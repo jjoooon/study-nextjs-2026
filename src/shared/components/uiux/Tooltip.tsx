@@ -35,9 +35,9 @@ function TooltipContent({
 }) {
   const variantStyles = {
     // 1. 외부 컨테이너 배경 및 텍스트 색상 수정
-    default: 'bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.4rem] z-100',
+    default: 'bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.4rem]',
     dark: 'bg-[var(--color-gray-90)] text-[var(--color-gray-0)] border border-[var(--color-gray-90)]',
-    light: 'bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.4rem] z-100',
+    light: 'bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.4rem]',
   };
 
   const arrowStyles = {
@@ -62,7 +62,7 @@ function TooltipContent({
         align={align}
         alignOffset={alignOffset ?? 0}
         className={cn(
-          'group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-50 w-auto rounded-[0.4rem] text-[1.2rem] leading-[1.45] text-balance max-w-[24rem] text-[var(--color-gray-70)] px-[1rem] py-[0.8rem]',
+          'group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-[9999] w-auto rounded-[0.4rem] text-[1.2rem] leading-[1.45] text-balance max-w-[24rem] text-[var(--color-gray-70)] px-[1rem] py-[0.8rem]',
           variantStyles[variant],
           className
         )}

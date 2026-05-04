@@ -1,9 +1,9 @@
 'use client';
 
-import { Gcol, Typo } from '@atoms';
-import { ProcessDot, CheckBoldIcon, ProcessActiveIcon } from '@icons';
 import { Fragment } from 'react';
 import { Num1, Num2, Num3, Num4, Num5, Num6 } from '@/shared/components/icons/StepNumber';
+import { Gcol, Typo } from '@atoms';
+import { ProcessDot, CheckBoldIcon, ProcessActiveIcon } from '@icons';
 
 export type PageProcessItem = {
   step: number;

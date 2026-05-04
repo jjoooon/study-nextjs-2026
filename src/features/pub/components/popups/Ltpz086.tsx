@@ -1,9 +1,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
@@ -16,11 +19,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@uiux/Table';
 
 // dummy data
 type DummyDataType = {
@@ -90,7 +89,7 @@ const DummyData: DummyDataType[] = [
     field10: '1,000',
   },
 ];
-export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz086 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '회사명',
@@ -210,7 +209,7 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
   }, [rowData]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -222,30 +221,36 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr] gap-5">
+        <DialogSection className="grid-rows-[auto_1fr] gap-3">
           <TableFold>
             <TableFoldHead title="위배내용">
               <Typo tag="span" variant={'body-md'}>
                 단위:원
               </Typo>
             </TableFoldHead>
-            <TableFoldBody className="grid-rows-[1fr]">
-              <FormTable caption="위배내용" className="" lineTop variant="default">
-                <FormRow vertical>
-                  <FormCell title="인수제한">청약완료불가(업계누적)</FormCell>
-                  <FormCell title="누적명">암진단비(손생보)</FormCell>
-                  <FormCell title="누적유형">-</FormCell>
-                  <FormCell title="기누적금액">
-                    <div className="w-full text-right">5,700</div>
-                  </FormCell>
-                  <FormCell title="합계">
-                    <div className="w-full text-right">4,700</div>
-                  </FormCell>
-                  <FormCell title="한도">
-                    <div className="w-full text-right">30,000</div>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
+            <TableFoldBody>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>인수제한</TableHead>
+                    <TableHead>누적명</TableHead>
+                    <TableHead>누적유형</TableHead>
+                    <TableHead>기누적금액</TableHead>
+                    <TableHead>합계</TableHead>
+                    <TableHead>한도</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="text-center">홍길동</TableCell>
+                    <TableCell className="text-center">Admin</TableCell>
+                    <TableCell className="text-center">활성</TableCell>
+                    <TableCell className="text-right">5,700</TableCell>
+                    <TableCell className="text-right">4,700</TableCell>
+                    <TableCell className="text-right">30,000</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </TableFoldBody>
           </TableFold>
 
@@ -288,3 +293,5 @@ export const Ltpz086 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz086;

@@ -1,9 +1,9 @@
 'use client';
 
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InfoBox } from '@common/InfoBox';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
@@ -18,17 +18,15 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz041 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz041 = () => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -41,12 +39,12 @@ export const Ltpz041 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection>
           <TableFold>
             <TableFoldHead title="개인사업자정보" />
             <TableFoldBody>
               <Gcol>
-                <FormTable caption="사업자" cols={['w-[14rem]', 'w-auto']}>
+                <FormTable caption="사업자" cols={['w-[9rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'사업자명'}>
                       <Input value={form.type01} onChange={(e) => setFormField('type01', e.target.value)} readOnly />
@@ -59,14 +57,16 @@ export const Ltpz041 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormRow>
                 </FormTable>
 
-                <InfoBox
-                  subTitle="개인사업자정보는 계약자의 보조정보로 계약자는 대표자인 개인으로 함"
-                  variant="info"
-                ></InfoBox>
-                <InfoBox
-                  subTitle="계약자와 개인사업자의 대표자가 동일한 경우만 입력 가능(사업자등록증 스캔 필수)"
-                  variant="info"
-                ></InfoBox>
+                <Gcol className="w-full" placement="ss" variant="box-info">
+                  <Typo icon="info" variant="body-sm">
+                    개인사업자정보는 계약자의 보조정보로 계약자는 대표자인 개인으로 함
+                  </Typo>
+                </Gcol>
+                <Gcol className="w-full" placement="ss" variant="box-info">
+                  <Typo icon="info" variant="body-sm">
+                    계약자와 개인사업자의 대표자가 동일한 경우만 입력 가능(사업자등록증 스캔 필수)
+                  </Typo>
+                </Gcol>
               </Gcol>
             </TableFoldBody>
           </TableFold>
@@ -91,3 +91,5 @@ export const Ltpz041 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz041;

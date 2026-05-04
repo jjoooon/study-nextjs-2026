@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Ltpa430 } from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpa430';
+import Ltpa430 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpa430';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
@@ -17,7 +17,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <Ltpa430 open={open} onOpenChange={setOpen} />
+      <Ltpa430 />
     </LayoutDoc>
   );
 };

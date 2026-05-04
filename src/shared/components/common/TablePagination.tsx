@@ -22,7 +22,7 @@ interface TableMoreProps {
   totalCount?: number;
   pageSize?: number;
   onLoadedCountChange?: (loadedCount: number) => void;
-
+  only?: 'all' | 'next';
   onLoadAll?: () => void;
   onLoadNext?: () => void;
   onLoadReset?: () => void;
@@ -92,6 +92,7 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
           >
             <PageArrowIcon className="rotate-180" />
           </Button>
+
           <Button
             variant={'none'}
             only={'icon'}

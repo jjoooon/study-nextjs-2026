@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -13,15 +16,13 @@ import {
   DialogSection,
   DialogTitle,
   DialogFooterArea,
+  DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
-export const Ltpz105 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz105 = () => {
   type DummyDataType = {
     id: number;
     field1: string | number;
@@ -116,8 +117,8 @@ export const Ltpz105 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
   // M2. 신규 페이지
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} size="md">
+    <Dialog open>
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -126,30 +127,28 @@ export const Ltpz105 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection>
+        <DialogSection className="grid grid-rows-[auto_1fr_1fr]">
           <Gcol className="w-full" placement="ss">
             <Typo variant={'body-lg'} weight={'bold'}>
               설계정보
             </Typo>
             <Grow className="w-full" variant="box-round" placement={'ss'}>
-              <FormTable caption="설계번호" variant="none" cols={['w-[1rem]', 'w-[10rem]', 'w-[1rem]', 'w-auto']}>
+              <FormTable caption="설계번호" variant="head">
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <b>LA123123123123-1</b>
+                    <Input value={'LA123123123123'} variant="info" readOnly />
                   </FormCell>
                   <FormCell title={'보험시기'}>
-                    <b>2026-03-18</b>
+                    <Input value={'2026-03-18'} variant="info" readOnly />
                   </FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'유효기간'} colSpan={3}>
-                    <b>2026-03-18</b>
+                  <FormCell title={'유효기간'}>
+                    <Input value={'2026-03-18'} variant="info" readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
             </Grow>
           </Gcol>
-          <Gcol className="w-full" placement="ss" gap={2}>
+          <Gcol className="w-full" placement="ss" gap={1}>
             <div className="ag-theme-alpine min-h-[18.4rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
@@ -172,7 +171,7 @@ export const Ltpz105 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Typo>
             </Gcol>
           </Gcol>
-          <div className="ag-theme-alpine min-h-[18.4rem]">
+          <div className="ag-theme-alpine">
             <AgGridReact<DummyDataType2>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}
@@ -193,14 +192,11 @@ export const Ltpz105 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button
-                variant={'outlined'}
-                size={'xl'}
-                color={'gray-light'}
-                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
-              >
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />
@@ -209,3 +205,5 @@ export const Ltpz105 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz105;

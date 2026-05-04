@@ -1,7 +1,12 @@
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
@@ -10,6 +15,7 @@ import { ResetIcon, SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+
 import {
   Dialog,
   DialogContent,
@@ -22,11 +28,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -231,7 +232,7 @@ const DATA_TABS: Ltpz032TabType[] = [
   },
 ];
 
-export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz019 = () => {
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const [coverageName, setCoverageName] = useState('');
 
@@ -338,7 +339,7 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -353,27 +354,27 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="현재 상품" cols={['w-1', 'w-auto', 'w-1', 'w-auto']} variant="head">
+            <FormTable variant="head">
               <FormRow>
                 <FormCell title={'현재 상품'}>
-                  <Typo variant={'body-lg'} weight={'bold'}>
-                    (LTPZ019)한화 시그니처 여성 건강보험40 2504
-                  </Typo>
+                  <Input value="한화 시그니처 여성 건강보험40 2504" readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'현재 고객'}>
-                  <Typo variant={'body-lg'} weight={'bold'}>
-                    홍길순 외 0명
-                  </Typo>
+                  <Input value="홍길순 외 0명" readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
-          <Gcol placement={'ss'} className="w-full" gap={5}>
+
+          <Gcol placement={'ss'} className="w-full" gap={3}>
+            {/* 간편설계인 경우 */}
             <Gcol placement={'ss'} className="w-full">
               <Typo variant={'body-lg'} weight={'bold'} className="flex items-center">
                 간편설계를 생성할 상품을 선택해주세요.
               </Typo>
             </Gcol>
+
+            {/* 상세설계인 경우 */}
             <Gcol placement={'ss'} className="w-full">
               <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
                 <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
@@ -381,14 +382,7 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Badge>
                 현재 고객을 대상으로 다른 상품을 설계하시겠어요?
               </Typo>
-              <RadioGroup
-                className="gap-2 ml-[1rem]"
-                errorMsg="하나를 선택해주세요."
-                errorPs="bl"
-                onValueChange={() => {}}
-                width="full"
-              >
-                {' '}
+              <RadioGroup className="gap-2 ml-[2.4rem]" onValueChange={() => {}} width="full">
                 {[
                   { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
                   { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
@@ -399,7 +393,6 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                 ))}
               </RadioGroup>
             </Gcol>
-
             <Gcol placement={'ss'} className="w-full">
               <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
                 <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
@@ -409,11 +402,19 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Typo>
 
               <Grow placement={'ss'} className="w-full gap-6">
-                <Grow className="w-full" placement="ss" gap={5}>
-                  <TableFold>
-                    <TableFoldHead title="상품정보"></TableFoldHead>
+                {/* M2. 수정  */}
+                <Grid className="w-full grid-cols-[1fr_1fr] gap-5">
+                  <TableFold variant={'default'}>
+                    <TableFoldHead title="상품정보">
+                      <Grow>
+                        기준일자
+                        <DatePickerInput mode={'single'} size={'md'} />
+                      </Grow>
+                    </TableFoldHead>
                     <TableFoldBody className="w-full">
-                      <div className="ag-theme-alpine w-full h-160!">
+                      <div
+                        className={`h-full tooltip-hidden-toggle ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                      >
                         <AgGridReact<DummyDataType>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -423,15 +424,15 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                             sortable: true,
                             resizable: true,
                           }}
-                          headerHeight={30}
-                          rowHeight={30}
-                          domLayout="normal"
+                          tooltipShowDelay={0}
+                          tooltipHideDelay={9999}
+                          tooltipMouseTrack={true}
                         />
                       </div>
                     </TableFoldBody>
                   </TableFold>
-                  <TableFold>
-                    <TableFoldHead title="(LA0203413)한화 시그니처 여성 건강"></TableFoldHead>
+                  <TableFold variant={'default'}>
+                    <TableFoldHead title="종정보"></TableFoldHead>
                     <TableFoldBody>
                       <Gcol className="w-full" gap={5}>
                         <Gcol className="w-full">
@@ -491,7 +492,8 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </Gcol>
                     </TableFoldBody>
                   </TableFold>
-                </Grow>
+                  {/* //M2. 수정  */}
+                </Grid>
               </Grow>
             </Gcol>
           </Gcol>
@@ -516,3 +518,5 @@ export const Ltpz019 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz019;

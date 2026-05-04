@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpa220 } from '@/features/pub/aqg/components/popups/Ltpa220';
+import Ltpa220 from '@/features/pub/aqg/components/popups/Ltpa220';
 
 export default {
   title: 'app/aqg/components/popups/Ltpa220',
@@ -18,7 +18,7 @@ export const Default = () => {
         </Button>
       </div>
 
-      <Ltpa220 open={open} onOpenChange={setOpen} />
+      <Ltpa220 />
     </LayoutDoc>
   );
 };

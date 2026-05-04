@@ -1,22 +1,22 @@
 'use client';
 // M1. 팝업에서 화면으로, 전체 수정
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { Button } from '@uiux/Button';
-
-import { Input } from '@uiux/Input';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { PageID } from '@features/PageID';
 import { TabPager } from '@/shared/components/common/TabPager';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { BottomBar } from '@common/BottomBar';
 import { useTabs } from '@/shared/hooks/useTabs';
+import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { PageID } from '@features/PageID';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
+
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
@@ -204,10 +204,10 @@ const dummyData2: DummyDataType2[] = [
 
 export default function Ltpa060Section() {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(dummyData);
-  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(dummyData2);
+  const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
 
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
-  
+
   // Tab1 AGGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -343,7 +343,7 @@ export default function Ltpa060Section() {
   );
 
   const { tabs, active, setActive } = useTabs(DATA_TABS);
-  
+
   return (
     <>
       <LayoutHead>
@@ -393,7 +393,7 @@ export default function Ltpa060Section() {
                           rowData={rowData}
                           columnDefs={columnDefs}
                           selectionColumnDef={{
-                            width: 50,
+                            width: 30,
                           }}
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           onCellValueChanged={onCellValueChanged}
@@ -430,7 +430,7 @@ export default function Ltpa060Section() {
                           rowData={rowData2}
                           columnDefs={columnDefs2}
                           selectionColumnDef={{
-                            width: 50,
+                            width: 30,
                           }}
                           onCellValueChanged={onCellValueChanged}
                           noRowsOverlayComponent={AgGridEmptyComponent}
@@ -488,7 +488,7 @@ export default function Ltpa060Section() {
                         rowData={rowData}
                         columnDefs={columnDefs}
                         selectionColumnDef={{
-                          width: 50,
+                          width: 30,
                         }}
                         onCellValueChanged={onCellValueChanged}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -525,7 +525,7 @@ export default function Ltpa060Section() {
                         rowData={rowData2}
                         columnDefs={columnDefs2}
                         selectionColumnDef={{
-                          width: 50,
+                          width: 30,
                         }}
                         onCellValueChanged={onCellValueChanged}
                         noRowsOverlayComponent={AgGridEmptyComponent}

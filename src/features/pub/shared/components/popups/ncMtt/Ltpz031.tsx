@@ -1,6 +1,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useState } from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid, Divider } from '@atoms';
 import { BulletItem } from '@common/BulletList';
@@ -26,13 +32,6 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useState } from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -176,7 +175,7 @@ const DataTabs2 = [
   { label: '간편고지형', value: 'TAB2_2' },
 ];
 
-export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz031 = () => {
   const [rowData] = useState<DummyDataType[]>(DummyData);
   const [form, setFormField] = useFormFields({
     // Tab1
@@ -809,7 +808,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
         <DialogHeader>
           <DialogTitle>
@@ -821,7 +820,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="w-full gap-5">
+        <DialogSection className="w-full gap-3">
           <Grow variant={'box-info-line'} placement={'bwc'} className="border-transparent">
             <Typo variant={'body-lg'}>
               자동고지(ICIS/심평원) 또는 질병 가져오기를 통해 질병 정보를 간편하게 입력하세요.
@@ -838,9 +837,9 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Button>
             </Grow>
           </Grow>
-          <Grow className="grid w-full grid-cols-[24.7rem_1fr] gap-5" placement={'ss'}>
+          <Grow className="grid w-full grid-cols-[24.7rem_1fr] gap-3" placement={'ss'}>
             {/* 많이찾는질병 & 질병검색 */}
-            <Grid placement={'ss'} className="w-full overflow-hidden grid-rows-[auto_1fr]" gap={5}>
+            <Grid placement={'ss'} className="w-full h-full overflow-hidden grid-rows-[auto_1fr]" gap={5}>
               <Gcol className="w-full" placement={'ss'} gap={2}>
                 <Typo variant="heading-md">많이 찾는 질병</Typo>
                 <Grow variant="box-round" placement={'bwc'}>
@@ -1384,7 +1383,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                             visibleCount={5}
                           >
                             {active2 === 'TAB2_1' && (
-                              <div className="ag-theme-alpine w-full h-70! ag-border-t">
+                              <div className="ag-theme-alpine w-full min-h-[15rem] ag-border-t">
                                 <AgGridReact<DummyDataType2>
                                   getRowId={(params) => String(params.data.id)}
                                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1402,7 +1401,7 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
                               </div>
                             )}
                             {active2 === 'TAB2_2' && (
-                              <div className="ag-theme-alpine w-full h-70! ag-border-t">
+                              <div className="ag-theme-alpine w-full min-h-[15rem] ag-border-t">
                                 <AgGridReact<DummyDataType3>
                                   getRowId={(params) => String(params.data.id)}
                                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1454,3 +1453,5 @@ export const Ltpz031 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz031;

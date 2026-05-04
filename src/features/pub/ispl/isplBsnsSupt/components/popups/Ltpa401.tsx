@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -17,12 +18,10 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpa401 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpa401 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>
@@ -39,12 +38,14 @@ export const Ltpa401 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable variant={'head'} lineTop={false}>
               <FormRow>
-                <FormCell title={'설계접수번호'}>LA260209313558</FormCell>
+                <FormCell title={'설계접수번호'}>
+                  <Input aria-label="" value={'LA260209313558'} readOnly variant="info" />
+                </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
 
-          <Gcol placement="ss" gap={5}>
+          <Gcol placement="ss" gap={3}>
             <TableFold>
               <TableFoldHead title="요청내용" />
               <TableFoldBody>
@@ -88,36 +89,34 @@ export const Ltpa401 = ({ open, onOpenChange }: PopupBaseProps) => {
 
             <TableFold>
               <TableFoldHead title="처리결과" />
-              <TableFoldBody>
-                <Gcol gap={5} placement="ss">
-                  <FormTable caption="처리결과 등록 테이블" cols={['w-[12rem] flex-1']}>
-                    <FormRow>
-                      <FormCell title={'처리결과'}>
-                        <RadioGroup className="gap-2" defaultValue="option1" onValueChange={() => {}} width="full">
-                          {[
-                            { id: 'option1', label: '설계완료' },
-                            { id: 'option2', label: '반려' },
-                          ].map((option) => (
-                            <RadioGroupItem key={option.id} id={option.id} value={option.id}>
-                              {option.label}
-                            </RadioGroupItem>
-                          ))}
-                        </RadioGroup>
-                      </FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'설계번호'}>
-                        <Input width={200} readOnly />
-                      </FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'메모'}>
-                        <Input width={200} readOnly />
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                  <Typo icon={'info'}>처리결과 저장 시, 신청하신 분께 알림톡이 발송되오니 참고 바랍니다.</Typo>
-                </Gcol>
+              <TableFoldBody className="gap-1">
+                <FormTable caption="처리결과 등록 테이블" cols={['w-[12rem] flex-1']}>
+                  <FormRow>
+                    <FormCell title={'처리결과'}>
+                      <RadioGroup className="gap-2" defaultValue="option1" onValueChange={() => {}} width="full">
+                        {[
+                          { id: 'option1', label: '설계완료' },
+                          { id: 'option2', label: '반려' },
+                        ].map((option) => (
+                          <RadioGroupItem key={option.id} id={option.id} value={option.id}>
+                            {option.label}
+                          </RadioGroupItem>
+                        ))}
+                      </RadioGroup>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={'설계번호'}>
+                      <Input readOnly />
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={'메모'}>
+                      <Input readOnly />
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+                <Typo icon={'info'}>처리결과 저장 시, 신청하신 분께 알림톡이 발송되오니 참고 바랍니다.</Typo>
               </TableFoldBody>
             </TableFold>
           </Gcol>
@@ -142,3 +141,5 @@ export const Ltpa401 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpa401;

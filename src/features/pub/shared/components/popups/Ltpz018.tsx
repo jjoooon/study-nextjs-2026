@@ -1,10 +1,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { Fragment, useMemo, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grid, Grow, Typo, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TabPager } from '@common/TabPager';
-import { InputClearIcon, PlusIcon, ArrowIcon } from '@icons';
+import { ArrowIcon, InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
@@ -17,110 +19,139 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { useMemo, useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { toast } from '@uiux/Sonner';
 
 type MenuItem = {
   code: string;
+  group: string;
   name: string;
   link: string;
   fix?: boolean;
+  selected?: boolean;
 };
 
 export type Ltpz018MenuItem = {
   code: string;
+  group: string;
   name: string;
   link: string;
   fix?: boolean;
+  selected?: boolean;
 };
 
 const MENU_LIST: MenuItem[] = [
-  { code: 'm01', fix: true, name: '설계완료알림', link: '/' },
-  { code: 'm02', fix: false, name: '다른상품설계', link: '/' },
-  { code: 'm03', fix: false, name: '수수료조회', link: '/' },
-  { code: 'm04', fix: true, name: '실손정액조회', link: '/' },
+  { code: 'm1_1', selected: false, fix: true, group: '공통(기본)', name: '설계매뉴얼', link: '/' },
+  { code: 'm1_2', selected: false, fix: false, group: '공통(기본)', name: '질문하기', link: '/' },
+  { code: 'm1_3', selected: true, fix: false, group: '공통(기본)', name: '설계동의', link: '/' },
+  { code: 'm1_4', selected: false, fix: false, group: '공통(기본)', name: '동의현황', link: '/' },
+  { code: 'm1_5', selected: false, fix: false, group: '공통(기본)', name: '약관조회', link: '/' },
 
-  { code: 'm05', fix: false, name: '동일상품복사', link: '/' },
-  { code: 'm06', fix: false, name: '物비용처리', link: '/' },
-  { code: 'm07', fix: false, name: '설계비교', link: '/' },
-  { code: 'm08', fix: false, name: '계약복사', link: '/' },
+  { code: 'm2_1', selected: false, fix: true, group: '지침', name: '실손정액조회', link: '/' },
+  { code: 'm2_2', selected: false, fix: false, group: '지침', name: '전체누적', link: '/' },
+  { code: 'm2_3', selected: false, fix: false, group: '지침', name: '부실유의', link: '/' },
+  { code: 'm2_4', selected: false, fix: false, group: '지침', name: '인수기준', link: '/' },
+  { code: 'm2_5', selected: false, fix: false, group: '지침', name: '인수스코어', link: '/' },
 
-  { code: 'm09', fix: false, name: 'QA심사이력', link: '/' },
-  { code: 'm10', fix: false, name: '동의현황', link: '/' },
-  { code: 'm11', fix: false, name: '부실유의', link: '/' },
-  { code: 'm12', fix: false, name: '통판스크립트', link: '/' },
+  { code: 'm3_1', selected: false, fix: false, group: '영업관리', name: '수수료조회', link: '/' },
+  { code: 'm3_2', selected: false, fix: false, group: '영업관리', name: '物비용처리', link: '/' },
 
-  { code: 'm13', fix: false, name: '이미지조회', link: '/' },
-  { code: 'm14', fix: false, name: '인수기준', link: '/' },
-  { code: 'm15', fix: false, name: '공통스크립트', link: '/' },
-  { code: 'm16', fix: false, name: '이미지스캔', link: '/' },
+  { code: 'm4_1', selected: false, fix: false, group: '설계', name: '다른상품설계', link: '/' },
+  { code: 'm4_2', selected: false, fix: false, group: '설계', name: '동일상품복사', link: '/' },
+  { code: 'm4_3', selected: false, fix: false, group: '설계', name: '계약복사', link: '/' },
+  { code: 'm4_4', selected: false, fix: false, group: '설계', name: '설계비교', link: '/' },
+  { code: 'm4_5', selected: false, fix: false, group: '설계', name: '건축물대장', link: '/' },
+  { code: 'm4_6', selected: false, fix: false, group: '설계', name: '업종선택', link: '/' },
+  { code: 'm4_7', selected: false, fix: false, group: '설계', name: '건물구조입력', link: '/' },
+  { code: 'm4_8', selected: false, fix: false, group: '설계', name: '설계완료알림', link: '/' },
+  { code: 'm4_9', selected: false, fix: false, group: '설계', name: '법정대리인등록', link: '/' },
+  { code: 'm4_10', selected: false, fix: false, group: '설계', name: '담보순서조정', link: '/' },
 
-  { code: 'm17', fix: false, name: '인수스코어', link: '/' },
-  { code: 'm18', fix: false, name: 'TM마케팅동의', link: '/' },
-  { code: 'm19', fix: false, name: '질병가이드', link: '/' },
-  { code: 'm20', fix: false, name: '건출물대장', link: '/' },
+  { code: 'm5_1', selected: false, fix: false, group: 'UW', name: '질병가이드', link: '/' },
+  { code: 'm5_2', selected: false, fix: false, group: 'UW', name: '고지콕콕', link: '/' },
+  { code: 'm5_3', selected: false, fix: false, group: 'UW', name: '청약완료불가사전안내', link: '/' },
 
-  { code: 'm21', fix: false, name: '전자문서지갑', link: '/' },
-  { code: 'm23', fix: false, name: '업종선택', link: '/' },
-  { code: 'm24', fix: false, name: '한눈에(통합)', link: '/' },
-  { code: 'm25', fix: false, name: '건물구조입력', link: '/' },
+  { code: 'm6_1', selected: false, fix: false, group: '스캔', name: '이미지조회', link: '/' },
+  { code: 'm6_2', selected: false, fix: false, group: '스캔', name: '이미지스캔', link: '/' },
+  { code: 'm6_3', selected: false, fix: false, group: '스캔', name: '원클릭스캔', link: '/' },
+  { code: 'm6_4', selected: false, fix: false, group: '스캔', name: '전자문서지갑', link: '/' },
 
-  { code: 'm26', fix: false, name: '질문하기', link: '/' },
-  { code: 'm27', fix: false, name: '설계 매뉴얼', link: '/' },
-  { code: 'm28', fix: false, name: '실손정액조회', link: '/' },
-  { code: 'm29', fix: false, name: '전체누적', link: '/' },
-
-  { code: 'm30', fix: false, name: '약관조회', link: '/' },
-  { code: 'm31', fix: false, name: '부실유의', link: '/' },
-  { code: 'm32', fix: false, name: '설계동의', link: '/' },
-  { code: 'm33', fix: false, name: '수수료조회', link: '/' },
-
-  { code: 'm34', fix: false, name: '원클릭스캔', link: '/' },
-  { code: 'm22', fix: false, name: '청약완료불가사전안내', link: '/' },
+  { code: 'm7_1', selected: false, fix: false, group: 'TM', name: 'QA심사이력', link: '/' },
+  { code: 'm7_2', selected: false, fix: false, group: 'TM', name: '통판스크립트', link: '/' },
+  { code: 'm7_3', selected: false, fix: false, group: 'TM', name: '공통스크립트', link: '/' },
+  { code: 'm7_4', selected: false, fix: false, group: 'TM', name: 'TMI마케팅동의', link: '/' },
 ];
 
-const MY_MENU_LIST: MenuItem[] = [
-  { code: 'm01', fix: true, name: '설계완료알림', link: '/' },
-  { code: 'm02', fix: false, name: '다른상품설계', link: '/' },
-  { code: 'm03', fix: false, name: '수수료조회', link: '/' },
-  { code: 'm04', fix: true, name: '실손정액조회', link: '/' },
-];
+const MAX_SELECTED_MENU = 7;
 
-type Ltpz018Props = PopupBaseProps & {
-  myMenuList?: Ltpz018MenuItem[];
+type Ltpz018Props = {
   onSaveMyMenuList?: (nextMenus: Ltpz018MenuItem[]) => void;
 };
 
-export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Ltpz018Props) => {
+const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
   const DATA_TABS = [
     { label: '전체메뉴', value: 'tab1' },
     { label: '편집모드', value: 'tab2' },
   ];
+  const [menuList, setMenuList] = useState<MenuItem[]>(MENU_LIST);
+
   const uniqueMenuList = useMemo(
-    () => MENU_LIST.filter((menu, index, list) => list.findIndex((item) => item.code === menu.code) === index),
-    []
+    () => menuList.filter((menu, index, list) => list.findIndex((item) => item.code === menu.code) === index),
+    [menuList]
   );
 
-  const initialSelectedMenuNames = useMemo(() => {
-    const sourceMenuList = myMenuList ?? MY_MENU_LIST;
-    const initialNameSet = new Set(sourceMenuList.map((menu) => menu.code));
-    return uniqueMenuList.filter((menu) => initialNameSet.has(menu.code)).map((menu) => menu.code);
-  }, [myMenuList, uniqueMenuList]);
+  const fixedMenuCount = useMemo(() => uniqueMenuList.filter((menu) => menu.fix).length, [uniqueMenuList]);
 
-  const [selectedMenuNames, setSelectedMenuNames] = useState<string[]>(initialSelectedMenuNames);
+  const [selectedMenuNames, setSelectedMenuNames] = useState<string[]>(
+    MENU_LIST.filter((menu) => menu.selected).map((menu) => menu.code)
+  );
 
-  const myMenu = useMemo(() => {
-    const menuMap = new Map(uniqueMenuList.map((menu) => [menu.code, menu]));
-    return selectedMenuNames.map((code) => menuMap.get(code)).filter((menu): menu is MenuItem => menu !== undefined);
-  }, [selectedMenuNames, uniqueMenuList]);
+  const showSelectionLimitToast = () => {
+    toast.info('나의 메뉴는 최대 7개까지 선택할 수 있습니다.', { duration: 1000000 });
+  };
+
+  const countNonFixedSelected = (codes: string[]) =>
+    codes.filter((code) => {
+      const target = uniqueMenuList.find((menu) => menu.code === code);
+      return target !== undefined && !target.fix;
+    }).length;
 
   const handleMenuSelectionChange = (nextValues: string[]) => {
+    if (fixedMenuCount + countNonFixedSelected(nextValues) > MAX_SELECTED_MENU) {
+      showSelectionLimitToast();
+      return;
+    }
+
     setSelectedMenuNames(nextValues);
+    setMenuList((prev) =>
+      prev.map((menu) => {
+        if (menu.fix) return menu;
+        return { ...menu, selected: nextValues.includes(menu.code) };
+      })
+    );
+  };
+
+  const handleToggleSelected = (code: string) => {
+    const targetMenu = uniqueMenuList.find((menu) => menu.code === code);
+    if (!targetMenu || targetMenu.fix) return;
+
+    const nextSelected = !targetMenu.selected;
+    if (nextSelected && fixedMenuCount + countNonFixedSelected(selectedMenuNames) >= MAX_SELECTED_MENU) {
+      showSelectionLimitToast();
+      return;
+    }
+
+    setMenuList((prev) => prev.map((menu) => (menu.code === code ? { ...menu, selected: nextSelected } : menu)));
+    setSelectedMenuNames((prev) => {
+      if (nextSelected) {
+        return prev.includes(code) ? prev : [...prev, code];
+      }
+      return prev.filter((selectedCode) => selectedCode !== code);
+    });
   };
 
   const handleRemoveMenu = (code: string) => {
     setSelectedMenuNames((prev) => prev.filter((selectedCode) => selectedCode !== code));
+    setMenuList((prev) => prev.map((menu) => (menu.code === code ? { ...menu, selected: false } : menu)));
     setSelectedMenuCode((prev) => (prev === code ? null : prev));
   };
 
@@ -157,12 +188,23 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
       .filter((menu): menu is Ltpz018MenuItem => menu !== undefined);
 
     onSaveMyMenuList?.(nextMenus);
-    onOpenChange?.(false);
   };
+  const groupedMenuList = useMemo(() => {
+    const groups: { group: string; items: MenuItem[] }[] = [];
+    for (const menu of MENU_LIST) {
+      const last = groups[groups.length - 1];
+      if (last?.group === menu.group) {
+        last.items.push(menu);
+      } else {
+        groups.push({ group: menu.group, items: [menu] });
+      }
+    }
+    return groups;
+  }, []);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="lg">
+    <Dialog open>
+      <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -174,7 +216,7 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_1fr] grid-cols-[1fr]">
           <Grid gap={5} className="grid-cols-[1fr_auto] place-items-stretch" placement="ss">
             <TabPager
               data={tabs}
@@ -183,40 +225,61 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
               getValue={(tab) => String(tab.value)}
               renderTab={(tab) => <span>{tab.label}</span>}
             >
-              <Grow variant="box-round-b" className="w-full flex-wrap" placement="ss">
-                {active === 'tab1' &&
-                  MENU_LIST.map((menu, idx) => (
-                    <Button
-                      key={`menu-${idx}`}
-                      variant={'outlined'}
-                      size={'md'}
-                      color={'gray-light'}
-                      className="min-w-[calc(25%_-_0.3rem)]"
-                    >
-                      {menu.name}
-                    </Button>
-                  ))}
-                {active === 'tab2' && (
-                  <CheckboxGroup
-                    className="gap-1 [&>div]:min-w-[calc(25%_-_0.3rem)]"
-                    value={selectedMenuNames}
-                    onValueChange={handleMenuSelectionChange}
-                  >
-                    {uniqueMenuList.map((menu) => (
-                      <CheckboxGroupItem
-                        variant="button"
-                        key={menu.code}
-                        value={menu.code}
-                        size="lg"
-                        className="w-full"
-                        disabled={menu.fix}
-                      >
-                        {menu.name}
-                      </CheckboxGroupItem>
+              <div className="w-full max-h-[46rem] overflow-y-auto">
+                <Gcol variant="box-round-b" className="w-full flex-wrap h-[46rem] px-5 py-4" placement="ss" gap={2.5}>
+                  {active === 'tab1' &&
+                    groupedMenuList.map((g, gIdx) => (
+                      <Gcol className="w-[14.8rem]" key={`group-${gIdx}`} placement="ss">
+                        <Typo tag="h3" variant={'body-sm'} weight={'bold'}>
+                          {g.group}
+                        </Typo>
+                        <Gcol className="w-auto" placement="ss">
+                          {g.items.map((menu) => (
+                            <Button
+                              key={menu.code}
+                              variant={'outlined'}
+                              size={'md'}
+                              color={'gray-light'}
+                              className="w-[14.8rem]"
+                              onClick={() => handleToggleSelected(menu.code)}
+                            >
+                              {menu.name}
+                            </Button>
+                          ))}
+                        </Gcol>
+                      </Gcol>
                     ))}
-                  </CheckboxGroup>
-                )}
-              </Grow>
+
+                  {active === 'tab2' &&
+                    groupedMenuList.map((g, gIdx) => (
+                      <Gcol className="w-[14.8rem]" key={`group-${gIdx}`} placement="ss">
+                        <Typo tag="h3" variant={'body-sm'} weight={'bold'}>
+                          {g.group}
+                        </Typo>
+                        <Gcol className="w-auto" placement="ss">
+                          <CheckboxGroup
+                            className="gap-1 [&>div]:min-w-[calc(25%_-_0.3rem)]"
+                            value={selectedMenuNames}
+                            onValueChange={handleMenuSelectionChange}
+                          >
+                            {g.items.map((menu) => (
+                              <CheckboxGroupItem
+                                variant="button"
+                                key={menu.code}
+                                value={menu.code}
+                                size="lg"
+                                className="w-[14.8rem]"
+                                disabled={menu.fix}
+                              >
+                                {menu.name}
+                              </CheckboxGroupItem>
+                            ))}
+                          </CheckboxGroup>
+                        </Gcol>
+                      </Gcol>
+                    ))}
+                </Gcol>
+              </div>
             </TabPager>
 
             <Grid placement="ss" className="w-[15.2rem] h-full grid-rows-[auto_1fr]">
@@ -263,60 +326,86 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
                 <Gcol className="absolute top-0 w-full left-0 p-2.5">
                   {active === 'tab2' ? (
                     <>
-                      {myMenu.map((menu) => (
-                        <div
-                          key={`mymenu-${menu.code}`}
-                          tabIndex={0}
-                          role="button"
-                          onClick={() => setSelectedMenuCode((prev) => (prev === menu.code ? null : menu.code))}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ')
-                              setSelectedMenuCode((prev) => (prev === menu.code ? null : menu.code));
-                          }}
-                          className={`flex w-full items-center justify-between gap-2 px-2 rounded-[0.3rem] text-[#fff] h-[2.2rem] text-[1.2rem] font-bold cursor-pointer outline-none ${
-                            selectedMenuCode === menu.code
-                              ? 'bg-[var(--color-primary-50)] ring-2 ring-[var(--color-primary-30)]'
-                              : 'bg-[var(--color-gray-50)]'
-                          }`}
-                        >
-                          <div className="truncate w-[10rem]">{menu.name}</div>
-                          <Button
-                            variant={'none'}
-                            only={'icon'}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleRemoveMenu(menu.code);
+                      {uniqueMenuList
+                        .filter((menu) => menu.fix)
+                        .map((menu) => (
+                          <div
+                            key={`mymenu-${menu.code}`}
+                            tabIndex={0}
+                            role="button"
+                            onClick={() => setSelectedMenuCode((prev) => (prev === menu.code ? null : menu.code))}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ')
+                                setSelectedMenuCode((prev) => (prev === menu.code ? null : menu.code));
                             }}
-                            className="w-[1.2rem] h-[1.2rem]"
-                            disabled={menu.fix ? true : false}
+                            className={`flex w-full items-center justify-between gap-2 px-2 rounded-[0.3rem] text-[#fff] h-[3.2rem] text-[1.2rem] font-bold cursor-pointer outline-none bg-[var(--color-gray-20)]`}
                           >
-                            <InputClearIcon size={12} />
-                          </Button>
-                        </div>
-                      ))}
-                      {Array.from({ length: Math.max(0, 7 - myMenu.length) }).map((_, i) => (
-                        <div
-                          key={`mymenu-empty-${i}`}
-                          className="flex w-full items-center justify-between px-2 bg-[var(--color-gray-5)] rounded-[0.3rem] text-[var(--color-gray-30)] h-[2.2rem] text-[1.2rem] border border-dashed border-[var(--color-gray-15)] justify-center"
-                        >
-                          <PlusIcon size={12} />
-                          추가
-                        </div>
-                      ))}
+                            <div className="truncate w-[10rem]">{menu.name}</div>
+                          </div>
+                        ))}
+                      {selectedMenuNames
+                        .map((code) => uniqueMenuList.find((menu) => menu.code === code))
+                        .filter((menu): menu is MenuItem => menu !== undefined && !menu.fix)
+                        .map((menu) => (
+                          <div
+                            key={`mymenu-${menu.code}`}
+                            tabIndex={0}
+                            role="button"
+                            onClick={() => setSelectedMenuCode((prev) => (prev === menu.code ? null : menu.code))}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ')
+                                setSelectedMenuCode((prev) => (prev === menu.code ? null : menu.code));
+                            }}
+                            className={`flex w-full items-center justify-between gap-2 px-2 rounded-[0.3rem] text-[#fff] h-[3.2rem] text-[1.2rem] font-bold cursor-pointer outline-none ${
+                              selectedMenuCode === menu.code
+                                ? 'bg-[var(--color-primary-50)] ring-2 ring-[var(--color-primary-30)]'
+                                : 'bg-[var(--color-gray-50)]'
+                            }`}
+                          >
+                            <div className="truncate w-[10rem]">{menu.name}</div>
+                            <Button
+                              variant={'none'}
+                              only={'icon'}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRemoveMenu(menu.code);
+                              }}
+                              className="w-[1.2rem] h-[1.2rem]"
+                            >
+                              <InputClearIcon size={12} />
+                            </Button>
+                          </div>
+                        ))}
                     </>
                   ) : (
                     <>
-                      {myMenu.map((menu) => (
-                        <Button
-                          key={`mymenu-${menu.code}`}
-                          variant={'contained'}
-                          size={'sm'}
-                          color={'gray'}
-                          className="w-full"
-                        >
-                          {menu.name}
-                        </Button>
-                      ))}
+                      {uniqueMenuList
+                        .filter((menu) => menu.fix)
+                        .map((menu) => (
+                          <Button
+                            key={`mymenu-${menu.code}`}
+                            variant={'contained'}
+                            size={'xl'}
+                            color={'gray'}
+                            className="w-full text-[1.2rem] rounded-[0.3rem]"
+                          >
+                            {menu.name}
+                          </Button>
+                        ))}
+                      {selectedMenuNames
+                        .map((code) => uniqueMenuList.find((menu) => menu.code === code))
+                        .filter((menu): menu is MenuItem => menu !== undefined && !menu.fix)
+                        .map((menu) => (
+                          <Button
+                            key={`mymenu-${menu.code}`}
+                            variant={'contained'}
+                            size={'xl'}
+                            color={'gray'}
+                            className="w-full text-[1.2rem] rounded-[0.3rem]"
+                          >
+                            {menu.name}
+                          </Button>
+                        ))}
                     </>
                   )}
                 </Gcol>
@@ -359,3 +448,5 @@ export const Ltpz018 = ({ open, onOpenChange, myMenuList, onSaveMyMenuList }: Lt
     </Dialog>
   );
 };
+
+export default Ltpz018;

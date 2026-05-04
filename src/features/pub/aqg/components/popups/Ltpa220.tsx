@@ -1,6 +1,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -17,12 +22,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -172,9 +171,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // dummy data
-
+const Ltpa220 = () => {
   const toNumericValue = (value: string | number): number => {
     if (typeof value === 'number') {
       return value;
@@ -200,7 +197,6 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
         if (params.node?.rowPinned === 'bottom') {
           return '';
         }
-
         return String(params.value ?? '');
       },
     },
@@ -279,7 +275,7 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
   }, [rowData]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -361,3 +357,5 @@ export const Ltpa220 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpa220;

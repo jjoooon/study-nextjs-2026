@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -16,9 +19,6 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -396,7 +396,7 @@ export default function Ltpa400Section() {
                       <FormCell title={'조회구분'}>
                         <NativeSelect
                           aria-label="조회구분 선택"
-                          width="12rem"
+                          width={120}
                           value={form.type01}
                           onChange={(e) => setFormField('type01', e.target.value)}
                         >
@@ -411,14 +411,14 @@ export default function Ltpa400Section() {
                         </NativeSelect>
                         <Input
                           aria-label=""
-                          width={'15rem'}
+                          width={150}
                           value={form.type02 || '12345678'}
                           onChange={(e) => setFormField('type02', e.target.value)}
                         />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="" width={'15rem'} value={'신부산지점GA지점'} readOnly />
+                        <Input aria-label="" width={200} value={'신부산지점GA지점'} readOnly />
                       </FormCell>
                       <FormCell title={'설계일자'}>
                         <DatePickerInput
@@ -426,13 +426,12 @@ export default function Ltpa400Section() {
                           onChange={() => {}}
                           rangeValue={{ from: '2026-02', to: '2026-03' }}
                           size="lg"
-                          width="sm"
                         />
                       </FormCell>
                       <FormCell title={'진행상태'}>
                         <NativeSelect
                           aria-label="진행상태 선택"
-                          width="12rem"
+                          width={120}
                           value={form.type03}
                           onChange={(e) => setFormField('type03', e.target.value)}
                         >
@@ -545,11 +544,11 @@ export default function Ltpa400Section() {
                         </NativeSelect>
                       </FormCell>
                       <FormCell title={'담당SM'}>
-                        <Input aria-label="" width={152} value={'12345678'} readOnly />
+                        <Input aria-label="" width={80} value={'12345678'} readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="" width={152} value={'김한화'} readOnly />
+                        <Input aria-label="" width={100} value={'김한화'} readOnly />
                       </FormCell>
                       <FormCell title={'설계일자'}>
                         <DatePickerInput
@@ -589,11 +588,11 @@ export default function Ltpa400Section() {
                         <Input aria-label="" width={152} value={'신부산지점GA지점'} readOnly />
                       </FormCell>
                       <FormCell title={'사용인'}>
-                        <Input aria-label="사용인" width={152} value={'12345678'} readOnly />
+                        <Input aria-label="사용인" width={80} value={'12345678'} readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="" width={152} value={'김한화'} readOnly />
+                        <Input aria-label="" width={100} value={'김한화'} readOnly />
                       </FormCell>
                     </FormRow>
                   </FormTable>

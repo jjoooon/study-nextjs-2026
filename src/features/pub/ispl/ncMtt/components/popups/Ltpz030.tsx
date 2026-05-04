@@ -1,5 +1,10 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Badge } from '@/shared/components/uiux/Badge';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -8,7 +13,6 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon } from '@icons';
 import { Button } from '@uiux/Button';
-
 import {
   Dialog,
   DialogClose,
@@ -19,13 +23,9 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { Badge } from '@/shared/components/uiux/Badge';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -171,7 +171,7 @@ const getUnderwritingDecision = (value: string | number) => {
   return status ? underwritingDecisionMap[status] : null;
 };
 
-export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz030 = () => {
   const columnDefs1T1 = React.useMemo<ColDef<DummyDataType1T1>[]>(
     () => [
       {
@@ -243,8 +243,8 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
   // const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+    <Dialog open>
+      <DialogContent showCloseButton resizable={false} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -265,8 +265,6 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
             visibleCount={4}
             variant="default"
             hasTableBelow={true}
-            error={false}
-            errorMsg="에러 메시지 예시"
             getValue={(tab) => String(tab.value)}
             renderTab={(tab) => <span>{tab.label}</span>}
             renderDropdownItem={false}
@@ -294,32 +292,26 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
                     >
                       <FormRow>
                         <FormCell title={'피보험자'}>
-                          <Typo tag={'strong'} className="body-md font-bold">
-                            김*화
-                          </Typo>
+                          <Input value="김한화" readOnly variant="info" />
                         </FormCell>
                         <FormCell title={'기준일자'}>
-                          <Typo tag={'strong'} className="body-md font-bold">
-                            YYYY-MM-DD
-                          </Typo>
+                          <Input value="YYYY-MM-DD" readOnly variant="info" />
                         </FormCell>
                         <FormCell title={'지급정보 조회기간'}>
-                          <Typo tag={'strong'} className="body-md font-bold">
-                            YY년
-                          </Typo>
+                          <Input value="YY년" readOnly variant="info" />
                         </FormCell>
                         <FormCell title={'고혈압'}>
-                          <Badge color="blue" size="md" variant="contained">
+                          <Badge color="blue" size="md" variant="contained" className="translate-y-[0.1rem]">
                             가능
                           </Badge>
                         </FormCell>
                         <FormCell title={'당뇨'}>
-                          <Badge color="blue" size="md" variant="contained">
+                          <Badge color="blue" size="md" variant="contained" className="translate-y-[0.1rem]">
                             가능
                           </Badge>
                         </FormCell>
                         <FormCell title={'고혈압&당뇨'}>
-                          <Badge color="blue" size="md" variant="contained">
+                          <Badge color="blue" size="md" variant="contained" className="translate-y-[0.1rem]">
                             가능
                           </Badge>
                         </FormCell>
@@ -638,3 +630,5 @@ export const Ltpz030 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz030;

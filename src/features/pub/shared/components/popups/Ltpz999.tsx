@@ -1,24 +1,14 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Button } from '@uiux/Button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogFooterArea,
-  DialogClose,
-} from '@uiux/Dialog';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Grow } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Button } from '@uiux/Button';
+import { Dialog, DialogContent, DialogFooter, DialogSection, DialogFooterArea, DialogClose } from '@uiux/Dialog';
 
 type DummyDataType = {
   id: number;
@@ -128,7 +118,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz999 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz999 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -146,20 +136,12 @@ export const Ltpz999 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="md">
-        <DialogHeader>
-          <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>
-              메시지내용
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ999)
-            </Typo>
-          </DialogTitle>
-        </DialogHeader>
-
-        <DialogSection className="grid-rows-[1fr]">
+    <Dialog open>
+      <DialogContent showCloseButton={false} resizable={true} size="md" className="grid-rows-[1fr_auto]">
+        <DialogSection className="grid-rows-[1fr] pt-5 ">
+          <Grow placement="ec" className="text-[var(--color-gray-70)]">
+            코드 LTRE006(trandZomH110)
+          </Grow>
           <div className="ag-theme-alpine min-h-[18.4rem]">
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
@@ -196,3 +178,5 @@ export const Ltpz999 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz999;

@@ -1,6 +1,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { ResetIcon } from '@/shared/components/icons/CommonIcons';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -15,13 +20,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
-import { ResetIcon } from '@/shared/components/icons/CommonIcons';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 // 담보패키지 dummy data
 type DummyDataType1 = {
@@ -152,7 +150,7 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz020 = () => {
   const CombinedConstructionHeader = () => {
     const headerAreaStyle: React.CSSProperties = {
       width: 'calc(100% + (var(--ag-cell-horizontal-padding) * 2))',
@@ -235,13 +233,14 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData1] = React.useState<DummyDataType1[]>(DummyData1);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
+  // 검수:체크시 트리구조 열림.
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              담보패키지 선택
+              보장패키지 선택()
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -357,3 +356,5 @@ export const Ltpz020 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz020;

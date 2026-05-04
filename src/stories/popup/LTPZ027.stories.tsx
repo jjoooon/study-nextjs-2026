@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz027 } from '@/features/pub/shared/components/popups/ncMtt/Ltpz027';
+import Ltpz027 from '@/features/pub/shared/components/popups/ncMtt/Ltpz027';
 
 export default {
   title: 'app/shared/components/popups/ncMtt/Ltpz027',
@@ -18,7 +18,7 @@ export const Default = () => {
         </Button>
       </div>
 
-      <Ltpz027 open={open} onOpenChange={setOpen} />
+      <Ltpz027 />
     </LayoutDoc>
   );
 };

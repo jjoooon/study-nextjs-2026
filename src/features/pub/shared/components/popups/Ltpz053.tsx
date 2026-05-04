@@ -1,6 +1,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -21,11 +25,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -41,7 +40,7 @@ const DummyData: DummyDataType[] = [
   { id: 3, isCheck: true, field01: '김한화', field02: '등록대상', field03: '등록대상', field04: '-' },
 ];
 
-export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz053 = () => {
   const designCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
     return (
       // M1. 수정
@@ -86,7 +85,7 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
   // M1. 추가
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
@@ -98,32 +97,31 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
+        <DialogSection className="grid grid-rows-[auto_1fr_auto_auto]">
+          <Grow placement="bwe" className="w-full" variant={'box-round'}>
             <FormTable caption="설계번호" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} variant={'head'}>
               <FormRow>
-                <FormCell title={'설계번호'} className="w-full">
-                  <Grow>
-                    <Input
-                      aria-label="설계번호 검색"
-                      width={100}
-                      value={form.type01}
-                      onChange={(e) => setFormField('type01', e.target.value)}
-                    />
-                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
-                  </Grow>
+                <FormCell title={'설계번호'} tdClassName="grid grid-cols-[1fr_auto] gap-1">
+                  <Input
+                    aria-label="설계번호 검색"
+                    value={form.type01}
+                    onChange={(e) => setFormField('type01', e.target.value)}
+                  />
+                  <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                    <SearchIcon color={'var(--color-primary-50)'} />
+                  </Button>
                 </FormCell>
-                <FormCell title={'상품명'} className="w-full">
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    한화 더건강한 한아름종합보험2601
-                  </Typo>
+                <FormCell title={'상품명'}>
+                  <Input
+                    value={'한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601'}
+                    readOnly
+                    variant="info"
+                  />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="ag-theme-alpine min-h-[18.4rem]">
+          <div className="ag-theme-alpine min-h-[12.4rem]">
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
@@ -158,10 +156,7 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFoldHead title="조회항목"></TableFoldHead>
             <TableFoldBody>
               {/* M1. 수정 */}
-              <FormTable
-                caption="조회항목"
-                cols={['w-[11rem]', 'w-auto', 'w-[11rem]', 'w-auto', 'w-[11rem]', 'w-auto']}
-              >
+              <FormTable caption="조회항목" cols={['w-[8rem]', 'w-auto', 'w-[11rem]', 'w-auto', 'w-[11rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'구분'} colSpan={5}>
                     <RadioGroup value={form.type02} onValueChange={(value) => setFormField('type02', value)}>
@@ -249,11 +244,10 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormTable>
             </TableFoldBody>
           </TableFold>
-
           <TableFold variant="accordion">
             <TableFoldHead title="신원확인결과"></TableFoldHead>
             <TableFoldBody>
-              <FormTable caption="월클릭스켄" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+              <FormTable caption="월클릭스켄" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'진위여부'}>
                     <Input aria-label="" width={160} value={'12345678'} readOnly />
@@ -290,3 +284,5 @@ export const Ltpz053 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz053;

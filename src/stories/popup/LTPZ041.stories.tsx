@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Ltpz041 } from '@/features/pub/ispl/crmtt/components/popups/Ltpz041';
+import Ltpz041 from '@/features/pub/ispl/crmtt/components/popups/Ltpz041';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
@@ -17,7 +17,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <Ltpz041 open={open} onOpenChange={setOpen} />
+      <Ltpz041 />
     </LayoutDoc>
   );
 };

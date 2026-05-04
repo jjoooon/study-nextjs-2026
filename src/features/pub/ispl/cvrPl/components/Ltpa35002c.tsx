@@ -1,7 +1,10 @@
 'use client';
 
+import type { CellClassParams, ColDef, EditableCallbackParams, CellEditorSelectorResult } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import {
-  createCellClickSelectionToggleHandler,
   numberValueFormatter,
   useDynamicColumnWidths,
   AgGridEmptyComponent,
@@ -24,9 +27,6 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@uiux/Resizable';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { CellClassParams, ColDef, EditableCallbackParams, CellEditorSelectorResult } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
 import {
   searchButtonRenderer,
@@ -34,8 +34,6 @@ import {
   editableCellClassRules,
   productNameCellRenderer,
 } from '../hooks/useLtpa350Step2';
-
-import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -374,8 +372,6 @@ export function Ltpa35002c() {
   // =====================
   const getExpiryRenderer = useExpiryCellRenderer();
 
-  // AgGridRow2용 핸들러 별도 선언
-  const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<AgGridRow2>(), []);
   // 재물
   const columnDefs: ColDef<AgGridRow>[] = useMemo(
     () => [
@@ -514,17 +510,29 @@ export function Ltpa35002c() {
         cellRenderer: getExpiryRenderer('left'),
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, getExpiryRenderer]
   );
 
-  const columnDefs2: ColDef<AgGridRow2>[] = useMemo(
-    () => [
+  const columnDefs2 = useMemo(
+    (): ColDef<AgGridRow2>[] => [
       {
         headerName: '',
         field: 'field1',
         width: attributeColumnWidth[8],
         spanRows: true,
         cellClass: (_params: CellClassParams<AgGridRow2>) => 'flex! items-center! justify-center! text-center',
+      } as ColDef<AgGridRow2>,
+      {
+        headerName: '선택',
+        field: 'isChecked',
+        cellRenderer: 'agCheckboxCellRenderer',
+        cellEditor: 'agCheckboxCellEditor',
+        editable: true,
+        cellClass: 'text-center editable-cell',
+        width: 30,
+        cellClassRules: {
+          'pointer-events-none': (params: CellClassParams<AgGridRow2>) => !!params.data?.locked,
+        },
       },
       {
         headerName: '',
@@ -560,7 +568,6 @@ export function Ltpa35002c() {
           isStandard: (params: CellClassParams<AgGridRow2>) => !!params.data?.isStandard?.edit,
           'tooltip-on': (params: CellClassParams<AgGridRow2>) => !!params.data?._tooltipOn,
         },
-        tooltipField: 'insuredAmount',
         cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
           if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
             return undefined;
@@ -784,22 +791,6 @@ export function Ltpa35002c() {
                       columnDefs={columnDefs2}
                       getRowId={(params) => String(params.data.id)}
                       singleClickEdit={true}
-                      rowSelection={{
-                        mode: 'multiRow' as const,
-                        checkboxes: true,
-                        headerCheckbox: false,
-                        enableClickSelection: false,
-                        enableSelectionWithoutKeys: true,
-                      }}
-                      onCellClicked={handleGridCellClickToggle}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 30,
-                        cellClass: 'text-center p-0!',
-                        cellClassRules: {
-                          'pointer-events-none': (params) => !!params.data?.locked,
-                        },
-                      }}
                       // onRowDataUpdated={handleRowDataUpdated}
                       tooltipShowDelay={0}
                       tooltipHideDelay={9999}
@@ -825,54 +816,57 @@ export function Ltpa35002c() {
                   variant={'bottom'}
                   cols={[
                     'min-w-[9rem]',
-                    'w-[36%]',
+                    'w-[25%]',
                     'min-w-[8rem]',
-                    'w-[30%]',
+                    'w-[20%]',
                     'min-w-[8rem]',
-                    'w-[30%]',
+                    'w-[20%]',
                     'min-w-[8rem]',
-                    'min-w-[15rem]',
+                    'w-[20%]',
                   ]}
                 >
                   <FormRow>
                     <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
-                      <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                        예상
-                      </Button>
-                      <Input
-                        type="tel"
-                        commaAmount={true}
-                        value={100000}
-                        size={'md'}
-                        width={'full'}
-                        readOnly={true}
-                        className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
-                      />
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Input
-                            type="text"
-                            commaAmount={true}
-                            value={39.4}
-                            size={'md'}
-                            width={60}
-                            className="[&_input]:text-right shrink-0 cursor-pointer"
-                          />
-                        </PopoverTrigger>
-                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                          <KeyValueList
-                            direction="col"
-                            variant="amount"
-                            data={[
-                              { key: '총압입보험료', value: '000,000,000원' },
-                              { key: '중도환급금', value: '0원' },
-                              { key: '만기환급금', value: '000,000,000원' },
-                            ]}
-                            className="w-full"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      %
+                      <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full">
+                        <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                          예상
+                        </Button>
+                        <Input
+                          type="tel"
+                          commaAmount={true}
+                          value={100000}
+                          size={'md'}
+                          readOnly={true}
+                          className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
+                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <>
+                              <Input
+                                type="text"
+                                commaAmount={true}
+                                value={39.4}
+                                size={'md'}
+                                width={44}
+                                className="[&_input]:text-right shrink-0 cursor-pointer"
+                              />
+                              %
+                            </>
+                          </PopoverTrigger>
+                          <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                            <KeyValueList
+                              direction="col"
+                              variant="amount"
+                              data={[
+                                { key: '총압입보험료', value: '000,000,000원' },
+                                { key: '중도환급금', value: '0원' },
+                                { key: '만기환급금', value: '000,000,000원' },
+                              ]}
+                              className="w-full"
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </Grid>
                     </FormCell>
                     <FormCell title="보장보험료">
                       <Popover>

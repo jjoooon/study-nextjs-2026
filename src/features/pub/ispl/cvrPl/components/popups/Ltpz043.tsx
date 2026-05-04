@@ -1,5 +1,7 @@
 'use client';
 
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -18,11 +20,8 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz043 = () => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -35,7 +34,7 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
@@ -51,16 +50,14 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Gcol className="w-full" gap={5}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable variant={'head'} lineTop={false} caption="">
-                <FormRow>
-                  <FormCell title={'설계번호'}>
-                    <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                      LA123123123123
-                    </Typo>
-                    <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                      설계번호의 상품명 text
-                    </Typo>
-                  </FormCell>
-                </FormRow>
+                <FormTable variant="none" cols={['w-1', 'w-auto']}>
+                  <FormRow>
+                    <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
+                      <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
+                      <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
               </FormTable>
             </Grow>
 
@@ -236,3 +233,5 @@ export const Ltpz043 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz043;

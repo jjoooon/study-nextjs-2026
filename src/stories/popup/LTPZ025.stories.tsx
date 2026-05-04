@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz025 } from '@/features/pub/ispl/ncMtt/components/popups/Ltpz025';
+import Ltpz025 from '@/features/pub/ispl/ncMtt/components/popups/Ltpz025';
 
 export default {
   title: 'app/ispl/ncMtt/components/popups/Ltpz025',
@@ -16,7 +16,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>Ltpz025 열기</Button>
       </div>
 
-      <Ltpz025 open={open} onOpenChange={setOpen} />
+      <Ltpz025 />
     </LayoutDoc>
   );
 };

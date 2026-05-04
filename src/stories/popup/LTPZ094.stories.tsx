@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Ltpz094 } from '@/features/pub/shared/components/popups/ncMtt/Ltpz094';
+import Ltpz094 from '@/features/pub/shared/components/popups/ncMtt/Ltpz094';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
@@ -17,7 +17,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <Ltpz094 open={open} onOpenChange={setOpen} />
+      <Ltpz094 />
     </LayoutDoc>
   );
 };

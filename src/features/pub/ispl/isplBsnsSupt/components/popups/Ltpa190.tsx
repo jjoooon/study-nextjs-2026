@@ -1,5 +1,9 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -25,11 +29,6 @@ import {
 } from '@uiux/Dialog';
 
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -89,7 +88,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpa190 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpa190 = () => {
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -190,7 +189,7 @@ export const Ltpa190 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

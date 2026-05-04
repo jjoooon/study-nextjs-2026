@@ -1,5 +1,9 @@
 'use client';
 
+import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback } from 'react';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
@@ -23,11 +27,6 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback } from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -71,7 +70,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz01601 = () => {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
@@ -181,7 +180,7 @@ export const Ltpz01601 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
   ];
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="lg">
         <DialogHeader>
           <DialogTitle>

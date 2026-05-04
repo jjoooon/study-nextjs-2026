@@ -1,6 +1,9 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -19,10 +22,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type OptionType = { 옵션1: string } | { 옵션2: string } | { 옵션3: string[] } | { 옵션4: string };
 
@@ -123,7 +122,7 @@ function CardBox({ children, bottom, color }: { children: React.ReactNode; botto
   );
 }
 
-export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz013 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   // 외부 스크롤 div ref 배열
@@ -212,7 +211,7 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -505,3 +504,5 @@ export const Ltpz013 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz013;

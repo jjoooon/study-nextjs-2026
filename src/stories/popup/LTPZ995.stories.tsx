@@ -14,8 +14,6 @@ export const Default = () => {
       <div className='flex w-full h-screen items-center justify-center max-w-[118rem] outline outline-1 outline-[red] -outline-offset-2 mx-auto'>
         <FileUploader open={open} onOpenChange={setOpen} resolve={() => {}} />
       </div>
-
-      
     </LayoutDoc>
   );
 };

@@ -1,7 +1,7 @@
 import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import { Ltpa401 } from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpa401';
+import Ltpa401 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpa401';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
@@ -18,7 +18,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <Ltpa401 open={open} onOpenChange={setOpen} />
+      <Ltpa401 />
     </LayoutDoc>
   );
 };

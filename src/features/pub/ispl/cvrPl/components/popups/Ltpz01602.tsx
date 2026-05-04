@@ -1,5 +1,10 @@
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { AgGridEmptyComponent, numberValueFormatter } from '@/shared/components/agGridUtils/AgGridUtils';
+import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -18,12 +23,6 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, numberValueFormatter } from '@/shared/components/agGridUtils/AgGridUtils';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -56,7 +55,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz01602 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz01602 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '업종구분',
@@ -143,7 +142,7 @@ export const Ltpz01602 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
         <DialogHeader>
           <DialogTitle>

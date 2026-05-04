@@ -1,5 +1,6 @@
 'use client';
 
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -15,7 +16,6 @@ import { Checkbox, CheckboxGroupItem, CheckboxGroup } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 interface TabDataType {
   id: string | number;
@@ -234,7 +234,7 @@ export const Ltpa35005 = () => {
             <LayoutScrollWrap>
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
-                  <FormTable cols={['w-[15.8rem]', 'w-[auto]', 'w-[15.8rem]', 'w-[auto]']}>
+                  <FormTable cols={['w-[15.8rem]', 'w-[auto]', 'w-[16rem]', 'w-[auto]']}>
                     <FormRow>
                       <FormCell title={'만기수익자'} colSpan={3}>
                         <NativeSelect aria-label="주피와 관계 선택" width={100} className="ml-[0.4rem]">
@@ -559,7 +559,7 @@ export const Ltpa35005 = () => {
                       </FormCell>
                       <FormCell
                         title={
-                          <Grow gap={1} placement="sc">
+                          <Grow gap={0} placement="sc">
                             성년후견인지정여부
                             <TooltipQ>
                               <b>성년후견제도란?</b>

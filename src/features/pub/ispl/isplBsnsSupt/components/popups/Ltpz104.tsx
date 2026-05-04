@@ -1,10 +1,12 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -14,15 +16,13 @@ import {
   DialogSection,
   DialogTitle,
   DialogFooterArea,
+  DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
-export const Ltpz104 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz104 = () => {
   type DummyDataType = {
     id: number;
     field1: string;
@@ -62,7 +62,7 @@ export const Ltpz104 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   // M2. 신규 페이지
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -77,50 +77,39 @@ export const Ltpz104 = ({ open, onOpenChange }: PopupBaseProps) => {
             <FormTable caption="설계번호" variant="none" cols={['w-[1rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    LA123123123123-1
-                  </Typo>
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    테아
-                  </Typo>
+                  <Input value={'LA123123123123-1'} variant="info" readOnly />
+                  <Input value={'테아'} variant="info" readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
-          <TableFold variant={'default'}>
-            <TableFoldHead title=""></TableFoldHead>
-            <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[18.4rem]">
-                <AgGridReact<DummyDataType>
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData}
-                  columnDefs={columnDefs}
-                  defaultColDef={{
-                    sortable: false,
-                    resizable: false,
-                  }}
-                  singleClickEdit={true}
-                  rowClassRules={{}}
-                  domLayout="normal"
-                  alwaysShowVerticalScroll={true}
-                />
-              </div>
-            </TableFoldBody>
-          </TableFold>
+
+          <div className="ag-theme-alpine">
+            <AgGridReact<DummyDataType>
+              getRowId={(params) => String(params.data.id)}
+              noRowsOverlayComponent={AgGridEmptyComponent}
+              rowData={rowData}
+              columnDefs={columnDefs}
+              defaultColDef={{
+                sortable: false,
+                resizable: false,
+              }}
+              singleClickEdit={true}
+              rowClassRules={{}}
+              domLayout="autoHeight"
+              alwaysShowVerticalScroll={true}
+            />
+          </div>
         </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button
-                variant={'outlined'}
-                size={'xl'}
-                color={'gray-light'}
-                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
-              >
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />
@@ -129,3 +118,5 @@ export const Ltpz104 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz104;

@@ -1,5 +1,10 @@
 'use client';
 
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -19,12 +24,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -108,7 +107,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz054 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz054 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상위누적명',
@@ -211,7 +210,7 @@ export const Ltpz054 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -226,13 +225,12 @@ export const Ltpz054 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           {/* 조회 */}
-          <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable variant={'head'} lineTop={false} caption="">
+          <Grow placement="bwc" className="w-full" variant={'box-round'} gap={6}>
+            <FormTable variant={'none'} lineTop={false} cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
               <FormRow>
-                <FormCell title={'조회구분'}>
+                <FormCell title={'조회구분'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
                   <NativeSelect
                     aria-label="항목 선택"
-                    width={160}
                     value={form.type01}
                     required
                     onChange={(e) => setFormField('type01', e.target.value)}
@@ -254,26 +252,24 @@ export const Ltpz054 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input width={230} value={'한화 더 건강한 1040종합..'} readOnly />
+                  <Input value={'한화 더 건강한 1040종합한화 더 건강한 1040종합'} readOnly />
                 </FormCell>
                 <FormCell title={'피보험자정보'}>
-                  <Grow>
-                    <NativeSelect
-                      aria-label="항목 선택"
-                      value={form.type03}
-                      onChange={(e) => setFormField('type03', e.target.value)}
-                      required
-                    >
-                      {[
-                        { value: 'selection', id: 'type03-1', label: '김한화(890823-1******)' },
-                        { value: 'selection2', id: 'type03-2', label: '박한화(890823-1******)' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.id} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                  </Grow>
+                  <NativeSelect
+                    aria-label="항목 선택"
+                    value={form.type03}
+                    onChange={(e) => setFormField('type03', e.target.value)}
+                    required
+                  >
+                    {[
+                      { value: 'selection', id: 'type03-1', label: '김한화(890823-1******)' },
+                      { value: 'selection2', id: 'type03-2', label: '박한화(890823-1******)' },
+                    ].map((option) => (
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -379,3 +375,5 @@ export const Ltpz054 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz054;

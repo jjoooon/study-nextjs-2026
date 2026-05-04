@@ -1,5 +1,12 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+
+import '@/shared/lib/agGridPub';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -13,13 +20,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
 
 type DummyDataType = {
   id: number;
@@ -71,7 +71,7 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpz025 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz025 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '성명',
@@ -131,7 +131,7 @@ export const Ltpz025 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -211,3 +211,5 @@ export const Ltpz025 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz025;

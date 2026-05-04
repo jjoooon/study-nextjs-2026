@@ -1,5 +1,11 @@
 'use client';
 
+import {
+  QuestionRadioCard,
+  QuestionRadioCardHeader,
+  QuestionRadioCardHeaderTitle,
+  QuestionRadioCardContents,
+} from '@/shared/components/common/QuestionRadioCard';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -14,17 +20,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import {
-  QuestionRadioCard,
-  QuestionRadioCardHeader,
-  QuestionRadioCardHeaderTitle,
-  QuestionRadioCardContents,
-} from '@/shared/components/common/QuestionRadioCard';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz003 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
@@ -385,3 +384,5 @@ export const Ltpz003 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz003;

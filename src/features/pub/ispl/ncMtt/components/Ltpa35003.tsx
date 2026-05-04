@@ -1,6 +1,13 @@
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback, useState } from 'react';
+import { TableMore } from '@/shared/components/common/TablePagination';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -14,7 +21,7 @@ import {
 import { TabPager } from '@common/TabPager';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { CheckIcon, ChevronDownIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
+import { CheckIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
@@ -24,14 +31,6 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback, useState } from 'react';
-import { TableMore } from '@/shared/components/common/TablePagination';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -463,8 +462,6 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
       cellClass: 'text-center',
     },
   ];
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
-
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -488,11 +485,10 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
 
   const pageSize = 4;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, setLoadedCount } =
-    useAgGridInfiniteAppend({
-      allRows: DummyData,
-      pageSize,
-    });
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext, setLoadedCount } = useAgGridInfiniteAppend({
+    allRows: DummyData,
+    pageSize,
+  });
   return (
     <>
       <form
@@ -992,7 +988,7 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                   <QuestionRadioCard>
                     <QuestionRadioCardHeader bg={'#EFF8FF'}>
                       <QuestionRadioCardHeaderTitle icon={<InfoBoxInfoIcon />} className={'items-center'}>
-                        최근 5년 이내에 의사로부터 진찰 또는 검사를 통하여 다음과 같은 의료행위를 받은 사실이 있습니까?
+                        상기 1~5번 질문에 대한 상세내용 기재해주세요.
                       </QuestionRadioCardHeaderTitle>
                       <Grow gap={2.5}>
                         <Typo variant={'body-sm'} color="information" weight={'bold'}>
@@ -1043,6 +1039,7 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                           onLoadAll={handleLoadAll}
                           onLoadNext={handleLoadNext}
                           onLoadReset={() => setLoadedCount(pageSize)}
+                          only={'all'}
                         />
                       </Grid>
                     </QuestionRadioCardContents>
@@ -1172,20 +1169,20 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                             <TableHead>용도</TableHead>
                             <TableCell>
                               <Grow gap={'3'}>
-                                <Checkbox disabled>자가용</Checkbox>
-                                <Checkbox disabled>영업용</Checkbox>
+                                <Checkbox>자가용</Checkbox>
+                                <Checkbox>영업용</Checkbox>
                               </Grow>
                             </TableCell>
                             <TableCell>
                               <Grow gap={'3'}>
-                                <Checkbox disabled>자가용</Checkbox>
-                                <Checkbox disabled>영업용</Checkbox>
+                                <Checkbox>자가용</Checkbox>
+                                <Checkbox>영업용</Checkbox>
                               </Grow>
                             </TableCell>
                             <TableCell>
                               <Grow gap={'3'}>
-                                <Checkbox disabled>자가용</Checkbox>
-                                <Checkbox disabled>영업용</Checkbox>
+                                <Checkbox>자가용</Checkbox>
+                                <Checkbox>영업용</Checkbox>
                               </Grow>
                             </TableCell>
                           </TableRow>
@@ -1202,7 +1199,7 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                                     size="lg"
                                     value={form.type01}
                                     variant="default"
-                                    width={240}
+                                    width={140}
                                     placeholder="내용을 입력하세요"
                                     readOnly={_simpleMode}
                                   />

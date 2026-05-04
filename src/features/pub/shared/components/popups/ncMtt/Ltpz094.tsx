@@ -1,6 +1,8 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -14,9 +16,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -100,7 +99,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz094 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz094 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '병명',
@@ -159,7 +158,7 @@ export const Ltpz094 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -172,7 +171,7 @@ export const Ltpz094 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
+        <DialogSection>
           <div className="ag-theme-alpine w-full min-h-[24.4rem]">
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
@@ -209,3 +208,5 @@ export const Ltpz094 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz094;

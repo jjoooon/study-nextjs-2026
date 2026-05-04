@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -14,15 +17,12 @@ import {
   DialogSection,
   DialogTitle,
   DialogFooterArea,
+  DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
-export const Ltpz01002 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz01002 = () => {
   type DummyDataType = {
     id: number;
     field1: string;
@@ -62,7 +62,7 @@ export const Ltpz01002 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -122,14 +122,11 @@ export const Ltpz01002 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button
-                variant={'outlined'}
-                size={'xl'}
-                color={'gray-light'}
-                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
-              >
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />

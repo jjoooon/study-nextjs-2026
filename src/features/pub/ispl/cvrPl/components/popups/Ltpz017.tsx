@@ -1,6 +1,9 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, createCellValueChangedHandler, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -19,10 +22,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -60,7 +59,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz017 = () => {
   // 검색버튼 여부에 따른 셀 렌더러
   const attributeRenderer = (params: ICellRendererParams<DummyDataType>) => {
     if (!params.value) {
@@ -118,7 +117,7 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
@@ -134,17 +133,17 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable
-              variant={'none'}
+              variant={'head'}
               lineTop={false}
               caption="보험정보"
               cols={['w-[1rem]', 'w-[10rem]', 'w-[1rem]', 'w-auto']}
             >
               <FormRow>
                 <FormCell title={'설계사'}>
-                  <Input value={'김한화'} readOnly />
+                  <Input value={'김한화'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'상품명'}>
-                  <Input className="w-full" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                  <Input value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -216,3 +215,5 @@ export const Ltpz017 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz017;

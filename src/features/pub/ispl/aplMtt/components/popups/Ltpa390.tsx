@@ -1,6 +1,9 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -18,10 +21,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { Input } from '@uiux/Input';
 
 type DummyDataType = {
   id: number;
@@ -35,7 +35,7 @@ const DummyData: DummyDataType[] = [
   { id: 2, field1: '', field2: '', field3: '' },
 ];
 
-export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpa390 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: 'No',
@@ -60,7 +60,7 @@ export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
   const rowData = DummyData;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md" className="">
         <DialogHeader>
           <DialogTitle>
@@ -76,50 +76,40 @@ export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable variant={'head'} lineTop={false} caption="설계번호">
               <FormRow>
-                <FormCell title={'설계번호'}>LA2608902384509</FormCell>
+                <FormCell title={'설계번호'}>
+                  <Input variant={'info'} readOnly value={'LA2608902384509'} />
+                </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
 
-          <Grid placement="ss" className="grid-rows-[auto_1fr_auto] gap-4">
-            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-              <Typo variant={'body-sm'} icon={'warning'}>
-                아래 내용은 청약완료까지 해소되지 않을경우 수납이 불가능합니다.(청약완료 불가)
-              </Typo>
-            </Gcol>
-            <Gcol placement="ss" className="w-full" gap={5}>
-              <div className="ag-theme-alpine min-h-[30rem]">
+          <Grid placement="ss" className="grid-rows-[1fr_auto] gap-4">
+            <Gcol placement="ss" className="w-full" gap={1}>
+              <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+                <Typo variant={'body-sm'} icon={'warning'}>
+                  아래 내용은 청약완료까지 해소되지 않을경우 수납이 불가능합니다.(청약완료 불가)
+                </Typo>
+              </Gcol>
+              <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData}
                   columnDefs={columnDefs}
-                  domLayout="normal"
-                  alwaysShowVerticalScroll={true}
+                  domLayout="autoHeight"
                 />
               </div>
             </Gcol>
-            <Gcol>
-              <TableFold variant="default">
-                <TableFoldHead title="모집자 확인사항" />
-                <TableFoldBody>
-                  <Gcol className="w-full" placement="ss" variant="box-warning">
-                    <Typo variant="body-sm">
-                      <Checkbox
-                        color="primary"
-                        errorMsg="선택은 필수입니다."
-                        errorPs="bl"
-                        onCheckedChange={() => {}}
-                        size="lg"
-                        variant="default"
-                      >
-                        모집자 김한화는 상기 내용에 대해 정확히 확인 하였습니다.
-                      </Checkbox>
-                    </Typo>
-                  </Gcol>
-                </TableFoldBody>
-              </TableFold>
-            </Gcol>
+            <TableFold variant="default">
+              <TableFoldHead title="모집자 확인사항" />
+              <TableFoldBody>
+                <Gcol className="w-full" placement="ss" variant="box-warning">
+                  <Typo variant="body-sm">
+                    <Checkbox>모집자 김한화는 상기 내용에 대해 정확히 확인 하였습니다.</Checkbox>
+                  </Typo>
+                </Gcol>
+              </TableFoldBody>
+            </TableFold>
           </Grid>
         </DialogSection>
 
@@ -147,3 +137,5 @@ export const Ltpa390 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpa390;

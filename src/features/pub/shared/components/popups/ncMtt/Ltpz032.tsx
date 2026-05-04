@@ -1,6 +1,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -18,12 +22,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { Ltpz094 } from './Ltpz094';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+// import { Ltpz094 } from './Ltpz094';
 
 type Ltpz032TabType = {
   name: string;
@@ -322,14 +321,7 @@ const DummyData23: DummyDataType23[] = [
   },
 ];
 
-export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // const [selectedRowId11, setSelectedRowId11] = React.useState<string>(String(DummyData11[0]?.id ?? ''));
-  const [isDetailPopupOpen, setIsDetailPopupOpen] = React.useState(false);
-
-  const handleOpenDetailPopup = React.useCallback(() => {
-    setIsDetailPopupOpen(true);
-  }, []);
-
+const Ltpz032 = () => {
   const columnDefs11 = React.useMemo<ColDef<DummyDataType11>[]>(() => {
     return [
       {
@@ -371,14 +363,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
         cellRenderer: (_params: ICellRendererParams<DummyDataType11>) => (
           <Grow className="w-full px-1">
             보기
-            <Button
-              aria-label="질병 상세내용 보기"
-              variant={'outlined'}
-              only="icon"
-              size={'md'}
-              color={'gray-light'}
-              onClick={handleOpenDetailPopup}
-            >
+            <Button aria-label="질병 상세내용 보기" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
               <SearchIcon color={'var(--color-primary-50)'} />
             </Button>
           </Grow>
@@ -595,7 +580,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
         editable: false,
       },
     ];
-  }, [handleOpenDetailPopup]);
+  }, []);
   const columnDefs12: ColDef<DummyDataType12>[] = [
     {
       headerName: '입력일자',
@@ -635,14 +620,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
       cellRenderer: (_params: ICellRendererParams<DummyDataType12>) => (
         <Grow className="w-full px-1">
           보기
-          <Button
-            aria-label="질병 상세내용 보기"
-            variant={'outlined'}
-            only="icon"
-            size={'md'}
-            color={'gray-light'}
-            onClick={handleOpenDetailPopup}
-          >
+          <Button aria-label="질병 상세내용 보기" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
             <SearchIcon color={'var(--color-primary-50)'} />
           </Button>
         </Grow>
@@ -1153,7 +1131,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   return (
     <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open>
         <DialogContent showCloseButton resizable={true} size="2xl">
           <DialogHeader>
             <DialogTitle>
@@ -1182,7 +1160,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
               renderDropdownItem={false}
             >
               {active === 'tab1' ? (
-                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_auto]" gap={5}>
+                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_auto]" gap={3}>
                   <TableFold className="">
                     <TableFoldHead title="일반/건강고지" />
                     <TableFoldBody>
@@ -1205,6 +1183,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                           }}
                           selectionColumnDef={{
                             headerName: '선택',
+                            width: 40,
                             cellClass: 'text-center editable-cell',
                           }}
                           domLayout="normal"
@@ -1236,6 +1215,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                           }}
                           selectionColumnDef={{
                             headerName: '선택',
+                            width: 40,
                             cellClass: 'text-center editable-cell',
                           }}
                           domLayout="normal"
@@ -1245,6 +1225,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </div>
                     </TableFoldBody>
                   </TableFold>
+
                   <Gcol className="w-full" placement="ss" variant="box-warning">
                     <Typo icon="warning" variant="body-sm">
                       최근 1개월이내 설계번호(유형별 최대 5개) 표시
@@ -1259,7 +1240,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </Gcol>
                 </Grid>
               ) : (
-                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_1fr_auto]" gap={5}>
+                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_1fr_auto]" gap={3}>
                   {/* Tab2-1 일반고지 */}
                   <TableFold>
                     <TableFoldHead title="일반고지" />
@@ -1356,6 +1337,7 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </div>
                     </TableFoldBody>
                   </TableFold>
+
                   <Gcol className="w-full" placement="ss" variant="box-warning">
                     <Typo icon="warning" variant="body-sm">
                       최근 1개월이내 설계번호(유형별 최대 5개) 표시
@@ -1389,7 +1371,8 @@ export const Ltpz032 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Ltpz094 open={isDetailPopupOpen} onOpenChange={setIsDetailPopupOpen} />
     </>
   );
 };
+
+export default Ltpz032;

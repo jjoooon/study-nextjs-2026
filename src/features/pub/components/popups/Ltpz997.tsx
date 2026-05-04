@@ -4,7 +4,6 @@ import { Typo } from '@atoms';
 import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -17,9 +16,9 @@ const dummyData: DummyDataType[] = [
   { id: 2, field1: '홍길순', field2: '-', field3: '-' },
 ];
 
-export const Ltpz997 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz997 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -65,3 +64,5 @@ export const Ltpz997 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz997;

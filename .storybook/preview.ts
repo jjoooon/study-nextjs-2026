@@ -1,14 +1,22 @@
 
+// @ts-ignore
 import '../src/shared/styles/globals.css';
-import { createElement } from 'react';
+import { createElement, Fragment } from 'react';
 import { Provider } from 'react-redux';
 import type { Preview } from '@storybook/nextjs-vite';
 
 import { store } from '../src/redux';
+import { Toaster } from '../src/shared/components/uiux/Sonner';
 
 const preview: Preview = {
   decorators: [
-    (Story) => createElement(Provider, { store, children: createElement(Story) }),
+    (Story) =>
+      createElement(
+        Fragment,
+        null,
+        createElement(Provider, { store, children: createElement(Story) }),
+        createElement(Toaster, { style: { '--z-index': 9999 } as React.CSSProperties })
+      ),
   ],
   parameters: {
     controls: {

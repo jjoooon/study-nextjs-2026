@@ -2,7 +2,7 @@ import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 
-import { Ltpz044 } from '@/features/pub/ispl/cvrPl/components/popups/Ltpz044';
+import Ltpz044 from '@/features/pub/ispl/cvrPl/components/popups/Ltpz044';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
@@ -43,7 +43,7 @@ export const Default: Story = {
           </Button>
         </div>
 
-        <Ltpz044 open={open} onOpenChange={setOpen} />
+        <Ltpz044 />
       </LayoutDoc>
     );
   },

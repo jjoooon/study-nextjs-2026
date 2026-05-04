@@ -1,6 +1,5 @@
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import type { ColDef, ColGroupDef, ICellRendererParams, IHeaderParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
@@ -17,74 +16,12 @@ import {
   DialogSection,
   DialogTitle,
   DialogFooterArea,
+  DialogClose,
 } from '@/shared/components/uiux/Dialog';
 import { Input } from '@/shared/components/uiux/Input';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 
 import '@/shared/lib/agGridPub';
-
-const CombinedQuestionHeader = (_props: IHeaderParams<DummyDataType>) => {
-  const headerAreaStyle: React.CSSProperties = {
-    width: 'calc(100% + (var(--ag-cell-horizontal-padding) * 2))',
-  };
-
-  return (
-    <div className="h-full w-full overflow-hidden" style={headerAreaStyle}>
-      <div className="grid h-full w-full grid-cols-[60px_minmax(0,1fr)]">
-        <div className="flex items-center justify-center border-r border-(--ag-border-color) text-center">순서</div>
-        <div className="flex items-center justify-center text-center">질문명</div>
-      </div>
-    </div>
-  );
-};
-
-const CombinedQuestionCell = ({ data }: ICellRendererParams<DummyDataType>) => {
-  const field01 = data?.field01;
-  const field02 = data?.field02 ?? '';
-  const isDetails = data?.isDetails === true;
-
-  return (
-    <div className="h-full w-full">
-      <div className={isDetails ? 'flex h-full w-full' : 'grid h-full w-full grid-cols-[60px_minmax(0,1fr)]'}>
-        {isDetails ? (
-          <div className="flex h-full w-full items-center justify-center text-center">{field02}</div>
-        ) : (
-          <>
-            <div className="flex items-center justify-center border-r border-(--ag-border-color) text-center">
-              {field01}
-            </div>
-            <div className="flex items-center justify-center text-center">{field02}</div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const CombinedAnswerCell = ({ data }: ICellRendererParams<DummyDataType>) => {
-  const field03 = data?.field03;
-  const field04 = data?.field04;
-  const isDetails = data?.isDetails === true;
-
-  return (
-    <div className={isDetails ? 'flex w-full' : 'grid w-full grid-cols-[30%_70%]'}>
-      {isDetails ? (
-        <div className="flex min-h-[2.5rem] w-full items-start self-stretch wrap-break-word whitespace-normal px-2 py-1 text-left">
-          {field04 || '\u00A0'}
-        </div>
-      ) : (
-        <>
-          <div className="flex min-h-[2.5rem] items-center justify-center border-r border-(--ag-border-color) px-2 text-center">
-            {field03 || '\u00A0'}
-          </div>
-          <div className="flex min-h-[2.5rem] items-start self-stretch wrap-break-word whitespace-normal px-2 py-1 text-left">
-            {field04 || '\u00A0'}
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
 
 type DummyDataType = {
   id: number;
@@ -124,33 +61,96 @@ const DUMMY_DATA: DummyDataType[] = [
   { id: 11, field01: 10, field02: '체격', field03: '', field04: '키(cm단위): 175, 몸무게(kg단위): 70' },
 ];
 
-const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-  {
-    headerName: '질문정보',
-    field: 'field02',
-    flex: 1,
-    minWidth: 240,
-    cellClass: 'p-0! flex',
-    tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
-    headerComponent: CombinedQuestionHeader,
-    cellRenderer: CombinedQuestionCell,
-  },
-  {
-    headerName: '답변',
-    flex: 1,
-    autoHeight: true,
-    wrapText: true,
-    cellClass: 'p-0! flex',
-    tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
-    cellRenderer: CombinedAnswerCell,
-  },
-];
-
-export const Ltpz028 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz028 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DUMMY_DATA);
 
+  const CombinedQuestionHeader = (_props: IHeaderParams<DummyDataType>) => {
+    const headerAreaStyle: React.CSSProperties = {
+      width: 'calc(100% + (var(--ag-cell-horizontal-padding) * 2))',
+    };
+
+    return (
+      <div className="h-full w-full overflow-hidden" style={headerAreaStyle}>
+        <div className="grid h-full w-full grid-cols-[60px_minmax(0,1fr)]">
+          <div className="flex items-center justify-center border-r border-(--ag-border-color) text-center">순서</div>
+          <div className="flex items-center justify-center text-center">질문명</div>
+        </div>
+      </div>
+    );
+  };
+
+  const CombinedQuestionCell = ({ data }: ICellRendererParams<DummyDataType>) => {
+    const field01 = data?.field01;
+    const field02 = data?.field02 ?? '';
+    const isDetails = data?.isDetails === true;
+
+    return (
+      <div className="h-full w-full">
+        <div className={isDetails ? 'flex h-full w-full' : 'grid h-full w-full grid-cols-[60px_minmax(0,1fr)]'}>
+          {isDetails ? (
+            <div className="flex h-full w-full items-center justify-center text-center">{field02}</div>
+          ) : (
+            <>
+              <div className="flex items-center justify-center border-r border-(--ag-border-color) text-center">
+                {field01}
+              </div>
+              <div className="flex items-center justify-center text-center">{field02}</div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const CombinedAnswerCell = ({ data }: ICellRendererParams<DummyDataType>) => {
+    const field03 = data?.field03;
+    const field04 = data?.field04;
+    const isDetails = data?.isDetails === true;
+
+    return (
+      <div className={isDetails ? 'flex w-full' : 'grid w-full grid-cols-[30%_70%]'}>
+        {isDetails ? (
+          <div className="flex min-h-[2.5rem] w-full items-start self-stretch wrap-break-word whitespace-normal px-2 py-1 text-left">
+            {field04 || '\u00A0'}
+          </div>
+        ) : (
+          <>
+            <div className="flex min-h-[2.5rem] items-center justify-center border-r border-(--ag-border-color) px-2 text-center">
+              {field03 || '\u00A0'}
+            </div>
+            <div className="flex min-h-[2.5rem] items-start self-stretch wrap-break-word whitespace-normal px-2 py-1 text-left">
+              {field04 || '\u00A0'}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
+
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+    {
+      headerName: '질문정보',
+      field: 'field02',
+      flex: 1,
+      minWidth: 240,
+      cellClass: 'p-0! flex',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
+      headerComponent: CombinedQuestionHeader,
+      cellRenderer: CombinedQuestionCell,
+    },
+    {
+      headerName: '답변',
+      flex: 1,
+      autoHeight: true,
+      wrapText: true,
+      cellClass: 'p-0! flex',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
+      cellRenderer: CombinedAnswerCell,
+    },
+  ];
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable size="lg">
         <DialogHeader>
           <DialogTitle>
@@ -164,21 +164,17 @@ export const Ltpz028 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid grid-rows-[auto_1fr]">
-          <Grow placement="bwe" className="w-full" variant="box-round" gap={5}>
-            <FormTable
-              variant="head"
-              caption="답변자 정보 테이블"
-              cols={['w-[5rem]', 'w-auto', 'w-[5rem]', 'w-auto', 'w-[5rem]', 'w-auto']}
-            >
+          <Grow placement="bwe" className="w-full" variant="box-round">
+            <FormTable variant="head" cols={['w-1', 'w-auto']}>
               <FormRow>
                 <FormCell title="답변자">
-                  <Input placeholder="김한화" width={100} readOnly />
+                  <Input value="김한화" width={100} readOnly variant="info" />
                 </FormCell>
                 <FormCell title="답변일시">
-                  <Input placeholder="2026-02-24" width={100} readOnly />
+                  <Input value="2026-02-24" width={100} readOnly variant="info" />
                 </FormCell>
                 <FormCell title="설계번호">
-                  <Input placeholder="LA12312312" width={150} readOnly />
+                  <Input value="LA12312312" width={150} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -201,9 +197,11 @@ export const Ltpz028 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant="outlined" size="xl" color="gray-light" id="btnRB" onClick={() => onOpenChange?.(false)}>
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />
@@ -212,3 +210,5 @@ export const Ltpz028 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz028;

@@ -2,6 +2,10 @@
 
 // M1. 팝업에서 화면으로 변경
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -15,10 +19,6 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -700,22 +700,11 @@ export default function Ltpa904Section() {
         mainBody={
           // M1. Grid 태그, gap 추가
           <Grid className="grid-rows-[auto_1fr]" gap={3}>
-            <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
+            <Grow placement="bwe" className="w-full" variant={'box-round'} gap={3}>
               <FormTable
                 variant={'none'}
                 caption="납입예정 리스트 테이블"
-                cols={[
-                  'flex-auto',
-                  'flex-1',
-                  'flex-auto',
-                  'flex-1',
-                  'flex-auto',
-                  'flex-1',
-                  'flex-auto',
-                  'flex-1',
-                  'flex-auto',
-                  'flex-1',
-                ]}
+                cols={['w-1', 'w-[19%]', 'w-1', 'w-[19%]', 'w-1', 'w-[19%]', 'w-1', 'w-[19%]', 'w-1', 'w-[20%]']}
               >
                 <FormRow>
                   <FormCell title={'설계번호'}>
@@ -734,7 +723,7 @@ export default function Ltpa904Section() {
                 {/* M1. 가로값 추가 */}
                 <FormRow>
                   <FormCell title={'업무구분1'}>
-                    <NativeSelect aria-label="업무구분1 선택" width={120}>
+                    <NativeSelect aria-label="업무구분1 선택">
                       {[
                         { value: 'selection', label: '(10)가입설계' },
                         { value: 'selection2', label: '(20)변경설계' },
@@ -746,7 +735,7 @@ export default function Ltpa904Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'업무구분2'}>
-                    <NativeSelect aria-label="업무구분2 선택" width={120}>
+                    <NativeSelect aria-label="업무구분2 선택">
                       {[
                         { value: 'selection', label: '(11)예상만기' },
                         { value: 'selection2', label: '(13)최소최대' },
@@ -760,13 +749,13 @@ export default function Ltpa904Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'환급률'}>
-                    <Input />
+                    <Input className="text-right" />
                   </FormCell>
                   <FormCell title={'환급금'}>
-                    <Input />
+                    <Input className="text-right" />
                   </FormCell>
                   <FormCell title={'추천구분'}>
-                    <NativeSelect aria-label="추천구분 선택" width={130}>
+                    <NativeSelect aria-label="추천구분 선택">
                       {[
                         { value: 'selection', label: '(10)목표환급율' },
                         { value: 'selection2', label: '(01)목표환급율' },

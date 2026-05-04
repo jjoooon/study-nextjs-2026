@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
@@ -19,10 +20,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpa050 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpa050 = () => {
   const insuranceTabs = [
     { label: '인보험', value: 'human' },
     { label: '물보험', value: 'property' },
@@ -31,7 +30,7 @@ export const Ltpa050 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rightTabActive, setRightTabActive] = React.useState('human');
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="full">
         <DialogHeader>
           <DialogTitle>

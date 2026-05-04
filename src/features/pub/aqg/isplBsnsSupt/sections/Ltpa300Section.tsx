@@ -1,6 +1,9 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -15,9 +18,6 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 type Ltpa300DummyDataRow = {
   id: number;
@@ -169,15 +169,15 @@ export default function Ltpa300Section() {
   });
   const columnDefs = React.useMemo<ColDef<Ltpa300DummyDataRow>[]>(
     () => [
-      { headerName: '취급기관', field: 'field01', flex: 1, cellClass: 'text-center' },
+      { headerName: '취급기관', field: 'field01', width: 120, cellClass: 'text-center' },
       { headerName: '모집직원번호', field: 'field02', width: 110, cellClass: 'text-center' },
-      { headerName: '모집직원명', field: 'field03', flex: 1, cellClass: 'text-center' },
+      { headerName: '모집직원명', field: 'field03', width: 100, cellClass: 'text-center' },
       { headerName: '사용인번호', field: 'field04', width: 100, cellClass: 'text-center' },
       { headerName: '사용인', field: 'field05', width: 80, cellClass: 'text-center' },
       {
         headerName: '증권번호',
         field: 'field06',
-        flex: 1,
+        width: 150,
         cellClass: 'text-center',
         tooltipValueGetter: createTooltipValueGetter<Ltpa300DummyDataRow>({ field: 'field06' }),
       },
@@ -186,7 +186,7 @@ export default function Ltpa300Section() {
       {
         headerName: '피보험자명',
         field: 'field09',
-        flex: 1,
+        width: 100,
         cellClass: 'text-center',
         tooltipValueGetter: createTooltipValueGetter<Ltpa300DummyDataRow>({ field: 'field09' }),
       },

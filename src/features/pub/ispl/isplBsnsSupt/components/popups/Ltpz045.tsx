@@ -1,5 +1,7 @@
 'use client';
 
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -19,19 +21,16 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz045 = () => {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
     type03: '',
   });
-  const [cddEtcValue, setCddEtcValue] = React.useState('');
+  const [cddEtcValue] = React.useState('');
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
@@ -44,25 +43,27 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full" gap={5}>
+          <Gcol className="w-full" gap={3}>
             <Grow className="w-full" variant="box-round">
-              <FormTable variant={'head'} lineTop={false} caption="">
+              <FormTable variant="head" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input aria-label="" width={150} value={'LA260209313558'} readOnly />
+                    <Input aria-label="" value={'LA26020945959594'} readOnly variant="info" />
                     -
-                    <Input aria-label="" width={30} value={'1'} readOnly />
+                    <Input aria-label="" width={30} value={'1'} readOnly variant="info" />
                   </FormCell>
-                  <FormCell title={'계약자'}>김한화(901212-1234567)</FormCell>
+                  <FormCell title={'계약자'}>
+                    <Input aria-label="" value={'김한화(901212-1234567)'} readOnly variant="info" />
+                  </FormCell>
                 </FormRow>
               </FormTable>
             </Grow>
-            <Gcol className="w-full" gap={4}>
-              {/* 개인등록  */}
+            <Gcol className="w-full" gap={3}>
+              {/* 고객정보: 개인  */}
               <TableFold>
                 <TableFoldHead title="고객정보(CDD 확인사항)"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption="고객정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-auto', 'w-[13rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'성명'}>김한화</FormCell>
                       <FormCell title={'영문명'}>Kim Hanhwa</FormCell>
@@ -96,23 +97,15 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormTable>
                 </TableFoldBody>
               </TableFold>
-              {/* //개인등록  */}
 
-              {/* 법인등록  */}
+              {/* 고객정보: 법인  */}
               <TableFold>
                 <TableFoldHead title="고객정보(CDD 확인사항)"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption="고객정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-auto', 'w-[13rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'법인명'}>
-                        <Input
-                          aria-label="증권번호 검색"
-                          size="md"
-                          width={100}
-                          value={''}
-                          onChange={(e) => e.target.value}
-                          readOnly
-                        />
+                        <Input aria-label="법인명 검색" value={''} readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -143,9 +136,8 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormTable>
                 </TableFoldBody>
               </TableFold>
-              {/* //법인등록  */}
 
-              {/* 개인등록  */}
+              {/* 실소유자 : 개인 */}
               <TableFold>
                 <TableFoldHead title="실소유자 확인사항"></TableFoldHead>
                 <TableFoldBody>
@@ -168,13 +160,12 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormTable>
                 </TableFoldBody>
               </TableFold>
-              {/* //개인등록  */}
 
-              {/* 법인등록  */}
+              {/* 실소유자 : 법인 */}
               <TableFold>
                 <TableFoldHead title="실소유자 확인사항"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption="고객정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-auto', 'w-[13rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'실소유자구분'} colSpan={3}>
                         <RadioGroup className="gap-1 flex-col items-start">
@@ -203,23 +194,15 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormTable>
                 </TableFoldBody>
               </TableFold>
-              {/* //법인등록  */}
 
-              {/* 법인등록  */}
+              {/* 대리인  */}
               <TableFold>
                 <TableFoldHead title="대리인 확인사항(대리인 고객등록 필수)"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption="고객정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-auto', 'w-[13rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'성명'}>
-                        <Input
-                          aria-label="증권번호 검색"
-                          size="md"
-                          width={100}
-                          value={''}
-                          onChange={(e) => e.target.value}
-                          readOnly
-                        />
+                        <Input aria-label="성명 검색" value={''} readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -249,13 +232,11 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </TableFoldBody>
               </TableFold>
 
-              {/* //법인등록  */}
-
-              {/* 개인등록  */}
+              {/* 법정대리인 정보 */}
               <TableFold>
                 <TableFoldHead title="법정대리인 정보"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption="법정대리인 정보" cols={['w-[14rem]', 'w-auto']}>
+                  <FormTable caption="법정대리인 정보" cols={['w-[13rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'이름/주민번호'}>
                         박환화(900101-1234567)와의 관계
@@ -280,15 +261,14 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormTable>
                 </TableFoldBody>
               </TableFold>
-              {/* //개인등록  */}
 
-              {/* 법인등록  */}
+              {/* CDD 검증정보  */}
               <TableFold>
                 <TableFoldHead title="CDD 검증정보"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption="" cols={['w-[19rem]', 'w-auto']}>
+                  <FormTable caption="" cols={['w-[13rem]', 'w-auto']}>
                     <FormRow>
-                      <FormCell title={'실명확인증표'}>
+                      <FormCell title={'실명확인증표'} tdClassName="grid grid-cols-[auto_1fr] gap-2">
                         <RadioGroup
                           className="gap-3"
                           value={form.type03}
@@ -300,21 +280,13 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
                           <RadioGroupItem value="option2" id="a2">
                             기타
                           </RadioGroupItem>
-                          <Input
-                            aria-label=""
-                            size="md"
-                            width={100}
-                            value={cddEtcValue}
-                            onChange={(e) => setCddEtcValue(e.target.value)}
-                            readOnly={form.type03 !== 'option2'}
-                          />
                         </RadioGroup>
+                        <Input size="md" value={cddEtcValue} readOnly={form.type03 !== 'option2'} />
                       </FormCell>
                     </FormRow>
                   </FormTable>
                 </TableFoldBody>
               </TableFold>
-              {/* //법인등록  */}
             </Gcol>
           </Gcol>
         </DialogSection>
@@ -338,3 +310,5 @@ export const Ltpz045 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz045;

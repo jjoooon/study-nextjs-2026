@@ -1,6 +1,16 @@
 'use client';
 
 // React
+import type {
+  ColDef,
+  ColGroupDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellRendererParams,
+  SuppressKeyboardEventParams,
+} from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import {
   AgGridEmptyComponent,
   GridHeaderCheckbox,
@@ -26,18 +36,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type {
-  ColDef,
-  ColGroupDef,
-  EditableCallbackParams,
-  GridApi,
-  ICellRendererParams,
-  SuppressKeyboardEventParams,
-} from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback } from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -89,7 +87,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz052 = () => {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [policySearchPart, setPolicySearchPart] = React.useState('');
 
@@ -160,7 +158,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
-      width: 80,
+      width: 50,
       field: 'id',
       cellClass: 'text-center px-0!',
       autoHeight: true,
@@ -170,10 +168,10 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       children: [
         {
           headerName: '동의서',
-          width: 100,
+          width: 80,
           editable: true,
           field: 'isAuthcheck1',
-          cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
+          cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center editable-cell'),
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
@@ -182,11 +180,11 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
         },
         {
           headerName: '모바일',
-          width: 100,
+          width: 80,
           editable: true,
           field: 'isAuthcheck2',
           headerClass: 'border-r-0!',
-          cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
+          cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center editable-cell'),
           cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
           cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
           suppressKeyboardEvent: suppressGridKeyboardOnInput,
@@ -198,12 +196,12 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '고객명',
       flex: 1,
-      minWidth: 200,
+      minWidth: 140,
       field: 'field01',
       // headerClass: 'border-l border-[#d4d4d5]',
       autoHeight: false,
       suppressNavigable: true,
-      cellClass: 'editable-cell text-center',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
         if (params.data?.isNew) {
           const isInputVisible = params.data.isField01InputVisible;
@@ -269,7 +267,7 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field02',
       autoHeight: true,
       editable: isEditableNewRow,
-      cellClass: 'editable-cell text-center',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
     },
     {
       headerName: '전화번호',
@@ -277,32 +275,32 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
       field: 'field03',
       autoHeight: true,
       editable: isEditableNewRow,
-      cellClass: 'editable-cell text-center',
+      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
     },
     {
       headerName: '출력/발송 결과',
       children: [
         {
           headerName: '동의서',
-          flex: 1,
+          width: 90,
           field: 'field04',
           editable: isEditableNewRow,
-          cellClass: 'editable-cell text-center',
+          cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
         },
         {
           headerName: '모바일',
-          flex: 1,
+          width: 90,
           field: 'field05',
           editable: isEditableNewRow,
-          cellClass: 'editable-cell text-center',
+          cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
         },
       ],
     },
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+    <Dialog open>
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -314,28 +312,28 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
-            <FormTable caption="취급자 정보" cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']} variant={'head'}>
+          <Grow placement="bwe" className="w-full" variant={'box-round'} gap={3}>
+            <FormTable variant={'head'}>
               <FormRow>
                 <FormCell title={'취급자 사번'} className="w-full">
                   <Grow>
                     <Input
                       aria-label="취급자 사번 검색"
-                      width={'10rem'}
+                      width={100}
                       value={policySearchPart}
                       onChange={(e) => setPolicySearchPart(e.target.value)}
                     />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={'10rem'} value={'김한화'} readOnly />
+                    <Input aria-label="" width={100} value={'김한화'} readOnly />
                   </Grow>
                 </FormCell>
                 <FormCell title={'취급자 연락처'} className="w-full">
                   <Grow>
-                    <Input aria-label="" width={'6rem'} value={'123'} />-
-                    <Input aria-label="" width={'6rem'} value={'1234'} />-
-                    <Input aria-label="" width={'6rem'} value={'1234'} />
+                    <Input aria-label="" width={50} value={'123'} />-
+                    <Input aria-label="" width={50} value={'1234'} />-
+                    <Input aria-label="" width={50} value={'1234'} />
                   </Grow>
                 </FormCell>
               </FormRow>
@@ -374,6 +372,10 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
                     headerCheckbox: true,
                     checkboxes: true,
                     enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    width: 30,
+                    cellClass: 'text-center editable-cell',
                   }}
                   // 행추가 된 rowCell
                   getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
@@ -445,3 +447,5 @@ export const Ltpz052 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz052;

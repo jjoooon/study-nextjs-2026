@@ -1,10 +1,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { InfoBox } from '@common/InfoBox';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,10 +20,6 @@ import {
 } from '@uiux/Dialog';
 import { TableCell } from '@uiux/Table';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 // Grid2 dummy data
 type DummyDataType = {
@@ -57,7 +55,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz027 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대상',
@@ -113,7 +111,7 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg" className="">
         <DialogHeader>
           <DialogTitle>
@@ -126,7 +124,7 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="w-full grid h-full gap-5 grid-rows-[auto_1fr]">
-          <Gcol placement={'ss'} gap={1.5}>
+          <Gcol placement={'ss'}>
             <Typo variant="heading-sm" color="default">
               발송대상
             </Typo>
@@ -160,7 +158,7 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
               </TableBody>
             </Table>
           </Gcol>
-          <Grid className="grid-rows-[auto_1fr]" placement={'ss'} gap={1.5}>
+          <Grid className="grid-rows-[auto_1fr]" placement={'ss'}>
             <Typo variant="heading-sm" color="default">
               진행이력
             </Typo>
@@ -180,11 +178,12 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
               />
             </div>
             {/* M1. 텍스트 추가 */}
-            <InfoBox
-              bg
-              subTitle="알림톡 발송불가 대상: 채널 (방카,TM) / 연령(만 19세미만) / 고객정보(휴대폰 또는 고객번호누락) / 심사상태(심사중 또는 심사승인) / 설계상태(설계수정 불가상태)"
-              variant="warning"
-            ></InfoBox>
+            <Grow variant="box-warning">
+              <Typo icon="warning" variant="body-sm">
+                알림톡 발송불가 대상: 채널 (방카,TM) / 연령(만 19세미만) / 고객정보(휴대폰 또는 고객번호누락) /
+                심사상태(심사중 또는 심사승인) / 설계상태(설계수정 불가상태)
+              </Typo>
+            </Grow>
           </Grid>
         </DialogSection>
         <DialogFooter>
@@ -203,3 +202,5 @@ export const Ltpz027 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz027;

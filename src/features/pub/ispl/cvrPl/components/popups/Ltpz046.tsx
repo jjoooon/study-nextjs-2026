@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, createCellValueChangedHandler, numberValueFormatter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -16,10 +19,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -89,12 +88,12 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz046 = () => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '부호',
-      width: 60,
+      width: 50,
       field: 'field01',
       cellClass: 'text-center',
     },
@@ -112,14 +111,14 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
     },
     {
       headerName: '목적물가입금액',
-      flex: 1,
+      width: 120,
       field: 'field04',
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '가입금액',
-      flex: 1,
+      width: 120,
       field: 'field05',
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
@@ -134,8 +133,8 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="lg">
+    <Dialog open>
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -149,16 +148,14 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogSection className="grid-rows-[auto_1fr]" gap-5>
           <Grow className="w-full" variant="box-round">
             <FormTable variant={'head'} lineTop={false} caption="">
-              <FormRow>
-                <FormCell title={'설계번호'}>
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    LA123123123123
-                  </Typo>
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    설계번호의 상품명 text
-                  </Typo>
-                </FormCell>
-              </FormRow>
+              <FormTable variant="none" cols={['w-1', 'w-auto']}>
+                <FormRow>
+                  <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
+                    <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
+                    <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
             </FormTable>
           </Grow>
           <Grow className="w-full">
@@ -182,6 +179,8 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
                 }}
                 selectionColumnDef={{
                   headerName: '선택',
+                  width: 30,
+                  cellClass: 'text-center editable-cell',
                 }}
                 onGridReady={(params) => {
                   params.api.forEachNode((node) => {
@@ -195,13 +194,13 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
             </div>
           </Grow>
           <Grow className="w-full">
-            <FormTable caption="담보" cols={['w-[14rem]', 'w-auto']}>
+            <FormTable caption="담보" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'담보명'}>
-                  <Input value="" width={180} readOnly />
+                  <Input value="" readOnly />
                 </FormCell>
-                <FormCell title={' 가입금액'}>
-                  <Input value="0" width={180} commaAmount readOnly />
+                <FormCell title={' 가입금액'} tdClassName="grid grid-cols-[1fr_auto] items-center gap-1">
+                  <Input value="0" commaAmount readOnly />
                   만원
                 </FormCell>
               </FormRow>
@@ -228,3 +227,5 @@ export const Ltpz046 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz046;

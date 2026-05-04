@@ -1,6 +1,9 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, EditableCallbackParams, ICellRendererParams, RowSelectedEvent } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useState, useRef } from 'react';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -30,10 +33,6 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, EditableCallbackParams, ICellRendererParams, RowSelectedEvent } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState, useRef } from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -105,7 +104,7 @@ const dummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz010 = () => {
   const [relationValue, setRelationValue] = useState('');
   const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
   const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
@@ -298,7 +297,7 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
   }, []);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
@@ -313,13 +312,16 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
+            <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
-                <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={150} value={'LA26020945959594'} readOnly />
+                <FormCell
+                  title={'설계번호'}
+                  tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
+                >
+                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
                   -
                   <Input aria-label="" width={30} value={'1'} readOnly />
-                  <Input aria-label="" width={300} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -480,7 +482,7 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
             <TableFold variant={'default'}>
               <TableFoldHead title="담보가입사항"></TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[15rem]">
+                <div className="ag-theme-alpine min-h-[15.4rem]">
                   <AgGridReact<DummyDataType>
                     ref={gridRef}
                     getRowId={(params) => String(params.data.id)}
@@ -538,3 +540,5 @@ export const Ltpz010 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz010;

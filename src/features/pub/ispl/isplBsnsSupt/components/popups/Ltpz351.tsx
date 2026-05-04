@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, phoneNumberValueFormatter, phoneNumberValueParser } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -14,11 +17,8 @@ import {
   DialogHeader,
   DialogSection,
   DialogTitle,
+  DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -34,18 +34,18 @@ const DummyData: DummyDataType[] = [
   { id: 2, isChecked: false, field1: '계약자', field2: '', field3: '' },
 ];
 
-export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz351 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
       field: 'field1',
-      width: 120,
+      width: 80,
       cellClass: 'text-center',
     },
     {
       headerName: '성명',
       field: 'field2',
-      width: 120,
+      flex: 1,
       cellClass: 'text-center',
       editable: (params) => params.data?.field1 === '계약자',
       cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
@@ -75,7 +75,7 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -171,14 +171,11 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button
-                variant={'outlined'}
-                size={'xl'}
-                color={'gray-light'}
-                onClick={onOpenChange ? () => onOpenChange(false) : undefined}
-              >
-                닫기
-              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
             </Grow>
           </DialogFooterArea>
           <DialogBottomInfo />
@@ -187,3 +184,5 @@ export const Ltpz351 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz351;

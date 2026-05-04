@@ -1,6 +1,11 @@
 'use client';
 
-import { Gcol, Grow, Typo } from '@atoms';
+import { BulletItem } from '@/shared/components/common/BulletList';
+import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { Badge } from '@/shared/components/uiux/Badge';
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { Input } from '@/shared/components/uiux/Input';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
@@ -13,21 +18,11 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { Input } from '@/shared/components/uiux/Input';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { BulletItem } from '@/shared/components/common/BulletList';
-import { Badge } from '@/shared/components/uiux/Badge';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
 
-export const Ltpz037 = ({ open, onOpenChange }: PopupBaseProps) => {
-  const [form, setFormField] = useFormFields({
-    type01: '',
-  });
+const Ltpz037 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -44,28 +39,33 @@ export const Ltpz037 = ({ open, onOpenChange }: PopupBaseProps) => {
           <Typo variant="body-lg">
             정확한 알릴사항 자동고지를 위해 동의 문자동의(LMS)로 발송합니다.
           </Typo>
-          <Gcol placement={'ss'}>
-            <Typo variant="body-lg" weight={'bold'}>취급자 정보</Typo>
-            <Typo variant="body-md">질병정보는 민감정보로서 <b>알릴사항의 목적으로만 활용</b>바랍니다.<br>
-            </br>이외의 용도로 활용 또는 <b>외부 유출시 법적처벌</b>을 받습니다.</Typo>
-            <Grow variant={'box-round'} placement={'ss'} className='w-full'>
-              <Input width={116} value={'1234567'} readOnly />
+          <Gcol placement={'ss'} className="w-full">
+            <Typo variant="body-lg" weight={'bold'}>
+              취급자 정보
+            </Typo>
+            <Typo variant="body-md">
+              질병정보는 민감정보로서 <b>알릴사항의 목적으로만 활용</b>바랍니다.<br></br>이외의 용도로 활용 또는{' '}
+              <b>외부 유출시 법적처벌</b>을 받습니다.
+            </Typo>
+            <Grid className="w-full grid-cols-[12rem_auto_1fr_12rem] items-center gap-1">
+              <Input value={'1234567'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
-              <Input width={85} value={'김한화'} readOnly />
-              <Input width={120} value={'010-1234-1234'} readOnly />
-            </Grow>
-            <Gcol variant={'box-warning'} placement={'ss'} className="w-full border border-[#D8D8D8] border-width: 0.1rem; border-style: solid;">
+              <Input value={'김한화'} readOnly />
+              <Input value={'010-1234-1234'} readOnly />
+            </Grid>
+            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
                 <Checkbox color="primary">타인에게 유출되지 않도록 처리하는 것에 동의합니다.</Checkbox>
               </Typo>
             </Gcol>
           </Gcol>
-         
-          <Gcol placement={'ss'}>
-            <Typo variant="body-lg" weight={'bold'}>고객정보</Typo>
-            <Typo variant="body-md">고객 휴대폰번호는 고객등록화면에서 수정해주세요.</Typo>
+
+          <Gcol placement={'ss'} className="w-full">
+            <Typo variant="body-lg" weight={'bold'}>
+              고객정보
+            </Typo>
             <Table variant="default">
               <colgroup>
                 <col style={{ width: '10rem' }} />
@@ -90,30 +90,12 @@ export const Ltpz037 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableHead className="text-left">
-                    휴대폰번호
-                  </TableHead>
-                  <TableCell>
-                    <Grow placement='ss'>
-                      <Input width={120} value={'010-1234-1234'} readOnly />
-                      <Button color="primary" onClick={() => {}} size="lg" variant="contained">
-                        인증번호 발송
-                      </Button>
-                    </Grow>
-                  </TableCell>
+                  <TableHead className="text-left">휴대폰번호</TableHead>
+                  <TableCell></TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableHead className="text-left">
-                    인증번호
-                  </TableHead>
-                  <TableCell>
-                    <Grow placement='ss'>
-                      <Input width={120}  value={form.type01} onChange={(e) => setFormField('type01', e.target.value)} readOnly/>
-                      <Button color="gray" onClick={() => {}} size="lg" variant="outlined">
-                        인증확인
-                      </Button>
-                    </Grow>
-                  </TableCell>
+                  <TableHead className="text-left">인증번호</TableHead>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -141,3 +123,5 @@ export const Ltpz037 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz037;

@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -17,10 +20,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -128,7 +127,7 @@ const comparisonRows: ComparisonRow[] = [
   },
 ];
 
-export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz011 = () => {
   const columnDefs2: ColDef<ComparisonRow>[] = [
     {
       headerName: '담보상태',
@@ -195,7 +194,7 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
   );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
@@ -213,7 +212,12 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
             <FormTable caption="대표담보명" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'대표담보명'}>
-                  <Input aria-label="" width={200} value={'대표담보명.text'} readOnly />
+                  <Input
+                    aria-label=""
+                    value={'대표담보명대표담보명.대표담보명대표담보명text'}
+                    readOnly
+                    variant="info"
+                  />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -263,3 +267,5 @@ export const Ltpz011 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz011;

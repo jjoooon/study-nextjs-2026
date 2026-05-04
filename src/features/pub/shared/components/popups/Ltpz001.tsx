@@ -1,6 +1,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -24,11 +28,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Textarea } from '@uiux/Textarea';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -161,7 +160,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz001 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '미리보기',
@@ -220,7 +219,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [tabActive, setTabActive] = useState('tab1');
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -234,84 +233,81 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
 
         <DialogSection className="grid-cols-[1fr_auto]">
-          <Gcol gap={5} placement={'ss'} className="overflow-y-auto">
-            {[0, 1, 2].map((idx) => (
-              <Gcol gap={2} placement={'ss'} key={idx}>
-                <Grow variant={'box-info-line'} className="w-full">
-                  <FormTable variant={'head'} cols={['w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-auto']}>
-                    <FormRow>
-                      <FormCell title={'설계번호'}>
-                        <Typo tag={'b'} variant={'body-lg'}>
-                          {idx === 0 && 'LA26029313558'}
-                          {idx === 1 && 'LA26029313559'}
-                          {idx === 2 && 'LA26029313560'}
-                        </Typo>
-                      </FormCell>
-                      <FormCell title={'계약자명'}>
-                        <Typo tag={'b'} variant={'body-lg'}>
-                          {idx === 0 && '김한화'}
-                          {idx === 1 && '이한화'}
-                          {idx === 2 && '박한화'}
-                        </Typo>
-                      </FormCell>
-                      <FormCell title={'상품명'}>
-                        <Typo tag={'b'} variant={'body-lg'}>
-                          {idx === 0 && '한화시그니처여성 건강 보험 3.0 무배당'}
-                          {idx === 1 && '한화시그니처남성 건강 보험 3.0 무배당'}
-                          {idx === 2 && '한화시그니처어린이 건강 보험 3.0 무배당'}
-                        </Typo>
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Grow>
-                <div className="ag-theme-alpine">
-                  <AgGridReact<DummyDataType>
-                    // 필수 props
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    defaultColDef={{
-                      cellClass: 'text-center',
-                    }}
-                    domLayout="autoHeight"
-                    // tree data 설정
-                    treeData={true}
-                    getDataPath={(row) => row.filePath}
-                    groupDefaultExpanded={-1}
-                    autoGroupColumnDef={{
-                      headerName: '출력물',
-                      field: 'field1',
-                      flex: 1,
-                      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
-                    }}
-                    // selection 설정
-                    rowSelection={{
-                      mode: 'multiRow',
-                      groupSelects: 'descendants',
-                      headerCheckbox: true,
-                      checkboxes: true,
-                      enableClickSelection: false,
-                      isRowSelectable: (params) => !params.data?.disabled && !params.data?.allDisabled,
-                    }}
-                    selectionColumnDef={{
-                      width: 30,
-                      cellClass: 'text-center editable-cell',
-                    }}
-                    onGridReady={(params) => {
-                      params.api.forEachNode((node) => {
-                        if (node.data?.isCheck) {
-                          node.setSelected(true);
-                        }
-                      });
-                    }}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                  />
-                </div>
+          {/* M2. 구조 변경 수정 */}
+          <Grid className="grid-rows-[1fr_auto] h-full gap-3">
+            <div className=" w-full h-full relative min-h-[30rem] overflow-y-auto ">
+              <Gcol gap={5} placement={'ss'} className="absolute">
+                {[0, 1].map((idx) => (
+                  <Gcol gap={2} placement={'ss'} key={idx}>
+                    <Grow variant={'box-info-line'} className="w-full">
+                      <FormTable variant={'head'} className="w-full">
+                        <FormRow>
+                          <FormCell title={'설계번호'}>
+                            <Input value={'LA26029313558'} variant="info" width={120} readOnly />
+                          </FormCell>
+                          <FormCell title={'계약자명'}>
+                            <Input value={'김한화'} readOnly variant="info" width={80} />
+                          </FormCell>
+                          <FormCell title={'상품명'}>
+                            <Input
+                              value={'한화시그니처여성 건강 보험 3.0 무배당'}
+                              readOnly
+                              variant="info"
+                              width={'full'}
+                            />
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                    </Grow>
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<DummyDataType>
+                        // 필수 props
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        defaultColDef={{
+                          cellClass: 'text-center',
+                        }}
+                        domLayout="autoHeight"
+                        // tree data 설정
+                        treeData={true}
+                        getDataPath={(row) => row.filePath}
+                        groupDefaultExpanded={-1}
+                        autoGroupColumnDef={{
+                          headerName: '출력물',
+                          field: 'field1',
+                          flex: 1,
+                          tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
+                        }}
+                        // selection 설정
+                        rowSelection={{
+                          mode: 'multiRow',
+                          groupSelects: 'descendants',
+                          headerCheckbox: true,
+                          checkboxes: true,
+                          enableClickSelection: false,
+                          isRowSelectable: (params) => !params.data?.disabled && !params.data?.allDisabled,
+                        }}
+                        selectionColumnDef={{
+                          width: 30,
+                          cellClass: 'text-center editable-cell',
+                        }}
+                        onGridReady={(params) => {
+                          params.api.forEachNode((node) => {
+                            if (node.data?.isCheck) {
+                              node.setSelected(true);
+                            }
+                          });
+                        }}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                      />
+                    </div>
+                  </Gcol>
+                ))}
               </Gcol>
-            ))}
-
+            </div>
             <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
                 기타 필수 스캔 대상 서류안내
@@ -320,7 +316,7 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
                 실명증표사본, 실명증표진위여부확인서(법인), 실명증표진위여부확인서(법인대리인), 실소유자확인서류
               </Typo>
             </Gcol>
-          </Gcol>
+          </Grid>
 
           <Grid gap={2} placement={'ss'} className="w-[26.4rem] shrink-0 grid-rows-[auto_1fr] overflow-hidden">
             <Typo tag={'h3'} variant={'heading-lg'}>
@@ -665,3 +661,5 @@ export const Ltpz001 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz001;

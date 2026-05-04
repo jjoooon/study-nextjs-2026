@@ -1,6 +1,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -20,11 +24,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType = {
   id: number;
@@ -106,7 +105,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz097 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz097 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상위누적명',
@@ -209,7 +208,7 @@ export const Ltpz097 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -224,17 +223,15 @@ export const Ltpz097 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           {/* 조회 */}
-          <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable variant={'head'} lineTop={false} caption="">
-              <FormRow>
-                <FormCell title={'조회구분'}>
-                  <NativeSelect
-                    aria-label="항목 선택"
-                    width={160}
-                    value={form.type01}
-                    required
-                    onChange={(e) => setFormField('type01', e.target.value)}
-                  >
+          <Grow placement="bwc" className="w-full" variant={'box-round'} gap={6}>
+            <FormTable variant={'head'} lineTop={false}>
+              <FormRow className="grid grid-cols-[1fr_auto]">
+                <FormCell
+                  title={'조회구분'}
+                  tdClassName="grid grid-cols-[auto_auto_auto_1fr] w-full"
+                  className="whitespace-nowrap"
+                >
+                  <NativeSelect aria-label="항목 선택" width={100} value={form.type01} required>
                     {[
                       { value: 'selection', id: 'type01-1', label: '설계번호' },
                       { value: 'selection2', id: 'type01-2', label: '증권번호' },
@@ -244,15 +241,11 @@ export const Ltpz097 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input
-                    width={130}
-                    value={form.type02 || 'LA260204310632'}
-                    onChange={(e) => setFormField('type02', e.target.value)}
-                  />
+                  <Input width={120} value={'LA260204310632'} />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input width={230} value={'한화 더 건강한 1040종합..'} readOnly />
+                  <Input value={'한화 더 건강한 1040종합한화 더 건강한 1040종합한화 더 건강한 1040종합'} readOnly />
                 </FormCell>
                 <FormCell title={'피보험자정보'}>
                   <Grow>
@@ -377,3 +370,5 @@ export const Ltpz097 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz097;

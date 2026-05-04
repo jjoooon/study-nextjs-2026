@@ -14,7 +14,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 const fileList = [
   { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1344024', fileAddress: 'file-address' },
@@ -22,9 +21,9 @@ const fileList = [
   { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1024', fileAddress: 'file-address' },
 ];
 
-export const Ltpz994 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz994 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>

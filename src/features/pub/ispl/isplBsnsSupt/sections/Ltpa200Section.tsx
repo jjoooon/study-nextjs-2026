@@ -2,6 +2,19 @@
 
 // M1. 팝업에서 화면으로 변경, 전체 수정
 
+import type {
+  ColDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellEditorParams,
+  ICellRendererParams,
+} from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback } from 'react';
+import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import {
   AgGridEmptyComponent,
   DatePickerCellEditor,
@@ -23,19 +36,6 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type {
-  ColDef,
-  EditableCallbackParams,
-  GridApi,
-  ICellEditorParams,
-  ICellRendererParams,
-} from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback } from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -398,11 +398,11 @@ export default function Ltpa200Section() {
       <LayoutTemplate
         mainBody={
           <Grid className="grid-rows-[auto_1fr]" gap={3}>
-            <Grow className="w-full" variant="box-round" placement={'bwe'}>
+            <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
-                variant={'head'}
+                variant={'none'}
                 caption="장기보험 모집자 설계 조회 테이블"
-                cols={['w-[8rem]', 'flex-1', 'w-[8rem]', 'flex-1']}
+                cols={['w-1', 'w-1', 'w-1', 'w-auto']}
               >
                 <FormRow>
                   <FormCell title={'등록항목'}>
@@ -447,7 +447,7 @@ export default function Ltpa200Section() {
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input aria-label="" width={120} value={'김한화'} readOnly />
-                    <Grow className="ml-32">
+                    <Grow className="ml-6">
                       <NativeSelect
                         aria-label="조직구분 선택"
                         width={90}

@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -18,10 +21,6 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -93,7 +92,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz040 = () => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -185,7 +184,7 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
   // rowSelection 사용시
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -199,15 +198,16 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
+            <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
-                <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={'15rem'} value={'LA26020945959594'} readOnly />
+                <FormCell
+                  title={'설계번호'}
+                  tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
+                >
+                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
                   -
-                  <Input aria-label="" width={'3rem'} value={'1'} readOnly />
-                  <Typo color="default" tag="span" variant="body-lg" weight="bold">
-                    설계번호의 상품명 text
-                  </Typo>
+                  <Input aria-label="" width={30} value={'1'} readOnly />
+                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -237,6 +237,10 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
                       headerCheckbox: true,
                       checkboxes: true,
                       enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      width: 30,
+                      cellClass: 'text-center editable-cell',
                     }}
                     rowClassRules={{}}
                     onGridReady={(params) => {
@@ -293,3 +297,5 @@ export const Ltpz040 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz040;

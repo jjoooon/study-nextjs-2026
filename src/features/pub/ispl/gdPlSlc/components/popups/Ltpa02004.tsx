@@ -1,5 +1,8 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
@@ -14,10 +17,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -256,7 +255,7 @@ const DummyData2: DummyDataType[] = [
   },
 ];
 
-export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpa02004 = () => {
   const [rowData1] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2] = React.useState<DummyDataType[]>(DummyData1);
   const [rowData3] = React.useState<DummyDataType[]>(DummyData2);
@@ -320,7 +319,7 @@ export const Ltpa02004 = ({ open, onOpenChange }: PopupBaseProps) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>

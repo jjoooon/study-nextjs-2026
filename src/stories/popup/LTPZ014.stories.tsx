@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Ltpz014 } from '@/features/pub/shared/components/popups/Ltpz014';
+import Ltpz014 from '@/features/pub/shared/components/popups/Ltpz014';
 
 export default {
   title: 'app/shared/components/popups/Ltpz014',
@@ -18,7 +18,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>Ltpz014 열기</Button>
       </div>
 
-      <Ltpz014 open={open} onOpenChange={setOpen} />
+      <Ltpz014 />
     </LayoutDoc>
   );
 };

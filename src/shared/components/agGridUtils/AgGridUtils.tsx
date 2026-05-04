@@ -1,17 +1,3 @@
-// 외부 라이브러리
-
-// 내부 공통 컴포넌트
-
-import { Typo, Grow, Grid, Gcol } from '@atoms';
-import { AmountUnitInput } from '@common/AmountUnitInput';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DatePickerInput } from '@common/DatePicker';
-import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
-import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import type { ICellEditorParams } from 'ag-grid-community';
 import type {
   CellClickedEvent,
@@ -32,6 +18,14 @@ import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import type { RefObject } from 'react';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
+import { Typo, Grow, Grid, Gcol } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DatePickerInput } from '@common/DatePicker';
+import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
 export type ToggleTopRow<T> = T & {
   originalIndex: number;
@@ -435,90 +429,6 @@ export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
   if (!isNaN(num)) return num.toLocaleString();
   return params.value;
 };
-
-/**
- * 가입금액(만원) 셀 렌더러 (AmountUnitInput 사용, 행별 ref 지원)
- */
-
-// React 컴포넌트로 분리 (Hook 규칙 위반 방지)
-function AmountUnitInputCellRenderer<RowType>(
-  props: ICellRendererParams<RowType> & { amountInputRefs: React.RefObject<Array<HTMLInputElement | null>> }
-) {
-  const { amountInputRefs, value, node, setValue, colDef } = props;
-  const [showSelect, setShowSelect] = React.useState(false);
-  const [localValue, setLocalValue] = React.useState(value);
-  const rowIndex = node?.rowIndex ?? 0;
-  if (!amountInputRefs || !amountInputRefs.current) return null;
-
-  const options: string[] = Array.isArray(colDef?.cellEditorParams?.values)
-    ? (colDef.cellEditorParams.values as string[])
-    : [''];
-
-  if (typeof value === 'number') {
-    return (
-      <div>
-        <AmountUnitInput
-          value={value}
-          onChange={(newValue) => {
-            if (setValue) setValue(newValue);
-          }}
-          inputRef={(el) => {
-            const refs = amountInputRefs.current;
-            if (refs) {
-              refs[rowIndex] = el;
-            }
-          }}
-          onEnter={() => {
-            const nextRef = amountInputRefs.current?.[rowIndex + 1];
-            if (nextRef) nextRef.focus();
-          }}
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div className="relative w-full">
-      {!showSelect ? (
-        <button
-          type="button"
-          className={`flex items-center px-[0.6rem] gap-1 w-full h-full editor-select`}
-          onClick={() => setShowSelect(true)}
-        >
-          <span className={`block flex-1`}>{localValue}</span>
-          <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
-        </button>
-      ) : (
-        <Grow className="w-full mt-[0.2rem] px-[0.6rem] items-center ">
-          <NativeSelect
-            size="md"
-            value={localValue}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              setLocalValue(e.target.value);
-              setShowSelect(false);
-              if (props.setValue) props.setValue(e.target.value);
-            }}
-            onBlur={() => setShowSelect(false)}
-            autoFocus
-          >
-            {options.map((option) => (
-              <NativeSelectOption key={option} value={option}>
-                {option}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </Grow>
-      )}
-    </div>
-  );
-}
-
-// ag-Grid cellRenderer 함수로 등록할 때는 이 래퍼를 사용
-export function amountUnitInputCellRenderer<RowType>(
-  params: ICellRendererParams<RowType> & { amountInputRefs: React.RefObject<Array<HTMLInputElement | null>> }
-) {
-  return <AmountUnitInputCellRenderer {...params} />;
-}
 
 /**
  * Popover를 통한 +/- 조정 기능이 포함된 숫자 편집기
@@ -1276,7 +1186,7 @@ export const CoveragePopover = ({
 /**
  * 휴대폰 번호 valueFormatter (010-1234-5678, 010-123-4567 등 자동 포맷)
  */
-export function phoneNumberValueFormatter<T = any>(params: ValueFormatterParams<T>) {
+export function phoneNumberValueFormatter<T = unknown>(params: ValueFormatterParams<T>) {
   if (!params.value) return '';
   const v = String(params.value).replace(/[^0-9]/g, '');
   if (v.length === 11) {

@@ -1,15 +1,10 @@
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createTooltipValueGetter, } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
+import { ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,13 +19,10 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
-import { ResetIcon } from '@icons';
 
-
-export const Ltpz09103 = ({ open, onOpenChange }: PopupBaseProps) => {
-  
+const Ltpz09103 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
@@ -65,13 +57,21 @@ export const Ltpz09103 = ({ open, onOpenChange }: PopupBaseProps) => {
               </FormRow>
             </FormTable>
             <Grow>
-              <Button color="gray" variant="outlined">파일추가</Button>
-              <Button color="gray" variant="outlined">파일수정</Button>
-              <Button color="gray" variant="outlined">파일삭제</Button>
+              <Button color="gray" variant="outlined">
+                파일추가
+              </Button>
+              <Button color="gray" variant="outlined">
+                파일수정
+              </Button>
+              <Button color="gray" variant="outlined">
+                파일삭제
+              </Button>
             </Grow>
           </Grow>
-          <Gcol className='min-h-[30rem]'>
-            <Grow className="w-full min-h-[30rem]" variant="box-round">이미지 노출</Grow>
+          <Gcol className="min-h-[30rem]">
+            <Grow className="w-full min-h-[30rem]" variant="box-round">
+              이미지 노출
+            </Grow>
           </Gcol>
         </DialogSection>
 
@@ -91,3 +91,5 @@ export const Ltpz09103 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz09103;

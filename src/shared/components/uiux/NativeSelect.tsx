@@ -1,11 +1,12 @@
-import { ErrorMsg } from '@common/ErrorMsg';
-import { SelectDropIcon } from '@icons';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
+import { Typo } from '@atoms';
+import { ErrorMsg } from '@common/ErrorMsg';
+import { SelectDropIcon } from '@icons';
 
 interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size'> {
-  variant?: 'default';
+  variant?: 'default' | 'text';
   size?: UIUXsize;
   width?: number | string; // 숫자면 rem으로 변환, 'full'이면 100%, 'auto'면 auto
   required?: boolean;
@@ -14,6 +15,11 @@ interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size
   errorMsg?: React.ReactNode;
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 }
+
+type NativeSelectOptGroupProps = React.HTMLAttributes<HTMLOptGroupElement> & {
+  disabled?: boolean;
+  label?: string;
+};
 
 function NativeSelect({
   className,
@@ -60,10 +66,12 @@ function NativeSelect({
     ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
     : '';
   const disabledStyle = 'disabled:opacity-50 disabled:cursor-not-allowed';
+  const disabledStyle2 = 'disabled:opacity-100 !border-0 !p-0 !w-auto';
   const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
   const variantStyles = {
     default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
+    text: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle2, sizeStyle),
   };
 
   const arrowStateStyle =
@@ -77,27 +85,40 @@ function NativeSelect({
 
   return (
     <div className={cn('relative', className)} style={widthStyle}>
-      <div
-        className="group/native-select relative has-[select:disabled]:opacity-50 tracking-[-0.13rem]"
-        data-slot="native-select-wrapper"
-      >
-        <select
-          data-slot="native-select"
-          className={cn(variantStyles[variant])}
-          tabIndex={readOnly ? -1 : props.tabIndex}
-          aria-invalid={error || undefined}
-          aria-describedby={error ? errorId : undefined}
-          // disabled={readOnly || props.disabled}
-          {...props}
-        />
-        <SelectDropIcon
-          className={cn(
-            'pointer-events-none absolute top-1/2 right-[0.8rem] -translate-y-1/2 select-none text-[var(--color-icon-basic)]',
-            size === 'lg' ? 'size-[1.6rem]' : 'size-[1.2rem]'
-          )}
-          aria-hidden="true"
-          color={arrowStateStyle}
-        />
+      <div className="group/native-select relative tracking-[-0.13rem]" data-slot="native-select-wrapper">
+        {variant !== 'text' && !props.disabled ? (
+          <>
+            <select
+              data-slot="native-select"
+              className={cn(variantStyles[variant])}
+              tabIndex={readOnly ? -1 : props.tabIndex}
+              aria-invalid={error || undefined}
+              aria-describedby={error ? errorId : undefined}
+              // disabled={readOnly || props.disabled}
+              {...props}
+            />
+            <SelectDropIcon
+              className={cn(
+                'pointer-events-none absolute top-1/2 right-[0.8rem] -translate-y-1/2 select-none text-[var(--color-icon-basic)]',
+                size === 'lg' ? 'size-[1.6rem]' : 'size-[1.2rem]'
+              )}
+              aria-hidden="true"
+              color={arrowStateStyle}
+            />
+          </>
+        ) : (
+          <Typo variant="heading-sm" className="whitespace-nowrap">
+            {(() => {
+              const selectedValue = props.value ?? props.defaultValue;
+              const matched = (
+                React.Children.toArray(props.children) as React.ReactElement<
+                  React.OptionHTMLAttributes<HTMLOptionElement>
+                >[]
+              ).find((child) => child.props.value === selectedValue);
+              return matched ? matched.props.children : selectedValue;
+            })()}
+          </Typo>
+        )}
       </div>
       {error && (
         <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
@@ -112,8 +133,12 @@ function NativeSelectOption({ ...props }: React.ComponentProps<'option'>) {
   return <option data-slot="native-select-option" {...props} />;
 }
 
-function NativeSelectOptGroup({ className, ...props }: React.ComponentProps<'optgroup'>) {
-  return <optgroup data-slot="native-select-optgroup" className={cn(className)} {...props} />;
+function NativeSelectOptGroup({ className, ...props }: NativeSelectOptGroupProps) {
+  return React.createElement('optgroup', {
+    'data-slot': 'native-select-optgroup',
+    className: cn(className),
+    ...props,
+  });
 }
 
 export { NativeSelect, NativeSelectOptGroup, NativeSelectOption };

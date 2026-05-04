@@ -1,6 +1,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -14,12 +15,10 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz014 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz014 = () => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="sm">
         <DialogHeader>
           <DialogTitle>
@@ -84,3 +83,5 @@ export const Ltpz014 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz014;

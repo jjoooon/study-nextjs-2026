@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -19,11 +21,8 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { useState } from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
-export const Ltpz106 = ({ open, onOpenChange }: PopupBaseProps) => {
+export const Ltpz106 = () => {
   // items 상태로 관리
   const [items, setItems] = useState([
     { idx: 1, age: 32, gender: '여', job: '1급' },
@@ -64,7 +63,7 @@ export const Ltpz106 = ({ open, onOpenChange }: PopupBaseProps) => {
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={false} size="sm">
         <DialogHeader>
           <DialogTitle>

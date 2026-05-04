@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -18,10 +20,6 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { useEffect, useState } from 'react';
-
-import { Ltpz014 } from '../../../shared/components/popups/Ltpz014';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 const DUMMY_DATA = {
   view1: [
@@ -63,7 +61,6 @@ type Ltpa35001Props = {
 export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) => {
   // viewKey만 사용, 상태 제거
   const { tabs, active, setActive, handleRemove, replaceTabs } = useTabs(DUMMY_DATA[viewKey]);
-  const [isLtpz014Open, setIsLtpz014Open] = useState(false);
 
   // M1. 무한루프에러 수정
   useEffect(() => {
@@ -240,8 +237,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                   <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
                                   <Input
                                     aria-label="주민등록번호 마스킹"
-                                    width={110}
-                                    value={'900101-1******'}
+                                    width={120}
+                                    value={'900101-1234567'}
                                     readOnly
                                   />
                                   <Button
@@ -815,8 +812,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                     <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
                                     <Input
                                       aria-label="주민등록번호 마스킹"
-                                      width={110}
-                                      value={'900101-1******'}
+                                      width={120}
+                                      value={'900101-1234567'}
                                       readOnly
                                     />
                                     <Button
@@ -979,8 +976,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                     <Input aria-label="소유자명" width={75} value={'김환화'} readOnly />
                                     <Input
                                       aria-label="주민등록번호 마스킹"
-                                      width={110}
-                                      value={'900101-1******'}
+                                      width={120}
+                                      value={'900101-1234567'}
                                       readOnly
                                     />
                                     <Button
@@ -1583,7 +1580,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                       <FormRow>
                         <FormCell title={'계약자'} titleVariant="section">
                           <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
-                          <Input aria-label="주민등록번호 마스킹" width={110} value={'900101-1******'} readOnly />
+                          <Input aria-label="주민등록번호 마스킹" width={120} value={'900101-1234567'} readOnly />
                           <Button
                             aria-label="피보험자 검색"
                             variant={'outlined'}
@@ -1593,7 +1590,11 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           >
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <Checkbox color="primary">개인사업자</Checkbox>
+
+                          <Checkbox color="primary" />
+                          <Button variant={'none'} className="px-0">
+                            개인사업자
+                          </Button>
                         </FormCell>
                         <FormCell title="개인정보취득경로">
                           <NativeSelect aria-label="개인정보취득경로 선택" width={200} required>
@@ -1695,11 +1696,10 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
             {/* M1. variant="box" 추가 */}
             <MainBottom variant="box">
               <MainBottomItem className="bg-[var(--color-gray-5)]">
-                <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => setIsLtpz014Open(true)}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   동영상매뉴얼
                 </Button>
-                <Ltpz014 open={isLtpz014Open} onOpenChange={setIsLtpz014Open} />
-                <Grow gap={1}>
+                <Grow>
                   <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                     저장
                   </Button>

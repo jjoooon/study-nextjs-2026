@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import LTPA010 from '@/app/pub/ispl/pages/LTPA010';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
+
 export default {
   title: '페이지인팝업Test/LTPA010',
   component: LTPA010,
@@ -23,9 +23,9 @@ export default {
   },
 };
 
-export const Default = ({ open, onOpenChange }: PopupBaseProps) => (
+export const Default = () => (
   <LayoutDoc>
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="full">
         <DialogHeader>
           <DialogTitle>

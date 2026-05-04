@@ -1,5 +1,15 @@
 'use client';
 
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+
+import { TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { TableFold } from '@/shared/components/common/TableFold';
+import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
+import { Input } from '@/shared/components/uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -13,17 +23,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-
-import { TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { TableFold } from '@/shared/components/common/TableFold';
-import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
-import { Input } from '@/shared/components/uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 // M2. 신규페이지
 import '@/shared/lib/agGridPub';
@@ -153,7 +152,7 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpz076 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz076 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '코드',
@@ -193,7 +192,7 @@ export const Ltpz076 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
@@ -208,18 +207,13 @@ export const Ltpz076 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable
-              variant={'none'}
-              lineTop={false}
-              caption="보험정보"
-              cols={['w-[1rem]', 'w-[2rem]', 'w-[1rem]', 'w-auto']}
-            >
+            <FormTable variant={'head'} lineTop={false} caption="보험정보" cols={['w-[1rem]', 'w-[2rem]']}>
               <FormRow>
                 <FormCell title={'플랜순번'}>
-                  <b>1</b>
+                  <Input value={'1'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'플랜명'}>
-                  <b>한아름_3대진단강화형_특화</b>
+                  <Input value={'한아름_3대진단강화형_특화'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -352,3 +346,5 @@ export const Ltpz076 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz076;

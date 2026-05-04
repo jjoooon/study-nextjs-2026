@@ -1,6 +1,9 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -18,10 +21,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type DummyDataType2 = {
   id: number;
@@ -186,7 +185,7 @@ const finalSummaryData: FinalSummaryData[] = [
   },
 ];
 
-export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz012 = () => {
   const isMergedSumRow = (data?: DummyDataType2) => {
     return (
       data?.isSumRow === true &&
@@ -334,8 +333,8 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="xl">
+    <Dialog open>
+      <DialogContent showCloseButton resizable={false} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -349,15 +348,23 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
 
         <DialogSection className="grid h-full grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="기본정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
-              <FormRow>
-                <FormCell title={'설계번호'}>
-                  <Input aria-label="설계번호" width={140} value={'LA260305361023'} readOnly />
-                  <Input aria-label="상품명" width={220} value={'한화 시그니쳐 여성 건강보험4.0'} readOnly />
+            <FormTable variant="head">
+              <FormRow className="grid grid-cols-[1fr_auto]">
+                <FormCell
+                  title={'설계번호'}
+                  tdClassName="grid grid-cols-[auto_minmax(20rem,1fr)] gap-1 w-full"
+                  className="whitespace-nowrap"
+                >
+                  <Input aria-label="설계번호" width={120} value={'LA260305361023'} readOnly />
+                  <Input aria-label="상품명" width={'full'} value={'한화 시그니쳐 여성 건강보험4.0'} readOnly />
                 </FormCell>
-                <FormCell title={'피보험자'}>
+                <FormCell
+                  title={'피보험자'}
+                  tdClassName="grid grid-cols-[auto_auto] gap-1"
+                  className="whitespace-nowrap"
+                >
                   <Input aria-label="피보험자명" width={80} value={'홍길순'} readOnly />
-                  <Input aria-label="생년월일" width={140} value={'940302-2******'} readOnly />
+                  <Input aria-label="생년월일" width={120} value={'940302-2******'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -467,3 +474,5 @@ export const Ltpz012 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz012;

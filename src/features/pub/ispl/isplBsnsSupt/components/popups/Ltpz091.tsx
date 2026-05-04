@@ -4,12 +4,13 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { AgGridEmptyComponent, createTooltipValueGetter, } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
+import { ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,8 +25,6 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
-import { ResetIcon } from '@icons';
-
 
 type LTPZ091Tab = { value: string; label: string };
 const DATA_TABS: LTPZ091Tab[] = [
@@ -181,9 +180,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-
-
-export const Ltpz091 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz091 = () => {
   // AgGrid Column
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   // 각 컬럼별 cellRenderer 예시 명확화
@@ -246,7 +243,7 @@ export const Ltpz091 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
@@ -295,12 +292,18 @@ export const Ltpz091 = ({ open, onOpenChange }: PopupBaseProps) => {
                       </FormRow>
                     </FormTable>
                     <Grow>
-                      <Button color="gray" variant="outlined">파일추가</Button>
-                      <Button color="gray" variant="outlined">파일수정</Button>
-                      <Button color="gray" variant="outlined">파일삭제</Button>
+                      <Button color="gray" variant="outlined">
+                        파일추가
+                      </Button>
+                      <Button color="gray" variant="outlined">
+                        파일수정
+                      </Button>
+                      <Button color="gray" variant="outlined">
+                        파일삭제
+                      </Button>
                     </Grow>
                   </Grow>
-                  <Grid className='w-full'>
+                  <Grid className="w-full">
                     <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
@@ -322,15 +325,13 @@ export const Ltpz091 = ({ open, onOpenChange }: PopupBaseProps) => {
                         }}
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
-                      />  
-                    </div>    
-                  </Grid>  
+                      />
+                    </div>
+                  </Grid>
                 </Grid>
               </Grid>
             </TabPager>
-            
           </Grid>
-          
         </DialogSection>
 
         <DialogFooter>
@@ -352,3 +353,5 @@ export const Ltpz091 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz091;
