@@ -329,7 +329,7 @@ const Ltpz00502 = () => {
     'h-[3rem]! rounded-full! border-transparent! bg-[#E5E5E5]! px-[0.8rem]! py-[0.4rem]! text-[1.2rem]! font-bold! leading-normal! tracking-[-0.13rem]! text-[#777777]! data-[state=checked]:border-transparent! data-[state=checked]:bg-[#414141]! data-[state=checked]:text-white! data-[state=checked]:shadow-none!';
 
   return (
-    <Gcol className="w-full" gap={2}>
+    <Gcol className="w-full" gap={2} placement='ss'>
       <Grow className="w-full bg-[#374151]" variant={'box-round'} placement="sc">
         <NotificationIcon />
         <Typo tag={'strong'} variant={'body-md'} className="text-white">
@@ -385,6 +385,7 @@ const Ltpz00502 = () => {
           </RadioGroup>
         </div>
       </TabPager>
+      <Typo tag={'strong'} variant={'body-lg'}>확인사항</Typo>
       <div className="ag-theme-alpine">
         <AgGridReact<DummyDataType2>
           getRowId={(params) => String(params.data.id)}
