@@ -870,12 +870,9 @@ export function createHeaderCheckboxOnCellValueChanged<T>(fields: (keyof T & str
 /**
  * ag-Grid 기본 empty overlay 컴포넌트.
  */
-export function AgGridEmptyComponent({ className: _className, ...props }: React.ComponentProps<'div'>) {
+export function AgGridEmptyComponent({ className: _className }: React.ComponentProps<'div'>) {
   return (
-    <div
-      className="bg-[var(--color-gray-0)] w-full h-full flex items-center justify-center gap-1 text-[var(--color-gray-70)]"
-      {...props}
-    >
+    <div className="bg-(--color-gray-0) w-full h-full flex items-center justify-center gap-1 text-(--color-gray-70)">
       <InfoBoxWarningIcon color="var(--color-gray-50)" />
       조회 결과가 없습니다.
     </div>
