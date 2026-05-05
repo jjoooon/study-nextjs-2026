@@ -23,6 +23,7 @@ import Ltpz00501 from './Ltpz00501';
 import Ltpz00502 from './Ltpz00502';
 import Ltpz00503 from './Ltpz00503';
 import Ltpz00504 from './Ltpz00504';
+import { Input } from '@/shared/components/uiux/Input';
 
 type CheckTab = {
   name: string;
@@ -38,10 +39,10 @@ type Ltpz005Props = PopupBaseProps & {
 };
 
 const CHECK_TABS: CheckTab[] = [
-  { name: '공통', value: 'common', label: '공통', state: 'green' },
+  { name: '공통', value: 'common', label: '공통', state: 'yellow' },
   { name: '누적', value: 'accum', label: '누적', state: 'red' },
-  { name: '직업', value: 'job', label: '직업', state: 'yellow' },
-  { name: '예상 UW', value: 'expected-uw', label: '예상 UW', state: 'yellow' },
+  { name: '직업', value: 'job', label: '직업', state: 'green' },
+  { name: '예상 UW', value: 'expected-uw', label: '예상UW', state: 'green' },
 ];
 
 const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
@@ -59,9 +60,9 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
   };
 
   const getStateIcon = (state: CheckTab['state']) => {
-    if (state === 'green') return <CircleCheckIcon size={20} />;
-    if (state === 'red') return <InfoToastIcon size={20} color={'#E43939'} />;
-    return <InfoToastIcon size={20} color={'#FFB800'} />;
+    if (state === 'green') return <CircleCheckIcon size={26} />;
+    if (state === 'red') return <InfoToastIcon size={26} color={'#E43939'} />;
+    return <InfoToastIcon size={26} color={'#FFB800'} />;
   };
 
   return (
@@ -77,22 +78,41 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_minmax(0,1fr)] min-h-0">
+        <DialogSection className="min-h-0 grid grid-rows-[auto_1fr]">
           <Gcol className="w-full" gap={4}>
-            <Grow variant={'box-info-line'} className="w-full" placement="se">
-              <Typo tag="strong" variant={'body-lg'}>
-                한화시그니처여성 건강 보험 3.0 무배당
-              </Typo>
-              <Divider variant={'dot'} />
-              <Typo tag="span" variant={'body-lg'}>
-                납입면제 강화형
-              </Typo>
-              <Divider variant={'dot'} />
-              <Typo tag="span" variant={'body-lg'}>
-                기본형
-              </Typo>
+            <Grow variant={'box-info-line'} className="w-full" placement="bwc">
+              <Gcol placement='ss'>
+                <Grow>
+                  <Typo tag="strong" variant={'body-lg'}>
+                    한화 시그니처 여성간편건강보험4.0 2604
+                  </Typo>
+                  <Divider variant={'dot'} className='w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full'/>
+                  <Typo tag="span" variant={'body-lg'} color={'gray'}>
+                    납입면제 미운영형, 납입 후 50%해약환급금지급형, 3N5간편고지형
+                  </Typo>
+                </Grow>
+                <Grow>
+                  <Divider variant={'dot'} className='w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full'/>
+                  <Typo tag="span" variant={'body-lg'} color={'gray'}>
+                    9형(3.10.5간편고지형(고혈압및당뇨추가고지))(올케어플랜)(6~9형)(15-80세)
+                  </Typo>
+                  <Divider variant={'dot'} className='w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full'/>
+                  <Typo tag="span" variant={'body-lg'} color={'gray'}>
+                    고지유형
+                  </Typo>
+                </Grow>
+              </Gcol>
+              <Grow>
+                <Typo tag="strong" className='w-[6rem]' variant={'body-lg'} color={'blueGray'}>설계번호</Typo>
+                <Input aria-label="" width={'15rem'} value={'LA260209313558'} />
+                -
+                <Input aria-label="" width={'3rem'} value={'1'} />
+              </Grow>
             </Grow>
-            <Grow className="grid w-full grid-cols-4 gap-2">
+          </Gcol>
+          
+          <Grow placement='ss' gap={0}>
+            <Gcol className="w-[6.4rem]" gap={0}>
               {tabs.map((tab) => {
                 const isActive = active === tab.value;
                 return (
@@ -100,38 +120,35 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
                     key={tab.value}
                     variant="outlined"
                     color="gray-light"
-                    className={`w-full! h-[5.2rem]! rounded-[1rem]! px-[1.2rem]! ${
+                    className={`w-full! -mr-[0.06rem] z-[99] h-[10.8rem]! rounded-[1rem] rounded-tr-[0] rounded-br-[0] border-r border-r-[transparent] ${
                       isActive
-                        ? 'border-[0.2rem] border-[#FF5C2E] shadow-[0_0.2rem_2rem_rgba(255,92,46,0.20)]'
-                        : 'shadow-[0_0.2rem_0.4rem_rgba(0,0,0,0.10)]'
+                        ? 'w-full! shadow-[inset_0.8rem_0_0_0_#FF5C2E,0_0.2rem_0_0_#00000010] border-l-0 pl-[1rem] pl-[1.6rem]'
+                        : 'w-[5.4rem]! h-[10.8rem] ml-[1rem]! bg-[#F4F4F4] '
                     }`}
                     onClick={() => setActive(tab.value)}
                   >
-                    <Grow placement="bwc" className="w-full">
-                      <Grow>
-                        {getTabIcon(tab.value)}
-                        <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-500">
-                          {tab.label}
-                        </Typo>
-                      </Grow>
+                    <Gcol>
                       {getStateIcon(tab.state)}
-                    </Grow>
+                      <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-500">
+                        {tab.label}
+                      </Typo>
+                    </Gcol>
                   </Button>
                 );
               })}
-            </Grow>
-          </Gcol>
-          <Gcol className="w-full min-h-0 overflow-y-auto" placement="ss">
-            {active === 'common' ? (
-              <Ltpz00501 />
-            ) : active === 'accum' ? (
-              <Ltpz00502 />
-            ) : active === 'job' ? (
-              <Ltpz00503 />
-            ) : (
-              <Ltpz00504 />
-            )}
-          </Gcol>
+            </Gcol>
+            <Gcol className="w-full max-h-[56.5rem] h-[56.5rem] overflow-y-auto rounded-tr-[1rem] rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc] p-[1rem]" placement="ss">
+              {active === 'common' ? (
+                <Ltpz00501 />
+              ) : active === 'accum' ? (
+                <Ltpz00502 />
+              ) : active === 'job' ? (
+                <Ltpz00503 />
+              ) : (
+                <Ltpz00504 />
+              )}
+            </Gcol>
+          </Grow>
         </DialogSection>
 
         <DialogFooter>
@@ -139,6 +156,9 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
             <Grow>
               {active === 'common' ? (
                 <>
+                  <Button variant={'contained'} color={'gray'} size={'xl'}>
+                    재조회
+                  </Button>
                   <Button variant={'contained'} size={'xl'}>
                     저장
                   </Button>

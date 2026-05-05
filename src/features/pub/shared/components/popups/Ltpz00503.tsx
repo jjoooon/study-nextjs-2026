@@ -182,7 +182,7 @@ const Ltpz00503 = () => {
         <FormTable caption="고객정보 테이블" cols={['w-[12rem]', 'flex-1', 'w-[14.9rem]', 'flex-1']}>
           <FormRow>
             <FormCell title={'고객명'}>김한화</FormCell>
-            <FormCell title={'직업정보(현재 설계기준)'}>2급/제품 및 광고영업원</FormCell>
+            <FormCell title={<>직업정보<b className='text-[#E43939]'>(현재 설계)</b></>}>2급/제품 및 광고영업원</FormCell>
           </FormRow>
         </FormTable>
         {/* M2. 수정 */}

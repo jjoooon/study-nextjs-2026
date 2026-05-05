@@ -1,6 +1,8 @@
 'use client';
 
+import { BulletItem } from '@/shared/components/common/BulletList';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { Badge } from '@/shared/components/uiux/Badge';
 import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import { Input } from '@/shared/components/uiux/Input';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
@@ -34,7 +36,7 @@ const Ltpz037 = () => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Typo variant="body-lg" weight={'bold'}>
+          <Typo variant="body-lg">
             정확한 알릴사항 자동고지를 위해 동의 문자동의(LMS)로 발송합니다.
           </Typo>
           <Gcol placement={'ss'} className="w-full">
@@ -55,9 +57,8 @@ const Ltpz037 = () => {
             </Grid>
             <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
-                <Checkbox color="primary">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</Checkbox>
+                <Checkbox color="primary">타인에게 유출되지 않도록 처리하는 것에 동의합니다.</Checkbox>
               </Typo>
-              <Typo variant="body-md">고객 휴대폰번호는 고객등록화면에서 수정해주세요.</Typo>
             </Gcol>
           </Gcol>
 
@@ -67,13 +68,26 @@ const Ltpz037 = () => {
             </Typo>
             <Table variant="default">
               <colgroup>
-                <col style={{ width: '15rem' }} />
+                <col style={{ width: '10rem' }} />
                 <col style={{ width: 'auto' }} />
               </colgroup>
               <TableBody>
                 <TableRow>
                   <TableHead className="text-left">고객명</TableHead>
-                  <TableCell></TableCell>
+                  <TableCell>
+                    <Grow placement='bwc'>
+                      <Grow>
+                        <Input width={62} value={'김한화'} readOnly />
+                        <Input width={116} value={'900110-1******'} readOnly />
+                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                          <SearchIcon color={'var(--color-primary-50)'} />
+                        </Button>
+                      </Grow>
+                       {/* 질병동의 여부 플래그 따라서 Y|N */}
+                      {/* <Badge color="red" size="md" variant="contained">FP질병제공동의 N</Badge> */}
+                      <Badge color="green" size="md" variant="contained">FP질병제공동의 Y</Badge>
+                    </Grow>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableHead className="text-left">휴대폰번호</TableHead>
@@ -87,13 +101,10 @@ const Ltpz037 = () => {
             </Table>
           </Gcol>
 
-          <Gcol className="w-full" placement="ss" variant="box-info">
-            <Typo icon="info" variant="body-sm">
-              고지 상병별 필요한 심사정보가 있는 경우 추가질문을 운영중이며,<br></br>
-              &quot;이상소견없음&quot;, &quot;완치됨&quot; 등의 내용은 &quot;완치&quot;로 고지하시면 심사에 반영됩니다.
-              <br />
-            </Typo>
-          </Gcol>
+          <Grow className="w-full items-start" placement="bwc" variant="box-info">
+            <BulletItem className='w-full' type="dotBig">최근 동의이력</BulletItem>
+            <Typo className='w-full text-right text-[#006FF2]' weight={'bold'} variant="body-sm">2026-03-19 10:00:00</Typo>
+          </Grow>
         </DialogSection>
 
         <DialogFooter>
