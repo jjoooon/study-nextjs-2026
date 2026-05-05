@@ -200,7 +200,7 @@ const Ltpz076 = () => {
               적용대상관리 및 조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ017_01)
+              (LTPZ076)
             </Typo>
           </DialogTitle>
         </DialogHeader>
