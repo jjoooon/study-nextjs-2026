@@ -1,11 +1,16 @@
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -18,14 +23,9 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
-import { ResetIcon, SearchIcon } from '@icons'; 
-import { Checkbox } from '@uiux/Checkbox';
+
 type DummyDataType = {
   id: number;
   isCheck: boolean;
@@ -161,8 +161,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-
-export const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -240,10 +239,9 @@ export const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="default">
+                  <Checkbox color="primary" onCheckedChange={() => {}}>
                     새창으로
                   </Checkbox>
-
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -251,7 +249,14 @@ export const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
               <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                 조회
               </Button>
-              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+              <Button
+                color={'gray'}
+                only={'icon'}
+                size={'lg'}
+                variant={'outlined'}
+                onClick={() => {}}
+                aria-label="새로고침"
+              >
                 <ResetIcon />
               </Button>
             </Grow>
@@ -305,3 +310,5 @@ export const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
     </Dialog>
   );
 };
+
+export default Ltpz079;

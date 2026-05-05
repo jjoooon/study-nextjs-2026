@@ -157,8 +157,6 @@ const Ltpz00503 = () => {
     },
   ];
 
-  // 직업
-  const [jobRowData] = React.useState<JobDataType[]>(JobDummyData);
   const pageSize = 5;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: JobDummyData,
@@ -182,43 +180,52 @@ const Ltpz00503 = () => {
         <FormTable caption="고객정보 테이블" cols={['w-[12rem]', 'flex-1', 'w-[14.9rem]', 'flex-1']}>
           <FormRow>
             <FormCell title={'고객명'}>김한화</FormCell>
-            <FormCell title={<>직업정보<b className='text-[#E43939]'>(현재 설계)</b></>}>2급/제품 및 광고영업원</FormCell>
+            <FormCell
+              title={
+                <>
+                  직업정보<b className="text-[#E43939]">(현재 설계)</b>
+                </>
+              }
+            >
+              2급/제품 및 광고영업원
+            </FormCell>
           </FormRow>
         </FormTable>
         {/* M2. 수정 */}
-        <div className="ag-theme-alpine min-h-[24rem]">
-          <AgGridReact<JobDataType>
-            getRowId={(params) => String(params.data.id)}
-            noRowsOverlayComponent={AgGridEmptyComponent}
-            rowData={jobRowData}
-            columnDefs={jobColumnDefs}
-            defaultColDef={{
-              sortable: true,
-              resizable: true,
-              suppressMovable: true,
-            }}
-            // getRowStyle={(params) => ({
-            //   backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
-            // })}
-            headerHeight={30}
-            groupHeaderHeight={30}
-            rowHeight={30}
-            domLayout="normal"
-            tooltipShowMode="whenTruncated"
-            tooltipShowDelay={0}
-            rowModelType="infinite"
-            cacheBlockSize={pageSize}
-            maxBlocksInCache={2}
-            datasource={dataSource}
+        <Gcol className="gap-1">
+          <div className="ag-theme-alpine ">
+            <AgGridReact<JobDataType>
+              getRowId={(params) => String(params.data.id)}
+              noRowsOverlayComponent={AgGridEmptyComponent}
+              columnDefs={jobColumnDefs}
+              defaultColDef={{
+                sortable: true,
+                resizable: true,
+                suppressMovable: true,
+              }}
+              // getRowStyle={(params) => ({
+              //   backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
+              // })}
+              headerHeight={30}
+              groupHeaderHeight={30}
+              rowHeight={30}
+              domLayout="autoHeight"
+              tooltipShowMode="whenTruncated"
+              tooltipShowDelay={0}
+              rowModelType="infinite"
+              cacheBlockSize={pageSize}
+              maxBlocksInCache={2}
+              datasource={dataSource}
+            />
+          </div>
+          <TableMore
+            loadedCount={loadedCount}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            onLoadAll={handleLoadAll}
+            onLoadNext={handleLoadNext}
           />
-        </div>
-        <TableMore
-          loadedCount={loadedCount}
-          totalCount={totalCount}
-          pageSize={pageSize}
-          onLoadAll={handleLoadAll}
-          onLoadNext={handleLoadNext}
-        />
+        </Gcol>
 
         <Gcol variant={'box-detail'} placement={'ss'} className="w-full">
           <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>

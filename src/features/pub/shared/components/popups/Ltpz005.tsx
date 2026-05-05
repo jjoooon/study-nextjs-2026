@@ -12,18 +12,18 @@ import {
   DialogSection,
   DialogTitle,
 } from '@/shared/components/uiux/Dialog';
+import { Input } from '@/shared/components/uiux/Input';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { Divider, Gcol, Grow, Typo } from '@atoms';
+import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { AiIcon, CircleCheckIcon, CommonIcon, CumulativeIcon, InfoToastIcon, JobIcon, UwIcon } from '@icons';
+import { AiIcon, CircleCheckIcon, InfoToastIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
 import Ltpz00501 from './Ltpz00501';
 import Ltpz00502 from './Ltpz00502';
 import Ltpz00503 from './Ltpz00503';
 import Ltpz00504 from './Ltpz00504';
-import { Input } from '@/shared/components/uiux/Input';
 
 type CheckTab = {
   name: string;
@@ -52,13 +52,6 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
     setActive(initialActiveTab);
   }, [initialActiveTab, setActive]);
 
-  const getTabIcon = (value: CheckTab['value']) => {
-    if (value === 'common') return <CommonIcon />;
-    if (value === 'accum') return <CumulativeIcon />;
-    if (value === 'job') return <JobIcon />;
-    return <UwIcon />;
-  };
-
   const getStateIcon = (state: CheckTab['state']) => {
     if (state === 'green') return <CircleCheckIcon size={26} />;
     if (state === 'red') return <InfoToastIcon size={26} color={'#E43939'} />;
@@ -78,41 +71,43 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="min-h-0 grid grid-rows-[auto_1fr]">
+        <DialogSection className="grid grid-rows-[auto_1fr] overflow-hidden">
           <Gcol className="w-full" gap={4}>
             <Grow variant={'box-info-line'} className="w-full" placement="bwc">
-              <Gcol placement='ss'>
+              <Gcol placement="ss">
                 <Grow>
                   <Typo tag="strong" variant={'body-lg'}>
                     한화 시그니처 여성간편건강보험4.0 2604
                   </Typo>
-                  <Divider variant={'dot'} className='w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full'/>
+                  <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
                     납입면제 미운영형, 납입 후 50%해약환급금지급형, 3N5간편고지형
                   </Typo>
                 </Grow>
                 <Grow>
-                  <Divider variant={'dot'} className='w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full'/>
+                  <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
                     9형(3.10.5간편고지형(고혈압및당뇨추가고지))(올케어플랜)(6~9형)(15-80세)
                   </Typo>
-                  <Divider variant={'dot'} className='w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full'/>
+                  <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
                     고지유형
                   </Typo>
                 </Grow>
               </Gcol>
               <Grow>
-                <Typo tag="strong" className='w-[6rem]' variant={'body-lg'} color={'blueGray'}>설계번호</Typo>
+                <Typo tag="strong" className="w-[6rem]" variant={'body-lg'} color={'blueGray'}>
+                  설계번호
+                </Typo>
                 <Input aria-label="" width={'15rem'} value={'LA260209313558'} />
                 -
                 <Input aria-label="" width={'3rem'} value={'1'} />
               </Grow>
             </Grow>
           </Gcol>
-          
-          <Grow placement='ss' gap={0}>
-            <Gcol className="w-[6.4rem]" gap={0}>
+
+          <Grid className="w-full grid-cols-[auto_1fr] h-full" gap={0}>
+            <Gcol className="w-[6.4rem] place-self-start" gap={0}>
               {tabs.map((tab) => {
                 const isActive = active === tab.value;
                 return (
@@ -137,7 +132,7 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
                 );
               })}
             </Gcol>
-            <Gcol className="w-full max-h-[56.5rem] h-[56.5rem] overflow-y-auto rounded-tr-[1rem] rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc] p-[1rem]" placement="ss">
+            <div className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-full h-full overflow-x-hidden overflow-y-auto rounded-tr-[1rem] rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]">
               {active === 'common' ? (
                 <Ltpz00501 />
               ) : active === 'accum' ? (
@@ -147,8 +142,8 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
               ) : (
                 <Ltpz00504 />
               )}
-            </Gcol>
-          </Grow>
+            </div>
+          </Grid>
         </DialogSection>
 
         <DialogFooter>
