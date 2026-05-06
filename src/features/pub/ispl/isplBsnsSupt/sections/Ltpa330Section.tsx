@@ -211,9 +211,9 @@ export default function Ltpa330Section() {
             <Grid className="grid-rows-[1fr_auto] gap-1">
               <div className="ag-theme-alpine">
                 <AgGridReact<Ltpa330DummyDataRow>
-                  // noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
                   columnDefs={columnDefs}
+                  rowData={Ltpa330DummyData} 
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
@@ -229,10 +229,10 @@ export default function Ltpa330Section() {
                     });
                   }}
                   rowSelection={{
-                    mode: 'multiRow', // 다중 선택 모드
-                    headerCheckbox: true, // 헤더(전체 선택) 체크박스 표시
-                    checkboxes: true, // 각 행에 체크박스 표시
-                    enableClickSelection: true,
+                    mode: 'multiRow',
+                    headerCheckbox: true,
+                    checkboxes: true,
+                    enableClickSelection: false,
                   }}
                   selectionColumnDef={{
                     width: 30,
@@ -241,7 +241,7 @@ export default function Ltpa330Section() {
                   enableCellSpan={true}
                   domLayout="normal"
                   key={loadedCount}
-                  rowModelType="infinite"
+                  // rowModelType="infinite"
                   cacheBlockSize={pageSize}
                   maxBlocksInCache={2}
                   datasource={dataSource}
