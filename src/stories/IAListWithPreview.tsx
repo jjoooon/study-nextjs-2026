@@ -99,7 +99,16 @@ export function IAListWithPreview() {
   }, [rowsWithPubInfo, showPhaseOnly]);
 
   const totalCount = React.useMemo(() => visibleRows.length, [visibleRows]);
-  const doneCount = React.useMemo(() => visibleRows.filter((row) => row.phase === 'Y').length, [visibleRows]);
+  const doneCount = React.useMemo(() => {
+    return visibleRows.filter((row) => {
+      if (row.phase !== 'Y') {
+        return false;
+      }
+      const info = getPubInfo(row);
+      const modifyDate = info?.수정일 || row.modify;
+      return !modifyDate;
+    }).length;
+  }, [visibleRows]);
   const progressPercent = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
 
   const activeRow = React.useMemo(() => {

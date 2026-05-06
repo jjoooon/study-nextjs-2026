@@ -2,7 +2,6 @@
 
 import { useAsideToggleState } from '@aggrid';
 import { BottomBar } from '@common/BottomBar';
-import { InfoContract } from '@common/InfoContract';
 import { AsideFoot } from '@features/AsideFoot';
 import { PageID } from '@features/PageID';
 import { PageProcess } from '@features/PageProcess';
@@ -14,12 +13,15 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 
+import { Ltpa35003Side } from '../../shared/components/Ltpa35003Side';
+import { Ltpa35004Side } from '../../shared/components/Ltpa35004Side';
+import { Ltpa350Side } from '../../shared/components/Ltpa350Side';
 import type { Ltpz005TabValue } from '../../shared/components/popups/Ltpz005';
 import Ltpz005 from '../../shared/components/popups/Ltpz005';
 import { Ltpa35005 } from '../aplMtt/components/Ltpa35005'; // 05. 추가사항
 import { Ltpa35006 } from '../aplMtt/components/Ltpa35006'; // 06. 수납
 import { Ltpa35001 } from '../crmtt/components/Ltpa35001'; // 01. 가입설계
-
+import { Ltpa35002 } from '../cvrPl/components/Ltpa35002'; // 02. 담보설계
 import { Ltpa35002a } from '../cvrPl/components/Ltpa35002a'; // 02. 담보설계
 import { Ltpa35002b } from '../cvrPl/components/Ltpa35002b'; // 02. 담보설계
 import { Ltpa35002c } from '../cvrPl/components/Ltpa35002c'; // 02. 담보설계
@@ -105,74 +107,7 @@ const data: Ltpa350DataType = {
     },
   },
 };
-const asideInfo = {
-  step1: null,
-  step2: {
-    date: '2024-05-08',
-    polName: '홍길동',
-    insName: '홍길동',
-    insAge: '32',
-    insGender: '남',
-    insGrade: '1급',
-    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-    quoteExpiryDate: '2024-06-30',
-    insuranceAgeDate: '2024-05-08',
-    consentEndDate: '2024-06-30',
-    note: '알릴사항 비대상',
-  },
-  step3: {
-    date: '2024-05-08',
-    polName: '홍길동',
-    insName: '홍길동',
-    insAge: '32',
-    insGender: '남',
-    insGrade: '1급',
-    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-    quoteExpiryDate: '2024-06-30',
-    insuranceAgeDate: '2024-05-08',
-    consentEndDate: '2024-06-30',
-    note: '알릴사항 비대상',
-  },
-  step4: {
-    date: '2024-05-08',
-    polName: '홍길동',
-    insName: '홍길동',
-    insAge: '32',
-    insGender: '남',
-    insGrade: '1급',
-    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-    quoteExpiryDate: '2024-06-30',
-    insuranceAgeDate: '2024-05-08',
-    consentEndDate: '2024-06-30',
-    note: '알릴사항 비대상',
-  },
-  step5: {
-    date: '2024-05-08',
-    polName: '홍길동',
-    insName: '홍길동',
-    insAge: '32',
-    insGender: '남',
-    insGrade: '1급',
-    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-    quoteExpiryDate: '2024-06-30',
-    insuranceAgeDate: '2024-05-08',
-    consentEndDate: '2024-06-30',
-    note: '알릴사항 비대상',
-  },
-  step6: {
-    date: '2024-05-08',
-    polName: '홍길동',
-    insName: '홍길동',
-    insAge: '32',
-    insGender: '남',
-    insGrade: '1급',
-    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-    quoteExpiryDate: '2024-06-30',
-    insuranceAgeDate: '2024-05-08',
-    consentEndDate: '2024-06-30',
-    note: '알릴사항 비대상',
-  },
-};
+
 const asideFoot = {
   step1: {
     insGen: 0,
@@ -263,7 +198,7 @@ export default function Ltpa350Section() {
 
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa35001 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
-    2: renderStep2(),
+    2: <Ltpa35002 />,
     3: <Ltpa35003 simpleMode={simpleMode} />,
     4: <Ltpa35004 />,
     5: <Ltpa35005 />,
@@ -344,19 +279,62 @@ export default function Ltpa350Section() {
             }}
           />
         }
+        // 각단계별정보
+        asideInfo={
+          activeStep === 3 ? (
+            <Ltpa35003Side
+              info={{
+                FP: true,
+                name: '홍길동',
+                consentEndDate: '2024-06-30',
+                noticeType: '1형(일반고지형)',
+                diseaseCount: 6,
+                reviewers: [
+                  ['M40', '척추만곡증'],
+                  ['M40', '척추만곡증'],
+                  ['M40', '척추만곡증'],
+                  ['M40', '척추만곡증'],
+                ],
+                systems: 4,
+              }}
+            />
+          ) : activeStep === 4 ? (
+            <Ltpa35004Side
+              info={{
+                reviewType: '특인심사',
+                reviewStatus: '배정대기',
+                msg: '[심사운용 시간 이후 요청]\n심사 자배정대기 중입니다.',
+                notice:
+                  '3월 질병 심사기준 안내 두줄까지 공지사항제목 노출 3월 질병 심사기준 안내 두줄까지 공지사항제목 노출',
+              }}
+            />
+          ) : activeStep === 1 ? (
+            <Ltpa350Side info={null} />
+          ) : (
+            <Ltpa350Side
+              info={{
+                date: '2024-05-08',
+                polName: '홍길동',
+                insName: '홍길동',
+                insAge: '32',
+                insGender: '남',
+                insGrade: '1급',
+                quoteExpiryDate: '2024-06-30',
+                insuranceAgeDate: '2024-05-08',
+                consentEndDate: '2024-06-30',
+                note: '알릴사항 비대상',
+                docPrint: true,
+                docScan: false,
+                eGuideDiscount: [1230, 39990],
+              }}
+            />
+          )
+        }
         // 바로가기
         asideLinks={
           <>
             <QuickLinks />
           </>
-        }
-        // 심사요청
-        asideInfo={
-          activeStep === 4 ? (
-            <InfoContract data={asideInfo[`step${activeStep}`]} extraContent={true} />
-          ) : (
-            <InfoContract data={asideInfo[`step${activeStep}`]} />
-          )
         }
         asideFoot={<AsideFoot dataTotal={asideFoot[`step${activeStep}`]} viewKey={currentViewKey} />}
         hideAside={hideAside}
