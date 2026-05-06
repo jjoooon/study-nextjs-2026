@@ -1,0 +1,502 @@
+'use client';
+
+import '@/shared/lib/agGridPub';
+import * as React from 'react';
+import type { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useState } from 'react';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { SearchIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogClose,
+  DialogFooterArea,
+} from '@uiux/Dialog';
+
+import { Input } from '@uiux/Input';
+
+type DummyDataType1 = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+};
+
+type DummyDataType2 = {
+  id: number;
+  isCheck: boolean;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+};
+
+const dummyData1: DummyDataType1[] = [
+  {
+    id: 1,
+    isCheck: false,
+    field01: '040',
+    field02: '위, 십이지장',
+    field03: '',
+    field04: '1개월',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    field01: '041',
+    field02: '공장(빈창자), 회장(돌창자), 맹장(충수동기 포함)',
+    field03: '',
+    field04: '2개월',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+  {
+    id: 3,
+    isCheck: true,
+    field01: '042',
+    field02: '소장(공장, 회장), 대장(맹장 포함)',
+    field03: '',
+    field04: '3개월',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+  {
+    id: 4,
+    isCheck: true,
+    field01: '043',
+    field02: '직장',
+    field03: '1년',
+    field04: '',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+];
+
+const dummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    isCheck: false,
+    field01: '040',
+    field02: '담석증(K80)',
+    field03: '2년',
+    field04: '1개월',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    field01: '041',
+    field02: '요로결석증(N20, N21, N23)',
+    field03: '',
+    field04: '12개월',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+  {
+    id: 3,
+    isCheck: true,
+    field01: '042',
+    field02: '골관절증 및 튜마토이드 관절염(M05, M06, M08, M15~M19)',
+    field03: '',
+    field04: '4개월',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+  {
+    id: 4,
+    isCheck: true,
+    field01: '043',
+    field02: '척추질환(M40, M41, M47, M50, M51, M54)',
+    field03: '',
+    field04: '4개월',
+    field05: '',
+    field06: '',
+    field07: '',
+  },
+];
+
+type ReasonCellEditorRef = {
+  getValue: () => string;
+};
+
+const ReasonCellEditor = React.forwardRef<ReasonCellEditorRef, ICellEditorParams<DummyDataType1 | DummyDataType2>>(
+  (props, ref) => {
+    const initialValue = String(props.value ?? '');
+    const [value, setValue] = React.useState<string>(initialValue);
+    const valueRef = React.useRef<string>(initialValue);
+
+    React.useImperativeHandle(
+      ref,
+      () => ({
+        getValue: () => valueRef.current,
+      }),
+      []
+    );
+
+    return (
+      <div className="flex h-full w-full items-center gap-1 px-1">
+        <div className="flex min-w-0 basis-0 flex-1 items-center">
+          <Input
+            aria-label=""
+            width={'100%'}
+            value={value}
+            size="sm"
+            autoFocus
+            onMouseDown={(e) => e.stopPropagation()}
+            onChange={(e) => {
+              const nextValue = e.target.value;
+
+              valueRef.current = nextValue;
+              setValue(nextValue);
+            }}
+          />
+        </div>
+        <div className="flex h-full w-[2.5rem] shrink-0 items-center justify-center">
+          <Button
+            aria-label="검색"
+            variant={'outlined'}
+            only="icon"
+            size={'md'}
+            color={'gray-light'}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
+            <SearchIcon color={'var(--color-primary-50)'} />
+          </Button>
+        </div>
+      </div>
+    );
+  }
+);
+
+ReasonCellEditor.displayName = 'ReasonCellEditor';
+
+const Ltpz061 = () => {
+  const [rowData1] = useState<DummyDataType1[]>(dummyData1);
+  const [rowData2] = useState<DummyDataType2[]>(dummyData2);
+
+  const selectCellRenderer = useCallback(
+    <TData,>(params: ICellRendererParams<TData>) => {
+      const value = params.value == null ? '' : String(params.value);
+      const hasValue = value.trim().length > 0;
+
+      if (!hasValue) {
+        return <div className="h-full w-full" />;
+      }
+
+      return (
+        <div className="flex h-full w-full items-center justify-between gap-1 px-1">
+          <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
+          <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+        </div>
+      );
+    },
+    []
+  );
+
+  const reasonCellRenderer = useCallback(
+    <TData,>(params: ICellRendererParams<TData>) => {
+      const value = params.value == null ? '' : String(params.value);
+
+      return (
+        <div className="flex h-full w-full items-center gap-1 px-1">
+          <div className="flex min-w-0 basis-0 flex-1 items-center justify-start px-2 text-left text-[1.3rem] leading-[2.5rem]">
+            <span className="block min-w-0 truncate">{value}</span>
+          </div>
+          <div className="flex h-full w-[2.5rem] shrink-0 items-center justify-center">
+            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </div>
+        </div>
+      );
+    },
+    []
+  );
+
+  const columnDefs: Array<ColDef<DummyDataType1> | ColGroupDef<DummyDataType1>> = [
+    {
+      headerName: '분류',
+      field: 'field01',
+      width: 50,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '대상이 되는 부위',
+      field: 'field02',
+      wrapText: true,
+      autoHeight: true,
+      width: 200,
+      cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
+      cellRenderer: (params: ICellRendererParams<DummyDataType1>) => {
+        return (
+          <div
+            className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
+            dangerouslySetInnerHTML={{ __html: String(params.data?.field02 ?? '') }}
+          />
+        );
+      },
+    },
+    {
+      headerName: '부담보기간',
+      marryChildren: true,
+      children: [
+        {
+          field: 'field03',
+          width: 130,
+          editable: true,
+          singleClickEdit: false,
+          headerName: '',
+          cellRenderer: selectCellRenderer,
+          cellEditor: 'agSelectCellEditor',
+          cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
+          cellClass: 'text-center flex [&>div>span]:h-auto!',
+          autoHeight: true,
+        },
+        {
+          field: 'field04',
+          width: 130,
+          editable: true,
+          singleClickEdit: false,
+          headerName: '',
+          cellRenderer: selectCellRenderer,
+          cellEditor: 'agSelectCellEditor',
+          cellEditorParams: { values: ['0개월', '1개월', '2개월', '3개월', '4개월', '5개월', '6개월', '7개월', '8개월', '9개월', '10개월', '11개월', '12개월'] },
+          cellClass: 'text-center flex [&>div>span]:h-auto!',
+          autoHeight: true,
+        },
+      ],
+    },
+    {
+      headerName: '부담보사유',
+      field: 'field05',
+      flex: 1,
+      cellClass: 'text-center h-full',
+      editable: true,
+      cellEditor: ReasonCellEditor,
+      cellRenderer: reasonCellRenderer,
+    },
+    {
+      headerName: '수정',
+      field: 'isCheck',
+      width: 60,
+      cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
+      cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
+      editable: true,
+    },
+  ];
+  const columnDefs2: Array<ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>> = [
+    {
+      headerName: '분류',
+      field: 'field01',
+      width: 50,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '대상이 되는 질병',
+      field: 'field02',
+      wrapText: true,
+      autoHeight: true,
+      width: 200,
+      cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
+      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+        return (
+          <div
+            className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
+            dangerouslySetInnerHTML={{ __html: String(params.data?.field02 ?? '') }}
+          />
+        );
+      },
+    },
+    {
+      headerName: '부담보기간',
+      marryChildren: true,
+      children: [
+        {
+          field: 'field03',
+          width: 130,
+          editable: true,
+          singleClickEdit: false,
+          headerName: '',
+          cellRenderer: selectCellRenderer,
+          cellEditor: 'agSelectCellEditor',
+          cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
+          cellClass: 'text-center flex [&>div>span]:h-auto!',
+          autoHeight: true,
+        },
+        {
+          field: 'field04',
+          width: 130,
+          editable: true,
+          singleClickEdit: false,
+          headerName: '',
+          cellRenderer: selectCellRenderer,
+          cellEditor: 'agSelectCellEditor',
+          cellEditorParams: { values: ['0개월', '1개월', '2개월', '3개월', '4개월', '5개월', '6개월', '7개월', '8개월', '9개월', '10개월', '11개월', '12개월'] },
+          cellClass: 'text-center flex [&>div>span]:h-auto! h-[100%]',
+          autoHeight: true,
+        },
+      ],
+    },
+    {
+      headerName: '부담보사유',
+      field: 'field05',
+      flex: 1,
+      cellClass: 'text-center h-full aligns-center',
+      editable: true,
+      cellEditor: ReasonCellEditor,
+      cellRenderer: reasonCellRenderer,
+    },
+    {
+      headerName: '수정',
+      field: 'isCheck',
+      width: 60,
+      cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
+      cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
+      editable: true,
+    },
+  ];
+
+  return (
+    <Dialog open>
+      <DialogContent showCloseButton resizable={true} size="xl">
+        <DialogHeader>
+          <DialogTitle>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              특정부위부담보입력
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ061)
+            </Typo>
+          </DialogTitle>
+        </DialogHeader>
+
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Grow className="w-full" variant="box-round" placement={'ss'}>
+            <FormTable variant="none" cols={['w-1', 'w-auto']}>
+              <FormRow>
+                <FormCell title={'증권번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full">
+                  <Input aria-label="" value={'LA2602093135558'} readOnly variant="info" />
+                  <Input aria-label="" value={'한화 더 건강한 한아름종합보험 2601'} readOnly variant="info" />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+
+          <Grid placement={'ss'} className="w-full gap-6 grid-rows-[auto_1fr]">
+            <Gcol gap={6}>
+              <TableFold variant={'accordion'}>
+                <TableFoldHead title="특정부위" />
+                <TableFoldBody>
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                    <AgGridReact<DummyDataType1>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      columnDefs={columnDefs}
+                      rowData={rowData1}
+                      headerHeight={0}
+                      groupHeaderHeight={32}
+                      singleClickEdit={true}
+                      defaultColDef={{
+                        suppressMovable: true,
+                      }}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: false,
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        headerName: '선택',
+                        width: 50,
+                      }}
+                      domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+              <TableFold variant={'accordion'}>
+                <TableFoldHead title="특정질병" />
+                <TableFoldBody>
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                    <AgGridReact<DummyDataType2>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      columnDefs={columnDefs2}
+                      rowData={rowData2}
+                      headerHeight={0}
+                      groupHeaderHeight={32}
+                      singleClickEdit={true}
+                      defaultColDef={{
+                        suppressMovable: true,
+                      }}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: false,
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        headerName: '선택',
+                        width: 50,
+                      }}
+                      domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+            </Gcol>
+          </Grid>
+        </DialogSection>
+        <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'contained'} size={'xl'}>
+                확인
+              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
+            </Grow>
+          </DialogFooterArea>
+          <DialogBottomInfo />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default Ltpz061;
