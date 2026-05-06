@@ -1,9 +1,5 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { useState } from 'react';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
-import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
 import { BottomBar } from '@common/BottomBar';
 import { InfoContract } from '@common/InfoContract';
@@ -15,6 +11,8 @@ import { QuickLinks } from '@features/QuickLinks';
 import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { useState } from 'react';
+import type { ReactNode } from 'react';
 
 import type { Ltpz005TabValue } from '../../shared/components/popups/Ltpz005';
 import Ltpz005 from '../../shared/components/popups/Ltpz005';
@@ -29,6 +27,8 @@ import { Ltpa35002d } from '../cvrPl/components/Ltpa35002d'; // 02. 담보설계
 import { Ltpa35002e } from '../cvrPl/components/Ltpa35002e'; // 02. 담보설계
 import { Ltpa35003 } from '../ncMtt/components/Ltpa35003'; // 04. 심사요청
 import { Ltpa35004 } from '../udRqRst/components/Ltpa35004'; // 04. 심사요청
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
+import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
@@ -323,7 +323,7 @@ export default function Ltpa350Section() {
               { id: 1, status: '정상', label: '공통', sum: 24 },
               { id: 2, status: '경고', label: '누적', sum: 1 },
               { id: 3, status: '중지', label: '직업', sum: 0 },
-              { id: 4, status: '정상', label: 'UW', sum: 99 },
+              { id: 4, status: '정상', label: '예상UW', sum: 99 },
             ]}
             onItemClick={(item) => {
               const nextActiveTab: Ltpz005TabValue =

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import FileUploader from '@/features/pub/components/popups/Ltpz995';
+import FileUploader from '@/features/pub/shared/components/popups/Ltpz995';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/components/popups/Ltpz995',
+  title: 'app/shared/components/popups/Ltpz995',
   component: FileUploader,
 };
 
