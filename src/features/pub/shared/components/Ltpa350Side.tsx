@@ -2,7 +2,15 @@
 
 import { Gcol, Grow, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import { CalendarIcon, SpinnerBIcon, InputClearIcon, CircleCheckIcon } from '@icons';
+import {
+  CalendarIcon,
+  SpinnerBIcon,
+  InputClearIcon,
+  CircleCheckIcon,
+  AppliedIcon,
+  ApprovedIcon,
+  PaidIcon,
+} from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 
@@ -68,7 +76,7 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
               <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
                 청약완료
               </Typo>
-              <SpinnerBIcon className="text-[var(--color-blue-gray-50)]" />
+              <AppliedIcon className="text-[var(--color-blue-gray-50)]" />
             </Grow>
           </Grow>
         </Grow>
@@ -79,7 +87,7 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
               <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
                 심사완료
               </Typo>
-              <SpinnerBIcon className="text-[var(--color-blue-gray-50)]" />
+              <ApprovedIcon className="text-[var(--color-blue-gray-50)]" />
             </Grow>
           </Grow>
         </Grow>
@@ -90,7 +98,7 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
               <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
                 수납완료
               </Typo>
-              <SpinnerBIcon className="text-[var(--color-blue-gray-50)]" />
+              <PaidIcon className="text-[var(--color-blue-gray-50)]" />
             </Grow>
           </Grow>
         </Grow>
