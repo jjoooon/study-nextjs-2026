@@ -5,6 +5,7 @@ import { TabPager } from '@common/TabPager';
 import { LayoutMain } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { useState } from 'react';
 import { Ltpa35002a } from './Ltpa35002a';
 import { Ltpa35002b } from './Ltpa35002b';
 import { Ltpa35002c } from './Ltpa35002c';
@@ -21,6 +22,11 @@ interface TabDataType {
   error?: boolean;
   info: string[];
 }
+
+interface Ltpa35002Props {
+  onIsWidthExpandedChange?: (isExpanded: boolean) => void;
+}
+
 const TabData: TabDataType[] = [
   {
     id: 1,
@@ -60,24 +66,30 @@ const TabData: TabDataType[] = [
   },
 ];
 
-export function Ltpa35002() {
+export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {
   // =====================
   // 상태 및 참조 관리
   // =====================
+  const [isWidthExpanded, setIsWidthExpanded] = useState(false);
   const tabListData = TabData;
   const stringifiedTabs: TabDataType[] = tabListData.map((item) => ({ ...item, value: String(item.id) }));
   const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
 
+  const handleSetIsWidthExpanded = (value: boolean) => {
+    setIsWidthExpanded(value);
+    onIsWidthExpandedChange?.(value);
+  };
+
   const renderByTabValue = () => {
     switch (TabActive) {
       case '1':
-        return <Ltpa35002a />;
+        return <Ltpa35002a isWidthExpanded={isWidthExpanded} setIsWidthExpanded={handleSetIsWidthExpanded} />;
       case '2':
-        return <Ltpa35002b />;
+        return <Ltpa35002b isWidthExpanded={isWidthExpanded} setIsWidthExpanded={handleSetIsWidthExpanded} />;
       case '3':
         return <Ltpa35002c />;
       case '4':
-        return <Ltpa35002d />;
+        return <Ltpa35002d isWidthExpanded={isWidthExpanded} setIsWidthExpanded={handleSetIsWidthExpanded} />;
       default:
         return null;
     }

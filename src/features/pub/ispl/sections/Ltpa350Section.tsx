@@ -146,19 +146,21 @@ export default function Ltpa350Section() {
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
   const [isTaskStatusPopupOpen, setIsTaskStatusPopupOpen] = useState<boolean>(false);
   const [taskStatusActiveTab, setTaskStatusActiveTab] = useState<Ltpz005TabValue>('common');
+  const [isWidthExpanded, setIsWidthExpanded] = useState<boolean>(false);
   const defaultStep = data.process.state.active;
   const { activeStep, setActiveStep } = useStepFromQuery<Ltpa350ProcessStep>({
     defaultStep,
     isValidStep: isPageProcessStep,
   });
-  const { hideAside } = useAsideToggleState();
+  const { hideAside: asideToggleState } = useAsideToggleState();
+  const hideAside = isWidthExpanded ? true : asideToggleState;
 
   // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
   const [currentViewKey, setCurrentViewKey] = useState<ViewKey>('view1');
 
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa35001 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
-    2: <Ltpa35002 />,
+    2: <Ltpa35002 onIsWidthExpandedChange={setIsWidthExpanded} />,
     3: <Ltpa35003 simpleMode={simpleMode} />,
     4: <Ltpa35004 />,
     5: <Ltpa35005 />,
