@@ -1,5 +1,6 @@
 'use client';
 
+import { useAsideToggleState } from '@aggrid';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { TabPager } from '@common/TabPager';
 import { LayoutMain } from '@layout/BaseLayout';
@@ -7,7 +8,6 @@ import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { Ltpa35002a } from './Ltpa35002a';
 import { useTabs } from '@/shared/hooks/useTabs';
-
 import '@/shared/lib/agGridPub';
 
 interface TabDataType {
@@ -66,6 +66,7 @@ export function Ltpa35002() {
   const stringifiedTabs: TabDataType[] = tabListData.map((item) => ({ ...item, value: String(item.id) }));
   const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
   const activeTab = Tabs.find((tab) => tab.value === TabActive);
+  const { hideAside, isWidthExpanded, setIsWidthExpanded } = useAsideToggleState();
 
   const renderByTabValue = () => {
     switch (TabActive) {
