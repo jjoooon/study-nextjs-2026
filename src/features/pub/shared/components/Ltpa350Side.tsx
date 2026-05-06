@@ -50,6 +50,50 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
             </Grow>
           </Grow>
         </Grow>
+        <Grow gap={2} placement={'bwc'}>
+          <Grow gap={1.5} placement={'bwc'} className="overflow-hidden px-1">
+            <Typo variant={'heading-md'}>계약정보</Typo>
+            <Grow className="gap-[0.2rem]" placement={'cc'}>
+              <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
+                간편설계
+              </Typo>
+              <SpinnerBIcon className="text-[var(--color-blue-gray-50)]" />
+            </Grow>
+          </Grow>
+        </Grow>
+        <Grow gap={2} placement={'bwc'}>
+          <Grow gap={1.5} placement={'bwc'} className="overflow-hidden px-1">
+            <Typo variant={'heading-md'}>계약정보</Typo>
+            <Grow className="gap-[0.2rem]" placement={'cc'}>
+              <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
+                청약완료
+              </Typo>
+              <SpinnerBIcon className="text-[var(--color-blue-gray-50)]" />
+            </Grow>
+          </Grow>
+        </Grow>
+        <Grow gap={2} placement={'bwc'}>
+          <Grow gap={1.5} placement={'bwc'} className="overflow-hidden px-1">
+            <Typo variant={'heading-md'}>계약정보</Typo>
+            <Grow className="gap-[0.2rem]" placement={'cc'}>
+              <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
+                심사완료
+              </Typo>
+              <SpinnerBIcon className="text-[var(--color-blue-gray-50)]" />
+            </Grow>
+          </Grow>
+        </Grow>
+        <Grow gap={2} placement={'bwc'}>
+          <Grow gap={1.5} placement={'bwc'} className="overflow-hidden px-1">
+            <Typo variant={'heading-md'}>계약정보</Typo>
+            <Grow className="gap-[0.2rem]" placement={'cc'}>
+              <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
+                수납완료
+              </Typo>
+              <SpinnerBIcon className="text-[var(--color-blue-gray-50)]" />
+            </Grow>
+          </Grow>
+        </Grow>
         <Gcol variant={'box-line'} className="w-full bg-[var(--color-blue-gray-10)]" placement={'ss'}>
           <Typo variant={'body-sm'} className="text-[var(--color-text-subtle)]">
             등록된 계약정보가 없습니다.
