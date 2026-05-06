@@ -159,38 +159,33 @@ const Ltpz060 = () => {
             </FormTable>
           </Grow>
 
-          <Grid placement={'ss'} className="w-full gap-6 grid-rows-[auto_1fr_auto]">
+          <Grid placement={'ss'} className="w-full gap-6 grid-rows-[1fr_auto]">
             <Gcol gap={6}>
-              <TableFold variant={'accordion'}>
-                <TableFoldHead title="특정부위" />
-                <TableFoldBody>
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      columnDefs={columnDefs}
-                      rowData={rowData}
-                      singleClickEdit={true}
-                      defaultColDef={{
-                        suppressMovable: true,
-                      }}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: false,
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 50,
-                      }}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                    />
-                  </div>
-                </TableFoldBody>
-              </TableFold>
+              <div className="ag-theme-alpine min-h-[18.4rem]">
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  columnDefs={columnDefs}
+                  rowData={rowData}
+                  singleClickEdit={true}
+                  defaultColDef={{
+                    suppressMovable: true,
+                  }}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 50,
+                  }}
+                  domLayout="normal"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                />
+              </div>
               <TableFold variant={'default'}>
                 <TableFoldHead title="계약기본사항"></TableFoldHead>
                 <TableFoldBody>
