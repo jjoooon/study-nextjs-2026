@@ -1,10 +1,10 @@
 'use client';
 
+import * as React from 'react';
 import { Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import {
   Dialog,
   DialogContent,
@@ -16,8 +16,15 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import '@/shared/lib/agGridPub';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 
 export const Ltpz101 = () => {
+  const [withdrawReason, setWithdrawReason] = React.useState<'resident-rdo' | 'customer-rdo' | undefined>(undefined);
+  const handleWithdrawReasonChange = React.useCallback((value: string) => {
+    if (value === 'resident-rdo' || value === 'customer-rdo') {
+      setWithdrawReason(value);
+    }
+  }, []);
 
   return (
     <Dialog open>
@@ -41,26 +48,25 @@ export const Ltpz101 = () => {
               cols={['w-[18rem]', 'flex-1']}
             >
               <FormRow>
-                <FormCell title={
-                  <div className="flex items-center gap-2">
-                    <RadioGroup>
+                <FormCell
+                  title={
+                    <RadioGroup value={withdrawReason} onValueChange={handleWithdrawReasonChange}>
                       <RadioGroupItem value="resident-rdo" id="resident-rdo" />
+                      <span>주민등록번호 오입력</span>
                     </RadioGroup>
-                    <span>주민등록번호 오입력</span>
-                  </div>
-                }>
-                </FormCell>
+                  }
+                />
               </FormRow>
               <FormRow>
-                <FormCell title={
-                  <div className="flex items-center gap-2">
-                    <RadioGroup>
+                <FormCell
+                  title={
+                    <RadioGroup value={withdrawReason} onValueChange={handleWithdrawReasonChange}>
                       <RadioGroupItem value="customer-rdo" id="customer-rdo" />
+                      <span>고객요청(사유작성)</span>
                     </RadioGroup>
-                    <span>고객요청(사유작성)</span>
-                  </div>
-                }>
-                  <Input width="full" value="" />
+                  }
+                >
+                  <Input width="full" />
                 </FormCell>
               </FormRow>
             </FormTable>

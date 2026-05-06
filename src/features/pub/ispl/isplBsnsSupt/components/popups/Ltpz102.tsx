@@ -1,11 +1,10 @@
 'use client';
 
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import {
   Dialog,
   DialogContent,
@@ -29,12 +28,12 @@ export const Ltpz102 = () => {
               철회알림특전송
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ101)
+              (LTPZ102)
             </Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow className="w-full" placement={'bwe'}>
+          <Gcol className="w-full" placement={'bwe'} gap={2}>
             <FormTable
               variant={'default'}
               lineTop
@@ -43,16 +42,21 @@ export const Ltpz102 = () => {
             >
               <FormRow>
                 <FormCell title={'고객명'}>
-                  <Input width="full" value="" />
+                  <Input width="full" value="김한화" readOnly />
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'고객 휴대폰번호'}>
-                  <Input width="full" value="" />
+                  <Input aria-label="고객 휴대폰번호 입력" width="full" placeholder="" />
                 </FormCell>
               </FormRow>
             </FormTable>
-          </Grow>
+            <Gcol className="w-full" placement="ss" variant="box-info">
+              <Typo icon="info"variant="body-sm">
+                철회알림톡 전송을 위한 팝업입니다.
+              </Typo>
+            </Gcol>
+          </Gcol>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>
