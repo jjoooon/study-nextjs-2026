@@ -13,6 +13,15 @@
   background-color: var(--color-gray-5);
 }
 
+.ag-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+}
+
 .ag-root-wrapper {
   border-radius: 0 !important;
   border-left: 0;
@@ -710,4 +719,8 @@
 .ag-header-cell-comp-wrapper .ag-icon {
   width: 0.8rem !important;
   height: 0.8rem !important;
+}
+
+.ag-header-cell-menu-button {
+  display: none !important;
 }
