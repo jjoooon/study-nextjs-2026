@@ -22,11 +22,6 @@ import { Ltpa35005 } from '../aplMtt/components/Ltpa35005'; // 05. 추가사항
 import { Ltpa35006 } from '../aplMtt/components/Ltpa35006'; // 06. 수납
 import { Ltpa35001 } from '../crmtt/components/Ltpa35001'; // 01. 가입설계
 import { Ltpa35002 } from '../cvrPl/components/Ltpa35002'; // 02. 담보설계
-import { Ltpa35002a } from '../cvrPl/components/Ltpa35002a'; // 02. 담보설계
-import { Ltpa35002b } from '../cvrPl/components/Ltpa35002b'; // 02. 담보설계
-import { Ltpa35002c } from '../cvrPl/components/Ltpa35002c'; // 02. 담보설계
-import { Ltpa35002d } from '../cvrPl/components/Ltpa35002d'; // 02. 담보설계
-import { Ltpa35002e } from '../cvrPl/components/Ltpa35002e'; // 02. 담보설계
 import { Ltpa35003 } from '../ncMtt/components/Ltpa35003'; // 04. 심사요청
 import { Ltpa35004 } from '../udRqRst/components/Ltpa35004'; // 04. 심사요청
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
@@ -156,45 +151,10 @@ export default function Ltpa350Section() {
     defaultStep,
     isValidStep: isPageProcessStep,
   });
-  const { hideAside, isWidthExpanded, setIsWidthExpanded } = useAsideToggleState();
+  const { hideAside } = useAsideToggleState();
 
   // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
   const [currentViewKey, setCurrentViewKey] = useState<ViewKey>('view1');
-
-  const renderStep2 = () => {
-    switch (currentViewKey) {
-      case 'view1':
-        return (
-          <Ltpa35002a
-            isWidthExpanded={isWidthExpanded}
-            setIsWidthExpanded={setIsWidthExpanded}
-            // viewKey={currentViewKey}
-          />
-        );
-      case 'view2':
-        return (
-          <Ltpa35002b
-            isWidthExpanded={isWidthExpanded}
-            setIsWidthExpanded={setIsWidthExpanded}
-            // viewKey={currentViewKey}
-          />
-        );
-      case 'view3':
-        return <Ltpa35002c />;
-      case 'view4':
-        return (
-          <Ltpa35002d
-            isWidthExpanded={isWidthExpanded}
-            setIsWidthExpanded={setIsWidthExpanded}
-            // viewKey={currentViewKey}
-          />
-        );
-      case 'view5':
-        return <Ltpa35002e isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />;
-      default:
-        return null;
-    }
-  };
 
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa35001 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가

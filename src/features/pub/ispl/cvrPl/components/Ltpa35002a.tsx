@@ -49,7 +49,6 @@ import {
   uwIconRenderer,
   groupEditableButtonRenderer,
 } from '../hooks/useLtpa350Step2';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 
@@ -797,174 +796,173 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   );
 
   return (
-    <>
+    <Gcol>
       <LayoutMainBody>
-        <LayoutScrollWrap className="grid-rows-[auto_1fr] gap-3">
-          {/* M1. 간격 및 위치 수정 */}
-          <Gcol>
-            <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
-              <Grow gap={1.5} placement={'bwc'}>
-                <Grow gap={2}>
-                  <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
-                    <PaperIcon />
-                    보장패키지
-                  </Button>
-                  <Divider dir="col" />
+        <LayoutScrollWrap
+          className={`${!isHeightExpanded ? 'grid-rows-[auto_auto_1fr]' : 'grid-rows-[auto_1fr]'} gap-0`}
+        >
+          <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
+            <Grow gap={1.5} placement={'bwc'}>
+              <Grow gap={2}>
+                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
+                  <PaperIcon />
+                  보장패키지
+                </Button>
+                <Divider dir="col" />
 
-                  <CheckboxGroup
-                    className="gap-[0.4rem] flex-wrap type-small"
-                    color="primary"
-                    minSelected={0}
-                    size="lg"
-                    variant="button"
-                    width="auto"
-                  >
-                    {[
-                      { label: '사망후유', value: '0' },
-                      { label: '진단비', value: '1' },
-                      { label: '입원/통원', value: '2' },
-                      { label: '수술/치료', value: '3' },
-                      { label: '골절/화상', value: '4' },
-                      { label: '검사/지원', value: '5' },
-                      { label: '운전/비용', value: '6' },
-                      { label: '재물/배상', value: '7' },
-                      { label: '기타', value: '8' },
-                    ].map((category) => (
-                      <CheckboxGroupItem key={category.value} value={category.value}>
-                        {category.label}
-                      </CheckboxGroupItem>
-                    ))}
-                  </CheckboxGroup>
-                  <Divider dir="col" />
+                <CheckboxGroup
+                  className="gap-[0.4rem] flex-wrap type-small"
+                  color="primary"
+                  minSelected={0}
+                  size="lg"
+                  variant="button"
+                  width="auto"
+                >
+                  {[
+                    { label: '사망후유', value: '0' },
+                    { label: '진단비', value: '1' },
+                    { label: '입원/통원', value: '2' },
+                    { label: '수술/치료', value: '3' },
+                    { label: '골절/화상', value: '4' },
+                    { label: '검사/지원', value: '5' },
+                    { label: '운전/비용', value: '6' },
+                    { label: '재물/배상', value: '7' },
+                    { label: '기타', value: '8' },
+                  ].map((category) => (
+                    <CheckboxGroupItem key={category.value} value={category.value}>
+                      {category.label}
+                    </CheckboxGroupItem>
+                  ))}
+                </CheckboxGroup>
+                <Divider dir="col" />
 
-                  <CheckboxGroup
-                    className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
-                    color="primary"
-                    minSelected={0}
-                    size="lg"
-                    variant="button"
-                    width="auto"
-                  >
-                    {[
-                      { label: '갱신', value: '1' },
-                      { label: '비갱신', value: '2' },
-                    ].map((category) => (
-                      <CheckboxGroupItem key={category.value} value={category.value}>
-                        {category.label}
-                      </CheckboxGroupItem>
-                    ))}
-                  </CheckboxGroup>
-                </Grow>
-                <Grow placement={'ec'}>
-                  <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
-                    <ResetIcon color="var(--color-gray-500)" />
-                  </Button>
-                </Grow>
+                <CheckboxGroup
+                  className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
+                  color="primary"
+                  minSelected={0}
+                  size="lg"
+                  variant="button"
+                  width="auto"
+                >
+                  {[
+                    { label: '갱신', value: '1' },
+                    { label: '비갱신', value: '2' },
+                  ].map((category) => (
+                    <CheckboxGroupItem key={category.value} value={category.value}>
+                      {category.label}
+                    </CheckboxGroupItem>
+                  ))}
+                </CheckboxGroup>
               </Grow>
-            </Gcol>
-            <Grow placement={'bwc'} className="gap-1 w-full pb-1">
-              <TextSelectChange
-                items={[
-                  [
-                    { checked: false, label: '100세만기', value: '100세만기' },
-                    { checked: true, label: '30세만기', value: '30세만기' },
-                  ],
-                  [
-                    { checked: false, label: '20년납입', value: '20년납입' },
-                    { checked: true, label: '30년납입', value: '30년납입' },
-                  ],
-                  [
-                    { checked: false, label: '월납', value: '월납' },
-                    { checked: true, label: '연납', value: '연납' },
-                  ],
-                  [
-                    { checked: false, label: '20년 갱신', value: '20년 갱신' },
-                    { checked: true, label: '30년 갱신', value: '30년 갱신' },
-                  ],
-                  [
-                    { checked: false, label: '1형', value: '1형' },
-                    { checked: true, label: '2형', value: '2형' },
-                  ],
-                ]}
-              />
-              <Grow className="gap-2.5">
-                {/* M1. 담보초기화 삭제 */}
-                <Checkbox>플랜기본값</Checkbox>
-                <Grow className="gap-1">
-                  <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={false} required={false}>
-                    {[
-                      { label: '플랜 선택', value: 'planA' },
-                      { label: '올인원플랜(15~89세)', value: 'planB' },
-                      { label: '플1형(355간편고지형)(프리미엄올인원플랜)(1.7189형)(15~80세)', value: 'planC' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.value} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                  <SelectDrop typeMode="custom" size="md" width={160} placeholder="나만의 설계선택">
-                    {/* 여기에 */}
-                    <Gcol className="w-full p-[0.2rem]">
-                      <Button variant="outlined" size="md" className="w-full">
-                        <SaveIcon /> 나만의 설계
-                      </Button>
-
-                      <Accordion type="multiple" className="w-full" defaultValue={['item-1', 'item-2', 'item-3']}>
-                        {planAccordionItems.map((item) => (
-                          <AccordionItem key={item.value} value={item.value}>
-                            <AccordionTrigger className="w-full group flex justify-between items-center text-[1.3rem] font-bold">
-                              {item.trigger}
-                              <ChevronDownIcon
-                                size={14}
-                                color="#777"
-                                className="transition-transform group-data-[state=open]:rotate-0 group-data-[state=closed]:rotate-180"
-                              />
-                            </AccordionTrigger>
-                            <AccordionContent className="px-[0.8rem]">
-                              {item.content.map((text, index) => (
-                                <Typo key={`${item.value}-${index}`} variant="body-md">
-                                  {text}
-                                </Typo>
-                              ))}
-                            </AccordionContent>
-                          </AccordionItem>
-                        ))}
-                      </Accordion>
-                    </Gcol>
-                  </SelectDrop>
-
-                  {/* M1. 토글 시 아이콘 변경 추가 */}
-                  <Button
-                    variant={'outlined'}
-                    color={'gray'}
-                    size={'md'}
-                    only={'icon'}
-                    onClick={() => setIsHeightExpanded(!isHeightExpanded)}
-                  >
-                    {isHeightExpanded ? (
-                      <SizeOffIcon size={16} color="var(--color-secondary-50)" className="rotate-90" />
-                    ) : (
-                      <SizeIcon size={16} color="var(--color-secondary-50)" className="rotate-90" />
-                    )}
-                  </Button>
-                  <Button
-                    variant={'outlined'}
-                    color={'gray'}
-                    size={'md'}
-                    only={'icon'}
-                    onClick={() => setIsWidthExpanded?.(!isWidthExpanded)}
-                  >
-                    {isWidthExpanded ? (
-                      <SizeOffIcon size={16} color="var(--color-secondary-50)" />
-                    ) : (
-                      <SizeIcon size={16} color="var(--color-secondary-50)" />
-                    )}
-                  </Button>
-                  {/* //M1. 토글 시 아이콘 변경 추가 */}
-                </Grow>
+              <Grow placement={'ec'}>
+                <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
+                  <ResetIcon color="var(--color-gray-500)" />
+                </Button>
               </Grow>
             </Grow>
           </Gcol>
+          <Grow placement={'bwc'} className="gap-1 w-full pb-1 mt-3">
+            <TextSelectChange
+              items={[
+                [
+                  { checked: false, label: '100세만기', value: '100세만기' },
+                  { checked: true, label: '30세만기', value: '30세만기' },
+                ],
+                [
+                  { checked: false, label: '20년납입', value: '20년납입' },
+                  { checked: true, label: '30년납입', value: '30년납입' },
+                ],
+                [
+                  { checked: false, label: '월납', value: '월납' },
+                  { checked: true, label: '연납', value: '연납' },
+                ],
+                [
+                  { checked: false, label: '20년 갱신', value: '20년 갱신' },
+                  { checked: true, label: '30년 갱신', value: '30년 갱신' },
+                ],
+                [
+                  { checked: false, label: '1형', value: '1형' },
+                  { checked: true, label: '2형', value: '2형' },
+                ],
+              ]}
+            />
+            <Grow className="gap-2.5">
+              {/* M1. 담보초기화 삭제 */}
+              <Checkbox>플랜기본값</Checkbox>
+              <Grow className="gap-1">
+                <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={false} required={false}>
+                  {[
+                    { label: '플랜 선택', value: 'planA' },
+                    { label: '올인원플랜(15~89세)', value: 'planB' },
+                    { label: '플1형(355간편고지형)(프리미엄올인원플랜)(1.7189형)(15~80세)', value: 'planC' },
+                  ].map((option) => (
+                    <NativeSelectOption key={option.value} value={option.value}>
+                      {option.label}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+                <SelectDrop typeMode="custom" size="md" width={160} placeholder="나만의 설계선택">
+                  {/* 여기에 */}
+                  <Gcol className="w-full p-[0.2rem]">
+                    <Button variant="outlined" size="md" className="w-full">
+                      <SaveIcon /> 나만의 설계
+                    </Button>
+
+                    <Accordion type="multiple" className="w-full" defaultValue={['item-1', 'item-2', 'item-3']}>
+                      {planAccordionItems.map((item) => (
+                        <AccordionItem key={item.value} value={item.value}>
+                          <AccordionTrigger className="w-full group flex justify-between items-center text-[1.3rem] font-bold">
+                            {item.trigger}
+                            <ChevronDownIcon
+                              size={14}
+                              color="#777"
+                              className="transition-transform group-data-[state=open]:rotate-0 group-data-[state=closed]:rotate-180"
+                            />
+                          </AccordionTrigger>
+                          <AccordionContent className="px-[0.8rem]">
+                            {item.content.map((text, index) => (
+                              <Typo key={`${item.value}-${index}`} variant="body-md">
+                                {text}
+                              </Typo>
+                            ))}
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </Gcol>
+                </SelectDrop>
+
+                {/* M1. 토글 시 아이콘 변경 추가 */}
+                <Button
+                  variant={'outlined'}
+                  color={'gray'}
+                  size={'md'}
+                  only={'icon'}
+                  onClick={() => setIsHeightExpanded(!isHeightExpanded)}
+                >
+                  {isHeightExpanded ? (
+                    <SizeOffIcon size={16} color="var(--color-secondary-50)" className="rotate-90" />
+                  ) : (
+                    <SizeIcon size={16} color="var(--color-secondary-50)" className="rotate-90" />
+                  )}
+                </Button>
+                <Button
+                  variant={'outlined'}
+                  color={'gray'}
+                  size={'md'}
+                  only={'icon'}
+                  onClick={() => setIsWidthExpanded?.(!isWidthExpanded)}
+                >
+                  {isWidthExpanded ? (
+                    <SizeOffIcon size={16} color="var(--color-secondary-50)" />
+                  ) : (
+                    <SizeIcon size={16} color="var(--color-secondary-50)" />
+                  )}
+                </Button>
+                {/* //M1. 토글 시 아이콘 변경 추가 */}
+              </Grow>
+            </Grow>
+          </Grow>
           <LayoutScrollItem>
             <div
               className={`tooltip-hidden-toggle ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
@@ -1172,6 +1170,6 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           </MainBottomItem>
         </MainBottom>
       </LayoutMainFoot>
-    </>
+    </Gcol>
   );
 }
