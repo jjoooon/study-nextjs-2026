@@ -21,7 +21,7 @@ import Ltpz005 from '../../shared/components/popups/Ltpz005';
 import { Ltpa35005 } from '../aplMtt/components/Ltpa35005'; // 05. 추가사항
 import { Ltpa35006 } from '../aplMtt/components/Ltpa35006'; // 06. 수납
 import { Ltpa35001 } from '../crmtt/components/Ltpa35001'; // 01. 가입설계
-
+import { Ltpa35002 } from '../cvrPl/components/Ltpa35002'; // 02. 담보설계
 import { Ltpa35002a } from '../cvrPl/components/Ltpa35002a'; // 02. 담보설계
 import { Ltpa35002b } from '../cvrPl/components/Ltpa35002b'; // 02. 담보설계
 import { Ltpa35002c } from '../cvrPl/components/Ltpa35002c'; // 02. 담보설계
@@ -198,7 +198,7 @@ export default function Ltpa350Section() {
 
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa35001 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
-    2: renderStep2(),
+    2: <Ltpa35002 />,
     3: <Ltpa35003 simpleMode={simpleMode} />,
     4: <Ltpa35004 />,
     5: <Ltpa35005 />,
