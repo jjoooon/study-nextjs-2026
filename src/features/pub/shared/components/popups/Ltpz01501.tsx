@@ -144,44 +144,20 @@ const Ltpz01501 = () => {
           </FormRow>
         </FormTable>
       </Grow>
-      <Grid className="w-full grid-rows-[auto_auto_1fr]" gap={2}>
-        <Grid className="grid-rows-[1fr_auto] h-full">
-          <Grid className="w-full grid-rows-[auto_auto_1fr] h-full" gap={4}>
-            <FormTable
-              caption="직업 상세"
-              cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}
-              lineTop={false}
-            >
-              <FormRow>
-                <FormCell title={'고객명'}>김한화</FormCell>
-                <FormCell title={'직업정보'}>1급/회사원</FormCell>
-              </FormRow>
-            </FormTable>
-            <Gcol>
-              <Grow className="w-full" gap={1} placement="se">
-                <Typo variant="body-md" color="default">
-                  직업정보(상해급수) 상이 계약
-                </Typo>
-                <Typo variant="body-md" weight={'bold'} color="primary">
-                  99건
-                </Typo>
-              </Grow>
-            </Gcol>
-            <div className="ag-theme-alpine min-h-[18.4rem]">
-              <AgGridReact<DummyDataType>
-                getRowId={(params) => String(params.data.id)}
-                rowData={rowData}
-                columnDefs={columnDefs}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                defaultColDef={{
-                  sortable: true,
-                  resizable: true,
-                }}
-                domLayout="normal"
-              />
-            </div>
-          </Grid>
-        </Grid>
+      <Grid className="w-full grid-rows-[auto_auto_1fr] h-full" gap={4}>
+        <div className="ag-theme-alpine min-h-[18.4rem]">
+          <AgGridReact<DummyDataType>
+            getRowId={(params) => String(params.data.id)}
+            rowData={rowData}
+            columnDefs={columnDefs}
+            noRowsOverlayComponent={AgGridEmptyComponent}
+            defaultColDef={{
+              sortable: true,
+              resizable: true,
+            }}
+            domLayout="normal"
+          />
+        </div>
       </Grid>
     </Gcol>
   );
