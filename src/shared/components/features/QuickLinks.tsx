@@ -1,9 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { AddIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import Link from 'next/link';
 
 const DummyList = [
   { fix: true, name: '설계매뉴얼', link: '/login' },
@@ -18,7 +18,7 @@ const DummyList = [
 export function QuickLinks() {
   return (
     <Gcol className="w-full gap-1">
-      <Grow className="gap-2" placement="bwc">
+      <Grow className="gap-2 px-1 w-full" placement="bwc">
         <Typo variant="heading-md">바로가기</Typo>
         <Button variant="outlined" color="gray" size="sm">
           편집

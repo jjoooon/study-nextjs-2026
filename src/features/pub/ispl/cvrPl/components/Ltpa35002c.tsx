@@ -1,32 +1,28 @@
 'use client';
 
-import type { CellClassParams, ColDef, EditableCallbackParams, CellEditorSelectorResult } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 import {
   numberValueFormatter,
   useDynamicColumnWidths,
   AgGridEmptyComponent,
   AmountWithPopoverCellEditor,
 } from '@aggrid';
-import { Divider, Grid, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
+import { Divider, Grid, Grow, Typo, Gcol } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputHash } from '@common/InputHash';
 import { KeyValueList } from '@common/KeyValueList';
-import { TabPager } from '@common/TabPager';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { ResetIcon, SearchIcon } from '@icons';
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@uiux/Resizable';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import type { CellClassParams, ColDef, EditableCallbackParams, CellEditorSelectorResult } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
 import {
   searchButtonRenderer,
@@ -36,43 +32,6 @@ import {
 } from '../hooks/useLtpa350Step2';
 
 import '@/shared/lib/agGridPub';
-
-interface TabDataType {
-  id: string | number;
-  name?: string;
-  age?: string | number;
-  gender?: string;
-  value: string;
-  error?: boolean;
-  info: string[];
-}
-const TabData: TabDataType[] = [
-  {
-    id: 1,
-    name: '홍길동',
-    age: '1',
-    gender: '여',
-    value: 'tab1',
-    error: true,
-    info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
-  },
-  {
-    id: 2,
-    name: '목적물',
-    value: 'tab2',
-    error: true,
-    info: ['추가정보1', '추가정보2', '추가정보3'],
-  },
-  {
-    id: 3,
-    name: '반짝빛나리반짝빛나리',
-    age: '3',
-    gender: '여',
-    value: 'tab3',
-    error: false,
-    info: ['추가정보1', '추가정보2'],
-  },
-];
 
 interface DummyDataType {
   id: number;
@@ -293,10 +252,6 @@ export function Ltpa35002c() {
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false, reset: false });
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const [testError, setTestError] = useState(false);
-  const tabListData = TabData;
-  const stringifiedTabs: TabDataType[] = tabListData.map((item) => ({ ...item, value: String(item.id) }));
-  const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
   const [rowData] = useState<AgGridRow[]>(DummyData);
   const [rowData2] = useState<AgGridRow2[]>(DummyData2);
   const [coverageName, setCoverageName] = useState('');
@@ -646,317 +601,250 @@ export function Ltpa35002c() {
   );
 
   return (
-    <>
-      <form
-        id="page2-MainForm"
-        className="w-full h-full"
-        onSubmit={(event) => {
-          event.preventDefault();
-          setTestError(!testError);
-        }}
-        noValidate
-      >
-        <LayoutMain className="grid grid-rows-[auto_1fr_auto] gap-[1rem] h-full">
-          <TabPager
-            data={Tabs}
-            active={TabActive}
-            setActive={TabSetActive}
-            visibleCount={5}
-            removable={true}
-            error={testError}
-            errorMsg="입력하세요."
-            getValue={(tab) => String(tab.id)}
-            renderTab={(tab) => (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="flex items-center">
-                    <span className="max-w-20 truncate block">{tab.name}</span>
-                    {tab.age && tab.gender && <span className="block">{`${tab.age}세(${tab.gender})`}</span>}
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent side="top" sideOffset={8}>
-                  <BulletList className="gap-[0.5rem]">
-                    {(tab.info ?? []).map((info: string, index: number) => (
-                      <BulletListItem key={index} type="dot">
-                        {info}
-                      </BulletListItem>
-                    ))}
-                  </BulletList>
-                </TooltipContent>
-              </Tooltip>
-            )}
-            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
-              <Button
-                variant={'none'}
-                key={String(tab.id)}
-                onClick={() => {
-                  setActive(String(tab.id));
-                  const idx = data.findIndex((t) => String(t.id) === String(tab.id));
-                  if (idx !== -1) {
-                    const page = Math.floor(idx / visibleCount);
-                    setVisibleStart(page * visibleCount);
-                  }
-                }}
+    <Gcol>
+      <LayoutMainBody>
+        <ResizablePanelGroup orientation="vertical" className="w-full">
+          <ResizablePanel defaultSize={50}>
+            <Grid className="w-full grid grid-rows-[auto_1fr] h-full" gap={1}>
+              <Grow placement={'bwc'} className="gap-1 w-full pt-2" gap={0}>
+                <Grow className="gap-1.5">
+                  <Typo variant="heading-sm">화재기본담보</Typo>
+                  <Typo variant="body-md">(060400, (1))</Typo>
+                </Grow>
+                <Grow className="gap-2.5">
+                  <Grow className="gap-1">
+                    <NativeSelect aria-label="실손전부보상" width={140} size={'sm'} readOnly={false} required={false}>
+                      {[
+                        { label: '실손전부보상', value: '실손전부보상' },
+                        { label: '실손전부보상2', value: '실손전부보상2' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <Button variant={'outlined'} color={'gray'} size={'md'}>
+                      가입설계도우미 알림톡발송
+                    </Button>
+                  </Grow>
+                </Grow>
+              </Grow>
+
+              <div className="ag-theme-alpine">
+                <AgGridReact<AgGridRow>
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  getRowId={(params) => String(params.data.id)}
+                  singleClickEdit={true}
+                  rowSelection={{
+                    mode: 'multiRow' as const,
+                    checkboxes: true,
+                    headerCheckbox: false,
+                    enableClickSelection: false,
+                    enableSelectionWithoutKeys: true,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 30,
+                    // pinned: 'left',
+                    cellClass: 'text-center p-0!',
+                    cellClassRules: {
+                      'pointer-events-none': (params) => !!params.data?.locked,
+                    },
+                  }}
+                />
+              </div>
+            </Grid>
+          </ResizablePanel>
+          <ResizableHandle />
+          <ResizablePanel defaultSize={50}>
+            <Grid className="w-full grid grid-rows-[auto_1fr] h-full" gap={1}>
+              <Grow placement={'bwc'} className="gap-1 w-full" gap={0}>
+                <Grow className="gap-1.5">
+                  <Typo variant="heading-sm">화재특약담보</Typo>
+                </Grow>
+                <Grow className="gap-2.5">
+                  <Button color="gray" onClick={() => {}} only="default" size="md" variant="contained">
+                    질권설정
+                  </Button>
+                  <TooltipQ>
+                    {`질권설정이란 채권자가 채무자 등이 제공한 재산이나 재산권에 대해 다른 채권자보다 우선변제를 받을 수 있도록 하는 담보권입니다. 목적물 질권 설정 버튼은 청약진행 후 활성화 됩니다.`}
+                  </TooltipQ>
+                </Grow>
+              </Grow>
+              <div
+                className={`tooltip-hidden-toggle ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
               >
-                <span className="flex items-start gap-2 w-full">
-                  <span className="block">{tab.name}</span>
-                  <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                </span>
-              </Button>
-            )}
-          />
-
-          <LayoutMainBody>
-            <ResizablePanelGroup orientation="vertical" className="w-full">
-              <ResizablePanel defaultSize={50}>
-                <Grid className="w-full grid grid-rows-[auto_1fr] h-full" gap={1}>
-                  <Grow placement={'bwc'} className="gap-1 w-full" gap={0}>
-                    <Grow className="gap-1.5">
-                      <Typo variant="heading-sm">화재기본담보</Typo>
-                      <Typo variant="body-md">(060400, (1))</Typo>
-                    </Grow>
-                    <Grow className="gap-2.5">
-                      <Grow className="gap-1">
-                        <NativeSelect
-                          aria-label="실손전부보상"
-                          width={140}
-                          size={'sm'}
-                          readOnly={false}
-                          required={false}
-                        >
-                          {[
-                            { label: '실손전부보상', value: '실손전부보상' },
-                            { label: '실손전부보상2', value: '실손전부보상2' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.value} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                        <Button variant={'outlined'} color={'gray'} size={'md'}>
-                          가입설계도우미 알림톡발송
-                        </Button>
-                      </Grow>
-                    </Grow>
-                  </Grow>
-
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<AgGridRow>
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      getRowId={(params) => String(params.data.id)}
-                      singleClickEdit={true}
-                      rowSelection={{
-                        mode: 'multiRow' as const,
-                        checkboxes: true,
-                        headerCheckbox: false,
-                        enableClickSelection: false,
-                        enableSelectionWithoutKeys: true,
-                      }}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 30,
-                        // pinned: 'left',
-                        cellClass: 'text-center p-0!',
-                        cellClassRules: {
-                          'pointer-events-none': (params) => !!params.data?.locked,
-                        },
-                      }}
+                <AgGridReact<AgGridRow2>
+                  enableCellSpan={true}
+                  rowData={rowData2}
+                  columnDefs={columnDefs2}
+                  getRowId={(params) => String(params.data.id)}
+                  singleClickEdit={true}
+                  // onRowDataUpdated={handleRowDataUpdated}
+                  tooltipShowDelay={0}
+                  tooltipHideDelay={9999}
+                  tooltipMouseTrack={true}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  suppressAnimationFrame={true}
+                  suppressColumnMoveAnimation={true}
+                  suppressRowTransform={true}
+                  animateRows={false}
+                />
+              </div>
+            </Grid>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </LayoutMainBody>
+      <LayoutMainFoot>
+        {/* M1. variant="box" 추가 */}
+        <MainBottom variant="box">
+          <MainBottomItem className="!py-0">
+            <FormTable
+              className="w-full! [&_tr]:justify-between"
+              lineTop={false}
+              variant={'bottom'}
+              cols={[
+                'min-w-[9rem]',
+                'w-[25%]',
+                'min-w-[8rem]',
+                'w-[20%]',
+                'min-w-[8rem]',
+                'w-[20%]',
+                'min-w-[8rem]',
+                'w-[20%]',
+              ]}
+            >
+              <FormRow>
+                <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
+                  <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full">
+                    <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                      예상
+                    </Button>
+                    <Input
+                      type="tel"
+                      commaAmount={true}
+                      value={100000}
+                      size={'md'}
+                      readOnly={true}
+                      className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
                     />
-                  </div>
-                </Grid>
-              </ResizablePanel>
-              <ResizableHandle />
-              <ResizablePanel defaultSize={50}>
-                <Grid className="w-full grid grid-rows-[auto_1fr] h-full" gap={1}>
-                  <Grow placement={'bwc'} className="gap-1 w-full" gap={0}>
-                    <Grow className="gap-1.5">
-                      <Typo variant="heading-sm">화재특약담보</Typo>
-                    </Grow>
-                    <Grow className="gap-2.5">
-                      <Button color="gray" onClick={() => {}} only="default" size="md" variant="contained">
-                        질권설정
-                      </Button>
-                      <TooltipQ>
-                        {`질권설정이란 채권자가 채무자 등이 제공한 재산이나 재산권에 대해 다른 채권자보다 우선변제를 받을 수 있도록 하는 담보권입니다. 목적물 질권 설정 버튼은 청약진행 후 활성화 됩니다.`}
-                      </TooltipQ>
-                    </Grow>
-                  </Grow>
-                  <div
-                    className={`tooltip-hidden-toggle ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
-                  >
-                    <AgGridReact<AgGridRow2>
-                      enableCellSpan={true}
-                      rowData={rowData2}
-                      columnDefs={columnDefs2}
-                      getRowId={(params) => String(params.data.id)}
-                      singleClickEdit={true}
-                      // onRowDataUpdated={handleRowDataUpdated}
-                      tooltipShowDelay={0}
-                      tooltipHideDelay={9999}
-                      tooltipMouseTrack={true}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      suppressAnimationFrame={true}
-                      suppressColumnMoveAnimation={true}
-                      suppressRowTransform={true}
-                      animateRows={false}
-                    />
-                  </div>
-                </Grid>
-              </ResizablePanel>
-            </ResizablePanelGroup>
-          </LayoutMainBody>
-          <LayoutMainFoot>
-            {/* M1. variant="box" 추가 */}
-            <MainBottom variant="box">
-              <MainBottomItem className="!py-0">
-                <FormTable
-                  className="w-full! [&_tr]:justify-between"
-                  lineTop={false}
-                  variant={'bottom'}
-                  cols={[
-                    'min-w-[9rem]',
-                    'w-[25%]',
-                    'min-w-[8rem]',
-                    'w-[20%]',
-                    'min-w-[8rem]',
-                    'w-[20%]',
-                    'min-w-[8rem]',
-                    'w-[20%]',
-                  ]}
-                >
-                  <FormRow>
-                    <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
-                      <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full">
-                        <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                          예상
-                        </Button>
-                        <Input
-                          type="tel"
-                          commaAmount={true}
-                          value={100000}
-                          size={'md'}
-                          readOnly={true}
-                          className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
-                        />
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <>
-                              <Input
-                                type="text"
-                                commaAmount={true}
-                                value={39.4}
-                                size={'md'}
-                                width={44}
-                                className="[&_input]:text-right shrink-0 cursor-pointer"
-                              />
-                              %
-                            </>
-                          </PopoverTrigger>
-                          <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                            <KeyValueList
-                              direction="col"
-                              variant="amount"
-                              data={[
-                                { key: '총압입보험료', value: '000,000,000원' },
-                                { key: '중도환급금', value: '0원' },
-                                { key: '만기환급금', value: '000,000,000원' },
-                              ]}
-                              className="w-full"
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      </Grid>
-                    </FormCell>
-                    <FormCell title="보장보험료">
-                      <Popover>
-                        <PopoverTrigger className="w-full">
-                          <span className="block w-full rounded-[0.4rem] h-[2.5rem] bg-[var(--color-gray-10)] px-2 text-[1.4rem] border border-[0.1rem] border-[var(--color-gray-20)] box-border tracking-[0] leading-[2.5rem] appearance-none truncate text-right cursor-pointer">
-                            {Number(100000).toLocaleString()}
-                          </span>
-                        </PopoverTrigger>
-                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                          <KeyValueList
-                            direction="col"
-                            variant="amount"
-                            data={[{ key: '일시납보험료', value: '000,000,000원' }]}
-                            className="w-full"
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <>
+                          <Input
+                            type="text"
+                            commaAmount={true}
+                            value={39.4}
+                            size={'md'}
+                            width={44}
+                            className="[&_input]:text-right shrink-0 cursor-pointer"
                           />
-                        </PopoverContent>
-                      </Popover>
-                    </FormCell>
-                    <FormCell title="적립보험료">
+                          %
+                        </>
+                      </PopoverTrigger>
+                      <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                        <KeyValueList
+                          direction="col"
+                          variant="amount"
+                          data={[
+                            { key: '총압입보험료', value: '000,000,000원' },
+                            { key: '중도환급금', value: '0원' },
+                            { key: '만기환급금', value: '000,000,000원' },
+                          ]}
+                          className="w-full"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </Grid>
+                </FormCell>
+                <FormCell title="보장보험료">
+                  <Popover>
+                    <PopoverTrigger className="w-full">
+                      <span className="block w-full rounded-[0.4rem] h-[2.5rem] bg-[var(--color-gray-10)] px-2 text-[1.4rem] border border-[0.1rem] border-[var(--color-gray-20)] box-border tracking-[0] leading-[2.5rem] appearance-none truncate text-right cursor-pointer">
+                        {Number(100000).toLocaleString()}
+                      </span>
+                    </PopoverTrigger>
+                    <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                      <KeyValueList
+                        direction="col"
+                        variant="amount"
+                        data={[{ key: '일시납보험료', value: '000,000,000원' }]}
+                        className="w-full"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </FormCell>
+                <FormCell title="적립보험료">
+                  <Input
+                    type="tel"
+                    commaAmount={true}
+                    value={100000}
+                    width={'full'}
+                    size={'md'}
+                    readOnly={true}
+                    className="text-right"
+                  />
+                </FormCell>
+
+                <FormCell title="합계보험료">
+                  <Popover>
+                    <PopoverTrigger asChild>
                       <Input
                         type="tel"
                         commaAmount={true}
-                        value={100000}
+                        value={0}
+                        clear={true}
                         width={'full'}
                         size={'md'}
-                        readOnly={true}
-                        className="text-right"
+                        required={true}
+                        error={false}
+                        errorMsg={'계약자 입력은 필수입니다.'}
+                        errorPs={'tr'}
+                        className="text-right font-bold"
                       />
-                    </FormCell>
-
-                    <FormCell title="합계보험료">
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Input
-                            type="tel"
-                            commaAmount={true}
-                            value={0}
-                            clear={true}
-                            width={'full'}
-                            size={'md'}
-                            required={true}
-                            error={testError}
-                            errorMsg={'계약자 입력은 필수입니다.'}
-                            errorPs={'tr'}
-                            className="text-right font-bold"
-                          />
-                        </PopoverTrigger>
-                        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
-                          <KeyValueList
-                            direction="col"
-                            variant="amount"
-                            data={[
-                              { key: '최소 보험료', value: '000,000,000원' },
-                              { key: '최대 보험료', value: '000,000,000원' },
-                            ]}
-                            className="w-full"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </MainBottomItem>
-              <MainBottomItem className="justify-end">
-                <Grow className="gap-1">
-                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                    담보전환
-                  </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                    상품비교설계
-                  </Button>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                    동일상품복사
-                  </Button>
-                  <Button
-                    type="submit"
-                    form={'page2-MainForm'}
-                    variant={'contained'}
-                    color={'primary'}
-                    size={'xl'}
-                    // onClick={onCalcGuidelineClick}
-                  >
-                    보험료계산(지침)
-                  </Button>
-                </Grow>
-              </MainBottomItem>
-            </MainBottom>
-          </LayoutMainFoot>
-        </LayoutMain>
-      </form>
-    </>
+                    </PopoverTrigger>
+                    <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+                      <KeyValueList
+                        direction="col"
+                        variant="amount"
+                        data={[
+                          { key: '최소 보험료', value: '000,000,000원' },
+                          { key: '최대 보험료', value: '000,000,000원' },
+                        ]}
+                        className="w-full"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </MainBottomItem>
+          <MainBottomItem className="justify-end">
+            <Grow className="gap-1">
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                담보전환
+              </Button>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                상품비교설계
+              </Button>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                동일상품복사
+              </Button>
+              <Button
+                type="submit"
+                form={'page2-MainForm'}
+                variant={'contained'}
+                color={'primary'}
+                size={'xl'}
+                // onClick={onCalcGuidelineClick}
+              >
+                보험료계산(지침)
+              </Button>
+            </Grow>
+          </MainBottomItem>
+        </MainBottom>
+      </LayoutMainFoot>
+    </Gcol>
   );
 }

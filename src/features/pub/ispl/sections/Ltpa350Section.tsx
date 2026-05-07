@@ -1,12 +1,7 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { useState } from 'react';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
-import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
 import { BottomBar } from '@common/BottomBar';
-import { InfoContract } from '@common/InfoContract';
 import { AsideFoot } from '@features/AsideFoot';
 import { PageID } from '@features/PageID';
 import { PageProcess } from '@features/PageProcess';
@@ -15,20 +10,22 @@ import { QuickLinks } from '@features/QuickLinks';
 import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { useState } from 'react';
+import type { ReactNode } from 'react';
 
+import { Ltpa35003Side } from '../../shared/components/Ltpa35003Side';
+import { Ltpa35004Side } from '../../shared/components/Ltpa35004Side';
+import { Ltpa350Side } from '../../shared/components/Ltpa350Side';
 import type { Ltpz005TabValue } from '../../shared/components/popups/Ltpz005';
 import Ltpz005 from '../../shared/components/popups/Ltpz005';
 import { Ltpa35005 } from '../aplMtt/components/Ltpa35005'; // 05. 추가사항
 import { Ltpa35006 } from '../aplMtt/components/Ltpa35006'; // 06. 수납
 import { Ltpa35001 } from '../crmtt/components/Ltpa35001'; // 01. 가입설계
-
-import { Ltpa35002a } from '../cvrPl/components/Ltpa35002a'; // 02. 담보설계
-import { Ltpa35002b } from '../cvrPl/components/Ltpa35002b'; // 02. 담보설계
-import { Ltpa35002c } from '../cvrPl/components/Ltpa35002c'; // 02. 담보설계
-import { Ltpa35002d } from '../cvrPl/components/Ltpa35002d'; // 02. 담보설계
-import { Ltpa35002e } from '../cvrPl/components/Ltpa35002e'; // 02. 담보설계
+import { Ltpa35002 } from '../cvrPl/components/Ltpa35002'; // 02. 담보설계
 import { Ltpa35003 } from '../ncMtt/components/Ltpa35003'; // 04. 심사요청
 import { Ltpa35004 } from '../udRqRst/components/Ltpa35004'; // 04. 심사요청
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
+import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
@@ -105,74 +102,7 @@ const data: Ltpa350DataType = {
     },
   },
 };
-const asideInfo = {
-  step1: null,
-  step2: {
-    date: '2024-05-08',
-    polName: '홍길동',
-    insName: '홍길동',
-    insAge: '32',
-    insGender: '남',
-    insGrade: '1급',
-    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-    quoteExpiryDate: '2024-06-30',
-    insuranceAgeDate: '2024-05-08',
-    consentEndDate: '2024-06-30',
-    note: '알릴사항 비대상',
-  },
-  step3: {
-    date: '2024-05-08',
-    polName: '홍길동',
-    insName: '홍길동',
-    insAge: '32',
-    insGender: '남',
-    insGrade: '1급',
-    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-    quoteExpiryDate: '2024-06-30',
-    insuranceAgeDate: '2024-05-08',
-    consentEndDate: '2024-06-30',
-    note: '알릴사항 비대상',
-  },
-  step4: {
-    date: '2024-05-08',
-    polName: '홍길동',
-    insName: '홍길동',
-    insAge: '32',
-    insGender: '남',
-    insGrade: '1급',
-    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-    quoteExpiryDate: '2024-06-30',
-    insuranceAgeDate: '2024-05-08',
-    consentEndDate: '2024-06-30',
-    note: '알릴사항 비대상',
-  },
-  step5: {
-    date: '2024-05-08',
-    polName: '홍길동',
-    insName: '홍길동',
-    insAge: '32',
-    insGender: '남',
-    insGrade: '1급',
-    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-    quoteExpiryDate: '2024-06-30',
-    insuranceAgeDate: '2024-05-08',
-    consentEndDate: '2024-06-30',
-    note: '알릴사항 비대상',
-  },
-  step6: {
-    date: '2024-05-08',
-    polName: '홍길동',
-    insName: '홍길동',
-    insAge: '32',
-    insGender: '남',
-    insGrade: '1급',
-    info: ['100세만기', '20년납입', '월납', '20년갱신', '1형(일반고지형)'],
-    quoteExpiryDate: '2024-06-30',
-    insuranceAgeDate: '2024-05-08',
-    consentEndDate: '2024-06-30',
-    note: '알릴사항 비대상',
-  },
-};
+
 const asideFoot = {
   step1: {
     insGen: 0,
@@ -216,54 +146,21 @@ export default function Ltpa350Section() {
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
   const [isTaskStatusPopupOpen, setIsTaskStatusPopupOpen] = useState<boolean>(false);
   const [taskStatusActiveTab, setTaskStatusActiveTab] = useState<Ltpz005TabValue>('common');
+  const [isWidthExpanded, setIsWidthExpanded] = useState<boolean>(false);
   const defaultStep = data.process.state.active;
   const { activeStep, setActiveStep } = useStepFromQuery<Ltpa350ProcessStep>({
     defaultStep,
     isValidStep: isPageProcessStep,
   });
-  const { hideAside, isWidthExpanded, setIsWidthExpanded } = useAsideToggleState();
+  const { hideAside: asideToggleState } = useAsideToggleState();
+  const hideAside = isWidthExpanded ? true : asideToggleState;
 
   // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
   const [currentViewKey, setCurrentViewKey] = useState<ViewKey>('view1');
 
-  const renderStep2 = () => {
-    switch (currentViewKey) {
-      case 'view1':
-        return (
-          <Ltpa35002a
-            isWidthExpanded={isWidthExpanded}
-            setIsWidthExpanded={setIsWidthExpanded}
-            // viewKey={currentViewKey}
-          />
-        );
-      case 'view2':
-        return (
-          <Ltpa35002b
-            isWidthExpanded={isWidthExpanded}
-            setIsWidthExpanded={setIsWidthExpanded}
-            // viewKey={currentViewKey}
-          />
-        );
-      case 'view3':
-        return <Ltpa35002c />;
-      case 'view4':
-        return (
-          <Ltpa35002d
-            isWidthExpanded={isWidthExpanded}
-            setIsWidthExpanded={setIsWidthExpanded}
-            // viewKey={currentViewKey}
-          />
-        );
-      case 'view5':
-        return <Ltpa35002e isWidthExpanded={isWidthExpanded} setIsWidthExpanded={setIsWidthExpanded} />;
-      default:
-        return null;
-    }
-  };
-
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa35001 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
-    2: renderStep2(),
+    2: <Ltpa35002 onIsWidthExpandedChange={setIsWidthExpanded} />,
     3: <Ltpa35003 simpleMode={simpleMode} />,
     4: <Ltpa35004 />,
     5: <Ltpa35005 />,
@@ -323,7 +220,7 @@ export default function Ltpa350Section() {
               { id: 1, status: '정상', label: '공통', sum: 24 },
               { id: 2, status: '경고', label: '누적', sum: 1 },
               { id: 3, status: '중지', label: '직업', sum: 0 },
-              { id: 4, status: '정상', label: 'UW', sum: 99 },
+              { id: 4, status: '정상', label: '예상UW', sum: 99 },
             ]}
             onItemClick={(item) => {
               const nextActiveTab: Ltpz005TabValue =
@@ -344,19 +241,62 @@ export default function Ltpa350Section() {
             }}
           />
         }
+        // 각단계별정보
+        asideInfo={
+          activeStep === 3 ? (
+            <Ltpa35003Side
+              info={{
+                FP: true,
+                name: '홍길동',
+                consentEndDate: '2024-06-30',
+                noticeType: '1형(일반고지형)',
+                diseaseCount: 6,
+                reviewers: [
+                  ['M40', '척추만곡증'],
+                  ['M40', '척추만곡증'],
+                  ['M40', '척추만곡증'],
+                  ['M40', '척추만곡증'],
+                ],
+                systems: 4,
+              }}
+            />
+          ) : activeStep === 4 ? (
+            <Ltpa35004Side
+              info={{
+                reviewType: '특인심사',
+                reviewStatus: '배정대기',
+                msg: '[심사운용 시간 이후 요청]\n심사 자배정대기 중입니다.',
+                notice:
+                  '3월 질병 심사기준 안내 두줄까지 공지사항제목 노출 3월 질병 심사기준 안내 두줄까지 공지사항제목 노출',
+              }}
+            />
+          ) : activeStep === 1 ? (
+            <Ltpa350Side info={null} />
+          ) : (
+            <Ltpa350Side
+              info={{
+                date: '2024-05-08',
+                polName: '홍길동',
+                insName: '홍길동',
+                insAge: '32',
+                insGender: '남',
+                insGrade: '1급',
+                quoteExpiryDate: '2024-06-30',
+                insuranceAgeDate: '2024-05-08',
+                consentEndDate: '2024-06-30',
+                note: '알릴사항 비대상',
+                docPrint: true,
+                docScan: false,
+                eGuideDiscount: [1230, 39990],
+              }}
+            />
+          )
+        }
         // 바로가기
         asideLinks={
           <>
             <QuickLinks />
           </>
-        }
-        // 심사요청
-        asideInfo={
-          activeStep === 4 ? (
-            <InfoContract data={asideInfo[`step${activeStep}`]} extraContent={true} />
-          ) : (
-            <InfoContract data={asideInfo[`step${activeStep}`]} />
-          )
         }
         asideFoot={<AsideFoot dataTotal={asideFoot[`step${activeStep}`]} viewKey={currentViewKey} />}
         hideAside={hideAside}

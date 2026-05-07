@@ -1,12 +1,12 @@
 import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import Ltpz997 from '@/features/pub/components/popups/Ltpz997';
+import Ltpz997 from '@/features/pub/shared/components/popups/Ltpz997';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'app/components/popups/Ltpz997',
+  title: 'app/shared/components/popups/Ltpz997',
   component: Ltpz997,
 };
 
