@@ -283,6 +283,76 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
 }
 
 /**
+ * 행 삭제 핸들러 생성기 (공용)
+ * @param setRowData 행 데이터 setState
+ * @param options.idKey 고유 id 필드명
+ */
+export function createDeleteRowHandler<RowType extends Record<string, unknown>, IDType extends string | number>(
+  setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
+  options: {
+    idKey: keyof RowType;
+  }
+) {
+  const { idKey } = options;
+
+  return (rowId: IDType) => {
+    setRowData((prev) => prev.filter((row) => row[idKey] !== rowId));
+  };
+}
+
+/**
+ * 다중 행 삭제 핸들러 생성기 (공용)
+ * @param setRowData 행 데이터 setState
+ * @param options.idKey 고유 id 필드명
+ */
+export function createDeleteRowsHandler<RowType extends Record<string, unknown>, IDType extends string | number>(
+  setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
+  options: {
+    idKey: keyof RowType;
+  }
+) {
+  const { idKey } = options;
+
+  return (rowIds: IDType[]) => {
+    const idSet = new Set(rowIds);
+    setRowData((prev) => prev.filter((row) => !idSet.has(row[idKey] as IDType)));
+  };
+}
+
+/**
+ * 선택된 행 삭제 핸들러 생성기 (공용, gridApiRef 자동 사용)
+ * @param setRowData 행 데이터 setState
+ * @param gridApiRef ag-Grid API ref
+ * @param options.idKey 고유 id 필드명
+ */
+export function createDeleteSelectedRowsHandler<RowType extends Record<string, unknown>>(
+  setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
+  gridApiRef: React.RefObject<GridApi<RowType> | null>,
+  options: {
+    idKey: keyof RowType;
+  }
+) {
+  const { idKey } = options;
+
+  return () => {
+    const selectedNodes = gridApiRef.current?.getSelectedNodes() || [];
+    const selectedIds: unknown[] = selectedNodes
+      .map((node) => node.data?.[idKey])
+      .filter((id) => id !== undefined && id !== null);
+
+    if (selectedIds.length > 0) {
+      const idSet = new Set(selectedIds);
+      setRowData((prev) =>
+        prev.filter((row) => {
+          const rowIdValue = row[idKey] as unknown;
+          return !idSet.has(rowIdValue);
+        })
+      );
+    }
+  };
+}
+
+/**
  * 행 복제 후 바로 아래 삽입 핸들러 생성기 (공용)
  * @param setRowData 행 데이터 setState
  * @param options.idKey 고유 id 필드명
