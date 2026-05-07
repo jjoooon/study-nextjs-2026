@@ -32,7 +32,7 @@ import type {
   SelectionChangedEvent,
   EditableCallbackParams,
   CellEditorSelectorResult,
-} from 'ag-grid-community';
+} from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
@@ -47,7 +47,7 @@ import {
   editableCellClassRules,
   productNameCellRenderer,
   groupEditableButtonRenderer,
-} from '../hooks/useLtpa350Step2';
+} from '../hooks/useLtpa35002';
 
 import '@/shared/lib/agGridPub';
 

@@ -1,8 +1,8 @@
 'use client';
 
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
 
-import { AllCommunityModule, ModuleRegistry, ValidationModule } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry, ValidationModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { memo, useMemo } from 'react';
 import { isProduction } from '@/shared/config/env';
