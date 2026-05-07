@@ -22,6 +22,7 @@ import {
 import '@/shared/lib/agGridPub';
 
 import Ltpz01501 from './Ltpz01501';
+import Ltpz01502 from './Ltpz01502';
 
 type LTPZ015Tab = { value: string; label: string };
 const DATA_TABS: LTPZ015Tab[] = [
@@ -65,7 +66,7 @@ const Ltpz015 = () => {
                   <Ltpz01501 />
                 ) : active === 'tab2' ? (
                   <Grid className="w-full grid-rows-[auto_1fr] h-full">
-                    
+                    <Ltpz01502 />
                   </Grid>
                 ) : active === 'tab3' ? (
                   <Grid className="w-full grid-rows-[auto_1fr] h-full">

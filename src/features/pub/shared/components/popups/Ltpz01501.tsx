@@ -17,6 +17,7 @@ import { Input } from '@uiux/Input';
 import '@/shared/lib/agGridPub';
 import { FileExportIcon, FileImportIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 type DummyDataType = {
   id: number;
@@ -186,7 +187,10 @@ const Ltpz01501 = () => {
     []
   );
 
-  
+  const [form, setFormField] = useFormFields({
+    type01: '',
+    type02: '',
+  });
 
   return (
     <Grid className='w-full grid-rows-[auto_1fr] h-full' gap={3}>
@@ -194,16 +198,16 @@ const Ltpz01501 = () => {
         <FormTable variant={'head'} lineTop={false} caption="">
           <FormRow>
             <FormCell title={'취급자'}>
-              <Input width={120} value={''} required />
+              <Input width={120} value={form.type01} onChange={(e) => setFormField('type01', e.target.value)} required />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
-              <Input width={200} value={''} readOnly />
+              <Input width={200} value={form.type02} readOnly />
             </FormCell>
           </FormRow>
         </FormTable>
       </Grow>
-      <TableFold variant="accordion">
+      <TableFold variant="accordion" className='grid grid-rows-[auto_1fr] h-full'>
         <TableFoldHead title="가입설계 동의(동의서출력)">
           <Grow>
             <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
@@ -231,15 +235,15 @@ const Ltpz01501 = () => {
             </Button>
           </Grow>
         </TableFoldHead>
-        <TableFoldBody>
-          <Gcol gap={2} placement='ss'>
+        <TableFoldBody className='h-full grid grid-rows-[1fr]'>
+          <Grid gap={2} placement='ss' className='w-full grid-rows-[auto_1fr] h-full'>
             <BulletItem
               size="md"
               type="dotBig"
             >
               입력된 정보는 저장되지 않습니다.(고객정보 미입력 출력 가능)
             </BulletItem>
-            <div className="ag-theme-alpine min-h-[18.4rem]">
+            <div className="ag-theme-alpine">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData}
@@ -264,7 +268,7 @@ const Ltpz01501 = () => {
                 domLayout="normal"
               />
             </div>
-          </Gcol>
+          </Grid>
         </TableFoldBody>
       </TableFold>
     </Grid>
