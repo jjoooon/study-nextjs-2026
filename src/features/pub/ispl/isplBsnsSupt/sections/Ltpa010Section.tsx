@@ -542,7 +542,7 @@ export default function Ltpa010Section() {
   );
 
   const pageSize = 2;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa010DummyData,
     pageSize,
   });
@@ -785,9 +785,6 @@ export default function Ltpa010Section() {
                     domLayout="normal"
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
-                    cacheBlockSize={pageSize}
-                    maxBlocksInCache={2}
-                    datasource={dataSource}
                   />
                 </div>
                 <TableMore
