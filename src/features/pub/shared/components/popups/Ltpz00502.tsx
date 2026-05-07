@@ -9,7 +9,7 @@ import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 
 import { TabPager } from '@common/TabPager';
-import { NotificationIcon } from '@icons';
+import { AiIcon, NotificationIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
@@ -329,10 +329,11 @@ const Ltpz00502 = () => {
     'h-[3rem]! rounded-full! border-transparent! bg-[#E5E5E5]! px-[0.8rem]! py-[0.4rem]! text-[1.2rem]! font-bold! leading-normal! tracking-[-0.13rem]! text-[#777777]! data-[state=checked]:border-transparent! data-[state=checked]:bg-[#414141]! data-[state=checked]:text-white! data-[state=checked]:shadow-none!';
 
   return (
+    // M2. 디자인 변경으로 수정
     <Gcol className="w-full" gap={2} placement='ss'>
       <Grow className="w-full bg-[#374151]" variant={'box-round'} placement="sc">
         <NotificationIcon />
-        <Typo tag={'strong'} variant={'body-md'} className="text-white">
+        <Typo tag={'p'} variant={'body-md'} weight={'normal'} className="text-white">
           청약완료불가(당사누적) 및 청약완료불가(업계누적)은 청약완료 전 까지만 해소하면 됩니다.
         </Typo>
       </Grow>
@@ -347,6 +348,12 @@ const Ltpz00502 = () => {
             {`${tab.name} ${tab.age}세(${tab.gender})`}
           </Typo>
         )}
+        renderAfter={
+          <Button variant={'contained'} size={'md'}>
+            <AiIcon color={'#FFF'} color2={'#FFF'}/>
+            AI인수한도해소
+          </Button>
+        }
       >
         <div className="w-full mt-1">
           <RadioGroup

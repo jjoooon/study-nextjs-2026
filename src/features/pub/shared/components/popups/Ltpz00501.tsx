@@ -219,6 +219,18 @@ const Ltpz00501 = () => {
       width: 100,
       spanRows: true,
       cellClass: 'flex! items-center! justify-center!',
+      cellStyle: ({ value }) => {
+        if (value === '인수기준' || value === '인수금지') {
+          return { color: '#E43939' };
+        }
+        if (value === '청약완료불가') {
+          return { color: '#00AA4D' };
+        }
+        if (value === '진단대상') {
+          return { color: '#006FF2' };
+        }
+        return undefined;
+      },
     },
     {
       headerName: '위배내용',
@@ -233,6 +245,7 @@ const Ltpz00501 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
+    // M2. 디자인 변경으로 수정
     <Gcol className="w-full" placement='ss' gap={3}>
       <Gcol gap={3} placement='ss'>
         <Gcol placement='ss'>
@@ -397,7 +410,7 @@ const Ltpz00501 = () => {
           </FormTable>
         </Gcol>
       </Gcol>
-      <Gcol className="w-full flex">
+      <Gcol>
         <TableFold>
           <TableFoldHead title="필수지침"></TableFoldHead>
           <TableFoldBody>

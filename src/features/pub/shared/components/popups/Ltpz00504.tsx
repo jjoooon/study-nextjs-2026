@@ -5,7 +5,7 @@ import { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Divider, Gcol, Grow, Typo } from '@atoms';
+import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { RecommendCard } from '@common/RecommendCard';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -15,10 +15,11 @@ export type Ltpz005TabValue = 'common' | 'accum' | 'job' | 'expected-uw';
 
 type ExpectedUwRecommendItem = {
   id: number;
+  isChecked: boolean;
+  type: string;
   title: string;
-  plan: string;
-  term: string;
-  detail: string;
+  plan: string[];
+  list: string[];
 };
 
 type ExpectedUwAmountRow = {
@@ -130,24 +131,51 @@ const expectedUwExclusionCoverageData: ExpectedUwAmountRow[] = [
 const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   {
     id: 1,
-    title: '한화 시그니처 여성 간편건강보험4.0',
-    plan: '납입면제형 · 기본형 · 3N5간편고지형',
-    term: '20년납/100세만기',
-    detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
+    isChecked: true,
+    type: '인수가능',
+    title: '한화 시그니처 여성 간편건강보험4.0한화 시그니처 여성 간편건강보험4.0',
+    plan: [
+      '2종 · 납입면제 강화형',
+      '납입후 50% 해약환급금지급형',
+    ],
+    list: [
+      '12형(365간편고지형) (올인원랜) (5-12형)',
+      '30년납/100세만기/10년',
+      '건강고지형Ⅱ(6년)',
+      '암/뇌/심장/수술/치료비'
+    ],
   },
   {
     id: 2,
+    isChecked: true,
+    type: '인수가능',
     title: '한화 시그니처 여성 간편건강보험4.0',
-    plan: '납입면제형 · 기본형 · 3N5간편고지형',
-    term: '20년납/100세만기',
-    detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
+    plan: [
+      '2종 · 납입면제 강화형',
+      '납입후 50% 해약환급금지급형',
+    ],
+    list: [
+      '12형(365간편고지형) (올인원랜) (5-12형)',
+      '30년납/100세만기/10년',
+      '건강고지형Ⅱ(6년)',
+      '암/뇌/심장/수술/치료비'
+    ],
   },
   {
     id: 3,
+    isChecked: true,
+    type: '인수가능',
     title: '한화 시그니처 여성 간편건강보험4.0',
-    plan: '납입면제형 · 기본형 · 3N5간편고지형',
-    term: '20년납/100세만기',
-    detail: '9형(355간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1.7.8.9형)(15~89세)...',
+    plan: [
+      '2종 · 납입면제 강화형',
+      '납입후 50% 해약환급금지급형',
+    ],
+    list: [
+      '12형(365간편고지형) (올인원랜) (5-12형)',
+      '30년납/100세만기/10년',
+      '건강고지형Ⅱ(6년)',
+      '암/뇌/심장/수술/치료비'
+    ],
   },
 ];
 
@@ -199,7 +227,8 @@ const Ltpz00504 = () => {
 
   return (
     <>
-      <Gcol className="w-full" gap={5}>
+      {/* M2. 디자인 변경으로 수정 */}
+      <Gcol className="w-full" gap={3}>
         <Grow
           variant={'box-round'}
           className="w-full bg-[#374151] px-[2rem] py-[1.6rem] flex items-center gap-[2.4rem]"
@@ -219,7 +248,7 @@ const Ltpz00504 = () => {
             <Typo tag={'p'} variant={'body-lg'} className="text-white">
               고지
             </Typo>
-            <Typo tag={'strong'} variant={'heading-lg'} className="text-white text-right">
+            <Typo tag={'strong'} variant={'heading-lg'} className="text-[#FF5C2E] text-right">
               고지필요
             </Typo>
           </div>
@@ -290,10 +319,13 @@ const Ltpz00504 = () => {
         <Gcol className="w-full" placement="ss">
           <Grow className="w-full" gap={5}>
             <TableFold>
-              <TableFoldHead title="제한담보" className="justify-start">
-                <Typo variant={'body-lg'} color={'primary'} weight={'bold'}>
-                  15개
-                </Typo>
+              <TableFoldHead title="제한담보" className="w-full gap-1 flex [&>[role='button']]:shrink-0! *:data-[group='row']:w-full!">
+                <Grow placement='bwe' className='w-full'>
+                  <Typo variant={'body-lg'} color={'primary'} weight={'bold'}>
+                    15개
+                  </Typo>
+                  <Button size={'sm'}>설계반영</Button>
+                </Grow>
               </TableFoldHead>
               <TableFoldBody>
                 {/* 제한담보 */}
@@ -398,18 +430,16 @@ const Ltpz00504 = () => {
           <Grow className="w-full">
             <Gcol>
               <Gcol className="w-full">
-                <Grow className="w-full" placement="ec">
-                  <Button color="primary" onClick={() => {}} only="default" size="md" variant="contained">
-                    설계반영
-                  </Button>
-                </Grow>
                 <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+                  <Typo variant={'body-sm'} icon={'info'}>
+                    <b>설계반영 시 유의사항</b>
+                  </Typo>  
                   <BulletList>
-                    <BulletListItem size={'sm'}>
-                      설계반영 클릭시 자동 처리됩니다. 이외의 사항은 심상요청이후 재확인바랍니다.
+                    <BulletListItem size={'sm'} type="dotBig" >
+                      <b>설계반영 클릭시 자동 처리됩니다. 이외의 사항은 심상요청이후 재확인바랍니다.</b>
                     </BulletListItem>
-                    <BulletListItem size={'sm'}>고지필요대상 : 알릴 사항 자동입력</BulletListItem>
-                    <BulletListItem size={'sm'}>제한담보 : 일괄조정 & 연관담보 동시 조정</BulletListItem>
+                    <BulletListItem size={'sm'} type="dotBig">고지필요대상 : 알릴 사항 자동입력</BulletListItem>
+                    <BulletListItem size={'sm'} type="dotBig">제한담보 : 일괄조정 & 연관담보 동시 조정</BulletListItem>
                   </BulletList>
                 </Gcol>
               </Gcol>
@@ -419,19 +449,20 @@ const Ltpz00504 = () => {
         <Gcol>
           <TableFold>
             <TableFoldHead title="대안설계"></TableFoldHead>
-            <TableFoldBody>
-              <Grow className="w-full mb-[1rem]" gap={5}>
+            <TableFoldBody className="w-full">
+              <Grid className="w-full mb-[1rem] grid-cols-3" gap={3}>
                 {expectedUwRecommendData.map((item) => (
                   <RecommendCard
                     key={item.id}
                     onAiReasonClick={() => setAiReasonOpen(true)}
+                    type={item.type}
                     title={item.title}
+                    list={item.list}
                     plan={item.plan}
-                    term={item.term}
-                    detail={item.detail}
+                    variant={'checkbox'}
                   />
                 ))}
-              </Grow>
+              </Grid>
             </TableFoldBody>
           </TableFold>
         </Gcol>
