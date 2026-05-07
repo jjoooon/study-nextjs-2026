@@ -1,6 +1,6 @@
+import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 import { ReactNode, HTMLAttributes, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 
 type BulletType = 'dot' | 'hash' | 'ref' | 'dash' | 'star' | 'dotBig' | 'symbols';
 type BulletSize = 'sm' | 'md' | 'lg' | 'xs';
@@ -133,7 +133,7 @@ export const BulletListItem = ({
         className={cn(
           'flex items-center justify-center shrink-0',
           itemHeight[resolvedSize],
-          bulletStyles[resolvedType],
+          // bulletStyles[resolvedType],
           resolvedType === 'symbols' && '-translate-y-[0.2rem] leading-[1.5]'
         )}
       >
@@ -167,7 +167,6 @@ export const BulletItem = ({
     <div
       className={cn(
         `relative flex justify-start items-start gap-[0.2rem] ${onClick ? 'cursor-pointer' : ''}`,
-        bulletStyles[type],
         itemSize[size],
         itemColor[color],
         className
