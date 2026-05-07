@@ -1,11 +1,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import { Gcol, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { EssentialIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
 import {
   Dialog,
   DialogContent,
@@ -16,10 +16,9 @@ import {
   DialogClose,
   DialogFooterArea,
 } from '@uiux/Dialog';
-import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { Input } from '@uiux/Input';
 
 const Ltpz088 = () => {
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
@@ -54,11 +53,11 @@ const Ltpz088 = () => {
           <FormTable caption={'질권설정내용'} cols={['w-[10rem]', 'w-auto']}>
             <FormRow>
               <FormCell title={'수익자'}>
-                <Input aria-label="" width={120}  value={''} readOnly />
+                <Input aria-label="" width={120} value={''} readOnly />
                 <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                   <SearchIcon color={'var(--color-primary-50)'} />
                 </Button>
-                <Input aria-label="" width={100} value={''} placeholder='___-__-_____' readOnly />
+                <Input aria-label="" width={100} value={''} placeholder="___-__-_____" readOnly />
               </FormCell>
             </FormRow>
           </FormTable>
@@ -68,31 +67,30 @@ const Ltpz088 = () => {
               <b>필수 확인 사항</b>
             </Typo>
             <BulletList color={'info'} size="md">
-              <BulletListItem before="①" type="symbols">
+              <BulletListItem before="1." type="symbols">
                 수익자는 청약서발행 전 필수로 입력되어야 합니다.
               </BulletListItem>
-              <BulletListItem before="②" type="symbols">
-                <Grow placement='ss' gap={0.5}>
-                수익자지정은 당사에 고객등록이 완료된 비영리법안<EssentialIcon className="mt-[0.3rem]" size={6} />만 가능합니다.<br />
-
+              <BulletListItem before="2." type="symbols">
+                <Grow placement="ss" gap={0.5}>
+                  수익자지정은 당사에 고객등록이 완료된 비영리법안
+                  <EssentialIcon className="mt-[0.3rem]" size={6} />만 가능합니다.
+                  <br />
                 </Grow>
                 <BulletList color={'warning'} size="md">
-                  <BulletItem type="symbols" className='object-none' >
-                    <Grow placement='ss' className="ml-[-1.5rem]" gap={0.5}>
-                      <EssentialIcon className="mt-[0.3rem]" size={6} />법인성격코드(사업자번호 중간 2자리)가 82, 83번 인 경우
+                  <BulletItem type="symbols" className="object-none">
+                    <Grow placement="ss" className="ml-[-1.5rem]" gap={0.5}>
+                      <EssentialIcon className="mt-[0.3rem]" size={6} />
+                      법인성격코드(사업자번호 중간 2자리)가 82, 83번 인 경우
                     </Grow>
                   </BulletItem>
                   <BulletListItem type="dash">
                     82 : 비영리법인의 본점 및 지점(법인인격 없는 사단,재단,기타 단체 중 법인으로 보는 단체를 포함)
                   </BulletListItem>
-                  <BulletListItem type="dash">
-                    83 : 국가, 지방자치단체, 지방자치단체조합
-                  </BulletListItem>
+                  <BulletListItem type="dash">83 : 국가, 지방자치단체, 지방자치단체조합</BulletListItem>
                 </BulletList>
               </BulletListItem>
             </BulletList>
           </Gcol>
-
         </DialogSection>
 
         <DialogFooter>
