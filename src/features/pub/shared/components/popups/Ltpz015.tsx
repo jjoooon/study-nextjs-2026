@@ -1,17 +1,13 @@
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
+import { Grow, Typo, Grid } from '@atoms';
+
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
+
 import { TabPager } from '@common/TabPager';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
+
 import {
   Dialog,
   DialogContent,
@@ -22,7 +18,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
@@ -42,7 +37,7 @@ const Ltpz015 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -84,6 +79,16 @@ const Ltpz015 = () => {
 
         <DialogFooter>
           <DialogFooterArea>
+            {active === 'tab1' ? (
+              <Grow>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  문서스캔
+                </Button>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  QR스캔
+                </Button>
+              </Grow>
+            ) : null}
             <Grow>
               <Button variant={'contained'} size={'xl'}>
                 출력하기
