@@ -6,8 +6,8 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import type { ICellEditorParams } from 'ag-grid-community';
 import type {
+  ICellEditorParams,
   CellClickedEvent,
   ValueFormatterParams,
   ICellRendererParams,
@@ -18,9 +18,9 @@ import type {
   CellClassParams,
   IHeaderParams,
   GridApi,
+  GridReadyEvent,
   CellValueChangedEvent,
-} from 'ag-grid-community';
-import type { GridReadyEvent } from 'ag-grid-community';
+} from 'ag-grid-enterprise';
 import type { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
@@ -239,6 +239,46 @@ export function createCellValueChangedHandler<RowType extends Record<string, unk
         return prev;
       });
     }
+  };
+}
+
+/**
+ * 행 추가 핸들러 생성기 (공용)
+ * @param setRowData 행 데이터 setState
+ * @param options.idKey 고유 id 필드명
+ * @param options.getNextId 다음 id 생성 함수
+ * @param options.createRow 신규 행 생성 함수
+ * @param options.insertAt 삽입 위치 (기본값: 'end')
+ * @param options.getInsertIndex 커스텀 삽입 인덱스 계산 함수
+ */
+export function createAddRowHandler<RowType extends Record<string, unknown>, IDType extends string | number>(
+  setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
+  options: {
+    idKey: keyof RowType;
+    getNextId: (rows: RowType[]) => IDType;
+    createRow: (nextId: IDType, rows: RowType[]) => RowType;
+    insertAt?: 'start' | 'end';
+    getInsertIndex?: (rows: RowType[]) => number;
+  }
+) {
+  const { idKey, getNextId, createRow, insertAt = 'end', getInsertIndex } = options;
+
+  return () => {
+    setRowData((prev) => {
+      const nextId = getNextId(prev);
+      const newRow = {
+        ...createRow(nextId, prev),
+        [idKey]: nextId,
+      } as RowType;
+
+      const nextRows = [...prev];
+      const defaultIndex = insertAt === 'start' ? 0 : nextRows.length;
+      const customIndex = getInsertIndex ? getInsertIndex(nextRows) : defaultIndex;
+      const boundedIndex = Math.max(0, Math.min(customIndex, nextRows.length));
+
+      nextRows.splice(boundedIndex, 0, newRow);
+      return nextRows;
+    });
   };
 }
 
