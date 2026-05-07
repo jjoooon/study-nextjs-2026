@@ -138,7 +138,7 @@ const Ltpz087 = () => {
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                 >
                   <Input aria-label="" width={130} value={'LA260112297637'} readOnly />
-                  <Input aria-label="" width={300} value={'한화 BigPlus 재산종합보험 2601'} readOnly />
+                  <Input aria-label="" width={320} value={'한화 BigPlus 재산종합보험 2601'} readOnly />
                 </FormCell>
               </FormRow>
               <FormRow>

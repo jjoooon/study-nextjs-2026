@@ -12,10 +12,8 @@ import {
   createTooltipValueGetter,
 } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import {
   Dialog,
   DialogContent,
@@ -26,7 +24,6 @@ import {
   DialogClose,
   DialogFooterArea,
 } from '@uiux/Dialog';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
   type DummyDataType = {
     id: number;
@@ -40,14 +37,14 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
     {
       id: 1,
       field01: '암(4대유사암제외)진단후특정치료비(진단후10년,연간1회한)(간편)',
-      field02: false,
+      field02: true,
       field03: false,
       filePath: ['folderC'],
     },
     {
       id: 2,
       field01: '특정유사암진단후특정치료비(진단후10년,연간1회한)(간편)',
-      field02: false,
+      field02: true,
       field03: false,
       filePath: ['folderD'],
     },
@@ -55,62 +52,62 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
       id: 3,
       field01: '4대유사암진단비',
       field02: false,
-      field03: false,
+      field03: true,
       filePath: ['folderE'],
     },
     {
       id: 4,
       field01: '통합안진단비',
-      field02: false,
+      field02: true,
       field03: false,
       filePath: ['folderA'],
     },
     {
       id: 5,
       field01: '- 통합암진단비(간암)',
-      field02: false,
+      field02: true,
       field03: false,
       filePath: ['folderA', 'folderA-1'],
     },
     {
       id: 6,
       field01: '- 통합암진단비(폐암)',
-      field02: false,
+      field02: true,
       field03: false,
       filePath: ['folderA', 'folderA-2'],
     },
     {
       id: 7,
       field01: '- 통합암진단비(기관지염)',
-      field02: false,
+      field02: true,
       field03: false,
       filePath: ['folderA', 'folderA-3'],
     },
     {
       id: 8,
       field01: '- 통합암진단비(폐암)',
-      field02: false,
+      field02: true,
       field03: false,
       filePath: ['folderA', 'folderA-4'],
     },
     {
       id: 9,
       field01: '- 통합암진단비(간암)',
-      field02: false,
+      field02: true,
       field03: false,
       filePath: ['folderA', 'folderA-5'],
     },
     {
       id: 10,
       field01: '- 통합암진단비(폐암)',
-      field02: false,
+      field02: true,
       field03: false,
       filePath: ['folderA', 'folderA-6'],
     },
     {
       id: 11,
       field01: '특정유사암진단후특정치료비(진단후10년,연간1회한)(간편)',
-      field02: false,
+      field02: true,
       field03: false,
       filePath: ['folderF'],
     },
@@ -196,14 +193,11 @@ const Ltpz007 = () => {
               }}
             />
           </div>
-          <Gcol variant="box-info" placement="ss">
-            <Typo variant="body-sm" color="primary" icon="info">
-              
-            </Typo>
-            <Typo variant="body-sm" color="primary" icon="info">
+          <BulletList position="col">
+            <BulletListItem className="whitespace-nowrap" type="dot">
               선택한 담보 중 해당 설계 내 전환이 가능한 담보만 표시됩니다.
-            </Typo>
-          </Gcol>
+            </BulletListItem>
+          </BulletList>
         </DialogSection>
 
         <DialogFooter>
