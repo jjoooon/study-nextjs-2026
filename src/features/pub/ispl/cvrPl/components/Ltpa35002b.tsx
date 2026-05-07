@@ -48,7 +48,7 @@ import {
   productNameCellRenderer,
   uwIconRenderer,
   groupEditableButtonRenderer,
-} from '../hooks/useLtpa350Step2';
+} from '../hooks/useLtpa35002';
 
 import '@/shared/lib/agGridPub';
 

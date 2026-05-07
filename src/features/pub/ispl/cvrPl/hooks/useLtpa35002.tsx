@@ -6,7 +6,7 @@ import { Grow, Gcol } from '@atoms';
 import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import type { GridApi } from 'ag-grid-community';
+import type { GridApi } from 'ag-grid-enterprise';
 import {
   ICellRendererParams,
   CellClassParams,
@@ -14,7 +14,7 @@ import {
   SelectionChangedEvent,
   ValueFormatterParams,
   IRowNode,
-} from 'ag-grid-community';
+} from 'ag-grid-enterprise';
 import { useCallback, useMemo } from 'react';
 
 /**
@@ -197,22 +197,11 @@ export function productNameCellRenderer<
   T extends ProductNameCellBase,
   D extends ProductTitleDetail = ProductTitleDetail,
 >(params: IGroupCellRendererParams<T & { titleDetail?: D }> & ICellRendererParams<T & { titleDetail?: D }>) {
-  const { data, api } = params;
+  const { data } = params;
   if (!data) return null;
 
-  // 1. 순번 계산 (중복 행일 경우 원본의 순서를 찾아옴)
-  let displayOrder: string | number = data.num ?? '';
-
-  if (data.isDuplicate) {
-    const allRows: ProductNameCellBase[] = [];
-    api.forEachNode((node) => {
-      if (node.data && !node.data.isDuplicate) allRows.push(node.data as ProductNameCellBase);
-    });
-
-    // 원본 행들 사이에서 displayNo와 일치하는 id를 가진 행의 인덱스 찾기
-    const originIdx = allRows.findIndex((r) => r.id === data.displayNo);
-    displayOrder = originIdx !== -1 ? originIdx + 1 : '';
-  }
+  // 1. 순번 계산 (중복 행은 num 숨김)
+  const displayOrder: string | number = data.isDuplicate ? '' : (data.num ?? '');
 
   // 2. 뱃지 렌더링 헬퍼 함수
   const renderBadges = (badges?: string[]) => {
@@ -240,10 +229,12 @@ export function productNameCellRenderer<
 
   return (
     <Grow className={`h-full ${data.badge ? 'pr-1.5' : 'pr-0'}`} placement="bwc">
-      {displayOrder && (
+      {displayOrder ? (
         <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">
           <span>{displayOrder}</span>
         </Grow>
+      ) : (
+        <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center"></Grow>
       )}
 
       {!data.isDuplicate ? (
