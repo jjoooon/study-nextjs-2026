@@ -1,23 +1,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ColSpanParams, EditableCallbackParams, ICellRendererParams, RowSelectedEvent } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState, useRef } from 'react';
-import {
-  AgGridEmptyComponent,
-  createCellValueChangedHandler,
-  editableSelectCellRenderer,
-  numberValueFormatter,
-} from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Gcol, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
 import {
   Dialog,
   DialogContent,
@@ -28,97 +16,9 @@ import {
   DialogClose,
   DialogFooterArea,
 } from '@uiux/Dialog';
-import React from 'react';
-
-
-type DummyDataType = {
-  id: number;
-  field01: string | number;
-  field02: string | number;
-  field03: string | number;
-  field04: string | number;
-  isSumRow?: boolean;
-};
-
-const dummyData: DummyDataType[] = [
-  {
-    id: 1,
-    field01: '', 
-    field02: '',
-    field03: '',
-    field04: '',
-  },
-  {
-    id: 2,
-    field01: '', 
-    field02: '',
-    field03: '',
-    field04: '',
-  },
-  {
-    id: 3,
-    field01: '', 
-    field02: '',
-    field03: '',
-    field04: '1000000',
-  },
-];
+import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
 const Ltpz088 = () => {
-
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '유형',
-      field: 'field01',
-      flex: 1,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '가입금액(원)',
-      field: 'field02',
-      width: 180,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '타질권금액(원)',
-      field: 'field03',
-      width: 180,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    
-    {
-      headerName: '보험료(만원)',
-      field: 'field04',
-      width: 180,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-  ];
-
-  const [rowData] = useState<DummyDataType[]>(dummyData);
-  const sumRow = React.useMemo(() => {
-    const parse = (v: string | number) => {
-      if (typeof v === 'number') return v;
-      if (!v) return 0;
-      const n = Number(String(v).replace(/,/g, ''));
-      return Number.isFinite(n) ? n : 0;
-    };
-    const total02 = rowData.reduce((s, r) => s + parse(r.field02), 0);
-    const total03 = rowData.reduce((s, r) => s + parse(r.field03), 0);
-    const total04 = rowData.reduce((s, r) => s + parse(r.field04), 0);
-    return [
-      {
-        id: -1,
-        isSumRow: true,
-        field01: '합계',
-        field02: total02,
-        field03: total03,
-        field04: total04,
-      },
-    ];
-  }, [rowData]);
 
   return (
     <Dialog open>
@@ -151,99 +51,47 @@ const Ltpz088 = () => {
             </FormTable>
           </Grow>
 
-          <Grid placement={'ss'} className="w-full gap-3 grid-rows-[auto_1fr]">
-            <TableFold variant={'accordion'}>
-              <TableFoldHead title="질권설정내용" />
-              <TableFoldBody>
-                <FormTable caption={'질권설정내용'} cols={['w-[10rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'질권자'}>
-                      <Input aria-label="" value={''} readOnly />
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                        <SearchIcon color={'var(--color-primary-50)'} />
-                      </Button>
-                      <Input aria-label="" width={150} value={''} readOnly />
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'질권자주소'}>
-                      <Gcol placement='ss'>
-                        <Grow className='w-full'>
-                          <Input aria-label="" width={120} value={''} readOnly />
-                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                            <SearchIcon color={'var(--color-primary-50)'} />
-                          </Button>
-                          <Input aria-label="" width={'full'} value={''} readOnly />
-                        </Grow>
-                        <Input aria-label="" width={'full'} value={''} readOnly />
-                      </Gcol>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'설정기간'}>
-                      <DatePickerInput mode={'range'} onChange={() => {}}  value="" />
-                      <Input aria-label="" width={100} value={''} readOnly />일간
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'질권 설정금액'}>
-                      <Input aria-label="" width={150} value={''} commaAmount readOnly />원
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </TableFoldBody>
-            </TableFold>
+          <FormTable caption={'질권설정내용'} cols={['w-[10rem]', 'w-auto']}>
+            <FormRow>
+              <FormCell title={'수익자'}>
+                <Input aria-label="" value={''} readOnly />
+                <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                  <SearchIcon color={'var(--color-primary-50)'} />
+                </Button>
+                <Input aria-label="" width={150} value={''} readOnly />
+              </FormCell>
+            </FormRow>
+          </FormTable>
 
-            <TableFold variant={'accordion'}>
-              <TableFoldHead title="질권설정금액" />
-              <TableFoldBody className="gap-2">
-                <div className="ag-theme-alpine min-h-[15.4rem]">
-                  <AgGridReact<DummyDataType>
-                    // ref={gridRef}
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    defaultColDef={{
-                      cellClass: 'p-0',
-                      cellStyle: { padding: 0 },
-                    }}
-                    singleClickEdit={true}
-                    domLayout="normal"
-                    // row 합계
-                    getRowStyle={(params) =>
-                      params.node.rowPinned && !params.data?.isSumRow ? { backgroundColor: '#ffffff' } : undefined
-                    }
-                    pinnedBottomRowData={sumRow}
-                  />
-                </div>
-                <FormTable caption={'질권자의 설정 상태'} cols={['w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'입력자'}>
-                      <Input aria-label="" value={''} readOnly />
-                    </FormCell>
-                    <FormCell title={'입력일'}>
-                      <DatePickerInput mode={'single'} onChange={() => {}} value="" readOnly />
-                    </FormCell>
-                    <FormCell title={'질권설정상태'}>
-                      <Input aria-label="" value={''} readOnly />
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </TableFoldBody>
-            </TableFold>
-            
-          </Grid>
+          <Gcol placement={'ss'} variant={'box-info'} className="w-full">
+            <BulletList color={'info'} size="md">
+              <BulletListItem before="①" type="symbols">
+                수익자는 청약서발행 전 필수로 입력되어야 합니다.
+              </BulletListItem>
+              <BulletListItem before="②" type="symbols">
+                수익자지정은 당사에 고객등록이 완료된 비영리법안*만 가능합니다.
+                <BulletList color={'warning'} size="md">
+                  <BulletListItem  type="ref">
+                    법인성격코드(사업자번호 중간 2자리)가 82, 83번 인 경우
+                  </BulletListItem>
+                  <BulletListItem type="dash">
+                    82 : 비영리법인의 본점 및 지점(법인인격 없는 사단,재단,기타 단체 중 법인으로 보는 단체를 포함)
+                  </BulletListItem>
+                  <BulletListItem type="dash">
+                    83 : 국가, 지방자치단체, 지방자치단체조합
+                  </BulletListItem>
+                </BulletList>
+              </BulletListItem>
+            </BulletList>
+          </Gcol>
+
         </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                초기화
-              </Button>
               <Button variant={'contained'} size={'xl'}>
-                저장
+                확인
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
@@ -252,7 +100,6 @@ const Ltpz088 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
-          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>
