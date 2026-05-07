@@ -1,16 +1,6 @@
 'use client';
 
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import type {
-  CellClassParams,
-  ColDef,
-  GridApi,
-  SelectionChangedEvent,
-  EditableCallbackParams,
-  CellEditorSelectorResult,
-} from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
 import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
@@ -35,6 +25,16 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import type {
+  CellClassParams,
+  ColDef,
+  GridApi,
+  SelectionChangedEvent,
+  EditableCallbackParams,
+  CellEditorSelectorResult,
+} from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
 import {
   rowDataWithTrackingFactory,
@@ -47,7 +47,7 @@ import {
   editableCellClassRules,
   productNameCellRenderer,
   groupEditableButtonRenderer,
-} from '../hooks/useLtpa350Step2';
+} from '../hooks/useLtpa35002';
 
 import '@/shared/lib/agGridPub';
 

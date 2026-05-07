@@ -3,10 +3,8 @@
 import '@/shared/lib/agGridPub';
 import { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { TableMore } from '@/shared/components/common/TablePagination';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
-import { Gcol, Typo } from '@atoms';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Gcol, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
@@ -120,8 +118,7 @@ const Ltpz00503 = () => {
         {
           headerName: '상해급수',
           field: 'beforeInjuryGrade',
-          minWidth: 100,
-          flex: 1,
+          width: 60,
           cellClass: 'text-center',
         },
         {
@@ -140,8 +137,7 @@ const Ltpz00503 = () => {
         {
           headerName: '상해급수',
           field: 'afterInjuryGrade',
-          minWidth: 100,
-          flex: 1,
+          width: 60,
           cellClass: 'text-center',
         },
         {
@@ -157,26 +153,21 @@ const Ltpz00503 = () => {
     },
   ];
 
-  const pageSize = 5;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: JobDummyData,
-    pageSize,
-  });
-
   return (
-    <Gcol className="w-full" gap={5}>
+    // M2. 디자인 변경으로 수정
+    <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={3}>
       <Gcol variant={'box-info'} placement={'ss'} className="w-full">
-        {/* M1. 텍스트 수정 */}
+       
         <Typo variant={'body-sm'} icon={'info'}>
           고객 직업정보(상해급수)가 불일치 할 경우 <b>신계약 체결이 불가능</b>합니다. 해당 신계약 청약완료 이전에
           기계약의 작업변경을 완료하시기 바랍니다.
         </Typo>
-        {/* M1. 텍스트 수정 */}
+       
         <Typo variant={'body-sm'} icon={'info'}>
           <b>신계약 청약서 발행 이전에 기계약의 직업변경 배서(청약중 이후)를 진행</b>바랍니다.
         </Typo>
       </Gcol>
-      <Gcol className="w-full" gap={2}>
+      <Grid className="grid-rows-[auto_1fr] h-full" gap={2}>
         <FormTable caption="고객정보 테이블" cols={['w-[12rem]', 'flex-1', 'w-[14.9rem]', 'flex-1']}>
           <FormRow>
             <FormCell title={'고객명'}>김한화</FormCell>
@@ -191,69 +182,54 @@ const Ltpz00503 = () => {
             </FormCell>
           </FormRow>
         </FormTable>
-        {/* M2. 수정 */}
-        <Gcol className="gap-1">
-          <div className="ag-theme-alpine ">
+       
+        <Gcol className="gap-1 relative">
+          <div className="ag-theme-alpine h-full">
             <AgGridReact<JobDataType>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}
+              rowData={JobDummyData}
               columnDefs={jobColumnDefs}
               defaultColDef={{
                 sortable: true,
                 resizable: true,
                 suppressMovable: true,
               }}
-              // getRowStyle={(params) => ({
-              //   backgroundColor: (params.node.rowIndex ?? 0) % 2 === 1 ? '#F4F4F4' : '#FFFFFF',
-              // })}
               headerHeight={30}
-              groupHeaderHeight={30}
               rowHeight={30}
-              domLayout="autoHeight"
+              domLayout="normal"
               tooltipShowMode="whenTruncated"
               tooltipShowDelay={0}
-              rowModelType="infinite"
-              cacheBlockSize={pageSize}
-              maxBlocksInCache={2}
-              datasource={dataSource}
             />
           </div>
-          <TableMore
-            loadedCount={loadedCount}
-            totalCount={totalCount}
-            pageSize={pageSize}
-            onLoadAll={handleLoadAll}
-            onLoadNext={handleLoadNext}
-          />
         </Gcol>
+      </Grid>
 
-        <Gcol variant={'box-detail'} placement={'ss'} className="w-full">
-          <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
-            신규설계의 직업정보가 정확할 경우: 기계약 직업 변경배서 진행(변경설계가 청약중 이후이고 변경후
-            직업정보(상해급수)가 일치하여야 신계약 청약서 발행가능함)
-          </Typo>
-          <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
-            기계약의 직업정보가 정확할 경우: 고객정보화면의 직업정보 변경 후 피보험자를 다시 불러온 후 신계약 설계 진행
-          </Typo>
-          <BulletList>
-            <BulletListItem size={'sm'} type="dash">
-              직업정보는 현재기분[2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로 매핑한
-              결과로 비교함)
-            </BulletListItem>
-            <BulletListItem size={'sm'} type="dash">
-              변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다.(계약변경설계이동 클릭시 변경설계화면으로 이동)
-            </BulletListItem>
-            <BulletListItem size={'sm'} type="dash">
-              상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.
-            </BulletListItem>
-            {/* M2. 수정 */}
-            <BulletListItem className="mt-2" size={'sm'} type="dotBig">
-              관련문서: [대내-150-1552]직업정보(상해급수) 일지 관련 신계약 프로세스 변경통보, 장기계약관리파트
-            </BulletListItem>
-          </BulletList>
-        </Gcol>
+      <Gcol variant={'box-detail'} placement={'ss'} className="w-full">
+        <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
+          신규설계의 직업정보가 정확할 경우: 기계약 직업 변경배서 진행(변경설계가 청약중 이후이고 변경후
+          직업정보(상해급수)가 일치하여야 신계약 청약서 발행가능함)
+        </Typo>
+        <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
+          기계약의 직업정보가 정확할 경우: 고객정보화면의 직업정보 변경 후 피보험자를 다시 불러온 후 신계약 설계 진행
+        </Typo>
+        <BulletList>
+          <BulletListItem size={'sm'} type="dash">
+            직업정보는 현재기분[2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로 매핑한
+            결과로 비교함)
+          </BulletListItem>
+          <BulletListItem size={'sm'} type="dash">
+            변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다.(계약변경설계이동 클릭시 변경설계화면으로 이동)
+          </BulletListItem>
+          <BulletListItem size={'sm'} type="dash">
+            상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.
+          </BulletListItem>
+          <BulletListItem className="mt-2" size={'sm'} type="symbols" before="▶">
+            관련문서: [대내-1507-1552]직업정보(상해급수) 일치 관련 신계약 프로세스 변경통보, 장기계약관리파트
+          </BulletListItem>
+        </BulletList>
       </Gcol>
-    </Gcol>
+    </Grid>
   );
 };
 
