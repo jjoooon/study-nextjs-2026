@@ -19,7 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableRow, TableCell } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -410,6 +410,7 @@ export function Ltpa35004() {
                   </FormCell>
                 </FormRow>
 
+                {/* M3. size md 삭제 */}
                 <FormRow>
                   <FormCell
                     title={'심사구분'}
@@ -419,7 +420,7 @@ export function Ltpa35004() {
                   >
                     <Grid className="w-full grid-cols-[11.3rem_15rem_23.7rem_minmax(19.4rem,1fr)_9.8rem] gap-1">
                       <Input aria-label="심사구분1" width={'full'} value={'신계약'} size={'md'} readOnly />
-                      <NativeSelect aria-label="심사구분2" width={'full'} size={'md'}>
+                      <NativeSelect aria-label="심사구분2" width={'full'}>
                         {[
                           { label: '설계심사', value: '설계심사' },
                           { label: '설계심사2', value: '설계심사2' },
@@ -430,8 +431,8 @@ export function Ltpa35004() {
                           </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                      <Input aria-label="심사구분3" width={'full'} size={'md'} value={'심사요청불가'} readOnly />
-                      <Input aria-label="심사구분4" width={'full'} size={'md'} value={''} readOnly />
+                      <Input aria-label="심사구분3" width={'full'} value={'심사요청불가'} readOnly />
+                      <Input aria-label="심사구분4" width={'full'} value={''} readOnly />
                       <Checkbox>사후적부 대체</Checkbox>
                     </Grid>
                   </FormCell>
@@ -439,14 +440,14 @@ export function Ltpa35004() {
                 <FormRow>
                   <FormCell title={'심사처리자'} className="min-w-[6.4rem]" tdStyle={{ flex: 1 }} tdClassName="w-full">
                     <Grid className="w-full grid-cols-[15rem_15rem_15rem_auto] gap-1">
-                      <Input aria-label="심사처리자1" width={'full'} value={''} size={'md'} readOnly />
-                      <Input aria-label="심사처리자2" width={'full'} value={''} size={'md'} readOnly />
-                      <Input aria-label="심사처리자3" width={'full'} value={''} size={'md'} readOnly />
+                      <Input aria-label="심사처리자1" width={'full'} value={''} readOnly />
+                      <Input aria-label="심사처리자2" width={'full'} value={''} readOnly />
+                      <Input aria-label="심사처리자3" width={'full'} value={''} readOnly />
                     </Grid>
                   </FormCell>
                   <FormCell title={'심사상태'} className="w-full" tdStyle={{ flex: 1 }} tdClassName="w-full">
                     <Grid className="w-full grid-cols-[minmax(15.4rem,1fr)_9.8rem] gap-1">
-                      <Input aria-label="심사상태" width={'full'} value={''} size={'md'} readOnly />
+                      <Input aria-label="심사상태" width={'full'} value={''} readOnly />
                       <Checkbox>심사자배정</Checkbox>
                     </Grid>
                   </FormCell>
