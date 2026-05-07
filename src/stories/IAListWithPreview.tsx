@@ -7,6 +7,7 @@ import LinkGo, { getStoryIframeUrl } from './Link';
 import iaHsh from './ia-hsh.json';
 import iaJhm from './ia-jhm.json';
 import iaKot from './ia-kot.json';
+import pub from './ia-pub.json';
 import sData from './ia-sdate.json';
 import iaListData from './ialist.json';
 
@@ -99,14 +100,6 @@ const parseDateValue = (value: string, baseYear: number): Date | null => {
 
   parsed.setHours(0, 0, 0, 0);
   return parsed;
-};
-
-const isPastDate = (value: string, today: Date) => {
-  const parsed = parseDateValue(value, today.getFullYear());
-  if (!parsed) {
-    return false;
-  }
-  return parsed.getTime() < today.getTime();
 };
 
 const isFutureDate = (value: string, today: Date) => {
@@ -411,6 +404,7 @@ export function IAListWithPreview() {
               const completeDate = formatCompleteDate(info?.완료일 || row.date);
               const modifyDate = formatCompleteDate(info?.수정일 || row.modify);
               const planDate = sData[index] ?? '';
+              const pubName = pub[index] ?? '';
 
               const isPlanFuture = isFutureDate(planDate, today);
 
@@ -452,7 +446,7 @@ export function IAListWithPreview() {
                     <b>{modifyDate}</b>
                   </td>
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
-                  <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
+                  <td className={`text-center ${rowBgClass}`}>{pubName}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.dev}</td>
                 </tr>
               );
