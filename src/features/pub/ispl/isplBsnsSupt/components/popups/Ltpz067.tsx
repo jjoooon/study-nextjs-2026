@@ -1,8 +1,5 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -10,8 +7,6 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -22,6 +17,11 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import type { ColDef } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -234,7 +234,14 @@ const Ltpz067 = () => {
               <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                 조회
               </Button>
-              <Button color={'gray'} only={'icon'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="새로고침">
+              <Button
+                color={'gray'}
+                only={'icon'}
+                size={'lg'}
+                variant={'outlined'}
+                onClick={() => {}}
+                aria-label="새로고침"
+              >
                 <ResetIcon />
               </Button>
             </Grow>

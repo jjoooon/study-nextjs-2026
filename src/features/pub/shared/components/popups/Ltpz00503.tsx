@@ -1,15 +1,15 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { TableMore } from '@/shared/components/common/TablePagination';
 import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
+import { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { TableMore } from '@/shared/components/common/TablePagination';
 
 // 직업
 type JobDataType = {

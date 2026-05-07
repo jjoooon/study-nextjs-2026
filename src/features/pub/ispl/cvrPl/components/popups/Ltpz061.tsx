@@ -1,10 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import * as React from 'react';
-import type { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useState } from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -24,6 +20,10 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useState } from 'react';
+import * as React from 'react';
 
 type DummyDataType1 = {
   id: number;
@@ -202,44 +202,38 @@ const Ltpz061 = () => {
   const [rowData1] = useState<DummyDataType1[]>(dummyData1);
   const [rowData2] = useState<DummyDataType2[]>(dummyData2);
 
-  const selectCellRenderer = useCallback(
-    <TData,>(params: ICellRendererParams<TData>) => {
-      const value = params.value == null ? '' : String(params.value);
-      const hasValue = value.trim().length > 0;
+  const selectCellRenderer = useCallback(<TData,>(params: ICellRendererParams<TData>) => {
+    const value = params.value == null ? '' : String(params.value);
+    const hasValue = value.trim().length > 0;
 
-      if (!hasValue) {
-        return <div className="h-full w-full" />;
-      }
+    if (!hasValue) {
+      return <div className="h-full w-full" />;
+    }
 
-      return (
-        <div className="flex h-full w-full items-center justify-between gap-1 px-1">
-          <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
-          <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+    return (
+      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
+        <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
+        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+      </div>
+    );
+  }, []);
+
+  const reasonCellRenderer = useCallback(<TData,>(params: ICellRendererParams<TData>) => {
+    const value = params.value == null ? '' : String(params.value);
+
+    return (
+      <div className="flex h-full w-full items-center gap-1 px-1">
+        <div className="flex min-w-0 basis-0 flex-1 items-center justify-start px-2 text-left text-[1.3rem] leading-[2.5rem]">
+          <span className="block min-w-0 truncate">{value}</span>
         </div>
-      );
-    },
-    []
-  );
-
-  const reasonCellRenderer = useCallback(
-    <TData,>(params: ICellRendererParams<TData>) => {
-      const value = params.value == null ? '' : String(params.value);
-
-      return (
-        <div className="flex h-full w-full items-center gap-1 px-1">
-          <div className="flex min-w-0 basis-0 flex-1 items-center justify-start px-2 text-left text-[1.3rem] leading-[2.5rem]">
-            <span className="block min-w-0 truncate">{value}</span>
-          </div>
-          <div className="flex h-full w-[2.5rem] shrink-0 items-center justify-center">
-            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-              <SearchIcon color={'var(--color-primary-50)'} />
-            </Button>
-          </div>
+        <div className="flex h-full w-[2.5rem] shrink-0 items-center justify-center">
+          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+            <SearchIcon color={'var(--color-primary-50)'} />
+          </Button>
         </div>
-      );
-    },
-    []
-  );
+      </div>
+    );
+  }, []);
 
   const columnDefs: Array<ColDef<DummyDataType1> | ColGroupDef<DummyDataType1>> = [
     {
@@ -288,7 +282,23 @@ const Ltpz061 = () => {
           headerName: '',
           cellRenderer: selectCellRenderer,
           cellEditor: 'agSelectCellEditor',
-          cellEditorParams: { values: ['0개월', '1개월', '2개월', '3개월', '4개월', '5개월', '6개월', '7개월', '8개월', '9개월', '10개월', '11개월', '12개월'] },
+          cellEditorParams: {
+            values: [
+              '0개월',
+              '1개월',
+              '2개월',
+              '3개월',
+              '4개월',
+              '5개월',
+              '6개월',
+              '7개월',
+              '8개월',
+              '9개월',
+              '10개월',
+              '11개월',
+              '12개월',
+            ],
+          },
           cellClass: 'text-center flex [&>div>span]:h-auto!',
           autoHeight: true,
         },
@@ -359,7 +369,23 @@ const Ltpz061 = () => {
           headerName: '',
           cellRenderer: selectCellRenderer,
           cellEditor: 'agSelectCellEditor',
-          cellEditorParams: { values: ['0개월', '1개월', '2개월', '3개월', '4개월', '5개월', '6개월', '7개월', '8개월', '9개월', '10개월', '11개월', '12개월'] },
+          cellEditorParams: {
+            values: [
+              '0개월',
+              '1개월',
+              '2개월',
+              '3개월',
+              '4개월',
+              '5개월',
+              '6개월',
+              '7개월',
+              '8개월',
+              '9개월',
+              '10개월',
+              '11개월',
+              '12개월',
+            ],
+          },
           cellClass: 'text-center flex [&>div>span]:h-auto! h-[100%]',
           autoHeight: true,
         },
@@ -402,7 +428,10 @@ const Ltpz061 = () => {
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
-                <FormCell title={'증권번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full">
+                <FormCell
+                  title={'증권번호'}
+                  tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
+                >
                   <Input aria-label="" value={'LA2602093135558'} readOnly variant="info" />
                   <Input aria-label="" value={'한화 더 건강한 한아름종합보험 2601'} readOnly variant="info" />
                 </FormCell>

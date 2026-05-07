@@ -1,10 +1,8 @@
 'use client';
 
-import * as React from 'react';
 import { Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
 import {
   Dialog,
   DialogContent,
@@ -15,6 +13,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import * as React from 'react';
 import '@/shared/lib/agGridPub';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 
@@ -41,12 +41,7 @@ export const Ltpz101 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" placement={'bwe'}>
-            <FormTable
-              variant={'default'}
-              lineTop
-              caption="주민등록번호 오입력"
-              cols={['w-[18rem]', 'flex-1']}
-            >
+            <FormTable variant={'default'} lineTop caption="주민등록번호 오입력" cols={['w-[18rem]', 'flex-1']}>
               <FormRow>
                 <FormCell
                   title={

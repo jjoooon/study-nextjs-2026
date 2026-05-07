@@ -1,17 +1,11 @@
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import {
   Dialog,
   DialogClose,
@@ -22,7 +16,13 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { useCallback } from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -74,24 +74,21 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 const Ltpz066 = () => {
-  const selectCellRenderer = useCallback(
-    <TData,>(params: ICellRendererParams<TData>) => {
-      const value = params.value == null ? '' : String(params.value);
-      const hasValue = value.trim().length > 0;
+  const selectCellRenderer = useCallback(<TData,>(params: ICellRendererParams<TData>) => {
+    const value = params.value == null ? '' : String(params.value);
+    const hasValue = value.trim().length > 0;
 
-      if (!hasValue) {
-        return <div className="h-full w-full" />;
-      }
+    if (!hasValue) {
+      return <div className="h-full w-full" />;
+    }
 
-      return (
-        <div className="flex h-full w-full items-center justify-between gap-1 px-1">
-          <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
-          <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
-        </div>
-      );
-    },
-    []
-  );
+    return (
+      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
+        <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
+        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+      </div>
+    );
+  }, []);
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -146,7 +143,7 @@ const Ltpz066 = () => {
       cellClass: `text-right`,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
-    }
+    },
   ];
 
   const [form, setFormField] = useFormFields({

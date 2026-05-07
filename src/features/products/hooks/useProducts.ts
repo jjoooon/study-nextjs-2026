@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { useProductsURLState } from './useProductsURLState';
 import { useGetProductsQuery } from '@/features/products/services/productService';
 import * as productsSelectors from '@/features/products/store/productsSelectors';
 import {
@@ -8,7 +9,6 @@ import {
   clearProductSelection,
 } from '@/features/products/store/productsUISlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useProductsURLState } from './useProductsURLState';
 
 // ============================================================================
 // PRODUCTS HOOKS (RTK Query + URL-based State)

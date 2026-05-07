@@ -1,10 +1,5 @@
 'use client';
 
-import { BulletItem } from '@/shared/components/common/BulletList';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { Badge } from '@/shared/components/uiux/Badge';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { Input } from '@/shared/components/uiux/Input';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -19,6 +14,11 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
+import { BulletItem } from '@/shared/components/common/BulletList';
+import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { Badge } from '@/shared/components/uiux/Badge';
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { Input } from '@/shared/components/uiux/Input';
 
 const Ltpz037 = () => {
   return (
@@ -36,9 +36,7 @@ const Ltpz037 = () => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Typo variant="body-lg">
-            정확한 알릴사항 자동고지를 위해 동의 문자동의(LMS)로 발송합니다.
-          </Typo>
+          <Typo variant="body-lg">정확한 알릴사항 자동고지를 위해 동의 문자동의(LMS)로 발송합니다.</Typo>
           <Gcol placement={'ss'} className="w-full">
             <Typo variant="body-lg" weight={'bold'}>
               취급자 정보
@@ -75,7 +73,7 @@ const Ltpz037 = () => {
                 <TableRow>
                   <TableHead className="text-left">고객명</TableHead>
                   <TableCell>
-                    <Grow placement='bwc'>
+                    <Grow placement="bwc">
                       <Grow>
                         <Input width={62} value={'김한화'} readOnly />
                         <Input width={116} value={'900110-1******'} readOnly />
@@ -83,9 +81,11 @@ const Ltpz037 = () => {
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
                       </Grow>
-                       {/* 질병동의 여부 플래그 따라서 Y|N */}
+                      {/* 질병동의 여부 플래그 따라서 Y|N */}
                       {/* <Badge color="red" size="md" variant="contained">FP질병제공동의 N</Badge> */}
-                      <Badge color="green" size="md" variant="contained">FP질병제공동의 Y</Badge>
+                      <Badge color="green" size="md" variant="contained">
+                        FP질병제공동의 Y
+                      </Badge>
                     </Grow>
                   </TableCell>
                 </TableRow>
@@ -102,8 +102,12 @@ const Ltpz037 = () => {
           </Gcol>
 
           <Grow className="w-full items-start" placement="bwc" variant="box-info">
-            <BulletItem className='w-full' type="dotBig">최근 동의이력</BulletItem>
-            <Typo className='w-full text-right text-[#006FF2]' weight={'bold'} variant="body-sm">2026-03-19 10:00:00</Typo>
+            <BulletItem className="w-full" type="dotBig">
+              최근 동의이력
+            </BulletItem>
+            <Typo className="w-full text-right text-[#006FF2]" weight={'bold'} variant="body-sm">
+              2026-03-19 10:00:00
+            </Typo>
           </Grow>
         </DialogSection>
 
