@@ -616,7 +616,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPZ006",
-    "path": "",
+    "path": "shared/components/popups",
     "dep4": "가족연계할인 안내 및 기계약 찾기",
     "file": "계약사항",
     "plan": "이현숙",
