@@ -11,7 +11,7 @@ import { FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 

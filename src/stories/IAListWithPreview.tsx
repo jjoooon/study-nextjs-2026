@@ -7,12 +7,13 @@ import LinkGo, { getStoryIframeUrl } from './Link';
 import iaHsh from './ia-hsh.json';
 import iaJhm from './ia-jhm.json';
 import iaKot from './ia-kot.json';
+import pub from './ia-pub.json';
 import sData from './ia-sdate.json';
 import iaListData from './ialist.json';
 
 type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
 type SortOrder = 'default' | 'asc' | 'desc';
-type SortKey = 'dep4' | 'plan' | 'pub' | 'dev' | 'path' | 'id' | 'completeDate' | 'modifyDate';
+type SortKey = 'dep4' | 'file' | 'planDate' | 'plan' | 'pub' | 'dev' | 'path' | 'id' | 'completeDate' | 'modifyDate';
 type SortState = {
   key: SortKey | null;
   order: SortOrder;
@@ -36,6 +37,8 @@ type IARow = {
   date: string;
   modify: string;
   file?: string;
+  planDate?: string;
+  pubName?: string;
   phase?: string;
   popup?: string;
   path?: string;
@@ -101,14 +104,6 @@ const parseDateValue = (value: string, baseYear: number): Date | null => {
   return parsed;
 };
 
-const isPastDate = (value: string, today: Date) => {
-  const parsed = parseDateValue(value, today.getFullYear());
-  if (!parsed) {
-    return false;
-  }
-  return parsed.getTime() < today.getTime();
-};
-
 const isFutureDate = (value: string, today: Date) => {
   const parsed = parseDateValue(value, today.getFullYear());
   if (!parsed) {
@@ -140,15 +135,25 @@ export function IAListWithPreview() {
   const [activeRowKey, setActiveRowKey] = React.useState<string>(() => getRowKey(ROWS[0]));
 
   const rowsWithPubInfo = React.useMemo(() => {
-    return ROWS.map((row) => {
+    return ROWS.map((row, index) => {
       const info = getPubInfo(row);
-      if (!info) return row;
+      const planDate = sData[index] ?? '';
+      const pubName = pub[index] ?? '';
+      if (!info) {
+        return {
+          ...row,
+          planDate,
+          pubName,
+        };
+      }
       const phase = info.완료일 ? 'Y' : row.phase;
       return {
         ...row,
         pub: info.이름,
         date: info.완료일 || row.date,
         modify: info.수정일 || row.modify,
+        planDate,
+        pubName,
         phase,
       };
     });
@@ -197,8 +202,8 @@ export function IAListWithPreview() {
         const compareResult = leftValue.localeCompare(rightValue);
         return sortState.order === 'asc' ? compareResult : -compareResult;
       }
-      type SortableKeys = keyof Pick<IARow, 'dep4' | 'plan' | 'pub' | 'dev' | 'path' | 'id'>;
-      if (!sortKey || !['dep4', 'plan', 'pub', 'dev', 'path', 'id'].includes(sortKey)) {
+      type SortableKeys = keyof Pick<IARow, 'dep4' | 'file' | 'planDate' | 'plan' | 'pub' | 'dev' | 'path' | 'id'>;
+      if (!sortKey || !['dep4', 'file', 'planDate', 'plan', 'pub', 'dev', 'path', 'id'].includes(sortKey)) {
         return 0;
       }
       const key = sortKey as SortableKeys;
@@ -331,8 +336,32 @@ export function IAListWithPreview() {
               >
                 화면명{getSortIndicator('dep4')}
               </th>
-              <th scope="col">설계서명</th>
-              <th scope="col">계획일</th>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('file')}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSort('file');
+                }}
+                role="button"
+                aria-label="설계서명 정렬"
+              >
+                설계서명{getSortIndicator('file')}
+              </th>
+              <th
+                scope="col"
+                className="cursor-pointer select-none"
+                onClick={() => handleSort('planDate')}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSort('planDate');
+                }}
+                role="button"
+                aria-label="계획일 정렬"
+              >
+                계획일{getSortIndicator('planDate')}
+              </th>
               <th
                 scope="col"
                 className="cursor-pointer select-none"
@@ -410,7 +439,8 @@ export function IAListWithPreview() {
               const info = getPubInfo(row);
               const completeDate = formatCompleteDate(info?.완료일 || row.date);
               const modifyDate = formatCompleteDate(info?.수정일 || row.modify);
-              const planDate = sData[index] ?? '';
+              const planDate = row.planDate ?? '';
+              const pubName = row.pubName ?? '';
 
               const isPlanFuture = isFutureDate(planDate, today);
 
@@ -452,7 +482,7 @@ export function IAListWithPreview() {
                     <b>{modifyDate}</b>
                   </td>
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
-                  <td className={`text-center ${rowBgClass}`}>{row.pub}</td>
+                  <td className={`text-center ${rowBgClass}`}>{pubName}</td>
                   <td className={`text-center ${rowBgClass}`}>{row.dev}</td>
                 </tr>
               );

@@ -3,8 +3,17 @@
 import '@/shared/lib/agGridPub';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogFooter, DialogSection, DialogFooterArea, DialogClose } from '@uiux/Dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogSection,
+  DialogFooterArea,
+  DialogClose,
+  DialogTitle,
+} from '@uiux/Dialog';
 import { BulletItem } from '@/shared/components/common/BulletList';
 import { ErrorIcon } from '@/shared/components/icons/CommonIcons';
 
@@ -12,6 +21,9 @@ const Ltpz999 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton={false} resizable={true} size={'md'} className="grid-rows-[1fr_auto]">
+        <VisuallyHidden.Root>
+          <DialogTitle>시스템 오류 안내</DialogTitle>
+        </VisuallyHidden.Root>
         <DialogSection className="pt-5 gap-5">
           <Grow placement="ec" className="text-[var(--color-gray-70)]">
             코드 LTRE006(trandZomH110)
