@@ -7,6 +7,7 @@ import LinkGo, { getStoryIframeUrl } from './Link';
 import iaHsh from './ia-hsh.json';
 import iaJhm from './ia-jhm.json';
 import iaKot from './ia-kot.json';
+import sData from './ia-sdate.json';
 import iaListData from './ialist.json';
 
 type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
@@ -59,7 +60,70 @@ const getPubInfo = (row: Pick<IARow, 'id' | 'subId'>) => {
 
 const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?? ''}`;
 
+const formatCompleteDate = (value: string) => value.replace(/^26\./, '');
+
+const parseDateValue = (value: string, baseYear: number): Date | null => {
+  const digits = value.replace(/\D/g, '');
+  let year = baseYear;
+  let month = 0;
+  let day = 0;
+
+  if (digits.length === 4) {
+    month = Number(digits.slice(0, 2));
+    day = Number(digits.slice(2, 4));
+  } else if (digits.length === 6) {
+    year = 2000 + Number(digits.slice(0, 2));
+    month = Number(digits.slice(2, 4));
+    day = Number(digits.slice(4, 6));
+  } else if (digits.length === 8) {
+    year = Number(digits.slice(0, 4));
+    month = Number(digits.slice(4, 6));
+    day = Number(digits.slice(6, 8));
+  } else {
+    return null;
+  }
+
+  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
+    return null;
+  }
+
+  const parsed = new Date(year, month - 1, day);
+  if (
+    Number.isNaN(parsed.getTime()) ||
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    return null;
+  }
+
+  parsed.setHours(0, 0, 0, 0);
+  return parsed;
+};
+
+const isPastDate = (value: string, today: Date) => {
+  const parsed = parseDateValue(value, today.getFullYear());
+  if (!parsed) {
+    return false;
+  }
+  return parsed.getTime() < today.getTime();
+};
+
+const isFutureDate = (value: string, today: Date) => {
+  const parsed = parseDateValue(value, today.getFullYear());
+  if (!parsed) {
+    return false;
+  }
+  return parsed.getTime() >= today.getTime();
+};
+
 export function IAListWithPreview() {
+  const today = React.useMemo(() => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return now;
+  }, []);
+
   const [showPhaseOnly] = React.useState(false);
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
   const handleSort = React.useCallback((key: SortKey) => {
@@ -220,6 +284,7 @@ export function IAListWithPreview() {
             <col style={{ width: '6rem' }} />
             <col />
             <col />
+            <col />
             <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
             <col style={{ width: '5rem' }} />
@@ -267,6 +332,7 @@ export function IAListWithPreview() {
                 화면명{getSortIndicator('dep4')}
               </th>
               <th scope="col">설계서명</th>
+              <th scope="col">계획일</th>
               <th
                 scope="col"
                 className="cursor-pointer select-none"
@@ -342,8 +408,11 @@ export function IAListWithPreview() {
 
               // pubInfoList 기준으로 완료일/수정일 표시
               const info = getPubInfo(row);
-              const completeDate = info?.완료일 || row.date;
-              const modifyDate = info?.수정일 || row.modify;
+              const completeDate = formatCompleteDate(info?.완료일 || row.date);
+              const modifyDate = formatCompleteDate(info?.수정일 || row.modify);
+              const planDate = sData[index] ?? '';
+
+              const isPlanFuture = isFutureDate(planDate, today);
 
               return (
                 <tr
@@ -373,10 +442,13 @@ export function IAListWithPreview() {
                   <td className={rowBgClass}>{row.dep4}</td>
                   <td className={rowBgClass}>{row.file}</td>
 
-                  <td className={`text-center ${rowBgClass}`}>
+                  <td className={`text-center ${rowBgClass} ${isPlanFuture && !info?.완료일 ? '!text-[red]' : ''}`}>
+                    <b>{planDate}</b>
+                  </td>
+                  <td className={`!text-center ${rowBgClass}`}>
                     <b>{completeDate}</b>
                   </td>
-                  <td className={`text-center ${rowBgClass}`}>
+                  <td className={`!text-center ${rowBgClass}`}>
                     <b>{modifyDate}</b>
                   </td>
                   <td className={`text-center ${rowBgClass}`}>{row.plan}</td>

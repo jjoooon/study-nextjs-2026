@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import { AgGridReact } from 'ag-grid-react';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
+import type { ColDef } from 'ag-grid-enterprise';
 import { createCellValueChangedHandler, AgGridEmptyComponent } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -111,8 +111,8 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
 import * as React from 'react';
 
 import { AgGridReact } from 'ag-grid-react';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
+import type { ColDef } from 'ag-grid-enterprise';
 import { createCellValueChangedHandler } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

@@ -1,6 +1,6 @@
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';

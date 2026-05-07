@@ -1,16 +1,16 @@
 'use client';
 
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState } from 'react';
-import { scaleChange } from '@/shared/utils/scale';
 import { Grow, Typo } from '@atoms';
 import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams, GridApi } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useMemo, useState } from 'react';
+import { scaleChange } from '@/shared/utils/scale';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
