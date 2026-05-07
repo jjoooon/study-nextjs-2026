@@ -2,6 +2,10 @@
 
 import '@/shared/lib/agGridPub';
 
+import { ColDef, ColGroupDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 
@@ -11,10 +15,6 @@ import { TooltipQ } from '@common/TooltipQ';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
 // 공통
 type DummyDataType = {

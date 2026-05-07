@@ -1,5 +1,7 @@
 'use client';
 
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/uiux/Table';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -13,8 +15,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/uiux/Table';
 
 const Ltpz107 = () => {
   return (

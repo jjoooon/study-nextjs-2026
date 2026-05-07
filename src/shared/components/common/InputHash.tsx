@@ -2,11 +2,11 @@
 
 // datalist + popover 기능의 InputCombo 컴포넌트
 // 기존 Input 컴포넌트 활용
+import React, { useRef, useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { Typo, Grow, Gcol } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import React, { useRef, useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
 
 // 고유 ID 생성을 위한 유틸
 function getRandomId(prefix = 'inputcombo-') {

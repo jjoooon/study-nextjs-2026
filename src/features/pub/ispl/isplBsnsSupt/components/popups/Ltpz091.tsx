@@ -2,6 +2,9 @@
 
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -22,9 +25,6 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 type LTPZ091Tab = { value: string; label: string };
 const DATA_TABS: LTPZ091Tab[] = [

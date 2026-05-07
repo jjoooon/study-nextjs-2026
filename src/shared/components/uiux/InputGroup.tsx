@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { Textarea } from '@uiux/Textarea';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { Textarea } from '@uiux/Textarea';
 
 function InputGroup({ className, ...props }: React.ComponentProps<'div'>) {
   return (

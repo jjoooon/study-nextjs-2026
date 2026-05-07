@@ -1,9 +1,9 @@
-import { Typo, Grow } from '@atoms';
-import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Typo, Grow } from '@atoms';
+import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 
 const FormCellVariants = cva('', {
   variants: {

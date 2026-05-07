@@ -1,7 +1,5 @@
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import type { ColDef } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
@@ -19,6 +17,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@/shared/components/uiux/Dialog';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 

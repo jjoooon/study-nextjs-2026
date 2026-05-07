@@ -1,5 +1,9 @@
 'use client';
 
+import { useState } from 'react';
+import type { ReactNode } from 'react';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
+import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
 import { BottomBar } from '@common/BottomBar';
 import { AsideFoot } from '@features/AsideFoot';
@@ -10,8 +14,6 @@ import { QuickLinks } from '@features/QuickLinks';
 import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { useState } from 'react';
-import type { ReactNode } from 'react';
 
 import { Ltpa35003Side } from '../../shared/components/Ltpa35003Side';
 import { Ltpa35004Side } from '../../shared/components/Ltpa35004Side';
@@ -24,8 +26,6 @@ import { Ltpa35001 } from '../crmtt/components/Ltpa35001'; // 01. 가입설계
 import { Ltpa35002 } from '../cvrPl/components/Ltpa35002'; // 02. 담보설계
 import { Ltpa35003 } from '../ncMtt/components/Ltpa35003'; // 04. 심사요청
 import { Ltpa35004 } from '../udRqRst/components/Ltpa35004'; // 04. 심사요청
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
-import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';

@@ -1,6 +1,6 @@
-import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 import { ReactNode, HTMLAttributes, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 
 type BulletType = 'dot' | 'hash' | 'ref' | 'dash' | 'star' | 'dotBig' | 'symbols';
 type BulletSize = 'sm' | 'md' | 'lg' | 'xs';

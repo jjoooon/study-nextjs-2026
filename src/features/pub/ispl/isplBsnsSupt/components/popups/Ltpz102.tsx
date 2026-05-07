@@ -14,7 +14,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import '@/shared/lib/agGridPub';
 
 export const Ltpz102 = () => {

@@ -1,11 +1,11 @@
 'use client';
 
-import { Gcol, Grow, Grid, Typo } from '@atoms';
-import { CheckIcon, ExMarkIcon, BadgeCheckIcon } from '@icons';
-import { Button } from '@uiux/Button';
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Gcol, Grow, Grid, Typo } from '@atoms';
+import { CheckIcon, ExMarkIcon, BadgeCheckIcon } from '@icons';
+import { Button } from '@uiux/Button';
 
 type TaskStatusBoardProps<
   T extends {
