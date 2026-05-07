@@ -1,11 +1,5 @@
 'use client';
 
-import {
-  QuestionRadioCard,
-  QuestionRadioCardHeader,
-  QuestionRadioCardHeaderTitle,
-  QuestionRadioCardContents,
-} from '@/shared/components/common/QuestionRadioCard';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -20,6 +14,12 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import {
+  QuestionRadioCard,
+  QuestionRadioCardHeader,
+  QuestionRadioCardHeaderTitle,
+  QuestionRadioCardContents,
+} from '@/shared/components/common/QuestionRadioCard';
 
 const Ltpz003 = () => {
   return (

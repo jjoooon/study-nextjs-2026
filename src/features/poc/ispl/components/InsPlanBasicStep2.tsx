@@ -1,6 +1,5 @@
 'use client';
 
-import { SearchIcon } from '@/shared/components/icons';
 import { Gcol, Typo, FormItem, Grow } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormTable } from '@common/FormTable';
@@ -12,6 +11,7 @@ import { Tabs, TabsLine, TabsContent, TabsList, TabsTrigger } from '@uiux/Tabs';
 
 import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
 import type { TabData, InsuredData } from '../types/insPlanBasic';
+import { SearchIcon } from '@/shared/components/icons';
 
 interface InsPlanBasicStep2Props {
   active: string;

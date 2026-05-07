@@ -1,17 +1,13 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import * as React from 'react';
-import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
+import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
-import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid'
 import {
   Dialog,
   DialogContent,
@@ -24,6 +20,10 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
+import type { ColDef } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import * as React from 'react';
 
 type DummyDataType = {
   id: number;

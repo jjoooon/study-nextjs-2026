@@ -1,10 +1,8 @@
 'use client';
 
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { Gcol, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
 import {
   Dialog,
   DialogContent,
@@ -15,10 +13,11 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import '@/shared/lib/agGridPub';
 
 export const Ltpz102 = () => {
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="md">
@@ -34,12 +33,7 @@ export const Ltpz102 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Gcol className="w-full" placement={'bwe'} gap={2}>
-            <FormTable
-              variant={'default'}
-              lineTop
-              caption="고객명 정보 테이블"
-              cols={['w-[18rem]', 'flex-1']}
-            >
+            <FormTable variant={'default'} lineTop caption="고객명 정보 테이블" cols={['w-[18rem]', 'flex-1']}>
               <FormRow>
                 <FormCell title={'고객명'}>
                   <Input width="full" value="김한화" readOnly />
@@ -52,7 +46,7 @@ export const Ltpz102 = () => {
               </FormRow>
             </FormTable>
             <Gcol className="w-full" placement="ss" variant="box-info">
-              <Typo icon="info"variant="body-sm">
+              <Typo icon="info" variant="body-sm">
                 철회알림톡 전송을 위한 팝업입니다.
               </Typo>
             </Gcol>

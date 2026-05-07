@@ -1,7 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -15,6 +14,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import React from 'react';
 
 const Ltpz014 = () => {
   return (

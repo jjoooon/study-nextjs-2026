@@ -1,11 +1,11 @@
 'use client';
 
+import { SelectArrowIcon } from '@icons';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
-import { SelectArrowIcon } from '@icons';
 
 function Select({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />;

@@ -1,10 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
-import { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 
@@ -12,6 +8,10 @@ import { TabPager } from '@common/TabPager';
 import { AiIcon, NotificationIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { ColDef, ColGroupDef } from 'ag-grid-community';
+import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 export type Ltpz005TabValue = 'common' | 'accum' | 'job' | 'expected-uw';
 
@@ -392,7 +392,9 @@ const Ltpz00502 = () => {
           </RadioGroup>
         </div>
       </TabPager>
-      <Typo tag={'strong'} variant={'body-lg'}>확인사항</Typo>
+      <Typo tag={'strong'} variant={'body-lg'}>
+        확인사항
+      </Typo>
       <div className="ag-theme-alpine">
         <AgGridReact<DummyDataType2>
           getRowId={(params) => String(params.data.id)}

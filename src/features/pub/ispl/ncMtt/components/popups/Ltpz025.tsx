@@ -1,9 +1,6 @@
 'use client';
 
 import type { ColDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent } from '@aggrid';
@@ -20,6 +17,9 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 
 type DummyDataType = {
   id: number;

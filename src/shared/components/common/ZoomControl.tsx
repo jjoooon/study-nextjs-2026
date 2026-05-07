@@ -1,14 +1,14 @@
 'use client';
 
+import { Grow, Typo } from '@atoms';
+import { ZoomOutIcon, ZoomInIcon } from '@icons';
+import { Button } from '@uiux/Button';
 import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { selectZoomPercent } from '@/shared/store/uiSelectors';
 import { resetZoom, zoomIn, zoomOut } from '@/shared/store/uiSlice';
 import { setScale } from '@/shared/utils/scale';
-import { Grow, Typo } from '@atoms';
-import { ZoomOutIcon, ZoomInIcon } from '@icons';
-import { Button } from '@uiux/Button';
 
 export const ZoomControl = () => {
   const dispatch = useAppDispatch();

@@ -1,8 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import { ArrowIcon } from '@/shared/components/icons';
-import { Input } from '@/shared/components/uiux/Input';
 import { Grow, Typo, Gcol } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
@@ -16,6 +13,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@uiux/Table';
+import { useState } from 'react';
+import { ArrowIcon } from '@/shared/components/icons';
+import { Input } from '@/shared/components/uiux/Input';
 
 const Ltpz023 = () => {
   // 초기 키워드 값

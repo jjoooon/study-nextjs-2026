@@ -25,6 +25,10 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { persistStore } from 'redux-persist';
 
+import { configureMiddleware, devToolsConfig } from './config';
+import { middlewareRegistry } from './registry/middleware';
+import { reducerRegistry } from './registry/reducer';
+import { createPersistedReducer, getApiMiddleware } from './setup';
 import type { DashboardState } from '@/features/dashboard/types/storeTypes';
 import type { ProductsUIState } from '@/features/products/types/storeTypes';
 import type { PopupState } from '@/shared/store/popupSlice';
@@ -33,10 +37,6 @@ import type { AuthState } from '@/shared/types/authTypes';
 import type { UIState } from '@/shared/types/uiTypes';
 import { globalRegistry, REGISTRY_KEYS } from '@/shared/utils/globalRegistry';
 import log from '@/shared/utils/logger';
-import { configureMiddleware, devToolsConfig } from './config';
-import { middlewareRegistry } from './registry/middleware';
-import { reducerRegistry } from './registry/reducer';
-import { createPersistedReducer, getApiMiddleware } from './setup';
 
 // 타입 임포트
 
