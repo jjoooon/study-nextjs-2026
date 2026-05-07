@@ -1,11 +1,5 @@
 'use client';
 
-import { CoveragePopover, editableSelectCellRenderer } from '@aggrid';
-import { createSelectionChangedHandler } from '@aggrid';
-import { Grow, Gcol } from '@atoms';
-import { SearchIcon } from '@icons';
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
 import type { GridApi } from 'ag-grid-community';
 import {
   ICellRendererParams,
@@ -16,6 +10,12 @@ import {
   IRowNode,
 } from 'ag-grid-community';
 import { useCallback, useMemo } from 'react';
+import { CoveragePopover, editableSelectCellRenderer } from '@aggrid';
+import { createSelectionChangedHandler } from '@aggrid';
+import { Grow, Gcol } from '@atoms';
+import { SearchIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
 
 /**
  * [공용 훅] AgGrid 초기화 핸들러

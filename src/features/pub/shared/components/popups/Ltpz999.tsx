@@ -1,12 +1,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { BulletItem } from '@/shared/components/common/BulletList';
+import { ErrorIcon } from '@/shared/components/icons/CommonIcons';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogSection, DialogFooterArea, DialogClose } from '@uiux/Dialog';
-import { BulletItem } from '@/shared/components/common/BulletList';
-import { ErrorIcon } from '@/shared/components/icons/CommonIcons';
 
 const Ltpz999 = () => {
   return (

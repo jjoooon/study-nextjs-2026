@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { SpinnerState } from './spinnerSlice';
 import type { RootState } from '@/redux';
+import type { SpinnerState } from './spinnerSlice';
 
 // ============================================================================
 // SPINNER SELECTORS

@@ -1,5 +1,6 @@
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { Gcol, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
@@ -14,7 +15,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 import '@/shared/lib/agGridPub';
 
 export const Ltpz102 = () => {

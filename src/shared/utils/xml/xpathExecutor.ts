@@ -1,6 +1,6 @@
+import log from '@/shared/utils/logger';
 import type { XPathNode, CompiledQuery } from './xmlTypes';
 import { evaluateFilter } from './xpathParser';
-import log from '@/shared/utils/logger';
 
 /**
  * XPath 쿼리 캐시 (LRU Cache)
