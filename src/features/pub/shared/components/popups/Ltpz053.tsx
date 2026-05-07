@@ -21,7 +21,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';

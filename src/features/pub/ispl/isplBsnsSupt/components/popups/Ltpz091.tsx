@@ -1,6 +1,6 @@
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';

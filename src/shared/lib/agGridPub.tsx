@@ -1,4 +1,4 @@
-import { AllCommunityModule, CellSpanModule, ClientSideRowModelModule, ModuleRegistry } from 'ag-grid-community';
+import { AllCommunityModule, CellSpanModule, ClientSideRowModelModule, ModuleRegistry } from 'ag-grid-enterprise';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import { RowGroupingModule } from 'ag-grid-enterprise';
