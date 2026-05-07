@@ -59,6 +59,7 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
   };
 
   return (
+    // M2. 디자인 변경으로 수정
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl" className="max-h-[calc(100vh-4rem)] h-full">
         <DialogHeader>
@@ -81,11 +82,17 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
                   </Typo>
                   <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
-                    납입면제 미운영형, 납입 후 50%해약환급금지급형, 3N5간편고지형
+                    납입면제 미운영형
                   </Typo>
+                  <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
+                  <Typo tag="span" variant={'body-lg'} color={'gray'}>
+                    납입 후 50%해약환급금지급형
+                  </Typo>
+                  <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
+                  <Typo tag="span" variant={'body-lg'} color={'gray'}>3N5간편고지형</Typo>
                 </Grow>
                 <Grow>
-                  <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
+                  
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
                     9형(3.10.5간편고지형(고혈압및당뇨추가고지))(올케어플랜)(6~9형)(15-80세)
                   </Typo>
@@ -107,32 +114,34 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
           </Gcol>
 
           <Grid className="w-full grid-cols-[auto_1fr] h-full" gap={0}>
-            <Gcol className="w-[6.4rem] place-self-start" gap={0}>
-              {tabs.map((tab) => {
+            <Grid className="w-[6.4rem] grid-rows-[1fr_1fr_1fr_1fr] h-full max-h-[44rem] mr-[-0.1rem] place-self-start" gap={0}>
+              {tabs.map((tab, index) => {
                 const isActive = active === tab.value;
                 return (
-                  <Button
-                    key={tab.value}
-                    variant="outlined"
-                    color="gray-light"
-                    className={`w-full! -mr-[0.06rem] z-[99] h-[10.8rem]! rounded-[1rem] rounded-tr-[0] rounded-br-[0] border-r border-r-[transparent] ${
-                      isActive
-                        ? 'w-full! shadow-[inset_0.8rem_0_0_0_#FF5C2E,0_0.2rem_0_0_#00000010] border-l-0 pl-[1rem] pl-[1.6rem]'
-                        : 'w-[5.4rem]! h-[10.8rem] ml-[1rem]! bg-[#F4F4F4] '
-                    }`}
-                    onClick={() => setActive(tab.value)}
-                  >
-                    <Gcol>
-                      {getStateIcon(tab.state)}
-                      <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-500">
-                        {tab.label}
-                      </Typo>
-                    </Gcol>
-                  </Button>
+                  <div key={tab.value} className={index > 0 ? 'mt-[-0.1rem]' : ''}>
+                    <Button
+                      variant="outlined"
+                      color="gray-light"
+                      className={`w-full h-full p-0 -mr-[0.06rem] z-[99] rounded-[1rem] rounded-tr-[0] rounded-br-[0] border-r border-r-[transparent] ${
+                        isActive
+                          ? 'w-full! shadow-[inset_0.8rem_0_0_0_#FF5C2E,0_0.2rem_0_0_#00000010] border-l-0 pl-[1rem] pl-[1.6rem]'
+                          : 'w-[5.4rem]! ml-[1rem]! bg-[#F4F4F4] '
+                      }`}
+                      onClick={() => setActive(tab.value)}
+                    >
+                      <Gcol>
+                        {getStateIcon(tab.state)}
+                        <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-500">
+                          {tab.label}
+                        </Typo>
+                      </Gcol>
+                    </Button>
+                  </div>
                 );
               })}
-            </Gcol>
-            <div className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-full h-full overflow-x-hidden overflow-y-auto rounded-tr-[1rem] rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]">
+            </Grid>
+            <div className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc[+
+            100%+1rem]] h-full overflow-x-hidden overflow-y-auto rounded-tr-[1rem] rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]">
               {active === 'common' ? (
                 <Ltpz00501 />
               ) : active === 'accum' ? (
@@ -165,10 +174,6 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
                 </>
               ) : active === 'accum' ? (
                 <>
-                  <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                    <AiIcon color={'#545454'} color2={'#545454'} />
-                    AI인수한도해소
-                  </Button>
                   <Button variant={'outlined'} size={'xl'} color={'gray'}>
                     타사정액담보해약확인서 등록
                   </Button>
