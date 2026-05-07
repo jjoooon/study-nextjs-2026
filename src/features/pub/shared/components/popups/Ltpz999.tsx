@@ -11,8 +11,8 @@ import { ErrorIcon } from '@/shared/components/icons/CommonIcons';
 const Ltpz999 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton={false} resizable={true} size={'md'}>
-        <DialogSection className="grid-rows-[1fr] pt-5 gap={5}">
+      <DialogContent showCloseButton={false} resizable={true} size={'md'} className="grid-rows-[1fr_auto]">
+        <DialogSection className="pt-5 gap-5">
           <Grow placement="ec" className="text-[var(--color-gray-70)]">
             코드 LTRE006(trandZomH110)
           </Grow>
