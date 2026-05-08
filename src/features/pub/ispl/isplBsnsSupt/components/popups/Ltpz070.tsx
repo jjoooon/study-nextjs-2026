@@ -323,7 +323,7 @@ const Ltpz070 = () => {
   ];
   const columnDefs2: (ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>)[] = [
     {
-      headerName: '변경후 (보장 보험료: 5000,000원)',
+      headerName: '변경후 (보장 보험료: 500,000원)',
       headerClass: 'text-[var(--color-primary-50)]',
       children: [
         {
