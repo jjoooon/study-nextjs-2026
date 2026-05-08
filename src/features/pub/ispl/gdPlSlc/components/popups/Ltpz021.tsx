@@ -2,6 +2,7 @@
 
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -14,6 +15,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
@@ -255,7 +257,7 @@ const DummyData2: DummyDataType[] = [
   },
 ];
 
-export const Ltpa02004 = () => {
+const Ltpz021 = () => {
   const [rowData1] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2] = React.useState<DummyDataType[]>(DummyData1);
   const [rowData3] = React.useState<DummyDataType[]>(DummyData2);
@@ -329,7 +331,29 @@ export const Ltpa02004 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
+        <DialogSection className="grid-rows-[auto_1fr]">
+          <Grow className="w-full" variant="box-round">
+            <FormTable variant={'head'} lineTop={false}>
+              <FormRow>
+                <FormCell title={'피보험자'}>
+                  <Input value={'홍길순 32세(여)'} variant="info" readOnly />
+                </FormCell>
+                <FormCell title={'직업'}>
+                  <Input value={'(1급)회사 사무직 종사자'} variant="info" readOnly />
+                </FormCell>
+                <FormCell title={'보장분석'}>
+                  <Input value={'2026-01-01 진행'} variant="info" readOnly />
+                </FormCell>
+                <FormCell title={'보험금지급 이력정보'}>
+                  <Input value={'2026-01-01'} variant="info" readOnly />
+                </FormCell>
+
+                <FormCell title={'피보험자'}>
+                  <Input value={'32세(1994-02-12) / 여 / 1급'} variant="info" readOnly />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
           <Grow gap={3} placement="ss">
             {[...Array(3)].map((_, i) => (
               <Grid
@@ -355,7 +379,7 @@ export const Ltpa02004 = () => {
                 >
                   {/* scrollable content */}
                   <div
-                    className="ag-theme-alpine no-header w-full min-h-132 overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                    className="ag-theme-alpine no-header w-full min-h-[34rem] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
                     ref={(el) => {
                       scrollRefs.current[i + 1] = el;
                     }}
@@ -394,10 +418,15 @@ export const Ltpa02004 = () => {
                     />
 
                     <Grow
-                      className="sticky bottom-0 z-10 flex h-[3rem] w-full border-t border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem]"
+                      className="sticky bottom-[-0.1rem] z-10 flex h-[3rem] w-full border-t border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem]"
                       placement="bwc"
                     >
-                      <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-gray-100)]">
+                      <Typo
+                        tag={'span'}
+                        variant={'body-md'}
+                        weight={'bold'}
+                        className="text-[var(--color-primary-100)]"
+                      >
                         예상보험표
                       </Typo>
                       <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
@@ -429,3 +458,5 @@ export const Ltpa02004 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz021;
