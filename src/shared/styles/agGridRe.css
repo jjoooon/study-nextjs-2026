@@ -724,3 +724,7 @@
 .ag-header-cell-menu-button {
   display: none !important;
 }
+
+.modify-cell {
+  background-color: #CBE3FF !important;
+}

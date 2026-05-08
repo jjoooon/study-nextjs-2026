@@ -1,17 +1,25 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-community';
+import type {
+  CellEditingStartedEvent,
+  CellEditingStoppedEvent,
+  ColDef,
+  ColGroupDef,
+  ICellRendererParams,
+} from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createModifiedCellClassRules, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { ArrowDoubleIcon, StageIcon } from '@icons';
+import { ArrowDoubleIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid'
+import { numberValueFormatter } from '@aggrid';
 import {
   Dialog,
   DialogContent,
@@ -24,12 +32,12 @@ import {
 } from '@uiux/Dialog';
 
 import '@/shared/lib/agGridPub';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { StarStage } from '@/shared/components/features/StarStage';
 
 // dummy data
 type DummyDataType = {
   id: number;
-  star: number;
   field01: string | number;
   field02: string | number;
   field03: string | number;
@@ -38,7 +46,6 @@ type DummyDataType = {
 
 type DummyDataType2 = {
   id: number;
-  star: number;
   field01: string | number;
   field02: string | number;
   field03: string | number;
@@ -69,10 +76,45 @@ type DummyDataType4 = {
   field08: string | number;
 };
 
+type EditableAmountRow = {
+  id: number;
+};
+
+const createField06EditingHandlers = <T extends EditableAmountRow>(
+  setEditingRowIds: React.Dispatch<React.SetStateAction<number[]>>,
+) => ({
+  onCellEditingStarted: (params: CellEditingStartedEvent<T>) => {
+    if (params.colDef.field !== 'field06' || !params.data) {
+      return;
+    }
+
+    const { data } = params;
+
+    setEditingRowIds((prev) => (prev.includes(data.id) ? prev : [...prev, data.id]));
+  },
+  onCellEditingStopped: (params: CellEditingStoppedEvent<T>) => {
+    if (params.colDef.field !== 'field06' || !params.data) {
+      return;
+    }
+
+    setEditingRowIds((prev) => prev.filter((id) => id !== params.data?.id));
+  },
+});
+
+const useField06EditingHandlers = <T extends EditableAmountRow>() => {
+  const [editingRowIds, setEditingRowIds] = React.useState<number[]>([]);
+
+  const editingHandlers = React.useMemo(() => createField06EditingHandlers<T>(setEditingRowIds), []);
+
+  return {
+    editingRowIds,
+    ...editingHandlers,
+  };
+};
+
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    star:2,
     field01: '수익성 저조',
     field02: '00.0',
     field03: '00.0%',
@@ -83,7 +125,6 @@ const DummyData: DummyDataType[] = [
 const DummyData2: DummyDataType2[] = [
   {
     id: 1,
-    star:4,
     field01: '수익성 우량',
     field02: '00.0',
     field03: '00.0%',
@@ -100,8 +141,8 @@ const DummyData3: DummyDataType3[] = [
     field04: '5000',
     field05: '-10.5',
     field06: '5000',
-    field07: '',
-    field08: '',
+    field07: '2500',
+    field08: '-8.5',
   },
   {
     id: 2,
@@ -116,7 +157,7 @@ const DummyData3: DummyDataType3[] = [
   },
   {
     id: 3,
-    field01: '상해사망(체증형)',
+    field01: '일반상해후유장해',
     field02: '00.0',
     field03: '10000',
     field04: '5000',
@@ -138,7 +179,7 @@ const DummyData3: DummyDataType3[] = [
   },
   {
     id: 5,
-    field01: '상해사망(체증형)',
+    field01: '일반상해후유장해',
     field02: '00.0',
     field03: '10000',
     field04: '5000',
@@ -162,58 +203,58 @@ const DummyData3: DummyDataType3[] = [
 const DummyData4: DummyDataType4[] = [
   {
     id: 1,
-    field01: '일반상해후유장해',
-    field02: '00.0',
+    field01: '암진단비',
+    field02: '0.00%',
     field03: '10000',
     field04: '5000',
-    field05: '-10.5',
-    field06: '5000',
-    field07: '',
-    field08: '',
+    field05: '126',
+    field06: '10000',
+    field07: '2500',
+    field08: '13.0',
   },
   {
     id: 2,
-    field01: '상해사망(체증형)',
-    field02: '00.0',
+    field01: '유사암진단비',
+    field02: '0.00%',
     field03: '10000',
     field04: '5000',
-    field05: '-10.5',
-    field06: '5000',
+    field05: '126',
+    field06: '10000',
     field07: '2500',
-    field08: '-8.5',
+    field08: '11.0',
   },
   {
     id: 3,
-    field01: '상해사망(체증형)',
-    field02: '00.0',
+    field01: '뇌전증진단비',
+    field02: '0.00%',
     field03: '10000',
     field04: '5000',
-    field05: '-10.5',
-    field06: '5000',
+    field05: '126',
+    field06: '10000',
     field07: '2500',
-    field08: '-8.5',
+    field08: '13.0',
   },
   {
     id: 4,
-    field01: '상해사망(체증형)',
-    field02: '00.0',
+    field01: '유사암진단비',
+    field02: '0.00%',
     field03: '10000',
     field04: '5000',
-    field05: '-10.5',
-    field06: '5000',
+    field05: '126',
+    field06: '10000',
     field07: '2500',
-    field08: '-8.5',
+    field08: '13.0',
   },
   {
     id: 5,
-    field01: '상해사망(체증형)',
-    field02: '00.0',
+    field01: '뇌전증진단비',
+    field02: '0.00%',
     field03: '10000',
     field04: '5000',
-    field05: '-10.5',
-    field06: '5000',
+    field05: '126',
+    field06: '10000',
     field07: '2500',
-    field08: '-8.5',
+    field08: '11.0',
   },
   {
     id: 6,
@@ -224,16 +265,24 @@ const DummyData4: DummyDataType4[] = [
     field05: '-10.5',
     field06: '5000',
     field07: '2500',
-    field08: '-8.5',
+    field08: '13.0',
   },
 ];
 
-const DEFAULT_STAGE_ICON_COUNT = 5;
-const STAGE_ICON_ACTIVE_COLOR = '#FFB800';
-const STAGE_ICON_INACTIVE_FILL = 'transparent';
-const STAGE_ICON_INACTIVE_BORDER = '#ccc';
+const Ltpz070 = () => {
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
+  const [rowData3] = React.useState<DummyDataType3[]>(DummyData3);
+  const [rowData4] = React.useState<DummyDataType4[]>(DummyData4);
+  const field06ModifiedCellClassRules3 = React.useMemo(
+    () => createModifiedCellClassRules({ rows: rowData3, idKey: 'id', valueKey: 'field06' }),
+    [rowData3],
+  );
+  const field06ModifiedCellClassRules4 = React.useMemo(
+    () => createModifiedCellClassRules({ rows: rowData4, idKey: 'id', valueKey: 'field06' }),
+    [rowData4],
+  );
 
-export const Ltpz070 = () => {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -246,24 +295,7 @@ export const Ltpz070 = () => {
           cellClass: 'text-center',
           autoHeight: true,
           sortable: false,
-          cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => {
-            const star = params.data?.star ?? 0;
-
-            return (
-              <Gcol className="p-1 flex items-center justify-end gap-0">
-                <Grow className="gap-0">
-                  {Array.from({ length: DEFAULT_STAGE_ICON_COUNT }, (_, index) => (
-                    <StageIcon
-                      key={index}
-                      color={index + 1 <= star ? STAGE_ICON_ACTIVE_COLOR : STAGE_ICON_INACTIVE_FILL}
-                      color2={index + 1 <= star ? STAGE_ICON_ACTIVE_COLOR : STAGE_ICON_INACTIVE_BORDER}
-                    />
-                  ))}
-                </Grow>
-                <span>{star <= 2 ? "수익성 저조" : "수익성 우량"}</span>
-              </Gcol>
-            );
-          },
+          cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => <StarStage profitabilityText={String(params.value ?? '')} />,
         },
         {
           headerName: '가치배수',
@@ -291,7 +323,8 @@ export const Ltpz070 = () => {
   ];
   const columnDefs2: (ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>)[] = [
     {
-      headerName: '변경후 (보장 보험료: $00,00$원)',
+      headerName: '변경후 (보장 보험료: 5000,000원)',
+      headerClass: 'text-[var(--color-primary-50)]',
       children: [
         {
           headerName: '수익성',
@@ -299,24 +332,7 @@ export const Ltpz070 = () => {
           width: 180,
           cellClass: 'text-center',
           autoHeight: true,
-          cellRenderer: (params: ICellRendererParams<DummyDataType2, string | number>) => {
-            const star = params.data?.star ?? 0;
-
-            return (
-              <Gcol className="p-1 flex items-center justify-end gap-0">
-                <Grow className="gap-0">
-                  {Array.from({ length: DEFAULT_STAGE_ICON_COUNT }, (_, index) => (
-                    <StageIcon
-                      key={index}
-                      color={index + 1 <= star ? STAGE_ICON_ACTIVE_COLOR : STAGE_ICON_INACTIVE_FILL}
-                      color2={index + 1 <= star ? STAGE_ICON_ACTIVE_COLOR : STAGE_ICON_INACTIVE_BORDER}
-                    />
-                  ))}
-                </Grow>
-                <span>{star <= 2 ? "수익성 저조" : "수익성 우량"}</span>
-              </Gcol>
-            );
-          },
+          cellRenderer: (params: ICellRendererParams<DummyDataType2, string | number>) => <StarStage profitabilityText={String(params.value ?? '')} />,
         },
         {
           headerName: '가치배수',
@@ -331,6 +347,7 @@ export const Ltpz070 = () => {
           flex: 1,
           cellClass: 'text-right',
           autoHeight: true,
+          
         },
         {
           headerName: '수정률',
@@ -346,7 +363,7 @@ export const Ltpz070 = () => {
     {
       headerName: '담보명',
       field: 'field01',
-      width: 230,
+      flex: 1,
       cellClass: 'text-left',
       sortable: false,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field01' }),
@@ -359,11 +376,13 @@ export const Ltpz070 = () => {
     },
     {
       headerName: '현재',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      headerClass: 'ag-header-right-divider',
       children: [
         {
           headerName: '가입금액(만원)',
           field: 'field03',
-          flex: 1,
+          width: 120,
           cellClass: 'text-right',
           valueParser: params => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -371,7 +390,7 @@ export const Ltpz070 = () => {
         {
           headerName: '보험료(원)',
           field: 'field04',
-          flex: 1,
+          width: 120,
           cellClass: 'text-right',
           valueParser: params => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -379,13 +398,15 @@ export const Ltpz070 = () => {
         {
           headerName: '가치배수',
           field: 'field05',
-          flex: 1,
+          width: 120,
           cellClass: 'text-right',
         },
       ]
     },
     {
       headerName: '변경후',
+      headerClass: 'text-[var(--color-primary-50)]',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       cellRenderer: (params: { value: string | number }) => {
         return (
           <>
@@ -397,15 +418,18 @@ export const Ltpz070 = () => {
         {
           headerName: '가입금액(만원)',
           field: 'field06',
-          flex: 1,
-          cellClass: 'text-right',
+          width: 120,
+          cellClass: 'text-right editable-cell',
+          cellClassRules: field06ModifiedCellClassRules3,
+          editable: true,
+          cellEditor: 'agInputCellEditor',
           valueParser: params => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
         },
         {
           headerName: '보험료(원)',
           field: 'field07',
-          flex: 1,
+          width: 120,
           cellClass: 'text-right',
           valueParser: params => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -413,7 +437,7 @@ export const Ltpz070 = () => {
         {
           headerName: '가치배수',
           field: 'field08',
-          flex: 1,
+          width: 120,
           cellClass: 'text-right',
         },
       ]
@@ -423,7 +447,7 @@ export const Ltpz070 = () => {
     {
       headerName: '담보명',
       field: 'field01',
-      width: 230,
+      flex: 1,
       cellClass: 'text-left',
       sortable: false,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType4>({ field: 'field01' }),
@@ -436,11 +460,13 @@ export const Ltpz070 = () => {
     },
     {
       headerName: '현재',
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      headerClass: 'ag-header-right-divider',
       children: [
         {
           headerName: '가입금액(만원)',
           field: 'field03',
-          flex: 1,
+          width: 120,
           cellClass: 'text-right',
           valueParser: params => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -448,7 +474,7 @@ export const Ltpz070 = () => {
         {
           headerName: '보험료(원)',
           field: 'field04',
-          flex: 1,
+          width: 120,
           cellClass: 'text-right',
           valueParser: params => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -456,26 +482,30 @@ export const Ltpz070 = () => {
         {
           headerName: '가치배수',
           field: 'field05',
-          flex: 1,
+          width: 120,
           cellClass: 'text-right',
         },
       ]
     },
     {
       headerName: '변경후',
+      headerClass: 'text-[var(--color-primary-50)]',
       children: [
         {
           headerName: '가입금액(만원)',
           field: 'field06',
-          flex: 1,
-          cellClass: 'text-right',
+          width: 120,
+          cellClass: 'text-right editable-cell',
+          cellClassRules: field06ModifiedCellClassRules4,
+          editable: true,
+          cellEditor: 'agInputCellEditor',
           valueParser: params => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
         },
         {
           headerName: '보험료(원)',
           field: 'field07',
-          flex: 1,
+          width: 120,
           cellClass: 'text-right',
           valueParser: params => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -483,17 +513,12 @@ export const Ltpz070 = () => {
         {
           headerName: '가치배수',
           field: 'field08',
-          flex: 1,
+          width: 120,
           cellClass: 'text-right',
         },
       ]
     },
   ];
-
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
-  const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
-  const [rowData3] = React.useState<DummyDataType3[]>(DummyData3);
-  const [rowData4] = React.useState<DummyDataType4[]>(DummyData4);
 
   return (
     <Dialog open>
@@ -514,7 +539,7 @@ export const Ltpz070 = () => {
               <TableFoldHead title="계약 수익성 상세" />
               <TableFoldBody>
                 <Grow className="w-full" gap={3}>
-                  <Grow className="w-full border border-[0.1rem] border-[var(--color-gray-30)] box-border rounded-md p-3">
+                  <div className="w-full border border-[0.1rem] border-[var(--color-gray-30)] box-border rounded-md p-3">
                     <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
@@ -529,11 +554,11 @@ export const Ltpz070 = () => {
                         }}
                       />
                     </div>
-                  </Grow>
+                  </div>
                   <Grow className="w-[2.4rem] h-[2.4rem]">
                     <ArrowDoubleIcon className="w-[2.4rem] h-[2.4rem] rotate-270" />
                   </Grow>
-                  <Grow className="w-full border border-[0.2rem] border-[var(--color-primary-50)] box-border rounded-md p-3 bg-[var(--color-primary-5)]">
+                  <div className="w-full border border-[0.2rem] border-[var(--color-primary-50)] box-border rounded-md p-3 bg-[var(--color-primary-5)]" style={{ boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)' }}>
                     <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
@@ -543,49 +568,69 @@ export const Ltpz070 = () => {
                         enableCellSpan={false}
                         singleClickEdit={false}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                         defaultColDef={{
+                        defaultColDef={{
                           sortable: false,
                           resizable: false,
                         }}
                       />
                     </div>
-                  </Grow>
+                  </div>
                 </Grow>
               </TableFoldBody>
             </TableFold>
             <TableFold>
               <TableFoldHead title="가입금액 감액 권장 담보" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<DummyDataType3>
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData3}
-                    columnDefs={columnDefs3}
-                    domLayout="normal"
-                    enableCellSpan={true}
-                    singleClickEdit={true}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                  />
+                <div className="relative">
+                  <div
+                      className="absolute top-0 bottom-0 right-0 z-10 border rounded-md pointer-events-none"
+                      style={{ width: '36.7rem', height: 'auto', borderColor: 'var(--color-primary-50)', borderWidth: '0.2rem', boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)' }}
+                    />
+                  <div className="ag-theme-alpine min-h-[15.4rem]">
+                    <AgGridReact<DummyDataType3>
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData3}
+                      columnDefs={columnDefs3}
+                      domLayout="normal"
+                      enableCellSpan={false}
+                      singleClickEdit={true}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                      }}
+                    />
+                  </div>
                 </div>
               </TableFoldBody>
             </TableFold>
             <TableFold>
               <TableFoldHead title="가입금액 증액 권장 담보" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<DummyDataType4>
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData4}
-                    columnDefs={columnDefs4}
-                    domLayout="normal"
-                    enableCellSpan={true}
-                    singleClickEdit={true}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
+                <div className="relative">
+                  <div
+                    className="absolute top-0 bottom-0 right-0 z-10 border rounded-md pointer-events-none"
+                    style={{ width: '36.7rem', height: 'auto', borderColor: 'var(--color-primary-50)', borderWidth: '0.2rem', boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)' }}
                   />
+                  <div className="ag-theme-alpine min-h-[15.4rem]">
+                    <AgGridReact<DummyDataType4>
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData4}
+                      columnDefs={columnDefs4}
+                      domLayout="normal"
+                      enableCellSpan={true}
+                      singleClickEdit={true}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                      }}
+                    />
+                  </div>
                 </div>
               </TableFoldBody>
             </TableFold>
@@ -626,3 +671,5 @@ export const Ltpz070 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz070;
