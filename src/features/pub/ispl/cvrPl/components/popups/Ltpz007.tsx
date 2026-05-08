@@ -1,3 +1,7 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 'use client';
 
 import '@/shared/lib/agGridPub';
@@ -8,7 +12,7 @@ import {
   createHeaderCheckboxOnCellValueChanged,
   createTooltipValueGetter,
 } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { Button } from '@uiux/Button';
 import {

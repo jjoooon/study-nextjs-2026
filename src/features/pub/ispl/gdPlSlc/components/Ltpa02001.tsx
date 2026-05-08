@@ -1,21 +1,26 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 'use client';
 
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon, ResetIcon } from '@icons';
 
+import { SearchIcon, ResetIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
+import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
@@ -346,8 +351,10 @@ const dummyData3Tab: Array<{ value: string; label: string; count: number }> = [
   },
 ];
 
-export function Ltpa020View1() {
+export function Ltpa02001() {
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
+  const [productCategory, setProductCategory] = React.useState<string[]>(['comprehensive', 'female']);
+  const [productFeature, setProductFeature] = React.useState<string[]>(['simple', 'shortTerm']);
 
   // 상품선택 AG-Grid 컬럼 정의
   const productNameHeader = useCallback(() => {
@@ -495,34 +502,75 @@ export function Ltpa020View1() {
   const selectedPlanRowData = planRowDataMap[active] ?? dummyData3;
 
   return (
-    <Grow className="w-full overflow-hidden" placement="ss" gap={5}>
-      <TableFold className="h-full">
-        <TableFoldHead title="상품정보" variant="default" />
-        <TableFoldBody className="w-full h-full">
-          <div className="ag-theme-alpine w-full h-full min-h-0">
-            <AgGridReact<DummyDataType>
-              getRowId={(params) => String(params.data.id)}
-              noRowsOverlayComponent={AgGridEmptyComponent}
-              rowData={dummyData}
-              columnDefs={columnDefs}
-              domLayout="normal"
-              tooltipShowMode="whenTruncated"
-              tooltipShowDelay={0}
-            />
-          </div>
-        </TableFoldBody>
-      </TableFold>
-
-      <Grid className="max-w-[42.5rem] w-[42.5rem] shrink-0 h-full grid-rows-[40%_1fr]" gap={5}>
-        <TableFold className="">
-          <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보" variant="default" />
+    <Grid className="w-full grid-rows-[auto_1fr]" gap={3}>
+      <Grow variant={'box-round'} className="w-full" placement="bwe">
+        <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
+          <FormRow className="items-start!">
+            <FormCell title={'상품분류'}>
+              <CheckboxGroup
+                value={productCategory}
+                onValueChange={setProductCategory}
+                variant="button"
+                size="md"
+                className="gap-[0.4rem] flex-wrap"
+              >
+                {[
+                  { value: 'all', label: '전체' },
+                  { value: 'comprehensive', label: '종합건강' },
+                  { value: 'simple', label: '간편' },
+                  { value: 'female', label: '여성' },
+                  { value: 'cancer', label: '암/간병' },
+                  { value: 'childDental', label: '자녀/치아' },
+                  { value: 'accident', label: '상해' },
+                  { value: 'medical', label: '의료비' },
+                  { value: 'property', label: '재물' },
+                  { value: 'annuity', label: '연금/저축' },
+                ].map((opt) => (
+                  <CheckboxGroupItem key={opt.value} value={opt.value} selectAll={opt.value === 'all'}>
+                    {opt.label}
+                  </CheckboxGroupItem>
+                ))}
+              </CheckboxGroup>
+            </FormCell>
+          </FormRow>
+          <FormRow className="items-start!">
+            <FormCell title={'상품특징'}>
+              <CheckboxGroup
+                value={productFeature}
+                onValueChange={setProductFeature}
+                variant="button"
+                size="md"
+                className="gap-[0.4rem] flex-wrap"
+              >
+                {[
+                  { value: 'all', label: '전체' },
+                  { value: 'simple', label: '간편' },
+                  { value: 'noRefund', label: '무해지' },
+                  { value: 'shortTerm', label: '세만기' },
+                  { value: 'longTerm', label: '연만기' },
+                ].map((opt) => (
+                  <CheckboxGroupItem key={opt.value} value={opt.value} selectAll={opt.value === 'all'}>
+                    {opt.label}
+                  </CheckboxGroupItem>
+                ))}
+              </CheckboxGroup>
+            </FormCell>
+          </FormRow>
+        </FormTable>
+        <Button variant="outlined" color="gray" only="icon">
+          <ResetIcon />
+        </Button>
+      </Grow>
+      <Grow className="w-full overflow-hidden" placement="ss" gap={5}>
+        <TableFold className="h-full">
+          <TableFoldHead title="상품정보" variant="default" />
           <TableFoldBody className="w-full h-full">
             <div className="ag-theme-alpine w-full h-full min-h-0">
-              <AgGridReact<DummyDataType2>
+              <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={dummyData2}
-                columnDefs={columnDefs2}
+                rowData={dummyData}
+                columnDefs={columnDefs}
                 domLayout="normal"
                 tooltipShowMode="whenTruncated"
                 tooltipShowDelay={0}
@@ -530,35 +578,54 @@ export function Ltpa020View1() {
             </div>
           </TableFoldBody>
         </TableFold>
-        <TabPager
-          data={tabs}
-          active={active}
-          setActive={setActive}
-          hasTableBelow={true}
-          getValue={(tab) => String(tab.value)}
-          renderTab={(tab) => {
-            return (
-              <>
-                <span>{tab.label}</span>
-                <span>({tab.count})</span>
-              </>
-            );
-          }}
-          renderDropdownItem={false}
-        >
-          <div className="ag-theme-alpine w-full ag-border-t h-full">
-            <AgGridReact<DummyDataType3>
-              getRowId={(params) => String(params.data.id)}
-              noRowsOverlayComponent={AgGridEmptyComponent}
-              rowData={selectedPlanRowData}
-              columnDefs={columnDefs3}
-              domLayout="normal"
-              tooltipShowMode="whenTruncated"
-              tooltipShowDelay={0}
-            />
-          </div>
-        </TabPager>
-      </Grid>
-    </Grow>
+
+        <Grid className="max-w-[42.5rem] w-[42.5rem] shrink-0 h-full grid-rows-[40%_1fr]" gap={5}>
+          <TableFold className="">
+            <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보" variant="default" />
+            <TableFoldBody className="w-full h-full">
+              <div className="ag-theme-alpine w-full h-full min-h-0">
+                <AgGridReact<DummyDataType2>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={dummyData2}
+                  columnDefs={columnDefs2}
+                  domLayout="normal"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
+          <TabPager
+            data={tabs}
+            active={active}
+            setActive={setActive}
+            hasTableBelow={true}
+            getValue={(tab) => String(tab.value)}
+            renderTab={(tab) => {
+              return (
+                <>
+                  <span>{tab.label}</span>
+                  <span>({tab.count})</span>
+                </>
+              );
+            }}
+            renderDropdownItem={false}
+          >
+            <div className="ag-theme-alpine w-full ag-border-t h-full">
+              <AgGridReact<DummyDataType3>
+                getRowId={(params) => String(params.data.id)}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                rowData={selectedPlanRowData}
+                columnDefs={columnDefs3}
+                domLayout="normal"
+                tooltipShowMode="whenTruncated"
+                tooltipShowDelay={0}
+              />
+            </div>
+          </TabPager>
+        </Grid>
+      </Grow>
+    </Grid>
   );
 }

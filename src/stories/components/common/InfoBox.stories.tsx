@@ -1,3 +1,6 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import { Gcol, Grow, Typo } from '@atoms';

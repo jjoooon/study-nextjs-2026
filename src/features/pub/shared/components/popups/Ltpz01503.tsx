@@ -1,3 +1,7 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 'use client';
 
 import { AgGridEmptyComponent, createAddRowHandler, createDeleteSelectedRowsHandler } from '@aggrid';
@@ -207,16 +211,15 @@ const Ltpz01503 = () => {
               <Input width={200} value={''} readOnly />
               <Grow>
                 (
-                  <Input width={40} value={''} readOnly/>-
-                  <Input width={40} value={''} readOnly/>-
-                  <Input width={40} value={''} readOnly/>
-                )
+                <Input width={40} value={''} readOnly />-
+                <Input width={40} value={''} readOnly />-
+                <Input width={40} value={''} readOnly />)
               </Grow>
             </FormCell>
           </FormRow>
         </FormTable>
       </Grow>
-      <TableFold variant="accordion" className='grid grid-rows-[auto_1fr] h-full'>
+      <TableFold variant="accordion" className="grid grid-rows-[auto_1fr] h-full">
         <TableFoldHead title="직접동의(모바일)">
           <Grow>
             <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
@@ -238,10 +241,10 @@ const Ltpz01503 = () => {
             </Button>
           </Grow>
         </TableFoldHead>
-        <TableFoldBody className='grid grid-rows-[1fr] h-full gap-2'>
-          <Grid gap={2} placement="ss" className='grid-rows-[auto_1fr] h-full'>
+        <TableFoldBody className="grid grid-rows-[1fr] h-full gap-2">
+          <Grid gap={2} placement="ss" className="grid-rows-[auto_1fr] h-full">
             <BulletItem size="md" type="dotBig">
-             당사 모바일로 홈페이지를 통해 고객이 직접 동의할 수 있는 알림톡이 전송됩니다.
+              당사 모바일로 홈페이지를 통해 고객이 직접 동의할 수 있는 알림톡이 전송됩니다.
             </BulletItem>
             <div className="ag-theme-alpine min-h-[20rem] h-full">
               <AgGridReact<DummyDataType>
@@ -271,7 +274,7 @@ const Ltpz01503 = () => {
           <FormTable caption="가입설계 동의" cols={['w-[12rem]', 'flex-1']}>
             <FormRow>
               <FormCell title={'동의항목'}>
-                <Grid className='w-full'>
+                <Grid className="w-full">
                   <CheckboxGroup
                     className="grid grid-cols-2 gap-1"
                     color="primary"
@@ -282,16 +285,15 @@ const Ltpz01503 = () => {
                   >
                     {[
                       { value: 'v1', label: '수집, 이용 및 조회' },
-                      { value: 'v2', label: '고유식별정보 처리'},
-                      { value: 'v3', label: '제3자 제공'},
-                      { value: 'v4', label: '민감정보(상해/질병)처리'},
+                      { value: 'v2', label: '고유식별정보 처리' },
+                      { value: 'v3', label: '제3자 제공' },
+                      { value: 'v4', label: '민감정보(상해/질병)처리' },
                     ].map((option) => (
                       <CheckboxGroupItem key={option.value} value={option.value}>
                         {option.label}
                       </CheckboxGroupItem>
                     ))}
                   </CheckboxGroup>
-
                 </Grid>
               </FormCell>
             </FormRow>

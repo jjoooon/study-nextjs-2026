@@ -1,3 +1,7 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 'use client';
 
 import { Gcol, Grid, Grow, Typo } from '@atoms';
@@ -55,7 +59,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz01602 = () => {
+const Ltpz01602 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '업종구분',
@@ -344,3 +348,5 @@ export const Ltpz01602 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz01602;

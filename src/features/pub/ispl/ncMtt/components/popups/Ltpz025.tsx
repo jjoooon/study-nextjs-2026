@@ -1,6 +1,8 @@
-'use client';
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
 
-import type { ColDef } from 'ag-grid-enterprise';
+'use client';
 
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent } from '@aggrid';
@@ -17,6 +19,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';

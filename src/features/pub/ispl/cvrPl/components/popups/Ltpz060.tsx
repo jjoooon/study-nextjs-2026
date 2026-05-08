@@ -1,8 +1,11 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
-import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';

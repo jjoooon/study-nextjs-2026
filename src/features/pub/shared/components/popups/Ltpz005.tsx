@@ -1,9 +1,13 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 'use client';
 
 import '@/shared/lib/agGridPub';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { AiIcon, CircleCheckIcon, InfoToastIcon } from '@icons';
+import { CircleCheckIcon, InfoToastIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import * as React from 'react';
 
@@ -64,8 +68,9 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
       <DialogContent showCloseButton resizable={true} size="2xl" className="max-h-[calc(100vh-4rem)] h-full">
         <DialogHeader>
           <DialogTitle>
+            {/* M3. 제목변경 */}
             <Typo tag={'strong'} variant={'heading-lg'}>
-              꼭 확인해야 할 일
+              꼭 해야할 일
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTRZ005)

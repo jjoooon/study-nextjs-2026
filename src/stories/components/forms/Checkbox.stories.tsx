@@ -1,4 +1,7 @@
-﻿import type { Meta, StoryObj } from '@storybook/react';
+﻿/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';

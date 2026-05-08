@@ -1,6 +1,8 @@
-'use client';
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+'use client';
 
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
@@ -22,6 +24,7 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';

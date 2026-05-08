@@ -1,3 +1,6 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
 const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
 const PROD_STORYBOOK_BASE_URL = 'https://jjoooon.github.io/study-nextjs-2026';
 

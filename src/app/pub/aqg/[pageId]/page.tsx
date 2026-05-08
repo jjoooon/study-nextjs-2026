@@ -1,3 +1,7 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 import { notFound } from 'next/navigation';
 import log from '@/shared/utils/logger';
 
@@ -6,7 +10,7 @@ import log from '@/shared/utils/logger';
 // ==============================================================================
 
 export default async function Page({ params }: { params: { pageId: string } }) {
-  const logger = log.getLogger('ProductPage');
+  const logger = log.getLogger('App Routing');
   const { pageId } = await params;
   logger.debug(`pageId: ${pageId}`);
 
