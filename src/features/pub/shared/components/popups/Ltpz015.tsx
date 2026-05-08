@@ -32,7 +32,6 @@ const DATA_TABS: LTPZ015Tab[] = [
   { value: 'tab3', label: '직접동의(모바일)' },
 ];
 
-
 const Ltpz015 = () => {
   // AgGrid Column
   const { tabs, active, setActive } = useTabs(DATA_TABS);

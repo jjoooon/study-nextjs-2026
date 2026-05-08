@@ -11,7 +11,7 @@ import { TooltipQ } from '@common/TooltipQ';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { ColDef, ColGroupDef } from 'ag-grid-community';
+import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
@@ -246,9 +246,9 @@ const Ltpz00501 = () => {
 
   return (
     // M2. 디자인 변경으로 수정
-    <Gcol className="w-full" placement='ss' gap={3}>
-      <Gcol gap={3} placement='ss'>
-        <Gcol placement='ss'>
+    <Gcol className="w-full" placement="ss" gap={3}>
+      <Gcol gap={3} placement="ss">
+        <Gcol placement="ss">
           <Typo tag={'strong'} variant={'body-lg'}>
             청약완료 전 필수 확인사항
           </Typo>

@@ -1,6 +1,6 @@
 'use client';
 
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
 
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent } from '@aggrid';

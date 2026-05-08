@@ -5,8 +5,8 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { AiIcon, CircleCheckIcon } from '@icons';
 import { Checkbox } from '@uiux/Checkbox';
 import { useState, type ReactNode } from 'react';
-import { Button } from '../uiux/Button';
 import { Badge } from '../uiux/Badge';
+import { Button } from '../uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../uiux/Tooltip';
 
 export type RecommendCardDataItem = {
@@ -24,8 +24,8 @@ type RecommendCardNormalProps = {
   title?: string;
   type?: string;
   plan?: string[];
-  list?: string[];  
-  checked?: boolean;  
+  list?: string[];
+  checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   onAiReasonClick?: () => void;
   children?: never;
@@ -79,19 +79,15 @@ function NormalRecommendCardItem({
     <Grid
       className={`relative p-px w-full rounded-[0.8rem] bg-linear-to-b from-[#E5E5E5] from-[47.33%] to-[#61554F] to-100%${className ? ` ${className}` : ''}`}
     >
-      <Grid
-        className={
-          'rounded-[0.8rem] grid-rows-[1fr_auto] w-full bg-[#817772]'
-        }
-      >
+      <Grid className={'rounded-[0.8rem] grid-rows-[1fr_auto] w-full bg-[#817772]'}>
         <Gcol
           className="relative overflow-visible bg-white rounded-[0.8rem] w-full py-[2rem] px-[1.6rem] shadow-[-3px_4px_6px_0_rgba(0,0,0,0.20)] [&>div]:[position:initial]"
           placement="ss"
           gap={2}
         >
-          <Grow className='w-full' placement="bwc">
-            <Badge size="md" variant="rounded" className='text-[#006FF2] bg-[#E0EFFF] h-[2.2rem] px-[0.6rem]'>
-              <CircleCheckIcon color='#006FF2' />
+          <Grow className="w-full" placement="bwc">
+            <Badge size="md" variant="rounded" className="text-[#006FF2] bg-[#E0EFFF] h-[2.2rem] px-[0.6rem]">
+              <CircleCheckIcon color="#006FF2" />
               {type}
             </Badge>
             {variant === 'checkbox' ? (
@@ -113,43 +109,36 @@ function NormalRecommendCardItem({
             ) : null}
           </Grow>
           <Gcol className="w-full" gap={0.5} placement={'ss'}>
-            <Gcol className='w-full' gap={2}>
-              <Typo tag={'strong'} variant={'body-xl'} className='w-full h-[2rem] text-[#000] overflow-hidden'>
+            <Gcol className="w-full" gap={2}>
+              <Typo tag={'strong'} variant={'body-xl'} className="w-full h-[2rem] text-[#000] overflow-hidden">
                 <Tooltip>
-                    <TooltipTrigger>
-                      {title}
-                    </TooltipTrigger>
-                    <TooltipContent
-                      align="center"
-                      side="top"
-                      sideOffset={0}
-                      variant="default"
-                    >
-                      {title}
-                    </TooltipContent>
-                  </Tooltip>
+                  <TooltipTrigger>{title}</TooltipTrigger>
+                  <TooltipContent align="center" side="top" sideOffset={0} variant="default">
+                    {title}
+                  </TooltipContent>
+                </Tooltip>
               </Typo>
               <Grow className="w-full flex flex-col" placement="ss">
-                {plan && plan.length > 0 ? (
-                  plan.map((item, index) => (
-                    <Typo key={index} tag={'p'} variant={'body-xs'} className='text-[#414141]'>
-                      {item}
-                    </Typo>
-                  ))
-                ) : null}
+                {plan && plan.length > 0
+                  ? plan.map((item, index) => (
+                      <Typo key={index} tag={'p'} variant={'body-xs'} className="text-[#414141]">
+                        {item}
+                      </Typo>
+                    ))
+                  : null}
               </Grow>
             </Gcol>
           </Gcol>
           {variant === 'normal' ? (
             <Grow className="w-full rounded-[0.8rem] bg-[#F4F4F4] px-[1rem] py-[1rem]" placement="sc">
               <BulletList>
-                {list && list.length > 0 ? (
-                  list.map((item, index) => (
-                    <BulletListItem key={index} size={'sm'} type={'dotBig'} className="text-[#000]!">
-                      {item}
-                    </BulletListItem>
-                  ))
-                ) : null}
+                {list && list.length > 0
+                  ? list.map((item, index) => (
+                      <BulletListItem key={index} size={'sm'} type={'dotBig'} className="text-[#000]!">
+                        {item}
+                      </BulletListItem>
+                    ))
+                  : null}
               </BulletList>
             </Grow>
           ) : null}
@@ -159,13 +148,13 @@ function NormalRecommendCardItem({
               placement="sc"
             >
               <BulletList>
-                {list && list.length > 0 ? (
-                  list.map((item, index) => (
-                    <BulletListItem key={index} size={'sm'} type={'dotBig'} className="text-[#000]!">
-                      {item}
-                    </BulletListItem>
-                  ))
-                ) : null}
+                {list && list.length > 0
+                  ? list.map((item, index) => (
+                      <BulletListItem key={index} size={'sm'} type={'dotBig'} className="text-[#000]!">
+                        {item}
+                      </BulletListItem>
+                    ))
+                  : null}
               </BulletList>
             </Grow>
           ) : null}

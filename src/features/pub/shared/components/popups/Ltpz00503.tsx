@@ -1,13 +1,13 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { ColDef, ColGroupDef } from 'ag-grid-community';
-import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
+import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 
 // 직업
 type JobDataType = {
@@ -157,12 +157,11 @@ const Ltpz00503 = () => {
     // M2. 디자인 변경으로 수정
     <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={3}>
       <Gcol variant={'box-info'} placement={'ss'} className="w-full">
-       
         <Typo variant={'body-sm'} icon={'info'}>
           고객 직업정보(상해급수)가 불일치 할 경우 <b>신계약 체결이 불가능</b>합니다. 해당 신계약 청약완료 이전에
           기계약의 작업변경을 완료하시기 바랍니다.
         </Typo>
-       
+
         <Typo variant={'body-sm'} icon={'info'}>
           <b>신계약 청약서 발행 이전에 기계약의 직업변경 배서(청약중 이후)를 진행</b>바랍니다.
         </Typo>
@@ -182,7 +181,7 @@ const Ltpz00503 = () => {
             </FormCell>
           </FormRow>
         </FormTable>
-       
+
         <Gcol className="gap-1 relative">
           <div className="ag-theme-alpine h-full">
             <AgGridReact<JobDataType>
@@ -215,8 +214,8 @@ const Ltpz00503 = () => {
         </Typo>
         <BulletList>
           <BulletListItem size={'sm'} type="dash">
-            직업정보는 현재기분[2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로 매핑한
-            결과로 비교함)
+            직업정보는 현재기분[2026.01.01] 기준으로 표기되고 있습니다. (구 직업코드의 경우 현재 기준으로 매핑한 결과로
+            비교함)
           </BulletListItem>
           <BulletListItem size={'sm'} type="dash">
             변경대상의 경우 계약변경설계화면으로 이동하여 진행바랍니다.(계약변경설계이동 클릭시 변경설계화면으로 이동)

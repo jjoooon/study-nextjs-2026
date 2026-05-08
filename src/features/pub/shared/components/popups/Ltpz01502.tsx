@@ -1,5 +1,10 @@
 'use client';
 
+<<<<<<< HEAD
+=======
+import { useTabs } from '@/shared/hooks/useTabs';
+import { AgGridEmptyComponent } from '@aggrid';
+>>>>>>> 6e4bfd35197a72caa9fb61a2f1cc207ca7fc69d0
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 
 
@@ -9,6 +14,16 @@ import { Button } from '@uiux/Button';
 
 
 import { Input } from '@uiux/Input';
+import type {
+  ColDef,
+  ColGroupDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellEditorParams,
+  ICellRendererParams,
+} from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 import { FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
@@ -23,7 +38,7 @@ import { BulletList, BulletListItem } from '@/shared/components/common/BulletLis
 const Ltpz01502 = () => {
   
   return (
-    <Grid className='w-full grid-rows-[auto_1fr] h-full' gap={3}>
+    <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
       <Grow className="w-full" variant="box-round">
         <FormTable variant={'head'} lineTop={false} caption="">
           <FormRow>

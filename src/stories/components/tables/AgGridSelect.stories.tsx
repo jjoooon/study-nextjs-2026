@@ -4,8 +4,8 @@ import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdo
 import type { Meta, StoryObj } from '@storybook/react';
 import { AgGridReact } from 'ag-grid-react';
 import { RichSelectModule } from 'ag-grid-enterprise';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
+import type { ColDef } from 'ag-grid-enterprise';
 import { createCellValueChangedHandler } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
@@ -105,8 +105,8 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
 import * as React from 'react';
 
 import { AgGridReact } from 'ag-grid-react';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
+import type { ColDef } from 'ag-grid-enterprise';
 import { createCellValueChangedHandler } from '@aggrid'
 
 ModuleRegistry.registerModules([AllCommunityModule]);

@@ -22,8 +22,8 @@
 
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry, ValidationModule } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AllCommunityModule, ModuleRegistry, ValidationModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
 import { useCustomerSearch } from '@/features/poc/hooks/useCustomerSearch';

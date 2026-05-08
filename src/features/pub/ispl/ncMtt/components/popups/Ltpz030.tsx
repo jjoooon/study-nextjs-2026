@@ -21,7 +21,7 @@ import {
 import { Input } from '@uiux/Input';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Badge } from '@/shared/components/uiux/Badge';

@@ -4,8 +4,8 @@ import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdo
 import type { Meta, StoryObj } from '@storybook/react';
 import { AgGridReact } from 'ag-grid-react';
 import { RichSelectModule } from 'ag-grid-enterprise';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
+import type { ColDef } from 'ag-grid-enterprise';
 import { createCellValueChangedHandler, useAgGridPagination, AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
 import { TablePagination, TableMore } from '@common/TablePagination';
 

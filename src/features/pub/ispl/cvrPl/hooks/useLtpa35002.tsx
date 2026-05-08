@@ -6,7 +6,6 @@ import { Grow, Gcol } from '@atoms';
 import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import type { GridApi } from 'ag-grid-enterprise';
 import {
   ICellRendererParams,
   CellClassParams,
@@ -15,6 +14,7 @@ import {
   ValueFormatterParams,
   IRowNode,
 } from 'ag-grid-enterprise';
+import type { GridApi } from 'ag-grid-enterprise';
 import { useCallback, useMemo } from 'react';
 
 /**

@@ -7,7 +7,7 @@ import { AdderIcon, AdderIcon2, Ai2Icon, SelectDropIcon, PaperIcon, ArrowDoubleI
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import * as React from 'react';

@@ -22,9 +22,9 @@ import type {
   CellValueChangedEvent,
 } from 'ag-grid-enterprise';
 import type { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import type { RefObject } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
+import * as React from 'react';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
 
 export type ToggleTopRow<T> = T & {

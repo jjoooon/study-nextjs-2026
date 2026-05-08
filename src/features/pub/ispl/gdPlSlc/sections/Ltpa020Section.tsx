@@ -17,8 +17,8 @@ import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import * as React from 'react';
 import { useCallback, useState } from 'react';
+import * as React from 'react';
 
 import { Ltpa020View1 } from '../components/Ltpa020View1';
 import { Ltpa020View2 } from '../components/Ltpa020View2';

@@ -18,7 +18,7 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, numberValueFormatter } from '@/shared/components/agGridUtils/AgGridUtils';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';

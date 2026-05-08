@@ -4,7 +4,7 @@ import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Typo } from '@atoms';
 import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 

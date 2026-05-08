@@ -865,7 +865,7 @@ if (process.env.NODE_ENV === 'development') {
 ```typescript
 'use client';
 
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './InsPlanCov.module.css';

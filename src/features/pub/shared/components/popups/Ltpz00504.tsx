@@ -7,7 +7,7 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { RecommendCard } from '@common/RecommendCard';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
-import { ColDef, ColGroupDef } from 'ag-grid-community';
+import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import Ltpz0050401 from './Ltpz0050401';
@@ -134,15 +134,12 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
     isChecked: true,
     type: '인수가능',
     title: '한화 시그니처 여성 간편건강보험4.0한화 시그니처 여성 간편건강보험4.0',
-    plan: [
-      '2종 · 납입면제 강화형',
-      '납입후 50% 해약환급금지급형',
-    ],
+    plan: ['2종 · 납입면제 강화형', '납입후 50% 해약환급금지급형'],
     list: [
       '12형(365간편고지형) (올인원랜) (5-12형)',
       '30년납/100세만기/10년',
       '건강고지형Ⅱ(6년)',
-      '암/뇌/심장/수술/치료비'
+      '암/뇌/심장/수술/치료비',
     ],
   },
   {
@@ -150,15 +147,12 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
     isChecked: true,
     type: '인수가능',
     title: '한화 시그니처 여성 간편건강보험4.0',
-    plan: [
-      '2종 · 납입면제 강화형',
-      '납입후 50% 해약환급금지급형',
-    ],
+    plan: ['2종 · 납입면제 강화형', '납입후 50% 해약환급금지급형'],
     list: [
       '12형(365간편고지형) (올인원랜) (5-12형)',
       '30년납/100세만기/10년',
       '건강고지형Ⅱ(6년)',
-      '암/뇌/심장/수술/치료비'
+      '암/뇌/심장/수술/치료비',
     ],
   },
   {
@@ -166,15 +160,12 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
     isChecked: true,
     type: '인수가능',
     title: '한화 시그니처 여성 간편건강보험4.0',
-    plan: [
-      '2종 · 납입면제 강화형',
-      '납입후 50% 해약환급금지급형',
-    ],
+    plan: ['2종 · 납입면제 강화형', '납입후 50% 해약환급금지급형'],
     list: [
       '12형(365간편고지형) (올인원랜) (5-12형)',
       '30년납/100세만기/10년',
       '건강고지형Ⅱ(6년)',
-      '암/뇌/심장/수술/치료비'
+      '암/뇌/심장/수술/치료비',
     ],
   },
 ];
@@ -319,8 +310,11 @@ const Ltpz00504 = () => {
         <Gcol className="w-full" placement="ss">
           <Grow className="w-full" gap={5}>
             <TableFold>
-              <TableFoldHead title="제한담보" className="w-full gap-1 flex [&>[role='button']]:shrink-0! *:data-[group='row']:w-full!">
-                <Grow placement='bwe' className='w-full'>
+              <TableFoldHead
+                title="제한담보"
+                className="w-full gap-1 flex [&>[role='button']]:shrink-0! *:data-[group='row']:w-full!"
+              >
+                <Grow placement="bwe" className="w-full">
                   <Typo variant={'body-lg'} color={'primary'} weight={'bold'}>
                     15개
                   </Typo>
@@ -433,13 +427,17 @@ const Ltpz00504 = () => {
                 <Gcol variant={'box-info'} placement={'ss'} className="w-full">
                   <Typo variant={'body-sm'} icon={'info'}>
                     <b>설계반영 시 유의사항</b>
-                  </Typo>  
+                  </Typo>
                   <BulletList>
-                    <BulletListItem size={'sm'} type="dotBig" >
+                    <BulletListItem size={'sm'} type="dotBig">
                       <b>설계반영 클릭시 자동 처리됩니다. 이외의 사항은 심상요청이후 재확인바랍니다.</b>
                     </BulletListItem>
-                    <BulletListItem size={'sm'} type="dotBig">고지필요대상 : 알릴 사항 자동입력</BulletListItem>
-                    <BulletListItem size={'sm'} type="dotBig">제한담보 : 일괄조정 & 연관담보 동시 조정</BulletListItem>
+                    <BulletListItem size={'sm'} type="dotBig">
+                      고지필요대상 : 알릴 사항 자동입력
+                    </BulletListItem>
+                    <BulletListItem size={'sm'} type="dotBig">
+                      제한담보 : 일괄조정 & 연관담보 동시 조정
+                    </BulletListItem>
                   </BulletList>
                 </Gcol>
               </Gcol>
