@@ -1,7 +1,7 @@
 'use client';
 
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Gcol, Grow, Divider, Grid } from '@atoms';
+import { Gcol, Grow, Divider, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import {
