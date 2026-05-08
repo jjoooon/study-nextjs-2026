@@ -1,3 +1,7 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 'use client';
 
 import { AgGridEmptyComponent } from '@aggrid';
@@ -22,7 +26,7 @@ import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
-export const Ltpz01002 = () => {
+const Ltpz01002 = () => {
   type DummyDataType = {
     id: number;
     field1: string;
@@ -135,3 +139,5 @@ export const Ltpz01002 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz01002;

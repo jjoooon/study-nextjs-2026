@@ -1,3 +1,7 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 import { Grow } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { ReSizeIcon } from '@icons';

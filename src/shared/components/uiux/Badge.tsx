@@ -1,30 +1,5 @@
-/**
- * Badge Component
- *
- * @description
- * 상태, 카테고리, 중요 정보를 시각적으로 표시하는 작은 라벨 컴포넌트
- *
- * @features
- * - 4가지 스타일 변형: contained, soft, outlined, ghost
- * - 3가지 색상 옵션: blue, red, green
- * - 3가지 크기 옵션: sm, md, lg
- * - asChild prop을 통한 다형성 지원 (Radix UI Slot 활용)
- *
- * @example
- * // 기본 사용
- * <Badge variant="contained" color="red" size="md">D-31</Badge>
- *
- * // Soft 스타일 (배경 + 테두리)
- * <Badge variant="soft" color="blue">진행중</Badge>
- *
- * // Link로 사용
- * <Badge asChild>
- *   <Link href="/status">상태 확인</Link>
- * </Badge>
- *
- * @version 1.0.0
- * @since 2026-03-05
- * @lastModified 2026-03-05
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 
 import { Slot } from '@radix-ui/react-slot';

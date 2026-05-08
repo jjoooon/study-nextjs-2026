@@ -1,4 +1,6 @@
-
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
 import * as React from 'react';
 import Ltpz021 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz021';
 import { LayoutDoc } from '@layout/BaseLayout';

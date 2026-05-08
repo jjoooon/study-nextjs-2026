@@ -1,3 +1,6 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { PageID } from '@/shared/components/features/PageID';

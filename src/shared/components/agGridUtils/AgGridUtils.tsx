@@ -1,3 +1,7 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 import { Typo, Grow, Grid, Gcol } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';

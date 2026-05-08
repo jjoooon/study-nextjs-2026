@@ -1,3 +1,7 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 'use client';
 
 import {
@@ -70,7 +74,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-export const Ltpz01601 = () => {
+const Ltpz01601 = () => {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
@@ -267,3 +271,5 @@ export const Ltpz01601 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz01601;
