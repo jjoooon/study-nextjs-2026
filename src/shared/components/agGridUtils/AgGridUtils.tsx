@@ -733,6 +733,32 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
   const renderer = (params: ICellRendererParams<T>) => {
     const data = params.data as T | undefined;
 
+    const parseSizedField = (
+      field: FieldRendererSource<T> | undefined
+    ): { source: FieldRendererSource<T> | undefined; size?: number } => {
+      if (typeof field !== 'string') {
+        return { source: field };
+      }
+
+      const matched = field.match(/^\[\s*([^,\]]+)\s*,\s*(\d+)\s*\]$/);
+      if (!matched) {
+        return { source: field };
+      }
+
+      const parsedSize = Number(matched[2]);
+      if (!Number.isFinite(parsedSize)) {
+        return { source: matched[1].trim() };
+      }
+
+      return {
+        source: matched[1].trim(),
+        size: parsedSize,
+      };
+    };
+
+    const parsedField1 = parseSizedField(field1);
+    const parsedField2 = parseSizedField(field2);
+
     // field1, field2 공통 resolver
     const resolveNode = (field: FieldRendererSource<T> | undefined): React.ReactNode => {
       if (field === undefined || field === null) return '';
@@ -760,11 +786,26 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
       return (field as React.ReactNode) ?? '';
     };
 
-    const aNode = resolveNode(field1);
-    const bNode = resolveNode(field2);
+    const aNode = resolveNode(parsedField1.source);
+    const bNode = resolveNode(parsedField2.source);
     const renderCell = (value: React.ReactNode) => {
       if (React.isValidElement(value)) return value;
       return <Typo>{String(value ?? '')}</Typo>;
+    };
+
+    const getRowCellStyle = (size?: number): React.CSSProperties => {
+      if (size === undefined) {
+        return {
+          flex: '1 1 0%',
+          minWidth: 0,
+        };
+      }
+
+      return {
+        flex: `0 0 ${size}px`,
+        width: `${size}px`,
+        minWidth: `${size}px`,
+      };
     };
 
     return div === 'col' ? (
@@ -773,10 +814,14 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
         <div className="h-[2.8rem] w-full leading-[2.8rem] truncate px-1">{renderCell(bNode)}</div>
       </Grid>
     ) : (
-      <Grid className="w-full h-full grid-cols-[1fr_1fr] justify-start divide-x divide-gray-200" gap={0}>
-        <div className="truncate">{renderCell(aNode)}</div>
-        <div className="truncate">{renderCell(bNode)}</div>
-      </Grid>
+      <div className="flex w-full h-full justify-start divide-x divide-gray-200">
+        <div className="truncate" style={getRowCellStyle(parsedField1.size)}>
+          {renderCell(aNode)}
+        </div>
+        <div className="truncate" style={getRowCellStyle(parsedField2.size)}>
+          {renderCell(bNode)}
+        </div>
+      </div>
     );
   };
 
