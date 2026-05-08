@@ -185,9 +185,7 @@ export function createModifiedCellClassRules<RowType extends Record<string, unkn
         return false;
       }
 
-      const rowId = params.data[idKey];
-
-      return serialize(params.value) !== initialValueMap.get(rowId);
+      return serialize(params.value) !== initialValueMap.get(params.data[idKey]);
     },
   };
 }
