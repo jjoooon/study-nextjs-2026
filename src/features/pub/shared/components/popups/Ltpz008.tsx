@@ -5,13 +5,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { ResetIcon, SearchIcon } from '@icons';
+
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,411 +22,271 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-enterprise';
+
+import { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
+import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
+import { Badge } from '@/shared/components/uiux/Badge';
+import { PageArrowDoubleIcon, PageArrowIcon } from '@/shared/components/icons/CommonIcons';
 
 type DummyDataType = {
   id: number;
-  field1: string;
-  field2: string;
-  field3: string;
-  field4: string;
-  field5: string;
-  field6: string;
-  field7: string;
+  isChecked: boolean;
+  isFixed: boolean;
+  field01: string | number;
+  field02: string | number;
+
 };
-const dummyData: DummyDataType[] = [
-  {
-    id: 1,
-    field1: '구분정보',
-    field2: '보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명 ',
-    field3: '설계번호',
-    field4: '계약자',
-    field5: '290000',
-    field6: '2023-01-01',
-    field7: '상태',
-  },
-  {
-    id: 2,
-    field1: '구분정보',
-    field2: '보험종목명 ',
-    field3: '설계번호',
-    field4: '계약자',
-    field5: '290000',
-    field6: '2023-01-01',
-    field7: '상태',
-  },
-  {
-    id: 3,
-    field1: '구분정보',
-    field2: '보험종목명 ',
-    field3: '설계번호',
-    field4: '계약자',
-    field5: '290000',
-    field6: '2023-01-01',
-    field7: '상태',
-  },
-];
-type DummyDataType2 = {
-  id: number;
-  field1: string | number;
-  field2: string | number;
-  field3: string | number;
-};
-const dummyData2: DummyDataType2[] = [
-  {
-    id: 1,
-    field1: '고액함암약물허가치료(신정원)고액함암약물허가치료(신정원)고액함암약물허가치료(신정원)',
-    field2: '28990',
-    field3: '20년납',
-  },
-  {
-    id: 2,
-    field1: '담보명',
-    field2: '28990',
-    field3: '20년납',
-  },
-  {
-    id: 3,
-    field1: '담보명',
-    field2: '28990',
-    field3: '20년납',
-  },
+const DummyData: DummyDataType[] = [
+  { id: 1, isChecked: true, isFixed: true, field01: '특정부위', field02: '040'},
+  { id: 2, isChecked: false, isFixed: true, field01: '특정부위', field02: '040'},
+  { id: 3, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
+  { id: 5, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
+  { id: 7, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
+  { id: 22, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
+  { id: 23, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
+  { id: 31, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
+  { id: 33, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
 ];
 
-const Ltpz002 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '구분',
-      field: 'field1',
-      width: 100,
-    },
-    {
-      headerName: '보험종목명',
-      field: 'field2',
-      flex: 1,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
-    },
-    {
-      headerName: '설계번호',
-      field: 'field3',
-      width: 100,
-    },
-    {
-      headerName: '계약자',
-      field: 'field4',
-      width: 100,
-    },
-    {
-      headerName: '보험료(원)',
-      field: 'field5',
-      cellClass: 'text-right',
-      width: 120,
-      cellRenderer: numberValueFormatter,
-    },
-    {
-      headerName: '설계일자',
-      field: 'field6',
-      width: 100,
-    },
-    {
-      headerName: '상태',
-      field: 'field7',
-      width: 80,
-    },
-  ];
 
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '담보명',
-      field: 'field1',
-      cellClass: 'text-left',
-      flex: 1,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
-    },
-    {
-      headerName: '가입금액(만원)',
-      field: 'field2',
-      width: 100,
-      cellClass: 'text-right',
-      cellRenderer: numberValueFormatter,
-    },
-    {
-      headerName: '보험기간',
-      field: 'field3',
-      width: 80,
-      cellClass: 'text-center',
-    },
-  ];
-  const columnDefs3: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '담보명',
-      field: 'field1',
-      cellClass: 'text-left',
-      flex: 1,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
-    },
-    {
-      headerName: '가입금액(만원)',
-      field: 'field2',
-      width: 100,
-      cellClass: 'text-right',
-      cellRenderer: numberValueFormatter,
-    },
-    {
-      headerName: '보험기간',
-      field: 'field3',
-      width: 80,
-      cellClass: 'text-center',
-    },
-  ];
+const Ltpz008 = () => {
+  const [rightRowData, setRightRowData] = React.useState<DummyDataType[]>(DummyData);
+  const rightGridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
 
-  const [rowData] = useState<DummyDataType[]>(dummyData);
-  const [rowData2] = useState<DummyDataType2[]>(dummyData2);
-  const [rowData3] = useState<DummyDataType2[]>(dummyData2);
+  const reorderMovableRows = React.useCallback(
+    (rows: DummyDataType[], reorder: (movableRows: DummyDataType[]) => DummyDataType[]) => {
+      const movableRows = rows.filter((row) => !row.isFixed);
+      const reorderedMovableRows = reorder(movableRows);
+      const fixedRowByIndex = new Map<number, DummyDataType>();
+
+      rows.forEach((row, index) => {
+        if (row.isFixed) {
+          fixedRowByIndex.set(index, row);
+        }
+      });
+
+      let movableIndex = 0;
+      return rows.map((_, index) => {
+        const fixedRow = fixedRowByIndex.get(index);
+        if (fixedRow) {
+          return fixedRow;
+        }
+
+        const movableRow = reorderedMovableRows[movableIndex];
+        movableIndex += 1;
+        return movableRow;
+      });
+    },
+    []
+  );
+
+  const getSelectedIds = React.useCallback((): number[] => {
+    const selectedNodes = rightGridApiRef.current?.getSelectedNodes() ?? [];
+    return selectedNodes
+      .filter((node) => !node.data?.isFixed)
+      .map((node) => node.data?.id)
+      .filter((id): id is number => typeof id === 'number');
+  }, []);
+
+  const moveSelectedBottom = React.useCallback(() => {
+    const selectedIds = getSelectedIds();
+    if (selectedIds.length === 0) return;
+
+    const selectedSet = new Set(selectedIds);
+    setRightRowData((prev) =>
+      reorderMovableRows(prev, (movableRows) => {
+        const selectedRows = movableRows.filter((row) => selectedSet.has(row.id));
+        const unselectedRows = movableRows.filter((row) => !selectedSet.has(row.id));
+        return [...unselectedRows, ...selectedRows];
+      })
+    );
+  }, [getSelectedIds, reorderMovableRows]);
+
+  const moveSelectedDownOne = React.useCallback(() => {
+    const selectedIds = getSelectedIds();
+    if (selectedIds.length === 0) return;
+
+    const selectedSet = new Set(selectedIds);
+    setRightRowData((prev) =>
+      reorderMovableRows(prev, (movableRows) => {
+        const next = [...movableRows];
+        for (let index = next.length - 2; index >= 0; index -= 1) {
+          if (selectedSet.has(next[index].id) && !selectedSet.has(next[index + 1].id)) {
+            [next[index], next[index + 1]] = [next[index + 1], next[index]];
+          }
+        }
+        return next;
+      })
+    );
+  }, [getSelectedIds, reorderMovableRows]);
+
+  const moveSelectedUpOne = React.useCallback(() => {
+    const selectedIds = getSelectedIds();
+    if (selectedIds.length === 0) return;
+
+    const selectedSet = new Set(selectedIds);
+    setRightRowData((prev) =>
+      reorderMovableRows(prev, (movableRows) => {
+        const next = [...movableRows];
+        for (let index = 1; index < next.length; index += 1) {
+          if (selectedSet.has(next[index].id) && !selectedSet.has(next[index - 1].id)) {
+            [next[index - 1], next[index]] = [next[index], next[index - 1]];
+          }
+        }
+        return next;
+      })
+    );
+  }, [getSelectedIds, reorderMovableRows]);
+
+  const moveSelectedTop = React.useCallback(() => {
+    const selectedIds = getSelectedIds();
+    if (selectedIds.length === 0) return;
+
+    const selectedSet = new Set(selectedIds);
+    setRightRowData((prev) =>
+      reorderMovableRows(prev, (movableRows) => {
+        const selectedRows = movableRows.filter((row) => selectedSet.has(row.id));
+        const unselectedRows = movableRows.filter((row) => !selectedSet.has(row.id));
+        return [...selectedRows, ...unselectedRows];
+      })
+    );
+  }, [getSelectedIds, reorderMovableRows]);
+
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+    {
+      headerName: '순번',
+      width: 40,
+      field: 'id',
+      cellClass: 'text-center',
+      spanRows: true,
+    },
+    {
+      headerName: '대상이 되는 부위 또는 질병',
+      flex: 1,
+      field: 'field02',
+      cellClass: 'text-left',
+      autoHeight: true,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
+    },
+  ];
+  
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size={'lg'}>
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              가입설계검색
+              담보순서변경
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ002)
+              (LTPZ015)
             </Typo>
           </DialogTitle>
         </DialogHeader>
-
-        <DialogSection className="grid-rows-[1fr]">
-          <TableFold variant={'default'}>
-            <TableFoldHead title={'고객정보'} />
-            <TableFoldBody className="grid-rows-[auto_1fr] gap-[2rem]">
-              <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                <FormTable variant={'none'} cols={['w-1', 'w-[30rem]', 'w-[10rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'조회구분'}>
-                      <NativeSelect required>
-                        <NativeSelectOption value="">피보험자번호</NativeSelectOption>
-                      </NativeSelect>
-                      <Input value={'000000-0******'} readOnly />
-                      <Button variant={'outlined'} only={'icon'} color={'gray-light'}>
-                        <SearchIcon color={'var(--color-primary-50)'} />
-                      </Button>
-                    </FormCell>
-                    <FormCell title={'설계상태'}>
-                      <NativeSelect width={'auto'}>
-                        {[
-                          '전체',
-                          '설계중',
-                          '간편설계',
-                          '설계심사중',
-                          '설계완료',
-                          '심사의뢰',
-                          '심사중',
-                          '심사완료',
-                          '청약중',
-                          '청약완료',
-                          '수납완료',
-                          '구득심사중',
-                          '구득심사완료',
-                          '청약삭제',
-                          '보험료산출',
-                          '설계취소',
-                          '지로',
-                          '반려',
-                          '취소',
-                          '가설계',
-                          '1차보험료산출',
-                          '업셀링설계',
-                          '검증',
-                        ].map((option) => (
-                          <NativeSelectOption key={option} value={option}>
-                            {option}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
-                    <FormCell title={'설계일자'}>
-                      <DatePickerInput required mode={'range'} />
-                    </FormCell>
-                    <FormCell title={'고객명(영문)'}>
-                      <b>hong gum</b>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-                <Grow>
-                  <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                    조회
-                  </Button>
-                  <Button
-                    color={'gray'}
-                    only={'icon'}
-                    size={'lg'}
-                    variant={'outlined'}
-                    onClick={() => {}}
-                    aria-label="새로고침"
-                  >
-                    <ResetIcon />
-                  </Button>
-                </Grow>
+        <DialogSection className='grid grid-rows-[auto_1fr]'>
+          <Grow className="w-full" variant="box-round" placement={'ss'}>
+            <FormTable caption="설계번호" variant="head" cols={['w-[1rem]', 'w-auto','w-[1rem]', 'w-auto']}>
+              <FormRow className='grid grid-cols-[1fr_auto] w-full'>
+                <FormCell title={'상품명'} className='shrink-0' tdClassName='flex-1'>
+                  <Input value={'한화 시그니처 여성 검강보험 3.0 2504 '} readOnly />
+                </FormCell>
+                <FormCell title={'설계번호'}>
+                  <Input aria-label="" width={130} value={'LA123123123123'} readOnly />
+                  <Input aria-label="" width={30} value={'1'} readOnly />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+          <Grow gap={3} placement='ss' className="w-full">
+            <Gcol className="h-full p-[1.2rem]" gap={2.5} placement="ss" variant="box-line">
+              <Grow>
+                <Badge color="gray" size={'md'} variant={'rounded'}>현재</Badge>
+                <Typo tag={'strong'} variant={'heading-md'}>가입설계 선택 담보</Typo>
               </Grow>
-
-              <Grid gap={3} className="grid-rows-[auto_1fr_auto_auto]">
-                <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
-                  <FormRow>
-                    <FormCell title={'동일모집인'}>
-                      1 동일모집인 이외의 설계는 지점 (OR 매니져)에게 문의하세요.
-                    </FormCell>
-                    <FormCell title={'상장구분'}>
-                      <b>hong gum</b>
-                    </FormCell>
-                    <FormCell title={'설립일자'} tdClassName={'justify-between'}>
-                      3
-                      <Button color="gray" onClick={() => {}} size="lg" variant="contained">
-                        설계조회
-                      </Button>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-
-                <div className="ag-theme-alpine min-h-[12.4rem]">
-                  <AgGridReact<DummyDataType>
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    defaultColDef={{
-                      cellClass: 'text-center',
-                    }}
-                    domLayout="normal"
-                    rowSelection={{
-                      mode: 'singleRow',
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    selectionColumnDef={{
-                      headerName: '선택',
-                      width: 30,
-                      cellClass: 'text-center editable-cell',
-                    }}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                  />
-                </div>
-
-                <Grow className="w-full" placement="ss" gap={5}>
-                  <TableFold>
-                    <TableFoldHead title={'현재 설계'} />
-                    <TableFoldBody className="grid-rows-[auto_1fr] gap-[1rem]">
-                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[9rem]']}>
-                        <FormRow>
-                          <FormCell title={'설계번호'}>
-                            <b>234234</b>
-                          </FormCell>
-                          <FormCell title={'설계상태'}>
-                            <b>ㅁㅁㅁㅁ</b>
-                          </FormCell>
-                        </FormRow>
-                        <FormRow>
-                          <FormCell title={'취급기관'}>
-                            <b>ㅇㅇㅇㅇㅇㅇ</b>
-                          </FormCell>
-                          <FormCell title={'취급자'}>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <b className="truncate block w-[8rem]">
-                                  홍길동홍 길동홍길 동홍길동홍길동 홍길동홍길동 홍길동홍길동
-                                </b>
-                              </TooltipTrigger>
-                              <TooltipContent>{`홍길동홍길동`}</TooltipContent>
-                            </Tooltip>
-                          </FormCell>
-                        </FormRow>
-                      </FormTable>
-                      <div className="ag-theme-alpine min-h-[15rem]">
-                        <AgGridReact<DummyDataType2>
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          getRowId={(params) => String(params.data.id)}
-                          rowData={rowData2}
-                          columnDefs={columnDefs2}
-                          defaultColDef={{
-                            cellClass: 'text-center',
-                          }}
-                          domLayout="normal"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-                  <TableFold>
-                    <TableFoldHead title={'비교 설계'} />
-                    <TableFoldBody className="grid-rows-[auto_1fr] gap-[1rem]">
-                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[9rem]']}>
-                        <FormRow>
-                          <FormCell title={'설계번호'}>
-                            <b>234234</b>
-                          </FormCell>
-                          <FormCell title={'설계상태'}>
-                            <b>ㅁㅁㅁㅁ</b>
-                          </FormCell>
-                        </FormRow>
-                        <FormRow>
-                          <FormCell title={'취급기관'}>
-                            <b>ㅇㅇㅇㅇㅇㅇ</b>
-                          </FormCell>
-                          <FormCell title={'취급자'}>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <b className="truncate block w-[8rem]">
-                                  홍길동홍 길동홍길 동홍길동홍길동 홍길동홍길동 홍길동홍길동
-                                </b>
-                              </TooltipTrigger>
-                              <TooltipContent>{`홍길동홍길동`}</TooltipContent>
-                            </Tooltip>
-                          </FormCell>
-                        </FormRow>
-                      </FormTable>
-                      <div className="ag-theme-alpine min-h-[15rem]">
-                        <AgGridReact<DummyDataType2>
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          getRowId={(params) => String(params.data.id)}
-                          rowData={rowData3}
-                          columnDefs={columnDefs3}
-                          defaultColDef={{
-                            cellClass: 'text-center',
-                          }}
-                          domLayout="normal"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
+              <div className="ag-theme-alpine min-h-[27rem]">
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={DummyData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                    cellClass: 'text-center',
+                  }}
+                  domLayout="normal"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                />
+              </div>
+            </Gcol>
+            <Gcol className="h-full p-[1.2rem] bg-[#FFF7F4] border-[0.2rem] border-[#FFCCBE]" gap={1} placement="ss" variant="box-line">
+              <Grow placement='bwc'>
+                <Grow>
+                  <Badge className='bg-[#FFE0E0] text-[#FF5C2E]' size={'md'} variant={'rounded'}>변경</Badge>
+                  <Typo tag={'strong'} variant={'heading-md'}>가입설계 선택 담보</Typo>
                 </Grow>
-
-                <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-                  <Typo variant={'body-sm'} icon={'warning'}>
-                    청약진행 이후에는 삭제조건부 등록 사항을 수정할 수 없습니다. 설계수정이 필요 하오니, 유의하시기
-                    바립니다.
-                  </Typo>
-                </Gcol>
-              </Grid>
-            </TableFoldBody>
-          </TableFold>
+                <Grow>
+                  <Button color="gray-light" onClick={moveSelectedBottom} only="icon" size="md" variant="outlined">
+                    <PageArrowDoubleIcon className='rotate-[270deg]' color={'#FF5C2E'} color2={'#FF5C2E'}/>
+                  </Button>
+                  <Button color="gray-light" onClick={moveSelectedDownOne} only="icon" size="md" variant="outlined">
+                    <PageArrowIcon className='rotate-[270deg]' color={'#FF5C2E'}/>
+                  </Button>
+                  <Button color="gray-light" onClick={moveSelectedUpOne} only="icon" size="md" variant="outlined">
+                    <PageArrowIcon className='rotate-[90deg]' color={'#FF5C2E'}/>
+                  </Button>
+                  <Button color="gray-light" onClick={moveSelectedTop} only="icon" size="md" variant="outlined">
+                    <PageArrowDoubleIcon className='rotate-[90deg]' color={'#FF5C2E'} color2={'#FF5C2E'}/>
+                  </Button>
+                </Grow>  
+              </Grow>
+              
+              <div className="ag-theme-alpine min-h-[27rem]">
+                <AgGridReact<DummyDataType>
+                  onGridReady={(params) => {
+                    rightGridApiRef.current = params.api;
+                  }}
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rightRowData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                    cellClass: 'text-center',
+                  }}
+                  domLayout="normal"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    checkboxes: (params) => !params.data?.isFixed,
+                    hideDisabledCheckboxes: true,
+                    enableClickSelection: false,
+                    headerCheckbox: false,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 40,
+                    cellClass: 'text-center editable-cell',
+                  }}
+                />
+              </div>
+            </Gcol>
+          </Grow>
+          <Typo icon="info" variant="body-sm">담보명의 순서를 변경항 경우 <b className='text-bold'>담보설계(LTRA350)과 고객에게 전달하는 출력물</b>에도 담보 순서가 변경됩니다.</Typo>
+          
         </DialogSection>
-
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                초기화
+              </Button>
               <Button variant={'contained'} size={'xl'}>
-                저장
+                확인
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
@@ -444,4 +302,4 @@ const Ltpz002 = () => {
   );
 };
 
-export default Ltpz002;
+export default Ltpz008;

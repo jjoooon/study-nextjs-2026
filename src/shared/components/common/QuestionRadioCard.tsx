@@ -4,7 +4,7 @@
 
 'use client';
 
-import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Grid, Grow, Typo } from '@atoms';
 import { Badge } from '@uiux/Badge';
 import React from 'react';
 import { type ReactNode } from 'react';
@@ -70,6 +70,7 @@ export const QuestionRadioCardContents = ({
 };
 
 type QuestionRadioCardProps = {
+} & React.HTMLAttributes<HTMLDivElement> & {
   children?: ReactNode;
   className?: string;
   isRadio?: boolean;
@@ -77,17 +78,21 @@ type QuestionRadioCardProps = {
   onValueChange?: (value: string) => void;
 };
 
-export const QuestionRadioCard = React.forwardRef<HTMLDivElement, QuestionRadioCardProps>(({ children, className }) => {
-  return (
-    <Gcol
-      className={cn(
-        'w-full overflow-hidden rounded-[1.2rem] gap-0 border border-solid border-[#D8D8D8] p-0',
-        className
-      )}
-      placement="ss"
-    >
-      {children}
-    </Gcol>
-  );
-});
+export const QuestionRadioCard = React.forwardRef<HTMLDivElement, QuestionRadioCardProps>(
+  ({ children, className, ...restProps }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'flex flex-col relative w-full tracking-[-0.13rem] justify-start items-start overflow-hidden rounded-[1.2rem] gap-0 border border-solid border-[#D8D8D8] p-0',
+          className
+        )}
+        data-group="col"
+        {...restProps}
+      >
+        {children}
+      </div>
+    );
+  }
+);
 QuestionRadioCard.displayName = 'QuestionRadioCard';
