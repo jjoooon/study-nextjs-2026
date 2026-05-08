@@ -1,7 +1,7 @@
 'use client';
 
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Grow, Typo, Grid } from '@atoms';
+import { Grow, Typo } from '@atoms';
 
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
