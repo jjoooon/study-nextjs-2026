@@ -104,12 +104,20 @@ const parseDateValue = (value: string, baseYear: number): Date | null => {
   return parsed;
 };
 
-const isFutureDate = (value: string, today: Date) => {
+const isPastDate = (value: string, today: Date) => {
   const parsed = parseDateValue(value, today.getFullYear());
   if (!parsed) {
     return false;
   }
-  return parsed.getTime() >= today.getTime();
+  return parsed.getTime() < today.getTime();
+};
+
+const isTodayDate = (value: string, today: Date) => {
+  const parsed = parseDateValue(value, today.getFullYear());
+  if (!parsed) {
+    return false;
+  }
+  return parsed.getTime() === today.getTime();
 };
 
 export function IAListWithPreview() {
@@ -442,7 +450,15 @@ export function IAListWithPreview() {
               const planDate = row.planDate ?? '';
               const pubName = row.pubName ?? '';
 
-              const isPlanFuture = isFutureDate(planDate, today);
+              const isPlanOverdue = isPastDate(planDate, today);
+              const isPlanToday = isTodayDate(planDate, today);
+              const planDateTextClass = !info?.완료일
+                ? isPlanOverdue
+                  ? '!text-[red]'
+                  : isPlanToday
+                    ? '!text-[blue]'
+                    : ''
+                : '';
 
               return (
                 <tr
@@ -472,7 +488,7 @@ export function IAListWithPreview() {
                   <td className={rowBgClass}>{row.dep4}</td>
                   <td className={rowBgClass}>{row.file}</td>
 
-                  <td className={`text-center ${rowBgClass} ${isPlanFuture && !info?.완료일 ? '!text-[red]' : ''}`}>
+                  <td className={`text-center ${rowBgClass} ${planDateTextClass}`}>
                     <b>{planDate}</b>
                   </td>
                   <td className={`!text-center ${rowBgClass}`}>
