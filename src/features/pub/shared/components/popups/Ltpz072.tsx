@@ -12,7 +12,10 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 
-const Ltpz093 = () => {
+
+
+
+const Ltpz072 = () => {
 
 
   return (
@@ -29,7 +32,7 @@ const Ltpz093 = () => {
         <DialogSection>
           <Gcol placement="ss">
             {/* 샘플이미지 */}
-            <img src="/images/Ltpa093/qr-code-sample.png" alt="QR코드 샘플" style={{ width: '100%' }} />
+            <img src="/images/Ltpa072/qr-code-sample.png" alt="QR코드 샘플" style={{ width: '100%' }} />
           </Gcol>  
           
         </DialogSection>
@@ -38,4 +41,4 @@ const Ltpz093 = () => {
   );
 };
 
-export default Ltpz093;
+export default Ltpz072;

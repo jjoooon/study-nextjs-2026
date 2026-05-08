@@ -7,11 +7,18 @@
   "editor.tabSize": 2,
   // ESLint 관련 설정
   "eslint.enable": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "eslint.workingDirectories": [
     {
       "mode": "auto"
     }
   ],
+  "prettier.requireConfig": true,
   // 모든 언어에 대해 ESLint를 기본 포매터로 지정 (혹은 Prettier 사용 시 해당 ID로 변경)
   "[javascript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
@@ -25,6 +32,20 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "errorLens.enabledDiagnosticLevels": [
+    "error",
+    "warning"
+  ],
+  "errorLens.messageEnabled": true,
   "github.copilot.nextEditSuggestions.enabled": true,
   "git.autofetch": true,
   "editor.wordWrap": "on",
