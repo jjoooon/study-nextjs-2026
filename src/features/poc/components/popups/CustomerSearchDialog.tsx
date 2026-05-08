@@ -20,6 +20,8 @@
  * }
  */
 
+import { Button } from '@uiux/Button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@uiux/Dialog';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AllCommunityModule, ModuleRegistry, ValidationModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
@@ -28,8 +30,6 @@ import { useCustomerSearch } from '@/features/poc/hooks/useCustomerSearch';
 import type { Customer } from '@/features/poc/types/customerTypes';
 import { isProduction } from '@/shared/config/env';
 import log from '@/shared/utils/logger';
-import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@uiux/Dialog';
 
 // AG Grid Theming
 import 'ag-grid-community/styles/ag-theme-quartz.css';

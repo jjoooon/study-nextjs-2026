@@ -1,9 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo, useState } from 'react';
 import { AgGridEmptyComponent, createCellValueChangedHandler, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -24,6 +21,9 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useMemo, useState } from 'react';
 
 type DummyDataType = {
   id: number;

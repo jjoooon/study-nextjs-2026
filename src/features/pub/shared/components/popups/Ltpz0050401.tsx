@@ -1,6 +1,8 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { Gcol, Grow, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
 import * as React from 'react';
 import {
   Dialog,
@@ -12,8 +14,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/components/uiux/Dialog';
-import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
 
 const Ltpz0050401 = ({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) => {
   return (

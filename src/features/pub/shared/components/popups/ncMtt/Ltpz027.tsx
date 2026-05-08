@@ -1,9 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -20,6 +17,9 @@ import {
 } from '@uiux/Dialog';
 import { TableCell } from '@uiux/Table';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 // Grid2 dummy data
 type DummyDataType = {

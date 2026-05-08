@@ -1,10 +1,10 @@
 'use client';
 
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Badge } from '@uiux/Badge';
 import React from 'react';
 import { type ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { Badge } from '@uiux/Badge';
 
 export const QuestionRadioCardHeader = ({
   bg,

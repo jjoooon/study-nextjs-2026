@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 import { Grow, Gcol, Grid, Typo } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { Button } from '@uiux/Button';
 import { Textarea } from '@uiux/Textarea';
+import React, { useRef, useState } from 'react';
+import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 
 export interface ChatResultItem {
   name: string;

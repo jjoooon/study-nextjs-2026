@@ -1,10 +1,5 @@
 'use client';
 // M1. 팝업에서 화면으로, 전체 수정
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-import { TabPager } from '@/shared/components/common/TabPager';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -17,6 +12,11 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 
 import { Input } from '@uiux/Input';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+import { TabPager } from '@/shared/components/common/TabPager';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
 

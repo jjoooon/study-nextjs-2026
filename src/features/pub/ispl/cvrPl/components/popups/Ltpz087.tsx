@@ -1,10 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import React from 'react';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -12,8 +8,6 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
 import {
   Dialog,
   DialogContent,
@@ -24,7 +18,12 @@ import {
   DialogClose,
   DialogFooterArea,
 } from '@uiux/Dialog';
-
+import { Input } from '@uiux/Input';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import React from 'react';
+import { DatePickerInput } from '@/shared/components/common/DatePicker';
 
 type DummyDataType = {
   id: number;
@@ -38,21 +37,21 @@ type DummyDataType = {
 const dummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '', 
+    field01: '',
     field02: '',
     field03: '',
     field04: '',
   },
   {
     id: 2,
-    field01: '', 
+    field01: '',
     field02: '',
     field03: '',
     field04: '',
   },
   {
     id: 3,
-    field01: '', 
+    field01: '',
     field02: '',
     field03: '',
     field04: '1000000',
@@ -60,7 +59,6 @@ const dummyData: DummyDataType[] = [
 ];
 
 const Ltpz087 = () => {
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '유형',
@@ -82,7 +80,7 @@ const Ltpz087 = () => {
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
-    
+
     {
       headerName: '보험료(만원)',
       field: 'field04',
@@ -142,10 +140,7 @@ const Ltpz087 = () => {
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell
-                  title={'목적물'}
-                  tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
-                >
+                <FormCell title={'목적물'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full">
                   <Input aria-label="" width={250} value={''} readOnly />
                   <Input aria-label="" width={200} value={''} readOnly />
                 </FormCell>
@@ -169,8 +164,8 @@ const Ltpz087 = () => {
                   </FormRow>
                   <FormRow>
                     <FormCell title={'질권자주소'}>
-                      <Gcol placement='ss'>
-                        <Grow className='w-full'>
+                      <Gcol placement="ss">
+                        <Grow className="w-full">
                           <Input aria-label="" width={120} value={''} readOnly />
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />
@@ -183,8 +178,9 @@ const Ltpz087 = () => {
                   </FormRow>
                   <FormRow>
                     <FormCell title={'설정기간'}>
-                      <DatePickerInput mode={'range'} onChange={() => {}}  value="" />
-                      <Input aria-label="" width={100} value={''} readOnly />일간
+                      <DatePickerInput mode={'range'} onChange={() => {}} value="" />
+                      <Input aria-label="" width={100} value={''} readOnly />
+                      일간
                     </FormCell>
                   </FormRow>
                   <FormRow>
@@ -219,7 +215,10 @@ const Ltpz087 = () => {
                     pinnedBottomRowData={sumRow}
                   />
                 </div>
-                <FormTable caption={'질권자의 설정 상태'} cols={['w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
+                <FormTable
+                  caption={'질권자의 설정 상태'}
+                  cols={['w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}
+                >
                   <FormRow>
                     <FormCell title={'입력자'}>
                       <Input aria-label="" value={''} readOnly />

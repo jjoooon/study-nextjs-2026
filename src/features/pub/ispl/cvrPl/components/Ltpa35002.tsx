@@ -1,16 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { TabPager } from '@common/TabPager';
 import { LayoutMain } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { useState } from 'react';
 import { Ltpa35002a } from './Ltpa35002a';
 import { Ltpa35002b } from './Ltpa35002b';
 import { Ltpa35002c } from './Ltpa35002c';
 import { Ltpa35002d } from './Ltpa35002d';
+import { useTabs } from '@/shared/hooks/useTabs';
 import '@/shared/lib/agGridPub';
 
 interface TabDataType {

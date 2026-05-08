@@ -30,7 +30,6 @@ const DATA_TABS: LTPZ015Tab[] = [
   { value: 'tab3', label: '직접동의(모바일)' },
 ];
 
-
 const Ltpz015 = () => {
   // AgGrid Column
   const { tabs, active, setActive } = useTabs(DATA_TABS);
@@ -40,9 +39,7 @@ const Ltpz015 = () => {
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>
-              
-            </Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}></Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ015)
             </Typo>
@@ -64,14 +61,10 @@ const Ltpz015 = () => {
                 {active === 'tab1' ? (
                   <Ltpz01501 />
                 ) : active === 'tab2' ? (
-                  <Grid className="w-full grid-rows-[auto_1fr] h-full">
-                    
-                  </Grid>
+                  <Grid className="w-full grid-rows-[auto_1fr] h-full"></Grid>
                 ) : active === 'tab3' ? (
-                  <Grid className="w-full grid-rows-[auto_1fr] h-full">
-                    
-                  </Grid>
-                ) : null }
+                  <Grid className="w-full grid-rows-[auto_1fr] h-full"></Grid>
+                ) : null}
               </Grid>
             </TabPager>
           </Grid>

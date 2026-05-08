@@ -1,7 +1,7 @@
+import { Typo } from '@atoms';
 import type { CSSProperties, KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXposition } from '@/shared/types/uiTypes';
-import { Typo } from '@atoms';
 
 type LayoutPlacement = Extract<
   UIUXposition,

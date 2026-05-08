@@ -1,8 +1,5 @@
 'use client';
 
-import type { ColDef, ColGroupDef, EditableCallbackParams, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
@@ -14,10 +11,20 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 
 import { Input } from '@uiux/Input';
+import type {
+  ColDef,
+  ColGroupDef,
+  EditableCallbackParams,
+  GridApi,
+  ICellEditorParams,
+  ICellRendererParams,
+} from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { FileExportIcon, FileImportIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { FileExportIcon, FileImportIcon, SearchIcon } from '@/shared/components/icons/CommonIcons';
 
 type DummyDataType = {
   id: number;
@@ -47,54 +54,52 @@ type ReasonCellEditorRef = {
   getValue: () => string;
 };
 
-const ReasonCellEditor = React.forwardRef<ReasonCellEditorRef, ICellEditorParams<DummyDataType>>(
-  (props, ref) => {
-    const initialValue = String(props.value ?? '');
-    const [value, setValue] = React.useState<string>(initialValue);
-    const valueRef = React.useRef<string>(initialValue);
+const ReasonCellEditor = React.forwardRef<ReasonCellEditorRef, ICellEditorParams<DummyDataType>>((props, ref) => {
+  const initialValue = String(props.value ?? '');
+  const [value, setValue] = React.useState<string>(initialValue);
+  const valueRef = React.useRef<string>(initialValue);
 
-    React.useImperativeHandle(
-      ref,
-      () => ({
-        getValue: () => valueRef.current,
-      }),
-      []
-    );
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      getValue: () => valueRef.current,
+    }),
+    []
+  );
 
-    return (
-      <Grid className="flex h-full w-full items-center gap-1 px-1 ">
-        <div className="flex min-w-0 basis-0 flex-1 items-center">
-          <Input
-            aria-label=""
-            width={'100%'}
-            value={value}
-            size="sm"
-            autoFocus
-            onMouseDown={(e) => e.stopPropagation()}
-            onChange={(e) => {
-              const nextValue = e.target.value;
+  return (
+    <Grid className="flex h-full w-full items-center gap-1 px-1 ">
+      <div className="flex min-w-0 basis-0 flex-1 items-center">
+        <Input
+          aria-label=""
+          width={'100%'}
+          value={value}
+          size="sm"
+          autoFocus
+          onMouseDown={(e) => e.stopPropagation()}
+          onChange={(e) => {
+            const nextValue = e.target.value;
 
-              valueRef.current = nextValue;
-              setValue(nextValue);
-            }}
-          />
-        </div>
-        <Grid className="flex h-full w-[2.5rem] shrink-0 items-center justify-center place-items-stretch divide-x divide-gray-300">
-          <Button
-            aria-label="검색"
-            variant={'outlined'}
-            only="icon"
-            size={'md'}
-            color={'gray-light'}
-            onMouseDown={(e) => e.stopPropagation()}
-          >
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grid>
+            valueRef.current = nextValue;
+            setValue(nextValue);
+          }}
+        />
+      </div>
+      <Grid className="flex h-full w-[2.5rem] shrink-0 items-center justify-center place-items-stretch divide-x divide-gray-300">
+        <Button
+          aria-label="검색"
+          variant={'outlined'}
+          only="icon"
+          size={'md'}
+          color={'gray-light'}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <SearchIcon color={'var(--color-primary-50)'} />
+        </Button>
       </Grid>
-    );
-  }
-);
+    </Grid>
+  );
+});
 
 const reasonCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
   const value = params.value == null ? '' : String(params.value);
@@ -113,8 +118,7 @@ const reasonCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
   );
 };
 
-
-ReasonCellEditor.displayName = 'ReasonCellEditor';  
+ReasonCellEditor.displayName = 'ReasonCellEditor';
 
 const Ltpz01501 = () => {
   // AgGrid Column
@@ -139,7 +143,7 @@ const Ltpz01501 = () => {
     },
   ];
 
-   // 첫번째 agGrid 행삭제
+  // 첫번째 agGrid 행삭제
   const handleDeleteRow = React.useCallback(() => {
     const gridApi = gridApiRef.current;
     if (!gridApi) return;
@@ -187,10 +191,8 @@ const Ltpz01501 = () => {
     []
   );
 
-  
-
   return (
-    <Grid className='w-full grid-rows-[auto_1fr] h-full' gap={3}>
+    <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
       <Grow className="w-full" variant="box-round">
         <FormTable variant={'head'} lineTop={false} caption="">
           <FormRow>
@@ -210,17 +212,11 @@ const Ltpz01501 = () => {
             <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
               초기화
             </Button>
-            <Button
-              color="success"
-              variant="outlined"
-            >
+            <Button color="success" variant="outlined">
               엑셀내보내기
               <FileExportIcon />
             </Button>
-            <Button
-              color="success"
-              variant="outlined"
-            >
+            <Button color="success" variant="outlined">
               엑셀가져오기
               <FileImportIcon />
             </Button>
@@ -233,11 +229,8 @@ const Ltpz01501 = () => {
           </Grow>
         </TableFoldHead>
         <TableFoldBody>
-          <Gcol gap={2} placement='ss'>
-            <BulletItem
-              size="md"
-              type="dotBig"
-            >
+          <Gcol gap={2} placement="ss">
+            <BulletItem size="md" type="dotBig">
               입력된 정보는 저장되지 않습니다.(고객정보 미입력 출력 가능)
             </BulletItem>
             <div className="ag-theme-alpine min-h-[18.4rem]">

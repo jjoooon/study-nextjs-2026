@@ -1,5 +1,6 @@
 'use client';
 
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import type { ColDef, ColGroupDef, ICellRendererParams, IHeaderParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
@@ -19,7 +20,6 @@ import {
   DialogClose,
 } from '@/shared/components/uiux/Dialog';
 import { Input } from '@/shared/components/uiux/Input';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 
 import '@/shared/lib/agGridPub';
 

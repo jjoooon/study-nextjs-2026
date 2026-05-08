@@ -1,7 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import { Gcol, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { EssentialIcon, SearchIcon } from '@icons';
@@ -17,6 +16,7 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
 const Ltpz088 = () => {
   return (

@@ -1,10 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 
@@ -12,6 +8,10 @@ import { TabPager } from '@common/TabPager';
 import { AiIcon, NotificationIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-enterprise';
+import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 export type Ltpz005TabValue = 'common' | 'accum' | 'job' | 'expected-uw';
 
@@ -330,7 +330,7 @@ const Ltpz00502 = () => {
 
   return (
     // M2. 디자인 변경으로 수정
-    <Gcol className="w-full" gap={2} placement='ss'>
+    <Gcol className="w-full" gap={2} placement="ss">
       <Grow className="w-full bg-[#374151]" variant={'box-round'} placement="sc">
         <NotificationIcon />
         <Typo tag={'p'} variant={'body-md'} weight={'normal'} className="text-white">
@@ -350,7 +350,7 @@ const Ltpz00502 = () => {
         )}
         renderAfter={
           <Button variant={'contained'} size={'md'}>
-            <AiIcon color={'#FFF'} color2={'#FFF'}/>
+            <AiIcon color={'#FFF'} color2={'#FFF'} />
             AI인수한도해소
           </Button>
         }

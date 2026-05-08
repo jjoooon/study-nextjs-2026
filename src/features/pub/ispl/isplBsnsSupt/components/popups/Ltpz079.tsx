@@ -1,9 +1,5 @@
 'use client';
 
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -23,6 +19,10 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 

@@ -1,8 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, useToggleTopRows, ToggleTopRow } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -21,6 +19,8 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Textarea } from '@uiux/Textarea';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
 type DummyDataType = {
@@ -134,20 +134,32 @@ const Ltpz006 = () => {
         </DialogHeader>
 
         <DialogSection>
-          <Gcol placement='ss' gap={3}>
-            <Typo tag={'strong'}>주피보험자의 ‘가족’이 당사 ‘한화 시그니처 여성 건강보험’의 피보험자인 경우 체결완료 계약 또는 체결 진행중인 설계를 연결하여 할인적용 가능합니다.</Typo>
+          <Gcol placement="ss" gap={3}>
+            <Typo tag={'strong'}>
+              주피보험자의 ‘가족’이 당사 ‘한화 시그니처 여성 건강보험’의 피보험자인 경우 체결완료 계약 또는 체결
+              진행중인 설계를 연결하여 할인적용 가능합니다.
+            </Typo>
             <BulletList position="col">
               <BulletListItem type="dash">가족의 범위 : 주피보험자의 모(母)</BulletListItem>
-              <BulletListItem type="dash">제출서류 : 가족관계가 정확히 표기된 주민등록등본 또는 가족관계증명서(태아제외)</BulletListItem>
-              <BulletListItem type="dash">할인 적용가능 상품 (아래 상품명을 포함한 경우 모두 해당) : 한화 시그니처 여성 건강(3종(추가가입용)제외) / 한화 다이렉트 시그니처 여성 건강 / 한화 시그니처 여성 3N5 / 한화 시그니처 여성 355</BulletListItem>
+              <BulletListItem type="dash">
+                제출서류 : 가족관계가 정확히 표기된 주민등록등본 또는 가족관계증명서(태아제외)
+              </BulletListItem>
+              <BulletListItem type="dash">
+                할인 적용가능 상품 (아래 상품명을 포함한 경우 모두 해당) : 한화 시그니처 여성 건강(3종(추가가입용)제외)
+                / 한화 다이렉트 시그니처 여성 건강 / 한화 시그니처 여성 3N5 / 한화 시그니처 여성 355
+              </BulletListItem>
             </BulletList>
             <Gcol placement={'ss'} variant={'box-detail'}>
               <Typo variant={'body-sm'} icon={'detail'}>
                 <b>유의사항</b>
               </Typo>
               <BulletList position="col">
-                <BulletListItem before="1." type="symbols">기계약의 상태가 정상이 아닌 경우 청약(수납)완료 불가</BulletListItem>
-                <BulletListItem before="2." type="symbols">할인관련 자세한 사항은 상품별 사업방법서를 확인 하시기 바랍니다.</BulletListItem>
+                <BulletListItem before="1." type="symbols">
+                  기계약의 상태가 정상이 아닌 경우 청약(수납)완료 불가
+                </BulletListItem>
+                <BulletListItem before="2." type="symbols">
+                  할인관련 자세한 사항은 상품별 사업방법서를 확인 하시기 바랍니다.
+                </BulletListItem>
               </BulletList>
             </Gcol>
           </Gcol>
@@ -157,7 +169,7 @@ const Ltpz006 = () => {
           <DialogFooterArea>
             <Grow>
               <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                체결완료 계약 찾기 
+                체결완료 계약 찾기
               </Button>
               <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 체결중 설계 찾기

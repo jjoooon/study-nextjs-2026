@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
@@ -20,6 +19,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import * as React from 'react';
 
 export const Ltpa050 = () => {
   const insuranceTabs = [

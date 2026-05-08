@@ -1,9 +1,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, GridApi } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import {
   AgGridEmptyComponent,
   GridHeaderCheckbox,
@@ -12,8 +9,8 @@ import {
   createTooltipValueGetter,
 } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
 import { BulletList, BulletListItem } from '@common/BulletList';
+import { Button } from '@uiux/Button';
 import {
   Dialog,
   DialogContent,
@@ -24,94 +21,97 @@ import {
   DialogClose,
   DialogFooterArea,
 } from '@uiux/Dialog';
+import type { ColDef, GridApi } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
-  type DummyDataType = {
-    id: number;
-    field01: string | number;
-    field02: boolean;
-    field03: boolean;
-    filePath?: string[];
-  };
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: boolean;
+  field03: boolean;
+  filePath?: string[];
+};
 
-  const DummyData: DummyDataType[] = [
-    {
-      id: 1,
-      field01: '암(4대유사암제외)진단후특정치료비(진단후10년,연간1회한)(간편)',
-      field02: true,
-      field03: false,
-      filePath: ['folderC'],
-    },
-    {
-      id: 2,
-      field01: '특정유사암진단후특정치료비(진단후10년,연간1회한)(간편)',
-      field02: true,
-      field03: false,
-      filePath: ['folderD'],
-    },
-    {
-      id: 3,
-      field01: '4대유사암진단비',
-      field02: false,
-      field03: true,
-      filePath: ['folderE'],
-    },
-    {
-      id: 4,
-      field01: '통합안진단비',
-      field02: true,
-      field03: false,
-      filePath: ['folderA'],
-    },
-    {
-      id: 5,
-      field01: '- 통합암진단비(간암)',
-      field02: true,
-      field03: false,
-      filePath: ['folderA', 'folderA-1'],
-    },
-    {
-      id: 6,
-      field01: '- 통합암진단비(폐암)',
-      field02: true,
-      field03: false,
-      filePath: ['folderA', 'folderA-2'],
-    },
-    {
-      id: 7,
-      field01: '- 통합암진단비(기관지염)',
-      field02: true,
-      field03: false,
-      filePath: ['folderA', 'folderA-3'],
-    },
-    {
-      id: 8,
-      field01: '- 통합암진단비(폐암)',
-      field02: true,
-      field03: false,
-      filePath: ['folderA', 'folderA-4'],
-    },
-    {
-      id: 9,
-      field01: '- 통합암진단비(간암)',
-      field02: true,
-      field03: false,
-      filePath: ['folderA', 'folderA-5'],
-    },
-    {
-      id: 10,
-      field01: '- 통합암진단비(폐암)',
-      field02: true,
-      field03: false,
-      filePath: ['folderA', 'folderA-6'],
-    },
-    {
-      id: 11,
-      field01: '특정유사암진단후특정치료비(진단후10년,연간1회한)(간편)',
-      field02: true,
-      field03: false,
-      filePath: ['folderF'],
-    },
-  ];
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: '암(4대유사암제외)진단후특정치료비(진단후10년,연간1회한)(간편)',
+    field02: true,
+    field03: false,
+    filePath: ['folderC'],
+  },
+  {
+    id: 2,
+    field01: '특정유사암진단후특정치료비(진단후10년,연간1회한)(간편)',
+    field02: true,
+    field03: false,
+    filePath: ['folderD'],
+  },
+  {
+    id: 3,
+    field01: '4대유사암진단비',
+    field02: false,
+    field03: true,
+    filePath: ['folderE'],
+  },
+  {
+    id: 4,
+    field01: '통합안진단비',
+    field02: true,
+    field03: false,
+    filePath: ['folderA'],
+  },
+  {
+    id: 5,
+    field01: '- 통합암진단비(간암)',
+    field02: true,
+    field03: false,
+    filePath: ['folderA', 'folderA-1'],
+  },
+  {
+    id: 6,
+    field01: '- 통합암진단비(폐암)',
+    field02: true,
+    field03: false,
+    filePath: ['folderA', 'folderA-2'],
+  },
+  {
+    id: 7,
+    field01: '- 통합암진단비(기관지염)',
+    field02: true,
+    field03: false,
+    filePath: ['folderA', 'folderA-3'],
+  },
+  {
+    id: 8,
+    field01: '- 통합암진단비(폐암)',
+    field02: true,
+    field03: false,
+    filePath: ['folderA', 'folderA-4'],
+  },
+  {
+    id: 9,
+    field01: '- 통합암진단비(간암)',
+    field02: true,
+    field03: false,
+    filePath: ['folderA', 'folderA-5'],
+  },
+  {
+    id: 10,
+    field01: '- 통합암진단비(폐암)',
+    field02: true,
+    field03: false,
+    filePath: ['folderA', 'folderA-6'],
+  },
+  {
+    id: 11,
+    field01: '특정유사암진단후특정치료비(진단후10년,연간1회한)(간편)',
+    field02: true,
+    field03: false,
+    filePath: ['folderF'],
+  },
+];
 
 const Ltpz007 = () => {
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
@@ -121,7 +121,7 @@ const Ltpz007 = () => {
     () => createHeaderCheckboxOnCellValueChanged<DummyDataType>(['field02', 'field03']),
     []
   );
-  
+
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '세만기형',
@@ -131,7 +131,7 @@ const Ltpz007 = () => {
       cellClass: 'text-center editable-cell',
       autoHeight: false,
       cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
-      cellEditor: 'agCheckboxCellEditor',     // ag-Grid 기본 체크박스 에디터 사용
+      cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
       headerComponent: GridHeaderCheckbox,
       headerComponentParams: createHeaderCheckboxParams(gridApiRef, 'field02'),
     },
@@ -143,7 +143,7 @@ const Ltpz007 = () => {
       cellClass: 'text-center editable-cell',
       autoHeight: false,
       cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
-      cellEditor: 'agCheckboxCellEditor',     // ag-Grid 기본 체크박스 에디터 사용
+      cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
       headerComponent: GridHeaderCheckbox,
       headerComponentParams: createHeaderCheckboxParams(gridApiRef, 'field03'),
     },
@@ -204,8 +204,8 @@ const Ltpz007 = () => {
           <DialogFooterArea>
             <Grow>
               <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  초기화
-                </Button>
+                초기화
+              </Button>
               <Button variant={'contained'} size={'xl'}>
                 저장
               </Button>

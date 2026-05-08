@@ -1,7 +1,16 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { AiIcon, CircleCheckIcon, InfoToastIcon } from '@icons';
+import { Button } from '@uiux/Button';
 import * as React from 'react';
+
+import Ltpz00501 from './Ltpz00501';
+import Ltpz00502 from './Ltpz00502';
+import Ltpz00503 from './Ltpz00503';
+import Ltpz00504 from './Ltpz00504';
 import {
   Dialog,
   DialogClose,
@@ -15,15 +24,6 @@ import {
 import { Input } from '@/shared/components/uiux/Input';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { AiIcon, CircleCheckIcon, InfoToastIcon } from '@icons';
-import { Button } from '@uiux/Button';
-
-import Ltpz00501 from './Ltpz00501';
-import Ltpz00502 from './Ltpz00502';
-import Ltpz00503 from './Ltpz00503';
-import Ltpz00504 from './Ltpz00504';
 
 type CheckTab = {
   name: string;
@@ -89,10 +89,11 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
                     납입 후 50%해약환급금지급형
                   </Typo>
                   <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
-                  <Typo tag="span" variant={'body-lg'} color={'gray'}>3N5간편고지형</Typo>
+                  <Typo tag="span" variant={'body-lg'} color={'gray'}>
+                    3N5간편고지형
+                  </Typo>
                 </Grow>
                 <Grow>
-                  
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
                     9형(3.10.5간편고지형(고혈압및당뇨추가고지))(올케어플랜)(6~9형)(15-80세)
                   </Typo>
@@ -114,7 +115,10 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
           </Gcol>
 
           <Grid className="w-full grid-cols-[auto_1fr] h-full" gap={0}>
-            <Grid className="w-[6.4rem] grid-rows-[1fr_1fr_1fr_1fr] h-full max-h-[44rem] mr-[-0.1rem] place-self-start" gap={0}>
+            <Grid
+              className="w-[6.4rem] grid-rows-[1fr_1fr_1fr_1fr] h-full max-h-[44rem] mr-[-0.1rem] place-self-start"
+              gap={0}
+            >
               {tabs.map((tab, index) => {
                 const isActive = active === tab.value;
                 return (
@@ -140,8 +144,10 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
                 );
               })}
             </Grid>
-            <div className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc[+
-            100%+1rem]] h-full overflow-x-hidden overflow-y-auto rounded-tr-[1rem] rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]">
+            <div
+              className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc[+
+            100%+1rem]] h-full overflow-x-hidden overflow-y-auto rounded-tr-[1rem] rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]"
+            >
               {active === 'common' ? (
                 <Ltpz00501 />
               ) : active === 'accum' ? (
