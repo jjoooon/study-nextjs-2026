@@ -22,6 +22,8 @@ import {
 import '@/shared/lib/agGridPub';
 
 import Ltpz01501 from './Ltpz01501';
+import Ltpz01502 from './Ltpz01502';
+import Ltpz01503 from './Ltpz01503';
 
 type LTPZ015Tab = { value: string; label: string };
 const DATA_TABS: LTPZ015Tab[] = [
@@ -39,35 +41,35 @@ const Ltpz015 = () => {
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}></Typo>
+            <Typo tag={'strong'} variant={'heading-lg'}>
+              가입설계동의
+            </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ015)
             </Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection>
-          <Grid className="w-full grid-rows-[auto_auto_1fr]">
-            <TabPager
-              data={tabs}
-              active={active}
-              setActive={setActive}
-              hasTableBelow={true}
-              getValue={(t) => t.value}
-              renderTab={(t) => t.label ?? t.value}
-              visibleCount={4}
-              removable={false}
-            >
-              <Grid className="grid-rows-[1fr_auto] h-full">
-                {active === 'tab1' ? (
-                  <Ltpz01501 />
-                ) : active === 'tab2' ? (
-                  <Grid className="w-full grid-rows-[auto_1fr] h-full"></Grid>
-                ) : active === 'tab3' ? (
-                  <Grid className="w-full grid-rows-[auto_1fr] h-full"></Grid>
-                ) : null}
-              </Grid>
-            </TabPager>
-          </Grid>
+          <TabPager
+            data={tabs}
+            active={active}
+            setActive={setActive}
+            hasTableBelow={true}
+            getValue={(t) => t.value}
+            renderTab={(t) => t.label ?? t.value}
+            visibleCount={4}
+            removable={false}
+          >
+            <>
+              {active === 'tab1' ? (
+                <Ltpz01501 />
+              ) : active === 'tab2' ? (
+                <Ltpz01502 />
+              ) : active === 'tab3' ? (
+                <Ltpz01503 />
+              ) : null }
+            </>
+          </TabPager>
         </DialogSection>
 
         <DialogFooter>
@@ -83,9 +85,16 @@ const Ltpz015 = () => {
               </Grow>
             ) : null}
             <Grow>
+            {active === 'tab1' ? (  
               <Button variant={'contained'} size={'xl'}>
                 출력하기
               </Button>
+            ) : null}
+            {active === 'tab3' ? (  
+              <Button variant={'contained'} size={'xl'}>
+                발송
+              </Button>
+            ) : null}
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
