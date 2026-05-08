@@ -1,10 +1,5 @@
 'use client';
 
-<<<<<<< HEAD
-=======
-import { useTabs } from '@/shared/hooks/useTabs';
-import { AgGridEmptyComponent } from '@aggrid';
->>>>>>> 6e4bfd35197a72caa9fb61a2f1cc207ca7fc69d0
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 
 
