@@ -1,6 +1,6 @@
 'use client';
 
-import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback } from 'react';
 import * as React from 'react';

@@ -1,6 +1,6 @@
 'use client';
 
-import type { ColDef, GridApi } from 'ag-grid-community';
+import type { ColDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';

@@ -1,8 +1,8 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { ColDef, ColGroupDef } from 'ag-grid-community';
-import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-community';
+import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';

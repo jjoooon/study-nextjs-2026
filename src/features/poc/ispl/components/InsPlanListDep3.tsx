@@ -1,7 +1,7 @@
 'use client';
 
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useEffect } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';

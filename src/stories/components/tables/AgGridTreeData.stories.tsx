@@ -3,7 +3,7 @@
 //
 // 1. 필수 import 및 모듈 등록:
 // import { AgGridReact } from 'ag-grid-react';
-// import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+// import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 // import { TreeDataModule } from 'ag-grid-enterprise';
 // ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 //
@@ -29,9 +29,9 @@ import { Grow, Gcol } from '@atoms';
 import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
 import { AgGridReact } from 'ag-grid-react';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import { TreeDataModule } from 'ag-grid-enterprise';
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridEmptyComponent } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
@@ -80,9 +80,9 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
             {`
 \`\`\`tsx
 import { AgGridReact } from 'ag-grid-react';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import { TreeDataModule } from 'ag-grid-enterprise';
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 

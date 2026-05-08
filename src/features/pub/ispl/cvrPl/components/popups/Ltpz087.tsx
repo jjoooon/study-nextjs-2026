@@ -2,7 +2,7 @@
 
 import '@/shared/lib/agGridPub';
 import React from 'react';
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';

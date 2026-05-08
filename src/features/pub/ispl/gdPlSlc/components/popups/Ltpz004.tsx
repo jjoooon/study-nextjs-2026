@@ -1,6 +1,6 @@
 'use client';
 
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';

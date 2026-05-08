@@ -7,8 +7,8 @@ import {
   CellSpanModule,
   ClientSideRowModelModule,
   ModuleRegistry,
-} from 'ag-grid-community';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+} from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
 ModuleRegistry.registerModules([AllCommunityModule, CellSpanModule, ClientSideRowModelModule]);

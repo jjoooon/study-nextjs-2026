@@ -1,7 +1,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-community';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@/shared/components/agGridUtils';
 import { useFormFields } from '@/shared/hooks/useFormFields';

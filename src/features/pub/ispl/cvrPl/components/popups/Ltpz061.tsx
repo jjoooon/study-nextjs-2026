@@ -1,7 +1,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
 import * as React from 'react';

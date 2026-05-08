@@ -1,7 +1,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ICellRendererParams } from 'ag-grid-community';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, useToggleTopRows, ToggleTopRow } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';

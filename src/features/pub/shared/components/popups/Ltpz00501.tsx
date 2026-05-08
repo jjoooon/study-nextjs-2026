@@ -2,7 +2,7 @@
 
 import '@/shared/lib/agGridPub';
 
-import { ColDef, ColGroupDef } from 'ag-grid-community';
+import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';

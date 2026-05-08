@@ -7,7 +7,7 @@ import type {
   GridApi,
   EditableCallbackParams,
   CellEditorSelectorResult,
-} from 'ag-grid-community';
+} from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import {

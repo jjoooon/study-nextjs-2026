@@ -8,7 +8,7 @@ import type {
   GridApi,
   ICellRendererParams,
   SuppressKeyboardEventParams,
-} from 'ag-grid-community';
+} from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import {
