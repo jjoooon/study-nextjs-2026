@@ -99,7 +99,7 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
-const Ltpz002 = () => {
+const Ltpz008 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
@@ -444,4 +444,4 @@ const Ltpz002 = () => {
   );
 };
 
-export default Ltpz002;
+export default Ltpz008;
