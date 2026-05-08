@@ -158,6 +158,39 @@ export function createCellErrorClassRules<RowType>(predicate: (params: CellClass
 }
 
 /**
+ * 원본값과 달라진 셀에 클래스 룰을 적용하는 생성기 (공용)
+ */
+export function createModifiedCellClassRules<RowType extends Record<string, unknown>, ValueKey extends keyof RowType>(options: {
+  rows: RowType[];
+  idKey: IdKeyOf<RowType>;
+  valueKey: ValueKey;
+  className?: string;
+  serialize?: (value: unknown) => string;
+}): {
+  [className: string]: (params: CellClassParams<RowType>) => boolean;
+} {
+  const {
+    rows,
+    idKey,
+    valueKey,
+    className = 'modify-cell',
+    serialize = (value) => String(value ?? ''),
+  } = options;
+
+  const initialValueMap = new Map(rows.map((row) => [row[idKey], serialize(row[valueKey])])) ;
+
+  return {
+    [className]: (params) => {
+      if (!params.data) {
+        return false;
+      }
+
+      return serialize(params.value) !== initialValueMap.get(params.data[idKey]);
+    },
+  };
+}
+
+/**
  * 선택 행 정보 전달 핸들러 생성기 (공용)
  * @param idKey 행 데이터의 id 필드명 (string)
  * @param callback id 전달 콜백 (id: IDType) => void
