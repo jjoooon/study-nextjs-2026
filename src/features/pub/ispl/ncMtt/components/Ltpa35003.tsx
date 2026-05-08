@@ -590,8 +590,7 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       1일까지)
                     </Typo>
                   </Gcol>
-                  <div id="question-card-1" />
-                  <QuestionRadioCard
+                  <QuestionRadioCard id="question-card-1"
                     className={highlightBadgeNum === 1 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -651,8 +650,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Gcol>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-2" />
                   <QuestionRadioCard
+                    id="question-card-2"
                     className={highlightBadgeNum === 2 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -692,8 +691,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Gcol>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-3" />
                   <QuestionRadioCard
+                    id="question-card-3"
                     className={highlightBadgeNum === 3 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -734,8 +733,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Gcol>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-4" />
                   <QuestionRadioCard
+                    id="question-card-4"
                     className={highlightBadgeNum === 4 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -792,8 +791,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Gcol>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-5" />
                   <QuestionRadioCard
+                    id="question-card-5"
                     className={highlightBadgeNum === 5 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -1048,8 +1047,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Grid>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-6" />
                   <QuestionRadioCard
+                    id="question-card-6"
                     className={highlightBadgeNum === 6 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -1120,8 +1119,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Gcol>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-7" />
                   <QuestionRadioCard
+                    id="question-card-7"
                     className={highlightBadgeNum === 7 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -1221,8 +1220,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Gcol>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-8" />
                   <QuestionRadioCard
+                    id="question-card-8"
                     className={highlightBadgeNum === 8 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -1269,8 +1268,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Gcol>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-9" />
                   <QuestionRadioCard
+                    id="question-card-9"
                     className={highlightBadgeNum === 9 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -1383,8 +1382,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Grid>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-10" />
                   <QuestionRadioCard
+                    id="question-card-10"
                     className={highlightBadgeNum === 10 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -1423,8 +1422,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Grow>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-11" />
                   <QuestionRadioCard
+                    id="question-card-11"
                     className={highlightBadgeNum === 11 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -1501,8 +1500,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Grid>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-12" />
                   <QuestionRadioCard
+                    id="question-card-12"
                     className={highlightBadgeNum === 12 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -1569,8 +1568,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Grid>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-13" />
                   <QuestionRadioCard
+                    id="question-card-13"
                     className={highlightBadgeNum === 13 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -1638,8 +1637,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Grid>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-14" />
                   <QuestionRadioCard
+                    id="question-card-14"
                     className={highlightBadgeNum === 14 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
@@ -1716,8 +1715,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       </Grid>
                     </QuestionRadioCardContents>
                   </QuestionRadioCard>
-                  <div id="question-card-15" />
                   <QuestionRadioCard
+                    id="question-card-15"
                     className={
                       highlightBadgeNum === 15 ? 'border-[0.2rem] border-[#FF5C2E] mb-[1.4rem]' : 'mb-[1.4rem]'
                     }

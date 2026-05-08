@@ -1462,7 +1462,7 @@
     "dep2": "가입설계",
     "dep3": "알릴사항",
     "id": "LTPZ084",
-    "path": "ispl/ncMtt",
+    "path": "ispl/ncMtt/components/popups",
     "dep4": "알릴사항",
     "file": "알릴사항",
     "plan": "이현숙",
