@@ -1,7 +1,7 @@
 'use client';
 
 import { AgGridEmptyComponent, createAddRowHandler, createDeleteSelectedRowsHandler } from '@aggrid';
-import { Gcol, Grow, Grid } from '@atoms';
+import { Grow, Grid } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
