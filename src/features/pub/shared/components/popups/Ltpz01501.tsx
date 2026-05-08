@@ -175,7 +175,7 @@ const Ltpz01501 = () => {
           </FormRow>
         </FormTable>
       </Grow>
-      <TableFold variant="accordion" className='grid grid-rows-[auto_1fr] h-full'>
+      <TableFold variant="accordion" className="grid grid-rows-[auto_1fr] h-full">
         <TableFoldHead title="가입설계 동의(동의서출력)">
           <Grow>
             <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
@@ -197,8 +197,8 @@ const Ltpz01501 = () => {
             </Button>
           </Grow>
         </TableFoldHead>
-        <TableFoldBody className='grid grid-rows-[1fr] h-full'>
-          <Grid gap={2} placement="ss" className='grid-rows-[auto_1fr] h-full'>
+        <TableFoldBody className="grid grid-rows-[1fr] h-full">
+          <Grid gap={2} placement="ss" className="grid-rows-[auto_1fr] h-full">
             <BulletItem size="md" type="dotBig">
               입력된 정보는 저장되지 않습니다.(고객정보 미입력 출력 가능)
             </BulletItem>

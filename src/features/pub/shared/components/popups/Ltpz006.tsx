@@ -1,11 +1,8 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, useToggleTopRows, ToggleTopRow } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { CheckIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -17,111 +14,9 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
-import { Textarea } from '@uiux/Textarea';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
-type DummyDataType = {
-  id: number;
-  field1: string | number;
-  field2: string | number;
-  field3: string | number;
-  field4: string | number;
-  field5: string | number;
-  field6: boolean;
-};
-
-const dummyData: DummyDataType[] = [
-  {
-    id: 1,
-    field1: '2026-02-24',
-    field2: 80939583,
-    field3: '홍길순1',
-    field4: '여의도 GA 지점',
-    field5: '메모 테스트 글입니다.',
-    field6: false,
-  },
-  {
-    id: 2,
-    field1: '2026-02-24',
-    field2: 80939583,
-    field3: '홍길순2',
-    field4: '여의도 GA 지점',
-    field5: '메모 테스트 글입니다.',
-    field6: false,
-  },
-  {
-    id: 3,
-    field1: '2026-02-24',
-    field2: 80939583,
-    field3: '홍길순3',
-    field4: '여의도 GA 지점',
-    field5: '메모 테스트 글입니다.',
-    field6: false,
-  },
-];
-
 const Ltpz006 = () => {
-  const { rowData, toggleById } = useToggleTopRows({
-    rows: dummyData,
-    idKey: 'id',
-    toggleKey: 'field6',
-  });
-
-  const columnDefs: ColDef<ToggleTopRow<DummyDataType>>[] = [
-    {
-      headerName: '입력일',
-      field: 'field1',
-      width: 100,
-    },
-    {
-      headerName: '입력자사번',
-      field: 'field2',
-      width: 100,
-    },
-    {
-      headerName: '입력자명',
-      field: 'field3',
-      width: 100,
-    },
-    {
-      headerName: '소속기관',
-      field: 'field4',
-      width: 150,
-    },
-    {
-      headerName: '내용',
-      field: 'field5',
-      flex: 1,
-    },
-    {
-      headerName: '노출여부',
-      field: 'field6',
-      width: 100,
-      cellRenderer: (params: ICellRendererParams<ToggleTopRow<DummyDataType>>) => {
-        return (
-          <Button
-            variant={'outlined'}
-            className="w-[7rem]"
-            color={params.data?.field6 ? 'primary' : 'gray'}
-            onClick={(event) => {
-              event.stopPropagation();
-
-              if (params.data) {
-                toggleById(params.data.id);
-              }
-            }}
-          >
-            {params.data?.field6 ? <CheckIcon /> : null}
-            {params.data?.field6 ? '노출' : '미노출'}
-          </Button>
-        );
-      },
-    },
-  ];
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
