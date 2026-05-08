@@ -1,5 +1,6 @@
-import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
 import * as React from 'react';
 import Ltpz010 from '@/features/pub/ispl/cvrPl/components/popups/Ltpz010';
 import { LayoutDoc } from '@layout/BaseLayout';

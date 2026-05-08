@@ -1,3 +1,7 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+
 'use client';
 
 import { FormItem, Grid, Grow, Typo } from '@atoms';
@@ -97,7 +101,7 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
   return (
     <Grow placement="bwc" className="w-full py-1 gap-1.5">
       <Grow className="gap-[.8rem] flex-1" placement="sc">
-        <ViewMode state={resolvedSimpleMode} onChange={handleSimpleModeChange} />
+        <ViewMode label={['간편', '상세']} state={resolvedSimpleMode} onChange={handleSimpleModeChange} />
 
         <Tooltip>
           <TooltipTrigger asChild>

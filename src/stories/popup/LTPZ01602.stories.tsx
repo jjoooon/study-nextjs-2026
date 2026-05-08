@@ -1,50 +1,25 @@
-import { Controls, Primary, Title } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
 import * as React from 'react';
-
-import { Ltpz01602 } from '@/features/pub/ispl/cvrPl/components/popups/Ltpz01602';
+import Ltpz01602 from '@/features/pub/ispl/cvrPl/components/popups/Ltpz01602';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
-const meta: Meta<typeof Ltpz01602> = {
-  title: 'app/ispl/cvrPl/components/popups/Ltpz01602',
+export default {
+  title: 'app//ispl/cvrPl/components/popups/Ltpz01602',
   component: Ltpz01602,
-  tags: ['autodocs'],
-  parameters: {
-    layout: 'padded',
-    docs: {
-      page: () => {
-        return (
-          <>
-            <Title />
-            <br />
-            <Primary />
-            <Controls />
-          </>
-        );
-      },
-    },
-  },
 };
 
-export default meta;
+export const Default = () => {
+  const [open, setOpen] = React.useState(true);
+  return (
+    <LayoutDoc>
+      <div className='flex w-full h-screen items-center justify-center max-w-[118rem] outline outline-1 outline-[red] -outline-offset-2 mx-auto'>
+        <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
+      </div>
 
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
-  render: () => {
-    const [open, setOpen] = React.useState(true);
-
-    return (
-      <LayoutDoc>
-        <div className='flex w-full h-screen items-center justify-center max-w-[118rem] outline outline-1 outline-[red] -outline-offset-2 mx-auto'>
-          <Button variant={'contained'} onClick={() => setOpen(true)}>
-            다이얼로그 열기
-          </Button>
-        </div>
-
-        <Ltpz01602 />
-      </LayoutDoc>
-    );
-  },
+      <Ltpz01602 />
+    </LayoutDoc>
+  );
 };

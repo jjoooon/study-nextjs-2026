@@ -1,5 +1,8 @@
-import { cva, type VariantProps } from 'class-variance-authority';
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
 
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 function Empty({ className, ...props }: React.ComponentProps<'div'>) {
