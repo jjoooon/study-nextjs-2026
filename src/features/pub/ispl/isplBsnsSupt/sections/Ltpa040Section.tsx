@@ -6,9 +6,9 @@
 
 import {
   AgGridEmptyComponent,
-  useAgGridInfiniteAppend,
+  createFieldRenderer,
 } from '@aggrid';
-import { Grid, Grow } from '@atoms';
+import { Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -16,11 +16,11 @@ import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
-import { ResetIcon, SearchIcon, FileExportIcon } from '@icons';
+import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
@@ -29,6 +29,7 @@ import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 
 type Ltp040TabType = { name: string; value: string; label: string };
 
@@ -58,6 +59,24 @@ type Ltpa040DummyDataRow = {
   field15: string | number;
 };
 
+type Ltpa040DummyDataRowT1 = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+};
+
+type Ltpa040DummyDataRowT2 = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+};
+
 const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 1,
@@ -65,7 +84,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field01: 'YYYY-MM-DD HH:MM',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
-    field04: '홍길동(8090001)',
+    field04: '홍길동',
     field05: '기등록',
     field06: '홍길순',
     field07: '사망후유, 진단비, 입원/통원',
@@ -137,9 +156,135 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   },
 ];
 
+const Ltpa040DummyDataT1: Ltpa040DummyDataRowT1[] = [
+  {
+    id: 1,
+    field01: '2026-04-13',
+    field02: '282',
+    field03: '82',
+    field04: '29.1%',
+    field05: '71',
+    field06: '47',
+  },
+  {
+    id: 2,
+    field01: '2026-04-12',
+    field02: '737',
+    field03: '437',
+    field04: '59.3%',
+    field05: '334',
+    field06: '119',
+  },
+  {
+    id: 3,
+    field01: '2026-04-11',
+    field02: '0,000',
+    field03: '000',
+    field04: '00.0%',
+    field05: '000',
+    field06: '000',
+  },
+  {
+    id: 4,
+    field01: '2026-04-10',
+    field02: '0,000',
+    field03: '000',
+    field04: '00.0%',
+    field05: '000',
+    field06: '000',
+  },
+  {
+    id: 5,
+    field01: '2026-04-09',
+    field02: '0,000',
+    field03: '000',
+    field04: '00.0%',
+    field05: '000',
+    field06: '000',
+  },
+  {
+    id: 6,
+    field01: '2026-04-06',
+    field02: '0,000',
+    field03: '000',
+    field04: '00.0%',
+    field05: '000',
+    field06: '000',
+  },
+  {
+    id: 7,
+    field01: '2026-04-06',
+    field02: '0,000',
+    field03: '000',
+    field04: '00.0%',
+    field05: '000',
+    field06: '000',
+  },
+  {
+    id: 8,
+    field01: '2026-04-06',
+    field02: '0,000',
+    field03: '000',
+    field04: '00.0%',
+    field05: '000',
+    field06: '000',
+  },
+  {
+    id: 9,
+    field01: '2026-04-06',
+    field02: '0,000',
+    field03: '000',
+    field04: '00.0%',
+    field05: '000',
+    field06: '000',
+  },
+  {
+    id: 10,
+    field01: '2026-04-06',
+    field02: '0,000',
+    field03: '000',
+    field04: '00.0%',
+    field05: '000',
+    field06: '000',
+  },
+  {
+    id: 11,
+    field01: '2026-04-06',
+    field02: '0,000',
+    field03: '000',
+    field04: '00.0%',
+    field05: '000',
+    field06: '000',
+  },
+];
+
+const Ltpa040DummyDataT2: Ltpa040DummyDataRowT2[] = [
+  {
+    id: 1,
+    field01: '한화 시그니처 여성 건강보험4.0',
+    field02: '1종 납입면제 강화형, 기본형[할증운영상품]',
+    field03: '',
+    field04: '',
+  },
+  
+];
+
 export default function Ltpa040Section() {
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+  const renderConsentCell = (params: ICellRendererParams<Ltpa040DummyDataRowT1>) => {
+    const value = String(params.value ?? '');
+
+    if (value === '일자') {
+      return <Typo>{value}</Typo>;
+    }
+
+    return (
+      <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+        {value}
+      </Button>
+    );
+  };
   
 
   const columnDefs: (ColDef<Ltpa040DummyDataRow> | ColGroupDef<Ltpa040DummyDataRow>)[] = [
@@ -262,15 +407,80 @@ export default function Ltpa040Section() {
     },
   ];
 
-  // const [rowData, setRowData] = React.useState<Ltpa040DummyDataRow[]>(Ltpa040DummyData);
+  const columnDefsT1: (ColDef<Ltpa040DummyDataRowT1>)[] = [
+    {
+      headerName: '일자',
+      field: 'field01',
+      flex: 1, 
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellRenderer: renderConsentCell,
+    },
+    {
+      headerName: '추천설계 이용건수',
+      field: 'field02',
+      width: 240,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+    {
+      headerName: '상품 선택 건수',
+      field: 'field03',
+      width: 400,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      spanRows: true,
+      cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT1>('field03', 'field04', 'row'),
+    },
+    {
+      headerName: '총 선택 건수',
+      field: 'field05',
+      width: 240,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+    {
+      headerName: '플랜 선택 건수',
+      field: 'field06',
+      width: 240,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+  ];
+
+  const columnDefsT2: (ColDef<Ltpa040DummyDataRowT2>)[] = [
+    {
+      headerName: '상품',
+      field: 'field01',
+      flex: 1, 
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellRenderer: renderConsentCell,
+    },
+    {
+      headerName: '종',
+      field: 'field02',
+      width: 240,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+    {
+      headerName: '플랜',
+      field: 'field03',
+      width: 400,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+    {
+      headerName: '건수',
+      field: 'field04',
+      width: 400,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+    },
+  ];
 
   const gridApiRef = React.useRef<GridApi<Ltpa040DummyDataRow> | null>(null);
-
-  const pageSize = 4;
-  // const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-  //   allRows: Ltpa040DummyData2,
-  //   pageSize,
-  // });
 
   // form event
   const [form, setFormField] = useFormFields({
@@ -474,7 +684,7 @@ export default function Ltpa040Section() {
                     cols={['w-1', 'w-1', 'w-1', 'w-auto']}
                   >
                     <FormRow>
-                      <FormCell title={'선택'}>
+                      <FormCell title={'조회조건'}>
                         <NativeSelect
                           aria-label="조회조건 선택"
                           width={120}
@@ -482,9 +692,10 @@ export default function Ltpa040Section() {
                           onChange={(e) => setFormField('type05', e.target.value)}
                         >
                           {[
-                            { value: 'selection', id: 'type05_1', label: '고객군별' },
-                            { value: 'selection2', id: 'type05_2', label: '추가옵션' },
-                            { value: 'selection3', id: 'type05_3', label: '상품별' },
+                            { value: 'selection', id: 'type05_1', label: '선택' },
+                            { value: 'selection', id: 'type05_2', label: '고객군별' },
+                            { value: 'selection2', id: 'type05_3', label: '추가옵션' },
+                            { value: 'selection3', id: 'type05_4', label: '상품별' },
                           ].map((option) => (
                             <NativeSelectOption key={option.id} value={option.value}>
                               {option.label}
@@ -518,6 +729,42 @@ export default function Ltpa040Section() {
                     </Button>
                   </Grow>
                 </Grow>
+                <TableFold>
+                  <TableFoldHead title="일자별 선택 현황" />
+                  <TableFoldBody className="grid-rows-[auto_1fr]">
+                    <div className="ag-theme-alpine min-h-[33rem]">
+                      <AgGridReact<Ltpa040DummyDataRowT1>
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={Ltpa040DummyDataT1}
+                        columnDefs={columnDefsT1}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                        }}
+                        domLayout="normal"
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+                <TableFold>
+                  <TableFoldHead title="2026-04-13 상세 현황" />
+                  <TableFoldBody className="grid-rows-[auto_1fr]">
+                    <div className="ag-theme-alpine min-h-[33rem]">
+                      <AgGridReact<Ltpa040DummyDataRowT2>
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={Ltpa040DummyDataT2}
+                        columnDefs={columnDefsT2}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                        }}
+                        domLayout="normal"
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
               </Grid>
             )}
           </TabPager>
