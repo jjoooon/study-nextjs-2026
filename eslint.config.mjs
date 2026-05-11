@@ -187,7 +187,9 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, reactCo
       version: 'detect'
     },
     'import/resolver': {
-      typescript: {}
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
+      }
     },
     'boundaries/elements': [
       {
