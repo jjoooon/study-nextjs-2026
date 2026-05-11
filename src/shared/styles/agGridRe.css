@@ -724,3 +724,15 @@
 .ag-header-cell-menu-button {
   display: none !important;
 }
+
+/* subtotal 행 배경색 */
+.ag-row.ag-row-subtotal {
+  background-color: var(--color-primary-10) !important;
+  color: var(--color-primary-50) !important;
+}
+
+.ag-row.ag-row-subtotal:hover,
+.ag-row.ag-row-subtotal.ag-row-hover {
+  background-color: var(--color-primary-10) !important;
+  color: var(--color-primary-50) !important;
+}
