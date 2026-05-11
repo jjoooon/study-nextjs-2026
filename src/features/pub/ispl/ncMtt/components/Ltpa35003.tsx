@@ -590,7 +590,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                       1일까지)
                     </Typo>
                   </Gcol>
-                  <QuestionRadioCard id="question-card-1"
+                  <QuestionRadioCard
+                    id="question-card-1"
                     className={highlightBadgeNum === 1 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
                   >
                     <QuestionRadioCardHeader>
