@@ -597,7 +597,12 @@ export function Ltpa02002({
                 <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'간편'}>
-                      <RadioGroup value={simpleType} onValueChange={(value) => setSimpleType(value)}>
+                      <RadioGroup
+                        width={'full'}
+                        value={simpleType}
+                        onValueChange={(value) => setSimpleType(value)}
+                        className="grid grid-cols-[1fr_1fr] w-full gap-0"
+                      >
                         {[
                           { value: '표준', label: '표준' },
                           { value: '간편', label: '간편' },
@@ -612,7 +617,7 @@ export function Ltpa02002({
                   <FormRow>
                     <FormCell title={'추가질병'}>
                       <CheckboxGroup
-                        className="gap-3 items-start"
+                        className="grid grid-cols-[1fr_1fr] w-full gap-0"
                         value={additionalDiseases}
                         onValueChange={(values) => setAdditionalDiseases(values)}
                       >
