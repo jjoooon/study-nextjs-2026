@@ -507,8 +507,7 @@ export function Ltpa02002({
               <RadioGroup
                 width={'full'}
                 className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
-                value={selectedAnalysisValue}
-                onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
+                defaultValue={'상품옵션'}
               >
                 {[
                   { value: '상품옵션', label: '상품옵션' },
@@ -579,14 +578,15 @@ export function Ltpa02002({
 
             {/* 보장분석 or 고지유형 */}
             {customerType === 'recent' ? (
-              <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem] ">
+              <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem]">
                 <RadioGroup
-                  className="gap-[0.4rem] flex-col items-start"
+                  width={'full'}
+                  className="gap-[0.4rem] [&>div]:w-full"
                   value={selectedAnalysisValue}
                   onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
                 >
                   {AnalysisOptions.map((opt) => (
-                    <RadioGroupItem key={opt.value} value={opt.value} variant="button" className="w-[15rem] !text-left">
+                    <RadioGroupItem key={opt.value} value={opt.value} variant="button" className="!w-full !text-left">
                       {opt.label}
                     </RadioGroupItem>
                   ))}
@@ -610,47 +610,6 @@ export function Ltpa02002({
                     </FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell
-                      title={
-                        <div>
-                          입원수술
-                          <br />
-                          <Button variant={'outlined'} size="sm" color="gray">
-                            예외질환조회
-                          </Button>
-                        </div>
-                      }
-                      className="align-top! pt-[0.8rem]!"
-                    >
-                      <Gcol placement="ss">
-                        {[0, 1, 2, 3, 4].map((idx) => (
-                          <Grow placement="sc" key={idx}>
-                            <Input
-                              width={86}
-                              placeholder="질병명검색"
-                              value={hospitalInputs[idx]}
-                              onChange={(e) => {
-                                const next = [...hospitalInputs];
-                                next[idx] = e.target.value;
-                                setHospitalInputs(next);
-                              }}
-                            />
-                            <Button
-                              variant={'outlined'}
-                              color={'gray-light'}
-                              size={'lg'}
-                              only={'icon'}
-                              aria-label="질병 검색"
-                            >
-                              <SearchIcon color="var(--color-primary-50)" />
-                            </Button>
-                            <Input width={80} placeholder="필수입력" />
-                          </Grow>
-                        ))}
-                      </Gcol>
-                    </FormCell>
-                  </FormRow>
-                  <FormRow>
                     <FormCell title={'추가질병'}>
                       <CheckboxGroup
                         className="gap-3 items-start"
@@ -666,6 +625,41 @@ export function Ltpa02002({
                           </CheckboxGroupItem>
                         ))}
                       </CheckboxGroup>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={null} colSpan={2} className="!pt-0">
+                      <Gcol placement="ss">
+                        <Typo variant={'heading-md'} className="text-[var(--color-blue-gray-50)]">
+                          입원수술
+                        </Typo>
+
+                        {[0, 1, 2, 3, 4].map((idx) => (
+                          <Grid key={idx} className="grid-cols-[auto_auto_1fr] gap-1 items-center w-full">
+                            <Input
+                              size={'sm'}
+                              width={86}
+                              placeholder="질병명검색"
+                              value={hospitalInputs[idx]}
+                              onChange={(e) => {
+                                const next = [...hospitalInputs];
+                                next[idx] = e.target.value;
+                                setHospitalInputs(next);
+                              }}
+                            />
+                            <Button
+                              variant={'outlined'}
+                              color={'gray-light'}
+                              size={'md'}
+                              only={'icon'}
+                              aria-label="질병 검색"
+                            >
+                              <SearchIcon color="var(--color-primary-50)" />
+                            </Button>
+                            <Input size={'sm'} readOnly after="년 내" />
+                          </Grid>
+                        ))}
+                      </Gcol>
                     </FormCell>
                   </FormRow>
                 </FormTable>
