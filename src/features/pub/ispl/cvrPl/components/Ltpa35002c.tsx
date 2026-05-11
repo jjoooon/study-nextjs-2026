@@ -15,6 +15,8 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { KeyValueList } from '@common/KeyValueList';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { createExpiryCellRenderer, productNameCellRenderer, searchButtonRenderer } from '@grid/CellRenderers';
+import { ProductNameHeader } from '@grid/HeadRenderers';
 import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
@@ -27,8 +29,6 @@ import { useCallback, useMemo, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData, dummyData2 } from '../data/ltpa35002cData';
 import type { DummyData2Type, DummyDataType } from '../data/ltpa35002cData';
-import { createExpiryCellRenderer, productNameCellRenderer, searchButtonRenderer } from '../renderers/cellRenderers';
-import { ProductNameHeader } from '../renderers/headRenderers';
 import { editableCellClassRules } from '../utils/agGridUtils';
 
 import '@/shared/lib/agGridPub';

@@ -264,7 +264,7 @@ export function Ltpa02002({
     },
   ];
   const [isAmountInputVisible, setIsAmountInputVisible] = useState<boolean>(false);
-  const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(false);
+  const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(true);
   const [isAddPanelOpen, setIsAddPanelOpen] = useState<boolean>(false);
   const [addPanelCheckedValues, setAddPanelCheckedValues] = useState<string[]>(['담보군', '상품특징', '보장분석']);
   const coverageOptions = [
@@ -406,177 +406,119 @@ export function Ltpa02002({
 
   return (
     <Grid className="w-full grid-rows-[auto_1fr]" gap={3}>
-      <Grow variant={'box-round'} className="w-full pl-[4.5rem] gap-[2rem] relative z-20" placement="bwc">
-        {/* 추가설정 좌측 */}
-        <div
-          className={`absolute top-[0.46rem] left-0 h-[3.6rem] bg-[var(--color-blue-gray-50)] rounded-r-full px-[0.2rem] gap-[0.2rem] flex items-center justify-start whitespace-nowrap text-[#fff] z-10 transition-transform duration-300 ease-out ${isAddPanelOpen ? 'translate-x-[0]' : '-translate-x-[calc(100%-4.2rem)]'}`}
-        >
-          <Grow className="px-[1.6rem]">
-            <CheckboxGroup
-              className="gap-[1rem]"
-              value={addPanelCheckedValues}
-              onValueChange={(nextValues: string[]) => {
-                setAddPanelCheckedValues(nextValues);
-                setIsPdName(nextValues.includes('상품명'));
-              }}
+      <Grow variant={'box-round'} className="w-full gap-[2rem] relative z-20" placement="ss">
+        <Typo tag="h3" variant={'heading-sm'} className="shrink-0 text-[var(--color-text-blue-gray)]">
+          추가정보
+        </Typo>
+
+        <Gcol placement="ss" gap={2}>
+          <Typo tag="div" variant={'body-md'} className="var(--color-text-blue-gray)">
+            추가정보를 입력하면 보다 정확한 추천 결과를 받아보실 수 있습니다. 추가정보를 선택적으로 입력 가능합니다.
+          </Typo>
+          <Grow placement="bwc" gap={6}>
+            <FormTable
+              caption=""
+              cols={
+                isPdName
+                  ? [
+                      'w-[4rem]',
+                      'w-[30%]',
+                      'w-[6rem]',
+                      'w-[30%]',
+                      'w-[6rem]',
+                      'w-[30%]',
+                      'w-[6rem]',
+                      'w-[18rem] min-w-[18rem]',
+                    ]
+                  : ['w-[4rem]', 'w-[30%]', 'w-[6rem]', 'w-[30%]', 'w-[6rem]', 'w-[30%]']
+              }
+              variant={'none'}
             >
-              {[
-                { check: true, disabled: true, value: '담보군', label: '담보군' },
-                { check: true, disabled: true, value: '상품특징', label: '상품특징' },
-                { check: true, disabled: true, value: '보장분석', label: '보장분석' },
-                { check: false, disabled: false, value: '상품명', label: '상품명' },
-              ].map((opt) => (
-                <CheckboxGroupItem key={opt.value} value={opt.value} size="lg" disabled={opt.disabled}>
-                  {opt.label}
-                </CheckboxGroupItem>
-              ))}
-            </CheckboxGroup>
+              <FormRow className="items-start!">
+                <FormCell title={'상품특징'}>
+                  <button
+                    type="button"
+                    className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                    onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+                    aria-expanded={isFilterOptionOpen}
+                  >
+                    <span className="w-[100%] flex items-center font-normal">{selectedProductFeatureSummary}</span>
+                    <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                  </button>
+                </FormCell>
+
+                {customerType === 'recent' ? (
+                  <FormCell title={'보장분석'}>
+                    <button
+                      type="button"
+                      className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                      onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+                      aria-expanded={isFilterOptionOpen}
+                    >
+                      <span className="w-[100%] flex items-center font-normal">{selectedAnalysisSummary}</span>
+                      <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                    </button>
+                  </FormCell>
+                ) : (
+                  <FormCell title={'고지유형'}>
+                    <button
+                      type="button"
+                      className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                      onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+                      aria-expanded={isFilterOptionOpen}
+                    >
+                      <span className="w-[100%] flex items-center font-normal">{selectedNoticeSummary}</span>
+                      <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                    </button>
+                  </FormCell>
+                )}
+
+                <FormCell title={'담보군'} className="items-center! min-h-[2.8rem]! pt-[0.6rem]">
+                  <button
+                    type="button"
+                    className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                    onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+                    aria-expanded={isFilterOptionOpen}
+                  >
+                    <span className="w-[100%] flex items-center font-normal">{selectedCoverageSummary}</span>
+                    <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                  </button>
+                </FormCell>
+              </FormRow>
+            </FormTable>
+            <Grow>
+              <Button variant="contained" color="coolgray" size={'lg'}>
+                설계추천
+              </Button>
+              <Button variant="outlined" color="gray" size={'lg'} only="icon" aria-label="초기화">
+                <ResetIcon />
+              </Button>
+            </Grow>
           </Grow>
-          <button
-            type="button"
-            className="w-[3.7rem] flex items-center gap-[0.2rem]"
-            onClick={() => setIsAddPanelOpen((prev) => !prev)}
-          >
-            {isAddPanelOpen ? '닫기' : '추가'}
-            <ArrowIcon className={isAddPanelOpen ? '' : 'rotate-[180deg]'} size={12} />
-          </button>
-        </div>
-
-        {/* 기본 */}
-        <FormTable
-          caption=""
-          cols={
-            isPdName
-              ? [
-                  'w-[4rem]',
-                  'w-[30%]',
-                  'w-[6rem]',
-                  'w-[30%]',
-                  'w-[6rem]',
-                  'w-[30%]',
-                  'w-[6rem]',
-                  'w-[18rem] min-w-[18rem]',
-                ]
-              : ['w-[4rem]', 'w-[30%]', 'w-[6rem]', 'w-[30%]', 'w-[6rem]', 'w-[30%]']
-          }
-          variant={'none'}
-        >
-          <FormRow className="items-start!">
-            <FormCell title={'담보군'} className="items-center! min-h-[2.8rem]! pt-[0.6rem]">
-              <button
-                type="button"
-                className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
-                onClick={() => setIsFilterOptionOpen((prev) => !prev)}
-                aria-expanded={isFilterOptionOpen}
-              >
-                <span className="w-[100%] flex items-center font-normal">{selectedCoverageSummary}</span>
-                <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
-              </button>
-            </FormCell>
-            <FormCell title={'상품특징'}>
-              <button
-                type="button"
-                className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
-                onClick={() => setIsFilterOptionOpen((prev) => !prev)}
-                aria-expanded={isFilterOptionOpen}
-              >
-                <span className="w-[100%] flex items-center font-normal">{selectedProductFeatureSummary}</span>
-                <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
-              </button>
-            </FormCell>
-
-            {customerType === 'recent' ? (
-              <FormCell title={'보장분석'}>
-                <button
-                  type="button"
-                  className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
-                  onClick={() => setIsFilterOptionOpen((prev) => !prev)}
-                  aria-expanded={isFilterOptionOpen}
-                >
-                  <span className="w-[100%] flex items-center font-normal">{selectedAnalysisSummary}</span>
-                  <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
-                </button>
-              </FormCell>
-            ) : (
-              <FormCell title={'고지유형'}>
-                <button
-                  type="button"
-                  className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
-                  onClick={() => setIsFilterOptionOpen((prev) => !prev)}
-                  aria-expanded={isFilterOptionOpen}
-                >
-                  <span className="w-[100%] flex items-center font-normal">{selectedNoticeSummary}</span>
-                  <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
-                </button>
-              </FormCell>
-            )}
-
-            {isPdName && (
-              <FormCell title={'상품명'}>
-                <Input
-                  aria-label="상품명 입력"
-                  type="text"
-                  value={'한화 시그니처 여성 간편건강보험 4.0'}
-                  width={'full'}
-                />
-                <Button variant={'outlined'} color={'gray-light'} aria-label="상품 검색" only={'icon'} size={'lg'}>
-                  <SearchIcon color="var(--color-primary-50)" />
-                </Button>
-              </FormCell>
-            )}
-          </FormRow>
-        </FormTable>
-        <Grow>
-          <Button variant="contained" color="coolgray" size={'lg'}>
-            설계추천
-          </Button>
-          <Button variant="outlined" color="gray" size={'lg'} only="icon" aria-label="초기화">
-            <ResetIcon />
-          </Button>
-        </Grow>
-
+        </Gcol>
         {isFilterOptionOpen && (
           <Grow
             variant="box-round-b"
-            className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] px-4 py-2.5 gap-0 z-10 pl-[4.5rem]! justify-stretch! "
+            className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] py-2.5 gap-[7rem] z-10 pl-[13.2rem]! pr-[13.4rem]! justify-stretch! "
             placement="ss"
           >
-            {/* 담보군 */}
-            <Gcol className="gap-[0.4rem]" placement="ss">
-              {coverageOptions.map((opt) => (
-                <Grow key={opt.value} className="w-full" placement="ss">
-                  <Checkbox
-                    value={opt.value}
-                    variant="button"
-                    className="w-[8rem]"
-                    checked={selectedCoverageValues.includes(opt.value)}
-                    onCheckedChange={(checked) => {
-                      setSelectedCoverageValues((prev) => {
-                        const nextChecked = checked === true;
-                        if (nextChecked) {
-                          return prev.includes(opt.value) ? prev : [...prev, opt.value];
-                        }
-                        return prev.filter((value) => value !== opt.value);
-                      });
-                    }}
-                  >
-                    {opt.label}
-                  </Checkbox>
-                  {isAmountInputVisible && (
-                    <Input after="만원" width={120} placeholder="가입금액" commaAmount size={'md'} />
-                  )}
-                </Grow>
-              ))}
-              <Checkbox
-                checked={isAmountInputVisible}
-                onCheckedChange={(checked) => setIsAmountInputVisible(checked === true)}
-              >
-                금액입력
-              </Checkbox>
-            </Gcol>
-            <Divider className="self-stretch h-auto" />
             {/* 상품특징 */}
-            <Gcol placement="ss" className="pl-[1.2rem]">
+            <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem]" gap={3}>
+              <RadioGroup
+                width={'full'}
+                className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
+                value={selectedAnalysisValue}
+                onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
+              >
+                {[
+                  { value: '상품옵션', label: '상품옵션' },
+                  { value: '상품선택', label: '상품선택' },
+                ].map((opt) => (
+                  <RadioGroupItem key={opt.value} value={opt.value} variant="button" className="w-full text-left">
+                    {opt.label}
+                  </RadioGroupItem>
+                ))}
+              </RadioGroup>
               <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'무해지'}>
@@ -634,11 +576,10 @@ export function Ltpa02002({
                 </FormRow>
               </FormTable>
             </Gcol>
-            <Divider className="self-stretch h-auto" />
 
             {/* 보장분석 or 고지유형 */}
             {customerType === 'recent' ? (
-              <Gcol placement="ss" className="pl-[1.2rem]">
+              <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem] ">
                 <RadioGroup
                   className="gap-[0.4rem] flex-col items-start"
                   value={selectedAnalysisValue}
@@ -652,7 +593,7 @@ export function Ltpa02002({
                 </RadioGroup>
               </Gcol>
             ) : (
-              <Gcol placement="ss" className="pl-[1.2rem]">
+              <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem]">
                 <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'간편'}>
@@ -730,7 +671,40 @@ export function Ltpa02002({
                 </FormTable>
               </Gcol>
             )}
-            {isPdName ? <div className="w-[36rem] shrink-0"></div> : <div className="w-[10rem] shrink-0"></div>}
+
+            {/* 담보군 */}
+            <Gcol variant={'box-line'} className="gap-[0.4rem]" placement="ss">
+              {coverageOptions.map((opt) => (
+                <Grow key={opt.value} className="w-full" placement="ss">
+                  <Checkbox
+                    value={opt.value}
+                    variant="button"
+                    className="w-[8rem]"
+                    checked={selectedCoverageValues.includes(opt.value)}
+                    onCheckedChange={(checked) => {
+                      setSelectedCoverageValues((prev) => {
+                        const nextChecked = checked === true;
+                        if (nextChecked) {
+                          return prev.includes(opt.value) ? prev : [...prev, opt.value];
+                        }
+                        return prev.filter((value) => value !== opt.value);
+                      });
+                    }}
+                  >
+                    {opt.label}
+                  </Checkbox>
+                  {isAmountInputVisible && (
+                    <Input after="만원" width={120} placeholder="가입금액" commaAmount size={'md'} />
+                  )}
+                </Grow>
+              ))}
+              <Checkbox
+                checked={isAmountInputVisible}
+                onCheckedChange={(checked) => setIsAmountInputVisible(checked === true)}
+              >
+                금액입력
+              </Checkbox>
+            </Gcol>
           </Grow>
         )}
       </Grow>

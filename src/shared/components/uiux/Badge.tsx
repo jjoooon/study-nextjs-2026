@@ -34,6 +34,7 @@ const badgeVariants = cva(
         bluegray: '',
         secondary: '',
         purple: '',
+        yellow: '',
       },
     },
     compoundVariants: [
@@ -50,6 +51,7 @@ const badgeVariants = cva(
       { variant: 'contained', color: 'bluegray', class: 'bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)]' },
       { variant: 'contained', color: 'secondary', class: 'bg-[var(--color-secondary-50)] text-[var(--color-gray-0)]' },
       { variant: 'contained', color: 'purple', class: 'bg-[#F0E6FF] text-[#853EE2]' },
+      { variant: 'contained', color: 'yellow', class: 'bg-[#FFF4E5] text-[#FFB800]' },
 
       {
         variant: 'dark',
@@ -139,6 +141,7 @@ const badgeVariants = cva(
       },
       // Ghost + Colors
       { variant: 'ghost', color: 'blue', class: 'text-[var(--color-information-50)]' },
+      { variant: 'ghost', color: 'yellow', class: 'text-[var(--color-warning-50)]' },
       { variant: 'ghost', color: 'red', class: 'text-[var(--color-danger-50)]' },
       { variant: 'ghost', color: 'green', class: 'text-[var(--color-success-50)]' },
       { variant: 'ghost', color: 'primary', class: 'text-[var(--color-primary-50)]' },

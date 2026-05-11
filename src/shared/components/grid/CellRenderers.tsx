@@ -13,7 +13,7 @@ import { Button } from '@uiux/Button';
 import type { ICellRendererParams, IGroupCellRendererParams, IRowNode } from 'ag-grid-enterprise';
 import type { ReactNode } from 'react';
 
-import type { ProductNameCellBase, ProductTitleDetail } from '../types/gridTypes';
+import type { ProductNameCellBase, ProductTitleDetail } from '../../../features/pub/ispl/cvrPl/types/gridTypes';
 
 export const createExpiryCellRenderer =
   <T,>(align: 'left' | 'center' | 'right' = 'right') =>

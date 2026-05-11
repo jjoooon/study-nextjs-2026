@@ -28,7 +28,7 @@ import { Ltpa02001 } from '../components/Ltpa02001';
 import { Ltpa02002 } from '../components/Ltpa02002';
 
 export default function Ltpa020Section() {
-  const [tabSelectValue, setTabSelectValue] = useState('tabPage1');
+  const [tabSelectValue, setTabSelectValue] = useState('Ltpa02002');
   const [customerType, setCustomerType] = React.useState('recent');
   type ComboFieldKey = 'user' | 'age';
 
@@ -36,6 +36,8 @@ export default function Ltpa020Section() {
     user: '',
     age: '',
   });
+  const [newCustomerGender, setNewCustomerGender] = useState('남');
+  const [newCustomerClass, setNewCustomerClass] = useState('1급');
   const handleComboValueChange = useCallback(
     <TField extends ComboFieldKey>(field: TField) =>
       (nextValue: string) => {
@@ -46,6 +48,24 @@ export default function Ltpa020Section() {
       },
     []
   );
+  const handleAgeComboChange = useCallback((nextValue: string, option?: { [key: string]: unknown }) => {
+    setComboValues((prev) => ({
+      ...prev,
+      age: nextValue,
+    }));
+
+    if (!option) return;
+
+    const gender = option['gender'];
+    if (typeof gender === 'string') {
+      setNewCustomerGender(gender);
+    }
+
+    const customerClass = option['class'];
+    if (typeof customerClass === 'string') {
+      setNewCustomerClass(customerClass);
+    }
+  }, []);
   // 고객정보 등록/미등록
   const [dataNone, setDataNone] = useState<boolean>(true);
 
@@ -61,21 +81,21 @@ export default function Ltpa020Section() {
           >
             <RadioGroupItem
               variant={'button'}
-              value="tabPage1"
+              value="Ltpa02001"
               className="relative z-1 [&>div]:hidden w-[24rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
             >
               상품선택
             </RadioGroupItem>
             <RadioGroupItem
               variant={'button'}
-              value="tabPage2"
+              value="Ltpa02002"
               className="relative z-1 [&>div]:hidden w-[24rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
             >
               추천설계
               <AiIcon
                 size={24}
-                color={tabSelectValue === 'tabPage2' ? '#ffffff' : '#006FF2'}
-                color2={tabSelectValue === 'tabPage2' ? '#ffffff' : '#A683FF'}
+                color={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#006FF2'}
+                color2={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#A683FF'}
                 className="absolute right-2 top-[0.6rem]"
               />
             </RadioGroupItem>
@@ -175,35 +195,71 @@ export default function Ltpa020Section() {
                                 aria-label="나이 검색"
                                 width={48}
                                 col={2}
-                                variant="badge"
+                                variant="recommend"
                                 options={[
                                   {
-                                    value: '32세',
+                                    value: '40세',
+                                    gender: '남',
+                                    class: '1급',
                                     label: (
-                                      <td>
-                                        <b>#32세(여)</b>1급
-                                      </td>
+                                      <div>
+                                        <b>#40세(남)</b>1급
+                                      </div>
                                     ),
                                   },
                                   {
-                                    value: '33세',
+                                    value: '35세',
+                                    gender: '여',
+                                    class: '1급',
                                     label: (
-                                      <td>
-                                        <b>#33세(여)</b>2급
-                                      </td>
+                                      <div>
+                                        <b>#35세(여)</b>1급
+                                      </div>
                                     ),
                                   },
                                   {
-                                    value: '34세',
+                                    value: '50세',
+                                    gender: '남',
+                                    class: '1급',
                                     label: (
-                                      <td>
-                                        <b>#34세(여)</b>1급
-                                      </td>
+                                      <div>
+                                        <b>#50세(남)</b>1급
+                                      </div>
+                                    ),
+                                  },
+                                  {
+                                    value: '45세',
+                                    gender: '여',
+                                    class: '1급',
+                                    label: (
+                                      <div>
+                                        <b>#45세(여)</b>1급
+                                      </div>
+                                    ),
+                                  },
+                                  {
+                                    value: '60세',
+                                    gender: '남',
+                                    class: '1급',
+                                    label: (
+                                      <div>
+                                        <b>#60세(남)</b>1급
+                                      </div>
+                                    ),
+                                  },
+                                  {
+                                    value: '55세',
+                                    gender: '여',
+                                    class: '1급',
+                                    label: (
+                                      <div>
+                                        <b>#55세(여)</b>1급
+                                      </div>
                                     ),
                                   },
                                 ]}
                                 value={comboValues.age}
-                                onChange={handleComboValueChange('age')}
+                                onChange={handleAgeComboChange}
                               />
                               <DatePickerInput value="1994-05-10" />
                             </KeyValueItem>
@@ -214,7 +270,7 @@ export default function Ltpa020Section() {
                               variant="info"
                               className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff]"
                             >
-                              <RadioGroup className="gap-2" defaultValue="남">
+                              <RadioGroup className="gap-2" value={newCustomerGender}>
                                 {[
                                   { value: '남', label: '남' },
                                   { value: '여', label: '여' },
@@ -232,7 +288,7 @@ export default function Ltpa020Section() {
                               variant="info"
                               className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff]"
                             >
-                              <RadioGroup className="gap-2" defaultValue="1급">
+                              <RadioGroup className="gap-2" value={newCustomerClass}>
                                 {[
                                   { value: '1급', label: '1급' },
                                   { value: '2급', label: '2급' },
@@ -264,7 +320,7 @@ export default function Ltpa020Section() {
               </FormTable>
             </Gcol>
 
-            {tabSelectValue === 'tabPage1' ? (
+            {tabSelectValue === 'Ltpa02001' ? (
               <Ltpa02001 />
             ) : (
               <Ltpa02002 dataNone={dataNone} setDataNone={setDataNone} userType={customerType} />

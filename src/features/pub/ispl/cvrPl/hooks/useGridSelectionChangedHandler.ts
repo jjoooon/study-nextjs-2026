@@ -4,44 +4,8 @@
 
 'use client';
 
-import { createSelectionChangedHandler } from '@aggrid';
 import type { GridApi, SelectionChangedEvent } from 'ag-grid-enterprise';
-import { useCallback, useMemo } from 'react';
-
-import type { EnsureLockedRowsSelected } from '../types/gridTypes';
-
-export function useGridReadyHandler<T extends { id: string | number; isChecked?: boolean; locked?: boolean }>(
-  ensureLockedRowsSelected: EnsureLockedRowsSelected
-) {
-  return useCallback(
-    (params: { api: GridApi<T> }): void => {
-      params.api.forEachNode((node) => {
-        if (node.data?.isChecked && !node.isSelected()) {
-          node.setSelected(true);
-        }
-      });
-      ensureLockedRowsSelected<T>(params.api);
-    },
-    [ensureLockedRowsSelected]
-  );
-}
-
-export function useRowDataUpdatedHandler<T extends { id: string | number; locked?: boolean }>(
-  ensureLockedRowsSelected: EnsureLockedRowsSelected
-) {
-  return useCallback(
-    (params: { api: GridApi<T>; pendingSelectId: string | number | null }): void => {
-      ensureLockedRowsSelected<T>(params.api);
-      if (params.pendingSelectId !== null) {
-        const nodeToSelect = params.api.getRowNode(String(params.pendingSelectId));
-        if (nodeToSelect) {
-          nodeToSelect.setSelected(true);
-        }
-      }
-    },
-    [ensureLockedRowsSelected]
-  );
-}
+import { useCallback } from 'react';
 
 export function useGridSelectionChangedHandler<
   T extends { id: string | number; isDuplicate?: boolean; locked?: boolean },
@@ -113,8 +77,4 @@ export function useGridSelectionChangedHandler<
       refreshColumns,
     ]
   );
-}
-
-export function useHandleSelectionChanged<T, K>(idKey: keyof T, callback?: (id: K) => void) {
-  return useMemo(() => createSelectionChangedHandler<T, K>(idKey, callback), [callback, idKey]);
 }
