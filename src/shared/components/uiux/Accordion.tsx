@@ -56,7 +56,7 @@ function AccordionItem({ className, ...props }: React.ComponentProps<typeof Acco
   const variant = React.useContext(AccordionContext);
 
   const itemStyles = {
-    default: 'border-b last:border-b-0',
+    default: '',
     box: 'bg-white rounded-xl mb-[0.2rem] overflow-hidden',
     line: 'border-b-[0.2rem] border-gray-200 last:border-b-0 py-[0.2rem]',
     minimal: 'py-[0.1rem]',
@@ -103,17 +103,19 @@ function AccordionTrigger({
           <div className="flex justify-end items-center">{children}</div>
         </AccordionPrimitive.Header>
       ) : (
-        <AccordionPrimitive.Header className="flex relative min-h-[5.75rem]">
-          <div className="flex w-full h-full items-center px-[0.4rem] py-[0.8rem] relative z-1 pointer-events-none gap-3 flex-1">
-            {children}
-          </div>
+        <AccordionPrimitive.Header className="flex relative min-h-[2.5rem] p-0">
           <AccordionPrimitive.Trigger
             data-slot="accordion-trigger"
             aria-label=""
-            className={cn('absolute inset-0 justify-end!', triggerStyles[variant], className)}
+            className={cn('flex justify-between items-center w-full !m-0 !p-0', triggerStyles[variant], className)}
             {...props}
           >
-            <ChevronDownIcon className="text-muted-foreground pointer-events-none shrink-0 translate-y-0.5 transition-transform duration-200" />
+            {children}
+            <ChevronDownIcon
+              size={16}
+              color={'var(--color-gray-50)'}
+              className="text-muted-foreground pointer-events-none shrink-0 translate-y-0 transition-transform duration-200"
+            />
           </AccordionPrimitive.Trigger>
         </AccordionPrimitive.Header>
       )}

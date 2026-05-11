@@ -37,10 +37,9 @@ export function TextSelectChange({ items }: { items: TextSelectChangeItem[][] })
   return (
     <Grow className="gap-1.5 [&_[data-slot='native-select-wrapper']:has(select:disabled)]:opacity-100!">
       {items.map((group, groupIndex) => (
-        <>
+        <React.Fragment key={groupIndex}>
           {groupIndex !== 0 && '·'}
           <NativeSelect
-            key={groupIndex}
             variant={disabled ? 'text' : 'default'}
             aria-label=""
             disabled={disabled}
@@ -53,7 +52,7 @@ export function TextSelectChange({ items }: { items: TextSelectChangeItem[][] })
               </NativeSelectOption>
             ))}
           </NativeSelect>
-        </>
+        </React.Fragment>
       ))}
       <Button variant={'outlined'} color={'gray'} size={'md'} onClick={handleConfirm}>
         {disabled ? '변경' : '확인'}
