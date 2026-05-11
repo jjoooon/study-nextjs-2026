@@ -7,6 +7,9 @@
 // datalist + popover 기능의 InputCombo 컴포넌트
 // 기존 Input 컴포넌트 활용
 
+import { Grid } from '@atoms';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import React, { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
@@ -23,10 +26,11 @@ interface InputComboProps extends Omit<React.ComponentProps<typeof Input>, 'valu
   options: ComboOption[];
   value: string;
   onChange: (value: string) => void;
+  variant?: 'default' | 'badge';
   clear?: boolean;
   size?: 'md' | 'lg';
   inputId?: string; // 고유 id를 외부에서 지정 가능
-  ulClassName?: string;
+  className?: string;
   col?: number; // 옵션 리스트의 컬럼 수 (기본 1)
   width?: number | string; // popover의 고정 너비 (기본은 Input과 동일)
 }
@@ -35,12 +39,13 @@ export function InputCombo({
   options,
   value,
   width,
+  variant = 'default',
   onChange,
   inputId,
   col = 1,
   clear,
   size = 'lg',
-  ulClassName,
+  className,
   ...restProps
 }: InputComboProps) {
   // 고유 data-comboid 생성 (컴포넌트 인스턴스마다, 외부에서 id 지정 가능)
@@ -189,34 +194,52 @@ export function InputCombo({
                 className="bg-white px-2.5 py-2 border border-[var(--color-gray-20)] shadow-md max-h-48 overflow-auto animate-fadein rounded-[0.6rem]"
                 style={popoverStyle}
               >
-                <table
-                  className={cn(
-                    `[&_td]:px-2 [&_td]:py-1 [&_td]:whitespace-nowrap [&_td]:border [&_td]:border-[var(--color-gray-10)] [&_td]:rounded-sm`,
-                    ulClassName
-                  )}
-                >
-                  <tbody
-                    className={cn(
-                      col !== 1 ? `grid grid-cols-${col} [&_tr]:border-0 [&_tr]:-ml-[0.1rem] [&_tr]:-mt-[0.1rem]` : ''
-                    )}
-                  >
+                {variant === 'badge' ? (
+                  <Grid className="grid-cols-[1fr_1fr] gap-2">
                     {filtered.map((opt, idx) => (
-                      <tr
+                      <Button
+                        variant={'outlined'}
+                        color={'gray-light'}
+                        className="rounded-full"
                         key={opt.value}
-                        className={cn(
-                          'cursor-pointer [&_td]:text-[1.3rem]',
-                          'hover:[&_td]:bg-[var(--color-warning-10)]',
-                          hoveredIdx === idx ? '[&_td]:bg-[var(--color-warning-10)]' : undefined
-                        )}
                         onMouseDown={(e) => e.preventDefault()}
                         onClick={() => handleOptionClick(opt)}
                         onMouseEnter={() => setHoveredIdx(idx)}
                       >
                         {opt.label}
-                      </tr>
+                      </Button>
                     ))}
-                  </tbody>
-                </table>
+                  </Grid>
+                ) : (
+                  <table
+                    className={cn(
+                      `[&_td]:px-2 [&_td]:py-1 [&_td]:whitespace-nowrap [&_td]:border [&_td]:border-[var(--color-gray-10)] [&_td]:rounded-sm`,
+                      className
+                    )}
+                  >
+                    <tbody
+                      className={cn(
+                        col !== 1 ? `grid grid-cols-${col} [&_tr]:border-0 [&_tr]:-ml-[0.1rem] [&_tr]:-mt-[0.1rem]` : ''
+                      )}
+                    >
+                      {filtered.map((opt, idx) => (
+                        <tr
+                          key={opt.value}
+                          className={cn(
+                            'cursor-pointer [&_td]:text-[1.3rem]',
+                            'hover:[&_td]:bg-[var(--color-warning-10)]',
+                            hoveredIdx === idx ? '[&_td]:bg-[var(--color-warning-10)]' : undefined
+                          )}
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => handleOptionClick(opt)}
+                          onMouseEnter={() => setHoveredIdx(idx)}
+                        >
+                          {opt.label}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
               </div>,
               document.body
             )
