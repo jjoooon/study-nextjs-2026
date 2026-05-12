@@ -51,7 +51,7 @@ const Ltpz043 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full" gap={5}>
+          <Gcol className="w-full" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable variant={'head'} lineTop={false} caption="">
                 <FormTable variant="none" cols={['w-1', 'w-auto']}>
@@ -64,157 +64,163 @@ const Ltpz043 = () => {
                 </FormTable>
               </FormTable>
             </Grow>
-
-            <FormTable caption="주차장 정보" cols={['w-[8rem]', 'w-[8rem]', 'w-auto']}>
-              <FormRow>
-                <FormCell title={'옥내주차장'} titleColSpan={2}>
-                  <Checkbox variant="noneText" aria-label="옥내주차장"></Checkbox>
-                  <Input
-                    errorMsg="입력은 필수입니다."
-                    errorPs="bl"
-                    onChange={(e) => setFormField('type01', e.target.value)}
-                    value={form.type01}
-                    width={100}
-                    commaAmount
-                  />
-                  <div>㎡</div>
-                  <div>↔</div>
-                  <Input
-                    errorMsg="입력은 필수입니다."
-                    errorPs="bl"
-                    onChange={(e) => setFormField('type02', e.target.value)}
-                    value={form.type02}
-                    width={100}
-                    commaAmount
-                  />
-                  평
-                </FormCell>
-                <FormCell title={null}>
-                  <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
-                </FormCell>
-              </FormRow>
-              <FormRow>
-                <FormCell title={'2단주차기'} titleColSpan={2}>
-                  <Checkbox variant="noneText" aria-label="2단주차기"></Checkbox>
-                  <Input
-                    errorMsg="입력은 필수입니다."
-                    errorPs="bl"
-                    onChange={(e) => setFormField('type03', e.target.value)}
-                    value={form.type03}
-                    width={100}
-                    commaAmount
-                  />
-                  대
-                </FormCell>
-                <FormCell title={null}>
-                  <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
-                </FormCell>
-              </FormRow>
-              <FormRow>
-                <FormCell title={'기계식주차기'} titleColSpan={2}>
-                  <Checkbox variant="noneText" aria-label="기계식주차기"></Checkbox>
-                  <Input
-                    errorMsg="입력은 필수입니다."
-                    errorPs="bl"
-                    onChange={(e) => setFormField('type04', e.target.value)}
-                    value={form.type04}
-                    width={100}
-                    commaAmount
-                  />
-                  대
-                </FormCell>
-                <FormCell title={null}>
-                  <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
-                </FormCell>
-              </FormRow>
-              <FormRow>
-                <FormCell title={'카리프트'} titleColSpan={2}>
-                  <Checkbox variant="noneText" aria-label="카리프트"></Checkbox>
-                  <Input
-                    errorMsg="입력은 필수입니다."
-                    errorPs="bl"
-                    onChange={(e) => setFormField('type05', e.target.value)}
-                    value={form.type05}
-                    width={100}
-                    commaAmount
-                  />
-                  대
-                </FormCell>
-                <FormCell title={null}>
-                  <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
-                </FormCell>
-              </FormRow>
-              <FormRow>
-                <FormCell title={'보상한도'} titleRowSpan={2} tdNone={true}></FormCell>
-                <FormCell title={'대인보상'}>
-                  (1사고당)
-                  <NativeSelect
-                    aria-label="선택"
-                    width={100}
-                    value={form.type06}
-                    required
-                    onChange={(e) => setFormField('type06', e.target.value)}
-                  >
-                    {[
-                      { value: 'selection', id: 'type06-1', label: '선택1' },
-                      { value: 'selection2', id: 'type06-2', label: '선택2' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                  (1인장)
-                  <Input onChange={() => {}} size="lg" value={''} variant="default" width={100} readOnly />
-                </FormCell>
-              </FormRow>
-              <FormRow>
-                <FormCell title={'대물보상'} colSpan={2}>
-                  (1사고당)
-                  <NativeSelect
-                    aria-label="선택"
-                    width={100}
-                    value={form.type07}
-                    required
-                    onChange={(e) => setFormField('type07', e.target.value)}
-                  >
-                    {[
-                      { value: 'selection', id: 'type07-1', label: '선택1' },
-                      { value: 'selection2', id: 'type07-2', label: '선택2' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                </FormCell>
-              </FormRow>
-              <FormRow>
-                <FormCell title={'공제금액'} titleColSpan={2} colSpan={2}>
-                  <NativeSelect
-                    aria-label="선택"
-                    width={100}
-                    value={form.type08}
-                    required
-                    onChange={(e) => setFormField('type08', e.target.value)}
-                  >
-                    {[
-                      { value: 'selection', id: 'type08-1', label: '선택1' },
-                      { value: 'selection2', id: 'type08-2', label: '선택2' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                </FormCell>
-              </FormRow>
-            </FormTable>
-            <InfoBox
-              bg
-              subTitle="해당업종의 면적은 ㎡단위(1평=3.3㎡)로 입력하시기 바랍니다."
-              variant="warning"
-            ></InfoBox>
+            <Gcol>
+              <FormTable caption="주차장 정보" cols={['w-[8rem]', 'w-[8rem]', 'w-auto']}>
+                <FormRow>
+                  <FormCell title={'옥내주차장'} titleColSpan={2}>
+                    <Checkbox variant="noneText" aria-label="옥내주차장"></Checkbox>
+                    <Input
+                      errorMsg="입력은 필수입니다."
+                      errorPs="bl"
+                      onChange={(e) => setFormField('type01', e.target.value)}
+                      value={form.type01}
+                      width={100}
+                      commaAmount
+                    />
+                    <div>㎡</div>
+                    <div>↔</div>
+                    <Input
+                      errorMsg="입력은 필수입니다."
+                      errorPs="bl"
+                      onChange={(e) => setFormField('type02', e.target.value)}
+                      value={form.type02}
+                      width={100}
+                      commaAmount
+                    />
+                    평
+                  </FormCell>
+                  <FormCell title={null}>
+                    <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'2단주차기'} titleColSpan={2}>
+                    <Checkbox variant="noneText" aria-label="2단주차기"></Checkbox>
+                    <Input
+                      errorMsg="입력은 필수입니다."
+                      errorPs="bl"
+                      onChange={(e) => setFormField('type03', e.target.value)}
+                      value={form.type03}
+                      width={100}
+                      commaAmount
+                    />
+                    대
+                  </FormCell>
+                  <FormCell title={null}>
+                    <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'기계식주차기'} titleColSpan={2}>
+                    <Checkbox variant="noneText" aria-label="기계식주차기"></Checkbox>
+                    <Input
+                      errorMsg="입력은 필수입니다."
+                      errorPs="bl"
+                      onChange={(e) => setFormField('type04', e.target.value)}
+                      value={form.type04}
+                      width={100}
+                      commaAmount
+                    />
+                    대
+                  </FormCell>
+                  <FormCell title={null}>
+                    <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'카리프트'} titleColSpan={2}>
+                    <Checkbox variant="noneText" aria-label="카리프트"></Checkbox>
+                    <Input
+                      errorMsg="입력은 필수입니다."
+                      errorPs="bl"
+                      onChange={(e) => setFormField('type05', e.target.value)}
+                      value={form.type05}
+                      width={100}
+                      commaAmount
+                    />
+                    대
+                  </FormCell>
+                  <FormCell title={null}>
+                    <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'보상한도'} titleRowSpan={2} tdNone={true}></FormCell>
+                  <FormCell title={'대인보상'}>
+                    (1사고당)
+                    <NativeSelect
+                      aria-label="선택"
+                      width={100}
+                      value={form.type06}
+                      required
+                      onChange={(e) => setFormField('type06', e.target.value)}
+                    >
+                      {[
+                        { value: 'selection', id: 'type06-1', label: '선택1' },
+                        { value: 'selection2', id: 'type06-2', label: '선택2' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.id} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    (1인장)
+                    <Input onChange={() => {}} size="lg" value={''} variant="default" width={100} readOnly />
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'대물보상'} colSpan={2}>
+                    (1사고당)
+                    <NativeSelect
+                      aria-label="선택"
+                      width={100}
+                      value={form.type07}
+                      required
+                      onChange={(e) => setFormField('type07', e.target.value)}
+                    >
+                      {[
+                        { value: 'selection', id: 'type07-1', label: '선택1' },
+                        { value: 'selection2', id: 'type07-2', label: '선택2' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.id} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'공제금액'} titleColSpan={2} colSpan={2}>
+                    <NativeSelect
+                      aria-label="선택"
+                      width={100}
+                      value={form.type08}
+                      required
+                      onChange={(e) => setFormField('type08', e.target.value)}
+                    >
+                      {[
+                        { value: 'selection', id: 'type08-1', label: '선택1' },
+                        { value: 'selection2', id: 'type08-2', label: '선택2' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.id} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+              <Grow variant="box-info" className="w-full" placement="ss">
+                <Typo variant="body-sm" icon="info">
+                  * 주차장 면적은 ㎡단위로 입력하시기 바랍니다. (1평=3.3㎡)
+                </Typo>
+              </Grow>
+              <Grow variant="box-warning" className="w-full" placement="ss">
+                <Typo variant="body-sm" icon="warning">
+                  해당업종의 면적은 ㎡단위(1평=3.3㎡)로 입력하시기 바랍니다.
+                </Typo>
+              </Grow>
+            </Gcol>
           </Gcol>
         </DialogSection>
 
