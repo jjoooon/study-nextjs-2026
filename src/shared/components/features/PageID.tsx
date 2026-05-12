@@ -31,7 +31,7 @@ export function PageID({ data }: PageIDProps) {
         <Typo tag={'h1'} variant={'heading-sm'} style={{ fontSize: '13px !important' }}>
           {safeData.pageName}
         </Typo>
-        <Typo>({safeData.pageId})</Typo>
+        {safeData.pageId && <Typo>({safeData.pageId})</Typo>}
       </Grow>
       <Grow>
         <ZoomControl />

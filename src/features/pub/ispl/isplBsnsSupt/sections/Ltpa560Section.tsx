@@ -10,7 +10,6 @@ import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
 import { SearchIcon, ResetIcon } from '@icons';
@@ -420,7 +419,6 @@ export default function Ltpa560Section() {
         <PageID
           data={{
             pageName: '실시간 설계현황',
-            pageId: 'LTPA560',
           }}
         />
       </LayoutHead>
@@ -564,52 +562,6 @@ export default function Ltpa560Section() {
               />
             </Grid>
           </Grid>
-        }
-        mainFoot={
-          <MainBottom>
-            <MainBottomItem>
-              <Grow gap={1}>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  삭제설계 확인
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  출력물
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  완수수납
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  설계비교
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  알림톡발송
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  셀프고지
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  증권발송
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  계약자발송
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  이미지조회
-                </Button>
-              </Grow>
-              <Grow gap={1}>
-                <Button variant={'contained'} size={'xl'} color={'gray-light'}>
-                  설계예외처리
-                </Button>
-                <Button variant={'contained'} size={'xl'} color={'gray-light'}>
-                  저장
-                </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
-                  설계삭제
-                </Button>
-              </Grow>
-            </MainBottomItem>
-          </MainBottom>
         }
       />
       <LayoutFoot>
