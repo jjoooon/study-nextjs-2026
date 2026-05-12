@@ -36,6 +36,12 @@ type ExpectedUwSingleRow = {
   coverageName: string;
 };
 
+type ExpectedUw03Row = {
+  id: number;
+  coverageName: string;
+  date: string;
+};
+
 //제한담보
 const expectedUwLimitedCoverageData: ExpectedUwAmountRow[] = [
   {
@@ -99,36 +105,36 @@ const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [
 ];
 
 //부 담보(부위/질병)
-const expectedUwExclusionCoverageData: ExpectedUwAmountRow[] = [
+const expectedUwExclusionCoverageData: ExpectedUw03Row[] = [
   {
     id: 1,
     coverageName: '보험료압입명제대상보장(8대사유)보험료압입명제대상보장(8대사유)',
-    amount: '10,000',
+    date: '5년 0개월',
   },
   {
     id: 2,
     coverageName: '보험료압입명제대상보장(8대사유)',
-    amount: '-',
+    date: '5년 0개월',
   },
   {
     id: 3,
     coverageName: '보험료압입명제대상보장(8대사유)',
-    amount: '-',
+    date: '-',
   },
   {
     id: 4,
     coverageName: '보험료압입명제대상보장(8대사유)',
-    amount: '-',
+    date: '-',
   },
   {
     id: 5,
     coverageName: '보험료압입명제대상보장(8대사유)',
-    amount: '-',
+    date: '-',
   },
   {
     id: 6,
     coverageName: '보험료압입명제대상보장(8대사유)',
-    amount: '-',
+    date: '-',
   },
 ];
 const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
@@ -182,14 +188,13 @@ const Ltpz00504 = () => {
       headerName: '제한 담보명',
       field: 'coverageName',
       flex: 1,
-      cellClass: 'justify-start!',
       tooltipValueGetter: createTooltipValueGetter<ExpectedUwAmountRow>({ field: 'coverageName' }),
     },
     {
       headerName: '가입금액(원)',
       field: 'amount',
       width: 100,
-      cellClass: 'justify-end! text-right',
+      cellClass: 'text-right',
       cellRenderer: (params: { value: string | number }) => {
         const value = String(params.value ?? '');
 
@@ -208,16 +213,39 @@ const Ltpz00504 = () => {
       headerName: '담보명',
       field: 'coverageName',
       flex: 1,
-      cellClass: 'justify-start! border-r-0!',
       tooltipValueGetter: createTooltipValueGetter<ExpectedUwSingleRow>({ field: 'coverageName' }),
-      headerClass: 'border-r-0!',
       cellStyle: { borderRight: 'none' },
+    },
+  ];
+
+  // 부담보
+  const expectedUw03ColumnDefs: (ColDef<ExpectedUw03Row> | ColGroupDef<ExpectedUw03Row>)[] = [
+    {
+      headerName: '부담보부위명',
+      field: 'coverageName',
+      flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<ExpectedUw03Row>({ field: 'coverageName' }),
+    },
+    {
+      headerName: '기간',
+      field: 'date',
+      width: 100,
+      cellClass: 'text-center',
+      cellRenderer: (params: { value: string | number }) => {
+        const value = String(params.value ?? '');
+
+        if (value === '-') {
+          return <div className="w-full text-center">-</div>;
+        }
+
+        return value;
+      },
     },
   ];
 
   const [expectedUwLimitedCoverageRowData] = React.useState<ExpectedUwAmountRow[]>(expectedUwLimitedCoverageData);
   const [expectedUwPremiumSurchargeRowData] = React.useState<ExpectedUwSingleRow[]>(expectedUwPremiumSurchargeData);
-  const [expectedUwExclusionCoverageRowData] = React.useState<ExpectedUwAmountRow[]>(expectedUwExclusionCoverageData);
+  const [expectedUwExclusionCoverageRowData] = React.useState<ExpectedUw03Row[]>(expectedUwExclusionCoverageData);
 
   return (
     <>
@@ -403,11 +431,11 @@ const Ltpz00504 = () => {
                     overflow: expectedUwExclusionCoverageRowData.length >= 4 ? 'hidden' : 'visible',
                   }}
                 >
-                  <AgGridReact<ExpectedUwAmountRow>
+                  <AgGridReact<ExpectedUw03Row>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={expectedUwExclusionCoverageRowData}
-                    columnDefs={expectedUwAmountColumnDefs}
+                    columnDefs={expectedUw03ColumnDefs}
                     defaultColDef={{
                       sortable: true,
                       resizable: true,
