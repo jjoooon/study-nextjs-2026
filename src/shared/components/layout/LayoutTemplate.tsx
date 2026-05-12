@@ -79,3 +79,16 @@ export const LayoutTemplate = ({ mainBody, mainFoot }: Props) => (
     </LayoutMain>
   </>
 );
+
+export const LayoutTemplatePx0 = ({ mainBody, mainFoot }: Props) => (
+  <>
+    <LayoutMain className="grid grid-rows-[1fr_auto] gap-0 px-0">
+      <LayoutMainBody>
+        <LayoutScrollWrap>
+          <LayoutScrollItem>{mainBody}</LayoutScrollItem>
+        </LayoutScrollWrap>
+      </LayoutMainBody>
+      {mainFoot && <LayoutMainFoot>{mainFoot}</LayoutMainFoot>}
+    </LayoutMain>
+  </>
+);

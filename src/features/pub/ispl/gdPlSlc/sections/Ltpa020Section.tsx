@@ -16,7 +16,7 @@ import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { Ai2Icon, SearchIcon, ArrowNext, AiIcon } from '@icons';
 import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
-import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { LayoutTemplatePx0 } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
@@ -107,217 +107,222 @@ export default function Ltpa020Section() {
           </Grow>
         </Grow>
       </LayoutHead>
-      <LayoutTemplate
+      <LayoutTemplatePx0
         mainBody={
           <Grid className="w-full h-full grid-rows-[auto_1fr]" gap={2} placement="ss">
             {/* 검색 */}
-            <Gcol placement="ss" className="bg-[var(--color-blue-gray-70)] rounded-[0.8rem] p-[1rem]">
-              <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
-                <FormRow className="items-start!">
-                  <FormCell title={'고객정보'} className="align-top [&>span]:block [&>span]:pt-1 [&>span]:text-[#fff]">
-                    <Grow placement="ss" gap={5} className="w-full">
-                      <ViewMode
-                        label={['등록', '미등록']}
-                        state={customerType === 'recent'}
-                        onChange={(value) => setCustomerType(value ? 'recent' : 'new')}
-                      />
+            <div className="w-full px-[1rem]">
+              <Gcol placement="ss" className="bg-[var(--color-blue-gray-70)] rounded-[0.8rem] p-[1rem]">
+                <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
+                  <FormRow className="items-start!">
+                    <FormCell
+                      title={'고객정보'}
+                      className="align-top [&>span]:block [&>span]:pt-1 [&>span]:text-[#fff]"
+                    >
+                      <Grow placement="ss" gap={5} className="w-full">
+                        <ViewMode
+                          label={['등록', '미등록']}
+                          state={customerType === 'recent'}
+                          onChange={(value) => setCustomerType(value ? 'recent' : 'new')}
+                        />
 
-                      <Grow placement="bwc" gap={2} className="w-full">
-                        {customerType === 'recent' && (
-                          <Grow placement="sc" className="flex-1 min-w-0 flex-wrap gap-x-5 gap-y-1">
-                            <Grow placement="sc">
-                              <InputCombo
-                                aria-label="고객 검색"
-                                width={136}
-                                col={2}
-                                options={[
-                                  { value: '홍길순 32세(여)', label: <td>홍길순</td> },
-                                  { value: '홍길동 32세(여)', label: <td>홍길동</td> },
-                                  { value: '김한화 32세(여)', label: <td>김한화</td> },
-                                ]}
-                                value={comboValues.user}
-                                onChange={handleComboValueChange('user')}
-                                placeholder="고객 검색"
-                              />
-                              <Button variant={'outlined'} color={'gray-light'} size={'lg'} only="icon">
-                                <SearchIcon size={14} color="var(--color-primary-50)" />
-                              </Button>
+                        <Grow placement="bwc" gap={2} className="w-full">
+                          {customerType === 'recent' && (
+                            <Grow placement="sc" className="flex-1 min-w-0 flex-wrap gap-x-5 gap-y-1">
+                              <Grow placement="sc">
+                                <InputCombo
+                                  aria-label="고객 검색"
+                                  width={136}
+                                  col={2}
+                                  options={[
+                                    { value: '홍길순 32세(여)', label: <td>홍길순</td> },
+                                    { value: '홍길동 32세(여)', label: <td>홍길동</td> },
+                                    { value: '김한화 32세(여)', label: <td>김한화</td> },
+                                  ]}
+                                  value={comboValues.user}
+                                  onChange={handleComboValueChange('user')}
+                                  placeholder="고객 검색"
+                                />
+                                <Button variant={'outlined'} color={'gray-light'} size={'lg'} only="icon">
+                                  <SearchIcon size={14} color="var(--color-primary-50)" />
+                                </Button>
+                              </Grow>
+
+                              <Grow placement="sc" gap={3}>
+                                <KeyValueItem
+                                  label={'직업'}
+                                  variant="info"
+                                  className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff]"
+                                >
+                                  (1급)회사 사무직 종사자
+                                </KeyValueItem>
+                                <Divider color="gray-dark" />
+
+                                <KeyValueItem
+                                  label={'보장분석'}
+                                  variant="info"
+                                  className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff] gap-2"
+                                >
+                                  <Grow gap={2}>
+                                    2026-01-01
+                                    <Button variant={'contained'} size={'sm'} color={'coolgray-light'}>
+                                      조회
+                                    </Button>
+                                  </Grow>
+                                </KeyValueItem>
+                                <Divider color="gray-dark" />
+
+                                <KeyValueItem
+                                  label={'보험금지급 이력정보'}
+                                  variant="info"
+                                  className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff] gap-2"
+                                >
+                                  <Grow gap={2}>
+                                    2026-01-01
+                                    <Button variant={'contained'} size={'sm'} color={'coolgray-light'}>
+                                      조회
+                                    </Button>
+                                  </Grow>
+                                </KeyValueItem>
+                              </Grow>
                             </Grow>
-
+                          )}
+                          {customerType === 'new' && (
                             <Grow placement="sc" gap={3}>
+                              <KeyValueItem
+                                label={'나이'}
+                                variant="info"
+                                className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#000] [&>div+div]:!font-normal"
+                              >
+                                <InputCombo
+                                  aria-label="나이 검색"
+                                  width={48}
+                                  col={2}
+                                  variant="recommend"
+                                  options={[
+                                    {
+                                      value: '40세',
+                                      gender: '남',
+                                      class: '1급',
+                                      label: (
+                                        <div>
+                                          <b>#40세(남)</b>1급
+                                        </div>
+                                      ),
+                                    },
+                                    {
+                                      value: '35세',
+                                      gender: '여',
+                                      class: '1급',
+                                      label: (
+                                        <div>
+                                          <b>#35세(여)</b>1급
+                                        </div>
+                                      ),
+                                    },
+                                    {
+                                      value: '50세',
+                                      gender: '남',
+                                      class: '1급',
+                                      label: (
+                                        <div>
+                                          <b>#50세(남)</b>1급
+                                        </div>
+                                      ),
+                                    },
+                                    {
+                                      value: '45세',
+                                      gender: '여',
+                                      class: '1급',
+                                      label: (
+                                        <div>
+                                          <b>#45세(여)</b>1급
+                                        </div>
+                                      ),
+                                    },
+                                    {
+                                      value: '60세',
+                                      gender: '남',
+                                      class: '1급',
+                                      label: (
+                                        <div>
+                                          <b>#60세(남)</b>1급
+                                        </div>
+                                      ),
+                                    },
+                                    {
+                                      value: '55세',
+                                      gender: '여',
+                                      class: '1급',
+                                      label: (
+                                        <div>
+                                          <b>#55세(여)</b>1급
+                                        </div>
+                                      ),
+                                    },
+                                  ]}
+                                  value={comboValues.age}
+                                  onChange={handleAgeComboChange}
+                                />
+                                <DatePickerInput value="1994-05-10" />
+                              </KeyValueItem>
+                              <Divider color="gray-dark" />
+
+                              <KeyValueItem
+                                label={'성별'}
+                                variant="info"
+                                className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff]"
+                              >
+                                <RadioGroup className="gap-2" value={newCustomerGender}>
+                                  {[
+                                    { value: '남', label: '남' },
+                                    { value: '여', label: '여' },
+                                  ].map((tag) => (
+                                    <RadioGroupItem key={tag.value} value={tag.value}>
+                                      {tag.label}
+                                    </RadioGroupItem>
+                                  ))}
+                                </RadioGroup>
+                              </KeyValueItem>
+                              <Divider color="gray-dark" />
+
                               <KeyValueItem
                                 label={'직업'}
                                 variant="info"
                                 className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff]"
                               >
-                                (1급)회사 사무직 종사자
+                                <RadioGroup className="gap-2" value={newCustomerClass}>
+                                  {[
+                                    { value: '1급', label: '1급' },
+                                    { value: '2급', label: '2급' },
+                                    { value: '3급', label: '3급' },
+                                  ].map((tag) => (
+                                    <RadioGroupItem key={tag.value} value={tag.value}>
+                                      {tag.label}
+                                    </RadioGroupItem>
+                                  ))}
+                                </RadioGroup>
                               </KeyValueItem>
-                              <Divider color="gray-dark" />
 
-                              <KeyValueItem
-                                label={'보장분석'}
-                                variant="info"
-                                className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff] gap-2"
-                              >
-                                <Grow gap={2}>
-                                  2026-01-01
-                                  <Button variant={'contained'} size={'sm'} color={'coolgray-light'}>
-                                    조회
-                                  </Button>
-                                </Grow>
-                              </KeyValueItem>
-                              <Divider color="gray-dark" />
-
-                              <KeyValueItem
-                                label={'보험금지급 이력정보'}
-                                variant="info"
-                                className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff] gap-2"
-                              >
-                                <Grow gap={2}>
-                                  2026-01-01
-                                  <Button variant={'contained'} size={'sm'} color={'coolgray-light'}>
-                                    조회
-                                  </Button>
-                                </Grow>
-                              </KeyValueItem>
+                              {/* <Button variant="contained" size="md" color="gray" className="gap-1" onClick={() => {}}>
+                                고객등록
+                                <ZoomInIcon size={16} />
+                              </Button> */}
                             </Grow>
+                          )}
+
+                          <Grow>
+                            <Button size={'sm'} onClick={() => {}}>
+                              경증예외질환?
+                            </Button>
                           </Grow>
-                        )}
-                        {customerType === 'new' && (
-                          <Grow placement="sc" gap={3}>
-                            <KeyValueItem
-                              label={'나이'}
-                              variant="info"
-                              className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#000] [&>div+div]:!font-normal"
-                            >
-                              <InputCombo
-                                aria-label="나이 검색"
-                                width={48}
-                                col={2}
-                                variant="recommend"
-                                options={[
-                                  {
-                                    value: '40세',
-                                    gender: '남',
-                                    class: '1급',
-                                    label: (
-                                      <div>
-                                        <b>#40세(남)</b>1급
-                                      </div>
-                                    ),
-                                  },
-                                  {
-                                    value: '35세',
-                                    gender: '여',
-                                    class: '1급',
-                                    label: (
-                                      <div>
-                                        <b>#35세(여)</b>1급
-                                      </div>
-                                    ),
-                                  },
-                                  {
-                                    value: '50세',
-                                    gender: '남',
-                                    class: '1급',
-                                    label: (
-                                      <div>
-                                        <b>#50세(남)</b>1급
-                                      </div>
-                                    ),
-                                  },
-                                  {
-                                    value: '45세',
-                                    gender: '여',
-                                    class: '1급',
-                                    label: (
-                                      <div>
-                                        <b>#45세(여)</b>1급
-                                      </div>
-                                    ),
-                                  },
-                                  {
-                                    value: '60세',
-                                    gender: '남',
-                                    class: '1급',
-                                    label: (
-                                      <div>
-                                        <b>#60세(남)</b>1급
-                                      </div>
-                                    ),
-                                  },
-                                  {
-                                    value: '55세',
-                                    gender: '여',
-                                    class: '1급',
-                                    label: (
-                                      <div>
-                                        <b>#55세(여)</b>1급
-                                      </div>
-                                    ),
-                                  },
-                                ]}
-                                value={comboValues.age}
-                                onChange={handleAgeComboChange}
-                              />
-                              <DatePickerInput value="1994-05-10" />
-                            </KeyValueItem>
-                            <Divider color="gray-dark" />
-
-                            <KeyValueItem
-                              label={'성별'}
-                              variant="info"
-                              className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff]"
-                            >
-                              <RadioGroup className="gap-2" value={newCustomerGender}>
-                                {[
-                                  { value: '남', label: '남' },
-                                  { value: '여', label: '여' },
-                                ].map((tag) => (
-                                  <RadioGroupItem key={tag.value} value={tag.value}>
-                                    {tag.label}
-                                  </RadioGroupItem>
-                                ))}
-                              </RadioGroup>
-                            </KeyValueItem>
-                            <Divider color="gray-dark" />
-
-                            <KeyValueItem
-                              label={'직업'}
-                              variant="info"
-                              className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff]"
-                            >
-                              <RadioGroup className="gap-2" value={newCustomerClass}>
-                                {[
-                                  { value: '1급', label: '1급' },
-                                  { value: '2급', label: '2급' },
-                                  { value: '3급', label: '3급' },
-                                ].map((tag) => (
-                                  <RadioGroupItem key={tag.value} value={tag.value}>
-                                    {tag.label}
-                                  </RadioGroupItem>
-                                ))}
-                              </RadioGroup>
-                            </KeyValueItem>
-
-                            {/* <Button variant="contained" size="md" color="gray" className="gap-1" onClick={() => {}}>
-                              고객등록
-                              <ZoomInIcon size={16} />
-                            </Button> */}
-                          </Grow>
-                        )}
-
-                        <Grow>
-                          <Button size={'sm'} onClick={() => {}}>
-                            경증예외질환?
-                          </Button>
                         </Grow>
                       </Grow>
-                    </Grow>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </Gcol>
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+              </Gcol>
+            </div>
 
             {tabSelectValue === 'Ltpa02001' ? (
               <Ltpa02001 />
@@ -356,7 +361,7 @@ export default function Ltpa020Section() {
             </MainBottomItem>
           </MainBottom>
         }
-      ></LayoutTemplate>
+      ></LayoutTemplatePx0>
       <LayoutFoot>
         <BottomBar />
       </LayoutFoot>
