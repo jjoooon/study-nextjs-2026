@@ -245,7 +245,7 @@ const RadioGroupItem = React.forwardRef<
     const isDisabled = Boolean(props.disabled || groupDisabled);
 
     return (
-      <div className={`relative flex items-center gap-[.5rem] ${isButton && isChipBox ? '' : ''}`}>
+      <div className={`relative flex items-center gap-1 ${isButton && isChipBox ? '' : ''}`}>
         <RadioGroupPrimitive.Item
           ref={ref}
           id={radioId}

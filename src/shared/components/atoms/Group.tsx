@@ -236,13 +236,14 @@ interface DividerProps {
   variant?: 'default' | 'dot';
   className?: string;
   dir?: 'col' | 'row';
-  color?: 'gray' | 'gray-light';
+  color?: 'gray' | 'gray-light' | 'gray-dark';
 }
 
 export const Divider = ({ className, variant = 'default', dir = 'col', color = 'gray' }: DividerProps) => {
   const colorMap: Record<string, string> = {
     gray: 'var(--color-gray-15)',
     'gray-light': 'var(--color-gray-10)',
+    'gray-dark': 'var(--color-gray-60)',
   };
 
   return (

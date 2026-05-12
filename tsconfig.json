@@ -32,6 +32,7 @@
       "@features/*": ["./src/shared/components/features/*"],
       "@layout/*": ["./src/shared/components/layout/*"],
       "@hooks/*": ["./src/shared/hooks/*"],
+      "@grid/*": ["./src/shared/components/grid/*"],
 
       "@aggrid": ["./src/shared/components/agGridUtils/index.ts"],
       "@atoms": ["./src/shared/components/atoms/index.ts"],

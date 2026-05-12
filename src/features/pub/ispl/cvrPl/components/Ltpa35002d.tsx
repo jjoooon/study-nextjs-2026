@@ -12,18 +12,22 @@ import {
   AgGridEmptyComponent,
   AmountWithPopoverCellEditor,
 } from '@aggrid';
-import { Divider, Gcol, Grow, Typo, Grid } from '@atoms';
+import { Divider, Gcol, Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InputHash } from '@common/InputHash';
 import { KeyValueList } from '@common/KeyValueList';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
-import { SelectDrop } from '@common/SelectDrop';
 import { TextSelectChange } from '@common/TextSelectChange';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ChevronDownIcon, PaperIcon, ResetIcon, SaveIcon, SearchIcon, SizeIcon, SizeOffIcon } from '@icons';
+import { MyPlanSelect } from '@features/MyPlanSelect';
+import {
+  createExpiryCellRenderer,
+  groupEditableButtonRenderer,
+  productNameCellRenderer,
+  searchButtonRenderer,
+} from '@grid/CellRenderers';
+import { ProductNameHeader } from '@grid/HeadRenderers';
+import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-import { AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
-import { Accordion } from '@uiux/Accordion';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -31,467 +35,32 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import type {
   CellClassParams,
+  ICellRendererParams,
   ColDef,
   GridApi,
   SelectionChangedEvent,
   EditableCallbackParams,
   CellEditorSelectorResult,
+  ValueFormatterParams,
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
+import { dummyData } from '../data/ltpa35002dData';
+import type { DummyDataType } from '../data/ltpa35002dData';
+import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
+import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChangedHandler';
+import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
 import {
-  rowDataWithTrackingFactory,
-  useEnsureLockedRowsSelected,
-  useHandleSelectionChanged,
-  useGridSelectionChangedHandler,
-  useGridReadyHandler,
-  searchButtonRenderer,
-  useExpiryCellRenderer,
   editableCellClassRules,
-  productNameCellRenderer,
-  groupEditableButtonRenderer,
-} from '../hooks/useLtpa35002';
+  ensureLockedRowsSelected,
+  getNextNumericRowId,
+  isCopyButtonVisible,
+  patchCopiedDuplicateRow,
+  rowDataWithTrackingFactory,
+} from '../utils/agGridUtils';
 
 import '@/shared/lib/agGridPub';
-
-interface DummyDataType {
-  id: number;
-  isChecked?: boolean;
-  isStandard?: {
-    group: boolean;
-    edit: boolean;
-  }; // [isStandard, 기준이 되는 필드명]
-  num?: number | null | undefined;
-  title?: string | number | boolean;
-  field1?: string | number | boolean;
-  titleDetail?: {
-    title: string;
-    description: string;
-    info: string[];
-  };
-  insuredAmount?: string | number | boolean | string[];
-  isSelectedInsuredAmount?: boolean;
-  rowCopy?: string | number | boolean;
-
-  field2?: string | number | boolean;
-  field4?: string | number | boolean;
-  field5?: string | number | boolean;
-  field6?: string | number | boolean;
-  field7?: string | number | boolean;
-  field8?: string | number | boolean;
-
-  isEditedtitle?: boolean;
-  isEditedInsuredAmount?: boolean;
-  isEditedrowCopy?: boolean;
-
-  isEditedField2?: boolean;
-  isEditedField4?: boolean;
-  isEditedField5?: boolean;
-  isEditedField6?: boolean;
-  isEditedField7?: boolean;
-  isEditedField8?: boolean;
-
-  filePath?: string[];
-  locked?: boolean;
-  isError?: boolean;
-  badge?: string[];
-  [key: string]: unknown;
-}
-const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    num: 1,
-    filePath: ['set-1'],
-    isChecked: true,
-    isStandard: {
-      group: false,
-      edit: false,
-    },
-    title:
-      '무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험 무배당 삼성화재 실손의료보험무배당 삼성화재 실손의료보험',
-    field2: true,
-    insuredAmount: '5000',
-    isSelectedInsuredAmount: false,
-    field4: 4500,
-    field5: '80세',
-    isEditedField5: false,
-    field6: '20년',
-    isEditedField6: false,
-    field7: 1000,
-    field8: '인수가능',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-
-    locked: true,
-    isHighlighted: true,
-    badge: ['독립', '갱신', '배타', '미래'],
-    isError: false,
-  },
-  {
-    id: 2,
-    num: 2,
-    filePath: ['set-2'],
-    isChecked: false,
-    isStandard: {
-      group: false,
-      edit: false,
-    },
-    title: '무배당 KB손해보험 암보험',
-    field2: true,
-    insuredAmount: '3400',
-    isSelectedInsuredAmount: false,
-    field4: 2800,
-    field5: '80세',
-    isEditedField5: false,
-    field6: '20년',
-    isEditedField6: false,
-    field7: 8000,
-    field8: '인수불가',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 1특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-
-    locked: false,
-
-    badge: ['갱신'],
-    isError: false,
-  },
-  {
-    id: 3,
-    num: 123,
-    filePath: ['set-123'],
-    isChecked: false,
-    isStandard: {
-      group: true,
-      edit: false,
-    },
-    title: '유방암(수용체타입)진단비',
-    field2: false,
-    insuredAmount: '4400',
-    isSelectedInsuredAmount: false,
-    field4: 380,
-    field5: '80세',
-    isEditedField5: true,
-    field6: '20년',
-    isEditedField6: true,
-    field7: 120,
-    field8: '조건부인수',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-
-    locked: false,
-
-    badge: ['독립'],
-    isError: false,
-  },
-  {
-    id: 4,
-    num: null,
-    filePath: ['set-123', 'set-123-1'],
-    isChecked: true,
-    isStandard: {
-      group: true,
-      edit: true,
-    },
-
-    title: '유방암A타입진단비(호르몬수용체양성,HER2음성)',
-    field2: false,
-    insuredAmount: '4400',
-    isSelectedInsuredAmount: false,
-    field4: 380,
-    field5: '80세',
-    isEditedField5: false,
-    field6: '20년',
-    isEditedField6: false,
-    field7: 120,
-    field8: '조건부인수',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-    locked: false,
-
-    badge: ['독립'],
-    isError: false,
-  },
-  {
-    id: 5,
-    num: null,
-    filePath: ['set-123', 'set-123-2'],
-    isChecked: true,
-    isStandard: {
-      group: true,
-      edit: false,
-    },
-
-    title: '유방암B타입진단비(호르몬수용체양성,HER2양성)',
-    field2: false,
-    insuredAmount: '4400',
-    isSelectedInsuredAmount: false,
-    field4: 380,
-    field5: '80세',
-    isEditedField5: false,
-    field6: '20년',
-    isEditedField6: false,
-    field7: 120,
-    field8: '조건부인수',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-    locked: false,
-
-    badge: ['독립'],
-    isError: false,
-  },
-  {
-    id: 6,
-    num: 230,
-    filePath: ['set-230'],
-    isChecked: false,
-    isStandard: {
-      group: true,
-      edit: false,
-    },
-
-    title: '주요순환계질환Ⅰ특정치료비(요양병원제외,각연간1회한)',
-    field2: false,
-    insuredAmount: '5460',
-    isSelectedInsuredAmount: false,
-    field4: 380,
-    field5: '80세',
-    isEditedField5: false,
-    field6: '20년',
-    isEditedField6: false,
-    field7: 120,
-    field8: '조건부인수',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-
-    locked: false,
-
-    badge: ['독립'],
-    isError: false,
-  },
-  {
-    id: 7,
-    num: null,
-    filePath: ['set-230', 'set-230-1'],
-    isChecked: true,
-    isStandard: {
-      group: true,
-      edit: true,
-    },
-    title: '주요순환계질환Ⅰ특정치료비(수술(혈전제거술제외))(요양병원제외,－연간1회한)',
-    field2: false,
-    insuredAmount: '1천만원',
-    isSelectedInsuredAmount: true,
-    field4: '380',
-    field5: '80세',
-    isEditedField5: true,
-    field6: '20년',
-    isEditedField6: true,
-    field7: 120,
-    field8: '조건부인수',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-    locked: false,
-
-    badge: ['독립'],
-    isError: false,
-  },
-  {
-    id: 8,
-    num: null,
-    filePath: ['set-230', 'set-230-2'],
-    isChecked: true,
-    isStandard: {
-      group: true,
-      edit: false,
-    },
-
-    title: '주요순환계질환Ⅰ특정치료비(혈전제거술)(요양병원제외,연간1회한)',
-    field2: false,
-    insuredAmount: '4400',
-    isSelectedInsuredAmount: false,
-    field4: 380,
-    field5: '80세',
-    isEditedField5: false,
-    field6: '20년',
-    isEditedField6: false,
-    field7: 120,
-    field8: '조건부인수',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-    locked: false,
-
-    badge: ['독립'],
-    isError: false,
-  },
-  {
-    id: 9,
-    num: 231,
-    filePath: ['set-231'],
-    isChecked: false,
-    isStandard: {
-      group: false,
-      edit: false,
-    },
-
-    title: '무배당 현대해상 3대질병보험',
-    field2: false,
-    insuredAmount: '5460',
-    isSelectedInsuredAmount: false,
-    field4: 380,
-    field5: '80세',
-    isEditedField5: false,
-    field6: '20년',
-    isEditedField6: false,
-    field7: 120,
-    field8: '조건부인수',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-
-    locked: false,
-
-    badge: ['독립'],
-    isError: false,
-  },
-  {
-    id: 10,
-    num: null,
-    filePath: ['set-231', 'set-231-1'],
-    isChecked: true,
-    isStandard: {
-      group: false,
-      edit: false,
-    },
-    title: '- 무배당 현대해상 3대질병보험',
-    field2: false,
-    insuredAmount: '1400',
-    isSelectedInsuredAmount: false,
-    field4: '380',
-    field5: '80세',
-    isEditedField5: false,
-    field6: '20년',
-    isEditedField6: false,
-    field7: 120,
-    field8: '조건부인수',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-    locked: false,
-
-    badge: ['독립'],
-    isError: false,
-  },
-  {
-    id: 11,
-    num: null,
-    filePath: ['set-231', 'set-231-2'],
-    isChecked: true,
-    isStandard: {
-      group: false,
-      edit: false,
-    },
-
-    title: '- 무배당 현대해상 3대질병보험',
-    field2: false,
-    insuredAmount: '4400',
-    isSelectedInsuredAmount: false,
-    field4: 380,
-    field5: '80세',
-    isEditedField5: false,
-    field6: '20년',
-    isEditedField6: false,
-    field7: 120,
-    field8: '조건부인수',
-    rowCopy: true,
-    titleDetail: {
-      title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-    locked: false,
-
-    badge: ['독립'],
-    isError: false,
-  },
-];
-
-type PlanAccordionItem = {
-  value: string;
-  trigger: string;
-  content: string[];
-};
-const planAccordionItems: PlanAccordionItem[] = [
-  {
-    value: 'item-1',
-    trigger: '기관플랜(5)',
-    content: [
-      '(지점)올인원플랜(15~40세)',
-      '(지점)올인원플랜(15~40세)',
-      '(지점)올인원플랜(15~40세)',
-      '(지점)올인원플랜(15~40세)',
-    ],
-  },
-  {
-    value: 'item-2',
-    trigger: '기관플랜(0)',
-    content: ['(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)'],
-  },
-  {
-    value: 'item-3',
-    trigger: '모집자플랜(0)',
-    content: ['(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)', '(지점)올인원플랜(15~40세)'],
-  },
-];
 
 type AgGridRow = DummyDataType & {
   isDuplicate?: boolean;
@@ -515,7 +84,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false, reset: false });
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const [rowData, setRowData] = useState<AgGridRow[]>(DummyData);
+  const [rowData, setRowData] = useState<AgGridRow[]>(dummyData);
   const pendingSelectIdRef = useRef<string | number | null>(null);
   const gridApiRef = useRef<GridApi<AgGridRow> | null>(null);
   const prevSelectedIdsRef = useRef<Set<string | number>>(new Set());
@@ -531,70 +100,27 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     []
   );
 
-  const productNameHeader = useCallback(() => {
-    const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
-      setShowProductNameTooltip(!!checked);
-    };
-    return (
-      <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
-        <Grow gap={1.5} placement={'sc'}>
-          <Checkbox variant={'text'} checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>
-            선택 24건
-          </Checkbox>
-          <Divider />
-          <Checkbox
-            variant={'text'}
-            checked={checkedMap.unselected}
-            onCheckedChange={handleCheckedChange('unselected')}
-          >
-            미선택
-          </Checkbox>
-          <Divider />
-          <Checkbox variant={'text'} checked={checkedMap.reset} onCheckedChange={handleCheckedChange('reset')}>
-            담보초기화
-          </Checkbox>
-        </Grow>
-        <Grow>
-          <InputHash
-            options={[
-              { value: '암암암암2', label: '암암암암2' },
-              { value: '뇌뇌뇌뇌뇌', label: '뇌뇌뇌뇌뇌' },
-              { value: '심심심심심', label: '심심심심심' },
-              { value: '표적', label: '표적' },
-              { value: '뇌', label: '뇌' },
-              { value: '심장', label: '심장' },
-              { value: '수술', label: '수술' },
-              { value: '골절', label: '골절' },
-              { value: '화상', label: '화상' },
-              { value: '치매', label: '치매' },
-              { value: '종신종신종신', label: '종신종신종신' },
-            ]}
-            size={'md'}
-            placeholder="담보명 입력"
-            clear={true}
-            value={coverageName}
-            onChange={(value) => setCoverageName(value)}
-          />
-          <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-          <Button aria-label="담보명 초기화" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-            <ResetIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grow>
-        <Grow placement={'sc'}>
-          <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
-            담보명 말풍선
-          </Checkbox>
-        </Grow>
-      </Grow>
-    );
-  }, [checkedMap, coverageName, showProductNameTooltip, handleCheckedChange]);
+  const productNameHeader = useCallback(
+    () => (
+      <ProductNameHeader
+        coverageName={coverageName}
+        onCoverageNameChange={setCoverageName}
+        showProductNameTooltip={showProductNameTooltip}
+        onShowProductNameTooltipChange={(checked) => setShowProductNameTooltip(!!checked)}
+        checkedMap={checkedMap}
+        onCheckedChange={handleCheckedChange}
+      />
+    ),
+    [checkedMap, coverageName, showProductNameTooltip, handleCheckedChange]
+  );
 
   // =====================
   // 공용 유틸리티/셀 렌더러
   // =====================
-  const getExpiryRenderer = useExpiryCellRenderer();
+  // 만기/납기 컬럼에서 재사용하는 셀 렌더러 팩토리(정렬값만 주입)
+  const getExpiryRenderer = createExpiryCellRenderer<AgGridRow>;
+
+  // 행 추가/복제 시 setState + 선택 유지(pending id 재선택)를 한 번에 처리하는 래퍼
   const rowDataWithTracking = useCallback(
     (updater: AgGridRow[] | ((prev: AgGridRow[]) => AgGridRow[])) => {
       rowDataWithTrackingFactory<AgGridRow>(setRowData, pendingSelectIdRef)(updater);
@@ -609,39 +135,34 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     },
     [setRowData, pendingSelectIdRef]
   );
+
+  // 중복 버튼 렌더러: id 생성/복제 row 가공/표시 조건을 주입해 공통 팩토리 생성
   const duplicateRenderer = useMemo(() => {
     return createInsertCopiedRowButtonCellRenderer<AgGridRow, 'id'>(rowDataWithTracking, {
       idKey: 'id',
-      getNextId: (rows) => {
-        const ids = rows.map((r) => (typeof r.id === 'number' ? r.id : Number(r.id))).filter((n) => !isNaN(n));
-        const maxId = ids.length > 0 ? Math.max(...ids) : 0;
-        return maxId + 1;
-      },
-      patchCopiedRow: (originalRow, nextId) => ({
-        ...originalRow,
-        id: nextId,
-        displayNo: originalRow.id,
-        isDuplicate: true,
-        isChecked: true,
-        filePath: Array.isArray(originalRow.filePath) ? [...originalRow.filePath, String(nextId)] : [String(nextId)],
-      }),
-      isVisible: (params) => {
-        const isRowChecked = params.node?.isSelected?.() ?? false;
-        const isCopiedRow = params.data?.isDuplicate === true;
-        return isRowChecked && !isCopiedRow;
-      },
+      getNextId: getNextNumericRowId,
+      patchCopiedRow: patchCopiedDuplicateRow,
+      isVisible: isCopyButtonVisible,
       ariaLabel: '동일 담보 추가',
     });
   }, [rowDataWithTracking]);
-  const ensureLockedRowsSelected = useEnsureLockedRowsSelected();
+
+  // 단일 선택 id를 부모로 전달하는 기본 selection 핸들러
   const handleSelectionChanged = useHandleSelectionChanged<AgGridRow, number>('id', onSelectPlan);
+
+  // 선택/해제 시 잠금행 보정 + 중복행 정리 + 관련 컬럼 강제 refresh를 수행하는 통합 핸들러
   const handleGridSelectionChanged = useGridSelectionChangedHandler<AgGridRow>({
     ensureLockedRowsSelected,
     setRowData,
     prevSelectedIdsRef,
     handleSelectionChanged,
+    onSelectedIdsChange: (selectedIds) => {
+      prevSelectedIdsRef.current = selectedIds;
+    },
     refreshColumns: ['field5', 'field6', 'rowCopy'],
   });
+
+  // 신규 생성 직후 pending id가 있으면 먼저 선택 상태를 복구하고 공통 selection 핸들러를 실행
   const onSelectionChanged = useCallback(
     (event: SelectionChangedEvent<AgGridRow>) => {
       if (pendingSelectIdRef.current !== null) {
@@ -651,12 +172,22 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         }
         pendingSelectIdRef.current = null;
       }
-      const selectedIds = handleGridSelectionChanged(event);
-      prevSelectedIdsRef.current = selectedIds;
+      handleGridSelectionChanged(event);
     },
     [handleGridSelectionChanged]
   );
+
+  // 셀 클릭 시 선택 토글(입력/버튼 클릭은 유지) 공통 핸들러
   const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<AgGridRow>(), []);
+
+  // groupEditableButtonRenderer의 시그니처(ICellRendererParams)에 맞추기 위한 number formatter 어댑터
+  const numberCellRenderer = useCallback(
+    (params: ICellRendererParams<AgGridRow>) =>
+      numberValueFormatter(params as unknown as ValueFormatterParams<AgGridRow>),
+    []
+  );
+
+  // onGridReady 시 잠금/기본선택 보정을 수행하고 api ref를 저장
   const gridReadyHandler = useGridReadyHandler<AgGridRow>(ensureLockedRowsSelected);
   const handleGridReady = useCallback(
     (params: { api: GridApi<AgGridRow> }) => {
@@ -710,7 +241,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
             };
           }
         },
-        cellRenderer: groupEditableButtonRenderer<AgGridRow>(getExpiryRenderer, numberValueFormatter),
+        cellRenderer: groupEditableButtonRenderer<AgGridRow>(getExpiryRenderer, numberCellRenderer),
         editable: (params: EditableCallbackParams) => {
           // 그룹이면서 편집 불가면 에디터 비활성화
           if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
@@ -777,7 +308,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         resizable: false,
       },
     ],
-    [attributeColumnWidth, duplicateRenderer, getExpiryRenderer]
+    [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]
   );
 
   return (
@@ -878,36 +409,38 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <SelectDrop typeMode="custom" size="md" width={160} placeholder="나만의 설계선택">
-                    {/* 여기에 */}
-                    <Gcol className="w-full p-[0.2rem]">
-                      <Button variant="outlined" size="md" className="w-full">
-                        <SaveIcon /> 나만의 설계
-                      </Button>
-
-                      <Accordion type="multiple" className="w-full" defaultValue={['item-1', 'item-2', 'item-3']}>
-                        {planAccordionItems.map((item) => (
-                          <AccordionItem key={item.value} value={item.value}>
-                            <AccordionTrigger className="w-full group flex justify-between items-center text-[1.3rem] font-bold">
-                              {item.trigger}
-                              <ChevronDownIcon
-                                size={14}
-                                color="#777"
-                                className="transition-transform group-data-[state=open]:rotate-0 group-data-[state=closed]:rotate-180"
-                              />
-                            </AccordionTrigger>
-                            <AccordionContent className="px-[0.8rem]">
-                              {item.content.map((text, index) => (
-                                <Typo key={`${item.value}-${index}`} variant="body-md">
-                                  {text}
-                                </Typo>
-                              ))}
-                            </AccordionContent>
-                          </AccordionItem>
-                        ))}
-                      </Accordion>
-                    </Gcol>
-                  </SelectDrop>
+                  <MyPlanSelect
+                    items={[
+                      {
+                        value: 'item-1',
+                        trigger: '기관플랜(5)',
+                        content: [
+                          '(지점)올인원플랜(15~40세)',
+                          '(지점)올인원플랜(15~40세)',
+                          '(지점)올인원플랜(15~40세)',
+                          '(지점)올인원플랜(15~40세)',
+                        ],
+                      },
+                      {
+                        value: 'item-2',
+                        trigger: '기관플랜(0)',
+                        content: [
+                          '(지점)올인원플랜(15~40세)',
+                          '(지점)올인원플랜(15~40세)',
+                          '(지점)올인원플랜(15~40세)',
+                        ],
+                      },
+                      {
+                        value: 'item-3',
+                        trigger: '모집자플랜(0)',
+                        content: [
+                          '(지점)올인원플랜(15~40세)',
+                          '(지점)올인원플랜(15~40세)',
+                          '(지점)올인원플랜(15~40세)',
+                        ],
+                      },
+                    ]}
+                  />
 
                   {/* M1. 토글 시 아이콘 변경 추가 */}
                   <Button

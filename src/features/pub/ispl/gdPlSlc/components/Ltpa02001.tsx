@@ -6,11 +6,9 @@
 
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Grid } from '@atoms';
-
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-
 import { SearchIcon, ResetIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
@@ -398,9 +396,10 @@ export function Ltpa02001() {
               {(
                 [
                   { label: '무해지', color: 'green' },
-                  { label: '차움', color: 'blue' },
+                  { label: '차움', color: 'yellow' },
                   { label: '할증', color: 'red' },
                   { label: '여성', color: 'purple' },
+                  { label: '간편', color: 'blue' },
                 ] as const
               ).map((badge) =>
                 badgeText.includes(badge.label) ? (
@@ -424,7 +423,7 @@ export function Ltpa02001() {
         <Grow className="flex-1 truncate block text-left">{params.data?.field2}</Grow>
         <Grow>
           {params.data?.btn && (
-            <Button color="gray" onClick={() => {}} only="default" size="sm" variant="contained">
+            <Button color="gray" onClick={() => {}} only="default" size="sm" variant="outlined">
               납면
             </Button>
           )}
@@ -456,7 +455,7 @@ export function Ltpa02001() {
       headerComponent: productNameHeader,
     },
     {
-      headerName: '상품분류',
+      headerName: '가입연령',
       field: 'field3',
       cellClass: 'text-center',
       width: 100,
@@ -565,7 +564,9 @@ export function Ltpa02001() {
         <TableFold className="h-full">
           <TableFoldHead title="상품정보" variant="default" />
           <TableFoldBody className="w-full h-full">
-            <div className="ag-theme-alpine w-full h-full min-h-0">
+            <div
+              className={`tooltip-hidden-toggle w-full h-full ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+            >
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
@@ -581,7 +582,15 @@ export function Ltpa02001() {
 
         <Grid className="max-w-[42.5rem] w-[42.5rem] shrink-0 h-full grid-rows-[40%_1fr]" gap={5}>
           <TableFold className="">
-            <TableFoldHead title="한화 3N5 더간편건강보험(세만기형)2601종 정보" variant="default" />
+            <TableFoldHead
+              title="한화 3N5 더간편건강보험(세만기형)2601종 정보 한화 3N5 더간편건강보험(세만기형)2601종 정보"
+              variant="default"
+              className="grid grid-cols-[1fr_auto] gap-2 [&>div]:first:overflow-hidden [&>div]:first:flex [&>div]:first:whitespace-nowrap [&>div]:first:w-full"
+            >
+              <Grow>
+                <Checkbox>미판매보종</Checkbox>
+              </Grow>
+            </TableFoldHead>
             <TableFoldBody className="w-full h-full">
               <div className="ag-theme-alpine w-full h-full min-h-0">
                 <AgGridReact<DummyDataType2>

@@ -4,7 +4,7 @@
 
 'use client';
 
-import { AgGridEmptyComponent, phoneNumberValueFormatter, phoneNumberValueParser } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -71,8 +71,6 @@ const Ltpz351 = () => {
       cellEditorParams: {
         maxLength: 13,
       },
-      valueFormatter: phoneNumberValueFormatter,
-      valueParser: phoneNumberValueParser,
     },
   ];
 

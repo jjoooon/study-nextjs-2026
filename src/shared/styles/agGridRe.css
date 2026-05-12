@@ -735,4 +735,7 @@
 .ag-row.ag-row-subtotal.ag-row-hover {
   background-color: var(--color-primary-10) !important;
   color: var(--color-primary-50) !important;
+}  
+.modify-cell {
+  background-color: #CBE3FF !important;
 }

@@ -158,6 +158,36 @@ export function createCellErrorClassRules<RowType>(predicate: (params: CellClass
 }
 
 /**
+ * 원본값과 달라진 셀에 클래스 룰을 적용하는 생성기 (공용)
+ */
+export function createModifiedCellClassRules<
+  RowType extends Record<string, unknown>,
+  ValueKey extends keyof RowType,
+>(options: {
+  rows: RowType[];
+  idKey: IdKeyOf<RowType>;
+  valueKey: ValueKey;
+  className?: string;
+  serialize?: (value: unknown) => string;
+}): {
+  [className: string]: (params: CellClassParams<RowType>) => boolean;
+} {
+  const { rows, idKey, valueKey, className = 'modify-cell', serialize = (value) => String(value ?? '') } = options;
+
+  const initialValueMap = new Map(rows.map((row) => [row[idKey], serialize(row[valueKey])]));
+
+  return {
+    [className]: (params) => {
+      if (!params.data) {
+        return false;
+      }
+
+      return serialize(params.value) !== initialValueMap.get(params.data[idKey]);
+    },
+  };
+}
+
+/**
  * 선택 행 정보 전달 핸들러 생성기 (공용)
  * @param idKey 행 데이터의 id 필드명 (string)
  * @param callback id 전달 콜백 (id: IDType) => void
@@ -499,6 +529,61 @@ export function createInsertCopiedRowButtonCellRenderer<
     isVisible,
     ariaLabel,
   });
+}
+
+export type DuplicateRowBase = {
+  id: string | number;
+  isDuplicate?: boolean;
+  isChecked?: boolean;
+  filePath?: string[];
+};
+
+export function rowDataWithTrackingFactory<T extends { id: string | number; isDuplicate?: boolean }>(
+  setRowData: React.Dispatch<React.SetStateAction<T[]>>,
+  pendingSelectIdRef: React.MutableRefObject<string | number | null>
+) {
+  return (updater: T[] | ((prev: T[]) => T[])) => {
+    setRowData((prev) => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      if (next.length > prev.length) {
+        const prevIds = new Set(prev.map((row) => row.id));
+        const newDuplicate = next.find((row) => !prevIds.has(row.id) && row.isDuplicate);
+        if (newDuplicate) {
+          pendingSelectIdRef.current = newDuplicate.id;
+        }
+      }
+      return next;
+    });
+  };
+}
+
+export function getNextNumericRowId<T extends { id: string | number }>(rows: T[]): number {
+  const ids = rows.map((row) => (typeof row.id === 'number' ? row.id : Number(row.id))).filter((id) => !isNaN(id));
+  const maxId = ids.length > 0 ? Math.max(...ids) : 0;
+  return maxId + 1;
+}
+
+export function patchCopiedDuplicateRow<T extends DuplicateRowBase>(
+  originalRow: T,
+  nextId: number
+): T & { displayNo: string | number } {
+  return {
+    ...originalRow,
+    id: nextId,
+    displayNo: originalRow.id,
+    isDuplicate: true,
+    isChecked: true,
+    filePath: Array.isArray(originalRow.filePath) ? [...originalRow.filePath, String(nextId)] : [String(nextId)],
+  };
+}
+
+export function isCopyButtonVisible<T extends { isDuplicate?: boolean }>(params: {
+  node?: { isSelected?: () => boolean | undefined };
+  data?: T;
+}): boolean {
+  const isRowChecked = params.node?.isSelected?.() ?? false;
+  const isCopiedRow = params.data?.isDuplicate === true;
+  return isRowChecked && !isCopiedRow;
 }
 
 /**
@@ -1338,24 +1423,3 @@ export const CoveragePopover = ({
     </Popover>
   );
 };
-
-/**
- * 휴대폰 번호 valueFormatter (010-1234-5678, 010-123-4567 등 자동 포맷)
- */
-export function phoneNumberValueFormatter<T = unknown>(params: ValueFormatterParams<T>) {
-  if (!params.value) return '';
-  const v = String(params.value).replace(/[^0-9]/g, '');
-  if (v.length === 11) {
-    return `${v.slice(0, 3)}-${v.slice(3, 7)}-${v.slice(7)}`;
-  } else if (v.length === 10) {
-    return `${v.slice(0, 3)}-${v.slice(3, 6)}-${v.slice(6)}`;
-  }
-  return v;
-}
-
-/**
- * 휴대폰 번호 valueParser (숫자만 추출)
- */
-export function phoneNumberValueParser(params: { newValue: string }) {
-  return params.newValue.replace(/[^0-9]/g, '');
-}

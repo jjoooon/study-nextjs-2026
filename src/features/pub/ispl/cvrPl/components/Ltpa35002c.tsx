@@ -10,16 +10,15 @@ import {
   AgGridEmptyComponent,
   AmountWithPopoverCellEditor,
 } from '@aggrid';
-import { Divider, Grid, Grow, Typo, Gcol } from '@atoms';
+import { Grid, Grow, Typo, Gcol } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InputHash } from '@common/InputHash';
 import { KeyValueList } from '@common/KeyValueList';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { ResetIcon, SearchIcon } from '@icons';
+import { createExpiryCellRenderer, productNameCellRenderer, searchButtonRenderer } from '@grid/CellRenderers';
+import { ProductNameHeader } from '@grid/HeadRenderers';
 import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
@@ -28,210 +27,11 @@ import type { CellClassParams, ColDef, EditableCallbackParams, CellEditorSelecto
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
-import {
-  searchButtonRenderer,
-  useExpiryCellRenderer,
-  editableCellClassRules,
-  productNameCellRenderer,
-} from '../hooks/useLtpa35002';
+import { dummyData, dummyData2 } from '../data/ltpa35002cData';
+import type { DummyData2Type, DummyDataType } from '../data/ltpa35002cData';
+import { editableCellClassRules } from '../utils/agGridUtils';
 
 import '@/shared/lib/agGridPub';
-
-interface DummyDataType {
-  id: number;
-  isChecked?: boolean;
-  field1?: string | number | boolean;
-  insuredAmount?: string | number | boolean;
-  field3?: string | number | boolean;
-  field4?: string | number | boolean;
-  field5?: string | number | boolean;
-  field6?: string | number | boolean;
-  field7?: string | number | boolean;
-  field8?: string | number | boolean;
-  [key: string]: unknown;
-}
-const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    isChecked: true,
-    field1: '건물(실손)',
-    insuredAmount: '200',
-    field3: 0,
-    field4: '일체',
-    field5: '일체',
-    field6: '건물내',
-    field7: '아니오',
-    field8: '가연성',
-
-    isEditedField6: true,
-    isEditedField7: true,
-    isEditedField8: true,
-  },
-  {
-    id: 2,
-    isChecked: false,
-    field1: '가재(실손)',
-    insuredAmount: '200',
-    field3: 0,
-    field4: '',
-    field5: '일체',
-    field6: '건물내',
-    field7: '아니오',
-    field8: '가연성',
-
-    isEditedField6: true,
-    isEditedField7: true,
-    isEditedField8: true,
-  },
-  {
-    id: 3,
-    isChecked: false,
-    field1: '가재(실손)',
-    insuredAmount: '200',
-    field3: 0,
-    field4: '',
-    field5: '일체',
-    field6: '건물내',
-    field7: '아니오',
-    field8: '가연성',
-
-    isEditedField6: true,
-    isEditedField7: true,
-    isEditedField8: true,
-  },
-];
-
-interface DummyData2Type {
-  id: number;
-  isChecked?: boolean;
-  isStandard?: {
-    group: boolean;
-    edit: boolean;
-  }; // [isStandard, 기준이 되는 필드명]
-  num?: number | null | undefined;
-  title?: string | number | boolean;
-  titleDetail?: {
-    title: string;
-    description: string;
-    info: string[];
-  };
-  insuredAmount?: string | number | boolean | string[]; //가입금액
-  isSelectedInsuredAmount?: boolean;
-  rowCopy?: string | number | boolean;
-
-  field1?: string | number | boolean;
-  field2?: string | number | boolean;
-  field3?: string | number | boolean;
-  field4?: string | number | boolean;
-  field5?: string | number | boolean;
-  field6?: string | number | boolean;
-  field7?: string | number | boolean;
-  field8?: string | number | boolean;
-
-  isEditedtitle?: boolean;
-  isEditedInsuredAmount?: boolean;
-  isEditedrowCopy?: boolean;
-
-  isEditedField2?: boolean;
-  isEditedinsuredAmount?: boolean;
-  isEditedField5?: boolean;
-  isEditedField6?: boolean;
-  isEditedField7?: boolean;
-  isEditedField8?: boolean;
-
-  filePath?: string[];
-  locked?: boolean;
-  isError?: boolean;
-  badge?: string[];
-  [key: string]: unknown;
-}
-const DummyData2: DummyData2Type[] = [
-  {
-    id: 1,
-    isChecked: true,
-    field1: '배상책임',
-    title: '보통약관(화재배상책임)',
-    field3: false,
-    insuredAmount: '2100',
-    isEditedInsuredAmount: true,
-    field5: '20년',
-    isEditedField5: true,
-    field6: '전기납',
-    isEditedField6: true,
-    field7: 0,
-    isEditedField7: true,
-    titleDetail: {
-      title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-  },
-  {
-    id: 2,
-    isChecked: false,
-    field1: '배상책임',
-    title:
-      '보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)보통약관(화재배상책임, 무과실)',
-    field3: true,
-    insuredAmount: '100',
-    isEditedInsuredAmount: true,
-    field5: '20년',
-    isEditedField5: true,
-    field6: '전기납',
-    isEditedField6: true,
-    field7: 0,
-    isEditedField7: true,
-    titleDetail: {
-      title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-  },
-  {
-    id: 3,
-    isChecked: false,
-    field1: '배상책임',
-    title: '보통약관(화재배상책임)',
-    field3: false,
-    insuredAmount: '4100',
-    isEditedInsuredAmount: true,
-    field5: '20년',
-    isEditedField5: false,
-    field6: '전기납',
-    isEditedField6: false,
-    field7: 0,
-    isEditedField7: false,
-    titleDetail: {
-      title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-  },
-  {
-    id: 4,
-    isChecked: true,
-    field1: '화재기타',
-    title: '보통약관(화재배상책임, 무과실)',
-    field3: true,
-    insuredAmount: 100,
-    isEditedInsuredAmount: true,
-    field5: '20년',
-    isEditedField5: true,
-    field6: '전기납',
-    isEditedField6: true,
-    field7: 0,
-    isEditedField7: true,
-    titleDetail: {
-      title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
-      description:
-        '질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)',
-      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~5,000만원'],
-    },
-  },
-];
 
 type AgGridRow = DummyDataType & {
   isDuplicate?: boolean;
@@ -256,8 +56,8 @@ export function Ltpa35002c() {
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false, reset: false });
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const [rowData] = useState<AgGridRow[]>(DummyData);
-  const [rowData2] = useState<AgGridRow2[]>(DummyData2);
+  const [rowData] = useState<AgGridRow[]>(dummyData);
+  const [rowData2] = useState<AgGridRow2[]>(dummyData2);
   const [coverageName, setCoverageName] = useState('');
 
   // =====================
@@ -270,66 +70,25 @@ export function Ltpa35002c() {
     []
   );
 
-  const productNameHeader = useCallback(() => {
-    const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
-      setShowProductNameTooltip(!!checked);
-    };
-    return (
-      <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
-        <Grow gap={1.5} placement={'sc'}>
-          <Checkbox variant={'text'} checked={checkedMap.selected} onCheckedChange={handleCheckedChange('selected')}>
-            선택 24건
-          </Checkbox>
-          <Divider />
-          <Checkbox
-            variant={'text'}
-            checked={checkedMap.unselected}
-            onCheckedChange={handleCheckedChange('unselected')}
-          >
-            미선택
-          </Checkbox>
-        </Grow>
-        <Grow>
-          <InputHash
-            options={[
-              { value: '암암암암2', label: '암암암암2' },
-              { value: '뇌뇌뇌뇌뇌', label: '뇌뇌뇌뇌뇌' },
-              { value: '심심심심심', label: '심심심심심' },
-              { value: '표적', label: '표적' },
-              { value: '뇌', label: '뇌' },
-              { value: '심장', label: '심장' },
-              { value: '수술', label: '수술' },
-              { value: '골절', label: '골절' },
-              { value: '화상', label: '화상' },
-              { value: '치매', label: '치매' },
-              { value: '종신종신종신', label: '종신종신종신' },
-            ]}
-            size={'md'}
-            placeholder="담보명 입력"
-            clear={true}
-            value={coverageName}
-            onChange={(value) => setCoverageName(value)}
-          />
-          <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-          <Button aria-label="담보명 초기화" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-            <ResetIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grow>
-        <Grow placement={'sc'}>
-          <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={handleTooltipCheck}>
-            담보명 말풍선
-          </Checkbox>
-        </Grow>
-      </Grow>
-    );
-  }, [checkedMap, coverageName, showProductNameTooltip, handleCheckedChange]);
+  const productNameHeader = useCallback(
+    () => (
+      <ProductNameHeader
+        coverageName={coverageName}
+        onCoverageNameChange={setCoverageName}
+        showProductNameTooltip={showProductNameTooltip}
+        onShowProductNameTooltipChange={(checked) => setShowProductNameTooltip(!!checked)}
+        checkedMap={checkedMap}
+        onCheckedChange={handleCheckedChange}
+      />
+    ),
+    [checkedMap, coverageName, showProductNameTooltip, handleCheckedChange]
+  );
 
   // =====================
   // 공용 유틸리티/셀 렌더러
   // =====================
-  const getExpiryRenderer = useExpiryCellRenderer();
+  // 만기/납기 컬럼에서 재사용하는 셀 렌더러 팩토리(정렬값만 주입)
+  const getExpiryRenderer = createExpiryCellRenderer<AgGridRow>;
 
   // 재물
   const columnDefs: ColDef<AgGridRow>[] = useMemo(

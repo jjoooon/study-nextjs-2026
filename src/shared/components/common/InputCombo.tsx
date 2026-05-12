@@ -7,6 +7,8 @@
 // datalist + popover 기능의 InputCombo 컴포넌트
 // 기존 Input 컴포넌트 활용
 
+import { Grid } from '@atoms';
+import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import React, { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
@@ -17,36 +19,47 @@ function getRandomId(prefix = 'inputcombo-') {
   return prefix + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 }
 
-type ComboOption = string | { value: string; label: React.ReactNode };
+type ComboOptionItem<TValue> = {
+  value: TValue;
+  label: React.ReactNode;
+  [key: string]: unknown;
+};
+type ComboOptionValue<TValue> = TValue | ComboOptionItem<TValue>;
 
-interface InputComboProps extends Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange'> {
-  options: ComboOption[];
-  value: string;
-  onChange: (value: string) => void;
+function isComboOptionItem<TValue>(opt: ComboOptionValue<TValue>): opt is ComboOptionItem<TValue> {
+  return typeof opt === 'object' && opt !== null && 'value' in opt && 'label' in opt;
+}
+
+interface InputComboProps<TValue> extends Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange' | 'variant'> {
+  options: ComboOptionValue<TValue>[];
+  value: TValue | string;
+  onChange: (value: TValue | string, option?: ComboOptionItem<TValue>) => void;
+  variant?: 'default' | 'recommend';
   clear?: boolean;
   size?: 'md' | 'lg';
   inputId?: string; // 고유 id를 외부에서 지정 가능
-  ulClassName?: string;
+  className?: string;
   col?: number; // 옵션 리스트의 컬럼 수 (기본 1)
   width?: number | string; // popover의 고정 너비 (기본은 Input과 동일)
 }
 
-export function InputCombo({
+export function InputCombo<TValue = string>({
   options,
   value,
   width,
+  variant = 'default',
   onChange,
   inputId,
   col = 1,
   clear,
   size = 'lg',
-  ulClassName,
+  className,
   ...restProps
-}: InputComboProps) {
+}: InputComboProps<TValue>) {
   // 고유 data-comboid 생성 (컴포넌트 인스턴스마다, 외부에서 id 지정 가능)
   const [testId] = useState(() => inputId || getRandomId('inputcombo-input-'));
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(String(value));
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   // inputRef는 Input 내부 input을 직접 참조하기 위해 사용
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -57,21 +70,20 @@ export function InputCombo({
   // popoverRef 불필요 (Radix Popover 사용)
 
   // 옵션을 value/label로 통일
-  const normalized = options.map((opt) =>
-    typeof opt === 'string' ? { value: opt, label: opt } : { value: opt.value, label: opt.label }
-  );
+  const normalized = options.map((opt) => (isComboOptionItem(opt) ? opt : { value: opt, label: String(opt) }));
 
   // 입력값에 따라 옵션 필터링 (value, label 모두에서 검색)
   const filtered = normalized.filter(
     (opt) =>
-      opt.value.toLowerCase().includes(inputValue.toLowerCase()) ||
+      String(opt.value).toLowerCase().includes(inputValue.toLowerCase()) ||
       (typeof opt.label === 'string' ? opt.label.toLowerCase().includes(inputValue.toLowerCase()) : false)
   );
 
   // input 값 외부 변경 반영
   useEffect(() => {
     setInputValue((prev) => {
-      if (prev !== value) return value;
+      const next = String(value);
+      if (prev !== next) return next;
       return prev;
     });
   }, [value]);
@@ -126,9 +138,9 @@ export function InputCombo({
   };
 
   // 리스트 클릭 처리
-  const handleOptionClick = (opt: { value: string; label: React.ReactNode }) => {
-    setInputValue(opt.value);
-    onChange(opt.value);
+  const handleOptionClick = (opt: ComboOptionItem<TValue>) => {
+    setInputValue(String(opt.value));
+    onChange(opt.value, opt);
     setOpen(false);
     setHoveredIdx(null);
     inputRef.current?.focus();
@@ -163,6 +175,56 @@ export function InputCombo({
       }
     : undefined;
 
+  if (variant === 'recommend') {
+    return (
+      <>
+        <Input
+          size={size}
+          value={inputValue}
+          onChange={handleInputChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          autoComplete="off"
+          data-comboid={testId}
+          clear={clear}
+          isFocused={open || isFocused}
+          width={width}
+          {...restProps}
+        />
+        {open && normalized.length > 0 && popoverPos && typeof window !== 'undefined'
+          ? typeof document !== 'undefined' && document.body
+            ? // body portal로 렌더링
+              ReactDOM.createPortal(
+                <div
+                  ref={popoverRef}
+                  tabIndex={-1}
+                  className="bg-white px-2.5 py-2 border border-[var(--color-gray-20)] shadow-md max-h-48 overflow-auto animate-fadein rounded-[0.6rem]"
+                  style={popoverStyle}
+                >
+                  <Grid className="grid-cols-[1fr_1fr] gap-2">
+                    {normalized.map((opt, idx) => (
+                      <Button
+                        variant={'outlined'}
+                        color={'gray-light'}
+                        className="rounded-full"
+                        key={`${idx}-${String(opt.value)}`}
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => handleOptionClick(opt)}
+                        onMouseEnter={() => setHoveredIdx(idx)}
+                      >
+                        {opt.label}
+                      </Button>
+                    ))}
+                  </Grid>
+                </div>,
+                document.body
+              )
+            : null
+          : null}
+      </>
+    );
+  }
   return (
     <>
       <Input
@@ -192,7 +254,7 @@ export function InputCombo({
                 <table
                   className={cn(
                     `[&_td]:px-2 [&_td]:py-1 [&_td]:whitespace-nowrap [&_td]:border [&_td]:border-[var(--color-gray-10)] [&_td]:rounded-sm`,
-                    ulClassName
+                    className
                   )}
                 >
                   <tbody
@@ -202,7 +264,7 @@ export function InputCombo({
                   >
                     {filtered.map((opt, idx) => (
                       <tr
-                        key={opt.value}
+                        key={`${idx}-${String(opt.value)}`}
                         className={cn(
                           'cursor-pointer [&_td]:text-[1.3rem]',
                           'hover:[&_td]:bg-[var(--color-warning-10)]',
