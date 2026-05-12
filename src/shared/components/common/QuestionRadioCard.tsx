@@ -69,14 +69,13 @@ export const QuestionRadioCardContents = ({
   return <Grid className={cn('w-full p-2.5 gap-2', className)}>{children}</Grid>;
 };
 
-type QuestionRadioCardProps = {
-} & React.HTMLAttributes<HTMLDivElement> & {
-  children?: ReactNode;
-  className?: string;
-  isRadio?: boolean;
-  isValue?: string;
-  onValueChange?: (value: string) => void;
-};
+type QuestionRadioCardProps = {} & React.HTMLAttributes<HTMLDivElement> & {
+    children?: ReactNode;
+    className?: string;
+    isRadio?: boolean;
+    isValue?: string;
+    onValueChange?: (value: string) => void;
+  };
 
 export const QuestionRadioCard = React.forwardRef<HTMLDivElement, QuestionRadioCardProps>(
   ({ children, className, ...restProps }, ref) => {

@@ -24,10 +24,10 @@ import {
 import { Input } from '@uiux/Input';
 
 import { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
-import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { Badge } from '@/shared/components/uiux/Badge';
+import React from 'react';
 import { PageArrowDoubleIcon, PageArrowIcon } from '@/shared/components/icons/CommonIcons';
+import { Badge } from '@/shared/components/uiux/Badge';
 
 type DummyDataType = {
   id: number;
@@ -35,20 +35,18 @@ type DummyDataType = {
   isFixed: boolean;
   field01: string | number;
   field02: string | number;
-
 };
 const DummyData: DummyDataType[] = [
-  { id: 1, isChecked: true, isFixed: true, field01: '특정부위', field02: '040'},
-  { id: 2, isChecked: false, isFixed: true, field01: '특정부위', field02: '040'},
-  { id: 3, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
-  { id: 5, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
-  { id: 7, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
-  { id: 22, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
-  { id: 23, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
-  { id: 31, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
-  { id: 33, isChecked: false, isFixed: false, field01: '특정부위', field02: '040'},
+  { id: 1, isChecked: true, isFixed: true, field01: '특정부위', field02: '040' },
+  { id: 2, isChecked: false, isFixed: true, field01: '특정부위', field02: '040' },
+  { id: 3, isChecked: false, isFixed: false, field01: '특정부위', field02: '040' },
+  { id: 5, isChecked: false, isFixed: false, field01: '특정부위', field02: '040' },
+  { id: 7, isChecked: false, isFixed: false, field01: '특정부위', field02: '040' },
+  { id: 22, isChecked: false, isFixed: false, field01: '특정부위', field02: '040' },
+  { id: 23, isChecked: false, isFixed: false, field01: '특정부위', field02: '040' },
+  { id: 31, isChecked: false, isFixed: false, field01: '특정부위', field02: '040' },
+  { id: 33, isChecked: false, isFixed: false, field01: '특정부위', field02: '040' },
 ];
-
 
 const Ltpz008 = () => {
   const [rightRowData, setRightRowData] = React.useState<DummyDataType[]>(DummyData);
@@ -170,7 +168,7 @@ const Ltpz008 = () => {
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
   ];
-  
+
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size={'lg'}>
@@ -184,11 +182,11 @@ const Ltpz008 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className='grid grid-rows-[auto_1fr]'>
+        <DialogSection className="grid grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="설계번호" variant="head" cols={['w-[1rem]', 'w-auto','w-[1rem]', 'w-auto']}>
-              <FormRow className='grid grid-cols-[1fr_auto] w-full'>
-                <FormCell title={'상품명'} className='shrink-0' tdClassName='flex-1'>
+            <FormTable caption="설계번호" variant="head" cols={['w-[1rem]', 'w-auto', 'w-[1rem]', 'w-auto']}>
+              <FormRow className="grid grid-cols-[1fr_auto] w-full">
+                <FormCell title={'상품명'} className="shrink-0" tdClassName="flex-1">
                   <Input value={'한화 시그니처 여성 검강보험 3.0 2504 '} readOnly />
                 </FormCell>
                 <FormCell title={'설계번호'}>
@@ -198,11 +196,15 @@ const Ltpz008 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grow gap={3} placement='ss' className="w-full">
+          <Grow gap={3} placement="ss" className="w-full">
             <Gcol className="h-full p-[1.2rem]" gap={2.5} placement="ss" variant="box-line">
               <Grow>
-                <Badge color="gray" size={'md'} variant={'rounded'}>현재</Badge>
-                <Typo tag={'strong'} variant={'heading-md'}>가입설계 선택 담보</Typo>
+                <Badge color="gray" size={'md'} variant={'rounded'}>
+                  현재
+                </Badge>
+                <Typo tag={'strong'} variant={'heading-md'}>
+                  가입설계 선택 담보
+                </Typo>
               </Grow>
               <div className="ag-theme-alpine min-h-[27rem]">
                 <AgGridReact<DummyDataType>
@@ -221,28 +223,37 @@ const Ltpz008 = () => {
                 />
               </div>
             </Gcol>
-            <Gcol className="h-full p-[1.2rem] bg-[#FFF7F4] border-[0.2rem] border-[#FFCCBE]" gap={1} placement="ss" variant="box-line">
-              <Grow placement='bwc'>
+            <Gcol
+              className="h-full p-[1.2rem] bg-[#FFF7F4] border-[0.2rem] border-[#FFCCBE]"
+              gap={1}
+              placement="ss"
+              variant="box-line"
+            >
+              <Grow placement="bwc">
                 <Grow>
-                  <Badge className='bg-[#FFE0E0] text-[#FF5C2E]' size={'md'} variant={'rounded'}>변경</Badge>
-                  <Typo tag={'strong'} variant={'heading-md'}>가입설계 선택 담보</Typo>
+                  <Badge className="bg-[#FFE0E0] text-[#FF5C2E]" size={'md'} variant={'rounded'}>
+                    변경
+                  </Badge>
+                  <Typo tag={'strong'} variant={'heading-md'}>
+                    가입설계 선택 담보
+                  </Typo>
                 </Grow>
                 <Grow>
                   <Button color="gray-light" onClick={moveSelectedBottom} only="icon" size="md" variant="outlined">
-                    <PageArrowDoubleIcon className='rotate-[270deg]' color={'#FF5C2E'} color2={'#FF5C2E'}/>
+                    <PageArrowDoubleIcon className="rotate-[270deg]" color={'#FF5C2E'} color2={'#FF5C2E'} />
                   </Button>
                   <Button color="gray-light" onClick={moveSelectedDownOne} only="icon" size="md" variant="outlined">
-                    <PageArrowIcon className='rotate-[270deg]' color={'#FF5C2E'}/>
+                    <PageArrowIcon className="rotate-[270deg]" color={'#FF5C2E'} />
                   </Button>
                   <Button color="gray-light" onClick={moveSelectedUpOne} only="icon" size="md" variant="outlined">
-                    <PageArrowIcon className='rotate-[90deg]' color={'#FF5C2E'}/>
+                    <PageArrowIcon className="rotate-[90deg]" color={'#FF5C2E'} />
                   </Button>
                   <Button color="gray-light" onClick={moveSelectedTop} only="icon" size="md" variant="outlined">
-                    <PageArrowDoubleIcon className='rotate-[90deg]' color={'#FF5C2E'} color2={'#FF5C2E'}/>
+                    <PageArrowDoubleIcon className="rotate-[90deg]" color={'#FF5C2E'} color2={'#FF5C2E'} />
                   </Button>
-                </Grow>  
+                </Grow>
               </Grow>
-              
+
               <div className="ag-theme-alpine min-h-[27rem]">
                 <AgGridReact<DummyDataType>
                   onGridReady={(params) => {
@@ -276,8 +287,10 @@ const Ltpz008 = () => {
               </div>
             </Gcol>
           </Grow>
-          <Typo icon="info" variant="body-sm">담보명의 순서를 변경항 경우 <b className='text-bold'>담보설계(LTRA350)과 고객에게 전달하는 출력물</b>에도 담보 순서가 변경됩니다.</Typo>
-          
+          <Typo icon="info" variant="body-sm">
+            담보명의 순서를 변경항 경우 <b className="text-bold">담보설계(LTRA350)과 고객에게 전달하는 출력물</b>에도
+            담보 순서가 변경됩니다.
+          </Typo>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>

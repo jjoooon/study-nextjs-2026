@@ -55,10 +55,7 @@ import type { DummyDataType } from '../data/ltpa35002dData';
 import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
 import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChangedHandler';
 import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
-import {
-  editableCellClassRules,
-  ensureLockedRowsSelected,
-} from '../utils/agGridUtils';
+import { editableCellClassRules, ensureLockedRowsSelected } from '../utils/agGridUtils';
 
 import '@/shared/lib/agGridPub';
 

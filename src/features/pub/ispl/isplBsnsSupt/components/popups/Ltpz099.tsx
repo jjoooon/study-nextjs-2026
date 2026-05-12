@@ -9,7 +9,6 @@ import { Grid, Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from '@uiux/Table';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,6 +20,7 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from '@uiux/Table';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
@@ -192,7 +192,7 @@ export const Ltpz099 = () => {
     {
       headerName: '가입금액',
       field: 'field02',
-      width: 100,      
+      width: 100,
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
@@ -216,7 +216,7 @@ export const Ltpz099 = () => {
     {
       headerName: '가입금액',
       field: 'field02',
-      width: 100,      
+      width: 100,
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
@@ -246,9 +246,14 @@ export const Ltpz099 = () => {
           <TableFold>
             <TableFoldHead title="기본정보" />
             <TableFoldBody>
-              <FormTable caption="기본정보 테이블" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
+              <FormTable
+                caption="기본정보 테이블"
+                cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}
+              >
                 <FormRow>
-                  <FormCell title={'추천일자'} colSpan={5}>YYYY-MM-DD</FormCell>
+                  <FormCell title={'추천일자'} colSpan={5}>
+                    YYYY-MM-DD
+                  </FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title={'기관'}>OO지점</FormCell>
@@ -257,7 +262,9 @@ export const Ltpz099 = () => {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'고객구분'}>기등록</FormCell>
-                  <FormCell title={'고객'} colSpan={4}>홍길순(32세, 여, 1급) 32세(여, 14급)</FormCell>
+                  <FormCell title={'고객'} colSpan={4}>
+                    홍길순(32세, 여, 1급) 32세(여, 14급)
+                  </FormCell>
                 </FormRow>
               </FormTable>
             </TableFoldBody>
@@ -265,9 +272,14 @@ export const Ltpz099 = () => {
           <TableFold>
             <TableFoldHead title="입력정보" />
             <TableFoldBody>
-              <FormTable caption="기본정보 테이블" cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}>
+              <FormTable
+                caption="기본정보 테이블"
+                cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}
+              >
                 <FormRow>
-                  <FormCell title={'담보군'} colSpan={5}>사망후유, 입원/통원, 수술/치료, 골절/화상, 검사/지원, 운전/비용</FormCell>
+                  <FormCell title={'담보군'} colSpan={5}>
+                    사망후유, 입원/통원, 수술/치료, 골절/화상, 검사/지원, 운전/비용
+                  </FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title={'무해지'}>적용</FormCell>
@@ -275,19 +287,29 @@ export const Ltpz099 = () => {
                   <FormCell title={'만기구분'}>세만기</FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'보장분석'} colSpan={5}>보장분석부족자금</FormCell>
+                  <FormCell title={'보장분석'} colSpan={5}>
+                    보장분석부족자금
+                  </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'고지유형'} colSpan={5}>표준</FormCell>
+                  <FormCell title={'고지유형'} colSpan={5}>
+                    표준
+                  </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'추가질병'} colSpan={5}>고혈압, 당뇨</FormCell>
+                  <FormCell title={'추가질병'} colSpan={5}>
+                    고혈압, 당뇨
+                  </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'질병입력'} colSpan={5}>대장.직장용종(3년 내) / 질병명(N년 내) / 질병명(N년 내) / 질병명(N년 내)</FormCell>
+                  <FormCell title={'질병입력'} colSpan={5}>
+                    대장.직장용종(3년 내) / 질병명(N년 내) / 질병명(N년 내) / 질병명(N년 내)
+                  </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'상품명'} colSpan={5}>한화 시그니처 여성 건강보험4.0</FormCell>
+                  <FormCell title={'상품명'} colSpan={5}>
+                    한화 시그니처 여성 건강보험4.0
+                  </FormCell>
                 </FormRow>
               </FormTable>
             </TableFoldBody>
@@ -296,20 +318,18 @@ export const Ltpz099 = () => {
             <TableFold>
               <TableFoldHead title="설계비교" />
               <TableFoldBody>
-                <Grow gap={3} placement='ss'>
+                <Grow gap={3} placement="ss">
                   <Grid className="w-full h-full grid-rows-[auto_1fr] gap-0">
                     <Table variant="default">
                       <colgroup>
                         <col style={{ width: '10rem' }} />
-                        <col style={{ width: '12rem'  }} />
+                        <col style={{ width: '12rem' }} />
                         <col style={{ width: '10rem' }} />
                         <col style={{ width: 'auto' }} />
                       </colgroup>
                       <TableHeader>
                         <TableRow>
-                          <TableHead colSpan={4}>
-                            추천설계
-                          </TableHead>
+                          <TableHead colSpan={4}>추천설계</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -346,15 +366,13 @@ export const Ltpz099 = () => {
                     <Table variant="default">
                       <colgroup>
                         <col style={{ width: '10rem' }} />
-                        <col style={{ width: '12rem'  }} />
+                        <col style={{ width: '12rem' }} />
                         <col style={{ width: '10rem' }} />
-                        <col style={{ width: 'auto'  }} />
+                        <col style={{ width: 'auto' }} />
                       </colgroup>
                       <TableHeader>
                         <TableRow>
-                          <TableHead colSpan={4}>
-                            진행 설계
-                          </TableHead>
+                          <TableHead colSpan={4}>진행 설계</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>

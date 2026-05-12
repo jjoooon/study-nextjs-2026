@@ -5,7 +5,7 @@
 'use client';
 
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Gcol, Grow, Divider, Grid, Typo } from '@atoms';
+import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import {
@@ -266,9 +266,6 @@ export function Ltpa02002({
   const [isAmountInputVisible, setIsAmountInputVisible] = useState<boolean>(false);
   const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(true);
   const [isProductOptionOpen, setIsProductOptionOpen] = useState<string>('상품옵션');
-
-  const [isAddPanelOpen, setIsAddPanelOpen] = useState<boolean>(false);
-  const [addPanelCheckedValues, setAddPanelCheckedValues] = useState<string[]>(['담보군', '상품특징', '보장분석']);
   const coverageOptions = [
     { value: '사망/후유', label: '사망/후유' },
     { value: '진단비', label: '진단비' },
@@ -310,7 +307,7 @@ export function Ltpa02002({
   const selectedProductFeatureSummary =
     productFeatureSummaryValues.length > 0 ? productFeatureSummaryValues.join(', ') : '선택';
   // 고지유형
-  const [isPdName, setIsPdName] = useState<boolean>(false);
+  const [isPdName] = useState<boolean>(false);
   // 고지유형(간편/추가질병/입원수술) 상태
   const [simpleType, setSimpleType] = useState<string>(''); // '표준' | '간편' | ''
   const [additionalDiseases, setAdditionalDiseases] = useState<string[]>([]); // ['고혈압', ...]

@@ -461,7 +461,7 @@ export default function Ltpa040Section() {
       field: 'field01',
       flex: 1,
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true, 
+      autoHeight: true,
       cellRenderer: renderConsentCell,
     },
     {
