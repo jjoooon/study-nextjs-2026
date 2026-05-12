@@ -17,7 +17,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
@@ -1201,12 +1200,14 @@ export default function Ltpa040Section() {
     },
     {
       headerName: '설계 생성정보',
+      headerClass: 'ag-header-color',
       cellClass: 'text-center',
       children: [
         {
           headerName: '설계번호',
           field: 'field12',
           width: 130,
+          headerClass: 'ag-header-color',
           cellClass: 'text-center',
           sortable: false,
         },
@@ -1214,6 +1215,7 @@ export default function Ltpa040Section() {
           headerName: '설계상태',
           field: 'field13',
           width: 100,
+          headerClass: 'ag-header-color',
           cellClass: 'text-center',
           sortable: false,
         },
@@ -1221,6 +1223,7 @@ export default function Ltpa040Section() {
           headerName: '설계담보수',
           field: 'field14',
           width: 100,
+          headerClass: 'ag-header-color',
           cellClass: 'text-center',
           sortable: false,
         },
@@ -1228,6 +1231,7 @@ export default function Ltpa040Section() {
           headerName: '보장보험료',
           field: 'field15',
           width: 100,
+          headerClass: 'ag-header-color',
           cellClass: 'text-right',
           valueFormatter: (params) => {
             if (params.value === null || params.value === undefined || params.value === '') return '';
@@ -1292,7 +1296,7 @@ export default function Ltpa040Section() {
       headerName: '상품',
       field: 'field01',
       flex: 1,
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-left px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: renderConsentCell,
     },
@@ -1316,6 +1320,7 @@ export default function Ltpa040Section() {
       headerName: '건수',
       field: 'field04',
       width: 200,
+      headerClass: 'ag-header-color',
       cellClass: 'text-center',
       autoHeight: true,
       sortable: true,
@@ -1335,21 +1340,15 @@ export default function Ltpa040Section() {
       cellRenderer: renderConsentCellT3, // 버튼 렌더러 적용
     },
     {
-      headerName: '추천설계 이용건수',
+      headerName: '추천설계\n이용건수',
       field: 'field02',
       flex: 1,
       cellClass: `text-center flex! items-center! justify-center! whitespace-pre-line`,
-      sortable: false,
+      headerClass: 'ag-header-preline',
+      sortable: true,
       filter: false,
       suppressMovable: true,
       spanRows: true,
-      headerComponent: () => (
-        <div className="w-full h-full flex items-center justify-center whitespace-normal leading-tight">
-          추천설계
-          <br />
-          이용건수
-        </div>
-      ),
     },
     {
       headerName: '고객구분',
@@ -1357,61 +1356,64 @@ export default function Ltpa040Section() {
       width: 170,
       cellClass: 'text-center',
       spanRows: true,
-      cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT1>('field03', 'field04', 'row'),
+      cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT3>('field03', 'field04', 'row'),
     },
     {
       headerName: '성별',
       cellClass: 'text-center',
       spanRows: true,
-      cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT1>('field05', 'field06', 'row'),
+      cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT3>('field05', 'field06', 'row'),
       children: [
         {
           headerName: '남',
           field: 'field05',
           width: 85,
-          cellClass: 'text-center',
+          cellClass: 'text-center flex! items-center! justify-center!',
+          sortable: false,
         },
         {
           headerName: '여',
           field: 'field06',
           width: 85,
-          cellClass: 'text-center',
+          cellClass: 'text-center flex! items-center! justify-center!',
+          sortable: false,
         },
       ],
     },
     {
       headerName: '연령대',
       cellClass: 'text-center',
+      sortable: false,
       children: [
         {
           headerName: '0~14세',
           field: 'field07',
           width: 85,
-          cellClass: 'text-center',
+          cellClass: 'text-center flex! items-center! justify-center!',
         },
         {
           headerName: '15~24세',
           field: 'field08',
           width: 85,
-          cellClass: 'text-center',
+          cellClass: 'text-center flex! items-center! justify-center!',
         },
         {
           headerName: '25~59세',
           field: 'field09',
           width: 85,
-          cellClass: 'text-center',
+          cellClass: 'text-center flex! items-center! justify-center!',
         },
         {
           headerName: '60~65세',
           field: 'field10',
           width: 85,
-          cellClass: 'text-center',
+          cellClass: 'text-center flex! items-center! justify-center!',
         },
         {
           headerName: '66세이상',
           field: 'field11',
           width: 85,
-          cellClass: 'text-center',
+          cellClass: 'text-center flex! items-center! justify-center!',
         },
       ],
     },
@@ -1423,19 +1425,19 @@ export default function Ltpa040Section() {
           headerName: '1급',
           field: 'field12',
           width: 85,
-          cellClass: 'text-center',
+          cellClass: 'text-center flex! items-center! justify-center! ',
         },
         {
           headerName: '2급',
           field: 'field13',
           width: 85,
-          cellClass: 'text-center',
+          cellClass: 'text-center flex! items-center! justify-center! ',
         },
         {
           headerName: '3급',
           field: 'field14',
           width: 85,
-          cellClass: 'text-center',
+          cellClass: 'text-center flex! items-center! justify-center!',
         },
         
       ]
@@ -1477,6 +1479,7 @@ export default function Ltpa040Section() {
       headerName: '건수',
       field: 'field05',
       width: 200,
+      headerClass: 'ag-header-color',
       cellClass: 'text-center',
       autoHeight: true,
     },
@@ -1484,6 +1487,7 @@ export default function Ltpa040Section() {
       headerName: '영업일평균',
       field: 'field06',
       width: 200,
+      headerClass: 'ag-header-color',
       cellClass: 'text-center',
       autoHeight: true,
     },
@@ -1502,21 +1506,15 @@ export default function Ltpa040Section() {
       cellRenderer: renderConsentCellT3, // 버튼 렌더러 적용
     },
     {
-      headerName: '추천설계 이용건수',
+      headerName: '추천설계\n이용건수',
       field: 'field02',
       flex: 1,
       cellClass: `text-center flex! items-center! justify-center! whitespace-pre-line`,
+      headerClass: 'ag-header-preline',
       sortable: true,
       filter: false,
       suppressMovable: true,
       spanRows: true,
-      headerComponent: () => (
-        <div className="w-full h-full flex items-center justify-center whitespace-normal leading-tight">
-          추천설계
-          <br />
-          이용건수
-        </div>
-      ),
     },
     {
       headerName: '무해지',
@@ -1645,42 +1643,44 @@ export default function Ltpa040Section() {
     {
       headerName: '무해지',
       field: 'field01',
-      flex: 1, 
+      width: 150,
       cellClass: 'text-center',
       autoHeight: true, 
     },
     {
       headerName: '납면',
       field: 'field02',
-      width: 200,
+      width: 150,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '만기구분',
       field: 'field03',
-      width: 200,
+      width: 150,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '고지유형',
       field: 'field04',
-      width: 200,
+      width: 150,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '담보군',
       field: 'field05',
-      width: 200,
+      flex:1,
       cellClass: 'text-left',
       autoHeight: true,
+      tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT6>({ field: 'field05' }),
     },
     {
       headerName: '건수',
       field: 'field06',
-      width: 200,
+      width: 120,
+      headerClass: 'ag-header-color',
       cellClass: 'text-center',
       autoHeight: true,
       sortable: true,
@@ -1688,12 +1688,12 @@ export default function Ltpa040Section() {
     {
       headerName: '영업일평균',
       field: 'field07',
-      width: 200,
+      width: 120,
+      headerClass: 'ag-header-color',
       cellClass: 'text-center',
       autoHeight: true,
     },
   ];
-  // const gridApiRef = React.useRef<GridApi<Ltpa040DummyDataRow> | null>(null);
 
   // form event
   const [form, setFormField] = useFormFields({
@@ -1883,7 +1883,7 @@ export default function Ltpa040Section() {
               </Grid>
             )}
             {active === 'tab2' && (
-              <Grid className="w-full grid-rows-[auto_1fr_1fr_1fr_1fr_1fr_1fr] gap-3 h-full">
+              <Grid className="w-full grid-rows-[auto_1fr] gap-3 h-full">
                 <Grow placement="bwe" className="w-full" variant="box-round-b" >
                   <FormTable
                     variant={'none'}
@@ -1991,7 +1991,7 @@ export default function Ltpa040Section() {
                           size="lg"
                         />
                         <Button
-                          color={'gray'}
+                          color={'secondary'}
                           size={'lg'}
                           variant={'outlined'}
                           onClick={() => {}}
@@ -2021,7 +2021,7 @@ export default function Ltpa040Section() {
                 <TableFold>
                   <TableFoldHead title="일자별 선택 현황" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[33rem]">
+                    <div className="ag-theme-alpine min-h-[33.2rem]">
                       <AgGridReact<Ltpa040DummyDataRowT1>
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
@@ -2038,7 +2038,7 @@ export default function Ltpa040Section() {
                 <TableFold>
                   <TableFoldHead title="2026-04-13 상세 현황" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[33rem]">
+                    <div className="ag-theme-alpine min-h-[33.2rem]">
                       <AgGridReact<Ltpa040DummyDataRowT2>
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
@@ -2056,19 +2056,19 @@ export default function Ltpa040Section() {
                 <TableFold>
                   <TableFoldHead title="일자별 고객군별 선택 현황" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[36.7rem]">
+                    <div className="ag-theme-alpine ag-header-preline-grid min-h-[36.8rem]">
                       <AgGridReact<Ltpa040DummyDataRowT3>
-                        noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
                         rowData={Ltpa040DummyDataT3}
                         columnDefs={columnDefsT3}
                         enableCellSpan={true}
                         defaultColDef={{
-                          sortable: true,
+                          sortable: false,
                           resizable: true,
                           autoHeaderHeight: true,
                         }}
                         domLayout="normal"
+                        headerHeight={29}
                       />
                     </div>
                   </TableFoldBody>
@@ -2076,9 +2076,8 @@ export default function Ltpa040Section() {
                 <TableFold>
                   <TableFoldHead title="2026-04-13 상세 현황" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[33rem]">
+                    <div className="ag-theme-alpine min-h-[33.2rem]">
                       <AgGridReact<Ltpa040DummyDataRowT4>
-                        noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
                         rowData={Ltpa040DummyDataT4}
                         columnDefs={columnDefsT4}
@@ -2096,9 +2095,8 @@ export default function Ltpa040Section() {
                 <TableFold>
                   <TableFoldHead title="일자별 추가옵션 선택 현황" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[36.7rem]">
+                    <div className="ag-theme-alpine ag-header-preline-grid min-h-[36.8rem]">
                       <AgGridReact<Ltpa040DummyDataRowT5>
-                        noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
                         rowData={Ltpa040DummyDataT5}
                         columnDefs={columnDefsT5}
@@ -2109,6 +2107,7 @@ export default function Ltpa040Section() {
                           autoHeaderHeight: true,
                         }}
                         domLayout="normal"
+                        headerHeight={29}
                       />
                     </div>
                   </TableFoldBody>
@@ -2116,9 +2115,8 @@ export default function Ltpa040Section() {
                 <TableFold>
                   <TableFoldHead title="2026-04-13 상세 현황" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[27rem]">
+                    <div className="ag-theme-alpine min-h-[33.2rem]">
                       <AgGridReact<Ltpa040DummyDataRowT6>
-                        noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
                         rowData={Ltpa040DummyDataT6}
                         columnDefs={columnDefsT6}
@@ -2129,6 +2127,8 @@ export default function Ltpa040Section() {
                           autoHeaderHeight: true,
                         }}
                         domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
                       />
                     </div>
                   </TableFoldBody>

@@ -237,7 +237,7 @@ export const Ltpz099 = () => {
               추천설계 상세보기
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA04001)
+              (LTPZ099)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -328,7 +328,7 @@ export const Ltpz099 = () => {
                       </colgroup>
                       <TableHeader>
                         <TableRow>
-                          <TableHead colSpan={4}>추천설계</TableHead>
+                          <TableHead colSpan={4}  className="bg-(--color-primary-15)">추천설계</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -345,7 +345,7 @@ export const Ltpz099 = () => {
                         </TableRow>
                       </TableBody>
                     </Table>
-                    <div className="ag-theme-alpine min-h-[33rem] ag-border-t">
+                    <div className="ag-theme-alpine min-h-[33.2rem] ag-border-t">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -371,7 +371,7 @@ export const Ltpz099 = () => {
                       </colgroup>
                       <TableHeader>
                         <TableRow>
-                          <TableHead colSpan={4}>진행 설계</TableHead>
+                          <TableHead colSpan={4} className="bg-(--color-primary-15)">진행 설계</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -389,7 +389,7 @@ export const Ltpz099 = () => {
                         </TableRow>
                       </TableBody>
                     </Table>
-                    <div className="ag-theme-alpine min-h-[33rem] ag-border-t">
+                    <div className="ag-theme-alpine min-h-[33.2rem] ag-border-t">
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
