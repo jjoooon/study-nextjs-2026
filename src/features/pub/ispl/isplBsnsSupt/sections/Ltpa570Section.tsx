@@ -25,7 +25,7 @@ import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
-type Ltpa560DummyDataRow = {
+type Ltpa570DummyDataRow = {
   id: number;
   field01: string | number;
   field02: string | number;
@@ -43,7 +43,7 @@ type Ltpa560DummyDataRow = {
   field10Type?: boolean;
   subtotal?: boolean;
 };
-const Ltpa560DummyData: Ltpa560DummyDataRow[] = [
+const Ltpa570DummyData: Ltpa570DummyDataRow[] = [
   {
     id: 1,
     field01: '한화시그니처 여성 건강보험 4.0',
@@ -212,7 +212,7 @@ const Ltpa560DummyData: Ltpa560DummyDataRow[] = [
   },
 ];
 
-export default function Ltpa560Section() {
+export default function Ltpa570Section() {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -220,10 +220,10 @@ export default function Ltpa560Section() {
     type04: '',
   });
 
-  const [rowData] = React.useState<Ltpa560DummyDataRow[]>(Ltpa560DummyData);
+  const [rowData] = React.useState<Ltpa570DummyDataRow[]>(Ltpa570DummyData);
 
   // AgGrid Column
-  const columnDefs: (ColDef<Ltpa560DummyDataRow> | ColGroupDef<Ltpa560DummyDataRow>)[] = [
+  const columnDefs: (ColDef<Ltpa570DummyDataRow> | ColGroupDef<Ltpa570DummyDataRow>)[] = [
     {
       headerName: '상품',
       flex: 1,
@@ -269,7 +269,7 @@ export default function Ltpa560Section() {
       width: 80,
       field: 'field06',
       cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
+      cellRenderer: (params: ICellRendererParams<Ltpa570DummyDataRow>) =>
         params.data?.field06Type ? (
           <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
             {params.value}
@@ -313,7 +313,7 @@ export default function Ltpa560Section() {
       field: 'field11',
       cellClass: 'text-center truncate',
       autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
+      cellRenderer: (params: ICellRendererParams<Ltpa570DummyDataRow>) =>
         params.data?.field10Type ? (
           <Button
             color="link"
@@ -346,11 +346,11 @@ export default function Ltpa560Section() {
 
   const pageSize = 2;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: Ltpa560DummyData,
+    allRows: Ltpa570DummyData,
     pageSize,
   });
 
-  const sumRow = React.useMemo<Ltpa560DummyDataRow[]>(() => {
+  const sumRow = React.useMemo<Ltpa570DummyDataRow[]>(() => {
     const toNumber = (value: string | number): number => {
       if (typeof value === 'number') {
         return Number.isFinite(value) ? value : 0;
@@ -420,7 +420,7 @@ export default function Ltpa560Section() {
         <PageID
           data={{
             pageName: '실시간 설계현황',
-            pageId: 'LTPA560',
+            pageId: 'LTPA570',
           }}
         />
       </LayoutHead>
@@ -536,7 +536,7 @@ export default function Ltpa560Section() {
             </Grow>
             <Grid className="grid-rows-[1fr]">
               <div className="ag-theme-alpine ltpa010-grid">
-                <AgGridReact<Ltpa560DummyDataRow>
+                <AgGridReact<Ltpa570DummyDataRow>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
                   getRowClass={(params) => (params.data?.subtotal ? 'ag-row-subtotal' : undefined)}
