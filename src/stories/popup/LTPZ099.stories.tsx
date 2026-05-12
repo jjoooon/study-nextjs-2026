@@ -2,13 +2,13 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 import * as React from 'react';
-import Ltpa04001 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpa04001';
+import Ltpz099 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz099';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpa04001',
-  component: Ltpa04001,
+  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpz099',
+  component: Ltpz099,
 };
 
 export const Default = () => {
@@ -19,7 +19,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <Ltpa04001 />
+      <Ltpz099 />
     </LayoutDoc>
   );
 };

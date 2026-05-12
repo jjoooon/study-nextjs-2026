@@ -179,7 +179,7 @@ const DummyData2: DummyDataType2[] = [
   },
 ];
 
-export const Ltpa04001 = () => {
+export const Ltpz099 = () => {
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -412,4 +412,4 @@ export const Ltpa04001 = () => {
   );
 };
 
-export default Ltpa04001;
+export default Ltpz099;
