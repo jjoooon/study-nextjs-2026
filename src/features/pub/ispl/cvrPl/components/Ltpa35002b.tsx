@@ -1,13 +1,16 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 'use client';
 
 import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
+  getNextNumericRowId,
+  isCopyButtonVisible,
   numberValueFormatter,
+  patchCopiedDuplicateRow,
+  rowDataWithTrackingFactory,
   useDynamicColumnWidths,
   AgGridEmptyComponent,
   AmountWithPopoverCellEditor,
@@ -52,14 +55,7 @@ import type { DummyDataType } from '../data/ltpa35002bData';
 import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
 import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChangedHandler';
 import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
-import {
-  editableCellClassRules,
-  ensureLockedRowsSelected,
-  getNextNumericRowId,
-  isCopyButtonVisible,
-  patchCopiedDuplicateRow,
-  rowDataWithTrackingFactory,
-} from '../utils/agGridUtils';
+import { editableCellClassRules, ensureLockedRowsSelected } from '../utils/agGridUtils';
 
 import '@/shared/lib/agGridPub';
 

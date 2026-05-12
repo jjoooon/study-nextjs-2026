@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 'use client';
 
 // ⚠️ CLONED & CUSTOM MODIFIED VERSION - DO NOT OVERWRITE

@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 import { SpinnerAIcon } from '@icons';
 import { cn } from '@/shared/lib/shadcn/utils';
 

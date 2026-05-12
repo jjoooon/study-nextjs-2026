@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */
-'use client';
+ */'use client';
 
 import { Grow } from '@atoms';
 import * as React from 'react';
@@ -218,8 +217,8 @@ export function IAListWithPreview() {
         return 0;
       }
       const key = sortKey as SortableKeys;
-      const leftValue = left[key] ?? '';
-      const rightValue = right[key] ?? '';
+      const leftValue = key === 'pub' ? (left.pubName ?? left.pub ?? '') : (left[key] ?? '');
+      const rightValue = key === 'pub' ? (right.pubName ?? right.pub ?? '') : (right[key] ?? '');
       const compareResult = leftValue.localeCompare(rightValue, 'ko');
       return sortState.order === 'asc' ? compareResult : -compareResult;
     });
@@ -272,7 +271,7 @@ export function IAListWithPreview() {
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
       <div className="h-[calc(100vh-4rem)] overflow-auto flex  flex-col justify-start">
         <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
-          반입일: 2026.04.29
+          반입일: 2026.05.12
         </div>
         <div className="w-full grid grid-cols-[1fr_auto] gap-2">
           <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem] flex-1">

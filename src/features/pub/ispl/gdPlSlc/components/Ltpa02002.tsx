@@ -1,11 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 'use client';
 
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Gcol, Grow, Divider, Grid, Typo } from '@atoms';
+import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import {
@@ -17,7 +16,6 @@ import {
   ArrowDoubleIcon,
   SearchIcon,
   ResetIcon,
-  ArrowIcon,
 } from '@icons';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 import { Button } from '@uiux/Button';
@@ -265,8 +263,7 @@ export function Ltpa02002({
   ];
   const [isAmountInputVisible, setIsAmountInputVisible] = useState<boolean>(false);
   const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(true);
-  const [isAddPanelOpen, setIsAddPanelOpen] = useState<boolean>(false);
-  const [addPanelCheckedValues, setAddPanelCheckedValues] = useState<string[]>(['담보군', '상품특징', '보장분석']);
+  const [isProductOptionOpen, setIsProductOptionOpen] = useState<string>('상품옵션');
   const coverageOptions = [
     { value: '사망/후유', label: '사망/후유' },
     { value: '진단비', label: '진단비' },
@@ -308,7 +305,7 @@ export function Ltpa02002({
   const selectedProductFeatureSummary =
     productFeatureSummaryValues.length > 0 ? productFeatureSummaryValues.join(', ') : '선택';
   // 고지유형
-  const [isPdName, setIsPdName] = useState<boolean>(false);
+  const [isPdName] = useState<boolean>(false);
   // 고지유형(간편/추가질병/입원수술) 상태
   const [simpleType, setSimpleType] = useState<string>(''); // '표준' | '간편' | ''
   const [additionalDiseases, setAdditionalDiseases] = useState<string[]>([]); // ['고혈압', ...]
@@ -412,7 +409,51 @@ export function Ltpa02002({
         </Typo>
 
         <Gcol placement="ss" gap={2}>
-          <Typo tag="div" variant={'body-md'} className="var(--color-text-blue-gray)">
+          <Typo tag="div" variant={'body-md'} className="var(--color-text-blue-gray) flex items-start gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <g clipPath="url(#clip0_1945_92923)">
+                <path
+                  d="M0 2.24795C0 1.0094 1.12076 0 2.50202 0H12.498C13.8792 0 15 1.0094 15 2.24795V15.752C15 16.9961 13.8792 18 12.498 18H2.50202C1.12076 18 0 16.9906 0 15.752V2.24795Z"
+                  fill="#D8DBE0"
+                />
+                <path
+                  opacity="0.4"
+                  d="M3 3.82001C3 3.3711 3.38656 3.00488 3.86041 3.00488H11.1396C11.6134 3.00488 12 3.3711 12 3.82001C12 4.26892 11.6134 4.63513 11.1396 4.63513H3.86041C3.38656 4.63513 3 4.26892 3 3.82001Z"
+                  fill="#6B7280"
+                />
+                <path
+                  opacity="0.4"
+                  d="M3 7.06927C3 6.62037 3.38656 6.25415 3.86041 6.25415H11.1396C11.6134 6.25415 12 6.62037 12 7.06927C12 7.51818 11.6134 7.8844 11.1396 7.8844H3.86041C3.38656 7.8844 3 7.51818 3 7.06927Z"
+                  fill="#6B7280"
+                />
+                <path
+                  opacity="0.4"
+                  d="M3 13.8151C3 13.3662 3.38656 13 3.86041 13H7.13959C7.61344 13 8 13.3662 8 13.8151C8 14.264 7.61344 14.6302 7.13959 14.6302H3.86041C3.38656 14.6302 3 14.264 3 13.8151Z"
+                  fill="#6B7280"
+                />
+                <path
+                  d="M17.1437 17.4588C17.1437 17.7556 16.8819 18 16.5639 18H12.5798C12.2619 18 12 17.7556 12 17.4588V9.20105H17.1437V17.4588Z"
+                  fill="#338CF5"
+                />
+                <path
+                  d="M17.1437 17.4574C17.1437 17.7542 16.8819 17.9986 16.5639 17.9986H12.5798C12.2619 17.9986 12 17.7542 12 17.4574V16.3983H17.1437V17.4574Z"
+                  fill="#003D85"
+                />
+                <path
+                  d="M14.2321 6.17458C14.4067 5.94181 14.7496 5.94181 14.9179 6.17458L17.1437 9.20069H12L14.2321 6.17458Z"
+                  fill="#FEF4D4"
+                />
+                <path
+                  d="M14.918 6.17458C14.7496 5.94181 14.4067 5.94181 14.2321 6.17458L13.6086 7.0184H15.5352L14.9117 6.17458H14.918Z"
+                  fill="#6B7280"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_1945_92923">
+                  <rect width="18" height="18" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
             추가정보를 입력하면 보다 정확한 추천 결과를 받아보실 수 있습니다. 추가정보를 선택적으로 입력 가능합니다.
           </Typo>
           <Grow placement="bwc" gap={6}>
@@ -507,72 +548,105 @@ export function Ltpa02002({
               <RadioGroup
                 width={'full'}
                 className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
-                defaultValue={'상품옵션'}
+                defaultValue={isProductOptionOpen}
+                onValueChange={(value) => setIsProductOptionOpen(value)}
               >
                 {[
                   { value: '상품옵션', label: '상품옵션' },
                   { value: '상품선택', label: '상품선택' },
-                ].map((opt) => (
-                  <RadioGroupItem key={opt.value} value={opt.value} variant="button" className="w-full text-left">
+                ].map((opt, idx) => (
+                  <RadioGroupItem key={'po' + idx} value={opt.value} variant="button" className="w-full text-left">
                     {opt.label}
                   </RadioGroupItem>
                 ))}
               </RadioGroup>
               <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
-                <FormRow>
-                  <FormCell title={'무해지'}>
-                    <RadioGroup
-                      value={noRefundValue}
-                      onValueChange={(value) => setNoRefundValue(value as ApplyOptionValue)}
-                      className="grid grid-cols-[1fr_1fr] w-[16rem]"
-                    >
-                      {[
-                        { value: '적용', label: '적용' },
-                        { value: '미적용', label: '미적용' },
-                      ].map((opt) => (
-                        <RadioGroupItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </RadioGroupItem>
-                      ))}
-                    </RadioGroup>
-                  </FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'납면'}>
-                    <RadioGroup
-                      value={premiumWaiverValue}
-                      onValueChange={(value) => setPremiumWaiverValue(value as ApplyOptionValue)}
-                      className="grid grid-cols-[1fr_1fr] w-[16rem]"
-                    >
-                      {[
-                        { value: '적용', label: '적용' },
-                        { value: '미적용', label: '미적용' },
-                      ].map((opt) => (
-                        <RadioGroupItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </RadioGroupItem>
-                      ))}
-                    </RadioGroup>
-                  </FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'만기'}>
-                    <RadioGroup
-                      value={maturityValue}
-                      onValueChange={(value) => setMaturityValue(value as MaturityOptionValue)}
-                      className="grid grid-cols-[1fr_1fr] w-[16rem]"
-                    >
-                      {[
-                        { value: '세만기', label: '세만기' },
-                        { value: '연만기', label: '연만기' },
-                      ].map((opt) => (
-                        <RadioGroupItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </RadioGroupItem>
-                      ))}
-                    </RadioGroup>
-                  </FormCell>
-                </FormRow>
+                {isProductOptionOpen === '상품옵션' ? (
+                  <>
+                    <FormRow>
+                      <FormCell title={'무해지'}>
+                        <RadioGroup
+                          value={noRefundValue}
+                          onValueChange={(value) => setNoRefundValue(value as ApplyOptionValue)}
+                          className="grid grid-cols-[1fr_1fr] w-[16rem]"
+                        >
+                          {[
+                            { value: '적용', label: '적용' },
+                            { value: '미적용', label: '미적용' },
+                          ].map((opt) => (
+                            <RadioGroupItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'납면'}>
+                        <RadioGroup
+                          value={premiumWaiverValue}
+                          onValueChange={(value) => setPremiumWaiverValue(value as ApplyOptionValue)}
+                          className="grid grid-cols-[1fr_1fr] w-[16rem]"
+                        >
+                          {[
+                            { value: '적용', label: '적용' },
+                            { value: '미적용', label: '미적용' },
+                          ].map((opt) => (
+                            <RadioGroupItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'만기'}>
+                        <RadioGroup
+                          value={maturityValue}
+                          onValueChange={(value) => setMaturityValue(value as MaturityOptionValue)}
+                          className="grid grid-cols-[1fr_1fr] w-[16rem]"
+                        >
+                          {[
+                            { value: '세만기', label: '세만기' },
+                            { value: '연만기', label: '연만기' },
+                          ].map((opt) => (
+                            <RadioGroupItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                  </>
+                ) : (
+                  <>
+                    <FormRow>
+                      <FormCell title={'상품명'} className="align-top !pt-[0.3rem]">
+                        <Gcol>
+                          <Grid className="grid-cols-[1fr_auto] gap-1 items-center w-full">
+                            <Input
+                              size={'sm'}
+                              placeholder="상품명 검색"
+                              value={'한화 3N5 더 간편건강보험(연만기 갱신형)2601'}
+                            />
+                            <Button
+                              variant={'outlined'}
+                              color={'gray-light'}
+                              size={'md'}
+                              only={'icon'}
+                              aria-label="상품 검색"
+                            >
+                              <SearchIcon color="var(--color-primary-50)" />
+                            </Button>
+                          </Grid>
+                          <Typo tag="p" variant={'body-xs'} className="text-[var(--color-gray-70)]">
+                            납입중50%해약환급금지급형, 납입면제 운영형, 3N52간편고지형Ⅲ
+                          </Typo>
+                        </Gcol>
+                      </FormCell>
+                    </FormRow>
+                  </>
+                )}
               </FormTable>
             </Gcol>
 
@@ -638,32 +712,34 @@ export function Ltpa02002({
                         <Typo variant={'heading-md'} className="text-[var(--color-blue-gray-50)]">
                           입원수술
                         </Typo>
-
-                        {[0, 1, 2, 3, 4].map((idx) => (
-                          <Grid key={idx} className="grid-cols-[auto_auto_1fr] gap-1 items-center w-full">
-                            <Input
-                              size={'sm'}
-                              width={86}
-                              placeholder="질병명검색"
-                              value={hospitalInputs[idx]}
-                              onChange={(e) => {
-                                const next = [...hospitalInputs];
-                                next[idx] = e.target.value;
-                                setHospitalInputs(next);
-                              }}
-                            />
-                            <Button
-                              variant={'outlined'}
-                              color={'gray-light'}
-                              size={'md'}
-                              only={'icon'}
-                              aria-label="질병 검색"
-                            >
-                              <SearchIcon color="var(--color-primary-50)" />
-                            </Button>
-                            <Input size={'sm'} readOnly after="년 내" />
-                          </Grid>
-                        ))}
+                        <Grid className="grid-cols-[auto_auto_1fr] gap-1 items-center w-full">
+                          {[0, 1, 2, 3, 4].map((idx) => (
+                            <>
+                              <Input
+                                key={idx}
+                                size={'sm'}
+                                width={86}
+                                placeholder="질병명검색"
+                                value={hospitalInputs[idx]}
+                                onChange={(e) => {
+                                  const next = [...hospitalInputs];
+                                  next[idx] = e.target.value;
+                                  setHospitalInputs(next);
+                                }}
+                              />
+                              <Button
+                                variant={'outlined'}
+                                color={'gray-light'}
+                                size={'md'}
+                                only={'icon'}
+                                aria-label="질병 검색"
+                              >
+                                <SearchIcon color="var(--color-primary-50)" />
+                              </Button>
+                              <Input size={'sm'} readOnly after="년 내" />
+                            </>
+                          ))}
+                        </Grid>
                       </Gcol>
                     </FormCell>
                   </FormRow>
@@ -673,30 +749,34 @@ export function Ltpa02002({
 
             {/* 담보군 */}
             <Gcol variant={'box-line'} className="gap-[0.4rem]" placement="ss">
-              {coverageOptions.map((opt) => (
-                <Grow key={opt.value} className="w-full" placement="ss">
-                  <Checkbox
-                    value={opt.value}
-                    variant="button"
-                    className="w-[8rem]"
-                    checked={selectedCoverageValues.includes(opt.value)}
-                    onCheckedChange={(checked) => {
-                      setSelectedCoverageValues((prev) => {
-                        const nextChecked = checked === true;
-                        if (nextChecked) {
-                          return prev.includes(opt.value) ? prev : [...prev, opt.value];
-                        }
-                        return prev.filter((value) => value !== opt.value);
-                      });
-                    }}
-                  >
-                    {opt.label}
-                  </Checkbox>
-                  {isAmountInputVisible && (
-                    <Input after="만원" width={120} placeholder="가입금액" commaAmount size={'md'} />
-                  )}
-                </Grow>
-              ))}
+              <Grid
+                className={`${isAmountInputVisible ? 'grid-cols-[auto_1fr]' : 'grid-cols-[1fr_1fr]'} grid-rows-[1fr] gap-1 w-full`}
+              >
+                {coverageOptions.map((opt) => (
+                  <>
+                    <Checkbox
+                      key={opt.value}
+                      value={opt.value}
+                      variant="button"
+                      className="w-full"
+                      checked={selectedCoverageValues.includes(opt.value)}
+                      onCheckedChange={(checked) => {
+                        setSelectedCoverageValues((prev) => {
+                          const nextChecked = checked === true;
+                          if (nextChecked) {
+                            return prev.includes(opt.value) ? prev : [...prev, opt.value];
+                          }
+                          return prev.filter((value) => value !== opt.value);
+                        });
+                      }}
+                    >
+                      {opt.label}
+                    </Checkbox>
+                    {isAmountInputVisible && <Input after="만원" placeholder="가입금액" commaAmount size={'md'} />}
+                  </>
+                ))}
+              </Grid>
+
               <Checkbox
                 checked={isAmountInputVisible}
                 onCheckedChange={(checked) => setIsAmountInputVisible(checked === true)}

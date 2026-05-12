@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */
-import type { Meta, StoryObj } from '@storybook/react';
+ */import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 // useState는 아래에서 React.useState로 사용하므로 별도 import 필요 없음
 import { Gcol, Grow } from '@atoms';

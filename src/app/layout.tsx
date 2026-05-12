@@ -42,17 +42,15 @@
  * - Providers: @/app/providers.tsx - Redux, MSW 설정
  * - Next.js Layouts: https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout
  */
-
+import { SpinnerRoot } from '@common/SpinnerRoot';
+import { Toaster } from '@uiux/Sonner';
 import type { Metadata, Viewport } from 'next';
-
+import { Providers } from './providers';
 import { AuthGuard } from '@/shared/components/AuthGuard';
 import { DialogRoot } from '@/shared/components/popups/DialogRoot';
 import '@/shared/styles/globals.css';
 import { AuthHeader } from '@/shared/types/authTypes';
 import log from '@/shared/utils/logger';
-import { SpinnerRoot } from '@common/SpinnerRoot';
-import { Toaster } from '@uiux/Sonner';
-import { Providers } from './providers';
 
 const logger = log.getLogger('Layout');
 

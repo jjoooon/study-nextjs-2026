@@ -1,13 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 'use client';
-
-import {
-  AgGridEmptyComponent,
-  createFieldRenderer,
-} from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -20,16 +15,16 @@ import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 
 type Ltp040TabType = { name: string; value: string; label: string };
 
@@ -198,7 +193,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 4,
     isCheck: false,
-   field01: 'YYYY-MM-DD HH:MM',
+    field01: 'YYYY-MM-DD HH:MM',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
     field04: '홍길동(8090001)',
@@ -1082,7 +1077,6 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
   },
 ]
 export default function Ltpa040Section() {
-
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   const renderConsentCell = (params: ICellRendererParams<Ltpa040DummyDataRowT1>) => {
@@ -1243,16 +1237,16 @@ export default function Ltpa040Section() {
           },
           sortable: false,
         },
-      ]
+      ],
     },
   ];
 
-  const columnDefsT1: (ColDef<Ltpa040DummyDataRowT1>)[] = [
+  const columnDefsT1: ColDef<Ltpa040DummyDataRowT1>[] = [
     {
       headerName: '일자',
       field: 'field01',
-      flex: 1, 
-      cellClass: 'text-center',
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: renderConsentCell,
       sortable: true,
@@ -1293,14 +1287,14 @@ export default function Ltpa040Section() {
     },
   ];
 
-  const columnDefsT2: (ColDef<Ltpa040DummyDataRowT2>)[] = [
+  const columnDefsT2: ColDef<Ltpa040DummyDataRowT2>[] = [
     {
       headerName: '상품',
       field: 'field01',
-      flex: 1, 
-      cellClass: 'text-left',
-      autoHeight: true, 
-      sortable: true,
+      flex: 1,
+      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      autoHeight: true,
+      cellRenderer: renderConsentCell,
     },
     {
       headerName: '종',
@@ -1817,11 +1811,7 @@ export default function Ltpa040Section() {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <Input
-                          aria-label="모집자 입력"
-                          width={120}
-                          value={''}
-                        />
+                        <Input aria-label="모집자 입력" width={120} value={''} />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -1830,11 +1820,7 @@ export default function Ltpa040Section() {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'상품코드'}>
-                        <Input
-                          aria-label="상품코드 입력"
-                          width={120}
-                          value={''}
-                        />
+                        <Input aria-label="상품코드 입력" width={120} value={''} />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -1878,16 +1864,16 @@ export default function Ltpa040Section() {
                     defaultColDef={{
                       resizable: true,
                     }}
-                     rowSelection={{
+                    rowSelection={{
                       mode: 'singleRow',
                       checkboxes: true,
                       enableClickSelection: false,
                     }}
                     selectionColumnDef={{
-                        headerName: '선택',
-                        // width: 30,
-                        cellClass: 'text-center editable-cell',
-                      }}
+                      headerName: '선택',
+                      // width: 30,
+                      cellClass: 'text-center editable-cell',
+                    }}
                     singleClickEdit={true}
                     rowClassRules={{}}
                     onCellValueChanged={() => {}}
@@ -2156,7 +2142,7 @@ export default function Ltpa040Section() {
             {active === 'tab1' && (
               <MainBottomItem className="justify-between">
                 <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'primary'} size={'xl'}>
-                    추천설계상세보기
+                  추천설계상세보기
                 </Button>
                 <Grow gap={1}>
                   <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'primary'} size={'xl'}>
@@ -2172,7 +2158,6 @@ export default function Ltpa040Section() {
                     엑셀내려받기
                   </Button>
                 </Grow>
-                
               </MainBottomItem>
             )}
           </MainBottom>

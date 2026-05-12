@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */
-import LTPA170 from '@/app/pub/aqg/pages/LTPA170';
+ */import LTPA170 from '@/app/pub/aqg/pages/LTPA170';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
