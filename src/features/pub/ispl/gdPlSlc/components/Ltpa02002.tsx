@@ -17,7 +17,6 @@ import {
   ArrowDoubleIcon,
   SearchIcon,
   ResetIcon,
-  ArrowIcon,
 } from '@icons';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@radix-ui/react-accordion';
 import { Button } from '@uiux/Button';
