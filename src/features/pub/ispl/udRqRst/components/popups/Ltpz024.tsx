@@ -131,11 +131,6 @@ const Ltpz024 = () => {
                     </FormRow>
                   </FormTable>
                 </Gcol>
-                {/* <InfoBox
-                  title="처리결과 저장 시, 신청하신 분께 알림톡이 발송되오니 참고 바랍니다."
-                  variant={'info'}
-                  bg={false}
-                ></InfoBox> */}
               </Gcol>
             </TableFoldBody>
           </TableFold>
