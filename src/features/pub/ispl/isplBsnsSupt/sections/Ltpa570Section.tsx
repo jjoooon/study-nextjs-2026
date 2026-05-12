@@ -400,18 +400,23 @@ export default function Ltpa570Section() {
                       value={groupBy}
                       width="full"
                     >
-                      <RadioGroupItem color="primary" id="d1" size="lg" value="option1" variant="default">
-                        채널
-                      </RadioGroupItem>
-                      <RadioGroupItem color="primary" id="d2" size="lg" value="option2" variant="default">
-                        본부
-                      </RadioGroupItem>
-                      <RadioGroupItem color="primary" id="d3" size="lg" value="option3" variant="default">
-                        지역단
-                      </RadioGroupItem>
-                      <RadioGroupItem color="primary" id="d4" size="lg" value="option4" variant="default">
-                        지점
-                      </RadioGroupItem>
+                      {[
+                        { value: 'option1', label: '채널' },
+                        { value: 'option2', label: '본부' },
+                        { value: 'option3', label: '지역단' },
+                        { value: 'option4', label: '지점' },
+                      ].map((option) => (
+                        <RadioGroupItem
+                          key={option.value}
+                          color="primary"
+                          id={option.value}
+                          size="lg"
+                          value={option.value}
+                          variant="default"
+                        >
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}
                     </RadioGroup>
                   </FormCell>
                 </FormRow>
