@@ -264,7 +264,21 @@ const Ltpa040DummyDataT2: Ltpa040DummyDataRowT2[] = [
     field01: '한화 시그니처 여성 건강보험4.0',
     field02: '1종 납입면제 강화형, 기본형[할증운영상품]',
     field03: '',
-    field04: '',
+    field04: '00',
+  },
+  {
+    id: 2,
+    field01: '한화 시그니처 여성 건강보험4.0',
+    field02: '1종 납입면제 강화형, 기본형[할증운영상품]',
+    field03: '올인원플랜(15~40세)',
+    field04: '00',
+  },
+  {
+    id: 3,
+    field01: '한화 시그니처 여성 건강보험4.0',
+    field02: '1종 해약환급금미지급형, 3.10.5간편고지형',
+    field03: '올인원플랜',
+    field04: '00',
   },
   
 ];
@@ -454,7 +468,7 @@ export default function Ltpa040Section() {
       field: 'field01',
       flex: 1, 
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
+      autoHeight: true, 
       cellRenderer: renderConsentCell,
     },
     {
