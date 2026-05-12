@@ -41,7 +41,7 @@ const DummyData: DummyDataType[] = [
   { id: 6, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
 ];
 
-const Ltpz085 = () => {
+const Ltrz085 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '할증담보',
@@ -80,7 +80,7 @@ const Ltpz085 = () => {
               통합/세트담보누적조정
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ085)
+              (LTRZ085)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -124,4 +124,4 @@ const Ltpz085 = () => {
   );
 };
 
-export default Ltpz085;
+export default Ltrz085;

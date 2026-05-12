@@ -116,12 +116,12 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
   return (
     <Gcol gap={2}>
       <Grow className="w-full px-1" placement={'bwc'}>
-        <Typo variant={'heading-md'}>누전사전예외</Typo>
         <Button variant={'text'} color={'gray'} onClick={() => {}}>
-          <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
-            {'12'}건
-          </Typo>
+          <Typo variant={'heading-md'}>누전사전예외</Typo>
         </Button>
+        <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
+          {'12'}건
+        </Typo>
       </Grow>
 
       <Gcol>

@@ -50,7 +50,7 @@ const badgeVariants = cva(
       { variant: 'contained', color: 'bluegray', class: 'bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)]' },
       { variant: 'contained', color: 'secondary', class: 'bg-[var(--color-secondary-50)] text-[var(--color-gray-0)]' },
       { variant: 'contained', color: 'purple', class: 'bg-[#F0E6FF] text-[#853EE2]' },
-      { variant: 'contained', color: 'yellow', class: 'bg-[#FFF4E5] text-[#FFB800]' },
+      { variant: 'contained', color: 'yellow', class: 'bg-[var(--color-warning-10)] text-[#FFB800]' },
 
       {
         variant: 'dark',

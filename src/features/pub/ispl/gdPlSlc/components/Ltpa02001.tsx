@@ -500,7 +500,7 @@ export function Ltpa02001() {
   const selectedPlanRowData = planRowDataMap[active] ?? dummyData3;
 
   return (
-    <Grid className="w-full grid-rows-[auto_1fr]" gap={3}>
+    <Grid className="w-full grid-rows-[auto_1fr] px-[1rem]" gap={3}>
       <Grow variant={'box-round'} className="w-full" placement="bwe">
         <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
           <FormRow className="items-start!">
