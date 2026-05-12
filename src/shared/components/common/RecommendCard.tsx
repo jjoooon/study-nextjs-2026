@@ -77,7 +77,6 @@ function NormalRecommendCardItem({
 }: NormalRecommendCardItemProps) {
   const [internalChecked, setInternalChecked] = useState(false);
   const isChecked = checked ?? internalChecked;
-  const isCheckboxSelected = variant === 'checkbox' && isChecked;
 
   return (
     <Grid

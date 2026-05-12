@@ -281,6 +281,12 @@ function DialogContent({
       const target = e.target as HTMLElement;
       const resizeHandle = target.closest('[data-slot="resize-handle"]');
       const dialogHeader = target.closest('[data-slot="dialog-header"]');
+      const dialogClose = target.closest('[data-slot="dialog-close"]');
+      const interactiveElement = target.closest('button, a, input, textarea, select, [role="button"]');
+
+      if (dialogClose || interactiveElement) {
+        return;
+      }
 
       if (resizeHandle) {
         e.preventDefault();

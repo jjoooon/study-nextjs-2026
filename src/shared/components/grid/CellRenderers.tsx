@@ -13,7 +13,20 @@ import { Button } from '@uiux/Button';
 import type { ICellRendererParams, IGroupCellRendererParams, IRowNode } from 'ag-grid-enterprise';
 import type { ReactNode } from 'react';
 
-import type { ProductNameCellBase, ProductTitleDetail } from '../../../features/pub/ispl/cvrPl/types/gridTypes';
+type ProductNameCellBase = {
+  id: string | number;
+  isDuplicate?: boolean;
+  num?: number | null;
+  displayNo?: number | string;
+  badge?: string[];
+  title?: string | number | boolean;
+};
+
+type ProductTitleDetail = {
+  title: string;
+  description: string;
+  info: string[];
+};
 
 export const createExpiryCellRenderer =
   <T,>(align: 'left' | 'center' | 'right' = 'right') =>

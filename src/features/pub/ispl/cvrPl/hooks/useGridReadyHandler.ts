@@ -6,7 +6,6 @@
 
 import type { GridApi } from 'ag-grid-enterprise';
 import { useCallback } from 'react';
-
 import type { EnsureLockedRowsSelected } from '../types/gridTypes';
 
 export function useGridReadyHandler<T extends { id: string | number; isChecked?: boolean; locked?: boolean }>(

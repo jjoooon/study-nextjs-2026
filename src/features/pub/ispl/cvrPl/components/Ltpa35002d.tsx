@@ -7,7 +7,11 @@
 import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
+  getNextNumericRowId,
+  isCopyButtonVisible,
   numberValueFormatter,
+  patchCopiedDuplicateRow,
+  rowDataWithTrackingFactory,
   useDynamicColumnWidths,
   AgGridEmptyComponent,
   AmountWithPopoverCellEditor,
@@ -54,10 +58,6 @@ import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
 import {
   editableCellClassRules,
   ensureLockedRowsSelected,
-  getNextNumericRowId,
-  isCopyButtonVisible,
-  patchCopiedDuplicateRow,
-  rowDataWithTrackingFactory,
 } from '../utils/agGridUtils';
 
 import '@/shared/lib/agGridPub';

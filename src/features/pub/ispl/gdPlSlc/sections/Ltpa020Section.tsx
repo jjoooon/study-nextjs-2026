@@ -91,12 +91,12 @@ export default function Ltpa020Section() {
               value="Ltpa02002"
               className="relative z-1 [&>div]:hidden w-[24rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
             >
-              추천설계
+              <span className="flex w-full justify-center items-center">추천설계</span>
               <AiIcon
                 size={24}
                 color={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#006FF2'}
                 color2={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#A683FF'}
-                className="absolute right-2 top-[0.6rem]"
+                className=""
               />
             </RadioGroupItem>
           </RadioGroup>

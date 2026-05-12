@@ -130,7 +130,6 @@ function Example() {
     className: { table: { disable: true } },
     forceFocused: { table: { disable: true } },
     disabled: { table: { disable: true } },
-    ulClassName: { table: { disable: true } },
   },
   args: {
     clear: true,

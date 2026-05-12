@@ -218,8 +218,8 @@ export function IAListWithPreview() {
         return 0;
       }
       const key = sortKey as SortableKeys;
-      const leftValue = left[key] ?? '';
-      const rightValue = right[key] ?? '';
+      const leftValue = key === 'pub' ? (left.pubName ?? left.pub ?? '') : (left[key] ?? '');
+      const rightValue = key === 'pub' ? (right.pubName ?? right.pub ?? '') : (right[key] ?? '');
       const compareResult = leftValue.localeCompare(rightValue, 'ko');
       return sortState.order === 'asc' ? compareResult : -compareResult;
     });

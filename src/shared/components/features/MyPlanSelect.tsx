@@ -3,7 +3,7 @@
  */
 import { Gcol } from '@atoms';
 import { SelectDrop } from '@common/SelectDrop';
-import { SaveIcon, ChevronDownIcon } from '@icons';
+import { SaveIcon } from '@icons';
 import { Accordion } from '@uiux/Accordion';
 import { Button } from '@uiux/Button';
 

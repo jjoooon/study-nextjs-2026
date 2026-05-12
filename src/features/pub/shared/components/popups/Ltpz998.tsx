@@ -103,9 +103,6 @@ const Ltpz998 = () => {
               domLayout="normal"
               tooltipShowMode="whenTruncated"
               tooltipShowDelay={0}
-              onCellClicked={() => {
-                console.log('Cell clicked:');
-              }}
             />
           </div>
           <Gcol placement="ss" gap={3} className="h-full pb-5 bg-[var(--color-gray-5)]" variant="box-line">

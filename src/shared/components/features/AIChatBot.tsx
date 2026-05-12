@@ -10,9 +10,6 @@ import { Dialog, DialogClose, DialogContent, DialogHeader } from '@uiux/Dialog';
 import Image from 'next/image';
 import * as React from 'react';
 
-import chatbotHeaderLogo from '../../../../public/images/chatbot/chatbot1.png';
-import chatbotHeaderImg from '../../../../public/images/chatbot/chatbot2.png';
-
 const CHATBOT_DIALOG_WIDTH = 198;
 const CHATBOT_DIALOG_HEIGHT = 560;
 const VIEWPORT_MARGIN = 12;
@@ -93,8 +90,14 @@ export default function AIChatBot({ isButton = true, open: openProp, setOpen: se
             className="w-full relative bg-[rgba(0,0,0,0.75)] h-[4rem] rounded-t-[1rem] pl-3 pr-[3.4rem]"
             placement="bwe"
           >
-            <Image src={chatbotHeaderLogo} alt="백프로에게 물어보세요!" className="mb-[1.2rem]" />
-            <Image src={chatbotHeaderImg} alt="백프로" />
+            <Image
+              src={'/images/chatbot/Chatbot1.png'}
+              alt="백프로에게 물어보세요!"
+              width={102}
+              height={11}
+              className="mb-[1.2rem]"
+            />
+            <Image src={'/images/chatbot/Chatbot2.png'} alt="백프로" width={49} height={49} />
             <DialogClose
               aria-label="챗봇 닫기"
               className="absolute right-[1.2rem] top-1/2 -translate-y-1/2 z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)]"
