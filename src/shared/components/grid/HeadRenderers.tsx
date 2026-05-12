@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 import { Divider, Grow } from '@atoms';
 import { InputHash } from '@common/InputHash';
 import { ResetIcon, SearchIcon } from '@icons';

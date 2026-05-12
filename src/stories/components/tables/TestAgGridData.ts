@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */
-export interface TestDataType {
+ */export interface TestDataType {
   data: Array<{
     id: number;
     code: string;

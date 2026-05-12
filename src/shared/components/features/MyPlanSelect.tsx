@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */
-import { Gcol } from '@atoms';
+ */import { Gcol } from '@atoms';
 import { SelectDrop } from '@common/SelectDrop';
 import { SaveIcon } from '@icons';
 import { Accordion } from '@uiux/Accordion';

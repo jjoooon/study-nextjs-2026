@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 import type { CellClassParams } from 'ag-grid-enterprise';
 import type { EnsureLockedRowsSelected } from '../types/gridTypes';
 

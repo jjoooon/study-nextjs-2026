@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 import { Typo, Grow } from '@atoms';
 import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
