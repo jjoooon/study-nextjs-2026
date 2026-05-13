@@ -2,6 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+import { useState } from 'react';
 import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -10,10 +11,12 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { HeaderWithUnit } from '@grid/HeadRenderers';
 import { useFormFields } from '@hooks/useFormFields';
 import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
+import { Checkbox } from '@uiux/Checkbox';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
@@ -24,7 +27,6 @@ import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
-import { HeaderWithUnit } from '@/shared/components/grid/HeadRenderers';
 
 type Ltp040TabType = { name: string; value: string; label: string };
 
@@ -1486,6 +1488,7 @@ export default function Ltpa040Section() {
       filter: false,
       suppressMovable: true,
       spanRows: true,
+      autoHeight: true,
       unSortIcon: true,
       cellRenderer: renderConsentCellT3, // 버튼 렌더러 적용
     },
@@ -1500,9 +1503,9 @@ export default function Ltpa040Section() {
       },
       field: 'field02',
       flex: 1,
-      headerClass: '',
       filter: false,
       suppressMovable: true,
+      autoHeight: true,
       spanRows: true,
       unSortIcon: true,
     },
@@ -1510,13 +1513,11 @@ export default function Ltpa040Section() {
       headerName: '고객구분',
       field: 'field03',
       width: 170,
-      cellClass: 'text-center',
       spanRows: true,
       cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT3>('field03', 'field04', 'row'),
     },
     {
       headerName: '성별',
-      cellClass: 'text-center',
       spanRows: true,
       cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT3>('field05', 'field06', 'row'),
       children: [
@@ -1524,13 +1525,11 @@ export default function Ltpa040Section() {
           headerName: '남',
           field: 'field05',
           width: 85,
-          cellClass: 'text-center flex! items-center! justify-center!',
         },
         {
           headerName: '여',
           field: 'field06',
           width: 85,
-          cellClass: 'text-center flex! items-center! justify-center!',
         },
       ],
     },
@@ -1542,55 +1541,46 @@ export default function Ltpa040Section() {
           headerName: '0~14세',
           field: 'field07',
           width: 85,
-          cellClass: 'text-center flex! items-center! justify-center!',
         },
         {
           headerName: '15~24세',
           field: 'field08',
           width: 85,
-          cellClass: 'text-center flex! items-center! justify-center!',
         },
         {
           headerName: '25~59세',
           field: 'field09',
           width: 85,
-          cellClass: 'text-center flex! items-center! justify-center!',
         },
         {
           headerName: '60~65세',
           field: 'field10',
           width: 85,
-          cellClass: 'text-center flex! items-center! justify-center!',
         },
         {
           headerName: '66세이상',
           field: 'field11',
           width: 85,
-          cellClass: 'text-center flex! items-center! justify-center!',
         },
       ],
     },
     {
       headerName: '직업급수',
-      cellClass: 'text-center',
       children: [
         {
           headerName: '1급',
           field: 'field12',
           width: 85,
-          cellClass: 'text-center flex! items-center! justify-center! ',
         },
         {
           headerName: '2급',
           field: 'field13',
           width: 85,
-          cellClass: 'text-center flex! items-center! justify-center! ',
         },
         {
           headerName: '3급',
           field: 'field14',
           width: 85,
-          cellClass: 'text-center flex! items-center! justify-center!',
         },
       ],
     },
@@ -1601,7 +1591,6 @@ export default function Ltpa040Section() {
       headerName: '고객구분',
       field: 'field01',
       flex: 1,
-      cellClass: 'text-center',
       autoHeight: true,
       suppressMovable: true,
       spanRows: true,
@@ -1610,21 +1599,18 @@ export default function Ltpa040Section() {
       headerName: '성별',
       field: 'field02',
       width: 200,
-      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '연령대',
       field: 'field03',
       width: 200,
-      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '직업급수',
       field: 'field04',
       width: 200,
-      cellClass: 'text-center',
       autoHeight: true,
     },
     {
@@ -1632,7 +1618,6 @@ export default function Ltpa040Section() {
       field: 'field05',
       width: 200,
       headerClass: 'ag-header-color',
-      cellClass: 'text-center',
       autoHeight: true,
     },
     {
@@ -1640,7 +1625,6 @@ export default function Ltpa040Section() {
       field: 'field06',
       width: 200,
       headerClass: 'ag-header-color',
-      cellClass: 'text-center',
       autoHeight: true,
     },
   ];
@@ -1650,7 +1634,6 @@ export default function Ltpa040Section() {
       headerName: '일자',
       field: 'field01',
       flex: 1,
-      cellClass: `text-center flex! items-center! justify-center! whitespace-pre-line`,
       filter: false,
       suppressMovable: true,
       spanRows: true,
@@ -1658,13 +1641,19 @@ export default function Ltpa040Section() {
       cellRenderer: renderConsentCellT3, // 버튼 렌더러 적용
     },
     {
-      headerName: '추천설계\n이용건수',
+      headerComponent: HeaderWithUnit,
+      headerComponentParams: {
+        label: '추천설계',
+        unit: '이용건수',
+        col: true,
+        view: true,
+        unitClassName: 'text-[1.3rem]',
+      },
       field: 'field02',
       flex: 1,
-      cellClass: `text-center flex! items-center! justify-center! whitespace-pre-line`,
-      headerClass: 'ag-header-preline',
       filter: false,
       suppressMovable: true,
+      autoHeight: true,
       spanRows: true,
       unSortIcon: true,
     },
@@ -1676,68 +1665,57 @@ export default function Ltpa040Section() {
           headerName: '적용',
           field: 'field03',
           width: 70,
-          cellClass: 'text-center',
         },
         {
           headerName: '미적용',
           field: 'field04',
           width: 70,
-          cellClass: 'text-center',
         },
       ],
     },
     {
       headerName: '납면',
-      cellClass: 'text-center',
       spanRows: true,
       children: [
         {
           headerName: '적용',
           field: 'field05',
           width: 70,
-          cellClass: 'text-center',
         },
         {
           headerName: '미적용',
           field: 'field06',
           width: 70,
-          cellClass: 'text-center',
         },
       ],
     },
     {
       headerName: '만기구분',
-      cellClass: 'text-center',
       children: [
         {
           headerName: '연만기',
           field: 'field07',
           width: 70,
-          cellClass: 'text-center',
         },
         {
           headerName: '세만기',
           field: 'field08',
           width: 70,
-          cellClass: 'text-center',
         },
       ],
     },
     {
       headerName: '고지유형',
-      cellClass: 'text-center',
       children: [
         {
           headerName: '표준',
           field: 'field09',
           width: 70,
-          cellClass: 'text-center',
         },
         {
           headerName: '간편',
           field: 'field10',
           width: 70,
-          cellClass: 'text-center',
         },
       ],
     },
@@ -1749,43 +1727,36 @@ export default function Ltpa040Section() {
           headerName: '사망/후유',
           field: 'field11',
           width: 70,
-          cellClass: 'text-center',
         },
         {
           headerName: '진단비',
           field: 'field12',
           width: 70,
-          cellClass: 'text-center',
         },
         {
           headerName: '입원/통원',
           field: 'field13',
           width: 70,
-          cellClass: 'text-center',
         },
         {
           headerName: '수술/치료',
           field: 'field14',
           width: 70,
-          cellClass: 'text-center',
         },
         {
           headerName: '골절/화상',
           field: 'field15',
           width: 70,
-          cellClass: 'text-center',
         },
         {
           headerName: '검사/지원',
           field: 'field16',
           width: 70,
-          cellClass: 'text-center',
         },
         {
           headerName: '운전/비용',
           field: 'field17',
           width: 70,
-          cellClass: 'text-center',
         },
       ],
     },
@@ -1796,28 +1767,24 @@ export default function Ltpa040Section() {
       headerName: '무해지',
       field: 'field01',
       width: 150,
-      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '납면',
       field: 'field02',
       width: 150,
-      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '만기구분',
       field: 'field03',
       width: 150,
-      cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '고지유형',
       field: 'field04',
       width: 150,
-      cellClass: 'text-center',
       autoHeight: true,
     },
     {
@@ -1833,7 +1800,6 @@ export default function Ltpa040Section() {
       field: 'field06',
       width: 120,
       headerClass: 'ag-header-color',
-      cellClass: 'text-center',
       autoHeight: true,
       unSortIcon: true,
     },
@@ -1842,7 +1808,6 @@ export default function Ltpa040Section() {
       field: 'field07',
       width: 120,
       headerClass: 'ag-header-color',
-      cellClass: 'text-center',
       autoHeight: true,
     },
   ];
@@ -1851,125 +1816,108 @@ export default function Ltpa040Section() {
     {
       headerName: '상품',
       field: 'field01',
-      width: 280,
+      width: 330,
       cellClass: 'text-left',
       autoHeight: true,
       unSortIcon: true,
-      tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT6>({ field: 'field01' }),
+      tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT7>({ field: 'field01' }),
     },
     {
       headerName: '종',
       field: 'field02',
-      width: 250,
+      width: 280,
       cellClass: 'text-left',
       autoHeight: true,
-      tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT6>({ field: 'field02' }),
+      tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT7>({ field: 'field02' }),
     },
     {
       headerName: '04',
-      cellClass: 'text-center',
       autoHeight: true,
       children: [
         {
           headerName: '1',
           field: 'field03',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
-
         },
         {
           headerName: '2',
           field: 'field04',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '3',
           field: 'field05',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '4',
           field: 'field06',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '5',
           field: 'field07',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '6',
           field: 'field08',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '7',
           field: 'field09',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '8',
           field: 'field10',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '9',
           field: 'field11',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '10',
           field: 'field12',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '11',
           field: 'field13',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '12',
           field: 'field14',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
         {
           headerName: '13',
           field: 'field15',
-          width: 55,
-          cellClass: 'text-center',
+          flex: 1,
           autoHeight: true,
         },
-      ]
+      ],
     },
     {
       headerName: '계',
       field: 'field16',
       flex: 1,
-      headerClass: 'ag-header-color',
-      cellClass: 'text-center',
       autoHeight: true,
       unSortIcon: true,
     },
@@ -1978,23 +1926,11 @@ export default function Ltpa040Section() {
       field: 'field17',
       width: 70,
       headerClass: 'ag-header-color',
-      cellClass: 'text-center',
       autoHeight: true,
     },
   ];
 
-  // form event
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-    type04: '',
-    type05: '',
-    type06: '',
-    type07: '',
-    type08: '',
-    type09: '',
-  });
+  const [searchInput, setSearchInput] = useState('고객군별');
 
   return (
     <>
@@ -2032,18 +1968,17 @@ export default function Ltpa040Section() {
                         <NativeSelect
                           aria-label="연령구간 선택"
                           width={120}
-                          value={form.type01}
-                          onChange={(e) => setFormField('type01', e.target.value)}
+                          value={''}
                         >
                           {[
-                            { value: 'selection', id: 'type01-1', label: '연령구간 전체' },
-                            { value: 'selection2', id: 'type01-2', label: '0~14세' },
-                            { value: 'selection3', id: 'type01-3', label: '15~24세' },
-                            { value: 'selection4', id: 'type01-4', label: '25~59세' },
-                            { value: 'selection5', id: 'type01-5', label: '60~65세' },
-                            { value: 'selection6', id: 'type01-6', label: '66세이상' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
+                            { value: '연령구간 전체',  label: '연령구간 전체' },
+                            { value: '0~14세', label: '0~14세' },
+                            { value: '15~24세', label: '15~24세' },
+                            { value: '25~59세', label: '25~59세' },
+                            { value: '60~65세', label: '60~65세' },
+                            { value: '66세이상', label: '66세이상' },
+                          ].map((option, idx) => (
+                            <NativeSelectOption key={'se' + idx} value={option.value}>
                               {option.label}
                             </NativeSelectOption>
                           ))}
@@ -2051,15 +1986,14 @@ export default function Ltpa040Section() {
                         <NativeSelect
                           aria-label="성별 선택"
                           width={120}
-                          value={form.type02}
-                          onChange={(e) => setFormField('type02', e.target.value)}
+                          value={''}
                         >
                           {[
-                            { value: 'selection', id: 'type02-1', label: '전체' },
-                            { value: 'selection2', id: 'type02-2', label: '남' },
-                            { value: 'selection3', id: 'type02-3', label: '여' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
+                            { value: '전체', label: '전체' },
+                            { value: '남', label: '남' },
+                            { value: '여', label: '여' },
+                          ].map((option, idx) => (
+                            <NativeSelectOption key={'se' + idx} value={option.value}>
                               {option.label}
                             </NativeSelectOption>
                           ))}
@@ -2067,16 +2001,15 @@ export default function Ltpa040Section() {
                         <NativeSelect
                           aria-label="직업급수 선택"
                           width={120}
-                          value={form.type03}
-                          onChange={(e) => setFormField('type03', e.target.value)}
+                          value={''}
                         >
                           {[
-                            { value: 'selection', id: 'type03-1', label: '직업급수 전체' },
-                            { value: 'selection2', id: 'type03-2', label: '1급' },
-                            { value: 'selection3', id: 'type03-3', label: '2급' },
-                            { value: 'selection4', id: 'type03-4', label: '3급' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
+                            { value: '직업급수 전체', label: '직업급수 전체' },
+                            { value: '1급', label: '1급' },
+                            { value: '2급', label: '2급' },
+                            { value: '3급', label: '3급' },
+                          ].map((option, idx) => (
+                            <NativeSelectOption key={'se' + idx} value={option.value}>
                               {option.label}
                             </NativeSelectOption>
                           ))}
@@ -2086,15 +2019,14 @@ export default function Ltpa040Section() {
                         <NativeSelect
                           aria-label="모집자 선택"
                           width={120}
-                          value={form.type04}
-                          onChange={(e) => setFormField('type04', e.target.value)}
+                          value={''}
                         >
                           {[
-                            { value: 'selection', id: 'type04-1', label: '전체' },
-                            { value: 'selection2', id: 'type04-2', label: '취급직원' },
-                            { value: 'selection3', id: 'type04-3', label: '사용인' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
+                            { value: '전체', label: '전체' },
+                            { value: '취급직원', label: '취급직원' },
+                            { value: '사용인', label: '사용인' },
+                          ].map((option, idx) => (
+                            <NativeSelectOption key={'se' + idx} value={option.value}>
                               {option.label}
                             </NativeSelectOption>
                           ))}
@@ -2175,101 +2107,143 @@ export default function Ltpa040Section() {
               <Grid className="w-full grid-rows-[auto_1fr] gap-3 h-full">
                 <Grow placement="bwe" className="w-full" variant="box-round-b">
                   <FormTable
-                    variant={'none'}
+                    variant={'head'}
                     lineTop={false}
                     caption="추천 설계조건입력 현황 조회 테이블"
-                    cols={['w-1', 'w-[10rem]', 'w-1', 'w-auto']}
+                    cols={['w-1', 'w-auto', 'w-1', 'w-auto']}
                   >
                     <FormRow>
-                      <FormCell title={'조회조건'}>
+                      <FormCell title={'조회조건'} colSpan={searchInput === '선택' ? 3 : 1}>
                         <NativeSelect
                           aria-label="조회조건 선택"
                           width={120}
-                          value={form.type05}
-                          onChange={(e) => setFormField('type05', e.target.value)}
+                          value={searchInput}
+                          onChange={(e) => setSearchInput(e.target.value)}
                         >
                           {[
-                            { value: 'selection', id: 'type05_1', label: '선택' },
-                            { value: 'selection', id: 'type05_2', label: '고객군별' },
-                            { value: 'selection2', id: 'type05_3', label: '추가옵션' },
-                            { value: 'selection3', id: 'type05_4', label: '상품별' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
+                            { value: '선택', label: '선택' },
+                            { value: '고객군별',label: '고객군별' },
+                            { value: '추가옵션',label: '추가옵션' },
+                            { value: '상품별',  label: '상품별' },
+                          ].map((option, idx) => (
+                            <NativeSelectOption key={'se' + idx} value={option.value}>
                               {option.label}
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
                       </FormCell>
-                      <FormCell title={'구분'}>
-                        <NativeSelect
-                          aria-label="고객 선택"
-                          width={120}
-                          value={form.type06}
-                          onChange={(e) => setFormField('type06', e.target.value)}
-                        >
-                          {[
-                            { value: 'selection', id: 'type06_1', label: '고객 전체' },
-                            { value: 'selection', id: 'type06_2', label: '기등록' },
-                            { value: 'selection2', id: 'type06_3', label: '미등록' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                        <NativeSelect
-                          aria-label="성별 선택"
-                          width={120}
-                          value={form.type07}
-                          onChange={(e) => setFormField('type07', e.target.value)}
-                        >
-                          {[
-                            { value: 'selection', id: 'type07_1', label: '성별' },
-                            { value: 'selection', id: 'type07_2', label: '남' },
-                            { value: 'selection2', id: 'type07_3', label: '여' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                        <NativeSelect
-                          aria-label="연령대 선택"
-                          width={120}
-                          value={form.type08}
-                          onChange={(e) => setFormField('type08', e.target.value)}
-                        >
-                          {[
-                            { value: 'selection', id: 'type08_1', label: '연령대 전체' },
-                            { value: 'selection', id: 'type08_2', label: '0~14세' },
-                            { value: 'selection2', id: 'type08_3', label: '15~24세' },
-                            { value: 'selection3', id: 'type08_4', label: '25~59세' },
-                            { value: 'selection3', id: 'type08_5', label: '60~65세' },
-                            { value: 'selection3', id: 'type08_6', label: '66세 이상' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                        <NativeSelect
-                          aria-label="직업 선택"
-                          width={120}
-                          value={form.type06}
-                          onChange={(e) => setFormField('type06', e.target.value)}
-                        >
-                          {[
-                            { value: 'selection', id: 'type06_1', label: '직업 전체' },
-                            { value: 'selection', id: 'type06_2', label: '1급' },
-                            { value: 'selection2', id: 'type06_3', label: '2급' },
-                            { value: 'selection3', id: 'type06_4', label: '3급' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.id} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                      </FormCell>
+                      {searchInput === '고객군별' && (
+                        <FormCell title={'구분'}>
+                          <NativeSelect
+                            aria-label="고객 선택"
+                            width={120}
+                            value={''}
+                            onChange={() => {}}
+                          >
+                            {[
+                              { value: '고객 전체', id: 'type06_1', label: '고객 전체' },
+                              { value: '기등록', id: 'type06_2', label: '기등록' },
+                              { value: '미등록', id: 'type06_3', label: '미등록' },
+                            ].map((option, idx) => (
+                              <NativeSelectOption key={'se' + idx} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <NativeSelect
+                            aria-label="성별 선택"
+                            width={120}
+                            value={''}
+                            onChange={() => {}}
+                          >
+                            {[
+                              { value: 'selection', id: 'type07_1', label: '성별' },
+                              { value: 'selection', id: 'type07_2', label: '남' },
+                              { value: 'selection2', id: 'type07_3', label: '여' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.id} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <NativeSelect
+                            aria-label="연령대 선택"
+                            width={120}
+                            value={''}
+                            onChange={() => {}}
+                          >
+                            {[
+                              { value: '연령대 전체', id: 'type08_1', label: '연령대 전체' },
+                              { value: '0~14세', id: 'type08_2', label: '0~14세' },
+                              { value: '15~24세', id: 'type08_3', label: '15~24세' },
+                              { value: '25~59세', id: 'type08_4', label: '25~59세' },
+                              { value: '60~65세', id: 'type08_5', label: '60~65세' },
+                              { value: '66세 이상', id: 'type08_6', label: '66세 이상' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.id} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <NativeSelect
+                            aria-label="직업 선택"
+                            width={120}
+                            value={''}
+                            onChange={() => {}}
+                          >
+                            {[
+                              { value: '직업 전체', label: '직업 전체' },
+                              { value: '1급', label: '1급' },
+                              { value: '2급', label: '2급' },
+                              { value: '3급', label: '3급' },
+                            ].map((option, idx) => (
+                              <NativeSelectOption key={'se' + idx} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                        </FormCell>
+                      )}
+                      {searchInput === '상품별' && (
+                        <FormCell title={'상품별'}>
+                          <NativeSelect
+                            aria-label="상품명 선택"
+                            width={120}
+                            value={''}
+                            onChange={() => {}}
+                          >
+                            {[
+                              { value: '상품명', label: '상품명' },
+                              { value: '상품코드', label: '상품코드' },
+                            ].map((option, idx) => (
+                              <NativeSelectOption key={'se' + idx} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <Input aria-label="상품명 입력" width={200} value={''} />
+                          <Button
+                            aria-label="피보험자 검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                          <Checkbox
+                            color="primary"
+                            errorMsg="선택은 필수입니다."
+                            errorPs="bl"
+                            onCheckedChange={() => {}}
+                            size="lg"
+                            variant="default"
+                          >
+                            총 포함
+                          </Checkbox>
+                        </FormCell>
+                      )}
+
                     </FormRow>
                     <FormRow>
                       <FormCell title={'조회기간'}>
@@ -2319,6 +2293,7 @@ export default function Ltpa040Section() {
                         defaultColDef={{
                           sortable: true,
                           resizable: true,
+                          cellClass: 'text-center',
                         }}
                         domLayout="normal"
                       />
@@ -2337,6 +2312,7 @@ export default function Ltpa040Section() {
                         defaultColDef={{
                           sortable: true,
                           resizable: true,
+                          cellClass: 'text-center',
                         }}
                         domLayout="normal"
                       />
@@ -2355,10 +2331,9 @@ export default function Ltpa040Section() {
                         defaultColDef={{
                           sortable: true,
                           resizable: true,
-                          autoHeaderHeight: true,
+                          cellClass: 'text-center flex justify-center tems-center',
                         }}
                         domLayout="normal"
-                        headerHeight={29}
                       />
                     </div>
                   </TableFoldBody>
@@ -2375,7 +2350,7 @@ export default function Ltpa040Section() {
                         defaultColDef={{
                           sortable: true,
                           resizable: false,
-                          autoHeaderHeight: true,
+                          cellClass: 'text-center',
                         }}
                         domLayout="normal"
                       />
@@ -2394,10 +2369,9 @@ export default function Ltpa040Section() {
                         defaultColDef={{
                           sortable: true,
                           resizable: true,
-                          autoHeaderHeight: true,
+                          cellClass: 'text-center',
                         }}
                         domLayout="normal"
-                        headerHeight={29}
                       />
                     </div>
                   </TableFoldBody>
@@ -2413,8 +2387,8 @@ export default function Ltpa040Section() {
                         enableCellSpan={true}
                         defaultColDef={{
                           sortable: true,
-                          resizable: false,
-                          autoHeaderHeight: true,
+                          resizable: true,
+                          cellClass: 'text-center',
                         }}
                         domLayout="normal"
                         tooltipShowMode="whenTruncated"
@@ -2434,8 +2408,8 @@ export default function Ltpa040Section() {
                         enableCellSpan={true}
                         defaultColDef={{
                           sortable: true,
-                          resizable: false,
-                          autoHeaderHeight: true,
+                          resizable: true,
+                          cellClass: 'text-center',
                         }}
                         domLayout="normal"
                         tooltipShowMode="whenTruncated"

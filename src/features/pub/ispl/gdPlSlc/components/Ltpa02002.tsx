@@ -6,7 +6,6 @@
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import AIChatBot from '@features/AIChatBot';
 import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, AiIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
@@ -18,6 +17,7 @@ import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import Ltpa120 from '@/features/pub/shared/components/popups/Ltpa120';
 
 import '@/shared/lib/agGridPub';
 
@@ -953,7 +953,7 @@ export function Ltpa02002({
               설계생성({comparedPlanKeys.length})
               <ArrowNext size={16} />
             </Button>
-            <AIChatBot />
+            <Ltpa120 />
           </Grow>
         </Grid>
       )}

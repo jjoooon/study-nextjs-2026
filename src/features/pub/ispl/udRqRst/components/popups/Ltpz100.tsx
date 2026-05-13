@@ -4,10 +4,8 @@
 'use client';
 
 import { AgGridEmptyComponent } from '@aggrid';
-import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { Grow, Typo, Gcol } from '@atoms';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
-import { TableFold, TableFoldHead, TableFoldBody } from '@/shared/components/common/TableFold';
 import {
   Dialog,
   DialogClose,
@@ -18,9 +16,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { TableFold, TableFoldHead, TableFoldBody } from '@/shared/components/common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -45,32 +44,15 @@ const DummyData: DummyDataType[] = [
     id: 2,
     field01: '2',
     field02: '2026-03-24 10:35',
-    field03: '백경희',
-    field04: '보완요청',
-    field05: '보완요청',
-    field06: '',
-    field06Items: [
-      { id: 'a', checked: true, label: '고지', disabled: true },
-      { id: 'b', checked: true, label: '제한담보', disabled: true },
-      { id: 'c', checked: true, label: '고지유형변경', disabled: true },
-      { id: 'd', checked: true, label: '서류', disabled: true },
-      { id: 'e', checked: true, label: '검토불가', disabled: true },
-      { id: 'f', checked: true, label: '기타', disabled: true },
-    ],
-    field07: '보기',
   },
   {
     id: 3,
     field01: '3',
     field02: '2026-03-24 10:35',
-    
   },
-  
 ];
 
-
 const Ltpz100 = () => {
-
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   // AgGrid Column
@@ -87,7 +69,6 @@ const Ltpz100 = () => {
       width: 120,
       cellClass: 'text-center',
     },
-    
   ];
 
   return (

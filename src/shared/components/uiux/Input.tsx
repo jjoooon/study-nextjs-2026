@@ -104,7 +104,12 @@ function Input({
   if (commaAmount) {
     displayValue = isFocused || forceFocused ? rawValue : formatAmount(rawValue);
   } else {
-    displayValue = format(rawValue, formatter);
+    if (formatter) {
+      displayValue = format(rawValue, formatter);
+    } else {
+      displayValue = rawValue;
+    }
+    
   }
 
   const resolvedWidth =

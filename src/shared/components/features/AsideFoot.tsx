@@ -9,7 +9,7 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
-import AIChatBot from './AIChatBot';
+import Ltpa120 from '@/features/pub/shared/components/popups/Ltpa120';
 
 type AsideFootDataTotal = {
   insGen: number | boolean;
@@ -113,7 +113,7 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
           </PopoverContent>
         </Popover>
 
-        <AIChatBot />
+        <Ltpa120 />
       </Grow>
     </Gcol>
   );
