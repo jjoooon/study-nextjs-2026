@@ -2614,7 +2614,7 @@
     "dep2": "AI",
     "dep3": "AI",
     "id": "LTPA120",
-    "path": "",
+    "path": "shared/components/popups",
     "dep4": "AI Agent(AI Chat)",
     "file": "공통화면",
     "plan": "이채우",

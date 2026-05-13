@@ -1,0 +1,14 @@
+{
+  "TypeScript file header": {
+    "prefix": "tsfile",
+    "scope": "typescript",
+    "body": ["/**", " * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.", " */", ""],
+    "description": "Insert a standard TypeScript file header comment",
+  },
+  "TypeScript React file header": {
+    "prefix": "tsxfile",
+    "scope": "typescriptreact",
+    "body": ["/**", " * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.", " */", ""],
+    "description": "Insert a standard TypeScript React file header comment",
+  },
+}
