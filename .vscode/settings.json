@@ -5,6 +5,8 @@
   // 전반적인 저장 시 포매팅 활성화
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
+  "editor.snippetSuggestions": "top",
+  "editor.tabCompletion": "on",
   // ESLint 관련 설정
   "eslint.enable": true,
   "eslint.validate": [
@@ -27,10 +29,14 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.snippetSuggestions": "top",
+    "editor.tabCompletion": "on"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.snippetSuggestions": "top",
+    "editor.tabCompletion": "on"
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
