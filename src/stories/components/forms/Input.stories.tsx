@@ -51,7 +51,8 @@ import { Input } from '@uiux/Input';
   variant={'default' | 'ghost'}
   size={'md' | 'sm'}
   width={'full' | 'auto' | 'max' | 'min' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '??rem'}
-  
+ 
+  formatter={'######-########'}
   required={false | true}
   readOnly={false | true}
   clear={false | true}
@@ -254,6 +255,10 @@ import { Input } from '@uiux/Input';
       table: { category: '설정 props' },
        control: { type: 'text' },
     },
+    formatter: {
+      table: { category: '설정 props' },
+       control: { type: 'text' },
+    },
      commaAmount: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
@@ -281,7 +286,6 @@ import { Input } from '@uiux/Input';
     // 숨기고 싶은 prop 예시
     value: {table: { disable: true },},
     onChange: {table: { disable: true },},
-    formatter: { table: { disable: true },},
   },
   args: {
     variant: 'default',
