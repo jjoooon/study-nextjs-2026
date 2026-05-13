@@ -8,7 +8,7 @@ import { Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon, ResetIcon, Ai2Icon, ArrowNext } from '@icons';
+import { SearchIcon, ResetIcon, AiIcon, ArrowNext } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -637,7 +637,7 @@ export function Ltpa02001() {
 
       <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
         <Button variant={'outlined'} color={'gray'} size={'xl'}>
-          <Ai2Icon />
+          <AiIcon size={24} className="" />
           추천설계
         </Button>
         <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
