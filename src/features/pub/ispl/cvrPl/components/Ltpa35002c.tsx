@@ -15,7 +15,7 @@ import { KeyValueList } from '@common/KeyValueList';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { createExpiryCellRenderer, productNameCellRenderer, searchButtonRenderer } from '@grid/CellRenderers';
-import { ProductNameHeader } from '@grid/HeadRenderers';
+import { ProductNameHeader, HeaderWithUnit } from '@grid/HeadRenderers';
 import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
@@ -105,11 +105,12 @@ export function Ltpa35002c() {
         cellClass: 'text-left',
       },
       {
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            가입금액<span className="text-[1.1rem]">(만원)</span>
-          </Grow>
-        ),
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '가입금액',
+          unit: '(만원)',
+        },
+        sortable: true,
         field: 'insuredAmount',
         width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
@@ -144,11 +145,12 @@ export function Ltpa35002c() {
         },
       },
       {
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            보험료<span className="text-[1.1rem]">(원)</span>
-          </Grow>
-        ),
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '보험료',
+          unit: '(원)',
+        },
+        sortable: true,
         field: 'field3',
         width: attributeColumnWidth[10],
         cellClass: 'text-right [&_input]:text-right',
@@ -270,11 +272,8 @@ export function Ltpa35002c() {
         resizable: false,
       },
       {
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            가입금액<span className="text-[1.1rem]">(만원)</span>
-          </Grow>
-        ),
+        headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" col={true} />,
+        sortable: true,
         field: 'insuredAmount',
         width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
@@ -348,11 +347,12 @@ export function Ltpa35002c() {
         cellRenderer: getExpiryRenderer('left'),
       },
       {
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            보험료<span className="text-[1.1rem]">(원)</span>
-          </Grow>
-        ),
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '보험료',
+          unit: '(원)',
+        },
+        sortable: true,
         field: 'field7',
         width: attributeColumnWidth[7],
         cellClass: 'text-right',

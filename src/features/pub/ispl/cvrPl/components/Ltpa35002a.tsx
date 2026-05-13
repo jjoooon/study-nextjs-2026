@@ -29,7 +29,7 @@ import {
   searchButtonRenderer,
   uwIconRenderer,
 } from '@grid/CellRenderers';
-import { ProductNameHeader } from '@grid/HeadRenderers';
+import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
 import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
@@ -192,11 +192,12 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         resizable: false,
       },
       {
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            가입금액<span className="text-[1.1rem]">(만원)</span>
-          </Grow>
-        ),
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '가입금액',
+          unit: '(만원)',
+        },
+        sortable: true,
         field: 'insuredAmount',
         width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
@@ -235,6 +236,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       },
       {
         headerName: '가능금액',
+        // unSortIcon: true,
         field: 'field4',
         width: attributeColumnWidth[7],
         cellClass: 'text-right',
@@ -278,23 +280,25 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         cellRenderer: getExpiryRenderer('left'),
       },
       {
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            보험료<span className="text-[1.1rem]">(원)</span>
-          </Grow>
-        ),
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '보험료',
+          unit: '(원)',
+        },
+        sortable: true,
         field: 'field7',
         width: attributeColumnWidth[7],
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
       },
       {
-        headerName: '예상UW',
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            <span className="text-[1.1rem]">예상</span>UW
-          </Grow>
-        ),
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: 'UW',
+          unit: '예상',
+          className: 'flex-row-reverse',
+        },
+        sortable: true,
         field: 'field8',
         width: attributeColumnWidth[6],
         cellClass: 'text-center px-0! tracking-tighter',

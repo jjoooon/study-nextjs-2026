@@ -1,12 +1,101 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Divider, Grow } from '@atoms';
+import { Divider, Grow, Gcol } from '@atoms';
 import { InputHash } from '@common/InputHash';
-import { ResetIcon, SearchIcon } from '@icons';
+import { ResetIcon, SearchIcon, SortArrowIcon, SortArrowDefaultIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+import type { IHeaderParams, SortDirection } from 'ag-grid-enterprise';
 import React from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
+
+interface HeaderWithUnitProps {
+  label: string;
+  unit: string;
+  className?: string;
+  unitClassName?: string;
+  gap?: number;
+  col?: boolean;
+  view?: boolean;
+  column?: IHeaderParams['column'];
+  enableSorting?: IHeaderParams['enableSorting'];
+  progressSort?: IHeaderParams['progressSort'];
+}
+
+export const HeaderWithUnit = React.memo(function HeaderWithUnit({
+  label,
+  unit,
+  col = false,
+  className,
+  unitClassName = 'text-[1.1rem]',
+  gap = 0,
+  column,
+  enableSorting,
+  view = false,
+  progressSort,
+}: HeaderWithUnitProps) {
+  const isSortable = !!(column && enableSorting && progressSort);
+  const [sort, setSort] = React.useState<SortDirection | undefined>(column?.getSort());
+
+  React.useEffect(() => {
+    if (!column) return;
+
+    const handleSortChanged = () => {
+      setSort(column.getSort());
+    };
+
+    column.addEventListener('sortChanged', handleSortChanged);
+    return () => {
+      column.removeEventListener('sortChanged', handleSortChanged);
+    };
+  }, [column]);
+
+  const handleSort = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (!isSortable) return;
+    if (!progressSort) return;
+    progressSort(event.shiftKey);
+  };
+
+  const content = col ? (
+    <Gcol className={cn('w-full leading-[1.4rem]', className)} placement={'cc'} gap={gap}>
+      {label}
+      <span className={cn(unitClassName)}>{unit}</span>
+    </Gcol>
+  ) : (
+    <Grow className={cn('w-full', className)} placement={'cc'} gap={gap}>
+      {label}
+      <span className={cn(unitClassName)}>{unit}</span>
+    </Grow>
+  );
+
+  if (!isSortable) {
+    return content;
+  }
+
+  return (
+    <button
+      type="button"
+      className="h-full w-full flex justify-center items-center cursor-pointer select-none"
+      onClick={handleSort}
+      aria-label={`${label} 정렬`}
+      aria-disabled={!enableSorting}
+    >
+      <Grow placement={'cc'} gap={0.4}>
+        {content}
+        <span className="text-[1rem] leading-none text-[var(--color-gray-60)]">
+          {sort === 'asc' ? (
+            <SortArrowIcon size={12} color="var(--color-gray-100)" className="rotate-180 shrink-0" />
+          ) : sort === 'desc' ? (
+            <SortArrowIcon size={12} color="var(--color-gray-100)" className="shrink-0" />
+          ) : (
+            view && <SortArrowDefaultIcon size={12} color="var(--color-gray-100)" className="shrink-0" />
+          )}
+        </span>
+      </Grow>
+    </button>
+  );
+});
 
 interface ProductNameHeaderProps {
   coverageName: string;

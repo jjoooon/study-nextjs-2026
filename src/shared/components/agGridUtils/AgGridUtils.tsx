@@ -1039,7 +1039,7 @@ export const GridHeaderCheckbox = (props: GridHeaderCheckboxParams) => {
     <Grow className="ag-header-cell-label">
       <Checkbox
         color="primary"
-        variant="noneText"
+        variant={display ? 'default' : 'noneText'}
         checked={checked}
         size={'md'}
         onClick={(e) => e.stopPropagation()}
@@ -1047,8 +1047,9 @@ export const GridHeaderCheckbox = (props: GridHeaderCheckboxParams) => {
           props.toggleAll(value === true);
           props.api.refreshHeader();
         }}
-      />
-      <span className="ag-header-cell-text">{display}</span>
+      >
+        {display && <span className="ag-header-cell-text">{display}</span>}
+      </Checkbox>
     </Grow>
   );
 };

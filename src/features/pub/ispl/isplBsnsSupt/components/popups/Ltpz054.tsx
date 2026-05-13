@@ -3,13 +3,13 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, ResetIcon, SearchIcon } from '@icons';
+import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import '@/shared/lib/agGridPub';
 import {
   Dialog,
   DialogClose,
@@ -21,196 +21,115 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
-import type { ColDef } from 'ag-grid-enterprise';
+import type { ColDef, CellDoubleClickedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+
+import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
+import { Checkbox } from '@/shared/components/uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 type DummyDataType = {
   id: number;
-  accName: string;
-  accRisk: string;
-  accDesignAmt: string;
-  accTotalAmt: string;
-  upperAccName: string;
-  upperAccRisk: string;
-  upperDesignAmt: string;
-  upperTotalAmt: string;
+  field1: string | number;
+  field2: string | number;
+  field3: string | number;
+  field4: string | number;
+  field5: string | number;
+  field6: string | number;
+  field7: string | number;
 };
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    accName: '상해사망후유',
-    accRisk: '일반상해사망일반상해사망일반상해사망일반상해사망',
-    accDesignAmt: '1000000',
-    accTotalAmt: '1000000',
-    upperAccName: '상해사망후유',
-    upperAccRisk: '일반상해사망일반상해사망일반상해사망일반상해사망일반상해사망',
-    upperDesignAmt: '1000000',
-    upperTotalAmt: '1000000',
+    field1: '청약서(계약자, 주피용)',
+    field2: 1,
+    field3: 1,
+    field4: '김*화',
+    field5: '2026-04-21 14:41',
+    field6: '박한화(9091999)',
+    field7: '',
   },
   {
     id: 2,
-    accName: '상해사망후유',
-    accRisk: '일반상해사망후유장애',
-    accDesignAmt: '1000000',
-    accTotalAmt: '1000000',
-    upperAccName: '상해사망후유',
-    upperAccRisk: '일반상해사망후유장애',
-    upperDesignAmt: '1000000',
-    upperTotalAmt: '1000000',
+    field1: '청약서(계약자, 주피용)',
+    field2: 1,
+    field3: 1,
+    field4: '김*화',
+    field5: '2026-04-21 14:41',
+    field6: '박한화(9091999)',
+    field7: '',
   },
   {
     id: 3,
-    accName: '상해사망후유',
-    accRisk: '교통상해사망',
-    accDesignAmt: '1000000',
-    accTotalAmt: '1000000',
-    upperAccName: '상해사망후유',
-    upperAccRisk: '교통상해사망',
-    upperDesignAmt: '1000000',
-    upperTotalAmt: '1000000',
-  },
-  {
-    id: 4,
-    accName: '특정상해',
-    accRisk: '통합상해진단비(경증)(연1회한)',
-    accDesignAmt: '1000000',
-    accTotalAmt: '1000000',
-    upperAccName: '특정상해',
-    upperAccRisk: '통합상해진단비(경증)(연1회한)',
-    upperDesignAmt: '1000000',
-    upperTotalAmt: '1000000',
-  },
-  {
-    id: 5,
-    accName: '특정상해',
-    accRisk: '통합상해진단비(중증)(연1회한)',
-    accDesignAmt: '1000000',
-    accTotalAmt: '1000000',
-    upperAccName: '특정상해',
-    upperAccRisk: '통합상해진단비(중증)(연1회한)',
-    upperDesignAmt: '1000000',
-    upperTotalAmt: '1000000',
-  },
-  {
-    id: 6,
-    accName: '특정상해',
-    accRisk: '골절진단+통합상해진단(중등증)(합)',
-    accDesignAmt: '1000000',
-    accTotalAmt: '1000000',
-    upperAccName: '특정상해',
-    upperAccRisk: '골절진단+통합상해진단(중등증)(합)',
-    upperDesignAmt: '1000000',
-    upperTotalAmt: '1000000',
+    field1: '청약서(계약자, 주피용)',
+    field2: 1,
+    field3: 1,
+    field4: '김*화',
+    field5: '2026-04-21 14:41',
+    field6: '박한화(9091999)',
+    field7: '',
   },
 ];
 
 const Ltpz054 = () => {
+  const handleCellDoubleClicked = (event: CellDoubleClickedEvent<DummyDataType>) => {
+    if (event.column?.getColId() === 'field1') {
+      alert('문서명 더블클릭:');
+    }
+  };
+
   const columnDefs: ColDef<DummyDataType>[] = [
     {
-      headerName: '상위누적명',
-      field: 'accName',
-      flex: 1,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      spanRows: true,
-      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
+      headerName: '순번',
+      field: 'id',
+      width: 60,
+      cellClass: `text-center `,
     },
     {
-      headerName: '누적위험명',
-      field: 'accRisk',
-      width: 250,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
+      headerName: '문서명',
+      field: 'field1',
+      flex: 1,
+      cellClass: `text-left`,
+    },
+    {
+      headerName: '출력순번',
+      field: 'field2',
+      width: 60,
+      cellClass: `text-center `,
+    },
+    {
+      headerName: '발행순번',
+      field: 'field3',
+      width: 60,
+      cellClass: `text-center `,
+    },
+    {
+      headerName: '고객명',
+      field: 'field4',
+      width: 80,
+      cellClass: `text-center `,
+    },
+    {
+      headerName: '스캔일시',
+      field: 'field5',
+      width: 120,
+      cellClass: `text-center bg-[#E9FEF2]`,
+    },
+    {
+      headerName: '스캔처리자',
+      field: 'field6',
+      width: 120,
       cellClass: `text-center`,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'accRisk' }),
     },
     {
-      headerName: '설계별 누적금액',
-      field: 'accDesignAmt',
-      flex: 1,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-right`,
-      valueParser: (params) => Number(params.newValue) || 0,
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '전체누적금액',
-      field: 'accTotalAmt',
-      flex: 1,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-right`,
-      valueParser: (params) => Number(params.newValue) || 0,
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '상위누적명',
-      field: 'upperAccName',
-      flex: 1,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      spanRows: true,
-      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
-    },
-    {
-      headerName: '누적위험명',
-      field: 'upperAccRisk',
-      width: 250,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
+      headerName: '비고',
+      field: 'field7',
+      width: 120,
       cellClass: `text-center`,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'upperAccRisk' }),
-    },
-    {
-      headerName: '설계별 누적금액',
-      field: 'upperDesignAmt',
-      flex: 1,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-right`,
-      valueParser: (params) => Number(params.newValue) || 0,
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '전체누적금액',
-      field: 'upperTotalAmt',
-      flex: 1,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-right`,
-      valueParser: (params) => Number(params.newValue) || 0,
-      valueFormatter: numberValueFormatter,
     },
   ];
-
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-  });
 
   return (
     <Dialog open>
@@ -218,66 +137,42 @@ const Ltpz054 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              피보험자별누적조회
+              신계약 등록문서 목록조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA160)
+              (LTPZ054)
             </Typo>
           </DialogTitle>
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          {/* 조회 */}
           <Grow placement="bwc" className="w-full" variant={'box-round'} gap={6}>
-            <FormTable variant={'none'} lineTop={false} cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
+            <FormTable className="flex" variant={'none'} lineTop={false} cols={['w-1', 'w-1', 'w-1', 'w-auto']}>
               <FormRow>
-                <FormCell title={'조회구분'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
-                  <NativeSelect
-                    aria-label="항목 선택"
-                    value={form.type01}
-                    required
-                    onChange={(e) => setFormField('type01', e.target.value)}
-                  >
-                    {[
-                      { value: 'selection', id: 'type01-1', label: '설계번호' },
-                      { value: 'selection2', id: 'type01-2', label: '증권번호' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                  <Input
-                    width={130}
-                    value={form.type02 || 'LA260204310632'}
-                    onChange={(e) => setFormField('type02', e.target.value)}
-                  />
+                <FormCell title={'가입설계번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
+                  <Input width={130} value={'LA260204310632'} />
+                  -
+                  <Input width={30} value={'1'} readOnly />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
-                  <Input value={'한화 더 건강한 1040종합한화 더 건강한 1040종합'} readOnly />
                 </FormCell>
-                <FormCell title={'피보험자정보'}>
-                  <NativeSelect
-                    aria-label="항목 선택"
-                    value={form.type03}
-                    onChange={(e) => setFormField('type03', e.target.value)}
-                    required
-                  >
-                    {[
-                      { value: 'selection', id: 'type03-1', label: '김한화(890823-1******)' },
-                      { value: 'selection2', id: 'type03-2', label: '박한화(890823-1******)' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
+                <FormCell title={'상품명'}>
+                  <Input width={'full'} value={'무배당 1등 엄마의 똑똑한 자녀보험 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
-
             <Grow>
+              <Checkbox
+                color="primary"
+                errorMsg="선택은 필수입니다."
+                errorPs="bl"
+                onCheckedChange={() => {}}
+                size="lg"
+                variant="default"
+              >
+                <span className="flex w-[3rem]">새창</span>
+              </Checkbox>
               <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
                 조회
               </Button>
@@ -295,35 +190,9 @@ const Ltpz054 = () => {
           </Grow>
 
           {/* 조회 정보 */}
-          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
+          <Grid placement="ss" className="w-full grid-rows-[1fr_1fr]" gap={5}>
             <TableFold>
-              <TableFoldHead title="피보험자의 위험정보(고객정보)">
-                <Grow>
-                  <Button color="success" variant="outlined">
-                    엑셀내보내기
-                    <FileExportIcon />
-                  </Button>
-                </Grow>
-              </TableFoldHead>
-              <TableFoldBody>
-                <Grow className="w-full">
-                  <FormTable
-                    caption="피보험자의 위험정보 테이블"
-                    cols={['w-[5rem]', 'flex-1', 'w-[8rem]', 'flex-1', 'w-[5rem]', 'flex-1', 'w-[5rem]', 'flex-1']}
-                  >
-                    <FormRow>
-                      <FormCell title={'직업'}>전기공학 개발자 및 연구원</FormCell>
-                      <FormCell title={'급수/등급'}>2/B</FormCell>
-                      <FormCell title={'회사'}>전기공학 개발자 및 연구원</FormCell>
-                      <FormCell title={'직무'}>전기공학 개발자 및 연구원</FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Grow>
-              </TableFoldBody>
-            </TableFold>
-
-            <TableFold>
-              <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
+              <TableFoldHead title="당사 스캔대상 발급물"></TableFoldHead>
               <TableFoldBody>
                 <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
                   <div className="ag-theme-alpine min-h-[18.4rem]">
@@ -333,24 +202,46 @@ const Ltpz054 = () => {
                       rowData={DummyData}
                       columnDefs={columnDefs}
                       defaultColDef={{ sortable: false }}
-                      enableCellSpan={true}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
+                      onCellDoubleClicked={handleCellDoubleClicked}
                     />
                   </div>
-                  <Gcol className="w-full">
-                    <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-                      <Typo variant={'body-sm'} icon={'warning'}>
-                        <b>주의사항 노출 영역</b>
-                      </Typo>
-                    </Gcol>
-                    <Gcol placement={'ss'} className="w-full">
-                      <Typo variant={'body-sm'} icon={'detail'}>
-                        자세한 합산 누적인수기준은 [스마트가이드 - 인수지침 - 장기보험 - 인보험 - 3. 담보별
-                        인수기준]에서 확인해주시면 됩니다.
-                      </Typo>
-                    </Gcol>
-                  </Gcol>
+                </Grid>
+              </TableFoldBody>
+            </TableFold>
+            <TableFold>
+              <TableFoldHead title="당사 스캔대상 비발급물">
+                <Grow>
+                  <Button color="primary" variant="outlined">
+                    이미지불러오기
+                  </Button>
+                </Grow>
+              </TableFoldHead>
+              <TableFoldBody>
+                <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={DummyData}
+                      columnDefs={columnDefs}
+                      defaultColDef={{ sortable: false }}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      onCellDoubleClicked={handleCellDoubleClicked}
+                    />
+                  </div>
                 </Grid>
               </TableFoldBody>
             </TableFold>
@@ -361,10 +252,24 @@ const Ltpz054 = () => {
           <DialogFooterArea>
             <Grow>
               <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                지침확인결과
+                이미지조회
+              </Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                자필비교
+              </Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                알림톡발송(홈페이지 문서 등록)
               </Button>
             </Grow>
             <Grow>
+              <Input onChange={() => {}} size="lg" value="177777 133777777" />
+              <Input onChange={() => {}} size="lg" value="" />
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                수정
+              </Button>
+              <Button variant={'contained'} size={'xl'}>
+                삭제
+              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기

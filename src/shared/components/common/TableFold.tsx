@@ -62,7 +62,7 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
           {title}
         </Typo>
       </div>
-      <Grow>{children}</Grow>
+      {context?.open && <Grow>{children}</Grow>}
     </Grow>
   );
 };

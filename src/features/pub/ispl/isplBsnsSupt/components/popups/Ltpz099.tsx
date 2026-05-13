@@ -328,7 +328,9 @@ export const Ltpz099 = () => {
                       </colgroup>
                       <TableHeader>
                         <TableRow>
-                          <TableHead colSpan={4}  className="bg-(--color-primary-15)">추천설계</TableHead>
+                          <TableHead colSpan={4} className="bg-(--color-primary-15)">
+                            추천설계
+                          </TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -371,7 +373,9 @@ export const Ltpz099 = () => {
                       </colgroup>
                       <TableHeader>
                         <TableRow>
-                          <TableHead colSpan={4} className="bg-(--color-primary-15)">진행 설계</TableHead>
+                          <TableHead colSpan={4} className="bg-(--color-primary-15)">
+                            진행 설계
+                          </TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>

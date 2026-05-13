@@ -30,7 +30,7 @@ import {
   searchButtonRenderer,
   uwIconRenderer,
 } from '@grid/CellRenderers';
-import { ProductNameHeader } from '@grid/HeadRenderers';
+import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
 import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 
@@ -192,11 +192,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         resizable: false,
       },
       {
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            가입금액<span className="text-[1.1rem]">(만원)</span>
-          </Grow>
-        ),
+        headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" col={true} />,
         field: 'insuredAmount',
         width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
@@ -234,11 +230,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
       },
       {
-        headerGroupComponent: () => (
-          <Grow className="w-full text-[1.3rem]" placement={'cc'} gap={0}>
-            보험료<span className="text-[1.1rem]">(원)</span>
-          </Grow>
-        ),
+        headerGroupComponent: () => <HeaderWithUnit label="보험" unit="(만원)" />,
         children: [
           {
             headerName: '출생전',
@@ -334,12 +326,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         ],
       },
       {
-        headerName: '예상UW',
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            <span className="text-[1.1rem]">예상</span>UW
-          </Grow>
-        ),
+        headerComponent: () => <HeaderWithUnit label="UW" unit="예상" className="flex-row-reverse" />,
         field: 'field8',
         width: attributeColumnWidth[6],
         cellClass: 'text-center px-0! tracking-tighter',
