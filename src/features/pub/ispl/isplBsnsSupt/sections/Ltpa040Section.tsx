@@ -10,6 +10,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { HeaderWithUnit } from '@grid/HeadRenderers';
 import { useFormFields } from '@hooks/useFormFields';
 import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -24,7 +25,6 @@ import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
-import { HeaderWithUnit } from '@/shared/components/grid/HeadRenderers';
 
 type Ltp040TabType = { name: string; value: string; label: string };
 
@@ -1876,7 +1876,6 @@ export default function Ltpa040Section() {
           width: 55,
           cellClass: 'text-center',
           autoHeight: true,
-
         },
         {
           headerName: '2',
@@ -1962,7 +1961,7 @@ export default function Ltpa040Section() {
           cellClass: 'text-center',
           autoHeight: true,
         },
-      ]
+      ],
     },
     {
       headerName: '계',
