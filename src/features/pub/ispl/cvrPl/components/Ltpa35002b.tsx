@@ -230,7 +230,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
       },
       {
-        headerComponent: () => <HeaderWithUnit label="보험" unit="(만원)" />,
+        headerGroupComponent: () => <HeaderWithUnit label="보험" unit="(만원)" />,
         children: [
           {
             headerName: '출생전',
@@ -326,12 +326,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         ],
       },
       {
-        headerName: '예상UW',
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            <span className="text-[1.1rem]">예상</span>UW
-          </Grow>
-        ),
+        headerComponent: () => <HeaderWithUnit label="UW" unit="예상" className="flex-row-reverse" />,
         field: 'field8',
         width: attributeColumnWidth[6],
         cellClass: 'text-center px-0! tracking-tighter',

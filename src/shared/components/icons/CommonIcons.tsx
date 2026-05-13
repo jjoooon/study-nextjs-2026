@@ -2034,3 +2034,33 @@ export const StageIcon: React.FC<IconProps> = ({ className = '', size = 16, colo
     />
   </svg>
 );
+export const SortArrowIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 24 24"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M11.9995 2.34216C12.7276 2.34232 13.3176 2.93215 13.3176 3.6603V13.2501H18.2776C19.1015 13.2501 19.5423 14.221 18.9999 14.841L12.7217 22.0147C12.3397 22.4513 11.6604 22.4513 11.2784 22.0147L5.00024 14.841C4.45769 14.221 4.89861 13.2501 5.72253 13.2501H10.6813V3.6603C10.6813 2.93218 11.2714 2.34237 11.9995 2.34216Z"
+      fill={color}
+    />
+  </svg>
+);
+export const SortArrowDefaultIcon: React.FC<IconProps> = ({ className = '', size = 24, color = 'currentColor' }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={toRem(size)}
+    height={toRem(size)}
+    viewBox="0 0 24 24"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M11.3981 2.6878C11.7169 2.32385 12.2836 2.32374 12.6022 2.6878L17.8395 8.67315C18.2919 9.19043 17.9242 10.0003 17.237 10.0003H13.0993V14.0003H17.237C17.9241 14.0003 18.2915 14.8092 17.8395 15.3265L12.6022 21.3118C12.2835 21.6761 11.7168 21.6761 11.3981 21.3118L6.16081 15.3265C5.70859 14.8092 6.07615 14.0003 6.76335 14.0003H10.9001V10.0003H6.76335C6.07603 10.0003 5.70821 9.19042 6.16081 8.67315L11.3981 2.6878Z"
+      fill={color}
+    />
+  </svg>
+);

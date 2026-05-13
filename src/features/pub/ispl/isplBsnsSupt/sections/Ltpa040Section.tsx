@@ -597,7 +597,7 @@ const Ltpa040DummyDataT3: Ltpa040DummyDataRowT3[] = [
     field13: '00',
     field14: '00',
   },
-]
+];
 
 const Ltpa040DummyDataT4: Ltpa040DummyDataRowT4[] = [
   {
@@ -951,7 +951,7 @@ const Ltpa040DummyDataT5: Ltpa040DummyDataRowT5[] = [
     field16: '00',
     field17: '00',
   },
-]
+];
 
 const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
   {
@@ -1074,7 +1074,7 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field06: '00',
     field07: '00',
   },
-]
+];
 export default function Ltpa040Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
@@ -1303,7 +1303,7 @@ export default function Ltpa040Section() {
     {
       headerName: '종',
       field: 'field02',
-      flex: 1, 
+      flex: 1,
       cellClass: 'text-left',
       autoHeight: true,
       sortable: false,
@@ -1327,7 +1327,7 @@ export default function Ltpa040Section() {
     },
   ];
 
-  const columnDefsT3: (ColDef<Ltpa040DummyDataRowT3> | ColGroupDef<Ltpa040DummyDataRowT3>)[] = [ 
+  const columnDefsT3: (ColDef<Ltpa040DummyDataRowT3> | ColGroupDef<Ltpa040DummyDataRowT3>)[] = [
     {
       headerName: '일자',
       field: 'field01',
@@ -1439,18 +1439,17 @@ export default function Ltpa040Section() {
           width: 85,
           cellClass: 'text-center flex! items-center! justify-center!',
         },
-        
-      ]
-    }
+      ],
+    },
   ];
 
-  const columnDefsT4: (ColDef<Ltpa040DummyDataRowT4>)[] = [
+  const columnDefsT4: ColDef<Ltpa040DummyDataRowT4>[] = [
     {
       headerName: '고객구분',
       field: 'field01',
-      flex: 1, 
+      flex: 1,
       cellClass: 'text-center',
-      autoHeight: true, 
+      autoHeight: true,
       suppressMovable: true,
       spanRows: true,
     },
@@ -1493,7 +1492,7 @@ export default function Ltpa040Section() {
     },
   ];
 
-  const columnDefsT5: (ColDef<Ltpa040DummyDataRowT5> | ColGroupDef<Ltpa040DummyDataRowT5>)[] = [ 
+  const columnDefsT5: (ColDef<Ltpa040DummyDataRowT5> | ColGroupDef<Ltpa040DummyDataRowT5>)[] = [
     {
       headerName: '일자',
       field: 'field01',
@@ -1639,13 +1638,13 @@ export default function Ltpa040Section() {
     },
   ];
 
-  const columnDefsT6: (ColDef<Ltpa040DummyDataRowT6>)[] = [
+  const columnDefsT6: ColDef<Ltpa040DummyDataRowT6>[] = [
     {
       headerName: '무해지',
       field: 'field01',
       width: 150,
       cellClass: 'text-center',
-      autoHeight: true, 
+      autoHeight: true,
     },
     {
       headerName: '납면',
@@ -1671,7 +1670,7 @@ export default function Ltpa040Section() {
     {
       headerName: '담보군',
       field: 'field05',
-      flex:1,
+      flex: 1,
       cellClass: 'text-left',
       autoHeight: true,
       tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT6>({ field: 'field05' }),
@@ -1884,7 +1883,7 @@ export default function Ltpa040Section() {
             )}
             {active === 'tab2' && (
               <Grid className="w-full grid-rows-[auto_1fr] gap-3 h-full">
-                <Grow placement="bwe" className="w-full" variant="box-round-b" >
+                <Grow placement="bwe" className="w-full" variant="box-round-b">
                   <FormTable
                     variant={'none'}
                     lineTop={false}
