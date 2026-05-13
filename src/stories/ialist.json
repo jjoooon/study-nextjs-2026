@@ -472,7 +472,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPA050",
-    "path": "ispl/isplBsnsSupt/components/popups",
+    "path": "ispl/isplBsnsSupt",
     "dep4": "설계비교 (화면의 변경필요)",
     "file": "전환_가입설계",
     "plan": "서영진",
