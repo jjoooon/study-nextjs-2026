@@ -11,10 +11,8 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
 import { KeyValueItem } from '@common/KeyValueList';
 import { ViewMode } from '@common/ViewMode';
-import AIChatBot from '@features/AIChatBot';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { Ai2Icon, SearchIcon, ArrowNext, AiIcon } from '@icons';
+import { SearchIcon, AiIcon } from '@icons';
 import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplatePx0 } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -330,36 +328,6 @@ export default function Ltpa020Section() {
               <Ltpa02002 dataNone={dataNone} setDataNone={setDataNone} userType={customerType} />
             )}
           </Grid>
-        }
-        mainFoot={
-          <MainBottom>
-            <MainBottomItem className="justify-end">
-              {dataNone ? (
-                <Grow gap={1}>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                    <Ai2Icon />
-                    추천설계
-                  </Button>
-                  <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
-                    설계시작
-                    <ArrowNext size={16} />
-                  </Button>
-                </Grow>
-              ) : (
-                <Grow gap={1}>
-                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                    <Ai2Icon />
-                    추천설계비교
-                  </Button>
-                  <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
-                    설계생성(2)
-                    <ArrowNext size={16} />
-                  </Button>
-                  <AIChatBot />
-                </Grow>
-              )}
-            </MainBottomItem>
-          </MainBottom>
         }
       ></LayoutTemplatePx0>
       <LayoutFoot>

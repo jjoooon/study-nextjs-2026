@@ -8,7 +8,7 @@ import { Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon, ResetIcon } from '@icons';
+import { SearchIcon, ResetIcon, Ai2Icon, ArrowNext } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -500,7 +500,7 @@ export function Ltpa02001() {
   const selectedPlanRowData = planRowDataMap[active] ?? dummyData3;
 
   return (
-    <Grid className="w-full grid-rows-[auto_1fr] px-[1rem]" gap={3}>
+    <Grid className="w-full grid-rows-[auto_1fr_auto] px-[1rem]" gap={3}>
       <Grow variant={'box-round'} className="w-full" placement="bwe">
         <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
           <FormRow className="items-start!">
@@ -633,6 +633,17 @@ export function Ltpa02001() {
             </div>
           </TabPager>
         </Grid>
+      </Grow>
+
+      <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
+        <Button variant={'outlined'} color={'gray'} size={'xl'}>
+          <Ai2Icon />
+          추천설계
+        </Button>
+        <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+          설계시작
+          <ArrowNext size={16} />
+        </Button>
       </Grow>
     </Grid>
   );
