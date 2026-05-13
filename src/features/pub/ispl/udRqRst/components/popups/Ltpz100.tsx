@@ -136,7 +136,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 
-const Ltpz090 = () => {
+const Ltpz100 = () => {
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
@@ -221,47 +221,65 @@ const Ltpz090 = () => {
               이력 상세
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (Ltpz090)
+              (Ltpz100)
             </Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="gap-3">
-          <Grid placement="ss" className="w-full grid-rows-[1fr_auto]" gap={3}>
+          <Grow placement="bwc" gap={3}>
             <TableFold variant="default" className="grid-rows-[auto_1fr]">
               <TableFoldHead title="심사이력" />
               <TableFoldBody>
-                <Gcol className="w-full h-full min-h-[18.4rem]">
-                  <div className="ag-theme-alpine ">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                      }}
-                      domLayout="normal"
-                    />
-                  </div>
-                </Gcol>
+                <Grow gap={3}>
+                  <Gcol className="w-full h-full min-h-[18.4rem]">
+                    <div className="ag-theme-alpine ">
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                        }}
+                        domLayout="normal"
+                      />
+                    </div>
+                  </Gcol>
+                  <Gcol className="w-full h-full min-h-[18.4rem]">
+                    <div className="ag-theme-alpine ">
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                        }}
+                        domLayout="normal"
+                      />
+                    </div>
+                  </Gcol>
+                  <Gcol className="w-full h-full min-h-[18.4rem]">
+                    <div className="ag-theme-alpine ">
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                        }}
+                        domLayout="normal"
+                      />
+                    </div>
+                  </Gcol>
+                </Grow>
               </TableFoldBody>
             </TableFold>
-            <Grow gap={3}>
-              <TableFold variant="default">
-                <TableFoldHead title="요청자 의견" />
-                <TableFoldBody>
-                  <Textarea placeholder="" resize={true} className="w-full" />
-                </TableFoldBody>
-              </TableFold>
-              <TableFold variant="default">
-                <TableFoldHead title="작업자 의견" />
-                <TableFoldBody>
-                  <Textarea placeholder="" resize={true} className="w-full" />
-                </TableFoldBody>
-              </TableFold>
-            </Grow>
-          </Grid>
+          </Grow>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>
@@ -279,4 +297,4 @@ const Ltpz090 = () => {
   );
 };
 
-export default Ltpz090;
+export default Ltpz100;
