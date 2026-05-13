@@ -1,12 +1,13 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Divider, Grow } from '@atoms';
+import { Divider, Grow, Gcol } from '@atoms';
 import { InputHash } from '@common/InputHash';
 import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import React from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 interface HeaderWithUnitProps {
   label: string;
@@ -14,19 +15,26 @@ interface HeaderWithUnitProps {
   className?: string;
   unitClassName?: string;
   gap?: number;
+  col?: boolean;
 }
 
 export const HeaderWithUnit = React.memo(function HeaderWithUnit({
   label,
   unit,
-  className = 'w-full',
+  col = false,
+  className,
   unitClassName = 'text-[1.1rem]',
   gap = 0,
 }: HeaderWithUnitProps) {
-  return (
-    <Grow className={className} placement={'cc'} gap={gap}>
+  return col ? (
+    <Gcol className={cn('w-full leading-[1.4rem]', className)} placement={'cc'} gap={gap}>
       {label}
-      <span className={unitClassName}>({unit})</span>
+      <span className={cn(unitClassName)}>{unit}</span>
+    </Gcol>
+  ) : (
+    <Grow className={cn('w-full', className)} placement={'cc'} gap={gap}>
+      {label}
+      <span className={cn(unitClassName)}>{unit}</span>
     </Grow>
   );
 });

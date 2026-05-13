@@ -4,8 +4,7 @@
 'use client';
 
 import { Grow } from '@atoms';
-import { CloseIcon } from '@icons';
-import { Dialog, DialogClose, DialogContent, DialogHeader } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogHeader } from '@uiux/Dialog';
 import Image from 'next/image';
 import * as React from 'react';
 

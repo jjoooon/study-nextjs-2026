@@ -192,7 +192,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         resizable: false,
       },
       {
-        headerComponent: () => <HeaderWithUnit label="가입금액" unit="만원" />,
+        headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" />,
         field: 'insuredAmount',
         width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
@@ -274,7 +274,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         cellRenderer: getExpiryRenderer('left'),
       },
       {
-        headerComponent: () => <HeaderWithUnit label="보험료" unit="원" />,
+        headerComponent: () => <HeaderWithUnit label="보험료" unit="(원)" />,
         field: 'field7',
         width: attributeColumnWidth[7],
         cellClass: 'text-right',
@@ -282,11 +282,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       },
       {
         headerName: '예상UW',
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            <span className="text-[1.1rem]">예상</span>UW
-          </Grow>
-        ),
+        headerComponent: () => <HeaderWithUnit label="UW" unit="예상" className="flex-row-reverse" />,
         field: 'field8',
         width: attributeColumnWidth[6],
         cellClass: 'text-center px-0! tracking-tighter',
