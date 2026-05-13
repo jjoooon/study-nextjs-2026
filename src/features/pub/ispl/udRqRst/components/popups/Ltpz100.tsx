@@ -7,7 +7,6 @@ import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import { Textarea } from '@uiux/Textarea';
 import { TableFold, TableFoldHead, TableFoldBody } from '@/shared/components/common/TableFold';
 import {
   Dialog,
@@ -25,23 +24,10 @@ import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
-type DetailCheckItem = {
-  id: string;
-  checked: boolean;
-  label: string;
-  disabled?: boolean;
-};
-
 type DummyDataType = {
   id: number;
   field01: string | number;
   field02: string | number;
-  field03: string | number;
-  field04: string | number;
-  field05: string | number;
-  field06: string | number;
-  field06Items: DetailCheckItem[];
-  field07: string | number;
 };
 
 const DummyData: DummyDataType[] = [
@@ -49,12 +35,11 @@ const DummyData: DummyDataType[] = [
     id: 1,
     field01: '1',
     field02: '2026-03-24 09:54',
-    field03: '김정택',
-    field04: '재심사의뢰',
-    field05: '',
-    field06: '',
-    field06Items: [],
-    field07: '보기',
+  },
+  {
+    id: 2,
+    field01: '2',
+    field02: '2026-03-24 10:35',
   },
   {
     id: 2,
@@ -78,61 +63,9 @@ const DummyData: DummyDataType[] = [
     id: 3,
     field01: '3',
     field02: '2026-03-24 10:35',
-    field03: '시스템',
-    field04: '결재완료',
-    field05: '감액후인수',
-    field06: '',
-    field06Items: [
-      { id: 'a', checked: true, label: '제한담보', disabled: true },
-      { id: 'b', checked: true, label: '부담보(부위/질병)', disabled: true },
-      { id: 'c', checked: true, label: '보험료 할증', disabled: true },
-    ],
-    field07: '보기',
+    
   },
-  {
-    id: 4,
-    field01: '4',
-    field02: '2026-03-24 10:35',
-    field03: '백경희',
-    field04: '결재완료',
-    field05: '부담보인수',
-    field06: '',
-    field06Items: [],
-    field07: '보기',
-  },
-  {
-    id: 5,
-    field01: '5',
-    field02: '2026-03-24 10:35',
-    field03: '백경희',
-    field04: '결재완료',
-    field05: '특별조건부인수',
-    field06: '',
-    field06Items: [],
-    field07: '보기',
-  },
-  {
-    id: 6,
-    field01: '6',
-    field02: '2026-03-24 10:35',
-    field03: '백경희',
-    field04: '재심사의뢰',
-    field05: '',
-    field06: '',
-    field06Items: [],
-    field07: '보기',
-  },
-  {
-    id: 7,
-    field01: '7',
-    field02: '2026-03-24 10:35',
-    field03: '백경희',
-    field04: '재심사의뢰',
-    field05: '',
-    field06: '',
-    field06Items: [],
-    field07: '보기',
-  },
+  
 ];
 
 
@@ -154,62 +87,7 @@ const Ltpz100 = () => {
       width: 120,
       cellClass: 'text-center',
     },
-    {
-      headerName: '담당자',
-      field: 'field03',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '작업구분',
-      field: 'field04',
-      flex: 1,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '심사결과',
-      field: 'field05',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '심사결과 상세',
-      field: 'field06',
-      width: 450,
-      cellClass: 'text-left',
-      autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        const row = params.data;
-
-        if (!row) {
-          return null;
-        }
-
-        return (
-          <Grow placement="ss" className="w-full gap-2 px-1">
-            {row.field06Items.map((item) => (
-              <Grow key={item.id}>
-                <Checkbox checked disabled>
-                  <span>{item.label}</span>
-                </Checkbox>
-              </Grow>
-            ))}
-          </Grow>
-        );
-      },
-    },
-    {
-      headerName: '보기',
-      field: 'field07',
-      width: 70,
-      autoHeight: true,
-      cellClass: 'text-center',
-      cellRenderer: () => (
-        <Button variant={'outlined'} size={'md'} color={'gray'}>
-          보기
-        </Button>
-      ),
-    },
+    
   ];
 
   return (
@@ -230,55 +108,63 @@ const Ltpz100 = () => {
             <TableFold variant="default" className="grid-rows-[auto_1fr]">
               <TableFoldHead title="심사이력" />
               <TableFoldBody>
-                <Grow gap={3}>
-                  <Gcol className="w-full h-full min-h-[18.4rem]">
-                    <div className="ag-theme-alpine ">
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        defaultColDef={{
-                          sortable: true,
-                          resizable: true,
-                        }}
-                        domLayout="normal"
-                      />
-                    </div>
-                  </Gcol>
-                  <Gcol className="w-full h-full min-h-[18.4rem]">
-                    <div className="ag-theme-alpine ">
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        defaultColDef={{
-                          sortable: true,
-                          resizable: true,
-                        }}
-                        domLayout="normal"
-                      />
-                    </div>
-                  </Gcol>
-                  <Gcol className="w-full h-full min-h-[18.4rem]">
-                    <div className="ag-theme-alpine ">
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        defaultColDef={{
-                          sortable: true,
-                          resizable: true,
-                        }}
-                        domLayout="normal"
-                      />
-                    </div>
-                  </Gcol>
-                </Grow>
+                <Gcol className="w-full h-full min-h-[18.4rem]">
+                  <div className="ag-theme-alpine ">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
+                      domLayout="normal"
+                    />
+                  </div>
+                </Gcol>
               </TableFoldBody>
             </TableFold>
+            {/* <TableFold variant="default" className="grid-rows-[auto_1fr]">
+              <TableFoldHead title="심사이력" />
+              <TableFoldBody>
+                <Gcol className="w-full h-full min-h-[18.4rem]">
+                  <div className="ag-theme-alpine ">
+                    <AgGridReact<DummyDataType2>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={rowData2}
+                      columnDefs={columnDefs2}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
+                      domLayout="normal"
+                    />
+                  </div>
+                </Gcol>
+              </TableFoldBody>
+            </TableFold>
+            <TableFold variant="default" className="grid-rows-[auto_1fr]">
+              <TableFoldHead title="심사이력" />
+              <TableFoldBody>
+                <Gcol className="w-full h-full min-h-[18.4rem]">
+                  <div className="ag-theme-alpine ">
+                    <AgGridReact<DummyDataType3>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={rowData3}
+                      columnDefs={columnDefs3}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
+                      domLayout="normal"
+                    />
+                  </div>
+                </Gcol>
+              </TableFoldBody>
+            </TableFold> */}
           </Grow>
         </DialogSection>
         <DialogFooter>

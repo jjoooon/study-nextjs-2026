@@ -24,6 +24,7 @@ import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
+import { HeaderWithUnit } from '@/shared/components/grid/HeadRenderers';
 
 type Ltp040TabType = { name: string; value: string; label: string };
 
@@ -129,6 +130,27 @@ type Ltpa040DummyDataRowT6 = {
   field05: string | number;
   field06: string | number;
   field07: string | number;
+};
+
+type Ltpa040DummyDataRowT7 = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+  field15: string | number;
+  field16: string | number;
+  field17: string | number;
 };
 
 const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
@@ -1075,6 +1097,149 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field07: '00',
   },
 ];
+
+const Ltpa040DummyDataT7: Ltpa040DummyDataRowT7[] = [
+  {
+    id: 1,
+    field01: '한화 시그니처 여성 건강보험4.0',
+    field02: '1종 납입면제 강화형, 기본형(할증운영상품)',
+    field03: '10',
+    field04: '10',
+    field05: '10',
+    field06: '10',
+    field07: '10',
+    field08: '10',
+    field09: '10',
+    field10: '10',
+    field11: '10',
+    field12: '10',
+    field13: '10',
+    field14: '10',
+    field15: '10',
+    field16: '130',
+    field17: '00',
+  },
+  {
+    id: 2,
+    field01: '한화 더 경증 간편건강보험(연만기 갱신형) 2601',
+    field02: '1종 해약환급금미지급형 3.105간편고지형',
+    field03: '10',
+    field04: '10',
+    field05: '10',
+    field06: '10',
+    field07: '10',
+    field08: '10',
+    field09: '10',
+    field10: '10',
+    field11: '10',
+    field12: '10',
+    field13: '10',
+    field14: '10',
+    field15: '10',
+    field16: '130',
+    field17: '00',
+  },
+  {
+    id: 3,
+    field01: '한화 3N5 더 간편건강보험(세만기형) 2604',
+    field02: '',
+    field03: '10',
+    field04: '10',
+    field05: '10',
+    field06: '10',
+    field07: '10',
+    field08: '10',
+    field09: '10',
+    field10: '10',
+    field11: '10',
+    field12: '10',
+    field13: '10',
+    field14: '10',
+    field15: '10',
+    field16: '130',
+    field17: '00',
+  },
+  {
+    id: 4,
+    field01: '한화 3N5 더 간편건강보험(연만기 갱신형) 2604',
+    field02: '',
+    field03: '10',
+    field04: '10',
+    field05: '10',
+    field06: '10',
+    field07: '10',
+    field08: '10',
+    field09: '10',
+    field10: '10',
+    field11: '10',
+    field12: '10',
+    field13: '10',
+    field14: '10',
+    field15: '10',
+    field16: '130',
+    field17: '00',
+  },
+  {
+    id: 5,
+    field01: '한화 굿밸런스 종합보험(연만기 갱신형) 2604',
+    field02: '',
+    field03: '10',
+    field04: '10',
+    field05: '10',
+    field06: '10',
+    field07: '10',
+    field08: '10',
+    field09: '10',
+    field10: '10',
+    field11: '10',
+    field12: '10',
+    field13: '10',
+    field14: '10',
+    field15: '10',
+    field16: '130',
+    field17: '00',
+  },
+  {
+    id: 6,
+    field01: '한화 더 경증 간편건강보험(연만기 갱신형) 2604',
+    field02: '',
+    field03: '10',
+    field04: '10',
+    field05: '10',
+    field06: '10',
+    field07: '10',
+    field08: '10',
+    field09: '10',
+    field10: '10',
+    field11: '10',
+    field12: '10',
+    field13: '10',
+    field14: '10',
+    field15: '10',
+    field16: '130',
+    field17: '00',
+  },
+  {
+    id: 7,
+    field01: '',
+    field02: '',
+    field03: '10',
+    field04: '10',
+    field05: '10',
+    field06: '10',
+    field07: '10',
+    field08: '10',
+    field09: '10',
+    field10: '10',
+    field11: '10',
+    field12: '10',
+    field13: '10',
+    field14: '10',
+    field15: '10',
+    field16: '130',
+    field17: '00',
+  },
+];
 export default function Ltpa040Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
@@ -1130,12 +1295,14 @@ export default function Ltpa040Section() {
           field: 'field03',
           width: 120,
           cellClass: 'text-center',
+          unSortIcon: true,
         },
         {
           headerName: '사용인',
           field: 'field04',
           width: 120,
           cellClass: 'text-center',
+          unSortIcon: true,
         },
         {
           headerName: '고객구분',
@@ -1161,6 +1328,7 @@ export default function Ltpa040Section() {
           field: 'field08',
           width: 100,
           cellClass: 'text-center',
+          unSortIcon: true,
         },
         {
           headerName: '추천상품',
@@ -1240,6 +1408,7 @@ export default function Ltpa040Section() {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: renderConsentCell,
+      unSortIcon: true,
     },
     {
       headerName: '추천설계 이용건수',
@@ -1247,6 +1416,7 @@ export default function Ltpa040Section() {
       width: 220,
       cellClass: 'text-center',
       autoHeight: true,
+      unSortIcon: true,
     },
     {
       headerName: '상품 선택 건수',
@@ -1256,6 +1426,7 @@ export default function Ltpa040Section() {
       autoHeight: true,
       spanRows: true,
       cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT1>('field03', 'field04', 'row'),
+      unSortIcon: true,
     },
     {
       headerName: '총 선택 건수',
@@ -1278,9 +1449,9 @@ export default function Ltpa040Section() {
       headerName: '상품',
       field: 'field01',
       flex: 1,
-      cellClass: 'text-left px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-left',
       autoHeight: true,
-      cellRenderer: renderConsentCell,
+      unSortIcon: true,
     },
     {
       headerName: '종',
@@ -1288,7 +1459,6 @@ export default function Ltpa040Section() {
       flex: 1,
       cellClass: 'text-left',
       autoHeight: true,
-      sortable: false,
     },
     {
       headerName: '플랜',
@@ -1296,7 +1466,6 @@ export default function Ltpa040Section() {
       flex: 1,
       cellClass: 'text-left',
       autoHeight: true,
-      sortable: false,
     },
     {
       headerName: '건수',
@@ -1305,7 +1474,7 @@ export default function Ltpa040Section() {
       headerClass: 'ag-header-color',
       cellClass: 'text-center',
       autoHeight: true,
-      sortable: true,
+      unSortIcon: true,
     },
   ];
 
@@ -1314,23 +1483,28 @@ export default function Ltpa040Section() {
       headerName: '일자',
       field: 'field01',
       flex: 1,
-      cellClass: `text-center flex! items-center! justify-center! whitespace-pre-line`,
-      sortable: true,
       filter: false,
       suppressMovable: true,
       spanRows: true,
+      unSortIcon: true,
       cellRenderer: renderConsentCellT3, // 버튼 렌더러 적용
     },
     {
-      headerName: '추천설계\n이용건수',
+      headerComponent: HeaderWithUnit,
+      headerComponentParams: {
+        label: '추천설계',
+        unit: '이용건수',
+        col: true,
+        view: true,
+        unitClassName: 'text-[1.3rem]',
+      },
       field: 'field02',
       flex: 1,
-      cellClass: `text-center flex! items-center! justify-center! whitespace-pre-line`,
-      headerClass: 'ag-header-preline',
-      sortable: true,
+      headerClass: '',
       filter: false,
       suppressMovable: true,
       spanRows: true,
+      unSortIcon: true,
     },
     {
       headerName: '고객구분',
@@ -1351,21 +1525,18 @@ export default function Ltpa040Section() {
           field: 'field05',
           width: 85,
           cellClass: 'text-center flex! items-center! justify-center!',
-          sortable: false,
         },
         {
           headerName: '여',
           field: 'field06',
           width: 85,
           cellClass: 'text-center flex! items-center! justify-center!',
-          sortable: false,
         },
       ],
     },
     {
       headerName: '연령대',
       cellClass: 'text-center',
-      sortable: false,
       children: [
         {
           headerName: '0~14세',
@@ -1480,10 +1651,10 @@ export default function Ltpa040Section() {
       field: 'field01',
       flex: 1,
       cellClass: `text-center flex! items-center! justify-center! whitespace-pre-line`,
-      sortable: true,
       filter: false,
       suppressMovable: true,
       spanRows: true,
+      unSortIcon: true,
       cellRenderer: renderConsentCellT3, // 버튼 렌더러 적용
     },
     {
@@ -1492,10 +1663,10 @@ export default function Ltpa040Section() {
       flex: 1,
       cellClass: `text-center flex! items-center! justify-center! whitespace-pre-line`,
       headerClass: 'ag-header-preline',
-      sortable: true,
       filter: false,
       suppressMovable: true,
       spanRows: true,
+      unSortIcon: true,
     },
     {
       headerName: '무해지',
@@ -1664,12 +1835,148 @@ export default function Ltpa040Section() {
       headerClass: 'ag-header-color',
       cellClass: 'text-center',
       autoHeight: true,
-      sortable: true,
+      unSortIcon: true,
     },
     {
       headerName: '영업일평균',
       field: 'field07',
       width: 120,
+      headerClass: 'ag-header-color',
+      cellClass: 'text-center',
+      autoHeight: true,
+    },
+  ];
+
+  const columnDefsT7: (ColDef<Ltpa040DummyDataRowT7> | ColGroupDef<Ltpa040DummyDataRowT7>)[] = [
+    {
+      headerName: '상품',
+      field: 'field01',
+      width: 280,
+      cellClass: 'text-left',
+      autoHeight: true,
+      unSortIcon: true,
+      tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT6>({ field: 'field01' }),
+    },
+    {
+      headerName: '종',
+      field: 'field02',
+      width: 250,
+      cellClass: 'text-left',
+      autoHeight: true,
+      tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT6>({ field: 'field02' }),
+    },
+    {
+      headerName: '04',
+      cellClass: 'text-center',
+      autoHeight: true,
+      children: [
+        {
+          headerName: '1',
+          field: 'field03',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+
+        },
+        {
+          headerName: '2',
+          field: 'field04',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '3',
+          field: 'field05',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '4',
+          field: 'field06',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '5',
+          field: 'field07',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '6',
+          field: 'field08',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '7',
+          field: 'field09',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '8',
+          field: 'field10',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '9',
+          field: 'field11',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '10',
+          field: 'field12',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '11',
+          field: 'field13',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '12',
+          field: 'field14',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+        {
+          headerName: '13',
+          field: 'field15',
+          width: 55,
+          cellClass: 'text-center',
+          autoHeight: true,
+        },
+      ]
+    },
+    {
+      headerName: '계',
+      field: 'field16',
+      flex: 1,
+      headerClass: 'ag-header-color',
+      cellClass: 'text-center',
+      autoHeight: true,
+      unSortIcon: true,
+    },
+    {
+      headerName: '영업일 평균',
+      field: 'field17',
+      width: 70,
       headerClass: 'ag-header-color',
       cellClass: 'text-center',
       autoHeight: true,
@@ -2103,6 +2410,27 @@ export default function Ltpa040Section() {
                         getRowId={(params) => String(params.data.id)}
                         rowData={Ltpa040DummyDataT6}
                         columnDefs={columnDefsT6}
+                        enableCellSpan={true}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: false,
+                          autoHeaderHeight: true,
+                        }}
+                        domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+                <TableFold>
+                  <TableFoldHead title="일자별 추가옵션 선택 현황" />
+                  <TableFoldBody>
+                    <div className="ag-theme-alpine min-h-[33.2rem]">
+                      <AgGridReact<Ltpa040DummyDataRowT7>
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={Ltpa040DummyDataT7}
+                        columnDefs={columnDefsT7}
                         enableCellSpan={true}
                         defaultColDef={{
                           sortable: true,
