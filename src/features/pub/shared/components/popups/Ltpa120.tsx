@@ -5,6 +5,9 @@
 
 import { Grow } from '@atoms';
 import { Dialog, DialogContent, DialogHeader } from '@uiux/Dialog';
+import { publicConfig } from '@/shared/config/env';
+import useMounted from '@/shared/hooks/useMounted';
+import { chatbotUtils } from '@/shared/utils/chatbotUtils';
 import Image from 'next/image';
 import * as React from 'react';
 
@@ -52,8 +55,18 @@ export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp 
     setOpen(true);
   };
 
+  useMounted(
+    () => {}, 
+    () => {
+    // unmount시 레퍼런스 삭제
+    chatbotUtils.setRef(null);
+  })
+
   return (
-    <Dialog open={open} onOpenChange={setOpen} modal={false}>
+    <Dialog open={open} onOpenChange={() => {
+      chatbotUtils.setRef(null);
+      setOpen(!open);
+    }} modal={false}>
       {isButton && (
         <button
           ref={buttonRef}
@@ -102,7 +115,8 @@ export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp 
         </DialogHeader>
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[1px] border-[var(--color-blue-gray-30)]">
           <iframe
-            src={'https://m.hwgeneralins.com/'}
+          ref={(el) => chatbotUtils.setRef(el)}
+            src={publicConfig.domain.chatbot}
             title={'AI 챗봇'}
             className="w-full h-full border-0"
             allow="clipboard-read; clipboard-write"
