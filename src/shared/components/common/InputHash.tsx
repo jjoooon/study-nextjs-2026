@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 'use client';
 
 // datalist + popover 기능의 InputCombo 컴포넌트

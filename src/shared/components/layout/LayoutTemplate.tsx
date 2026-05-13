@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 'use client';
 
 import { Gcol } from '@atoms';
@@ -71,6 +70,19 @@ export const LayoutTemplateLTPA350 = ({
 export const LayoutTemplate = ({ mainBody, mainFoot }: Props) => (
   <>
     <LayoutMain className="grid grid-rows-[1fr_auto] gap-[1rem] px-[1rem]">
+      <LayoutMainBody>
+        <LayoutScrollWrap>
+          <LayoutScrollItem>{mainBody}</LayoutScrollItem>
+        </LayoutScrollWrap>
+      </LayoutMainBody>
+      {mainFoot && <LayoutMainFoot>{mainFoot}</LayoutMainFoot>}
+    </LayoutMain>
+  </>
+);
+
+export const LayoutTemplatePx0 = ({ mainBody, mainFoot }: Props) => (
+  <>
+    <LayoutMain className="grid grid-rows-[1fr_auto] gap-0 px-0">
       <LayoutMainBody>
         <LayoutScrollWrap>
           <LayoutScrollItem>{mainBody}</LayoutScrollItem>

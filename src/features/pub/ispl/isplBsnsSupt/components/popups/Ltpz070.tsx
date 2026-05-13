@@ -1,25 +1,16 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 'use client';
 
-import type {
-  CellEditingStartedEvent,
-  CellEditingStoppedEvent,
-  ColDef,
-  ColGroupDef,
-  ICellRendererParams,
-} from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { AgGridEmptyComponent, createModifiedCellClassRules, createTooltipValueGetter } from '@aggrid';
+import { numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ArrowDoubleIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { numberValueFormatter } from '@aggrid';
 import {
   Dialog,
   DialogContent,
@@ -30,10 +21,12 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { StarStage } from '@/shared/components/features/StarStage';
+import { StarStage } from '@features/StarStage';
 
 // dummy data
 type DummyDataType = {
@@ -74,42 +67,6 @@ type DummyDataType4 = {
   field06: string | number;
   field07: string | number;
   field08: string | number;
-};
-
-type EditableAmountRow = {
-  id: number;
-};
-
-const createField06EditingHandlers = <T extends EditableAmountRow>(
-  setEditingRowIds: React.Dispatch<React.SetStateAction<number[]>>,
-) => ({
-  onCellEditingStarted: (params: CellEditingStartedEvent<T>) => {
-    if (params.colDef.field !== 'field06' || !params.data) {
-      return;
-    }
-
-    const { data } = params;
-
-    setEditingRowIds((prev) => (prev.includes(data.id) ? prev : [...prev, data.id]));
-  },
-  onCellEditingStopped: (params: CellEditingStoppedEvent<T>) => {
-    if (params.colDef.field !== 'field06' || !params.data) {
-      return;
-    }
-
-    setEditingRowIds((prev) => prev.filter((id) => id !== params.data?.id));
-  },
-});
-
-const useField06EditingHandlers = <T extends EditableAmountRow>() => {
-  const [editingRowIds, setEditingRowIds] = React.useState<number[]>([]);
-
-  const editingHandlers = React.useMemo(() => createField06EditingHandlers<T>(setEditingRowIds), []);
-
-  return {
-    editingRowIds,
-    ...editingHandlers,
-  };
 };
 
 const DummyData: DummyDataType[] = [
@@ -276,11 +233,11 @@ const Ltpz070 = () => {
   const [rowData4] = React.useState<DummyDataType4[]>(DummyData4);
   const field06ModifiedCellClassRules3 = React.useMemo(
     () => createModifiedCellClassRules({ rows: rowData3, idKey: 'id', valueKey: 'field06' }),
-    [rowData3],
+    [rowData3]
   );
   const field06ModifiedCellClassRules4 = React.useMemo(
     () => createModifiedCellClassRules({ rows: rowData4, idKey: 'id', valueKey: 'field06' }),
-    [rowData4],
+    [rowData4]
   );
 
   // AgGrid Column
@@ -295,7 +252,9 @@ const Ltpz070 = () => {
           cellClass: 'text-center',
           autoHeight: true,
           sortable: false,
-          cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => <StarStage profitabilityText={String(params.value ?? '')} />,
+          cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
+            <StarStage profitabilityText={String(params.value ?? '')} />
+          ),
         },
         {
           headerName: '가치배수',
@@ -318,26 +277,31 @@ const Ltpz070 = () => {
           cellClass: 'text-right',
           autoHeight: true,
         },
-      ]
+      ],
     },
   ];
   const columnDefs2: (ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>)[] = [
     {
       headerName: '변경후 (보장 보험료: 500,000원)',
-      headerClass: 'text-[var(--color-primary-50)]',
+      headerClass: 'ag-header-color',
+      // headerClass: 'text-[var(--color-primary-50)]',
       children: [
         {
           headerName: '수익성',
           field: 'field01',
           width: 180,
+          headerClass: 'ag-header-color',
           cellClass: 'text-center',
           autoHeight: true,
-          cellRenderer: (params: ICellRendererParams<DummyDataType2, string | number>) => <StarStage profitabilityText={String(params.value ?? '')} />,
+          cellRenderer: (params: ICellRendererParams<DummyDataType2, string | number>) => (
+            <StarStage profitabilityText={String(params.value ?? '')} />
+          ),
         },
         {
           headerName: '가치배수',
           field: 'field02',
           flex: 1,
+          headerClass: 'ag-header-color',
           cellClass: 'text-right',
           autoHeight: true,
         },
@@ -345,18 +309,19 @@ const Ltpz070 = () => {
           headerName: '예상손해율',
           field: 'field03',
           flex: 1,
+          headerClass: 'ag-header-color',
           cellClass: 'text-right',
           autoHeight: true,
-          
         },
         {
           headerName: '수정률',
           field: 'field04',
           flex: 1,
+          headerClass: 'ag-header-color',
           cellClass: 'text-right',
           autoHeight: true,
         },
-      ]
+      ],
     },
   ];
   const columnDefs3: (ColDef<DummyDataType3> | ColGroupDef<DummyDataType3>)[] = [
@@ -384,7 +349,7 @@ const Ltpz070 = () => {
           field: 'field03',
           width: 120,
           cellClass: 'text-right',
-          valueParser: params => Number(params.newValue) || 0,
+          valueParser: (params) => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
         },
         {
@@ -392,7 +357,7 @@ const Ltpz070 = () => {
           field: 'field04',
           width: 120,
           cellClass: 'text-right',
-          valueParser: params => Number(params.newValue) || 0,
+          valueParser: (params) => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
         },
         {
@@ -401,46 +366,42 @@ const Ltpz070 = () => {
           width: 120,
           cellClass: 'text-right',
         },
-      ]
+      ],
     },
     {
       headerName: '변경후',
-      headerClass: 'text-[var(--color-primary-50)]',
+      headerClass: 'ag-header-color',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      cellRenderer: (params: { value: string | number }) => {
-        return (
-          <>
-            <div className="text-[var(--color-primary-50)]">{params.value}</div>
-          </>
-        );
-      },
       children: [
         {
           headerName: '가입금액(만원)',
           field: 'field06',
           width: 120,
+          headerClass: 'ag-header-color',
           cellClass: 'text-right editable-cell',
           cellClassRules: field06ModifiedCellClassRules3,
           editable: true,
           cellEditor: 'agInputCellEditor',
-          valueParser: params => Number(params.newValue) || 0,
+          valueParser: (params) => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
         },
         {
           headerName: '보험료(원)',
           field: 'field07',
           width: 120,
+          headerClass: 'ag-header-color',
           cellClass: 'text-right',
-          valueParser: params => Number(params.newValue) || 0,
+          valueParser: (params) => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
         },
         {
           headerName: '가치배수',
           field: 'field08',
           width: 120,
+          headerClass: 'ag-header-color',
           cellClass: 'text-right',
         },
-      ]
+      ],
     },
   ];
   const columnDefs4: (ColDef<DummyDataType4> | ColGroupDef<DummyDataType4>)[] = [
@@ -468,7 +429,7 @@ const Ltpz070 = () => {
           field: 'field03',
           width: 120,
           cellClass: 'text-right',
-          valueParser: params => Number(params.newValue) || 0,
+          valueParser: (params) => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
         },
         {
@@ -476,7 +437,7 @@ const Ltpz070 = () => {
           field: 'field04',
           width: 120,
           cellClass: 'text-right',
-          valueParser: params => Number(params.newValue) || 0,
+          valueParser: (params) => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
         },
         {
@@ -485,38 +446,41 @@ const Ltpz070 = () => {
           width: 120,
           cellClass: 'text-right',
         },
-      ]
+      ],
     },
     {
       headerName: '변경후',
-      headerClass: 'text-[var(--color-primary-50)]',
+      headerClass: 'ag-header-color',
       children: [
         {
           headerName: '가입금액(만원)',
           field: 'field06',
           width: 120,
+          headerClass: 'ag-header-color',
           cellClass: 'text-right editable-cell',
           cellClassRules: field06ModifiedCellClassRules4,
           editable: true,
           cellEditor: 'agInputCellEditor',
-          valueParser: params => Number(params.newValue) || 0,
+          valueParser: (params) => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
         },
         {
           headerName: '보험료(원)',
           field: 'field07',
           width: 120,
+          headerClass: 'ag-header-color',
           cellClass: 'text-right',
-          valueParser: params => Number(params.newValue) || 0,
+          valueParser: (params) => Number(params.newValue) || 0,
           valueFormatter: numberValueFormatter, // 천단위 콤마 표시
         },
         {
           headerName: '가치배수',
           field: 'field08',
           width: 120,
+          headerClass: 'ag-header-color',
           cellClass: 'text-right',
         },
-      ]
+      ],
     },
   ];
 
@@ -539,7 +503,7 @@ const Ltpz070 = () => {
               <TableFoldHead title="계약 수익성 상세" />
               <TableFoldBody>
                 <Grow className="w-full" gap={3}>
-                  <div className="w-full border border-[0.1rem] border-[var(--color-gray-30)] box-border rounded-md p-3">
+                  <div className="w-full border border-(--color-gray-30) box-border rounded-md p-3">
                     <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
@@ -558,8 +522,11 @@ const Ltpz070 = () => {
                   <Grow className="w-[2.4rem] h-[2.4rem]">
                     <ArrowDoubleIcon className="w-[2.4rem] h-[2.4rem] rotate-270" />
                   </Grow>
-                  <div className="w-full border border-[0.2rem] border-[var(--color-primary-50)] box-border rounded-md p-3 bg-[var(--color-primary-5)]" style={{ boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)' }}>
-                    <div className="ag-theme-alpine">
+                  <div
+                    className="w-full border-[0.2rem] border-(--color-primary-50) box-border rounded-md p-3 bg-(--color-primary-5)"
+                    style={{ boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)' }}
+                  >
+                    <div className="ag-theme-alpine ag-header-color-grid">
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData2}
@@ -583,9 +550,15 @@ const Ltpz070 = () => {
               <TableFoldBody>
                 <div className="relative">
                   <div
-                      className="absolute top-0 bottom-0 right-0 z-10 border rounded-md pointer-events-none"
-                      style={{ width: '36.7rem', height: 'auto', borderColor: 'var(--color-primary-50)', borderWidth: '0.2rem', boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)' }}
-                    />
+                    className="absolute top-0 bottom-0 right-0 z-10 border rounded-md pointer-events-none"
+                    style={{
+                      width: '36.7rem',
+                      height: 'auto',
+                      borderColor: 'var(--color-primary-50)',
+                      borderWidth: '0.2rem',
+                      boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)',
+                    }}
+                  />
                   <div className="ag-theme-alpine min-h-[15.4rem]">
                     <AgGridReact<DummyDataType3>
                       getRowId={(params) => String(params.data.id)}
@@ -612,7 +585,13 @@ const Ltpz070 = () => {
                 <div className="relative">
                   <div
                     className="absolute top-0 bottom-0 right-0 z-10 border rounded-md pointer-events-none"
-                    style={{ width: '36.7rem', height: 'auto', borderColor: 'var(--color-primary-50)', borderWidth: '0.2rem', boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)' }}
+                    style={{
+                      width: '36.7rem',
+                      height: 'auto',
+                      borderColor: 'var(--color-primary-50)',
+                      borderWidth: '0.2rem',
+                      boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)',
+                    }}
                   />
                   <div className="ag-theme-alpine min-h-[15.4rem]">
                     <AgGridReact<DummyDataType4>
@@ -640,7 +619,8 @@ const Ltpz070 = () => {
                   안내문구는 추후 확정 예정입니다.
                 </BulletListItem>
                 <BulletListItem size="sm">
-                  가입금액 감액, 증액 담보 리스트 : 가입담보 중 수익성 개선을 위해 가입금액 감액, 증액이 권장되는 담보 리스트 입니다.
+                  가입금액 감액, 증액 담보 리스트 : 가입담보 중 수익성 개선을 위해 가입금액 감액, 증액이 권장되는 담보
+                  리스트 입니다.
                 </BulletListItem>
                 <BulletListItem size="sm">
                   가치배수는 회사 내부에서 관리하는 정보이므로 고객에게 안내되지 않도록 유의바랍니다.

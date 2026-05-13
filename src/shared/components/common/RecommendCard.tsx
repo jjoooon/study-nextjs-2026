@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 'use client';
 
 import { Gcol, Grow, Grid, Typo } from '@atoms';
@@ -77,7 +76,6 @@ function NormalRecommendCardItem({
 }: NormalRecommendCardItemProps) {
   const [internalChecked, setInternalChecked] = useState(false);
   const isChecked = checked ?? internalChecked;
-  const isCheckboxSelected = variant === 'checkbox' && isChecked;
 
   return (
     <Grid

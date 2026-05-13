@@ -1,13 +1,16 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 'use client';
 
 import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
+  getNextNumericRowId,
+  isCopyButtonVisible,
   numberValueFormatter,
+  patchCopiedDuplicateRow,
+  rowDataWithTrackingFactory,
   useDynamicColumnWidths,
   AgGridEmptyComponent,
   AmountWithPopoverCellEditor,
@@ -27,7 +30,7 @@ import {
   searchButtonRenderer,
   uwIconRenderer,
 } from '@grid/CellRenderers';
-import { ProductNameHeader } from '@grid/HeadRenderers';
+import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
 import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 
@@ -52,14 +55,7 @@ import type { DummyDataType } from '../data/ltpa35002bData';
 import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
 import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChangedHandler';
 import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
-import {
-  editableCellClassRules,
-  ensureLockedRowsSelected,
-  getNextNumericRowId,
-  isCopyButtonVisible,
-  patchCopiedDuplicateRow,
-  rowDataWithTrackingFactory,
-} from '../utils/agGridUtils';
+import { editableCellClassRules, ensureLockedRowsSelected } from '../utils/agGridUtils';
 
 import '@/shared/lib/agGridPub';
 
@@ -196,11 +192,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         resizable: false,
       },
       {
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            가입금액<span className="text-[1.1rem]">(만원)</span>
-          </Grow>
-        ),
+        headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" col={true} />,
         field: 'insuredAmount',
         width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
@@ -238,11 +230,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
       },
       {
-        headerGroupComponent: () => (
-          <Grow className="w-full text-[1.3rem]" placement={'cc'} gap={0}>
-            보험료<span className="text-[1.1rem]">(원)</span>
-          </Grow>
-        ),
+        headerComponent: () => <HeaderWithUnit label="보험" unit="(만원)" />,
         children: [
           {
             headerName: '출생전',

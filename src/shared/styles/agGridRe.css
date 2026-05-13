@@ -39,7 +39,7 @@
 
 /* header */
 .ag-header {
-  height: 3rem !important;
+  height: 3rem;
 }
 
 .ag-header-cell-resize {
@@ -738,4 +738,30 @@
 }  
 .modify-cell {
   background-color: #CBE3FF !important;
+}
+
+/* agGrid header bg, border 색상 변경 */
+.ag-theme-alpine .ag-header-group-cell.ag-header-color,
+.ag-theme-alpine .ag-header-cell.ag-header-color {
+  background-color: var(--color-primary-15) !important;
+}
+.ag-header-cell.ag-header-color {
+  border-right: 0.1rem solid var(--color-white) !important;
+}
+
+.ag-theme-alpine.ag-header-color-grid {
+  --ag-header-row-border: solid 0.1rem var(--color-white);
+}
+.ag-theme-alpine :where(.ag-header-cell.ag-header-color:not(.ag-header-span-height.ag-header-span-total, .ag-header-parent-hidden)) {
+  border-top: 0.1rem solid var(--color-white) !important;
+}
+.ag-header-row-column .ag-header-cell:last-child {
+  border-right: 0 !important;
+}
+
+/* header 두 줄 시 sortable 적용해야 할 때 */
+.ag-theme-alpine.ag-header-preline-grid .ag-header-cell.ag-header-preline .ag-header-cell-text {
+  white-space: pre-line !important;
+  line-height: 1.2;
+  text-align: center;
 }

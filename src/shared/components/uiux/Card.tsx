@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 

@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-
 import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ReactNode, createElement } from 'react';
@@ -12,6 +11,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 const typoVariants = cva('', {
   variants: {
     variant: {
+      'heading-xl': 'heading-xl block text-[1.8rem] font-bold leading-[150%] tracking-[-0.08rem]',
       'heading-lg': 'heading-lg block text-[1.6rem] font-bold leading-[150%] tracking-[-0.08rem]',
       'heading-md': 'heading-md block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem]',
       'heading-sm': 'heading-sm block text-[1.3rem] font-bold leading-[150%] tracking-[-0.08rem]',

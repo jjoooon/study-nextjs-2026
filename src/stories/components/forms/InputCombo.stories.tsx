@@ -1,7 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */
-import type { Meta, StoryObj } from '@storybook/react';
+ */import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 import { InputCombo } from '@common/InputCombo';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
@@ -130,7 +129,6 @@ function Example() {
     className: { table: { disable: true } },
     forceFocused: { table: { disable: true } },
     disabled: { table: { disable: true } },
-    ulClassName: { table: { disable: true } },
   },
   args: {
     clear: true,
