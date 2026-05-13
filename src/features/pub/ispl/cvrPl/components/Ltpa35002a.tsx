@@ -236,7 +236,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       },
       {
         headerName: '가능금액',
-        unSortIcon: true,
+        // unSortIcon: true,
         field: 'field4',
         width: attributeColumnWidth[7],
         cellClass: 'text-right',

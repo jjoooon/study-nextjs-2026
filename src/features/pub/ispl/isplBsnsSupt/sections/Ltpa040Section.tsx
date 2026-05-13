@@ -1116,42 +1116,38 @@ export default function Ltpa040Section() {
           field: 'field01',
           width: 150,
           cellClass: 'text-center',
-          sortable: true,
+          unSortIcon: true,
         },
         {
           headerName: '채널',
           field: 'field02',
           width: 70,
           cellClass: 'text-center',
-          sortable: true,
+          unSortIcon: true,
         },
         {
           headerName: '취급자',
           field: 'field03',
           width: 120,
           cellClass: 'text-center',
-          sortable: true,
         },
         {
           headerName: '사용인',
           field: 'field04',
           width: 120,
           cellClass: 'text-center',
-          sortable: true,
         },
         {
           headerName: '고객구분',
           field: 'field05',
           width: 90,
           cellClass: 'text-center',
-          sortable: false,
         },
         {
           headerName: '고객명',
           field: 'field06',
           width: 80,
           cellClass: 'text-center',
-          sortable: false,
         },
         {
           headerName: '입력조건',
@@ -1159,14 +1155,12 @@ export default function Ltpa040Section() {
           width: 230,
           cellClass: 'text-left',
           tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRow>({ field: 'field07' }),
-          sortable: false,
         },
         {
           headerName: '추천 설계번호',
           field: 'field08',
           width: 100,
           cellClass: 'text-center',
-          sortable: true,
         },
         {
           headerName: '추천상품',
@@ -1174,14 +1168,12 @@ export default function Ltpa040Section() {
           width: 230,
           cellClass: 'text-left',
           tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRow>({ field: 'field09' }),
-          sortable: false,
         },
         {
           headerName: '담보수',
           field: 'field10',
           width: 80,
           cellClass: 'text-center',
-          sortable: false,
         },
         {
           headerName: '보장보험료',
@@ -1194,7 +1186,6 @@ export default function Ltpa040Section() {
             const num = Number(raw);
             return Number.isNaN(num) ? String(params.value) : `${num.toLocaleString()}원`;
           },
-          sortable: false,
         },
       ],
     },
@@ -1209,7 +1200,6 @@ export default function Ltpa040Section() {
           width: 130,
           headerClass: 'ag-header-color',
           cellClass: 'text-center',
-          sortable: false,
         },
         {
           headerName: '설계상태',
@@ -1217,7 +1207,6 @@ export default function Ltpa040Section() {
           width: 100,
           headerClass: 'ag-header-color',
           cellClass: 'text-center',
-          sortable: false,
         },
         {
           headerName: '설계담보수',
@@ -1225,7 +1214,6 @@ export default function Ltpa040Section() {
           width: 100,
           headerClass: 'ag-header-color',
           cellClass: 'text-center',
-          sortable: false,
         },
         {
           headerName: '보장보험료',
@@ -1239,7 +1227,6 @@ export default function Ltpa040Section() {
             const num = Number(raw);
             return Number.isNaN(num) ? String(params.value) : `${num.toLocaleString()}원`;
           },
-          sortable: false,
         },
       ],
     },
@@ -1253,7 +1240,6 @@ export default function Ltpa040Section() {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: renderConsentCell,
-      sortable: true,
     },
     {
       headerName: '추천설계 이용건수',
@@ -1261,7 +1247,6 @@ export default function Ltpa040Section() {
       width: 220,
       cellClass: 'text-center',
       autoHeight: true,
-      sortable: true,
     },
     {
       headerName: '상품 선택 건수',
@@ -1271,7 +1256,6 @@ export default function Ltpa040Section() {
       autoHeight: true,
       spanRows: true,
       cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT1>('field03', 'field04', 'row'),
-      sortable: true,
     },
     {
       headerName: '총 선택 건수',
@@ -1279,7 +1263,6 @@ export default function Ltpa040Section() {
       width: 220,
       cellClass: 'text-center',
       autoHeight: true,
-      sortable: false,
     },
     {
       headerName: '플랜 선택 건수',
@@ -1287,7 +1270,6 @@ export default function Ltpa040Section() {
       width: 220,
       cellClass: 'text-center',
       autoHeight: true,
-      sortable: false,
     },
   ];
 
@@ -1861,6 +1843,7 @@ export default function Ltpa040Section() {
                     tooltipShowDelay={0}
                     tooltipHideDelay={3000}
                     defaultColDef={{
+                      sortable: true,
                       resizable: true,
                     }}
                     rowSelection={{
@@ -2027,6 +2010,7 @@ export default function Ltpa040Section() {
                         rowData={Ltpa040DummyDataT1}
                         columnDefs={columnDefsT1}
                         defaultColDef={{
+                          sortable: true,
                           resizable: true,
                         }}
                         domLayout="normal"
@@ -2062,7 +2046,7 @@ export default function Ltpa040Section() {
                         columnDefs={columnDefsT3}
                         enableCellSpan={true}
                         defaultColDef={{
-                          sortable: false,
+                          sortable: true,
                           resizable: true,
                           autoHeaderHeight: true,
                         }}
@@ -2082,7 +2066,7 @@ export default function Ltpa040Section() {
                         columnDefs={columnDefsT4}
                         enableCellSpan={true}
                         defaultColDef={{
-                          sortable: false,
+                          sortable: true,
                           resizable: false,
                           autoHeaderHeight: true,
                         }}
@@ -2101,7 +2085,7 @@ export default function Ltpa040Section() {
                         columnDefs={columnDefsT5}
                         enableCellSpan={true}
                         defaultColDef={{
-                          sortable: false,
+                          sortable: true,
                           resizable: true,
                           autoHeaderHeight: true,
                         }}
@@ -2121,7 +2105,7 @@ export default function Ltpa040Section() {
                         columnDefs={columnDefsT6}
                         enableCellSpan={true}
                         defaultColDef={{
-                          sortable: false,
+                          sortable: true,
                           resizable: false,
                           autoHeaderHeight: true,
                         }}
