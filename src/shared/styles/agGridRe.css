@@ -1,6 +1,4 @@
 .ag-theme-alpine {
-  --ag-row-height: 3rem;
-  --ag-header-height: 3rem;
   width: 100%;
   height: 100%;
 }
@@ -36,6 +34,20 @@
 /* .ag-row-odd {
   background-color: transparent;
 } */
+
+/* ===== Row Span Cell ===== */
+/* suppressRowTransform 사용 시 스팬된 셀이 absolute 포지션으로 올라오므로
+   배경색이 없으면 뒤 행이 비쳐 보임 → 배경색 필수 */
+.ag-row .ag-cell.row-span-cell {
+  background-color: #fff;
+  z-index: 1;
+}
+.ag-row.ag-row-even .ag-cell.row-span-cell {
+  background-color: #fff;
+}
+.ag-row.ag-row-odd .ag-cell.row-span-cell {
+  background-color: var(--ag-odd-row-background-color, #f9f9f9);
+}
 
 /* header */
 .ag-header {

@@ -137,6 +137,15 @@
 
 /* 2. 실제 값 창고 (라이트 모드) */
 :root {
+  /* AG Grid 전체 헤더 높이 기본값 설정 */
+  --ag-header-height: 3rem;
+  --ag-group-header-height: 3rem;
+  /* 필요한 경우 다른 높이 변수들도 조절 */
+  --ag-group-header-height: 3rem;
+  --ag-list-item-height: 3rem;
+
+
+
   /* ===== 1. Base Unit ===== */
   --base-unit: 0.4rem;
 
