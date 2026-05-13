@@ -8,6 +8,29 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import React from 'react';
 
+interface HeaderWithUnitProps {
+  label: string;
+  unit: string;
+  className?: string;
+  unitClassName?: string;
+  gap?: number;
+}
+
+export const HeaderWithUnit = React.memo(function HeaderWithUnit({
+  label,
+  unit,
+  className = 'w-full',
+  unitClassName = 'text-[1.1rem]',
+  gap = 0,
+}: HeaderWithUnitProps) {
+  return (
+    <Grow className={className} placement={'cc'} gap={gap}>
+      {label}
+      <span className={unitClassName}>({unit})</span>
+    </Grow>
+  );
+});
+
 interface ProductNameHeaderProps {
   coverageName: string;
   onCoverageNameChange: (value: string) => void;

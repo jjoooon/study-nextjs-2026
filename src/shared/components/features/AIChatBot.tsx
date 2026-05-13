@@ -75,19 +75,21 @@ export default function AIChatBot({ isButton = true, open: openProp, setOpen: se
 
       <DialogContent
         defaultPosition={defaultPosition}
-        showCloseButton={false}
+        showCloseButton={true}
         showOverlay={false}
         resizable={true}
-        zIndex={2147483647}
+        zIndex={1000}
         onPointerDownOutside={(event) => event.preventDefault()}
         onInteractOutside={(event) => event.preventDefault()}
         onEscapeKeyDown={(event) => event.preventDefault()}
+        closeButtonClassName="absolute right-[1.2rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:fill-white"
         className="w-[19.8rem] h-[56rem] min-w-[19.8rem] min-h-[56rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0"
       >
         <DialogHeader className="!max-h-[4.9rem] h-[4.9rem] min-h-0 !p-0 items-end">
           <Grow
-            className="w-full relative bg-[rgba(0,0,0,0.75)] h-[4rem] rounded-t-[1rem] pl-3 pr-[3.4rem]"
+            className="w-full relative bg-[rgba(0,0,0,0.75)] backdrop-blur-xs h-[4rem] rounded-t-[1rem] pl-3 pr-[3.6rem]"
             placement="bwe"
+            gap={0}
           >
             <Image
               src={'/images/chatbot/Chatbot1.png'}
@@ -97,12 +99,6 @@ export default function AIChatBot({ isButton = true, open: openProp, setOpen: se
               className="mb-[1.2rem]"
             />
             <Image src={'/images/chatbot/Chatbot2.png'} alt="백프로" width={49} height={49} />
-            <DialogClose
-              aria-label="챗봇 닫기"
-              className="absolute right-[1.2rem] top-1/2 -translate-y-1/2 z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)]"
-            >
-              <CloseIcon size={16} color="#ffffff" />
-            </DialogClose>
           </Grow>
         </DialogHeader>
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[1px] border-[var(--color-blue-gray-30)]">

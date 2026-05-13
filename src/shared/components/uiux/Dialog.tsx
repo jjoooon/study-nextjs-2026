@@ -183,6 +183,7 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  closeButtonClassName,
   showOverlay,
   overlayClassName,
   resizable = false,
@@ -194,6 +195,7 @@ function DialogContent({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
+  closeButtonClassName?: string;
   showOverlay?: boolean;
   overlayClassName?: string;
   resizable?: boolean;
@@ -416,7 +418,10 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-[2.2rem] right-[2.4rem] rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none "
+            className={cn(
+              'flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-[2.2rem] right-[2.4rem] rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none',
+              closeButtonClassName
+            )}
           >
             <CloseIcon color="#2C2724" />
           </DialogPrimitive.Close>
