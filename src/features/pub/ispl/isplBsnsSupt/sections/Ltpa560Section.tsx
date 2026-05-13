@@ -9,7 +9,6 @@ import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
 import { SearchIcon, ResetIcon } from '@icons';
@@ -224,12 +223,13 @@ export default function Ltpa560Section() {
   // AgGrid Column
   const columnDefs: (ColDef<Ltpa560DummyDataRow> | ColGroupDef<Ltpa560DummyDataRow>)[] = [
     {
-      headerName: '설계번호',
+      headerName: '상품',
       flex: 1,
       field: 'field01',
-      cellClass: 'text-center',
+      cellClass: 'text-center [&>div]:whitespace-normal',
       spanRows: true,
       autoHeight: true,
+      colSpan: (params) => (params.node?.rowPinned === 'bottom' ? 3 : 1),
     },
     {
       headerName: '채널',
@@ -238,7 +238,7 @@ export default function Ltpa560Section() {
       cellClass: 'text-center',
       spanRows: true,
       autoHeight: true,
-      colSpan: (params) => (params.data?.subtotal ? 2 : 1),
+      colSpan: (params) => (params.node?.rowPinned === 'bottom' ? 0 : params.data?.subtotal ? 2 : 1),
     },
     {
       headerName: '본부명',
@@ -246,25 +246,25 @@ export default function Ltpa560Section() {
       field: 'field03',
       cellClass: 'text-center',
       autoHeight: true,
-      colSpan: (params) => (params.data?.subtotal ? 0 : 1),
+      colSpan: (params) => (params.node?.rowPinned === 'bottom' || params.data?.subtotal ? 0 : 1),
     },
     {
       headerName: '단순설계',
-      flex: 1,
+      width: 80,
       field: 'field04',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '설계중',
-      flex: 1,
+      width: 80,
       field: 'field05',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '설계완료',
-      flex: 1,
+      width: 80,
       field: 'field06',
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
@@ -279,14 +279,14 @@ export default function Ltpa560Section() {
     },
     {
       headerName: '청약중',
-      flex: 1,
+      width: 80,
       field: 'field07',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '청약심사완료',
-      flex: 1,
+      width: 80,
       field: 'field08',
       cellClass: 'text-center',
       autoHeight: true,
@@ -347,13 +347,77 @@ export default function Ltpa560Section() {
     allRows: Ltpa560DummyData,
     pageSize,
   });
+
+  const sumRow = React.useMemo<Ltpa560DummyDataRow[]>(() => {
+    const toNumber = (value: string | number): number => {
+      if (typeof value === 'number') {
+        return Number.isFinite(value) ? value : 0;
+      }
+
+      const normalized = value.replaceAll(',', '').trim();
+      if (normalized.length === 0) {
+        return 0;
+      }
+
+      const parsed = Number(normalized);
+      return Number.isFinite(parsed) ? parsed : 0;
+    };
+
+    const { currentTotal, planATotal, planBTotal, planCTotal, planDTotal, planETotal, planFTotal, planGTotal } =
+      rowData.reduce(
+        (acc, row) => {
+          if (row.subtotal) {
+            return acc;
+          }
+
+          acc.planATotal += toNumber(row.field04);
+          acc.planBTotal += toNumber(row.field05);
+          acc.planCTotal += toNumber(row.field06);
+          acc.planDTotal += toNumber(row.field07);
+          acc.planETotal += toNumber(row.field08);
+          acc.planFTotal += toNumber(row.field09);
+          acc.planGTotal += toNumber(row.field10);
+          acc.currentTotal += toNumber(row.field11);
+
+          return acc;
+        },
+        {
+          currentTotal: 0,
+          planATotal: 0,
+          planBTotal: 0,
+          planCTotal: 0,
+          planDTotal: 0,
+          planETotal: 0,
+          planFTotal: 0,
+          planGTotal: 0,
+        }
+      );
+
+    return [
+      {
+        id: -1,
+        field01: '총합계',
+        field02: '',
+        field03: '',
+        field04: planATotal,
+        field05: planBTotal,
+        field06: planCTotal,
+        field07: planDTotal,
+        field08: planETotal,
+        field09: planFTotal,
+        field10: planGTotal,
+        field11: currentTotal,
+        field12: '',
+      },
+    ];
+  }, [rowData]);
+
   return (
     <>
       <LayoutHead>
         <PageID
           data={{
             pageName: '실시간 설계현황',
-            pageId: 'LTPA560',
           }}
         />
       </LayoutHead>
@@ -480,11 +544,12 @@ export default function Ltpa560Section() {
                     resizable: true,
                     autoHeaderHeight: true,
                   }}
-                  domLayout="normal"
+                  domLayout="autoHeight"
                   cacheBlockSize={pageSize}
                   maxBlocksInCache={2}
                   datasource={dataSource}
                   enableCellSpan={true}
+                  pinnedBottomRowData={sumRow}
                 />
               </div>
               <TableMore
@@ -496,52 +561,6 @@ export default function Ltpa560Section() {
               />
             </Grid>
           </Grid>
-        }
-        mainFoot={
-          <MainBottom>
-            <MainBottomItem>
-              <Grow gap={1}>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  삭제설계 확인
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  출력물
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  완수수납
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  설계비교
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  알림톡발송
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  셀프고지
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  증권발송
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  계약자발송
-                </Button>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  이미지조회
-                </Button>
-              </Grow>
-              <Grow gap={1}>
-                <Button variant={'contained'} size={'xl'} color={'gray-light'}>
-                  설계예외처리
-                </Button>
-                <Button variant={'contained'} size={'xl'} color={'gray-light'}>
-                  저장
-                </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
-                  설계삭제
-                </Button>
-              </Grow>
-            </MainBottomItem>
-          </MainBottom>
         }
       />
       <LayoutFoot>
