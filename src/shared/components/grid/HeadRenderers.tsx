@@ -76,12 +76,12 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
   return (
     <button
       type="button"
-      className="w-full h-full"
+      className="h-full w-full flex justify-center items-center cursor-pointer select-none"
       onClick={handleSort}
       aria-label={`${label} 정렬`}
       aria-disabled={!enableSorting}
     >
-      <Grow className="w-full" placement={'cc'} gap={0.4}>
+      <Grow placement={'cc'} gap={0.4}>
         {content}
         <span className="text-[1rem] leading-none text-[var(--color-gray-60)]">
           {sort === 'asc' ? (
