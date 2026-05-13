@@ -39,7 +39,7 @@
 
 /* header */
 .ag-header {
-  height: 3rem !important;
+  height: 3rem;
 }
 
 .ag-header-cell-resize {
