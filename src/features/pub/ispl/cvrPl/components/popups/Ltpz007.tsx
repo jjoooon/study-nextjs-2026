@@ -4,13 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import {
-  AgGridEmptyComponent,
-  GridHeaderCheckbox,
-  createHeaderCheckboxParams,
-  createHeaderCheckboxOnCellValueChanged,
-  createTooltipValueGetter,
-} from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { Button } from '@uiux/Button';
@@ -24,7 +18,8 @@ import {
   DialogClose,
   DialogFooterArea,
 } from '@uiux/Dialog';
-import type { ColDef, GridApi } from 'ag-grid-enterprise';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
@@ -117,38 +112,143 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz007 = () => {
-  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const selectedHeaderField = React.useMemo<'field02' | 'field03' | null>(() => {
+    if (rowData.length === 0) {
+      return null;
+    }
 
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
-  const onCellValueChanged = React.useMemo(
-    () => createHeaderCheckboxOnCellValueChanged<DummyDataType>(['field02', 'field03']),
-    []
+    if (rowData.every((row) => row.field02)) {
+      return 'field02';
+    }
+
+    if (rowData.every((row) => row.field03)) {
+      return 'field03';
+    }
+
+    return null;
+  }, [rowData]);
+
+  const handleHeaderRadioChange = React.useCallback((field: 'field02' | 'field03') => {
+    setRowData((currentRowData) =>
+      currentRowData.map((row) => ({
+        ...row,
+        field02: field === 'field02',
+        field03: field === 'field03',
+      }))
+    );
+  }, []);
+
+  const renderRadioHeader = React.useCallback(
+    (label: string, field: 'field02' | 'field03') => {
+      return (
+        <div className="flex h-full w-full items-center justify-center gap-2">
+          <RadioGroup
+            value={selectedHeaderField ?? ''}
+            onValueChange={() => handleHeaderRadioChange(field)}
+            width="auto"
+            className="justify-center gap-0"
+          >
+            <RadioGroupItem value={field} id={`header-${field}`} variant="default" size="lg">
+              <span>{label}</span>
+            </RadioGroupItem>
+          </RadioGroup>
+        </div>
+      );
+    },
+    [handleHeaderRadioChange, selectedHeaderField]
   );
+
+  const handleRadioChange = React.useCallback((rowId: number, field: 'field02' | 'field03') => {
+    setRowData((currentRowData) =>
+      currentRowData.map((row) => {
+        if (row.id !== rowId) {
+          return row;
+        }
+
+        return {
+          ...row,
+          field02: field === 'field02',
+          field03: field === 'field03',
+        };
+      })
+    );
+  }, []);
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
-      headerName: '세만기형',
+      headerComponent: () => renderRadioHeader('세만기형', 'field02'),
       width: 100,
       field: 'field02',
-      editable: true,
-      cellClass: 'text-center editable-cell',
+      headerClass: '!justify-center',
+      cellClass: 'text-center justify-center',
+      cellClassRules: {
+        'bg-[var(--color-primary-5)]': (params) => Boolean(params.data?.field02),
+      },
       autoHeight: false,
-      cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
-      cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
-      headerComponent: GridHeaderCheckbox,
-      headerComponentParams: createHeaderCheckboxParams(gridApiRef, 'field02'),
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        const row = params.data;
+
+        if (!row) {
+          return null;
+        }
+
+        return (
+          <div
+            className="flex h-full w-full cursor-pointer items-center justify-center"
+            onClick={(event) => {
+              event.stopPropagation();
+              handleRadioChange(row.id, 'field02');
+            }}
+          >
+            <RadioGroup
+              value={row.field02 ? 'field02' : row.field03 ? 'field03' : ''}
+              onValueChange={() => handleRadioChange(row.id, 'field02')}
+              width="auto"
+              className="justify-center gap-0"
+            >
+              <RadioGroupItem value="field02" id={`field02-${row.id}`} variant="default" size="lg" />
+            </RadioGroup>
+          </div>
+        );
+      },
     },
     {
-      headerName: '갱신형',
+      headerComponent: () => renderRadioHeader('갱신형', 'field03'),
       width: 100,
       field: 'field03',
-      editable: true,
-      cellClass: 'text-center editable-cell',
+      headerClass: '!justify-center',
+      cellClass: 'text-center',
+      cellClassRules: {
+        'bg-[var(--color-primary-5)]': (params) => Boolean(params.data?.field03),
+      },
       autoHeight: false,
-      cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
-      cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
-      headerComponent: GridHeaderCheckbox,
-      headerComponentParams: createHeaderCheckboxParams(gridApiRef, 'field03'),
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        const row = params.data;
+
+        if (!row) {
+          return null;
+        }
+
+        return (
+          <div
+            className="flex h-full w-full cursor-pointer items-center justify-center"
+            onClick={(event) => {
+              event.stopPropagation();
+              handleRadioChange(row.id, 'field03');
+            }}
+          >
+            <RadioGroup
+              value={row.field02 ? 'field02' : row.field03 ? 'field03' : ''}
+              onValueChange={() => handleRadioChange(row.id, 'field03')}
+              width="auto"
+              className="justify-center gap-0"
+            >
+              <RadioGroupItem value="field03" id={`field03-${row.id}`} variant="default" size="lg" />
+            </RadioGroup>
+          </div>
+        );
+      },
     },
   ];
 
@@ -173,13 +273,9 @@ const Ltpz007 = () => {
               noRowsOverlayComponent={AgGridEmptyComponent}
               rowData={rowData}
               columnDefs={columnDefs}
-              singleClickEdit={true}
-              onCellValueChanged={onCellValueChanged}
-              onGridReady={(params) => {
-                gridApiRef.current = params.api;
-              }}
               defaultColDef={{
                 suppressMovable: true,
+                // headerClass: '!justify-center',
               }}
               domLayout="normal"
               tooltipShowMode="whenTruncated"

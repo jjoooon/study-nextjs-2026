@@ -9,6 +9,7 @@ import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { StarStage } from '@features/StarStage';
 import { ArrowDoubleIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -26,7 +27,6 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { StarStage } from '@features/StarStage';
 
 // dummy data
 type DummyDataType = {
@@ -284,7 +284,6 @@ const Ltpz070 = () => {
     {
       headerName: '변경후 (보장 보험료: 500,000원)',
       headerClass: 'ag-header-color',
-      // headerClass: 'text-[var(--color-primary-50)]',
       children: [
         {
           headerName: '수익성',
