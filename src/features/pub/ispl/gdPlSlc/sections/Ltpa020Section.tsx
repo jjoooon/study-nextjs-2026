@@ -93,7 +93,6 @@ export default function Ltpa020Section() {
                 size={24}
                 color={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#006FF2'}
                 color2={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#A683FF'}
-                className=""
               />
             </RadioGroupItem>
           </RadioGroup>
