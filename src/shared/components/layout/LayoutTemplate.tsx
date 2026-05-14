@@ -69,7 +69,7 @@ export const LayoutTemplateLTPA350 = ({
 
 export const LayoutTemplate = ({ mainBody, mainFoot }: Props) => (
   <>
-    <LayoutMain className="grid grid-rows-[1fr_auto] gap-[1rem] px-[1rem]">
+    <LayoutMain className="grid grid-rows-[1fr_auto] gap-0 px-[1rem]">
       <LayoutMainBody>
         <LayoutScrollWrap>
           <LayoutScrollItem>{mainBody}</LayoutScrollItem>

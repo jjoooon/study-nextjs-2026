@@ -193,7 +193,7 @@ export function TableMore({
   };
 
   return (
-    <Grow placement={'bwc'} className="w-full py-1 px-4">
+    <Grow placement={'bwc'} className="w-full p-0">
       <Grow className="text-[1.3rem]" placement="sc">
         <b>{loadedCount}</b> / 전체 {totalCount}
       </Grow>

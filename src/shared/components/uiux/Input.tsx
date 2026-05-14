@@ -109,7 +109,6 @@ function Input({
     } else {
       displayValue = rawValue;
     }
-    
   }
 
   const resolvedWidth =

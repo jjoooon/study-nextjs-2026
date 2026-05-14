@@ -85,7 +85,7 @@ const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
         onClick={handleDivClick}
         // 중요: 여기가 shadcn Input의 포커스 스타일을 흉내내는 부분입니다.
         className={cn(
-          'flex flex-wrap',
+          'flex flex-wrap border border-[var(--color-gray-20)] w-full px-2 py-1 rounded-[0.4rem] bg-white',
           error
             ? 'border-[var(--color-danger-50)] bg-[var(--color-danger-5)] outline-[0.2rem] outline-[var(--color-danger-50)] -outline-offset-[0.2rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
             : 'border-[var(--color-gray-20)]',
@@ -98,7 +98,7 @@ const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
             key={`${tag}-${index}`}
             variant="contained"
             color="gray"
-            className="gap-1 px-1 py-0.5 text-[1.2rem] font-bold"
+            className="gap-1 px-1 text-[1.2rem] font-bold"
           >
             {tag}
             <Button
@@ -113,7 +113,7 @@ const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
               }}
               aria-label={`Remove ${tag} tag`}
             >
-              <InputClearIcon color={'var(--color-blue-gray-50)'} />
+              <InputClearIcon color={'var(--color-blue-gray-50)'} size={12} />
             </Button>
           </Badge>
         ))}
@@ -128,7 +128,7 @@ const InputTag = React.forwardRef<HTMLInputElement, InputTagProps>(
           onKeyDown={handleKeyDown}
           placeholder={placeholder} // 태그가 하나라도 있으면 placeholder 숨김
           // Input 스타일 리셋
-          className="flex-1 min-w-[12rem] bg-transparent outline-none text-sm disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex-1 min-w-[12rem] h-[1.8rem] bg-transparent outline-none text-sm disabled:cursor-not-allowed disabled:opacity-50"
           // 태그 최대 개수 도달 시 입력 막기
           disabled={maxTags ? value.length >= maxTags : false}
         />
