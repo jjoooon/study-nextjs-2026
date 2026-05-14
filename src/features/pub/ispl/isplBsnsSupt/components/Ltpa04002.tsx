@@ -1129,7 +1129,7 @@ const Ltpa040DummyDataT7: Ltpa040DummyDataRowT7[] = [
   },
 ];
 
-const Ltpa04002Section = () => {
+const Ltpa04002 = () => {
   const renderConsentCell = (params: ICellRendererParams<Ltpa040DummyDataRowT1>) => {
     const value = String(params.value ?? '');
 
@@ -1968,4 +1968,4 @@ const Ltpa04002Section = () => {
   );
 };
 
-export default Ltpa04002Section;
+export default Ltpa04002;

@@ -8,13 +8,13 @@ import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { Button } from '@uiux/Button';
-import Ltpa04001Section from './Ltpa04001Section';
-import Ltpa04002Section from './Ltpa04002Section';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
+import Ltpa04001 from '../components/Ltpa04001';
+import Ltpa04002 from '../components/Ltpa04002';
 
 type Ltp040TabType = { name: string; value: string; label: string };
 
@@ -48,7 +48,7 @@ export default function Ltpa040Section() {
             renderTab={(tab) => <span>{tab.label}</span>}
             renderDropdownItem={false}
           >
-            {active === 'tab1' ? <Ltpa04001Section /> : active === 'tab2' ? <Ltpa04002Section /> : null}
+            {active === 'tab1' ? <Ltpa04001 /> : active === 'tab2' ? <Ltpa04002 /> : null}
           </TabPager>
         }
         mainFoot={

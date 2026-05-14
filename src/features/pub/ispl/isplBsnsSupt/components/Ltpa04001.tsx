@@ -116,7 +116,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   },
 ];
 
-const Ltpa04001Section = () => {
+const Ltpa04001 = () => {
   const columnDefs: (ColDef<Ltpa040DummyDataRow> | ColGroupDef<Ltpa040DummyDataRow>)[] = [
     {
       headerName: '추천설계정보',
@@ -382,4 +382,4 @@ const Ltpa04001Section = () => {
   );
 };
 
-export default Ltpa04001Section;
+export default Ltpa04001;
