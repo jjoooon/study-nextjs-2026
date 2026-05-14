@@ -1048,7 +1048,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPZ296",
-    "path": "ispl/isplBsnsSupt",
+    "path": "ispl/isplBsnsSupt/components/popups",
     "dep4": "담보별 피보험자명세관리",
     "file": "전환_가입설계",
     "plan": "서영진",
