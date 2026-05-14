@@ -10,7 +10,6 @@ import useMounted from '@/shared/hooks/useMounted';
 import { chatbotUtils } from '@/shared/utils/chatbotUtils';
 import Image from 'next/image';
 import * as React from 'react';
-import { DOMParser } from '@xmldom/xmldom';
 
 const CHATBOT_DIALOG_WIDTH = 198;
 const CHATBOT_DIALOG_HEIGHT = 560;
@@ -36,13 +35,13 @@ function getInitialDialogPosition(): { x: number; y: number } {
   };
 }
 
-export interface AIChatBotProps {
+export interface Ltpa120Props {
   isButton?: boolean;
   open?: boolean;
   setOpen?: (open: boolean) => void;
 }
 
-export default function AIChatBot({ isButton = true, open: openProp, setOpen: setOpenProp }: AIChatBotProps) {
+export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp }: Ltpa120Props) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [internalOpen, setInternalOpen] = React.useState(false);
   const [defaultPosition, setDefaultPosition] = React.useState({ x: 0, y: 0 });
@@ -126,4 +125,6 @@ export default function AIChatBot({ isButton = true, open: openProp, setOpen: se
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default Ltpa120;

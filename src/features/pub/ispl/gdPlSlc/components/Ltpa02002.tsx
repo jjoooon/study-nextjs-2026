@@ -6,8 +6,7 @@
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import AIChatBot from '@features/AIChatBot';
-import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext } from '@icons';
+import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, AiIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -18,6 +17,7 @@ import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import Ltpa120 from '@/features/pub/shared/components/popups/Ltpa120';
 
 import '@/shared/lib/agGridPub';
 
@@ -946,14 +946,14 @@ export function Ltpa02002({
           </Grid>
           <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
             <Button variant={'outlined'} color={'gray'} size={'xl'}>
-              <Ai2Icon />
+              <AiIcon size={24} color={'#006FF2'} color2={'#A683FF'} />
               추천설계비교({comparedPlanKeys.length})
             </Button>
             <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
               설계생성({comparedPlanKeys.length})
               <ArrowNext size={16} />
             </Button>
-            <AIChatBot />
+            <Ltpa120 />
           </Grow>
         </Grid>
       )}

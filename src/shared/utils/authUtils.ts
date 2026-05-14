@@ -53,3 +53,5 @@ export function hasButtonAuth(id?: string) {
 
   return getAuthList().includes(match[1]);
 }
+
+export const gParentIframeUrlHost = '*';

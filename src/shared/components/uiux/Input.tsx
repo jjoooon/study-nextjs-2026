@@ -12,8 +12,8 @@ import * as React from 'react';
 import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
+import { format } from '@/shared/utils/formatUtils';
 
-type FormatterType = ((value: string) => string) | 'jumin' | 'default';
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   variant?: 'ghost' | 'default' | 'info';
   size?: UIUXsize;
@@ -28,20 +28,12 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   commaAmount?: boolean;
   clear?: boolean;
   forceFocused?: boolean;
-  formatter?: FormatterType;
+  formatter?: string;
   isFocused?: boolean;
   width?: 'auto' | 'full' | string | number;
   restrictChars?: boolean;
   // debug?: boolean;
 }
-// 주민등록번호 입력 포맷터: 6자리-7자리, 빈자리는 언더바
-function formatJumin(input: string): string {
-  const digits = input.replace(/\D/g, '').slice(0, 13);
-  const front = digits.slice(0, 6).padEnd(6, '_');
-  const back = digits.slice(6, 13).padEnd(7, '_');
-  return `${front}-${back}`;
-}
-
 function formatAmount(value: string) {
   const sanitized = sanitizeAmountInput(value);
   if (!sanitized) return '';
@@ -109,10 +101,10 @@ function Input({
   const rawValue = value === undefined || value === null ? '' : String(value);
   let displayValue = rawValue;
 
-  if (formatter === 'jumin') {
-    displayValue = formatJumin(rawValue);
-  } else if (commaAmount) {
+  if (commaAmount) {
     displayValue = isFocused || forceFocused ? rawValue : formatAmount(rawValue);
+  } else if (formatter) {
+      displayValue = format(rawValue, formatter);
   }
 
   const resolvedWidth =
@@ -205,7 +197,7 @@ function Input({
   };
 
   // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
-  const resolvedPlaceholder = formatter === 'jumin' && !props.placeholder ? '______-_______' : props.placeholder;
+  const resolvedPlaceholder = formatter?.replaceAll('#', '_');
   const clearPaddingStyle = clear && isInputFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined;
   const mergedInputStyle = clearPaddingStyle ? { ...styleProp, ...clearPaddingStyle } : styleProp;
 
@@ -251,16 +243,16 @@ function Input({
                 onClick={() => {
                   // input 값을 지우는 이벤트 발생
                   if (onChange) {
-                    let clearedValue = '';
-                    // 주민등록번호: 빈 문자열 전달
-                    if (formatter === 'jumin') {
-                      clearedValue = '';
-                    } else if (formatter && typeof formatter === 'function') {
-                      clearedValue = formatter('');
-                    }
+                    // let clearedValue = '';
+                    // // 주민등록번호: 빈 문자열 전달
+                    // if (formatter === 'jumin') {
+                    //   clearedValue = '';
+                    // } else if (formatter && typeof formatter === 'function') {
+                    //   clearedValue = formatter('');
+                    // }
                     const event = {
                       target: {
-                        value: clearedValue,
+                        value: '',
                       },
                     } as React.ChangeEvent<HTMLInputElement>;
                     onChange(event);

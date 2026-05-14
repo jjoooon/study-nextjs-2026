@@ -119,6 +119,8 @@ const envSchema = z.object({
 
   /** 디버그 IP에 적용할 로그 레벨 */
   DEBUG_LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('debug'),
+
+  NEXT_PUBLIC_DOMAIN_CHATBOT: z.string(),
 });
 
 /**
@@ -149,6 +151,8 @@ const config = envSchema.parse({
 
   DEBUG_IPS: process.env.DEBUG_IPS,
   DEBUG_LOG_LEVEL: process.env.DEBUG_LOG_LEVEL,
+
+  NEXT_PUBLIC_DOMAIN_CHATBOT: process.env.NEXT_PUBLIC_DOMAIN_CHATBOT,
 });
 
 /**
@@ -186,6 +190,10 @@ export const publicConfig = {
     redux: config.NEXT_PUBLIC_REDUX_DEVTOOLS,
     logLevel: config.NEXT_PUBLIC_LOG_LEVEL,
   },
+
+  domain: {
+    chatbot: config.NEXT_PUBLIC_DOMAIN_CHATBOT,
+  }
 } as const;
 
 /**

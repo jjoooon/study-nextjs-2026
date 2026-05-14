@@ -137,21 +137,8 @@ const DummyData: DummyDataType[] = [
 
 
 const Ltpz090 = () => {
-  const renderConsentCell = (params: ICellRendererParams<DummyDataType>) => {
-    const value = String(params.value ?? '');
-  
-    if (value === '보기') {
-      return <Typo>{value}</Typo>;
-    }
-  
-    return (
-      <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-        {value}
-      </Button>
-    );
-  };
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -218,15 +205,12 @@ const Ltpz090 = () => {
       autoHeight: true,
       cellClass: 'text-center',
       cellRenderer: () => (
-        <Button variant={'text'} size={'lg'} color={'link'}>
+        <Button variant={'outlined'} size={'md'} color={'gray'}>
           보기
         </Button>
       ),
     },
   ];
-
-  // TODO: 상세 팝업 컴포넌트 연결 필요
-  const handleOpenDetailPopup = () => {};
 
   return (
     <Dialog open>
