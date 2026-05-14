@@ -37,10 +37,16 @@ export type ToggleTopRow<T> = T & {
 
 type PrimitiveId = string | number;
 
+/**
+ * T에서 id로 사용할 수 있는 키(string | number 값)만 추출.
+ */
 type IdKeyOf<T> = {
   [K in keyof T]-?: T[K] extends PrimitiveId ? K : never;
 }[keyof T];
 
+/**
+ * T에서 토글 플래그로 사용할 수 있는 boolean 키만 추출.
+ */
 type BooleanKeyOf<T> = {
   [K in keyof T]-?: T[K] extends boolean ? K : never;
 }[keyof T];
@@ -81,6 +87,10 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
   idKey,
   toggleKey,
 }: UseToggleTopRowsParams<T>) {
+  /**
+   * 최근 토글 순서를 기록하기 위한 증가 시퀀스.
+   * - 더 최근에 토글된 항목이 상단에서 먼저 오도록 사용.
+   */
   const sequenceRef = useRef(1);
 
   const [rowData, setRowData] = useState<ToggleTopRow<T>[]>(() => {
@@ -93,6 +103,10 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
     return sortToggleRows(initialized, toggleKey);
   });
 
+  /**
+   * id 기준으로 토글 상태를 반전하고,
+   * 반전 결과에 맞춰 상단 정렬 규칙을 다시 적용.
+   */
   const toggleById = useCallback(
     (id: T[IdKeyOf<T>]) => {
       setRowData((prev) => {
@@ -117,8 +131,11 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
   );
 
   return {
+    /** 정렬 규칙이 반영된 행 데이터 */
     rowData,
+    /** 필요 시 외부에서 직접 행 데이터 갱신 */
     setRowData,
+    /** 특정 id 행의 토글 상태 반전 */
     toggleById,
   };
 }
@@ -537,6 +554,11 @@ export type DuplicateRowBase = {
   filePath?: string[];
 };
 
+/**
+ * rowData setState 래퍼.
+ * - 행이 새로 추가된 경우, `isDuplicate`인 신규 행을 찾아
+ *   `pendingSelectIdRef`에 기록(후속 선택 처리용).
+ */
 export function rowDataWithTrackingFactory<T extends { id: string | number; isDuplicate?: boolean }>(
   setRowData: React.Dispatch<React.SetStateAction<T[]>>,
   pendingSelectIdRef: React.MutableRefObject<string | number | null>
@@ -556,12 +578,24 @@ export function rowDataWithTrackingFactory<T extends { id: string | number; isDu
   };
 }
 
+/**
+ * 현재 rows에서 다음 숫자 id를 계산.
+ * - 숫자 문자열도 number로 변환해 비교.
+ * - 유효한 숫자 id가 없으면 1 반환.
+ */
 export function getNextNumericRowId<T extends { id: string | number }>(rows: T[]): number {
   const ids = rows.map((row) => (typeof row.id === 'number' ? row.id : Number(row.id))).filter((id) => !isNaN(id));
   const maxId = ids.length > 0 ? Math.max(...ids) : 0;
   return maxId + 1;
 }
 
+/**
+ * 복제 행 생성 시 공통 보정값을 적용.
+ * - `id`: 새 id
+ * - `displayNo`: 원본 id
+ * - `isDuplicate`, `isChecked`: true
+ * - `filePath`: 기존 경로에 새 id 문자열 추가
+ */
 export function patchCopiedDuplicateRow<T extends DuplicateRowBase>(
   originalRow: T,
   nextId: number
@@ -576,6 +610,11 @@ export function patchCopiedDuplicateRow<T extends DuplicateRowBase>(
   };
 }
 
+/**
+ * 복제 버튼 노출 조건.
+ * - 행이 선택되어 있고,
+ * - 이미 복제된 행이 아닐 때만 노출.
+ */
 export function isCopyButtonVisible<T extends { isDuplicate?: boolean }>(params: {
   node?: { isSelected?: () => boolean | undefined };
   data?: T;
@@ -983,6 +1022,13 @@ export function useAgGridInfiniteAppend<TData>({
     setLoadedCount(totalCount);
   }, [totalCount]);
 
+  /**
+   * 접기: 처음 상태(pageSize 또는 initialLoadedCount)로 복원.
+   */
+  const handleLoadReset = React.useCallback(() => {
+    setLoadedCount(initialLoadedCount ?? pageSize);
+  }, [initialLoadedCount, pageSize]);
+
   const dataSource = React.useMemo<IDatasource>(() => {
     return {
       getRows: (params: IGetRowsParams) => {
@@ -1004,6 +1050,7 @@ export function useAgGridInfiniteAppend<TData>({
     setLoadedCount,
     handleLoadNext,
     handleLoadAll,
+    handleLoadReset,
     dataSource,
   };
 }
@@ -1385,7 +1432,9 @@ export const CoveragePopover = ({
   text: string;
   items?: { title: string; description: string; info: string[] };
 }) => {
+  /** 팝오버 열림 상태 */
   const [open, setOpen] = useState(false);
+  /** 트리거 버튼 ref (접근성/포커스 제어 확장 대비) */
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (
