@@ -31,9 +31,8 @@ type DummyData1Type = {
   isCheck: boolean;
   field1: number;
   field2: string;
-  field3: string[];
-  field4: string[][];
-  field5: number;
+  field3: string[][];
+  field4: number;
 };
 const DummyData1: DummyData1Type[] = [
   {
@@ -41,18 +40,8 @@ const DummyData1: DummyData1Type[] = [
     isCheck: true,
     field1: 1,
     field2: '사망/후유',
-    field3: ['포함', '미포함'],
-    field4: [['사망', '후유장해', '장애'], ['보험료']],
-    field5: 98,
-  },
-  {
-    id: 2,
-    isCheck: false,
-    field1: 2,
-    field2: '진단비',
-    field3: ['포함', '미포함'],
-    field4: [['사망', '후유장해', '장애'], ['보험료']],
-    field5: 25,
+    field3: [['사망', '후유장해', '장애'], ['보험료']],
+    field4: 98,
   },
 ];
 
@@ -73,18 +62,32 @@ export default function Ltpa600Section() {
     {
       headerName: '구분',
       field: 'field3',
-      width: 110,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '세부조건',
-      field: 'field4',
       flex: 1,
       cellClass: 'text-center',
+      cellRenderer: (params) => {
+        const values = params.value as string[][];
+        console.log('values', values);
+        return (
+          <Grid className="grid-cols-[8rem_1fr] grid-rows-[1fr_1fr] gap-0">
+            {values[0].map((value, index) => (
+              <React.Fragment key={index}>
+                <Grow placement="cc">포함</Grow>
+                <Grow placement="cc">{value[0]}</Grow>
+              </React.Fragment>
+            ))}
+            {values[1].map((value, index) => (
+              <React.Fragment key={index}>
+                <Grow placement="cc">미포함</Grow>
+                <Grow placement="cc">{value[0]}</Grow>
+              </React.Fragment>
+            ))}
+          </Grid>
+        );
+      },
     },
     {
       headerName: '담보',
-      field: 'field5',
+      field: 'field4',
       width: 60,
       cellClass: 'text-center',
     },
