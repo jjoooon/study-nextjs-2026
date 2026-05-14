@@ -314,7 +314,7 @@ const Ltpz052 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_1fr_auto]">
           <Grow placement="bwe" className="w-full" variant={'box-round'} gap={3}>
             <FormTable variant={'head'}>
               <FormRow>
@@ -342,7 +342,7 @@ const Ltpz052 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <TableFold variant="accordion" className="grid-rows-[auto_1fr] gap-2.5">
+          <TableFold variant="accordion" className="grid-rows-[auto_1fr] gap-1">
             <TableFoldHead title="고객정보">
               {/* M1. onClick 추가 */}
               <Grow>

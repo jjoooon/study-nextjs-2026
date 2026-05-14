@@ -238,62 +238,65 @@ export default function Ltpa600Section() {
 
   // 담보분류 -------------
   const [rowData, setRowData] = React.useState<DummyData1Type[]>(DummyData1);
-  const columnDefs1: ColDef<DummyData1Type>[] = [
-    {
-      headerName: '순서',
-      field: 'field1',
-      width: 50,
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '담보그룹',
-      field: 'field2',
-      width: 80,
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '구분',
-      field: 'field3',
-      flex: 1,
-      cellClass: 'text-center !p-0',
-      autoHeight: true,
-      sortable: false,
-      cellRenderer: (params: ICellRendererParams<DummyData1Type, TagGroups>) => {
-        const values = params.value;
-        const rowId = params.data?.id;
-
-        if (!values || rowId === undefined) {
-          return null;
-        }
-
-        return (
-          <Grid className="grid-cols-[5rem_1fr] grid-rows-[auto_auto] gap-0 ">
-            <Grow placement="cc" className="border-b border-[var(--color-gray-10)]">
-              포함
-            </Grow>
-            <Grow placement="cc" className="py-1 px-2 border-l border-b border-[var(--color-gray-10)]">
-              <InputTag value={values[0]} onChange={(value) => handleTagChange(rowId, 0, value)} />
-            </Grow>
-            <Grow placement="cc" className="">
-              미포함
-            </Grow>
-            <Grow placement="cc" className="py-1 px-2 border-l border-[var(--color-gray-10)]">
-              <InputTag value={values[1]} onChange={(value) => handleTagChange(rowId, 1, value)} />
-            </Grow>
-          </Grid>
-        );
+  const columnDefs1: ColDef<DummyData1Type>[] = useMemo(
+    () => [
+      {
+        headerName: '순서',
+        field: 'field1',
+        width: attributeColumnWidth[5],
+        cellClass: 'text-center',
+        autoHeight: true,
       },
-    },
-    {
-      headerName: '담보',
-      field: 'field4',
-      width: 60,
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-  ];
+      {
+        headerName: '담보그룹',
+        field: 'field2',
+        width: attributeColumnWidth[8],
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '구분',
+        field: 'field3',
+        flex: 1,
+        cellClass: 'text-center !p-0',
+        autoHeight: true,
+        sortable: false,
+        cellRenderer: (params: ICellRendererParams<DummyData1Type, TagGroups>) => {
+          const values = params.value;
+          const rowId = params.data?.id;
+
+          if (!values || rowId === undefined) {
+            return null;
+          }
+
+          return (
+            <Grid className="grid-cols-[5rem_1fr] grid-rows-[auto_auto] gap-0 ">
+              <Grow placement="cc" className="border-b border-[var(--color-gray-10)]">
+                포함
+              </Grow>
+              <Grow placement="cc" className="py-1 px-2 border-l border-b border-[var(--color-gray-10)]">
+                <InputTag value={values[0]} onChange={(value) => handleTagChange(rowId, 0, value)} />
+              </Grow>
+              <Grow placement="cc" className="">
+                미포함
+              </Grow>
+              <Grow placement="cc" className="py-1 px-2 border-l border-[var(--color-gray-10)]">
+                <InputTag value={values[1]} onChange={(value) => handleTagChange(rowId, 1, value)} />
+              </Grow>
+            </Grid>
+          );
+        },
+      },
+      {
+        headerName: '담보',
+        field: 'field4',
+        width: attributeColumnWidth[5],
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   // 시뮬레이션 -------------
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
@@ -431,6 +434,16 @@ export default function Ltpa600Section() {
                     resizable: false,
                   }}
                   singleClickEdit={true}
+                  rowSelection={{
+                    mode: 'singleRow',
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 30,
+                    cellClass: 'editable-cell text-center',
+                  }}
                   domLayout="normal"
                   animateRows={false}
                 />

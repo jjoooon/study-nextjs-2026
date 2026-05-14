@@ -38,6 +38,13 @@ export type ToggleTopRow<T> = T & {
 type PrimitiveId = string | number;
 
 /**
+ * T에서 순서값으로 사용할 수 있는 number 키만 추출.
+ */
+type NumberKeyOf<T> = {
+  [K in keyof T]-?: T[K] extends number ? K : never;
+}[keyof T];
+
+/**
  * T에서 id로 사용할 수 있는 키(string | number 값)만 추출.
  */
 type IdKeyOf<T> = {
@@ -293,6 +300,68 @@ export function createCellValueChangedHandler<RowType extends Record<string, unk
 }
 
 /**
+ * 순서 컬럼 편집 시 행 위치를 재배치하고 순서를 1부터 다시 매기는 핸들러 생성기.
+ * - 예: 5번 행의 순서를 1로 변경하면, 해당 행이 맨 앞으로 이동하고 나머지는 2, 3, 4, 5로 재정렬.
+ * - 선택적으로 이동된 행이 보이도록 스크롤 위치를 맞춤.
+ */
+export function createSequentialRowReorderHandler<
+  RowType extends Record<string, unknown>,
+  IDType extends string | number,
+>(
+  setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
+  options: {
+    idKey: keyof RowType;
+    orderKey: NumberKeyOf<RowType>;
+    gridApiRef?: React.RefObject<GridApi<RowType> | null>;
+  }
+) {
+  const { idKey, orderKey, gridApiRef } = options;
+
+  return (params: CellValueChangedEvent<RowType>) => {
+    if (params.colDef.field !== String(orderKey)) {
+      return;
+    }
+
+    const requestedOrder = Number(params.newValue);
+    if (!Number.isFinite(requestedOrder)) {
+      return;
+    }
+
+    const targetRowId = params.data[idKey] as IDType;
+
+    setRowData((previous) => {
+      const sourceIndex = previous.findIndex((row) => row[idKey] === targetRowId);
+      if (sourceIndex < 0) {
+        return previous;
+      }
+
+      const sourceRow = previous[sourceIndex];
+      const rowsWithoutSource = previous.filter((_, index) => index !== sourceIndex);
+      const boundedIndex = Math.max(0, Math.min(Math.trunc(requestedOrder) - 1, rowsWithoutSource.length));
+
+      const reorderedRows = [...rowsWithoutSource];
+      reorderedRows.splice(boundedIndex, 0, sourceRow);
+
+      return reorderedRows.map((row, index) => ({
+        ...row,
+        [orderKey]: index + 1,
+      })) as RowType[];
+    });
+
+    if (gridApiRef?.current) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const rowNode = gridApiRef.current?.getRowNode(String(targetRowId));
+          if (rowNode) {
+            gridApiRef.current?.ensureNodeVisible(rowNode, 'middle');
+          }
+        });
+      });
+    }
+  };
+}
+
+/**
  * 행 추가 핸들러 생성기 (공용)
  * @param setRowData 행 데이터 setState
  * @param options.idKey 고유 id 필드명
@@ -300,6 +369,7 @@ export function createCellValueChangedHandler<RowType extends Record<string, unk
  * @param options.createRow 신규 행 생성 함수
  * @param options.insertAt 삽입 위치 (기본값: 'end')
  * @param options.getInsertIndex 커스텀 삽입 인덱스 계산 함수
+ * @param options.gridApiRef 추가된 행으로 스크롤하기 위한 ag-Grid API ref
  */
 export function createAddRowHandler<RowType extends Record<string, unknown>, IDType extends string | number>(
   setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
@@ -309,9 +379,10 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
     createRow: (nextId: IDType, rows: RowType[]) => RowType;
     insertAt?: 'start' | 'end';
     getInsertIndex?: (rows: RowType[]) => number;
+    gridApiRef?: React.RefObject<GridApi<RowType> | null>;
   }
 ) {
-  const { idKey, getNextId, createRow, insertAt = 'end', getInsertIndex } = options;
+  const { idKey, getNextId, createRow, insertAt = 'end', getInsertIndex, gridApiRef } = options;
 
   return () => {
     setRowData((prev) => {
@@ -327,6 +398,19 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
       const boundedIndex = Math.max(0, Math.min(customIndex, nextRows.length));
 
       nextRows.splice(boundedIndex, 0, newRow);
+
+      if (gridApiRef?.current) {
+        const rowId = String(nextId);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const rowNode = gridApiRef.current?.getRowNode(rowId);
+            if (rowNode) {
+              gridApiRef.current?.ensureNodeVisible(rowNode, 'middle');
+            }
+          });
+        });
+      }
+
       return nextRows;
     });
   };
