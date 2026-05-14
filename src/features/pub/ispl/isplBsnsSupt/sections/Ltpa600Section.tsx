@@ -9,6 +9,7 @@ import {
   getNextNumericRowId,
   useAgGridInfiniteAppend,
   useDynamicColumnWidths,
+  createTooltipValueGetter,
 } from '@aggrid';
 import { Grow, Grid, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -33,7 +34,6 @@ import * as React from 'react';
 import '@/shared/lib/agGridPub';
 
 type TagGroups = [string[], string[]];
-
 type DummyData1Type = {
   id: number;
   isCheck: boolean;
@@ -125,7 +125,8 @@ const DummyData2: DummyData2Type[] = [
     field1: '사망/후유',
     field2: '사망/후유',
     field3: 'CLA23114',
-    field4: '2나눔의행복(상해사망)',
+    field4:
+      '2나눔의행복(상해사망)나눔의행복(상해사망)나눔의행복(상해사망)나눔의행복(상해사망)나눔의행복(상해사망)나눔의행복(상해사망)나눔의행복(상해사망)나눔의행복(상해사망)',
     field5: '보험료',
     field6: '기타',
     rowCopy: true,
@@ -235,7 +236,7 @@ const DummyData2: DummyData2Type[] = [
 export default function Ltpa600Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
-  // 담보분류
+  // 담보분류 -------------
   const [rowData, setRowData] = React.useState<DummyData1Type[]>(DummyData1);
   const columnDefs1: ColDef<DummyData1Type>[] = [
     {
@@ -294,7 +295,7 @@ export default function Ltpa600Section() {
     },
   ];
 
-  // 시뮬레이션
+  // 시뮬레이션 -------------
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
   const pageSize = 3;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
@@ -302,6 +303,7 @@ export default function Ltpa600Section() {
     pageSize,
   });
 
+  // 복사
   const duplicateButtonRenderer = useMemo(
     () =>
       createInsertCopiedRowButtonCellRenderer<DummyData2Type, 'id'>(setRowData2, {
@@ -363,6 +365,7 @@ export default function Ltpa600Section() {
         field: 'field4',
         flex: 1,
         autoHeight: true,
+        tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field4' }),
       },
       {
         headerName: '예외',
@@ -503,6 +506,9 @@ export default function Ltpa600Section() {
                     singleClickEdit={true}
                     domLayout="normal"
                     animateRows={false}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                    tooltipHideDelay={3000}
                   />
                 </div>
               </Grid>
