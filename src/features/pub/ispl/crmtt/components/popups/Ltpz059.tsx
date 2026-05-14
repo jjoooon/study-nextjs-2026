@@ -222,7 +222,7 @@ type ImageItemType = {
   label: string;
 };
 
-type InsuredFloorType = '전체' | '일부';
+type InsuredFloorType = '전체' | '일부' | null;
 
 const IMAGE_PAGE_SIZE = 5;
 
@@ -338,7 +338,7 @@ const DummyData4: DummyDataType4[] = [
 
 const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [editableFieldName, setEditableFieldName] = React.useState<string | null>(null);
-  const [insuredFloorType, setInsuredFloorType] = React.useState<InsuredFloorType>('일부');
+  const [insuredFloorType, setInsuredFloorType] = React.useState<InsuredFloorType>(null);
   const [detailPlace, setDetailPlace] = React.useState<string>('건물전체');
   const [imagePageBySection, setImagePageBySection] = React.useState<Record<ImageSectionType, number>>({
     기둥: 0,
@@ -560,7 +560,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              설계이미지조회
+              건물구조입력
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ059)
@@ -582,7 +582,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </Button>
               </Grow>
             </TableFoldHead>
-            <TableFoldBody className="gap-3 grid grid-rows-[auto_1fr]">
+            <TableFoldBody className="gap-3 flex flex-col">
               <Grow placement="bwc" className="w-full" variant={'box-round'}>
                 <RadioGroup defaultValue="건물구조선택" onValueChange={(value) => setBuildingSelectType(value)}>
                   {[
@@ -595,137 +595,133 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                   ))}
                 </RadioGroup>
               </Grow>
-              <Grid className="w-full h-full grid-rows-[1fr_auto]">
-                {buildingSelectType === '건물구조선택' && (
-                  <Grid className="w-full h-full grid-cols-[6fr_4fr]">
-                    <Grid className="w-full h-full grid-cols-[1fr_1fr_1fr] min-h-[53.6rem]">
-                      <div className="ag-theme-alpine min-h-[53.6rem]">
-                        <AgGridReact<DummyDataType>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={DummyData}
-                          columnDefs={columnDefs}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                          }}
-                          rowSelection={{
-                            mode: 'multiRow',
-                            headerCheckbox: true,
-                            checkboxes: true,
-                            enableClickSelection: false,
-                          }}
-                          selectionColumnDef={{
-                            width: 30,
-                          }}
-                          domLayout="normal"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                        />
-                      </div>
-                      <div className="ag-theme-alpine min-h-[53.6rem]">
-                        <AgGridReact<DummyDataType2>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={DummyData2}
-                          columnDefs={columnDefs2}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                          }}
-                          rowSelection={{
-                            mode: 'multiRow',
-                            headerCheckbox: true,
-                            checkboxes: true,
-                            enableClickSelection: false,
-                          }}
-                          selectionColumnDef={{
-                            width: 30,
-                          }}
-                          domLayout="normal"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                        />
-                      </div>
-                      <div className="ag-theme-alpine min-h-[53.6rem]">
-                        <AgGridReact<DummyDataType3>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={DummyData3}
-                          columnDefs={columnDefs3}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                          }}
-                          rowSelection={{
-                            mode: 'multiRow',
-                            headerCheckbox: true,
-                            checkboxes: true,
-                            enableClickSelection: false,
-                          }}
-                          selectionColumnDef={{
-                            width: 30,
-                          }}
-                          domLayout="normal"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                        />
-                      </div>
-                    </Grid>
-                    <Grid className="grid-rows-[1fr_auto]">
-                      <div className="ag-theme-alpine min-h-[53.6rem]">
-                        <AgGridReact<DummyDataType4>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={DummyData4}
-                          columnDefs={columnDefs4}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                          }}
-                          groupHeaderHeight={30}
-                          headerHeight={0}
-                          getRowHeight={(params) => (params.data?.rowType === 'spacer' ? 30 : 30)}
-                          singleClickEdit={true}
-                          domLayout="normal"
-                        />
-                      </div>
-                      <Gcol className="w-full" placement="ss" variant="box-warning">
-                        <Typo icon="warning" variant="body-sm">
-                          <b>주의사항</b>
-                        </Typo>
-                        <BulletList position="col">
-                          <BulletListItem type="dotBig">
-                            조회결과를 참고하여 건물구조를 선택하시기 바랍니다.
-                          </BulletListItem>
-                          <BulletListItem type="dotBig">조회결과는 저장되지 않습니다.</BulletListItem>
-                        </BulletList>
-                      </Gcol>
-                    </Grid>
+              {buildingSelectType === '건물구조선택' && (
+                <Grid className="w-full h-full grid-cols-[2fr_2fr_2fr_4fr]">
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={DummyData}
+                      columnDefs={columnDefs}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: true,
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        width: 30,
+                      }}
+                      domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                    />
+                  </div>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataType2>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={DummyData2}
+                      columnDefs={columnDefs2}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: true,
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        width: 30,
+                      }}
+                      domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                    />
+                  </div>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataType3>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={DummyData3}
+                      columnDefs={columnDefs3}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: true,
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        width: 30,
+                      }}
+                      domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                    />
+                  </div>
+                  <Grid className="grid-rows-[1fr_auto]">
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<DummyDataType4>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={DummyData4}
+                        columnDefs={columnDefs4}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                        }}
+                        groupHeaderHeight={30}
+                        headerHeight={0}
+                        getRowHeight={(params) => (params.data?.rowType === 'spacer' ? 30 : 30)}
+                        singleClickEdit={true}
+                        domLayout="autoHeight"
+                      />
+                    </div>
+                    <Gcol className="w-full" placement="ss" variant="box-warning">
+                      <Typo icon="warning" variant="body-sm">
+                        <b>주의사항</b>
+                      </Typo>
+                      <BulletList position="col">
+                        <BulletListItem type="dotBig">
+                          조회결과를 참고하여 건물구조를 선택하시기 바랍니다.
+                        </BulletListItem>
+                        <BulletListItem type="dotBig">조회결과는 저장되지 않습니다.</BulletListItem>
+                      </BulletList>
+                    </Gcol>
                   </Grid>
-                )}
-                {buildingSelectType === '이미지로선택' && (
-                  <Gcol className="w-full h-full" placement="ss">
-                    <FormTable caption="사업자" cols={['w-[14rem]', 'w-[calc(100%-14rem)]']}>
-                      <FormRow>
-                        <FormCell title={'기둥'} className="h-auto">
-                          {renderImageSelectorRow('기둥')}
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'지붕'} className="h-72">
-                          {renderImageSelectorRow('지붕')}
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'외벽'} className="h-72">
-                          {renderImageSelectorRow('외벽')}
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>
-                  </Gcol>
-                )}
-              </Grid>
+                </Grid>
+              )}
+              {buildingSelectType === '이미지로선택' && (
+                <Gcol className="w-full h-full" placement="ss">
+                  <FormTable caption="사업자" cols={['w-[14rem]', 'w-[calc(100%-14rem)]']}>
+                    <FormRow>
+                      <FormCell title={'기둥'} className="h-auto">
+                        {renderImageSelectorRow('기둥')}
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'지붕'} className="h-72">
+                        {renderImageSelectorRow('지붕')}
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'외벽'} className="h-72">
+                        {renderImageSelectorRow('외벽')}
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </Gcol>
+              )}
               <TableFold variant="accordion">
                 <TableFoldHead title="소재지">
                   <Grow>
@@ -794,8 +790,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <FormRow>
                       <FormCell title={'보험가입층수'}>
                         <RadioGroup
-                          defaultValue="일부"
-                          value={insuredFloorType}
+                          value={insuredFloorType ?? ''}
                           onValueChange={(value) => {
                             if (value === '전체' || value === '일부') {
                               setInsuredFloorType(value);
@@ -824,7 +819,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                           value={detailPlace}
                           width={400}
                           onChange={(e) => setDetailPlace(e.target.value)}
-                          readOnly={insuredFloorType !== '전체'}
+                          readOnly={insuredFloorType === '전체'}
                         />
                         입력예시: 2층 201호
                       </FormCell>
