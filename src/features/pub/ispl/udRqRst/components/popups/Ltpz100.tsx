@@ -4,7 +4,7 @@
 'use client';
 
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { Grow, Typo, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Badge } from '@/shared/components/uiux/Badge';
@@ -118,11 +118,6 @@ const DummyData1: DummyDataType1[] = [
   {
     id: 15,
     field01: '상해사망추가15',
-    field02: '10000',
-  },
-  {
-    id: 16,
-    field01: '상해사망추가',
     field02: '10000',
   },
 ];
@@ -273,85 +268,79 @@ const Ltpz100 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grow placement="ss" gap={3}>
-            <Gcol placement="ss" className="grid-rows-[auto_1fr]">
-              <Grow>
+          <Grid gap={3} className="w-full grid-cols-[1fr_1fr_1fr] min-h-[20.9rem]">
+            <Grid className="grid-rows-[auto_1fr]">
+              <Grow placement="sc">
                 <Typo tag={'strong'} variant={'heading-md'}>
                   제한 담보
                 </Typo>
                 <Badge color="primary" variant="contained">
-                  15개
+                  {rowData1.length}개
                 </Badge>
               </Grow>
-              <Grid className="w-full">
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<DummyDataType1>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData1}
-                    columnDefs={columnDefs1}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                    }}
-                    domLayout={'normal'}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                  />
-                </div>
-              </Grid>
-            </Gcol>
-            <Gcol placement="ss" className="grid-rows-[auto_1fr]">
-              <Grow>
+              <div className="ag-theme-alpine">
+                <AgGridReact<DummyDataType1>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData1}
+                  columnDefs={columnDefs1}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  domLayout={'normal'}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                />
+              </div>
+            </Grid>
+            <Grid className="grid-rows-[auto_1fr]">
+              <Grow placement="sc">
                 <Typo tag={'strong'} variant={'heading-md'}>
                   보험료 할증
                 </Typo>
                 <Badge color="primary" variant="contained">
-                  15개
+                  {rowData2.length}개
                 </Badge>
               </Grow>
-              <Grid className="w-full">
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<DummyDataType2>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData2}
-                    columnDefs={columnDefs2}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                    }}
-                    domLayout={'normal'}
-                  />
-                </div>
-              </Grid>
-            </Gcol>
-            <Gcol placement="ss" className="grid-rows-[auto_1fr]">
-              <Grow>
+              <div className="ag-theme-alpine">
+                <AgGridReact<DummyDataType2>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData2}
+                  columnDefs={columnDefs2}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  domLayout={'normal'}
+                />
+              </div>
+            </Grid>
+            <Grid className="grid-rows-[auto_1fr]">
+              <Grow placement="sc">
                 <Typo tag={'strong'} variant={'heading-md'}>
                   부담보(부위/질병)
                 </Typo>
                 <Badge color="primary" variant="contained">
-                  15개 
+                  {rowData3.length}개
                 </Badge>
               </Grow>
-              <Grid className="w-full">
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<DummyDataType3>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData3}
-                    columnDefs={columnDefs3}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                    }}
-                    domLayout={'normal'}
-                  />
-                </div>
-              </Grid>
-            </Gcol>
-          </Grow>
+              <div className="w-full ag-theme-alpine">
+                <AgGridReact<DummyDataType3>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData3}
+                  columnDefs={columnDefs3}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  domLayout={'normal'}
+                />
+              </div>
+            </Grid>
+          </Grid>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>
