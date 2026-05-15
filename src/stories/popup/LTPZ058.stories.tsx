@@ -1,15 +1,14 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- *//*
- * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */import * as React from 'react';
-import { Ltpa200 } from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpa200';
+
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
+import Ltpz058 from '@/features/pub/ispl/crmtt/components/popups/Ltpz058';
 
 export default {
-  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpa200',
-  component: Ltpa200,
+  title: 'app/ispl/crmtt/components/popups/Ltpz058',
+  component: Ltpz058,
 };
 
 export const Default = () => {
@@ -20,7 +19,7 @@ export const Default = () => {
         <Button variant={'contained'} onClick={() => setOpen(true)}>다이얼로그 열기</Button>
       </div>
 
-      <Ltpa200 />
+      <Ltpz058 />
     </LayoutDoc>
   );
 };
