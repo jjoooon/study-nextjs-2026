@@ -6,7 +6,6 @@
 import {
   AgGridEmptyComponent,
   createAddRowHandler,
-  createDeleteSelectedRowsHandler,
   createSequentialRowReorderHandler,
   useDynamicColumnWidths,
   getNextNumericRowId,
@@ -167,9 +166,9 @@ const Ltpz640 = () => {
     gridApiRef,
   });
 
-  const handleDeleteRow = createDeleteSelectedRowsHandler<DummyData1Type>(setRowData, gridApiRef, {
-    idKey: 'id',
-  });
+  const handleDeleteRow = React.useCallback(() => {
+    setRowData((prev) => prev.filter((row) => !row.cheked));
+  }, [setRowData]);
 
   const handleOrderChanged = createSequentialRowReorderHandler<DummyData1Type, number>(setRowData, {
     idKey: 'id',
