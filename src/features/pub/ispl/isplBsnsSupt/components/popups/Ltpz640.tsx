@@ -12,6 +12,7 @@ import {
   getNextNumericRowId,
 } from '@aggrid';
 import { Grow, Typo } from '@atoms';
+import { ConfirmDialog } from '@common/ConfirmDialog';
 import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -24,6 +25,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 import type { CellValueChangedEvent, ColDef, ColGroupDef, GridApi, RowDragEndEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -299,6 +301,30 @@ const Ltpz640 = () => {
     },
     [rowData, setRowData]
   );
+  const [openCellMerge, setOpenCellMerge] = React.useState(false);
+  const [mergePackageName, setMergePackageName] = React.useState('');
+
+  const handleMergePackageName = React.useCallback(() => {
+    if (!mergePackageName.trim()) {
+      return;
+    }
+
+    setRowData((prev) =>
+      prev.map((row) => {
+        if (!row.cheked) {
+          return row;
+        }
+
+        return {
+          ...row,
+          field1: mergePackageName,
+        };
+      })
+    );
+
+    setMergePackageName('');
+    setOpenCellMerge(false);
+  }, [mergePackageName, setRowData]);
 
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
     () => [
@@ -347,66 +373,90 @@ const Ltpz640 = () => {
     [attributeColumnWidth]
   );
   return (
-    <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
-        <DialogHeader>
-          <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>
-              보장패키지유형관리
-            </Typo>
-          </DialogTitle>
-        </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr] gap-1">
-          <Grow placement="ec" className="w-full">
-            <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
-              행추가
-              <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
-            </Button>
-            <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow}>
-              행삭제
-              <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
-            </Button>
-          </Grow>
-          <div className="ag-theme-alpine min-h-[50vh]">
-            <AgGridReact<DummyData1Type>
-              onGridReady={(event) => {
-                gridApiRef.current = event.api;
-              }}
-              noRowsOverlayComponent={AgGridEmptyComponent}
-              getRowId={(params) => String(params.data.id)}
-              rowData={rowData}
-              columnDefs={columnDefs1}
-              onCellValueChanged={handleCellValueChanged}
-              defaultColDef={{
-                sortable: true,
-                resizable: false,
-              }}
-              singleClickEdit={true}
-              rowDragManaged={true}
-              onRowDragEnd={handleRowDragEnd}
-              domLayout="normal"
-              animateRows={false}
-              tooltipShowMode="whenTruncated"
-              tooltipShowDelay={0}
-              tooltipHideDelay={3000}
-              enableCellSpan={true}
+    <>
+      <Dialog open>
+        <DialogContent showCloseButton resizable={true} size="md">
+          <DialogHeader>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                보장패키지유형관리
+              </Typo>
+            </DialogTitle>
+          </DialogHeader>
+          <DialogSection className="grid-rows-[auto_1fr] gap-1">
+            <Grow placement="ec" className="w-full">
+              <Button variant={'outlined'} color={'gray'} onClick={() => setOpenCellMerge(true)}>
+                패키지 병합/분리
+              </Button>
+              <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
+                행추가
+                <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
+              </Button>
+              <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow}>
+                행삭제
+                <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
+              </Button>
+            </Grow>
+            <div className="ag-theme-alpine min-h-[50vh]">
+              <AgGridReact<DummyData1Type>
+                onGridReady={(event) => {
+                  gridApiRef.current = event.api;
+                }}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                getRowId={(params) => String(params.data.id)}
+                rowData={rowData}
+                columnDefs={columnDefs1}
+                onCellValueChanged={handleCellValueChanged}
+                defaultColDef={{
+                  sortable: true,
+                  resizable: true,
+                }}
+                singleClickEdit={true}
+                rowDragManaged={true}
+                onRowDragEnd={handleRowDragEnd}
+                domLayout="normal"
+                animateRows={false}
+                tooltipShowMode="whenTruncated"
+                tooltipShowDelay={0}
+                tooltipHideDelay={3000}
+                enableCellSpan={true}
+              />
+            </div>
+          </DialogSection>
+          <DialogFooter>
+            <DialogFooterArea>
+              <Grow>
+                <Button size={'xl'}>저장</Button>
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+            </DialogFooterArea>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <ConfirmDialog
+        title="패키지 병합/분리"
+        description={
+          <div className="space-y-2">
+            <p>선택한 담보그룹명의 패키지명을 입력하세요.</p>
+            <Input
+              type="text"
+              placeholder="패키지명 입력하세요."
+              value={mergePackageName}
+              onChange={(e) => setMergePackageName(e.target.value)}
             />
           </div>
-        </DialogSection>
-        <DialogFooter>
-          <DialogFooterArea>
-            <Grow>
-              <Button size={'xl'}>저장</Button>
-              <DialogClose asChild>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
-                </Button>
-              </DialogClose>
-            </Grow>
-          </DialogFooterArea>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        }
+        open={openCellMerge}
+        confirmLabel="적용"
+        cancelLabel="취소"
+        onOpenChange={setOpenCellMerge}
+        onConfirm={handleMergePackageName}
+      />
+    </>
   );
 };
 
