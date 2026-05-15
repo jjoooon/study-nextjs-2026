@@ -213,23 +213,14 @@ export default function Ltpa630Section() {
   const columnDefs2: ColDef<DummyData2Type>[] = useMemo(
     () => [
       {
-        headerName: '담보코드',
-        field: 'field1',
-        width: attributeColumnWidth[13],
-        cellRenderer: treeNameCellRenderer,
-        cellRendererParams: {
-          className: 'text-left',
-        },
-      },
-      {
         headerName: '담보명',
         field: 'field2',
         flex: 1,
-        cellRenderer: treeNameCellRenderer,
-        cellRendererParams: {
-          className: 'text-left',
-          buttonClassName: 'font-medium',
-        },
+        cellClass: (params) =>
+          params.data && params.data.filePath.length === 1
+            ? 'editable-cell'
+            : 'before:content-["-"] before:inline-block before:mr-1',
+        editable: (params) => Boolean(params.data && params.data.filePath.length === 1),
       },
       {
         headerName: '구분',
@@ -285,7 +276,7 @@ export default function Ltpa630Section() {
             </Grid>
 
             {/* 담보관리 */}
-            <Grid className="grid-rows-[auto_1fr_auto] h-full w-full" gap={1}>
+            <Grid className="grid-rows-[auto_1fr] h-full w-full" gap={1}>
               <Grow className="w-full" placement="bwc">
                 <Typo variant={'heading-md'} tag="h2">
                   담보관리
@@ -303,6 +294,9 @@ export default function Ltpa630Section() {
               </Grow>
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyData2Type>
+                  onGridReady={(event) => {
+                    gridApiRef.current = event.api;
+                  }}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData2}
@@ -342,16 +336,13 @@ export default function Ltpa630Section() {
             <MainBottomItem>
               <Grow gap={1} placement={'sc'} className="w-full">
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  담보그룹관리
+                  패키지관리
                 </Button>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   상품별 시뮬레이션
                 </Button>
               </Grow>
               <Grow gap={1} placement={'ec'} className="w-full">
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  엑셀내보내기
-                </Button>
                 <Button variant={'contained'} color={'primary'} size={'xl'}>
                   저장
                 </Button>
