@@ -3,7 +3,9 @@
  */
 'use client';
 import { Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon } from '@icons';
 
 import { Button } from '@uiux/Button';
@@ -20,6 +22,7 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -29,8 +32,6 @@ import {
   createDeleteSelectedRowsHandler,
   getNextNumericRowId,
 } from '@/shared/components/agGridUtils/AgGridUtils';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 
 type DummyDataTypeA = {
   id: number;
@@ -486,7 +487,7 @@ export const Ltpz296 = () => {
   ];
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="full">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -497,17 +498,27 @@ export const Ltpz296 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_1fr_1fr_auto_auto]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable
-              variant={'none'}
+              variant={'head'}
               lineTop={false}
               caption="정액담보점검목록 조회"
               cols={['w-[6rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}
             >
               <FormRow>
-                <FormCell title={'설계번호'}>LA26022432174</FormCell>
-                <FormCell title={'발행후변경순번'}>1</FormCell>
+                <FormCell title={'설계번호'}>
+                  <Input
+                    aria-label="설계번호 입력"
+                    value={'LA26022432174'}
+                    onChange={() => {}}
+                    variant="info"
+                    readOnly
+                  />
+                </FormCell>
+                <FormCell title={'발행후변경순번'}>
+                  <Input aria-label="발행후변경순번 입력" value={'1'} onChange={() => {}} variant="info" readOnly />
+                </FormCell>
                 <FormCell title={'피보험자찾기'}>
                   <NativeSelect aria-label="점검방법 선택" value={''} width={80} onChange={() => {}}>
                     {[
@@ -567,7 +578,7 @@ export const Ltpz296 = () => {
                   }}
                   singleClickEdit={true}
                   rowClassRules={{}}
-                  domLayout="autoHeight"
+                  domLayout="normal"
                   rowSelection={{
                     mode: 'multiRow',
                     checkboxes: true,
@@ -615,7 +626,7 @@ export const Ltpz296 = () => {
                   }}
                   singleClickEdit={true}
                   rowClassRules={{}}
-                  domLayout="autoHeight"
+                  domLayout="normal"
                   rowSelection={{
                     mode: 'multiRow',
                     checkboxes: true,
@@ -719,10 +730,10 @@ export const Ltpz296 = () => {
                     >
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input width={100} placeholder="직장명" value={''} />
-                    <Input width={100} placeholder="업종" value={''} />
-                    <Input width={100} placeholder="직무" value={''} />
-                    <NativeSelect aria-label="운전형태" width={100}>
+                    <Input width={90} placeholder="직장명" value={''} />
+                    <Input width={90} placeholder="업종" value={''} />
+                    <Input width={90} placeholder="직무" value={''} />
+                    <NativeSelect aria-label="운전형태" width={90}>
                       {[
                         { value: '운전형태', label: '운전형태' },
                         { value: '운전형태1', label: '운전형태1' },
@@ -732,7 +743,7 @@ export const Ltpz296 = () => {
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <NativeSelect aria-label="이륜차여부" width={100}>
+                    <NativeSelect aria-label="이륜차여부" width={90}>
                       {[
                         { value: '이륜차여부', label: '이륜차여부' },
                         { value: '이륜차여부1', label: '이륜차여부1' },
@@ -742,7 +753,7 @@ export const Ltpz296 = () => {
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <NativeSelect aria-label="병력여부" width={100}>
+                    <NativeSelect aria-label="병력여부" width={90}>
                       {[
                         { value: '병력여부', label: '병력여부' },
                         { value: '병력여부1', label: '병력여부1' },
@@ -762,40 +773,44 @@ export const Ltpz296 = () => {
             <TableFoldBody>
               <FormTable>
                 <FormRow>
-                  <FormCell title={'직장주소'} titleRowSpan={2}>
-                    <Input width={80} value={'1234567'} />
-                    <Button
-                      aria-label="피보험자 검색"
-                      variant={'outlined'}
-                      only="icon"
-                      size={'lg'}
-                      color={'gray-light'}
-                    >
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
-                    <Input width={120} value={'1234567'} readOnly />
-                    <Input width={80} value={''} />리
-                    <NativeSelect aria-label="사망보험금" width={80}>
-                      {[
-                        { value: '선택1', label: '선택1' },
-                        { value: '선택2', label: '선택2' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <Input width={40} value={''} readOnly />-
-                    <Input width={40} value={''} readOnly />
-                    <Input width={100} value={''} />
-                    <Input width={40} value={''} readOnly />
-                    <Input width={40} value={''} readOnly />
-                    <Input width={100} value={''} />
-                  </FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title={null}>
-                    <Input aria-label="" width={200} value={''} />
+                  <FormCell title={'직장주소'}>
+                    <div className="flex w-full h-full flex-wrap justify-start items-start gap-1">
+                      <Grow className="basis-lg">
+                        <Input width={80} value={'1234567'} />
+                        <Button
+                          aria-label="피보험자 검색"
+                          variant={'outlined'}
+                          only="icon"
+                          size={'lg'}
+                          color={'gray-light'}
+                        >
+                          <SearchIcon color={'var(--color-primary-50)'} />
+                        </Button>
+                        <Input width={100} value={'1234567'} readOnly />
+                        <Input width={80} value={''} />리
+                      </Grow>
+                      <Grow className="basis-lg">
+                        <NativeSelect aria-label="사망보험금" width={80}>
+                          {[
+                            { value: '선택1', label: '선택1' },
+                            { value: '선택2', label: '선택2' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.value} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                        <Input width={60} value={''} readOnly />-
+                        <Input width={60} value={''} readOnly />
+                        <Input width={90} value={''} />
+                        <Input width={60} value={''} readOnly />
+                        <Input width={60} value={''} readOnly />
+                        <Input width={90} value={''} />
+                      </Grow>
+                      <Grow className="basis-full">
+                        <Input aria-label="" width={'full'} value={''} />
+                      </Grow>
+                    </div>
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -845,6 +860,7 @@ export const Ltpz296 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>
