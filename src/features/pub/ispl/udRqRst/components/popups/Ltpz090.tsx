@@ -251,13 +251,13 @@ const Ltpz090 = () => {
               <TableFold variant="default">
                 <TableFoldHead title="요청자 의견" />
                 <TableFoldBody>
-                  <Textarea placeholder="" resize={true} className="w-full" />
+                  <Textarea placeholder="" resize={true} className="w-full" readOnly />
                 </TableFoldBody>
               </TableFold>
               <TableFold variant="default">
                 <TableFoldHead title="작업자 의견" />
                 <TableFoldBody>
-                  <Textarea placeholder="" resize={true} className="w-full" />
+                  <Textarea placeholder="" resize={true} className="w-full" readOnly />
                 </TableFoldBody>
               </TableFold>
             </Grow>
