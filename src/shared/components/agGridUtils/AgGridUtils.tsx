@@ -268,6 +268,7 @@ export type TreeNameCellRendererOptions = {
   className?: string;
   buttonClassName?: string;
   childPrefix?: string;
+  toggleOnGroupClick?: boolean;
 };
 
 export type TreeNameCellRendererParams<RowType> = ICellRendererParams<RowType> & TreeNameCellRendererOptions;
@@ -285,6 +286,7 @@ export function createTreeNameCellRenderer<RowType>() {
     const textClassName = params.className ?? '';
     const buttonClassName = params.buttonClassName ?? '';
     const childPrefix = params.childPrefix ?? '- ';
+    const toggleOnGroupClick = params.toggleOnGroupClick ?? true;
     const valueText = String(params.value ?? '');
 
     const handleToggle = () => {
@@ -295,14 +297,20 @@ export function createTreeNameCellRenderer<RowType>() {
       params.node.setExpanded(!params.node.expanded);
     };
 
+    if (hasChildren && toggleOnGroupClick) {
+      return (
+        <button
+          type={'button'}
+          className={`flex w-full items-center gap-1 text-left ${buttonClassName}`}
+          onClick={handleToggle}
+        >
+          {valueText}
+        </button>
+      );
+    }
+
     return hasChildren ? (
-      <button
-        type={'button'}
-        className={`flex w-full items-center gap-1 text-left ${buttonClassName}`}
-        onClick={handleToggle}
-      >
-        {valueText}
-      </button>
+      <span className={`truncate-no ${textClassName}`}>{valueText}</span>
     ) : (
       <span className={`truncate-no ${textClassName}`}>
         {isChild && valueText ? childPrefix : ''}

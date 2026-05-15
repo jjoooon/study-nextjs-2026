@@ -4,7 +4,7 @@
 'use client';
 import { Grid, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { ResetIcon, SearchIcon } from '@icons';
+import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon } from '@icons';
 
 import { Button } from '@uiux/Button';
 import {
@@ -20,13 +20,19 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
-import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils/AgGridUtils';
+import * as React from 'react';
+import {
+  AgGridEmptyComponent,
+  createAddRowHandler,
+  createDeleteSelectedRowsHandler,
+  getNextNumericRowId,
+} from '@/shared/components/agGridUtils/AgGridUtils';
 import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 
-type DummyDataType = {
+type DummyDataTypeA = {
   id: number;
   isChecked: boolean;
   field1: string;
@@ -41,7 +47,7 @@ type DummyDataType = {
   field10: string;
 };
 
-const DummyData: DummyDataType[] = [
+const DummyDataA: DummyDataTypeA[] = [
   {
     id: 1,
     isChecked: false,
@@ -58,37 +64,132 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+type DummyDataTypeB = {
+  id: number;
+  isChecked: boolean;
+  field1: string | number;
+  field2: string | number;
+  field3: string | number;
+  field4: string | number;
+  field5: string | number;
+  field6: string | number;
+  field7: string | number;
+  field8: string | number;
+  field9: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+  field15: string | number;
+  field16: string | number;
+  field17: string | number;
+  field18: string | number;
+  field19: string | number;
+  field20: string | number;
+  field21: string | number;
+  field22: string | number;
+};
+
+const DummyDataB: DummyDataTypeB[] = [
+  {
+    id: 1,
+    isChecked: false,
+    field1: 'Text',
+    field2: '김한화',
+    field3: '900101-1234567',
+    field4: '010',
+    field5: '1234',
+    field6: '5678',
+    field7: 'text',
+    field8: 'text',
+    field9: 'text',
+    field10: 'text',
+    field11: '신용추심원',
+    field12: 'text',
+    field13: 'text',
+    field14: 'text',
+    field15: 'text',
+    field16: 'text',
+    field17: 'text',
+    field18: 'text',
+    field19: 'text',
+    field20: 'text',
+    field21: 'text',
+    field22: 'text',
+  },
+];
 export const Ltpz296 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
+  const gridApiRefA = React.useRef<GridApi<DummyDataTypeA> | null>(null);
+  const [rowDataA, setRowDataA] = React.useState<DummyDataTypeA[]>(DummyDataA);
+
+  const handleAddRowA = createAddRowHandler<DummyDataTypeA, number>(setRowDataA, {
+    idKey: 'id',
+    getNextId: getNextNumericRowId,
+    createRow: (nextId) => ({
+      id: nextId,
+      isChecked: false,
+      field1: '',
+      field2: '',
+      field3: '',
+      field4: '',
+      field5: '',
+      field6: '',
+      field7: '',
+      field8: '',
+      field9: '',
+      field10: '',
+    }),
+    insertAt: 'end',
+    gridApiRef: gridApiRefA,
+  });
+
+  const handleDeleteRowA = createDeleteSelectedRowsHandler<DummyDataTypeA>(setRowDataA, gridApiRefA, {
+    idKey: 'id',
+  });
+
+  const columnDefsA: ColDef<DummyDataTypeA>[] = [
     {
       headerName: '그룹명',
       field: 'field1',
       flex: 1,
-      cellClass: 'text-center',
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
     },
     {
       headerName: '인원',
       field: 'field2',
       width: 80,
-      cellClass: 'text-center',
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
     },
     {
       headerName: '성별',
       field: 'field3',
       width: 80,
-      cellClass: 'text-center',
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['남자', '여자'] },
+      sortable: false,
     },
     {
       headerName: '평균연령',
       field: 'field4',
       width: 80,
-      cellClass: 'text-center',
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
     },
     {
       headerName: '직업코드',
       field: 'field5',
       width: 120,
-      cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      cellRenderer: (_params: ICellRendererParams<DummyDataTypeA>) => (
         <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
           <Typo>{_params.value}</Typo>
           <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
@@ -101,31 +202,286 @@ export const Ltpz296 = () => {
       headerName: '직업명',
       field: 'field6',
       flex: 1,
-      cellClass: 'text-center',
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
     },
     {
       headerName: '급수',
       field: 'field7',
       width: 60,
-      cellClass: 'text-center',
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
     },
     {
-      headerName: '운정용도',
+      headerName: '운전용도',
       field: 'field8',
       width: 80,
-      cellClass: 'text-center',
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['text1', 'text2'] },
+      sortable: false,
     },
     {
       headerName: '보혐료',
       field: 'field9',
       width: 80,
-      cellClass: 'text-center',
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
     },
     {
       headerName: '등록인원',
       field: 'field10',
       width: 80,
-      cellClass: 'text-right',
+      editable: true,
+      cellClass: 'editable-cell text-right',
+      sortable: false,
+    },
+  ];
+  const gridApiRefB = React.useRef<GridApi<DummyDataTypeB> | null>(null);
+  const [rowDataB, setRowDataB] = React.useState<DummyDataTypeB[]>(DummyDataB);
+
+  const handleAddRowB = createAddRowHandler<DummyDataTypeB, number>(setRowDataB, {
+    idKey: 'id',
+    getNextId: getNextNumericRowId,
+    createRow: (nextId) => ({
+      id: nextId,
+      isChecked: false,
+      field1: '',
+      field2: '',
+      field3: '',
+      field4: '',
+      field5: '',
+      field6: '',
+      field7: '',
+      field8: '',
+      field9: '',
+      field10: '',
+      field11: '',
+      field12: '',
+      field13: '',
+      field14: '',
+      field15: '',
+      field16: '',
+      field17: '',
+      field18: '',
+      field19: '',
+      field20: '',
+      field21: '',
+      field22: '',
+    }),
+    insertAt: 'end',
+    gridApiRef: gridApiRefB,
+  });
+
+  const handleDeleteRowB = createDeleteSelectedRowsHandler<DummyDataTypeB>(setRowDataB, gridApiRefB, {
+    idKey: 'id',
+  });
+
+  const columnDefsB: ColDef<DummyDataTypeB>[] = [
+    {
+      headerName: '그룹명',
+      field: 'field1',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+      pinned: 'left',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택1', '선택2'] },
+    },
+    {
+      headerName: '이름',
+      field: 'field2',
+      width: 100,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+      pinned: 'left',
+      cellRenderer: (_params: ICellRendererParams<DummyDataTypeB>) => (
+        <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
+          <Typo>{_params.value}</Typo>
+          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+            <SearchIcon color={'var(--color-primary-50)'} />
+          </Button>
+        </Grid>
+      ),
+    },
+    {
+      headerName: '주민등록번호',
+      field: 'field3',
+      width: 110,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+      pinned: 'left',
+    },
+    {
+      headerName: '전화번호(휴대폰)',
+      children: [
+        {
+          field: 'field4',
+          width: 50,
+          editable: true,
+          cellClass: 'editable-cell text-center',
+        },
+        {
+          field: 'field5',
+          width: 50,
+          editable: true,
+          cellClass: 'editable-cell text-center',
+        },
+        {
+          field: 'field6',
+          width: 50,
+          editable: true,
+          cellClass: 'editable-cell text-center',
+        },
+      ],
+    } as ColDef<DummyDataTypeB>,
+    {
+      headerName: '동의',
+      field: 'field7',
+      width: 60,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+    },
+    {
+      headerName: '관계',
+      field: 'field8',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택1', '선택2'] },
+    },
+    {
+      headerName: '연령',
+      field: 'field9',
+      width: 60,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+    },
+    {
+      headerName: '급수',
+      field: 'field10',
+      width: 60,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+    },
+    {
+      headerName: '직업',
+      field: 'field11',
+      width: 100,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+      cellRenderer: (_params: ICellRendererParams<DummyDataTypeB>) => (
+        <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
+          <Typo>{_params.value}</Typo>
+          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+            <SearchIcon color={'var(--color-primary-50)'} />
+          </Button>
+        </Grid>
+      ),
+    },
+    {
+      headerName: '직업명',
+      field: 'field12',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+    },
+    {
+      headerName: '업종',
+      field: 'field13',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+    },
+    {
+      headerName: '직무',
+      field: 'field14',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+    },
+    {
+      headerName: '운전형태',
+      field: 'field15',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택1', '선택2'] },
+    },
+    {
+      headerName: '이륜차',
+      field: 'field16',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택1', '선택2'] },
+    },
+    {
+      headerName: '병력여부',
+      field: 'field17',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택1', '선택2'] },
+    },
+    {
+      headerName: '치아병력',
+      field: 'field18',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['선택1', '선택2'] },
+    },
+    {
+      headerName: '알릴사항',
+      field: 'field19',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+    },
+    {
+      headerName: '사망수익자',
+      field: 'field20',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+    },
+    {
+      headerName: '사망외수익자',
+      field: 'field21',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-center',
+      sortable: false,
+    },
+    {
+      headerName: '보험료',
+      field: 'field22',
+      width: 80,
+      editable: true,
+      cellClass: 'editable-cell text-right',
+      sortable: false,
     },
   ];
   return (
@@ -134,7 +490,7 @@ export const Ltpz296 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              철회알림특전송
+              차세대 가입설계 시스템 구축 프로젝트
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ296)
@@ -185,33 +541,283 @@ export const Ltpz296 = () => {
             </Grow>
           </Grow>
           <TableFold>
-            <TableFoldHead title="등록사항">
+            <TableFoldHead title="그룹설정">
               <Grow>
-                <Button color="gray" variant="outlined">
+                <Button color="gray" variant="outlined" onClick={handleAddRowA}>
                   그룹추가
                 </Button>
-                <Button color="gray" variant="outlined">
+                <Button color="gray" variant="outlined" onClick={handleDeleteRowA}>
                   그룹삭제
                 </Button>
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
               <div className="ag-theme-alpine">
-                <AgGridReact<DummyDataType>
+                <AgGridReact<DummyDataTypeA>
+                  onGridReady={(event) => {
+                    gridApiRefA.current = event.api;
+                  }}
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyData}
-                  columnDefs={columnDefs}
+                  rowData={rowDataA}
+                  columnDefs={columnDefsA}
                   defaultColDef={{
-                    sortable: false,
-                    resizable: false,
+                    sortable: true,
+                    resizable: true,
                   }}
                   singleClickEdit={true}
                   rowClassRules={{}}
                   domLayout="autoHeight"
-                  alwaysShowVerticalScroll={true}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    width: 30,
+                  }}
                 />
               </div>
+            </TableFoldBody>
+          </TableFold>
+          <TableFold>
+            <TableFoldHead title="피보험자 명세">
+              <Grow>
+                <Button color="success" variant="outlined">
+                  엑셀내보내기
+                  <FileExportIcon />
+                </Button>
+                <Button color="success" variant="outlined">
+                  엑셀가져오기
+                  <FileImportIcon />
+                </Button>
+                <Button color="gray" variant="outlined" onClick={handleAddRowB}>
+                  그룹추가
+                </Button>
+                <Button color="gray" variant="outlined" onClick={handleDeleteRowB}>
+                  그룹삭제
+                </Button>
+              </Grow>
+            </TableFoldHead>
+            <TableFoldBody>
+              <div className="ag-theme-alpine">
+                <AgGridReact<DummyDataTypeB>
+                  onGridReady={(event) => {
+                    gridApiRefB.current = event.api;
+                  }}
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowDataB}
+                  columnDefs={columnDefsB}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  singleClickEdit={true}
+                  rowClassRules={{}}
+                  domLayout="autoHeight"
+                  rowSelection={{
+                    mode: 'multiRow',
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    width: 30,
+                    pinned: 'left',
+                  }}
+                  groupHeaderHeight={30}
+                  headerHeight={0}
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
+          <TableFold>
+            <TableFoldHead title="일반정보 일괄 등록(선택된 피보험자에게 아래의 정보로 일괄 등록 됩니다.)">
+              <Grow>
+                <Button color="gray" variant="outlined" onClick={() => {}}>
+                  등록
+                </Button>
+              </Grow>
+            </TableFoldHead>
+            <TableFoldBody>
+              <FormTable>
+                <FormRow>
+                  <FormCell title={'사망보험금'}>
+                    <NativeSelect aria-label="사망보험금" width={80}>
+                      {[
+                        { value: '선택1', label: '선택1' },
+                        { value: '선택2', label: '선택2' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <Input aria-label="피보험자명" width={120} value={'1234567'} readOnly />
+                    <Button
+                      aria-label="피보험자 검색"
+                      variant={'outlined'}
+                      only="icon"
+                      size={'lg'}
+                      color={'gray-light'}
+                    >
+                      <SearchIcon color={'var(--color-primary-50)'} />
+                    </Button>
+                  </FormCell>
+                  <FormCell title={'사망외보험금'}>
+                    <NativeSelect aria-label="사망외보험금" width={80}>
+                      {[
+                        { value: '선택1', label: '선택1' },
+                        { value: '선택2', label: '선택2' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <Input aria-label="피보험자명" width={100} value={'1234567'} readOnly />
+                    <Button
+                      aria-label="피보험자 검색"
+                      variant={'outlined'}
+                      only="icon"
+                      size={'lg'}
+                      color={'gray-light'}
+                    >
+                      <SearchIcon color={'var(--color-primary-50)'} />
+                    </Button>
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'기타'} colSpan={3}>
+                    <NativeSelect aria-label="기타" width={80}>
+                      {[
+                        { value: '그룹명', label: '그룹명' },
+                        { value: '그룹명1', label: '그룹명1' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <NativeSelect aria-label="기타" width={100}>
+                      {[
+                        { value: '그룹명', label: '그룹명' },
+                        { value: '그룹명1', label: '그룹명1' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <Input aria-label="피보험자명" width={100} value={'1234567'} readOnly />
+                    <Button
+                      aria-label="피보험자 검색"
+                      variant={'outlined'}
+                      only="icon"
+                      size={'lg'}
+                      color={'gray-light'}
+                    >
+                      <SearchIcon color={'var(--color-primary-50)'} />
+                    </Button>
+                    <Input width={100} placeholder="직장명" value={''} />
+                    <Input width={100} placeholder="업종" value={''} />
+                    <Input width={100} placeholder="직무" value={''} />
+                    <NativeSelect aria-label="운전형태" width={100}>
+                      {[
+                        { value: '운전형태', label: '운전형태' },
+                        { value: '운전형태1', label: '운전형태1' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <NativeSelect aria-label="이륜차여부" width={100}>
+                      {[
+                        { value: '이륜차여부', label: '이륜차여부' },
+                        { value: '이륜차여부1', label: '이륜차여부1' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <NativeSelect aria-label="병력여부" width={100}>
+                      {[
+                        { value: '병력여부', label: '병력여부' },
+                        { value: '병력여부1', label: '병력여부1' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </TableFoldBody>
+          </TableFold>
+          <TableFold>
+            <TableFoldHead title="피보험자 직장 주소 및 연락처 일괄 입력(저장시 고객정보에 반영)"></TableFoldHead>
+            <TableFoldBody>
+              <FormTable>
+                <FormRow>
+                  <FormCell title={'직장주소'} titleRowSpan={2}>
+                    <Input width={80} value={'1234567'} />
+                    <Button
+                      aria-label="피보험자 검색"
+                      variant={'outlined'}
+                      only="icon"
+                      size={'lg'}
+                      color={'gray-light'}
+                    >
+                      <SearchIcon color={'var(--color-primary-50)'} />
+                    </Button>
+                    <Input width={120} value={'1234567'} readOnly />
+                    <Input width={80} value={''} />리
+                    <NativeSelect aria-label="사망보험금" width={80}>
+                      {[
+                        { value: '선택1', label: '선택1' },
+                        { value: '선택2', label: '선택2' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <Input width={40} value={''} readOnly />-
+                    <Input width={40} value={''} readOnly />
+                    <Input width={100} value={''} />
+                    <Input width={40} value={''} readOnly />
+                    <Input width={40} value={''} readOnly />
+                    <Input width={100} value={''} />
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={null}>
+                    <Input aria-label="" width={200} value={''} />
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'직장연락처'}>
+                    <NativeSelect aria-label="사망보험금" width={80}>
+                      {[
+                        { value: '선택1', label: '선택1' },
+                        { value: '선택2', label: '선택2' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.value} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    -
+                    <Input width={60} value={''} />-
+                    <Input width={60} value={''} />
+                    ~(
+                    <Input width={60} value={''} />)
+                  </FormCell>
+                </FormRow>
+              </FormTable>
             </TableFoldBody>
           </TableFold>
         </DialogSection>
