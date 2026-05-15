@@ -3,13 +3,15 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Grid, Typo } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { SearchIcon } from '@icons';
+import { TableMore } from '@common/TablePagination';
+import { SearchIcon, ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -21,7 +23,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, GridApi } from 'ag-grid-enterprise';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
@@ -42,23 +44,72 @@ const DummyData1: DummyData1Type[] = [
     field3: '사망/후유',
     field4: '',
   },
+  {
+    id: 2,
+    field1: 'CLA34224',
+    field2:
+      '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 3,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '진단서',
+  },
+  {
+    id: 4,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 5,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
 ];
 
 const Ltpz080 = () => {
-  const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
-  const [rowData, setRowData] = React.useState<DummyData1Type[]>(DummyData1);
-
   const columnDefs1: ColDef<DummyData1Type>[] = [
     {
-      headerName: '순서',
+      headerName: '담보코드',
       field: 'field1',
-      width: 40,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      cellEditor: 'agNumberCellEditor',
-      sortable: false,
+      width: 140,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '담보명',
+      field: 'field2',
+      flex: 1,
+      tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
+    },
+    {
+      headerName: '담보그룹',
+      field: 'field3',
+      width: 140,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '예외',
+      field: 'field4',
+      width: 140,
+      cellClass: 'text-center',
     },
   ];
+
+  const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
+  const pageSize = 3;
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
+    allRows: rowData1,
+    pageSize,
+  });
+
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
@@ -69,54 +120,93 @@ const Ltpz080 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr] gap-1">
-          <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="설계번호" variant="head" cols={['w-[1rem]', 'w-auto', 'w-[1rem]', 'w-auto']}>
-              <FormRow className="grid grid-cols-[1fr_auto] w-full">
+        <DialogSection className="grid-rows-[auto_auto_1fr] gap-3">
+          <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
+            <FormTable variant="head">
+              <FormRow className="w-full">
                 <FormCell title={'상품명'} className="shrink-0" tdClassName="flex-1">
-                  <Input value={'한화 시그니처 여성 검강보험 3.0 2504 '} readOnly />
+                  <Input width={140} value={'LA123123123123'} />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
+                  <Input width={290} aria-label="" value={'한화시그니처여성 건강보험/(1종)'} readOnly />
                 </FormCell>
-                <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={130} value={'LA123123123123'} readOnly />
-                  <Input aria-label="" width={30} value={'1'} readOnly />
+                <FormCell title={'기준일자'}>
+                  <DatePickerInput mode="single" onChange={() => {}} value={'2026-04-30'} />
                 </FormCell>
               </FormRow>
             </FormTable>
+            <Grow>
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                조회
+              </Button>
+              <Button
+                color={'gray'}
+                only={'icon'}
+                size={'lg'}
+                variant={'outlined'}
+                onClick={() => {}}
+                aria-label="새로고침"
+              >
+                <ResetIcon />
+              </Button>
+            </Grow>
           </Grow>
-          <div className="ag-theme-alpine min-h-[24.4rem]">
-            <AgGridReact<DummyData1Type>
-              onGridReady={(event) => {
-                gridApiRef.current = event.api;
-              }}
-              noRowsOverlayComponent={AgGridEmptyComponent}
-              getRowId={(params) => String(params.data.id)}
-              rowData={rowData}
-              columnDefs={columnDefs1}
-              defaultColDef={{
-                sortable: true,
-                resizable: false,
-              }}
-              singleClickEdit={true}
-              rowSelection={{
-                mode: 'singleRow',
-                checkboxes: true,
-                enableClickSelection: false,
-              }}
-              selectionColumnDef={{
-                headerName: '선택',
-                width: 30,
-                cellClass: 'editable-cell text-center',
-              }}
-              domLayout="normal"
-              animateRows={false}
-              tooltipShowMode="whenTruncated"
-              tooltipShowDelay={0}
-              tooltipHideDelay={3000}
+
+          <FormTable cols={['w-[11rem]', 'w-auto']}>
+            <FormRow className="w-full">
+              <FormCell title={'매핑 담보 그룹'}>
+                <CheckboxGroup className="gap-3">
+                  {[
+                    { value: '사망/후유', label: '사망/후유' },
+                    { value: '진단비', label: '진단비' },
+                    { value: '입원/통원', label: '입원/통원' },
+                    { value: '수술/치료', label: '수술/치료' },
+                    { value: '골절/화상', label: '골절/화상' },
+                    { value: '검사/지원', label: '검사/지원' },
+                    { value: '운전비용', label: '운전비용' },
+                    { value: '재물/배상', label: '재물/배상' },
+                    { value: '기타', label: '기타' },
+                    { value: '미분류', label: '미분류' },
+                  ].map((option, idx) => (
+                    <CheckboxGroupItem key={'mpg' + idx} value={option.value}>
+                      {option.label}
+                    </CheckboxGroupItem>
+                  ))}
+                </CheckboxGroup>
+              </FormCell>
+            </FormRow>
+          </FormTable>
+
+          <Gcol>
+            <div className="ag-theme-alpine min-h-[24.4rem]">
+              <AgGridReact<DummyData1Type>
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                getRowId={(params) => String(params.data.id)}
+                rowData={rowData1.slice(0, loadedCount)}
+                columnDefs={columnDefs1}
+                defaultColDef={{
+                  sortable: true,
+                  resizable: false,
+                }}
+                singleClickEdit={true}
+                domLayout="normal"
+                animateRows={false}
+                tooltipShowMode="whenTruncated"
+                tooltipShowDelay={0}
+                tooltipHideDelay={3000}
+              />
+            </div>
+            <TableMore
+              isAll={false}
+              loadedCount={loadedCount}
+              totalCount={totalCount}
+              pageSize={pageSize}
+              onLoadAll={handleLoadAll}
+              onLoadNext={handleLoadNext}
+              onLoadReset={handleLoadReset}
             />
-          </div>
+          </Gcol>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>

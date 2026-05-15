@@ -264,6 +264,56 @@ export function createCellClickSelectionToggleHandler<RowType>() {
   };
 }
 
+export type TreeNameCellRendererOptions = {
+  className?: string;
+  buttonClassName?: string;
+  childPrefix?: string;
+};
+
+export type TreeNameCellRendererParams<RowType> = ICellRendererParams<RowType> & TreeNameCellRendererOptions;
+
+/**
+ * Tree Data용 텍스트 셀 렌더러 팩토리
+ * - 그룹 노드: 버튼 클릭으로 expand/collapse
+ * - 자식 노드: 선택적 prefix(기본 '- ') 표시
+ * - 컬럼별 스타일: cellRendererParams.className / buttonClassName
+ */
+export function createTreeNameCellRenderer<RowType>() {
+  const renderer = (params: TreeNameCellRendererParams<RowType>) => {
+    const hasChildren = params.node.group;
+    const isChild = params.node.level > 0;
+    const textClassName = params.className ?? '';
+    const buttonClassName = params.buttonClassName ?? '';
+    const childPrefix = params.childPrefix ?? '- ';
+    const valueText = String(params.value ?? '');
+
+    const handleToggle = () => {
+      if (!hasChildren) {
+        return;
+      }
+
+      params.node.setExpanded(!params.node.expanded);
+    };
+
+    return hasChildren ? (
+      <button
+        type={'button'}
+        className={`flex w-full items-center gap-1 text-left ${buttonClassName}`}
+        onClick={handleToggle}
+      >
+        {valueText}
+      </button>
+    ) : (
+      <span className={`truncate-no ${textClassName}`}>
+        {isChild && valueText ? childPrefix : ''}
+        {valueText}
+      </span>
+    );
+  };
+
+  return Object.assign(renderer, { displayName: 'AgGridTreeNameCellRenderer' });
+}
+
 /**
  * AgGrid onCellValueChanged 핸들러 생성기 (공용)
  * @param field 변경할 필드명 (keyof RowType)
