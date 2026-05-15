@@ -184,6 +184,25 @@ const Ltpz640 = () => {
         return;
       }
 
+      if (event.colDef.field === 'cheked') {
+        const changedId = event.data.id;
+        const newChecked = Boolean(event.newValue);
+
+        setRowData((prev) =>
+          prev.map((row) => {
+            if (row.id !== changedId) {
+              return row;
+            }
+
+            return {
+              ...row,
+              cheked: newChecked,
+            };
+          })
+        );
+        return;
+      }
+
       if (event.colDef.field !== 'field1') {
         return;
       }
@@ -303,24 +322,54 @@ const Ltpz640 = () => {
   );
   const [openCellMerge, setOpenCellMerge] = React.useState(false);
   const [mergePackageName, setMergePackageName] = React.useState('');
+  const hasCheckedRows = rowData.some((row) => row.cheked);
 
   const handleMergePackageName = React.useCallback(() => {
     if (!mergePackageName.trim()) {
       return;
     }
 
-    setRowData((prev) =>
-      prev.map((row) => {
+    setRowData((prev) => {
+      // 1. field1 업데이트
+      const updated = prev.map((row) => {
         if (!row.cheked) {
           return row;
         }
 
         return {
           ...row,
+          cheked: false,
           field1: mergePackageName,
         };
-      })
-    );
+      });
+
+      // 2. 동일 field1끼리 연속 그룹으로 정렬
+      //    기존 순서를 최대한 유지하면서, 같은 field1은 첫 등장 위치로 모음
+      const groups: Map<string, DummyData1Type[]> = new Map();
+      const keyOrder: string[] = [];
+
+      for (const row of updated) {
+        if (!groups.has(row.field1)) {
+          groups.set(row.field1, []);
+          keyOrder.push(row.field1);
+        }
+
+        groups.get(row.field1)!.push(row);
+      }
+
+      const regrouped: DummyData1Type[] = [];
+
+      for (const key of keyOrder) {
+        for (const row of groups.get(key)!) {
+          regrouped.push(row);
+        }
+      }
+
+      return regrouped.map((row, index) => ({
+        ...row,
+        field0: index + 1,
+      }));
+    });
 
     setMergePackageName('');
     setOpenCellMerge(false);
@@ -385,7 +434,12 @@ const Ltpz640 = () => {
           </DialogHeader>
           <DialogSection className="grid-rows-[auto_1fr] gap-1">
             <Grow placement="ec" className="w-full">
-              <Button variant={'outlined'} color={'gray'} onClick={() => setOpenCellMerge(true)}>
+              <Button
+                variant={'outlined'}
+                color={'gray'}
+                disabled={!hasCheckedRows}
+                onClick={() => setOpenCellMerge(true)}
+              >
                 패키지 병합/분리
               </Button>
               <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
