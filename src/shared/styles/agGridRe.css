@@ -793,3 +793,11 @@
 .ag-header-group-cell .ag-header-cell-comp-wrapper .ag-header-group-text{
   overflow: visible;
 }
+
+.cell-span-style {
+  background-color: #ffffff;
+  border-bottom: 1px solid #dde2eb !important;
+  display: flex;
+  align-items: center; /* 텍스트 중앙 정렬 */
+  z-index: 1;
+}
