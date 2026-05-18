@@ -69,6 +69,14 @@ function sanitizeAmountInput(value: string): string {
   return `${intPart}.${decimalPart}`;
 }
 
+function normalizeFormattedInput(value: string): string {
+  return value.replace(/\D/g, '');
+}
+
+function getDigitsBeforePosition(value: string, position: number): number {
+  return [...value.slice(0, position)].filter((char) => /\d/.test(char)).length;
+}
+
 function Input({
   size = 'lg',
   variant = 'default',
@@ -94,6 +102,7 @@ function Input({
   ...props
 }: UIInputProps) {
   const [focused, setFocused] = useState(false);
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
   const isInputFocused = typeof isFocused === 'boolean' ? isFocused : focused;
   const isControlled = value !== undefined;
   const { onFocus: onFocusProp, onBlur: onBlurProp, style: styleProp, ...inputProps } = props;
@@ -111,8 +120,29 @@ function Input({
     typeof width === 'number' ? `${width / 10}rem` : width === 'full' ? '100%' : width === 'auto' ? 'auto' : width;
   const widthStyle = resolvedWidth ? { width: resolvedWidth } : undefined;
 
+  const createSyntheticChangeEvent = (
+    original: React.ChangeEvent<HTMLInputElement>,
+    value: string,
+    extra?: Record<string, unknown>
+  ) => {
+    return {
+      ...original,
+      target: {
+        ...original.target,
+        value,
+        ...extra,
+      },
+    } as React.ChangeEvent<HTMLInputElement>;
+  };
+
+  const handleFormatterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const normalizedValue = normalizeFormattedInput(e.target.value);
+    onChange?.(createSyntheticChangeEvent(e, normalizedValue));
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = restrictChars ? applyRestrictedCharsFilter(e.target.value) : e.target.value;
+
     if (commaAmount) {
       const normalizedValue = sanitizeAmountInput(val);
       if (onChange) {
@@ -130,11 +160,54 @@ function Input({
         return;
       }
     }
+
+    if (formatter) {
+      handleFormatterChange({
+        ...e,
+        target: { ...e.target, value: val },
+      } as React.ChangeEvent<HTMLInputElement>);
+      return;
+    }
+
     if (val !== e.target.value) {
       onChange?.({ ...e, target: { ...e.target, value: val } } as React.ChangeEvent<HTMLInputElement>);
       return;
     }
     onChange?.(e);
+  };
+
+  const handleFormatterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!formatter || !onChange) return;
+    if (e.key !== 'Backspace' && e.key !== 'Delete') return;
+
+    const { selectionStart, selectionEnd, value } = e.currentTarget;
+    if (selectionStart === null || selectionEnd === null || selectionStart !== selectionEnd) return;
+
+    const isDelimiter = (char: string | undefined) => char !== undefined && !/\d/.test(char);
+    const currentChar = value[selectionStart];
+    const previousChar = selectionStart > 0 ? value[selectionStart - 1] : undefined;
+
+    if (e.key === 'Backspace' && isDelimiter(previousChar)) {
+      e.preventDefault();
+      const rawValue = normalizeFormattedInput(value);
+      const deleteIndex = getDigitsBeforePosition(value, selectionStart - 1) - 1;
+      if (deleteIndex < 0 || deleteIndex >= rawValue.length) return;
+
+      const nextValue = rawValue.slice(0, deleteIndex) + rawValue.slice(deleteIndex + 1);
+      onChange?.(createSyntheticChangeEvent(e as unknown as React.ChangeEvent<HTMLInputElement>, nextValue));
+      return;
+    }
+
+    if (e.key === 'Delete' && isDelimiter(currentChar)) {
+      e.preventDefault();
+      const rawValue = normalizeFormattedInput(value);
+      const deleteIndex = getDigitsBeforePosition(value, selectionStart);
+      if (deleteIndex < 0 || deleteIndex >= rawValue.length) return;
+
+      const nextValue = rawValue.slice(0, deleteIndex) + rawValue.slice(deleteIndex + 1);
+      onChange?.(createSyntheticChangeEvent(e as unknown as React.ChangeEvent<HTMLInputElement>, nextValue));
+      return;
+    }
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -217,6 +290,7 @@ function Input({
           {before && <div>{before}</div>}
           <div className="relative w-full [&>input]:w-full [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[-0.13rem] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
             <input
+              ref={inputRef}
               type={type}
               data-slot="input"
               className={cn(after && 'text-right')}
@@ -226,6 +300,7 @@ function Input({
               aria-describedby={error ? errorId : undefined}
               value={isControlled ? displayValue : undefined}
               onChange={handleChange}
+              onKeyDown={handleFormatterKeyDown}
               onFocus={handleFocus}
               onBlur={handleBlur}
               style={mergedInputStyle}
@@ -271,6 +346,7 @@ function Input({
             <span className="font-bold text-[#000]">{displayValue}</span>
           ) : (
             <input
+              ref={inputRef}
               type={type}
               data-slot="input"
               className={cn(
@@ -284,6 +360,7 @@ function Input({
               aria-describedby={error ? errorId : undefined}
               value={isControlled ? displayValue : undefined}
               onChange={handleChange}
+              onKeyDown={handleFormatterKeyDown}
               onFocus={handleFocus}
               onBlur={handleBlur}
               style={mergedInputStyle}
