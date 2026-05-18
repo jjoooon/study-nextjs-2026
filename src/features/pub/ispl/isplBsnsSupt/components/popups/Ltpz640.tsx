@@ -12,7 +12,7 @@ import {
 } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { ConfirmDialog } from '@common/ConfirmDialog';
-import { ZoomInIcon, ZoomOutIcon } from '@icons';
+import { ZoomInIcon, ZoomOutIcon, ArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -275,6 +275,7 @@ const Ltpz640 = () => {
 
       const sourceBlockRows = rowData.slice(sourceStart, sourceEnd + 1);
       const sourceBlockIdSet = new Set(sourceBlockRows.map((row) => row.id));
+      const originalIndexById = new Map(rowData.map((row, index) => [row.id, index] as const));
 
       if (sourceBlockRows.length <= 1) {
         setRowData(
@@ -298,9 +299,36 @@ const Ltpz640 = () => {
 
       if (targetRow) {
         const targetField1 = targetRow.field1;
+        let targetStartIndex = normalizedInsertIndex;
+        let targetEndIndex = normalizedInsertIndex;
 
-        while (normalizedInsertIndex > 0 && remainingRows[normalizedInsertIndex - 1]?.field1 === targetField1) {
-          normalizedInsertIndex -= 1;
+        while (targetStartIndex > 0 && remainingRows[targetStartIndex - 1]?.field1 === targetField1) {
+          targetStartIndex -= 1;
+        }
+
+        while (
+          targetEndIndex < remainingRows.length - 1 &&
+          remainingRows[targetEndIndex + 1]?.field1 === targetField1
+        ) {
+          targetEndIndex += 1;
+        }
+
+        const isMergedTarget = targetStartIndex !== targetEndIndex;
+
+        if (!isMergedTarget) {
+          normalizedInsertIndex = targetStartIndex;
+        } else {
+          const targetOriginalIndex = originalIndexById.get(targetRow.id);
+
+          if (targetOriginalIndex === undefined) {
+            normalizedInsertIndex = targetStartIndex;
+          } else if (sourceEnd < targetOriginalIndex) {
+            normalizedInsertIndex = targetEndIndex + 1;
+          } else if (sourceStart > targetOriginalIndex) {
+            normalizedInsertIndex = targetStartIndex;
+          } else {
+            normalizedInsertIndex = targetStartIndex;
+          }
         }
       }
 
@@ -407,6 +435,7 @@ const Ltpz640 = () => {
         cellRenderer: 'agCheckboxCellRenderer',
         cellEditor: 'agCheckboxCellEditor',
         autoHeight: true,
+        resizable: false,
       },
       {
         headerName: '담보그룹명',
@@ -448,6 +477,12 @@ const Ltpz640 = () => {
               <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow} disabled={!hasCheckedRows}>
                 행삭제
                 <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
+              </Button>
+              <Button color="gray-light" only="icon" size="sm" variant="outlined">
+                <ArrowIcon className="rotate-90" color={'#FF5C2E'} size={13} />
+              </Button>
+              <Button color="gray-light" only="icon" size="sm" variant="outlined">
+                <ArrowIcon className="-rotate-90" color={'#FF5C2E'} size={13} />
               </Button>
             </Grow>
             <div className="ag-theme-alpine min-h-[50vh]">

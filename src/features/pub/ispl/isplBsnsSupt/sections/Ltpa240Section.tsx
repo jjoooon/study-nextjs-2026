@@ -3,11 +3,8 @@
  */
 'use client';
 
-import {
-  AgGridEmptyComponent,
-  DatePickerCellEditor,
-} from '@aggrid';
-import { Grid, Grow, Gcol, Typo } from '@atoms';
+import { AgGridEmptyComponent, DatePickerCellEditor } from '@aggrid';
+import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -16,8 +13,8 @@ import { ResetIcon, SearchIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
 import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -137,7 +134,6 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa240Section() {
-
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -147,15 +143,16 @@ export default function Ltpa240Section() {
     },
     {
       headerName: '계약정보',
-      children : [
-        { 
-          headerName: '회사명', 
-          field: 'field02', 
-          width: 160, tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }) 
+      children: [
+        {
+          headerName: '회사명',
+          field: 'field02',
+          width: 160,
+          tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
         },
-        { 
-          headerName: '상품명', 
-          field: 'field03', 
+        {
+          headerName: '상품명',
+          field: 'field03',
         },
       ],
     },
@@ -196,7 +193,7 @@ export default function Ltpa240Section() {
     },
   ];
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
     <>
@@ -212,11 +209,7 @@ export default function Ltpa240Section() {
         mainBody={
           <Grid className="grid-rows-[auto_1fr]" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
-              <FormTable
-                variant={'head'}
-                caption="보험신용정보 통합조회 테이블"
-                cols={['w-1', 'w-1', 'w-1', 'w-auto']}
-              >
+              <FormTable variant={'head'} caption="보험신용정보 통합조회 테이블" cols={['w-1', 'w-1', 'w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'취급자'}>
                     <Input width={110} value={'1234567'} required />
@@ -256,14 +249,17 @@ export default function Ltpa240Section() {
             <TableFold variant={'accordion'}>
               <TableFoldHead title="실손보상담보 총등록건수">
                 <Grow>
-                 <Button variant={'outlined'} color={'success'}>
+                  <Button variant={'outlined'} color={'success'}>
                     엑셀내보내기
                     <FileExportIcon />
                   </Button>
                 </Grow>
               </TableFoldHead>
               <TableFoldBody className="grid-rows-[auto_1fr] gap-3">
-                <FormTable caption="보험신용정보 테이블" cols={['w-[12rem]', 'w-[35rem]', 'w-[12rem]', 'w-[35rem]', 'w-[12rem]', 'w-[auto]']}>
+                <FormTable
+                  caption="보험신용정보 테이블"
+                  cols={['w-[12rem]', 'w-[35rem]', 'w-[12rem]', 'w-[35rem]', 'w-[12rem]', 'w-[auto]']}
+                >
                   <FormRow>
                     <FormCell className="" title={'조회상태'}>
                       김한화
@@ -301,17 +297,20 @@ export default function Ltpa240Section() {
             <TableFold variant={'accordion'}>
               <TableFoldHead title="정액보상담보 총등록건수">
                 <Grow>
-                 <Button variant={'outlined'} color={'secondary'}>
+                  <Button variant={'outlined'} color={'secondary'}>
                     상세조회
                   </Button>
-                 <Button variant={'outlined'} color={'success'}>
+                  <Button variant={'outlined'} color={'success'}>
                     엑셀내보내기
                     <FileExportIcon />
                   </Button>
                 </Grow>
               </TableFoldHead>
               <TableFoldBody className="grid-rows-[auto_1fr] gap-3">
-                <FormTable caption="보험신용정보 테이블" cols={['w-[12rem]', 'w-[35rem]', 'w-[12rem]', 'w-[35rem]', 'w-[12rem]', 'w-[auto]']}>
+                <FormTable
+                  caption="보험신용정보 테이블"
+                  cols={['w-[12rem]', 'w-[35rem]', 'w-[12rem]', 'w-[35rem]', 'w-[12rem]', 'w-[auto]']}
+                >
                   <FormRow>
                     <FormCell className="" title={'조회상태'}>
                       김한화
