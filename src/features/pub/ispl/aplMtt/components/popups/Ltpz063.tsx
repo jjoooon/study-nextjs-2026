@@ -2,9 +2,9 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { SearchIcon } from '@icons';
+import { TabPager } from '@common/TabPager';
 
 import { Button } from '@uiux/Button';
 import {
@@ -20,238 +20,199 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
-import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent } from '@/shared/components/agGridUtils/AgGridUtils';
 import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+
+import { useTabs } from '@/shared/hooks/useTabs';
+
+type LTPZ051Tab = { name: string; value: string; label: string };
+const DATA_TABS: LTPZ051Tab[] = [
+  { name: '승환계약정보 (0건)', value: 'value1', label: '승환계약정보 (0건)' },
+  { name: '정상계약정보 (0건)', value: 'value2', label: '정상계약정보 (0건)' },
+  { name: '추가계약정보 (0건)', value: 'value3', label: '추가계약정보 (0건)' },
+];
 
 type DummyDataType = {
   id: number;
-  isChecked: boolean;
   field1: string | number;
   field2: string | number;
   field3: string | number;
   field4: string | number;
   field5: string | number;
-  field6: string | number;
-  field7: string | number;
-  field8: string | number;
-  field9: string | number;
-  field10: string | number;
-  field11: string | number;
-  field12: string | number;
-  field13: string | number;
-  field14: string | number;
-  field15: string | number;
-  field16: string | number;
-  field17: string | number;
 };
 
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    isChecked: false,
-    field1: '김한화',
-    field2: '900101-1234567',
-    field3: '010',
-    field4: '1234',
-    field5: '5678',
-    field6: 'text',
-    field7: 'text',
-    field8: 'text',
-    field9: 'text',
-    field10: '신용추심원',
-    field11: 'text',
-    field12: 'text',
-    field13: 'text',
-    field14: 'text',
-    field15: 'text',
-    field16: 'text',
-    field17: 'text',
+    field1: '보험회사명',
+    field2: '한화손보',
+    field3: '한화손보',
+    field4: '메리츠화재',
+    field5: '삼성화재',
+  },
+  {
+    id: 2,
+    field1: '상품명',
+    field2: '한화 여성간편건강보험 4.0',
+    field3: 'ㅇㅇ 간편보험 2601',
+    field4: '(무)메리츠간편한355건강보험',
+    field5: '삼성간편건강보험',
+  },
+  {
+    id: 3,
+    field1: '계약상태',
+    field2: '신규',
+    field3: '해지(2024-03-01)',
+    field4: '실효(2024-03-01)',
+    field5: '철회(2024-03-01)',
+  },
+  {
+    id: 4,
+    field1: '피보험자',
+    field2: '홍길순',
+    field3: '홍길순',
+    field4: '홍길순',
+    field5: '홍길순',
+  },
+  {
+    id: 5,
+    field1: '보험기간',
+    field2: '2024-03-01 ~ 2026-03-31',
+    field3: '2024-03-01 ~ 2026-03-31',
+    field4: '2024-03-01 ~ 2026-03-31',
+    field5: '2025-12-15 ~ 2026-03-15',
+  },
+  {
+    id: 6,
+    field1: '보험료',
+    field2: '165,000원',
+    field3: '165,000원',
+    field4: '165,000원',
+    field5: '165,000원',
+  },
+  {
+    id: 7,
+    field1: '납입주기/기간',
+    field2: '월납/10년납',
+    field3: '월납/10년납',
+    field4: '월납/10년납',
+    field5: '월납/10년납',
+  },
+  {
+    id: 8,
+    field1: '주요보장내용',
+    field2: '질병후유장해 등',
+    field3: '질병후유장해 등',
+    field4: '유병자상해사망 등',
+    field5: '유병자상해사망 등',
+  },
+  {
+    id: 9,
+    field1: '보험가입금액',
+    field2: '3,000만원 등',
+    field3: '3,000만원 등',
+    field4: '3,000만원 등',
+    field5: '3,000만원 등',
+  },
+  {
+    id: 10,
+    field1: '해약환급금',
+    field2: '30,000,000원',
+    field3: '30,000,000원',
+    field4: '30,000,000원',
+    field5: '',
+  },
+  {
+    id: 11,
+    field1: '예정이율',
+    field2: '5.99%',
+    field3: '5.99%',
+    field4: '5.99%',
+    field5: '5.99%',
+  },
+  {
+    id: 12,
+    field1: '보험목적',
+    field2: '장기상해',
+    field3: '장기상해',
+    field4: '장기상해',
+    field5: '장기상해',
+  },
+  {
+    id: 13,
+    field1: '면책사유 및 면책사항',
+    field2: '계약자,피보험자,수익자의 고의사고 등',
+    field3: '계약자,피보험자,수익자의 고의사고 등',
+    field4: '계약자,피보험자,수익자의 고의사고 등',
+    field5: '계약자,피보험자,수익자의 고의사고 등',
+  },
+  {
+    id: 14,
+    field1: '승환',
+    field2: '',
+    field3: '',
+    field4: '',
+    field5: '',
   },
 ];
 export const Ltpz063 = () => {
-  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+  const { tabs, active, setActive } = useTabs(DATA_TABS);
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
-      headerName: '가입설계동의 시 최소 필요정보',
-      width: 100,
-      children: [
-        {
-          headerName: '이름',
-          field: 'field1',
-          width: 100,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          sortable: false,
-          cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
-            <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-              <Typo>{_params.value}</Typo>
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-                <SearchIcon color={'var(--color-primary-50)'} />
-              </Button>
-            </Grid>
-          ),
-        },
-        {
-          headerName: '주민등록번호',
-          field: 'field2',
-          width: 110,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          sortable: false,
-        },
-        {
-          headerName: '전화번호(휴대폰)',
-          children: [
-            {
-              field: 'field3',
-              width: 50,
-              editable: true,
-              cellClass: 'editable-cell text-center',
-            },
-            {
-              field: 'field4',
-              width: 50,
-              editable: true,
-              cellClass: 'editable-cell text-center',
-            },
-            {
-              field: 'field5',
-              width: 50,
-              editable: true,
-              cellClass: 'editable-cell text-center',
-            },
-          ],
-        },
-      ],
-    } as ColDef<DummyDataType>,
-    {
-      headerComponent: () => (
-        <div className="w-full flex flex-col items-center justify-center leading-[1.1]">
-          <span>동의 여부</span>
-          <span>개별/단체</span>
-        </div>
-      ),
-      field: 'field6',
-      width: 60,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
+      headerName: '구분',
+      width: 150,
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: 'text-center font-bold',
+      field: 'field1',
+      pinned: 'left',
     },
     {
-      headerName: '고객 및 설계 기본 정보',
-      children: [
-        {
-          headerName: '주피와의관계',
-          field: 'field7',
-          width: 80,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          cellEditor: 'agSelectCellEditor',
-          cellEditorParams: { values: ['선택1', '선택2'] },
-        },
-        {
-          headerName: '연령',
-          field: 'field8',
-          width: 60,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          sortable: false,
-        },
-        {
-          headerName: '상해급수',
-          field: 'field9',
-          width: 60,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          sortable: false,
-        },
-        {
-          headerName: '직업',
-          field: 'field10',
-          flex: 1,
-          minWidth: 100,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          sortable: false,
-          cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
-            <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-              <Typo>{_params.value}</Typo>
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-                <SearchIcon color={'var(--color-primary-50)'} />
-              </Button>
-            </Grid>
-          ),
-        },
-        {
-          headerName: '직업명',
-          field: 'field11',
-          flex: 1,
-          minWidth: 80,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          sortable: false,
-        },
-        {
-          headerName: '업종',
-          field: 'field12',
-          minWidth: 80,
-          flex: 1,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          sortable: false,
-        },
-        {
-          headerName: '직무',
-          field: 'field13',
-          minWidth: 80,
-          flex: 1,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          sortable: false,
-        },
-        {
-          headerName: '운전형태',
-          field: 'field14',
-          width: 80,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          cellEditor: 'agSelectCellEditor',
-          cellEditorParams: { values: ['선택1', '선택2'] },
-        },
-        {
-          headerName: '이륜차',
-          field: 'field15',
-          width: 80,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          cellEditor: 'agSelectCellEditor',
-          cellEditorParams: { values: ['선택1', '선택2'] },
-        },
-        {
-          headerName: '병력여부',
-          field: 'field16',
-          width: 80,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          cellEditor: 'agSelectCellEditor',
-          cellEditorParams: { values: ['선택1', '선택2'] },
-        },
-        {
-          headerName: '알릴사항',
-          field: 'field17',
-          width: 80,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-          sortable: false,
-        },
-      ],
-    } as ColDef<DummyDataType>,
+      headerName: '당사신규',
+      width: 180,
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: 'text-center',
+      field: 'field2',
+      pinned: 'left',
+    },
+    {
+      headerName: '당사기존',
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: 'text-center',
+      flex: 1,
+      minWidth: 200,
+      field: 'field3',
+    },
+    {
+      headerName: '타사기존',
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: 'text-center',
+      flex: 1,
+      minWidth: 200,
+      field: 'field4',
+    },
+    {
+      headerName: '타사기존',
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: ({ data }) => (data?.field1 === '해약환급금' ? 'text-center editable-cell' : 'text-center'),
+      flex: 1,
+      minWidth: 200,
+      field: 'field5',
+      editable: ({ data }) => data?.field1 === '해약환급금',
+    },
+    {
+      headerName: '타사기존',
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: ({ data }) => (data?.field1 === '해약환급금' ? 'text-center editable-cell' : 'text-center'),
+      flex: 1,
+      minWidth: 200,
+      field: 'field5',
+      editable: ({ data }) => data?.field1 === '해약환급금',
+    },
   ];
   return (
     <Dialog open>
@@ -325,20 +286,27 @@ export const Ltpz063 = () => {
               </BulletListItem>
             </BulletList>
           </Gcol>
-          <TableFold>
-            <TableFoldHead title="피보험자 명세">
-              <Grow>
+          <TabPager
+            data={tabs}
+            active={active}
+            setActive={setActive}
+            hasTableBelow={true}
+            getValue={(t) => t.value}
+            renderTab={(t) => t.label ?? t.value}
+            visibleCount={4}
+            removable={false}
+            renderAfter={
+              <Grow gap={2} placement={'sc'}>
+                <Typo>(2026-03-30 12:32 기준 한국신용정보원 계약정보 조회)</Typo>
                 <Button color="gray" variant="outlined" onClick={() => {}}>
                   재조회
                 </Button>
               </Grow>
-            </TableFoldHead>
-            <TableFoldBody>
-              <div className="ag-theme-alpine">
+            }
+          >
+            {active === 'value1' ? (
+              <div className="ag-theme-alpine ag-border-t min-h-[13rem]">
                 <AgGridReact<DummyDataType>
-                  onGridReady={(event) => {
-                    gridApiRef.current = event.api;
-                  }}
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={DummyData}
@@ -347,38 +315,32 @@ export const Ltpz063 = () => {
                     sortable: true,
                     resizable: true,
                   }}
-                  singleClickEdit={true}
                   rowClassRules={{}}
-                  domLayout="normal"
-                  rowSelection={{
-                    mode: 'multiRow',
-                    checkboxes: true,
-                    enableClickSelection: false,
-                  }}
-                  selectionColumnDef={{
-                    width: 30,
-                  }}
-                  groupHeaderHeight={30}
-                  headerHeight={0}
+                  domLayout="autoHeight"
                 />
               </div>
-            </TableFoldBody>
-          </TableFold>
+            ) : active === 'value2' ? (
+              <div></div>
+            ) : active === 'value3' ? (
+              <div></div>
+            ) : null}
+          </TabPager>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => {}}>
-                새로고침
-              </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => {}}>
-                단체규약
-              </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => {}}>
-                일괄가입설계동의
-              </Button>
+              <BulletItem color="warning" size="sm" type="ref">
+                06.6월 이전 비교안내할 타 보험회사 계약이 있거나, 고객님께서 추가로 안내받고 싶어하는 계약이 있는 경우
+                작성해주세요.
+              </BulletItem>
             </Grow>
             <Grow>
+              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => {}}>
+                불러오기
+              </Button>
+              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => {}}>
+                타사승환추가
+              </Button>
               <Button variant={'contained'} size={'xl'}>
                 저장
               </Button>
