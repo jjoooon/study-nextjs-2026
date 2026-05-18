@@ -688,6 +688,9 @@ export const Ltpz063 = () => {
       field: 'externalInsurance1',
       editable: ({ data }) => isType3EditableRow(data),
       cellEditorSelector: getType3CellEditorSelector,
+      cellEditorParams: {
+        mode: 'range',
+      },
       cellRenderer: (params: {
         data: DummyDataType3 | undefined;
         value: string | number | boolean | null | undefined;
