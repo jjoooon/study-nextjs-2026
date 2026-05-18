@@ -1,16 +1,15 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */
-import LTPA300 from '@/app/pub/ispl/pages/LTPA300';
+ */import LTPA240 from '@/app/pub/ispl/pages/LTPA240';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/ispl/udrtkGu/LTPA300',
-  component: LTPA300,
+  title: 'app/ispl/isplBsnsSupt/LTPA240',
+  component: LTPA240,
 };
 
 export const Default = () => (
   <LayoutDoc>
-    <LTPA300 />
+    <LTPA240 />
   </LayoutDoc>
 );
