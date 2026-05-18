@@ -445,7 +445,7 @@ const Ltpz640 = () => {
                 행추가
                 <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
               </Button>
-              <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow}>
+              <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow} disabled={!hasCheckedRows}>
                 행삭제
                 <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
               </Button>

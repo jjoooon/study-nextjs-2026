@@ -219,7 +219,7 @@ const Ltpz097 = () => {
               피보험자별누적조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA160)
+              (LTPZ097)
             </Typo>
           </DialogTitle>
         </DialogHeader>

@@ -198,7 +198,7 @@ const Ltpz098 = () => {
               계약별누적위험
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA170)
+              (LTPZ098)
             </Typo>
           </DialogTitle>
         </DialogHeader>
