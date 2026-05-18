@@ -2,11 +2,13 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+import { DatePickerCellEditor } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -20,7 +22,7 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
-import { ColDef } from 'ag-grid-enterprise';
+import type { CellEditorSelectorResult, ColDef, EditableCallbackParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent } from '@/shared/components/agGridUtils/AgGridUtils';
@@ -38,129 +40,519 @@ const DATA_TABS: LTPZ051Tab[] = [
 
 type DummyDataType = {
   id: number;
-  field1: string | number;
-  field2: string | number;
-  field3: string | number;
-  field4: string | number;
-  field5: string | number;
+  type: string | number;
+  ourInsurance1: string | number;
+  ourInsurance2: string | number | boolean;
+  externalInsurance1: string | number | boolean;
+  externalInsurance2: string | number | boolean;
 };
 
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field1: '보험회사명',
-    field2: '한화손보',
-    field3: '한화손보',
-    field4: '메리츠화재',
-    field5: '삼성화재',
+    type: '보험회사명',
+    ourInsurance1: '한화손보',
+    ourInsurance2: '한화손보',
+    externalInsurance1: '메리츠화재',
+    externalInsurance2: '삼성화재',
   },
   {
     id: 2,
-    field1: '상품명',
-    field2: '한화 여성간편건강보험 4.0',
-    field3: 'ㅇㅇ 간편보험 2601',
-    field4: '(무)메리츠간편한355건강보험',
-    field5: '삼성간편건강보험',
+    type: '상품명',
+    ourInsurance1: '한화 여성간편건강보험 4.0',
+    ourInsurance2: 'ㅇㅇ 간편보험 2601',
+    externalInsurance1: '(무)메리츠간편한355건강보험',
+    externalInsurance2: '삼성간편건강보험',
   },
   {
     id: 3,
-    field1: '계약상태',
-    field2: '신규',
-    field3: '해지(2024-03-01)',
-    field4: '실효(2024-03-01)',
-    field5: '철회(2024-03-01)',
+    type: '계약상태(발생일)',
+    ourInsurance1: '신규',
+    ourInsurance2: '해지(2024-03-01)',
+    externalInsurance1: '실효(2024-03-01)',
+    externalInsurance2: '철회(2024-03-01)',
   },
   {
     id: 4,
-    field1: '피보험자',
-    field2: '홍길순',
-    field3: '홍길순',
-    field4: '홍길순',
-    field5: '홍길순',
+    type: '피보험자',
+    ourInsurance1: '홍길순',
+    ourInsurance2: '홍길순',
+    externalInsurance1: '홍길순',
+    externalInsurance2: '홍길순',
   },
   {
     id: 5,
-    field1: '보험기간',
-    field2: '2024-03-01 ~ 2026-03-31',
-    field3: '2024-03-01 ~ 2026-03-31',
-    field4: '2024-03-01 ~ 2026-03-31',
-    field5: '2025-12-15 ~ 2026-03-15',
+    type: '보험기간',
+    ourInsurance1: '2024-03-01 ~ 2026-03-31',
+    ourInsurance2: '2024-03-01 ~ 2026-03-31',
+    externalInsurance1: '2024-03-01 ~ 2026-03-31',
+    externalInsurance2: '2025-12-15 ~ 2026-03-15',
   },
   {
     id: 6,
-    field1: '보험료',
-    field2: '165,000원',
-    field3: '165,000원',
-    field4: '165,000원',
-    field5: '165,000원',
+    type: '보험료',
+    ourInsurance1: '165,000원',
+    ourInsurance2: '165,000원',
+    externalInsurance1: '165,000원',
+    externalInsurance2: '165,000원',
   },
   {
     id: 7,
-    field1: '납입주기/기간',
-    field2: '월납/10년납',
-    field3: '월납/10년납',
-    field4: '월납/10년납',
-    field5: '월납/10년납',
+    type: '납입주기/기간',
+    ourInsurance1: '월납/10년납',
+    ourInsurance2: '월납/10년납',
+    externalInsurance1: '월납/10년납',
+    externalInsurance2: '월납/10년납',
   },
   {
     id: 8,
-    field1: '주요보장내용',
-    field2: '질병후유장해 등',
-    field3: '질병후유장해 등',
-    field4: '유병자상해사망 등',
-    field5: '유병자상해사망 등',
+    type: '주요보장내용',
+    ourInsurance1: '질병후유장해 등',
+    ourInsurance2: '질병후유장해 등',
+    externalInsurance1: '유병자상해사망 등',
+    externalInsurance2: '유병자상해사망 등',
   },
   {
     id: 9,
-    field1: '보험가입금액',
-    field2: '3,000만원 등',
-    field3: '3,000만원 등',
-    field4: '3,000만원 등',
-    field5: '3,000만원 등',
+    type: '보험가입금액',
+    ourInsurance1: '3,000만원 등',
+    ourInsurance2: '3,000만원 등',
+    externalInsurance1: '3,000만원 등',
+    externalInsurance2: '3,000만원 등',
   },
   {
     id: 10,
-    field1: '해약환급금',
-    field2: '30,000,000원',
-    field3: '30,000,000원',
-    field4: '30,000,000원',
-    field5: '',
+    type: '해약환급금',
+    ourInsurance1: '30,000,000원',
+    ourInsurance2: '30,000,000원',
+    externalInsurance1: '',
+    externalInsurance2: '',
   },
   {
     id: 11,
-    field1: '예정이율',
-    field2: '5.99%',
-    field3: '5.99%',
-    field4: '5.99%',
-    field5: '5.99%',
+    type: '예정이율',
+    ourInsurance1: '5.99%',
+    ourInsurance2: '5.99%',
+    externalInsurance1: '',
+    externalInsurance2: '',
   },
   {
     id: 12,
-    field1: '보험목적',
-    field2: '장기상해',
-    field3: '장기상해',
-    field4: '장기상해',
-    field5: '장기상해',
+    type: '보험목적',
+    ourInsurance1: '장기상해',
+    ourInsurance2: '장기상해',
+    externalInsurance1: '',
+    externalInsurance2: '',
   },
   {
     id: 13,
-    field1: '면책사유 및 면책사항',
-    field2: '계약자,피보험자,수익자의 고의사고 등',
-    field3: '계약자,피보험자,수익자의 고의사고 등',
-    field4: '계약자,피보험자,수익자의 고의사고 등',
-    field5: '계약자,피보험자,수익자의 고의사고 등',
+    type: '면책사유 및 면책사항',
+    ourInsurance1: '계약자,피보험자,수익자의 고의사고 등',
+    ourInsurance2: '계약자,피보험자,수익자의 고의사고 등',
+    externalInsurance1: '',
+    externalInsurance2: '',
   },
   {
     id: 14,
-    field1: '승환',
-    field2: '',
-    field3: '',
-    field4: '',
-    field5: '',
+    type: '승환',
+    ourInsurance1: '',
+    ourInsurance2: true,
+    externalInsurance1: true,
+    externalInsurance2: false,
+  },
+];
+
+type DummyDataType2 = {
+  id: number;
+  type: string | number;
+  ourInsurance1: string | number;
+  ourInsurance2: string | number | boolean;
+  externalInsurance1: string | number | boolean;
+  externalInsurance2: string | number | boolean;
+};
+
+const DummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    type: '보험회사명',
+    ourInsurance1: '한화손보',
+    ourInsurance2: '한화손보',
+    externalInsurance1: '메리츠화재',
+    externalInsurance2: '삼성화재',
+  },
+  {
+    id: 2,
+    type: '상품명',
+    ourInsurance1: '한화 여성간편건강보험 4.0',
+    ourInsurance2: 'ㅇㅇ 간편보험 2601',
+    externalInsurance1: '(무)메리츠간편한355건강보험',
+    externalInsurance2: '삼성간편건강보험',
+  },
+  {
+    id: 3,
+    type: '계약상태',
+    ourInsurance1: '신규',
+    ourInsurance2: '정상',
+    externalInsurance1: '정상',
+    externalInsurance2: '정상',
+  },
+  {
+    id: 4,
+    type: '피보험자',
+    ourInsurance1: '홍길순',
+    ourInsurance2: '홍길순',
+    externalInsurance1: '홍길순',
+    externalInsurance2: '홍길순',
+  },
+  {
+    id: 5,
+    type: '보험기간',
+    ourInsurance1: '2024-03-01 ~ 2026-03-31',
+    ourInsurance2: '2024-03-01 ~ 2026-03-31',
+    externalInsurance1: '2024-03-01 ~ 2026-03-31',
+    externalInsurance2: '2025-12-15 ~ 2026-03-15',
+  },
+  {
+    id: 6,
+    type: '보험료',
+    ourInsurance1: '165,000원',
+    ourInsurance2: '165,000원',
+    externalInsurance1: '165,000원',
+    externalInsurance2: '165,000원',
+  },
+  {
+    id: 7,
+    type: '납입주기/기간',
+    ourInsurance1: '월납/10년납',
+    ourInsurance2: '월납/10년납',
+    externalInsurance1: '월납/10년납',
+    externalInsurance2: '월납/10년납',
+  },
+  {
+    id: 8,
+    type: '주요보장내용',
+    ourInsurance1: '질병후유장해 등',
+    ourInsurance2: '질병후유장해 등',
+    externalInsurance1: '유병자상해사망 등',
+    externalInsurance2: '유병자상해사망 등',
+  },
+  {
+    id: 9,
+    type: '보험가입금액',
+    ourInsurance1: '3,000만원 등',
+    ourInsurance2: '3,000만원 등',
+    externalInsurance1: '3,000만원 등',
+    externalInsurance2: '3,000만원 등',
+  },
+  {
+    id: 10,
+    type: '해약환급금',
+    ourInsurance1: '30,000,000원',
+    ourInsurance2: '30,000,000원',
+    externalInsurance1: '',
+    externalInsurance2: '',
+  },
+  {
+    id: 11,
+    type: '예정이율',
+    ourInsurance1: '5.99%',
+    ourInsurance2: '5.99%',
+    externalInsurance1: '',
+    externalInsurance2: '',
+  },
+  {
+    id: 12,
+    type: '보험목적',
+    ourInsurance1: '장기상해',
+    ourInsurance2: '장기상해',
+    externalInsurance1: '',
+    externalInsurance2: '',
+  },
+  {
+    id: 13,
+    type: '면책사유 및 면책사항',
+    ourInsurance1: '계약자,피보험자,수익자의 고의사고 등',
+    ourInsurance2: '계약자,피보험자,수익자의 고의사고 등',
+    externalInsurance1: '',
+    externalInsurance2: '',
+  },
+  {
+    id: 14,
+    type: '승환',
+    ourInsurance1: '',
+    ourInsurance2: true,
+    externalInsurance1: true,
+    externalInsurance2: false,
+  },
+];
+type DummyDataType3 = {
+  id: number;
+  type: string | number;
+  ourInsurance1: string | number;
+  externalInsurance1: string | number | boolean;
+  externalInsurance2: string | number | boolean;
+  externalInsurance3: string | number | boolean;
+};
+
+type AgGridRow = DummyDataType3;
+
+const DummyData3: DummyDataType3[] = [
+  {
+    id: 1,
+    type: '보험회사명',
+    ourInsurance1: '한화손보',
+    externalInsurance1: '한화손보',
+    externalInsurance2: '메리츠화재',
+    externalInsurance3: '삼성화재',
+  },
+  {
+    id: 2,
+    type: '상품명',
+    ourInsurance1: '한화 여성간편건강보험 4.0',
+    externalInsurance1: 'ㅇㅇ 간편보험 2601',
+    externalInsurance2: '(무)메리츠간편한355건강보험',
+    externalInsurance3: '삼성간편건강보험',
+  },
+  {
+    id: 3,
+    type: '계약상태',
+    ourInsurance1: '신규',
+    externalInsurance1: '정상',
+    externalInsurance2: '정상',
+    externalInsurance3: '정상',
+  },
+  {
+    id: 4,
+    type: '피보험자',
+    ourInsurance1: '홍길순',
+    externalInsurance1: '홍길순',
+    externalInsurance2: '홍길순',
+    externalInsurance3: '홍길순',
+  },
+  {
+    id: 5,
+    type: '보험기간',
+    ourInsurance1: '2024-03-01 ~ 2026-03-31',
+    externalInsurance1: '2024-03-01 ~ 2026-03-31',
+    externalInsurance2: '2025-12-15 ~ 2026-03-15',
+    externalInsurance3: '2025-12-15 ~ 2026-03-15',
+  },
+  {
+    id: 6,
+    type: '보험료',
+    ourInsurance1: '165,000원',
+    externalInsurance1: '165,000원',
+    externalInsurance2: '165,000원',
+    externalInsurance3: '165,000원',
+  },
+  {
+    id: 7,
+    type: '납입주기/기간',
+    ourInsurance1: '월납/10년납',
+    externalInsurance1: '월납/10년납',
+    externalInsurance2: '월납/10년납',
+    externalInsurance3: '월납/10년납',
+  },
+  {
+    id: 8,
+    type: '주요보장내용',
+    ourInsurance1: '질병후유장해 등',
+    externalInsurance1: '유병자상해사망 등',
+    externalInsurance2: '유병자상해사망 등',
+    externalInsurance3: '유병자상해사망 등',
+  },
+  {
+    id: 9,
+    type: '보험가입금액',
+    ourInsurance1: '3,000만원 등',
+    externalInsurance1: '3,000만원 등',
+    externalInsurance2: '3,000만원 등',
+    externalInsurance3: '3,000만원 등',
+  },
+  {
+    id: 10,
+    type: '해약환급금',
+    ourInsurance1: '30,000,000원',
+    externalInsurance1: '30,000,000원',
+    externalInsurance2: '30,000,000원',
+    externalInsurance3: '30,000,000원',
+  },
+  {
+    id: 11,
+    type: '예정이율',
+    ourInsurance1: '5.99%',
+    externalInsurance1: '5.99%',
+    externalInsurance2: '5.99%',
+    externalInsurance3: '5.99%',
+  },
+  {
+    id: 12,
+    type: '보험목적',
+    ourInsurance1: '장기상해',
+    externalInsurance1: '장기상해',
+    externalInsurance2: '장기상해',
+    externalInsurance3: '장기상해',
+  },
+  {
+    id: 13,
+    type: '면책사유 및 면책사항',
+    ourInsurance1: '계약자,피보험자,수익자의 고의사고 등',
+    externalInsurance1: '계약자,피보험자,수익자의 고의사고 등',
+    externalInsurance2: '계약자,피보험자,수익자의 고의사고 등',
+    externalInsurance3: '계약자,피보험자,수익자의 고의사고 등',
+  },
+  {
+    id: 14,
+    type: '승환',
+    ourInsurance1: '',
+    externalInsurance1: true,
+    externalInsurance2: false,
+    externalInsurance3: false,
   },
 ];
 export const Ltpz063 = () => {
   const { tabs, active, setActive } = useTabs(DATA_TABS);
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData3, setRowData3] = React.useState<DummyDataType3[]>(DummyData3);
+
+  const isType3CompanyRow = (row: DummyDataType3 | undefined) => row?.type === '보험회사명';
+  const isType3DateRow = (row: DummyDataType3 | undefined) => row?.type === '보험기간';
+  const isType3NumberFormatRow = (row: DummyDataType3 | undefined) =>
+    row?.type === '보험료' || row?.type === '보험가입금액' || row?.type === '해약환급금';
+  const isType3EditableTextRow = (row: DummyDataType3 | undefined) =>
+    row?.type === '상품명' ||
+    row?.type === '계약상태' ||
+    row?.type === '피보험자' ||
+    row?.type === '납입주기/기간' ||
+    row?.type === '주요보장내용' ||
+    row?.type === '예정이율' ||
+    row?.type === '보험목적' ||
+    row?.type === '면책사유 및 면책사항';
+  const isType3EditableRow = (row: DummyDataType3 | undefined) =>
+    !!row &&
+    (isType3CompanyRow(row) || isType3DateRow(row) || isType3NumberFormatRow(row) || isType3EditableTextRow(row));
+
+  const getType3CellEditorSelector = (
+    params: EditableCallbackParams<AgGridRow>
+  ): CellEditorSelectorResult | undefined => {
+    if (isType3CompanyRow(params.data)) {
+      return {
+        component: 'agSelectCellEditor',
+        params: { values: ['한화손보', '메리츠화재'] },
+      };
+    }
+
+    if (isType3DateRow(params.data)) {
+      return {
+        component: DatePickerCellEditor,
+      };
+    }
+
+    return undefined;
+  };
+
+  const ThirdGridHeaderWithDelete = React.useMemo(() => {
+    const Component = () => (
+      <Grow className="w-full" gap={2} placement={'cc'}>
+        <span className="ag-header-cell-text">타사기존</span>
+        <Button
+          color="gray"
+          variant="outlined"
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+        >
+          삭제
+        </Button>
+      </Grow>
+    );
+
+    return Component;
+  }, []);
+
+  const isSelectableField = (field: string): field is 'ourInsurance2' | 'externalInsurance1' | 'externalInsurance2' =>
+    field === 'ourInsurance2' || field === 'externalInsurance1' || field === 'externalInsurance2';
+
+  const isSelectableField3 = (
+    field: string
+  ): field is 'externalInsurance1' | 'externalInsurance2' | 'externalInsurance3' =>
+    field === 'externalInsurance1' || field === 'externalInsurance2' || field === 'externalInsurance3';
+
+  const isEditableTargetRow = (fieldName: DummyDataType['type']) =>
+    fieldName === '해약환급금' ||
+    fieldName === '예정이율' ||
+    fieldName === '보험목적' ||
+    fieldName === '면책사유 및 면책사항';
+
+  const externalInsuranceCellClassRules = {
+    'editable-cell': ({ data }: { data: DummyDataType | undefined }) => (data ? isEditableTargetRow(data.type) : false),
+  };
+
+  const externalValueFormatter = (params: {
+    value: string | number | null | undefined;
+    data: DummyDataType | undefined;
+  }) => {
+    if (params.value === null || params.value === undefined || params.value === '') return '';
+    const stringValue = String(params.value);
+
+    return stringValue;
+  };
+
+  const isCheckedValue = (value: string | number | boolean | null | undefined) => {
+    if (value === null || value === undefined || value === '') {
+      return false;
+    }
+
+    if (typeof value === 'boolean') {
+      return value;
+    }
+
+    if (typeof value === 'number') {
+      return value === 1;
+    }
+
+    return value.toLowerCase() === 'true';
+  };
+
+  const handleCheckboxChange = (
+    params: {
+      data: DummyDataType | undefined;
+      colDef: ColDef<DummyDataType>;
+    },
+    checked: boolean | 'indeterminate'
+  ) => {
+    const targetField = params.colDef.field;
+
+    if (!params.data || !targetField || !isSelectableField(targetField)) {
+      return;
+    }
+
+    const nextValue = checked === true;
+
+    setRowData((prevRows) =>
+      prevRows.map((row) => (row.id === params.data?.id ? { ...row, [targetField]: nextValue } : row))
+    );
+  };
+
+  const handleCheckboxChange3 = (
+    params: {
+      data: DummyDataType3 | undefined;
+      colDef: ColDef<DummyDataType3>;
+    },
+    checked: boolean | 'indeterminate'
+  ) => {
+    const targetField = params.colDef.field;
+
+    if (!params.data || !targetField || !isSelectableField3(targetField)) {
+      return;
+    }
+
+    const nextValue = checked === true;
+
+    setRowData3((prevRows) =>
+      prevRows.map((row) => (row.id === params.data?.id ? { ...row, [targetField]: nextValue } : row))
+    );
+  };
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -168,50 +560,216 @@ export const Ltpz063 = () => {
       width: 150,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center font-bold',
-      field: 'field1',
+      field: 'type',
       pinned: 'left',
     },
     {
       headerName: '당사신규',
-      width: 180,
+      width: 200,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center',
-      field: 'field2',
+      field: 'ourInsurance1',
       pinned: 'left',
     },
     {
       headerName: '당사기존',
       headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center',
+      cellClass: 'text-center flex! items-center! justify-center!',
       flex: 1,
       minWidth: 200,
-      field: 'field3',
+      field: 'ourInsurance2',
+      cellRenderer: (params: {
+        data: DummyDataType | undefined;
+        value: string | number | boolean | null | undefined;
+        colDef: ColDef<DummyDataType>;
+      }) =>
+        params.data?.type === '승환' ? (
+          <Checkbox
+            checked={isCheckedValue(params.value)}
+            color="primary"
+            errorMsg="선택은 필수입니다."
+            errorPs="bl"
+            onCheckedChange={(checked) => handleCheckboxChange(params, checked)}
+            size="lg"
+            variant="noneText"
+          >
+            단일
+          </Checkbox>
+        ) : (
+          params.value
+        ),
     },
     {
       headerName: '타사기존',
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: 'text-center flex! items-center! justify-center!',
+      cellClassRules: externalInsuranceCellClassRules,
+      flex: 1,
+      minWidth: 200,
+      field: 'externalInsurance1',
+      editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
+      valueFormatter: externalValueFormatter,
+      cellRenderer: (params: {
+        data: DummyDataType | undefined;
+        value: string | number | boolean | null | undefined;
+        colDef: ColDef<DummyDataType>;
+      }) =>
+        params.data?.type === '승환' ? (
+          <Checkbox
+            checked={isCheckedValue(params.value)}
+            color="primary"
+            errorMsg="선택은 필수입니다."
+            errorPs="bl"
+            onCheckedChange={(checked) => handleCheckboxChange(params, checked)}
+            size="lg"
+            variant="noneText"
+          >
+            단일
+          </Checkbox>
+        ) : (
+          params.value
+        ),
+    },
+    {
+      headerName: '타사기존',
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: 'text-center flex! items-center! justify-center!',
+      cellClassRules: externalInsuranceCellClassRules,
+      flex: 1,
+      minWidth: 200,
+      field: 'externalInsurance2',
+      editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
+      cellRenderer: (params: {
+        data: DummyDataType | undefined;
+        value: string | number | boolean | null | undefined;
+        colDef: ColDef<DummyDataType>;
+      }) =>
+        params.data?.type === '승환' ? (
+          <Checkbox
+            checked={isCheckedValue(params.value)}
+            color="primary"
+            errorMsg="선택은 필수입니다."
+            errorPs="bl"
+            onCheckedChange={(checked) => handleCheckboxChange(params, checked)}
+            size="lg"
+            variant="noneText"
+          >
+            단일
+          </Checkbox>
+        ) : (
+          params.value
+        ),
+    },
+  ];
+  const columnDefs3: ColDef<DummyDataType3>[] = [
+    {
+      headerName: '구분',
+      width: 150,
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: 'text-center font-bold',
+      field: 'type',
+      pinned: 'left',
+    },
+    {
+      headerName: '당사신규',
+      width: 200,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center',
-      flex: 1,
-      minWidth: 200,
-      field: 'field4',
+      field: 'ourInsurance1',
+      pinned: 'left',
     },
     {
       headerName: '타사기존',
+      headerComponent: ThirdGridHeaderWithDelete,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: ({ data }) => (data?.field1 === '해약환급금' ? 'text-center editable-cell' : 'text-center'),
+      cellClass: 'text-center flex! items-center! justify-center!',
       flex: 1,
       minWidth: 200,
-      field: 'field5',
-      editable: ({ data }) => data?.field1 === '해약환급금',
+      field: 'externalInsurance1',
+      editable: ({ data }) => isType3EditableRow(data),
+      cellEditorSelector: getType3CellEditorSelector,
+      cellRenderer: (params: {
+        data: DummyDataType3 | undefined;
+        value: string | number | boolean | null | undefined;
+        colDef: ColDef<DummyDataType3>;
+      }) =>
+        params.data?.type === '승환' ? (
+          <Checkbox
+            checked={isCheckedValue(params.value)}
+            color="primary"
+            errorMsg="선택은 필수입니다."
+            errorPs="bl"
+            onCheckedChange={(checked) => handleCheckboxChange3(params, checked)}
+            size="lg"
+            variant="noneText"
+          >
+            단일
+          </Checkbox>
+        ) : (
+          params.value
+        ),
     },
     {
       headerName: '타사기존',
+      headerComponent: ThirdGridHeaderWithDelete,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: ({ data }) => (data?.field1 === '해약환급금' ? 'text-center editable-cell' : 'text-center'),
+      cellClass: 'text-center flex! items-center! justify-center!',
       flex: 1,
       minWidth: 200,
-      field: 'field5',
-      editable: ({ data }) => data?.field1 === '해약환급금',
+      field: 'externalInsurance2',
+      editable: ({ data }) => isType3EditableRow(data),
+      cellEditorSelector: getType3CellEditorSelector,
+      cellRenderer: (params: {
+        data: DummyDataType3 | undefined;
+        value: string | number | boolean | null | undefined;
+        colDef: ColDef<DummyDataType3>;
+      }) =>
+        params.data?.type === '승환' ? (
+          <Checkbox
+            checked={isCheckedValue(params.value)}
+            color="primary"
+            errorMsg="선택은 필수입니다."
+            errorPs="bl"
+            onCheckedChange={(checked) => handleCheckboxChange3(params, checked)}
+            size="lg"
+            variant="noneText"
+          >
+            단일
+          </Checkbox>
+        ) : (
+          params.value
+        ),
+    },
+    {
+      headerName: '타사기존',
+      headerComponent: ThirdGridHeaderWithDelete,
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: 'text-center flex! items-center! justify-center!',
+      flex: 1,
+      minWidth: 200,
+      field: 'externalInsurance3',
+      editable: ({ data }) => isType3EditableRow(data),
+      cellEditorSelector: getType3CellEditorSelector,
+      cellRenderer: (params: {
+        data: DummyDataType3 | undefined;
+        value: string | number | boolean | null | undefined;
+        colDef: ColDef<DummyDataType3>;
+      }) =>
+        params.data?.type === '승환' ? (
+          <Checkbox
+            checked={isCheckedValue(params.value)}
+            color="primary"
+            errorMsg="선택은 필수입니다."
+            errorPs="bl"
+            onCheckedChange={(checked) => handleCheckboxChange3(params, checked)}
+            size="lg"
+            variant="noneText"
+          >
+            단일
+          </Checkbox>
+        ) : (
+          params.value
+        ),
     },
   ];
   return (
@@ -305,12 +863,13 @@ export const Ltpz063 = () => {
             }
           >
             {active === 'value1' ? (
-              <div className="ag-theme-alpine ag-border-t min-h-[13rem]">
+              <div className="ag-theme-alpine ag-border-t">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyData}
+                  rowData={rowData}
                   columnDefs={columnDefs}
+                  singleClickEdit={true}
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
@@ -320,9 +879,37 @@ export const Ltpz063 = () => {
                 />
               </div>
             ) : active === 'value2' ? (
-              <div></div>
+              <div className="ag-theme-alpine ag-border-t">
+                <AgGridReact<DummyDataType2>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={DummyData2}
+                  columnDefs={columnDefs}
+                  singleClickEdit={true}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  rowClassRules={{}}
+                  domLayout="autoHeight"
+                />
+              </div>
             ) : active === 'value3' ? (
-              <div></div>
+              <div className="ag-theme-alpine ag-border-t">
+                <AgGridReact<DummyDataType3>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData3}
+                  columnDefs={columnDefs3}
+                  singleClickEdit={true}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  rowClassRules={{}}
+                  domLayout="autoHeight"
+                />
+              </div>
             ) : null}
           </TabPager>
         </DialogSection>
@@ -335,12 +922,16 @@ export const Ltpz063 = () => {
               </BulletItem>
             </Grow>
             <Grow>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => {}}>
-                불러오기
-              </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={() => {}}>
-                타사승환추가
-              </Button>
+              {active === 'value3' ? (
+                <>
+                  <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                    불러오기
+                  </Button>
+                  <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                    타사승환추가
+                  </Button>
+                </>
+              ) : null}
               <Button variant={'contained'} size={'xl'}>
                 저장
               </Button>
