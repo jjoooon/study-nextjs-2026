@@ -1,12 +1,26 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
+ */
+const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
 const PROD_STORYBOOK_BASE_URL = 'https://jjoooon.github.io/study-nextjs-2026';
+const HYGITEST_STORYBOOK_BASE_URL = 'https://ltp-story.hwgitest.com';
+
+const LOCAL_HOST_NAMES = new Set(['localhost', '127.0.0.1']);
+const HYGITEST_HOST_NAMES = new Set(['ltp-story.hwgitest.com']);
 
 function getStorybookBaseUrl(): string {
   if (typeof window === 'undefined') return LOCAL_STORYBOOK_BASE_URL;
   const { hostname } = window.location;
-  return hostname === 'localhost' || hostname === '127.0.0.1' ? LOCAL_STORYBOOK_BASE_URL : PROD_STORYBOOK_BASE_URL;
+
+  if (LOCAL_HOST_NAMES.has(hostname)) {
+    return LOCAL_STORYBOOK_BASE_URL;
+  }
+
+  if (HYGITEST_HOST_NAMES.has(hostname) || hostname.endsWith('.hwgitest.com')) {
+    return HYGITEST_STORYBOOK_BASE_URL;
+  }
+
+  return PROD_STORYBOOK_BASE_URL;
 }
 
 /**

@@ -351,6 +351,61 @@ const Ltpz640 = () => {
   const [mergePackageName, setMergePackageName] = React.useState('');
   const hasCheckedRows = rowData.some((row) => row.cheked);
 
+  const moveCheckedRowsWithinGroup = React.useCallback(
+    (direction: 'up' | 'down') => {
+      setRowData((prev) => {
+        const nextRows = [...prev];
+        let groupStart = 0;
+
+        while (groupStart < nextRows.length) {
+          let groupEnd = groupStart;
+
+          while (groupEnd + 1 < nextRows.length && nextRows[groupEnd + 1]?.field1 === nextRows[groupStart]?.field1) {
+            groupEnd += 1;
+          }
+
+          if (direction === 'up') {
+            for (let index = groupStart + 1; index <= groupEnd; index += 1) {
+              const current = nextRows[index];
+              const previous = nextRows[index - 1];
+
+              if (current?.cheked && !previous?.cheked) {
+                nextRows[index - 1] = current;
+                nextRows[index] = previous;
+              }
+            }
+          } else {
+            for (let index = groupEnd - 1; index >= groupStart; index -= 1) {
+              const current = nextRows[index];
+              const following = nextRows[index + 1];
+
+              if (current?.cheked && !following?.cheked) {
+                nextRows[index] = following;
+                nextRows[index + 1] = current;
+              }
+            }
+          }
+
+          groupStart = groupEnd + 1;
+        }
+
+        return nextRows.map((row, index) => ({
+          ...row,
+          field0: index + 1,
+        }));
+      });
+    },
+    [setRowData]
+  );
+
+  const handleMoveCheckedRowsUp = React.useCallback(() => {
+    moveCheckedRowsWithinGroup('up');
+  }, [moveCheckedRowsWithinGroup]);
+
+  const handleMoveCheckedRowsDown = React.useCallback(() => {
+    moveCheckedRowsWithinGroup('down');
+  }, [moveCheckedRowsWithinGroup]);
+
   const handleMergePackageName = React.useCallback(() => {
     if (!mergePackageName.trim()) {
       return;
@@ -478,10 +533,24 @@ const Ltpz640 = () => {
                 행삭제
                 <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
               </Button>
-              <Button color="gray-light" only="icon" size="sm" variant="outlined">
+              <Button
+                color="gray-light"
+                only="icon"
+                size="sm"
+                variant="outlined"
+                onClick={handleMoveCheckedRowsUp}
+                disabled={!hasCheckedRows}
+              >
                 <ArrowIcon className="rotate-90" color={'#FF5C2E'} size={13} />
               </Button>
-              <Button color="gray-light" only="icon" size="sm" variant="outlined">
+              <Button
+                color="gray-light"
+                only="icon"
+                size="sm"
+                variant="outlined"
+                onClick={handleMoveCheckedRowsDown}
+                disabled={!hasCheckedRows}
+              >
                 <ArrowIcon className="-rotate-90" color={'#FF5C2E'} size={13} />
               </Button>
             </Grow>
