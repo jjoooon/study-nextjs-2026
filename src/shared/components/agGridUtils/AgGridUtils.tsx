@@ -935,8 +935,52 @@ export function editableSelectCellRenderer<RowType>(
   );
 }
 
+type DatePickerEditorMode = 'single' | 'range';
+
+type DatePickerRangeValue = {
+  from?: string;
+  to?: string;
+};
+
+type DatePickerCellEditorParams = {
+  mode?: DatePickerEditorMode;
+};
+
+function parseRangeFromValue(rawValue: unknown): DatePickerRangeValue {
+  if (rawValue && typeof rawValue === 'object' && !Array.isArray(rawValue)) {
+    const fromValue = 'from' in rawValue ? rawValue.from : undefined;
+    const toValue = 'to' in rawValue ? rawValue.to : undefined;
+
+    return {
+      from: typeof fromValue === 'string' ? fromValue : '',
+      to: typeof toValue === 'string' ? toValue : '',
+    };
+  }
+
+  if (typeof rawValue !== 'string' || !rawValue.trim()) {
+    return { from: '', to: '' };
+  }
+
+  const [from = '', to = ''] = rawValue.split('~').map((part) => part.trim());
+  return { from, to };
+}
+
 export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams<RowType>) {
-  const [value, setValue] = React.useState<string>(props.value ?? '');
+  const editorParams = (props.colDef?.cellEditorParams ?? {}) as DatePickerCellEditorParams;
+  const mode: DatePickerEditorMode = editorParams.mode ?? 'single';
+
+  const [value, setValue] = React.useState<string>(() => {
+    if (mode === 'range') {
+      const initialRange = parseRangeFromValue(props.value);
+      if (initialRange.from && initialRange.to) {
+        return `${initialRange.from} ~ ${initialRange.to}`;
+      }
+      return initialRange.from ?? '';
+    }
+
+    return typeof props.value === 'string' ? props.value : '';
+  });
+  const [rangeValue, setRangeValue] = React.useState<DatePickerRangeValue>(() => parseRangeFromValue(props.value));
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   type CellEditorImperativeRef = {
@@ -950,8 +994,20 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
 
   // 셀 진입 시마다 최신 value로 동기화
   React.useEffect(() => {
-    setValue(props.value ?? '');
-  }, [props.value]);
+    if (mode === 'range') {
+      const nextRange = parseRangeFromValue(props.value);
+      setRangeValue(nextRange);
+      if (nextRange.from && nextRange.to) {
+        setValue(`${nextRange.from} ~ ${nextRange.to}`);
+      } else {
+        setValue(nextRange.from ?? '');
+      }
+      return;
+    }
+
+    setRangeValue({ from: '', to: '' });
+    setValue(typeof props.value === 'string' ? props.value : '');
+  }, [mode, props.value]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -960,6 +1016,22 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
   }, []);
 
   const handleChange = (_: Date | undefined, formatted: string) => {
+    if (mode === 'range') {
+      const [from = '', to = ''] = formatted.split('~').map((part) => part.trim());
+      const nextRangeValue = { from, to };
+      setRangeValue(nextRangeValue);
+      setValue(formatted);
+
+      if (props.node && props.column) {
+        props.node.setDataValue(props.column.getColId(), formatted);
+      }
+
+      if (props.stopEditing && from && to) {
+        setTimeout(() => props.stopEditing(), 0);
+      }
+      return;
+    }
+
     setValue(formatted);
     // 셀의 값을 즉시 반영
     if (props.node && props.column) {
@@ -981,7 +1053,16 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
     [value]
   );
 
-  return <DatePickerInput value={value} onChange={handleChange} size="md" width="full" />;
+  return (
+    <DatePickerInput
+      mode={mode}
+      value={mode === 'single' ? value : undefined}
+      rangeValue={mode === 'range' ? rangeValue : undefined}
+      onChange={handleChange}
+      size="md"
+      width="full"
+    />
+  );
 }
 
 type FieldRendererComponentProps<T> = { data?: T };
