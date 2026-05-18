@@ -1025,10 +1025,6 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
       if (props.node && props.column) {
         props.node.setDataValue(props.column.getColId(), formatted);
       }
-
-      if (props.stopEditing && from && to) {
-        setTimeout(() => props.stopEditing(), 0);
-      }
       return;
     }
 
