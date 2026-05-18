@@ -37,10 +37,23 @@ export type ToggleTopRow<T> = T & {
 
 type PrimitiveId = string | number;
 
+/**
+ * T에서 순서값으로 사용할 수 있는 number 키만 추출.
+ */
+type NumberKeyOf<T> = {
+  [K in keyof T]-?: T[K] extends number ? K : never;
+}[keyof T];
+
+/**
+ * T에서 id로 사용할 수 있는 키(string | number 값)만 추출.
+ */
 type IdKeyOf<T> = {
   [K in keyof T]-?: T[K] extends PrimitiveId ? K : never;
 }[keyof T];
 
+/**
+ * T에서 토글 플래그로 사용할 수 있는 boolean 키만 추출.
+ */
 type BooleanKeyOf<T> = {
   [K in keyof T]-?: T[K] extends boolean ? K : never;
 }[keyof T];
@@ -81,6 +94,10 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
   idKey,
   toggleKey,
 }: UseToggleTopRowsParams<T>) {
+  /**
+   * 최근 토글 순서를 기록하기 위한 증가 시퀀스.
+   * - 더 최근에 토글된 항목이 상단에서 먼저 오도록 사용.
+   */
   const sequenceRef = useRef(1);
 
   const [rowData, setRowData] = useState<ToggleTopRow<T>[]>(() => {
@@ -93,6 +110,10 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
     return sortToggleRows(initialized, toggleKey);
   });
 
+  /**
+   * id 기준으로 토글 상태를 반전하고,
+   * 반전 결과에 맞춰 상단 정렬 규칙을 다시 적용.
+   */
   const toggleById = useCallback(
     (id: T[IdKeyOf<T>]) => {
       setRowData((prev) => {
@@ -117,8 +138,11 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
   );
 
   return {
+    /** 정렬 규칙이 반영된 행 데이터 */
     rowData,
+    /** 필요 시 외부에서 직접 행 데이터 갱신 */
     setRowData,
+    /** 특정 id 행의 토글 상태 반전 */
     toggleById,
   };
 }
@@ -240,6 +264,64 @@ export function createCellClickSelectionToggleHandler<RowType>() {
   };
 }
 
+export type TreeNameCellRendererOptions = {
+  className?: string;
+  buttonClassName?: string;
+  childPrefix?: string;
+  toggleOnGroupClick?: boolean;
+};
+
+export type TreeNameCellRendererParams<RowType> = ICellRendererParams<RowType> & TreeNameCellRendererOptions;
+
+/**
+ * Tree Data용 텍스트 셀 렌더러 팩토리
+ * - 그룹 노드: 버튼 클릭으로 expand/collapse
+ * - 자식 노드: 선택적 prefix(기본 '- ') 표시
+ * - 컬럼별 스타일: cellRendererParams.className / buttonClassName
+ */
+export function createTreeNameCellRenderer<RowType>() {
+  const renderer = (params: TreeNameCellRendererParams<RowType>) => {
+    const hasChildren = params.node.group;
+    const isChild = params.node.level > 0;
+    const textClassName = params.className ?? '';
+    const buttonClassName = params.buttonClassName ?? '';
+    const childPrefix = params.childPrefix ?? '- ';
+    const toggleOnGroupClick = params.toggleOnGroupClick ?? true;
+    const valueText = String(params.value ?? '');
+
+    const handleToggle = () => {
+      if (!hasChildren) {
+        return;
+      }
+
+      params.node.setExpanded(!params.node.expanded);
+    };
+
+    if (hasChildren && toggleOnGroupClick) {
+      return (
+        <button
+          type={'button'}
+          className={`flex w-full items-center gap-1 text-left ${buttonClassName}`}
+          onClick={handleToggle}
+        >
+          {valueText}
+        </button>
+      );
+    }
+
+    return hasChildren ? (
+      <span className={`truncate-no ${textClassName}`}>{valueText}</span>
+    ) : (
+      <span className={`truncate-no ${textClassName}`}>
+        {isChild && valueText ? childPrefix : ''}
+        {valueText}
+      </span>
+    );
+  };
+
+  return Object.assign(renderer, { displayName: 'AgGridTreeNameCellRenderer' });
+}
+
 /**
  * AgGrid onCellValueChanged 핸들러 생성기 (공용)
  * @param field 변경할 필드명 (keyof RowType)
@@ -276,6 +358,68 @@ export function createCellValueChangedHandler<RowType extends Record<string, unk
 }
 
 /**
+ * 순서 컬럼 편집 시 행 위치를 재배치하고 순서를 1부터 다시 매기는 핸들러 생성기.
+ * - 예: 5번 행의 순서를 1로 변경하면, 해당 행이 맨 앞으로 이동하고 나머지는 2, 3, 4, 5로 재정렬.
+ * - 선택적으로 이동된 행이 보이도록 스크롤 위치를 맞춤.
+ */
+export function createSequentialRowReorderHandler<
+  RowType extends Record<string, unknown>,
+  IDType extends string | number,
+>(
+  setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
+  options: {
+    idKey: keyof RowType;
+    orderKey: NumberKeyOf<RowType>;
+    gridApiRef?: React.RefObject<GridApi<RowType> | null>;
+  }
+) {
+  const { idKey, orderKey, gridApiRef } = options;
+
+  return (params: CellValueChangedEvent<RowType>) => {
+    if (params.colDef.field !== String(orderKey)) {
+      return;
+    }
+
+    const requestedOrder = Number(params.newValue);
+    if (!Number.isFinite(requestedOrder)) {
+      return;
+    }
+
+    const targetRowId = params.data[idKey] as IDType;
+
+    setRowData((previous) => {
+      const sourceIndex = previous.findIndex((row) => row[idKey] === targetRowId);
+      if (sourceIndex < 0) {
+        return previous;
+      }
+
+      const sourceRow = previous[sourceIndex];
+      const rowsWithoutSource = previous.filter((_, index) => index !== sourceIndex);
+      const boundedIndex = Math.max(0, Math.min(Math.trunc(requestedOrder) - 1, rowsWithoutSource.length));
+
+      const reorderedRows = [...rowsWithoutSource];
+      reorderedRows.splice(boundedIndex, 0, sourceRow);
+
+      return reorderedRows.map((row, index) => ({
+        ...row,
+        [orderKey]: index + 1,
+      })) as RowType[];
+    });
+
+    if (gridApiRef?.current) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const rowNode = gridApiRef.current?.getRowNode(String(targetRowId));
+          if (rowNode) {
+            gridApiRef.current?.ensureNodeVisible(rowNode, 'middle');
+          }
+        });
+      });
+    }
+  };
+}
+
+/**
  * 행 추가 핸들러 생성기 (공용)
  * @param setRowData 행 데이터 setState
  * @param options.idKey 고유 id 필드명
@@ -283,6 +427,7 @@ export function createCellValueChangedHandler<RowType extends Record<string, unk
  * @param options.createRow 신규 행 생성 함수
  * @param options.insertAt 삽입 위치 (기본값: 'end')
  * @param options.getInsertIndex 커스텀 삽입 인덱스 계산 함수
+ * @param options.gridApiRef 추가된 행으로 스크롤하기 위한 ag-Grid API ref
  */
 export function createAddRowHandler<RowType extends Record<string, unknown>, IDType extends string | number>(
   setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
@@ -292,9 +437,10 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
     createRow: (nextId: IDType, rows: RowType[]) => RowType;
     insertAt?: 'start' | 'end';
     getInsertIndex?: (rows: RowType[]) => number;
+    gridApiRef?: React.RefObject<GridApi<RowType> | null>;
   }
 ) {
-  const { idKey, getNextId, createRow, insertAt = 'end', getInsertIndex } = options;
+  const { idKey, getNextId, createRow, insertAt = 'end', getInsertIndex, gridApiRef } = options;
 
   return () => {
     setRowData((prev) => {
@@ -310,6 +456,19 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
       const boundedIndex = Math.max(0, Math.min(customIndex, nextRows.length));
 
       nextRows.splice(boundedIndex, 0, newRow);
+
+      if (gridApiRef?.current) {
+        const rowId = String(nextId);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const rowNode = gridApiRef.current?.getRowNode(rowId);
+            if (rowNode) {
+              gridApiRef.current?.ensureNodeVisible(rowNode, 'middle');
+            }
+          });
+        });
+      }
+
       return nextRows;
     });
   };
@@ -537,6 +696,11 @@ export type DuplicateRowBase = {
   filePath?: string[];
 };
 
+/**
+ * rowData setState 래퍼.
+ * - 행이 새로 추가된 경우, `isDuplicate`인 신규 행을 찾아
+ *   `pendingSelectIdRef`에 기록(후속 선택 처리용).
+ */
 export function rowDataWithTrackingFactory<T extends { id: string | number; isDuplicate?: boolean }>(
   setRowData: React.Dispatch<React.SetStateAction<T[]>>,
   pendingSelectIdRef: React.MutableRefObject<string | number | null>
@@ -556,12 +720,24 @@ export function rowDataWithTrackingFactory<T extends { id: string | number; isDu
   };
 }
 
+/**
+ * 현재 rows에서 다음 숫자 id를 계산.
+ * - 숫자 문자열도 number로 변환해 비교.
+ * - 유효한 숫자 id가 없으면 1 반환.
+ */
 export function getNextNumericRowId<T extends { id: string | number }>(rows: T[]): number {
   const ids = rows.map((row) => (typeof row.id === 'number' ? row.id : Number(row.id))).filter((id) => !isNaN(id));
   const maxId = ids.length > 0 ? Math.max(...ids) : 0;
   return maxId + 1;
 }
 
+/**
+ * 복제 행 생성 시 공통 보정값을 적용.
+ * - `id`: 새 id
+ * - `displayNo`: 원본 id
+ * - `isDuplicate`, `isChecked`: true
+ * - `filePath`: 기존 경로에 새 id 문자열 추가
+ */
 export function patchCopiedDuplicateRow<T extends DuplicateRowBase>(
   originalRow: T,
   nextId: number
@@ -576,6 +752,11 @@ export function patchCopiedDuplicateRow<T extends DuplicateRowBase>(
   };
 }
 
+/**
+ * 복제 버튼 노출 조건.
+ * - 행이 선택되어 있고,
+ * - 이미 복제된 행이 아닐 때만 노출.
+ */
 export function isCopyButtonVisible<T extends { isDuplicate?: boolean }>(params: {
   node?: { isSelected?: () => boolean | undefined };
   data?: T;
@@ -897,7 +1078,7 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
     };
 
     return div === 'col' ? (
-      <Grid className="w-full h-[5.6rem] grid-rowss-[1fr_1fr] divide-y divide-gray-200" gap={0}>
+      <Grid className="w-full h-[5.6rem] grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
         <div className="h-[2.8rem] w-full leading-[2.8rem] truncate px-1">{renderCell(aNode)}</div>
         <div className="h-[2.8rem] w-full leading-[2.8rem] truncate px-1">{renderCell(bNode)}</div>
       </Grid>
@@ -983,6 +1164,13 @@ export function useAgGridInfiniteAppend<TData>({
     setLoadedCount(totalCount);
   }, [totalCount]);
 
+  /**
+   * 접기: 처음 상태(pageSize 또는 initialLoadedCount)로 복원.
+   */
+  const handleLoadReset = React.useCallback(() => {
+    setLoadedCount(initialLoadedCount ?? pageSize);
+  }, [initialLoadedCount, pageSize]);
+
   const dataSource = React.useMemo<IDatasource>(() => {
     return {
       getRows: (params: IGetRowsParams) => {
@@ -1004,6 +1192,7 @@ export function useAgGridInfiniteAppend<TData>({
     setLoadedCount,
     handleLoadNext,
     handleLoadAll,
+    handleLoadReset,
     dataSource,
   };
 }
@@ -1385,7 +1574,9 @@ export const CoveragePopover = ({
   text: string;
   items?: { title: string; description: string; info: string[] };
 }) => {
+  /** 팝오버 열림 상태 */
   const [open, setOpen] = useState(false);
+  /** 트리거 버튼 ref (접근성/포커스 제어 확장 대비) */
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (

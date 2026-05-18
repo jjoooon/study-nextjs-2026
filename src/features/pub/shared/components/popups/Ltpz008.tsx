@@ -177,7 +177,7 @@ const Ltpz008 = () => {
               담보순서변경
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ015)
+              (LTPZ008)
             </Typo>
           </DialogTitle>
         </DialogHeader>

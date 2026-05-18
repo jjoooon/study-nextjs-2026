@@ -131,6 +131,8 @@ export function IAListWithPreview() {
 
   const [showPhaseOnly] = React.useState(false);
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
+  const [selectedPub, setSelectedPub] = React.useState<string>('all');
+  const [selectedDev, setSelectedDev] = React.useState<string>('all');
   const handleSort = React.useCallback((key: SortKey) => {
     setSortState((prev) => {
       if (prev.key !== key || prev.order === 'default') {
@@ -177,9 +179,39 @@ export function IAListWithPreview() {
     return filtered.filter((row) => row.phase === 'Y');
   }, [rowsWithPubInfo, showPhaseOnly]);
 
-  const totalCount = React.useMemo(() => visibleRows.length, [visibleRows]);
-  const doneCount = React.useMemo(() => {
+  const pubOptions = React.useMemo(() => {
+    const names = new Set<string>();
+    visibleRows.forEach((row) => {
+      const value = row.pubName ?? row.pub ?? '';
+      if (value) {
+        names.add(value);
+      }
+    });
+    return Array.from(names).sort((left, right) => left.localeCompare(right, 'ko'));
+  }, [visibleRows]);
+
+  const devOptions = React.useMemo(() => {
+    const names = new Set<string>();
+    visibleRows.forEach((row) => {
+      if (row.dev) {
+        names.add(row.dev);
+      }
+    });
+    return Array.from(names).sort((left, right) => left.localeCompare(right, 'ko'));
+  }, [visibleRows]);
+
+  const ownerFilteredRows = React.useMemo(() => {
     return visibleRows.filter((row) => {
+      const pubName = row.pubName ?? row.pub ?? '';
+      const isPubMatched = selectedPub === 'all' || pubName === selectedPub;
+      const isDevMatched = selectedDev === 'all' || row.dev === selectedDev;
+      return isPubMatched && isDevMatched;
+    });
+  }, [selectedDev, selectedPub, visibleRows]);
+
+  const totalCount = React.useMemo(() => ownerFilteredRows.length, [ownerFilteredRows]);
+  const doneCount = React.useMemo(() => {
+    return ownerFilteredRows.filter((row) => {
       if (row.phase !== 'Y') {
         return false;
       }
@@ -187,19 +219,19 @@ export function IAListWithPreview() {
       const modifyDate = info?.수정일 || row.modify;
       return !modifyDate;
     }).length;
-  }, [visibleRows]);
+  }, [ownerFilteredRows]);
   const progressPercent = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
 
   const activeRow = React.useMemo(() => {
-    return visibleRows.find((row) => getRowKey(row) === activeRowKey) ?? visibleRows[0] ?? null;
-  }, [activeRowKey, visibleRows]);
+    return ownerFilteredRows.find((row) => getRowKey(row) === activeRowKey) ?? ownerFilteredRows[0] ?? null;
+  }, [activeRowKey, ownerFilteredRows]);
 
   const sortedRows = React.useMemo(() => {
     if (sortState.key === null || sortState.order === 'default') {
-      return visibleRows;
+      return ownerFilteredRows;
     }
     const sortKey = sortState.key;
-    return [...visibleRows].sort((left, right) => {
+    return [...ownerFilteredRows].sort((left, right) => {
       // 날짜 정렬도 pubInfoList 기준으로 변경
       if (sortKey === 'completeDate' || sortKey === 'modifyDate') {
         const getDateNum = (row: IARow, type: 'completeDate' | 'modifyDate') => {
@@ -222,7 +254,7 @@ export function IAListWithPreview() {
       const compareResult = leftValue.localeCompare(rightValue, 'ko');
       return sortState.order === 'asc' ? compareResult : -compareResult;
     });
-  }, [sortState, visibleRows]);
+  }, [ownerFilteredRows, sortState]);
 
   const toPageStep = React.useCallback((subId: string): PageProcessStep | undefined => {
     const match = subId.match(/_(\d)$/);
@@ -301,8 +333,8 @@ export function IAListWithPreview() {
             <col />
             <col />
             <col style={{ width: '5rem' }} />
-            <col style={{ width: '5rem' }} />
-            <col style={{ width: '5rem' }} />
+            <col style={{ width: '7rem' }} />
+            <col style={{ width: '7rem' }} />
           </colgroup>
           <thead>
             <tr>
@@ -411,31 +443,41 @@ export function IAListWithPreview() {
               >
                 기획{getSortIndicator('plan')}
               </th>
-              <th
-                scope="col"
-                className="text-center cursor-pointer select-none"
-                onClick={() => handleSort('pub')}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') handleSort('pub');
-                }}
-                role="button"
-                aria-label="퍼블 정렬"
-              >
-                퍼블{getSortIndicator('pub')}
+              <th scope="col" className="text-center">
+                <label className="sr-only" htmlFor="pubFilterSelect">
+                  퍼블 필터
+                </label>
+                <select
+                  id="pubFilterSelect"
+                  className="h-[2.4rem] w-full rounded border border-[#c8ccd3] bg-white px-1 text-[1.2rem]"
+                  value={selectedPub}
+                  onChange={(event) => setSelectedPub(event.target.value)}
+                >
+                  <option value="all">퍼블</option>
+                  {pubOptions.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
               </th>
-              <th
-                scope="col"
-                className="text-center cursor-pointer select-none"
-                onClick={() => handleSort('dev')}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') handleSort('dev');
-                }}
-                role="button"
-                aria-label="개발 정렬"
-              >
-                개발{getSortIndicator('dev')}
+              <th scope="col" className="text-center">
+                <label className="sr-only" htmlFor="devFilterSelect">
+                  개발 필터
+                </label>
+                <select
+                  id="devFilterSelect"
+                  className="h-[2.4rem] w-full rounded border border-[#c8ccd3] bg-white px-1 text-[1.2rem]"
+                  value={selectedDev}
+                  onChange={(event) => setSelectedDev(event.target.value)}
+                >
+                  <option value="all">개발</option>
+                  {devOptions.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
               </th>
             </tr>
           </thead>

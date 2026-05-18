@@ -10,7 +10,7 @@ import { hasButtonAuth } from '@/shared/utils/authUtils';
 
 const buttonVariants = cva(
   `relative inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md font-normal transition-all outline-none select-none cursor-pointer leading-[100%] tracking-[-0.13rem] 
-  disabled:pointer-events-none disabled:opacity-100 shrik-0  
+  disabled:pointer-events-none disabled:opacity-100 shrik-0 [&:disabled_svg]:opacity-50 
   focus-visible:ring-2 focus-visible:ring-offset-2 
   has-[>svg]:inline-flex has-[>svg]:items-center has-[>svg]:justify-center`,
   {

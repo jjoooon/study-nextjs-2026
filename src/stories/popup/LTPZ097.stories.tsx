@@ -1,12 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */import * as React from 'react';
-import Ltpz097 from '@/features/pub/shared/components/popups/Ltpz097';
+import Ltpz097 from '@/features/pub/ispl/udrtkGu/components/popups/Ltpz097';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 
 export default {
-  title: 'app/shared/components/popups/Ltpz097',
+  title: 'app/ispl/udrtkGu/components/popups/Ltpz097',
   component: Ltpz097,
 };
 

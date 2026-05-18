@@ -75,7 +75,7 @@ type ConfirmDialogProps = {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   title?: string;
-  description?: string;
+  description?: string | React.ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
   tone?: DialogTone;
@@ -149,7 +149,7 @@ export function ConfirmDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           {title && <AlertDialogTitle>{title}</AlertDialogTitle>}
-          {description ? <AlertDialogDescription dangerouslySetInnerHTML={{ __html: description }} /> : null}
+          {description ? <AlertDialogDescription>{description}</AlertDialogDescription> : null}
         </AlertDialogHeader>
         <AlertDialogFooter>
           {showCancel && <AlertDialogCancel onClick={handleCancel}>{cancelLabel}</AlertDialogCancel>}
