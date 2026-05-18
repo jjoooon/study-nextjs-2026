@@ -32,7 +32,12 @@ const Ltpz108 = () => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Gcol className="w-full []" variant="box-round" placement={'ss'}>
+          <Gcol
+            className="w-full [&>h3]:w-full [&>h3]:text-center [&>h3]:font-bold [&>p_b]:text-[var(--color-primary-50)] [&>p_b]:font-bold overflow-y-auto"
+            variant="box-round"
+            placement={'ss'}
+            gap={2}
+          >
             <h3>[피보험자 20명 초과시 지침 체크 방법 선택]</h3>
             <p>
               지침체크 처리시 약 1분 저옫 소요 예상 됩니다.
