@@ -2,7 +2,6 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */import * as React from 'react';
 import Ltpz999 from '@/features/pub/shared/components/popups/Ltpz999';
-import Ltpz998 from '@/features/pub/shared/components/popups/Ltpz998';
 
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
@@ -21,7 +20,6 @@ export const Default = () => {
       </div>
 
       <Ltpz999 />
-      <Ltpz998 />
     </LayoutDoc>
   );
 };
