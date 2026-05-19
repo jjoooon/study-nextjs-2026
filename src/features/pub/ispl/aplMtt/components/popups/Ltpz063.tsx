@@ -22,7 +22,7 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
-import type { CellEditorSelectorResult, ColDef, EditableCallbackParams } from 'ag-grid-enterprise';
+import type { CellEditorSelectorResult, ColDef, EditableCallbackParams, IHeaderParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent } from '@/shared/components/agGridUtils/AgGridUtils';
@@ -46,6 +46,29 @@ type DummyDataType = {
   externalInsurance1: string | number | boolean;
   externalInsurance2: string | number | boolean;
 };
+
+type GridCellValue = string | number | boolean | null | undefined;
+type MainSelectableField = 'ourInsurance2' | 'externalInsurance1' | 'externalInsurance2';
+type ExtraSelectableField = 'externalInsurance1' | 'externalInsurance2' | 'externalInsurance3';
+
+type CheckboxRendererParams<TData> = {
+  data: TData | undefined;
+  value: GridCellValue;
+  colDef: ColDef<TData>;
+};
+
+const TYPE3_NUMBER_FORMAT_TYPES = new Set(['보험료', '보험가입금액', '해약환급금']);
+const TYPE3_EDITABLE_TEXT_TYPES = new Set([
+  '상품명',
+  '계약상태',
+  '피보험자',
+  '납입주기/기간',
+  '주요보장내용',
+  '예정이율',
+  '보험목적',
+  '면책사유 및 면책사항',
+]);
+const EDITABLE_TARGET_TYPES = new Set(['해약환급금', '예정이율', '보험목적', '면책사유 및 면책사항']);
 
 const DummyData: DummyDataType[] = [
   {
@@ -162,14 +185,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-type DummyDataType2 = {
-  id: number;
-  type: string | number;
-  ourInsurance1: string | number;
-  ourInsurance2: string | number | boolean;
-  externalInsurance1: string | number | boolean;
-  externalInsurance2: string | number | boolean;
-};
+type DummyDataType2 = DummyDataType;
 
 const DummyData2: DummyDataType2[] = [
   {
@@ -415,19 +431,13 @@ export const Ltpz063 = () => {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData3, setRowData3] = React.useState<DummyDataType3[]>(DummyData3);
 
+  const getTypeLabel = (row: { type: string | number } | undefined) => (row ? String(row.type) : '');
+  const isSwitchoverRow = (row: { type: string | number } | undefined) => getTypeLabel(row) === '승환';
+
   const isType3CompanyRow = (row: DummyDataType3 | undefined) => row?.type === '보험회사명';
   const isType3DateRow = (row: DummyDataType3 | undefined) => row?.type === '보험기간';
-  const isType3NumberFormatRow = (row: DummyDataType3 | undefined) =>
-    row?.type === '보험료' || row?.type === '보험가입금액' || row?.type === '해약환급금';
-  const isType3EditableTextRow = (row: DummyDataType3 | undefined) =>
-    row?.type === '상품명' ||
-    row?.type === '계약상태' ||
-    row?.type === '피보험자' ||
-    row?.type === '납입주기/기간' ||
-    row?.type === '주요보장내용' ||
-    row?.type === '예정이율' ||
-    row?.type === '보험목적' ||
-    row?.type === '면책사유 및 면책사항';
+  const isType3NumberFormatRow = (row: DummyDataType3 | undefined) => TYPE3_NUMBER_FORMAT_TYPES.has(getTypeLabel(row));
+  const isType3EditableTextRow = (row: DummyDataType3 | undefined) => TYPE3_EDITABLE_TEXT_TYPES.has(getTypeLabel(row));
   const isType3EditableRow = (row: DummyDataType3 | undefined) =>
     !!row &&
     (isType3CompanyRow(row) || isType3DateRow(row) || isType3NumberFormatRow(row) || isType3EditableTextRow(row));
@@ -452,53 +462,45 @@ export const Ltpz063 = () => {
   };
 
   const ThirdGridHeaderWithDelete = React.useMemo(() => {
-    const Component = () => (
-      <Grow className="w-full" gap={2} placement={'cc'}>
-        <span className="ag-header-cell-text">타사기존</span>
-        <Button
-          color="gray"
-          variant="outlined"
-          onClick={(event) => {
-            event.stopPropagation();
-          }}
-        >
-          삭제
-        </Button>
-      </Grow>
-    );
+    const Component = (props: IHeaderParams<AgGridRow>) => {
+      const handleDeleteColumn = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+
+        const targetColumnId = props.column?.getColId();
+
+        if (!targetColumnId) {
+          return;
+        }
+
+        props.api.setColumnsVisible([targetColumnId], false);
+      };
+
+      return (
+        <Grow className="w-full" gap={2} placement={'cc'}>
+          <span className="ag-header-cell-text">타사기존</span>
+          <Button color="gray" variant="outlined" onClick={handleDeleteColumn}>
+            삭제
+          </Button>
+        </Grow>
+      );
+    };
 
     return Component;
   }, []);
 
-  const isSelectableField = (field: string): field is 'ourInsurance2' | 'externalInsurance1' | 'externalInsurance2' =>
+  const isSelectableField = (field: string): field is MainSelectableField =>
     field === 'ourInsurance2' || field === 'externalInsurance1' || field === 'externalInsurance2';
 
-  const isSelectableField3 = (
-    field: string
-  ): field is 'externalInsurance1' | 'externalInsurance2' | 'externalInsurance3' =>
+  const isSelectableField3 = (field: string): field is ExtraSelectableField =>
     field === 'externalInsurance1' || field === 'externalInsurance2' || field === 'externalInsurance3';
 
-  const isEditableTargetRow = (fieldName: DummyDataType['type']) =>
-    fieldName === '해약환급금' ||
-    fieldName === '예정이율' ||
-    fieldName === '보험목적' ||
-    fieldName === '면책사유 및 면책사항';
+  const isEditableTargetRow = (fieldName: DummyDataType['type']) => EDITABLE_TARGET_TYPES.has(String(fieldName));
 
   const externalInsuranceCellClassRules = {
     'editable-cell': ({ data }: { data: DummyDataType | undefined }) => (data ? isEditableTargetRow(data.type) : false),
   };
 
-  const externalValueFormatter = (params: {
-    value: string | number | null | undefined;
-    data: DummyDataType | undefined;
-  }) => {
-    if (params.value === null || params.value === undefined || params.value === '') return '';
-    const stringValue = String(params.value);
-
-    return stringValue;
-  };
-
-  const isCheckedValue = (value: string | number | boolean | null | undefined) => {
+  const isCheckedValue = (value: GridCellValue) => {
     if (value === null || value === undefined || value === '') {
       return false;
     }
@@ -514,13 +516,7 @@ export const Ltpz063 = () => {
     return value.toLowerCase() === 'true';
   };
 
-  const handleCheckboxChange = (
-    params: {
-      data: DummyDataType | undefined;
-      colDef: ColDef<DummyDataType>;
-    },
-    checked: boolean | 'indeterminate'
-  ) => {
+  const handleCheckboxChange = (params: CheckboxRendererParams<DummyDataType>, checked: boolean | 'indeterminate') => {
     const targetField = params.colDef.field;
 
     if (!params.data || !targetField || !isSelectableField(targetField)) {
@@ -535,10 +531,7 @@ export const Ltpz063 = () => {
   };
 
   const handleCheckboxChange3 = (
-    params: {
-      data: DummyDataType3 | undefined;
-      colDef: ColDef<DummyDataType3>;
-    },
+    params: CheckboxRendererParams<DummyDataType3>,
     checked: boolean | 'indeterminate'
   ) => {
     const targetField = params.colDef.field;
@@ -553,6 +546,62 @@ export const Ltpz063 = () => {
       prevRows.map((row) => (row.id === params.data?.id ? { ...row, [targetField]: nextValue } : row))
     );
   };
+
+  const createCheckboxCellRenderer = <TData extends { type: string | number }>(
+    onChange: (params: CheckboxRendererParams<TData>, checked: boolean | 'indeterminate') => void
+  ) => {
+    const CheckboxCellRenderer = (params: CheckboxRendererParams<TData>) =>
+      isSwitchoverRow(params.data) ? (
+        <Checkbox
+          checked={isCheckedValue(params.value)}
+          color="primary"
+          errorMsg="선택은 필수입니다."
+          errorPs="bl"
+          onCheckedChange={(checked) => onChange(params, checked)}
+          size="lg"
+          variant="noneText"
+        >
+          단일
+        </Checkbox>
+      ) : (
+        params.value
+      );
+
+    CheckboxCellRenderer.displayName = 'CheckboxCellRenderer';
+
+    return CheckboxCellRenderer;
+  };
+
+  const checkboxRenderer = createCheckboxCellRenderer(handleCheckboxChange);
+  const checkboxRenderer3 = createCheckboxCellRenderer(handleCheckboxChange3);
+
+  const createMainExternalColumn = (field: 'externalInsurance1' | 'externalInsurance2'): ColDef<DummyDataType> => ({
+    headerName: '타사기존',
+    headerClass: '[&_.ag-header-cell-text]:font-bold',
+    cellClass: 'text-center flex! items-center! justify-center!',
+    cellClassRules: externalInsuranceCellClassRules,
+    flex: 1,
+    minWidth: 200,
+    field,
+    editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
+    cellRenderer: checkboxRenderer,
+  });
+
+  const createThirdExternalColumn = (field: ExtraSelectableField): ColDef<DummyDataType3> => ({
+    headerName: '타사기존',
+    headerComponent: ThirdGridHeaderWithDelete,
+    headerClass: '[&_.ag-header-cell-text]:font-bold',
+    cellClass: 'text-center flex! items-center! justify-center!',
+    flex: 1,
+    minWidth: 200,
+    field,
+    editable: ({ data }) => isType3EditableRow(data),
+    cellEditorSelector: getType3CellEditorSelector,
+    cellEditorParams: {
+      mode: 'range',
+    },
+    cellRenderer: checkboxRenderer3,
+  });
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -578,88 +627,10 @@ export const Ltpz063 = () => {
       flex: 1,
       minWidth: 200,
       field: 'ourInsurance2',
-      cellRenderer: (params: {
-        data: DummyDataType | undefined;
-        value: string | number | boolean | null | undefined;
-        colDef: ColDef<DummyDataType>;
-      }) =>
-        params.data?.type === '승환' ? (
-          <Checkbox
-            checked={isCheckedValue(params.value)}
-            color="primary"
-            errorMsg="선택은 필수입니다."
-            errorPs="bl"
-            onCheckedChange={(checked) => handleCheckboxChange(params, checked)}
-            size="lg"
-            variant="noneText"
-          >
-            단일
-          </Checkbox>
-        ) : (
-          params.value
-        ),
+      cellRenderer: checkboxRenderer,
     },
-    {
-      headerName: '타사기존',
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center flex! items-center! justify-center!',
-      cellClassRules: externalInsuranceCellClassRules,
-      flex: 1,
-      minWidth: 200,
-      field: 'externalInsurance1',
-      editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
-      valueFormatter: externalValueFormatter,
-      cellRenderer: (params: {
-        data: DummyDataType | undefined;
-        value: string | number | boolean | null | undefined;
-        colDef: ColDef<DummyDataType>;
-      }) =>
-        params.data?.type === '승환' ? (
-          <Checkbox
-            checked={isCheckedValue(params.value)}
-            color="primary"
-            errorMsg="선택은 필수입니다."
-            errorPs="bl"
-            onCheckedChange={(checked) => handleCheckboxChange(params, checked)}
-            size="lg"
-            variant="noneText"
-          >
-            단일
-          </Checkbox>
-        ) : (
-          params.value
-        ),
-    },
-    {
-      headerName: '타사기존',
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center flex! items-center! justify-center!',
-      cellClassRules: externalInsuranceCellClassRules,
-      flex: 1,
-      minWidth: 200,
-      field: 'externalInsurance2',
-      editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
-      cellRenderer: (params: {
-        data: DummyDataType | undefined;
-        value: string | number | boolean | null | undefined;
-        colDef: ColDef<DummyDataType>;
-      }) =>
-        params.data?.type === '승환' ? (
-          <Checkbox
-            checked={isCheckedValue(params.value)}
-            color="primary"
-            errorMsg="선택은 필수입니다."
-            errorPs="bl"
-            onCheckedChange={(checked) => handleCheckboxChange(params, checked)}
-            size="lg"
-            variant="noneText"
-          >
-            단일
-          </Checkbox>
-        ) : (
-          params.value
-        ),
-    },
+    createMainExternalColumn('externalInsurance1'),
+    createMainExternalColumn('externalInsurance2'),
   ];
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
@@ -678,102 +649,9 @@ export const Ltpz063 = () => {
       field: 'ourInsurance1',
       pinned: 'left',
     },
-    {
-      headerName: '타사기존',
-      headerComponent: ThirdGridHeaderWithDelete,
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center flex! items-center! justify-center!',
-      flex: 1,
-      minWidth: 200,
-      field: 'externalInsurance1',
-      editable: ({ data }) => isType3EditableRow(data),
-      cellEditorSelector: getType3CellEditorSelector,
-      cellEditorParams: {
-        mode: 'range',
-      },
-      cellRenderer: (params: {
-        data: DummyDataType3 | undefined;
-        value: string | number | boolean | null | undefined;
-        colDef: ColDef<DummyDataType3>;
-      }) =>
-        params.data?.type === '승환' ? (
-          <Checkbox
-            checked={isCheckedValue(params.value)}
-            color="primary"
-            errorMsg="선택은 필수입니다."
-            errorPs="bl"
-            onCheckedChange={(checked) => handleCheckboxChange3(params, checked)}
-            size="lg"
-            variant="noneText"
-          >
-            단일
-          </Checkbox>
-        ) : (
-          params.value
-        ),
-    },
-    {
-      headerName: '타사기존',
-      headerComponent: ThirdGridHeaderWithDelete,
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center flex! items-center! justify-center!',
-      flex: 1,
-      minWidth: 200,
-      field: 'externalInsurance2',
-      editable: ({ data }) => isType3EditableRow(data),
-      cellEditorSelector: getType3CellEditorSelector,
-      cellRenderer: (params: {
-        data: DummyDataType3 | undefined;
-        value: string | number | boolean | null | undefined;
-        colDef: ColDef<DummyDataType3>;
-      }) =>
-        params.data?.type === '승환' ? (
-          <Checkbox
-            checked={isCheckedValue(params.value)}
-            color="primary"
-            errorMsg="선택은 필수입니다."
-            errorPs="bl"
-            onCheckedChange={(checked) => handleCheckboxChange3(params, checked)}
-            size="lg"
-            variant="noneText"
-          >
-            단일
-          </Checkbox>
-        ) : (
-          params.value
-        ),
-    },
-    {
-      headerName: '타사기존',
-      headerComponent: ThirdGridHeaderWithDelete,
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center flex! items-center! justify-center!',
-      flex: 1,
-      minWidth: 200,
-      field: 'externalInsurance3',
-      editable: ({ data }) => isType3EditableRow(data),
-      cellEditorSelector: getType3CellEditorSelector,
-      cellRenderer: (params: {
-        data: DummyDataType3 | undefined;
-        value: string | number | boolean | null | undefined;
-        colDef: ColDef<DummyDataType3>;
-      }) =>
-        params.data?.type === '승환' ? (
-          <Checkbox
-            checked={isCheckedValue(params.value)}
-            color="primary"
-            errorMsg="선택은 필수입니다."
-            errorPs="bl"
-            onCheckedChange={(checked) => handleCheckboxChange3(params, checked)}
-            size="lg"
-            variant="noneText"
-          >
-            단일
-          </Checkbox>
-        ) : (
-          params.value
-        ),
-    },
+    createThirdExternalColumn('externalInsurance1'),
+    createThirdExternalColumn('externalInsurance2'),
+    createThirdExternalColumn('externalInsurance3'),
   ];
   return (
     <Dialog open>
