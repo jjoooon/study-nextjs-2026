@@ -162,11 +162,10 @@
 .ag-row-selected {
   background-color: var(--color-warning-10);
 } */
-
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell *,
 .ag-theme-alpine .ag-row.ag-row-state-true .ag-cell {
   color: #ff5c2e !important;
 }
-
 .ag-theme-alpine .ag-row.ag-row-state-true {
   --color-text-base: #ff5c2e;
 }

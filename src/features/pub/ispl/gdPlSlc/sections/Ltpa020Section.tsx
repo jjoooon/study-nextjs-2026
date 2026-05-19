@@ -141,7 +141,7 @@ export default function Ltpa020Section() {
                                   placeholder="고객 검색"
                                 />
                                 <Button variant={'outlined'} color={'gray-light'} size={'lg'} only="icon">
-                                  <SearchIcon size={14} color="var(--color-primary-50)" />
+                                  <SearchIcon color="var(--color-primary-50)" />
                                 </Button>
                               </Grow>
 

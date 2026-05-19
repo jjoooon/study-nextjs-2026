@@ -1283,16 +1283,16 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
     };
 
     return div === 'col' ? (
-      <Grid className="w-full h-[5.6rem] grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
-        <div className="h-[2.8rem] w-full leading-[2.8rem] truncate px-1">{renderCell(aNode)}</div>
-        <div className="h-[2.8rem] w-full leading-[2.8rem] truncate px-1">{renderCell(bNode)}</div>
+      <Grid className="w-full grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
+        <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{renderCell(aNode)}</div>
+        <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{renderCell(bNode)}</div>
       </Grid>
     ) : (
       <div className="flex w-full h-full justify-start divide-x divide-gray-200">
-        <div className="truncate" style={getRowCellStyle(parsedField1.size)}>
+        <div className="truncate-no" style={getRowCellStyle(parsedField1.size)}>
           {renderCell(aNode)}
         </div>
-        <div className="truncate" style={getRowCellStyle(parsedField2.size)}>
+        <div className="truncate-no" style={getRowCellStyle(parsedField2.size)}>
           {renderCell(bNode)}
         </div>
       </div>

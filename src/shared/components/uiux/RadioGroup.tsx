@@ -273,7 +273,11 @@ const RadioGroupItem = React.forwardRef<
             <div
               className={cn(
                 'border border-[var(--color-gray-15)]! absolute left-[0.6rem] rounded-full flex items-center justify-center bg-white',
-                size === 'sm' ? 'top-[0.35rem] h-[1.2rem] w-[1.2rem]' : 'top-[0.55rem] h-[1.4rem] w-[1.4rem]'
+                size === 'sm'
+                  ? 'top-[0.35rem] h-[1.2rem] w-[1.2rem]'
+                  : size === 'md'
+                    ? 'top-[0.45rem] h-[1.4rem] w-[1.4rem]'
+                    : 'top-[0.55rem] h-[1.4rem] w-[1.4rem]'
               )}
             >
               <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap ">

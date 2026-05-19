@@ -393,7 +393,7 @@ export const Default: Story = {
       setChecked(args.checked ?? false);
     }, [args.checked]);
 
-    const groupSize = args.size === 'xl' ? 'lg' : args.size;
+    const groupSize = args.size === 'sm' ? 'md' : args.size === 'xl' ? 'lg' : args.size;
 
     const handleCheckedChange = (value: boolean | 'indeterminate') => {
       setChecked(value);

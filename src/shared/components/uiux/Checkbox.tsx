@@ -13,7 +13,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   children?: React.ReactNode;
   variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipBox';
-  size?: 'xl' | 'lg' | 'md';
+  size?: 'xl' | 'lg' | 'md' | 'sm';
   color?: 'primary' | 'info' | 'secondary';
   required?: boolean;
   error?: boolean;
@@ -73,21 +73,25 @@ function Checkbox({
     xl: 'size-[2.4rem] rounded-[0.5rem]',
     lg: 'size-[2rem] rounded-[0.4rem]',
     md: 'size-[1.4rem] rounded-[0.3rem]',
+    sm: 'size-[1.2rem] rounded-[0.2rem]',
   };
   const chipBoxSizeStyles = {
     xl: 'h-[3rem] px-[1.2rem]',
     lg: 'h-[2.8rem] px-[1rem]',
     md: 'h-[2.5rem] px-[0.8rem]',
+    sm: 'h-[2.2rem] px-[0.6rem]',
   };
   const favoriteSizeStyles = {
     xl: 'size-[2.4rem]',
     lg: 'size-[2rem]',
     md: 'size-[1.8rem]',
+    sm: 'size-[1.6rem]',
   };
   const buttonSizeStyles = {
     xl: 'h-[3rem] pr-[1.2rem] pl-[0.2rem]',
-    lg: 'h-[2.5rem]',
-    md: 'h-[2.2rem]',
+    lg: 'h-[2.8rem]',
+    md: 'h-[2.5rem]',
+    sm: 'h-[2.2rem]',
   };
 
   const colorStyles = {

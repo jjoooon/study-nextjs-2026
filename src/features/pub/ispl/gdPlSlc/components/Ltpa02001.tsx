@@ -550,7 +550,7 @@ export function Ltpa02001() {
                   { value: 'property', label: '재물' },
                   { value: 'annuity', label: '연금/저축' },
                 ].map((opt) => (
-                  <RadioGroupItem variant="button" size="sm" key={opt.value} value={opt.value}>
+                  <RadioGroupItem variant="button" size="md" key={opt.value} value={opt.value}>
                     {opt.label}
                   </RadioGroupItem>
                 ))}
