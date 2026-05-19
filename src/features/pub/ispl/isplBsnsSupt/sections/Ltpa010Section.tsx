@@ -285,6 +285,7 @@ export default function Ltpa010Section() {
         },
       ],
     },
+    // M5. 수정
     {
       headerName: '보험료(원)',
       headerClass: 'ag-header-right-divider text-[1.3rem]',
@@ -295,7 +296,12 @@ export default function Ltpa010Section() {
           cellClass: 'text-center px-0! text-[1.3rem]',
           width: 100,
           autoHeight: true,
-          cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field07', 'field08'),
+          cellRenderer: (params: { data?: Ltpa010DummyDataRow }) => (
+            <Grid className="w-full grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
+              <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{params.data?.field07}</div>
+              <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{params.data?.field08}%</div>
+            </Grid>
+          ),
         },
       ],
     },
@@ -439,7 +445,7 @@ export default function Ltpa010Section() {
     [setRowData, setErrorRows]
   );
 
-  const pageSize = 10;
+  const pageSize = 2;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa010DummyData,
     pageSize,

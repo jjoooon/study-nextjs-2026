@@ -735,7 +735,7 @@ export function createDuplicateButtonCellRenderer<
     if (!isVisible(params))
       return (
         <Grow className="w-full h-full flex items-center justify-center">
-          <Button
+          {/* <Button
             aria-label={ariaLabel}
             variant={'outlined'}
             only={'icon'}
@@ -745,7 +745,7 @@ export function createDuplicateButtonCellRenderer<
             disabled
           >
             <PlusIcon color={'var(--color-gray-30)'} />
-          </Button>
+          </Button> */}
         </Grow>
       );
 
@@ -1366,8 +1366,8 @@ export function useAgGridInfiniteAppend<TData>({
   }, [pageSize, totalCount]);
 
   const handleLoadAll = React.useCallback(() => {
-    setLoadedCount(totalCount);
-  }, [totalCount]);
+    setLoadedCount((prev) => (prev >= totalCount ? safeInitial : totalCount));
+  }, [safeInitial, totalCount]);
 
   /**
    * 접기: 처음 상태(pageSize 또는 initialLoadedCount)로 복원.

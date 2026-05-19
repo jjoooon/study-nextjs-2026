@@ -19,7 +19,7 @@ interface TableMoreProps {
   totalPages?: number;
   onPageChange?: (pageNumber: number) => void;
   itemsPerPage?: number | null;
-
+  isReset?: boolean;
   isAll?: boolean;
   loadedCount?: number;
   totalCount?: number;
@@ -125,6 +125,7 @@ export function TableMore({
   loadedCount,
   totalCount,
   pageSize,
+  isReset = false,
   isAll = true,
   onLoadedCountChange,
   onLoadAll,
@@ -149,6 +150,9 @@ export function TableMore({
 
   const handleLoadAll = () => {
     if (isLastPage) {
+      if (!isReset) {
+        return;
+      }
       if (onLoadReset) {
         onLoadReset();
         return;
@@ -200,11 +204,25 @@ export function TableMore({
 
       <Grow>
         {isAll && (
-          <Button variant={'contained'} size={'md'} color={'coolgray'} onClick={handleLoadAll}>
-            {isLastPage ? '접기' : '전체보기'}
+          <Button
+            variant={'contained'}
+            size={'md'}
+            className="w-[6rem]"
+            color={'coolgray-light'}
+            onClick={handleLoadAll}
+            disabled={isLastPage && !isReset}
+          >
+            {isLastPage ? (isReset ? '접기' : '전체조회') : '전체조회'}
           </Button>
         )}
-        <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleLoadNext} disabled={isLastPage}>
+        <Button
+          variant={'outlined'}
+          size={'md'}
+          className="w-[6rem]"
+          color={'gray'}
+          onClick={handleLoadNext}
+          disabled={isLastPage}
+        >
           다음
         </Button>
       </Grow>

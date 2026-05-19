@@ -7,7 +7,6 @@ import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
   getNextNumericRowId,
-  isCopyButtonVisible,
   numberValueFormatter,
   patchCopiedDuplicateRow,
   rowDataWithTrackingFactory,
@@ -139,7 +138,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       idKey: 'id',
       getNextId: getNextNumericRowId,
       patchCopiedRow: patchCopiedDuplicateRow,
-      isVisible: isCopyButtonVisible,
+      isVisible: (params) => params.data?.rowCopy === true && params.data?.isDuplicate !== true, //복제된 행 중복버튼 안보이게
       ariaLabel: '동일 담보 추가',
     });
   }, [rowDataWithTracking]);
