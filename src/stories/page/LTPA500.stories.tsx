@@ -1,0 +1,16 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+import { LayoutDoc } from '@layout/BaseLayout';
+import LTPA500 from '@/app/pub/ispl/pages/LTPA500';
+
+export default {
+  title: 'app/ispl/isplBsnsSupt/LTPA500',
+  component: LTPA500,
+};
+
+export const Default = () => (
+  <LayoutDoc>
+    <LTPA500 />
+  </LayoutDoc>
+);
