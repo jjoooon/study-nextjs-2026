@@ -801,3 +801,7 @@
   align-items: center; /* 텍스트 중앙 정렬 */
   z-index: 1;
 }
+
+.row-cloning .ag-cell {
+  background-color: var(--color-yellow-10) !important;
+}

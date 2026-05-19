@@ -35,6 +35,13 @@ export type ToggleTopRow<T> = T & {
   toggleOrder: number | null;
 };
 
+type CloneTopRowMeta = {
+  isClonedTopRow: true;
+  cloneBaseId: string;
+};
+
+export type ClonedTopRow<T extends Record<string, unknown>> = T & CloneTopRowMeta;
+
 type PrimitiveId = string | number;
 
 /**
@@ -57,6 +64,11 @@ type IdKeyOf<T> = {
 type BooleanKeyOf<T> = {
   [K in keyof T]-?: T[K] extends boolean ? K : never;
 }[keyof T];
+
+interface UseCloneTopRowsParams<T extends Record<string, unknown>, IdKey extends IdKeyOf<T>> {
+  rows: T[];
+  idKey: IdKey;
+}
 
 interface UseToggleTopRowsParams<T extends Record<string, unknown>> {
   rows: T[];
@@ -144,6 +156,122 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
     setRowData,
     /** 특정 id 행의 토글 상태 반전 */
     toggleById,
+  };
+}
+
+function hasCloneTopRowMeta<T extends Record<string, unknown>>(row: T | ClonedTopRow<T>): row is ClonedTopRow<T> {
+  return (row as Partial<CloneTopRowMeta>).isClonedTopRow === true;
+}
+
+export function useCloneTopRows<T extends Record<string, unknown>, IdKey extends IdKeyOf<T>>({
+  rows,
+  idKey,
+}: UseCloneTopRowsParams<T, IdKey>) {
+  const [clonedBaseIds, setClonedBaseIds] = useState<Set<string>>(new Set());
+
+  const resolveBaseId = useCallback(
+    (row?: T | ClonedTopRow<T>) => {
+      if (!row) {
+        return null;
+      }
+
+      if (hasCloneTopRowMeta(row)) {
+        return row.cloneBaseId;
+      }
+
+      return String(row[idKey] as PrimitiveId);
+    },
+    [idKey]
+  );
+
+  useEffect(() => {
+    const validIds = new Set(rows.map((row) => String(row[idKey] as PrimitiveId)));
+
+    setClonedBaseIds((prev) => {
+      const next = new Set<string>();
+
+      prev.forEach((id) => {
+        if (validIds.has(id)) {
+          next.add(id);
+        }
+      });
+
+      return next;
+    });
+  }, [idKey, rows]);
+
+  const toggleCloneByRow = useCallback(
+    (row: T | ClonedTopRow<T> | undefined, checked: boolean) => {
+      const baseId = resolveBaseId(row);
+      if (!baseId) {
+        return;
+      }
+
+      setClonedBaseIds((prev) => {
+        const next = new Set(prev);
+
+        if (checked) {
+          next.add(baseId);
+        } else {
+          next.delete(baseId);
+        }
+
+        return next;
+      });
+    },
+    [resolveBaseId]
+  );
+
+  const isFavoriteRow = useCallback(
+    (row?: T | ClonedTopRow<T>) => {
+      const baseId = resolveBaseId(row);
+      return baseId ? clonedBaseIds.has(baseId) : false;
+    },
+    [clonedBaseIds, resolveBaseId]
+  );
+
+  const rowData = useMemo<Array<T | ClonedTopRow<T>>>(() => {
+    const clonedRows = rows
+      .filter((row) => clonedBaseIds.has(String(row[idKey] as PrimitiveId)))
+      .map((row) => ({
+        ...row,
+        isClonedTopRow: true,
+        cloneBaseId: String(row[idKey] as PrimitiveId),
+      }));
+
+    return [...clonedRows, ...rows];
+  }, [clonedBaseIds, idKey, rows]);
+
+  const getRowId = useCallback(
+    (row?: T | ClonedTopRow<T>) => {
+      if (!row) {
+        return '';
+      }
+
+      if (hasCloneTopRowMeta(row)) {
+        return `cloned-${row.cloneBaseId}`;
+      }
+
+      return String(row[idKey] as PrimitiveId);
+    },
+    [idKey]
+  );
+
+  const getCloneRowClass = useCallback((row?: T | ClonedTopRow<T>, className = 'row-cloning') => {
+    if (!row) {
+      return '';
+    }
+
+    return hasCloneTopRowMeta(row) ? className : '';
+  }, []);
+
+  return {
+    clonedBaseIds,
+    rowData,
+    toggleCloneByRow,
+    isFavoriteRow,
+    getRowId,
+    getCloneRowClass,
   };
 }
 

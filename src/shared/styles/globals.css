@@ -307,6 +307,9 @@
   --color-alpha-primary-25: #FF5C2E3F;
   --color-alpha-primary-10: #FF5C2D33;
   --color-alpha-primary-0: #FF5C2E00;
+  --color-yellow-50: #EAB308;
+  --color-yellow-40: #FACC15;
+  --color-yellow-10: #FEF9C3;
 
   /* color */
   --color-background-base: var(--color-gray-0);

@@ -24,7 +24,6 @@ type DialogSizeConfig = {
 
 type DialogSize = DialogSizePreset | DialogSizeConfig;
 
-const DEFAULT_DIALOG_OVERLAY_Z_INDEX = 50;
 const DEFAULT_DIALOG_CONTENT_Z_INDEX = 51;
 const DIALOG_Z_INDEX_STEP = 2;
 const DIALOG_VIEWPORT_GAP = '2.4rem';
@@ -81,23 +80,53 @@ const resolveDialogSize = (size?: DialogSize) => {
   };
 };
 
-// 열린 다이얼로그 depth 추적 — 가장 높은 depth 만 암막 표시
-const _openDialogs = new Map<string, number>(); // id → depth
+type OpenDialogMeta = {
+  depth: number;
+  order: number;
+};
+
+// 열린 다이얼로그 추적 (중첩/병렬 모두 등록 순서 기준으로 레이어 계산)
+const _openDialogs = new Map<string, OpenDialogMeta>(); // id → meta
+let _openDialogOrder = 0;
 const _overlayListeners = new Set<() => void>();
 
 function _registerDialog(id: string, depth: number) {
-  _openDialogs.set(id, depth);
+  const existing = _openDialogs.get(id);
+  _openDialogs.set(id, {
+    depth,
+    order: existing?.order ?? ++_openDialogOrder,
+  });
   _overlayListeners.forEach((fn) => fn());
 }
 function _unregisterDialog(id: string) {
   _openDialogs.delete(id);
   _overlayListeners.forEach((fn) => fn());
 }
-function _getMaxOpenDepth() {
-  return _openDialogs.size > 0 ? Math.max(..._openDialogs.values()) : 0;
-}
 function _getOpenCount() {
   return _openDialogs.size;
+}
+function _getTopOpenDialogId(): string | null {
+  let topId: string | null = null;
+  let maxOrder = -1;
+
+  _openDialogs.forEach((meta, id) => {
+    if (meta.order > maxOrder) {
+      maxOrder = meta.order;
+      topId = id;
+    }
+  });
+
+  return topId;
+}
+function _getDialogLayerIndex(id: string | null): number {
+  if (!id) return 1;
+
+  const orderedIds = Array.from(_openDialogs.entries())
+    .sort(([, a], [, b]) => a.order - b.order)
+    .map(([dialogId]) => dialogId);
+
+  const index = orderedIds.indexOf(id);
+  return index >= 0 ? index + 1 : 1;
 }
 function _subscribeOverlay(fn: () => void) {
   _overlayListeners.add(fn);
@@ -106,7 +135,15 @@ function _subscribeOverlay(fn: () => void) {
   };
 }
 
-const DialogDepthContext = React.createContext<number>(0);
+type DialogContextValue = {
+  depth: number;
+  dialogId: string | null;
+};
+
+const DialogDepthContext = React.createContext<DialogContextValue>({
+  depth: 0,
+  dialogId: null,
+});
 
 function Dialog({
   open: openProp,
@@ -114,8 +151,8 @@ function Dialog({
   onOpenChange,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
-  const parentDepth = React.useContext(DialogDepthContext);
-  const newDepth = parentDepth + 1;
+  const parentDialogContext = React.useContext(DialogDepthContext);
+  const newDepth = parentDialogContext.depth + 1;
   const dialogId = React.useId();
 
   // controlled / uncontrolled open 상태 모두 추적
@@ -139,7 +176,7 @@ function Dialog({
   }, [isOpen, dialogId, newDepth]);
 
   return (
-    <DialogDepthContext.Provider value={newDepth}>
+    <DialogDepthContext.Provider value={{ depth: newDepth, dialogId }}>
       <DialogPrimitive.Root
         data-slot="dialog"
         open={isOpen}
@@ -207,33 +244,33 @@ function DialogContent({
     y: number;
   };
 }) {
-  const depth = React.useContext(DialogDepthContext);
-  // depth 기반 z-index: 1단계 50/51, 2단계 52/53 ...
-  const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (depth - 1) * DIALOG_Z_INDEX_STEP;
+  const { dialogId } = React.useContext(DialogDepthContext);
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
-  const [maxOpenDepth, setMaxOpenDepth] = React.useState(_getMaxOpenDepth);
+  const [topOpenDialogId, setTopOpenDialogId] = React.useState(_getTopOpenDialogId);
   const [openCount, setOpenCount] = React.useState(_getOpenCount);
+  const [dialogLayerIndex, setDialogLayerIndex] = React.useState(() => _getDialogLayerIndex(dialogId));
 
   React.useEffect(
     () =>
       _subscribeOverlay(() => {
-        setMaxOpenDepth(_getMaxOpenDepth());
+        setTopOpenDialogId(_getTopOpenDialogId());
         setOpenCount(_getOpenCount());
+        setDialogLayerIndex(_getDialogLayerIndex(dialogId));
       }),
-    []
+    [dialogId]
   );
 
-  // 각 다이얼로그는 자신의 depth만으로 z-index를 결정 (첫번째 51 고정, 두번째 53 고정)
+  // 레이어 기반 z-index: 열린 순서대로 51, 53, 55 ...
+  const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (Math.max(dialogLayerIndex, 1) - 1) * DIALOG_Z_INDEX_STEP;
+
+  // 각 다이얼로그는 자신의 레이어 순서만으로 z-index를 결정
   const parallelZIndex = zIndex !== undefined ? zIndex : autoContentZIndex;
 
-  const overlayZIndex = React.useMemo(() => {
-    if (zIndex !== undefined) return zIndex - 1;
-    return DEFAULT_DIALOG_OVERLAY_Z_INDEX + (depth - 1) * DIALOG_Z_INDEX_STEP;
-  }, [depth, zIndex]);
+  const overlayZIndex = parallelZIndex - 1;
 
-  // 단일 팝업 → 항상 암막 표시 / 중첩 → 가장 위(depth === maxOpenDepth)만 표시
-  const resolvedShowOverlay = showOverlay ?? (openCount <= 1 || depth >= maxOpenDepth);
+  // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시
+  const resolvedShowOverlay = showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId));
   const isFullSize = size === 'full';
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
   const [resizedSize, setResizedSize] = React.useState({ width: 0, height: 0 });
