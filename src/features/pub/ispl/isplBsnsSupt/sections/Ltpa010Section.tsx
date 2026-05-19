@@ -18,7 +18,7 @@ import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, MemoIcon, FileExportIcon } from '@icons';
+import { SearchIcon, ResetIcon, FileExportIcon, PenIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -34,11 +34,11 @@ import '@/shared/lib/agGridPub';
 type Ltpa010DummyDataRow = {
   id: number;
   isCheck: boolean;
-  isState: boolean;
+  isState: boolean; // 판매중지 상품 true
   field01: string | number;
   field02: string | number;
   field03: string | number;
-  field04: string | number;
+  memo: boolean;
   field05: string | number;
   field06: string | number;
   field07: string | number;
@@ -54,7 +54,7 @@ type Ltpa010DummyDataRow = {
   field17: string | number;
   field18: string | number;
   field19: string | number;
-  field20: string | number;
+  nickname?: string;
 };
 const Ltpa010DummyData: Ltpa010DummyDataRow[] = [
   {
@@ -64,7 +64,7 @@ const Ltpa010DummyData: Ltpa010DummyDataRow[] = [
     field01: 'LA2131234123',
     field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
     field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
-    field04: 'memoCreate',
+    memo: true,
     field05: '김한화김한화김한화',
     field06: '2009-01-01',
     field07: '9,999,999',
@@ -80,16 +80,16 @@ const Ltpa010DummyData: Ltpa010DummyDataRow[] = [
     field17: '박한화(123123)',
     field18: '배서설계',
     field19: 'LA20143129023123912',
-    field20: '',
+    nickname: '최고설계메니져뚜루루',
   },
   {
     id: 2,
     isCheck: false,
-    isState: true,
+    isState: false,
     field01: 'LA2131234123',
     field02: '한화실손의료보험(갱신형)2601',
     field03: '고지유형/플랜명/차량번호 값',
-    field04: 'memoView',
+    memo: true,
     field05: '김한화',
     field06: '2009-01-01',
     field07: '9,999,999',
@@ -105,16 +105,16 @@ const Ltpa010DummyData: Ltpa010DummyDataRow[] = [
     field17: '박한화(123123)',
     field18: '배서설계',
     field19: 'LA20143129023123912',
-    field20: '',
+    nickname: '',
   },
   {
     id: 3,
     isCheck: true,
-    isState: false,
+    isState: true,
     field01: 'LA2131234123',
     field02: '한화실손의료보헌갱신형2601',
-    field03: '고지유형/플랜명/차량번호 값',
-    field04: 'memoCreate',
+    field03: '',
+    memo: false,
     field05: '김한화',
     field06: '2009-01-01',
     field07: '9,999,999',
@@ -130,7 +130,7 @@ const Ltpa010DummyData: Ltpa010DummyDataRow[] = [
     field17: '박한화(123123)',
     field18: '배서설계',
     field19: 'LA20143129023123912',
-    field20: '',
+    nickname: '',
   },
   {
     id: 4,
@@ -139,7 +139,7 @@ const Ltpa010DummyData: Ltpa010DummyDataRow[] = [
     field01: 'LA2131234123',
     field02: '한화실손의료보헌갱신형2601',
     field03: '고지유형/플랜명/차량번호 값',
-    field04: 'memoCreate',
+    memo: false,
     field05: '김한화',
     field06: '2009-01-01',
     field07: '9,999,999',
@@ -155,7 +155,7 @@ const Ltpa010DummyData: Ltpa010DummyDataRow[] = [
     field17: '박한화(123123)',
     field18: '배서설계',
     field19: 'LA20143129023123912',
-    field20: '',
+    nickname: 'AI설계메니져뚜루루',
   },
 ];
 
@@ -173,13 +173,20 @@ export default function Ltpa010Section() {
 
   // AgGrid Column
   const columnDefs: (ColDef<Ltpa010DummyDataRow> | ColGroupDef<Ltpa010DummyDataRow>)[] = [
+    // M5. 수정
     {
       headerName: '설계번호',
       flex: 1,
       cellClass: 'text-center px-0!',
-      cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field01'),
+      field: 'field01',
       autoHeight: true,
+      cellRenderer: (params: { data?: Ltpa010DummyDataRow }) => (
+        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+          {params.data?.field01}
+        </Button>
+      ),
     },
+    // M5. 수정
     {
       headerName: '상품명/구분',
       headerClass: 'ag-header-right-divider text-[1.3rem]',
@@ -187,14 +194,11 @@ export default function Ltpa010Section() {
         {
           flex: 2,
           headerName: '고지유형/플랜명',
-          cellClass: 'text-center px-0! text-[1.3rem]',
+          cellClass: 'text-left px-0! text-[1.3rem]',
           autoHeight: true,
-          tooltipValueGetter: createTooltipValueGetter<Ltpa010DummyDataRow>({
-            field: 'field02',
-          }),
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field02', (data?: Ltpa010DummyDataRow) => {
-            const hasTooltip = data?.field04 === 'memoView';
-            const hasMemoButton = data?.field04 === 'memoCreate' || hasTooltip;
+            const hasTooltip = data?.memo;
+            const hasMemoButton = !data?.memo || hasTooltip;
 
             if (!hasMemoButton) {
               return null;
@@ -204,27 +208,35 @@ export default function Ltpa010Section() {
               <Button
                 color={hasTooltip ? 'primary' : 'gray-light'}
                 onClick={() => {
-                  alert('3대진단 클릭');
+                  alert('메모장');
                 }}
-                only={'icon'}
+                only={data?.nickname && hasTooltip ? 'default' : 'icon'}
                 size={'sm'}
                 variant={'outlined'}
               >
-                {hasTooltip ? <MemoIcon color={'#FF5C2E'} /> : <MemoIcon />}
+                {hasTooltip ? (
+                  data?.nickname ? (
+                    <span>{data.nickname.slice(0, 5)}</span>
+                  ) : (
+                    <PenIcon size={14} color={'var(--color-primary-50)'} />
+                  )
+                ) : (
+                  <PenIcon size={14} color={'var(--color-gray-30)'} />
+                )}
               </Button>
             );
 
             return (
-              <Grow placement="cc" className="h-full pr-1 ">
-                <div className="truncate">{data?.field03}</div>
+              <Grow placement="bwc" className="h-full ">
+                <div className="truncate-no">{data?.field03}</div>
 
-                {hasTooltip ? (
+                {data?.nickname ? (
                   <Tooltip>
                     <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
-                    <TooltipContent align="center" side="bottom" sideOffset={0} variant="default" className="w-[16rem]">
+                    <TooltipContent align="center" side="bottom" sideOffset={0} variant="default">
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: `입력일: 2026-03-22 <br /> 내용: 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다. 등록 메모 TEXT입니다.`,
+                          __html: data?.nickname,
                         }}
                       />
                     </TooltipContent>
@@ -241,7 +253,7 @@ export default function Ltpa010Section() {
 
     {
       headerName: '계약자',
-      cellClass: 'text-center px-0! text-[1.3rem]',
+      cellClass: 'text-center px-0! text-[1.3rem] ',
       headerClass: 'ag-header-right-divider text-[1.3rem]',
       autoHeight: true,
       children: [
@@ -364,6 +376,7 @@ export default function Ltpa010Section() {
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field14', (data?: Ltpa010DummyDataRow) => (
             <Grow gap={0.5}>
               <span>{data?.field15 ?? ''}</span>
+
               <Button
                 color="gray-light"
                 onClick={() => {}}
@@ -418,124 +431,6 @@ export default function Ltpa010Section() {
     },
   ];
 
-  // Grid2 Column: 'SM' → '최초설계자' 변경
-  // const columnDefs2: (ColDef<Ltpa010DummyDataRow> | ColGroupDef<Ltpa010DummyDataRow>)[] = [
-  //   ...columnDefs.slice(0, -3),
-  //   {
-  //     headerName: '최초설계자',
-  //     headerClass: 'ag-header-right-divider',
-  //     children: [
-  //       {
-  //         headerName: '최초설계자',
-  //         cellClass: 'text-center px-0!',
-  //         flex: 1,
-  //         autoHeight: true,
-  //         cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field14', (data?: Ltpa010DummyDataRow) => (
-  //           <Grow gap={0.5}>
-  //             <span>{data?.field15 ?? ''}</span>
-  //             <Button
-  //               color="gray-light"
-  //               onClick={() => {}}
-  //               only="default"
-  //               size="sm"
-  //               variant="outlined"
-  //               className="w-[2.2rem] h-[2.2rem] min-w-[2.2rem] p-0"
-  //             >
-  //               <Typo color="primary" tag="span" variant="body-xs" weight="bold">
-  //                 I
-  //               </Typo>
-  //             </Button>
-  //             <Button color="gray-light" onClick={() => {}} only="default" size="sm" variant="outlined">
-  //               <Typo color="primary" tag="span" variant="body-xs" weight="bold">
-  //                 D
-  //               </Typo>
-  //             </Button>
-  //           </Grow>
-  //         )),
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     headerName: '사용인',
-  //     headerClass: 'ag-header-right-divider',
-  //     children: [
-  //       {
-  //         headerName: '부실유의',
-  //         cellClass: 'text-center px-0!',
-  //         width: 80,
-  //         autoHeight: true,
-  //         cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field16', 'field17'),
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     headerName: '설계종료',
-  //     children: [
-  //       {
-  //         headerName: '증권번호',
-  //         cellClass: 'text-center px-0!',
-  //         flex: 1,
-  //         autoHeight: true,
-  //         cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field18', (data?: Ltpa010DummyDataRow) => (
-  //           <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-  //             {data?.field19}
-  //           </Button>
-  //         )),
-  //       },
-  //     ],
-  //   },
-  // ];
-
-  // Grid3 Column: '최초설계자', '사용인' 제거 + 취급자→BM, 취급자/유자겨자 추가, 증권번호→증원번호
-  // const columnDefs3: (ColDef<Ltpa010DummyDataRow> | ColGroupDef<Ltpa010DummyDataRow>)[] = [
-  //   ...columnDefs.filter((col) => {
-  //     const name = (col as ColGroupDef).headerName;
-  //     return name !== '최초설계자' && name !== '사용인' && name !== '취급기관/팀' && name !== '설계종료';
-  //   }),
-  //   {
-  //     headerName: '취급기관/팀',
-  //     headerClass: 'ag-header-right-divider',
-  //     children: [
-  //       {
-  //         headerName: 'BM',
-  //         cellClass: 'text-center px-0!',
-  //         flex: 1,
-  //         autoHeight: true,
-  //         cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field12', 'field13'),
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     headerName: '취급자',
-  //     headerClass: 'ag-header-right-divider',
-  //     children: [
-  //       {
-  //         headerName: '유자격자',
-  //         cellClass: 'text-center px-0!',
-  //         flex: 1,
-  //         autoHeight: true,
-  //         cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field12', 'field13'),
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     headerName: '설계종료',
-  //     children: [
-  //       {
-  //         headerName: '증원번호',
-  //         cellClass: 'text-center px-0!',
-  //         flex: 1,
-  //         autoHeight: true,
-  //         cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field18', (data?: Ltpa010DummyDataRow) => (
-  //           <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-  //             {data?.field19}
-  //           </Button>
-  //         )),
-  //       },
-  //     ],
-  //   },
-  // ];
-
   // rowSelection 사용시
   const [rowData, setRowData] = React.useState<Ltpa010DummyDataRow[]>(Ltpa010DummyData);
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
@@ -544,7 +439,7 @@ export default function Ltpa010Section() {
     [setRowData, setErrorRows]
   );
 
-  const pageSize = 2;
+  const pageSize = 10;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa010DummyData,
     pageSize,
@@ -773,10 +668,13 @@ export default function Ltpa010Section() {
                     rowSelection={{
                       mode: 'multiRow',
                       checkboxes: true,
+                      headerCheckbox: false, // M5.추가
                       enableClickSelection: false,
                     }}
                     selectionColumnDef={{
                       headerName: '선택',
+                      cellClass: 'editable-cell p-0!', // M5.추가
+                      width: 30, // M5.추가
                     }}
                     onGridReady={(params) => {
                       params.api.forEachNode((node) => {

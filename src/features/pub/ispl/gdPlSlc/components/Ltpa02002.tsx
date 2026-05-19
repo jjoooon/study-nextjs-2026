@@ -498,7 +498,13 @@ export function Ltpa02002({
                     { value: '상품옵션', label: '상품옵션' },
                     { value: '상품선택', label: '상품선택' },
                   ].map((opt, idx) => (
-                    <RadioGroupItem key={'po' + idx} value={opt.value} variant="button" className="w-full text-left">
+                    <RadioGroupItem
+                      key={'po' + idx}
+                      value={opt.value}
+                      variant="button"
+                      size={'md'}
+                      className="w-full text-left"
+                    >
                       {opt.label}
                     </RadioGroupItem>
                   ))}
@@ -565,7 +571,7 @@ export function Ltpa02002({
                     <>
                       <FormRow>
                         <FormCell title={'상품명'} className="align-top !pt-[0.3rem]">
-                          <Gcol>
+                          <Gcol placement="ss" gap={1}>
                             <Grid className="grid-cols-[1fr_auto] gap-1 items-center w-full">
                               <Input
                                 size={'sm'}
@@ -603,7 +609,13 @@ export function Ltpa02002({
                     onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
                   >
                     {AnalysisOptions.map((opt) => (
-                      <RadioGroupItem key={opt.value} value={opt.value} variant="button" className="!w-full !text-left">
+                      <RadioGroupItem
+                        key={opt.value}
+                        value={opt.value}
+                        variant="button"
+                        size={'md'}
+                        className="!w-full !text-left"
+                      >
                         {opt.label}
                       </RadioGroupItem>
                     ))}
@@ -702,6 +714,7 @@ export function Ltpa02002({
                         value={opt.value}
                         variant="button"
                         className="w-full"
+                        size={'md'}
                         checked={selectedCoverageValues.includes(opt.value)}
                         onCheckedChange={(checked) => {
                           setSelectedCoverageValues((prev) => {

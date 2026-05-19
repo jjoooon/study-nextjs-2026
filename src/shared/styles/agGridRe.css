@@ -162,11 +162,10 @@
 .ag-row-selected {
   background-color: var(--color-warning-10);
 } */
-
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell *,
 .ag-theme-alpine .ag-row.ag-row-state-true .ag-cell {
   color: #ff5c2e !important;
 }
-
 .ag-theme-alpine .ag-row.ag-row-state-true {
   --color-text-base: #ff5c2e;
 }
@@ -800,4 +799,8 @@
   display: flex;
   align-items: center; /* 텍스트 중앙 정렬 */
   z-index: 1;
+}
+
+.row-cloning .ag-cell {
+  background-color: var(--color-yellow-10) !important;
 }

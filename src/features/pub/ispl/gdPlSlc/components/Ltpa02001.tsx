@@ -3,7 +3,8 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useCloneTopRows } from '@aggrid';
+import type { ClonedTopRow } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
@@ -13,6 +14,7 @@ import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
@@ -21,7 +23,7 @@ import { useTabs } from '@/shared/hooks/useTabs';
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
-  id: number;
+  id: string | number;
   field1: string | number;
   field2: string | number;
   importance: boolean;
@@ -350,8 +352,20 @@ const dummyData3Tab: Array<{ value: string; label: string; count: number }> = [
 
 export function Ltpa02001() {
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
-  const [productCategory, setProductCategory] = React.useState<string[]>(['comprehensive', 'female']);
+  const [productCategory, setProductCategory] = React.useState<string>('');
   const [productFeature, setProductFeature] = React.useState<string[]>(['simple', 'shortTerm']);
+  const {
+    rowData: productRowData,
+    toggleCloneByRow,
+    isFavoriteRow,
+    getRowId: getProductRowId,
+    getCloneRowClass,
+  } = useCloneTopRows<DummyDataType, 'id'>({
+    rows: dummyData,
+    idKey: 'id',
+  });
+
+  type ProductGridRow = DummyDataType | ClonedTopRow<DummyDataType>;
 
   // 상품선택 AG-Grid 컬럼 정의
   const productNameHeader = useCallback(() => {
@@ -379,15 +393,30 @@ export function Ltpa02001() {
     );
   }, [showProductNameTooltip]);
 
-  const importanceCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
+  const importanceCellRenderer = (params: ICellRendererParams<ProductGridRow>) => {
     const badgeText = params.data?.badge ?? '';
+    const isCloned = isFavoriteRow(params.data);
+
+    const handleFavoriteChange = (checked: boolean | 'indeterminate') => {
+      if (checked === 'indeterminate') return;
+      toggleCloneByRow(params.data, checked);
+    };
+
     return (
       <Grow className="w-full" placement="bwc">
         <Grow className="overflow-hidden -tracking-[0.03rem]">
-          <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="favorite">
-            중요
+          {/* M5. 텍스트수정 */}
+          <Checkbox
+            color="primary"
+            onCheckedChange={handleFavoriteChange}
+            checked={isCloned}
+            size="lg"
+            variant="favorite"
+          >
+            즐겨찾기
           </Checkbox>
-          <div className="truncate">{params.data?.field2 ?? ''}</div>
+          {/* M5. truncate > truncate-no 로 수정 */}
+          <div className="truncate-no">{params.data?.field2 ?? ''}</div>
         </Grow>
         <Grow>
           {badgeText && (
@@ -419,7 +448,9 @@ export function Ltpa02001() {
         <Grow className="border-r border-[var(--color-gray-10)] h-full aspect-auto w-[4rem] flex items-center justify-center shrink-0 pr-[1rem] pl-[0.4rem]">
           {params.data?.field1}
         </Grow>
-        <Grow className="flex-1 truncate block text-left">{params.data?.field2}</Grow>
+
+        {/* M5. truncate > truncate-no 로 수정 */}
+        <Grow className="flex-1 truncate-no block text-left">{params.data?.field2}</Grow>
         <Grow>
           {params.data?.btn && (
             <Button color="gray" onClick={() => {}} only="default" size="sm" variant="outlined">
@@ -437,7 +468,7 @@ export function Ltpa02001() {
       </Button>
     );
   };
-  const columnDefs: ColDef<DummyDataType>[] = [
+  const columnDefs: ColDef<ProductGridRow>[] = [
     {
       headerName: '상품분류',
       field: 'field1',
@@ -449,7 +480,7 @@ export function Ltpa02001() {
       flex: 1,
       field: 'field2',
       cellClass: 'text-left',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
+      tooltipValueGetter: createTooltipValueGetter<ProductGridRow>({ field: 'field2' }),
       cellRenderer: importanceCellRenderer,
       headerComponent: productNameHeader,
     },
@@ -505,13 +536,8 @@ export function Ltpa02001() {
         <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
           <FormRow className="items-start!">
             <FormCell title={'상품분류'}>
-              <CheckboxGroup
-                value={productCategory}
-                onValueChange={setProductCategory}
-                variant="button"
-                size="md"
-                className="gap-[0.4rem] flex-wrap"
-              >
+              {/* M5. RadioGroup 수정 */}
+              <RadioGroup value={productCategory} onValueChange={setProductCategory} className="gap-[0.4rem] flex-wrap">
                 {[
                   { value: 'all', label: '전체' },
                   { value: 'comprehensive', label: '종합건강' },
@@ -524,11 +550,11 @@ export function Ltpa02001() {
                   { value: 'property', label: '재물' },
                   { value: 'annuity', label: '연금/저축' },
                 ].map((opt) => (
-                  <CheckboxGroupItem key={opt.value} value={opt.value} selectAll={opt.value === 'all'}>
+                  <RadioGroupItem variant="button" size="md" key={opt.value} value={opt.value}>
                     {opt.label}
-                  </CheckboxGroupItem>
+                  </RadioGroupItem>
                 ))}
-              </CheckboxGroup>
+              </RadioGroup>
             </FormCell>
           </FormRow>
           <FormRow className="items-start!">
@@ -566,11 +592,12 @@ export function Ltpa02001() {
             <div
               className={`tooltip-hidden-toggle w-full h-full ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
             >
-              <AgGridReact<DummyDataType>
-                getRowId={(params) => String(params.data.id)}
+              <AgGridReact<ProductGridRow>
+                getRowId={(params) => getProductRowId(params.data)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={dummyData}
+                rowData={productRowData}
                 columnDefs={columnDefs}
+                getRowClass={(params) => getCloneRowClass(params.data, 'row-cloning')}
                 domLayout="normal"
                 tooltipShowMode="whenTruncated"
                 tooltipShowDelay={0}
