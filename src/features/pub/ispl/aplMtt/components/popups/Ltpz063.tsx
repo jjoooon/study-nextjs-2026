@@ -22,7 +22,13 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
-import type { CellEditorSelectorResult, ColDef, EditableCallbackParams, IHeaderParams } from 'ag-grid-enterprise';
+import type {
+  CellClassParams,
+  CellEditorSelectorResult,
+  ColDef,
+  EditableCallbackParams,
+  IHeaderParams,
+} from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent } from '@/shared/components/agGridUtils/AgGridUtils';
@@ -69,6 +75,7 @@ const TYPE3_EDITABLE_TEXT_TYPES = new Set([
   '면책사유 및 면책사항',
 ]);
 const EDITABLE_TARGET_TYPES = new Set(['해약환급금', '예정이율', '보험목적', '면책사유 및 면책사항']);
+const LEFT_ALIGN_TARGET_TYPES = new Set(['보험료', '보험가입금액', '해약환급금', '예정이율']);
 
 const DummyData: DummyDataType[] = [
   {
@@ -429,10 +436,23 @@ const DummyData3: DummyDataType3[] = [
 export const Ltpz063 = () => {
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
   const [rowData3, setRowData3] = React.useState<DummyDataType3[]>(DummyData3);
 
   const getTypeLabel = (row: { type: string | number } | undefined) => (row ? String(row.type) : '');
   const isSwitchoverRow = (row: { type: string | number } | undefined) => getTypeLabel(row) === '승환';
+  const isLeftAlignTargetRow = (row: { type: string | number } | undefined) =>
+    LEFT_ALIGN_TARGET_TYPES.has(getTypeLabel(row));
+
+  const getValueCellClass = <TData extends { type: string | number }>(params: CellClassParams<TData>) =>
+    isLeftAlignTargetRow(params.data)
+      ? 'text-right [&_.ag-input-field-input]:text-right'
+      : 'text-center [&_.ag-input-field-input]:text-center';
+
+  const getSelectableValueCellClass = <TData extends { type: string | number }>(params: CellClassParams<TData>) =>
+    isLeftAlignTargetRow(params.data)
+      ? 'text-right [&_.ag-input-field-input]:text-right'
+      : 'text-center flex! items-center! justify-center! [&_.ag-input-field-input]:text-center';
 
   const isType3CompanyRow = (row: DummyDataType3 | undefined) => row?.type === '보험회사명';
   const isType3DateRow = (row: DummyDataType3 | undefined) => row?.type === '보험기간';
@@ -530,6 +550,23 @@ export const Ltpz063 = () => {
     );
   };
 
+  const handleCheckboxChange2 = (
+    params: CheckboxRendererParams<DummyDataType2>,
+    checked: boolean | 'indeterminate'
+  ) => {
+    const targetField = params.colDef.field;
+
+    if (!params.data || !targetField || !isSelectableField(targetField)) {
+      return;
+    }
+
+    const nextValue = checked === true;
+
+    setRowData2((prevRows) =>
+      prevRows.map((row) => (row.id === params.data?.id ? { ...row, [targetField]: nextValue } : row))
+    );
+  };
+
   const handleCheckboxChange3 = (
     params: CheckboxRendererParams<DummyDataType3>,
     checked: boolean | 'indeterminate'
@@ -573,12 +610,13 @@ export const Ltpz063 = () => {
   };
 
   const checkboxRenderer = createCheckboxCellRenderer(handleCheckboxChange);
+  const checkboxRenderer2 = createCheckboxCellRenderer(handleCheckboxChange2);
   const checkboxRenderer3 = createCheckboxCellRenderer(handleCheckboxChange3);
 
   const createMainExternalColumn = (field: 'externalInsurance1' | 'externalInsurance2'): ColDef<DummyDataType> => ({
     headerName: '타사기존',
     headerClass: '[&_.ag-header-cell-text]:font-bold',
-    cellClass: 'text-center flex! items-center! justify-center!',
+    cellClass: getSelectableValueCellClass,
     cellClassRules: externalInsuranceCellClassRules,
     flex: 1,
     minWidth: 200,
@@ -591,7 +629,7 @@ export const Ltpz063 = () => {
     headerName: '타사기존',
     headerComponent: ThirdGridHeaderWithDelete,
     headerClass: '[&_.ag-header-cell-text]:font-bold',
-    cellClass: 'text-center flex! items-center! justify-center!',
+    cellClass: getSelectableValueCellClass,
     flex: 1,
     minWidth: 200,
     field,
@@ -616,14 +654,14 @@ export const Ltpz063 = () => {
       headerName: '당사신규',
       width: 200,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center',
+      cellClass: getValueCellClass,
       field: 'ourInsurance1',
       pinned: 'left',
     },
     {
       headerName: '당사기존',
       headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center flex! items-center! justify-center!',
+      cellClass: getSelectableValueCellClass,
       flex: 1,
       minWidth: 200,
       field: 'ourInsurance2',
@@ -631,6 +669,55 @@ export const Ltpz063 = () => {
     },
     createMainExternalColumn('externalInsurance1'),
     createMainExternalColumn('externalInsurance2'),
+  ];
+  const columnDefs2: ColDef<DummyDataType2>[] = [
+    {
+      headerName: '구분',
+      width: 150,
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: 'text-center font-bold',
+      field: 'type',
+      pinned: 'left',
+    },
+    {
+      headerName: '당사신규',
+      width: 200,
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: getValueCellClass,
+      field: 'ourInsurance1',
+      pinned: 'left',
+    },
+    {
+      headerName: '당사기존',
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: getSelectableValueCellClass,
+      flex: 1,
+      minWidth: 200,
+      field: 'ourInsurance2',
+      cellRenderer: checkboxRenderer2,
+    },
+    {
+      headerName: '타사기존',
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: getSelectableValueCellClass,
+      cellClassRules: externalInsuranceCellClassRules,
+      flex: 1,
+      minWidth: 200,
+      field: 'externalInsurance1',
+      editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
+      cellRenderer: checkboxRenderer2,
+    },
+    {
+      headerName: '타사기존',
+      headerClass: '[&_.ag-header-cell-text]:font-bold',
+      cellClass: getSelectableValueCellClass,
+      cellClassRules: externalInsuranceCellClassRules,
+      flex: 1,
+      minWidth: 200,
+      field: 'externalInsurance2',
+      editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
+      cellRenderer: checkboxRenderer2,
+    },
   ];
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
@@ -645,7 +732,7 @@ export const Ltpz063 = () => {
       headerName: '당사신규',
       width: 200,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center',
+      cellClass: getValueCellClass,
       field: 'ourInsurance1',
       pinned: 'left',
     },
@@ -764,8 +851,8 @@ export const Ltpz063 = () => {
                 <AgGridReact<DummyDataType2>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyData2}
-                  columnDefs={columnDefs}
+                  rowData={rowData2}
+                  columnDefs={columnDefs2}
                   singleClickEdit={true}
                   defaultColDef={{
                     sortable: true,
