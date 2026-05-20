@@ -1,0 +1,292 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
+'use client';
+
+import { AgGridEmptyComponent } from '@aggrid';
+import { Grid, Grow, Gcol } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+
+import { PageID } from '@features/PageID';
+import { ResetIcon } from '@icons';
+import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+
+import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+
+import '@/shared/lib/agGridPub';
+
+// dummy data
+type DummyDataType = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+  field06: string | number;
+  field07: string | number;
+  field08: string | number;
+  field09: string | number;
+};
+const DummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field01: 'LA260204310632',
+    field02: 'LA00102001',
+    field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
+    field04: '문서서명',
+    field05: 'TM',
+    field06: 'YYYY-MM-DD',
+    field07: '수납완료',
+    field08: '김한화(4404732)',
+    field09: '미발행',
+  },
+  {
+    id: 2,
+    field01: 'LA260204310632',
+    field02: 'LA00102001',
+    field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
+    field04: '문서서명',
+    field05: 'TM',
+    field06: 'YYYY-MM-DD',
+    field07: 'TEXT',
+    field08: '김한화(4404732)',
+    field09: 'TEXT',
+  },
+  {
+    id: 3,
+    field01: 'LA260204310632',
+    field02: 'LA00102001',
+    field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
+    field04: '문서서명',
+    field05: 'TM',
+    field06: 'YYYY-MM-DD',
+    field07: 'TEXT',
+    field08: '김한화(4404732)',
+    field09: 'TEXT',
+  },
+  {
+    id: 4,
+    field01: 'LA260204310632',
+    field02: 'LA00102001',
+    field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
+    field04: '문서서명',
+    field05: 'TM',
+    field06: 'YYYY-MM-DD',
+    field07: 'TEXT',
+    field08: '김한화(4404732)',
+    field09: 'TEXT',
+  },
+];
+
+export default function Ltpa340Section() {
+  // AgGrid Column
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+    {
+      headerName: '설계번호',
+      field: 'field01',
+      width: 110,
+      cellClass: 'text-center editable-cell',
+      editable: true,
+    },
+    {
+      headerName: '상품코드',
+      field: 'field02',
+      width: 110,
+      cellClass: 'text-center editable-cell',
+      editable: true,
+    },
+    {
+      headerName: '상품명',
+      field: 'field03',
+      flex: 1,
+      cellClass: 'text-left',
+    },
+    {
+      headerName: '출력물구분',
+      field: 'field04',
+      width: 120,
+      editable: true,
+      cellClass: 'text-center editable-cell',
+      cellEditor: 'agSelectCellEditor',
+      cellEditorParams: { values: ['전체', '문서서명'] },
+    },
+    {
+      headerName: '판매허용채널',
+      field: 'field05',
+      width: 100,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '보험시기',
+      field: 'field06',
+      width: 120,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '설계상태',
+      field: 'field07',
+      width: 80,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '설계자',
+      field: 'field08',
+      width: 120,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '발행성공여부',
+      field: 'field09',
+      width: 100,
+      cellClass: 'text-center',
+    },
+  ];
+
+  // form event
+  const [form, setFormField] = useFormFields({
+    type01: '',
+    type02: '',
+  });
+
+  return (
+    <>
+      <LayoutHead>
+        <PageID
+          data={{
+            pageName: '장기신계약발급물일괄생성',
+            pageId: 'LTPA340',
+          }}
+        />
+      </LayoutHead>
+      <LayoutTemplate
+        mainBody={
+          <Grid className="grid-rows-[auto_1fr]" gap={3}>
+            <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
+              <FormTable
+                variant={'none'}
+                caption="장기신계약발급물일괄생성 테이블"
+                cols={['w-1', 'w-1', 'w-1', 'w-auto']}
+              >
+                <FormRow>
+                  <FormCell title={'조회구분'}>
+                    <NativeSelect
+                      aria-label="항목 선택"
+                      width={108}
+                      value={form.type01}
+                      onChange={(e) => setFormField('type01', e.target.value)}
+                      required
+                    >
+                      {[
+                        { value: 'selection1', id: 'type01-1', label: '전체' },
+                        { value: 'selection2', id: 'type01-2', label: '보험시기' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.id} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <DatePickerInput mode="range" onChange={() => {}} size="lg" value="" />
+                  </FormCell>
+                  <FormCell title={'검색조건'}>
+                    <NativeSelect
+                      aria-label="검색조건 선택"
+                      width={108}
+                      value={form.type02}
+                      onChange={(e) => setFormField('type02', e.target.value)}
+                      required
+                    >
+                      {[{ value: 'selection', id: 'type02-1', label: '상품코드' }].map((option) => (
+                        <NativeSelectOption key={option.id} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <Input width={130} value={'LA260204310632'} />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+              <Grow>
+                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                  조회
+                </Button>
+                <Button
+                  color={'gray'}
+                  only={'icon'}
+                  size={'lg'}
+                  variant={'outlined'}
+                  onClick={() => {}}
+                  aria-label="새로고침"
+                >
+                  <ResetIcon />
+                </Button>
+              </Grow>
+            </Grow>
+            <Gcol className="w-full" gap={1}>
+              <div className="ag-theme-alpine min-h-150">
+                <AgGridReact<DummyDataType>
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={DummyData}
+                  columnDefs={columnDefs}
+                  singleClickEdit={true}
+                  domLayout="normal"
+                  rowSelection={{
+                    mode: 'multiRow',
+                    checkboxes: true,
+                    enableClickSelection: true,
+                  }}
+                  selectionColumnDef={{
+                    width: 40,
+                    cellClass: 'text-center editable-cell',
+                  }}
+                />
+              </div>
+            </Gcol>
+          </Grid>
+        }
+        mainFoot={
+          <MainBottom>
+            <MainBottomItem className="justify-end">
+              <Grow gap={1}>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  전체발행
+                </Button>
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  상품설명서발행
+                </Button>
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  청약서류발행
+                </Button>
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  보험증권발행
+                </Button>
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  보장상세발행
+                </Button>
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  설계정보 일괄조회
+                </Button>
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  신_상품설명서발행
+                </Button>
+              </Grow>
+            </MainBottomItem>
+          </MainBottom>
+        }
+      />
+      <LayoutFoot>
+        <BottomBar />
+      </LayoutFoot>
+    </>
+  );
+}
