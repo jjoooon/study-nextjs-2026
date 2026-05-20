@@ -27,7 +27,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Badge } from '@/shared/components/uiux/Badge';
+import { Badge } from '@uiux/Badge';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';

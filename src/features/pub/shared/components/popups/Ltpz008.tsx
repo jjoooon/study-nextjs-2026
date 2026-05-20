@@ -26,7 +26,7 @@ import { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { PageArrowDoubleIcon, PageArrowIcon } from '@/shared/components/icons/CommonIcons';
-import { Badge } from '@/shared/components/uiux/Badge';
+import { Badge } from '@uiux/Badge';
 
 type DummyDataType = {
   id: number;

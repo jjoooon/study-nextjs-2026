@@ -19,13 +19,13 @@ import {
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
-import { TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { TableFold } from '@/shared/components/common/TableFold';
+import { TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TableFold } from '@common/TableFold';
 import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
-import { Input } from '@/shared/components/uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 // M2. 신규페이지
 import '@/shared/lib/agGridPub';

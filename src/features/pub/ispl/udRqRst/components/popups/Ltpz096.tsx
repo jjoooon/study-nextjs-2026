@@ -4,6 +4,7 @@
 'use client';
 
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -24,11 +25,10 @@ import { Textarea } from '@uiux/Textarea';
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
 
 import '@/shared/lib/agGridPub';
-import { Badge } from '@/shared/components/uiux/Badge';
-import { Input } from '@/shared/components/uiux/Input';
+import { Badge } from '@uiux/Badge';
+import { Input } from '@uiux/Input';
 
 type DummyDataType1 = {
   id: number;

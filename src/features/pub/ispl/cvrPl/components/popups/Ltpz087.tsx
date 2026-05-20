@@ -26,7 +26,7 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import React from 'react';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
+import { DatePickerInput } from '@common/DatePicker';
 
 type DummyDataType = {
   id: number;

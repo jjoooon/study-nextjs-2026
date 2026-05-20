@@ -18,7 +18,7 @@ import {
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@uiux/Table';
 import { useState } from 'react';
 import { ArrowIcon } from '@/shared/components/icons';
-import { Input } from '@/shared/components/uiux/Input';
+import { Input } from '@uiux/Input';
 
 const Ltpz023 = () => {
   // 초기 키워드 값

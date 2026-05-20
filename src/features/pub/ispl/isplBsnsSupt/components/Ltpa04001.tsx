@@ -12,7 +12,7 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { createTooltipValueGetter } from '@aggrid';
 
 import '@/shared/lib/agGridPub';
 

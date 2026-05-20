@@ -120,7 +120,11 @@ export function InputHash({ options, value, width, onChange, inputId, ...restPro
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleOptionClick(opt)}
                   >
-                    <Typo color="gray" className="gap-[0.2rem] flex items-center" weight={'bold'}>
+                    <Typo
+                      color="gray"
+                      className="gap-[0.2rem] flex items-center text-[var(--color-blue-gray-60)]"
+                      weight={'bold'}
+                    >
                       <span>#</span>
                       {opt.label}
                     </Typo>

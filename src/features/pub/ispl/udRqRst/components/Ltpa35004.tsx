@@ -374,7 +374,7 @@ export function Ltpa35004() {
           >
             <Gcol variant={'box-round-b'} placement={'ss'} className={`${!isHeightExpanded ? '' : 'hidden'}`}>
               <FormTable caption="취급자 정보" variant={'head'}>
-                <FormRow>
+                <FormRow className="w-full [&>div]:w-full">
                   <FormCell
                     title={'동시설계'}
                     className="min-w-[6.4rem]"
@@ -471,7 +471,7 @@ export function Ltpa35004() {
                           지침확인
                         </Button>
                       </ConTit>
-                      <div className="ag-theme-alpine">
+                      <div className="ag-theme-alpine min-h-[12.3rem]">
                         <AgGridReact<AgGridRow>
                           key={gridKey}
                           rowData={rowData}

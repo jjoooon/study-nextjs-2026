@@ -3,7 +3,10 @@
  */
 'use client';
 import { DatePickerCellEditor } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 
@@ -31,9 +34,6 @@ import type {
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils/AgGridUtils';
-import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
 
 import { useTabs } from '@/shared/hooks/useTabs';
 

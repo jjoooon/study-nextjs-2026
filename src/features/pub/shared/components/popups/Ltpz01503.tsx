@@ -19,8 +19,8 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { CheckboxGroup, CheckboxGroupItem } from '@/shared/components/uiux/Checkbox';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 type DummyDataType = {
   id: number;

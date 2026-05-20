@@ -19,7 +19,7 @@ import {
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 

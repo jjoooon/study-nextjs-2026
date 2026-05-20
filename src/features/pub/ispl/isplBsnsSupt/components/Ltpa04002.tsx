@@ -15,8 +15,8 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { createTooltipValueGetter } from '@aggrid';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 

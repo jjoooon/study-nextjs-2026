@@ -21,13 +21,13 @@ import {
   createTooltipValueGetter,
   DatePickerCellEditor,
   editableSelectCellRenderer,
-} from '@/shared/components/agGridUtils';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+} from '@aggrid';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ResetIcon } from '@/shared/components/icons/CommonIcons';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { Checkbox } from '@uiux/Checkbox';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';

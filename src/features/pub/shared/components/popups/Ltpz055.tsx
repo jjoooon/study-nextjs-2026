@@ -9,12 +9,12 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { BulletList } from '@/shared/components/common/BulletList';
-import { BulletListItem } from '@/shared/components/common/BulletList';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
-import { Button } from '@/shared/components/uiux/Button';
-import { Input } from '@/shared/components/uiux/Input';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { BulletList } from '@common/BulletList';
+import { BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 const Ltpz055 = () => {
   return (

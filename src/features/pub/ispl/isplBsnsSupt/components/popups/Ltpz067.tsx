@@ -24,7 +24,7 @@ import { Input } from '@uiux/Input';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { Checkbox } from '@uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

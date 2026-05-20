@@ -27,7 +27,7 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useState } from 'react';
-import { TableMore } from '@/shared/components/common/TablePagination';
+import { TableMore } from '@common/TablePagination';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';

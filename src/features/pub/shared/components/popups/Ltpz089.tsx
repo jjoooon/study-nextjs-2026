@@ -4,20 +4,29 @@
 
 'use client';
 
+import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import '@/shared/lib/agGridPub';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
 
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-
-import { Input } from '@/shared/components/uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 
 type DummyDataType = {
   id: number;
@@ -109,7 +118,7 @@ const Ltpz089 = () => {
             <TableFoldHead title="목적물세부사항과 수용장소">
               <Typo variant={'body-sm'}>수용장소 건물 형태</Typo>
             </TableFoldHead>
-            <TableFoldBody>
+            <TableFoldBody className="gap-1">
               <FormTable caption="목적물세부사항" className="" cols={['w-[22%]', 'w-full']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'목적물세부사항'} variant="default">
@@ -182,6 +191,18 @@ const Ltpz089 = () => {
           </TableFold>
         </DialogSection>
         <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              <Button variant={'contained'} size={'xl'}>
+                확인
+              </Button>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
+            </Grow>
+          </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>

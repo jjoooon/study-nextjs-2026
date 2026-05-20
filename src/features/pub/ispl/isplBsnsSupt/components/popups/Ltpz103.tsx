@@ -20,7 +20,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import * as React from 'react';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { BulletList, BulletListItem } from '@common/BulletList';
 
 import '@/shared/lib/agGridPub';
 

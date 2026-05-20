@@ -16,11 +16,11 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { createTooltipValueGetter } from '@aggrid';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 
 import '@/shared/lib/agGridPub';

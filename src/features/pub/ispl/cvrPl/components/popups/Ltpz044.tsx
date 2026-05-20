@@ -6,6 +6,7 @@
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,21 +22,6 @@ import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-
-const parseNumericValue = (value: unknown): number => {
-  if (value === null || value === undefined || value === '') return 0;
-  const normalized = String(value).replace(/,/g, '').trim();
-  const parsed = Number(normalized);
-  return Number.isNaN(parsed) ? 0 : parsed;
-};
-
-const formatNumericValue = (value: unknown): string => {
-  if (value === null || value === undefined || value === '') return '';
-  const normalized = String(value).replace(/,/g, '').trim();
-  const parsed = Number(normalized);
-  return Number.isNaN(parsed) ? '' : parsed.toLocaleString();
-};
 
 type DummyDataType = {
   id: number;
@@ -72,6 +58,20 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz044 = () => {
+  const parseNumericValue = (value: unknown): number => {
+    if (value === null || value === undefined || value === '') return 0;
+    const normalized = String(value).replace(/,/g, '').trim();
+    const parsed = Number(normalized);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  };
+
+  const formatNumericValue = (value: unknown): string => {
+    if (value === null || value === undefined || value === '') return '';
+    const normalized = String(value).replace(/,/g, '').trim();
+    const parsed = Number(normalized);
+    return Number.isNaN(parsed) ? '' : parsed.toLocaleString();
+  };
+
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '구문',

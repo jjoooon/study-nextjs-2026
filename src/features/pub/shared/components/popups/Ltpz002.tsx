@@ -27,7 +27,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 type DummyDataType = {
   id: number;

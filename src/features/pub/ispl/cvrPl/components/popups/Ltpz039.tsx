@@ -23,7 +23,7 @@ import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { Checkbox } from '@uiux/Checkbox';
 
 import '@/shared/lib/agGridPub';
 

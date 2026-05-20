@@ -9,9 +9,9 @@ import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 
 import { Grow, Typo } from '@/shared/components/atoms';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import { Button } from '@/shared/components/uiux/Button';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { Button } from '@uiux/Button';
 import {
   Dialog,
   DialogContent,
@@ -21,8 +21,8 @@ import {
   DialogTitle,
   DialogFooterArea,
   DialogClose,
-} from '@/shared/components/uiux/Dialog';
-import { Input } from '@/shared/components/uiux/Input';
+} from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 

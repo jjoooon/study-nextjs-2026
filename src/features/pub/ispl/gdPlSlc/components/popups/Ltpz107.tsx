@@ -15,8 +15,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/uiux/Table';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
 const Ltpz107 = () => {
   return (

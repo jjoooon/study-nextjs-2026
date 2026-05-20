@@ -23,7 +23,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 type Ltpa570DummyDataRow = {
   id: number;
