@@ -5,6 +5,7 @@
 
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
@@ -26,7 +27,6 @@ import * as React from 'react';
 import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
 
 import '@/shared/lib/agGridPub';
-import { useState } from 'react';
 import { Badge } from '@/shared/components/uiux/Badge';
 import { Input } from '@/shared/components/uiux/Input';
 
@@ -162,8 +162,7 @@ const Ltpz096 = () => {
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   // 보완요청 체크박스 그룹 상태
-  const [requestCheck] = useState<string[]>(['고지', '제한담보', '고지유형변경', '서류', '검토불가', '기타']);
-
+  const [requestCheck] = React.useState<string[]>(['고지', '제한담보', '고지유형변경', '서류', '검토불가', '기타']);
   // AgGrid Column
   const columnDefs1: ColDef<DummyDataType1>[] = [
     {
@@ -356,6 +355,7 @@ const Ltpz096 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

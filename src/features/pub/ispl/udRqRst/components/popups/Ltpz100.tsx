@@ -340,8 +340,8 @@ const Ltpz100 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
-        <DialogBottomInfo />
       </DialogContent>
     </Dialog>
   );

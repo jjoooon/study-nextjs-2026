@@ -99,7 +99,7 @@ const PopoverContent = React.forwardRef<React.ElementRef<typeof PopoverPrimitive
           sideOffset={sideOffset}
           tabIndex={-1}
           className={cn(
-            'z-50 w-auto border border-[var(--color-gray-10)] rounded-[.6rem] px-2.5 py-2 shadow-md outline-none',
+            'z-150 w-auto border border-[var(--color-gray-10)] rounded-[.6rem] px-2.5 py-2 shadow-md outline-none',
             variantStyles[variant] ?? variantStyles.default,
             motionClass,
             'data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-popover-content-transform-origin]',
