@@ -272,7 +272,7 @@ export function Ltpa35002c() {
         resizable: false,
       },
       {
-        headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" col={true} />,
+        headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" />,
         sortable: true,
         field: 'insuredAmount',
         width: attributeColumnWidth[9],
@@ -311,6 +311,18 @@ export function Ltpa35002c() {
         },
       },
       {
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '보험료',
+          unit: '(원)',
+        },
+        sortable: true,
+        field: 'field7',
+        width: attributeColumnWidth[7],
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter<AgGridRow2>,
+      },
+      {
         headerName: '만기',
         field: 'field5',
         width: attributeColumnWidth[7],
@@ -345,18 +357,6 @@ export function Ltpa35002c() {
           values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
         },
         cellRenderer: getExpiryRenderer('left'),
-      },
-      {
-        headerComponent: HeaderWithUnit,
-        headerComponentParams: {
-          label: '보험료',
-          unit: '(원)',
-        },
-        sortable: true,
-        field: 'field7',
-        width: attributeColumnWidth[7],
-        cellClass: 'text-right',
-        valueFormatter: numberValueFormatter<AgGridRow2>,
       },
     ],
     [attributeColumnWidth, getExpiryRenderer, productNameHeader]

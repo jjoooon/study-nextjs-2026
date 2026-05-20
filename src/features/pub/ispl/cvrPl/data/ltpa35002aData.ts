@@ -112,7 +112,7 @@ export const dummyData: DummyDataType[] = [
     locked: false,
 
     badge: ['갱신'],
-    isError: false,
+    isError: true,
   },
   {
     id: 3,

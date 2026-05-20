@@ -180,6 +180,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   );
 
   // --- 그리드 컬럼 정의 (인보험 뷰) ---
+  // M5. 순서변경
   const columnDefs: ColDef<AgGridRow>[] = useMemo(
     () => [
       {
@@ -189,6 +190,14 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         cellClass: 'text-center',
         cellRenderer: searchButtonRenderer<AgGridRow>,
         resizable: false,
+      },
+      {
+        headerName: '가능금액',
+        // unSortIcon: true,
+        field: 'field4',
+        width: attributeColumnWidth[7],
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter<AgGridRow>,
       },
       {
         headerComponent: HeaderWithUnit,
@@ -233,10 +242,15 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           return true;
         },
       },
+
       {
-        headerName: '가능금액',
-        // unSortIcon: true,
-        field: 'field4',
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '보험료',
+          unit: '(원)',
+        },
+        sortable: true,
+        field: 'field7',
         width: attributeColumnWidth[7],
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
@@ -278,18 +292,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
         cellRenderer: getExpiryRenderer('left'),
       },
-      {
-        headerComponent: HeaderWithUnit,
-        headerComponentParams: {
-          label: '보험료',
-          unit: '(원)',
-        },
-        sortable: true,
-        field: 'field7',
-        width: attributeColumnWidth[7],
-        cellClass: 'text-right',
-        valueFormatter: numberValueFormatter<AgGridRow>,
-      },
+
       {
         headerComponent: HeaderWithUnit,
         headerComponentParams: {

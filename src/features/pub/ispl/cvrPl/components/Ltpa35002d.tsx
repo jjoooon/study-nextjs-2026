@@ -245,7 +245,17 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           return true;
         },
       },
-
+      {
+        headerComponent: () => (
+          <Grow className="w-full" placement={'cc'} gap={0}>
+            보험료<span className="text-[1.1rem]">(원)</span>
+          </Grow>
+        ),
+        field: 'field7',
+        width: attributeColumnWidth[9],
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter<AgGridRow>,
+      },
       {
         headerName: '만기',
         // 행 선택 시에만 편집 가능 클래스 적용
@@ -283,18 +293,6 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
         cellRenderer: getExpiryRenderer('left'),
       },
-      {
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            보험료<span className="text-[1.1rem]">(원)</span>
-          </Grow>
-        ),
-        field: 'field7',
-        width: attributeColumnWidth[9],
-        cellClass: 'text-right',
-        valueFormatter: numberValueFormatter<AgGridRow>,
-      },
-
       {
         headerName: '중복',
         field: 'rowCopy',
