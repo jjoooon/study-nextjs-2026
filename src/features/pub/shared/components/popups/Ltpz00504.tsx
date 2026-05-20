@@ -9,6 +9,7 @@ import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { RecommendCard } from '@common/RecommendCard';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
@@ -346,9 +347,7 @@ const Ltpz00504 = () => {
                 className="w-full gap-1 flex [&>[role='button']]:shrink-0! *:data-[group='row']:w-full!"
               >
                 <Grow placement="bwe" className="w-full">
-                  <Typo variant={'body-lg'} color={'primary'} weight={'bold'}>
-                    15개
-                  </Typo>
+                  <Badge>15개</Badge>
                   <Button size={'sm'}>설계반영</Button>
                 </Grow>
               </TableFoldHead>
@@ -383,9 +382,7 @@ const Ltpz00504 = () => {
             </TableFold>
             <TableFold>
               <TableFoldHead title="보험료 할증" className="justify-start">
-                <Typo variant={'body-lg'} color={'primary'} weight={'bold'}>
-                  15개
-                </Typo>
+                <Badge>15개</Badge>
               </TableFoldHead>
               <TableFoldBody>
                 {/* 보험료 할증 */}
@@ -418,9 +415,7 @@ const Ltpz00504 = () => {
             </TableFold>
             <TableFold>
               <TableFoldHead title="부 담보(부위/질병)" className="justify-start">
-                <Typo variant={'body-lg'} color={'primary'} weight={'bold'}>
-                  15개
-                </Typo>
+                <Badge>15개</Badge>
               </TableFoldHead>
               <TableFoldBody>
                 {/* 부 담보(부위/질병) */}

@@ -81,9 +81,9 @@ function NormalRecommendCardItem({
     <Grid
       className={`relative p-px w-full rounded-[0.8rem] bg-linear-to-b from-[#E5E5E5] from-[47.33%] to-[#61554F] to-100%${className ? ` ${className}` : ''}`}
     >
-      <Grid className={'rounded-[0.8rem] grid-rows-[1fr_auto] w-full bg-[#817772]'}>
+      <Grid className={'rounded-[0.8rem] grid-rows-[1fr_auto] w-full bg-[#817772] gap-0'}>
         <Gcol
-          className="relative overflow-visible bg-white rounded-[0.8rem] w-full py-[2rem] px-[1.6rem] shadow-[-3px_4px_6px_0_rgba(0,0,0,0.20)] [&>div]:[position:initial]"
+          className="relative overflow-visible bg-white rounded-[0.8rem] w-full pt-[2rem] pb-[1.2rem] px-4 shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] [&>div]:[position:initial]"
           placement="ss"
           gap={2}
         >
@@ -188,7 +188,7 @@ export function RecommendCard(props: RecommendCardProps) {
       >
         <Grid className="bg-[#817772] rounded-[0.8rem] grid-rows-[1fr_auto] w-full">
           <Gcol
-            className="relative bg-white rounded-[0.8rem] w-full min-h-[16.3rem] py-[2rem] px-[1.6rem] shadow-[-3px_4px_6px_0_rgba(0,0,0,0.20)]"
+            className="relative bg-white rounded-[0.8rem] w-full min-h-[16.3rem] py-[2rem] px-[1.6rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)]"
             placement="ss"
             gap={2}
           >

@@ -2598,7 +2598,7 @@
     "dep2": "인수지침/심사",
     "dep3": "설계데이터관리",
     "id": "LTPA220",
-    "path": "aqg/components/popups",
+    "path": "ispl/udrtkGu/components/popups",
     "dep4": "CSM계산내역",
     "file": "인수지침심사",
     "plan": "안혜은",

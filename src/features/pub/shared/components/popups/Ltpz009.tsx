@@ -4,11 +4,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, useToggleTopRows, ToggleTopRow } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { CheckIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,9 +20,11 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { toast } from '@uiux/Sonner';
 import { Textarea } from '@uiux/Textarea';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 
 type DummyDataType = {
   id: number;
@@ -66,13 +67,17 @@ const dummyData: DummyDataType[] = [
 ];
 
 const Ltpz009 = () => {
-  const { rowData, toggleById } = useToggleTopRows({
-    rows: dummyData,
-    idKey: 'id',
-    toggleKey: 'field6',
-  });
+  const [memoContent, setMemoContent] = useState('');
 
-  const columnDefs: ColDef<ToggleTopRow<DummyDataType>>[] = [
+  const showSelectionLimitToast = () => {
+    if (memoContent.trim().length > 0) {
+      return;
+    }
+
+    toast.info('메모 내용을 입력해주세요.', { duration: 3000 });
+  };
+
+  const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '입력일',
       field: 'field1',
@@ -96,37 +101,14 @@ const Ltpz009 = () => {
     {
       headerName: '내용',
       field: 'field5',
+      cellClass: 'text-left',
       flex: 1,
-    },
-    {
-      headerName: '노출여부',
-      field: 'field6',
-      width: 100,
-      cellRenderer: (params: ICellRendererParams<ToggleTopRow<DummyDataType>>) => {
-        return (
-          <Button
-            variant={'outlined'}
-            className="w-[7rem]"
-            color={params.data?.field6 ? 'primary' : 'gray'}
-            onClick={(event) => {
-              event.stopPropagation();
-
-              if (params.data) {
-                toggleById(params.data.id);
-              }
-            }}
-          >
-            {params.data?.field6 ? <CheckIcon /> : null}
-            {params.data?.field6 ? '노출' : '미노출'}
-          </Button>
-        );
-      },
     },
   ];
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -141,20 +123,28 @@ const Ltpz009 = () => {
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable caption="보험정보" cols={['w-1', 'w-auto']} variant="head">
-              <FormRow>
+              <FormRow className="grid grid-cols-[auto_1fr] w-full">
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" value={'LA26020945959594'} readOnly variant="info" />
                 </FormCell>
+                <FormCell title={'설계별명'}>
+                  <Input aria-label="" width={240} placeholder="한글 20자 이내로 등록가능" value={''} />
+                </FormCell>
               </FormRow>
             </FormTable>
+            <Grow>
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                저장
+              </Button>
+            </Grow>
           </Grow>
 
           <Gcol placement={'ss'} className="w-full gap-4">
             <div className="ag-theme-alpine min-h-[12.4rem]">
-              <AgGridReact<ToggleTopRow<DummyDataType>>
+              <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={rowData}
+                rowData={dummyData}
                 columnDefs={columnDefs}
                 defaultColDef={{
                   sortable: true,
@@ -169,7 +159,14 @@ const Ltpz009 = () => {
               <Typo tag={'h3'} variant={'heading-sm'}>
                 메모 입력
               </Typo>
-              <Textarea className="w-full" placeholder="제목을 입력해주세요." maxLength={4000} resize={false} />
+              <Textarea
+                className="w-full"
+                placeholder="제목을 입력해주세요."
+                maxLength={4000}
+                resize={false}
+                value={memoContent}
+                onChange={(event) => setMemoContent(event.target.value)}
+              />
               <Gcol placement={'ss'} variant={'box-warning'}>
                 <Typo variant={'body-sm'} icon={'warning'}>
                   정보보안을 위하여 <em>개인정보를 입력할 수 없음.</em> (예: 주민등록번호, 성별, 주소, 휴대폰)
@@ -188,7 +185,7 @@ const Ltpz009 = () => {
               <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 초기화
               </Button>
-              <Button variant={'contained'} size={'xl'}>
+              <Button variant={'contained'} size={'xl'} onClick={showSelectionLimitToast}>
                 저장
               </Button>
               <DialogClose asChild>

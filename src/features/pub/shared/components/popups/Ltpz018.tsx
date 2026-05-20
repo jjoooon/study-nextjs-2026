@@ -109,7 +109,7 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
   );
 
   const showSelectionLimitToast = () => {
-    toast.info('나의 메뉴는 최대 7개까지 선택할 수 있습니다.', { duration: 1000000 });
+    toast.info('나의 메뉴는 최대 7개까지 선택할 수 있습니다.', { duration: 3000 });
   };
 
   const countNonFixedSelected = (codes: string[]) =>
