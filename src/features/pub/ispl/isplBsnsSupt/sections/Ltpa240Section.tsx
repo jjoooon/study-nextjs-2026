@@ -8,7 +8,6 @@ import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { PageID } from '@features/PageID';
 import { ResetIcon, SearchIcon, FileExportIcon, PlusIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
@@ -16,6 +15,7 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
@@ -378,7 +378,7 @@ export default function Ltpa240Section() {
           flex: 1,
           cellClass: 'text-center',
         },
-      ]
+      ],
     },
   ];
 
@@ -493,7 +493,7 @@ export default function Ltpa240Section() {
           flex: 1,
           cellClass: 'text-center',
         },
-      ]
+      ],
     },
   ];
 
@@ -515,7 +515,11 @@ export default function Ltpa240Section() {
         mainBody={
           <Grid className="grid-rows-[auto_auto_auto_1fr_auto]" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
-              <FormTable variant={'head'} caption="정액보상담보 총등록건수 조회 테이블" cols={['w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-auto']}>
+              <FormTable
+                variant={'head'}
+                caption="정액보상담보 총등록건수 조회 테이블"
+                cols={['w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-auto']}
+              >
                 <FormRow>
                   <FormCell title={'취급자'}>
                     <Input width={110} value={'1234567'} required />
@@ -610,7 +614,16 @@ export default function Ltpa240Section() {
               <TableFoldBody className="grid-rows-[auto_1fr] gap-3">
                 <FormTable
                   caption="보험신용정보 테이블"
-                  cols={['w-[12rem]', 'w-[15rem]', 'w-[auto]', 'w-[15rem]', 'w-[auto]', 'w-[15rem]', 'w-[auto]', 'w-[auto]']}
+                  cols={[
+                    'w-[12rem]',
+                    'w-[15rem]',
+                    'w-[auto]',
+                    'w-[15rem]',
+                    'w-[auto]',
+                    'w-[15rem]',
+                    'w-[auto]',
+                    'w-[auto]',
+                  ]}
                 >
                   <FormRow>
                     <FormCell className="" title={'조회상태'}>
@@ -623,12 +636,7 @@ export default function Ltpa240Section() {
                       2026-03-11 14:50:12
                     </FormCell>
                     <FormCell className="" title={'업권구분'}>
-                      <RadioGroup
-                        className="gap-3"
-                        onValueChange={() => {}}
-                        width="full"
-                        defaultValue={'전체'}
-                      >
+                      <RadioGroup className="gap-3" onValueChange={() => {}} width="full" defaultValue={'전체'}>
                         {[
                           { value: '전체', label: '전체' },
                           { value: '전체(합산)', label: '전체(합산)' },
@@ -707,10 +715,12 @@ export default function Ltpa240Section() {
             <Gcol className="w-full">
               <Gcol className="s-full" variant={'box-info'} placement="ss">
                 <Typo variant={'body-sm'} icon={'info'}>
-                  회사별 가입현황 정보는 "내보험다보여(https://ins.credit4u.or.kr/showAll/main.do)"서비스를 통해 신용정보주체가 직접 조회 가능(본인인증 필요)
+                  회사별 가입현황 정보는 "내보험다보여(https://ins.credit4u.or.kr/showAll/main.do)"서비스를 통해
+                  신용정보주체가 직접 조회 가능(본인인증 필요)
                 </Typo>
                 <Typo variant={'body-sm'} icon={'info'}>
-                  당사계약 및 타사 해약시 <b>①실시간 반영 되지 않으며(익일반영)/②설계 중인 정보는 포함되지 않음</b>에 유의 필요
+                  당사계약 및 타사 해약시 <b>①실시간 반영 되지 않으며(익일반영)/②설계 중인 정보는 포함되지 않음</b>에
+                  유의 필요
                 </Typo>
               </Gcol>
             </Gcol>
@@ -743,13 +753,13 @@ export default function Ltpa240Section() {
                 </Button>
               </Grow>
               <Grow gap={1}>
-                <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
+                <Button form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
                   정액담보상세출력(회사별)
                 </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
+                <Button form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
                   정액담보상세출력(보장별)
                 </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                <Button form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                   출력
                 </Button>
               </Grow>
