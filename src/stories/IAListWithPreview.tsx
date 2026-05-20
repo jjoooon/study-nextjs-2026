@@ -211,14 +211,7 @@ export function IAListWithPreview() {
 
   const totalCount = React.useMemo(() => ownerFilteredRows.length, [ownerFilteredRows]);
   const doneCount = React.useMemo(() => {
-    return ownerFilteredRows.filter((row) => {
-      if (row.phase !== 'Y') {
-        return false;
-      }
-      const info = getPubInfo(row);
-      const modifyDate = info?.수정일 || row.modify;
-      return !modifyDate;
-    }).length;
+    return ownerFilteredRows.filter((row) => row.phase === 'Y').length;
   }, [ownerFilteredRows]);
   const progressPercent = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
 

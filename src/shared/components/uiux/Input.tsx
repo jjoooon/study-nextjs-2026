@@ -222,7 +222,7 @@ function Input({
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
   const baseStyle = cn(
-    'w-full rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.13rem] appearance-none truncate',
+    'w-full rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate',
     isInvalid || error
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
@@ -230,7 +230,7 @@ function Input({
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
   );
   const ghostStyle = cn(
-    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[-0.13rem] appearance-none truncate'
+    'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate'
   );
   const hoverStyle =
     isInvalid || error
@@ -256,7 +256,7 @@ function Input({
   const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
   const infoStyle = cn(
-    'rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.13rem] appearance-none truncate',
+    'rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate',
     isInvalid || error
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
@@ -288,7 +288,7 @@ function Input({
           )}
         >
           {before && <div>{before}</div>}
-          <div className="relative w-full [&>input]:w-full [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[-0.13rem] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
+          <div className="relative w-full [&>input]:w-full [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[-0.03rem] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
             <input
               ref={inputRef}
               type={type}
@@ -351,7 +351,7 @@ function Input({
               data-slot="input"
               className={cn(
                 variantStyles[variant],
-                commaAmount && 'text-right tracking-[-0.13rem]',
+                commaAmount && 'text-right tracking-[-0.03rem]',
                 'w-[100%] [:focus]:px-[0.7rem]'
               )}
               required={required}

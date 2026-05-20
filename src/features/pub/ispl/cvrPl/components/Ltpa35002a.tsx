@@ -590,9 +590,14 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 <FormCell title="보장보험료">
                   <Popover>
                     <PopoverTrigger className="w-full">
-                      <span className="block w-full rounded-[0.4rem] h-[2.5rem] bg-[var(--color-gray-10)] px-2 text-[1.4rem] border border-[0.1rem] border-[var(--color-gray-20)] box-border tracking-[0] leading-[2.5rem] appearance-none truncate text-right cursor-pointer">
-                        {Number(100000).toLocaleString()}
-                      </span>
+                      <Input
+                        type="tel"
+                        commaAmount={true}
+                        value={Number(100000).toLocaleString()}
+                        size={'md'}
+                        readOnly={true}
+                        className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
+                      />
                     </PopoverTrigger>
                     <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
                       <KeyValueList

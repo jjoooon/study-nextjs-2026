@@ -5,11 +5,11 @@
 
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
-import { Textarea } from '@uiux/Textarea';
-import { Badge } from '@/shared/components/uiux/Badge';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -20,16 +20,15 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Input } from '@/shared/components/uiux/Input';
+import { Textarea } from '@uiux/Textarea';
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
 
 import '@/shared/lib/agGridPub';
-import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { useState } from 'react';
-
+import { Badge } from '@/shared/components/uiux/Badge';
+import { Input } from '@/shared/components/uiux/Input';
 
 type DummyDataType1 = {
   id: number;
@@ -163,8 +162,7 @@ const Ltpz096 = () => {
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   // 보완요청 체크박스 그룹 상태
-  const [requestCheck] = useState<string[]>(['고지', '제한담보', '고지유형변경', '서류', '검토불가', '기타']);
-
+  const [requestCheck] = React.useState<string[]>(['고지', '제한담보', '고지유형변경', '서류', '검토불가', '기타']);
   // AgGrid Column
   const columnDefs1: ColDef<DummyDataType1>[] = [
     {
@@ -273,7 +271,10 @@ const Ltpz096 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Textarea value="[시스템심사 : 보완요청] - 대장직장용종 : [수술無_불가] 고지해당 안되는 유형으로 변경바랍니다.(질병 및 상해 전담보)" readOnly />
+          <Textarea
+            value="[시스템심사 : 보완요청] - 대장직장용종 : [수술無_불가] 고지해당 안되는 유형으로 변경바랍니다.(질병 및 상해 전담보)"
+            readOnly
+          />
           <Grid className="grid-rows-[1fr_auto]" gap={2}>
             <TableFold variant="default">
               <TableFoldHead title="질병고지" />
@@ -354,6 +355,7 @@ const Ltpz096 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

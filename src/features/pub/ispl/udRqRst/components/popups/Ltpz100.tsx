@@ -4,10 +4,12 @@
 'use client';
 
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { Badge } from '@/shared/components/uiux/Badge';
 import {
   Dialog,
   DialogClose,
@@ -18,30 +20,28 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Input } from '@/shared/components/uiux/Input';
+import { Input } from '@uiux/Input';
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
 
 import '@/shared/lib/agGridPub';
 
 type DummyDataType1 = {
   id: number;
-  field01: string | number;
+  field01: string;
   field02: string | number;
 };
 
 type DummyDataType2 = {
   id: number;
-  field01: string | number;
-  field02: string | number;
+  field01: string;
 };
 
 type DummyDataType3 = {
   id: number;
-  field01: string | number;
-  field02: string | number;
+  field01: string;
+  field02: string;
 };
 
 const DummyData1: DummyDataType1[] = [
@@ -126,27 +126,22 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 1,
     field01: '보험료납입면제대상보장(8대사유Ⅱ)',
-    field02: '10000',
   },
   {
     id: 2,
     field01: '보장 보험료50% 납입지원Ⅱ(4대유사암)',
-    field02: '10000',
   },
   {
     id: 3,
     field01: '상해사망(체증형)',
-    field02: '10000',
   },
   {
     id: 4,
     field01: '상해사망추가',
-    field02: '10000',
   },
   {
     id: 5,
     field01: '보장보험료50%납입지원Ⅱ(4대유사암)',
-    field02: '10000',
   },
 ];
 
@@ -154,37 +149,37 @@ const DummyData3: DummyDataType3[] = [
   {
     id: 1,
     field01: '보험료납입면제대상보장(8대사유Ⅱ)',
-    field02: '10000',
+    field02: '5년 0개월',
   },
   {
     id: 2,
     field01: '보장 보험료50% 납입지원Ⅱ(4대유사암)',
-    field02: '10000',
+    field02: '5년 0개월',
   },
   {
     id: 3,
     field01: '상해사망(체증형)',
-    field02: '10000',
+    field02: '5년 0개월',
   },
   {
     id: 4,
     field01: '상해사망추가',
-    field02: '10000',
+    field02: '5년 0개월',
   },
   {
     id: 5,
     field01: '보장보험료50%납입지원Ⅱ(4대유사암)',
-    field02: '10000',
+    field02: '5년 0개월',
   },
   {
     id: 6,
     field01: '상해사망(체증형)6',
-    field02: '10000',
+    field02: '5년 0개월',
   },
   {
     id: 7,
     field01: '상해사망추가7',
-    field02: '10000',
+    field02: '5년 0개월',
   },
 ];
 
@@ -213,34 +208,27 @@ const Ltpz100 = () => {
 
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
-      headerName: '제한 담보명',
+      headerName: '담보명',
       field: 'field01',
       flex: 1,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field01' }),
     },
-    {
-      headerName: '가입금액(원)',
-      field: 'field02',
-      width: 90,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
   ];
 
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
-      headerName: '제한 담보명',
+      headerName: '부담보부위명',
       field: 'field01',
       flex: 1,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field01' }),
     },
     {
-      headerName: '가입금액(원)',
+      headerName: '기간',
       field: 'field02',
       width: 90,
-      cellClass: 'text-right',
+      cellClass: 'text-center',
       valueFormatter: numberValueFormatter,
     },
   ];
@@ -262,7 +250,7 @@ const Ltpz100 = () => {
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable caption="심사결과" variant="head">
               <FormRow>
-                <FormCell title={'심사결과'}> 
+                <FormCell title={'심사결과'}>
                   <Input value={'특별조건부인수'} variant="info" readOnly />
                 </FormCell>
               </FormRow>
@@ -352,6 +340,7 @@ const Ltpz100 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

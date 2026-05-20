@@ -346,9 +346,9 @@ const Ltpz00504 = () => {
                 title="제한담보"
                 className="w-full gap-1 flex [&>[role='button']]:shrink-0! *:data-[group='row']:w-full!"
               >
-                <Grow placement="bwe" className="w-full">
-                  <Badge>15개</Badge>
-                  <Button size={'sm'}>설계반영</Button>
+                <Grow placement="bwc" className="w-full">
+                  <Badge color="primary">15개</Badge>
+                  <Button size={'md'}>설계반영</Button>
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
@@ -382,7 +382,7 @@ const Ltpz00504 = () => {
             </TableFold>
             <TableFold>
               <TableFoldHead title="보험료 할증" className="justify-start">
-                <Badge>15개</Badge>
+                <Badge color="primary">15개</Badge>
               </TableFoldHead>
               <TableFoldBody>
                 {/* 보험료 할증 */}
@@ -415,7 +415,7 @@ const Ltpz00504 = () => {
             </TableFold>
             <TableFold>
               <TableFoldHead title="부 담보(부위/질병)" className="justify-start">
-                <Badge>15개</Badge>
+                <Badge color="primary">15개</Badge>
               </TableFoldHead>
               <TableFoldBody>
                 {/* 부 담보(부위/질병) */}

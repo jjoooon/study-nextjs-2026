@@ -117,7 +117,7 @@ const Ltpz023 = () => {
               </TableHeader>
               <TableBody>
                 {keywords.map((keyword, i) => (
-                  <TableRow key={i}>
+                  <TableRow key={i} className={selectedIdx === i ? '[&>td]:bg-[var(--color-primary-10)]' : ''}>
                     <TableCell className="text-center align-middle">
                       <label className="inline-flex cursor-pointer items-center justify-center w-full h-full">
                         <input
@@ -147,7 +147,6 @@ const Ltpz023 = () => {
                         variant="default"
                         width={220}
                         onFocus={() => setSelectedIdx(i)}
-                        className={selectedIdx === i ? 'ring-2 ring-primary-500' : ''}
                         placeholder="최대 한글 6자"
                         clear
                       />
