@@ -95,7 +95,7 @@ function NormalRecommendCardItem({
             {variant === 'checkbox' ? (
               <Checkbox
                 checked={isChecked}
-                className={`absolute right-0 size-[2.4rem]`}
+                className={`absolute right-0`}
                 color="primary"
                 onCheckedChange={(nextChecked) => {
                   const nextValue = nextChecked === true;

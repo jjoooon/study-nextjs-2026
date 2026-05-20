@@ -120,7 +120,7 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
 
           <Grid className="w-full grid-cols-[auto_1fr] h-full" gap={0}>
             <Grid
-              className="w-[6.4rem] grid-rows-[1fr_1fr_1fr_1fr] h-full max-h-[44rem] mr-[-0.1rem] place-self-start"
+              className="w-[6.4rem] grid-rows-[1fr_1fr_1fr_1fr] pb-[0.8rem] h-full max-h-[44rem] mr-[-0.1rem] place-self-start"
               gap={0}
             >
               {tabs.map((tab, index) => {

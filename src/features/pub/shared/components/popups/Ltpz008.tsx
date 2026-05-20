@@ -190,6 +190,7 @@ const Ltpz008 = () => {
                 </FormCell>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="" width={130} value={'LA123123123123'} readOnly />
+                  -
                   <Input aria-label="" width={30} value={'1'} readOnly />
                 </FormCell>
               </FormRow>
@@ -298,7 +299,7 @@ const Ltpz008 = () => {
                 초기화
               </Button>
               <Button variant={'contained'} size={'xl'}>
-                확인
+                저장
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
