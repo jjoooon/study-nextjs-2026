@@ -70,7 +70,9 @@ const Ltpz023 = () => {
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow variant="box-round" placement={'ss'} className="w-full">
             <Input placeholder="키워드 입력(최대 한글 6자)" />
-            <Button color="coolgray">추가</Button>
+            <Button size={'lg'} color="coolgray">
+              추가
+            </Button>
           </Grow>
           <Gcol>
             <Grow className="flex" placement="bwc">
@@ -82,21 +84,21 @@ const Ltpz023 = () => {
                   color="gray-light"
                   onClick={moveUp}
                   only="icon"
-                  size="sm"
+                  size="md"
                   variant="outlined"
                   disabled={selectedIdx === null || selectedIdx === 0}
                 >
-                  <ArrowIcon className="rotate-90" color={'#FF5C2E'} size={13} />
+                  <ArrowIcon className="rotate-90" color={'#FF5C2E'} size={14} />
                 </Button>
                 <Button
                   color="gray-light"
                   onClick={moveDown}
                   only="icon"
-                  size="sm"
+                  size="md"
                   variant="outlined"
                   disabled={selectedIdx === null || selectedIdx === keywords.length - 1}
                 >
-                  <ArrowIcon className="-rotate-90" color={'#FF5C2E'} size={13} />
+                  <ArrowIcon className="-rotate-90" color={'#FF5C2E'} size={14} />
                 </Button>
               </Grow>
             </Grow>
