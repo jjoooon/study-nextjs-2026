@@ -707,7 +707,7 @@ export default function Ltpa240Section() {
             <Gcol className="w-full">
               <Gcol className="s-full" variant={'box-info'} placement="ss">
                 <Typo variant={'body-sm'} icon={'info'}>
-                  회사별 가입현황 정보는 "내보험다보여(https://ins.credit4u.or.kr/showAll/main.do)"서비스를 통해 신용정보주체가 직접 조회 가능(본인인증 필요)
+                  회사별 가입현황 정보는 &quot;내보험다보여(https://ins.credit4u.or.kr/showAll/main.do)&quot; 서비스를 통해 신용정보주체가 직접 조회 가능(본인인증 필요)
                 </Typo>
                 <Typo variant={'body-sm'} icon={'info'}>
                   당사계약 및 타사 해약시 <b>①실시간 반영 되지 않으며(익일반영)/②설계 중인 정보는 포함되지 않음</b>에 유의 필요

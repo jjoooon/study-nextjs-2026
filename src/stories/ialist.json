@@ -3048,7 +3048,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPA560",
-    "path": "ispl/isplBsnsSupt",
+    "path": "ispl/isplBsnsSupt/components/popups",
     "dep4": "실시간 설계현황",
     "file": "실시간 설계현황",
     "plan": "안성희",
@@ -3084,7 +3084,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPZ035",
-    "path": "",
+    "path": "ispl/isplBsnsSupt/components/popups",
     "dep4": "가입설계",
     "file": "담보그룹_보장패키지_설계추천속성 관리",
     "plan": "안성희",
@@ -3094,7 +3094,7 @@
     "date": "",
     "modify": "",
     "subId": "",
-    "phase": "",
+    "phase": "Y",
     "popup": "팝업"
   }
 ]
