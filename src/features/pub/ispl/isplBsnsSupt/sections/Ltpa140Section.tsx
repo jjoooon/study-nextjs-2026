@@ -3,25 +3,30 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { PageID } from '@features/PageID';
 
+import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 
 import '@/shared/lib/agGridPub';
-
 // dummy data
 type DummyDataType = {
   id: number;
@@ -42,47 +47,47 @@ type DummyDataType = {
   field15: string | number;
   field16: string | number;
   field17: string | number;
+  field18: string | number;
+  field19: string | number;
+  field20: string | number;
+  field21: string | number;
+  field22: string | number;
+  field23: string | number;
+  field24: string | number;
+  field25: string | number;
+  field26: string | number;
+  field27: string | number;
 };
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),',
-    field02: '2026-03-01',
-    field03: '2027-07-01',
-    field04: '9999999',
-    field05: '9999999',
-    field06: '9999999',
-    field07: '9999999',
-    field08: '9999999',
-    field09: '9999999',
-    field10: '정상',
-    field11: '2026-03-01',
-    field12: '입원의료비',
-    field13: '사고당 365일 한',
-    field14: '급여 90%',
-    field15: '50% 보상(일)',
-    field16: '담보총액공제(입원)',
-    field17: '50%',
-  },
-  {
-    id: 2,
-    field01: '상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),',
-    field02: '2026-03-01',
-    field03: '2027-07-01',
-    field04: '9999999',
-    field05: '9999999',
-    field06: '9999999',
-    field07: '9999999',
-    field08: '9999999',
-    field09: '9999999',
-    field10: '정상',
-    field11: '2026-03-01',
-    field12: '입원의료비',
-    field13: '사고당 365일 한',
-    field14: '급여 90%',
-    field15: '50% 보상(일)',
-    field16: '담보총액공제(입원)',
-    field17: '50%',
+    field01: 'YYYY-MM-DD',
+    field02: 'LA2414313',
+    field03: 'TEXT',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: '2A',
+    field07: 'TEXT',
+    field08: 'YYYY-MM-DD',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD',
+    field11: 'TEXT',
+    field12: 'TEXT',
+    field13: 'TEXT',
+    field14: 'YYYY-MM-DD',
+    field15: 'TEXT',
+    field16: 'TEXT',
+    field17: '김한화',
+    field18: 'YYYY-MM-DD',
+    field19: '김한화',
+    field20: 'YYYY-MM-DD',
+    field21: '관계순번',
+    field22: 'TEXT',
+    field23: '김한화',
+    field24: '김한화',
+    field25: '김한화',
+    field26: 'TEXT',
+    field27: 'TEXT',
   },
 ];
 
@@ -90,228 +95,198 @@ export default function Ltpa140Section() {
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
-      headerName: '',
-      field: 'id',
-      width: 40,
-      cellClass: 'text-center',
+      headerName: '전문개시일',
       autoHeight: true,
-    },
-    {
-      headerName: '보장내용',
-      field: 'field01',
-      flex: 1,
-      cellClass: 'text-left',
-      autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        const val = String(params.value ?? '');
-        return (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="truncate-no px-1">{val}</div>
-            </TooltipTrigger>
-            <TooltipContent side="top" hideArrow>
-              {val}
-            </TooltipContent>
-          </Tooltip>
-        );
-      },
-    },
-    {
-      headerName: '담보보장기간',
-      cellClass: 'text-center',
       children: [
         {
-          headerName: '시기',
-          cellClass: 'text-center',
-          field: 'field02',
+          headerName: '상품코드',
+          width: 100,
+          cellClass: 'text-center px-0!',
           autoHeight: true,
-          width: 80,
-        },
-        {
-          headerName: '종기',
-          cellClass: 'text-center',
-          field: 'field03',
-          autoHeight: true,
-          width: 80,
+          cellRenderer: createFieldRenderer<DummyDataType>('field01', 'field02'),
         },
       ],
     },
     {
-      headerName: '가입금액',
+      headerName: '전문번호',
+      autoHeight: true,
       children: [
         {
-          headerName: '(단위:천원)',
-          cellClass: 'text-right',
-          field: 'field04',
-          width: 80,
+          headerName: '의료비보종',
+          width: 100,
+          cellClass: 'text-center px-0!',
           autoHeight: true,
-          valueFormatter: numberValueFormatter<DummyDataType>,
+          cellRenderer: createFieldRenderer<DummyDataType>('field03', 'field04'),
         },
       ],
     },
     {
-      headerName: '공제금액(단위:천원)',
+      headerName: '전송순번',
+      autoHeight: true,
       children: [
         {
-          headerName: '의원',
-          width: 80,
-          cellClass: 'text-right',
-          field: 'field05',
+          headerName: '상해급수',
+          width: 100,
+          cellClass: 'text-center px-0!',
           autoHeight: true,
-          valueFormatter: numberValueFormatter<DummyDataType>,
-        },
-        {
-          headerName: '병원',
-          width: 80,
-          cellClass: 'text-right',
-          field: 'field06',
-          autoHeight: true,
-          valueFormatter: numberValueFormatter<DummyDataType>,
-        },
-        {
-          headerName: '요양기관',
-          width: 80,
-          cellClass: 'text-right',
-          field: 'field07',
-          autoHeight: true,
-          valueFormatter: numberValueFormatter<DummyDataType>,
-        },
-        {
-          headerName: '약제비',
-          width: 80,
-          cellClass: 'text-right',
-          field: 'field08',
-          autoHeight: true,
-          valueFormatter: numberValueFormatter<DummyDataType>,
-        },
-        {
-          headerName: '구공체',
-          width: 80,
-          cellClass: 'text-right',
-          field: 'field09',
-          autoHeight: true,
-          valueFormatter: numberValueFormatter<DummyDataType>,
+          cellRenderer: createFieldRenderer<DummyDataType>('field05', 'field06'),
         },
       ],
     },
     {
-      headerName: '보험상태',
-      cellClass: 'text-center',
-      width: 80,
-      field: 'field10',
+      headerName: '종별코드',
       autoHeight: true,
-    },
-    {
-      headerName: '상태변경일자',
-      cellClass: 'text-center',
-      field: 'field11',
-      width: 100,
-      autoHeight: true,
-    },
-    {
-      headerName: '담보특성',
       children: [
         {
-          headerName: '보상기간',
-          flex: 1,
-          cellClass: 'text-left px-0!',
+          headerName: '보험시기',
+          width: 100,
+          cellClass: 'text-center px-0!',
           autoHeight: true,
-          cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-            const v1 = String(params.data?.field12 ?? '');
-            const v2 = String(params.data?.field13 ?? '');
+          cellRenderer: createFieldRenderer<DummyDataType>('field07', 'field08'),
+        },
+      ],
+    },
+    {
+      headerName: '세부코드',
+      autoHeight: true,
+      children: [
+        {
+          headerName: '보험종기',
+          width: 100,
+          cellClass: 'text-center px-0!',
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType>('field09', 'field10'),
+        },
+      ],
+    },
+    {
+      headerName: '등록구분',
+      autoHeight: true,
+      children: [
+        {
+          headerName: '배서번호',
+          width: 100,
+          cellClass: 'text-center px-0!',
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType>('field11', 'field12'),
+        },
+      ],
+    },
+    {
+      headerName: '응답코드',
+      cellClass: 'text-center',
+      autoHeight: true,
+      children: [
+        {
+          headerName: '배서기준일',
+          width: 100,
+          cellClass: 'text-center px-0!',
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType>('field13', 'field14'),
+        },
+      ],
+    },
+    {
+      headerName: '처리상태',
+      autoHeight: true,
+      children: [
+        {
+          headerName: '계약상태',
+          width: 100,
+          cellClass: 'text-center px-0!',
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType>('field15', 'field16'),
+        },
+      ],
+    },
+    {
+      headerName: '송신자',
+      autoHeight: true,
+      children: [
+        {
+          headerName: '상태변경일',
+          width: 100,
+          cellClass: 'text-center px-0!',
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType>('field17', 'field18'),
+        },
+      ],
+    },
+    {
+      headerName: '계약자명',
+      autoHeight: true,
+      children: [
+        {
+          headerName: '부활일자',
+          width: 100,
+          cellClass: 'text-center px-0!',
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType>('field19', 'field20'),
+        },
+      ],
+    },
+    {
+      headerName: '관계순번',
+      autoHeight: true,
+      children: [
+        {
+          headerName: '담보건수',
+          field: 'field22',
+          width: 100,
+          cellClass: 'text-center px-0!',
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType>('field21', 'field22'),
+        },
+      ],
+    },
+    {
+      headerName: '피보험자번호',
+      autoHeight: true,
+      children: [
+        {
+          headerName: '변경후피보험자',
+          field: 'field24',
+          width: 100,
+          cellClass: 'text-center px-0!',
+          autoHeight: true,
+          cellRenderer: createFieldRenderer<DummyDataType>('field23', 'field24'),
+        },
+      ],
+    },
+    {
+      headerName: '피보험자명',
+      autoHeight: true,
+      children: [
+        {
+          headerName: '피보험자명',
+          field: 'field25',
+          width: 100,
+          cellClass: 'text-center px-0!',
+          autoHeight: true,
+          colSpan: () => 2,
+          cellRenderer: (params: { data?: DummyDataType }) => {
+            const field25 = String(params.data?.field25 ?? '');
+            const field26 = String(params.data?.field26 ?? '');
+            const field27 = String(params.data?.field27 ?? '');
+
             return (
-              <Grid className="w-full grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{v1}</div>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" hideArrow>
-                    {v1}
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{v2}</div>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" hideArrow>
-                    {v2}
-                  </TooltipContent>
-                </Tooltip>
-              </Grid>
+              <div className="grid h-full w-full grid-rows-[1fr_1fr]">
+                <div className="flex items-center justify-center truncate-no px-1">{field25}</div>
+                <div className="grid grid-cols-2 divide-x divide-gray-200 border-t border-gray-200">
+                  <div className="flex items-center justify-center truncate-no px-1">{field26}</div>
+                  <div className="flex items-center justify-center truncate-no px-1">{field27}</div>
+                </div>
+              </div>
             );
           },
         },
-      ],
-    },
-    {
-      headerName: '자가부담비율',
-      cellClass: 'text-center',
-      children: [
         {
-          headerName: '병실차액',
-          flex: 1,
-          cellClass: 'text-left px-0!',
+          headerName: '유효',
+          field: 'field27',
+          width: 100,
+          cellClass: 'text-center px-0!',
           autoHeight: true,
-          cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-            const v1 = String(params.data?.field14 ?? '');
-            const v2 = String(params.data?.field15 ?? '');
-            return (
-              <Grid className="w-full grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{v1}</div>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" hideArrow>
-                    {v1}
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{v2}</div>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" hideArrow>
-                    {v2}
-                  </TooltipContent>
-                </Tooltip>
-              </Grid>
-            );
-          },
-        },
-      ],
-    },
-    {
-      headerName: '공제금액기준',
-      cellClass: 'text-center',
-      children: [
-        {
-          headerName: '보험미적용보상',
-          flex: 1,
-          cellClass: 'text-left px-0!',
-          autoHeight: true,
-          cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-            const v1 = String(params.data?.field16 ?? '');
-            const v2 = String(params.data?.field17 ?? '');
-            return (
-              <Grid className="w-full grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{v1}</div>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" hideArrow>
-                    {v1}
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{v2}</div>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" hideArrow>
-                    {v2}
-                  </TooltipContent>
-                </Tooltip>
-              </Grid>
-            );
-          },
+          colSpan: () => 0,
         },
       ],
     },
@@ -322,8 +297,8 @@ export default function Ltpa140Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '장기신계약발급물일괄생성',
-            pageId: 'LTPA250',
+            pageName: '실손특약증권별등록',
+            pageId: 'LTPA140',
           }}
         />
       </LayoutHead>
@@ -331,20 +306,40 @@ export default function Ltpa140Section() {
         mainBody={
           <Grid className="grid-rows-[auto_1fr]" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
-              <FormTable
-                variant={'head'}
-                caption="장기신계약발급물일괄생성 테이블"
-                cols={['w-1', 'w-auto', 'w-1', 'w-auto']}
-              >
+              <FormTable variant={'head'} caption="실손특약증권별등록 테이블" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'주민번호'}>
-                    <Input className="text-[1.3rem]" value={'김한화(900101-1******)'} readOnly variant="info" />
+                  <FormCell title={'증권번호'}>
+                    <Input value={'LA2414313498143'} required />
                   </FormCell>
-                  <FormCell title={'담보건수'}>
-                    <Input className="text-[1.3rem]" value={'32건'} readOnly variant="info" />
+                  <FormCell title={'유효여부'}>
+                    <RadioGroup className="gap-1" onValueChange={() => {}} width="full">
+                      {[
+                        { value: '전체', label: '전체' },
+                        { value: '유효', label: '유효' },
+                      ].map((option) => (
+                        <RadioGroupItem key={option.value} value={option.value} size="lg">
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}
+                    </RadioGroup>
                   </FormCell>
                 </FormRow>
               </FormTable>
+              <Grow>
+                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                  조회
+                </Button>
+                <Button
+                  color={'gray'}
+                  only={'icon'}
+                  size={'lg'}
+                  variant={'outlined'}
+                  onClick={() => {}}
+                  aria-label="새로고침"
+                >
+                  <ResetIcon />
+                </Button>
+              </Grow>
             </Grow>
             <Gcol className="w-full" gap={1}>
               <div className="ag-theme-alpine min-h-150">
@@ -353,12 +348,103 @@ export default function Ltpa140Section() {
                   rowData={DummyData}
                   columnDefs={columnDefs}
                   domLayout="normal"
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
                 />
               </div>
             </Gcol>
+            <TableFold variant="accordion">
+              <TableFoldHead title="등록추가정보"></TableFoldHead>
+              <TableFoldBody>
+                <FormTable
+                  caption="등록추가정보 테이블"
+                  cols={['w-[10%]', 'w-[15%]', 'w-[10%]', 'w-[15%]', 'w-[10%]', 'w-[40%]']}
+                  lineTop
+                >
+                  <FormRow>
+                    <FormCell className="" title={'처리구분'} variant="default">
+                      <NativeSelect
+                        error
+                        errorMsg="처리구분코드를 선택해 주세요."
+                        errorPs="tl"
+                        aria-label="처리구분"
+                        value={''}
+                        onChange={() => {}}
+                      >
+                        {[
+                          { value: 'selection0401', label: '선택1' },
+                          { value: 'selection0402', label: '선택2' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                    </FormCell>
+                    <FormCell title="신용정보제공구분">
+                      <NativeSelect
+                        error
+                        errorMsg="신용정보제공구분을 선택해 주세요."
+                        errorPs="tl"
+                        aria-label="처리구분"
+                        value={''}
+                        onChange={() => {}}
+                      >
+                        {[
+                          { value: 'selection0401', label: '선택1' },
+                          { value: 'selection0402', label: '선택2' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                    </FormCell>
+                    <FormCell title="신용정보제공구분">
+                      <Grow placement="bwc">
+                        <Grow>
+                          <Input
+                            aria-label="주민등록번호 마스킹"
+                            width={120}
+                            value={''}
+                            placeholder={'______-_______'}
+                            error
+                            errorMsg="주민등록번호를 입력해주세요."
+                            errorPs="tl"
+                          />
+                          <Button
+                            aria-label="피보험자 검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                          <Input aria-label="피보험자 나이" width={100} value={'김한화'} readOnly />
+                        </Grow>
+                        <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}}>
+                          전송전삭제처리
+                        </Checkbox>
+                      </Grow>
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+              </TableFoldBody>
+            </TableFold>
           </Grid>
+        }
+        mainFoot={
+          <MainBottom>
+            <MainBottomItem className="justify-end">
+              <Grow gap={1}>
+                <Button form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
+                  삭제
+                </Button>
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                  등록
+                </Button>
+              </Grow>
+            </MainBottomItem>
+          </MainBottom>
         }
       />
       <LayoutFoot>
