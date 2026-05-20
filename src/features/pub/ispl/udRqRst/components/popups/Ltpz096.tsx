@@ -8,8 +8,7 @@ import { Grow, Typo, Gcol, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
-import { Textarea } from '@uiux/Textarea';
-import { Badge } from '@/shared/components/uiux/Badge';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -20,16 +19,16 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Input } from '@/shared/components/uiux/Input';
+import { Textarea } from '@uiux/Textarea';
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
 
 import '@/shared/lib/agGridPub';
-import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { useState } from 'react';
-
+import { Badge } from '@/shared/components/uiux/Badge';
+import { Input } from '@/shared/components/uiux/Input';
 
 type DummyDataType1 = {
   id: number;
@@ -273,7 +272,10 @@ const Ltpz096 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Textarea value="[시스템심사 : 보완요청] - 대장직장용종 : [수술無_불가] 고지해당 안되는 유형으로 변경바랍니다.(질병 및 상해 전담보)" readOnly />
+          <Textarea
+            value="[시스템심사 : 보완요청] - 대장직장용종 : [수술無_불가] 고지해당 안되는 유형으로 변경바랍니다.(질병 및 상해 전담보)"
+            readOnly
+          />
           <Grid className="grid-rows-[1fr_auto]" gap={2}>
             <TableFold variant="default">
               <TableFoldHead title="질병고지" />

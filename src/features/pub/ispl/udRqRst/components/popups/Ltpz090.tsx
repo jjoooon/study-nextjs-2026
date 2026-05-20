@@ -7,8 +7,6 @@ import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import { Textarea } from '@uiux/Textarea';
-import { TableFold, TableFoldHead, TableFoldBody } from '@/shared/components/common/TableFold';
 import {
   Dialog,
   DialogClose,
@@ -19,9 +17,11 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Textarea } from '@uiux/Textarea';
 import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { TableFold, TableFoldHead, TableFoldBody } from '@/shared/components/common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -135,9 +135,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-
 const Ltpz090 = () => {
-
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   // AgGrid Column

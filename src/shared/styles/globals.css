@@ -570,7 +570,7 @@
     font-size: 1.3rem;
     color: #000;
     opacity: 0.2;
-    letter-spacing: -0.039rem;
+    letter-spacing: -0.03rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -607,7 +607,7 @@
   .ag-picker-field-display,
   input,
   select {
-    letter-spacing: -0.08rem !important;
+    letter-spacing: -0.02rem !important;
   }
 
   [data-layout="doc"] {

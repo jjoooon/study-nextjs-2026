@@ -6,10 +6,9 @@
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Grid, Gcol, Grow, Typo, Divider } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Button } from '@uiux/Button';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { Button } from '@uiux/Button';
 import {
   Dialog,
   DialogClose,
@@ -23,9 +22,10 @@ import {
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import '@/shared/lib/agGridPub';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { Badge } from '@/shared/components/uiux/Badge';
+import { useTabs } from '@/shared/hooks/useTabs';
 type Ltpz026TabType = {
   name: string;
   value: string;
@@ -244,7 +244,8 @@ const DummyData: DummyDataType[] = [
     field07: 'N',
     field08: '고지',
     field09: '',
-  },{
+  },
+  {
     id: 10,
     isChecked: false,
     field01: 'M51',
@@ -430,7 +431,6 @@ const DummyDataT3: DummyDataTypeT3[] = [
 ];
 
 const Ltpz026 = () => {
-
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대표질병코드',
@@ -549,7 +549,7 @@ const Ltpz026 = () => {
   const [rowDataT3] = React.useState<DummyDataTypeT3[]>(DummyDataT3);
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-  
+
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="full">
@@ -583,9 +583,7 @@ const Ltpz026 = () => {
                 key={String(tab.value)}
                 onClick={() => {
                   setActiveTab(String(tab.value));
-                  const currentIndex = data.findIndex(
-                    (currentTab) => String(currentTab.value) === String(tab.value)
-                  );
+                  const currentIndex = data.findIndex((currentTab) => String(currentTab.value) === String(tab.value));
                   if (currentIndex !== -1) {
                     const page = Math.floor(currentIndex / visibleCount);
                     setVisibleStart(page * visibleCount);
@@ -604,8 +602,13 @@ const Ltpz026 = () => {
                       고지콕콕 안내대상
                     </Typo>
                     <Divider />
-                    <Badge color="green" variant="contained"> Y</Badge>
-                    <Typo tag={'p'} variant={'body-sm'} color={'gray'}>안내 비대상 상품입니다.</Typo>
+                    <Badge color="green" variant="contained">
+                      {' '}
+                      Y
+                    </Badge>
+                    <Typo tag={'p'} variant={'body-sm'} color={'gray'}>
+                      안내 비대상 상품입니다.
+                    </Typo>
                   </Grow>
                   <div className="ag-theme-alpine min-h-[15.7rem]">
                     <AgGridReact<DummyDataType>
@@ -652,7 +655,9 @@ const Ltpz026 = () => {
                     <Grid gap={3} className="w-full grid-cols-[1fr_1fr_1fr] min-h-[20.7rem]">
                       <Grid className="grid-rows-[auto_1fr]">
                         <Grow placement="sc">
-                          <Typo tag={'strong'} variant={'body-xs'} icon={'dotBig'} weight={'bold'} color={'default'}>제한 담보</Typo>
+                          <Typo tag={'strong'} variant={'body-xs'} icon={'dotBig'} weight={'bold'} color={'default'}>
+                            제한 담보
+                          </Typo>
                           <Badge color="primary" variant="contained">
                             {rowDataT1.length}개
                           </Badge>
@@ -729,8 +734,12 @@ const Ltpz026 = () => {
                       <BulletListItem size={'sm'} type={'dotBig'}>
                         <b>설계반영 클릭시 자동 처리됩니다. 이외의 사항은 심사요청이후 재확인바랍니다.</b>
                       </BulletListItem>
-                      <BulletListItem size={'sm'} type={'dotBig'}>고지필요대상 : 알릴 사항 자동입력</BulletListItem>
-                      <BulletListItem size={'sm'} type={'dotBig'}>제한담보 : 일괄조정 & 연관담보 동시 조정</BulletListItem>
+                      <BulletListItem size={'sm'} type={'dotBig'}>
+                        고지필요대상 : 알릴 사항 자동입력
+                      </BulletListItem>
+                      <BulletListItem size={'sm'} type={'dotBig'}>
+                        제한담보 : 일괄조정 & 연관담보 동시 조정
+                      </BulletListItem>
                     </BulletList>
                   </Gcol>
                 </Grid>
@@ -739,8 +748,7 @@ const Ltpz026 = () => {
               <Grid placement="ss" className="w-full h-full" gap={3}>
                 <TableFold>
                   <TableFoldHead title="" />
-                  <TableFoldBody>
-                  </TableFoldBody>
+                  <TableFoldBody></TableFoldBody>
                 </TableFold>
               </Grid>
             )}

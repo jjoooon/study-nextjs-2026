@@ -664,7 +664,7 @@ export function Ltpa02001() {
 
       <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
         <Button variant={'outlined'} color={'gray'} size={'xl'}>
-          <AiIcon size={24} className="" />
+          <AiIcon size={24} color={'#006FF2'} color2={'#A683FF'} />
           추천설계
         </Button>
         <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>

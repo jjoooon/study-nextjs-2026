@@ -605,7 +605,7 @@ export function Ltpa35004() {
                           진단/적부이력
                         </Button>
                         <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                          외부심사결과지요청$
+                          외부심사결과지요청
                         </Button>
                         <Button variant={'outlined'} color={'gray'} size={'xl'}>
                           진단적부예외

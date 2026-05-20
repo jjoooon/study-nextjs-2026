@@ -287,9 +287,9 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
       </Gcol>
 
       {/* 요청자 의견 */}
-      <Gcol className="shrink-0 w-full h-[13.2rem] py-2.5 px-3 bg-[var(--color-gray-15)] border-t-1 border-[var(--color-gray-20)]">
+      <Gcol className="shrink-0 w-full h-[13.2rem] py-2.5 px-3 bg-[var(--color-gray-5)] border border-[var(--color-gray-15)] rounded-b-[0.8rem]">
         <Grow placement="bwc">
-          <b className="text-[1.1rem]">요청자 의견</b>
+          <b className="text-[1.3rem]">요청자 의견</b>
           <Button>심사요청</Button>
         </Grow>
         <Textarea
