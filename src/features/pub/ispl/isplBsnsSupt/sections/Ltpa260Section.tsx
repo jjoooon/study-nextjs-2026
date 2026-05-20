@@ -6,13 +6,13 @@
 import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
+import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { PageID } from '@features/PageID';
 import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { DatePickerInput } from '@common/DatePicker';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
@@ -87,132 +87,131 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-
 export default function Ltpa260Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  
+
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
-      () => [
-    {
-      headerName: '',
-      field: 'field01',
-      width: 50,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '회사명',
-      cellClass: 'text-center',
-      children: [
-        {
-          headerName: '보험종목',
-          field: 'field03',
-          width: 170,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>('field02', 'field03'),
+    () => [
+      {
+        headerName: '',
+        field: 'field01',
+        width: 50,
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '회사명',
+        cellClass: 'text-center',
+        children: [
+          {
+            headerName: '보험종목',
+            field: 'field03',
+            width: 170,
+            cellClass: 'text-center px-0!',
+            autoHeight: true,
+            cellRenderer: createFieldRenderer<DummyDataType>('field02', 'field03'),
+          },
+        ],
+      },
+      {
+        headerName: '',
+        field: 'field05',
+        width: 360,
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+        headerComponent: () => {
+          return (
+            <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
+              <Grow placement="cc" className="w-full border-b px-2 border-(--color-gray-10)">
+                증권번호
+              </Grow>
+              <Grow placement="cc" className="w-full px-2 border-l border-b border-(--color-gray-10)">
+                담보건수
+              </Grow>
+              <Grow placement="cc" className="col-span-2 w-full px-2 justify-center">
+                상품명
+              </Grow>
+            </Grid>
+          );
         },
-      ],
-    },
-    {
-      headerName: '',
-      field: 'field05',
-      width: 360,
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-      headerComponent: () => {
-        return (
-          <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
-            <Grow placement="cc" className="w-full border-b px-2 border-(--color-gray-10)">
-              증권번호
-            </Grow>
-            <Grow placement="cc" className="w-full px-2 border-l border-b border-(--color-gray-10)">
-              담보건수
-            </Grow>
-            <Grow placement="cc" className="col-span-2 w-full px-2 justify-center">
-              상품명
-            </Grow>
-          </Grid>
-        );
-      },
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        return (
-          <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
-            <Grow placement="cc" className="w-full border-b px-2 border-(--color-gray-10)">
-              {String(params.data?.field04 ?? '')}
-            </Grow>
-            <Grow placement="cc" className="w-full px-2 border-l border-b border-(--color-gray-10)">
-              {String(params.data?.field06 ?? '')}
-            </Grow>
-            <Grow placement="cc" className="col-span-2 w-full px-2 justify-start">
-              {String(params.data?.field05 ?? '')}
-            </Grow>
-          </Grid>
-        );
-      },
-    },
-    {
-      headerName: '피보험자명',
-      cellClass: 'text-center',
-      autoHeight: true,
-      children: [
-        {
-          headerName: '상해급수',
-          field: 'field08',
-          flex: 1,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>('field07', 'field08'),
+        cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+          return (
+            <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
+              <Grow placement="cc" className="w-full border-b px-2 border-(--color-gray-10)">
+                {String(params.data?.field04 ?? '')}
+              </Grow>
+              <Grow placement="cc" className="w-full px-2 border-l border-b border-(--color-gray-10)">
+                {String(params.data?.field06 ?? '')}
+              </Grow>
+              <Grow placement="cc" className="col-span-2 w-full px-2 justify-start">
+                {String(params.data?.field05 ?? '')}
+              </Grow>
+            </Grid>
+          );
         },
-      ],
-    },
-    {
-      headerName: '보장기간',
-      field: 'field09',
-      width: 360,
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-      headerComponent: () => {
-        return (
-          <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
-            <Grow placement="cc" className="col-span-2 w-full px-2 justify-center">
-              보장기간
-            </Grow>
-            <Grow placement="cc" className="w-full h-full border-t px-2 border-(--color-gray-10)">
-              시기
-            </Grow>
-            <Grow placement="cc" className="w-full h-full px-2 border-l border-t border-(--color-gray-10)">
-              종기
-            </Grow>
-          </Grid>
-        );
       },
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        return (
-          <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
-            <Grow placement="cc" className="col-span-2 w-full px-2 justify-center">
-              {String(params.data?.field09 ?? '')}
-            </Grow>
-            <Grow placement="cc" className="w-full h-full border-t px-2 border-(--color-gray-10)">
-              {String(params.data?.field10 ?? '')}
-            </Grow>
-            <Grow placement="cc" className="w-full px-2 border-l border-t border-(--color-gray-10)">
-              {String(params.data?.field11 ?? '')}
-            </Grow>
-          </Grid>
-        );
+      {
+        headerName: '피보험자명',
+        cellClass: 'text-center',
+        autoHeight: true,
+        children: [
+          {
+            headerName: '상해급수',
+            field: 'field08',
+            flex: 1,
+            cellClass: 'text-center px-0!',
+            autoHeight: true,
+            cellRenderer: createFieldRenderer<DummyDataType>('field07', 'field08'),
+          },
+        ],
       },
-    },
-    {
-      headerName: '계약상태',
-      field: 'field12',
-      width: 120,
-      cellClass: 'text-center flex! items-center justify-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => String(params.data?.field12 ?? ''),
-    },
-  ],
-  [attributeColumnWidth]
-);
+      {
+        headerName: '보장기간',
+        field: 'field09',
+        width: 360,
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+        headerComponent: () => {
+          return (
+            <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
+              <Grow placement="cc" className="col-span-2 w-full px-2 justify-center">
+                보장기간
+              </Grow>
+              <Grow placement="cc" className="w-full h-full border-t px-2 border-(--color-gray-10)">
+                시기
+              </Grow>
+              <Grow placement="cc" className="w-full h-full px-2 border-l border-t border-(--color-gray-10)">
+                종기
+              </Grow>
+            </Grid>
+          );
+        },
+        cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+          return (
+            <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
+              <Grow placement="cc" className="col-span-2 w-full px-2 justify-center">
+                {String(params.data?.field09 ?? '')}
+              </Grow>
+              <Grow placement="cc" className="w-full h-full border-t px-2 border-(--color-gray-10)">
+                {String(params.data?.field10 ?? '')}
+              </Grow>
+              <Grow placement="cc" className="w-full px-2 border-l border-t border-(--color-gray-10)">
+                {String(params.data?.field11 ?? '')}
+              </Grow>
+            </Grid>
+          );
+        },
+      },
+      {
+        headerName: '계약상태',
+        field: 'field12',
+        width: 120,
+        cellClass: 'text-center flex! items-center justify-center',
+        cellRenderer: (params: ICellRendererParams<DummyDataType>) => String(params.data?.field12 ?? ''),
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
@@ -260,7 +259,7 @@ export default function Ltpa260Section() {
                 </Button>
               </Grow>
             </Grow>
-            <TableFold variant={'accordion'} >
+            <TableFold variant={'accordion'}>
               <TableFoldHead title="실손보상담보 총등록건수" />
               <TableFoldBody className="h-full">
                 <div className="ag-theme-alpine">

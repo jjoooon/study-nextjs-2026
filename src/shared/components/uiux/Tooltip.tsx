@@ -28,6 +28,7 @@ function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimiti
 function TooltipContent({
   className,
   variant = 'default',
+  hideArrow = false,
   sideOffset = 0,
   align,
   alignOffset,
@@ -35,6 +36,7 @@ function TooltipContent({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content> & {
   variant?: 'default' | 'dark' | 'light';
+  hideArrow?: boolean;
 }) {
   const variantStyles = {
     // 1. 외부 컨테이너 배경 및 텍스트 색상 수정
@@ -65,7 +67,7 @@ function TooltipContent({
         align={align}
         alignOffset={alignOffset ?? 0}
         className={cn(
-          'group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-[9999] w-auto rounded-[0.4rem] text-[1.2rem] leading-[1.45] text-balance max-w-[24rem] text-[var(--color-gray-70)] px-[1rem] py-[0.8rem]',
+          'group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-9999 w-auto rounded-[0.4rem] text-[1.2rem] leading-[1.45] text-balance max-w-[24rem] text-(--color-gray-70) px-[1rem] py-[0.8rem]',
           variantStyles[variant],
           className
         )}
@@ -73,29 +75,30 @@ function TooltipContent({
       >
         <div
           className={cn(
-            'p-0 relative z-51 whitespace-normal text-[var(--color-gray-70)] text-[1.2rem] text-wrap',
+            'p-0 relative z-51 whitespace-normal text-(--color-gray-70) text-[1.2rem] text-wrap',
             contentStyles[variant]
           )}
         >
           {typeof children === 'string' ? <span dangerouslySetInnerHTML={{ __html: children }} /> : children}
         </div>
-        {variant === 'default' || variant === 'light' ? (
-          <TooltipPrimitive.Arrow asChild>
-            <svg width="12" height="7" viewBox="0 0 12 7" style={{ overflow: 'visible' }}>
-              {/* 흰 fill을 y=-3까지 올려 box border 연결선을 덮음 */}
-              <polygon points="0,-1 6,7 12, -1" fill="#FFF" />
-              {/* 양쪽 사선만 stroke — 상단 가로선 없음 */}
-              <polyline points="0,0 6,7 12,0" fill="none" stroke="#CCC" strokeWidth="1" />
-            </svg>
-          </TooltipPrimitive.Arrow>
-        ) : (
-          <TooltipPrimitive.Arrow
-            className={cn(
-              'bg-foreground fill-foreground size-[0.9rem] translate-y-[calc(-50%-0.25rem)] rotate-45 rounded-[0.1rem] animate-none',
-              arrowStyles[variant]
-            )}
-          />
-        )}
+        {!hideArrow &&
+          (variant === 'default' || variant === 'light' ? (
+            <TooltipPrimitive.Arrow asChild>
+              <svg width="12" height="7" viewBox="0 0 12 7" style={{ overflow: 'visible' }}>
+                {/* 흰 fill을 y=-3까지 올려 box border 연결선을 덮음 */}
+                <polygon points="0,-1 6,7 12, -1" fill="#FFF" />
+                {/* 양쪽 사선만 stroke — 상단 가로선 없음 */}
+                <polyline points="0,0 6,7 12,0" fill="none" stroke="#CCC" strokeWidth="1" />
+              </svg>
+            </TooltipPrimitive.Arrow>
+          ) : (
+            <TooltipPrimitive.Arrow
+              className={cn(
+                'bg-foreground fill-foreground size-[0.9rem] translate-y-[calc(-50%-0.25rem)] rotate-45 rounded-[0.1rem] animate-none',
+                arrowStyles[variant]
+              )}
+            />
+          ))}
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );
