@@ -246,7 +246,7 @@ export const Divider = ({ className, variant = 'default', dir = 'col', color = '
   };
 
   return (
-    <hr
+    <span
       className={cn(
         'shrink-0 border-0 inline-block',
         variant === 'default' &&
@@ -254,7 +254,7 @@ export const Divider = ({ className, variant = 'default', dir = 'col', color = '
             ? `border-[${colorMap[color]}] h-[1rem] w-[0.1rem] border-l`
             : `border-[${colorMap[color]}] h-[0.1rem] w-[1rem] border-t`),
         variant === 'dot' &&
-          `relative w-[0.3rem] h-[100%] flex before:block  before:absolute  before:top-1/2 before:content-[''] before:w-[0.3rem] before:h-[0.3rem] 
+          `block relative w-[0.3rem] h-[100%] flex before:block  before:absolute  before:top-1/2 before:content-[''] before:w-[0.3rem] before:h-[0.3rem] before:shrink-0 
         before:rounded-full  before:bg-[#777]`,
         className
       )}

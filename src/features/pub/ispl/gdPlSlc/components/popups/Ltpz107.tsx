@@ -4,7 +4,6 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -105,7 +104,6 @@ const Ltpz107 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
-          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

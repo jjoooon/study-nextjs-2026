@@ -7,7 +7,6 @@ import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, AiIcon } from '@icons';
-import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -148,7 +147,7 @@ const dummyDataList: DummyDataListType[] = [
   {
     id: 2,
     field1: '한화 시그니처 여성 간편건강보험',
-    field2: ['납입면제형', '기본형', '23N5간편 고지형'],
+    field2: ['납입면제형납입면제형', '기본형', '23N5간편 고지형', '23N5간편 고지형'],
     field3: ['20년납', '100세만기'],
     field4: [
       {
@@ -766,130 +765,136 @@ export function Ltpa02002({
       ) : (
         <Grid className="w-full grid-rows-[1fr_auto]" gap={0}>
           <Grid
-            className="w-[calc(100vw + 2rem)]  h-full grid-rows-[1fr] grid-cols-[1fr_auto] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] after:content-[''] after:block after:absolute after:pointer-events-none after:bottom-[1.9rem] after:left-2 after:w-[calc(100%-46rem)] after:h-[3.4rem] after:bg-gradient-to-b after:from-transparent after:to-[#F4F4F4] after:z-10"
+            className="w-[calc(100vw + 2rem)] h-full grid-rows-[1fr] grid-cols-[2fr_1fr] min-[1600px]:grid-cols-[1fr_1fr] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
             gap={3}
           >
             {/* 리스트 */}
-            <div className="relative overflow-y-auto w-full h-full">
-              <Gcol
-                className="absolute top-0 left-0 w-full h-full after:content-[''] after:block after:w-full after:min-h-[1.6rem]"
-                gap={3}
-                placement="ss"
-              >
-                {dataList.map((item) => (
-                  <Grid
-                    key={item.id}
-                    className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]"
-                  >
-                    <Gcol gap={2} placement="ss">
-                      <Typo tag="h3" variant="heading-xl" className="break-keep">
-                        {item.field1}
-                      </Typo>
-                      <Grow variant="box-info" className="w-full" placement="ss">
-                        {item.field2.map((v, idx) => (
-                          <>
-                            {idx > 0 && <Divider variant="dot" color="gray-dark" />}
-                            <Typo key={idx} tag="p" variant="body-sm">
-                              {v}
-                            </Typo>
-                          </>
-                        ))}
-                      </Grow>
-                      <Grow className="w-full" placement="ss">
-                        {item.field3.map((v, idx) => (
-                          <Badge
-                            key={idx}
-                            color="yellow"
-                            size="lg"
-                            className="text-[var(--color-gray-70)] font-normal text-[1.2rem]"
-                          >
-                            {v}
-                          </Badge>
-                        ))}
-                      </Grow>
-                    </Gcol>
-                    <Grow>
-                      {item.field4.map((v, idx) => {
-                        const planKey = `${item.id}-${idx}`;
-                        const isSelected = selectedPlanKey === planKey;
-                        return (
-                          <Grid
-                            key={idx}
-                            className={`grid-rows-[1fr_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-shadow gap-0 ${
-                              isSelected
-                                ? 'bg-[var(--color-primary-10)] after:pointer-events-none after:content-[""] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-[1rem] after:border-[0.2rem] after:border-[var(--color-primary-50)] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)]  bg-no-repeat bg-[position:calc(100%+120%)_-4%] bg-[size:10rem,_cover] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)] [&>button_*]:text-white [&>button_path]:fill-white [&>button_path]:fill-white'
-                                : 'bg-[var(--color-primary-5)] shadow-[inset_0_0_0_0.1rem_rgba(0,0,0,0.1)]'
-                            }`}
-                          >
-                            <button
-                              type="button"
-                              className="p-[1.2rem] h-full flex flex-col justify-between items-start"
-                              onClick={() => setSelectedPlanKey(isSelected ? null : planKey)}
-                              aria-pressed={isSelected}
+            <div className="relative w-full h-full after:content-[''] after:block after:absolute after:pointer-events-none after:bottom-0 after:left-0 after:w-[100%] after:h-[3.4rem] after:bg-gradient-to-b after:from-transparent after:to-[#F4F4F4] after:z-10">
+              <div className="relative overflow-y-auto w-full h-full">
+                <Gcol
+                  className="absolute top-0 left-0 w-full h-full after:content-[''] after:block after:w-full after:min-h-[1.6rem]"
+                  gap={3}
+                  placement="ss"
+                >
+                  {dataList.map((item) => (
+                    <Grid
+                      key={item.id}
+                      className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]"
+                    >
+                      <Gcol gap={2} placement="ss">
+                        <Typo tag="h3" variant="heading-xl" className="break-keep pb-[0.4rem]">
+                          {item.field1}
+                        </Typo>
+                        <Grow
+                          className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-information-5)] flex-wrap gap-x-[0.4rem] gap-y-[0.2rem]"
+                          placement="sc"
+                        >
+                          {item.field2.map((v, idx) => (
+                            <>
+                              {idx > 0 && <Divider variant="dot" color="gray-dark" />}
+                              <Typo key={idx} tag="p" variant="body-sm">
+                                {v}
+                              </Typo>
+                            </>
+                          ))}
+                        </Grow>
+                        <Grow placement="ss">
+                          {item.field3.map((v, idx) => (
+                            <Grow
+                              key={idx}
+                              className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-warning-5)]"
+                              placement="ss"
                             >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="40"
-                                height="40"
-                                viewBox="0 0 40 40"
-                                fill="none"
-                              >
-                                <circle cx="30.5" cy="29.5" r="9.5" fill="var(--color-primary-20)" />
-                                <path
-                                  d="M18.9854 22.4062C19.7586 22.4062 20.3857 23.0334 20.3857 23.8066C20.3857 24.5798 19.7585 25.207 18.9854 25.207H11.8066C11.0335 25.207 10.4063 24.5798 10.4062 23.8066C10.4062 23.0334 11.0334 22.4062 11.8066 22.4062H18.9854Z"
-                                  fill="#61554F"
-                                />
-                                <path
-                                  d="M22.6484 16.3994C23.4215 16.3996 24.0479 17.0267 24.0479 17.7998C24.0479 18.5729 23.4215 19.2 22.6484 19.2002H11.8066C11.0334 19.2002 10.4062 18.573 10.4062 17.7998C10.4062 17.0266 11.0334 16.3994 11.8066 16.3994H22.6484Z"
-                                  fill="#61554F"
-                                />
-                                <path
-                                  fillRule="evenodd"
-                                  clipRule="evenodd"
-                                  d="M23.8057 4C25.5194 4.00002 27.1515 4.73281 28.29 6.01367L32.9844 11.2949C33.9606 12.3932 34.5 13.8118 34.5 15.2812V31C34.5 34.3137 31.8137 37 28.5 37H11.5L11.1914 36.9922C8.02111 36.8316 5.5 34.2102 5.5 31V10C5.5 6.68629 8.18629 4 11.5 4H23.8057ZM11.5 6.59961C9.62223 6.59961 8.09961 8.12223 8.09961 10V31C8.09961 32.8778 9.62223 34.4004 11.5 34.4004H28.5C30.3778 34.4004 31.9004 32.8778 31.9004 31V15.2998H28.5C25.5729 15.2998 23.2002 12.9271 23.2002 10V6.59961H11.5ZM25.7998 10C25.7998 11.4912 27.0088 12.7002 28.5 12.7002H30.7549L26.3467 7.74121C26.1814 7.55526 25.9979 7.38952 25.7998 7.24609V10Z"
-                                  fill="#61554F"
-                                />
-                              </svg>
-                              <Gcol placement="ss" gap={0}>
-                                <Typo tag="p" variant="body-sm" className="text-[var(--color-gray-70)]">
-                                  예상보험료
-                                </Typo>
-                                <Typo tag="p" variant="heading-xl" className="text-[var(--color-primary-50)]">
-                                  {v.field1.toLocaleString()}원
-                                </Typo>
-                              </Gcol>
-                            </button>
-                            <Grow className="w-full h-[4rem] bg-[var(--color-secondary-50)]" placement="cc">
-                              <Checkbox
-                                checked={comparedPlanKeys.includes(planKey)}
-                                onCheckedChange={(checked) => {
-                                  const isChecked = checked === true;
-                                  setComparedPlanKeys((prev) => {
-                                    if (isChecked) {
-                                      return prev.includes(planKey) ? prev : [...prev, planKey];
-                                    }
-                                    return prev.filter((key) => key !== planKey);
-                                  });
-                                }}
-                              >
-                                <span className="text-[#FFF]">비교하기</span>
-                              </Checkbox>
+                              <Typo key={idx} tag="p" variant="body-sm">
+                                {v}
+                              </Typo>
                             </Grow>
-                          </Grid>
-                        );
-                      })}
-                    </Grow>
-                  </Grid>
-                ))}
-              </Gcol>
+                          ))}
+                        </Grow>
+                      </Gcol>
+                      <Grow>
+                        {item.field4.map((v, idx) => {
+                          const planKey = `${item.id}-${idx}`;
+                          const isSelected = selectedPlanKey === planKey;
+                          return (
+                            <Grid
+                              key={idx}
+                              className={`grid-rows-[1fr_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-shadow gap-0 ${
+                                isSelected
+                                  ? 'bg-[var(--color-primary-10)] after:pointer-events-none after:content-[""] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-[1rem] after:border-[0.2rem] after:border-[var(--color-primary-50)] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)]  bg-no-repeat bg-[position:calc(100%+120%)_-4%] bg-[size:10rem,_cover] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)] [&>button_*]:text-white [&>button_path]:fill-white [&>button_path]:fill-white'
+                                  : 'bg-[var(--color-primary-5)] shadow-[inset_0_0_0_0.1rem_rgba(0,0,0,0.1)]'
+                              }`}
+                            >
+                              <button
+                                type="button"
+                                className="p-[1.2rem] h-full flex flex-col justify-between items-start"
+                                onClick={() => setSelectedPlanKey(isSelected ? null : planKey)}
+                                aria-pressed={isSelected}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="40"
+                                  height="40"
+                                  viewBox="0 0 40 40"
+                                  fill="none"
+                                >
+                                  <circle cx="30.5" cy="29.5" r="9.5" fill="var(--color-primary-20)" />
+                                  <path
+                                    d="M18.9854 22.4062C19.7586 22.4062 20.3857 23.0334 20.3857 23.8066C20.3857 24.5798 19.7585 25.207 18.9854 25.207H11.8066C11.0335 25.207 10.4063 24.5798 10.4062 23.8066C10.4062 23.0334 11.0334 22.4062 11.8066 22.4062H18.9854Z"
+                                    fill="#61554F"
+                                  />
+                                  <path
+                                    d="M22.6484 16.3994C23.4215 16.3996 24.0479 17.0267 24.0479 17.7998C24.0479 18.5729 23.4215 19.2 22.6484 19.2002H11.8066C11.0334 19.2002 10.4062 18.573 10.4062 17.7998C10.4062 17.0266 11.0334 16.3994 11.8066 16.3994H22.6484Z"
+                                    fill="#61554F"
+                                  />
+                                  <path
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    d="M23.8057 4C25.5194 4.00002 27.1515 4.73281 28.29 6.01367L32.9844 11.2949C33.9606 12.3932 34.5 13.8118 34.5 15.2812V31C34.5 34.3137 31.8137 37 28.5 37H11.5L11.1914 36.9922C8.02111 36.8316 5.5 34.2102 5.5 31V10C5.5 6.68629 8.18629 4 11.5 4H23.8057ZM11.5 6.59961C9.62223 6.59961 8.09961 8.12223 8.09961 10V31C8.09961 32.8778 9.62223 34.4004 11.5 34.4004H28.5C30.3778 34.4004 31.9004 32.8778 31.9004 31V15.2998H28.5C25.5729 15.2998 23.2002 12.9271 23.2002 10V6.59961H11.5ZM25.7998 10C25.7998 11.4912 27.0088 12.7002 28.5 12.7002H30.7549L26.3467 7.74121C26.1814 7.55526 25.9979 7.38952 25.7998 7.24609V10Z"
+                                    fill="#61554F"
+                                  />
+                                </svg>
+                                <Gcol placement="ss" gap={0}>
+                                  <Typo tag="p" variant="body-sm" className="text-[var(--color-gray-70)]">
+                                    예상보험료
+                                  </Typo>
+                                  <Typo tag="p" variant="heading-xl" className="text-[var(--color-primary-50)]">
+                                    {v.field1.toLocaleString()}원
+                                  </Typo>
+                                </Gcol>
+                              </button>
+                              <Grow className="w-full h-[4rem] bg-[var(--color-secondary-50)]" placement="cc">
+                                <Checkbox
+                                  checked={comparedPlanKeys.includes(planKey)}
+                                  onCheckedChange={(checked) => {
+                                    const isChecked = checked === true;
+                                    setComparedPlanKeys((prev) => {
+                                      if (isChecked) {
+                                        return prev.includes(planKey) ? prev : [...prev, planKey];
+                                      }
+                                      return prev.filter((key) => key !== planKey);
+                                    });
+                                  }}
+                                >
+                                  <span className="text-[#FFF]">비교하기</span>
+                                </Checkbox>
+                              </Grow>
+                            </Grid>
+                          );
+                        })}
+                      </Grow>
+                    </Grid>
+                  ))}
+                </Gcol>
+              </div>
             </div>
             {/* 상세 */}
             <Grid
-              className="shrink-0 w-[41.3rem] h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr_auto]"
+              className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr_auto]"
               gap={0}
             >
               <Gcol
-                className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)] bg-no-repeat bg-[size:10rem,_cover]  bg-[position:96%_-6%] rounded-b-[1rem]"
+                className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)] bg-no-repeat bg-[size:10rem,_cover]  bg-[position:96%_-6%] rounded-b-[1rem] "
                 placement="ss"
               >
                 <Typo tag="p" variant="body-sm" className="text-white opacity-80">

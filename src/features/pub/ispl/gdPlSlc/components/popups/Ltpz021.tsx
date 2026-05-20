@@ -357,7 +357,7 @@ const Ltpz021 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grow gap={3} placement="ss">
+          <Grow gap={3} placement="ss" className="w-full h-full">
             {[...Array(3)].map((_, i) => (
               <Grid
                 className="grid-rows-[auto_1fr] w-full overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5 h-full"
@@ -373,7 +373,7 @@ const Ltpz021 = () => {
                     </Typo>
                   </Gcol>
                   <Grow>
-                    <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="default"></Checkbox>
+                    <Checkbox color="info" onCheckedChange={() => {}} size="lg" variant="default"></Checkbox>
                   </Grow>
                 </Grow>
                 <Grow
@@ -424,12 +424,7 @@ const Ltpz021 = () => {
                       className="sticky bottom-[-0.1rem] z-10 flex h-[3rem] w-full border-t border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem]"
                       placement="bwc"
                     >
-                      <Typo
-                        tag={'span'}
-                        variant={'body-md'}
-                        weight={'bold'}
-                        className="text-[var(--color-primary-100)]"
-                      >
+                      <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
                         예상보험표
                       </Typo>
                       <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
