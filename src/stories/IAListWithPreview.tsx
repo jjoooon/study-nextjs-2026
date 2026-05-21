@@ -131,6 +131,7 @@ export function IAListWithPreview() {
 
   const [showPhaseOnly] = React.useState(false);
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
+  const [selectedPlan, setSelectedPlan] = React.useState<string>('all');
   const [selectedPub, setSelectedPub] = React.useState<string>('all');
   const [selectedDev, setSelectedDev] = React.useState<string>('all');
   const handleSort = React.useCallback((key: SortKey) => {
@@ -200,14 +201,25 @@ export function IAListWithPreview() {
     return Array.from(names).sort((left, right) => left.localeCompare(right, 'ko'));
   }, [visibleRows]);
 
+  const planOptions = React.useMemo(() => {
+    const names = new Set<string>();
+    visibleRows.forEach((row) => {
+      if (row.plan) {
+        names.add(row.plan);
+      }
+    });
+    return Array.from(names).sort((left, right) => left.localeCompare(right, 'ko'));
+  }, [visibleRows]);
+
   const ownerFilteredRows = React.useMemo(() => {
     return visibleRows.filter((row) => {
+      const isPlanMatched = selectedPlan === 'all' || row.plan === selectedPlan;
       const pubName = row.pubName ?? row.pub ?? '';
       const isPubMatched = selectedPub === 'all' || pubName === selectedPub;
       const isDevMatched = selectedDev === 'all' || row.dev === selectedDev;
-      return isPubMatched && isDevMatched;
+      return isPlanMatched && isPubMatched && isDevMatched;
     });
-  }, [selectedDev, selectedPub, visibleRows]);
+  }, [selectedDev, selectedPlan, selectedPub, visibleRows]);
 
   const totalCount = React.useMemo(() => ownerFilteredRows.length, [ownerFilteredRows]);
   const doneCount = React.useMemo(() => {
@@ -318,14 +330,14 @@ export function IAListWithPreview() {
         <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
           <colgroup>
             <col style={{ width: '1rem' }} />
-            <col style={{ width: '4rem' }} />
             <col style={{ width: '8rem' }} />
-            <col style={{ width: '12rem' }} />
+            <col style={{ width: '8rem' }} />
+            <col style={{ width: '10rem' }} />
             <col style={{ width: '6rem' }} />
             <col />
             <col />
             <col />
-            <col style={{ width: '5rem' }} />
+            <col style={{ width: '7rem' }} />
             <col style={{ width: '7rem' }} />
             <col style={{ width: '7rem' }} />
           </colgroup>
@@ -423,18 +435,23 @@ export function IAListWithPreview() {
               >
                 수정일{getSortIndicator('modifyDate')}
               </th>
-              <th
-                scope="col"
-                className="text-center cursor-pointer select-none"
-                onClick={() => handleSort('plan')}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') handleSort('plan');
-                }}
-                role="button"
-                aria-label="기획 정렬"
-              >
-                기획{getSortIndicator('plan')}
+              <th scope="col" className="text-center">
+                <label className="sr-only" htmlFor="planFilterSelect">
+                  기획 필터
+                </label>
+                <select
+                  id="planFilterSelect"
+                  className="h-[2.4rem] w-full rounded border border-[#c8ccd3] bg-white px-1 text-[1.2rem]"
+                  value={selectedPlan}
+                  onChange={(event) => setSelectedPlan(event.target.value)}
+                >
+                  <option value="all">기획</option>
+                  {planOptions.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
               </th>
               <th scope="col" className="text-center">
                 <label className="sr-only" htmlFor="pubFilterSelect">
@@ -506,17 +523,18 @@ export function IAListWithPreview() {
                     .join(' ')}
                   onClick={() => setActiveRowKey(getRowKey(row))}
                 >
-                  <td className={rowBgClass}>
+                  <td className={rowBgClass + ' text-center'}>
                     <b>{index + 1}</b>
                   </td>
                   <td className={rowBgClass + ' '}>
-                    <b>{row.path ?? ''}</b>
+                    <span className="break-all !text-[1.1rem]">{row.path ?? ''}</span>
                   </td>
                   <td scope="row" className={rowIdBgClass}>
                     <b>{row.id}</b>
                     {row.subId ? (
                       <>
-                        <br />({row.subId})
+                        <br />
+                        <span className="break-all !text-[1rem]">({row.subId})</span>
                       </>
                     ) : (
                       ''
