@@ -4,11 +4,12 @@
 'use client';
 
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Grow, Typo, Grid } from '@atoms';
+import { Grow, Typo, Gcol, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 import {
   Dialog,
   DialogClose,
@@ -172,41 +173,54 @@ const Ltpz067 = () => {
 
         <DialogSection>
           <Grid placement="ss" className="w-full grid-rows-[auto_1fr_1fr]" gap={5}>
-            <Grow className="w-full">
-              <FormTable
-                caption="납입보험료상세 테이블"
-                cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
-              >
+            <Grow className="w-full" variant="box-round" placement={'ss'}>
+              <FormTable variant="head" cols={['w-1', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'보험기간'}>  2026-02-01 ~ 2046-02-03 </FormCell>
-                  <FormCell title={'만기납기'}>20년만기/전기납 </FormCell>
+                  <FormCell
+                    title={'보험기간'}
+                  >
+                    <Input aria-label="" width={180} value={'2026-02-01 ~ 2046-02-03'} readOnly />
+                  </FormCell>
+                  <FormCell
+                    title={'만기납기'}
+                  >
+                    <Input aria-label="" width={200} value={'20년만기/전기납'} readOnly />
+                  </FormCell>
                 </FormRow>
               </FormTable>
             </Grow>
+            
+            {/* <Grid>
 
-            <TableFold>
-              <TableFoldHead title="단체실손의료비 전환대상" />
-              <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[19.6rem]">
-                <AgGridReact<DummyDataType>
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyData}
-                  columnDefs={columnDefs}
-                  defaultColDef={{
-                    sortable: false,
-                    resizable: false,
-                    cellStyle: {
-                      whiteSpace: 'normal',
-                      overflowWrap: 'anywhere',
-                      lineHeight: '1.4',
-                    },
-                  }}
-                  enableCellSpan={true}
-                />
-              </div>
-              </TableFoldBody>
-            </TableFold>
+            </Grid> */}
+            <Gcol placement={'ss'} className="w-full gap-2">
+              <TableFold>
+                <TableFoldHead title="단체실손의료비 전환대상" />
+                <TableFoldBody>
+                  <div className="ag-theme-alpine min-h-[19.6rem]">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={DummyData}
+                      columnDefs={columnDefs}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                        cellStyle: {
+                          whiteSpace: 'normal',
+                          overflowWrap: 'anywhere',
+                          lineHeight: '1.4',
+                        },
+                      }}
+                      enableCellSpan={true}
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+              <Typo variant={'body-sm'} icon={'info'}>
+                납입보험료 변동이 예상되는 시점만 표기하였으며 상황에 따라 변동 될 수 있으므로 안내에 유의 필요
+              </Typo>
+            </Gcol>
 
             <TableFold>
               <TableFoldHead title="할인종류" />
