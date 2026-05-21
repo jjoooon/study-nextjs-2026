@@ -5,9 +5,8 @@
 
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
 import { Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-
+import { Button } from '@uiux/Button';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef } from 'ag-grid-enterprise';
 import * as React from 'react';
@@ -22,6 +21,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+
+import '@/shared/lib/agGridPub';
 
 // dummy data
 type DummyDataType = {
@@ -111,7 +112,7 @@ const Ltpz035 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="md" className="">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
