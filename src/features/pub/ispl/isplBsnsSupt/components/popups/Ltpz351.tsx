@@ -123,7 +123,8 @@ const Ltpz351 = () => {
             </Typo>
           </Gcol>
           <Gcol className="w-full" placement="ss" variant="box-info">
-            <Typo icon="info" variant="body-sm">
+            {/* 2026-05-21 bold 추가*/}
+            <Typo icon="info" variant="body-sm" weight={'bold'}>
               보험차익비과세
             </Typo>
             <BulletList>

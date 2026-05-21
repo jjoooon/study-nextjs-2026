@@ -4,20 +4,30 @@
 
 'use client';
 
+// 2026-05-21 import 수정
 import { Grow, Typo } from '@atoms';
 import '@/shared/lib/agGridPub';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
 
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-
-import { Input } from '@/shared/components/uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 
 type DummyDataType = {
   id: number;
@@ -181,7 +191,17 @@ const Ltpz089 = () => {
             </TableFoldBody>
           </TableFold>
         </DialogSection>
+        {/* 2026-05-21 수정 */}
         <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
+            </Grow>
+          </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>

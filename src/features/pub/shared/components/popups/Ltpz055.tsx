@@ -2,19 +2,28 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 
+// 2026-05-21 import 수정
 'use client';
-
 import { Gcol, Grow, Typo } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
+import { BulletList } from '@common/BulletList';
+import { BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { BulletList } from '@/shared/components/common/BulletList';
-import { BulletListItem } from '@/shared/components/common/BulletList';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
-import { Button } from '@/shared/components/uiux/Button';
-import { Input } from '@/shared/components/uiux/Input';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 
 const Ltpz055 = () => {
   return (
@@ -211,7 +220,17 @@ const Ltpz055 = () => {
             </Typo>
           </Gcol>
         </DialogSection>
+        {/* 2026-05-21 수정 */}
         <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
+            </Grow>
+          </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
