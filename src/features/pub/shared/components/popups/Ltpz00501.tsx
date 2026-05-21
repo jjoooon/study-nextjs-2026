@@ -17,7 +17,7 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { BulletList, BulletListItem } from '@common/BulletList';
 
 // 공통
 type DummyDataType = {

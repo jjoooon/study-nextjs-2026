@@ -17,11 +17,11 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
-import { BulletItem } from '@/shared/components/common/BulletList';
+import { BulletItem } from '@common/BulletList';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { Badge } from '@/shared/components/uiux/Badge';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { Input } from '@/shared/components/uiux/Input';
+import { Badge } from '@uiux/Badge';
+import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
 
 const Ltpz037 = () => {
   return (

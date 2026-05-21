@@ -23,10 +23,10 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import { Textarea } from '@/shared/components/uiux/Textarea';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Textarea } from '@uiux/Textarea';
 // 대분류
 type DummyDataTypeA = {
   id: number;

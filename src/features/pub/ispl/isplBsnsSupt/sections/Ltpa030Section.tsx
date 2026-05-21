@@ -28,7 +28,7 @@ import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } fro
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback } from 'react';
 import * as React from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { createTooltipValueGetter } from '@aggrid';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 

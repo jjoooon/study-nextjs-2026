@@ -17,7 +17,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { BulletList, BulletListItem } from '@common/BulletList';
 
 const Ltpz006 = () => {
   return (

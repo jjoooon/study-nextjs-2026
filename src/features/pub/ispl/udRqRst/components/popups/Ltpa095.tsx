@@ -20,7 +20,7 @@ import * as React from 'react';
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import '@/shared/lib/agGridPub';
-import { TableFold, TableFoldHead, TableFoldBody } from '@/shared/components/common/TableFold';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;

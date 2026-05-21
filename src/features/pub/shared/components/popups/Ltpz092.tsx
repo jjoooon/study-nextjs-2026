@@ -20,8 +20,8 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import * as React from 'react';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { Checkbox } from '@uiux/Checkbox';
 
 const Ltpz092 = () => {
   const [isExistingCustomer, setIsExistingCustomer] = React.useState(false);

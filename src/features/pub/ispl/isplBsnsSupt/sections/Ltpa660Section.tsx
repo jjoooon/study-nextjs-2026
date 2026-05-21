@@ -21,6 +21,7 @@ import { useMemo } from 'react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
+import { NativeSelect } from '@uiux/NativeSelect';
 
 type DummyData1Type = {
   id: number;
@@ -251,6 +252,9 @@ export default function Ltpa650Section() {
               <FormTable variant={'none'} cols={['w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'담보'} tdClassName="grid-cols-[auto_1fr_auto]">
+                    <NativeSelect>
+                      <option value="">전체</option>
+                    </NativeSelect>
                     <Input width={120} value={'LA202852001'} />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />

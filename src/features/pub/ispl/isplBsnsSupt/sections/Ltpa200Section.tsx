@@ -36,7 +36,7 @@ import type {
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback } from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
+import { createTooltipValueGetter } from '@aggrid';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 

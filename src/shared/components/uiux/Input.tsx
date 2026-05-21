@@ -247,10 +247,10 @@ function Input({
   } 
       focus:ring-1 ${!isInvalid && !error ? 'focus:ring-[var(--color-gray-5)]' : ''} focus:outline-none`;
   const readonlyStyle = readOnly
-    ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
+    ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none outline-none'
     : '';
   const readonlyStyle2 = readOnly
-    ? 'bg-[transparent] cursor-not-allowed opacity-100 pointer-events-none border-0 px-0 text-[#000] font-bold appearance-none field-sizing-[content]'
+    ? 'bg-[transparent] cursor-not-allowed opacity-100 pointer-events-none border-0 px-0 text-[#000] font-bold outline-none appearance-none field-sizing-[content]'
     : '';
   const disabledStyle = disabled ? 'opacity-50 cursor-not-allowed' : '';
   const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
@@ -343,7 +343,7 @@ function Input({
       ) : (
         <>
           {variant === 'info' && readOnly ? (
-            <span className="font-bold text-[#000]">{displayValue}</span>
+            <span className="font-bold text-[#000] text-[1.3rem]">{displayValue}</span>
           ) : (
             <input
               ref={inputRef}

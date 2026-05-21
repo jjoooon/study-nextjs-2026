@@ -25,6 +25,7 @@
   border-left: 0;
   border-right: 0;
   border-top: .2rem solid #000;
+  /* overflow: visible !important; */
 }
 
 .ag-center-cols-container>[role="row"]:nth-child(2n) {
@@ -815,4 +816,13 @@
 }
 .ltpz020-table-1 .ag-cell:first-child.editable-cell {
   background-color: var(--color-information-5);
+}
+
+/* .ag-cell-value:not(.ag-allow-overflow), .ag-group-value {
+  overflow: visible;
+} */
+
+.ag-select-list {
+  max-height: 200px !important; /* 원하시는 높이로 조절 */
+  overflow-y: auto !important;   /* 항목이 많으면 스크롤 생성 */
 }

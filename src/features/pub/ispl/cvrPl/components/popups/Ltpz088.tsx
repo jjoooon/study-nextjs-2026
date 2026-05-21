@@ -19,7 +19,7 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { BulletItem, BulletList, BulletListItem } from '@/shared/components/common/BulletList';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 
 const Ltpz088 = () => {
   return (

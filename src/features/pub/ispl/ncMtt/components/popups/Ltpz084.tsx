@@ -14,8 +14,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Ltpa3500301 } from '../Ltpa3500301';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import { Input } from '@/shared/components/uiux/Input';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { Input } from '@uiux/Input';
 
 const Ltpz084 = () => {
   return (

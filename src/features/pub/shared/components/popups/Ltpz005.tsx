@@ -8,12 +8,6 @@ import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CircleCheckIcon, InfoToastIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import * as React from 'react';
-
-import Ltpz00501 from './Ltpz00501';
-import Ltpz00502 from './Ltpz00502';
-import Ltpz00503 from './Ltpz00503';
-import Ltpz00504 from './Ltpz00504';
 import {
   Dialog,
   DialogClose,
@@ -23,8 +17,14 @@ import {
   DialogHeader,
   DialogSection,
   DialogTitle,
-} from '@/shared/components/uiux/Dialog';
-import { Input } from '@/shared/components/uiux/Input';
+} from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import * as React from 'react';
+
+import Ltpz00501 from './Ltpz00501';
+import Ltpz00502 from './Ltpz00502';
+import Ltpz00503 from './Ltpz00503';
+import Ltpz00504 from './Ltpz00504';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
@@ -210,7 +210,7 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
               ) : (
                 <>
                   <Button variant={'contained'} size={'xl'}>
-                    설계생성
+                    설계생성(1)
                   </Button>
                   <DialogClose asChild>
                     <Button variant={'outlined'} size={'xl'} color={'gray-light'}>

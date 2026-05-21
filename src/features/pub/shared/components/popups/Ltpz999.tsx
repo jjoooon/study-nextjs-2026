@@ -17,7 +17,7 @@ import {
   DialogClose,
   DialogTitle,
 } from '@uiux/Dialog';
-import { BulletItem } from '@/shared/components/common/BulletList';
+import { BulletItem } from '@common/BulletList';
 import { ErrorIcon } from '@/shared/components/icons/CommonIcons';
 
 const Ltpz999 = () => {

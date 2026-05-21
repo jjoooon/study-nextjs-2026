@@ -2,6 +2,12 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+import {
+  AgGridEmptyComponent,
+  createAddRowHandler,
+  createDeleteSelectedRowsHandler,
+  getNextNumericRowId,
+} from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -26,12 +32,6 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import {
-  AgGridEmptyComponent,
-  createAddRowHandler,
-  createDeleteSelectedRowsHandler,
-  getNextNumericRowId,
-} from '@/shared/components/agGridUtils/AgGridUtils';
 
 type DummyDataTypeA = {
   id: number;
@@ -563,7 +563,7 @@ export const Ltpz296 = () => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[12.3rem]">
                 <AgGridReact<DummyDataTypeA>
                   onGridReady={(event) => {
                     gridApiRefA.current = event.api;
@@ -611,7 +611,7 @@ export const Ltpz296 = () => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[12.3rem]">
                 <AgGridReact<DummyDataTypeB>
                   onGridReady={(event) => {
                     gridApiRefB.current = event.api;
@@ -651,7 +651,7 @@ export const Ltpz296 = () => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <FormTable>
+              <FormTable cols={['w-[10rem]', 'w-[auto]', 'w-[10rem]', 'w-[auto]']}>
                 <FormRow>
                   <FormCell title={'사망보험금'}>
                     <NativeSelect aria-label="사망보험금" width={80}>
@@ -771,7 +771,7 @@ export const Ltpz296 = () => {
           <TableFold>
             <TableFoldHead title="피보험자 직장 주소 및 연락처 일괄 입력(저장시 고객정보에 반영)"></TableFoldHead>
             <TableFoldBody>
-              <FormTable>
+              <FormTable cols={['w-[10rem]', 'w-[auto]']}>
                 <FormRow>
                   <FormCell title={'직장주소'}>
                     <div className="flex w-full h-full flex-wrap justify-start items-start gap-1">

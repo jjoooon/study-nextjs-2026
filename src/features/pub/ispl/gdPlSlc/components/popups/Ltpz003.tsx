@@ -22,7 +22,7 @@ import {
   QuestionRadioCardHeader,
   QuestionRadioCardHeaderTitle,
   QuestionRadioCardContents,
-} from '@/shared/components/common/QuestionRadioCard';
+} from '@common/QuestionRadioCard';
 
 const Ltpz003 = () => {
   return (

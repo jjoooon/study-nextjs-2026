@@ -25,8 +25,8 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import type { ColDef, CellDoubleClickedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
+import { AgGridEmptyComponent } from '@aggrid';
+import { Checkbox } from '@uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

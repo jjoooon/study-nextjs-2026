@@ -10,8 +10,8 @@ import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 
 import { Grow, Typo } from '@/shared/components/atoms';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
-import { Button } from '@/shared/components/uiux/Button';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Button } from '@uiux/Button';
 import {
   Dialog,
   DialogContent,
@@ -21,7 +21,7 @@ import {
   DialogTitle,
   DialogFooterArea,
   DialogClose,
-} from '@/shared/components/uiux/Dialog';
+} from '@uiux/Dialog';
 
 import '@/shared/lib/agGridPub';
 

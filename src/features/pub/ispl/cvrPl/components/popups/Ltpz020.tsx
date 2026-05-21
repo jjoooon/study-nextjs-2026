@@ -256,7 +256,7 @@ const Ltpz020 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr] min-h-[40rem]">
+        <DialogSection className="grid-rows-[1fr] ">
           <Grid className="grid-cols-[30rem_1fr] h-full w-full" gap={3}>
             {/* 패키지 유형 */}
             <Grid className="grid-rows-[auto_1fr] h-full w-full">
@@ -265,7 +265,7 @@ const Ltpz020 = () => {
                   패키지 유형
                 </Typo>
               </Grow>
-              <div className="ag-theme-alpine ltpz020-table-1">
+              <div className="ag-theme-alpine ltpz020-table-1 min-h-[30.8rem]">
                 <AgGridReact<DummyData1Type>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
@@ -290,7 +290,7 @@ const Ltpz020 = () => {
                   세부담보
                 </Typo>
               </Grow>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[30.8rem]">
                 <AgGridReact<DummyData2Type>
                   onFirstDataRendered={(event) => {
                     event.api.selectAll();

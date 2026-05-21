@@ -16,7 +16,7 @@ import {
   DialogSection,
   DialogTitle,
   DialogTrigger,
-} from '@/shared/components/uiux/Dialog';
+} from '@uiux/Dialog';
 
 const Ltpz0050401 = ({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) => {
   return (

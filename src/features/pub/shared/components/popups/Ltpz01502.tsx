@@ -13,7 +13,7 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import * as React from 'react';
 import '@/shared/lib/agGridPub';
-import { BulletListItem } from '@/shared/components/common/BulletList';
+import { BulletListItem } from '@common/BulletList';
 
 const Ltpz01502 = () => {
   return (

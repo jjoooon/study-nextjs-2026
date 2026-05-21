@@ -186,7 +186,7 @@ const Ltpz00503 = () => {
         </FormTable>
 
         <Gcol className="gap-1 relative">
-          <div className="ag-theme-alpine h-full">
+          <div className="ag-theme-alpine h-full min-h-[12.3rem]">
             <AgGridReact<JobDataType>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}

@@ -56,7 +56,7 @@ export const TableFoldHead = ({ children, title, className, variant }: TableFold
             handleClick();
           }
         }}
-        style={v === 'accordion' ? { cursor: 'pointer' } : {}}
+        style={v === 'accordion' ? { cursor: 'pointer', outline: 'none' } : {}}
       >
         <Typo tag={'h3'} variant={'heading-md'}>
           {title}

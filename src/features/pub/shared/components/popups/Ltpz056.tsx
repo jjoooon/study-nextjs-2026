@@ -8,13 +8,13 @@ import { Gcol, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
-import { BulletList } from '@/shared/components/common/BulletList';
-import { BulletListItem } from '@/shared/components/common/BulletList';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+import { BulletList } from '@common/BulletList';
+import { BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { SearchIcon } from '@/shared/components/icons';
-import { Button } from '@/shared/components/uiux/Button';
-import { Input } from '@/shared/components/uiux/Input';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 
 const Ltpz056 = () => {
   return (

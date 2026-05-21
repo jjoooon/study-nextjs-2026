@@ -4,6 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { createCellClickSelectionToggleHandler, numberValueFormatter } from '@aggrid';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -22,10 +23,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import type { ColDef, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useState } from 'react';
-import {
-  createCellClickSelectionToggleHandler,
-  numberValueFormatter,
-} from '@/shared/components/agGridUtils/AgGridUtils';
 
 type Ltpa35006GridRow = {
   id: number;
