@@ -343,7 +343,7 @@ function Input({
       ) : (
         <>
           {variant === 'info' && readOnly ? (
-            <span className="font-bold text-[#000]">{displayValue}</span>
+            <span className="font-bold text-[#000] text-[1.3rem]">{displayValue}</span>
           ) : (
             <input
               ref={inputRef}
