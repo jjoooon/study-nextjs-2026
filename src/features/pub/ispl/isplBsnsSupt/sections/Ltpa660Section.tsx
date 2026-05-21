@@ -14,14 +14,13 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-
+import { NativeSelect } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { NativeSelect } from '@uiux/NativeSelect';
 
 type DummyData1Type = {
   id: number;

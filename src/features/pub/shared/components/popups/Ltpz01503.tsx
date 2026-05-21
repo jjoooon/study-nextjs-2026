@@ -6,21 +6,17 @@
 import { AgGridEmptyComponent, createAddRowHandler, createDeleteSelectedRowsHandler } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { BulletItem } from '@common/BulletList';
-
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
-
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type { ColDef, ColGroupDef, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-
 import '@/shared/lib/agGridPub';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 type DummyDataType = {
   id: number;
