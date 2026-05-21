@@ -16,9 +16,9 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import * as React from 'react';
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import '@/shared/lib/agGridPub';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 

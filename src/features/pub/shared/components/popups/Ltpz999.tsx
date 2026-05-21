@@ -5,6 +5,7 @@
 
 import '@/shared/lib/agGridPub';
 import { Gcol, Grow, Typo } from '@atoms';
+import { BulletItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { Button } from '@uiux/Button';
@@ -17,7 +18,6 @@ import {
   DialogClose,
   DialogTitle,
 } from '@uiux/Dialog';
-import { BulletItem } from '@common/BulletList';
 import { ErrorIcon } from '@/shared/components/icons/CommonIcons';
 
 const Ltpz999 = () => {

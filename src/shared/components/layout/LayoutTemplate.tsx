@@ -75,7 +75,7 @@ export const LayoutTemplate = ({ mainBody, mainFoot }: Props) => (
           <LayoutScrollItem>{mainBody}</LayoutScrollItem>
         </LayoutScrollWrap>
       </LayoutMainBody>
-      {mainFoot && <LayoutMainFoot>{mainFoot}</LayoutMainFoot>}
+      {mainFoot ? <LayoutMainFoot>{mainFoot}</LayoutMainFoot> : <div className="h-[1rem]"></div>}
     </LayoutMain>
   </>
 );
@@ -88,7 +88,7 @@ export const LayoutTemplatePx0 = ({ mainBody, mainFoot }: Props) => (
           <LayoutScrollItem>{mainBody}</LayoutScrollItem>
         </LayoutScrollWrap>
       </LayoutMainBody>
-      {mainFoot && <LayoutMainFoot>{mainFoot}</LayoutMainFoot>}
+      {mainFoot ? <LayoutMainFoot>{mainFoot}</LayoutMainFoot> : <div className="h-[1rem]"></div>}
     </LayoutMain>
   </>
 );

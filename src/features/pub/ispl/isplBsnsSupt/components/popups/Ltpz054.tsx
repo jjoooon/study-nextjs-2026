@@ -2,7 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-
+import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -10,6 +10,7 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import '@/shared/lib/agGridPub';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -24,9 +25,6 @@ import { Input } from '@uiux/Input';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import type { ColDef, CellDoubleClickedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-
-import { AgGridEmptyComponent } from '@aggrid';
-import { Checkbox } from '@uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

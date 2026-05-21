@@ -337,9 +337,9 @@ export function IAListWithPreview() {
             <col />
             <col />
             <col />
-            <col style={{ width: '7rem' }} />
-            <col style={{ width: '7rem' }} />
-            <col style={{ width: '7rem' }} />
+            <col style={{ width: '6rem' }} />
+            <col style={{ width: '6rem' }} />
+            <col style={{ width: '6rem' }} />
           </colgroup>
           <thead>
             <tr>

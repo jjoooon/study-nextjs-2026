@@ -260,7 +260,7 @@ export default function Ltpa140Section() {
         {
           headerName: '피보험자명',
           field: 'field25',
-          flex:1,
+          flex: 1,
           minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,

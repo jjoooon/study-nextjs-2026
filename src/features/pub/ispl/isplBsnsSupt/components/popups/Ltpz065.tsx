@@ -10,6 +10,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -24,7 +25,6 @@ import { Input } from '@uiux/Input';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { Checkbox } from '@uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

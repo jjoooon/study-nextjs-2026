@@ -4,6 +4,7 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -15,7 +16,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
 const Ltpz107 = () => {

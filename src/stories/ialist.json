@@ -3048,7 +3048,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPA560",
-    "path": "ispl/isplBsnsSupt/components/popups",
+    "path": "ispl/isplBsnsSupt",
     "dep4": "실시간 설계현황",
     "file": "실시간 설계현황",
     "plan": "안성희",

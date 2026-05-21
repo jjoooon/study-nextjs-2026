@@ -1,16 +1,14 @@
 'use client';
 
 import type { ColDef } from 'ag-grid-enterprise';
-
 import { AllCommunityModule, ModuleRegistry, ValidationModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { memo, useMemo } from 'react';
+import type { Product } from '../types/apiTypes';
 import { isProduction } from '@/shared/config/env';
 
 // ✅ AG Grid v34+ Theming API 사용 (구버전 CSS 제거)
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-
-import type { Product } from '../types/apiTypes';
 
 // ============================================================================
 // AG GRID MODULE REGISTRATION

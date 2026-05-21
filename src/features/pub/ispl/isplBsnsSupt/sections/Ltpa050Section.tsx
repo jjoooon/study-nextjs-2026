@@ -3,7 +3,7 @@
  */
 
 'use client';
-
+import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -19,7 +19,6 @@ import '@/shared/lib/agGridPub';
 import { Button } from '@uiux/Button';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent } from '@aggrid';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { useTabs } from '@/shared/hooks/useTabs';

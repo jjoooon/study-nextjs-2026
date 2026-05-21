@@ -16,7 +16,7 @@
  * @example
  * /products?search=laptop&category=electronics&sortBy=price&sortOrder=asc
  */
-
+import type { ProductsFilters, ProductsSort } from '../types/uiTypes';
 import { URL_PARAMS as SHARED_URL_PARAMS } from '@/shared/utils/url/urlParams';
 
 const last30DaysRange = () => {
@@ -27,8 +27,6 @@ const last30DaysRange = () => {
     end: now.toISOString(),
   };
 };
-
-import type { ProductsFilters, ProductsSort } from '../types/uiTypes';
 
 // ============================================================================
 // PRODUCTS URL PARAMETER KEYS

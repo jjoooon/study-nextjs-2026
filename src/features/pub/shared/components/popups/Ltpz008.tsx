@@ -9,6 +9,7 @@ import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -26,7 +27,6 @@ import { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { PageArrowDoubleIcon, PageArrowIcon } from '@/shared/components/icons/CommonIcons';
-import { Badge } from '@uiux/Badge';
 
 type DummyDataType = {
   id: number;

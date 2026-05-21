@@ -4,6 +4,7 @@
 'use client';
 
 import { AgGridEmptyComponent, createModifiedCellClassRules } from '@aggrid';
+import { createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -15,12 +16,11 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { createTooltipValueGetter } from '@aggrid';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 
 import '@/shared/lib/agGridPub';
@@ -192,11 +192,11 @@ export default function Ltpa540Section() {
 
   const EditCellColor = React.useMemo(
     () => createModifiedCellClassRules({ rows: rowData, idKey: 'id', valueKey: 'field09' }),
-    [rowData],
+    [rowData]
   );
   const EditCellColor2 = React.useMemo(
     () => createModifiedCellClassRules({ rows: rowData, idKey: 'id', valueKey: 'field10' }),
-    [rowData],
+    [rowData]
   );
 
   // 기존정보보기 체크 상태
@@ -328,7 +328,7 @@ export default function Ltpa540Section() {
         ],
       },
     ],
-    [showExisting, modifiedCells, EditCellColor, EditCellColor2],
+    [showExisting, modifiedCells, EditCellColor, EditCellColor2]
   );
 
   return (
@@ -356,12 +356,7 @@ export default function Ltpa540Section() {
                       <NativeSelectOption value="유사담보명">유사담보명</NativeSelectOption>
                     </NativeSelect>
                     <Input width={220} value={''} />
-                    <RadioGroup
-                      className="gap-3 ml-1"
-                      onValueChange={() => {}}
-                      width="full"
-                      defaultValue={'예'}
-                    >
+                    <RadioGroup className="gap-3 ml-1" onValueChange={() => {}} width="full" defaultValue={'예'}>
                       {[
                         { value: '예외', label: '예외' },
                         { value: '변경항목', label: '변경항목' },
@@ -375,10 +370,7 @@ export default function Ltpa540Section() {
                 </FormRow>
               </FormTable>
               <Grow>
-                <Checkbox
-                  checked={showExisting}
-                  onCheckedChange={(checked) => setShowExisting(checked === true)}
-                >
+                <Checkbox checked={showExisting} onCheckedChange={(checked) => setShowExisting(checked === true)}>
                   <span className="whitespace-nowrap mr-4">기존정보보기</span>
                 </Checkbox>
                 <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">

@@ -5,12 +5,12 @@
 
 import { Grow } from '@atoms';
 import { Dialog, DialogContent, DialogHeader } from '@uiux/Dialog';
+import { DOMParser } from '@xmldom/xmldom';
+import Image from 'next/image';
+import * as React from 'react';
 import { publicConfig } from '@/shared/config/env';
 import useMounted from '@/shared/hooks/useMounted';
 import { chatbotUtils } from '@/shared/utils/chatbotUtils';
-import Image from 'next/image';
-import * as React from 'react';
-import { DOMParser } from '@xmldom/xmldom';
 
 const CHATBOT_DIALOG_WIDTH = 198;
 const CHATBOT_DIALOG_HEIGHT = 560;
@@ -57,17 +57,22 @@ export default function AIChatBot({ isButton = true, open: openProp, setOpen: se
   };
 
   useMounted(
-    () => {}, 
+    () => {},
     () => {
-    // unmount시 레퍼런스 삭제
-    chatbotUtils.setRef(null);
-  })
+      // unmount시 레퍼런스 삭제
+      chatbotUtils.setRef(null);
+    }
+  );
 
   return (
-    <Dialog open={open} onOpenChange={() => {
-      chatbotUtils.setRef(null);
-      setOpen(!open);
-    }} modal={false}>
+    <Dialog
+      open={open}
+      onOpenChange={() => {
+        chatbotUtils.setRef(null);
+        setOpen(!open);
+      }}
+      modal={false}
+    >
       {isButton && (
         <button
           ref={buttonRef}
@@ -116,7 +121,7 @@ export default function AIChatBot({ isButton = true, open: openProp, setOpen: se
         </DialogHeader>
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[1px] border-[var(--color-blue-gray-30)]">
           <iframe
-          ref={(el) => chatbotUtils.setRef(el)}
+            ref={(el) => chatbotUtils.setRef(el)}
             src={publicConfig.domain.chatbot}
             title={'AI 챗봇'}
             className="w-full h-full border-0"

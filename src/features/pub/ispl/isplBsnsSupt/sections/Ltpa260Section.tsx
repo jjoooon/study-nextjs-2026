@@ -88,8 +88,6 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa260Section() {
-  const { attributeColumnWidth } = useDynamicColumnWidths();
-
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
     () => [
@@ -210,7 +208,7 @@ export default function Ltpa260Section() {
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => String(params.data?.field12 ?? ''),
       },
     ],
-    [attributeColumnWidth]
+    []
   );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);

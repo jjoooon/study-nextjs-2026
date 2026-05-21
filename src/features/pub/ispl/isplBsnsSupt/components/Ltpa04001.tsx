@@ -3,6 +3,7 @@
  */
 'use client';
 import { AgGridEmptyComponent } from '@aggrid';
+import { createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -12,7 +13,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { createTooltipValueGetter } from '@aggrid';
 
 import '@/shared/lib/agGridPub';
 

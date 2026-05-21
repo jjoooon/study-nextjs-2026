@@ -19,9 +19,9 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
+import * as React from 'react';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -91,7 +91,7 @@ const DummyData: DummyDataType[] = [
 
 export default function Ltpa340Section() {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  
+
   // 행추가 삭제 ----------------------------------
   const handleAddRow = React.useMemo(
     () =>
@@ -120,7 +120,7 @@ export default function Ltpa340Section() {
   );
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
-  
+
   const handleDeleteButtonClick = React.useMemo(
     () =>
       createDeleteSelectedRowsHandler<DummyDataType>(setRowData, gridApiRef, {
@@ -276,13 +276,7 @@ export default function Ltpa340Section() {
               <Grow className="w-full" placement="ec">
                 <Grow>
                   <Typo>서명방법</Typo>
-                  <NativeSelect
-                    aria-label="검색조건 선택"
-                    width={108}
-                    value={''}
-                    size = {'md'}
-                    onChange={() => {}}
-                  >
+                  <NativeSelect aria-label="검색조건 선택" width={108} value={''} size={'md'} onChange={() => {}}>
                     {[
                       { value: '전체', label: '전체' },
                       { value: '문서서명', label: '문서서명' },

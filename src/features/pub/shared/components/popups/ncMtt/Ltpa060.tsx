@@ -9,6 +9,7 @@ import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
@@ -25,7 +26,6 @@ import { Input } from '@uiux/Input';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import { TabPager } from '@common/TabPager';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 type LTPZ060TabType = {

@@ -14,6 +14,7 @@ import {
   QuestionRadioCardHeader,
   QuestionRadioCardHeaderTitle,
 } from '@common/QuestionRadioCard';
+import { TableMore } from '@common/TablePagination';
 import { TooltipQ } from '@common/TooltipQ';
 import { CheckIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
@@ -27,7 +28,6 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useState } from 'react';
-import { TableMore } from '@common/TablePagination';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';

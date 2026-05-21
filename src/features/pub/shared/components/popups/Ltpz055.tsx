@@ -5,16 +5,16 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { BulletList } from '@common/BulletList';
 import { BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
 const Ltpz055 = () => {
   return (

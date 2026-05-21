@@ -6,10 +6,8 @@
 import '@/shared/lib/agGridPub';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Button } from '@uiux/Button';
 import {
   Dialog,
   DialogClose,
@@ -20,9 +18,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 const Ltpz081 = () => {
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="sm" className="">
@@ -52,7 +51,14 @@ const Ltpz081 = () => {
             </FormRow>
             <FormRow>
               <FormCell title={'영수증번호'}>
-                <Input aria-label="" error errorMsg="영수증 번호가 규칙에 맞지 않습니다." errorPs="tl" width={'full'} value={''} />
+                <Input
+                  aria-label=""
+                  error
+                  errorMsg="영수증 번호가 규칙에 맞지 않습니다."
+                  errorPs="tl"
+                  width={'full'}
+                  value={''}
+                />
               </FormCell>
             </FormRow>
           </FormTable>

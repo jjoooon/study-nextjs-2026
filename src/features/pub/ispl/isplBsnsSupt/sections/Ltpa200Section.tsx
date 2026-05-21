@@ -12,6 +12,7 @@ import {
   createFieldRenderer,
   editableSelectCellRenderer,
 } from '@aggrid';
+import { createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -36,7 +37,6 @@ import type {
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback } from 'react';
-import { createTooltipValueGetter } from '@aggrid';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 

@@ -7,6 +7,7 @@ import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
@@ -18,7 +19,6 @@ import { Input } from '@uiux/Input';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import { TabPager } from '@common/TabPager';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';

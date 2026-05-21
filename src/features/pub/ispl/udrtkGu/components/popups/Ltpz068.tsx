@@ -19,10 +19,10 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 type DummyDataType = {
   id: number;

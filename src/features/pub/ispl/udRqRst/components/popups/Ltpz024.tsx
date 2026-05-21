@@ -40,9 +40,13 @@ const Ltpz024 = () => {
         <DialogSection className="grid-rows-[auto_1fr]">
           <Gcol gap={3}>
             <Grow className="w-full" variant="box-round" placement={'ss'}>
-              <FormTable variant={'head'} lineTop={false} caption="">
+              <FormTable variant={'head'}>
                 <FormRow>
-                  <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_auto_1fr_auto] gap-1 w-full">
+                  <FormCell
+                    title={'설계번호'}
+                    className="whitespace-nowrap"
+                    tdClassName="grid grid-cols-[auto_auto_1fr_auto] gap-1"
+                  >
                     <Input width={120} value={'LA260209313558'} readOnly />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />

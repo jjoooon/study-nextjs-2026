@@ -5,6 +5,12 @@
 
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import {
+  QuestionRadioCard,
+  QuestionRadioCardHeader,
+  QuestionRadioCardHeaderTitle,
+  QuestionRadioCardContents,
+} from '@common/QuestionRadioCard';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -17,12 +23,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import {
-  QuestionRadioCard,
-  QuestionRadioCardHeader,
-  QuestionRadioCardHeaderTitle,
-  QuestionRadioCardContents,
-} from '@common/QuestionRadioCard';
 
 const Ltpz003 = () => {
   return (

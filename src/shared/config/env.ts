@@ -193,7 +193,7 @@ export const publicConfig = {
 
   domain: {
     chatbot: config.NEXT_PUBLIC_DOMAIN_CHATBOT,
-  }
+  },
 } as const;
 
 /**

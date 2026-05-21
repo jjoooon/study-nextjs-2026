@@ -10,6 +10,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -27,7 +28,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Badge } from '@uiux/Badge';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';

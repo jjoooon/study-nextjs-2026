@@ -269,7 +269,7 @@ export const Ltpa35005 = () => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <Input aria-label="은행 계좌번호" width={150} placeholder={'계좌번호 입력'} value={''} />
+                        <Input aria-label="은행 계좌번호" width={190} placeholder={'계좌번호 입력'} value={''} />
                         <Button color={'secondary'} only={'default'} size={'lg'} variant={'outlined'}>
                           계좌확인
                         </Button>
@@ -480,7 +480,7 @@ export const Ltpa35005 = () => {
                               CDD등록
                             </Button>
                             <Button color={'secondary'} size={'lg'} variant={'contained'} onClick={() => {}}>
-                              CDD등록
+                              EDD등록
                             </Button>
                           </Grow>
                         </Grow>

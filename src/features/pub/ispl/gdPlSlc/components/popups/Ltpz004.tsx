@@ -6,6 +6,7 @@
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,7 +21,6 @@ import {
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 

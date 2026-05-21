@@ -13,13 +13,13 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 type DummyDataType = {

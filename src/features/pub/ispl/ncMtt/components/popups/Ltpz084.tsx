@@ -2,6 +2,7 @@
 
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   DialogClose,
@@ -13,9 +14,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Ltpa3500301 } from '../Ltpa3500301';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Input } from '@uiux/Input';
+import { Ltpa3500301 } from '../Ltpa3500301';
 
 const Ltpz084 = () => {
   return (

@@ -22,9 +22,9 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';

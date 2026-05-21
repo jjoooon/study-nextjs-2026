@@ -5,6 +5,7 @@
 
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -21,7 +22,6 @@ import { Textarea } from '@uiux/Textarea';
 import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
