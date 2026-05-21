@@ -3,8 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createModifiedCellClassRules } from '@aggrid';
-import { createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createModifiedCellClassRules, createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -32,7 +31,7 @@ type DummyDataType = {
   field02: string | number;
   field03: string | number;
   field04: string | number;
-  field05: string | number;
+  field05: number;
   field06: string | number;
   field07: string | number;
   field08: string | number;
@@ -47,11 +46,11 @@ const DummyData: DummyDataType[] = [
     field02: '나눔의행복(상해사망)',
     field03: 'CLA23114',
     field04: '나눔의행복(상해사망)',
-    field05: '1',
+    field05: 1,
     field06: 'Y',
     field07: 'CLA23114',
     field08: '나눔의행복(상해사망)',
-    field09: '1',
+    field09: 1,
     field10: 'Y',
   },
   {
@@ -60,11 +59,11 @@ const DummyData: DummyDataType[] = [
     field02: '나눔의행복(상해사망)',
     field03: 'CLA23321',
     field04: '나눔의행복(상해사망)',
-    field05: '2',
+    field05: 2,
     field06: 'Y',
     field07: 'CLA23321',
     field08: '나눔의행복(상해사망)',
-    field09: '98',
+    field09: 98,
     field10: 'Y',
   },
   {
@@ -73,11 +72,11 @@ const DummyData: DummyDataType[] = [
     field02: '나눔의행복(상해사망)',
     field03: 'CLA23114',
     field04: '나눔의행복(상해사망)',
-    field05: '99',
+    field05: 99,
     field06: '',
     field07: 'CLA23114',
     field08: '나눔의행복(상해사망)',
-    field09: '1',
+    field09: 1,
     field10: 'Y',
   },
   {
@@ -86,11 +85,11 @@ const DummyData: DummyDataType[] = [
     field02: '상해사망',
     field03: 'CLA01801',
     field04: '상해사망',
-    field05: '1',
+    field05: 1,
     field06: '',
     field07: 'CLA01801',
     field08: '상해사망',
-    field09: '1',
+    field09: 1,
     field10: 'Y',
   },
   {
@@ -99,11 +98,11 @@ const DummyData: DummyDataType[] = [
     field02: '상해사망',
     field03: 'CLA12642',
     field04: '상해사망(갱신형)',
-    field05: '1',
+    field05: 1,
     field06: '',
     field07: 'CLA12642',
     field08: '상해사망(갱신형)',
-    field09: '1',
+    field09: 1,
     field10: 'Y',
   },
   {
@@ -112,11 +111,11 @@ const DummyData: DummyDataType[] = [
     field02: '상해사망',
     field03: 'CLA33333',
     field04: '상해사망(간편)',
-    field05: '1',
+    field05: 1,
     field06: 'Y',
     field07: 'CLA33333',
     field08: '상해사망(간편)',
-    field09: '3',
+    field09: 3,
     field10: '',
   },
   {
@@ -125,11 +124,11 @@ const DummyData: DummyDataType[] = [
     field02: '상해사망',
     field03: 'CLA44444',
     field04: '상해사망(간편, 갱신형)',
-    field05: '1',
+    field05: 1,
     field06: '',
     field07: 'CLA44444',
     field08: '상해사망(간편, 갱신형)',
-    field09: '3',
+    field09: 3,
     field10: '',
   },
   {
@@ -138,11 +137,11 @@ const DummyData: DummyDataType[] = [
     field02: '상해사망',
     field03: '',
     field04: '',
-    field05: '',
+    field05: 0,
     field06: '',
     field07: 'CLA44444',
     field08: '상해사망(간편, 갱신형)',
-    field09: '3',
+    field09: 3,
     field10: '',
   },
   {
@@ -151,11 +150,11 @@ const DummyData: DummyDataType[] = [
     field02: '상해사망(갱신형)',
     field03: '',
     field04: '',
-    field05: '',
+    field05: 0,
     field06: '',
     field07: 'CLA44444',
     field08: '상해사망(간편, 갱신형)',
-    field09: '3',
+    field09: 3,
     field10: '',
   },
   {
@@ -164,11 +163,11 @@ const DummyData: DummyDataType[] = [
     field02: '상해사망(갱신형)',
     field03: '',
     field04: '',
-    field05: '',
+    field05: 0,
     field06: '',
     field07: 'CLA44444',
     field08: '상해사망(간편, 갱신형)',
-    field09: '3',
+    field09: 3,
     field10: '',
   },
   {
@@ -177,11 +176,11 @@ const DummyData: DummyDataType[] = [
     field02: '상해사망(갱신형)',
     field03: '',
     field04: '',
-    field05: '',
+    field05: 0,
     field06: '',
     field07: 'CLA44444',
     field08: '상해사망(간편, 갱신형)',
-    field09: '3',
+    field09: 3,
     field10: '',
   },
 ];
@@ -205,11 +204,6 @@ export default function Ltpa540Section() {
   // 직접 수정된 셀 추적: Set<"rowId:fieldName">
   const [modifiedCells, setModifiedCells] = React.useState<Set<string>>(new Set());
 
-  const markModified = (id: number, field: string) => {
-    setModifiedCells((prev) => new Set(prev).add(`${id}:${field}`));
-  };
-
-  // AgGrid Column — showExisting / modifiedCells 변경 시 재생성
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = React.useMemo(
     () => [
       {
@@ -219,14 +213,17 @@ export default function Ltpa540Section() {
             headerName: '담보코드',
             field: 'field01',
             width: 100,
-            cellClass: 'flex! items-center! justify-center!',
+            minWidth: 70,
+            cellClass: 'text-center',
+            autoHeight: true,
             spanRows: true,
           },
           {
             headerName: '담보명',
             field: 'field02',
             flex: 1,
-            cellClass: 'flex! items-center! justify-left!',
+            cellClass: 'text-left',
+            autoHeight: true,
             spanRows: true,
             tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
           },
@@ -239,6 +236,7 @@ export default function Ltpa540Section() {
             headerName: '담보코드',
             field: 'field03',
             width: 100,
+            minWidth: 70,
             hide: !showExisting,
             cellClass: 'text-center',
           },
@@ -273,6 +271,7 @@ export default function Ltpa540Section() {
             headerName: '담보코드',
             field: 'field07',
             width: 100,
+            minWidth: 70,
             cellClass: 'text-center',
           },
           {
@@ -287,48 +286,37 @@ export default function Ltpa540Section() {
             headerName: '순위',
             field: 'field09',
             width: 80,
-            cellClass: 'text-right flex [&>div>span]:h-auto! editable-cell',
+            cellClass: 'text-center',
             autoHeight: true,
             editable: true,
             cellClassRules: EditCellColor,
-            cellRenderer: (params: import('ag-grid-enterprise').ICellRendererParams<DummyDataType>) => (
-              <Input
-                defaultValue={String(params.value ?? '')}
-                onChange={(e) => params.node.setDataValue('field09', e.target.value)}
-                style={{ textAlign: 'right' }}
-              />
-            ),
-
-            valueParser: (params) => Number(params.newValue) || 0,
+            cellStyle: (params) => {
+              const original = rowData.find((r) => r.id === params.data?.id)?.field09;
+              const isModified = String(params.value) !== String(original);
+              return { backgroundColor: isModified ? '#CBE3FF' : '#EFF8FF' };
+            },
           },
           {
             // 예외 — 직접 수정했을 때만 색상
             headerName: '예외',
             field: 'field10',
             width: 80,
-            cellClass: 'text-center [&>div>span]:h-auto! editable-cell',
+            cellClass: 'text-center',
             autoHeight: true,
+            editable: true,
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: { values: ['Y', 'N'] },
             cellClassRules: EditCellColor2,
-            cellRenderer: (params: import('ag-grid-enterprise').ICellRendererParams<DummyDataType>) => {
-              const id = params.data?.id as number;
-              return (
-                <NativeSelect
-                  defaultValue={String(params.value ?? 'Y')}
-                  onChange={(e) => {
-                    params.node.setDataValue('field10', (e.target as HTMLSelectElement).value);
-                    markModified(id, 'field10');
-                  }}
-                >
-                  <NativeSelectOption value="Y">Y</NativeSelectOption>
-                  <NativeSelectOption value="N">N</NativeSelectOption>
-                </NativeSelect>
-              );
+            cellStyle: (params) => {  
+              const original = rowData.find((r) => r.id === params.data?.id)?.field10;
+              const isModified = String(params.value) !== String(original);
+              return { backgroundColor: isModified ? '#CBE3FF' : '#EFF8FF' };
             },
           },
         ],
       },
     ],
-    [showExisting, modifiedCells, EditCellColor, EditCellColor2]
+    [showExisting, EditCellColor, EditCellColor2],
   );
 
   return (
@@ -343,7 +331,7 @@ export default function Ltpa540Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_auto_auto_1fr_auto]" gap={3}>
+          <Grid className="grid-rows-[auto_1fr]" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable variant={'head'} caption="유사담보관리 조회 테이블" cols={['w-[8rem]', 'w-auto']}>
                 <FormRow>
@@ -406,14 +394,11 @@ export default function Ltpa540Section() {
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={DummyData}
+                    rowData={DummyData}  
                     columnDefs={columnDefs}
                     domLayout="normal"
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
-                    selectionColumnDef={{
-                      cellClass: 'text-center',
-                    }}
                     enableCellSpan={true}
                     singleClickEdit={true}
                   />

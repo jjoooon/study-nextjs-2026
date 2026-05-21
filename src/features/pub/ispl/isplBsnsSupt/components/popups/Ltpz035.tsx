@@ -3,6 +3,7 @@
  */
 'use client';
 
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -20,17 +21,15 @@ import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
-
 import '@/shared/lib/agGridPub';
 
 // dummy data
 type DummyDataType = {
   id: number;
   field01: string | number;
-  field02: string | number;
+  field02: string;
   field03: string | number;
-  field04: string | number;
+  field04: string;
 };
 
 const DummyData: DummyDataType[] = [

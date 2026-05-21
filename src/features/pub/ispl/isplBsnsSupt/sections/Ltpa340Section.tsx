@@ -16,7 +16,7 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
+import type { ColDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
 import * as React from 'react';
@@ -28,15 +28,15 @@ import '@/shared/lib/agGridPub';
 // dummy data
 type DummyDataType = {
   id: number;
-  field01: string | number;
-  field02: string | number;
-  field03: string | number;
-  field04: string | number;
-  field05: string | number;
-  field06: string | number;
-  field07: string | number;
-  field08: string | number;
-  field09: string | number;
+  field01: string;
+  field02: string;
+  field03: string;
+  field04: string;
+  field05: string;
+  field06: string;
+  field07: string;
+  field08: string;
+  field09: string;
 };
 const DummyData: DummyDataType[] = [
   {
@@ -131,7 +131,7 @@ export default function Ltpa340Section() {
   //  ---------------------------------- 행추가 삭제
 
   // AgGrid Column
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+  const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '설계번호',
       field: 'field01',
@@ -276,11 +276,15 @@ export default function Ltpa340Section() {
               <Grow className="w-full" placement="ec">
                 <Grow>
                   <Typo>서명방법</Typo>
-                  <NativeSelect aria-label="검색조건 선택" width={108} value={''} size={'md'} onChange={() => {}}>
+                  <NativeSelect
+                    aria-label="검색조건 선택"
+                    width={108}
+                    size={'md'}
+                  >
                     {[
-                      { value: '전체', label: '전체' },
-                      { value: '문서서명', label: '문서서명' },
-                      { value: '전자서명', label: '전자서명' },
+                      { value: 'selection01', label: '전체' },
+                      { value: 'selection02', label: '문서서명' },
+                      { value: 'selection03', label: '전자서명' },
                     ].map((option) => (
                       <NativeSelectOption key={option.value} value={option.value}>
                         {option.label}
