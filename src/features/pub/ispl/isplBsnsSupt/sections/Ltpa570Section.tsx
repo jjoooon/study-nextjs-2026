@@ -324,7 +324,7 @@ export default function Ltpa570Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr_auto] h-full" gap={3}>
+          <Grid className="grid-rows-[auto_1fr] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}
