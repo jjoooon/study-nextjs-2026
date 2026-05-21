@@ -230,18 +230,20 @@ export const Ltpa35005 = () => {
   }));
   const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
 
+  // M5. useState 추가
   const [firstPay, setFirstPay] = React.useState<string>('즉시이체');
   const [morePay, setMorePay] = React.useState<string>('자동이체');
 
   return (
     <LayoutTemplateLTPA350MainBody
       mainBody={
-        <LayoutMain className="grid grid-rows-[1fr_auto] gap-[1rem] h-full w-full">
+        <LayoutMain className="grid grid-rows-[1fr_auto] gap-[1rem] h-full w-full [&_th]:break-keep">
           <LayoutMainBody>
             <LayoutScrollWrap>
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
-                  <FormTable cols={['w-[15.8rem]', 'w-[auto]', 'w-[16rem]', 'w-[auto]']}>
+                  {/* M5. cols 수정 */}
+                  <FormTable cols={['w-[14rem]', 'w-[auto]', 'w-[13rem]', 'w-[auto]']}>
                     <FormRow>
                       <FormCell title={'만기수익자'} colSpan={3}>
                         <NativeSelect aria-label="주피와 관계 선택" width={100} className="ml-[0.4rem]">
@@ -318,17 +320,20 @@ export const Ltpa35005 = () => {
                         </RadioGroup>
                       </FormCell>
                       <FormCell title={'서명방법'}>
-                        <RadioGroup defaultValue="문서서명">
-                          {[
-                            { value: '문서서명', label: '문서서명' },
-                            { value: '태블릿', label: '태블릿' },
-                            { value: '휴대폰', label: '휴대폰' },
-                          ].map((option) => (
-                            <RadioGroupItem key={option.value} value={option.value}>
-                              {option.label}
-                            </RadioGroupItem>
-                          ))}
-                        </RadioGroup>
+                        <Grow placement="bwc">
+                          <RadioGroup defaultValue="문서서명">
+                            {[
+                              { value: '문서서명', label: '문서서명' },
+                              { value: '태블릿', label: '태블릿' },
+                              { value: '휴대폰', label: '휴대폰' },
+                            ].map((option) => (
+                              <RadioGroupItem key={option.value} value={option.value}>
+                                {option.label}
+                              </RadioGroupItem>
+                            ))}
+                          </RadioGroup>
+                          <Checkbox color="primary">조회동일여부</Checkbox>
+                        </Grow>
                       </FormCell>
                     </FormRow>
                     <FormRow>
@@ -485,7 +490,7 @@ export const Ltpa35005 = () => {
                           </Grow>
                         </Grow>
                       </FormCell>
-                      <FormCell title={'영수일자(보험시기)'}>
+                      <FormCell title={'영수일자 (보험시기)'}>
                         <DatePickerInput mode={'single'} required />
                       </FormCell>
                     </FormRow>
@@ -568,7 +573,7 @@ export const Ltpa35005 = () => {
                       <FormCell
                         title={
                           <Grow gap={0} placement="sc">
-                            성년후견인지정여부
+                            성년후견인 지정여부
                             <TooltipQ>
                               <b>성년후견제도란?</b>
                               <br /> 정신적 제약으로 보호가 필요한 성인의 권익보호와 지원을 위해 마련된 제도로, 보호가

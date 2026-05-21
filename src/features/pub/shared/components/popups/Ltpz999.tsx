@@ -7,6 +7,7 @@ import '@/shared/lib/agGridPub';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { ArrowIcon } from '@icons';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { Button } from '@uiux/Button';
 import {
@@ -45,6 +46,14 @@ const Ltpz999 = () => {
             <BulletItem type="dot">시스템 메시지는 기본 90자까지 이내를 권장합니다.</BulletItem>
             <BulletItem type="dot">최대한 90자 이내로 정의 부탁드립니다.</BulletItem>
             <BulletItem type="dot">시스템 오류가 발행했습니다.</BulletItem>
+            <Gcol
+              className="rounded-[0.6rem] bg-[var(--color-gray-5)] p-2 gap-2 border border-[var(--color-gray-15)] max-w-[36rem]"
+              placement="ss"
+            >
+              <Button variant={'none'} className="!justify-between w-full font-bold">
+                처리방안 <ArrowIcon className="rotate-[-90deg]" size={16} />
+              </Button>
+            </Gcol>
           </Gcol>
         </DialogSection>
 

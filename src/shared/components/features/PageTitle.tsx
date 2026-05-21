@@ -53,7 +53,7 @@ export function PageTitle({ data }: PageTitleProps) {
                 onChange={(e) => setContractHolder(e.target.value)}
               />
             </TooltipTrigger>
-            <TooltipContent side="top" sideOffset={8}>
+            <TooltipContent side="top" sideOffset={0}>
               계약자명을 입력하세요.
             </TooltipContent>
           </Tooltip>
@@ -111,7 +111,7 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
               <ArrowIcon className="rotate-180" color="var(--color-gray-60)" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="top" sideOffset={8}>
+          <TooltipContent side="top" sideOffset={0}>
             {safeData.title}
           </TooltipContent>
         </Tooltip>
@@ -159,7 +159,7 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
                       onChange={(e) => setContractHolder(e.target.value)}
                     />
                   </TooltipTrigger>
-                  <TooltipContent side="top" sideOffset={8}>
+                  <TooltipContent side="top" sideOffset={0}>
                     {contractHolder}
                   </TooltipContent>
                 </Tooltip>

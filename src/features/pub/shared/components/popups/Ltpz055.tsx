@@ -11,7 +11,16 @@ import { BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
@@ -212,6 +221,15 @@ const Ltpz055 = () => {
           </Gcol>
         </DialogSection>
         <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
+            </Grow>
+          </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>

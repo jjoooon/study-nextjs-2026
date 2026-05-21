@@ -18,7 +18,7 @@ export function TooltipQ({ defaultOpen = false, sideOffset = 1, children }: Tool
   return (
     <Tooltip defaultOpen={defaultOpen}>
       <TooltipTrigger asChild>
-        <Button only="icon" size="md" variant="none">
+        <Button only="icon" size="md" variant="none" className="aspect-auto">
           <QuestionMark color="#61554F" />
         </Button>
       </TooltipTrigger>
