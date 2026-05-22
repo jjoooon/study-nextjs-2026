@@ -3,8 +3,8 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Grow, Grid } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import { Grow, Grid, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -15,12 +15,14 @@ import { useFormFields } from '@hooks/useFormFields';
 import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { TableMore } from '@common/TablePagination';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 import '@/shared/lib/agGridPub';
@@ -60,7 +62,7 @@ const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
     field08: '2026-03-11 15:33',
     field09: '신청중',
     field10: '김한화김한화김한화김한화김한화',
-    field11: '심한화심한화심한화 심한화',
+    field11: '심한화',
     field12: 'LA251028678825',
   },
   {
@@ -80,9 +82,9 @@ const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
   },
 ];
 
+// 2026-05-22 체크박스 삭제, 페이징 추가
 type Ltpa400DummyDataRow2 = {
   id: number;
-  isCheck: boolean;
   field01_01: string | number;
   field02_01: string | number;
   field03_01: string | number;
@@ -99,7 +101,6 @@ type Ltpa400DummyDataRow2 = {
 const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
   {
     id: 1,
-    isCheck: false,
     field01_01: '',
     field02_01: ' ',
     field03_01: '',
@@ -115,7 +116,6 @@ const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
   },
   {
     id: 2,
-    isCheck: false,
     field01_01: '',
     field02_01: ' ',
     field03_01: '',
@@ -131,7 +131,6 @@ const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
   },
   {
     id: 3,
-    isCheck: false,
     field01_01: '',
     field02_01: ' ',
     field03_01: '',
@@ -147,7 +146,6 @@ const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
   },
   {
     id: 4,
-    isCheck: false,
     field01_01: '',
     field02_01: ' ',
     field03_01: '',
@@ -163,7 +161,21 @@ const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
   },
   {
     id: 5,
-    isCheck: false,
+    field01_01: '',
+    field02_01: ' ',
+    field03_01: '',
+    field04_01: '',
+    field05_01: '',
+    field06_01: '',
+    field07_01: '',
+    field08_01: '',
+    field09_01: '',
+    field10_01: '',
+    field11_01: '',
+    field12_01: '',
+  },
+  {
+    id: 6,
     field01_01: '',
     field02_01: ' ',
     field03_01: '',
@@ -181,6 +193,16 @@ const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
 
 export default function Ltpa400Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+
+  // 2026-05-22 페이징 추가
+  const pageSize = 5;
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+    allRows: Ltpa400DummyData2,
+    pageSize,
+  });
+  const visibleRows = React.useMemo(() => Ltpa400DummyData2.slice(0, loadedCount), [loadedCount]);
+  
+  // 2026-05-22 지원SM 버튼으로 변경
   const columnDefs: ColDef<Ltpa400DummyDataRow>[] = [
     {
       headerName: '설계접수번호',
@@ -264,6 +286,11 @@ export default function Ltpa400Section() {
       width: 120,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field11' }),
+      cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
+        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+          {params.data?.field11 ?? ''}
+        </Button>
+      ),
     },
     {
       headerName: '설계번호',
@@ -622,52 +649,58 @@ export default function Ltpa400Section() {
                       <FileExportIcon />
                     </Button>
                   </Grow>
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
-                    <AgGridReact<Ltpa400DummyDataRow2>
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={Ltpa400DummyData2}
-                      columnDefs={columnDefs2}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                      }}
-                      singleClickEdit={true}
-                      onCellValueChanged={() => {}}
-                      rowSelection={{
-                        mode: 'singleRow',
-
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 30,
-                      }}
-                      onGridReady={(params) => {
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isCheck) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                      domLayout="normal"
+                  <Gcol className="w-full" gap={1}>
+                    <div className="ag-theme-alpine min-h-[18.4rem]">
+                      {/* 2026-05-22 체크박스 삭제 */}
+                      <AgGridReact<Ltpa400DummyDataRow2>
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        getRowId={(params) => String(params.data.id)}
+                        // rowData={Ltpa400DummyData2}
+                        rowData={visibleRows}
+                        columnDefs={columnDefs2}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                        }}
+                        domLayout="normal"
+                      />
+                    </div>
+                    {/* 2026-05-22 페이징 추가 */}
+                    <TableMore
+                      isAll={true}
+                      loadedCount={loadedCount}
+                      totalCount={totalCount}
+                      pageSize={pageSize}
+                      onLoadAll={handleLoadAll}
+                      onLoadNext={handleLoadNext}
                     />
-                  </div>
+                  </Gcol>
                 </Grid>
               </Grid>
             )}
           </TabPager>
         }
+        // 2025-05-22 버튼 분리
         mainFoot={
           <MainBottom>
-            <MainBottomItem>
-              <Grow gap={1} placement={'ee'} className="w-full">
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
-                  상품선택
-                </Button>
-              </Grow>
-            </MainBottomItem>
+            {active === 'tab1' && (
+              <MainBottomItem>
+                <Grow gap={1} placement={'ee'} className="w-full">
+                  <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                    상품선택
+                  </Button>
+                </Grow>
+              </MainBottomItem>
+            )}
+            {active === 'tab2' && (
+              <MainBottomItem>
+                <Grow gap={1} placement={'ee'} className="w-full">
+                  <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                    상품선택
+                  </Button>
+                </Grow>
+              </MainBottomItem>
+            )}
           </MainBottom>
         }
       />
