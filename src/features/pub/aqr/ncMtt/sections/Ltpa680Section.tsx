@@ -12,7 +12,6 @@ import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 
 import { ChevronDownIcon, FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
@@ -982,7 +981,7 @@ export default function Ltpa680Section() {
                 </Gcol>
               </Gcol>
             </Grid>
-            <Gcol placement="ss">
+            <Grid placement="ss" className="grid-rows-[auto_1fr]">
               <Grid className="grid-cols-[1fr_1fr_1fr] w-full" placement="ss" gap={3}>
                 <Gcol className="w-full" placement="ss">
                   <Grow className="w-full" placement="bwc">
@@ -1263,7 +1262,7 @@ export default function Ltpa680Section() {
                                             resize="y"
                                             value={considerText1}
                                             readOnly={!isConsiderEditMode}
-                                            className="h-40 w-full "
+                                            className="h-full w-full "
                                             onChange={(e) => isConsiderEditMode && setConsiderText1(e.target.value)}
                                           />
                                         </TableCell>
@@ -1283,7 +1282,7 @@ export default function Ltpa680Section() {
                                             resize="y"
                                             value={considerText2}
                                             readOnly={!isConsiderEditMode}
-                                            className="h-40"
+                                            className="h-full w-full"
                                             onChange={(e) => isConsiderEditMode && setConsiderText2(e.target.value)}
                                           />
                                         </TableCell>
@@ -1415,23 +1414,8 @@ export default function Ltpa680Section() {
                   )}
                 </TabPager>
               </Grid>
-            </Gcol>
+            </Grid>
           </Grid>
-        }
-        mainFoot={
-          <MainBottom>
-            <MainBottomItem>
-              <Grow gap={1}></Grow>
-              <Grow gap={1}>
-                <Button variant={'contained'} size={'xl'} color={'gray-light'}>
-                  저장
-                </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
-                  설계삭제
-                </Button>
-              </Grow>
-            </MainBottomItem>
-          </MainBottom>
         }
       />
       <LayoutFoot>

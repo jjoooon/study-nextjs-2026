@@ -24,7 +24,6 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback } from 'react';
-import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -176,7 +175,8 @@ const Ltpz066 = () => {
               <TableFoldBody>
                 <FormTable caption="유형" cols={['w-[12rem]', 'w-auto']}>
                   <FormRow>
-                    <FormCell title={'피보험자'}>
+                    {/* 2026-05-21 title 변경 */}
+                    <FormCell title={'유형'}>
                       <NativeSelect
                         aria-label="항목 선택"
                         value={form.type01}
@@ -230,6 +230,10 @@ const Ltpz066 = () => {
                 tooltipShowDelay={0}
               />
             </div>
+            {/* 2026-05-21 수정 */}
+            <Typo icon="info" variant="body-sm">
+              세트형 담보는 개별 담보금액 조정 불가
+            </Typo>
           </Grid>
         </DialogSection>
 
