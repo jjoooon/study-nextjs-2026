@@ -2,8 +2,8 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 
+// 2026-05-21 import 수정
 'use client';
-
 import { Gcol, Grow, Typo } from '@atoms';
 
 import { BulletList } from '@common/BulletList';
@@ -220,6 +220,7 @@ const Ltpz055 = () => {
             </Typo>
           </Gcol>
         </DialogSection>
+        {/* 2026-05-21 수정 */}
         <DialogFooter>
           <DialogFooterArea>
             <Grow>

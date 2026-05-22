@@ -180,7 +180,7 @@ export default function Ltpa300Section() {
       {
         headerName: '증권번호',
         field: 'field06',
-        width: 150,
+        flex: 1,
         cellClass: 'text-center',
         tooltipValueGetter: createTooltipValueGetter<Ltpa300DummyDataRow>({ field: 'field06' }),
       },
@@ -355,7 +355,7 @@ export default function Ltpa300Section() {
 
             <TableFold>
               <TableFoldHead title="정액담보점검결과(피보험자별)">
-                <Button id="btnPA" color="success" variant="outlined" onClick={() => {}}>
+                <Button color="success" variant="outlined" onClick={() => {}}>
                   엑셀내보내기
                   <FileExportIcon />
                 </Button>

@@ -602,11 +602,12 @@ export const Ltpz296 = () => {
                   엑셀가져오기
                   <FileImportIcon />
                 </Button>
+                {/* 2026-05-21 텍스트수정 */}
                 <Button color="gray" variant="outlined" onClick={handleAddRowB}>
-                  그룹추가
+                  행추가
                 </Button>
                 <Button color="gray" variant="outlined" onClick={handleDeleteRowB}>
-                  그룹삭제
+                  행삭제
                 </Button>
               </Grow>
             </TableFoldHead>

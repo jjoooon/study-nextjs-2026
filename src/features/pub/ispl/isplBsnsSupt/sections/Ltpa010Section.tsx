@@ -811,10 +811,11 @@ export default function Ltpa010Section() {
                 </Button>
               </Grow>
               <Grow gap={1}>
-                <Button variant={'contained'} size={'xl'} color={'gray-light'}>
+                {/*2026-05-22 버튼 스타일 변경 */}
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
                   설계예외처리
                 </Button>
-                <Button variant={'contained'} size={'xl'} color={'gray-light'}>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
                   저장
                 </Button>
                 <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
