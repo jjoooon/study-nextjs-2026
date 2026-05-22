@@ -3,19 +3,24 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useDynamicColumnWidths, createTreeNameCellRenderer } from '@aggrid';
-import { Grow, Grid } from '@atoms';
+import { AgGridEmptyComponent, numberValueFormatter, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { Grow, Grid, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
+import { TableMore } from '@common/TablePagination';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
 import { SearchIcon, ResetIcon } from '@icons';
+import { FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
+import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
 import * as React from 'react';
@@ -24,214 +29,147 @@ import '@/shared/lib/agGridPub';
 
 type DummyData1Type = {
   id: number;
+  packageName: string;
   field1: string;
   field2: string;
+  field3: number;
+  field4: number;
+  field5: number;
+  field6: boolean;
 };
 const DummyData1: DummyData1Type[] = [
   {
     id: 1,
-    field1: '간병',
-    field2: '간병인사용',
-  },
-  {
-    id: 2,
-    field1: '암주요',
-    field2: '암주요치료(상급종합)',
-  },
-  {
-    id: 3,
-    field1: '암주요',
-    field2: '암주요치료(종합병원)',
-  },
-  {
-    id: 4,
-    field1: '암주요',
-    field2: '암주요치료(비급여)',
-  },
-  {
-    id: 5,
-    field1: '암주요',
-    field2: '암주요치료(전이암)',
-  },
-  {
-    id: 6,
-    field1: '암주요',
-    field2: '표적항암',
-  },
-  {
-    id: 7,
-    field1: '순환계치료비',
-    field2: '요양병원제외',
-  },
-  {
-    id: 8,
-    field1: '순환계치료비',
-    field2: '상급종합병원',
-  },
-  {
-    id: 9,
-    field1: '순환계치료비',
-    field2: '주요순환계',
-  },
-  {
-    id: 10,
-    field1: '입원',
-    field2: '1인실',
-  },
-  {
-    id: 11,
-    field1: '입원',
-    field2: '2~3인실',
-  },
-  {
-    id: 12,
-    field1: '운전자',
-    field2: '운전자비용',
-  },
-  {
-    id: 13,
-    field1: '여성',
-    field2: '유/갑/생',
-  },
-  {
-    id: 14,
-    field1: '출산/난임',
-    field2: '미혼자용',
-  },
-  {
-    id: 15,
-    field1: '출산/난임',
-    field2: '기혼자용',
-  },
-];
-
-type DummyData2Type = {
-  id: number;
-  packageName: string;
-  field1: string;
-  field2: string;
-  field3: string;
-  filePath: string[];
-};
-const DummyData2: DummyData2Type[] = [
-  {
-    id: 1,
     packageName: '간병인 사용',
     field1: 'CLA23114',
     field2: '나눔의 행복(상해사망)',
-    field3: '',
-    filePath: ['1'],
+    field3: 50000,
+    field4: 1,
+    field5: 1,
+    field6: false,
   },
   {
     id: 2,
     packageName: '간병인 사용',
     field1: 'CLA23114',
     field2: '나눔의 행복(상해사망)',
-    field3: '',
-    filePath: ['2'],
+    field3: 50000,
+    field4: 2,
+    field5: 2,
+    field6: true,
   },
   {
     id: 3,
     packageName: '암주요치료(전이암)',
     field1: 'CLA23114',
     field2: '통합암(4대유사암제외) 진단비',
-    field3: '세트담보',
-    filePath: ['3'],
+    field3: 50000,
+    field4: 3,
+    field5: 3,
+    field6: false,
   },
   {
     id: 4,
     packageName: '암주요치료(전이암)',
-    field1: '',
+    field1: 'CLA23114',
     field2: '나눔의 행복(상해사망)',
-    field3: '',
-    filePath: ['3', '3-1'],
+    field3: 50000,
+    field4: 4,
+    field5: 3,
+    field6: false,
   },
   {
     id: 5,
     packageName: '암주요치료(전이암)',
-    field1: '',
+    field1: 'CLA23114',
     field2: '나눔의 행복(상해사망)',
-    field3: '',
-    filePath: ['3', '3-2'],
+    field3: 50000,
+    field4: 4,
+    field5: 1,
+    field6: true,
   },
   {
     id: 6,
     packageName: '암주요치료',
     field1: 'CLA23114',
     field2: '나눔의 행복(상해사망)',
-    field3: '',
-    filePath: ['4'],
+    field3: 50000,
+    field4: 6,
+    field5: 1,
+    field6: false,
   },
 ];
 
-const treeNameCellRenderer = createTreeNameCellRenderer<DummyData2Type>();
-
-export default function Ltpa650Section() {
+export default function Ltpa660Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
+  const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
 
-  // 담보분류 -------------
-  const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
+  const pageSize = 3;
+  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
+    useAgGridInfiniteAppend({
+      allRows: DummyData1,
+      pageSize,
+    });
+  const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
     () => [
-      {
-        headerName: '패키지명',
-        field: 'field1',
-        width: attributeColumnWidth[13],
-        autoHeight: true,
-        spanRows: true,
-      },
-      {
-        headerName: '세부',
-        field: 'field2',
-        flex: 1,
-        autoHeight: true,
-      },
-    ],
-    [attributeColumnWidth]
-  );
-
-  // 담보관리 -------------
-  const gridApiRef = React.useRef<GridApi<DummyData2Type> | null>(null);
-
-  const columnDefs2: ColDef<DummyData2Type>[] = useMemo(
-    () => [
-      {
-        headerName: '패키지명',
-        field: 'packageName',
-        width: attributeColumnWidth[15],
-        autoHeight: true,
-        spanRows: true,
-      },
       {
         headerName: '담보코드',
         field: 'field1',
         cellClass: 'text-center',
         width: attributeColumnWidth[10],
         autoHeight: true,
-        spanRows: true,
+        cellRenderer: (params: ICellRendererParams<DummyData1Type>) =>
+          params.data?.field1 ? (
+            <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+              {params.value}
+            </Button>
+          ) : (
+            params.value
+          ),
       },
       {
         headerName: '담보명',
         field: 'field2',
         flex: 1,
-        cellClass: (params) =>
-          params.data && params.data.filePath.length === 1
-            ? ''
-            : 'before:content-["-"] before:inline-block before:mr-1',
-        // editable: (params) => Boolean(params.data && params.data.filePath.length === 1),
       },
       {
-        headerName: '구분',
+        headerName: '판매건수',
         field: 'field3',
+        width: attributeColumnWidth[10],
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter<DummyData1Type>,
+      },
+      {
+        headerName: '판매순위',
+        field: 'field4',
+        width: attributeColumnWidth[10],
         cellClass: 'text-center',
-        width: attributeColumnWidth[8],
-        cellRenderer: treeNameCellRenderer,
-        cellRendererParams: {
-          className: 'block w-full text-center',
-          buttonClassName: 'justify-center text-center',
+      },
+      {
+        headerName: '순위조정',
+        field: 'field5',
+        width: attributeColumnWidth[10],
+        cellClass: 'px-[0.2rem]! editable-cell text-center',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         },
+        cellRenderer: getExpiryRenderer('center'),
+      },
+      {
+        headerName: '추천제외',
+        field: 'field6',
+        width: attributeColumnWidth[10],
+        cellClass: 'text-center',
+        editable: true,
+        cellDataType: 'boolean',
+        cellRenderer: 'agCheckboxCellRenderer',
+        cellEditor: 'agCheckboxCellEditor',
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, getExpiryRenderer]
   );
 
   return (
@@ -247,26 +185,41 @@ export default function Ltpa650Section() {
       <LayoutTemplate
         mainBody={
           <Grid className="w-full grid grid-rows-[auto_1fr] gap-3 h-full">
-            <Grow placement="bwc" className="w-full" variant={'box-round'}>
-              <FormTable variant={'none'} cols={['w-1', 'w-auto']}>
+            <Grow placement="bwe" className="w-full" variant={'box-round'}>
+              <FormTable variant={'none'} cols={['w-1', 'w-[20rem]', 'w-1', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'담보'} tdClassName="grid-cols-[auto_1fr_auto]">
-                    <NativeSelect>
-                      <option value="">전체</option>
+                  <FormCell title={'담보'} tdClassName="grid-cols-[auto_auto_1fr_auto]" colSpan={3}>
+                    <NativeSelect width={96}>
+                      <option value="">담보그룹</option>
                     </NativeSelect>
-                    <Input width={120} value={'LA202852001'} />
+                    <Input width={80} value={'CLA23114'} />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input
                       aria-label=""
-                      width={450}
+                      width={430}
                       value={'한화시그니처여성건강보험/(1종) 납입면제 강화형 기본형'}
                       readOnly
                     />
                   </FormCell>
-                  <FormCell title={'기준일자'}>
-                    <DatePickerInput mode="single" onChange={() => {}} value="" />
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'조회기간'}>
+                    <DatePickerInput mode="range" onChange={() => {}} value="" />
+                  </FormCell>
+                  <FormCell title={'구분'}>
+                    <CheckboxGroup className="gap-3">
+                      {[
+                        { label: '현재판매담보', value: '현재판매담보' },
+                        { label: '보통약관제외', value: '보통약관제외' },
+                        { label: '동시가입담보 묶어서 보기', value: 'simpleExclude' },
+                      ].map((option) => (
+                        <CheckboxGroupItem key={option.value} value={option.value}>
+                          {option.label}
+                        </CheckboxGroupItem>
+                      ))}
+                    </CheckboxGroup>
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -287,53 +240,83 @@ export default function Ltpa650Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Grid className="grid-cols-[1fr_1fr] h-full w-full" gap={3}>
-              {/* 패키지 관리 */}
-              <div className="ag-theme-alpine radio-selection">
-                <AgGridReact<DummyData1Type>
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={DummyData1}
-                  columnDefs={columnDefs1}
-                  defaultColDef={{
-                    sortable: true,
-                    resizable: false,
-                  }}
-                  singleClickEdit={true}
-                  domLayout="normal"
-                  animateRows={false}
-                  enableCellSpan={true}
-                />
-              </div>
-
-              {/* 담보관리 */}
+            <Gcol>
+              <Grow className="w-full" placement="ec">
+                <Button color="success" variant="outlined">
+                  엑셀내보내기
+                  <FileExportIcon />
+                </Button>
+              </Grow>
               <div className="ag-theme-alpine">
-                <AgGridReact<DummyData2Type>
+                <AgGridReact<DummyData1Type>
                   onGridReady={(event) => {
                     gridApiRef.current = event.api;
                   }}
+                  onSortChanged={(event) => {
+                    handleSortChanged(
+                      event.api
+                        .getColumnState()
+                        .filter((col) => col.sort)
+                        .map((col) => ({
+                          colId: col.colId || '',
+                          sort: (col.sort || 'asc') as 'asc' | 'desc',
+                        }))
+                    );
+                  }}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
-                  rowData={DummyData2}
+                  rowData={DummyData1}
                   columnDefs={columnDefs2}
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
                   }}
+                  suppressClickEdit={true}
                   singleClickEdit={true}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 30,
+                    cellClass: 'editable-cell text-center',
+                  }}
                   domLayout="normal"
                   animateRows={false}
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                   tooltipHideDelay={3000}
-                  treeData={true}
-                  groupDisplayType={'custom'}
-                  getDataPath={(row) => row.filePath}
-                  groupDefaultExpanded={0}
+                  rowModelType="infinite"
+                  cacheBlockSize={pageSize}
+                  maxBlocksInCache={2}
+                  datasource={dataSource}
                 />
               </div>
-            </Grid>
+              <TableMore
+                isAll={false}
+                loadedCount={loadedCount}
+                totalCount={totalCount}
+                pageSize={pageSize}
+                onLoadAll={handleLoadAll}
+                onLoadNext={handleLoadNext}
+                onLoadReset={handleLoadReset}
+              />
+            </Gcol>
           </Grid>
+        }
+        mainFoot={
+          <MainBottom>
+            <MainBottomItem>
+              <Grow gap={1} placement={'ec'} className="w-full">
+                <Button variant={'contained'} color={'primary'} size={'xl'}>
+                  저장
+                </Button>
+              </Grow>
+            </MainBottomItem>
+          </MainBottom>
         }
       />
       <LayoutFoot>

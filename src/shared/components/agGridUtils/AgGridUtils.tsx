@@ -1342,10 +1342,16 @@ interface UseAgGridInfiniteAppendParams<TData> {
   initialLoadedCount?: number;
 }
 
+type SortState = Array<{
+  colId: string;
+  sort: 'asc' | 'desc';
+}>;
+
 /**
  * infinite rowModel + 더보기(append) 공통 훅
  * - 다음: pageSize 만큼 로드 범위 증가
  * - 전체조회: 전체 건수로 로드 범위 확장
+ * - 정렬: onSortChanged 콜백으로 sortModel 전달 필수
  */
 export function useAgGridInfiniteAppend<TData>({
   allRows,
@@ -1356,6 +1362,7 @@ export function useAgGridInfiniteAppend<TData>({
   const safeInitial = Math.max(0, Math.min(initialLoadedCount ?? pageSize, totalCount));
 
   const [loadedCount, setLoadedCount] = React.useState<number>(safeInitial);
+  const [sortState, setSortState] = React.useState<SortState>([]);
 
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
   const currentPage = Math.max(1, Math.ceil(Math.max(loadedCount, 1) / pageSize));
@@ -1376,17 +1383,57 @@ export function useAgGridInfiniteAppend<TData>({
     setLoadedCount(initialLoadedCount ?? pageSize);
   }, [initialLoadedCount, pageSize]);
 
+  /**
+   * 정렬 상태 업데이트 (AgGrid onSortChanged 콜백에서 호출)
+   */
+  const handleSortChanged = React.useCallback((sortModel: SortState) => {
+    setSortState(sortModel);
+  }, []);
+
+  /**
+   * 정렬 로직: sortState에 따라 데이터 정렬
+   */
+  const getSortedRows = React.useCallback(
+    (rows: TData[]): TData[] => {
+      if (sortState.length === 0) return rows;
+
+      return [...rows].sort((a, b) => {
+        for (const { colId, sort } of sortState) {
+          const aVal = (a as Record<string, unknown>)[colId];
+          const bVal = (b as Record<string, unknown>)[colId];
+
+          if (aVal === bVal) continue;
+
+          let comparison = 0;
+          if (typeof aVal === 'string' && typeof bVal === 'string') {
+            comparison = aVal.localeCompare(bVal);
+          } else if (typeof aVal === 'number' && typeof bVal === 'number') {
+            comparison = aVal - bVal;
+          } else {
+            comparison = String(aVal).localeCompare(String(bVal));
+          }
+
+          return sort === 'asc' ? comparison : -comparison;
+        }
+        return 0;
+      });
+    },
+    [sortState]
+  );
+
   const dataSource = React.useMemo<IDatasource>(() => {
     return {
       getRows: (params: IGetRowsParams) => {
+        // 정렬 적용 후 슬라이싱
+        const sortedRows = getSortedRows(allRows);
         const safeEnd = Math.min(params.endRow, loadedCount);
-        const rowsThisBlock = allRows.slice(params.startRow, safeEnd);
+        const rowsThisBlock = sortedRows.slice(params.startRow, safeEnd);
         const lastRow = loadedCount >= totalCount ? totalCount : loadedCount;
 
         params.successCallback(rowsThisBlock, lastRow);
       },
     };
-  }, [allRows, loadedCount, totalCount]);
+  }, [allRows, loadedCount, totalCount, getSortedRows]);
 
   return {
     loadedCount,
@@ -1398,6 +1445,7 @@ export function useAgGridInfiniteAppend<TData>({
     handleLoadNext,
     handleLoadAll,
     handleLoadReset,
+    handleSortChanged,
     dataSource,
   };
 }

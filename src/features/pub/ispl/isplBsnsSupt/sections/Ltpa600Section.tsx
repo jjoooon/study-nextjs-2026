@@ -301,11 +301,11 @@ export default function Ltpa600Section() {
   // 시뮬레이션 -------------
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
   const pageSize = 3;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
-    allRows: rowData2,
-    pageSize,
-  });
-
+  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
+    useAgGridInfiniteAppend({
+      allRows: rowData2,
+      pageSize,
+    });
   // 복사
   const duplicateButtonRenderer = useMemo(
     () =>
@@ -522,6 +522,21 @@ export default function Ltpa600Section() {
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
                     tooltipHideDelay={3000}
+                    rowModelType="infinite"
+                    onSortChanged={(event) => {
+                      handleSortChanged(
+                        event.api
+                          .getColumnState()
+                          .filter((col) => col.sort)
+                          .map((col) => ({
+                            colId: col.colId || '',
+                            sort: (col.sort || 'asc') as 'asc' | 'desc',
+                          }))
+                      );
+                    }}
+                    cacheBlockSize={pageSize}
+                    maxBlocksInCache={2}
+                    datasource={dataSource}
                   />
                 </div>
               </Grid>
