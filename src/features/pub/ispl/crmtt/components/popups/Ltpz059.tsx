@@ -728,6 +728,10 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                     <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
                       층/면적반영
                     </Button>
+                    {/* 2026-05-22 button 추가 */}
+                    <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
+                      복합건물
+                    </Button>
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody>

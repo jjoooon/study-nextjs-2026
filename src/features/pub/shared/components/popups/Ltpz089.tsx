@@ -195,6 +195,9 @@ const Ltpz089 = () => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
+              <Button variant={'contained'} size={'xl'}>
+                확인
+              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
