@@ -3,10 +3,10 @@
  */
 const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
 const PROD_STORYBOOK_BASE_URL = 'https://jjoooon.github.io/study-nextjs-2026';
-const HYGITEST_STORYBOOK_BASE_URL = 'https://ltp-story.hwgitest.com';
+const HYGITEST_STORYBOOK_BASE_URL = 'https://story-dev.hwgitest.com';
 
 const LOCAL_HOST_NAMES = new Set(['localhost', '127.0.0.1']);
-const HYGITEST_HOST_NAMES = new Set(['ltp-story.hwgitest.com']);
+const HYGITEST_HOST_NAMES = new Set(['story-dev.hwgitest.com']);
 
 function getStorybookBaseUrl(): string {
   if (typeof window === 'undefined') return LOCAL_STORYBOOK_BASE_URL;

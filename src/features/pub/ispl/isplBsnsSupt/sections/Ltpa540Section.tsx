@@ -202,8 +202,6 @@ export default function Ltpa540Section() {
   const [showExisting, setShowExisting] = React.useState(false);
 
   // 직접 수정된 셀 추적: Set<"rowId:fieldName">
-  const [modifiedCells, setModifiedCells] = React.useState<Set<string>>(new Set());
-
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = React.useMemo(
     () => [
       {
@@ -307,7 +305,7 @@ export default function Ltpa540Section() {
             cellEditor: 'agSelectCellEditor',
             cellEditorParams: { values: ['Y', 'N'] },
             cellClassRules: EditCellColor2,
-            cellStyle: (params) => {  
+            cellStyle: (params) => {
               const original = rowData.find((r) => r.id === params.data?.id)?.field10;
               const isModified = String(params.value) !== String(original);
               return { backgroundColor: isModified ? '#CBE3FF' : '#EFF8FF' };
@@ -316,7 +314,7 @@ export default function Ltpa540Section() {
         ],
       },
     ],
-    [showExisting, EditCellColor, EditCellColor2],
+    [showExisting, EditCellColor, EditCellColor2]
   );
 
   return (
@@ -394,7 +392,7 @@ export default function Ltpa540Section() {
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={DummyData}  
+                    rowData={DummyData}
                     columnDefs={columnDefs}
                     domLayout="normal"
                     tooltipShowMode="whenTruncated"

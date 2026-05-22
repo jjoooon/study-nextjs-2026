@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';

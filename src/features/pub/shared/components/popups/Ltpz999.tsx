@@ -24,7 +24,7 @@ import { ErrorIcon } from '@/shared/components/icons/CommonIcons';
 const Ltpz999 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton={false} resizable={true} size={'md'} className="grid-rows-[1fr_auto]">
+      <DialogContent showCloseButton={false} resizable={true} size={'sm'} className="grid-rows-[1fr_auto]">
         <VisuallyHidden.Root>
           <DialogTitle>시스템 오류 안내</DialogTitle>
         </VisuallyHidden.Root>
@@ -53,6 +53,25 @@ const Ltpz999 = () => {
               <Button variant={'none'} className="!justify-between w-full font-bold">
                 처리방안 <ArrowIcon className="rotate-[-90deg]" size={16} />
               </Button>
+              <div className="">
+                오류가 났을 경우 해소는 이렇게 해주세요.
+                <br />
+                [가입설계] 버튼을 클릭 후 담보 해소를 해주세요.
+                <br />
+                [가입설계] 버튼을 클릭 후 담보 해소를 해주세요.
+                <br />
+                [가입설계] 버튼을 클릭 후 담보 해소를 해주세요.
+                <br />
+                [가입설계] 버튼을 클릭 후 담보 해소를 해주세요.
+                <br />
+                [가입설계] 버튼을 클릭 후 담보 해소를 해주세요.
+                <br />
+                [가입설계] 버튼을 클릭 후 담보 해소를 해주세요.
+                <br />
+                [가입설계] 버튼을 클릭 후 담보 해소를 해주세요.
+                <br />
+                [가입설계] 버튼을 클릭 후 담보 해소를 해주세요.
+              </div>
             </Gcol>
           </Gcol>
         </DialogSection>
