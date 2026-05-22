@@ -122,6 +122,12 @@ const isTodayDate = (value: string, today: Date) => {
   return parsed.getTime() === today.getTime();
 };
 
+const isCompletedRow = (row: Pick<IARow, 'id' | 'subId' | 'phase' | 'date'>) => {
+  const completeDate = getPubInfo(row)?.완료일?.trim() || row.date?.trim() || '';
+
+  return Boolean(completeDate);
+};
+
 export function IAListWithPreview() {
   const today = React.useMemo(() => {
     const now = new Date();
@@ -159,7 +165,6 @@ export function IAListWithPreview() {
           pubName,
         };
       }
-      const phase = info.완료일 ? 'Y' : row.phase;
       return {
         ...row,
         pub: info.이름,
@@ -167,7 +172,6 @@ export function IAListWithPreview() {
         modify: info.수정일 || row.modify,
         planDate,
         pubName,
-        phase,
       };
     });
   }, []);
@@ -177,7 +181,7 @@ export function IAListWithPreview() {
     if (!showPhaseOnly) {
       return filtered;
     }
-    return filtered.filter((row) => row.phase === 'Y');
+    return filtered.filter((row) => isCompletedRow(row));
   }, [rowsWithPubInfo, showPhaseOnly]);
 
   const pubOptions = React.useMemo(() => {
@@ -223,7 +227,7 @@ export function IAListWithPreview() {
 
   const totalCount = React.useMemo(() => ownerFilteredRows.length, [ownerFilteredRows]);
   const doneCount = React.useMemo(() => {
-    return ownerFilteredRows.filter((row) => row.phase === 'Y').length;
+    return ownerFilteredRows.filter((row) => isCompletedRow(row)).length;
   }, [ownerFilteredRows]);
   const progressPercent = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
 
@@ -503,10 +507,11 @@ export function IAListWithPreview() {
               const modifyDate = formatCompleteDate(info?.수정일 || row.modify);
               const planDate = row.planDate ?? '';
               const pubName = row.pubName ?? '';
+              const isCompleted = isCompletedRow(row);
 
               const isPlanOverdue = isPastDate(planDate, today);
               const isPlanToday = isTodayDate(planDate, today);
-              const planDateTextClass = !info?.완료일
+              const planDateTextClass = !isCompleted
                 ? isPlanOverdue
                   ? '!text-[red]'
                   : isPlanToday
@@ -518,7 +523,7 @@ export function IAListWithPreview() {
                 <tr
                   key={`${getRowKey(row)}-${index}`}
                   data-active={isActive ? 'true' : undefined}
-                  className={[isActive ? 'selected' : '', info?.완료일 ? 'complete' : '', rowBgClass]
+                  className={[isActive ? 'selected' : '', isCompleted ? 'complete' : '', rowBgClass]
                     .filter(Boolean)
                     .join(' ')}
                   onClick={() => setActiveRowKey(getRowKey(row))}
