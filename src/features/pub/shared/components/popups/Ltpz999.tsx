@@ -9,6 +9,7 @@ import { BulletItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { ArrowIcon } from '@icons';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
+
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,6 +20,7 @@ import {
   DialogClose,
   DialogTitle,
 } from '@uiux/Dialog';
+import * as React from 'react';
 import { ErrorIcon } from '@/shared/components/icons/CommonIcons';
 
 const Ltpz999 = () => {

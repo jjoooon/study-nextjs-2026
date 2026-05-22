@@ -8,6 +8,14 @@ import { CloseIcon } from '@icons';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import {
+  registerDialog,
+  unregisterDialog,
+  getOpenCount,
+  getTopOpenDialogId,
+  getDialogLayerIndex,
+  subscribeOverlay,
+} from '@/shared/utils/popup/dialogOverlayRegistry';
 
 type DialogSizeValue = number | string;
 
@@ -80,61 +88,6 @@ const resolveDialogSize = (size?: DialogSize) => {
   };
 };
 
-type OpenDialogMeta = {
-  depth: number;
-  order: number;
-};
-
-// 열린 다이얼로그 추적 (중첩/병렬 모두 등록 순서 기준으로 레이어 계산)
-const _openDialogs = new Map<string, OpenDialogMeta>(); // id → meta
-let _openDialogOrder = 0;
-const _overlayListeners = new Set<() => void>();
-
-function _registerDialog(id: string, depth: number) {
-  const existing = _openDialogs.get(id);
-  _openDialogs.set(id, {
-    depth,
-    order: existing?.order ?? ++_openDialogOrder,
-  });
-  _overlayListeners.forEach((fn) => fn());
-}
-function _unregisterDialog(id: string) {
-  _openDialogs.delete(id);
-  _overlayListeners.forEach((fn) => fn());
-}
-function _getOpenCount() {
-  return _openDialogs.size;
-}
-function _getTopOpenDialogId(): string | null {
-  let topId: string | null = null;
-  let maxOrder = -1;
-
-  _openDialogs.forEach((meta, id) => {
-    if (meta.order > maxOrder) {
-      maxOrder = meta.order;
-      topId = id;
-    }
-  });
-
-  return topId;
-}
-function _getDialogLayerIndex(id: string | null): number {
-  if (!id) return 1;
-
-  const orderedIds = Array.from(_openDialogs.entries())
-    .sort(([, a], [, b]) => a.order - b.order)
-    .map(([dialogId]) => dialogId);
-
-  const index = orderedIds.indexOf(id);
-  return index >= 0 ? index + 1 : 1;
-}
-function _subscribeOverlay(fn: () => void) {
-  _overlayListeners.add(fn);
-  return () => {
-    _overlayListeners.delete(fn);
-  };
-}
-
 type DialogContextValue = {
   depth: number;
   dialogId: string | null;
@@ -171,8 +124,8 @@ function Dialog({
   // open 상태일 때만 _openDialogs 에 등록
   React.useEffect(() => {
     if (!isOpen) return;
-    _registerDialog(dialogId, newDepth);
-    return () => _unregisterDialog(dialogId);
+    registerDialog(dialogId, newDepth);
+    return () => unregisterDialog(dialogId);
   }, [isOpen, dialogId, newDepth]);
 
   return (
@@ -200,15 +153,23 @@ function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.C
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
-function DialogOverlay({ className, style, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+function DialogOverlay({
+  className,
+  style,
+  disableMotion = false,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Overlay> & {
+  disableMotion?: boolean;
+}) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       style={style}
       className={cn(
         'fixed inset-0 bg-black/60 pointer-events-none',
-        'data-[state=open]:animate-in data-[state=open]:fade-in-0',
-        'data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
+        disableMotion
+          ? 'transition-none'
+          : 'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
         className
       )}
       {...props}
@@ -247,16 +208,16 @@ function DialogContent({
   const { dialogId } = React.useContext(DialogDepthContext);
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
-  const [topOpenDialogId, setTopOpenDialogId] = React.useState(_getTopOpenDialogId);
-  const [openCount, setOpenCount] = React.useState(_getOpenCount);
-  const [dialogLayerIndex, setDialogLayerIndex] = React.useState(() => _getDialogLayerIndex(dialogId));
+  const [topOpenDialogId, setTopOpenDialogId] = React.useState(getTopOpenDialogId);
+  const [openCount, setOpenCount] = React.useState(getOpenCount);
+  const [dialogLayerIndex, setDialogLayerIndex] = React.useState(() => getDialogLayerIndex(dialogId));
 
   React.useEffect(
     () =>
-      _subscribeOverlay(() => {
-        setTopOpenDialogId(_getTopOpenDialogId());
-        setOpenCount(_getOpenCount());
-        setDialogLayerIndex(_getDialogLayerIndex(dialogId));
+      subscribeOverlay(() => {
+        setTopOpenDialogId(getTopOpenDialogId());
+        setOpenCount(getOpenCount());
+        setDialogLayerIndex(getDialogLayerIndex(dialogId));
       }),
     [dialogId]
   );
@@ -271,6 +232,7 @@ function DialogContent({
 
   // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시
   const resolvedShowOverlay = showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId));
+  const disableOverlayMotion = openCount > 1;
   const isFullSize = size === 'full';
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
   const [resizedSize, setResizedSize] = React.useState({ width: 0, height: 0 });
@@ -422,7 +384,13 @@ function DialogContent({
 
   return (
     <DialogPortal data-slot="dialog-portal">
-      {resolvedShowOverlay && <DialogOverlay style={{ zIndex: overlayZIndex }} className={overlayClassName} />}
+      {resolvedShowOverlay && (
+        <DialogOverlay
+          style={{ zIndex: overlayZIndex }}
+          className={overlayClassName}
+          disableMotion={disableOverlayMotion}
+        />
+      )}
       <DialogPrimitive.Content
         ref={contentRef}
         data-slot="dialog-content"
