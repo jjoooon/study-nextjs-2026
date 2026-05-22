@@ -40,7 +40,7 @@ const Ltpz104 = () => {
     { id: 4, field1: '서류출력', field2: '미출력', field3: '' },
     { id: 5, field1: '서류스캔', field2: '미스캔', field3: '' },
   ];
-
+  // 2026-05-22 cellClass 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '업무구분',
@@ -58,7 +58,7 @@ const Ltpz104 = () => {
       headerName: '주요내용',
       field: 'field3',
       flex: 1,
-      cellClass: 'text-center',
+      cellClass: 'text-left',
     },
   ];
 

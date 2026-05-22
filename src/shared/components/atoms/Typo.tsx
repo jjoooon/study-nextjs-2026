@@ -10,28 +10,29 @@ import { cn } from '@/shared/lib/shadcn/utils';
 
 const typoVariants = cva('', {
   variants: {
+    // 2026-05-21 class 수정
     variant: {
-      'heading-xl': 'heading-xl block text-[1.8rem] font-bold leading-[150%] tracking-[-0.08rem]',
-      'heading-lg': 'heading-lg block text-[1.6rem] font-bold leading-[150%] tracking-[-0.08rem]',
-      'heading-md': 'heading-md block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem]',
-      'heading-sm': 'heading-sm block text-[1.3rem] font-bold leading-[150%] tracking-[-0.08rem]',
-      'heading-xs': 'heading-xs block text-[1.1rem] font-normal leading-[150%] tracking-[-0.08rem]',
+      'heading-xl': 'heading-xl block text-[1.8rem] font-bold leading-[normal] tracking-[-0.08rem]',
+      'heading-lg': 'heading-lg block text-[1.6rem] font-bold leading-[normal] tracking-[-0.08rem]',
+      'heading-md': 'heading-md block text-[1.4rem] font-bold leading-[normal] tracking-[-0.08rem]',
+      'heading-sm': 'heading-sm block text-[1.3rem] font-bold leading-[normal] tracking-[-0.08rem]',
+      'heading-xs': 'heading-xs block text-[1.1rem] font-normal leading-[normal] tracking-[-0.08rem]',
 
-      'body-xl': 'body-xl text-[1.5rem] leading-[150%] tracking-[-0.13rem]',
-      'body-lg': 'body-lg text-[1.4rem] leading-[150%] tracking-[-0.13rem]',
-      'body-md': 'body-md text-[1.3rem] leading-[150%] tracking-[-0.13rem]',
-      'body-sm': 'body-sm text-[1.2rem] leading-[150%] tracking-[-0.13rem]',
-      'body-xs': 'body-xs text-[1.1rem] leading-[150%] tracking-[-0.13rem]',
+      'body-xl': 'body-xl text-[1.5rem] leading-[normal] tracking-[-0.13rem]',
+      'body-lg': 'body-lg text-[1.4rem] leading-[normal] tracking-[-0.13rem]',
+      'body-md': 'body-md text-[1.3rem] leading-[normal] tracking-[-0.13rem]',
+      'body-sm': 'body-sm text-[1.2rem] leading-[normal] tracking-[-0.13rem]',
+      'body-xs': 'body-xs text-[1.1rem] leading-[normal] tracking-[-0.13rem]',
 
-      'button-lg': 'button-lg text-[1.4rem] leading-[100%] tracking-[-0.13rem]',
-      'button-md': 'button-md text-[1.3rem] leading-[100%] tracking-[-0.13rem]',
-      'button-sm': 'button-sm text-[1.2rem] leading-[100%] tracking-[-0.13rem]',
-      'button-xs': 'button-xs text-[1.1rem] leading-[100%] tracking-[-0.13rem]',
+      'button-lg': 'button-lg text-[1.4rem] leading-[normal] tracking-[-0.13rem]',
+      'button-md': 'button-md text-[1.3rem] leading-[normal] tracking-[-0.13rem]',
+      'button-sm': 'button-sm text-[1.2rem] leading-[normal] tracking-[-0.13rem]',
+      'button-xs': 'button-xs text-[1.1rem] leading-[normal] tracking-[-0.13rem]',
 
       'amount-md':
-        'block text-[1.4rem] font-bold leading-[150%] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+        'block text-[1.4rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
       'amount-xs':
-        'block text-[1.1rem] font-bold leading-[150%] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
+        'block text-[1.1rem] font-bold leading-[normal] tracking-[-0.08rem] underline underline-offset-[0.3rem]',
     },
     icon: {
       info: 'InfoBoxInfoIcon',

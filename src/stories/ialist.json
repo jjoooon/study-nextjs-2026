@@ -3084,7 +3084,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPA690",
-    "path": "shared/components/popups",
+    "path": "shared/components",
     "dep4": "메시지 관리",
     "file": "담보그룹_보장패키지_설계추천속성 관리",
     "plan": "안성희",

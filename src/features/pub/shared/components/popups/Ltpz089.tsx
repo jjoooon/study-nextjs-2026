@@ -190,6 +190,7 @@ const Ltpz089 = () => {
             </TableFoldBody>
           </TableFold>
         </DialogSection>
+        {/* 2026-05-21 수정 */}
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
