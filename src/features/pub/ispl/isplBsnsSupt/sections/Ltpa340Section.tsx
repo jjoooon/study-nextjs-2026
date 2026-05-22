@@ -3,23 +3,23 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
-import { Grid, Grow, Gcol } from '@atoms';
+import { AgGridEmptyComponent, createAddRowHandler, createDeleteSelectedRowsHandler } from '@aggrid';
+import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import { PageID } from '@features/PageID';
-import { ResetIcon } from '@icons';
+import { ResetIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import type { ColDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
+import * as React from 'react';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
@@ -28,15 +28,15 @@ import '@/shared/lib/agGridPub';
 // dummy data
 type DummyDataType = {
   id: number;
-  field01: string | number;
-  field02: string | number;
-  field03: string | number;
-  field04: string | number;
-  field05: string | number;
-  field06: string | number;
-  field07: string | number;
-  field08: string | number;
-  field09: string | number;
+  field01: string;
+  field02: string;
+  field03: string;
+  field04: string;
+  field05: string;
+  field06: string;
+  field07: string;
+  field08: string;
+  field09: string;
 };
 const DummyData: DummyDataType[] = [
   {
@@ -90,8 +90,48 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa340Section() {
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+
+  // 행추가 삭제 ----------------------------------
+  const handleAddRow = React.useMemo(
+    () =>
+      createAddRowHandler<DummyDataType, number>(setRowData, {
+        idKey: 'id',
+        getNextId: (rows) => {
+          const maxId = rows.reduce((max, row) => Math.max(max, row.id), 0);
+          return maxId + 1;
+        },
+        createRow: (nextId) => ({
+          id: nextId,
+          isCheck: true,
+          field01: '',
+          field02: '',
+          field03: '',
+          field04: '',
+          field05: '',
+          field06: '',
+          field07: '',
+          field08: '',
+          field09: '',
+        }),
+        insertAt: 'end',
+      }),
+    [setRowData]
+  );
+
+  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+
+  const handleDeleteButtonClick = React.useMemo(
+    () =>
+      createDeleteSelectedRowsHandler<DummyDataType>(setRowData, gridApiRef, {
+        idKey: 'id',
+      }),
+    [setRowData, gridApiRef]
+  );
+  //  ---------------------------------- 행추가 삭제
+
   // AgGrid Column
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+  const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '설계번호',
       field: 'field01',
@@ -179,7 +219,7 @@ export default function Ltpa340Section() {
                 cols={['w-1', 'w-1', 'w-1', 'w-auto']}
               >
                 <FormRow>
-                  <FormCell title={'조회구분'}>
+                  <FormCell title={'등록일자'}>
                     <NativeSelect
                       aria-label="항목 선택"
                       width={108}
@@ -196,7 +236,7 @@ export default function Ltpa340Section() {
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <DatePickerInput mode="range" onChange={() => {}} size="lg" value="" />
+                    <DatePickerInput mode="range" onChange={() => {}} size="lg" value="" required />
                   </FormCell>
                   <FormCell title={'검색조건'}>
                     <NativeSelect
@@ -212,7 +252,7 @@ export default function Ltpa340Section() {
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <Input width={130} value={'LA260204310632'} />
+                    <Input width={130} value={'LA260204310632'} maxLength={10} />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -232,11 +272,39 @@ export default function Ltpa340Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Gcol className="w-full" gap={1}>
+            <Gcol className="w-full grid-rows-[auto_1fr]" gap={1}>
+              <Grow className="w-full" placement="ec">
+                <Grow>
+                  <Typo>서명방법</Typo>
+                  <NativeSelect
+                    aria-label="검색조건 선택"
+                    width={108}
+                    size={'md'}
+                  >
+                    {[
+                      { value: 'selection01', label: '전체' },
+                      { value: 'selection02', label: '문서서명' },
+                      { value: 'selection03', label: '전자서명' },
+                    ].map((option) => (
+                      <NativeSelectOption key={option.value} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                </Grow>
+                <Button variant={'outlined'} color={'secondary'} onClick={handleAddRow}>
+                  행추가
+                  <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
+                </Button>
+                <Button variant={'outlined'} color={'secondary'} onClick={handleDeleteButtonClick}>
+                  행삭제
+                  <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
+                </Button>
+              </Grow>
               <div className="ag-theme-alpine min-h-150">
                 <AgGridReact<DummyDataType>
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyData}
+                  rowData={rowData}
                   columnDefs={columnDefs}
                   singleClickEdit={true}
                   domLayout="normal"
@@ -249,6 +317,9 @@ export default function Ltpa340Section() {
                     width: 40,
                     cellClass: 'text-center editable-cell',
                   }}
+                  onGridReady={(params) => {
+                    gridApiRef.current = params.api;
+                  }}
                 />
               </div>
             </Gcol>
@@ -258,26 +329,26 @@ export default function Ltpa340Section() {
           <MainBottom>
             <MainBottomItem className="justify-end">
               <Grow gap={1}>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  전체발행
-                </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   상품설명서발행
                 </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   청약서류발행
                 </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   보험증권발행
                 </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   보장상세발행
                 </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   설계정보 일괄조회
                 </Button>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   신_상품설명서발행
+                </Button>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  전체발행
                 </Button>
               </Grow>
             </MainBottomItem>

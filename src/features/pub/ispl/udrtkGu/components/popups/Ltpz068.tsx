@@ -4,6 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Ai2Icon } from '@icons';
@@ -18,11 +19,10 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils/AgGridUtils';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 
 type DummyDataType = {
   id: number;

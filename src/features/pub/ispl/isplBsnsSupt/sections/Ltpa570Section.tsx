@@ -18,12 +18,12 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 
 type Ltpa570DummyDataRow = {
   id: number;
@@ -324,7 +324,7 @@ export default function Ltpa570Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr_auto] h-full" gap={3}>
+          <Grid className="grid-rows-[auto_1fr] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}

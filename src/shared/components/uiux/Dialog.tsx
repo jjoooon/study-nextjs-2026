@@ -31,11 +31,11 @@ const DIALOG_DEFAULT_MAX_HEIGHT = `calc(100vh - ${DIALOG_VIEWPORT_GAP})`;
 const DIALOG_FULL_WIDTH = `calc(100vw - 2rem)`;
 const DIALOG_FULL_HEIGHT = `calc(100vh - 2rem)`;
 const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
-  sm: '37rem',
+  sm: '48rem',
   md: '56rem',
   lg: '76rem',
   xl: '96rem',
-  '2xl': '112rem',
+  '2xl': '118 rem',
 };
 
 const toCssSize = (value?: DialogSizeValue): string | undefined => {

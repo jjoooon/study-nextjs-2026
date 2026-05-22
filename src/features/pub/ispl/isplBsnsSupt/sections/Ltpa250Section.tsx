@@ -6,17 +6,12 @@
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
-
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-
 import { PageID } from '@features/PageID';
-
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-
 import { Input } from '@uiux/Input';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
@@ -25,23 +20,23 @@ import '@/shared/lib/agGridPub';
 // dummy data
 type DummyDataType = {
   id: number;
-  field01: string | number;
-  field02: string | number;
-  field03: string | number;
-  field04: string | number;
-  field05: string | number;
-  field06: string | number;
-  field07: string | number;
-  field08: string | number;
-  field09: string | number;
-  field10: string | number;
-  field11: string | number;
-  field12: string | number;
-  field13: string | number;
-  field14: string | number;
-  field15: string | number;
-  field16: string | number;
-  field17: string | number;
+  field01: string;
+  field02: string;
+  field03: string;
+  field04: number;
+  field05: number;
+  field06: number;
+  field07: number;
+  field08: number;
+  field09: number;
+  field10: string;
+  field11: string;
+  field12: string;
+  field13: string;
+  field14: string;
+  field15: string;
+  field16: string;
+  field17: string;
 };
 const DummyData: DummyDataType[] = [
   {
@@ -49,16 +44,16 @@ const DummyData: DummyDataType[] = [
     field01: '상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),',
     field02: '2026-03-01',
     field03: '2027-07-01',
-    field04: '9999999',
-    field05: '9999999',
-    field06: '9999999',
-    field07: '9999999',
-    field08: '9999999',
-    field09: '9999999',
+    field04: 9999999,
+    field05: 9999999,
+    field06: 9999999,
+    field07: 9999999,
+    field08: 9999999,
+    field09: 9999999,
     field10: '정상',
     field11: '2026-03-01',
     field12: '입원의료비',
-    field13: '사고당 365일 한',
+    field13: '사고당 365일 한도',
     field14: '급여 90%',
     field15: '50% 보상(일)',
     field16: '담보총액공제(입원)',
@@ -69,16 +64,16 @@ const DummyData: DummyDataType[] = [
     field01: '상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),',
     field02: '2026-03-01',
     field03: '2027-07-01',
-    field04: '9999999',
-    field05: '9999999',
-    field06: '9999999',
-    field07: '9999999',
-    field08: '9999999',
-    field09: '9999999',
+    field04: 9999999,
+    field05: 9999999,
+    field06: 9999999,
+    field07: 9999999,
+    field08: 9999999,
+    field09: 9999999,
     field10: '정상',
     field11: '2026-03-01',
     field12: '입원의료비',
-    field13: '사고당 365일 한',
+    field13: '사고당 365일 한도',
     field14: '급여 90%',
     field15: '50% 보상(일)',
     field16: '담보총액공제(입원)',
@@ -154,7 +149,7 @@ export default function Ltpa250Section() {
       children: [
         {
           headerName: '의원',
-          width: 80,
+          width: 70,
           cellClass: 'text-right',
           field: 'field05',
           autoHeight: true,
@@ -162,7 +157,7 @@ export default function Ltpa250Section() {
         },
         {
           headerName: '병원',
-          width: 80,
+          width: 70,
           cellClass: 'text-right',
           field: 'field06',
           autoHeight: true,
@@ -170,7 +165,7 @@ export default function Ltpa250Section() {
         },
         {
           headerName: '요양기관',
-          width: 80,
+          width: 70,
           cellClass: 'text-right',
           field: 'field07',
           autoHeight: true,
@@ -178,7 +173,7 @@ export default function Ltpa250Section() {
         },
         {
           headerName: '약제비',
-          width: 80,
+          width: 70,
           cellClass: 'text-right',
           field: 'field08',
           autoHeight: true,
@@ -186,7 +181,7 @@ export default function Ltpa250Section() {
         },
         {
           headerName: '구공체',
-          width: 80,
+          width: 70,
           cellClass: 'text-right',
           field: 'field09',
           autoHeight: true,
@@ -197,7 +192,7 @@ export default function Ltpa250Section() {
     {
       headerName: '보험상태',
       cellClass: 'text-center',
-      width: 80,
+      width: 70,
       field: 'field10',
       autoHeight: true,
     },
@@ -205,7 +200,7 @@ export default function Ltpa250Section() {
       headerName: '상태변경일자',
       cellClass: 'text-center',
       field: 'field11',
-      width: 100,
+      width: 90,
       autoHeight: true,
     },
     {
@@ -322,7 +317,7 @@ export default function Ltpa250Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '장기신계약발급물일괄생성',
+            pageName: '실손특약담보사항조회',
             pageId: 'LTPA250',
           }}
         />
@@ -333,7 +328,7 @@ export default function Ltpa250Section() {
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable
                 variant={'head'}
-                caption="장기신계약발급물일괄생성 테이블"
+                caption="실손특약담보사항조회 테이블"
                 cols={['w-1', 'w-auto', 'w-1', 'w-auto']}
               >
                 <FormRow>
@@ -353,8 +348,6 @@ export default function Ltpa250Section() {
                   rowData={DummyData}
                   columnDefs={columnDefs}
                   domLayout="normal"
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
                 />
               </div>
             </Gcol>

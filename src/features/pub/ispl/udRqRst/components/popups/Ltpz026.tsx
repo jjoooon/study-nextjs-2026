@@ -5,9 +5,11 @@
 
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Grid, Gcol, Grow, Typo, Divider } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -22,9 +24,7 @@ import {
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 import '@/shared/lib/agGridPub';
-import { Badge } from '@/shared/components/uiux/Badge';
 import { useTabs } from '@/shared/hooks/useTabs';
 type Ltpz026TabType = {
   name: string;

@@ -2,8 +2,16 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+import {
+  AgGridEmptyComponent,
+  createAddRowHandler,
+  createDeleteSelectedRowsHandler,
+  getNextNumericRowId,
+} from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
 
 import { Button } from '@uiux/Button';
@@ -20,18 +28,10 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import {
-  AgGridEmptyComponent,
-  createAddRowHandler,
-  createDeleteSelectedRowsHandler,
-  getNextNumericRowId,
-} from '@/shared/components/agGridUtils/AgGridUtils';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 
 type DummyDataType = {
   id: number;
@@ -366,7 +366,7 @@ export const Ltpz064 = () => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[15.4rem]">
                 <AgGridReact<DummyDataType>
                   onGridReady={(event) => {
                     gridApiRef.current = event.api;

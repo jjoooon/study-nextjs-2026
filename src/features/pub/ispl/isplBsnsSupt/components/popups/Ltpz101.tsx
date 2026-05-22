@@ -17,8 +17,8 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import * as React from 'react';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import '@/shared/lib/agGridPub';
 
 export const Ltpz101 = () => {

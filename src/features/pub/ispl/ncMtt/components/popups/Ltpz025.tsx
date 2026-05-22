@@ -7,6 +7,7 @@ import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,7 +22,6 @@ import {
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
 
 type DummyDataType = {
   id: number;

@@ -4,7 +4,7 @@
 
 'use client';
 
-// 2026-05-21 import 수정
+import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import '@/shared/lib/agGridPub';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -13,13 +13,13 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
-  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
+  DialogFooterArea,
+  DialogClose,
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
@@ -27,7 +27,6 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 
 type DummyDataType = {
   id: number;
@@ -119,7 +118,7 @@ const Ltpz089 = () => {
             <TableFoldHead title="목적물세부사항과 수용장소">
               <Typo variant={'body-sm'}>수용장소 건물 형태</Typo>
             </TableFoldHead>
-            <TableFoldBody>
+            <TableFoldBody className="gap-1">
               <FormTable caption="목적물세부사항" className="" cols={['w-[22%]', 'w-full']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'목적물세부사항'} variant="default">

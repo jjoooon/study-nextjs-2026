@@ -11,6 +11,7 @@ import {
   editableSelectCellRenderer,
   useAgGridInfiniteAppend,
 } from '@aggrid';
+import { createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -28,7 +29,6 @@ import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } fro
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback } from 'react';
 import * as React from 'react';
-import { createTooltipValueGetter } from '@/shared/components/agGridUtils';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 

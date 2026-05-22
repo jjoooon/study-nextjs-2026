@@ -272,7 +272,7 @@ const RadioGroupItem = React.forwardRef<
           {isButton ? (
             <div
               className={cn(
-                'border border-[var(--color-gray-15)]! absolute left-[0.6rem] rounded-full flex items-center justify-center bg-white',
+                'border border-[var(--color-gray-15)]! absolute left-[0.6rem] rounded-full flex items-center justify-center bg-white  focus:!outline-none',
                 size === 'sm'
                   ? 'top-[0.35rem] h-[1.2rem] w-[1.2rem]'
                   : size === 'md'
@@ -280,7 +280,7 @@ const RadioGroupItem = React.forwardRef<
                     : 'top-[0.55rem] h-[1.4rem] w-[1.4rem]'
               )}
             >
-              <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap ">
+              <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap focus:!outline-none">
                 <div
                   className={cn(
                     radioIndicatorVariants({ size: 'lg', color, disabled: isDisabled }),

@@ -4,6 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -20,7 +21,6 @@ import {
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@/shared/components/agGridUtils';
 
 type DummyDataType = {
   id: number;

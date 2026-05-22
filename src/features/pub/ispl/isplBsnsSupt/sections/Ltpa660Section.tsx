@@ -14,7 +14,7 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-
+import { NativeSelect } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
@@ -251,6 +251,9 @@ export default function Ltpa650Section() {
               <FormTable variant={'none'} cols={['w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'담보'} tdClassName="grid-cols-[auto_1fr_auto]">
+                    <NativeSelect>
+                      <option value="">전체</option>
+                    </NativeSelect>
                     <Input width={120} value={'LA202852001'} />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />

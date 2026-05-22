@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -88,8 +88,6 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa260Section() {
-  const { attributeColumnWidth } = useDynamicColumnWidths();
-
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
     () => [
@@ -210,7 +208,7 @@ export default function Ltpa260Section() {
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => String(params.data?.field12 ?? ''),
       },
     ],
-    [attributeColumnWidth]
+    []
   );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);

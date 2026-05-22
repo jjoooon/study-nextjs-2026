@@ -17,8 +17,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Textarea } from '@uiux/Textarea';
 import * as React from 'react';
-import { Textarea } from '@/shared/components/uiux/Textarea';
 
 const Ltpz050 = () => {
   return (

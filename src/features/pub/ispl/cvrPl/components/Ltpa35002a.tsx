@@ -28,6 +28,7 @@ import {
   searchButtonRenderer,
   uwIconRenderer,
 } from '@grid/CellRenderers';
+
 import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
 import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
@@ -36,6 +37,7 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type {
   CellClassParams,
   ICellRendererParams,
@@ -491,6 +493,18 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 }}
                 onCellClicked={handleGridCellClickToggle}
                 selectionColumnDef={{
+                  headerComponent: () => (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant={'none'} className="justify-center flex items-center gap-1 w-full">
+                          해제
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent variant="default" side="top" align="start" sideOffset={-4}>
+                        담보 전체 해지
+                      </TooltipContent>
+                    </Tooltip>
+                  ),
                   width: 30,
                   cellClass: 'text-center p-0! editable-cell',
                   cellClassRules: {

@@ -110,7 +110,7 @@ const Ltpz094 = () => {
       width: 150,
       autoHeight: true,
       wrapText: true,
-      cellClass: 'whitespace-normal break-words text-center',
+      cellClass: 'text-center !leading-[1.4] !py-1',
       suppressMovable: true,
     },
     {
@@ -119,7 +119,7 @@ const Ltpz094 = () => {
       width: 200,
       autoHeight: true,
       wrapText: true,
-      cellClass: 'whitespace-normal break-words text-center',
+      cellClass: 'text-center !leading-[1.4] !py-1',
       filter: false,
       suppressMovable: true,
     },
@@ -129,7 +129,7 @@ const Ltpz094 = () => {
       flex: 1,
       autoHeight: true,
       wrapText: true,
-      cellClass: 'whitespace-normal break-words text-left leading-5',
+      cellClass: 'text-left !leading-[1.4] !py-1',
       suppressMovable: true,
     },
     {
@@ -138,7 +138,7 @@ const Ltpz094 = () => {
       width: 80,
       autoHeight: true,
       wrapText: true,
-      cellClass: 'whitespace-normal break-words text-center',
+      cellClass: 'text-center !leading-[1.4] !py-1',
       filter: false,
       suppressMovable: true,
     },
@@ -183,11 +183,6 @@ const Ltpz094 = () => {
               defaultColDef={{
                 sortable: false,
                 resizable: false,
-                cellStyle: {
-                  whiteSpace: 'normal',
-                  overflowWrap: 'anywhere',
-                  // lineHeight: '2rem',
-                },
               }}
               enableCellSpan={true}
               domLayout="normal"

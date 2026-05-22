@@ -4,6 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
@@ -22,7 +23,6 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 
 // dummy data
 type DummyDataType = {

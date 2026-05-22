@@ -130,18 +130,18 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
             <Checkbox variant={'text'} checked={checkedMap.unselected} onCheckedChange={onCheckedChange('unselected')}>
               미선택
             </Checkbox>
-            <Divider />
-            <Checkbox variant={'text'} checked={checkedMap.reset} onCheckedChange={onCheckedChange('reset')}>
+            {/* <Divider /> */}
+            {/* <Checkbox variant={'text'} checked={checkedMap.reset} onCheckedChange={onCheckedChange('reset')}>
               담보초기화
-            </Checkbox>
+            </Checkbox> */}
           </>
         ) : (
           <>
             <Checkbox variant={'text'}>선택 24건</Checkbox>
             <Divider />
             <Checkbox variant={'text'}>미선택</Checkbox>
-            <Divider />
-            <Checkbox variant={'text'}>담보초기화</Checkbox>
+            {/* <Divider /> */}
+            {/* <Checkbox variant={'text'}>담보초기화</Checkbox> */}
           </>
         )}
       </Grow>

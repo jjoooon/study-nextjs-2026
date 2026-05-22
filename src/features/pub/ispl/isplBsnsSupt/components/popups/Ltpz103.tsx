@@ -4,6 +4,7 @@
 'use client';
 
 import { Grow, Typo, Gcol } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -20,7 +21,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import * as React from 'react';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
 import '@/shared/lib/agGridPub';
 

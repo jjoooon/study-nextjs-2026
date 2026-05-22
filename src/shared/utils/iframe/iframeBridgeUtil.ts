@@ -1,29 +1,29 @@
 /**
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import log from '@/shared/utils/logger';
-import { EventMessage } from '@/shared/types/externalTypes';
 import { gParentIframeUrlHost } from '../authUtils';
+import { EventMessage } from '@/shared/types/externalTypes';
+import log from '@/shared/utils/logger';
 
 const logger = log.getLogger('IFrameMessage');
 
 /**
  * 부모 또는 특정 iframe에 메세지 전송
- * 
+ *
  * 예)
  * import { sendMessage } from '@/shared/utils/iframe/iframeBridgeUtils';
- * 
+ *
  * sendMessage({
  *   type: 'REACT',
  *   eventName: 'changeTitle',
  *   title: '가입설계(1010100)',
- * };  
+ * };
  * sendMessage({
  *   targetRef: aiFrameRef,
  *   type: 'REACT',
  *   eventName: 'changeTitle',
  *   title: '가입설계(1010100)',
- * });  
+ * });
  */
 export const sendMessage = ({
   message,
@@ -53,4 +53,3 @@ export const sendMessage = ({
     }
   }
 };
-

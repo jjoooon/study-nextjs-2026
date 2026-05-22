@@ -9,6 +9,7 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -23,7 +24,6 @@ import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
 
 import '@/shared/lib/agGridPub';
 

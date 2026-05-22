@@ -232,7 +232,7 @@ const Ltpz011 = () => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[36.5rem]">
+              <div className="ag-theme-alpine min-h-[21.4rem]">
                 <AgGridReact<ComparisonRow>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}

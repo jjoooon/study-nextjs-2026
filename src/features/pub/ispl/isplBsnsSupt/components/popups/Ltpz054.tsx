@@ -2,7 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-// 2026-05-21 import 수정
+import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -25,8 +25,6 @@ import { Input } from '@uiux/Input';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import type { ColDef, CellDoubleClickedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-
-import { AgGridEmptyComponent } from '@/shared/components/agGridUtils';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

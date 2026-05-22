@@ -398,7 +398,7 @@ const Ltpz00502 = () => {
       <Typo tag={'strong'} variant={'body-lg'}>
         확인사항
       </Typo>
-      <div className="ag-theme-alpine">
+      <div className="ag-theme-alpine min-h-[12.3rem]">
         <AgGridReact<DummyDataType2>
           getRowId={(params) => String(params.data.id)}
           noRowsOverlayComponent={AgGridEmptyComponent}

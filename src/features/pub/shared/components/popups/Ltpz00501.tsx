@@ -8,6 +8,7 @@ import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TooltipQ } from '@common/TooltipQ';
@@ -17,7 +18,6 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
 
 // 공통
 type DummyDataType = {

@@ -1521,8 +1521,11 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                   <Grow>010-1234-5678</Grow>
                                   <KeyValueItem label="전자적안내동의">
                                     <Grow placement="sc" gap="0">
-                                      <Badge color="green" size="md" variant="ghost" className="text-[1.4rem]">
+                                      <Badge color="green" size="md" className="text-[1.4rem]">
                                         Y
+                                      </Badge>
+                                      <Badge color="red" size="md" className="text-[1.4rem]">
+                                        N
                                       </Badge>
                                       <TooltipQ>{tooltipContents[0]}</TooltipQ>
                                     </Grow>
@@ -1644,8 +1647,11 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                             <Grow>010-1234-5678</Grow>
                             <KeyValueItem label="전자적안내동의">
                               <Grow placement="sc" gap="0">
-                                <Badge color="green" size="md" variant="ghost" className="text-[1.4rem]">
+                                <Badge color="green" size="md">
                                   Y
+                                </Badge>
+                                <Badge color="red" size="md">
+                                  N
                                 </Badge>
                                 <TooltipQ>{tooltipContents[0]}</TooltipQ>
                               </Grow>

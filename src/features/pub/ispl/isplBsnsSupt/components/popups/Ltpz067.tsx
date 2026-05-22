@@ -3,12 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
-import { Grow, Typo, Grid } from '@atoms';
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { Grow, Typo, Gcol, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,183 +23,147 @@ import { Input } from '@uiux/Input';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-type DummyDataType = {
+type DummyDataType1 = {
   id: number;
-  isCheck: boolean;
-  field01: string | number;
-  field02: string | number;
-  field03: string | number;
-  field04: string | number;
-  field05: string | number;
-  field06: string | number;
-  field07: string | number;
-  field08: string | number;
-  field09: string | number;
-  field10: string | number;
-  field11: string | number;
+  field01: string;
+  field02: number;
+  field03: number;
+  field04: number;
+  field05: number;
+  field06: string;
 };
-const DummyData: DummyDataType[] = [
+type DummyDataType2 = {
+  id: number;
+  field01: string;
+  field02: string;
+};
+const DummyData1: DummyDataType1[] = [
   {
     id: 1,
-    isCheck: false,
-    field01: 'text',
-    field02: 'text',
-    field03: 'YYYY-MM-DD',
-    field04: 'YYYY-MM-DD',
-    field05: 'YYYY-MM-DD',
-    field06: 'text',
-    field07: 'text',
-    field08: 'text',
-    field09: 'text text text text text text text text text text text text text',
-    field10: 'text',
-    field11: '9999999999',
+    field01: '1회차',
+    field02: 38750,
+    field03: 0,
+    field04: 38750,
+    field05: 38750,
+    field06: '당사자동차보험기가입자할인(0%), 단체할인(단체취급특별약관적용)(0%), 만12세이하자녀할인(0%)',
   },
   {
     id: 2,
-    isCheck: false,
-    field01: 'text',
-    field02: 'text',
-    field03: 'YYYY-MM-DD',
-    field04: 'YYYY-MM-DD',
-    field05: 'YYYY-MM-DD',
-    field06: 'text',
-    field07: 'text',
-    field08: 'text',
-    field09: 'text',
-    field10: 'text',
-    field11: '9999999999',
+    field01: '2회차',
+    field02: 38750,
+    field03: 0,
+    field04: 38750,
+    field05: 38750,
+    field06: '당사자동차보험기가입자할인(0%), 단체할인(단체취급특별약관적용)(0%), 만12세이하자녀할인(0%)',
+  },
+  {
+    id: 3,
+    field01: '2회차',
+    field02: 38750,
+    field03: 0,
+    field04: 38750,
+    field05: 38750,
+    field06: '당사자동차보험기가입자할인(0%), 단체할인(단체취급특별약관적용)(0%), 만12세이하자녀할인(0%)',
+  },
+];
+const DummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    field01: '단체할인(단체취급특별약관적용)',
+    field02:
+      '① 적용대상 : 동일한 단체에 소속된 피보험자 10인 이상이 하나의 계약으로 가입하는 경우\n' +
+      '② 할인율 : 피보험자 9명 이하 : 할인없음 / 10명~29명: 1% / 30%명 이상 : 2%\n' +
+      '③ 할인금액 : 영업보험료에 위한 할인율을 곱한 금액',
+  },
+  {
+    id: 2,
+    field01: '만12세이하자녀할인',
+    field02:
+      '① 적용대상 - 보험계약 체결시 피보험자의 가족관계등록부상 자녀(입양된 자녀 포함) 중 1인 이상이 만12세 이하인 경우\n' +
+      '- 보험계약 체결시 피보험자의 가족관계등록부상 자녀(입양된 자녀 포함) 중 1인 이상이 만12세 이하인 경우\n' +
+      '- 보험계약 체결 이후 자녀를 새로이 출산 또는 입양한 경우(입양의 경우, 보험계약 체결시점에 만 12세 이하인 경우에만 적용)\n' +
+      '② 할인적용',
   },
 ];
 
 const Ltpz067 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
+  const columnDefs1: ColDef<DummyDataType1>[] = [
     {
-      headerName: '회사명',
+      headerName: '납입회차',
       field: 'field01',
-      width: 150,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
+      width: 100,
+      autoHeight: true,
+      cellClass: 'text-center',
     },
     {
-      headerName: '증권번호',
+      headerName: '보장보험료',
       field: 'field02',
-      width: 120,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '보험시기',
-      field: 'field03',
-      width: 120,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '보험종기',
-      field: 'field04',
-      width: 120,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '담보상태 변경일자',
-      field: 'field05',
-      width: 120,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '담보상태',
-      field: 'field06',
-      width: 70,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '보장내용코드',
-      field: 'field07',
       width: 100,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '담보특성코드',
-      field: 'field08',
-      width: 100,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '담보명',
-      field: 'field09',
-      width: 200,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-left`,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field09' }),
-    },
-    {
-      headerName: '담보코드',
-      field: 'field10',
-      width: 100,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '가입액(원)',
-      field: 'field11',
-      width: 100,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-right`,
-      valueParser: (params) => Number(params.newValue) || 0,
+      autoHeight: true,
+      cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '적립보험료',
+      field: 'field03',
+      width: 100,
+      autoHeight: true,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '합계보험료',
+      field: 'field04',
+      width: 100,
+      autoHeight: true,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '납입보험료',
+      field: 'field05',
+      width: 100,
+      autoHeight: true,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '상세',
+      field: 'field06',
+      flex: 1,
+      autoHeight: true,
+      wrapText: true,
+      cellClass: '!leading-[1.4] !py-1',
+    },
+  ];
+
+  const columnDefs2: ColDef<DummyDataType2>[] = [
+    {
+      headerName: '할인명',
+      field: 'field01',
+      width: 200,
+      autoHeight: true,
+    },
+    {
+      headerName: '할인상세',
+      field: 'field02',
+      flex: 1,
+      autoHeight: true,
+      wrapText: true,
+      cellClass: '!leading-[1.4] !py-1 !whitespace-pre-line',
     },
   ];
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              단체 손실의료비 전환대상 조회
+              납입보험료상세
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ067)
@@ -208,105 +171,69 @@ const Ltpz067 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
-          {/* 조회 */}
-          <Grow placement="bwc" className="w-full" variant={'box-round'} gap={6}>
-            <FormTable variant={'none'} lineTop={false} cols={['w-1', 'w-auto']}>
-              <FormRow>
-                <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
-                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
-                  -
-                  <Input width={30} value={'1'} readOnly />
-                  <b>한화 더건강한 한아름종합보험2601</b>
-                </FormCell>
-              </FormRow>
-            </FormTable>
-            <Grow className="w-[12rem]">
-              <Checkbox
-                color="primary"
-                errorMsg="선택은 필수입니다."
-                errorPs="bl"
-                onCheckedChange={() => {}}
-                size="lg"
-                variant="default"
-              >
-                재조회
-              </Checkbox>
+        <DialogSection>
+          <Grid className="w-full grid-rows-[auto_1fr_1fr]" gap={3}>
+            <Grow className="w-full" variant="box-round" placement={'ss'}>
+              <FormTable variant="head">
+                <FormRow>
+                  <FormCell title={'보험기간'}>
+                    <Input aria-label="" width={180} value={'2026-02-01 ~ 2046-02-03'} readOnly />
+                  </FormCell>
+                  <FormCell title={'만기납기'}>
+                    <Input aria-label="" width={200} value={'20년만기/전기납'} readOnly />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
             </Grow>
-            <Grow>
-              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                조회
-              </Button>
-              <Button
-                color={'gray'}
-                only={'icon'}
-                size={'lg'}
-                variant={'outlined'}
-                onClick={() => {}}
-                aria-label="새로고침"
-              >
-                <ResetIcon />
-              </Button>
-            </Grow>
-          </Grow>
 
-          {/* 조회 정보 */}
-          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
+            <Gcol placement={'ss'} className="w-full gap-2">
+              <TableFold>
+                <TableFoldHead title="단체실손의료비 전환대상" />
+                <TableFoldBody>
+                  <div className="ag-theme-alpine min-h-[19.6rem]">
+                    <AgGridReact<DummyDataType1>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={DummyData1}
+                      columnDefs={columnDefs1}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                      }}
+                      enableCellSpan={true}
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+              <Typo variant={'body-sm'} icon={'info'}>
+                납입보험료 변동이 예상되는 시점만 표기하였으며 상황에 따라 변동 될 수 있으므로 안내에 유의 필요
+              </Typo>
+            </Gcol>
+
             <TableFold>
-              <TableFoldHead title="단체실손의료비 전환대상" />
+              <TableFoldHead title="할인종류" />
               <TableFoldBody>
-                <Grow className="w-full">
-                  <FormTable
-                    caption="단체실손의료비 전환대상 테이블"
-                    cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'flex-1']}
-                  >
-                    <FormRow>
-                      <FormCell title={'피보험자'}>
-                        <Input width={80} value={'김한화'} readOnly />
-                        <Input aria-label="주민등록번호 마스킹" width={120} value={'900101-1234567'} readOnly />
-                      </FormCell>
-                      <FormCell title={'조회건수'}>
-                        <Input width={30} value={'n'} readOnly />건
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Grow>
+                <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <AgGridReact<DummyDataType2>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={DummyData2}
+                    columnDefs={columnDefs2}
+                    defaultColDef={{
+                      sortable: false,
+                      resizable: false,
+                    }}
+                    enableCellSpan={true}
+                  />
+                </div>
               </TableFoldBody>
             </TableFold>
-
-            <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
-              <div className="ag-theme-alpine min-h-[18.4rem]">
-                <AgGridReact<DummyDataType>
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyData}
-                  columnDefs={columnDefs}
-                  defaultColDef={{ sortable: false }}
-                  enableCellSpan={true}
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
-                  // 체크박스 시
-                  rowSelection={{
-                    mode: 'multiRow',
-                    headerCheckbox: false,
-                    checkboxes: true,
-                    enableClickSelection: true,
-                  }}
-                  selectionColumnDef={{
-                    headerName: '선택',
-                  }}
-                />
-              </div>
-            </Grid>
           </Grid>
         </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'} color={'primary'}>
-                저장
-              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기

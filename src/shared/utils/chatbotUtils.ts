@@ -13,8 +13,9 @@ export const chatbotUtils = {
   sendMessage(message: EventMessage) {
     if (this.iframeRef) {
       sendMessage({
-        targetRef: this.iframeRef, message: message as EventMessage
+        targetRef: this.iframeRef,
+        message: message as EventMessage,
       });
     }
   },
-}
+};

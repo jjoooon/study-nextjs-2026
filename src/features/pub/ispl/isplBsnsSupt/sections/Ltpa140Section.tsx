@@ -30,33 +30,33 @@ import '@/shared/lib/agGridPub';
 // dummy data
 type DummyDataType = {
   id: number;
-  field01: string | number;
-  field02: string | number;
-  field03: string | number;
-  field04: string | number;
-  field05: string | number;
-  field06: string | number;
-  field07: string | number;
-  field08: string | number;
-  field09: string | number;
-  field10: string | number;
-  field11: string | number;
-  field12: string | number;
-  field13: string | number;
-  field14: string | number;
-  field15: string | number;
-  field16: string | number;
-  field17: string | number;
-  field18: string | number;
-  field19: string | number;
-  field20: string | number;
-  field21: string | number;
-  field22: string | number;
-  field23: string | number;
-  field24: string | number;
-  field25: string | number;
-  field26: string | number;
-  field27: string | number;
+  field01: string;
+  field02: string;
+  field03: string;
+  field04: string;
+  field05: string;
+  field06: string;
+  field07: string;
+  field08: string;
+  field09: string;
+  field10: string;
+  field11: string;
+  field12: string;
+  field13: string;
+  field14: string;
+  field15: string;
+  field16: string;
+  field17: string;
+  field18: string;
+  field19: string;
+  field20: string;
+  field21: string;
+  field22: string;
+  field23: string;
+  field24: string;
+  field25: string;
+  field26: string;
+  field27: string;
 };
 const DummyData: DummyDataType[] = [
   {
@@ -100,7 +100,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '상품코드',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field01', 'field02'),
@@ -113,7 +113,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '의료비보종',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field03', 'field04'),
@@ -126,7 +126,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '상해급수',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field05', 'field06'),
@@ -139,7 +139,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '보험시기',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field07', 'field08'),
@@ -152,7 +152,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '보험종기',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field09', 'field10'),
@@ -165,7 +165,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '배서번호',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field11', 'field12'),
@@ -179,7 +179,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '배서기준일',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field13', 'field14'),
@@ -192,7 +192,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '계약상태',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field15', 'field16'),
@@ -205,7 +205,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '상태변경일',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field17', 'field18'),
@@ -218,7 +218,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '부활일자',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field19', 'field20'),
@@ -232,7 +232,7 @@ export default function Ltpa140Section() {
         {
           headerName: '담보건수',
           field: 'field22',
-          width: 100,
+          width: 125,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field21', 'field22'),
@@ -260,7 +260,8 @@ export default function Ltpa140Section() {
         {
           headerName: '피보험자명',
           field: 'field25',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           colSpan: () => 2,
@@ -283,7 +284,8 @@ export default function Ltpa140Section() {
         {
           headerName: '유효',
           field: 'field27',
-          width: 100,
+          flex: 1,
+          minWidth: 110,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           colSpan: () => 0,
@@ -389,8 +391,8 @@ export default function Ltpa140Section() {
                         onChange={() => {}}
                       >
                         {[
-                          { value: 'selection0401', label: '선택1' },
-                          { value: 'selection0402', label: '선택2' },
+                          { value: 'selection0403', label: '선택1' },
+                          { value: 'selection0404', label: '선택2' },
                         ].map((option) => (
                           <NativeSelectOption key={option.value} value={option.value}>
                             {option.label}
@@ -398,7 +400,7 @@ export default function Ltpa140Section() {
                         ))}
                       </NativeSelect>
                     </FormCell>
-                    <FormCell title="신용정보제공구분">
+                    <FormCell title="피보험자">
                       <Grow placement="bwc">
                         <Grow>
                           <Input
@@ -411,7 +413,7 @@ export default function Ltpa140Section() {
                             errorPs="tl"
                           />
                           <Button
-                            aria-label="피보험자 검색"
+                            aria-label="주민등록번호 검색"
                             variant={'outlined'}
                             only="icon"
                             size={'lg'}
@@ -419,9 +421,9 @@ export default function Ltpa140Section() {
                           >
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <Input aria-label="피보험자 나이" width={100} value={'김한화'} readOnly />
+                          <Input aria-label="피보험자 이름" width={100} value={'김한화'} readOnly />
                         </Grow>
-                        <Checkbox color="primary" errorMsg="선택은 필수입니다." errorPs="bl" onCheckedChange={() => {}}>
+                        <Checkbox color="primary" errorMsg="" errorPs="bl" onCheckedChange={() => {}}>
                           전송전삭제처리
                         </Checkbox>
                       </Grow>

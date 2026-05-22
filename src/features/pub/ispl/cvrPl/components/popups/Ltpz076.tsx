@@ -5,6 +5,9 @@
 
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TableFold } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -16,16 +19,13 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
 
-import { TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { TableFold } from '@/shared/components/common/TableFold';
 import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
-import { Input } from '@/shared/components/uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 
 // M2. 신규페이지
 import '@/shared/lib/agGridPub';

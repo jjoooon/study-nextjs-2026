@@ -5,9 +5,11 @@
 
 import '@/shared/lib/agGridPub';
 import { Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -20,8 +22,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import * as React from 'react';
-import { BulletList, BulletListItem } from '@/shared/components/common/BulletList';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
 
 const Ltpz092 = () => {
   const [isExistingCustomer, setIsExistingCustomer] = React.useState(false);

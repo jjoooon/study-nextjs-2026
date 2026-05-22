@@ -26,7 +26,7 @@ type FormatType = keyof typeof BaseMaskFormat;
 type ValueInput = string | number | Date | null | undefined;
 type StringInput = string | null | undefined;
 
-/** 
+/**
  * 지정한 formatType에 맞춰서 포맷팅하여 반환합니다.
  * @param value 포팃팅대상 데이터
  * @param formatType 포맷유형
@@ -53,15 +53,16 @@ export function formatWithType(value: ValueInput, formatType: FormatType): strin
  */
 export function format(value: ValueInput, formatStr: string): string {
   if (
-    formatStr === null || 
-    formatStr === '' || 
-    formatStr === undefined || 
-    value === null || 
-    value === undefined || 
-    value === ''){ 
-      return '';
-    }
-  
+    formatStr === null ||
+    formatStr === '' ||
+    formatStr === undefined ||
+    value === null ||
+    value === undefined ||
+    value === ''
+  ) {
+    return '';
+  }
+
   const rawValue = String(value);
   // Date 처리
   if (/[yMdhms]/.test(formatStr)) {

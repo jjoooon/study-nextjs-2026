@@ -24,10 +24,10 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/uiux/Tooltip';
 
 type DummyDataType = {
   id: number;

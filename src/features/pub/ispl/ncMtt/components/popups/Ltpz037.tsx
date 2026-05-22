@@ -4,8 +4,11 @@
 'use client';
 
 import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { BulletItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -16,12 +19,9 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
-import { BulletItem } from '@/shared/components/common/BulletList';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { Badge } from '@/shared/components/uiux/Badge';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { Input } from '@/shared/components/uiux/Input';
 
 const Ltpz037 = () => {
   return (

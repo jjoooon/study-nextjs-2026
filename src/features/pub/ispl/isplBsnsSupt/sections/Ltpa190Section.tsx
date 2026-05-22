@@ -4,30 +4,30 @@
 'use client';
 // M1. 팝업에서 화면으로 전환, 전체 수정
 
-import { Grow, Grid } from '@atoms';
-import { BottomBar } from '@common/BottomBar';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { PageID } from '@features/PageID';
-import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
-import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback } from 'react';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
   createTooltipValueGetter,
   DatePickerCellEditor,
   editableSelectCellRenderer,
-} from '@/shared/components/agGridUtils';
-import { DatePickerInput } from '@/shared/components/common/DatePicker';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
+} from '@aggrid';
+import { Grow, Grid } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { PageID } from '@features/PageID';
+import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback } from 'react';
 import { ResetIcon } from '@/shared/components/icons/CommonIcons';
-import { Checkbox } from '@/shared/components/uiux/Checkbox';
-import { NativeSelect, NativeSelectOption } from '@/shared/components/uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';

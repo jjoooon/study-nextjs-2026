@@ -6,6 +6,7 @@
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,15 +19,14 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Textarea } from '@uiux/Textarea';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { FormCell, FormRow, FormTable } from '@/shared/components/common/FormTable';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
-import { Textarea } from '@/shared/components/uiux/Textarea';
 // 대분류
 type DummyDataTypeA = {
   id: number;

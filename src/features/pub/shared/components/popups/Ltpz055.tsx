@@ -13,13 +13,13 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
-  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
+  DialogFooterArea,
+  DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
