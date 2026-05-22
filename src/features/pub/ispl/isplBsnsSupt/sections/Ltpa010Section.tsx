@@ -464,37 +464,31 @@ export default function Ltpa010Section() {
         mainBody={
           <Grid className="grid-rows-[auto_1fr_auto] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
+              {/* 2026-05-22 설계구분 삭제 및 간격 조정, select value값 수정 */}
               {/* M1. variant={'none'} */}
+
               <FormTable
                 variant={'none'}
                 lineTop={false}
                 caption="설계번호"
                 cols={[
-                  'w-[1rem]',
-                  'w-auto',
-                  'w-[1rem]',
-                  'min-w-[10.8rem] w-auto',
-                  'w-[1rem]',
-                  'min-w-[10.8rem] w-auto',
-                  'w-[1rem]',
-                  'w-auto',
+                  'w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-auto'
                 ]}
               >
                 <FormRow>
-                  <FormCell title={'조회구분'} tdClassName="grid grid-cols-[auto_1fr]">
+                  <FormCell title={'조회구분'}>
                     <NativeSelect
                       aria-label="조회구분 선택"
+                      width={140}
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                       required
                     >
                       {[
-                        { value: 'selection', label: '피보험자번호' },
-                        { value: 'selection2', label: '계약자번호' },
-                        { value: 'selection3', label: '설계번호' },
-                        { value: 'selection4', label: '차량번호' },
-                        { value: 'selection5', label: '증권번호' },
-                        { value: 'selection6', label: '상품명' },
+                        { value: 'selection', label: '선택' },
+                        { value: 'selection2', label: '피보험자 번호' },
+                        { value: 'selection3', label: '계약자 번호' },
+                        { value: 'selection4', label: '설계번호' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
@@ -502,41 +496,46 @@ export default function Ltpa010Section() {
                       ))}
                     </NativeSelect>
                     {form.type01 === 'selection' || form.type01 === 'selection2' ? (
-                      <Grow className="w-full" placement="sc">
-                        <Input aria-label="이름" value={'김현화'} required />
+                      <Grow className="w-full" placement="ss">
+                        <Input aria-label="이름" value={'김현화'} width={100} required />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
                       </Grow>
                     ) : (
-                      <Input aria-label="번호" value={'1234556556'} readOnly />
+                      <Input aria-label="번호" width={150} value={'1234556556'} readOnly />
                     )}
-                  </FormCell>
-                  <FormCell title={'설계구분'}>
-                    <NativeSelect
-                      aria-label="설계구분 선택"
-                      value={form.type03}
-                      onChange={(e) => setFormField('type03', e.target.value)}
-                    >
-                      {[
-                        { value: 'selection', label: '전체' },
-                        { value: 'selection2', label: '전체2' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
                   </FormCell>
                   <FormCell title={'설계상태'}>
                     <NativeSelect
                       aria-label="설계상태 선택"
+                      width={150}
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
                     >
                       {[
                         { value: 'selection', label: '전체' },
-                        { value: 'selection2', label: '전체2' },
+                        { value: 'selection2', label: '간편설계' },
+                        { value: 'selection3', label: '설계심사중' },
+                        { value: 'selection4', label: '설계완료' },
+                        { value: 'selection5', label: '심사의뢰' },
+                        { value: 'selection6', label: '심사중' },
+                        { value: 'selection7', label: '심사완료' },
+                        { value: 'selection8', label: '청약중' },
+                        { value: 'selection9', label: '청약완료' },
+                        { value: 'selection10', label: '수납완료' },
+                        { value: 'selection11', label: '구독심사중' },
+                        { value: 'selection12', label: '구독심사완료' },
+                        { value: 'selection13', label: '청약삭제' },
+                        { value: 'selection14', label: '보험료산출' },
+                        { value: 'selection15', label: '설계취소' },
+                        { value: 'selection16', label: '지로' },
+                        { value: 'selection17', label: '반려' },
+                        { value: 'selection18', label: '취소' },
+                        { value: 'selection19', label: '가설계' },
+                        { value: 'selection20', label: '1차보험료산출' },
+                        { value: 'selection21', label: '업셀링설계' },
+                        { value: 'selection22', label: '검증' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
@@ -547,12 +546,18 @@ export default function Ltpa010Section() {
                   <FormCell title={'설계경로'}>
                     <NativeSelect
                       aria-label="설계경로 선택"
+                      width={150}
                       value={form.type05}
                       onChange={(e) => setFormField('type05', e.target.value)}
                     >
                       {[
                         { value: 'selection', label: '전체' },
-                        { value: 'selection2', label: '전체2' },
+                        { value: 'selection2', label: '문서서명' },
+                        { value: 'selection3', label: '전자서명(태블릿)' },
+                        { value: 'selection4', label: '전자서명(휴대폰)' },
+                        { value: 'selection5', label: '전자청약' },
+                        { value: 'selection6', label: 'TM' },
+                        { value: 'selection7', label: 'CM' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
@@ -562,37 +567,43 @@ export default function Ltpa010Section() {
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'설계조직'} colSpan={3} tdClassName="grid grid-cols-[1fr_1fr_auto_1fr]">
+                  <FormCell title={'설계조직'}>
                     <NativeSelect
                       aria-label="설계조직 선택"
                       value={form.type07}
+                      width={140}
                       required
                       onChange={(e) => setFormField('type07', e.target.value)}
                     >
                       {[
-                        { value: 'selection', label: '선택1' },
-                        { value: 'selection2', label: '선택2' },
+                        { value: 'selection', label: '취급기관' },
+                        { value: 'selection2', label: '취급직원' },
+                        { value: 'selection3', label: '사용인' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <Input aria-label="" value={'1301097'} required />
+                    <Input aria-label="" width={150} value={'1301097'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" value={'신부산GA지점'} readOnly />
+                    <Input aria-label="" width={150} value={'신부산GA지점'} readOnly />
                   </FormCell>
                   <FormCell title={'영업가족'}>
                     <NativeSelect
                       aria-label="영업가족 선택"
                       value={form.type08}
+                      width={150}
                       onChange={(e) => setFormField('type08', e.target.value)}
                     >
                       {[
-                        { value: 'selection', label: '선택1' },
-                        { value: 'selection2', label: '선택2' },
+                        { value: 'selection', label: '전체' },
+                        { value: 'selection2', label: '교차' },
+                        { value: 'selection3', label: 'BP' },
+                        { value: 'selection4', label: '교차+BP' },
+                        { value: 'selection5', label: '그 외' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
@@ -600,7 +611,7 @@ export default function Ltpa010Section() {
                       ))}
                     </NativeSelect>
                   </FormCell>
-                  <FormCell title={'설계일자'} colSpan={3} tdClassName="grid grid-cols-[auto_1fr]">
+                  <FormCell title={'설계일자'} >
                     <DatePickerInput
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
@@ -616,11 +627,14 @@ export default function Ltpa010Section() {
                     <NativeSelect
                       aria-label="설계일자"
                       value={form.type09}
+                      width={150}
                       onChange={(e) => setFormField('type09', e.target.value)}
                     >
                       {[
-                        { value: 'selection', label: '선택1' },
-                        { value: 'selection2', label: '선택2' },
+                        { value: 'selection', label: '선택' },
+                        { value: 'selection2', label: '7일' },
+                        { value: 'selection3', label: '1개월' },
+                        { value: 'selection4', label: '2개월' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
