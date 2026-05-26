@@ -31,7 +31,8 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterpris
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { editableCellClassRules } from '@/features/pub/ispl/cvrPl/utils/agGridUtils';
-import { PopupBaseProps } from '@/shared/types/uiTypes';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 
 import '@/shared/lib/agGridPub';
 
@@ -225,15 +226,6 @@ type ImageItemType = {
 type InsuredFloorType = '전체' | '일부' | null;
 
 const IMAGE_PAGE_SIZE = 5;
-
-const PUBLIC_URL = (process.env.PUBLIC_URL ?? '').replace(/\/$/, '');
-const withPublicUrl = (src: string): string => {
-  if (/^https?:\/\//.test(src)) {
-    return src;
-  }
-  const normalizedPath = src.startsWith('/') ? src : `/${src}`;
-  return `${PUBLIC_URL}${normalizedPath}`;
-};
 
 const imageItemsBySection: Record<ImageSectionType, ImageItemType[]> = {
   기둥: [
