@@ -14,6 +14,7 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Textarea } from '@uiux/Textarea';
 
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
@@ -146,7 +147,7 @@ export default function Ltpa690Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Grid className="grid-cols-2 h-full">
+            <Grid className="grid-cols-2 h-full" gap={3}>
               <TableFold variant="accordion">
                 <TableFoldHead title="메시지 목록">
                   <Grow>
@@ -193,22 +194,82 @@ export default function Ltpa690Section() {
               <TableFold variant="accordion">
                 <TableFoldHead title="메시지 등록"></TableFoldHead>
                 <TableFoldBody>
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType>
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={DummyData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: false,
-                      }}
-                      singleClickEdit={true}
-                      domLayout="normal"
-                      animateRows={false}
-                      enableCellSpan={true}
-                    />
-                  </div>
+                  <FormTable cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}>
+                    <FormRow>
+                      <FormCell title={'메시지코드'}>
+                        <Input value={'LTPA123'} required />
+                        <Button variant={'outlined'} color={'gray'} size={'lg'} onClick={() => {}}>
+                          중복확인
+                        </Button>
+                      </FormCell>
+                      <FormCell title={'등록자'}>
+                        <Input value={'LTPA123'} required />
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'메시지 구분'}>
+                        <NativeSelect width={'auto'}>
+                          {[
+                            { label: '선택', value: '' },
+                            { label: '시스템오류', value: '시스템오류' },
+                            { label: '업무오류', value: '업무오류' },
+                            { label: '알림', value: '알림' },
+                            { label: '질의', value: '질의' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.value} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                      <FormCell title={'메시지 유형'}>
+                        <NativeSelect width={'auto'}>
+                          {[
+                            { label: '선택', value: '' },
+                            { label: '정상', value: '정상' },
+                            { label: '계좌오류', value: '계좌오류' },
+                            { label: '기타오류', value: '기타오류' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.value} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'메시지'} colSpan={3}>
+                        <Input value={'자료가 존재하지 않습니다.'} required />
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'메시지 설명'} colSpan={3}>
+                        <Input value={''} />
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'처리방안'} colSpan={3}>
+                        <Textarea variant={'default'} placeholder={'내용을 입력하세요'} minLength={10}>
+                          오류가있을경우 해소는 이렇게 해주세요.
+                        </Textarea>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'연계화면ID'} colSpan={3}>
+                        <Input width={100} value={''} /> <p>오류 팝업에 연걔시킬 화면 아이디 입력</p>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow>
+                      <FormCell title={'비고'} colSpan={3}>
+                        <Textarea
+                          variant={'default'}
+                          placeholder={'내용을 입력하세요'}
+                          minLength={10}
+                          className="min-h-[calc(100vh-54rem)]"
+                        ></Textarea>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
                 </TableFoldBody>
               </TableFold>
             </Grid>

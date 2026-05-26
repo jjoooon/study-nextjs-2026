@@ -141,8 +141,8 @@ export const BulletListItem = ({
         )}
       >
         {resolvedType === 'ref' && <RefIcon size={10} />}
-        {resolvedType === 'dot' && <DotIcon size={3} />}
-        {resolvedType === 'dotBig' && <DotIcon size={6} />}
+        {resolvedType === 'dot' && <DotIcon size={6} />}
+        {resolvedType === 'dotBig' && <DotIcon size={9} />}
         {resolvedType === 'dash' && <DashIcon size={8} />}
         {resolvedType === 'star' && (
           <StarIcon size={11} className={resolvedSize === 'xs' ? '-translate-y-[0.2rem]' : undefined} />
@@ -189,8 +189,8 @@ export const BulletItem = ({
     >
       <div className={cn('flex items-center justify-center shrink-0', itemHeight[size], bulletStyles[type])}>
         {type === 'ref' && <RefIcon size={10} />}
-        {type === 'dot' && <DotIcon size={3} />}
-        {type === 'dotBig' && <DotIcon size={6} />}
+        {type === 'dot' && <DotIcon size={6} />}
+        {type === 'dotBig' && <DotIcon size={9} />}
         {type === 'dash' && <DashIcon size={8} />}
         {type === 'star' && <StarIcon size={11} />}
         {type === 'hash' && <HashIcon size={10} />}

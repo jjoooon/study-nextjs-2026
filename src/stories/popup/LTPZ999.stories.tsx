@@ -1,25 +1,33 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import * as React from 'react';
+ */
+import type { Meta, StoryObj } from '@storybook/react';
+
 import Ltpz999 from '@/features/pub/shared/components/popups/Ltpz999';
-
 import { LayoutDoc } from '@layout/BaseLayout';
-import { Button } from '@uiux/Button';
 
-export default {
+const meta: Meta<typeof Ltpz999> = {
   title: 'app/shared/components/popups/Ltpz999',
   component: Ltpz999,
+  argTypes: {
+    errorType: {
+      control: { type: 'select' },
+      options: ['오류', '알림', '질의'],
+    },
+  },
+  args: {
+    errorType: '오류',
+  },
 };
 
-export const Default = () => {
-  const [open, setOpen] = React.useState(true);
-  return (
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  render: (args) => (
     <LayoutDoc>
-      <div className='flex w-full h-screen items-center justify-center max-w-[118rem] outline outline-1 outline-[red] -outline-offset-2 mx-auto'>
-        <Button variant={'contained'} onClick={() => setOpen(true)}>Ltpz999 열기</Button>
-      </div>
-      <Ltpz999 />
-      
+      <Ltpz999 {...args} />
     </LayoutDoc>
-  );
+  ),
 };
