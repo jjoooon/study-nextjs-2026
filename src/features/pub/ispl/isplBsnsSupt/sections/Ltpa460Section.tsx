@@ -22,7 +22,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
 
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 import '@/shared/lib/agGridPub';
 

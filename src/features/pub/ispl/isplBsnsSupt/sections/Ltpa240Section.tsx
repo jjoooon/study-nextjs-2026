@@ -21,7 +21,7 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 import '@/shared/lib/agGridPub';
 

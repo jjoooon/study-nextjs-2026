@@ -20,9 +20,9 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
 import '@/shared/lib/agGridPub';
-import { TableFold, TableFoldBody, TableFoldHead } from '@/shared/components/common/TableFold';
-import { TableMore } from '@/shared/components/common/TablePagination';
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TableMore } from '@common/TablePagination';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 type DummyDataType = {
   id: number;
