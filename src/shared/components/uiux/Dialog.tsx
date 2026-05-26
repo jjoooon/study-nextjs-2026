@@ -43,7 +43,7 @@ const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
   md: '56rem',
   lg: '76rem',
   xl: '96rem',
-  '2xl': '118 rem',
+  '2xl': '118rem',
 };
 
 const toCssSize = (value?: DialogSizeValue): string | undefined => {

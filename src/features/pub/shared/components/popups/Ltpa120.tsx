@@ -10,6 +10,7 @@ import * as React from 'react';
 import { publicConfig } from '@/shared/config/env';
 import useMounted from '@/shared/hooks/useMounted';
 import { chatbotUtils } from '@/shared/utils/chatbotUtils';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 
 const CHATBOT_DIALOG_WIDTH = 198;
 const CHATBOT_DIALOG_HEIGHT = 560;
@@ -81,7 +82,7 @@ export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp 
           onClick={handleOpen}
         >
           <Image
-            src="/images/chatbot.png"
+            src={withPublicUrl('/images/chatbot.png')}
             alt="백프로에게 물어보세요!"
             width={32}
             height={32}
@@ -109,13 +110,13 @@ export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp 
             gap={0}
           >
             <Image
-              src={'/images/chatbot/Chatbot1.png'}
+              src={withPublicUrl('/images/chatbot/Chatbot1.png')}
               alt="백프로에게 물어보세요!"
               width={102}
               height={11}
               className="mb-[1.2rem]"
             />
-            <Image src={'/images/chatbot/Chatbot2.png'} alt="백프로" width={49} height={49} />
+            <Image src={withPublicUrl('/images/chatbot/Chatbot2.png')} alt="백프로" width={49} height={49} />
           </Grow>
         </DialogHeader>
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[1px] border-[var(--color-blue-gray-30)]">

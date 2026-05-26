@@ -31,7 +31,8 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterpris
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { editableCellClassRules } from '@/features/pub/ispl/cvrPl/utils/agGridUtils';
-import { PopupBaseProps } from '@/shared/types/uiTypes';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 
 import '@/shared/lib/agGridPub';
 
@@ -421,7 +422,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
           {visibleItems.map((item) => (
             <Gcol key={`${section}-${item.id}`} className="w-70 shrink-0">
               <img
-                src={item.src}
+                src={withPublicUrl(item.src)}
                 alt={item.label}
                 className="border border-solid border-[#D8D8D8] w-[175rem] h-[13rem] aspect-square object-cover"
               />

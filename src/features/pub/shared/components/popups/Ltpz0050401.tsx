@@ -17,6 +17,7 @@ import {
   DialogTrigger,
 } from '@uiux/Dialog';
 import * as React from 'react';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 
 const Ltpz0050401 = ({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) => {
   return (
@@ -29,8 +30,13 @@ const Ltpz0050401 = ({ open, onOpenChange }: { open: boolean; onOpenChange: (ope
 
         <DialogSection className="p-0 flex items-center justify-center">
           <div
-            className="relative bg-[url('/images/Ltpa005/ai_box_img.jpg')] bg-center bg-no-repeat"
-            style={{ width: '50rem', height: '19rem', backgroundSize: '50.6rem 18.8rem' }}
+            className="relative bg-center bg-no-repeat"
+            style={{
+              width: '50rem',
+              height: '19rem',
+              backgroundImage: `url(${withPublicUrl('/images/Ltpa005/ai_box_img.jpg')})`,
+              backgroundSize: '50.6rem 18.8rem',
+            }}
           >
             <Typo tag={'p'} variant={'body-lg'} className="absolute right-[1rem] top-[1rem]" style={{ width: '33rem' }}>
               고객님의 보장 내용을 분석해보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로

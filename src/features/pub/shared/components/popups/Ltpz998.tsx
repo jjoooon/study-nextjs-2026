@@ -157,7 +157,7 @@ const Ltpz998 = () => {
               tooltipShowDelay={0}
             />
           </div>
-          <div className="w-full min-h-[calc(100vh-42rem)]">
+          <div className="w-full h-[calc(100vh-42rem)] max-h-[24rem] min-h-[10rem]">
             {selectedData && (
               <Grid
                 gap={3}
