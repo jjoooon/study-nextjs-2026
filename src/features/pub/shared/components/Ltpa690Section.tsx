@@ -179,6 +179,9 @@ export default function Ltpa690Section() {
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
+                      rowModelType="infinite"
+                      cacheBlockSize={pageSize}
+                      maxBlocksInCache={2}
                       datasource={dataSource}
                     />
                   </div>
@@ -196,7 +199,7 @@ export default function Ltpa690Section() {
                 <TableFoldBody>
                   <FormTable cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}>
                     <FormRow>
-                      <FormCell 
+                      <FormCell
                         title={
                           <Grow placement="sc">
                             <span>메시지코드</span>
@@ -209,7 +212,7 @@ export default function Ltpa690Section() {
                           중복확인
                         </Button>
                       </FormCell>
-                      <FormCell 
+                      <FormCell
                         title={
                           <Grow placement="sc">
                             <span>등록자</span>
@@ -252,7 +255,7 @@ export default function Ltpa690Section() {
                       </FormCell>
                     </FormRow>
                     <FormRow>
-                      <FormCell 
+                      <FormCell
                         title={
                           <Grow placement="sc">
                             <span>메시지</span>
