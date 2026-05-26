@@ -8,7 +8,7 @@ import { Grow, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { PageID } from '@features/PageID';
-import { FileExportIcon, FileImportIcon, ResetIcon } from '@icons';
+import { FileExportIcon, FileImportIcon, ResetIcon, EssentialIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -196,13 +196,27 @@ export default function Ltpa690Section() {
                 <TableFoldBody>
                   <FormTable cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}>
                     <FormRow>
-                      <FormCell title={'메시지코드'}>
+                      <FormCell 
+                        title={
+                          <Grow placement="sc">
+                            <span>메시지코드</span>
+                            <EssentialIcon />
+                          </Grow>
+                        }
+                      >
                         <Input value={'LTPA123'} required />
                         <Button variant={'outlined'} color={'gray'} size={'lg'} onClick={() => {}}>
                           중복확인
                         </Button>
                       </FormCell>
-                      <FormCell title={'등록자'}>
+                      <FormCell 
+                        title={
+                          <Grow placement="sc">
+                            <span>등록자</span>
+                            <EssentialIcon />
+                          </Grow>
+                        }
+                      >
                         <Input value={'LTPA123'} required />
                       </FormCell>
                     </FormRow>
@@ -238,7 +252,15 @@ export default function Ltpa690Section() {
                       </FormCell>
                     </FormRow>
                     <FormRow>
-                      <FormCell title={'메시지'} colSpan={3}>
+                      <FormCell 
+                        title={
+                          <Grow placement="sc">
+                            <span>메시지</span>
+                            <EssentialIcon />
+                          </Grow>
+                        }
+                        colSpan={3}
+                      >
                         <Input value={'자료가 존재하지 않습니다.'} required />
                       </FormCell>
                     </FormRow>
@@ -256,7 +278,7 @@ export default function Ltpa690Section() {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'연계화면ID'} colSpan={3}>
-                        <Input width={100} value={''} /> <p>오류 팝업에 연걔시킬 화면 아이디 입력</p>
+                        <Input width={100} value={''} /> <p>오류 팝업에 연계시킬 화면 아이디 입력</p>
                       </FormCell>
                     </FormRow>
                     <FormRow>

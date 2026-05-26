@@ -3,23 +3,24 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
-import { Grid, Grow, Gcol } from '@atoms';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, createTooltipValueGetter } from '@aggrid';
+import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
-import { ResetIcon, FileImportIcon } from '@icons';
+import { ResetIcon, FileImportIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { useCallback, useState } from 'react';
 
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { useFormFields } from '@/shared/hooks/useFormFields';
@@ -38,6 +39,8 @@ type DummyDataType = {
   field07: string | number;
   field08: string | number;
   field09: string | number;
+  field10: string | number;
+  field11: string | number;
 };
 const DummyData: DummyDataType[] = [
   {
@@ -51,6 +54,8 @@ const DummyData: DummyDataType[] = [
     field07: '항목명3',
     field08: '항목명4',
     field09: '항목명5',
+    field10: '항목명6',
+    field11: '항목명7',
   },
   {
     id: 2,
@@ -63,6 +68,8 @@ const DummyData: DummyDataType[] = [
     field07: 'Data',
     field08: 'Data',
     field09: 'Data',
+    field10: '항목명6',
+    field11: '항목명7',
   },
   {
     id: 3,
@@ -75,6 +82,8 @@ const DummyData: DummyDataType[] = [
     field07: 'Data',
     field08: 'Data',
     field09: 'Data',
+    field10: '항목명6',
+    field11: '항목명7',
   },
   {
     id: 4,
@@ -87,6 +96,8 @@ const DummyData: DummyDataType[] = [
     field07: 'Data',
     field08: 'Data',
     field09: 'Data',
+    field10: '항목명6',
+    field11: '항목명7',
   },
   {
     id: 5,
@@ -99,6 +110,8 @@ const DummyData: DummyDataType[] = [
     field07: 'Data',
     field08: 'Data',
     field09: 'Data',
+    field10: '항목명6',
+    field11: '항목명7',
   },
   {
     id: 6,
@@ -111,6 +124,8 @@ const DummyData: DummyDataType[] = [
     field07: 'Data',
     field08: 'Data',
     field09: 'Data',
+    field10: '항목명6',
+    field11: '항목명7',
   },
   {
     id: 7,
@@ -123,6 +138,8 @@ const DummyData: DummyDataType[] = [
     field07: 'Data',
     field08: 'Data',
     field09: 'Data',
+    field10: '항목명6',
+    field11: '항목명7',
   },
   {
     id: 8,
@@ -135,12 +152,46 @@ const DummyData: DummyDataType[] = [
     field07: 'Data',
     field08: 'Data',
     field09: 'Data',
+    field10: 'Data',
+    field11: 'Data',
   },
-  
 ];
 
 export default function Ltpa460Section() {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
+
+  const [showProductNameTooltip] = useState(false);
+
+  const [coverageName, setCoverageName] = useState('');
+
+  const productNameHeader = useCallback(({ displayName  }: { displayName : string }) => {
+    return (
+      <Grow className="w-full px-[0.6rem]" placement={'sc'} gap={4}>
+        <Grow placement="bwc" className="justify-center!" gap={1}>
+          <Typo>{displayName }</Typo>
+          <Grow >
+            <Input
+              aria-label="상품명"
+              placeholder=""
+              type="text"
+              width={90}
+              size={'sm'}
+              clear={true}
+              value={coverageName}
+              onChange={(e) => setCoverageName(e.target.value)}
+            />
+            <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </Grow>
+        </Grow>
+      </Grow>
+    );
+  }, [coverageName, showProductNameTooltip]);
+
+  const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
+    return <p className="truncate w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
+  }, []);
 
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
@@ -162,7 +213,7 @@ export default function Ltpa460Section() {
     {
       headerName: '로그구분',
       field: 'field02',
-      width: 120,
+      width: 150,
       cellClass: 'text-left',
       autoHeight: true,
       pinned: 'left',
@@ -170,7 +221,7 @@ export default function Ltpa460Section() {
     {
       headerName: '거래코드',
       field: 'field03',
-      width: 120,
+      width: 130,
       cellClass: 'text-left',
       autoHeight: true,
       pinned: 'left',
@@ -178,55 +229,118 @@ export default function Ltpa460Section() {
     {
       headerName: '시작일시',
       field: 'field04',
-      width: 100,
+      width: 110,
       cellClass: 'text-center',
       pinned: 'left',
     },
     {
       headerName: 'KEY1',
       field: 'field05',
-      flex: 1,
-      autoHeight: true,
+      width: 200,
       cellClass: 'text-left',
+      sortable: false,
+      filter: false,
+      autoHeight: true,
+      suppressMovable: true, // 이동 방지
+      lockPinned: true, // 고정 열에서 제외 방지
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
+        label: 'KEY1',
+        field: 'field05',
+      }),
+      headerComponent: productNameHeader,
+      cellRenderer: titleRenderer,
     },
     {
       headerName: 'KEY2',
       field: 'field06',
-      flex: 1,
+      width: 200,
       cellClass: 'text-left',
       autoHeight: true,
+      suppressMovable: true, // 이동 방지
+      lockPinned: true, // 고정 열에서 제외 방지
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
+        label: 'KEY2',
+        field: 'field06',
+      }),
+      headerComponent: productNameHeader,
+      cellRenderer: titleRenderer,
     },
     {
       headerName: 'KEY3',
       field: 'field07',
-      flex: 1,
+      width: 200,
       cellClass: 'text-left',
       autoHeight: true,
+      suppressMovable: true, // 이동 방지
+      lockPinned: true, // 고정 열에서 제외 방지
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
+        label: 'KEY3',
+        field: 'field07',
+      }),
+      headerComponent: productNameHeader,
+      cellRenderer: titleRenderer,
     },
     {
       headerName: 'KEY4',
       field: 'field08',
-      flex: 1,
+      width: 200,
       cellClass: 'text-left',
       autoHeight: true,
+      suppressMovable: true, // 이동 방지
+      lockPinned: true, // 고정 열에서 제외 방지
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
+        label: 'KEY4',
+        field: 'field08',
+      }),
+      headerComponent: productNameHeader,
+      cellRenderer: titleRenderer,
     },
     {
       headerName: 'KEY5',
       field: 'field09',
-      flex: 1,
+      width: 200,
       cellClass: 'text-left',
       autoHeight: true,
+      suppressMovable: true, // 이동 방지
+      lockPinned: true, // 고정 열에서 제외 방지
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
+        label: 'KEY5',
+        field: 'field09',
+      }),
+      headerComponent: productNameHeader,
+      cellRenderer: titleRenderer,
+    },
+    {
+      headerName: 'KEY6',
+      field: 'field10',
+      width: 200,
+      cellClass: 'text-left',
+      autoHeight: true,
+      suppressMovable: true, // 이동 방지
+      lockPinned: true, // 고정 열에서 제외 방지
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
+        label: 'KEY6',
+        field: 'field10',
+      }),
+      headerComponent: productNameHeader,
+      cellRenderer: titleRenderer,
+    },
+    {
+      headerName: 'KEY7',
+      field: 'field11',
+      width: 200,
+      cellClass: 'text-left',
+      autoHeight: true,
+      suppressMovable: true, // 이동 방지
+      lockPinned: true, // 고정 열에서 제외 방지
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
+        label: 'KEY7',
+        field: 'field11',
+      }),
+      headerComponent: productNameHeader,
+      cellRenderer: titleRenderer,
     },
   ];
-
-  // form event
-  const [form, setFormField] = useFormFields({
-    type01: 'selection1',
-    type02: '',
-    type03: '',
-    type04: '',
-    type05: '',
-  });
 
   return (
     <>
@@ -266,15 +380,15 @@ export default function Ltpa460Section() {
                     <NativeSelect
                       aria-label="검증업무구분 선택"
                       width={108}
-                      value={form.type02}
-                      onChange={(e) => setFormField('type02', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                     >
                       {[
-                        { value: 'selection', id: '', label: '보험료' },
-                        { value: 'selection1', id: 'type02-1', label: '추천보험료' },
-                        { value: 'selection2', id: 'type02-2', label: '예상환급금' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.id} value={option.value}>
+                        { value: 'selection', label: '보험료' },
+                        { value: 'selection1', label: '추천보험료' },
+                        { value: 'selection2', label: '예상환급금' },
+                      ].map((option, index) => (
+                        <NativeSelectOption key={index} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}
@@ -292,12 +406,12 @@ export default function Ltpa460Section() {
                     <NativeSelect
                       aria-label="로그구분 선택"
                       width={108}
-                      value={form.type03}
-                      onChange={(e) => setFormField('type03', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                     >
                       {[
                         { value: 'selection', id: '', label: '선택' },
-                        { value: 'selection1', id: 'type03-1', label: '선택2' },
+                        { value: 'selection1', id: '', label: '선택2' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
@@ -309,14 +423,14 @@ export default function Ltpa460Section() {
                     <NativeSelect
                       aria-label="거개코드 선택"
                       width={108}
-                      value={form.type04}
-                      onChange={(e) => setFormField('type04', e.target.value)}
+                      value={''}
+                      onChange={() => {}}
                     >
                       {[
-                        { value: 'selection', id: '', label: '선택' },
-                        { value: 'selection1', id: 'type04-1', label: '선택1' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.id} value={option.value}>
+                        { value: 'selection', label: '선택' },
+                        { value: 'selection1', label: '선택1' },
+                      ].map((option, index) => (
+                        <NativeSelectOption key={index} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}
