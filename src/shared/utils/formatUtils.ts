@@ -22,9 +22,7 @@ export const BaseMaskFormat = {
 } as const;
 
 type FormatType = keyof typeof BaseMaskFormat;
-
 type ValueInput = string | number | Date | null | undefined;
-type StringInput = string | null | undefined;
 
 /**
  * 지정한 formatType에 맞춰서 포맷팅하여 반환합니다.

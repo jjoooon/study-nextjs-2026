@@ -276,11 +276,7 @@ export default function Ltpa340Section() {
               <Grow className="w-full" placement="ec">
                 <Grow>
                   <Typo>서명방법</Typo>
-                  <NativeSelect
-                    aria-label="검색조건 선택"
-                    width={108}
-                    size={'md'}
-                  >
+                  <NativeSelect aria-label="검색조건 선택" width={108} size={'md'}>
                     {[
                       { value: 'selection01', label: '전체' },
                       { value: 'selection02', label: '문서서명' },

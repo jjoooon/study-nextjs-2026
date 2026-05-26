@@ -238,6 +238,24 @@ export default function Ltpa600Section() {
 
   // 담보분류 -------------
   const [rowData, setRowData] = React.useState<DummyData1Type[]>(DummyData1);
+
+  // inputTag의 onChange에서 호출되는 함수로, 변경된 태그 값을 받아서 해당 행의 field3 값을 업데이트하는 로직입니다.
+  const handleTagChange = React.useCallback((rowId: number, groupIndex: 0 | 1, value: string[]) => {
+    setRowData((previous) =>
+      previous.map((row) => {
+        if (row.id !== rowId) {
+          return row;
+        }
+        const nextField3: TagGroups = groupIndex === 0 ? [value, row.field3[1]] : [row.field3[0], value];
+
+        return {
+          ...row,
+          field3: nextField3,
+        };
+      })
+    );
+  }, []);
+
   const columnDefs1: ColDef<DummyData1Type>[] = useMemo(
     () => [
       {
@@ -295,7 +313,7 @@ export default function Ltpa600Section() {
         autoHeight: true,
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, handleTagChange]
   );
 
   // 시뮬레이션 -------------
@@ -318,22 +336,6 @@ export default function Ltpa600Section() {
     []
   );
 
-  // inputTag의 onChange에서 호출되는 함수로, 변경된 태그 값을 받아서 해당 행의 field3 값을 업데이트하는 로직입니다.
-  const handleTagChange = React.useCallback((rowId: number, groupIndex: 0 | 1, value: string[]) => {
-    setRowData((previous) =>
-      previous.map((row) => {
-        if (row.id !== rowId) {
-          return row;
-        }
-        const nextField3: TagGroups = groupIndex === 0 ? [value, row.field3[1]] : [row.field3[0], value];
-
-        return {
-          ...row,
-          field3: nextField3,
-        };
-      })
-    );
-  }, []);
   const getExpiryRenderer = createExpiryCellRenderer<DummyData2Type>;
   const columnDefs2: (ColDef<DummyData2Type> | ColGroupDef<DummyData2Type>)[] = useMemo(
     () => [

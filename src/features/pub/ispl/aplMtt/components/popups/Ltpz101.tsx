@@ -11,9 +11,9 @@ import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { FileExportIcon } from '@icons'; // 2026-05-26 추가
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import { FileExportIcon } from '@icons'; // 2026-05-26 추가
 import {
   Dialog,
   DialogClose,
@@ -68,7 +68,9 @@ const Ltpz101 = () => {
 
   const rowData = DummyData;
 
-  {/* 2026-05-26 전체 수정 */}
+  {
+    /* 2026-05-26 전체 수정 */
+  }
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
@@ -84,10 +86,10 @@ const Ltpz101 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr_auto]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable variant={'head'}  lineTop={false} caption="설계번호">
+            <FormTable variant={'head'} lineTop={false} caption="설계번호">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input  readOnly value={'LA2608902384509'} />
+                  <Input readOnly value={'LA2608902384509'} />
                   -
                   <Input aria-label="" width={30} value={'1'} readOnly />
                 </FormCell>
@@ -96,7 +98,7 @@ const Ltpz101 = () => {
           </Grow>
           <Grid className="grid-rows-[auto_1fr] gap-2">
             <Grow variant={'box-warning'} placement={'ss'} className="w-full">
-              <Typo variant={'body-sm'} icon={'warning'}>   
+              <Typo variant={'body-sm'} icon={'warning'}>
                 아래 내용은 청약완료까지 해소되지 않을경우 수납이 불가능합니다.(청약완료 불가)
               </Typo>
             </Grow>
@@ -132,7 +134,6 @@ const Ltpz101 = () => {
 
         <DialogFooter>
           <DialogFooterArea>
-            
             <Grow>
               <Button variant={'contained'} size={'xl'}>
                 확인

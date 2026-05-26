@@ -23,7 +23,6 @@ import * as React from 'react';
 import { useCallback, useState } from 'react';
 
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -159,35 +158,35 @@ const DummyData: DummyDataType[] = [
 
 export default function Ltpa460Section() {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
-
-  const [showProductNameTooltip] = useState(false);
-
   const [coverageName, setCoverageName] = useState('');
 
-  const productNameHeader = useCallback(({ displayName  }: { displayName : string }) => {
-    return (
-      <Grow className="w-full px-[0.6rem]" placement={'sc'} gap={4}>
-        <Grow placement="bwc" className="justify-center!" gap={1}>
-          <Typo>{displayName }</Typo>
-          <Grow >
-            <Input
-              aria-label="상품명"
-              placeholder=""
-              type="text"
-              width={90}
-              size={'sm'}
-              clear={true}
-              value={coverageName}
-              onChange={(e) => setCoverageName(e.target.value)}
-            />
-            <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-              <SearchIcon color={'var(--color-primary-50)'} />
-            </Button>
+  const productNameHeader = useCallback(
+    ({ displayName }: { displayName: string }) => {
+      return (
+        <Grow className="w-full px-[0.6rem]" placement={'sc'} gap={4}>
+          <Grow placement="bwc" className="justify-center!" gap={1}>
+            <Typo>{displayName}</Typo>
+            <Grow>
+              <Input
+                aria-label="상품명"
+                placeholder=""
+                type="text"
+                width={90}
+                size={'sm'}
+                clear={true}
+                value={coverageName}
+                onChange={(e) => setCoverageName(e.target.value)}
+              />
+              <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+                <SearchIcon color={'var(--color-primary-50)'} />
+              </Button>
+            </Grow>
           </Grow>
         </Grow>
-      </Grow>
-    );
-  }, [coverageName, showProductNameTooltip]);
+      );
+    },
+    [coverageName]
+  );
 
   const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
     return <p className="truncate w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
@@ -377,12 +376,7 @@ export default function Ltpa460Section() {
                     />
                   </FormCell>
                   <FormCell title={'검증업무구분'}>
-                    <NativeSelect
-                      aria-label="검증업무구분 선택"
-                      width={108}
-                      value={''}
-                      onChange={() => {}}
-                    >
+                    <NativeSelect aria-label="검증업무구분 선택" width={108} value={''} onChange={() => {}}>
                       {[
                         { value: 'selection', label: '보험료' },
                         { value: 'selection1', label: '추천보험료' },
@@ -403,12 +397,7 @@ export default function Ltpa460Section() {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'로그구분'}>
-                    <NativeSelect
-                      aria-label="로그구분 선택"
-                      width={108}
-                      value={''}
-                      onChange={() => {}}
-                    >
+                    <NativeSelect aria-label="로그구분 선택" width={108} value={''} onChange={() => {}}>
                       {[
                         { value: 'selection', id: '', label: '선택' },
                         { value: 'selection1', id: '', label: '선택2' },
@@ -420,12 +409,7 @@ export default function Ltpa460Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'거개코드'}>
-                    <NativeSelect
-                      aria-label="거개코드 선택"
-                      width={108}
-                      value={''}
-                      onChange={() => {}}
-                    >
+                    <NativeSelect aria-label="거개코드 선택" width={108} value={''} onChange={() => {}}>
                       {[
                         { value: 'selection', label: '선택' },
                         { value: 'selection1', label: '선택1' },

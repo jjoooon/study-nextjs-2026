@@ -5,11 +5,17 @@
 
 // 2026-05-26 페이징 추가
 
-import { AgGridEmptyComponent, createModifiedCellClassRules, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createModifiedCellClassRules,
+  createTooltipValueGetter,
+  useAgGridInfiniteAppend,
+} from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
 import { ResetIcon, FileExportIcon, FileImportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
@@ -25,7 +31,6 @@ import * as React from 'react';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 
 import '@/shared/lib/agGridPub';
-import { TableMore } from '@common/TablePagination';
 
 // dummy data
 type DummyDataType = {
@@ -317,12 +322,12 @@ export default function Ltpa540Section() {
         ],
       },
     ],
-    [showExisting, EditCellColor, EditCellColor2]
+    [showExisting, EditCellColor, EditCellColor2, rowData]
   );
 
   const [rowData1] = React.useState<DummyDataType[]>(DummyData);
   const pageSize = 3;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: rowData1,
     pageSize,
   });
@@ -418,7 +423,7 @@ export default function Ltpa540Section() {
                   pageSize={pageSize}
                   onLoadAll={handleLoadAll}
                   onLoadNext={handleLoadNext}
-                  />
+                />
               </TableFoldBody>
             </TableFold>
           </Grid>
