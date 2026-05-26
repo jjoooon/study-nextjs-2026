@@ -749,7 +749,7 @@ export function Ltpa02002({
         <Gcol className="h-full gap-2.5 " placement="cc">
           <div className="w-[24.8rem]">
             <Image
-              src="/images/Ltpa020/pro100.jpg"
+              src={withPublicUrl('/images/Ltpa020/pro100.jpg')}
               alt="설명"
               fill
               style={{ objectFit: 'cover' }}
