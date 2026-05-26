@@ -353,7 +353,7 @@ export default function Ltpa460Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr_auto]" gap={3}>
+          <Grid className="grid-rows-[auto_1fr_auto] h-full w-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}
@@ -445,7 +445,7 @@ export default function Ltpa460Section() {
                   <FileImportIcon />
                 </Button>
               </Grow>
-              <div className="ag-theme-alpine min-h-150">
+              <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={visibleRows}
