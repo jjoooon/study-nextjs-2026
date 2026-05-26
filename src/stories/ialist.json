@@ -3086,7 +3086,7 @@
     "id": "LTPA690",
     "path": "shared/components",
     "dep4": "메시지 관리",
-    "file": "담보그룹_보장패키지_설계추천속성 관리",
+    "file": "메시지관리",
     "plan": "안성희",
     "pub": "",
     "dev": "미정",
