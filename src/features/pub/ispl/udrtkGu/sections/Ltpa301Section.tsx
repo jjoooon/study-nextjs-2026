@@ -20,8 +20,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 type Ltpa301DummyDataRow = {
   id: number;
