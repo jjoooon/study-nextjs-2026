@@ -226,6 +226,15 @@ type InsuredFloorType = '전체' | '일부' | null;
 
 const IMAGE_PAGE_SIZE = 5;
 
+const PUBLIC_URL = (process.env.PUBLIC_URL ?? '').replace(/\/$/, '');
+const withPublicUrl = (src: string): string => {
+  if (/^https?:\/\//.test(src)) {
+    return src;
+  }
+  const normalizedPath = src.startsWith('/') ? src : `/${src}`;
+  return `${PUBLIC_URL}${normalizedPath}`;
+};
+
 const imageItemsBySection: Record<ImageSectionType, ImageItemType[]> = {
   기둥: [
     { id: 1, src: '/images/Ltpz059/dummy.jpg', label: '철골철근콘크리트조' },
@@ -421,7 +430,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
           {visibleItems.map((item) => (
             <Gcol key={`${section}-${item.id}`} className="w-70 shrink-0">
               <img
-                src={item.src}
+                src={withPublicUrl(item.src)}
                 alt={item.label}
                 className="border border-solid border-[#D8D8D8] w-[175rem] h-[13rem] aspect-square object-cover"
               />
