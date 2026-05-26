@@ -172,7 +172,7 @@ const Ltpz067 = () => {
         </DialogHeader>
 
         <DialogSection>
-          <Grid className="w-full grid-rows-[auto_1fr_1fr]" gap={3}>
+          <Grid className="w-full grid-rows-[auto_auto_auto]" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'ss'}>
               <FormTable variant="head">
                 <FormRow>
@@ -189,7 +189,7 @@ const Ltpz067 = () => {
             <Gcol placement={'ss'} className="w-full gap-2">
               <TableFold>
                 <TableFoldHead title="단체실손의료비 전환대상" />
-                <TableFoldBody>
+                <TableFoldBody className="gap-2">
                   <div className="ag-theme-alpine min-h-[19.6rem]">
                     <AgGridReact<DummyDataType1>
                       getRowId={(params) => String(params.data.id)}
@@ -203,11 +203,11 @@ const Ltpz067 = () => {
                       enableCellSpan={true}
                     />
                   </div>
+                  <Typo variant={'body-sm'} icon={'info'}>
+                    납입보험료 변동이 예상되는 시점만 표기하였으며 상황에 따라 변동 될 수 있으므로 안내에 유의 필요
+                  </Typo>
                 </TableFoldBody>
               </TableFold>
-              <Typo variant={'body-sm'} icon={'info'}>
-                납입보험료 변동이 예상되는 시점만 표기하였으며 상황에 따라 변동 될 수 있으므로 안내에 유의 필요
-              </Typo>
             </Gcol>
 
             <TableFold>

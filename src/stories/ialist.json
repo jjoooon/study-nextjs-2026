@@ -508,7 +508,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPZ101",
-    "path": "ispl/isplBsnsSupt/components/popups",
+    "path": "ispl/aplMtt/components/popups",
     "dep4": "청약완료불가사전안내",
     "file": "전환_가입설계",
     "plan": "서영진",
