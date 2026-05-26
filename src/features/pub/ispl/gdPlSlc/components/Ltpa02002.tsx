@@ -17,6 +17,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import Ltpa120 from '@/features/pub/shared/components/popups/Ltpa120';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 
 import '@/shared/lib/agGridPub';
 
@@ -821,9 +822,19 @@ export function Ltpa02002({
                               key={idx}
                               className={`grid-rows-[1fr_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-shadow gap-0 ${
                                 isSelected
-                                  ? 'bg-[var(--color-primary-10)] after:pointer-events-none after:content-[""] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-[1rem] after:border-[0.2rem] after:border-[var(--color-primary-50)] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)]  bg-no-repeat bg-[position:calc(100%+120%)_-4%] bg-[size:10rem,_cover] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)] [&>button_*]:text-white [&>button_path]:fill-white [&>button_path]:fill-white'
+                                  ? 'bg-[var(--color-primary-10)] after:pointer-events-none after:content-[""] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-[1rem] after:border-[0.2rem] after:border-[var(--color-primary-50)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)] [&>button_*]:text-white [&>button_path]:fill-white [&>button_path]:fill-white'
                                   : 'bg-[var(--color-primary-5)] shadow-[inset_0_0_0_0.1rem_rgba(0,0,0,0.1)]'
                               }`}
+                              style={
+                                isSelected
+                                  ? {
+                                      backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
+                                      backgroundRepeat: 'no-repeat',
+                                      backgroundPosition: 'calc(100% + 120%) -4%',
+                                      backgroundSize: '10rem, cover',
+                                    }
+                                  : undefined
+                              }
                             >
                               <button
                                 type="button"
@@ -894,8 +905,14 @@ export function Ltpa02002({
               gap={0}
             >
               <Gcol
-                className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] bg-[url(/images/Ltpa020/cand_on_bg.png),linear-gradient(358deg,#FF5C2E_9.4%,#FF8D02_97.24%)] bg-no-repeat bg-[size:10rem,_cover]  bg-[position:96%_-6%] rounded-b-[1rem] "
+                className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] rounded-b-[1rem] "
                 placement="ss"
+                style={{
+                  backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: '10rem, cover',
+                  backgroundPosition: '96% -6%',
+                }}
               >
                 <Typo tag="p" variant="body-sm" className="text-white opacity-80">
                   보장내용 확인

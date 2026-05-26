@@ -64,7 +64,7 @@ export default function Ltpa020Section() {
     }
   }, []);
   // 고객정보 등록/미등록
-  const [dataNone, setDataNone] = useState<boolean>(false);
+  const [dataNone, setDataNone] = useState<boolean>(true);
 
   return (
     <>
