@@ -98,7 +98,7 @@ const Ltpz089 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              휴대폰 전자서명 알림톡 발송
+              건물형태수용장소
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ089)
