@@ -3,7 +3,9 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createModifiedCellClassRules, createTooltipValueGetter } from '@aggrid';
+// 2026-05-26 페이징 추가
+
+import { AgGridEmptyComponent, createModifiedCellClassRules, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -23,6 +25,7 @@ import * as React from 'react';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 
 import '@/shared/lib/agGridPub';
+import { TableMore } from '@common/TablePagination';
 
 // dummy data
 type DummyDataType = {
@@ -317,6 +320,13 @@ export default function Ltpa540Section() {
     [showExisting, EditCellColor, EditCellColor2]
   );
 
+  const [rowData1] = React.useState<DummyDataType[]>(DummyData);
+  const pageSize = 3;
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
+    allRows: rowData1,
+    pageSize,
+  });
+
   return (
     <>
       <LayoutHead>
@@ -401,6 +411,14 @@ export default function Ltpa540Section() {
                     singleClickEdit={true}
                   />
                 </div>
+                <TableMore
+                  isAll={true}
+                  loadedCount={loadedCount}
+                  totalCount={totalCount}
+                  pageSize={pageSize}
+                  onLoadAll={handleLoadAll}
+                  onLoadNext={handleLoadNext}
+                  />
               </TableFoldBody>
             </TableFold>
           </Grid>

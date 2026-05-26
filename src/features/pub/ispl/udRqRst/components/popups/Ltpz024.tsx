@@ -48,7 +48,8 @@ const Ltpz024 = () => {
                     tdClassName="grid grid-cols-[auto_auto_1fr_auto] gap-1"
                   >
                     <Input width={120} value={'LA260209313558'} readOnly />
-                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                    {/* 2026-05-26 버튼 비활성화 */}
+                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled >
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input value={'김한화'} readOnly />
