@@ -5,17 +5,11 @@
 
 // 2026-05-26 페이징 추가
 
-import {
-  AgGridEmptyComponent,
-  createModifiedCellClassRules,
-  createTooltipValueGetter,
-  useAgGridInfiniteAppend,
-} from '@aggrid';
+import { AgGridEmptyComponent, createModifiedCellClassRules, createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
 import { ResetIcon, FileExportIcon, FileImportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
@@ -324,14 +318,6 @@ export default function Ltpa540Section() {
     ],
     [showExisting, EditCellColor, EditCellColor2, rowData]
   );
-
-  const [rowData1] = React.useState<DummyDataType[]>(DummyData);
-  const pageSize = 3;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: rowData1,
-    pageSize,
-  });
-
   return (
     <>
       <LayoutHead>
@@ -344,7 +330,7 @@ export default function Ltpa540Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr]" gap={3}>
+          <Grid className="grid-rows-[auto_1fr] w-full h-full" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable variant={'head'} caption="유사담보관리 조회 테이블" cols={['w-[8rem]', 'w-auto']}>
                 <FormRow>
@@ -403,7 +389,7 @@ export default function Ltpa540Section() {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody className="gap-2">
-                <div className="ag-theme-alpine min-h-200">
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -416,14 +402,6 @@ export default function Ltpa540Section() {
                     singleClickEdit={true}
                   />
                 </div>
-                <TableMore
-                  isAll={true}
-                  loadedCount={loadedCount}
-                  totalCount={totalCount}
-                  pageSize={pageSize}
-                  onLoadAll={handleLoadAll}
-                  onLoadNext={handleLoadNext}
-                />
               </TableFoldBody>
             </TableFold>
           </Grid>
