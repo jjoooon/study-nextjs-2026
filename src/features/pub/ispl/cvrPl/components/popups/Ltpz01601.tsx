@@ -13,6 +13,7 @@ import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -214,9 +215,11 @@ const Ltpz01601 = () => {
               <Grow>
                 <Button color="gray" variant="outlined" onClick={handleAddRow}>
                   행추가
+                  <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
                 <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
                   행삭제
+                  <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
               </Grow>
             </TableFoldHead>

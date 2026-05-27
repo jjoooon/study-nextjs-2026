@@ -114,9 +114,15 @@ export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp 
               alt="백프로에게 물어보세요!"
               width={102}
               height={11}
-              className="mb-[1.2rem]"
+              className="mb-[1.2rem] !w-[10.2rem] !h-[1.1rem]"
             />
-            <Image src={withPublicUrl('/images/chatbot/Chatbot2.png')} alt="백프로" width={49} height={49} />
+            <Image
+              src={withPublicUrl('/images/chatbot/Chatbot2.png')}
+              alt="백프로"
+              width={49}
+              height={49}
+              className="!w-[4.9rem] !h-[4.9rem]"
+            />
           </Grow>
         </DialogHeader>
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[1px] border-[var(--color-blue-gray-30)]">
