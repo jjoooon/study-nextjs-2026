@@ -10,6 +10,7 @@ import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 
 import { ResetIcon, SearchIcon } from '@icons';
@@ -24,7 +25,6 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 import '@/shared/lib/agGridPub';
 // dummy data

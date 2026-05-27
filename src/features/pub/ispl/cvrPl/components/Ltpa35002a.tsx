@@ -559,11 +559,18 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
               ]}
             >
               <FormRow>
-                <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
-                  <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full">
-                    <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                      예상
-                    </Button>
+                <FormCell
+                  title={
+                    <Grow placement="sc" className="whitespace-nowrap" gap={1}>
+                      만기금(환급률)
+                      <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                        예상
+                      </Button>
+                    </Grow>
+                  }
+                  style={{ borderBottom: '0.1rem solid #ccc' }}
+                >
+                  <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full place-items-center">
                     <Input
                       type="tel"
                       commaAmount={true}
@@ -591,7 +598,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                           direction="col"
                           variant="amount"
                           data={[
-                            { key: '총압입보험료', value: '000,000,000원' },
+                            { key: '총납입보험료', value: '000,000,000원' },
                             { key: '중도환급금', value: '0원' },
                             { key: '만기환급금', value: '000,000,000원' },
                           ]}
@@ -676,9 +683,16 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
               <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 담보전환
               </Button>
-              <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                상품비교설계
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    상품비교설계
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent variant="default" side="top" align="center" sideOffset={-1}>
+                  상품/계약형태로 비교설계가 가능합니다.
+                </TooltipContent>
+              </Tooltip>
               <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 동일상품복사
               </Button>

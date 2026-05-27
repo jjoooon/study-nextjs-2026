@@ -79,14 +79,14 @@ export default function Ltpa020Section() {
             <RadioGroupItem
               variant={'button'}
               value="Ltpa02001"
-              className="relative z-1 [&>div]:hidden w-[24rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
+              className="relative z-1 [&>div]:hidden w-[18rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
             >
               상품선택
             </RadioGroupItem>
             <RadioGroupItem
               variant={'button'}
               value="Ltpa02002"
-              className="relative z-1 [&>div]:hidden w-[24rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
+              className="relative z-1 [&>div]:hidden w-[18rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
             >
               <span className="flex w-full justify-center items-center">추천설계</span>
               <AiIcon
@@ -96,6 +96,31 @@ export default function Ltpa020Section() {
               />
             </RadioGroupItem>
           </RadioGroup>
+          <Grow>
+            <FormTable variant="none">
+              <FormRow>
+                <FormCell title={'기준일자'}>
+                  <DatePickerInput value="2026-01-01" />
+                </FormCell>
+                <FormCell title={'판매채널'}>
+                  <RadioGroup>
+                    {[
+                      { value: '전체', label: '전체' },
+                      { value: '전속', label: '전속' },
+                      { value: 'GA', label: 'GA' },
+                      { value: 'TM', label: 'TM' },
+                      { value: 'CM', label: 'CM' },
+                      { value: '방카', label: '방카' },
+                    ].map((option) => (
+                      <RadioGroupItem key={option.value} value={option.value}>
+                        {option.label}
+                      </RadioGroupItem>
+                    ))}
+                  </RadioGroup>
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
           <Grow className="gap-1 shrink-0" placement={'ec'}>
             <Input aria-label="계약자명 입력" type="text" value={'6012345 박하늘별님달'} width={'full'} />
             <Button variant={'outlined'} color={'gray-light'} aria-label="계약자 추가" only={'icon'} size={'lg'}>

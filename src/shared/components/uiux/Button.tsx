@@ -415,6 +415,23 @@ interface UIButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>, VariantProps<typeof buttonVariants> {
   children?: React.ReactNode;
   asChild?: boolean;
+  effect?: 'flash';
+}
+
+// Flash animation style (opacity blink)
+const flashKeyframes = `
+@keyframes button-flash {
+  0% { opacity: 1; }
+  25% { opacity: 0.2; }
+  50% { opacity: 1; }
+  75% { opacity: 0.2; }
+  100% { opacity: 1; }
+}`;
+if (typeof window !== 'undefined' && !document.getElementById('button-flash-style')) {
+  const style = document.createElement('style');
+  style.id = 'button-flash-style';
+  style.innerHTML = flashKeyframes;
+  document.head.appendChild(style);
 }
 
 const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
@@ -429,11 +446,13 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
       only = 'default',
       type,
       id,
+      effect,
       ...props
     },
     ref
   ) => {
     const Comp = asChild ? Slot : 'button';
+    const effectClass = effect === 'flash' ? 'button-flash-animate' : '';
 
     return (
       <Comp
@@ -442,7 +461,7 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
         data-variant={variant}
         data-size={size}
         data-only={only}
-        className={cn(buttonVariants({ variant, color, size, only }), className)}
+        className={cn(buttonVariants({ variant, color, size, only }), effectClass, className)}
         type={Comp === 'button' ? (type ?? 'button') : undefined}
         disabled={!hasButtonAuth(id)}
         {...props}
@@ -452,6 +471,14 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
     );
   }
 );
+
+// Add flash animation class
+if (typeof window !== 'undefined' && !document.getElementById('button-flash-animate-style')) {
+  const style = document.createElement('style');
+  style.id = 'button-flash-animate-style';
+  style.innerHTML = `.button-flash-animate { animation: button-flash 1s linear 2; }`;
+  document.head.appendChild(style);
+}
 
 Button.displayName = 'Button';
 

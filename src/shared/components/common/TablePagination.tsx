@@ -21,6 +21,7 @@ interface TableMoreProps {
   itemsPerPage?: number | null;
   isReset?: boolean;
   isAll?: boolean;
+  isNext?: boolean;
   loadedCount?: number;
   totalCount?: number;
   pageSize?: number;
@@ -127,6 +128,7 @@ export function TableMore({
   pageSize,
   isReset = false,
   isAll = true,
+  isNext = true,
   onLoadedCountChange,
   onLoadAll,
   onLoadNext,
@@ -215,16 +217,18 @@ export function TableMore({
             {isLastPage ? (isReset ? '접기' : '전체조회') : '전체조회'}
           </Button>
         )}
-        <Button
-          variant={'outlined'}
-          size={'md'}
-          className="w-[6rem]"
-          color={'gray'}
-          onClick={handleLoadNext}
-          disabled={isLastPage}
-        >
-          다음
-        </Button>
+        {isNext && (
+          <Button
+            variant={'outlined'}
+            size={'md'}
+            className="w-[6rem]"
+            color={'gray'}
+            onClick={handleLoadNext}
+            disabled={isLastPage}
+          >
+            다음
+          </Button>
+        )}
       </Grow>
     </Grow>
   );

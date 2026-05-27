@@ -10,6 +10,7 @@ import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { SearchIcon, ResetIcon, ArrowNext } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
@@ -20,7 +21,6 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 type Ltpa301DummyDataRow = {
   id: number;
@@ -159,7 +159,8 @@ export default function Ltpa301Section() {
     {
       headerName: '처리내용',
       field: 'field14',
-      width: 150,
+      flex: 1,
+      cellClass: 'text-left ',
     },
   ];
 
@@ -296,8 +297,8 @@ export default function Ltpa301Section() {
                       <FormCell title={'처리구분'}>
                         <NativeSelect aria-label="처리구분 선택" width={130}>
                           {[
-                            { value: 'selection', label: '처리구분' },
-                            { value: 'selection2', label: '처리내용' },
+                            { value: 'selection', label: '선택1' },
+                            { value: 'selection2', label: '선택2' },
                           ].map((option) => (
                             <NativeSelectOption key={option.value} value={option.value}>
                               {option.label}
@@ -316,6 +317,7 @@ export default function Ltpa301Section() {
               </TableFold>
             </Grid>
 
+            {/* 2026-05-27 */}
             <Gcol className="w-full">
               <Gcol className="s-full" variant={'box-warning'} placement="ss">
                 <Typo variant={'body-sm'} icon={'warning'}>
@@ -329,8 +331,6 @@ export default function Ltpa301Section() {
                     타사 : 한국신용정보원의 집적 기준 및 Data 사용
                   </BulletListItem>
                 </BulletList>
-              </Gcol>
-              <Gcol className="s-full" variant={'box-warning'} placement="ss">
                 <Typo variant={'body-sm'} icon={'warning'}>
                   <b>주의사항</b>
                 </Typo>

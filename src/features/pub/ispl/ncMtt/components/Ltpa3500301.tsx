@@ -155,17 +155,21 @@ const QuestionDataList: Array<'Y' | 'N' | ''> = [
 ];
 
 interface Ltpa3500301Props {
-  simpleMode: boolean;
+  simpleMode?: boolean;
+  sampleMode?: boolean;
   mtValue?: '0rem' | '-3rem';
+  allNoDisabled?: boolean;
   warningMessage?: string;
   hideNotifySelect?: boolean;
 }
 
 export const Ltpa3500301 = ({
-  simpleMode,
+  sampleMode = false,
+  simpleMode = false,
   mtValue = '-3rem',
   warningMessage = '[홍길순 Self고지중] Self고지 완료(또는 취소)처리시 알릴사항 입력 가능',
   hideNotifySelect = false,
+  allNoDisabled = false,
 }: Ltpa3500301Props) => {
   const [periodType, setPeriodType] = useState<string>('');
   const [highlightBadgeNum, setHighlightBadgeNum] = useState<number | null>(null);
@@ -174,6 +178,16 @@ export const Ltpa3500301 = ({
 
   const badgeLabelNumbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
+  // sampleMode가 true로 변경될 때 한 번만 모든 답변을 빈값으로 초기화
+  React.useEffect(() => {
+    if (sampleMode) {
+      setQAnswerList(Array(qAnswerList.length).fill(''));
+    }
+  }, [sampleMode, qAnswerList.length]);
+  // sampleMode가 true면 simpleMode도 강제로 true
+  if (sampleMode) {
+    simpleMode = true;
+  }
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -279,45 +293,50 @@ export const Ltpa3500301 = ({
   });
 
   return (
-    <LayoutScrollWrap className="grid-cols-[1fr_auto] gap-3">
+    <LayoutScrollWrap className={`${sampleMode ? 'grid-cols-[1fr]' : 'grid-cols-[1fr_auto]'} gap-3`}>
       <LayoutScrollItem
         className="w-full h-full grid grid-rows-[auto_1fr] gap-3 scroll-smooth"
         data-layout="scroll-item"
       >
-        <Grow variant={'box-round-b'} placement={'se'} className={'w-full'}>
-          <Gcol placement="ss">
-            <Typo variant={'body-sm'} icon={'warning'} color={'danger'} weight={'bold'}>
-              {warningMessage}
-            </Typo>
-            <Typo variant={'body-lg'} weight={'bold'}>
-              다음 각 항목의 질문에 사실대로 답변 하시기 바랍니 다.
-            </Typo>
-          </Gcol>
-          <Grow gap={1}>
-            {!hideNotifySelect && (
-              <NativeSelect aria-label="알릴사항" width={124} readOnly>
-                {[
-                  { label: '알릴사항(설계)', value: 'value1' },
-                  { label: '알릴사항', value: 'value2' },
-                ].map((option) => (
-                  <NativeSelectOption key={option.value} value={option.value}>
-                    {option.label}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
-            )}
-            <Button color="primary" onClick={() => {}} size="lg" variant="outlined">
-              모두 아니오
-            </Button>
+        {!sampleMode && (
+          <Grow variant={'box-round-b'} placement={'se'} className={'w-full'}>
+            <Gcol placement="ss">
+              <Typo variant={'body-sm'} icon={'warning'} color={'danger'} weight={'bold'}>
+                {warningMessage}
+              </Typo>
+              <Typo variant={'body-lg'} weight={'bold'}>
+                다음 각 항목의 질문에 사실대로 답변 하시기 바랍니 다.
+              </Typo>
+            </Gcol>
+            <Grow gap={1}>
+              {!hideNotifySelect && (
+                <NativeSelect aria-label="알릴사항" width={124} readOnly>
+                  {[
+                    { label: '알릴사항(설계)', value: 'value1' },
+                    { label: '알릴사항', value: 'value2' },
+                  ].map((option) => (
+                    <NativeSelectOption key={option.value} value={option.value}>
+                      {option.label}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              )}
+              <Button color="primary" onClick={() => {}} size="lg" variant="outlined" disabled={allNoDisabled}>
+                모두 아니오
+              </Button>
+            </Grow>
           </Grow>
-        </Grow>
+        )}
         <Gcol gap={2}>
-          <Gcol variant={'box-round'} placement={'ss'} className="w-full">
-            <Typo variant={'body-sm'} weight={'bold'}>
-              ■ 이 청 약서에서 ‘최근 3개월 1년, 5년 이내’는 청약일의 3개월, 1년, 5년 전일부터 청약일가지를 의미합니다.
-              (예를 들어 청약일이 4월 1일 인 경우 ‘최근 3개월 1년, 5년 이내’는 1월 1일부터 4월 1일까지)
-            </Typo>
-          </Gcol>
+          {!sampleMode && (
+            <Gcol variant={'box-round'} placement={'ss'} className="w-full">
+              <Typo variant={'body-sm'} weight={'bold'}>
+                ■ 이 청 약서에서 ‘최근 3개월 1년, 5년 이내’는 청약일의 3개월, 1년, 5년 전일부터 청약일가지를 의미합니다.
+                (예를 들어 청약일이 4월 1일 인 경우 ‘최근 3개월 1년, 5년 이내’는 1월 1일부터 4월 1일까지)
+              </Typo>
+            </Gcol>
+          )}
+
           <div id="question-card-1" />
           <QuestionRadioCard className={highlightBadgeNum === 1 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}>
             <QuestionRadioCardHeader>
@@ -750,6 +769,7 @@ export const Ltpa3500301 = ({
                   pageSize={pageSize}
                   onLoadAll={handleLoadAll}
                   onLoadNext={handleLoadNext}
+                  isNext={false}
                   onLoadReset={() => setLoadedCount(pageSize)}
                   only={'all'}
                 />
@@ -872,20 +892,20 @@ export const Ltpa3500301 = ({
                     <TableHead>용도</TableHead>
                     <TableCell>
                       <Grow gap={'3'}>
-                        <Checkbox>자가용</Checkbox>
-                        <Checkbox>영업용</Checkbox>
+                        <Checkbox disabled={simpleMode}>자가용</Checkbox>
+                        <Checkbox disabled={simpleMode}>영업용</Checkbox>
                       </Grow>
                     </TableCell>
                     <TableCell>
                       <Grow gap={'3'}>
-                        <Checkbox>자가용</Checkbox>
-                        <Checkbox>영업용</Checkbox>
+                        <Checkbox disabled={simpleMode}>자가용</Checkbox>
+                        <Checkbox disabled={simpleMode}>영업용</Checkbox>
                       </Grow>
                     </TableCell>
                     <TableCell>
                       <Grow gap={'3'}>
-                        <Checkbox>자가용</Checkbox>
-                        <Checkbox>영업용</Checkbox>
+                        <Checkbox disabled={simpleMode}>자가용</Checkbox>
+                        <Checkbox disabled={simpleMode}>영업용</Checkbox>
                       </Grow>
                     </TableCell>
                   </TableRow>
@@ -1472,125 +1492,130 @@ export const Ltpa3500301 = ({
           </QuestionRadioCard>
         </Gcol>
       </LayoutScrollItem>
-      <LayoutScrollItem
-        className={`w-full h-[100% - 3rem] gap-1 flex flex-col sticky ${mtValue === '-3rem' ? 'mt-[-3rem]' : ''}`}
-      >
-        <Gcol className="top-0 z-20 w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem]" gap={2}>
-          <Gcol className={isCollapsed ? 'bg-[#F4F4F4] rounded-[0.6rem] p-1' : 'bg-[#F4F4F4] rounded-t-[0.6rem] p-1'}>
-            <Typo variant={'body-sm'} weight={'bold'}>
-              답변내용
-            </Typo>
-            <Button
-              color="gray"
-              variant="outlined"
-              className="text-[1.1rem]"
-              onClick={() => setIsCollapsed((prev) => !prev)}
-            >
-              {isCollapsed ? '펼침' : '접기'}
-              <SelectDropIcon size={12} className={isCollapsed ? '' : 'rotate-180'} color={'#545454'} />
-            </Button>
-          </Gcol>
-          {!isCollapsed && (
-            <Gcol className="w-full mb-2 rounded-b-[0.6rem]" gap={1}>
-              {qAnswerList.map((answer, idx) => {
-                const badgeNum = idx + 1;
-                const isSelectable = badgeLabelNumbers.includes(badgeNum);
-                return (
-                  <Grow className="w-full" gap={1} key={idx}>
-                    <Badge color={'secondary'} size={'md'} variant={'contained'} className="w-[1.8rem]">
-                      {badgeNum}
-                    </Badge>
-                    <Button
-                      className="w-[1.8rem] h-[1.8rem] text-center"
-                      onClick={() => {
-                        if (isSelectable) {
-                          setHighlightBadgeNum(badgeNum);
-                          scrollToCard(badgeNum);
-                        }
-                      }}
-                      only="default"
-                      variant="none"
-                      disabled={!isSelectable}
-                    >
-                      <Typo variant={'body-sm'} weight={'bold'} color={answer === 'Y' ? 'danger' : 'green'}>
-                        {answer}
-                      </Typo>
-                    </Button>
-                  </Grow>
-                );
-              })}
-            </Gcol>
-          )}
-        </Gcol>
-        <Gcol
-          className="sticky top-0 z-20 w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem] text-center"
-          gap={2}
+      {!sampleMode && (
+        <LayoutScrollItem
+          className={`w-full h-[100% - 3rem] gap-1 flex flex-col sticky ${mtValue === '-3rem' ? 'mt-[-3rem]' : ''}`}
         >
-          <Gcol className="bg-[#F4F4F4] rounded-t-[0.6rem] py-1" gap={1}>
-            <Gcol gap={0}>
+          <Gcol
+            className="top-0 z-20 w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem]"
+            gap={2}
+          >
+            <Gcol className={isCollapsed ? 'bg-[#F4F4F4] rounded-[0.6rem] p-1' : 'bg-[#F4F4F4] rounded-t-[0.6rem] p-1'}>
               <Typo variant={'body-sm'} weight={'bold'}>
-                [참고용]<br></br>
-                지급정보<br></br>
-                <TooltipQ>
-                  <Typo variant="body-md" weight={'bold'}>
-                    주의
-                  </Typo>
-                  <BulletList position="col">
-                    <BulletListItem type="dotBig" size="md">
-                      참고용으로 활용 & 반드시 고객에게 직접 확인 후 알릴의무 고지바랍니다
-                    </BulletListItem>
-                    <BulletListItem type="dotBig" size="md">
-                      입원 또는 수술: 원사고발생일 기준 (실제 사고사실과 다를 수 있음)
-                    </BulletListItem>
-                  </BulletList>
-                </TooltipQ>
+                답변내용
               </Typo>
-              <Typo variant={'body-xs'}>
-                조회기준일<br></br>
-                2026.02.02
+              <Button
+                color="gray"
+                variant="outlined"
+                className="text-[1.1rem]"
+                onClick={() => setIsCollapsed((prev) => !prev)}
+              >
+                {isCollapsed ? '펼침' : '접기'}
+                <SelectDropIcon size={12} className={isCollapsed ? '' : 'rotate-180'} color={'#545454'} />
+              </Button>
+            </Gcol>
+            {!isCollapsed && (
+              <Gcol className="w-full mb-2 rounded-b-[0.6rem]" gap={1}>
+                {qAnswerList.map((answer, idx) => {
+                  const badgeNum = idx + 1;
+                  const isSelectable = badgeLabelNumbers.includes(badgeNum);
+                  return (
+                    <Grow className="w-full" gap={1} key={idx}>
+                      <Badge color={'secondary'} size={'md'} variant={'contained'} className="w-[1.8rem]">
+                        {badgeNum}
+                      </Badge>
+                      <Button
+                        className="w-[1.8rem] h-[1.8rem] text-center"
+                        onClick={() => {
+                          if (isSelectable) {
+                            setHighlightBadgeNum(badgeNum);
+                            scrollToCard(badgeNum);
+                          }
+                        }}
+                        only="default"
+                        variant="none"
+                        disabled={!isSelectable}
+                      >
+                        <Typo variant={'body-sm'} weight={'bold'} color={answer === 'Y' ? 'danger' : 'green'}>
+                          {answer}
+                        </Typo>
+                      </Button>
+                    </Grow>
+                  );
+                })}
+              </Gcol>
+            )}
+          </Gcol>
+          <Gcol
+            className="sticky top-0 z-20 w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem] text-center"
+            gap={2}
+          >
+            <Gcol className="bg-[#F4F4F4] rounded-t-[0.6rem] py-1" gap={1}>
+              <Gcol gap={0}>
+                <Typo variant={'body-sm'} weight={'bold'}>
+                  [참고용]<br></br>
+                  지급정보<br></br>
+                  <TooltipQ>
+                    <Typo variant="body-md" weight={'bold'}>
+                      주의
+                    </Typo>
+                    <BulletList position="col">
+                      <BulletListItem type="dotBig" size="md">
+                        참고용으로 활용 & 반드시 고객에게 직접 확인 후 알릴의무 고지바랍니다
+                      </BulletListItem>
+                      <BulletListItem type="dotBig" size="md">
+                        입원 또는 수술: 원사고발생일 기준 (실제 사고사실과 다를 수 있음)
+                      </BulletListItem>
+                    </BulletList>
+                  </TooltipQ>
+                </Typo>
+                <Typo variant={'body-xs'}>
+                  조회기준일<br></br>
+                  2026.02.02
+                </Typo>
+              </Gcol>
+              <Typo variant={'body-sm'} weight={'bold'}>
+                입원/수술
               </Typo>
             </Gcol>
-            <Typo variant={'body-sm'} weight={'bold'}>
-              입원/수술
-            </Typo>
-          </Gcol>
-          <Gcol className="w-full mb-2" gap={1}>
-            <Grow gap={1}>
-              <Typo variant={'body-sm'}>5년내</Typo>
-              <Typo variant={'body-sm'} weight={'bold'} color={'gray'}>
-                무
-              </Typo>
-            </Grow>
-            <Grow gap={1}>
-              <Typo variant={'body-sm'}>4년내</Typo>
-              <Typo variant={'body-sm'} weight={'bold'} color={'gray'}>
-                무
-              </Typo>
-            </Grow>
-            <Grow gap={1}>
-              <Typo variant={'body-sm'}>3년내</Typo>
-              <Typo variant={'body-sm'} weight={'bold'} color={'gray'}>
-                무
-              </Typo>
-            </Grow>
-            <Grow gap={1}>
-              <Typo variant={'body-sm'} weight={'bold'}>
-                2년내
-              </Typo>
-              <Typo variant={'body-sm'} weight={'bold'} color={'danger'}>
-                무
-              </Typo>
-            </Grow>
+            <Gcol className="w-full mb-2" gap={1}>
+              <Grow gap={1}>
+                <Typo variant={'body-sm'}>5년내</Typo>
+                <Typo variant={'body-sm'} weight={'bold'} color={'gray'}>
+                  무
+                </Typo>
+              </Grow>
+              <Grow gap={1}>
+                <Typo variant={'body-sm'}>4년내</Typo>
+                <Typo variant={'body-sm'} weight={'bold'} color={'gray'}>
+                  무
+                </Typo>
+              </Grow>
+              <Grow gap={1}>
+                <Typo variant={'body-sm'}>3년내</Typo>
+                <Typo variant={'body-sm'} weight={'bold'} color={'gray'}>
+                  무
+                </Typo>
+              </Grow>
+              <Grow gap={1}>
+                <Typo variant={'body-sm'} weight={'bold'}>
+                  2년내
+                </Typo>
+                <Typo variant={'body-sm'} weight={'bold'} color={'danger'}>
+                  무
+                </Typo>
+              </Grow>
 
-            <Grow gap={1}>
-              <Typo variant={'body-sm'}>1년내</Typo>
-              <Typo variant={'body-sm'} weight={'bold'} color={'gray'}>
-                무
-              </Typo>
-            </Grow>
+              <Grow gap={1}>
+                <Typo variant={'body-sm'}>1년내</Typo>
+                <Typo variant={'body-sm'} weight={'bold'} color={'gray'}>
+                  무
+                </Typo>
+              </Grow>
+            </Gcol>
           </Gcol>
-        </Gcol>
-      </LayoutScrollItem>
+        </LayoutScrollItem>
+      )}
     </LayoutScrollWrap>
   );
 };

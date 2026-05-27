@@ -50,7 +50,7 @@ const Ltpz037 = () => {
             </Typo>
             <Grid className="w-full grid-cols-[12rem_auto_1fr_12rem] items-center gap-1">
               <Input value={'1234567'} readOnly />
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>
               <Input value={'김한화'} readOnly />
@@ -80,7 +80,14 @@ const Ltpz037 = () => {
                       <Grow>
                         <Input width={62} value={'김한화'} readOnly />
                         <Input width={116} value={'900110-1******'} readOnly />
-                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                        <Button
+                          aria-label="검색"
+                          variant={'outlined'}
+                          only="icon"
+                          size={'lg'}
+                          color={'gray-light'}
+                          disabled
+                        >
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
                       </Grow>
@@ -94,11 +101,25 @@ const Ltpz037 = () => {
                 </TableRow>
                 <TableRow>
                   <TableHead className="text-left">휴대폰번호</TableHead>
-                  <TableCell></TableCell>
+                  <TableCell>
+                    <Grow placement="ss">
+                      <Input width={130} value={'010-1111-1111'} readOnly />
+                      <Button variant={'outlined'} size={'lg'} color={'gray-light'}>
+                        인증번호 발송
+                      </Button>
+                    </Grow>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableHead className="text-left">인증번호</TableHead>
-                  <TableCell></TableCell>
+                  <TableCell>
+                    <Grow placement="ss">
+                      <Input width={130} value={''} />
+                      <Button variant={'outlined'} size={'lg'} color={'gray-light'}>
+                        인증확인
+                      </Button>
+                    </Grow>
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>

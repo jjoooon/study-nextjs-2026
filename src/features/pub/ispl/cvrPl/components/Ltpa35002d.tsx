@@ -391,7 +391,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 {/* M1. 담보초기화 삭제 */}
                 <Checkbox>플랜기본값</Checkbox>
                 <Grow className="gap-1">
-                  <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={false} required={false}>
+                  <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={true} required={false}>
                     {[
                       { label: '플랜 선택', value: 'planA' },
                       { label: '올인원플랜(15~89세)', value: 'planB' },
@@ -403,6 +403,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     ))}
                   </NativeSelect>
                   <MyPlanSelect
+                    readOnly={true}
                     items={[
                       {
                         value: 'item-1',
@@ -541,11 +542,18 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 ]}
               >
                 <FormRow>
-                  <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
+                  <FormCell
+                    title={
+                      <Grow placement="sc" className="whitespace-nowrap" gap={1}>
+                        만기금(환급률)
+                        <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                          예상
+                        </Button>
+                      </Grow>
+                    }
+                    style={{ borderBottom: '0.1rem solid #ccc' }}
+                  >
                     <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full">
-                      <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                        예상
-                      </Button>
                       <Input
                         type="tel"
                         commaAmount={true}
@@ -573,7 +581,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                             direction="col"
                             variant="amount"
                             data={[
-                              { key: '총압입보험료', value: '000,000,000원' },
+                              { key: '총납입보험료', value: '000,000,000원' },
                               { key: '중도환급금', value: '0원' },
                               { key: '만기환급금', value: '000,000,000원' },
                             ]}
@@ -652,9 +660,6 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
             </MainBottomItem>
             <MainBottomItem>
               <Grow className="gap-1">
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  담보전환
-                </Button>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   상품비교설계
                 </Button>

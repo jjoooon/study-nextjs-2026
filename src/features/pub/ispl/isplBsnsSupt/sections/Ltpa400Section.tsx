@@ -101,18 +101,18 @@ type Ltpa400DummyDataRow2 = {
 const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
   {
     id: 1,
-    field01_01: '',
-    field02_01: ' ',
-    field03_01: '',
-    field04_01: '',
-    field05_01: '',
-    field06_01: '',
-    field07_01: '',
-    field08_01: '',
-    field09_01: '',
-    field10_01: '',
-    field11_01: '',
-    field12_01: '',
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
   },
   {
     id: 2,
@@ -203,6 +203,7 @@ export default function Ltpa400Section() {
   const visibleRows = React.useMemo(() => Ltpa400DummyData2.slice(0, loadedCount), [loadedCount]);
 
   // 2026-05-22 지원SM 버튼으로 변경
+  // 2026-05-27 담당SM 버튼으로 변경
   const columnDefs: ColDef<Ltpa400DummyDataRow>[] = [
     {
       headerName: '설계접수번호',
@@ -279,6 +280,11 @@ export default function Ltpa400Section() {
       width: 120,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field10' }),
+      cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
+        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+          {params.data?.field10 ?? ''}
+        </Button>
+      ),
     },
     {
       headerName: '지원SM',
@@ -310,68 +316,86 @@ export default function Ltpa400Section() {
     {
       headerName: 'No',
       field: 'id',
-      width: 50,
+      width: 40,
       cellClass: 'text-center',
     },
     {
       headerName: '지점',
       field: 'field01_01',
+      cellClass: 'text-center',
       flex: 1,
     },
     {
       headerName: '대리점코드',
       field: 'field02_01',
+      cellClass: 'text-center',
       flex: 1,
     },
     {
       headerName: '대리점명',
       field: 'field03_01',
-      flex: 0.8,
+      cellClass: 'text-center',
+      flex: 1.2,
     },
     {
       headerName: '사용인코드',
       field: 'field04_01',
+      cellClass: 'text-center',
       flex: 0.8,
     },
     {
       headerName: '사용인명',
       field: 'field05_01',
+      cellClass: 'text-center',
       flex: 0.8,
     },
     {
       headerName: '상품명',
       field: 'field06_01',
-      flex: 1,
+      cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow2>({ field: 'field06_01' }),
+      flex: 1.4,
     },
     {
       headerName: '플랜명',
       field: 'field07_01',
+      cellClass: 'text-left',
       flex: 1,
     },
     {
       headerName: '고객명',
       field: 'field08_01',
-      flex: 0.8,
+      cellClass: 'text-center',
+      flex: 0.7,
     },
     {
       headerName: '설계일자',
       field: 'field09_01',
+      cellClass: 'text-center',
       flex: 1,
     },
     {
       headerName: '담당SM',
       field: 'field10_01',
-      flex: 0.8,
+      cellClass: 'text-center',
+      flex: 1,
     },
     {
       headerName: '설계번호',
       field: 'field11_01',
-      flex: 1.4,
+      cellClass: 'text-center',
+      flex: 1,
+      cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow2>) => (
+        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+          {params.data?.field11_01 ?? ''}
+        </Button>
+      ),
     },
     {
       headerName: '증권번호',
       field: 'field12_01',
-      flex: 1.4,
+      cellClass: 'text-center',
+      flex: 1,
     },
   ];
 

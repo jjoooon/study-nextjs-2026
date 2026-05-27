@@ -398,7 +398,7 @@ const Ltpz00501 = () => {
             <FormRow>
               <FormCell
                 title={
-                  <b>
+                  <Grow placement="sc">
                     전환대상 계약 변경/해약 확인
                     <TooltipQ>
                       전환용 실손의료비 청약완료 가능한 조건은 아래와 같습니다.
@@ -411,7 +411,7 @@ const Ltpz00501 = () => {
                         </BulletListItem>
                       </BulletList>
                     </TooltipQ>
-                  </b>
+                  </Grow>
                 }
               >
                 <Typo variant={'body-md'}>전환전 계약 : LA260112297637</Typo>

@@ -1262,7 +1262,7 @@ const Ltpz031 = () => {
                         </TableFoldBody>
                       </TableFold>
 
-                      <TableFold>
+                      <TableFold defaultOpen={false}>
                         <TableFoldHead title="(선택)치료내용">
                           <Grow>
                             <BulletItem
@@ -1315,7 +1315,7 @@ const Ltpz031 = () => {
                                               aria-label="기타 치료 입력"
                                               value={''}
                                               readOnly
-                                              className="w-[57.4rem]"
+                                              className="!w-[calc(100%-7.5rem)]"
                                             />
                                           )}
                                         </Grow>

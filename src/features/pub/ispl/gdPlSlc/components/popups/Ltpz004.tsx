@@ -204,7 +204,7 @@ const Ltpz004 = () => {
           </Gcol>
           <TableFold>
             <TableFoldHead title="1형(355간편고지형)(프리미엄올인원플랜)(1.7.8.9형)(15~80세)"></TableFoldHead>
-            <TableFoldBody>
+            <TableFoldBody className="gap-2">
               <div className="ag-theme-alpine min-h-[33rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
@@ -220,6 +220,9 @@ const Ltpz004 = () => {
                   tooltipShowDelay={0}
                 />
               </div>
+              <Typo icon="info" variant="body-sm">
+                담보별 실제 가입금액은 설계 화면에서 확인하실 수 있습니다.
+              </Typo>
             </TableFoldBody>
           </TableFold>
         </DialogSection>

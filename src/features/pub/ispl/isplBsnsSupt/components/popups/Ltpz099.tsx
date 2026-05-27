@@ -22,6 +22,8 @@ import {
 import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from '@uiux/Table';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import { useRef } from 'react';
+import React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -179,6 +181,30 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 export const Ltpz099 = () => {
+  // 021 페이지 방식: 외부 스크롤 div 동기화
+  const scrollRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const isSyncing = useRef(false);
+  const handleSyncScroll = (idx: number, e: React.UIEvent<HTMLDivElement>) => {
+    if (isSyncing.current) {
+      return;
+    }
+
+    isSyncing.current = true;
+
+    const target = e.currentTarget;
+    const scrollTop = target.scrollTop;
+
+    scrollRefs.current.forEach((ref, i) => {
+      if (i !== idx && ref && Math.abs(ref.scrollTop - scrollTop) > 1) {
+        ref.scrollTop = scrollTop;
+      }
+    });
+
+    setTimeout(() => {
+      isSyncing.current = false;
+    }, 0);
+  };
+
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -227,7 +253,29 @@ export const Ltpz099 = () => {
       valueFormatter: numberValueFormatter,
     },
   ];
+  function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
+    if (typeof column.width === 'number') {
+      const width = `${column.width}px`;
 
+      return {
+        flex: '0 0 auto',
+        minWidth: width,
+        width,
+      };
+    }
+
+    if (typeof column.flex === 'number') {
+      return {
+        flex: `${column.flex} ${column.flex} 0%`,
+        minWidth: 0,
+      };
+    }
+
+    return {
+      flex: '1 1 0%',
+      minWidth: 0,
+    };
+  }
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
@@ -347,7 +395,30 @@ export const Ltpz099 = () => {
                         </TableRow>
                       </TableBody>
                     </Table>
-                    <div className="ag-theme-alpine min-h-[33.2rem] ag-border-t">
+                    <div
+                      className="ag-theme-alpine no-header w-full min-h-[34rem] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                      ref={(el) => {
+                        scrollRefs.current[0] = el;
+                      }}
+                      onScroll={(e) => handleSyncScroll(0, e)}
+                    >
+                      <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
+                        {columnDefs.map((column, index) => {
+                          const key = column.field ?? column.headerName ?? `column-${index}`;
+
+                          return (
+                            <div
+                              key={key}
+                              className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
+                              style={getComparisonHeaderCellStyle(column)}
+                            >
+                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
+                                {column.headerName}
+                              </Typo>
+                            </div>
+                          );
+                        })}
+                      </div>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -357,7 +428,6 @@ export const Ltpz099 = () => {
                           sortable: false,
                           resizable: false,
                         }}
-                        domLayout="normal"
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
                       />
@@ -393,7 +463,30 @@ export const Ltpz099 = () => {
                         </TableRow>
                       </TableBody>
                     </Table>
-                    <div className="ag-theme-alpine min-h-[33.2rem] ag-border-t">
+                    <div
+                      className="ag-theme-alpine no-header w-full min-h-[34rem] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                      ref={(el) => {
+                        scrollRefs.current[1] = el;
+                      }}
+                      onScroll={(e) => handleSyncScroll(1, e)}
+                    >
+                      <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
+                        {columnDefs2.map((column, index) => {
+                          const key = column.field ?? column.headerName ?? `column-${index}`;
+
+                          return (
+                            <div
+                              key={key}
+                              className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
+                              style={getComparisonHeaderCellStyle(column)}
+                            >
+                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
+                                {column.headerName}
+                              </Typo>
+                            </div>
+                          );
+                        })}
+                      </div>
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -404,7 +497,6 @@ export const Ltpz099 = () => {
                           resizable: false,
                         }}
                         animateRows={false}
-                        domLayout="normal"
                         enableCellSpan={true}
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}

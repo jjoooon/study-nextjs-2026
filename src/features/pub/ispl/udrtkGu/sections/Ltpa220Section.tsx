@@ -5,21 +5,14 @@
 
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
-import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { PageID } from '@features/PageID';
+import { LayoutHead } from '@layout/BaseLayout';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogFooterArea,
-  DialogClose,
-} from '@uiux/Dialog';
+
 import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
@@ -174,7 +167,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-const Ltpa220 = () => {
+export default function Ltpa220Section() {
   const toNumericValue = (value: string | number): number => {
     if (typeof value === 'number') {
       return value;
@@ -278,87 +271,73 @@ const Ltpa220 = () => {
   }, [rowData]);
 
   return (
-    <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
-        <DialogHeader>
-          <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>
-              CSM계산내역
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA220)
-            </Typo>
-          </DialogTitle>
-        </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]" gap-5>
-          <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
-              <FormRow>
-                <FormCell title={'설계번호'}>
-                  <Input
-                    aria-label=""
-                    width={150}
-                    value={form.type01}
-                    onChange={(e) => setFormField('type01', e.target.value)}
-                    required
-                  />
-                </FormCell>
-                <FormCell title={'CSM배수'}>
-                  <Input
-                    aria-label=""
-                    width={150}
-                    value={form.type02}
-                    onChange={(e) => setFormField('type02', e.target.value)}
-                  />
-                </FormCell>
-              </FormRow>
-            </FormTable>
-            <Grow>
-              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                조회
-              </Button>
-              <Button color={'gray'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                재계산
-              </Button>
-            </Grow>
-          </Grow>
-          <TableFold>
-            <TableFoldHead title="담보별 CSM" />
-            <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[18.4rem]">
-                <AgGridReact<DummyDataType>
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData}
-                  pinnedBottomRowData={pinnedBottomRowData}
-                  columnDefs={columnDefs}
-                  defaultColDef={{
-                    suppressMovable: true,
-                  }}
-                  domLayout="normal"
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
-                />
-              </div>
-            </TableFoldBody>
-          </TableFold>
-        </DialogSection>
+    <>
+      <LayoutHead>
+        <PageID
+          data={{
+            pageName: 'CSM계산내역',
+            pageId: 'LTPA220',
+          }}
+        />
+      </LayoutHead>
 
-        <DialogFooter>
-          <DialogFooterArea>
-            <Grow>
-              <DialogClose asChild>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
+      <LayoutTemplate
+        mainBody={
+          <Grid className="grid-rows-[auto_1fr] h-full" gap-5>
+            <Grow placement="bwc" className="w-full" variant={'box-round'}>
+              <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
+                <FormRow>
+                  <FormCell title={'설계번호'}>
+                    <Input
+                      aria-label=""
+                      width={150}
+                      value={form.type01}
+                      onChange={(e) => setFormField('type01', e.target.value)}
+                      required
+                    />
+                  </FormCell>
+                  <FormCell title={'CSM배수'}>
+                    <Input
+                      aria-label=""
+                      width={150}
+                      value={form.type02}
+                      onChange={(e) => setFormField('type02', e.target.value)}
+                    />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+              <Grow>
+                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                  조회
                 </Button>
-              </DialogClose>
+                <Button color={'gray'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                  재계산
+                </Button>
+              </Grow>
             </Grow>
-          </DialogFooterArea>
-          <DialogBottomInfo />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <TableFold>
+              <TableFoldHead title="담보별 CSM" />
+              <TableFoldBody>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyDataType>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData}
+                    pinnedBottomRowData={pinnedBottomRowData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{
+                      suppressMovable: true,
+                    }}
+                    domLayout="normal"
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+          </Grid>
+        }
+      />
+    </>
   );
-};
-
-export default Ltpa220;
+}

@@ -265,8 +265,8 @@ function SelectDrop<TValue extends string = string>({
         ? 'hover:border-[var(--color-input-border-highlight-bold)] focus:border-[var(--color-input-border-highlight-bold)]'
         : 'hover:border-[var(--color-input-border-hover)] focus:border-[var(--color-input-border-hover)] focus:ring-[var(--color-gray-5)]',
     'focus:outline-none focus:ring-1',
-    readOnly && 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none',
-    'disabled:cursor-not-allowed disabled:bg-(--color-blue-gray-10) disabled:text-gray-50',
+    readOnly && 'bg-[var(--color-gray-10)] cursor-not-allowed opacity-100 pointer-events-none',
+    'disabled:cursor-not-allowed disabled:bg-(--color-gray-10)',
     TRIGGER_VARIANT_MAP[variant],
     widthClass,
     triggerClassName

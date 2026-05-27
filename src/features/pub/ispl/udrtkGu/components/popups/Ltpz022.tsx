@@ -35,9 +35,9 @@ type Ltpz022TabType = {
 
 const DATA_TABS: Ltpz022TabType[] = [
   {
-    name: '대상',
+    name: '설계',
     value: 'tab1',
-    label: '대상',
+    label: '설계',
   },
   {
     name: '홍길순',
@@ -280,7 +280,7 @@ const Ltpz022 = () => {
             getValue={(tab) => String(tab.value)}
             renderTab={(tab) => <span>{tab.label}</span>}
             renderAfter={
-              <Button variant={'contained'} size={'md'}>
+              <Button variant={'contained'} size={'md'} effect={'flash'}>
                 <AiIcon color={'#fff'} color2={'#fff'} />
                 AI자동해소
               </Button>

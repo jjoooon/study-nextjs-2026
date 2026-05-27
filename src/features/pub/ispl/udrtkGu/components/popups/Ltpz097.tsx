@@ -109,6 +109,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz097 = () => {
+  // 2026-05-27 cellClass 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상위누적명',
@@ -129,7 +130,7 @@ const Ltpz097 = () => {
       filter: false,
       suppressMovable: true,
       resizable: true,
-      cellClass: `text-center`,
+      cellClass: `text-left`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'accRisk' }),
     },
     {
@@ -175,7 +176,7 @@ const Ltpz097 = () => {
       filter: false,
       suppressMovable: true,
       resizable: true,
-      cellClass: `text-center`,
+      cellClass: `text-left`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'upperAccRisk' }),
     },
     {
@@ -290,16 +291,10 @@ const Ltpz097 = () => {
           </Grow>
 
           {/* 조회 정보 */}
+          {/* 2026-05-27 */}
           <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
             <TableFold>
-              <TableFoldHead title="피보험자의 위험정보(고객정보)">
-                <Grow>
-                  <Button color="success" variant="outlined">
-                    엑셀내보내기
-                    <FileExportIcon />
-                  </Button>
-                </Grow>
-              </TableFoldHead>
+              <TableFoldHead title="피보험자의 위험정보(고객정보)"></TableFoldHead>
               <TableFoldBody>
                 <Grow className="w-full">
                   <FormTable
@@ -318,7 +313,14 @@ const Ltpz097 = () => {
             </TableFold>
 
             <TableFold>
-              <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)" />
+              <TableFoldHead title="피보험자의 위험별 누적(상단배치 후 하위누적 합산 시 적색은 단순합산, 주황색은 최대값합산)">
+                <Grow>
+                  <Button color="success" variant="outlined">
+                    엑셀내보내기
+                    <FileExportIcon />
+                  </Button>
+                </Grow>
+              </TableFoldHead>
               <TableFoldBody>
                 <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
                   <div className="ag-theme-alpine min-h-[18.4rem]">
