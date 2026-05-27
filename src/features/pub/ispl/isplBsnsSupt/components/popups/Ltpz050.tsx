@@ -102,7 +102,17 @@ const Ltpz050 = () => {
 
         <DialogFooter>
           <DialogFooterArea>
+            {/* 2026-05-27 버튼 추가 */}
             <Grow>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                인수
+              </Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                거절
+              </Button>
+              <Button variant={'contained'} size={'xl'}>
+                저장
+              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기

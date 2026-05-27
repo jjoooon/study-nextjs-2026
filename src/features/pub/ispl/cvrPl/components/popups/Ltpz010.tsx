@@ -330,9 +330,10 @@ const Ltpz010 = () => {
             </FormTable>
           </Grow>
 
-          <Grid placement={'ss'} className="w-full gap-6 grid-rows-[auto_1fr]">
-            <Gcol gap={6}>
-              <TableFold variant={'default'}>
+          {/* 2026-05-27 전체 TableFold에 accordion 추가, gap 수정 */}
+          <Grid placement={'ss'} className="w-full gap-3 grid-rows-[auto_1fr]">
+            <Gcol gap={3}>
+              <TableFold variant={'accordion'}>
                 <TableFoldHead title="계약기본사항"></TableFoldHead>
                 <TableFoldBody>
                   <FormTable caption={'계약기본사항'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
@@ -417,9 +418,9 @@ const Ltpz010 = () => {
                 </TableFoldBody>
               </TableFold>
 
-              <TableFold variant={'default'}>
+              <TableFold variant={'accordion'}>
                 <TableFoldHead title="피보험자/계약자"></TableFoldHead>
-                <TableFoldBody>
+                <TableFoldBody className="gap-2"> {/* 2026-05-27 gap 추가 */ }
                   <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'피보험자'}>
@@ -464,26 +465,26 @@ const Ltpz010 = () => {
                       </FormCell>
                     </FormRow>
                   </FormTable>
+                  {/* 2026-05-27 위치 변경 */}
+                  <FormTable caption={'합계보험료'} cols={['w-[14rem]', 'w-auto']}>
+                    <FormRow>
+                      <FormCell title={'합계보험료'}>
+                        <Input aria-label="" width={200} value={'123456'} commaAmount readOnly />원
+                        <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                          출생후 보혐료
+                        </Button>
+                        <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                          보험료 계산
+                        </Button>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
                 </TableFoldBody>
               </TableFold>
-
-              <FormTable caption={'합계보험료'} cols={['w-[14rem]', 'w-auto']}>
-                <FormRow>
-                  <FormCell title={'합계보험료'}>
-                    <Input aria-label="" width={200} value={'123456'} commaAmount readOnly />원
-                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                      출생후 보혐료
-                    </Button>
-                    <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                      보험료 계산
-                    </Button>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
             </Gcol>
 
-            <TableFold variant={'default'}>
-              <TableFoldHead title="담보가입사항"></TableFoldHead>
+            <TableFold variant={'accordion'}>
+              <TableFoldHead title="담보가입사항" />
               <TableFoldBody>
                 <div className="ag-theme-alpine min-h-[15.4rem]">
                   <AgGridReact<DummyDataType>
@@ -527,8 +528,9 @@ const Ltpz010 = () => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
+              {/* 2026-05-26 텍스트 수정 */}
               <Button variant={'contained'} size={'xl'}>
-                저장
+                확인
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>

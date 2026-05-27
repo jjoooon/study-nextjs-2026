@@ -26,6 +26,7 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 
 // dummy data
 type DummyDataType = {
@@ -104,6 +105,9 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz038 = () => {
+  const [searchCategory, setSearchCategory] = useState('selection');
+  const isInputOnlyCategory = searchCategory === 'selection4' || searchCategory === 'selection5';
+
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
@@ -216,8 +220,18 @@ const Ltpz038 = () => {
                     ))}
                   </NativeSelect>
                 </FormCell>
-                <FormCell title={'조회구분'} tdClassName="grid grid-cols-[1fr_auto_auto]">
-                  <NativeSelect aria-label="조회구분 선택">
+                {/* 2026-05-27 설계번호, 차량번호 선택시 input만 노출로 수정 */}
+                <FormCell
+                  title={'조회구분'}
+                  tdClassName={
+                    isInputOnlyCategory ? 'grid grid-cols-[16rem_1fr]' : 'grid grid-cols-[16rem_1fr_auto]'
+                  }
+                >
+                  <NativeSelect
+                    aria-label="조회구분 선택"
+                    value={searchCategory}
+                    onChange={(event) => setSearchCategory(event.target.value)}
+                  >
                     {[
                       { value: 'selection', label: '선택' },
                       { value: 'selection2', label: '피보험자 번호' },
@@ -230,13 +244,16 @@ const Ltpz038 = () => {
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input aria-label="" width={160} value={'123123'} readOnly />
-                  <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                    <SearchIcon color={'var(--color-primary-50)'} />
-                  </Button>
+                  <Input aria-label="" width="full" value={'123123'} readOnly />
+                  {!isInputOnlyCategory && (
+                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                      <SearchIcon color={'var(--color-primary-50)'} />
+                    </Button>
+                  )}
                 </FormCell>
+                {/* 2026-05-27 가로 수정 */}
                 <FormCell title={'설계상태'}>
-                  <NativeSelect aria-label="설계상태 선택" required>
+                  <NativeSelect aria-label="설계상태 선택" width={212} required>
                     {[
                       { value: 'selection', label: '전체' },
                       { value: 'selection2', label: '전체2' },
