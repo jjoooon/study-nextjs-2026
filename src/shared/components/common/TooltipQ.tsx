@@ -26,7 +26,7 @@ export function TooltipQ({ defaultOpen = false, sideOffset = 1, children }: Tool
         side="top"
         sideOffset={sideOffset}
         variant="default"
-        className="[&>span]:whitespace-auto! text-wrap text-justify tracking-[-0.08rem]"
+        className="[&>span]:whitespace-auto! text-wrap tracking-[-0.08rem] break-keep"
       >
         {children}
       </TooltipContent>

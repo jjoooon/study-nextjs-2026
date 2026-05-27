@@ -258,7 +258,7 @@ import { Gcol, Grow } from '@atoms';
       table: { disable: true },
     },
     placement: {
-      control: 'inline-radio',
+      control: 'select',
       options: placementOptions,
       description: '정렬 옵션 (justify-content + align-items)',
       table: {
@@ -266,7 +266,7 @@ import { Gcol, Grow } from '@atoms';
       },
     },
     variant: {
-      control: 'inline-radio',
+      control: 'select',
       options: variantOptions,
       description: '시각적 스타일 변형',
       table: {
