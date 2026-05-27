@@ -12,8 +12,7 @@ import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon } from '@icons';
-
+import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -638,9 +637,11 @@ export const Ltpz296 = () => {
                   {/* 2026-05-21 텍스트수정 */}
                   <Button color="gray" variant="outlined" onClick={handleAddRowB}>
                     행추가
+                    <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
                   <Button color="gray" variant="outlined" onClick={handleDeleteRowB}>
                     행삭제
+                    <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
                 </Grow>
               </TableFoldHead>

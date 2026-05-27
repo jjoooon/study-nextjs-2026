@@ -11,12 +11,11 @@ import {
   createHeaderCheckboxOnCellValueChanged,
 } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
-
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon } from '@icons';
+import { ZoomInIcon, ZoomOutIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -348,9 +347,11 @@ const Ltpz052 = () => {
               <Grow>
                 <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
                   행추가
+                  <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
                 <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow}>
                   행삭제
+                  <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
               </Grow>
             </TableFoldHead>

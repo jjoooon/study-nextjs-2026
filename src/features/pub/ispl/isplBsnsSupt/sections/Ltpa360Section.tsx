@@ -13,7 +13,7 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, FileExportIcon, FileImportIcon } from '@icons';
+import { SearchIcon, ResetIcon, FileExportIcon, FileImportIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -1349,9 +1349,11 @@ export default function Ltpa360Section() {
                       </Button>
                       <Button color="gray" variant="outlined">
                         행추가
+                        <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                       </Button>
                       <Button color="gray" variant="outlined">
                         행삭제
+                        <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                       </Button>
                       <Button color="gray" variant="outlined">
                         파일등록
@@ -1638,9 +1640,11 @@ export default function Ltpa360Section() {
                     </Button>
                     <Button color="gray" variant="outlined">
                       행추가
+                      <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                     </Button>
                     <Button color="gray" variant="outlined">
                       행삭제
+                      <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                     </Button>
                   </Grow>
                   <div className="ag-theme-alpine min-h-[18.4rem] w-full">
@@ -1806,9 +1810,11 @@ export default function Ltpa360Section() {
                     </Button>
                     <Button color="gray" variant="outlined">
                       행추가
+                      <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                     </Button>
                     <Button color="gray" variant="outlined">
                       행삭제
+                      <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                     </Button>
                   </Grow>
                   <div className="ag-theme-alpine min-h-[18.4rem] w-full">
