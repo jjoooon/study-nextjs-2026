@@ -604,7 +604,7 @@ export const Ltpa35005 = () => {
                     </FormRow>
                   </FormTable>
 
-                  <FormTable cols={['w-[15.8rem]', 'w-[auto]', 'w-[15.8rem]', 'w-[auto]']}>
+                  <FormTable cols={['w-[10rem]', 'w-[auto]', 'w-[10rem]', 'w-[40%]']}>
                     <FormRow>
                       <FormCell title={'초회보험료'}>
                         <NativeSelect
@@ -639,6 +639,8 @@ export const Ltpa35005 = () => {
                               { value: '자동이체', label: '자동이체' },
                               { value: '급여이체', label: '급여이체' },
                               { value: '방문', label: '방문' },
+                              { value: '카드이체', label: '카드이체' },
+                              { value: '지로', label: '지로' },
                             ].map((option) => (
                               <NativeSelectOption key={option.value} value={option.value}>
                                 {option.label}
@@ -782,7 +784,30 @@ export const Ltpa35005 = () => {
                           </Grow>
                         </FormCell>
                       )}
-                      {morePay === '방문' && <FormCell title=""></FormCell>}
+                      {morePay === '카드이체' && (
+                        <FormCell title="카드주관계">
+                          <Grow gap={1}>
+                            <NativeSelect aria-label="연속이체 선택" width={80}>
+                              {[{ value: '본인', label: '본인' }].map((option) => (
+                                <NativeSelectOption key={option.value} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                            <RadioGroup defaultValue="개인" disabled>
+                              {[
+                                { value: '개인', label: '개인' },
+                                { value: '사업자', label: '사업자' },
+                              ].map((option) => (
+                                <RadioGroupItem key={option.value} value={option.value} id={option.value}>
+                                  {option.label}
+                                </RadioGroupItem>
+                              ))}
+                            </RadioGroup>
+                          </Grow>
+                        </FormCell>
+                      )}
+                      {(morePay === '지로' || morePay === '방문') && <FormCell title=""></FormCell>}
                     </FormRow>
 
                     <FormRow>
@@ -838,7 +863,16 @@ export const Ltpa35005 = () => {
                           </Button>
                         </FormCell>
                       )}
-                      {morePay === '방문' && <FormCell title=""></FormCell>}
+                      {morePay === '카드이체' && (
+                        <FormCell title="카드주">
+                          <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
+                          <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                          <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                        </FormCell>
+                      )}
+                      {(morePay === '지로' || morePay === '방문') && <FormCell title=""></FormCell>}
                     </FormRow>
                     <FormRow>
                       {(firstPay === '즉시이체' || firstPay === '현금' || firstPay === '예약이체') && (
@@ -882,7 +916,27 @@ export const Ltpa35005 = () => {
                           </NativeSelect>
                         </FormCell>
                       )}
-                      {(morePay === '방문' || morePay === '급여이체') && <FormCell title=""></FormCell>}
+                      {morePay === '카드이체' && (
+                        <FormCell title="카드사">
+                          <NativeSelect aria-label="카드 선택" width={100}>
+                            {[{ value: '선택', label: '선택' }].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <NativeSelect aria-label="이체일 선택" width={100}>
+                            {[{ value: '이체일', label: '이체일' }].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                        </FormCell>
+                      )}
+                      {(morePay === '지로' || morePay === '방문' || morePay === '급여이체') && (
+                        <FormCell title=""></FormCell>
+                      )}
                     </FormRow>
                     <FormRow>
                       {(firstPay === '즉시이체' || firstPay === '예약이체') && (
@@ -906,8 +960,8 @@ export const Ltpa35005 = () => {
                       )}
                       {firstPay === '카드납입' && (
                         <FormCell title="카드번호">
-                          <Input aria-label="카드번호" width={200} value={''} />
-                          <Input aria-label="카드기간" width={100} value={''} />
+                          <Input aria-label="카드번호" width={170} value={''} />
+                          <Input aria-label="카드기간" width={80} value={''} />
                           <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                             카드확인
                           </Button>
@@ -925,7 +979,18 @@ export const Ltpa35005 = () => {
                           </Button>
                         </FormCell>
                       )}
-                      {(morePay === '방문' || morePay === '급여이체') && <FormCell title=""></FormCell>}
+                      {morePay === '카드이체' && (
+                        <FormCell title="카드번호">
+                          <Input aria-label="카드번호" width={170} value={''} />
+                          <Input aria-label="카드기간" width={80} value={''} />
+                          <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
+                            카드확인
+                          </Button>
+                        </FormCell>
+                      )}
+                      {(morePay === '지로' || morePay === '방문' || morePay === '급여이체') && (
+                        <FormCell title=""></FormCell>
+                      )}
                     </FormRow>
                   </FormTable>
 
@@ -956,7 +1021,7 @@ export const Ltpa35005 = () => {
                       </Button>
                     )}
                   >
-                    <FormTable lineTop={false} cols={['w-[15.8rem]', 'w-[auto]', 'w-[15.8rem]', 'w-[auto]']}>
+                    <FormTable lineTop={false} cols={['w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}>
                       {/* 사망수익자 / 사망외수익자 (항상 노출) */}
                       <FormRow>
                         <FormCell
@@ -975,7 +1040,7 @@ export const Ltpa35005 = () => {
                           }
                         >
                           <Input aria-label="법정상속인" width={90} value={'법정상속인'} readOnly />
-                          <Input aria-label="법정상속인명" width={130} value={''} readOnly />
+                          <Input aria-label="법정상속인명" width={90} value={''} readOnly />
                           <Button
                             aria-label="법정상속인 검색"
                             variant={'outlined'}
@@ -995,8 +1060,8 @@ export const Ltpa35005 = () => {
                           </NativeSelect>
                         </FormCell>
                         <FormCell title="사망외수익자">
-                          <Input aria-label="사망외수익자명" width={90} value={'김한화'} readOnly />
-                          <Input aria-label="사망외수익자 주민등록번호" width={130} value={'900101-1234567'} readOnly />
+                          <Input aria-label="사망외수익자명" width={70} value={'김한화'} readOnly />
+                          <Input aria-label="사망외수익자 주민등록번호" width={120} value={'900101-1234567'} readOnly />
                           <Button
                             aria-label="사망외수익자 검색"
                             variant={'outlined'}
@@ -1019,7 +1084,7 @@ export const Ltpa35005 = () => {
                       <FormRow>
                         <FormCell title="지정대리인" colSpan={3}>
                           <Input aria-label="지정대리인" width={90} value={''} readOnly />
-                          <Input aria-label="지정대리인" width={130} value={''} readOnly />
+                          <Input aria-label="지정대리인" width={90} value={''} readOnly />
                           <Button
                             aria-label="지정대리인 검색"
                             variant={'outlined'}
@@ -1040,6 +1105,60 @@ export const Ltpa35005 = () => {
                           <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                             알림톡발송
                           </Button>
+                        </FormCell>
+                      </FormRow>
+                      {/* 미성년 */}
+                      <FormRow>
+                        <FormCell title="법정대리인1" colSpan={3} tdClassName="justify-between">
+                          <Grow>
+                            <Input aria-label="법정대리인1" width={90} value={''} />
+                            <Input aria-label="법정대리인1" width={90} value={''} />
+                            <Button
+                              aria-label="법정대리인1 검색"
+                              variant={'outlined'}
+                              only="icon"
+                              size={'lg'}
+                              color={'gray-light'}
+                            >
+                              <SearchIcon color={'var(--color-primary-50)'} />
+                            </Button>
+                            <NativeSelect aria-label="법정대리인1 선택" width={120} className="ml-[0.4rem]">
+                              {[{ value: '선택', label: '선택' }].map((option) => (
+                                <NativeSelectOption key={option.value} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                          </Grow>
+                          <Grow placement="ec">
+                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                              법정대리인등록
+                            </Button>
+                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                              수정
+                            </Button>
+                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                              재조회
+                            </Button>
+                          </Grow>
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title="법정대리인2">
+                          <Input aria-label="법정대리인1" width={90} value={''} />
+                          <Input aria-label="법정대리인1" width={90} value={''} />
+                          <Button
+                            aria-label="법정대리인1 검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                        </FormCell>
+                        <FormCell title="1인 사유">
+                          <Input value={''} />
                         </FormCell>
                       </FormRow>
                     </FormTable>

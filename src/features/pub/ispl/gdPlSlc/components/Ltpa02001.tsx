@@ -612,60 +612,65 @@ export function Ltpa02001() {
           </ResizablePanel>
           <ResizableHandle />
           <ResizablePanel defaultSize={30}>
-            <Grid className="w-full h-full grid-rows-[40%_1fr]" gap={5}>
-              <TableFold className="">
-                <TableFoldHead
-                  title="한화 3N5 더간편건강보험(세만기형)2601종 정보 한화 3N5 더간편건강보험(세만기형)2601종 정보"
-                  variant="default"
-                  className="grid grid-cols-[1fr_auto] gap-2 [&>div]:first:overflow-hidden [&>div]:first:flex [&>div]:first:whitespace-nowrap [&>div]:first:w-full"
+            <ResizablePanelGroup orientation="vertical" className="w-full">
+              <ResizablePanel defaultSize={50}>
+                <TableFold className="w-full h-full">
+                  <TableFoldHead
+                    title="한화 3N5 더간편건강보험(세만기형)2601종 정보 한화 3N5 더간편건강보험(세만기형)2601종 정보"
+                    variant="default"
+                    className="grid grid-cols-[1fr_auto] gap-2 [&>div]:first:overflow-hidden [&>div]:first:flex [&>div]:first:whitespace-nowrap [&>div]:first:w-full"
+                  >
+                    <Grow>
+                      <Checkbox>미판매보종</Checkbox>
+                    </Grow>
+                  </TableFoldHead>
+                  <TableFoldBody className="w-full h-full">
+                    <div className="ag-theme-alpine w-full h-full">
+                      <AgGridReact<DummyDataType2>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={dummyData2}
+                        columnDefs={columnDefs2}
+                        domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel defaultSize={50}>
+                <TabPager
+                  data={tabs}
+                  active={active}
+                  setActive={setActive}
+                  hasTableBelow={true}
+                  getValue={(tab) => String(tab.value)}
+                  renderTab={(tab) => {
+                    return (
+                      <>
+                        <span>{tab.label}</span>
+                        <span>({tab.count})</span>
+                      </>
+                    );
+                  }}
+                  renderDropdownItem={false}
                 >
-                  <Grow>
-                    <Checkbox>미판매보종</Checkbox>
-                  </Grow>
-                </TableFoldHead>
-                <TableFoldBody className="w-full h-full">
-                  <div className="ag-theme-alpine w-full h-full min-h-0">
-                    <AgGridReact<DummyDataType2>
+                  <div className="ag-theme-alpine w-full ag-border-t h-full">
+                    <AgGridReact<DummyDataType3>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={dummyData2}
-                      columnDefs={columnDefs2}
+                      rowData={selectedPlanRowData}
+                      columnDefs={columnDefs3}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
                     />
                   </div>
-                </TableFoldBody>
-              </TableFold>
-              <TabPager
-                data={tabs}
-                active={active}
-                setActive={setActive}
-                hasTableBelow={true}
-                getValue={(tab) => String(tab.value)}
-                renderTab={(tab) => {
-                  return (
-                    <>
-                      <span>{tab.label}</span>
-                      <span>({tab.count})</span>
-                    </>
-                  );
-                }}
-                renderDropdownItem={false}
-              >
-                <div className="ag-theme-alpine w-full ag-border-t h-full">
-                  <AgGridReact<DummyDataType3>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={selectedPlanRowData}
-                    columnDefs={columnDefs3}
-                    domLayout="normal"
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                  />
-                </div>
-              </TabPager>
-            </Grid>
+                </TabPager>
+              </ResizablePanel>
+            </ResizablePanelGroup>
           </ResizablePanel>
         </ResizablePanelGroup>
       </Grow>

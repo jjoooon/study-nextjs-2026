@@ -46,7 +46,8 @@ const Ltpz084 = () => {
               simpleMode={true}
               mtValue="0rem"
               warningMessage="알릴의무사항은 상세설계시 입력 가능합니다."
-              hideNotifySelect={true}
+              hideNotifySelect={false}
+              allNoDisabled={true}
             />
           </div>
         </DialogSection>

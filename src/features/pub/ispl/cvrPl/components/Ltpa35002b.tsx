@@ -229,7 +229,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
       },
       {
-        headerGroupComponent: () => <HeaderWithUnit label="보험" unit="(만원)" />,
+        headerGroupComponent: () => <HeaderWithUnit label="보험료" unit="(만원)" />,
         children: [
           {
             headerName: '출생전',
@@ -711,7 +711,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                           direction="col"
                           variant="amount"
                           data={[
-                            { key: '총압입보험료', value: '000,000,000원' },
+                            { key: '총납입보험료', value: '000,000,000원' },
                             { key: '중도환급금', value: '0원' },
                             { key: '만기환급금', value: '000,000,000원' },
                           ]}

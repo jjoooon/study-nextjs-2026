@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, AiIcon } from '@icons';
@@ -272,6 +272,7 @@ export function Ltpa02002({
       width: 80,
       cellClass: 'text-right',
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
+      valueFormatter: numberValueFormatter<DummyDataListDetailType>,
     },
     {
       headerName: '보험료(원)',
@@ -279,6 +280,7 @@ export function Ltpa02002({
       width: 70,
       cellClass: 'text-right',
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
+      valueFormatter: numberValueFormatter<DummyDataListDetailType>,
     },
   ];
 
@@ -293,7 +295,6 @@ export function Ltpa02002({
     { value: '수술/치료', label: '수술/치료' },
     { value: '골절/화상', label: '골절/화상' },
     { value: '검사/지원', label: '검사/지원' },
-    { value: '운전/비용', label: '운전/비용' },
   ] as const;
   type CoverageOptionValue = (typeof coverageOptions)[number]['value'];
   const [selectedCoverageValues, setSelectedCoverageValues] = useState<CoverageOptionValue[]>([]);
@@ -427,7 +428,10 @@ export function Ltpa02002({
                       aria-expanded={isFilterOptionOpen}
                     >
                       <span className="w-[100%] flex items-center font-normal">{selectedProductFeatureSummary}</span>
-                      <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                      <SelectDropIcon
+                        color="var(--color-gray-50)"
+                        className={isFilterOptionOpen ? 'rotate-[180deg]' : ''}
+                      />
                     </button>
                   </FormCell>
 
@@ -440,7 +444,10 @@ export function Ltpa02002({
                         aria-expanded={isFilterOptionOpen}
                       >
                         <span className="w-[100%] flex items-center font-normal">{selectedAnalysisSummary}</span>
-                        <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                        <SelectDropIcon
+                          color="var(--color-gray-50)"
+                          className={isFilterOptionOpen ? 'rotate-[180deg]' : ''}
+                        />
                       </button>
                     </FormCell>
                   ) : (
@@ -452,7 +459,10 @@ export function Ltpa02002({
                         aria-expanded={isFilterOptionOpen}
                       >
                         <span className="w-[100%] flex items-center font-normal">{selectedNoticeSummary}</span>
-                        <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                        <SelectDropIcon
+                          color="var(--color-gray-50)"
+                          className={isFilterOptionOpen ? 'rotate-[180deg]' : ''}
+                        />
                       </button>
                     </FormCell>
                   )}
@@ -465,7 +475,10 @@ export function Ltpa02002({
                       aria-expanded={isFilterOptionOpen}
                     >
                       <span className="w-[100%] flex items-center font-normal">{selectedCoverageSummary}</span>
-                      <SelectDropIcon color="var(--color-gray-50)" className="rotate-[180deg]" />
+                      <SelectDropIcon
+                        color="var(--color-gray-50)"
+                        className={isFilterOptionOpen ? 'rotate-[180deg]' : ''}
+                      />
                     </button>
                   </FormCell>
                 </FormRow>
@@ -668,7 +681,7 @@ export function Ltpa02002({
                             입원수술
                           </Typo>
                           <Grid className="grid-cols-[auto_auto_1fr] gap-1 items-center w-full">
-                            {[0, 1, 2, 3, 4].map((idx) => (
+                            {[0, 1, 2, 3].map((idx) => (
                               <>
                                 <Input
                                   key={idx}
@@ -948,7 +961,7 @@ export function Ltpa02002({
                     />
                   </Button>
                   <div
-                    className={`${isAiReasonExpanded ? 'max-h-[13.2rem]' : 'max-h-[3.4rem]'} h-full overflow-y-auto pr-[0.2rem] text-[1.1rem] leading-[1.5] transition-all`}
+                    className={`${isAiReasonExpanded ? 'max-h-[100%]' : 'max-h-[3.4rem]'} h-full overflow-y-auto pr-[0.2rem] text-[1.1rem] leading-[1.5] transition-all`}
                     dangerouslySetInnerHTML={{ __html: selectedPlanInfo?.plan.field2 ?? '' }}
                   />
                 </Grow>

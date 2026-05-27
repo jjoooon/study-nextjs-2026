@@ -157,6 +157,7 @@ const QuestionDataList: Array<'Y' | 'N' | ''> = [
 interface Ltpa3500301Props {
   simpleMode: boolean;
   mtValue?: '0rem' | '-3rem';
+  allNoDisabled?: boolean;
   warningMessage?: string;
   hideNotifySelect?: boolean;
 }
@@ -166,6 +167,7 @@ export const Ltpa3500301 = ({
   mtValue = '-3rem',
   warningMessage = '[홍길순 Self고지중] Self고지 완료(또는 취소)처리시 알릴사항 입력 가능',
   hideNotifySelect = false,
+  allNoDisabled = false,
 }: Ltpa3500301Props) => {
   const [periodType, setPeriodType] = useState<string>('');
   const [highlightBadgeNum, setHighlightBadgeNum] = useState<number | null>(null);
@@ -306,7 +308,7 @@ export const Ltpa3500301 = ({
                 ))}
               </NativeSelect>
             )}
-            <Button color="primary" onClick={() => {}} size="lg" variant="outlined">
+            <Button color="primary" onClick={() => {}} size="lg" variant="outlined" disabled={allNoDisabled}>
               모두 아니오
             </Button>
           </Grow>

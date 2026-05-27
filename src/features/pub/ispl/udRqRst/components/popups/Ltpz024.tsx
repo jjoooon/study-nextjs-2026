@@ -25,7 +25,7 @@ import { Input } from '@uiux/Input';
 const Ltpz024 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={false} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -43,7 +43,7 @@ const Ltpz024 = () => {
               <FormTable variant={'head'}>
                 <FormRow>
                   <FormCell
-                    title={'설계번호'}
+                    title={'취급자 정보'}
                     className="whitespace-nowrap"
                     tdClassName="grid grid-cols-[auto_auto_1fr_auto] gap-1"
                   >

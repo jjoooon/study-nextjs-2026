@@ -870,7 +870,7 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field02: '적용',
     field03: '연만기',
     field04: '표준',
-    field05: '사망/후유, 진단비, 입원/통원, 수술/치료, 골절/화상, 검사/지원, 운전/비용',
+    field05: '사망/후유, 진단비, 입원/통원, 수술/치료, 골절/화상, 검사/지원',
     field06: '00',
     field07: '00',
   },
@@ -890,7 +890,7 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field02: '적용',
     field03: '연만기',
     field04: '표준',
-    field05: '검사/지원, 운전/비용',
+    field05: '검사/지원',
     field06: '00',
     field07: '00',
   },
@@ -900,7 +900,7 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field02: '미적용',
     field03: '세만기',
     field04: '간편',
-    field05: '골절/화상, 검사/지원, 운전/비용',
+    field05: '골절/화상, 검사/지원',
     field06: '00',
     field07: '00',
   },
@@ -920,7 +920,7 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field02: '미적용',
     field03: '세만기',
     field04: '간편',
-    field05: '사망/후유, 진단비, 입원/통원, 골절/화상, 검사/지원, 운전/비용',
+    field05: '사망/후유, 진단비, 입원/통원, 골절/화상, 검사/지원',
     field06: '00',
     field07: '00',
   },
@@ -930,7 +930,7 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field02: '적용',
     field03: '연만기',
     field04: '표준',
-    field05: '사망/후유, 진단비, 검사/지원, 운전/비용',
+    field05: '사망/후유, 진단비, 검사/지원',
     field06: '00',
     field07: '00',
   },
@@ -940,7 +940,7 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field02: '미적용',
     field03: '세만기',
     field04: '간편',
-    field05: '사망/후유, 진단비, 골절/화상, 검사/지원, 운전/비용',
+    field05: '사망/후유, 진단비, 골절/화상, 검사/지원',
     field06: '00',
     field07: '00',
   },
@@ -960,7 +960,7 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field02: '미적용',
     field03: '세만기',
     field04: '간편',
-    field05: '사망/후유, 진단비, 입원/통원, 검사/지원, 운전/비용',
+    field05: '사망/후유, 진단비, 입원/통원, 검사/지원',
     field06: '00',
     field07: '00',
   },
@@ -980,7 +980,7 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field02: '미적용',
     field03: '세만기',
     field04: '간편',
-    field05: '사망/후유, 진단비, 입원/통원, 운전/비용',
+    field05: '사망/후유, 진단비, 입원/통원',
     field06: '00',
     field07: '00',
   },
@@ -1508,11 +1508,6 @@ const Ltpa04002 = () => {
           field: 'field16',
           width: 70,
         },
-        {
-          headerName: '운전/비용',
-          field: 'field17',
-          width: 70,
-        },
       ],
     },
   ];
@@ -1685,7 +1680,7 @@ const Ltpa04002 = () => {
     },
   ];
 
-  const [searchInput, setSearchInput] = useState('고객군별');
+  const [searchInput, setSearchInput] = useState('선택');
 
   return (
     <Grid className="w-full grid-rows-[auto_1fr] gap-3 h-full">
@@ -1769,7 +1764,7 @@ const Ltpa04002 = () => {
               </FormCell>
             )}
             {searchInput === '상품별' && (
-              <FormCell title={'상품별'}>
+              <FormCell title={'상품'}>
                 <NativeSelect aria-label="상품명 선택" width={120} value={''} onChange={() => {}}>
                   {[
                     { value: '상품명', label: '상품명' },

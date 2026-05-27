@@ -235,7 +235,7 @@ export function Ltpa35002c() {
   const columnDefs2 = useMemo(
     (): ColDef<AgGridRow2>[] => [
       {
-        headerName: '',
+        headerName: '담보군',
         field: 'field1',
         width: attributeColumnWidth[8],
         spanRows: true,
@@ -510,7 +510,7 @@ export function Ltpa35002c() {
                           direction="col"
                           variant="amount"
                           data={[
-                            { key: '총압입보험료', value: '000,000,000원' },
+                            { key: '총납입보험료', value: '000,000,000원' },
                             { key: '중도환급금', value: '0원' },
                             { key: '만기환급금', value: '000,000,000원' },
                           ]}
@@ -589,9 +589,6 @@ export function Ltpa35002c() {
           </MainBottomItem>
           <MainBottomItem className="justify-end">
             <Grow className="gap-1">
-              <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                담보전환
-              </Button>
               <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 상품비교설계
               </Button>

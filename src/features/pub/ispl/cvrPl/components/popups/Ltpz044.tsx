@@ -93,7 +93,7 @@ const Ltpz044 = () => {
       editable: false,
     },
     {
-      headerName: '보장P (일시납외)보장',
+      headerName: '보장P (일시납외)',
       field: 'field03',
       width: 120,
       cellClass: 'text-right',
@@ -129,14 +129,11 @@ const Ltpz044 = () => {
       valueFormatter: (params) => formatNumericValue(params.value),
     },
     {
-      headerName: '합계보험료 (=적용보험료)',
+      headerName: '합계보험료(=적용보험료)',
       field: 'field07',
       flex: 1,
       cellClass: 'text-right',
       editable: false,
-      headerComponent: () => (
-        <div className="w-full text-center whitespace-normal leading-5">합계보험료/ (=적용보험료)</div>
-      ),
       valueParser: (params) => parseNumericValue(params.newValue),
       valueFormatter: (params) => formatNumericValue(params.value),
     },

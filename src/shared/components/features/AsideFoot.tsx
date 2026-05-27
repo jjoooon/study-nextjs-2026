@@ -36,6 +36,11 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
     maximumFractionDigits: 2,
   });
 
+  const insGenText =
+    typeof resolvedDataTotal.insGen === 'number'
+      ? resolvedDataTotal.insGen.toLocaleString('ko-KR')
+      : resolvedDataTotal.insGen;
+
   return (
     <Gcol className="w-full pb-1.5 relative">
       {viewKey !== 'view3' && viewKey !== 'view4' && viewKey !== 'view5' && (
@@ -46,7 +51,7 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
           <Checkbox variant={'button'}>4세대</Checkbox>
           <Grow>
             <Button variant={'none'} className="px-0">
-              <Typo variant={'amount-md'}>{resolvedDataTotal.insGen}</Typo>
+              <Typo variant={'amount-md'}>{insGenText}</Typo>
               <Typo variant={'heading-md'}>원</Typo>
             </Button>
           </Grow>

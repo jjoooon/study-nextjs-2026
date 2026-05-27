@@ -382,7 +382,7 @@ const Ltpz013 = () => {
                         </Typo>
                       </Gcol>
                       <Gcol variant="box-info" placement="ss" className="border border-[var(--color-information-15)]">
-                        <NativeSelect size="md">
+                        <NativeSelect size="md" readOnly>
                           {selectOption1.map((option, index) => {
                             return (
                               <NativeSelectOption key={index} value={option.value}>
@@ -391,7 +391,7 @@ const Ltpz013 = () => {
                             );
                           })}
                         </NativeSelect>
-                        <NativeSelect size="md">
+                        <NativeSelect size="md" readOnly>
                           {selectOption2.map((option, index) => {
                             return (
                               <NativeSelectOption key={index} value={option.value}>
@@ -419,7 +419,7 @@ const Ltpz013 = () => {
                               );
                             })}
                           </NativeSelect>
-                          <NativeSelect size="md">
+                          <NativeSelect size="md" readOnly>
                             {selectOption5.map((option, index) => {
                               return (
                                 <NativeSelectOption key={index} value={option.value}>
@@ -429,7 +429,7 @@ const Ltpz013 = () => {
                             })}
                           </NativeSelect>
                         </Grow>
-                        <NativeSelect size="md">
+                        <NativeSelect size="md" readOnly>
                           {selectOption6.map((option, index) => {
                             return (
                               <NativeSelectOption key={index} value={option.value}>

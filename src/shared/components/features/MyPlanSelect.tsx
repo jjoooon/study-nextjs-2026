@@ -14,6 +14,7 @@ export type ItemBase<TValue extends string = string, TContent = string> = {
 
 interface MyPlanSelectProps<TItem extends ItemBase> {
   items: TItem[];
+  readOnly?: boolean;
   defaultValue?: TItem['value'][];
   placeholder?: string;
   renderContent?: (content: TItem['content'][number], item: TItem, index: number) => string;
@@ -21,6 +22,7 @@ interface MyPlanSelectProps<TItem extends ItemBase> {
 
 export const MyPlanSelect = <TItem extends ItemBase>({
   items,
+  readOnly = false,
   defaultValue,
   placeholder = '나만의 설계선택',
   renderContent,
@@ -28,7 +30,7 @@ export const MyPlanSelect = <TItem extends ItemBase>({
   const fallbackDefaultValue = items.slice(0, 3).map((item) => item.value);
 
   return (
-    <SelectDrop typeMode="custom" size="md" width={160} placeholder={placeholder}>
+    <SelectDrop typeMode="custom" size="md" width={160} placeholder={placeholder} readOnly={readOnly}>
       <Gcol className="w-full p-[0.2rem]">
         <Button variant="outlined" size="md" className="w-full">
           <SaveIcon /> 나만의 설계

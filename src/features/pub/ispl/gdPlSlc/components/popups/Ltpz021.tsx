@@ -278,9 +278,9 @@ const Ltpz021 = () => {
       },
     },
     {
-      headerName: '가입금액(원)',
+      headerName: '가입금액(만원)',
       field: 'field2',
-      width: 70,
+      width: 90,
       valueFormatter: numberValueFormatter,
       colSpan: (params) => {
         // 합계 행이면 숨김
@@ -425,10 +425,22 @@ const Ltpz021 = () => {
                       placement="bwc"
                     >
                       <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
-                        예상보험표
+                        예상보험료
                       </Typo>
                       <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
-                        7000
+                        {(() => {
+                          // 각 그리드의 데이터 합계 계산
+                          const data = i === 0 ? rowData1 : i === 1 ? rowData2 : rowData3;
+                          const sum = data.reduce(
+                            (acc, cur) =>
+                              acc +
+                              (typeof cur.field3 === 'number'
+                                ? cur.field3
+                                : Number(cur.field3.toString().replace(/[^\d.-]/g, ''))),
+                            0
+                          );
+                          return sum.toLocaleString();
+                        })()}
                       </Typo>
                     </Grow>
                   </div>
