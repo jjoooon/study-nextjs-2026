@@ -149,6 +149,28 @@ export const Ltpz296 = () => {
     idKey: 'id',
   });
 
+  // 2026-05-27 그룹추가시 select 화살표만 노출
+  const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
+    const value = params.value == null ? '' : String(params.value);
+    const hasValue = value.trim().length > 0;
+
+    if (hasValue) {
+      return (
+        <div className="flex h-full w-full items-center justify-center px-1">
+          <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
+        <span className="block min-w-0 flex-1" />
+        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+      </div>
+    );
+  }, []);
+
+  // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
   const columnDefsA: ColDef<DummyDataTypeA>[] = [
     {
       headerName: '그룹명',
@@ -174,6 +196,7 @@ export const Ltpz296 = () => {
       cellClass: 'editable-cell text-center',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['남자', '여자'] },
+      cellRenderer: selectCellRenderer,
       sortable: false,
     },
     {
@@ -223,6 +246,7 @@ export const Ltpz296 = () => {
       cellClass: 'editable-cell text-center',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['text1', 'text2'] },
+      cellRenderer: selectCellRenderer,
       sortable: false,
     },
     {
@@ -282,6 +306,7 @@ export const Ltpz296 = () => {
     idKey: 'id',
   });
 
+  // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
   const columnDefsB: ColDef<DummyDataTypeB>[] = [
     {
       headerName: '그룹명',
@@ -293,6 +318,7 @@ export const Ltpz296 = () => {
       pinned: 'left',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '이름',
@@ -359,6 +385,7 @@ export const Ltpz296 = () => {
       cellClass: 'editable-cell text-center',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '연령',
@@ -424,6 +451,7 @@ export const Ltpz296 = () => {
       cellClass: 'editable-cell text-center',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '이륜차',
@@ -433,6 +461,7 @@ export const Ltpz296 = () => {
       cellClass: 'editable-cell text-center',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '병력여부',
@@ -442,6 +471,7 @@ export const Ltpz296 = () => {
       cellClass: 'editable-cell text-center',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '치아병력',
@@ -451,6 +481,7 @@ export const Ltpz296 = () => {
       cellClass: 'editable-cell text-center',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '알릴사항',
@@ -490,15 +521,16 @@ export const Ltpz296 = () => {
       <DialogContent showCloseButton resizable={true} size="full">
         <DialogHeader>
           <DialogTitle>
+            {/* 2026-05-27 텍스트 수정 */}
             <Typo tag={'strong'} variant={'heading-lg'}>
-              차세대 가입설계 시스템 구축 프로젝트
+              담보별 피보험자명세관리
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ296)
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr_1fr_auto_auto]">
+        <DialogSection className="w-full h-full grid-rows-[auto_1fr_auto_auto_auto]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable
               variant={'head'}

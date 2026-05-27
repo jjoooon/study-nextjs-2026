@@ -258,18 +258,8 @@ export default function Ltpa330Section() {
                 onLoadNext={handleLoadNext}
                 isAll={false}
               />
-            </Grid>
-          </Grid>
-        }
-        mainFoot={
-          <MainBottom>
-            <MainBottomItem>
-              <Grow>
-                <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  이미지조회
-                </Button>
-              </Grow>
-              <Grow>
+              {/* 2026-05-27 위치 변경 */}
+              <Grow placement={'ec'}>
                 <Typo>설계번호</Typo>
                 <Input
                   size={'lg'}
@@ -281,6 +271,18 @@ export default function Ltpa330Section() {
                 />
                 <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
                   이미지전송
+                </Button>
+              </Grow>
+            </Grid>
+          </Grid>
+        }
+        mainFoot={
+          <MainBottom>
+            <MainBottomItem>
+              {/* 2026-05-27 className 추가 */}
+              <Grow className="justify-start!">
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  이미지조회
                 </Button>
               </Grow>
             </MainBottomItem>
