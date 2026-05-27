@@ -1520,7 +1520,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 <Grow placement="bwc">
                                   <Grow>010-1234-5678</Grow>
                                   <KeyValueItem label="전자적안내동의">
-                                    <Grow placement="sc" gap="0">
+                                    <Grow placement="sc">
                                       <Badge color="green" size="md" className="text-[1.4rem]">
                                         Y
                                       </Badge>
@@ -1646,7 +1646,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           <Grow placement="bwc">
                             <Grow>010-1234-5678</Grow>
                             <KeyValueItem label="전자적안내동의">
-                              <Grow placement="sc" gap="0">
+                              <Grow placement="sc">
                                 <Badge color="green" size="md">
                                   Y
                                 </Badge>

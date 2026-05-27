@@ -478,11 +478,18 @@ export function Ltpa35002c() {
               ]}
             >
               <FormRow>
-                <FormCell title="만기금(환급률)" style={{ borderBottom: '0.1rem solid #ccc' }}>
+                <FormCell
+                  title={
+                    <Grow placement="sc" className="whitespace-nowrap" gap={1}>
+                      만기금(환급률)
+                      <Button variant={'outlined'} color={'gray'} size={'sm'}>
+                        예상
+                      </Button>
+                    </Grow>
+                  }
+                  style={{ borderBottom: '0.1rem solid #ccc' }}
+                >
                   <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full">
-                    <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                      예상
-                    </Button>
                     <Input
                       type="tel"
                       commaAmount={true}
