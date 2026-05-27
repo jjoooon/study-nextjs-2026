@@ -153,9 +153,10 @@ const Ltpz046 = () => {
             <FormTable variant={'head'} lineTop={false} caption="">
               <FormTable variant="none" cols={['w-1', 'w-auto']}>
                 <FormRow>
+                  {/* 2027-05-27 input 수정 */}
                   <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
-                    <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
-                    <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                    <Input aria-label="" width={130} value={'LA26020945959594'} variant="info" readOnly />
+                    <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} variant="info" readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>

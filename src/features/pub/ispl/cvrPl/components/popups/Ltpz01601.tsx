@@ -14,6 +14,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
+import { ZoomInIcon, ZoomOutIcon } from '@icons'; // 2026-05-27 추가
 import {
   Dialog,
   DialogClose,
@@ -211,12 +212,15 @@ const Ltpz01601 = () => {
           </Grow>
           <TableFold className="grid-rows-[auto_1fr]">
             <TableFoldHead title="골프용품손해(실손)">
+              {/* 2026-05-27 아이콘 추가 */}
               <Grow>
                 <Button color="gray" variant="outlined" onClick={handleAddRow}>
                   행추가
+                  <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
                 <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
                   행삭제
+                  <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
               </Grow>
             </TableFoldHead>

@@ -221,85 +221,90 @@ const Ltpz076 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid className="w-full grid grid-flow-col grid-cols-[52%_4%_44%]" placement="ss">
+          {/* 2027-05-27 버튼 이동으로 전체수정 */}
+          <Grid className="w-full grid grid-flow-col grid-cols-[6fr_4fr]" placement="ss">
             <TableFold className="w-full">
               <TableFoldHead title="대상" />
               <TableFoldBody className="grid grid-rows-[auto_1fr] gap-[1.2rem]">
-                <Grow placement="bwe" className="w-full" variant={'box-round'}>
-                  <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[1rem]', 'w-auto']}>
-                    <FormRow>
-                      <FormCell title={'직업구분'}>
-                        <NativeSelect aria-label="직업구분 선택" width={80} required>
-                          {[
-                            { value: 'selection', label: '설계사' },
-                            { value: 'selection2', label: '대리점' },
-                            { value: 'selection3', label: '중개인' },
-                            { value: 'selection4', label: '사용인' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.value} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                      </FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'조회구분'}>
-                        <NativeSelect aria-label="조회구분 선택" width={80} required>
-                          {[
-                            { value: 'selection', label: '코드' },
-                            { value: 'selection2', label: '상호명' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.value} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                        <Input aria-label="" width={75} value={'1234567'} required />
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                  <Grow>
-                    <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                      조회
-                    </Button>
-                    <Button
-                      color={'gray'}
-                      only={'icon'}
-                      size={'lg'}
-                      variant={'outlined'}
-                      onClick={() => {}}
-                      aria-label="새로고침"
-                    >
-                      <ResetIcon />
+                <Grid className="w-full grid-flow-col grid-cols-[1fr] gap-1">
+                  <Gcol>
+                    <Grow placement="bwe" className="w-full" variant={'box-round'}>
+                      <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[1rem]', 'w-auto']}>
+                        <FormRow>
+                          <FormCell title={'직업구분'}>
+                            <NativeSelect aria-label="직업구분 선택" width={80} required>
+                              {[
+                                { value: 'selection', label: '설계사' },
+                                { value: 'selection2', label: '대리점' },
+                                { value: 'selection3', label: '중개인' },
+                                { value: 'selection4', label: '사용인' },
+                              ].map((option) => (
+                                <NativeSelectOption key={option.value} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                          </FormCell>
+                        </FormRow>
+                        <FormRow>
+                          <FormCell title={'조회구분'}>
+                            <NativeSelect aria-label="조회구분 선택" width={80} required>
+                              {[
+                                { value: 'selection', label: '코드' },
+                                { value: 'selection2', label: '상호명' },
+                              ].map((option) => (
+                                <NativeSelectOption key={option.value} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                            <Input aria-label="" width={75} value={'1234567'} required />
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                      <Grow>
+                        <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                          조회
+                        </Button>
+                        <Button
+                          color={'gray'}
+                          only={'icon'}
+                          size={'lg'}
+                          variant={'outlined'}
+                          onClick={() => {}}
+                          aria-label="새로고침"
+                        >
+                          <ResetIcon />
+                        </Button>
+                      </Grow>
+                    </Grow>
+                    <div className="ag-theme-alpine min-h-[18.4rem]">
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        enableCellSpan={true}
+                        singleClickEdit={true}
+                        rowSelection={{
+                          mode: 'multiRow',
+                          headerCheckbox: false,
+                          checkboxes: true,
+                        }}
+                        selectionColumnDef={{
+                          headerName: '선택',
+                          width: 30,
+                        }}
+                      />
+                    </div>
+                  </Gcol>
+                  <Grow className="w-full h-full flex justify-center items-center ">
+                    <Button variant={'none'} size={'lg'} color={'primary'} className="p-0">
+                      <RightArrowIcon color="#FF5C2E" />
                     </Button>
                   </Grow>
-                </Grow>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<DummyDataType>
-                    getRowId={(params) => String(params.data.id)}
-                    rowData={rowData}
-                    columnDefs={columnDefs}
-                    enableCellSpan={true}
-                    singleClickEdit={true}
-                    rowSelection={{
-                      mode: 'multiRow',
-                      headerCheckbox: false,
-                      checkboxes: true,
-                    }}
-                    selectionColumnDef={{
-                      headerName: '선택',
-                      width: 30,
-                    }}
-                  />
-                </div>
+                </Grid>
               </TableFoldBody>
             </TableFold>
-            <Gcol className="w-full h-full flex justify-center items-center">
-              <Button variant={'none'} size={'lg'} color={'primary'}>
-                <RightArrowIcon color="#FF5C2E" />
-              </Button>
-            </Gcol>
             <TableFold className="w-full">
               <TableFoldHead title="적용대상">
                 <Button variant={'outlined'} size={'md'} color={'gray'}>

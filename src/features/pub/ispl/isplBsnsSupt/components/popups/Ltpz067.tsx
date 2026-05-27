@@ -172,15 +172,16 @@ const Ltpz067 = () => {
         </DialogHeader>
 
         <DialogSection>
-          <Grid className="w-full grid-rows-[auto_1fr_auto]" gap={3}>
+          <Grid className="w-full grid-rows-[auto_auto_auto]" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'ss'}>
               <FormTable variant="head">
+                {/* 2027-05-27 input 수정 */}
                 <FormRow>
                   <FormCell title={'보험기간'}>
-                    <Input aria-label="" width={180} value={'2026-02-01 ~ 2046-02-03'} readOnly />
+                    <Input aria-label="" variant="info" width={180} value={'2026-02-01 ~ 2046-02-03'} readOnly />
                   </FormCell>
                   <FormCell title={'만기납기'}>
-                    <Input aria-label="" width={200} value={'20년만기/전기납'} readOnly />
+                    <Input aria-label="" variant="info" width={200} value={'20년만기/전기납'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>

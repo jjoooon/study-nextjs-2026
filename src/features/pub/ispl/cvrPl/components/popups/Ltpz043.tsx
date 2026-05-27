@@ -3,6 +3,8 @@
  */
 'use client';
 
+import * as React from 'react';
+
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -20,10 +22,16 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 const Ltpz043 = () => {
+  const [parkingInputEnabled, setParkingInputEnabled] = React.useState({
+    indoor: false,
+    twoStage: false,
+    mechanical: false,
+    carLift: false,
+  });
+
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -64,9 +72,20 @@ const Ltpz043 = () => {
             </Grow>
             <Gcol>
               <FormTable caption="주차장 정보" cols={['w-[8rem]', 'w-[8rem]', 'w-auto']}>
+                {/* 2027-05-27 전체 수정(옥내주차장, 2단주차기, 기계식주차기, 카리프트) */}
                 <FormRow>
                   <FormCell title={'옥내주차장'} titleColSpan={2}>
-                    <Checkbox variant="noneText" aria-label="옥내주차장"></Checkbox>
+                    <Checkbox
+                      variant="noneText"
+                      aria-label="옥내주차장"
+                      checked={parkingInputEnabled.indoor}
+                      onCheckedChange={(checked) =>
+                        setParkingInputEnabled((prev) => ({
+                          ...prev,
+                          indoor: checked === true,
+                        }))
+                      }
+                    ></Checkbox>
                     <Input
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
@@ -74,6 +93,7 @@ const Ltpz043 = () => {
                       value={form.type01}
                       width={100}
                       commaAmount
+                      readOnly={!parkingInputEnabled.indoor}
                     />
                     <div>㎡</div>
                     <div>↔</div>
@@ -84,6 +104,7 @@ const Ltpz043 = () => {
                       value={form.type02}
                       width={100}
                       commaAmount
+                      readOnly={!parkingInputEnabled.indoor}
                     />
                     평
                   </FormCell>
@@ -93,7 +114,17 @@ const Ltpz043 = () => {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'2단주차기'} titleColSpan={2}>
-                    <Checkbox variant="noneText" aria-label="2단주차기"></Checkbox>
+                    <Checkbox
+                      variant="noneText"
+                      aria-label="2단주차기"
+                      checked={parkingInputEnabled.twoStage}
+                      onCheckedChange={(checked) =>
+                        setParkingInputEnabled((prev) => ({
+                          ...prev,
+                          twoStage: checked === true,
+                        }))
+                      }
+                    ></Checkbox>
                     <Input
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
@@ -101,6 +132,7 @@ const Ltpz043 = () => {
                       value={form.type03}
                       width={100}
                       commaAmount
+                      readOnly={!parkingInputEnabled.twoStage}
                     />
                     대
                   </FormCell>
@@ -110,7 +142,17 @@ const Ltpz043 = () => {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'기계식주차기'} titleColSpan={2}>
-                    <Checkbox variant="noneText" aria-label="기계식주차기"></Checkbox>
+                    <Checkbox
+                      variant="noneText"
+                      aria-label="기계식주차기"
+                      checked={parkingInputEnabled.mechanical}
+                      onCheckedChange={(checked) =>
+                        setParkingInputEnabled((prev) => ({
+                          ...prev,
+                          mechanical: checked === true,
+                        }))
+                      }
+                    ></Checkbox>
                     <Input
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
@@ -118,6 +160,7 @@ const Ltpz043 = () => {
                       value={form.type04}
                       width={100}
                       commaAmount
+                      readOnly={!parkingInputEnabled.mechanical}
                     />
                     대
                   </FormCell>
@@ -127,7 +170,17 @@ const Ltpz043 = () => {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'카리프트'} titleColSpan={2}>
-                    <Checkbox variant="noneText" aria-label="카리프트"></Checkbox>
+                    <Checkbox
+                      variant="noneText"
+                      aria-label="카리프트"
+                      checked={parkingInputEnabled.carLift}
+                      onCheckedChange={(checked) =>
+                        setParkingInputEnabled((prev) => ({
+                          ...prev,
+                          carLift: checked === true,
+                        }))
+                      }
+                    ></Checkbox>
                     <Input
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
@@ -135,6 +188,7 @@ const Ltpz043 = () => {
                       value={form.type05}
                       width={100}
                       commaAmount
+                      readOnly={!parkingInputEnabled.carLift}
                     />
                     대
                   </FormCell>

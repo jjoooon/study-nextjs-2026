@@ -26,6 +26,8 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import * as React from 'react';
+
 
 import '@/shared/lib/agGridPub';
 
@@ -59,6 +61,27 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz01602 = () => {
+  // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
+  const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
+    const value = params.value == null ? '' : String(params.value);
+    const hasValue = value.trim().length > 0;
+
+    if (hasValue) {
+      return (
+        <div className="flex h-full w-full items-center justify-center px-1">
+          <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
+        <span className="block min-w-0 flex-1" />
+        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+      </div>
+    );
+  }, []);
+
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '업종구분',
@@ -68,6 +91,7 @@ const Ltpz01602 = () => {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
+      cellRenderer: selectCellRenderer, // 2026-05-27 추가
     },
     {
       headerName: '규모',

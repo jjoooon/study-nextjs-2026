@@ -169,7 +169,8 @@ const Ltpz066 = () => {
         </DialogHeader>
 
         <DialogSection>
-          <Grid placement="ss" className="w-full grid-rows-[auto_auto_1fr]" gap={5}>
+          {/* 2027-05-27 전체 수정 */}
+          <Grid placement="ss" className="w-full grid-rows-[auto_auto]" gap={3}>
             <TableFold>
               <TableFoldHead title="유형선택" />
               <TableFoldBody>
@@ -199,7 +200,7 @@ const Ltpz066 = () => {
             </TableFold>
             <TableFold>
               <TableFoldHead title="사고등급별 담보 가입금액" />
-              <TableFoldBody>
+              <TableFoldBody className="gap-2">
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
@@ -214,26 +215,26 @@ const Ltpz066 = () => {
                     tooltipShowDelay={0}
                   />
                 </div>
+                <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <AgGridReact<DummyDataType2>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={DummyData2}
+                    columnDefs={columnDefs2}
+                    defaultColDef={{ sortable: false }}
+                    singleClickEdit={true}
+                    enableCellSpan={true}
+                    domLayout="normal"
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                  />
+                </div>
+                {/* 2026-05-21 수정 */}
+                <Typo icon="info" variant="body-sm">
+                  세트형 담보는 개별 담보금액 조정 불가
+                </Typo>
               </TableFoldBody>
             </TableFold>
-            <div className="ag-theme-alpine min-h-[18.4rem]">
-              <AgGridReact<DummyDataType2>
-                getRowId={(params) => String(params.data.id)}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={DummyData2}
-                columnDefs={columnDefs2}
-                defaultColDef={{ sortable: false }}
-                singleClickEdit={true}
-                enableCellSpan={true}
-                domLayout="normal"
-                tooltipShowMode="whenTruncated"
-                tooltipShowDelay={0}
-              />
-            </div>
-            {/* 2026-05-21 수정 */}
-            <Typo icon="info" variant="body-sm">
-              세트형 담보는 개별 담보금액 조정 불가
-            </Typo>
           </Grid>
         </DialogSection>
 
