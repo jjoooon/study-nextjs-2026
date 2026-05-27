@@ -269,9 +269,10 @@ export default function Ltpa300Section() {
                     </Button>
                     <Input aria-label="조직구분명 입력" width={140} value={'신부산GA지점'} readOnly />
                   </FormCell>
-                  <FormCell title={'점검방법'}>
+                  {/* 2026-05-27 */}
+                  <FormCell title={'증권번호'}>
                     <NativeSelect
-                      aria-label="점검방법 선택"
+                      aria-label="증권번호 선택"
                       value={form.type03}
                       width={140}
                       onChange={(e) => setFormField('type03', e.target.value)}
