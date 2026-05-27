@@ -188,8 +188,9 @@ const Ltpz054 = () => {
           </Grow>
 
           {/* 조회 정보 */}
+          {/* 2026.05.27 */}
           <Grid placement="ss" className="w-full grid-rows-[auto_auto]" gap={5}>
-            <TableFold>
+            <TableFold className="grid-rows-[1fr]">
               <TableFoldHead title="당사 스캔대상 발급물"></TableFoldHead>
               <TableFoldBody>
                 <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
@@ -213,7 +214,7 @@ const Ltpz054 = () => {
                 </Grid>
               </TableFoldBody>
             </TableFold>
-            <TableFold>
+            <TableFold className="grid-rows-[1fr]">
               <TableFoldHead title="당사 스캔대상 비발급물">
                 <Grow>
                   <Button color="primary" variant="outlined">

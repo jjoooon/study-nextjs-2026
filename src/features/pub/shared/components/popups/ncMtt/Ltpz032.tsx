@@ -1163,7 +1163,7 @@ const Ltpz032 = () => {
               renderDropdownItem={false}
             >
               {active === 'tab1' ? (
-                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_auto]" gap={3}>
+                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[auto_auto_auto]" gap={3}>
                   <TableFold className="">
                     <TableFoldHead title="일반/건강고지" />
                     <TableFoldBody>
@@ -1243,7 +1243,7 @@ const Ltpz032 = () => {
                   </Gcol>
                 </Grid>
               ) : (
-                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_1fr_auto]" gap={3}>
+                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[auto_auto_auto_auto]" gap={3}>
                   {/* Tab2-1 일반고지 */}
                   <TableFold>
                     <TableFoldHead title="일반고지" />
