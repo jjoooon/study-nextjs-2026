@@ -682,7 +682,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     </Grow>
                   }
                 >
-                  <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full">
+                  <Grid className="grid-cols-[1fr_auto_auto] gap-1 w-full">
                     <Input
                       type="tel"
                       commaAmount={true}

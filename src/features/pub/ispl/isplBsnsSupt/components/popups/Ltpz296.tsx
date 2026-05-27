@@ -12,8 +12,7 @@ import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon } from '@icons';
-
+import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -530,7 +529,7 @@ export const Ltpz296 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="w-full h-full grid-rows-[auto_1fr_auto_auto_auto]">
+        <DialogSection className="w-full h-full grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable
               variant={'head'}
@@ -583,291 +582,295 @@ export const Ltpz296 = () => {
               </Button>
             </Grow>
           </Grow>
-          <TableFold>
-            <TableFoldHead title="그룹설정">
-              <Grow>
-                <Button color="gray" variant="outlined" onClick={handleAddRowA}>
-                  그룹추가
-                </Button>
-                <Button color="gray" variant="outlined" onClick={handleDeleteRowA}>
-                  그룹삭제
-                </Button>
-              </Grow>
-            </TableFoldHead>
-            <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[12.3rem]">
-                <AgGridReact<DummyDataTypeA>
-                  onGridReady={(event) => {
-                    gridApiRefA.current = event.api;
-                  }}
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowDataA}
-                  columnDefs={columnDefsA}
-                  defaultColDef={{
-                    sortable: true,
-                    resizable: true,
-                  }}
-                  singleClickEdit={true}
-                  rowClassRules={{}}
-                  domLayout="normal"
-                  rowSelection={{
-                    mode: 'multiRow',
-                    checkboxes: true,
-                    enableClickSelection: false,
-                  }}
-                  selectionColumnDef={{
-                    width: 30,
-                  }}
-                />
-              </div>
-            </TableFoldBody>
-          </TableFold>
-          <TableFold>
-            <TableFoldHead title="피보험자 명세">
-              <Grow>
-                <Button color="success" variant="outlined">
-                  엑셀내보내기
-                  <FileExportIcon />
-                </Button>
-                <Button color="success" variant="outlined">
-                  엑셀가져오기
-                  <FileImportIcon />
-                </Button>
-                {/* 2026-05-21 텍스트수정 */}
-                <Button color="gray" variant="outlined" onClick={handleAddRowB}>
-                  행추가
-                </Button>
-                <Button color="gray" variant="outlined" onClick={handleDeleteRowB}>
-                  행삭제
-                </Button>
-              </Grow>
-            </TableFoldHead>
-            <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[12.3rem]">
-                <AgGridReact<DummyDataTypeB>
-                  onGridReady={(event) => {
-                    gridApiRefB.current = event.api;
-                  }}
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowDataB}
-                  columnDefs={columnDefsB}
-                  defaultColDef={{
-                    sortable: true,
-                    resizable: true,
-                  }}
-                  singleClickEdit={true}
-                  rowClassRules={{}}
-                  domLayout="normal"
-                  rowSelection={{
-                    mode: 'multiRow',
-                    checkboxes: true,
-                    enableClickSelection: false,
-                  }}
-                  selectionColumnDef={{
-                    width: 30,
-                    pinned: 'left',
-                  }}
-                  groupHeaderHeight={30}
-                  headerHeight={0}
-                />
-              </div>
-            </TableFoldBody>
-          </TableFold>
-          <TableFold>
-            <TableFoldHead title="일반정보 일괄 등록(선택된 피보험자에게 아래의 정보로 일괄 등록 됩니다.)">
-              <Grow>
-                <Button color="gray" variant="outlined" onClick={() => {}}>
-                  등록
-                </Button>
-              </Grow>
-            </TableFoldHead>
-            <TableFoldBody>
-              <FormTable cols={['w-[10rem]', 'w-[auto]', 'w-[10rem]', 'w-[auto]']}>
-                <FormRow>
-                  <FormCell title={'사망보험금'}>
-                    <NativeSelect aria-label="사망보험금" width={80}>
-                      {[
-                        { value: '선택1', label: '선택1' },
-                        { value: '선택2', label: '선택2' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <Input aria-label="피보험자명" width={120} value={'1234567'} readOnly />
-                    <Button
-                      aria-label="피보험자 검색"
-                      variant={'outlined'}
-                      only="icon"
-                      size={'lg'}
-                      color={'gray-light'}
-                    >
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
-                  </FormCell>
-                  <FormCell title={'사망외보험금'}>
-                    <NativeSelect aria-label="사망외보험금" width={80}>
-                      {[
-                        { value: '선택1', label: '선택1' },
-                        { value: '선택2', label: '선택2' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <Input aria-label="피보험자명" width={100} value={'1234567'} readOnly />
-                    <Button
-                      aria-label="피보험자 검색"
-                      variant={'outlined'}
-                      only="icon"
-                      size={'lg'}
-                      color={'gray-light'}
-                    >
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
-                  </FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'기타'} colSpan={3}>
-                    <NativeSelect aria-label="기타" width={80}>
-                      {[
-                        { value: '그룹명', label: '그룹명' },
-                        { value: '그룹명1', label: '그룹명1' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <NativeSelect aria-label="기타" width={100}>
-                      {[
-                        { value: '그룹명', label: '그룹명' },
-                        { value: '그룹명1', label: '그룹명1' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <Input aria-label="피보험자명" width={100} value={'1234567'} readOnly />
-                    <Button
-                      aria-label="피보험자 검색"
-                      variant={'outlined'}
-                      only="icon"
-                      size={'lg'}
-                      color={'gray-light'}
-                    >
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
-                    <Input width={90} placeholder="직장명" value={''} />
-                    <Input width={90} placeholder="업종" value={''} />
-                    <Input width={90} placeholder="직무" value={''} />
-                    <NativeSelect aria-label="운전형태" width={90}>
-                      {[
-                        { value: '운전형태', label: '운전형태' },
-                        { value: '운전형태1', label: '운전형태1' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <NativeSelect aria-label="이륜차여부" width={90}>
-                      {[
-                        { value: '이륜차여부', label: '이륜차여부' },
-                        { value: '이륜차여부1', label: '이륜차여부1' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    <NativeSelect aria-label="병력여부" width={90}>
-                      {[
-                        { value: '병력여부', label: '병력여부' },
-                        { value: '병력여부1', label: '병력여부1' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </TableFoldBody>
-          </TableFold>
-          <TableFold>
-            <TableFoldHead title="피보험자 직장 주소 및 연락처 일괄 입력(저장시 고객정보에 반영)"></TableFoldHead>
-            <TableFoldBody>
-              <FormTable cols={['w-[10rem]', 'w-[auto]']}>
-                <FormRow>
-                  <FormCell title={'직장주소'}>
-                    <div className="flex w-full h-full flex-wrap justify-start items-start gap-1">
-                      <Grow className="basis-lg">
-                        <Input width={80} value={'1234567'} />
-                        <Button
-                          aria-label="피보험자 검색"
-                          variant={'outlined'}
-                          only="icon"
-                          size={'lg'}
-                          color={'gray-light'}
-                        >
-                          <SearchIcon color={'var(--color-primary-50)'} />
-                        </Button>
-                        <Input width={100} value={'1234567'} readOnly />
-                        <Input width={80} value={''} />리
-                      </Grow>
-                      <Grow className="basis-lg">
-                        <NativeSelect aria-label="사망보험금" width={80}>
-                          {[
-                            { value: '선택1', label: '선택1' },
-                            { value: '선택2', label: '선택2' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.value} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                        <Input width={60} value={''} readOnly />-
-                        <Input width={60} value={''} readOnly />
-                        <Input width={90} value={''} />
-                        <Input width={60} value={''} readOnly />
-                        <Input width={60} value={''} readOnly />
-                        <Input width={90} value={''} />
-                      </Grow>
-                      <Grow className="basis-full">
-                        <Input aria-label="" width={'full'} value={''} />
-                      </Grow>
-                    </div>
-                  </FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'직장연락처'}>
-                    <NativeSelect aria-label="사망보험금" width={80}>
-                      {[
-                        { value: '선택1', label: '선택1' },
-                        { value: '선택2', label: '선택2' },
-                      ].map((option) => (
-                        <NativeSelectOption key={option.value} value={option.value}>
-                          {option.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                    -
-                    <Input width={60} value={''} />-
-                    <Input width={60} value={''} />
-                    ~(
-                    <Input width={60} value={''} />)
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </TableFoldBody>
-          </TableFold>
+          <div>
+            <TableFold>
+              <TableFoldHead title="그룹설정">
+                <Grow>
+                  <Button color="gray" variant="outlined" onClick={handleAddRowA}>
+                    그룹추가
+                  </Button>
+                  <Button color="gray" variant="outlined" onClick={handleDeleteRowA}>
+                    그룹삭제
+                  </Button>
+                </Grow>
+              </TableFoldHead>
+              <TableFoldBody>
+                <div className="ag-theme-alpine min-h-[12.3rem]">
+                  <AgGridReact<DummyDataTypeA>
+                    onGridReady={(event) => {
+                      gridApiRefA.current = event.api;
+                    }}
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowDataA}
+                    columnDefs={columnDefsA}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                    }}
+                    singleClickEdit={true}
+                    rowClassRules={{}}
+                    domLayout="normal"
+                    rowSelection={{
+                      mode: 'multiRow',
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      width: 30,
+                    }}
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+            <TableFold>
+              <TableFoldHead title="피보험자 명세">
+                <Grow>
+                  <Button color="success" variant="outlined">
+                    엑셀내보내기
+                    <FileExportIcon />
+                  </Button>
+                  <Button color="success" variant="outlined">
+                    엑셀가져오기
+                    <FileImportIcon />
+                  </Button>
+                  {/* 2026-05-21 텍스트수정 */}
+                  <Button color="gray" variant="outlined" onClick={handleAddRowB}>
+                    행추가
+                    <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
+                  </Button>
+                  <Button color="gray" variant="outlined" onClick={handleDeleteRowB}>
+                    행삭제
+                    <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
+                  </Button>
+                </Grow>
+              </TableFoldHead>
+              <TableFoldBody>
+                <div className="ag-theme-alpine min-h-[12.3rem]">
+                  <AgGridReact<DummyDataTypeB>
+                    onGridReady={(event) => {
+                      gridApiRefB.current = event.api;
+                    }}
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowDataB}
+                    columnDefs={columnDefsB}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                    }}
+                    singleClickEdit={true}
+                    rowClassRules={{}}
+                    domLayout="normal"
+                    rowSelection={{
+                      mode: 'multiRow',
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      width: 30,
+                      pinned: 'left',
+                    }}
+                    groupHeaderHeight={30}
+                    headerHeight={0}
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+            <TableFold>
+              <TableFoldHead title="일반정보 일괄 등록(선택된 피보험자에게 아래의 정보로 일괄 등록 됩니다.)">
+                <Grow>
+                  <Button color="gray" variant="outlined" onClick={() => {}}>
+                    등록
+                  </Button>
+                </Grow>
+              </TableFoldHead>
+              <TableFoldBody>
+                <FormTable cols={['w-[10rem]', 'w-[auto]', 'w-[10rem]', 'w-[auto]']}>
+                  <FormRow>
+                    <FormCell title={'사망보험금'}>
+                      <NativeSelect aria-label="사망보험금" width={80}>
+                        {[
+                          { value: '선택1', label: '선택1' },
+                          { value: '선택2', label: '선택2' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      <Input aria-label="피보험자명" width={120} value={'1234567'} readOnly />
+                      <Button
+                        aria-label="피보험자 검색"
+                        variant={'outlined'}
+                        only="icon"
+                        size={'lg'}
+                        color={'gray-light'}
+                      >
+                        <SearchIcon color={'var(--color-primary-50)'} />
+                      </Button>
+                    </FormCell>
+                    <FormCell title={'사망외보험금'}>
+                      <NativeSelect aria-label="사망외보험금" width={80}>
+                        {[
+                          { value: '선택1', label: '선택1' },
+                          { value: '선택2', label: '선택2' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      <Input aria-label="피보험자명" width={100} value={'1234567'} readOnly />
+                      <Button
+                        aria-label="피보험자 검색"
+                        variant={'outlined'}
+                        only="icon"
+                        size={'lg'}
+                        color={'gray-light'}
+                      >
+                        <SearchIcon color={'var(--color-primary-50)'} />
+                      </Button>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={'기타'} colSpan={3}>
+                      <NativeSelect aria-label="기타" width={80}>
+                        {[
+                          { value: '그룹명', label: '그룹명' },
+                          { value: '그룹명1', label: '그룹명1' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      <NativeSelect aria-label="기타" width={100}>
+                        {[
+                          { value: '그룹명', label: '그룹명' },
+                          { value: '그룹명1', label: '그룹명1' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      <Input aria-label="피보험자명" width={100} value={'1234567'} readOnly />
+                      <Button
+                        aria-label="피보험자 검색"
+                        variant={'outlined'}
+                        only="icon"
+                        size={'lg'}
+                        color={'gray-light'}
+                      >
+                        <SearchIcon color={'var(--color-primary-50)'} />
+                      </Button>
+                      <Input width={90} placeholder="직장명" value={''} />
+                      <Input width={90} placeholder="업종" value={''} />
+                      <Input width={90} placeholder="직무" value={''} />
+                      <NativeSelect aria-label="운전형태" width={90}>
+                        {[
+                          { value: '운전형태', label: '운전형태' },
+                          { value: '운전형태1', label: '운전형태1' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      <NativeSelect aria-label="이륜차여부" width={90}>
+                        {[
+                          { value: '이륜차여부', label: '이륜차여부' },
+                          { value: '이륜차여부1', label: '이륜차여부1' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      <NativeSelect aria-label="병력여부" width={90}>
+                        {[
+                          { value: '병력여부', label: '병력여부' },
+                          { value: '병력여부1', label: '병력여부1' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+              </TableFoldBody>
+            </TableFold>
+            <TableFold>
+              <TableFoldHead title="피보험자 직장 주소 및 연락처 일괄 입력(저장시 고객정보에 반영)"></TableFoldHead>
+              <TableFoldBody>
+                <FormTable cols={['w-[10rem]', 'w-[auto]']}>
+                  <FormRow>
+                    <FormCell title={'직장주소'}>
+                      <div className="flex w-full h-full flex-wrap justify-start items-start gap-1">
+                        <Grow className="basis-lg">
+                          <Input width={80} value={'1234567'} />
+                          <Button
+                            aria-label="피보험자 검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                          <Input width={100} value={'1234567'} readOnly />
+                          <Input width={80} value={''} />리
+                        </Grow>
+                        <Grow className="basis-lg">
+                          <NativeSelect aria-label="사망보험금" width={80}>
+                            {[
+                              { value: '선택1', label: '선택1' },
+                              { value: '선택2', label: '선택2' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <Input width={60} value={''} readOnly />-
+                          <Input width={60} value={''} readOnly />
+                          <Input width={90} value={''} />
+                          <Input width={60} value={''} readOnly />
+                          <Input width={60} value={''} readOnly />
+                          <Input width={90} value={''} />
+                        </Grow>
+                        <Grow className="basis-full">
+                          <Input aria-label="" width={'full'} value={''} />
+                        </Grow>
+                      </div>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={'직장연락처'}>
+                      <NativeSelect aria-label="사망보험금" width={80}>
+                        {[
+                          { value: '선택1', label: '선택1' },
+                          { value: '선택2', label: '선택2' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      -
+                      <Input width={60} value={''} />-
+                      <Input width={60} value={''} />
+                      ~(
+                      <Input width={60} value={''} />)
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+              </TableFoldBody>
+            </TableFold>
+          </div>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>

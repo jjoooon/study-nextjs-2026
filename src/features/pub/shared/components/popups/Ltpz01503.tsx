@@ -8,7 +8,7 @@ import { Grow, Grid } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
+import { FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -230,9 +230,11 @@ const Ltpz01503 = () => {
             </Button>
             <Button variant={'outlined'} color={'secondary'} onClick={handleAddRow}>
               행추가
+              <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
             </Button>
             <Button variant={'outlined'} color={'secondary'} onClick={handleDeleteButtonClick}>
               행삭제
+              <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
             </Button>
           </Grow>
         </TableFoldHead>

@@ -489,7 +489,7 @@ export function Ltpa35002c() {
                   }
                   style={{ borderBottom: '0.1rem solid #ccc' }}
                 >
-                  <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full">
+                  <Grid className="grid-cols-[1fr_auto_auto] gap-1 w-full">
                     <Input
                       type="tel"
                       commaAmount={true}

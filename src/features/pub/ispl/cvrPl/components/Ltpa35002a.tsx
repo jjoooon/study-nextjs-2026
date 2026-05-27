@@ -570,7 +570,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   }
                   style={{ borderBottom: '0.1rem solid #ccc' }}
                 >
-                  <Grid className="grid-cols-[auto_1fr_auto_auto] gap-1 w-full place-items-center">
+                  <Grid className="grid-cols-[1fr_auto_auto] gap-1 w-full place-items-center">
                     <Input
                       type="tel"
                       commaAmount={true}
