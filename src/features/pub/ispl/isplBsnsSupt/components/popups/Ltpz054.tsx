@@ -142,7 +142,7 @@ const Ltpz054 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-
+        {/* 2026.05.27 */}
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'} gap={6}>
             <FormTable className="flex" variant={'none'} lineTop={false} cols={['w-1', 'w-1', 'w-1', 'w-auto']}>
@@ -188,7 +188,7 @@ const Ltpz054 = () => {
           </Grow>
 
           {/* 조회 정보 */}
-          <Grid placement="ss" className="w-full grid-rows-[1fr_1fr]" gap={5}>
+          <Grid placement="ss" className="w-full grid-rows-[auto_auto]" gap={5}>
             <TableFold>
               <TableFoldHead title="당사 스캔대상 발급물"></TableFoldHead>
               <TableFoldBody>
