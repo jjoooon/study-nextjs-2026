@@ -372,7 +372,7 @@ const Ltpz012 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid placement="ss" className="min-h-0 w-full overflow-y-auto grid-rows-[1fr_1fr_auto_auto]" gap={4}>
+          <Grid placement="ss" className="min-h-0 w-full overflow-y-auto" gap={4}>
             {/* 가점계산 */}
             <TableFold>
               <TableFoldHead title="가점계산">
@@ -399,7 +399,7 @@ const Ltpz012 = () => {
             <TableFold>
               <TableFoldHead title="감점계산" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+                <div className="ag-theme-alpine min-h-[24.4rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

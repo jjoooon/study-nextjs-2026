@@ -133,25 +133,6 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
     );
   };
 
-  const handleToggleSelected = (code: string) => {
-    const targetMenu = uniqueMenuList.find((menu) => menu.code === code);
-    if (!targetMenu || targetMenu.fix) return;
-
-    const nextSelected = !targetMenu.selected;
-    if (nextSelected && fixedMenuCount + countNonFixedSelected(selectedMenuNames) >= MAX_SELECTED_MENU) {
-      showSelectionLimitToast();
-      return;
-    }
-
-    setMenuList((prev) => prev.map((menu) => (menu.code === code ? { ...menu, selected: nextSelected } : menu)));
-    setSelectedMenuNames((prev) => {
-      if (nextSelected) {
-        return prev.includes(code) ? prev : [...prev, code];
-      }
-      return prev.filter((selectedCode) => selectedCode !== code);
-    });
-  };
-
   const handleRemoveMenu = (code: string) => {
     setSelectedMenuNames((prev) => prev.filter((selectedCode) => selectedCode !== code));
     setMenuList((prev) => prev.map((menu) => (menu.code === code ? { ...menu, selected: false } : menu)));
@@ -244,7 +225,6 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
                               size={'md'}
                               color={'gray-light'}
                               className="w-[14.8rem]"
-                              onClick={() => handleToggleSelected(menu.code)}
                             >
                               {menu.name}
                             </Button>
