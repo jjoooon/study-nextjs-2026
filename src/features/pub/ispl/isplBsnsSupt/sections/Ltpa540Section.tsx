@@ -10,6 +10,7 @@ import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { ResetIcon, FileExportIcon, FileImportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
@@ -22,7 +23,6 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 import '@/shared/lib/agGridPub';
 

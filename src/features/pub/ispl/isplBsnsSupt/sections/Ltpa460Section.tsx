@@ -10,6 +10,7 @@ import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import { TableMore } from '@common/TablePagination';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { ResetIcon, FileImportIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
@@ -21,8 +22,6 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
-
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 import '@/shared/lib/agGridPub';
 

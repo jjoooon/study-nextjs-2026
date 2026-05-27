@@ -7,6 +7,9 @@ import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TableMore } from '@common/TablePagination';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { FileExportIcon, FileImportIcon, ResetIcon, EssentialIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
@@ -20,9 +23,6 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
 import '@/shared/lib/agGridPub';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { TableMore } from '@common/TablePagination';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 
 type DummyDataType = {
   id: number;

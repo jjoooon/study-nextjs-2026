@@ -19,6 +19,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import { TableMore } from '@common/TablePagination';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
@@ -30,7 +31,6 @@ import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } fro
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback } from 'react';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
