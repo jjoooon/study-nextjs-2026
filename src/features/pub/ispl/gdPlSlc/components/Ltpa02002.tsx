@@ -721,9 +721,8 @@ export function Ltpa02002({
                   className={`${isAmountInputVisible ? 'grid-cols-[auto_1fr]' : 'grid-cols-[1fr_1fr]'} grid-rows-[1fr] gap-1 w-full`}
                 >
                   {coverageOptions.map((opt) => (
-                    <>
+                    <React.Fragment key={opt.value}>
                       <Checkbox
-                        key={opt.value}
                         value={opt.value}
                         variant="button"
                         className="w-full"
@@ -742,7 +741,7 @@ export function Ltpa02002({
                         {opt.label}
                       </Checkbox>
                       {isAmountInputVisible && <Input after="만원" placeholder="가입금액" commaAmount size={'md'} />}
-                    </>
+                    </React.Fragment>
                   ))}
                 </Grid>
 
