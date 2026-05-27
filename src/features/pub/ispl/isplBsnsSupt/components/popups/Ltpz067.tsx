@@ -4,7 +4,7 @@
 'use client';
 
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';

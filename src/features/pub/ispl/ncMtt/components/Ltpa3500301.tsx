@@ -750,6 +750,7 @@ export const Ltpa3500301 = ({
                   pageSize={pageSize}
                   onLoadAll={handleLoadAll}
                   onLoadNext={handleLoadNext}
+                  isNext={false}
                   onLoadReset={() => setLoadedCount(pageSize)}
                   only={'all'}
                 />
