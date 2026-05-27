@@ -33,6 +33,7 @@ const Ltpz045 = () => {
   });
   const [cddEtcValue] = React.useState('');
   return (
+    // 2026-05-27
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
@@ -51,12 +52,12 @@ const Ltpz045 = () => {
               <FormTable variant="head" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input aria-label="" value={'LA26020945959594'} readOnly variant="info" />
+                    <Input aria-label="" value={'LA26020945959594'} readOnly />
                     -
-                    <Input aria-label="" width={30} value={'1'} readOnly variant="info" />
+                    <Input aria-label="" width={30} value={'1'} readOnly />
                   </FormCell>
                   <FormCell title={'계약자'}>
-                    <Input aria-label="" value={'김한화(901212-1234567)'} readOnly variant="info" />
+                    <Input aria-label="" value={'김한화(901212-1234567)'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -66,7 +67,7 @@ const Ltpz045 = () => {
               <TableFold>
                 <TableFoldHead title="고객정보(CDD 확인사항)"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-auto', 'w-[13rem]', 'w-auto']}>
+                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'성명'}>김한화</FormCell>
                       <FormCell title={'영문명'}>Kim Hanhwa</FormCell>
@@ -105,10 +106,10 @@ const Ltpz045 = () => {
               <TableFold>
                 <TableFoldHead title="고객정보(CDD 확인사항)"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-auto', 'w-[13rem]', 'w-auto']}>
+                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'법인명'}>
-                        <Input aria-label="법인명 검색" value={''} readOnly />
+                        <Input aria-label="법인명 검색" width={120} value={''} readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -168,7 +169,7 @@ const Ltpz045 = () => {
               <TableFold>
                 <TableFoldHead title="실소유자 확인사항"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-auto', 'w-[13rem]', 'w-auto']}>
+                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'실소유자구분'} colSpan={3}>
                         <RadioGroup className="gap-1 flex-col items-start">
@@ -202,10 +203,10 @@ const Ltpz045 = () => {
               <TableFold>
                 <TableFoldHead title="대리인 확인사항(대리인 고객등록 필수)"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-auto', 'w-[13rem]', 'w-auto']}>
+                  <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'성명'}>
-                        <Input aria-label="성명 검색" value={''} readOnly />
+                        <Input aria-label="성명 검색" width={108} value={''} readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -235,40 +236,10 @@ const Ltpz045 = () => {
                 </TableFoldBody>
               </TableFold>
 
-              {/* 법정대리인 정보 */}
-              <TableFold>
-                <TableFoldHead title="법정대리인 정보"></TableFoldHead>
-                <TableFoldBody>
-                  <FormTable caption="법정대리인 정보" cols={['w-[13rem]', 'w-auto']}>
-                    <FormRow>
-                      <FormCell title={'이름/주민번호'}>
-                        박환화(900101-1234567)와의 관계
-                        <NativeSelect
-                          aria-label="선택"
-                          width={100}
-                          value={form.type01}
-                          readOnly
-                          onChange={(e) => setFormField('type01', e.target.value)}
-                        >
-                          {[
-                            { value: 'selection', label: '선택1' },
-                            { value: 'selection2', label: '선택2' },
-                          ].map((option) => (
-                            <NativeSelectOption key={option.value} value={option.value}>
-                              {option.label}
-                            </NativeSelectOption>
-                          ))}
-                        </NativeSelect>
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </TableFoldBody>
-              </TableFold>
-
               {/* CDD 검증정보  */}
               <TableFold>
                 <TableFoldHead title="CDD 검증정보"></TableFoldHead>
-                <TableFoldBody>
+                <TableFoldBody className="gap-1">
                   <FormTable caption="" cols={['w-[13rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'실명확인증표'} tdClassName="grid grid-cols-[auto_1fr] gap-2">
@@ -288,6 +259,35 @@ const Ltpz045 = () => {
                       </FormCell>
                     </FormRow>
                   </FormTable>
+                  {/* 법정대리인 정보 */}
+                  <TableFold>
+                    <TableFoldHead title="법정대리인 정보"></TableFoldHead>
+                    <TableFoldBody>
+                      <FormTable caption="법정대리인 정보" cols={['w-[13rem]', 'w-auto']}>
+                        <FormRow>
+                          <FormCell title={'이름/주민번호'}>
+                            박환화(900101-1234567)와의 관계
+                            <NativeSelect
+                              aria-label="선택"
+                              width={100}
+                              value={form.type01}
+                              readOnly
+                              onChange={(e) => setFormField('type01', e.target.value)}
+                            >
+                              {[
+                                { value: 'selection', label: '선택1' },
+                                { value: 'selection2', label: '선택2' },
+                              ].map((option) => (
+                                <NativeSelectOption key={option.value} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                    </TableFoldBody>
+                  </TableFold>
                 </TableFoldBody>
               </TableFold>
             </Gcol>
@@ -298,7 +298,7 @@ const Ltpz045 = () => {
           <DialogFooterArea>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
-                확인
+                저장
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
