@@ -415,7 +415,7 @@ const Ltpz068 = () => {
                   <div
                     role="button"
                     key={plan}
-                    className="flex flex-col w-full cursor-pointer h-[100%]"
+                    className="flex flex-col w-full cursor-pointer h-[100%] focus:outline-none"
                     tabIndex={0}
                     onClick={() => setSelectedPlan(plan)}
                     onKeyDown={(e) => {

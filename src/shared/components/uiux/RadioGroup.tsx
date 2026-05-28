@@ -307,7 +307,7 @@ const RadioGroupItem = React.forwardRef<
           <label
             htmlFor={radioId}
             className={cn(
-              'text-[1.3rem] font-normal cursor-pointer select-none',
+              'text-[1.3rem] font-normal cursor-pointer select-none ',
               isError && 'text-[var(--color-text-danger)]'
             )}
           >

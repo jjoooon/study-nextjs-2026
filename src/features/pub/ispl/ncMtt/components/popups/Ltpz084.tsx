@@ -43,11 +43,10 @@ const Ltpz084 = () => {
           </Grow>
           <div className="relative w-full grid grid-rows-[1fr]">
             <Ltpa3500301
-              simpleMode={true}
+              simpleMode={false}
               mtValue="0rem"
               warningMessage="알릴의무사항은 상세설계시 입력 가능합니다."
-              hideNotifySelect={false}
-              allNoDisabled={true}
+              // allNoDisabled={true}
             />
           </div>
         </DialogSection>

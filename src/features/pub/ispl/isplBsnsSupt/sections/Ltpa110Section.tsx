@@ -12,7 +12,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ArrowDoubleIcon, ResetIcon, SearchIcon } from '@icons';
+import { ArrowDoubleIcon, ResetIcon, SearchIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -340,6 +340,7 @@ export default function Ltpa110Section() {
                   <Grow>
                     <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
                       행삭제
+                      <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                     </Button>
                   </Grow>
                 </TableFoldHead>

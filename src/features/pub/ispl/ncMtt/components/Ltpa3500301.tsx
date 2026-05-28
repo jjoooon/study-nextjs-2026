@@ -160,7 +160,6 @@ interface Ltpa3500301Props {
   mtValue?: '0rem' | '-3rem';
   allNoDisabled?: boolean;
   warningMessage?: string;
-  hideNotifySelect?: boolean;
 }
 
 export const Ltpa3500301 = ({
@@ -168,7 +167,6 @@ export const Ltpa3500301 = ({
   simpleMode = false,
   mtValue = '-3rem',
   warningMessage = '[홍길순 Self고지중] Self고지 완료(또는 취소)처리시 알릴사항 입력 가능',
-  hideNotifySelect = false,
   allNoDisabled = false,
 }: Ltpa3500301Props) => {
   const [periodType, setPeriodType] = useState<string>('');
@@ -221,7 +219,7 @@ export const Ltpa3500301 = ({
     const targetTop =
       anchor.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - stickyHeight;
 
-    container.scrollTo({ top: targetTop, behavior: 'smooth' });
+    container.scrollTo({ top: targetTop - 3, behavior: 'smooth' });
   };
 
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -301,26 +299,30 @@ export const Ltpa3500301 = ({
         {!sampleMode && (
           <Grow variant={'box-round-b'} placement={'se'} className={'w-full'}>
             <Gcol placement="ss">
-              <Typo variant={'body-sm'} icon={'warning'} color={'danger'} weight={'bold'}>
+              <Typo
+                variant={'body-sm'}
+                icon={'warning'}
+                color={'danger'}
+                weight={'bold'}
+                className="text-[var(--color-danger-50)]"
+              >
                 {warningMessage}
               </Typo>
               <Typo variant={'body-lg'} weight={'bold'}>
-                다음 각 항목의 질문에 사실대로 답변 하시기 바랍니 다.
+                다음 각 항목의 질문에 사실대로 답변 하시기 바랍니다.
               </Typo>
             </Gcol>
             <Grow gap={1}>
-              {!hideNotifySelect && (
-                <NativeSelect aria-label="알릴사항" width={124} readOnly>
-                  {[
-                    { label: '알릴사항(설계)', value: 'value1' },
-                    { label: '알릴사항', value: 'value2' },
-                  ].map((option) => (
-                    <NativeSelectOption key={option.value} value={option.value}>
-                      {option.label}
-                    </NativeSelectOption>
-                  ))}
-                </NativeSelect>
-              )}
+              <NativeSelect aria-label="알릴사항" width={124} readOnly>
+                {[
+                  { label: '알릴사항(설계)', value: 'value1' },
+                  { label: '알릴사항', value: 'value2' },
+                ].map((option) => (
+                  <NativeSelectOption key={option.value} value={option.value}>
+                    {option.label}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
               <Button color="primary" onClick={() => {}} size="lg" variant="outlined" disabled={allNoDisabled}>
                 모두 아니오
               </Button>
@@ -330,15 +332,17 @@ export const Ltpa3500301 = ({
         <Gcol gap={2}>
           {!sampleMode && (
             <Gcol variant={'box-round'} placement={'ss'} className="w-full">
-              <Typo variant={'body-sm'} weight={'bold'}>
-                ■ 이 청 약서에서 ‘최근 3개월 1년, 5년 이내’는 청약일의 3개월, 1년, 5년 전일부터 청약일가지를 의미합니다.
+              <Typo variant={'body-lg'} weight={'bold'}>
+                ■ 이 청약서에서 ‘최근 3개월 1년, 5년 이내’는 청약일의 3개월, 1년, 5년 전일부터 청약일가지를 의미합니다.
                 (예를 들어 청약일이 4월 1일 인 경우 ‘최근 3개월 1년, 5년 이내’는 1월 1일부터 4월 1일까지)
               </Typo>
             </Gcol>
           )}
 
-          <div id="question-card-1" />
-          <QuestionRadioCard className={highlightBadgeNum === 1 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}>
+          <QuestionRadioCard
+            id="question-card-1"
+            className={highlightBadgeNum === 1 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel="1">
                 최근 3개월 이내에 의사로부터 진찰 또는 검사(건강검진 포함)를 통하여 다음과 같은 의료행위를 받은 사실이
@@ -396,8 +400,10 @@ export const Ltpa3500301 = ({
               </Gcol>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-2" />
-          <QuestionRadioCard className={highlightBadgeNum === 2 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}>
+          <QuestionRadioCard
+            id="question-card-2"
+            className={highlightBadgeNum === 2 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel="2">
                 최근 3개월 이내에 마약을 사용하거나 혈압강하제, 신경안정제, 수면제, 각성제(흥분제), 진통제 등 약물을
@@ -435,8 +441,10 @@ export const Ltpa3500301 = ({
               </Gcol>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-3" />
-          <QuestionRadioCard className={highlightBadgeNum === 3 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}>
+          <QuestionRadioCard
+            id="question-card-3"
+            className={highlightBadgeNum === 3 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel="3">
                 최근 1년 이내에 의사로부터 진찰 또는 검사를 받고, 이를 통하여 추가검사(재검사)를 받은 사실이 있습니까?
@@ -474,8 +482,10 @@ export const Ltpa3500301 = ({
               </Gcol>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-4" />
-          <QuestionRadioCard className={highlightBadgeNum === 4 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}>
+          <QuestionRadioCard
+            id="question-card-4"
+            className={highlightBadgeNum === 4 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel={'4'}>
                 최근 5년 이내에 의사로부터 진찰 또는 검사를 통하여 다음과 같은 의료행위를 받은 사실이 있습니까?
@@ -527,8 +537,10 @@ export const Ltpa3500301 = ({
               </Gcol>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-5" />
-          <QuestionRadioCard className={highlightBadgeNum === 5 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}>
+          <QuestionRadioCard
+            id="question-card-5"
+            className={highlightBadgeNum === 5 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel={'5'}>
                 최근 5년 이내에 아래의 질병으로 의사로부터 진찰 또는 검사를 통하여 다음과 같은 의료행위를 받은 사실이
@@ -776,8 +788,10 @@ export const Ltpa3500301 = ({
               </Grid>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-6" />
-          <QuestionRadioCard className={highlightBadgeNum === 6 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}>
+          <QuestionRadioCard
+            id="question-card-6"
+            className={highlightBadgeNum === 6 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel="6">
                 청약서 상의 피보험자 직업을 확인했는지 여부
@@ -841,8 +855,10 @@ export const Ltpa3500301 = ({
               </Gcol>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-7" />
-          <QuestionRadioCard className={highlightBadgeNum === 7 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}>
+          <QuestionRadioCard
+            id="question-card-7"
+            className={highlightBadgeNum === 7 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle className="items-center" badgeLabel="7">
                 현재 운전을 하고 있습니까? 운전하고 계신다면 다음 중 어느 것입니까? (해당하는 것에{' '}
@@ -940,8 +956,10 @@ export const Ltpa3500301 = ({
               </Gcol>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-8" />
-          <QuestionRadioCard className={highlightBadgeNum === 8 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}>
+          <QuestionRadioCard
+            id="question-card-8"
+            className={highlightBadgeNum === 8 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel="8">
                 원동기장치 자전거(전동킥보드, 전동이륜평행차, 전동기의 동력만으로 움직일 수 있는 자전거 등 개인형
@@ -985,8 +1003,10 @@ export const Ltpa3500301 = ({
               </Gcol>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-9" />
-          <QuestionRadioCard className={highlightBadgeNum === 9 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}>
+          <QuestionRadioCard
+            id="question-card-9"
+            className={highlightBadgeNum === 9 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel="9">
                 최근 1년 이내에 다음과 같은 취미를 자주 반복적으로 하고 있거나 관련 자격증을 가지고 있습니까? (해당하는
@@ -1091,8 +1111,8 @@ export const Ltpa3500301 = ({
               </Grid>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-10" />
           <QuestionRadioCard
+            id="question-card-10"
             className={highlightBadgeNum === 10 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
@@ -1131,8 +1151,8 @@ export const Ltpa3500301 = ({
               </Grow>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-11" />
           <QuestionRadioCard
+            id="question-card-11"
             className={highlightBadgeNum === 11 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
@@ -1209,8 +1229,8 @@ export const Ltpa3500301 = ({
               </Grid>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-12" />
           <QuestionRadioCard
+            id="question-card-12"
             className={highlightBadgeNum === 12 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
@@ -1277,8 +1297,8 @@ export const Ltpa3500301 = ({
               </Grid>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-13" />
           <QuestionRadioCard
+            id="question-card-13"
             className={highlightBadgeNum === 13 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
@@ -1346,8 +1366,8 @@ export const Ltpa3500301 = ({
               </Grid>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-14" />
           <QuestionRadioCard
+            id="question-card-14"
             className={highlightBadgeNum === 14 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
@@ -1424,8 +1444,8 @@ export const Ltpa3500301 = ({
               </Grid>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
-          <div id="question-card-15" />
           <QuestionRadioCard
+            id="question-card-15"
             className={highlightBadgeNum === 15 ? 'border-[0.2rem] border-[#FF5C2E] mb-[1.4rem]' : 'mb-[1.4rem]'}
           >
             <QuestionRadioCardHeader>

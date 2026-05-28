@@ -135,6 +135,7 @@ export const BulletListItem = ({
       <div
         className={cn(
           'flex items-center justify-center shrink-0',
+          itemColor[resolvedColor],
           itemHeight[resolvedSize],
           // bulletStyles[resolvedType],
           resolvedType === 'symbols' && '-translate-y-[0.2rem] leading-[1.5]'
