@@ -9,7 +9,7 @@ import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { SearchIcon } from '@icons';
+import { SearchIcon, TableSelectArrowIcon } from '@icons'; // 2026-05-27 TableSelectArrowIcon 추가
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -23,7 +23,15 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise'; // 2026-05-27 CellClassParams 삭제
+import type {
+  ColDef,
+  ColGroupDef,
+  ICellEditorParams,
+  ICellRendererParams,
+  CellClassParams,
+  EditableCallbackParams,
+  SelectionChangedEvent,
+} from 'ag-grid-enterprise'; // 2026-05-27 EditableCallbackParams, SelectionChangedEvent 추가
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
@@ -38,6 +46,7 @@ type DummyDataType1 = {
   field05: string | number;
   field06: string | number;
   field07: string | number;
+  isRowSelected?: boolean;
 };
 
 type DummyDataType2 = {
@@ -50,6 +59,7 @@ type DummyDataType2 = {
   field05: string | number;
   field06: string | number;
   field07: string | number;
+  isRowSelected?: boolean;
 };
 
 const dummyData1: DummyDataType1[] = [
@@ -202,24 +212,29 @@ const ReasonCellEditor = React.forwardRef<ReasonCellEditorRef, ICellEditorParams
 ReasonCellEditor.displayName = 'ReasonCellEditor';
 
 const Ltpz061 = () => {
-  const [rowData1] = useState<DummyDataType1[]>(dummyData1);
-  const [rowData2] = useState<DummyDataType2[]>(dummyData2);
+  // 2026-05-27 isRowSelected 필드 추가: 선택된 행의 상태를 관리하기 위한 필드로, 체크박스 선택 시 해당 행이 선택되었는지 여부를 나타냄
+  const [rowData1, setRowData1] = useState<DummyDataType1[]>(dummyData1);
+  const [rowData2, setRowData2] = useState<DummyDataType2[]>(dummyData2);
+
+  const handleSelectionChanged1 = useCallback((event: SelectionChangedEvent<DummyDataType1>) => {
+    const selectedIds = new Set(event.api.getSelectedNodes().map((n) => n.data?.id));
+    setRowData1((prev) => prev.map((row) => ({ ...row, isRowSelected: selectedIds.has(row.id) })));
+  }, []);
+
+  const handleSelectionChanged2 = useCallback((event: SelectionChangedEvent<DummyDataType2>) => {
+    const selectedIds = new Set(event.api.getSelectedNodes().map((n) => n.data?.id));
+    setRowData2((prev) => prev.map((row) => ({ ...row, isRowSelected: selectedIds.has(row.id) })));
+  }, []);
 
   const selectCellRenderer = useCallback(<TData,>(params: ICellRendererParams<TData>) => {
-    const value = params.value == null ? '' : String(params.value);
-    const hasValue = value.trim().length > 0;
-
-    if (!hasValue) {
-      return <div className="h-full w-full" />;
-    }
-
     return (
-      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
-        <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
-        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+      <div className="flex items-center justify-center gap-1 w-full h-full editor-select px-[0.6rem]">
+        <span className="text-center">{params.value}</span>
+        <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
       </div>
     );
   }, []);
+  // 2026-05-27 끝
 
   const reasonCellRenderer = useCallback(<TData,>(params: ICellRendererParams<TData>) => {
     const value = params.value == null ? '' : String(params.value);
@@ -261,6 +276,7 @@ const Ltpz061 = () => {
         );
       },
     },
+    // 2026-05-27 select 전체 수정
     {
       headerName: '부담보기간',
       marryChildren: true,
@@ -268,20 +284,24 @@ const Ltpz061 = () => {
         {
           field: 'field03',
           width: 130,
-          editable: false,
           singleClickEdit: false,
           headerName: '',
-          // cellRenderer: getExpiryRenderer('left'),
-          // cellRenderer: selectCellRenderer,
+          cellClass: (params: CellClassParams<DummyDataType1>) => {
+            const base = 'text-center flex [&>div>span]:h-auto!';
+            return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+          },
+          editable: (params: EditableCallbackParams<DummyDataType1>) => {
+            return params.data?.isRowSelected === true;
+          },
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
-          cellClass: 'text-center flex [&>div>span]:h-auto!',
+          cellRenderer: selectCellRenderer,
           autoHeight: true,
         },
         {
           field: 'field04',
           width: 130,
-          editable: true,
+          editable: (params: EditableCallbackParams<DummyDataType1>) => params.data?.isRowSelected === true,
           singleClickEdit: false,
           headerName: '',
           cellRenderer: selectCellRenderer,
@@ -303,7 +323,10 @@ const Ltpz061 = () => {
               '12개월',
             ],
           },
-          cellClass: 'text-center flex [&>div>span]:h-auto!',
+          cellClass: (params: CellClassParams<DummyDataType1>) => {
+            const base = 'text-center flex [&>div>span]:h-auto!';
+            return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+          },
           autoHeight: true,
         },
       ],
@@ -349,6 +372,7 @@ const Ltpz061 = () => {
         );
       },
     },
+    // 2026-05-27 select 전체 수정
     {
       headerName: '부담보기간',
       marryChildren: true,
@@ -356,19 +380,22 @@ const Ltpz061 = () => {
         {
           field: 'field03',
           width: 130,
-          editable: true,
+          editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
           singleClickEdit: false,
           headerName: '',
           cellRenderer: selectCellRenderer,
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
-          cellClass: 'text-center flex [&>div>span]:h-auto!',
+          cellClass: (params: CellClassParams<DummyDataType2>) => {
+            const base = 'text-center flex [&>div>span]:h-auto!';
+            return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+          },
           autoHeight: true,
         },
         {
           field: 'field04',
           width: 130,
-          editable: true,
+          editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
           singleClickEdit: false,
           headerName: '',
           cellRenderer: selectCellRenderer,
@@ -390,7 +417,10 @@ const Ltpz061 = () => {
               '12개월',
             ],
           },
-          cellClass: 'text-center flex [&>div>span]:h-auto! h-[100%]',
+          cellClass: (params: CellClassParams<DummyDataType2>) => {
+            const base = 'text-center flex [&>div>span]:h-auto! h-[100%]';
+            return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+          },
           autoHeight: true,
         },
       ],

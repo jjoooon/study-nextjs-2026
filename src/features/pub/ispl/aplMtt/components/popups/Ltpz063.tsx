@@ -883,10 +883,17 @@ export const Ltpz063 = () => {
         <DialogFooter>
           <DialogFooterArea className="grid grid-cols-[1fr_auto]">
             <Grow>
-              <BulletItem color="warning" size="sm" type="ref">
-                06.6월 이전 비교안내할 타 보험회사 계약이 있거나, 고객님께서 추가로 안내받고 싶어하는 계약이 있는 경우
-                작성해주세요.
-              </BulletItem>
+              {active === 'value2' && (
+                <BulletItem color="warning" size="sm" type="ref">
+                  해약예정인 계약은 승환예정 체크박스 선택 후 저장해주시기 바랍니다.
+                </BulletItem>
+              )}
+              {active === 'value3' && (
+                <BulletItem color="warning" size="sm" type="ref">
+                  06.6월 이전 비교안내할 타 보험회사 계약이 있거나, 고객님께서 추가로 안내받고 싶어하는 계약이 있는 경우
+                  작성해주세요.
+                </BulletItem>
+              )}
             </Grow>
             <Grow>
               {active === 'value3' ? (
