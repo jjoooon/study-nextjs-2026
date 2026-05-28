@@ -190,7 +190,7 @@ const syncTreeVisibilityBySelection = (api: GridApi<DummyData2Type>) => {
   });
 };
 
-const Ltpz020 = () => {
+const Ltpz020 = ({ open }: { open: boolean }) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // 담보분류 -------------
@@ -243,7 +243,7 @@ const Ltpz020 = () => {
 
   // 검수:체크시 트리구조 열림.
   return (
-    <Dialog open>
+    <Dialog open={open}>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
