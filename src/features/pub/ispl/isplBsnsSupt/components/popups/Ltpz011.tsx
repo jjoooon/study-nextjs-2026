@@ -131,6 +131,7 @@ const comparisonRows: ComparisonRow[] = [
 ];
 
 const Ltpz011 = () => {
+  // 2026-05-28 cellClass 수정
   const columnDefs2: ColDef<ComparisonRow>[] = [
     {
       headerName: '담보상태',
@@ -161,7 +162,7 @@ const Ltpz011 = () => {
       field: 'coverage',
       flex: 1,
       tooltipValueGetter: createTooltipValueGetter<ComparisonRow>({ field: 'coverage' }),
-      cellClass: (params) => (params.data?.isSumRow ? 'text-center font-bold' : 'text-center'),
+      cellClass: (params) => (params.data?.isSumRow ? 'text-left font-bold' : 'text-left'),
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
         params.data?.isSumRow ? <b>합계</b> : params.value,
     },
