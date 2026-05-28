@@ -266,10 +266,10 @@ const Ltpz062 = () => {
 
         <DialogFooter>
           <div className="flex items-center px-6 mb-3">
-            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-              <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
-                <Checkbox color="primary">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</Checkbox>
-              </Typo>
+            <Gcol variant={'box-warning-line'} placement={'ss'} className="w-full">
+              <Checkbox>
+                <span className="text-[var(--color-danger-50)]">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</span>
+              </Checkbox>
             </Gcol>
           </div>
           <DialogFooterArea>

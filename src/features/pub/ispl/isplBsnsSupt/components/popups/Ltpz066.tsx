@@ -4,7 +4,7 @@
 'use client';
 
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
-import { Grow, Typo, Grid } from '@atoms';
+import { Grow, Typo, Grid, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -230,9 +230,11 @@ const Ltpz066 = () => {
                   />
                 </div>
                 {/* 2026-05-21 수정 */}
-                <Typo icon="info" variant="body-sm">
-                  세트형 담보는 개별 담보금액 조정 불가
-                </Typo>
+                <Gcol variant="box-info" className="w-full" placement="ss">
+                  <Typo icon="info" variant="body-sm">
+                    세트형 담보는 개별 담보금액 조정 불가
+                  </Typo>
+                </Gcol>
               </TableFoldBody>
             </TableFold>
           </Grid>

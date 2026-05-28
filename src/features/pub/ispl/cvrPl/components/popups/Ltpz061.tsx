@@ -5,11 +5,12 @@
 
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms'; // 2026-05-27 Grid 삭제
+import { Grow, Typo, Gcol } from '@atoms'; // 2026-05-27 Grid 삭제
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { SearchIcon, TableSelectArrowIcon } from '@icons'; // 2026-05-27 TableSelectArrowIcon 추가
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
+import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -23,7 +24,15 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams, CellClassParams, EditableCallbackParams, SelectionChangedEvent } from 'ag-grid-enterprise'; // 2026-05-27 EditableCallbackParams, SelectionChangedEvent 추가
+import type {
+  ColDef,
+  ColGroupDef,
+  ICellEditorParams,
+  ICellRendererParams,
+  CellClassParams,
+  EditableCallbackParams,
+  SelectionChangedEvent,
+} from 'ag-grid-enterprise'; // 2026-05-27 EditableCallbackParams, SelectionChangedEvent 추가
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
@@ -218,16 +227,6 @@ const Ltpz061 = () => {
     setRowData2((prev) => prev.map((row) => ({ ...row, isRowSelected: selectedIds.has(row.id) })));
   }, []);
 
-  const selectCellRenderer = useCallback(<TData,>(params: ICellRendererParams<TData>) => {
-    return (
-      <div className="flex items-center justify-center gap-1 w-full h-full editor-select px-[0.6rem]">
-        <span className="text-center">{params.value}</span>
-        <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
-      </div>
-    );
-  }, []);
-  // 2026-05-27 끝
-
   const reasonCellRenderer = useCallback(<TData,>(params: ICellRendererParams<TData>) => {
     const value = params.value == null ? '' : String(params.value);
 
@@ -245,6 +244,7 @@ const Ltpz061 = () => {
     );
   }, []);
 
+  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType1>;
   const columnDefs: Array<ColDef<DummyDataType1> | ColGroupDef<DummyDataType1>> = [
     {
       headerName: '분류',
@@ -287,7 +287,7 @@ const Ltpz061 = () => {
           },
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
-          cellRenderer: selectCellRenderer,
+          cellRenderer: getExpiryRenderer('center'),
           autoHeight: true,
         },
         {
@@ -296,7 +296,7 @@ const Ltpz061 = () => {
           editable: (params: EditableCallbackParams<DummyDataType1>) => params.data?.isRowSelected === true,
           singleClickEdit: false,
           headerName: '',
-          cellRenderer: selectCellRenderer,
+          cellRenderer: getExpiryRenderer('center'),
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: {
             values: [
@@ -341,6 +341,8 @@ const Ltpz061 = () => {
       editable: true,
     },
   ];
+
+  const getExpiryRenderer2 = createExpiryCellRenderer<DummyDataType2>;
   const columnDefs2: Array<ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>> = [
     {
       headerName: '분류',
@@ -375,7 +377,7 @@ const Ltpz061 = () => {
           editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
           singleClickEdit: false,
           headerName: '',
-          cellRenderer: selectCellRenderer,
+          // cellRenderer: selectCellRenderer,
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
           cellClass: (params: CellClassParams<DummyDataType2>) => {
@@ -383,6 +385,7 @@ const Ltpz061 = () => {
             return params.data?.isRowSelected === true ? base : `${base} no-edited`;
           },
           autoHeight: true,
+          cellRenderer: getExpiryRenderer2('center'),
         },
         {
           field: 'field04',
@@ -390,7 +393,7 @@ const Ltpz061 = () => {
           editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
           singleClickEdit: false,
           headerName: '',
-          cellRenderer: selectCellRenderer,
+          cellRenderer: getExpiryRenderer2('center'),
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: {
             values: [
@@ -487,6 +490,7 @@ const Ltpz061 = () => {
                       headerCheckbox: false,
                       checkboxes: true,
                       enableClickSelection: false,
+                      enableSelectionWithoutKeys: true,
                     }}
                     selectionColumnDef={{
                       headerName: '선택',
@@ -520,12 +524,13 @@ const Ltpz061 = () => {
                       headerCheckbox: false,
                       checkboxes: true,
                       enableClickSelection: false,
+                      enableSelectionWithoutKeys: true,
                     }}
                     selectionColumnDef={{
                       headerName: '선택',
                       width: 50,
                     }}
-                    onSelectionChanged={handleSelectionChanged2} // 2026-05-27 선택된 행의 상태를 업데이트하는 이벤트 핸들러 추가
+                    onSelectionChanged={handleSelectionChanged2}
                     domLayout="normal"
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}

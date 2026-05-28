@@ -257,7 +257,7 @@ const Ltpz030 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection>
           <TabPager
             data={tabs}
             active={active}
@@ -266,7 +266,6 @@ const Ltpz030 = () => {
             onRemove={handleRemove}
             visibleCount={4}
             variant="default"
-            hasTableBelow={true}
             getValue={(tab) => String(tab.value)}
             renderTab={(tab) => <span>{tab.label}</span>}
             renderDropdownItem={false}

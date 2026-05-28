@@ -49,7 +49,15 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
   // Ltpa35001
   if (info === null) {
     return (
-      <Gcol>
+      <Gcol gap={2}>
+        <Grow className="w-full px-1" placement={'bwc'}>
+          <Button variant={'text'} color={'gray'} onClick={() => {}}>
+            <Typo variant={'heading-md'}>누적사전예외</Typo>
+          </Button>
+          <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
+            {'12'}건
+          </Typo>
+        </Grow>
         <Grow gap={2} placement={'bwc'}>
           <Grow gap={1.5} placement={'bwc'} className="overflow-hidden px-1">
             <Typo variant={'heading-md'}>계약정보</Typo>
@@ -117,7 +125,7 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
     <Gcol gap={2}>
       <Grow className="w-full px-1" placement={'bwc'}>
         <Button variant={'text'} color={'gray'} onClick={() => {}}>
-          <Typo variant={'heading-md'}>누전사전예외</Typo>
+          <Typo variant={'heading-md'}>누적사전예외</Typo>
         </Button>
         <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
           {'12'}건

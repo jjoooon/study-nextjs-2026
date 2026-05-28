@@ -571,9 +571,6 @@ const Ltpz026 = () => {
             onRemove={handleRemove}
             visibleCount={4}
             variant="default"
-            hasTableBelow={true}
-            error={false}
-            errorMsg="에러 메시지 예시"
             getValue={(tab) => String(tab.value)}
             renderTab={(tab) => <span>{tab.label}</span>}
             renderDropdownItem={(tab, setActiveTab, setVisibleStart, data, visibleCount) => (
@@ -648,13 +645,13 @@ const Ltpz026 = () => {
                   <Grid className="w-full grid-rows-[auto_1fr]">
                     <Grow placement="sc">
                       <Typo tag={'strong'} variant={'heading-md'}>
-                        고지콕콕 안내대상
+                        조건콕콕
                       </Typo>
                     </Grow>
                     <Grid gap={3} className="w-full grid-cols-[1fr_1fr_1fr] min-h-[20.7rem]">
                       <Grid className="grid-rows-[auto_1fr]">
                         <Grow placement="sc">
-                          <Typo tag={'strong'} variant={'body-xs'} icon={'dotBig'} weight={'bold'} color={'default'}>
+                          <Typo tag={'strong'} variant={'body-sm'} icon={'dot'} weight={'bold'} color={'default'}>
                             제한 담보
                           </Typo>
                           <Badge color="primary" variant="contained">
@@ -679,7 +676,7 @@ const Ltpz026 = () => {
                       </Grid>
                       <Grid className="grid-rows-[auto_1fr]">
                         <Grow placement="sc">
-                          <Typo tag={'strong'} variant={'body-xs'} icon={'dotBig'} weight={'bold'} color={'default'}>
+                          <Typo tag={'strong'} variant={'body-sm'} icon={'dot'} weight={'bold'} color={'default'}>
                             보험료 할증
                           </Typo>
                           <Badge color="primary" variant="contained">
@@ -702,7 +699,7 @@ const Ltpz026 = () => {
                       </Grid>
                       <Grid className="grid-rows-[auto_1fr]">
                         <Grow placement="sc">
-                          <Typo tag={'strong'} variant={'body-xs'} icon={'dotBig'} weight={'bold'} color={'default'}>
+                          <Typo tag={'strong'} variant={'body-sm'} icon={'dot'} weight={'bold'} color={'default'}>
                             부담보(부위/질병)
                           </Typo>
                           <Badge color="primary" variant="contained">
@@ -730,13 +727,13 @@ const Ltpz026 = () => {
                       <b>설계반영 시 유의사항</b>
                     </Typo>
                     <BulletList>
-                      <BulletListItem size={'sm'} type={'dotBig'}>
+                      <BulletListItem size={'sm'} type={'dot'}>
                         <b>설계반영 클릭시 자동 처리됩니다. 이외의 사항은 심사요청이후 재확인바랍니다.</b>
                       </BulletListItem>
-                      <BulletListItem size={'sm'} type={'dotBig'}>
+                      <BulletListItem size={'sm'} type={'dot'}>
                         고지필요대상 : 알릴 사항 자동입력
                       </BulletListItem>
-                      <BulletListItem size={'sm'} type={'dotBig'}>
+                      <BulletListItem size={'sm'} type={'dot'}>
                         제한담보 : 일괄조정 & 연관담보 동시 조정
                       </BulletListItem>
                     </BulletList>

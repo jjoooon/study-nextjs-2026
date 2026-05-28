@@ -38,7 +38,7 @@ const radioGroupItemVariants = cva(
         button:
           'rounded-[0.6rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)] disabled:data-[state=checked]:text-[var(--color-gray-30)] disabled:data-[state=checked]:shadow-none',
         chipBox:
-          'rounded-full border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap px-2 text-[1.3rem] tracking-[-0.042rem] w-auto data-[state=checked]:bg-[var(--color-primary-50)] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#ff6135] data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(255,92,46,0.19)]',
+          'rounded-full border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap px-2 text-[1.3rem] tracking-[-0.042rem] w-auto data-[state=checked]:bg-[var(--color-primary-50)] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#ff6135] ',
         none: '',
       },
       size: {
@@ -104,14 +104,14 @@ const radioGroupItemVariants = cva(
       {
         variant: 'chipBox',
         size: 'md',
-        className: 'h-[2.5rem] px-[0.8rem]',
+        className: 'h-[2.6rem] px-[0.8rem]',
       },
       // chipBox variant + color (info)
       {
         variant: 'chipBox',
         color: 'info',
         className:
-          'data-[state=checked]:bg-[#006ff2] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#006ff2] data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(0,111,242,0.19)]',
+          'data-[state=checked]:bg-[#006ff2] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#006ff2] data-[state=checked]:shadow-none',
       },
     ],
     defaultVariants: {

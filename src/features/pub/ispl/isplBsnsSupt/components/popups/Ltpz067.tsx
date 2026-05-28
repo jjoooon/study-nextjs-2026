@@ -205,9 +205,11 @@ const Ltpz067 = () => {
                       enableCellSpan={true}
                     />
                   </div>
-                  <Typo variant={'body-sm'} icon={'info'}>
-                    납입보험료 변동이 예상되는 시점만 표기하였으며 상황에 따라 변동 될 수 있으므로 안내에 유의 필요
-                  </Typo>
+                  <Gcol variant="box-info" className="w-full" placement="ss">
+                    <Typo variant={'body-sm'} icon={'info'}>
+                      납입보험료 변동이 예상되는 시점만 표기하였으며 상황에 따라 변동 될 수 있으므로 안내에 유의 필요
+                    </Typo>
+                  </Gcol>
                 </Grid>
               </TableFoldBody>
             </TableFold>

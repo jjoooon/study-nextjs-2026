@@ -5,7 +5,7 @@
 
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
@@ -161,49 +161,47 @@ const Ltpz060 = () => {
             </FormTable>
           </Grow>
 
-          <Grid placement={'ss'} className="w-full gap-6 grid-rows-[1fr_auto]">
-            <Gcol gap={6}>
-              <div className="ag-theme-alpine min-h-[18.4rem]">
-                <AgGridReact<DummyDataType>
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  columnDefs={columnDefs}
-                  rowData={rowData}
-                  singleClickEdit={true}
-                  defaultColDef={{
-                    suppressMovable: true,
-                  }}
-                  rowSelection={{
-                    mode: 'multiRow',
-                    headerCheckbox: false,
-                    checkboxes: true,
-                    enableClickSelection: false,
-                  }}
-                  selectionColumnDef={{
-                    headerName: '선택',
-                    width: 50,
-                  }}
-                  domLayout="normal"
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
-                />
-              </div>
-              <TableFold variant={'default'}>
-                <TableFoldHead title="계약기본사항"></TableFoldHead>
-                <TableFoldBody>
-                  <FormTable caption={'계약기본사항'} cols={['w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
-                    <FormRow>
-                      <FormCell title={'담보명'}>
-                        <Input width={'full'} value={'풍수재손해(실손전부보상비)'} readOnly />
-                      </FormCell>
-                      <FormCell title={'가입금액'}>
-                        <Input width={'full'} value={'0'} readOnly />원
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </TableFoldBody>
-              </TableFold>
-            </Gcol>
+          <Grid placement={'ss'} className="w-full grid-rows-[1fr_auto] gap-3">
+            <div className="ag-theme-alpine min-h-[18.4rem]">
+              <AgGridReact<DummyDataType>
+                getRowId={(params) => String(params.data.id)}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                columnDefs={columnDefs}
+                rowData={rowData}
+                singleClickEdit={true}
+                defaultColDef={{
+                  suppressMovable: true,
+                }}
+                rowSelection={{
+                  mode: 'multiRow',
+                  headerCheckbox: false,
+                  checkboxes: true,
+                  enableClickSelection: false,
+                }}
+                selectionColumnDef={{
+                  headerName: '선택',
+                  width: 50,
+                }}
+                domLayout="normal"
+                tooltipShowMode="whenTruncated"
+                tooltipShowDelay={0}
+              />
+            </div>
+            <TableFold variant={'default'}>
+              <TableFoldHead title="계약기본사항"></TableFoldHead>
+              <TableFoldBody>
+                <FormTable caption={'계약기본사항'} cols={['w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
+                  <FormRow>
+                    <FormCell title={'담보명'}>
+                      <Input width={'full'} value={'풍수재손해(실손전부보상비)'} readOnly />
+                    </FormCell>
+                    <FormCell title={'가입금액'}>
+                      <Input width={'full'} value={'0'} readOnly />원
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+              </TableFoldBody>
+            </TableFold>
           </Grid>
         </DialogSection>
         <DialogFooter>

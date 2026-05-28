@@ -180,7 +180,7 @@ const Ltpz049 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Gcol placement="ss">
+          <Gcol placement="ss" className="gap-2">
             <div className="ag-theme-alpine min-h-[18.4rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
@@ -196,9 +196,11 @@ const Ltpz049 = () => {
                 domLayout="normal"
               />
             </div>
-            <Typo icon="info">
-              할증보험료 계산시 발생할 수 있는 1원 미만의 할증보험료는 0원으로 표시되며, 갱신기 변동될 수 있습니다.
-            </Typo>
+            <Gcol variant="box-info" className="w-full" placement="ss">
+              <Typo icon="info">
+                할증보험료 계산시 발생할 수 있는 1원 미만의 할증보험료는 0원으로 표시되며, 갱신기 변동될 수 있습니다.
+              </Typo>
+            </Gcol>
           </Gcol>
         </DialogSection>
 

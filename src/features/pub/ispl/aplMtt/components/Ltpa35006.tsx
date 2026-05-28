@@ -798,7 +798,7 @@ export const Ltpa35006 = () => {
                             width: 50,
                             cellClass: 'text-center p-0!',
                             cellRenderer: (params: ICellRendererParams<Ltpa35006GridRow>) =>
-                              params.node.rowPinned ? <b>선택건수</b> : null,
+                              params.node.rowPinned ? '선택건수' : null,
                             cellClassRules: {
                               'pointer-events-none': (params) => !!params.data?.locked,
                             },

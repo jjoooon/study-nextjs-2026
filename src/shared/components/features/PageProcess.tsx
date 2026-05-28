@@ -84,7 +84,7 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                     ) : null}
                   </b>
                   <Typo
-                    className={`px-2 text-[1.1rem] leading-[1.3rem] text-center ${isActive ? 'text-white' : 'text-[var(--color-gray-70)]'}`}
+                    className={`px-2 text-[1.1rem] leading-[1.3rem] text-center ${isActive ? 'text-white font-[700]' : 'text-[var(--color-gray-70)]'}`}
                   >
                     {item.label}
                   </Typo>

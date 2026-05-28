@@ -251,7 +251,11 @@ const Ltpz065 = () => {
           </Grow>
 
           {/* 조회 정보 */}
+<<<<<<< HEAD
           <Grid placement="ss" className="w-full grid-rows-[auto_1fr]">
+=======
+          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={2}>
+>>>>>>> ab7021f41570f7142b261b26d9305cf5a79a4303
             <TableFold>
               <TableFoldHead title="단체실손의료비 전환대상" />
               <TableFoldBody className="gap-5">
@@ -304,6 +308,34 @@ const Ltpz065 = () => {
                 </Grid>
               </TableFoldBody>
             </TableFold>
+<<<<<<< HEAD
+=======
+
+            <Grid className="w-full h-full">
+              <div className="ag-theme-alpine min-h-[18.4rem]">
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={DummyData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{ sortable: false }}
+                  enableCellSpan={true}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                  // 체크박스 시
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                    enableClickSelection: true,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                  }}
+                />
+              </div>
+            </Grid>
+>>>>>>> ab7021f41570f7142b261b26d9305cf5a79a4303
           </Grid>
         </DialogSection>
 

@@ -133,7 +133,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
           }}
           onScroll={handleScroll}
         >
-          <Gcol className="py-2 gap-4">
+          <Gcol className="gap-4">
             {chatData.map((item, idx) => (
               <div
                 key={idx}
@@ -141,6 +141,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
                   itemRefs.current[idx] = el;
                 }}
                 style={{ scrollSnapAlign: 'start' }}
+                className="py-2"
               >
                 {/* 심부산 */}
                 <Gcol className="px-3 gap-2">

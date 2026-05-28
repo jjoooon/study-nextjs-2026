@@ -40,7 +40,8 @@ const Ltpz037 = () => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Typo variant="body-lg">정확한 알릴사항 자동고지를 위해 동의 문자동의(LMS)로 발송합니다.</Typo>
-          <Gcol placement={'ss'} className="w-full">
+
+          <Gcol placement={'ss'} className="w-full" gap={2}>
             <Typo variant="body-lg" weight={'bold'}>
               취급자 정보
             </Typo>
@@ -48,7 +49,7 @@ const Ltpz037 = () => {
               질병정보는 민감정보로서 <b>알릴사항의 목적으로만 활용</b>바랍니다.<br></br>이외의 용도로 활용 또는{' '}
               <b>외부 유출시 법적처벌</b>을 받습니다.
             </Typo>
-            <Grid className="w-full grid-cols-[12rem_auto_1fr_12rem] items-center gap-1">
+            <Grid className="w-full grid-cols-[12rem_auto_1fr_12rem] items-center gap-1 px-5 py-4 bg-[var(--color-gray-5)] rounded-[0.6rem]">
               <Input value={'1234567'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                 <SearchIcon color={'var(--color-primary-50)'} />
@@ -56,7 +57,7 @@ const Ltpz037 = () => {
               <Input value={'김한화'} readOnly />
               <Input value={'010-1234-1234'} readOnly />
             </Grid>
-            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+            <Gcol variant={'box-warning-line'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
                 <Checkbox color="primary">타인에게 유출되지 않도록 처리하는 것에 동의합니다.</Checkbox>
               </Typo>
@@ -123,16 +124,15 @@ const Ltpz037 = () => {
                 </TableRow>
               </TableBody>
             </Table>
+            <Grow className="w-full items-start mt-1" placement="bwc" variant="box-info">
+              <BulletItem className="w-full" type="dotBig">
+                최근 동의이력
+              </BulletItem>
+              <Typo className="w-full text-right text-[#006FF2]" weight={'bold'} variant="body-sm">
+                2026-03-19 10:00:00
+              </Typo>
+            </Grow>
           </Gcol>
-
-          <Grow className="w-full items-start" placement="bwc" variant="box-info">
-            <BulletItem className="w-full" type="dotBig">
-              최근 동의이력
-            </BulletItem>
-            <Typo className="w-full text-right text-[#006FF2]" weight={'bold'} variant="body-sm">
-              2026-03-19 10:00:00
-            </Typo>
-          </Grow>
         </DialogSection>
 
         <DialogFooter>

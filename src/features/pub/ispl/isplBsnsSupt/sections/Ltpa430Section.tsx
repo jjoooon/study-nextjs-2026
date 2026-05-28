@@ -7,13 +7,13 @@
 
 import { AgGridEmptyComponent, createFieldRenderer, renderTbodyTh, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Button } from '@uiux/Button';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { PageID } from '@features/PageID';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { PageID } from '@features/PageID';
+import { Button } from '@uiux/Button';
 
 import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
@@ -219,7 +219,7 @@ export default function Ltpa010Section() {
         mainBody={
           <>
             <Gcol placement="ss" className="gap-3">
-              <Gcol>
+              <Gcol gap={2}>
                 <Grow placement="bwc" className="w-full" variant={'box-round'}>
                   <FormTable variant="none" cols={['w-1', 'w-auto']}>
                     <FormRow>
@@ -245,7 +245,7 @@ export default function Ltpa010Section() {
                   </Typo>
                 </Gcol>
               </Gcol>
-              <Gcol>
+              <Gcol placement="ss">
                 <Typo variant="body-md" className="w-full text-right">
                   기준 : 가입담보 사항에 해당하는 보장보험료 합계
                 </Typo>
@@ -262,13 +262,11 @@ export default function Ltpa010Section() {
                     domLayout="autoHeight"
                   />
                 </div>
+                <Typo icon="ref">
+                  현재 설계 담보로 계산된 합계보험료비교 내용(실제해당 형으로 변경시 가입불가능한 담보가 포함될 수 있음)
+                </Typo>
               </Gcol>
-              <Typo icon="ref">
-                현재 설계 담보로 계산된 합계보험료비교 내용(실제해당 형으로 변경시 가입불가능한 담보가 포함될 수 있음)
-              </Typo>
             </Gcol>
-
-            
           </>
         }
         mainFoot={

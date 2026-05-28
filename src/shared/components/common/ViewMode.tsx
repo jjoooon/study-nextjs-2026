@@ -23,22 +23,20 @@ export const ViewMode = ({ state = true, label, onChange }: ViewModeProps) => {
         htmlFor="docType"
         className={`relative h-[2.8rem] p-[0.1rem] rounded-full border bg-white border-[var(--color-gray-15)] flex justify-center items-center gap-0 cursor-pointer select-none 
           [&>.peer-1]:text-[var(--color-gray-0)] 
-          [&>.peer-1]:font-bold 
           [&>.peer-1]:bg-gradient-to-r 
           [&>.peer-1]:from-[#ff5c2e] 
           [&>.peer-1]:to-[#ffb800] 
-          [&>.peer-1]:shadow-[0rem_.2rem_.4rem_0rem_rgba(0,0,0,0.08)]
-
+          [&>.peer-1]:font-bold
           peer-checked:[&>.peer-1]:!bg-none 
+          peer-checked:[&>.peer-1]:font-normal 
           peer-checked:[&>.peer-1]:text-[var(--color-gray-50)] 
           peer-checked:[&>.peer-1]:text-normal 
-
+          
           peer-checked:[&>.peer-2]:text-[var(--color-gray-0)] 
           peer-checked:[&>.peer-2]:font-bold 
           peer-checked:[&>.peer-2]:bg-gradient-to-r 
           peer-checked:[&>.peer-2]:from-[#ff5c2e] 
-          peer-checked:[&>.peer-2]:to-[#ffb800] 
-          peer-checked:[&>.peer-2]:shadow-[0rem_.2rem_.4rem_0rem_rgba(0,0,0,0.08)]`}
+          peer-checked:[&>.peer-2]:to-[#ffb800]`}
       >
         <span className="peer-1 rounded-full flex items-center pl-1 pr-[0.6rem] h-full text-[1.1rem] text-[var(--color-gray-50)] tracking-[-0.08rem] !whitespace-nowrap">
           {label?.[0] ?? '간편'}

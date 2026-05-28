@@ -339,7 +339,7 @@ const Ltpz039 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Gcol className="w-full grid-rows-[auto_1fr]">
+          <Gcol className="w-full grid-rows-[auto_1fr]" gap={2}>
             <div className="ag-theme-alpine min-h-[25.3rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
