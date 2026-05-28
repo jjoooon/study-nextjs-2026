@@ -312,7 +312,7 @@ export function IAListWithPreview() {
     <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
       <div className="h-[calc(100vh-4rem)] overflow-auto flex  flex-col justify-start">
         <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
-          반입일: 2026.05.18
+          반입일: 2026.05.28
         </div>
         <div className="w-full grid grid-cols-[1fr_auto] gap-2">
           <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem] flex-1">
