@@ -19,7 +19,7 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ResetIcon, SearchIcon } from '@icons';
+import { ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -31,7 +31,6 @@ import { useCallback } from 'react';
 import * as React from 'react';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
-
 import '@/shared/lib/agGridPub';
 
 // dummy data
@@ -636,9 +635,11 @@ export default function Ltpa030Section() {
                       (<Checkbox>삭제건포함</Checkbox>)
                       <Button color="gray" variant="outlined" onClick={handleAddRow}>
                         행추가
+                        <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                       </Button>
                       <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
                         행삭제
+                        <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                       </Button>
                     </Grow>
                   </TableFoldHead>
@@ -678,9 +679,11 @@ export default function Ltpa030Section() {
                     <Grow>
                       <Button color="gray" variant="outlined" onClick={handleAddRow2}>
                         행추가
+                        <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                       </Button>
                       <Button color="gray" variant="outlined" onClick={handleDeleteRow2}>
                         행삭제
+                        <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                       </Button>
                     </Grow>
                   </TableFoldHead>

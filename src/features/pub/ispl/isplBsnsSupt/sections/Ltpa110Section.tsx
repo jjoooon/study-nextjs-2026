@@ -326,13 +326,15 @@ export default function Ltpa110Section() {
                       </BulletListItem>
                     </BulletList>
                   </Gcol>
+                  {/* 2026-05-27 버튼 위치 변경 */}
+                  <Grow className="w-full py-1">
+                    <Button color="primary" onClick={() => {}} only="icon" size="lg" variant="outlined">
+                      <ArrowDoubleIcon />
+                    </Button>
+                  </Grow>
                 </TableFoldBody>
               </TableFold>
-              <Grow className="w-full py-1">
-                <Button color="primary" onClick={() => {}} only="icon" size="lg" variant="outlined">
-                  <ArrowDoubleIcon />
-                </Button>
-              </Grow>
+              
               <TableFold className="h-full grid-rows-[auto_1fr]">
                 <TableFoldHead title="선택설계">
                   <Grow>

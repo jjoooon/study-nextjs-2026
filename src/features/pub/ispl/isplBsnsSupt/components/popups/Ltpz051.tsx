@@ -45,6 +45,17 @@ type DummyDataType = {
   field06: string | number;
   field07: string | number;
 };
+
+// 2026-05-27 agGrid 추가
+type DummyDataType1 = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+  field05: string | number;
+};
+
 const DummyData: DummyDataType[] = [
   {
     id: 1,
@@ -68,6 +79,26 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+// 2026-05-27 agGrid 추가
+const DummyData1: DummyDataType1[] = [
+  {
+    id: 1,
+    field01: '변경대상',
+    field02: 'LA20253419197000',
+    field03: '계약변경설계이동',
+    field04: 'TEXT',
+    field05: 'TEXT',
+  },
+  {
+    id: 2,
+    field01: '변경대상',
+    field02: 'LA20253419197000',
+    field03: '계약변경설계이동',
+    field04: 'TEXT',
+    field05: 'TEXT',
+  },
+];
+
 const Ltpz051 = () => {
   // AgGrid Column
   const { tabs, active, setActive } = useTabs(DATA_TABS);
@@ -86,12 +117,18 @@ const Ltpz051 = () => {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
+    // 2026-05-27 링크로 변경
     {
       headerName: '변경설계번호',
       flex: 1,
       field: 'field03',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+      cellClass: 'text-center px-0!',
       autoHeight: true,
+      cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
+        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+          {params.data?.field03}
+        </Button>
+      ),
     },
     {
       headerName: '변경전 직업정보',
@@ -138,7 +175,54 @@ const Ltpz051 = () => {
     },
   ];
 
+  // 2026-05-27 agGrid 추가
+  const columnDefs1: ColDef<DummyDataType1>[] = [
+    {
+      headerName: '대상여부',
+      field: 'field01',
+      width: 110,
+      cellClass: 'text-center',
+      autoHeight: true,
+    },
+    {
+      headerName: '증권번호',
+      field: 'field02',
+      width: 140,
+      cellClass: 'text-center',
+      autoHeight: true,
+    },
+    {
+      headerName: '변경설계번호',
+      field: 'field03',
+      width: 130,
+      cellClass: 'text-center',
+      autoHeight: true,
+      cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
+        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+          {params.data?.field03}
+        </Button>
+      ),
+    },
+    {
+      headerName: '변경전 직업정보',
+      flex: 1,
+      minWidth: 120,
+      field: 'field04',
+      cellClass: 'text-center',
+      autoHeight: true,
+    },
+    {
+      headerName: '변경후 직업정보',
+      flex: 1,
+      minWidth: 120,
+      field: 'field05',
+      cellClass: 'text-center',
+      autoHeight: true,
+    },
+  ];
+
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData1] = React.useState<DummyDataType1[]>(DummyData1); // 2026-05-27 agGrid 추가
 
   return (
     <Dialog open>
@@ -253,11 +337,12 @@ const Ltpz051 = () => {
                           99건
                         </Typo>
                       </Grow>
+                      {/* 2026-05-27 agGrid 수정 */}
                       <div className="ag-theme-alpine min-h-[18.4rem]">
-                        <AgGridReact<DummyDataType>
+                        <AgGridReact<DummyDataType1>
                           getRowId={(params) => String(params.data.id)}
-                          rowData={rowData}
-                          columnDefs={columnDefs}
+                          rowData={rowData1}
+                          columnDefs={columnDefs1}
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           defaultColDef={{
                             sortable: true,

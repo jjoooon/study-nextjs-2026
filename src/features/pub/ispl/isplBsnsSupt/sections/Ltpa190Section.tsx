@@ -18,6 +18,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { ZoomInIcon, ZoomOutIcon, ResetIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -27,9 +28,7 @@ import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } fro
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback } from 'react';
-import { ResetIcon } from '@/shared/components/icons/CommonIcons';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
@@ -364,9 +363,11 @@ export default function Ltpa190Section() {
                   (<Checkbox>삭제건포함</Checkbox>)
                   <Button color="gray" variant="outlined" onClick={handleAddRow}>
                     행추가
+                    <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
                   <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
                     행삭제
+                    <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
                 </Grow>
               </TableFoldHead>

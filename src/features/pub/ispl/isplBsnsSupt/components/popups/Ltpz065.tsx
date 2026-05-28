@@ -260,13 +260,14 @@ const Ltpz065 = () => {
                     caption="단체실손의료비 전환대상 테이블"
                     cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'flex-1']}
                   >
+                    {/* 2027-05-27 input 수정 */}
                     <FormRow>
                       <FormCell title={'피보험자'}>
-                        <Input width={80} value={'김한화'} readOnly />
-                        <Input aria-label="주민등록번호 마스킹" width={120} value={'900101-1234567'} readOnly />
+                        <Input width={80} variant="info" value={'김한화'} readOnly />
+                        <Input aria-label="주민등록번호 마스킹" width={120} variant="info" value={'900101-1234567'} readOnly />
                       </FormCell>
                       <FormCell title={'조회건수'}>
-                        <Input width={30} value={'n'} readOnly />건
+                        <Input width={30} variant="info" value={'n'} readOnly />건
                       </FormCell>
                     </FormRow>
                   </FormTable>

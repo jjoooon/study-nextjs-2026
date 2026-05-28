@@ -193,15 +193,16 @@ const Ltpz053 = () => {
                   </FormRow>
                 )}
                 {form.type02 === '운전면허증' && (
+                  // 2026-05-27 생년월일, 발급일자 input으로 수정
                   <FormRow>
                     <FormCell title={'성명'}>
                       <Input aria-label="" value={''} required />
                     </FormCell>
                     <FormCell title={'생년월일'}>
-                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
+                      <Input aria-label="" value={''} width={90} placeholder="____-__-__" required />
                     </FormCell>
                     <FormCell title={'발급일자'}>
-                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
+                      <Input aria-label="" value={''} width={90} placeholder="____-__-__" required />
                       <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                         신원확인
                       </Button>

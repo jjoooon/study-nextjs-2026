@@ -12,8 +12,7 @@ import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
-
+import { FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -114,6 +113,28 @@ export const Ltpz064 = () => {
     idKey: 'id',
   });
 
+  // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
+  const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
+    const value = params.value == null ? '' : String(params.value);
+    const hasValue = value.trim().length > 0;
+
+    if (hasValue) {
+      return (
+        <div className="flex h-full w-full items-center justify-center px-1">
+          <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
+        <span className="block min-w-0 flex-1" />
+        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+      </div>
+    );
+  }, []);
+
+  // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '가입설계동의 시 최소 필요정보',
@@ -192,6 +213,7 @@ export const Ltpz064 = () => {
           cellClass: 'editable-cell text-center',
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: { values: ['선택1', '선택2'] },
+          cellRenderer: selectCellRenderer,
         },
         {
           headerName: '연령',
@@ -261,6 +283,7 @@ export const Ltpz064 = () => {
           cellClass: 'editable-cell text-center',
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: { values: ['선택1', '선택2'] },
+          cellRenderer: selectCellRenderer,
         },
         {
           headerName: '이륜차',
@@ -270,6 +293,7 @@ export const Ltpz064 = () => {
           cellClass: 'editable-cell text-center',
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: { values: ['선택1', '선택2'] },
+          cellRenderer: selectCellRenderer,
         },
         {
           headerName: '병력여부',
@@ -279,6 +303,7 @@ export const Ltpz064 = () => {
           cellClass: 'editable-cell text-center',
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: { values: ['선택1', '선택2'] },
+          cellRenderer: selectCellRenderer,
         },
         {
           headerName: '알릴사항',
@@ -296,8 +321,9 @@ export const Ltpz064 = () => {
       <DialogContent showCloseButton resizable={true} size="full">
         <DialogHeader>
           <DialogTitle>
+            {/* 2026-05-27 타이틀 수정 */}
             <Typo tag={'strong'} variant={'heading-lg'}>
-              차세대 가입설계 시스템 구축 프로젝트
+              다수피보험자 명세관리
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ064)
@@ -360,9 +386,11 @@ export const Ltpz064 = () => {
                   </Button>
                   <Button color="gray" variant="outlined" onClick={handleAddRow}>
                     행추가
+                    <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
                   <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
                     행삭제
+                    <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
                 </Grow>
               </TableFoldHead>

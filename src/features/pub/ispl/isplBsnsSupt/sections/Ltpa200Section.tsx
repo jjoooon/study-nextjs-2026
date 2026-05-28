@@ -22,7 +22,7 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ResetIcon, SearchIcon } from '@icons';
+import { ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -492,9 +492,11 @@ export default function Ltpa200Section() {
                 <Grow>
                   <Button color="gray" variant="outlined" onClick={handleAddRow}>
                     행추가
+                    <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
                   <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
                     행삭제
+                    <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
                 </Grow>
               </TableFoldHead>

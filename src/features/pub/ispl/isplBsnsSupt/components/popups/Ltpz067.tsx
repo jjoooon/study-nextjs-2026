@@ -172,43 +172,44 @@ const Ltpz067 = () => {
         </DialogHeader>
 
         <DialogSection>
-          <Grid className="w-full grid-rows-[auto_1fr_auto]" gap={3}>
+          <Grid className="w-full grid-rows-[auto_auto_auto]" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'ss'}>
               <FormTable variant="head">
+                {/* 2027-05-27 input 수정 */}
                 <FormRow>
                   <FormCell title={'보험기간'}>
-                    <Input aria-label="" width={180} value={'2026-02-01 ~ 2046-02-03'} readOnly />
+                    <Input aria-label="" variant="info" width={180} value={'2026-02-01 ~ 2046-02-03'} readOnly />
                   </FormCell>
                   <FormCell title={'만기납기'}>
-                    <Input aria-label="" width={200} value={'20년만기/전기납'} readOnly />
+                    <Input aria-label="" variant="info" width={200} value={'20년만기/전기납'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
             </Grow>
 
-            {/* <Gcol placement={'ss'} className="w-full"> */}
             <TableFold>
               <TableFoldHead title="단체실손의료비 전환대상" />
               <TableFoldBody className="gap-2">
-                <div className="ag-theme-alpine min-h-[19.6rem]">
-                  <AgGridReact<DummyDataType1>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={DummyData1}
-                    columnDefs={columnDefs1}
-                    defaultColDef={{
-                      sortable: false,
-                      resizable: false,
-                    }}
-                    enableCellSpan={true}
-                  />
-                </div>
-                <Typo variant={'body-sm'} icon={'info'}>
-                  납입보험료 변동이 예상되는 시점만 표기하였으며 상황에 따라 변동 될 수 있으므로 안내에 유의 필요
-                </Typo>
+                <Grid placement={'ss'} className="grid-rows-[1fr_auto]">
+                  <div className="ag-theme-alpine min-h-[19.6rem]">
+                    <AgGridReact<DummyDataType1>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={DummyData1}
+                      columnDefs={columnDefs1}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: false,
+                      }}
+                      enableCellSpan={true}
+                    />
+                  </div>
+                  <Typo variant={'body-sm'} icon={'info'}>
+                    납입보험료 변동이 예상되는 시점만 표기하였으며 상황에 따라 변동 될 수 있으므로 안내에 유의 필요
+                  </Typo>
+                </Grid>
               </TableFoldBody>
             </TableFold>
-            {/* </Gcol> */}
 
             <TableFold>
               <TableFoldHead title="할인종류" />

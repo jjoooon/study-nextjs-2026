@@ -10,7 +10,7 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { SearchIcon } from '@icons';
+import { SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -277,11 +277,13 @@ export const Ltrz085 = () => {
           <TableFold variant="accordion" className="grid-rows-[auto_1fr]">
             <TableFoldHead title="변경조건 설계/계약">
               <Grow>
-                <Button id="btnCA" variant={'outlined'} size={'xl'} color={'gray'}>
+                <Button id="btnCA" variant={'outlined'} color={'gray'}>
                   행추가
+                  <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
-                <Button id="btnDA" variant={'outlined'} size={'xl'} color={'gray'}>
+                <Button id="btnDA" variant={'outlined'} color={'gray'}>
                   행삭제
+                  <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
               </Grow>
             </TableFoldHead>

@@ -23,7 +23,7 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
+import type { CellClassParams, ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
@@ -58,7 +58,7 @@ const dummyData1: DummyDataType1[] = [
     isCheck: false,
     field01: '040',
     field02: '위, 십이지장',
-    field03: '',
+    field03: '11',
     field04: '1개월',
     field05: '',
     field06: '',
@@ -116,7 +116,7 @@ const dummyData2: DummyDataType2[] = [
     isCheck: true,
     field01: '041',
     field02: '요로결석증(N20, N21, N23)',
-    field03: '',
+    field03: '1',
     field04: '12개월',
     field05: '',
     field06: '',
@@ -268,10 +268,11 @@ const Ltpz061 = () => {
         {
           field: 'field03',
           width: 130,
-          editable: true,
+          editable: false,
           singleClickEdit: false,
           headerName: '',
-          cellRenderer: selectCellRenderer,
+          // cellRenderer: getExpiryRenderer('left'),
+          // cellRenderer: selectCellRenderer,
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
           cellClass: 'text-center flex [&>div>span]:h-auto!',
