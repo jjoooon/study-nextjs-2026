@@ -25,6 +25,7 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 const Ltpz043 = () => {
+  // 2026-05-27 추가
   const [parkingInputEnabled, setParkingInputEnabled] = React.useState({
     indoor: false,
     twoStage: false,
@@ -70,9 +71,9 @@ const Ltpz043 = () => {
                 </FormTable>
               </FormTable>
             </Grow>
-            <Gcol>
+            <Gcol gap={2}> { /* 2026-05-27 gap 추가 */ }
               <FormTable caption="주차장 정보" cols={['w-[8rem]', 'w-[8rem]', 'w-auto']}>
-                {/* 2027-05-27 전체 수정(옥내주차장, 2단주차기, 기계식주차기, 카리프트) */}
+                {/* 2026-05-27 전체 수정(옥내주차장, 2단주차기, 기계식주차기, 카리프트) */}
                 <FormRow>
                   <FormCell title={'옥내주차장'} titleColSpan={2}>
                     <Checkbox

@@ -340,7 +340,7 @@ const DummyData4: DummyDataType4[] = [
 const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [editableFieldName, setEditableFieldName] = React.useState<string | null>(null);
   const [insuredFloorType, setInsuredFloorType] = React.useState<InsuredFloorType>(null);
-  const [detailPlace, setDetailPlace] = React.useState<string>('건물전체');
+  const [detailPlace, setDetailPlace] = React.useState<string>('');
   const [imagePageBySection, setImagePageBySection] = React.useState<Record<ImageSectionType, number>>({
     기둥: 0,
     지붕: 0,
@@ -794,11 +794,15 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'보험가입층수'}>
+                        {/* 2026-05-27 radio 수정 */}
                         <RadioGroup
                           value={insuredFloorType ?? ''}
                           onValueChange={(value) => {
                             if (value === '전체' || value === '일부') {
                               setInsuredFloorType(value);
+                              if (value === '일부') {
+                                setDetailPlace('');
+                              }
                             }
                           }}
                         >
@@ -820,11 +824,13 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'세부장소'} colSpan={3}>
+                        {/* 2026-05-27 placeholder 수정 */}
                         <Input
                           value={detailPlace}
                           width={400}
                           onChange={(e) => setDetailPlace(e.target.value)}
                           readOnly={insuredFloorType === '전체'}
+                          placeholder={insuredFloorType === '전체' ? '건물전체' : undefined}
                         />
                         입력예시: 2층 201호
                       </FormCell>

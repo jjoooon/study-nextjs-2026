@@ -31,6 +31,7 @@ const Ltpz047 = () => {
     type05: '',
     type06: '',
     type07: '',
+    type08: '', // 2026-05-28 추가
   });
   return (
     <Dialog open>
@@ -50,7 +51,7 @@ const Ltpz047 = () => {
             <FormTable variant={'head'} lineTop={false} caption="">
               <FormTable variant="none" cols={['w-1', 'w-auto']}>
                 <FormRow>
-                  {/* 2027-05-27 input 수정 */}
+                  {/* 2026-05-27 variant 추가 */}
                   <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
                     <Input aria-label="" variant="info" width={130} value={'LA26020945959594'} readOnly />
                     <Input aria-label="" variant="info" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
@@ -194,22 +195,40 @@ const Ltpz047 = () => {
                 </FormCell>
               </FormRow>
               <FormRow>
+                {/* 2026-05-27 EssentialIcon 아이콘 삭제 */}
                 <FormCell
                   title={
                     <Grow placement="sc">
                       <span>종업원담보업종</span>
-                      <EssentialIcon />
                     </Grow>
                   }
                   titleColSpan={2}
                   colSpan={4}
-                ></FormCell>
+                >
+                  {/* 2026-05-27 select 추가 */}
+                  <NativeSelect
+                    aria-label="선택"
+                    width={100}
+                    value={form.type07}
+                    required
+                    onChange={(e) => setFormField('type07', e.target.value)}
+                  >
+                    {[
+                      { value: 'selection', id: 'type07-1', label: '선택1' },
+                      { value: 'selection2', id: 'type07-2', label: '선택2' },
+                    ].map((option) => (
+                      <NativeSelectOption key={option.id} value={option.value}>
+                        {option.label}
+                      </NativeSelectOption>
+                    ))}
+                  </NativeSelect>
+                </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'할인율'} titleColSpan={2} colSpan={4}>
                   <Input
-                    onChange={(e) => setFormField('type07', e.target.value)}
-                    value={form.type07}
+                    onChange={(e) => setFormField('type08', e.target.value)}
+                    value={form.type08}
                     width={220}
                     readOnly
                   />

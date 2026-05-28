@@ -582,7 +582,8 @@ export const Ltpz296 = () => {
               </Button>
             </Grow>
           </Grow>
-          <div>
+          {/* 2026-05-27 div 추가 */}
+          <div className="flex flex-col gap-3">
             <TableFold>
               <TableFoldHead title="그룹설정">
                 <Grow>
