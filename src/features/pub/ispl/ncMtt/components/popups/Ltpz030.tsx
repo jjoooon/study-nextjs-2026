@@ -175,6 +175,7 @@ const getUnderwritingDecision = (value: string | number) => {
 };
 
 const Ltpz030 = () => {
+  /* 2026.05.28 className 추가 */
   const columnDefs1T1 = React.useMemo<ColDef<DummyDataType1T1>[]>(
     () => [
       {
@@ -220,15 +221,13 @@ const Ltpz030 = () => {
         field: 'field04',
         width: 100,
         autoHeight: true,
-        editable: false,
       },
       {
         headerName: '비고',
         field: 'field05',
         flex: 1,
         autoHeight: true,
-        editable: false,
-        className: 'truncate text-left',
+        cellClass: 'truncate text-left!',
       },
     ],
     []
@@ -549,7 +548,10 @@ const Ltpz030 = () => {
                             </Badge>
                           </Gcol>
                         </TableCell>
-                        <TableCell rowSpan={6}>종대질환 경증외 입원수술 심사필요병력(거절 39,40,41,797)</TableCell>
+                        {/* 2026.05.28 className 추가 */}
+                        <TableCell rowSpan={6} className="text-left">
+                          종대질환 경증외 입원수술 심사필요병력(거절 39,40,41,797)
+                        </TableCell>
                       </TableRow>
                       <TableRow className="text-center">
                         <TableHead>5형(건강고지10년)</TableHead>

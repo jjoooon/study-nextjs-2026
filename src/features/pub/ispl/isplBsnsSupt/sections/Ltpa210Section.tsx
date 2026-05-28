@@ -231,11 +231,12 @@ export default function Ltpa210Section() {
         return params.value;
       },
     },
+    // 2026-05-28: cellClass 수정
     {
       headerName: '적용사유',
       field: 'field07',
       flex: 2,
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'flex! items-center! justify-start!',
       editable: isEditableNewRow,
       cellEditor: 'agInputCellEditor',
     },
