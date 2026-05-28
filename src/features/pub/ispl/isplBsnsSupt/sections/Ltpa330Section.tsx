@@ -258,18 +258,19 @@ export default function Ltpa330Section() {
                 onLoadNext={handleLoadNext}
                 isAll={false}
               />
-              {/* 2026-05-27 위치 변경 */}
-              <Grow placement={'ec'}>
-                <Typo>설계번호</Typo>
-                <Input
-                  size={'lg'}
-                  width={150}
-                  value={'LA20233591906000'}
-                  onChange={() => {}}
-                  readOnly
-                  style={{ height: 32 }}
-                />
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+              {/* 2026-05-27 전체 수정 */}
+              <Grow placement={'ec'} className="p-2.5 bg-[#EFF8FF] rounded-lg gap-2.5">
+                <Grow gap={2}>
+                  <Typo variant="body-md" weight={'bold'}  className="text-[#6B7280]">설계번호</Typo>
+                  <Input
+                    size={'lg'}
+                    width={150}
+                    value={'LA20233591906000'}
+                    onChange={() => {}}
+                    readOnly
+                  />
+                </Grow>              
+                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'coolgray'} size={'lg'}>
                   이미지전송
                 </Button>
               </Grow>
