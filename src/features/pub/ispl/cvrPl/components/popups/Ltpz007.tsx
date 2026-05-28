@@ -5,8 +5,7 @@
 
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
+import { Grow, Typo, Gcol } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -266,7 +265,7 @@ const Ltpz007 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_1fr] gap-2">
           <div className="ag-theme-alpine min-h-[33.4rem]">
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
@@ -292,11 +291,11 @@ const Ltpz007 = () => {
               }}
             />
           </div>
-          <BulletList position="col">
-            <BulletListItem className="whitespace-nowrap" type="dot">
+          <Gcol className="w-full" placement="ss" variant="box-info">
+            <Typo icon="info" variant="body-sm">
               선택한 담보 중 해당 설계 내 전환이 가능한 담보만 표시됩니다.
-            </BulletListItem>
-          </BulletList>
+            </Typo>
+          </Gcol>
         </DialogSection>
 
         <DialogFooter>

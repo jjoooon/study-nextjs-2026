@@ -496,7 +496,7 @@ const Ltpz070 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection>
           <Gcol gap={3}>
             <TableFold>
               <TableFoldHead title="계약 수익성 상세" />

@@ -1062,7 +1062,7 @@ export const ProcessActiveIcon: React.FC<IconProps> = ({
   </svg>
 );
 
-export const FileUploadIcon: React.FC<IconProps> = ({ className = '', size = 14, color = '#545454' }) => (
+export const FileUploadIcon: React.FC<IconProps> = ({ className = '', size = 14, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}
@@ -1330,7 +1330,7 @@ export const StarIcon: React.FC<IconProps> = ({ className = '', size = 10, color
     <path d="M7.59784 6.5L2.40169 3.5" stroke={color} strokeWidth="0.75" strokeLinecap="round" />
   </svg>
 );
-export const DotIcon: React.FC<IconProps> = ({ className = '', size = 4, color = 'var(--color-blue-gray-50)' }) => (
+export const DotIcon: React.FC<IconProps> = ({ className = '', size = 4, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}
@@ -1342,7 +1342,7 @@ export const DotIcon: React.FC<IconProps> = ({ className = '', size = 4, color =
     <circle cx="2" cy="2" r="1" fill={color} />
   </svg>
 );
-export const DashIcon: React.FC<IconProps> = ({ className = '', size = 5, color = 'var(--color-secondary-50)' }) => (
+export const DashIcon: React.FC<IconProps> = ({ className = '', size = 5, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}
@@ -1354,7 +1354,7 @@ export const DashIcon: React.FC<IconProps> = ({ className = '', size = 5, color 
     <rect width="5" height="1" fill={color} />
   </svg>
 );
-export const ReSizeIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'var(--color-gray-50)' }) => (
+export const ReSizeIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}
@@ -1374,7 +1374,7 @@ export const ReSizeIcon: React.FC<IconProps> = ({ className = '', size = 16, col
   </svg>
 );
 
-export const FileItemIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'var(--color-gray-50)' }) => (
+export const FileItemIcon: React.FC<IconProps> = ({ className = '', size = 16, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}
@@ -1390,11 +1390,7 @@ export const FileItemIcon: React.FC<IconProps> = ({ className = '', size = 16, c
   </svg>
 );
 
-export const InfoToastIcon: React.FC<IconProps> = ({
-  className = '',
-  size = 20,
-  color = 'var(--color-information-50)',
-}) => (
+export const InfoToastIcon: React.FC<IconProps> = ({ className = '', size = 20, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}

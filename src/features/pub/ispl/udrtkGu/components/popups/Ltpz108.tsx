@@ -31,7 +31,7 @@ const Ltpz108 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[1fr]">
           <Gcol
             className="w-full [&>h3]:w-full [&>h3]:text-center [&>h3]:font-bold [&>p_b]:text-[var(--color-primary-50)] [&>p_b]:font-bold overflow-y-auto"
             variant="box-round"
@@ -64,7 +64,7 @@ const Ltpz108 = () => {
           <DialogFooterArea>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
-                즉사처리
+                즉시처리
               </Button>
               <Button variant={'contained'} size={'xl'}>
                 대용량처리

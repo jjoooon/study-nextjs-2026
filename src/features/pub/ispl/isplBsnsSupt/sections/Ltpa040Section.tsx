@@ -41,7 +41,6 @@ export default function Ltpa040Section() {
             onRemove={handleRemove}
             visibleCount={6}
             variant="default"
-            hasTableBelow={true}
             error={false}
             errorMsg="에러 메시지 예시"
             getValue={(tab) => String(tab.value)}
