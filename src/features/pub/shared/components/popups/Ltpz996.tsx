@@ -41,6 +41,7 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz996 = () => {
   const rowData = DummyData;
+  // 2026-05-28 cellClass 수정
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
@@ -79,7 +80,7 @@ const Ltpz996 = () => {
         headerName: '메세지상세',
         field: 'field5',
         flex: 1,
-        cellClass: 'text-center',
+        cellClass: 'text-left',
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field5' }),
       },
     ],
