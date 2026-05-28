@@ -251,7 +251,7 @@ const Ltpz065 = () => {
           </Grow>
 
           {/* 조회 정보 */}
-          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
+          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={2}>
             <TableFold>
               <TableFoldHead title="단체실손의료비 전환대상" />
               <TableFoldBody>
@@ -264,7 +264,13 @@ const Ltpz065 = () => {
                     <FormRow>
                       <FormCell title={'피보험자'}>
                         <Input width={80} variant="info" value={'김한화'} readOnly />
-                        <Input aria-label="주민등록번호 마스킹" width={120} variant="info" value={'900101-1234567'} readOnly />
+                        <Input
+                          aria-label="주민등록번호 마스킹"
+                          width={120}
+                          variant="info"
+                          value={'900101-1234567'}
+                          readOnly
+                        />
                       </FormCell>
                       <FormCell title={'조회건수'}>
                         <Input width={30} variant="info" value={'n'} readOnly />건
@@ -275,7 +281,7 @@ const Ltpz065 = () => {
               </TableFoldBody>
             </TableFold>
 
-            <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
+            <Grid className="w-full h-full">
               <div className="ag-theme-alpine min-h-[18.4rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}

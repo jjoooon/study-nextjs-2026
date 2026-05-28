@@ -235,8 +235,6 @@ const Ltpz055 = () => {
               </BulletList>
             </Gcol>
           </Gcol>
-
-
         </DialogSection>
         {/* 2026-05-21 수정 */}
         <DialogFooter>

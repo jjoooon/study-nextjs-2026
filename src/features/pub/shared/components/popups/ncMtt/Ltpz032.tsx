@@ -1155,15 +1155,12 @@ const Ltpz032 = () => {
               onRemove={handleRemove}
               visibleCount={4}
               variant="default"
-              hasTableBelow={true}
-              error={false}
-              errorMsg="에러 메시지 예시"
               getValue={(tab) => String(tab.value)}
               renderTab={(tab) => <span>{tab.label}</span>}
               renderDropdownItem={false}
             >
               {active === 'tab1' ? (
-                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[1fr_1fr_auto]" gap={3}>
+                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[auto_auto_auto]" gap={3}>
                   <TableFold className="">
                     <TableFoldHead title="일반/건강고지" />
                     <TableFoldBody>

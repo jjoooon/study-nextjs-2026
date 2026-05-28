@@ -194,7 +194,7 @@ const Ltpz062 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr_1fr]">
+        <DialogSection className="grid-rows-[auto_auto_auto]">
           <Typo tag={'p'} variant={'body-lg'}>
             보험금지급이력을 기반으로 필요한 정보를 예상하여 자동입력합니다.
           </Typo>
@@ -266,10 +266,10 @@ const Ltpz062 = () => {
 
         <DialogFooter>
           <div className="flex items-center px-6 mb-3">
-            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-              <Typo variant={'body-sm'} className="text-[var(--color-danger-50)]">
-                <Checkbox color="primary">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</Checkbox>
-              </Typo>
+            <Gcol variant={'box-warning-line'} placement={'ss'} className="w-full">
+              <Checkbox>
+                <span className="text-[var(--color-danger-50)]">고객에게 알릴 의무 최종 확인 후 진행하겠습니다.</span>
+              </Checkbox>
             </Gcol>
           </div>
           <DialogFooterArea>

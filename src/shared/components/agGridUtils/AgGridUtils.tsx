@@ -1691,7 +1691,7 @@ export function useDynamicPx(targetPx: number, standardFontSize: number = 12): n
 export function renderTbodyTh(children: React.ReactNode) {
   return (
     <Grow className="w-full px-2 py-1  h-full">
-      <Typo className="w-full whitespace-pre-wrap" color="gray" tag="span" variant="body-md" weight="bold">
+      <Typo className="w-full whitespace-pre-wrap text-[#000] font-[500]" color="gray" tag="span" variant="body-md">
         {children}
       </Typo>
     </Grow>

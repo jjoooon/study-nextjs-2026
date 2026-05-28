@@ -4,15 +4,23 @@
 
 'use client';
 
-import { Gcol, Typo } from '@atoms';
-
+import { Gcol, Typo, Grow } from '@atoms';
 import { BulletList } from '@common/BulletList';
 import { BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooterArea,
+  DialogClose,
+} from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { SearchIcon } from '@/shared/components/icons';
 
@@ -31,7 +39,7 @@ const Ltpz056 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection>
+        <DialogSection className="gap-2">
           <TableFold variant="default">
             <TableFoldHead title="카카오알림톡 발송대상"></TableFoldHead>
             <TableFoldBody>
@@ -62,7 +70,7 @@ const Ltpz056 = () => {
           </TableFold>
 
           <Gcol className="w-full" placement="ss" variant="box-info">
-            <Typo icon="info" variant="body-sm">
+            <Typo icon="info" variant="body-sm" weight={'bold'}>
               화면 및 기능설명
             </Typo>
             <BulletList>
@@ -75,7 +83,7 @@ const Ltpz056 = () => {
             </BulletList>
           </Gcol>
           <Gcol className="w-full" placement="ss" variant="box-info">
-            <Typo icon="info" variant="body-sm">
+            <Typo icon="info" variant="body-sm" weight={'bold'}>
               카카오 알림톡 전송 시 주의사항
             </Typo>
             <BulletList>
@@ -103,6 +111,15 @@ const Ltpz056 = () => {
           </Gcol>
         </DialogSection>
         <DialogFooter>
+          <DialogFooterArea>
+            <Grow>
+              <DialogClose asChild>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                  닫기
+                </Button>
+              </DialogClose>
+            </Grow>
+          </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>

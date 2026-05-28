@@ -32,7 +32,7 @@ const Ltpz024 = () => {
               [심평원] 진료정보 조회동의
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (Ltpz024)
+              (LTPZ024)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -65,7 +65,7 @@ const Ltpz024 = () => {
                 </FormRow>
               </FormTable>
             </Grow>
-            <Gcol>
+            <Gcol gap={2}>
               <Grow placement={'ss'} className="w-full">
                 <Typo variant={'body-lg'}>알릴 의무 대체 서비스 이용을 위한 알림톡 발송 서비스입니다.</Typo>
               </Grow>

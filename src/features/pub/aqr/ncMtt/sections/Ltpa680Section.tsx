@@ -1064,25 +1064,12 @@ export default function Ltpa680Section() {
                     <Gcol className="mt-1" gap={3}>
                       {/* 가이드라인 유형 선택 상태 */}
                       {/* 상단 useState 선언부에 추가: const [guidelineType, setGuidelineType] = useState('일반고지형'); */}
-                      <RadioGroup
-                        className="gap-2"
-                        errorMsg="하나를 선택해주세요."
-                        errorPs="bl"
-                        onValueChange={setGuidelineType}
-                        width="full"
-                        value={guidelineType}
-                      >
+                      <RadioGroup className="gap-2" onValueChange={setGuidelineType} width="full" value={guidelineType}>
                         {[
                           { value: '일반고지형', label: '일반고지형' },
                           { value: '간편고지형', label: '간편고지형' },
                         ].map((option) => (
-                          <RadioGroupItem
-                            key={option.value}
-                            size="lg"
-                            value={option.value}
-                            variant="chipBox"
-                            className="bg-[#E5E5E5] text-[#777] data-[state=checked]:bg-[#414141] data-[state=checked]:text-white data-[state=checked]:border-solid data-[state=checked]:border data-[state=checked]:border-[#414141] hover:border-[#414141]"
-                          >
+                          <RadioGroupItem key={option.value} size="md" value={option.value} variant="chipBox">
                             {option.label}
                           </RadioGroupItem>
                         ))}

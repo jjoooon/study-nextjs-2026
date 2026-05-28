@@ -998,6 +998,7 @@ export const Ltpa35005 = () => {
                     variant={'default'}
                     data={Tabs}
                     active={TabActive}
+                    hasTableBelow={true}
                     setActive={TabSetActive}
                     visibleCount={5}
                     getValue={(tab) => String(tab.value)}
@@ -1039,8 +1040,8 @@ export const Ltpa35005 = () => {
                             </Grow>
                           }
                         >
-                          <Input aria-label="법정상속인" width={90} value={'법정상속인'} readOnly />
-                          <Input aria-label="법정상속인명" width={90} value={''} readOnly />
+                          <Input aria-label="법정상속인" width={84} value={'법정상속인'} readOnly />
+                          <Input aria-label="법정상속인명" width={84} value={''} readOnly />
                           <Button
                             aria-label="법정상속인 검색"
                             variant={'outlined'}
@@ -1083,8 +1084,8 @@ export const Ltpa35005 = () => {
                       </FormRow>
                       <FormRow>
                         <FormCell title="지정대리인" colSpan={3}>
-                          <Input aria-label="지정대리인" width={90} value={''} readOnly />
-                          <Input aria-label="지정대리인" width={90} value={''} readOnly />
+                          <Input aria-label="지정대리인" width={84} value={''} readOnly />
+                          <Input aria-label="지정대리인" width={84} value={''} readOnly />
                           <Button
                             aria-label="지정대리인 검색"
                             variant={'outlined'}
@@ -1111,8 +1112,8 @@ export const Ltpa35005 = () => {
                       <FormRow>
                         <FormCell title="법정대리인1" colSpan={3} tdClassName="justify-between">
                           <Grow>
-                            <Input aria-label="법정대리인1" width={90} value={''} />
-                            <Input aria-label="법정대리인1" width={90} value={''} />
+                            <Input aria-label="법정대리인1" width={84} value={''} />
+                            <Input aria-label="법정대리인1" width={84} value={''} />
                             <Button
                               aria-label="법정대리인1 검색"
                               variant={'outlined'}

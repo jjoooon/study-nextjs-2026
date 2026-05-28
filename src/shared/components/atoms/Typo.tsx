@@ -113,7 +113,7 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
     detail:
       'inline-block relative -indent-[1.4rem] ml-[1.4rem] text-[var(--color-gray-70)] [&>em]:text-[var(--color-primary-50)] [&>em]:font-bold [&>em]:not-italic!',
     dot: 'inline-block relative -indent-[0.9rem] ml-[0.9rem]',
-    dotBig: 'inline-block relative -indent-[1.6rem] ml-[1.6rem]',
+    dotBig: 'inline-block relative -indent-[1.2rem] ml-[1.2rem]',
     hash: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',
     dash: 'inline-block relative -indent-[1.6rem] ml-[1.6rem]',
     star: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',

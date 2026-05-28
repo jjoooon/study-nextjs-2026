@@ -173,11 +173,6 @@ const DataTabs = [
   { label: '어깨병변', value: 'TAB5' },
 ];
 
-const DataTabs2 = [
-  { label: '일반고지형', value: 'TAB2_1' },
-  { label: '간편고지형', value: 'TAB2_2' },
-];
-
 const Ltpz031 = () => {
   const [rowData] = useState<DummyDataType[]>(DummyData);
   const [form, setFormField] = useFormFields({
@@ -213,7 +208,6 @@ const Ltpz031 = () => {
     type05_04: '',
   });
   const { tabs, active, setActive, handleRemove } = useTabs(DataTabs);
-  const { tabs: tabs2, active: active2, setActive: setActive2, handleRemove: handleRemove2 } = useTabs(DataTabs2);
   const [searchWord] = useState('척추');
 
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -810,6 +804,8 @@ const Ltpz031 = () => {
     },
   ];
 
+  const [subTabs, setSubTabs] = useState('tab1');
+
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
@@ -1375,53 +1371,64 @@ const Ltpz031 = () => {
                       <TableFold>
                         <TableFoldHead title="질병별 사전심사 안내" />
                         <TableFoldBody>
-                          <TabPager
-                            data={tabs2}
-                            active={active2}
-                            setActive={setActive2}
-                            removable={true}
-                            onRemove={handleRemove2}
-                            getValue={(tab) => tab.value}
-                            renderTab={(tab) => <span>{tab.label}</span>}
-                            visibleCount={5}
+                          <RadioGroup
+                            className="gap-1 mb-[0.4rem]"
+                            onValueChange={setSubTabs}
+                            width="full"
+                            value={subTabs}
                           >
-                            {active2 === 'TAB2_1' && (
-                              <div className="ag-theme-alpine w-full min-h-[15rem] ag-border-t">
-                                <AgGridReact<DummyDataType2>
-                                  getRowId={(params) => String(params.data.id)}
-                                  noRowsOverlayComponent={AgGridEmptyComponent}
-                                  rowData={dummyData2}
-                                  columnDefs={columnDefs2}
-                                  defaultColDef={{
-                                    sortable: true,
-                                    resizable: true,
-                                  }}
-                                  domLayout="normal"
-                                  tooltipShowMode="whenTruncated"
-                                  tooltipShowDelay={0}
-                                  headerHeight={50}
-                                />
-                              </div>
-                            )}
-                            {active2 === 'TAB2_2' && (
-                              <div className="ag-theme-alpine w-full min-h-[15rem] ag-border-t">
-                                <AgGridReact<DummyDataType3>
-                                  getRowId={(params) => String(params.data.id)}
-                                  noRowsOverlayComponent={AgGridEmptyComponent}
-                                  rowData={dummyData3}
-                                  columnDefs={columnDefs3}
-                                  defaultColDef={{
-                                    sortable: true,
-                                    resizable: true,
-                                  }}
-                                  headerHeight={50}
-                                  domLayout="normal"
-                                  tooltipShowMode="whenTruncated"
-                                  tooltipShowDelay={0}
-                                />
-                              </div>
-                            )}
-                          </TabPager>
+                            {[
+                              { value: 'tab1', label: '일반고지형' },
+                              { value: 'tab2', label: '간편고지형' },
+                            ].map((option) => (
+                              <RadioGroupItem
+                                key={option.value}
+                                size="md"
+                                value={option.value}
+                                variant="chipBox"
+                                className="bg-[#E5E5E5] text-[#777] data-[state=checked]:bg-[#414141] data-[state=checked]:text-white data-[state=checked]:border-solid data-[state=checked]:border data-[state=checked]:border-[#414141] hover:border-[#414141]"
+                              >
+                                {option.label}
+                              </RadioGroupItem>
+                            ))}
+                          </RadioGroup>
+
+                          {subTabs === 'tab1' && (
+                            <div className="ag-theme-alpine w-full min-h-[15rem]">
+                              <AgGridReact<DummyDataType2>
+                                getRowId={(params) => String(params.data.id)}
+                                noRowsOverlayComponent={AgGridEmptyComponent}
+                                rowData={dummyData2}
+                                columnDefs={columnDefs2}
+                                defaultColDef={{
+                                  sortable: true,
+                                  resizable: true,
+                                }}
+                                domLayout="normal"
+                                tooltipShowMode="whenTruncated"
+                                tooltipShowDelay={0}
+                                headerHeight={50}
+                              />
+                            </div>
+                          )}
+                          {subTabs === 'tab2' && (
+                            <div className="ag-theme-alpine w-full min-h-[15rem]">
+                              <AgGridReact<DummyDataType3>
+                                getRowId={(params) => String(params.data.id)}
+                                noRowsOverlayComponent={AgGridEmptyComponent}
+                                rowData={dummyData3}
+                                columnDefs={columnDefs3}
+                                defaultColDef={{
+                                  sortable: true,
+                                  resizable: true,
+                                }}
+                                headerHeight={50}
+                                domLayout="normal"
+                                tooltipShowMode="whenTruncated"
+                                tooltipShowDelay={0}
+                              />
+                            </div>
+                          )}
                         </TableFoldBody>
                       </TableFold>
                     </Gcol>

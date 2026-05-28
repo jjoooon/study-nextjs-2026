@@ -5,7 +5,7 @@
 
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
@@ -443,73 +443,71 @@ const Ltpz061 = () => {
             </FormTable>
           </Grow>
 
-          <Grid placement={'ss'} className="w-full gap-6 grid-rows-[auto_1fr]">
-            <Gcol gap={6}>
-              <TableFold variant={'accordion'}>
-                <TableFoldHead title="특정부위" />
-                <TableFoldBody>
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
-                    <AgGridReact<DummyDataType1>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      columnDefs={columnDefs}
-                      rowData={rowData1}
-                      headerHeight={0}
-                      groupHeaderHeight={32}
-                      singleClickEdit={true}
-                      defaultColDef={{
-                        suppressMovable: true,
-                      }}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: false,
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 50,
-                      }}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                    />
-                  </div>
-                </TableFoldBody>
-              </TableFold>
-              <TableFold variant={'accordion'}>
-                <TableFoldHead title="특정질병" />
-                <TableFoldBody>
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
-                    <AgGridReact<DummyDataType2>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      columnDefs={columnDefs2}
-                      rowData={rowData2}
-                      headerHeight={0}
-                      groupHeaderHeight={32}
-                      singleClickEdit={true}
-                      defaultColDef={{
-                        suppressMovable: true,
-                      }}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: false,
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 50,
-                      }}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                    />
-                  </div>
-                </TableFoldBody>
-              </TableFold>
-            </Gcol>
+          <Grid placement={'ss'} className="w-full gap-3 grid-rows-[auto_1fr]">
+            <TableFold variant={'accordion'}>
+              <TableFoldHead title="특정부위" />
+              <TableFoldBody>
+                <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <AgGridReact<DummyDataType1>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    columnDefs={columnDefs}
+                    rowData={rowData1}
+                    headerHeight={0}
+                    groupHeaderHeight={32}
+                    singleClickEdit={true}
+                    defaultColDef={{
+                      suppressMovable: true,
+                    }}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      headerCheckbox: false,
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      headerName: '선택',
+                      width: 50,
+                    }}
+                    domLayout="normal"
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
+            <TableFold variant={'accordion'}>
+              <TableFoldHead title="특정질병" />
+              <TableFoldBody>
+                <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <AgGridReact<DummyDataType2>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    columnDefs={columnDefs2}
+                    rowData={rowData2}
+                    headerHeight={0}
+                    groupHeaderHeight={32}
+                    singleClickEdit={true}
+                    defaultColDef={{
+                      suppressMovable: true,
+                    }}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      headerCheckbox: false,
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      headerName: '선택',
+                      width: 50,
+                    }}
+                    domLayout="normal"
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                  />
+                </div>
+              </TableFoldBody>
+            </TableFold>
           </Grid>
         </DialogSection>
         <DialogFooter>

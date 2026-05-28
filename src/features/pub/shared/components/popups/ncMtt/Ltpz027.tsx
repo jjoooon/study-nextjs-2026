@@ -126,7 +126,7 @@ const Ltpz027 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="w-full grid h-full gap-5 grid-rows-[auto_1fr]">
+        <DialogSection className="w-full grid h-full grid-rows-[auto_1fr]">
           <Gcol placement={'ss'}>
             <Typo variant="heading-sm" color="default">
               발송대상
@@ -161,7 +161,7 @@ const Ltpz027 = () => {
               </TableBody>
             </Table>
           </Gcol>
-          <Grid className="grid-rows-[auto_1fr]" placement={'ss'}>
+          <Grid className="grid-rows-[auto_1fr] gap-2" placement={'ss'}>
             <Typo variant="heading-sm" color="default">
               진행이력
             </Typo>

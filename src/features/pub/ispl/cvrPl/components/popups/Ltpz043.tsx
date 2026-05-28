@@ -3,8 +3,6 @@
  */
 'use client';
 
-import * as React from 'react';
-
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -22,6 +20,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 const Ltpz043 = () => {
@@ -57,21 +56,21 @@ const Ltpz043 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection>
           <Gcol className="w-full" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable variant={'head'} lineTop={false} caption="">
                 <FormTable variant="none" cols={['w-1', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
-                      <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
+                      <Input aria-label="" width={140} value={'LA26020945959594'} readOnly />
                       <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                     </FormCell>
                   </FormRow>
                 </FormTable>
               </FormTable>
             </Grow>
-            <Gcol gap={2}> { /* 2026-05-27 gap 추가 */ }
+            <Gcol gap={2}>
               <FormTable caption="주차장 정보" cols={['w-[8rem]', 'w-[8rem]', 'w-auto']}>
                 {/* 2026-05-27 전체 수정(옥내주차장, 2단주차기, 기계식주차기, 카리프트) */}
                 <FormRow>
@@ -263,11 +262,7 @@ const Ltpz043 = () => {
                   </FormCell>
                 </FormRow>
               </FormTable>
-              <Grow variant="box-info" className="w-full" placement="ss">
-                <Typo variant="body-sm" icon="info">
-                  * 주차장 면적은 ㎡단위로 입력하시기 바랍니다. (1평=3.3㎡)
-                </Typo>
-              </Grow>
+
               <Grow variant="box-warning" className="w-full" placement="ss">
                 <Typo variant="body-sm" icon="warning">
                   해당업종의 면적은 ㎡단위(1평=3.3㎡)로 입력하시기 바랍니다.

@@ -753,7 +753,7 @@ export const Ltpz063 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_auto_1fr]">
-          <Grow className="w-full" variant="box-round" placement={'bwe'}>
+          <Grow className="w-full" variant="box-round" placement={'bwc'}>
             <FormTable
               variant={'head'}
               lineTop={false}
@@ -802,7 +802,7 @@ export const Ltpz063 = () => {
               <BulletListItem>
                 휴대폰, 태블릿, 음성녹음 서명의 경우 전자서명 요청 전 모든 공란 기입 필수 (공란 존재 시 발송 불가) /
                 문서서명은 모든 공란 기입 후 스캔
-                <BulletItem color="warning" size="sm" type="ref">
+                <BulletItem color="warning" size="sm" type="ref" className="mt-1">
                   {"보험회사 면책사유 및 면책사항은 '상품설명서 참조' 등의 단순 기재가 불가. (* 금감원 주의사항)"}
                 </BulletItem>
                 <BulletItem color="warning" size="sm" type="ref">
@@ -881,7 +881,7 @@ export const Ltpz063 = () => {
           </TabPager>
         </DialogSection>
         <DialogFooter>
-          <DialogFooterArea>
+          <DialogFooterArea className="grid grid-cols-[1fr_auto]">
             <Grow>
               <BulletItem color="warning" size="sm" type="ref">
                 06.6월 이전 비교안내할 타 보험회사 계약이 있거나, 고객님께서 추가로 안내받고 싶어하는 계약이 있는 경우

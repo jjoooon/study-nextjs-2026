@@ -462,8 +462,8 @@ export function Ltpa35004() {
           <LayoutMainBody>
             <LayoutScrollWrap>
               <LayoutScrollItem>
-                <Grid className="w-full h-full grid-cols-[1fr_30.7rem] overflow-x-hidden" gap={6}>
-                  <Grid className="h-full grid-rows-[1fr_14rem] gap-3">
+                <Grid className="w-full h-full grid-cols-[1fr_30.7rem] overflow-x-hidden" gap={3}>
+                  <Grid className="h-full grid-rows-[1fr_auto] gap-3">
                     <Gcol className="h-full">
                       <ConTit>
                         <ConTitName>지침세부내용</ConTitName>
@@ -471,7 +471,7 @@ export function Ltpa35004() {
                           지침확인
                         </Button>
                       </ConTit>
-                      <div className="ag-theme-alpine min-h-[12.3rem]">
+                      <div className="ag-theme-alpine">
                         <AgGridReact<AgGridRow>
                           key={gridKey}
                           rowData={rowData}
