@@ -110,7 +110,9 @@ const Ltpz089 = () => {
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable caption="소재지정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
-                <FormCell title={'소재지'}>소재지 정보</FormCell>
+                <FormCell title={'소재지'}>
+                  <Input value={'소재지 정보'} readOnly variant="info" />
+                </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
@@ -118,7 +120,7 @@ const Ltpz089 = () => {
             <TableFoldHead title="목적물세부사항과 수용장소">
               <Typo variant={'body-sm'}>수용장소 건물 형태</Typo>
             </TableFoldHead>
-            <TableFoldBody className="gap-1">
+            <TableFoldBody className="gap-2">
               <FormTable caption="목적물세부사항" className="" cols={['w-[22%]', 'w-full']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'목적물세부사항'} variant="default">

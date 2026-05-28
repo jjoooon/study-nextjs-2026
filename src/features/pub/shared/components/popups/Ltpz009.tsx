@@ -64,6 +64,33 @@ const dummyData: DummyDataType[] = [
     field5: '메모 테스트 글입니다.',
     field6: false,
   },
+  {
+    id: 4,
+    field1: '2026-02-24',
+    field2: 80939583,
+    field3: '홍길순3',
+    field4: '여의도 GA 지점',
+    field5: '메모 테스트 글입니다.',
+    field6: false,
+  },
+  {
+    id: 5,
+    field1: '2026-02-24',
+    field2: 80939583,
+    field3: '홍길순3',
+    field4: '여의도 GA 지점',
+    field5: '메모 테스트 글입니다.',
+    field6: false,
+  },
+  {
+    id: 6,
+    field1: '2026-02-24',
+    field2: 80939583,
+    field3: '홍길순3',
+    field4: '여의도 GA 지점',
+    field5: '메모 테스트 글입니다.',
+    field6: false,
+  },
 ];
 
 const Ltpz009 = () => {
@@ -108,7 +135,7 @@ const Ltpz009 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

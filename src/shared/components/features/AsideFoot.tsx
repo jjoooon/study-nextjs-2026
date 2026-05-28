@@ -90,14 +90,14 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
         {/* M1. color={'gray'} 수정, className삭제 */}
         <Button variant={'outlined'} color={'gray'} size={'lg'}>
           제안서
-          <PlusIcon color={'var(--color-secondary-50)'} />
+          <PlusIcon />
         </Button>
         <Popover>
           <PopoverTrigger asChild>
             {/* M1. color={'gray'} 수정, className삭제 */}
             <Button variant={'outlined'} color={'gray'} size={'lg'}>
               출력
-              <PlusIcon color={'var(--color-secondary-50)'} />
+              <PlusIcon />
             </Button>
           </PopoverTrigger>
           <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>

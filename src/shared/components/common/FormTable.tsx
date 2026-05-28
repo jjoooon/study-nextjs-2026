@@ -159,7 +159,12 @@ export const FormCell = ({
       <div className="flex items-center gap-2 items-center">
         {title !== null && (
           <dt className={cn('font-bold', className)}>
-            <Typo variant={'body-md'} weight="bold" color={titleTypoColor}>
+            <Typo
+              variant={'body-md'}
+              weight="bold"
+              color={titleTypoColor}
+              className={`${titleVariant === 'section' ? '!text-[1.5rem]' : ''}`}
+            >
               {title}
             </Typo>
           </dt>
@@ -181,7 +186,12 @@ export const FormCell = ({
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
         >
-          <Typo variant={'body-md'} weight="bold" color={titleTypoColor}>
+          <Typo
+            variant={'body-md'}
+            weight="bold"
+            color={titleTypoColor}
+            className={`${titleVariant === 'section' ? '!text-[1.5rem]' : ''}`}
+          >
             {title}
           </Typo>
         </TableHead>

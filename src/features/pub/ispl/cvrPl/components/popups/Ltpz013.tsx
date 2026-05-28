@@ -109,7 +109,12 @@ function CardBox({ children, bottom, color }: { children: React.ReactNode; botto
     <Grid
       placement="ss"
       data-recommend-item="true"
-      className={`group bg-[var(--color-secondary-40)] gap-0 rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative max-w-[31.2rem] min-w-[31.2rem] grid-rows-[1fr_auto] ${color ? `bg-[${color}]` : ''}`}
+      className={`group gap-0 rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative max-w-[31.2rem] min-w-[31.2rem] grid-rows-[1fr_auto] `}
+      style={{
+        background: color
+          ? `linear-gradient(to bottom, white, ${color})`
+          : `linear-gradient(to bottom, white, var(--color-secondary-40))`,
+      }}
     >
       <Grid
         className="bg-[#fff] group-[.card-selected]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] group-[.card-selected]:[background-repeat:no-repeat] group-[.card-selected]:[background-position:right_top,left_top] rounded-b-[1rem] p-[1rem] gap-2 w-full p-0 shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] group-[.card-selected]:text-white gap-0 grid-rows-[1fr_auto]"
@@ -239,12 +244,12 @@ const Ltpz013 = () => {
                 }
               >
                 <Grid className="grid-rows-[auto_1fr]">
-                  <Grow className="bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem]">
+                  <Grow className="bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem] font-[700]">
                     <FixingPinIcon className="" />
                     기준설계
                   </Grow>
                   <Grid className="p-[1.6rem] gap-5 grid-rows-[1fr_auto]" placement="ss">
-                    <Gcol className="gap-1" placement="ss">
+                    <Gcol className="gap-2" placement="ss">
                       <Gcol placement="ss">
                         <Typo tag="h3" variant={'body-xl'} weight={'bold'} className="">
                           {InfoData.담보명}
@@ -314,7 +319,7 @@ const Ltpz013 = () => {
                               className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
                               style={getComparisonHeaderCellStyle(column)}
                             >
-                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
+                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#000]">
                                 {column.headerName}
                               </Typo>
                             </div>
@@ -356,7 +361,7 @@ const Ltpz013 = () => {
                   key={i}
                 >
                   <Gcol className="p-[1.6rem] gap-5" placement="ss">
-                    <Gcol className="gap-1" placement="ss">
+                    <Gcol className="gap-2" placement="ss">
                       <Grow placement="bwc" className="w-full">
                         <Checkbox aria-label="선택"></Checkbox>
                         <Button variant={'outlined'} color={'gray'} size={'sm'}>
@@ -456,7 +461,7 @@ const Ltpz013 = () => {
                               className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
                               style={getComparisonHeaderCellStyle(column)}
                             >
-                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
+                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#000]">
                                 {column.headerName}
                               </Typo>
                             </div>

@@ -55,7 +55,7 @@ const Ltpz050 = () => {
               </FormCell>
             </FormRow>
           </FormTable>
-          <Gcol>
+          <Gcol gap={2}>
             <Gcol variant="box-warning" className="w-full" placement="ss">
               <Typo variant={'body-sm'} icon={'warning'}>
                 부실유의계약 해당 항목

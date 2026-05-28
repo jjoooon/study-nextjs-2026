@@ -89,7 +89,7 @@ const Ltpz351 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="">
+        <DialogSection>
           <Gcol className="w-full" placement="ss" gap={2}>
             <div className="ag-theme-alpine radio-selection min-h-[9.4rem]">
               <AgGridReact<DummyDataType>
@@ -117,56 +117,58 @@ const Ltpz351 = () => {
               </Button>
             </Grow>
           </Gcol>
-          <Gcol className="w-full" placement="ss" variant="box-warning">
-            <Typo icon="warning" variant="body-sm">
-              계약자 휴대폰 번호는 고객등록화면에서 수정
-            </Typo>
-          </Gcol>
-          <Gcol className="w-full" placement="ss" variant="box-info">
-            {/* 2026-05-21 bold 추가*/}
-            <Typo icon="info" variant="body-sm" weight={'bold'}>
-              보험차익비과세
-            </Typo>
-            <BulletList>
-              <BulletListItem size="sm">
-                보험차익비과세란? - 저축성보험에서 보험차익이 이자소득에 해당되어 과세가 되어야 하나 금융산업을 위해
-                일정한 조건을 충족하면 이에 대해 비과세를 적용합니다.
-              </BulletListItem>
-              <BulletListItem size="sm">
-                저축성보험 비과세 적용 요건 및 가입한도 : 비과세 상품 가입 시 세금우대 등록이 필수입니다. (전 금융권
-                통합 가입한도 초과여부 관리)
-                <BulletList>
-                  <BulletListItem size="sm" before="1." type="symbols">
-                    월 적립식 저축성보험
-                    <BulletList>
-                      <BulletListItem size="sm" before="①" type="symbols">
-                        비과세요건 - 10년 이상 유지, 5년 이상 납입
-                      </BulletListItem>
-                      <BulletListItem size="sm" before="②" type="symbols">
-                        가입한도 - 월 납입액 150만원 이하
-                      </BulletListItem>
-                      <BulletListItem size="sm" before="③" type="symbols">
-                        비과세 적용 - 세금우대전산망 비과세 등록 시
-                      </BulletListItem>
-                    </BulletList>
-                  </BulletListItem>
-                  <BulletListItem size="sm" before="2." type="symbols">
-                    월 적립식 외 저축성보험
-                    <BulletList>
-                      <BulletListItem size="sm" before="①" type="symbols">
-                        비과세요건 - 10년 이상 유지
-                      </BulletListItem>
-                      <BulletListItem size="sm" before="②" type="symbols">
-                        가입한도 - 계약기간 총 납입액 1억 이하
-                      </BulletListItem>
-                      <BulletListItem size="sm" before="③" type="symbols">
-                        비과세 적용 - 세금우대전산망 비과세 등록 시
-                      </BulletListItem>
-                    </BulletList>
-                  </BulletListItem>
-                </BulletList>
-              </BulletListItem>
-            </BulletList>
+          <Gcol gap={2}>
+            <Gcol className="w-full" placement="ss" variant="box-warning">
+              <Typo icon="warning" variant="body-sm">
+                계약자 휴대폰 번호는 고객등록화면에서 수정
+              </Typo>
+            </Gcol>
+            <Gcol className="w-full" placement="ss" variant="box-info">
+              {/* 2026-05-21 bold 추가*/}
+              <Typo icon="info" variant="body-sm" weight={'bold'}>
+                보험차익비과세
+              </Typo>
+              <BulletList>
+                <BulletListItem size="sm">
+                  보험차익비과세란? - 저축성보험에서 보험차익이 이자소득에 해당되어 과세가 되어야 하나 금융산업을 위해
+                  일정한 조건을 충족하면 이에 대해 비과세를 적용합니다.
+                </BulletListItem>
+                <BulletListItem size="sm">
+                  저축성보험 비과세 적용 요건 및 가입한도 : 비과세 상품 가입 시 세금우대 등록이 필수입니다. (전 금융권
+                  통합 가입한도 초과여부 관리)
+                  <BulletList>
+                    <BulletListItem size="sm" before="1." type="symbols">
+                      월 적립식 저축성보험
+                      <BulletList>
+                        <BulletListItem size="sm" before="①" type="symbols">
+                          비과세요건 - 10년 이상 유지, 5년 이상 납입
+                        </BulletListItem>
+                        <BulletListItem size="sm" before="②" type="symbols">
+                          가입한도 - 월 납입액 150만원 이하
+                        </BulletListItem>
+                        <BulletListItem size="sm" before="③" type="symbols">
+                          비과세 적용 - 세금우대전산망 비과세 등록 시
+                        </BulletListItem>
+                      </BulletList>
+                    </BulletListItem>
+                    <BulletListItem size="sm" before="2." type="symbols">
+                      월 적립식 외 저축성보험
+                      <BulletList>
+                        <BulletListItem size="sm" before="①" type="symbols">
+                          비과세요건 - 10년 이상 유지
+                        </BulletListItem>
+                        <BulletListItem size="sm" before="②" type="symbols">
+                          가입한도 - 계약기간 총 납입액 1억 이하
+                        </BulletListItem>
+                        <BulletListItem size="sm" before="③" type="symbols">
+                          비과세 적용 - 세금우대전산망 비과세 등록 시
+                        </BulletListItem>
+                      </BulletList>
+                    </BulletListItem>
+                  </BulletList>
+                </BulletListItem>
+              </BulletList>
+            </Gcol>
           </Gcol>
         </DialogSection>
 
