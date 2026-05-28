@@ -169,7 +169,7 @@ const Ltpz066 = () => {
         </DialogHeader>
 
         <DialogSection>
-          {/* 2027-05-27 전체 수정 */}
+          {/* 2026-05-27 전체 수정 */}
           <Grid placement="ss" className="w-full grid-rows-[auto_auto]" gap={3}>
             <TableFold>
               <TableFoldHead title="유형선택" />

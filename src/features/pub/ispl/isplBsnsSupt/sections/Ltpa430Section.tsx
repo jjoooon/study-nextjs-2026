@@ -3,7 +3,7 @@
  */
 'use client';
 
-// 2027-05-27 팝업에서 화면으로 변경, 전체 수정
+// 2026-05-27 팝업에서 화면으로 변경, 전체 수정
 
 import { AgGridEmptyComponent, createFieldRenderer, renderTbodyTh, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';

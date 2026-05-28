@@ -84,7 +84,6 @@ export function TabPager<T>({
     className: cn('w-full h-full grid grid-rows-[auto_1fr] content-start', className),
     ...(removable && onRemove ? { onRemove } : {}),
   };
-
   return (
     <>
       <Tabs {...tabsProps}>

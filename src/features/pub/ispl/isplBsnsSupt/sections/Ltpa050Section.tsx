@@ -640,14 +640,14 @@ export default function Ltpa050Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-cols-[1fr_1fr] items-start" placement="ss" gap={3}>
-            <Gcol placement="ss">
+          <Grid className="grid-cols-[auto_auto] items-start" placement="ss" gap={3}>
+            <Gcol placement="ss" gap={3}>
               <Grow placement="bwc" className="w-full" variant={'box-round'} gap={6}>
                 <FormTable className="flex" variant={'none'} lineTop={false} cols={['w-1', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
                       <Button color="link" onClick={() => {}} only="default" size="md" variant="text">
-                        LA260204310632-1
+                        <b>LA260204310632-1</b>
                       </Button>
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
@@ -670,7 +670,7 @@ export default function Ltpa050Section() {
                     </Button>
                   </Grow>
                 </TableFoldHead>
-                <TableFoldBody>
+                <TableFoldBody className="gap-2">
                   <FormTable caption="계약정보" cols={['w-[20%]', 'w-[30%]', 'w-[20%]', 'w-[30%]']}>
                     <FormRow>
                       <FormCell className="" title={'계약자'} colSpan={3}>
@@ -696,31 +696,33 @@ export default function Ltpa050Section() {
                       </FormCell>
                     </FormRow>
                   </FormTable>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataTypeA01>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={DummyDataA01}
+                      columnDefs={columnDefsA01}
+                      defaultColDef={{ sortable: true, resizable: true }}
+                      domLayout="autoHeight"
+                      headerHeight={40}
+                    />
+                  </div>
+                  <Gcol className="w-full" placement="ss" variant="box-info">
+                    <Typo icon="info" variant="body-sm">
+                      만기환급금은 예상금액으로 공시이율의 변동, 중도인출금, 보험료 납입일자 등에 따라 금액이 달라질 수
+                      있습니다.
+                    </Typo>
+                  </Gcol>
                 </TableFoldBody>
               </TableFold>
-              <div className="ag-theme-alpine">
-                <AgGridReact<DummyDataTypeA01>
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyDataA01}
-                  columnDefs={columnDefsA01}
-                  defaultColDef={{ sortable: true, resizable: true }}
-                  domLayout="autoHeight"
-                  headerHeight={40}
-                />
-              </div>
-              <Gcol className="w-full" placement="ss" variant="box-info">
-                <Typo icon="info" variant="body-sm">
-                  만기환급금은 예상금액으로 공시이율의 변동, 중도인출금, 보험료 납입일자 등에 따라 금액이 달라질 수
-                  있습니다.
-                </Typo>
-              </Gcol>
+
               <TableFold>
                 <TableFoldHead title="피보험자정보"></TableFoldHead>
                 <TableFoldBody>
                   <TabPager
                     data={tabsA}
                     active={activeA}
+                    hasTableBelow={true}
                     setActive={setActiveA}
                     onRemove={handleRemoveA}
                     error={false}
@@ -729,8 +731,8 @@ export default function Ltpa050Section() {
                     renderTab={(tab) => <span>{tab.label}</span>}
                   >
                     {activeA === 'tab1' && (
-                      <Gcol>
-                        <div className="ag-theme-alpine mt-3">
+                      <Gcol gap={2}>
+                        <div className="ag-theme-alpine ag-border-t">
                           <AgGridReact<DummyDataTypeA02>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -753,8 +755,8 @@ export default function Ltpa050Section() {
                       </Gcol>
                     )}
                     {activeA === 'tab2' && (
-                      <Gcol>
-                        <div className="ag-theme-alpine mt-3">
+                      <Gcol gap={2}>
+                        <div className="ag-theme-alpine ag-border-t">
                           <AgGridReact<DummyDataTypeA04>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -795,13 +797,13 @@ export default function Ltpa050Section() {
                 </TableFoldBody>
               </TableFold>
             </Gcol>
-            <Gcol placement="ss">
+            <Gcol placement="ss" gap={3}>
               <Grow placement="bwc" className="w-full" variant={'box-round'} gap={6}>
                 <FormTable className="flex" variant={'none'} lineTop={false} cols={['w-1', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
                       <Button color="link" onClick={() => {}} only="default" size="md" variant="text">
-                        LA260204310632-1
+                        <b>LA260204310632-1</b>
                       </Button>
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
@@ -824,7 +826,7 @@ export default function Ltpa050Section() {
                     </Button>
                   </Grow>
                 </TableFoldHead>
-                <TableFoldBody>
+                <TableFoldBody className="gap-2">
                   <FormTable caption="계약정보" cols={['w-[20%]', 'w-[30%]', 'w-[20%]', 'w-[30%]']}>
                     <FormRow>
                       <FormCell className="" title={'계약자'} colSpan={3}>
@@ -850,31 +852,33 @@ export default function Ltpa050Section() {
                       </FormCell>
                     </FormRow>
                   </FormTable>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataTypeB01>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={DummyDataB01}
+                      columnDefs={columnDefsB01}
+                      defaultColDef={{ sortable: true, resizable: true }}
+                      domLayout="autoHeight"
+                      headerHeight={40}
+                    />
+                  </div>
+                  <Gcol className="w-full" placement="ss" variant="box-info">
+                    <Typo icon="info" variant="body-sm">
+                      만기환급금은 예상금액으로 공시이율의 변동, 중도인출금, 보험료 납입일자 등에 따라 금액이 달라질 수
+                      있습니다.
+                    </Typo>
+                  </Gcol>
                 </TableFoldBody>
               </TableFold>
-              <div className="ag-theme-alpine">
-                <AgGridReact<DummyDataTypeB01>
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyDataB01}
-                  columnDefs={columnDefsB01}
-                  defaultColDef={{ sortable: true, resizable: true }}
-                  domLayout="autoHeight"
-                  headerHeight={40}
-                />
-              </div>
-              <Gcol className="w-full" placement="ss" variant="box-info">
-                <Typo icon="info" variant="body-sm">
-                  만기환급금은 예상금액으로 공시이율의 변동, 중도인출금, 보험료 납입일자 등에 따라 금액이 달라질 수
-                  있습니다.
-                </Typo>
-              </Gcol>
+
               <TableFold>
                 <TableFoldHead title="피보험자정보"></TableFoldHead>
                 <TableFoldBody>
                   <TabPager
                     data={tabsB}
                     active={activeB}
+                    hasTableBelow={true}
                     setActive={setActiveB}
                     onRemove={handleRemoveB}
                     error={false}
@@ -883,8 +887,8 @@ export default function Ltpa050Section() {
                     renderTab={(tab) => <span>{tab.label}</span>}
                   >
                     {activeB === 'tab1' && (
-                      <Gcol>
-                        <div className="ag-theme-alpine mt-3">
+                      <Gcol gap={2}>
+                        <div className="ag-theme-alpine ag-border-t">
                           <AgGridReact<DummyDataTypeB02>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -907,8 +911,8 @@ export default function Ltpa050Section() {
                       </Gcol>
                     )}
                     {activeB === 'tab2' && (
-                      <Gcol>
-                        <div className="ag-theme-alpine mt-3">
+                      <Gcol gap={2}>
+                        <div className="ag-theme-alpine ag-border-t">
                           <AgGridReact<DummyDataTypeB04>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}

@@ -203,9 +203,9 @@ const Ltpz012 = () => {
       width: 110,
       cellClass: (params) => {
         if (isMergedSumRow(params.data)) {
-          return 'text-center font-bold';
+          return 'text-center';
         }
-        return params.data?.isSumRow ? 'text-center font-bold' : 'text-center';
+        return params.data?.isSumRow ? 'text-center' : 'text-center';
       },
       cellStyle: (params) => (isMergedSumRow(params.data) ? { borderRight: '1px solid #E5E7EB' } : undefined),
       colSpan: (params) => {
@@ -215,7 +215,7 @@ const Ltpz012 = () => {
         return params.data?.isSumRow ? 2 : 1;
       },
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) =>
-        params.data?.isSumRow ? <b>{params.value}</b> : params.value,
+        params.data?.isSumRow ? params.value : params.value,
     },
     {
       headerName: '누적위험명',
@@ -236,7 +236,7 @@ const Ltpz012 = () => {
       },
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
         if (isMergedSumRow(params.data)) {
-          return <b>{params.value}</b>;
+          return params.value;
         }
         return params.data?.isSumRow ? null : params.value;
       },
@@ -294,11 +294,7 @@ const Ltpz012 = () => {
       cellClass: 'text-right',
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
         if (params.data?.isSumRow) {
-          return (
-            <div className="flex h-full w-full items-center justify-end pl-2">
-              <b>{params.value}</b>
-            </div>
-          );
+          return <div className="flex h-full w-full items-center justify-end pl-2">{params.value}</div>;
         }
         return params.value;
       },
@@ -312,7 +308,7 @@ const Ltpz012 = () => {
       width: 110,
       cellClass: 'text-center',
       cellStyle: { borderRight: '1px solid #E5E7EB' },
-      cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => <b>{params.data?.label}</b>,
+      cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => <span>{params.data?.label}</span>,
     },
     {
       headerName: '내용',
@@ -320,7 +316,7 @@ const Ltpz012 = () => {
       flex: 1,
       cellClass: 'text-right pr-2',
       cellStyle: { borderRight: '1px solid #E5E7EB' },
-      cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => <b>{params.data?.formula}</b>,
+      cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => <span>{params.data?.formula}</span>,
     },
     {
       headerName: '청약포인트',
@@ -328,9 +324,7 @@ const Ltpz012 = () => {
       width: 100,
       cellClass: 'text-right',
       cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => (
-        <div className="flex h-full w-full items-center justify-end pl-2">
-          <b>{params.value}</b>
-        </div>
+        <div className="flex h-full w-full items-center justify-end pl-2">{params.value}</div>
       ),
     },
   ];
@@ -381,7 +375,7 @@ const Ltpz012 = () => {
                 </Button>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine ag-blue-text min-h-[18.4rem]">
+                <div className="ag-theme-alpine min-h-[18.4rem]">
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

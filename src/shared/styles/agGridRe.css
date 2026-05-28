@@ -231,7 +231,7 @@
 .ag-theme-alpine .ag-floating-bottom .ag-row-even .ag-cell {
   background-color: transparent;
   font-size: 1.3rem;
-  font-weight: 400;
+  font-weight: 700;
   padding: 0;
   color: var(--color-primary-50);
   border: 0;
@@ -239,6 +239,10 @@
 
 .ag-row-selected:before {
   background-color: transparent;
+}
+
+.ag-theme-alpine .ag-floating-bottom-container .ag-row + .ag-row:last-child {
+  border-top: 0.1rem solid var(--color-primary-50);
 }
 
 /* .ag-row-selected:before {
@@ -825,4 +829,11 @@
 .ag-select-list {
   max-height: 200px !important; /* 원하시는 높이로 조절 */
   overflow-y: auto !important;   /* 항목이 많으면 스크롤 생성 */
+}
+.ltpz012-final-grid .ag-cell b{
+  font-weight: 700;
+}
+.ltpz012-final-grid .ag-cell {
+  font-weight: 700;
+  color:var(--color-primary-50) !important;
 }

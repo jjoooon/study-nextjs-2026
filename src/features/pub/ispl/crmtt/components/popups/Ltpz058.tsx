@@ -212,7 +212,7 @@ const Ltpz058 = () => {
           {searchCategory === '분류기준' && (
             <>
               {/* 분류기준  */}
-              <Grid className="w-full h-full grid-cols-[1fr_2fr_3fr] gap-4">
+              <Grid className="w-full h-full grid-cols-[1fr_2fr_3fr] gap-3">
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataTypeA>
                     getRowId={(params) => String(params.data.id)}

@@ -4,7 +4,7 @@
 'use client';
 
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { Grow, Typo, Grid } from '@atoms';
+import { Grow, Typo, Grid, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -175,7 +175,7 @@ const Ltpz067 = () => {
           <Grid className="w-full grid-rows-[auto_auto_auto]" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'ss'}>
               <FormTable variant="head">
-                {/* 2027-05-27 input 수정 */}
+                {/* 2026-05-27 variant 추가 */}
                 <FormRow>
                   <FormCell title={'보험기간'}>
                     <Input aria-label="" variant="info" width={180} value={'2026-02-01 ~ 2046-02-03'} readOnly />
@@ -190,7 +190,8 @@ const Ltpz067 = () => {
             <TableFold>
               <TableFoldHead title="단체실손의료비 전환대상" />
               <TableFoldBody className="gap-2">
-                <Grid placement={'ss'} className="grid-rows-[1fr_auto]">
+                {/* 2026-05-27 Grid 추가 */}
+                <Grid placement={'ss'} className="grid-rows-[1fr_auto] gap-2">
                   <div className="ag-theme-alpine min-h-[19.6rem]">
                     <AgGridReact<DummyDataType1>
                       getRowId={(params) => String(params.data.id)}

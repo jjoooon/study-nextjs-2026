@@ -208,6 +208,7 @@ const Ltpz01602 = () => {
                   enableCellSpan={true}
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
+                  singleClickEdit={true} // 2026-05-27 추가
                   rowSelection={{
                     mode: 'multiRow',
                     headerCheckbox: false,

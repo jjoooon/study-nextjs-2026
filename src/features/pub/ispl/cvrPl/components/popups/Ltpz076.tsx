@@ -221,7 +221,7 @@ const Ltpz076 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          {/* 2027-05-27 버튼 이동으로 전체수정 */}
+          {/* 2026-05-27 버튼 이동으로 전체수정 */}
           <Grid className="w-full grid grid-flow-col grid-cols-[6fr_4fr]" placement="ss">
             <TableFold className="w-full">
               <TableFoldHead title="대상" />

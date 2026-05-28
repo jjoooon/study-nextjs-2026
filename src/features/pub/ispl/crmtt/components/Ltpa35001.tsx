@@ -211,6 +211,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                         variant={'default'}
                         data={tabs}
                         active={active}
+                        hasTableBelow={true}
                         setActive={setActive}
                         removable={true}
                         onRemove={handleRemove}
@@ -500,6 +501,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                         variant={'default'}
                         data={tabs}
                         active={active}
+                        hasTableBelow={true}
                         setActive={setActive}
                         removable={true}
                         onRemove={handleRemove}
@@ -778,6 +780,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                         variant={'default'}
                         data={tabs}
                         active={active}
+                        hasTableBelow={true}
                         setActive={setActive}
                         removable={true}
                         onRemove={handleRemove}
@@ -1214,6 +1217,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                         variant={'default'}
                         data={tabs}
                         active={active}
+                        hasTableBelow={true}
                         setActive={setActive}
                         removable={true}
                         onRemove={handleRemove}
@@ -1235,7 +1239,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </Grow>
                         }
                       >
-                        <Gcol placement={'ss'}>
+                        <Gcol placement={'ss'} gap={2}>
                           <FormTable
                             caption="그룹 정보"
                             lineTop={false}
@@ -1581,7 +1585,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                     <FormTable
                       caption="계약자 정보"
                       cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}
-                      className="-mt-2"
+                      className="-mt-1"
                     >
                       <FormRow>
                         <FormCell title={'계약자'} titleVariant="section">

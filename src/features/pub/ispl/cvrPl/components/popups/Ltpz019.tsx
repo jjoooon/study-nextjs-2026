@@ -244,7 +244,7 @@ const Ltpz019 = () => {
       setShowProductNameTooltip(!!checked);
     };
     return (
-      <Grow className="w-full px-[0.6rem]" placement={'sc'} gap={4}>
+      <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={3}>
         <Grow>
           <Input
             aria-label="상품명"
@@ -369,7 +369,7 @@ const Ltpz019 = () => {
             </FormTable>
           </Grow>
 
-          <Gcol placement={'ss'} className="w-full" gap={3}>
+          <Gcol placement={'ss'} className="w-full" gap={2}>
             {/* 간편설계인 경우 */}
             <Gcol placement={'ss'} className="w-full">
               <Typo variant={'body-lg'} weight={'bold'} className="flex items-center">
@@ -378,73 +378,108 @@ const Ltpz019 = () => {
             </Gcol>
 
             {/* 상세설계인 경우 */}
-            <Gcol placement={'ss'} className="w-full">
-              <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
-                <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
-                  1
-                </Badge>
-                현재 고객을 대상으로 다른 상품을 설계하시겠어요?
-              </Typo>
-              <RadioGroup className="gap-2 ml-[2.4rem]" onValueChange={() => {}} width="full">
-                {[
-                  { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
-                  { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
-                ].map((option) => (
-                  <RadioGroupItem key={option.value} value={option.value}>
-                    {option.label}
-                  </RadioGroupItem>
-                ))}
-              </RadioGroup>
-            </Gcol>
-            <Gcol placement={'ss'} className="w-full">
+            <Gcol gap={3} placement={'ss'}>
+              <Gcol placement={'ss'} className="w-full">
+                <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
+                  <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
+                    1
+                  </Badge>
+                  현재 고객을 대상으로 다른 상품을 설계하시겠어요?
+                </Typo>
+                <RadioGroup className="gap-2 ml-[2.4rem]" onValueChange={() => {}} width="full">
+                  {[
+                    { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
+                    { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
+                  ].map((option) => (
+                    <RadioGroupItem key={option.value} value={option.value}>
+                      {option.label}
+                    </RadioGroupItem>
+                  ))}
+                </RadioGroup>
+              </Gcol>
               <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
                 <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
                   2
                 </Badge>
                 상품을 선택해주세요.
               </Typo>
+            </Gcol>
 
-              <Grow placement={'ss'} className="w-full gap-6">
-                {/* M2. 수정  */}
-                <Grid className="w-full grid-cols-[1fr_1fr] gap-5">
-                  <TableFold variant={'default'}>
-                    <TableFoldHead title="상품정보">
-                      <Grow>
-                        기준일자
-                        <DatePickerInput mode={'single'} size={'md'} />
-                      </Grow>
-                    </TableFoldHead>
-                    <TableFoldBody className="w-full">
-                      <div
-                        className={`h-full tooltip-hidden-toggle ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
-                      >
-                        <AgGridReact<DummyDataType>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={dummyData}
-                          columnDefs={columnDefs}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                          }}
-                          tooltipShowDelay={0}
-                          tooltipHideDelay={9999}
-                          tooltipMouseTrack={true}
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-                  <TableFold variant={'default'}>
-                    <TableFoldHead title="종정보"></TableFoldHead>
-                    <TableFoldBody>
-                      <Gcol className="w-full" gap={5}>
-                        <Gcol className="w-full">
-                          <div className="ag-theme-alpine w-full h-70!">
-                            <AgGridReact<DummyDataType2>
+            <Grow placement={'ss'} className="w-full gap-3">
+              {/* M2. 수정  */}
+              <Grid className="w-full grid-cols-[1fr_1fr] gap-3">
+                <TableFold variant={'default'}>
+                  <TableFoldHead title="상품정보">
+                    <Grow>
+                      기준일자
+                      <DatePickerInput mode={'single'} size={'md'} />
+                    </Grow>
+                  </TableFoldHead>
+                  <TableFoldBody className="w-full">
+                    <div
+                      className={`h-full tooltip-hidden-toggle ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                    >
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={dummyData}
+                        columnDefs={columnDefs}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                        }}
+                        tooltipShowDelay={0}
+                        tooltipHideDelay={9999}
+                        tooltipMouseTrack={true}
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+                <TableFold variant={'default'}>
+                  <TableFoldHead title="종정보"></TableFoldHead>
+                  <TableFoldBody>
+                    <Gcol className="w-full" gap={3}>
+                      <Gcol className="w-full">
+                        <div className="ag-theme-alpine w-full h-70!">
+                          <AgGridReact<DummyDataType2>
+                            getRowId={(params) => String(params.data.id)}
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            rowData={dummyData2}
+                            columnDefs={columnDefs2}
+                            defaultColDef={{
+                              sortable: true,
+                              resizable: true,
+                            }}
+                            headerHeight={30}
+                            rowHeight={30}
+                            domLayout="normal"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
+                          />
+                        </div>
+                      </Gcol>
+                      <Gcol className="w-full">
+                        <TabPager
+                          data={tabs}
+                          active={active}
+                          setActive={setActive}
+                          removable={false}
+                          onRemove={handleRemove}
+                          visibleCount={4}
+                          variant="default"
+                          hasTableBelow={true}
+                          error={false}
+                          errorMsg="에러 메시지 예시"
+                          getValue={(tab) => String(tab.value)}
+                          renderTab={(tab) => <span>{tab.label}</span>}
+                          renderDropdownItem={false}
+                        >
+                          <div className="ag-theme-alpine w-full h-70! ag-border-t">
+                            <AgGridReact<DummyDataType3>
                               getRowId={(params) => String(params.data.id)}
                               noRowsOverlayComponent={AgGridEmptyComponent}
-                              rowData={dummyData2}
-                              columnDefs={columnDefs2}
+                              rowData={dummyData3}
+                              columnDefs={columnDefs3}
                               defaultColDef={{
                                 sortable: true,
                                 resizable: true,
@@ -456,49 +491,14 @@ const Ltpz019 = () => {
                               tooltipShowDelay={0}
                             />
                           </div>
-                        </Gcol>
-                        <Gcol className="w-full">
-                          <TabPager
-                            data={tabs}
-                            active={active}
-                            setActive={setActive}
-                            removable={false}
-                            onRemove={handleRemove}
-                            visibleCount={4}
-                            variant="default"
-                            hasTableBelow={true}
-                            error={false}
-                            errorMsg="에러 메시지 예시"
-                            getValue={(tab) => String(tab.value)}
-                            renderTab={(tab) => <span>{tab.label}</span>}
-                            renderDropdownItem={false}
-                          >
-                            <div className="ag-theme-alpine w-full h-70! ag-border-t">
-                              <AgGridReact<DummyDataType3>
-                                getRowId={(params) => String(params.data.id)}
-                                noRowsOverlayComponent={AgGridEmptyComponent}
-                                rowData={dummyData3}
-                                columnDefs={columnDefs3}
-                                defaultColDef={{
-                                  sortable: true,
-                                  resizable: true,
-                                }}
-                                headerHeight={30}
-                                rowHeight={30}
-                                domLayout="normal"
-                                tooltipShowMode="whenTruncated"
-                                tooltipShowDelay={0}
-                              />
-                            </div>
-                          </TabPager>
-                        </Gcol>
+                        </TabPager>
                       </Gcol>
-                    </TableFoldBody>
-                  </TableFold>
-                  {/* //M2. 수정  */}
-                </Grid>
-              </Grow>
-            </Gcol>
+                    </Gcol>
+                  </TableFoldBody>
+                </TableFold>
+                {/* //M2. 수정  */}
+              </Grid>
+            </Grow>
           </Gcol>
         </DialogSection>
 

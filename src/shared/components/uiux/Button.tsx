@@ -48,7 +48,7 @@ const buttonVariants = cva(
       },
       size: {
         xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 min-w-[6rem] `,
-        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0.1rem] px-2.5 gap-1`,
+        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pb-[0.15rem] px-2.5 gap-1`,
         md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0rem] px-1.5 gap-[0.2rem]`,
         sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem]`,
         xs: `h-[1.6rem] rounded-[0.3rem] text-[1.1rem] font-normal p-1 gap-[0.2rem]`,
@@ -276,15 +276,16 @@ const buttonVariants = cva(
       {
         variant: 'outlined',
         color: 'secondary',
-        className: `border border-[var(--color-secondary-50)] 
+        className: `border border-[var(--color-gray-60)] 
         bg-[var(--color-gray-0)] 
-        text-[var(--color-secondary-50)] 
-        hover:bg-[var(--color-secondary-5)] 
+        text-[var(--color-gray-100)] 
+        hover:bg-[var(--color-gray-5)] 
         hover:border-dashed 
-        hover:border-[var(--color-secondary-50)] 
-        focus-visible:ring-[var(--color-secondary-5)] 
+        hover:border-[var(--color-gray-100)] 
+        focus-visible:ring-[var(--color-gray-5)] 
         focus-visible:border-dashed 
-        focus-visible:border-[var(--color-secondary-50)]`,
+        focus-visible:border-[var(--color-gray-100)]
+        disabled:bg-[var(--color-gray-5)]`,
       },
       {
         variant: 'outlined',
@@ -292,6 +293,7 @@ const buttonVariants = cva(
         className: `border border-[var(--color-gray-60)] 
         bg-[var(--color-gray-0)] 
         text-[var(--color-gray-100)] 
+        [&_svg]:!text-[var(--color-gray-60)]
         hover:bg-[var(--color-gray-5)] 
         hover:border-dashed 
         hover:border-[var(--color-gray-100)] 

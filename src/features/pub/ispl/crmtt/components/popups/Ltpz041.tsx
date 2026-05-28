@@ -46,7 +46,7 @@ const Ltpz041 = () => {
           <TableFold>
             <TableFoldHead title="개인사업자정보" />
             <TableFoldBody>
-              <Gcol>
+              <Gcol gap={2}>
                 <FormTable caption="사업자" cols={['w-[9rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'사업자명'}>
@@ -64,8 +64,6 @@ const Ltpz041 = () => {
                   <Typo icon="info" variant="body-sm">
                     개인사업자정보는 계약자의 보조정보로 계약자는 대표자인 개인으로 함
                   </Typo>
-                </Gcol>
-                <Gcol className="w-full" placement="ss" variant="box-info">
                   <Typo icon="info" variant="body-sm">
                     계약자와 개인사업자의 대표자가 동일한 경우만 입력 가능(사업자등록증 스캔 필수)
                   </Typo>

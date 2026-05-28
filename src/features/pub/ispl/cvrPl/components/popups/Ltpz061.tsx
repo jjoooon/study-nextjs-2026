@@ -23,7 +23,7 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { CellClassParams, ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise'; // 2026-05-27 CellClassParams 삭제
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useState } from 'react';

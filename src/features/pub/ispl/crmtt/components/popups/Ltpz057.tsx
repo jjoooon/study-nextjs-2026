@@ -48,7 +48,7 @@ const Ltpz057 = () => {
                 </Button>
               </Grow>
             </TableFoldHead>
-            <TableFoldBody>
+            <TableFoldBody className="gap-2">
               <FormTable cols={['w-[15rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell

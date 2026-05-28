@@ -122,7 +122,7 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
         </NativeSelect>
       </Grow>
       <Grow className="gap-2.5 shrink-0" placement="ec">
-        <Button variant="outlined" color="secondary" size="md">
+        <Button variant="outlined" color="gray" size="md">
           {/* M1. 아이콘 수정 */}
           <PenIcon size={12} />
           메모
