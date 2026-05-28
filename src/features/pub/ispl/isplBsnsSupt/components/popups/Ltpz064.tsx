@@ -372,7 +372,8 @@ export const Ltpz064 = () => {
               </Button>
             </Grow>
           </Grow>
-          <div>
+          {/* 2026-05-27 구조변경, div, Gcol 추가 */}
+          <div className="flex flex-col gap-3">
             <TableFold>
               <TableFoldHead title="피보험자 명세">
                 <Grow>
@@ -545,77 +546,79 @@ export const Ltpz064 = () => {
                 </FormTable>
               </TableFoldBody>
             </TableFold>
-            <TableFold>
-              <TableFoldHead title="피보험자 주소 및 연락처 일괄입력"></TableFoldHead>
-              <TableFoldBody>
-                <FormTable>
-                  <FormRow>
-                    <FormCell title={null}>
-                      <NativeSelect aria-label="" width={80}>
-                        {[
-                          { value: '선택1', label: '선택1' },
-                          { value: '선택2', label: '선택2' },
-                        ].map((option) => (
-                          <NativeSelectOption key={option.value} value={option.value}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                      <Input width={100} value={''} />
-                      <Button
-                        aria-label="피보험자 검색"
-                        variant={'outlined'}
-                        only="icon"
-                        size={'lg'}
-                        color={'gray-light'}
-                      >
-                        <SearchIcon color={'var(--color-primary-50)'} />
-                      </Button>
-                      <Input width={120} value={''} placeholder="직장명" />
-                      <Input width={120} value={''} placeholder="업종" />
-                      <Input width={120} value={''} placeholder="직무" />
-                      <NativeSelect aria-label="" width={80}>
-                        {[
-                          { value: '선택1', label: '선택1' },
-                          { value: '선택2', label: '선택2' },
-                        ].map((option) => (
-                          <NativeSelectOption key={option.value} value={option.value}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                      <NativeSelect aria-label="" width={80}>
-                        {[
-                          { value: '선택1', label: '선택1' },
-                          { value: '선택2', label: '선택2' },
-                        ].map((option) => (
-                          <NativeSelectOption key={option.value} value={option.value}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                      <NativeSelect aria-label="" width={80}>
-                        {[
-                          { value: '선택1', label: '선택1' },
-                          { value: '선택2', label: '선택2' },
-                        ].map((option) => (
-                          <NativeSelectOption key={option.value} value={option.value}>
-                            {option.label}
-                          </NativeSelectOption>
-                        ))}
-                      </NativeSelect>
-                      <Button color="gray" onClick={() => {}} only="default" size="lg" variant="outlined">
-                        입력
-                      </Button>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </TableFoldBody>
-            </TableFold>
-            <Gcol className="w-full" placement="ss" variant="box-warning">
-              <Typo icon="warning">
-                [다수 피보험자 정보]란의 좌측에 있는 체크박스를 통하여 체크된 피보험자에게 아래의 정보가 일괄등록됩니다.
-              </Typo>
+            <Gcol className="gap-2">
+              <TableFold>
+                <TableFoldHead title="피보험자 주소 및 연락처 일괄입력"></TableFoldHead>
+                <TableFoldBody>
+                  <FormTable>
+                    <FormRow>
+                      <FormCell title={null}>
+                        <NativeSelect aria-label="" width={80}>
+                          {[
+                            { value: '선택1', label: '선택1' },
+                            { value: '선택2', label: '선택2' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.value} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                        <Input width={100} value={''} />
+                        <Button
+                          aria-label="피보험자 검색"
+                          variant={'outlined'}
+                          only="icon"
+                          size={'lg'}
+                          color={'gray-light'}
+                        >
+                          <SearchIcon color={'var(--color-primary-50)'} />
+                        </Button>
+                        <Input width={120} value={''} placeholder="직장명" />
+                        <Input width={120} value={''} placeholder="업종" />
+                        <Input width={120} value={''} placeholder="직무" />
+                        <NativeSelect aria-label="" width={80}>
+                          {[
+                            { value: '선택1', label: '선택1' },
+                            { value: '선택2', label: '선택2' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.value} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                        <NativeSelect aria-label="" width={80}>
+                          {[
+                            { value: '선택1', label: '선택1' },
+                            { value: '선택2', label: '선택2' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.value} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                        <NativeSelect aria-label="" width={80}>
+                          {[
+                            { value: '선택1', label: '선택1' },
+                            { value: '선택2', label: '선택2' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.value} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
+                          ))}
+                        </NativeSelect>
+                        <Button color="gray" onClick={() => {}} only="default" size="lg" variant="outlined">
+                          입력
+                        </Button>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </TableFoldBody>
+              </TableFold>
+              <Gcol className="w-full" placement="ss" variant="box-warning">
+                <Typo icon="warning">
+                  [다수 피보험자 정보]란의 좌측에 있는 체크박스를 통하여 체크된 피보험자에게 아래의 정보가 일괄등록됩니다.
+                </Typo>
+              </Gcol>
             </Gcol>
           </div>
         </DialogSection>

@@ -260,7 +260,7 @@ const Ltpz065 = () => {
                     caption="단체실손의료비 전환대상 테이블"
                     cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'flex-1']}
                   >
-                    {/* 2027-05-27 input 수정 */}
+                    {/* 2026-05-27 variant 추가 */}
                     <FormRow>
                       <FormCell title={'피보험자'}>
                         <Input width={80} variant="info" value={'김한화'} readOnly />
