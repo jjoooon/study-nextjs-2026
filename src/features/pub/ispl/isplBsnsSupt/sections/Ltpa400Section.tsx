@@ -280,11 +280,6 @@ export default function Ltpa400Section() {
       width: 120,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field10' }),
-      cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
-        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-          {params.data?.field10 ?? ''}
-        </Button>
-      ),
     },
     {
       headerName: '지원SM',

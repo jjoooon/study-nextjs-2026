@@ -204,7 +204,7 @@ const Ltpz051 = () => {
       ),
     },
     {
-      headerName: '변경전 직업정보',
+      headerName: '변경전 가입여부',
       flex: 1,
       minWidth: 120,
       field: 'field04',
@@ -212,7 +212,7 @@ const Ltpz051 = () => {
       autoHeight: true,
     },
     {
-      headerName: '변경후 직업정보',
+      headerName: '변경후 가입여부',
       flex: 1,
       minWidth: 120,
       field: 'field05',

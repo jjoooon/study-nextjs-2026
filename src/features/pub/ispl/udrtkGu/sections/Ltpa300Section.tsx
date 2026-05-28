@@ -289,9 +289,9 @@ export default function Ltpa300Section() {
                   </FormCell>
                 </FormRow>
                 <FormRow>
-                  <FormCell title={'점검방법'}>
+                  <FormCell title={'증권번호'}>
                     <Input
-                      aria-label="점검방법 입력"
+                      aria-label="증권번호 입력"
                       width={140}
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
