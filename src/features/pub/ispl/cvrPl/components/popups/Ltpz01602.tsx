@@ -82,6 +82,7 @@ const Ltpz01602 = () => {
     );
   }, []);
 
+  // 2026-05-27 업종구분, 보상한도, 자가부담금, 트램플린 : editable, cellEditor, cellRenderer 추가
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '업종구분',
@@ -91,7 +92,7 @@ const Ltpz01602 = () => {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
-      cellRenderer: selectCellRenderer, // 2026-05-27 추가
+      cellRenderer: selectCellRenderer, 
     },
     {
       headerName: '규모',
@@ -119,16 +120,22 @@ const Ltpz01602 = () => {
       field: 'field06',
       width: 100,
       cellClass: 'text-center',
+      editable: true,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
+      cellEditor: 'agSelectCellEditor',
+      cellRenderer: selectCellRenderer, 
     },
     {
       headerName: '자가부담금',
       field: 'field07',
       width: 100,
       cellClass: 'text-center',
+      editable: true,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
+      cellEditor: 'agSelectCellEditor',
+      cellRenderer: selectCellRenderer, 
     },
     {
       headerName: '보험료',
@@ -143,6 +150,7 @@ const Ltpz01602 = () => {
       field: 'field09',
       width: 100,
       cellClass: 'text-center',
+      editable: true,
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
           트램플린
@@ -150,6 +158,8 @@ const Ltpz01602 = () => {
           (에어바운스)
         </div>
       ),
+      cellEditor: 'agSelectCellEditor',
+      cellRenderer: selectCellRenderer, 
     },
     {
       headerName: '요양병원여부',
@@ -314,12 +324,12 @@ const Ltpz01602 = () => {
                     </NativeSelect>
                   </FormCell>
                 </FormRow>
+                {/* 2026-05-27 수정 */}
                 <FormRow>
                   <FormCell
                     title={
                       <Grow placement="sc">
                         자기부담금
-                        <EssentialIcon />
                       </Grow>
                     }
                     titleColSpan={3}
@@ -332,6 +342,7 @@ const Ltpz01602 = () => {
                       onChange={(e) => setFormField('type05', e.target.value)}
                       commaAmount
                       readOnly
+                      required
                     />
                   </FormCell>
                 </FormRow>
