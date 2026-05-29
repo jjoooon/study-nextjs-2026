@@ -58,6 +58,7 @@ import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChanged
 import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
 import { editableCellClassRules, ensureLockedRowsSelected } from '../utils/agGridUtils';
 import '@/shared/lib/agGridPub';
+import Ltpz020 from '@/features/pub/ispl/cvrPl/components/popups/Ltpz020';
 
 type AgGridRow = DummyDataType & {
   isDuplicate?: boolean;
@@ -318,7 +319,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     ],
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]
   );
-
+  const [Ltpz020Open, setLtpz020Open] = useState(false);
   return (
     <Gcol>
       <LayoutMainBody>
@@ -328,10 +329,11 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
             <Grow gap={1.5} placement={'bwc'}>
               <Grow gap={2}>
-                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
+                <Button variant={'contained'} color={'coolgray-light'} size={'md'} onClick={() => setLtpz020Open(true)}>
                   <PaperIcon />
                   보장패키지
                 </Button>
+                <Ltpz020 open={Ltpz020Open} />
                 <Divider dir="col" />
 
                 <CheckboxGroup
