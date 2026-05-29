@@ -217,6 +217,41 @@
   background: var(--color-primary-10);
 }
 
+  /* AG Grid 내부의 수평/수직 스크롤바 전체 타겟팅 */
+.ag-theme-alpine ::-webkit-scrollbar {
+  width: 0.8rem !important;          /* 세로 스크롤바 두께 */
+  height: 0.8rem !important;         /* 가로 스크롤바 높이 */
+}
+
+/* 스크롤바 트랙 (바탕 배경) */
+.ag-theme-alpine ::-webkit-scrollbar-track {
+  background: #f1f1f1; /* 트랙 배경 색상 */
+  border-radius: 0rem;
+}
+
+/* 스크롤바 움직이는 바 (Thumb) */
+.ag-theme-alpine ::-webkit-scrollbar-thumb {
+  background: #c1c1c1; /* 스크롤바 자체 색상 */
+  border-radius: 0rem;  /* 둥글게 */
+}
+
+/* 스크롤바 마우스 올렸을 때 (Hover) */
+.ag-theme-alpine ::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8; /* 호버 시 약간 더 어둡게 */
+}
+.ag-body-vertical-scroll-container,
+.ag-body-vertical-scroll-viewport,
+.ag-body-vertical-scroll {
+  width: 0.8rem !important;
+  min-width: 0.8rem !important;
+  max-width: 0.8rem !important;
+}
+
+.ag-header .ag-header-viewport,
+.ag-header-container {
+  background-color: var(--color-gray-5);
+}
+
 /* .ag-theme-alpine{
   min-height:18rem;
 } */
@@ -785,7 +820,7 @@
   border-top: 0.1rem solid var(--color-white) !important;
 }
 .ag-header-row-column .ag-header-cell:last-child {
-  border-right: 0 !important;
+  /* border-right: 0 !important; */
 }
 
 /* header 두 줄 시 sortable 적용해야 할 때 */

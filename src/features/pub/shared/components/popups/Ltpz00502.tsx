@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid'; // 2026-05-29 numberValueFormatter 추가
 import { Gcol, Grow, Typo } from '@atoms';
 
 import { TabPager } from '@common/TabPager';
@@ -204,12 +204,13 @@ const Ltpz00502 = () => {
 
   // 누적 인수기준
   const columnDefs2: (ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>)[] = [
+    // 2026-05-29 numberValueFormatter 추가
     {
       headerName: '누적명',
       field: 'accumName',
       width: 200,
       spanRows: true,
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'flex! items-center! justify-start!', // 2026-05-29 justify-start로 변경
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'accumName' }),
     },
     {
@@ -225,6 +226,7 @@ const Ltpz00502 = () => {
       width: 90,
       spanRows: true,
       cellClass: 'flex! items-center! justify-end!',
+      valueFormatter: numberValueFormatter,
       cellRenderer: (params: { value: string | number }) => {
         const rawValue = String(params.value ?? '').trim();
         const numericValue = Number(rawValue.replace(/,/g, ''));
@@ -245,6 +247,7 @@ const Ltpz00502 = () => {
       width: 80,
       spanRows: true,
       cellClass: 'flex! items-center! justify-end!',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '한도(원)',
@@ -252,6 +255,7 @@ const Ltpz00502 = () => {
       width: 80,
       spanRows: true,
       cellClass: 'flex! items-center! justify-end!',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보명',
@@ -280,6 +284,7 @@ const Ltpz00502 = () => {
       field: 'appliedAmount',
       width: 80,
       cellClass: 'text-right',
+      valueFormatter: numberValueFormatter, 
     },
     {
       headerName: '초과금액',
@@ -288,6 +293,7 @@ const Ltpz00502 = () => {
       spanRows: true,
       cellClass: 'flex! items-center! justify-end! border-r-0',
       cellStyle: { borderRight: 'none' },
+      valueFormatter: numberValueFormatter,
       cellRenderer: (params: { value: string | number }) => {
         const rawValue = String(params.value ?? '').trim();
         const numericValue = Number(rawValue.replace(/,/g, ''));
@@ -295,7 +301,6 @@ const Ltpz00502 = () => {
         if (!Number.isNaN(numericValue) && numericValue === 0) {
           return `${rawValue}(누적해소)`;
         }
-
         return params.value;
       },
     },

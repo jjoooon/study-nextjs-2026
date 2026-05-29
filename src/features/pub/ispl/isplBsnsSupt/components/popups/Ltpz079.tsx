@@ -177,8 +177,8 @@ const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '문서명',
       field: 'field02',
-      flex: 2,
-      cellClass: 'text-left',
+      flex: 1,
+      cellClass: 'text-left', // 2026-05-29 text-left로 변경
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {

@@ -6,9 +6,7 @@ import { Grow } from '@atoms';
 import * as React from 'react';
 import LinkGo, { getStoryIframeUrl } from './Link';
 
-import iaHsh from './ia-hsh.json';
 import iaJhm from './ia-jhm.json';
-import iaKot from './ia-kot.json';
 import pub from './ia-pub.json';
 import sData from './ia-sdate.json';
 import iaListData from './ialist.json';
@@ -55,7 +53,7 @@ type PubInfo = {
   수정일: string;
 };
 
-const pubInfoList: PubInfo[] = [...(iaHsh as PubInfo[]), ...(iaKot as PubInfo[]), ...(iaJhm as PubInfo[])];
+const pubInfoList: PubInfo[] = [...(iaJhm as PubInfo[])];
 
 // pubInfoList에서 화면아이디로 PubInfo를 찾는 헬퍼
 const getPubInfo = (row: Pick<IARow, 'id' | 'subId'>) => {

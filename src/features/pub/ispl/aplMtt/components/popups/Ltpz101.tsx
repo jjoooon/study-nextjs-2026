@@ -32,16 +32,20 @@ type DummyDataType = {
   id: number;
   field1: string;
   field2: string;
-  field3: string;
 };
 
 const DummyData: DummyDataType[] = [
-  { id: 1, field1: '', field2: '', field3: '' },
-  { id: 2, field1: '', field2: '', field3: '' },
-  { id: 3, field1: '', field2: '', field3: '' },
-  { id: 4, field1: '', field2: '', field3: '' },
-  { id: 5, field1: '', field2: '', field3: '' },
-  { id: 6, field1: '', field2: '', field3: '' },
+  {
+    id: 1,
+    field1: '홍길동이름',
+    field2:
+      '내용이 들어갑니다.내용이 들어갑니다. 내용이 들어갑니다.내용이 들어갑니다. 내용이 들어갑니다.내용이 들어갑니다.내용이 들어갑니다.내용이 들어갑니다.내용이 들어갑니다.',
+  },
+  { id: 2, field1: '', field2: '내용이 들어갑니다.내용이 들어갑니다.' },
+  { id: 3, field1: '', field2: '내용이 들어갑니다.' },
+  { id: 4, field1: '', field2: '' },
+  { id: 5, field1: '', field2: '' },
+  { id: 6, field1: '', field2: '' },
 ];
 
 const Ltpz101 = () => {
@@ -49,20 +53,21 @@ const Ltpz101 = () => {
     {
       headerName: 'No',
       field: 'id',
-      width: 50,
+      width: 40,
       cellClass: 'text-center',
     },
     {
       headerName: '피보험자',
-      field: 'field2',
-      width: 100,
+      field: 'field1',
+      width: 70,
       cellClass: 'text-center',
     },
     {
       headerName: '위배내용',
-      field: 'field3',
+      field: 'field2',
       flex: 2,
-      cellClass: 'text-center',
+      // resizable: false,
+      cellClass: 'text-left', // 2026-05-29 text-left으로 변경
     },
   ];
 
@@ -116,6 +121,7 @@ const Ltpz101 = () => {
                   rowData={rowData}
                   columnDefs={columnDefs}
                   domLayout="normal"
+                  // suppressMovableColumns={true}
                 />
               </div>
             </Gcol>
@@ -123,7 +129,7 @@ const Ltpz101 = () => {
           <TableFold variant="default">
             <TableFoldHead title="모집자 확인사항" />
             <TableFoldBody>
-              <Gcol className="w-full" placement="ss" variant="box-warning">
+              <Gcol className="w-full" placement="ss" variant="box-warning-line">
                 <Typo variant="body-sm">
                   <Checkbox>모집자 김한화는 상기 내용에 대해 정확히 확인 하였습니다.</Checkbox>
                 </Typo>
