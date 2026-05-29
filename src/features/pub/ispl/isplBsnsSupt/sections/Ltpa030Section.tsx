@@ -30,7 +30,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { useCallback } from 'react';
 import * as React from 'react';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
-import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
+import { LayoutTemplate } from '@layout/LayoutTemplate'; // 2026-05-29 경로 변경
 import '@/shared/lib/agGridPub';
 
 // dummy data
