@@ -221,7 +221,7 @@ export default function Ltpa560Section() {
   const [rowData] = React.useState<Ltpa560DummyDataRow[]>(Ltpa560DummyData);
 
   // AgGrid Column
-  // 2026-05-29 수정 cellClass 추가
+  // 2026-05-29 수정 cellClass 추가, width 수정
   const columnDefs: (ColDef<Ltpa560DummyDataRow> | ColGroupDef<Ltpa560DummyDataRow>)[] = [
     {
       headerName: '상품',
@@ -243,7 +243,7 @@ export default function Ltpa560Section() {
     },
     {
       headerName: '본부명',
-      flex: 2,
+      flex: 2.5,
       field: 'field03',
       cellClass: 'text-center',
       autoHeight: true,
@@ -251,21 +251,21 @@ export default function Ltpa560Section() {
     },
     {
       headerName: '단순설계',
-      width: 80,
+      width: 75,
       field: 'field04',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '설계중',
-      width: 80,
+      width: 75,
       field: 'field05',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '설계완료',
-      width: 80,
+      width: 75,
       field: 'field06',
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
@@ -280,7 +280,7 @@ export default function Ltpa560Section() {
     },
     {
       headerName: '청약중',
-      width: 80,
+      width: 75,
       field: 'field07',
       cellClass: 'text-center',
       autoHeight: true,
@@ -294,21 +294,21 @@ export default function Ltpa560Section() {
     },
     {
       headerName: '청약완료',
-      width: 80,
+      width: 75,
       field: 'field09',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '수납완료',
-      width: 80,
+      width: 75,
       field: 'field10',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '총합계',
-      width: 80,
+      flex: 1,
       field: 'field11',
       cellClass: 'text-center truncate',
       autoHeight: true,
