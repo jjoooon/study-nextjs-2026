@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid'; // 2026-05-29 tooltip 추가
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
@@ -276,6 +276,7 @@ const Ltpz021 = () => {
         if (params.data?.id === 0) return 2;
         return 1;
       },
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }), // 2026-05-29 tooltip 추가
     },
     {
       headerName: '가입금액(만원)',
@@ -418,6 +419,9 @@ const Ltpz021 = () => {
                         sortable: false,
                         resizable: false,
                       }}
+                      // 2026-05-29 tooltip 추가
+                      tooltipShowMode="whenTruncated" 
+                      tooltipShowDelay={0}
                     />
 
                     <Grow

@@ -87,7 +87,7 @@ const Ltpz105 = () => {
       headerName: '고객명',
       field: 'field2',
       flex: 1,
-      cellClass: 'text-center', // 2026-05-28 text-center 수정
+      cellClass: 'text-center', // 2026-05-29 text-center 수정
     },
     {
       headerName: '상령일',
@@ -151,7 +151,7 @@ const Ltpz105 = () => {
               </FormTable>
             </Grow>
           </Gcol>
-          <Gcol className="w-full" placement="ss" gap={1}>
+          <Gcol className="w-full" placement="ss" gap={2}> {/* 2026-05-29 gap-2 수정 */}
             <div className="ag-theme-alpine min-h-[18.4rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}

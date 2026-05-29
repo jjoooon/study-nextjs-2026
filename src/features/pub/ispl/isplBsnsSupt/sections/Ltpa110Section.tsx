@@ -20,7 +20,7 @@ import type { ColDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
-import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
+import { LayoutTemplate } from '@layout/LayoutTemplate'; // 2026-05-29 경로 변경
 
 import '@/shared/lib/agGridPub';
 
@@ -199,7 +199,7 @@ export default function Ltpa110Section() {
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
 
-  // 첫번째 agGrid 행삭제
+  // 두번째 agGrid 행삭제
   const handleDeleteRow = React.useCallback(() => {
     const gridApi = gridApiRef.current;
     if (!gridApi) return;
@@ -291,6 +291,7 @@ export default function Ltpa110Section() {
                 <TableFoldHead title="기본사항" />
                 <TableFoldBody className="gap-2">
                   <div className="ag-theme-alpine">
+                    { /* 2026-05-29 onGridReady 삭제 */ }
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
@@ -307,9 +308,6 @@ export default function Ltpa110Section() {
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
-                      }}
-                      onGridReady={(params) => {
-                        gridApiRef.current = params.api;
                       }}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
@@ -366,6 +364,10 @@ export default function Ltpa110Section() {
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
                       domLayout="autoHeight"
+                      //2026-05-29 코드 추가 
+                      onGridReady={(params) => {
+                        gridApiRef.current = params.api;
+                      }}
                     />
                   </div>
                 </TableFoldBody>
