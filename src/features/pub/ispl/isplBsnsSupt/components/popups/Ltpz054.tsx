@@ -193,7 +193,7 @@ const Ltpz054 = () => {
             <TableFold className="grid-rows-[1fr]">
               <TableFoldHead title="당사 스캔대상 발급물"></TableFoldHead>
               <TableFoldBody>
-                {/* 2026-05-28 Grid 삭제 */}
+                {/* 2026-05-28 <Grid> 삭제 */}
                 <div className="ag-theme-alpine min-h-[18.4rem]">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
