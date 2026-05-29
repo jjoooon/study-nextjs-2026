@@ -109,6 +109,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz098 = () => {
+  // 2026-05-28 cellClass 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '증권(설계번호)',
@@ -145,7 +146,7 @@ const Ltpz098 = () => {
       headerName: '담보명',
       field: 'field06',
       width: 200,
-      cellClass: 'text-center',
+      cellClass: 'text-left',
     },
     {
       headerName: '가입금액',
@@ -158,7 +159,7 @@ const Ltpz098 = () => {
       headerName: '누적위험명',
       field: 'field08',
       width: 130,
-      cellClass: 'text-center',
+      cellClass: 'text-left',
     },
     {
       headerName: '누적배수',

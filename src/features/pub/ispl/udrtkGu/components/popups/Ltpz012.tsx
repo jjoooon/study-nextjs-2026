@@ -433,10 +433,8 @@ const Ltpz012 = () => {
             <TableFold>
               <TableFoldHead title="최종" />
               <TableFoldBody>
-                <div
-                  className="ag-theme-alpine no-header ltpz012-final-grid"
-                  style={{ borderTop: '1px solid #ff5c2e' }}
-                >
+                {/* 2026-05-28 */}
+                <div className="ag-theme-alpine no-header" style={{ borderTop: '1px solid #ff5c2e' }}>
                   <AgGridReact<FinalSummaryData>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

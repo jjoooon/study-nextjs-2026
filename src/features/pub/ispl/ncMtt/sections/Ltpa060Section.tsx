@@ -211,7 +211,8 @@ export default function Ltpa060Section() {
 
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
 
-  // Tab1 AGGrid Column
+  // Tab1 AGGrid Column/
+  // 2026-05-28: cellClass 변경
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대표질병코드',
@@ -223,7 +224,7 @@ export default function Ltpa060Section() {
       headerName: '질병명',
       field: 'field2',
       flex: 1,
-      cellClass: 'text-center',
+      cellClass: 'text-left',
     },
     {
       headerName: '원사고발생일',
@@ -276,6 +277,7 @@ export default function Ltpa060Section() {
     },
   ];
   // Tab2 AGGrid Column
+  // 2026-05-28: cellClass 변경
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '대표질병코드',
@@ -287,7 +289,7 @@ export default function Ltpa060Section() {
       headerName: '질병명',
       field: 'field2',
       flex: 1,
-      cellClass: 'text-center',
+      cellClass: 'text-left',
     },
     {
       headerName: '원사고발생일',

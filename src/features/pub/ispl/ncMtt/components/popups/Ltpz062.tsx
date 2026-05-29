@@ -193,7 +193,7 @@ const Ltpz062 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-
+        {/*  */}
         <DialogSection className="grid-rows-[auto_auto_auto]">
           <Typo tag={'p'} variant={'body-lg'}>
             보험금지급이력을 기반으로 필요한 정보를 예상하여 자동입력합니다.

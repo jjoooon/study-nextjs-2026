@@ -154,13 +154,14 @@ const Ltpz017 = () => {
 
           <TableFold className="grid grid-rows-[auto_auto_1fr]">
             <TableFoldHead title="플랜등록사항" />
-            <Gcol className="w-full mb-1" placement="ss" variant="box-detail">
-              <Typo icon="detail" variant="body-sm">
-                적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 전체 노출)
-              </Typo>
-              {/* <Typo icon="detail" variant="body-sm">적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 미노출)</Typo> */}
-            </Gcol>
-            <TableFoldBody>
+            {/* 2026-05-28 */}
+            <TableFoldBody className="gap-1">
+              <Gcol className="w-full" placement="ss" variant="box-detail">
+                <Typo icon="detail" variant="body-sm">
+                  적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 전체 노출)
+                </Typo>
+                {/* <Typo icon="detail" variant="body-sm">적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 미노출)</Typo> */}
+              </Gcol>
               <div className="ag-theme-alpine min-h-[18.4rem]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}

@@ -254,7 +254,7 @@ const Ltpz065 = () => {
           <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={2}>
             <TableFold>
               <TableFoldHead title="단체실손의료비 전환대상" />
-              <TableFoldBody>
+              <TableFoldBody className="gap-5">
                 <Grow className="w-full">
                   <FormTable
                     caption="단체실손의료비 전환대상 테이블"
@@ -278,33 +278,32 @@ const Ltpz065 = () => {
                     </FormRow>
                   </FormTable>
                 </Grow>
+                <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
+                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={DummyData}
+                      columnDefs={columnDefs}
+                      defaultColDef={{ sortable: false }}
+                      enableCellSpan={true}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      // 체크박스 시
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: false,
+                        checkboxes: true,
+                        enableClickSelection: true,
+                      }}
+                      selectionColumnDef={{
+                        headerName: '선택',
+                      }}
+                    />
+                  </div>
+                </Grid>
               </TableFoldBody>
             </TableFold>
-
-            <Grid className="w-full h-full">
-              <div className="ag-theme-alpine min-h-[18.4rem]">
-                <AgGridReact<DummyDataType>
-                  getRowId={(params) => String(params.data.id)}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyData}
-                  columnDefs={columnDefs}
-                  defaultColDef={{ sortable: false }}
-                  enableCellSpan={true}
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
-                  // 체크박스 시
-                  rowSelection={{
-                    mode: 'multiRow',
-                    headerCheckbox: false,
-                    checkboxes: true,
-                    enableClickSelection: true,
-                  }}
-                  selectionColumnDef={{
-                    headerName: '선택',
-                  }}
-                />
-              </div>
-            </Grid>
           </Grid>
         </DialogSection>
 

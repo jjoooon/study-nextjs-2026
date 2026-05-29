@@ -24,8 +24,11 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { useState } from 'react';
 
 const Ltpz055 = () => {
+  const [sendType, setSendType] = useState<string>('');
+
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="md">
@@ -64,7 +67,12 @@ const Ltpz055 = () => {
                   <TableHead>기존발송번호</TableHead>
                   <TableHead>신규발송번호</TableHead>
                   <TableHead>
-                    <RadioGroup className="gap-2 grid grid-cols-2" onValueChange={() => {}} value={''} width="full">
+                    <RadioGroup
+                      className="gap-2 grid grid-cols-2"
+                      onValueChange={setSendType}
+                      value={sendType}
+                      width="full"
+                    >
                       {[
                         { value: 'option1', label: '알림톡' },
                         { value: 'option2', label: 'LMS' },

@@ -245,7 +245,8 @@ const Ltpz090 = () => {
                 </Gcol>
               </TableFoldBody>
             </TableFold>
-            <Grow gap={3}>
+            {/* 2026-05-29 placement="ss" */}
+            <Grow gap={3} placement="ss">
               <TableFold variant="default">
                 <TableFoldHead title="요청자 의견" />
                 <TableFoldBody>

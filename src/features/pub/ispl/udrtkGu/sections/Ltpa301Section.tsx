@@ -175,8 +175,9 @@ export default function Ltpa301Section() {
         />
       </LayoutHead>
       <LayoutTemplate
+        // 2026-05-28
         mainBody={
-          <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={3}>
+          <Grid className="w-full grid-rows-[auto_auto]" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable variant={'head'} lineTop={false} caption="증권번호 조회" cols={['w-[10rem]', 'flex-1']}>
                 <FormRow>
@@ -205,8 +206,8 @@ export default function Ltpa301Section() {
               </Grow>
             </Grow>
 
-            <Grid className="w-full grid-rows-[auto_1fr_auto] h-full" gap={3}>
-              <TableFold variant={'accordion'}>
+            <Grid className="w-full grid-rows-[auto_auto_auto]" gap={3}>
+              <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검내역" />
                 <TableFoldBody>
                   <FormTable caption="정액담보점검내역 테이블" cols={['w-[10rem]', 'flex-1', 'w-[10rem]', 'flex-1']}>
@@ -241,7 +242,7 @@ export default function Ltpa301Section() {
                 </TableFoldBody>
               </TableFold>
 
-              <TableFold variant={'accordion'}>
+              <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검결과">
                   <Typo variant="body-md">(단위: 원)</Typo>
                 </TableFoldHead>
@@ -277,7 +278,7 @@ export default function Ltpa301Section() {
                 </TableFoldBody>
               </TableFold>
 
-              <TableFold variant={'accordion'}>
+              <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검 관리">
                   <Grow className="w-full justify-end" placement="ee">
                     <Button color="gray" variant="outlined">
@@ -315,38 +316,37 @@ export default function Ltpa301Section() {
                   </FormTable>
                 </TableFoldBody>
               </TableFold>
-            </Grid>
-
-            {/* 2026-05-27 */}
-            <Gcol className="w-full">
-              <Gcol className="s-full" variant={'box-warning'} placement="ss">
-                <Typo variant={'body-sm'} icon={'warning'}>
-                  <b>누적계산기준</b>
-                </Typo>
-                <BulletList color={'warning'} size="sm">
-                  <BulletListItem before="1." className="whitespace-nowrap" color="default" size="md" type="symbols">
-                    당사 : 기계약(보험료 미납해지 포함) 및 심사중인 건 포함
-                  </BulletListItem>
-                  <BulletListItem before="2." className="whitespace-nowrap" color="default" size="md" type="symbols">
-                    타사 : 한국신용정보원의 집적 기준 및 Data 사용
-                  </BulletListItem>
-                </BulletList>
-                <Typo variant={'body-sm'} icon={'warning'}>
-                  <b>주의사항</b>
-                </Typo>
-                <BulletList color={'warning'} size="sm">
-                  <BulletListItem before="1." className="whitespace-nowrap" color="default" size="md" type="symbols">
-                    점검 수행 전 신정원 조회 후 정액담보점검 클릭 권장
-                  </BulletListItem>
-                  <BulletListItem before="2." className="whitespace-nowrap" color="default" size="md" type="symbols">
-                    당사금액 문제가 있는 경우 다른 심사요청 건이 있는지 확인 권장
-                  </BulletListItem>
-                  <BulletListItem before="3." className="whitespace-nowrap" color="default" size="md" type="symbols">
-                    타사의 누적집적오류는 당사에서 수정요청 불가
-                  </BulletListItem>
-                </BulletList>
+              {/* 2026-05-27 */}
+              <Gcol className="w-full">
+                <Gcol className="s-full" variant={'box-warning'} placement="ss">
+                  <Typo variant={'body-sm'} icon={'warning'}>
+                    <b>누적계산기준</b>
+                  </Typo>
+                  <BulletList color={'warning'} size="sm">
+                    <BulletListItem before="1." className="whitespace-nowrap" color="default" size="md" type="symbols">
+                      당사 : 기계약(보험료 미납해지 포함) 및 심사중인 건 포함
+                    </BulletListItem>
+                    <BulletListItem before="2." className="whitespace-nowrap" color="default" size="md" type="symbols">
+                      타사 : 한국신용정보원의 집적 기준 및 Data 사용
+                    </BulletListItem>
+                  </BulletList>
+                  <Typo variant={'body-sm'} icon={'warning'}>
+                    <b>주의사항</b>
+                  </Typo>
+                  <BulletList color={'warning'} size="sm">
+                    <BulletListItem before="1." className="whitespace-nowrap" color="default" size="md" type="symbols">
+                      점검 수행 전 신정원 조회 후 정액담보점검 클릭 권장
+                    </BulletListItem>
+                    <BulletListItem before="2." className="whitespace-nowrap" color="default" size="md" type="symbols">
+                      당사금액 문제가 있는 경우 다른 심사요청 건이 있는지 확인 권장
+                    </BulletListItem>
+                    <BulletListItem before="3." className="whitespace-nowrap" color="default" size="md" type="symbols">
+                      타사의 누적집적오류는 당사에서 수정요청 불가
+                    </BulletListItem>
+                  </BulletList>
+                </Gcol>
               </Gcol>
-            </Gcol>
+            </Grid>
           </Grid>
         }
         mainFoot={
