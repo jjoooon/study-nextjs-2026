@@ -82,13 +82,13 @@ const Ltpz054 = () => {
     {
       headerName: '순번',
       field: 'id',
-      width: 60,
+      width: 40,
       cellClass: `text-center `,
     },
     {
       headerName: '문서명',
       field: 'field1',
-      flex: 1,
+      flex: 3,
       cellClass: `text-left`,
     },
     {
@@ -106,25 +106,25 @@ const Ltpz054 = () => {
     {
       headerName: '고객명',
       field: 'field4',
-      width: 80,
+      width: 70,
       cellClass: `text-center `,
     },
     {
       headerName: '스캔일시',
       field: 'field5',
-      width: 120,
+      width: 110,
       cellClass: `text-center bg-[#E9FEF2]`,
     },
     {
       headerName: '스캔처리자',
       field: 'field6',
-      width: 120,
+      width: 100,
       cellClass: `text-center`,
     },
     {
       headerName: '비고',
       field: 'field7',
-      width: 120,
+      flex: 1,
       cellClass: `text-center`,
     },
   ];
@@ -206,6 +206,9 @@ const Ltpz054 = () => {
                       checkboxes: true,
                       enableClickSelection: false,
                     }}
+                    selectionColumnDef={{
+                      width: 30,
+                    }}
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
                     onCellDoubleClicked={handleCellDoubleClicked}
@@ -234,6 +237,9 @@ const Ltpz054 = () => {
                       mode: 'multiRow',
                       checkboxes: true,
                       enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      width: 30,
                     }}
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}

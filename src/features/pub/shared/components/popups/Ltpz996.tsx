@@ -31,7 +31,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
-    field1: 'sMenuInfo',
+    field1: 'sComG002RA',
     field2: 'transComG100',
     field3: 'RB',
     field4: 'COM10107',
@@ -42,6 +42,7 @@ const DummyData: DummyDataType[] = [
 const Ltpz996 = () => {
   const rowData = DummyData;
   // 2026-05-28 cellClass 수정
+  // 2026-05-29 width 수정
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
@@ -53,19 +54,19 @@ const Ltpz996 = () => {
       {
         headerName: '서비스코드',
         field: 'field2',
-        width: 120,
+        width: 90,
         cellClass: 'text-center',
       },
       {
         headerName: '거래코드',
         field: 'field3',
-        width: 100,
+        width: 60,
         cellClass: 'text-center',
       },
       {
         headerName: '메세지코드',
         field: 'field4',
-        width: 120,
+        width: 80,
         cellClass: 'text-center',
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
           if (!params.value) return null;

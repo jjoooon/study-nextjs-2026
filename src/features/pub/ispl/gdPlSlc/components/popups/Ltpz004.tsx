@@ -160,20 +160,20 @@ const Ltpz004 = () => {
     {
       headerName: '담보명',
       field: 'field1',
-      flex: 1,
+      flex: 4,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
     },
     {
       headerName: '가입연령',
       field: 'field2',
-      width: 86,
+      width: 70,
       cellClass: 'text-center',
     },
     {
       headerName: '가입금액(만원)',
       field: 'field3',
-      width: 86,
+      flex: 1,
       cellClass: 'text-right ',
       valueFormatter: numberValueFormatter,
     },

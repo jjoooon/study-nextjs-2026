@@ -164,11 +164,12 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz001 = () => {
+  // 2026-05-29 width 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '미리보기',
       field: 'field2',
-      width: 80,
+      width: 60,
       cellRenderer: () => (
         <Button variant={'text'} size={'lg'} color={'link'}>
           미리보기
@@ -178,32 +179,32 @@ const Ltpz001 = () => {
     {
       headerName: '출력방식',
       field: 'field3',
-      width: 80,
+      width: 60,
     },
     {
       headerName: '출력여부',
       field: 'field4',
-      width: 80,
+      width: 60,
     },
     {
       headerName: '스캔대상',
       field: 'field5',
-      width: 80,
+      width: 60,
     },
     {
       headerName: '이메일',
       field: 'field6',
-      width: 60,
+      width: 50,
     },
     {
       headerName: '팩스',
       field: 'field7',
-      width: 60,
+      width: 50,
     },
     {
       headerName: '모바일',
       field: 'field8',
-      width: 60,
+      width: 50,
     },
   ];
 

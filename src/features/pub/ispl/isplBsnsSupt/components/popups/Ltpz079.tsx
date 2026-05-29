@@ -52,7 +52,7 @@ const DummyData: DummyDataType[] = [
     field05: 'TEXT',
     field06: 'YYYY-MM-DD HH:MM:SS',
     field07: '김한화',
-    field08: 'TEXT',
+    field08: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXT',
   },
   {
     id: 2,
@@ -166,6 +166,7 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
   // AgGrid Column
+  // 2026-05-29 width, cellClass 수정
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '증권번호',
@@ -176,8 +177,8 @@ const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '문서명',
       field: 'field02',
-      flex: 1,
-      cellClass: 'text-center',
+      flex: 2,
+      cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
@@ -189,7 +190,7 @@ const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '피보험자',
       field: 'field04',
-      width: 80,
+      width: 70,
       cellClass: 'text-center',
     },
     {
@@ -213,8 +214,8 @@ const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '비고',
       field: 'field08',
-      width: 70,
-      cellClass: 'text-center',
+      flex: 1,
+      cellClass: 'text-left',
     },
   ];
 

@@ -43,13 +43,13 @@ const Ltpz105 = () => {
     {
       headerName: '유료설계 기한항목',
       field: 'field1',
-      flex: 1,
+      flex: 1.7,
       cellClass: 'text-center',
     },
     {
       headerName: '유효일자',
       field: 'field2',
-      width: 220,
+      flex: 1,
       cellClass: 'text-center',
     },
   ];
@@ -80,7 +80,7 @@ const Ltpz105 = () => {
     {
       headerName: '구분',
       field: 'field1',
-      width: 120,
+      width: 70,
       cellClass: 'text-center',
     },
     {
@@ -105,7 +105,8 @@ const Ltpz105 = () => {
     {
       headerName: '동의종료일',
       field: 'field4',
-      flex: 1,
+      flex: 0.8,
+      cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => {
         return (
           <>
@@ -159,8 +160,8 @@ const Ltpz105 = () => {
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={{
-                  sortable: false,
-                  resizable: false,
+                  sortable: true,
+                  resizable: true,
                 }}
                 singleClickEdit={true}
                 rowClassRules={{}}
@@ -181,8 +182,8 @@ const Ltpz105 = () => {
               rowData={rowData2}
               columnDefs={columnDefs2}
               defaultColDef={{
-                sortable: false,
-                resizable: false,
+                sortable: true,
+                resizable: true,
               }}
               singleClickEdit={true}
               rowClassRules={{}}

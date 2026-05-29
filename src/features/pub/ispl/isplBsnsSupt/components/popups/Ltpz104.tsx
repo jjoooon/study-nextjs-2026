@@ -66,7 +66,7 @@ const Ltpz104 = () => {
   // M2. 신규 페이지
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="md">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
