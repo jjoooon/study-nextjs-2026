@@ -110,7 +110,7 @@ const Ltpz050 = () => {
               <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 거절
               </Button>
-              <Button variant={'contained'} size={'xl'}>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 저장
               </Button>
               <DialogClose asChild>

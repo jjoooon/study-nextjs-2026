@@ -91,13 +91,13 @@ const Ltpz028 = () => {
       <div className="h-full w-full">
         <div className={isDetails ? 'flex h-full w-full' : 'grid h-full w-full grid-cols-[60px_minmax(0,1fr)]'}>
           {isDetails ? (
-            <div className="flex h-full w-full items-center justify-center text-center">{field02}</div>
+            <div className="flex h-full w-full items-center justify-start text-left">{field02}</div>
           ) : (
             <>
               <div className="flex items-center justify-center border-r border-(--ag-border-color) text-center">
                 {field01}
               </div>
-              <div className="flex items-center justify-center text-center">{field02}</div>
+              <div className="flex items-center justify-start text-left pl-1">{field02}</div>
             </>
           )}
         </div>

@@ -109,7 +109,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz097 = () => {
-  // 2026-05-27 cellClass 수정
+  // 2026-05-28 cellClass 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상위누적명',
@@ -120,7 +120,7 @@ const Ltpz097 = () => {
       suppressMovable: true,
       resizable: true,
       spanRows: true,
-      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
+      cellClass: `flex! items-center! justify-start! whitespace-pre-line text-left `,
     },
     {
       headerName: '누적위험명',
@@ -166,7 +166,7 @@ const Ltpz097 = () => {
       suppressMovable: true,
       resizable: true,
       spanRows: true,
-      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
+      cellClass: `flex! items-center! justify-start! whitespace-pre-line text-left `,
     },
     {
       headerName: '누적위험명',

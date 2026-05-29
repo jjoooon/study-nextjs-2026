@@ -616,6 +616,7 @@ export default function Ltpa360Section() {
   };
 
   // Tab1 AGGrid Column
+  // 2026-05-28: cellClass 변경
   const columnDefs1: ColDef<Ltpa360DummyDataRow1>[] = [
     {
       headerName: '단계별 진행현황',
@@ -627,6 +628,7 @@ export default function Ltpa360Section() {
       headerName: '세부내용',
       field: 'field02',
       width: 400,
+      cellClass: 'text-left',
     },
     {
       headerName: '계획일정',
@@ -652,6 +654,7 @@ export default function Ltpa360Section() {
   ];
 
   // Tab1_1 AGGrid Column
+  // 2026-05-28: cellClass 변경
   const columnDefs1b: ColDef<Ltpa360DummyDataRow1b>[] = [
     {
       headerName: '판매일자',
@@ -675,6 +678,7 @@ export default function Ltpa360Section() {
       headerName: '보종명',
       field: 'field03',
       flex: 1,
+      cellClass: 'text-left',
       cellClassRules: {
         'font-bold': (params) =>
           Object.values(params.data ?? {}).some((v) => typeof v === 'string' && v.includes('지연')),

@@ -221,12 +221,13 @@ export default function Ltpa560Section() {
   const [rowData] = React.useState<Ltpa560DummyDataRow[]>(Ltpa560DummyData);
 
   // AgGrid Column
+  // 2026-05-29 수정 cellClass 추가
   const columnDefs: (ColDef<Ltpa560DummyDataRow> | ColGroupDef<Ltpa560DummyDataRow>)[] = [
     {
       headerName: '상품',
       flex: 1,
       field: 'field01',
-      cellClass: 'text-center [&>div]:whitespace-normal',
+      cellClass: 'text-center [&>div]:whitespace-normal [&_span]:leading-normal',
       spanRows: true,
       autoHeight: true,
       colSpan: (params) => (params.node?.rowPinned === 'bottom' ? 3 : 1),

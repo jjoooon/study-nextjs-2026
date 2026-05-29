@@ -194,6 +194,7 @@ export default function Ltpa500Section() {
   const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
   // AgGrid Column
+  // 2026-05-29 수정 cellClass 수정
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '업무구분',
@@ -217,7 +218,7 @@ export default function Ltpa500Section() {
       headerName: '상품명',
       field: 'field04',
       flex: 1.4,
-      cellClass: 'text-center',
+      cellClass: 'text-left',
     },
     {
       headerName: '계약자',
