@@ -205,7 +205,7 @@ function Checkbox({
   }
 
   return (
-    <div className={cn('relative', `flex items-center gap-1 ${isFavorite ? 'h-full' : ''}`)}>
+    <div className={cn('relative', `flex items-center gap-x-1 gap-y-[0.2rem] ${isFavorite ? 'h-full' : ''}`)}>
       <CheckboxPrimitive.Root
         data-slot="checkbox"
         id={checkboxId}
@@ -522,7 +522,7 @@ function CheckboxGroup({
       <div className={cn('relative', width === 'full' ? 'w-full' : 'w-auto')}>
         <div
           role="group"
-          className={cn('flex items-center justify-start flex-wrap w-full', className)}
+          className={cn('flex items-center justify-start flex-wrap w-full gap-x-2 gap-y-1', className)}
           data-required={required ? 'true' : undefined}
           data-disabled={disabled ? 'true' : undefined}
           data-invalid={isError ? 'true' : undefined}
