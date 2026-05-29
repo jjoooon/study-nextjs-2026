@@ -188,29 +188,28 @@ const Ltpz054 = () => {
           </Grow>
 
           {/* 조회 정보 */}
-          <Grid placement="ss" className="w-full grid-rows-[1fr_1fr]" gap={5}>
+          <Grid placement="ss" className="w-full grid-rows-[1fr_1fr]" gap={3}> {/* 2026-05-28 gap 수정 */}
             <TableFold>
               <TableFoldHead title="당사 스캔대상 발급물"></TableFoldHead>
               <TableFoldBody>
-                <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={DummyData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{ sortable: false }}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      onCellDoubleClicked={handleCellDoubleClicked}
-                    />
-                  </div>
-                </Grid>
+                {/* 2026-05-28 Grid 삭제 */}
+                <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <AgGridReact<DummyDataType>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={DummyData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{ sortable: false }}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                    onCellDoubleClicked={handleCellDoubleClicked}
+                  />
+                </div>
               </TableFoldBody>
             </TableFold>
             <TableFold>
@@ -222,25 +221,24 @@ const Ltpz054 = () => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={DummyData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{ sortable: false }}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      onCellDoubleClicked={handleCellDoubleClicked}
-                    />
-                  </div>
-                </Grid>
+                {/* 2026-05-28 Grid 삭제 */}
+                <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <AgGridReact<DummyDataType>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={DummyData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{ sortable: false }}
+                    rowSelection={{
+                      mode: 'multiRow',
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                    onCellDoubleClicked={handleCellDoubleClicked}
+                  />
+                </div>
               </TableFoldBody>
             </TableFold>
           </Grid>
