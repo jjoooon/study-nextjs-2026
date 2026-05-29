@@ -62,7 +62,7 @@ const Ltpz101 = () => {
       headerName: '위배내용',
       field: 'field3',
       flex: 2,
-      cellClass: 'text-center',
+      cellClass: 'text-left', // 2026-05-29 text-left으로 변경
     },
   ];
 
