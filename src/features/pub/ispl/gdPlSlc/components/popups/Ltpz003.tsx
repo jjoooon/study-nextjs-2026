@@ -31,8 +31,8 @@ const Ltpz003 = () => {
           </DialogTitle>
         </DialogHeader>
         {/* M1. 전체적으로 수정 */}
-        <DialogSection className="grid-rows-[1fr] h-[50rem]">
-          <div className="!relative h-full">
+        <DialogSection className="grid-rows-[1fr]">
+          <div className="!relative min-h-[30rem] h-full">
             <Ltpa3500301 sampleMode={true} />
           </div>
         </DialogSection>

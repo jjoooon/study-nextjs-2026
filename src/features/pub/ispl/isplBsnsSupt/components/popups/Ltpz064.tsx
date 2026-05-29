@@ -616,7 +616,8 @@ export const Ltpz064 = () => {
               </TableFold>
               <Gcol className="w-full" placement="ss" variant="box-warning">
                 <Typo icon="warning">
-                  [다수 피보험자 정보]란의 좌측에 있는 체크박스를 통하여 체크된 피보험자에게 아래의 정보가 일괄등록됩니다.
+                  [다수 피보험자 정보]란의 좌측에 있는 체크박스를 통하여 체크된 피보험자에게 아래의 정보가
+                  일괄등록됩니다.
                 </Typo>
               </Gcol>
             </Gcol>
