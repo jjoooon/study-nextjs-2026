@@ -243,7 +243,7 @@ export const Ltpa35005 = () => {
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
                   {/* M5. cols 수정 */}
-                  <FormTable cols={['w-[14rem]', 'w-[auto]', 'w-[13rem]', 'w-[auto]']}>
+                  <FormTable cols={['w-[13rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
                     <FormRow>
                       <FormCell title={'만기수익자'} colSpan={3}>
                         <NativeSelect aria-label="주피와 관계 선택" width={100} className="ml-[0.4rem]">

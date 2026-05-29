@@ -294,7 +294,7 @@ const RadioGroupItem = React.forwardRef<
               <div
                 className={cn(
                   radioIndicatorVariants({ size: indicatorSize, color, disabled: isDisabled }),
-                  size === 'lg' && 'h-[1rem] w-[1rem]',
+                  size === 'lg' && 'h-[0.9rem] w-[0.9rem]',
                   size === 'md' && 'h-[0.6rem] w-[0.6rem]'
                 )}
               />
