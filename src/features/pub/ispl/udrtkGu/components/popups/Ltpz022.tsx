@@ -197,7 +197,7 @@ const Ltpz022 = () => {
     {
       headerName: '인수제한',
       field: 'criteria',
-      width: 140,
+      width: 80,
       spanRows: true,
       cellClass: 'flex! items-center! justify-center! whitespace-pre-line text-center',
       cellStyle: (params) => ({
@@ -231,7 +231,7 @@ const Ltpz022 = () => {
       }),
       cellRenderer: (params: ICellRendererParams<UnderwritingViolationRow>) => (
         <div
-          className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
+          className="h-full w-full py-1.5 pl-1 leading-[1.3] whitespace-normal"
           dangerouslySetInnerHTML={{ __html: applyDetailsColor(String(params.data?.details ?? '')) }}
         />
       ),
@@ -242,7 +242,7 @@ const Ltpz022 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="md" className="h-[50rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -260,7 +260,7 @@ const Ltpz022 = () => {
               <FormRow>
                 <FormCell title={'설계번호'} className="whitespace-nowrap">
                   <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} align="center" readOnly />
-                  <Input aria-label="" width={300} value={'한화 시그니처 여성 건강보험4.0'} readOnly />
+                  <Input aria-label="" width={200} value={'한화 시그니처 여성 건강보험4.0'} readOnly />
                   <Input aria-label="" width={80} value={''} readOnly />
                 </FormCell>
                 <FormCell title={'플랜명'} className="whitespace-nowrap">
@@ -273,7 +273,7 @@ const Ltpz022 = () => {
             data={tabs}
             active={active}
             setActive={setActive}
-            removable={true}
+            removable={false}
             onRemove={handleRemove}
             visibleCount={5}
             hasTableBelow={true}
@@ -300,7 +300,7 @@ const Ltpz022 = () => {
               ></Button>
             )}
           >
-            <div className="ag-theme-alpine ag-border-t min-h-[36rem]">
+            <div className="ag-theme-alpine ag-border-t min-h-[16rem]">
               <AgGridReact<UnderwritingViolationRow>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
@@ -312,6 +312,7 @@ const Ltpz022 = () => {
                   gridApiRef.current = params.api;
                 }}
                 onCellClicked={handleCellClicked}
+                animateRows={false}
               />
             </div>
           </TabPager>

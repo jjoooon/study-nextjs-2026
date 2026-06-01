@@ -164,10 +164,10 @@ function Checkbox({
 
   if (isText) {
     const checkedColor =
-      color === 'info' ? 'text-[var(--color-element-information,#006ff2)]' : 'text-[var(--color-primary-50)]';
+      color === 'info' ? 'text-[var(--color-information-50, #006ff2)]' : 'text-[var(--color-primary-50)]';
 
     const labelClass = [
-      'text-[1.3rem] font-normal select-none cursor-pointer tracking-[-0.13rem]',
+      'text-[1.3rem] font-normal select-none cursor-pointer tracking-[-0.13rem] underline underline-offset-4',
       checkedState === true && `underline underline-offset-4 font-bold! ${checkedColor}`,
     ]
       .filter(Boolean)

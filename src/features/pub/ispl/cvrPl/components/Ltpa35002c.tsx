@@ -101,7 +101,7 @@ export function Ltpa35002c() {
       {
         headerName: '구분',
         field: 'field1',
-        flex: 1,
+        flex: 3,
         cellClass: 'text-left',
       },
       {
@@ -169,7 +169,8 @@ export function Ltpa35002c() {
       {
         headerName: '수용장소상세',
         field: 'field5',
-        width: attributeColumnWidth[10],
+        flex: 1,
+        // width: attributeColumnWidth[10],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: 'editable-cell',
         editable: true,

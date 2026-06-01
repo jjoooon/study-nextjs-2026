@@ -327,7 +327,8 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       {
         headerComponent: () => <HeaderWithUnit label="UW" unit="예상" className="flex-row-reverse" />,
         field: 'field8',
-        width: attributeColumnWidth[6],
+        flex: 1,
+        // width: attributeColumnWidth[6],
         cellClass: 'text-center px-0! tracking-tighter',
         cellRenderer: uwIconRenderer,
       },
@@ -542,7 +543,8 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 autoGroupColumnDef={{
                   headerComponent: productNameHeader,
                   field: 'id',
-                  flex: 1,
+                  minWidth: 400,
+                  flex: 8,
                   cellClass: (_) => 'text-left !p-0',
                   cellRenderer: productNameCellRenderer,
                   tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시

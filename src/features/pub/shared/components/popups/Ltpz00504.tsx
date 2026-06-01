@@ -378,6 +378,7 @@ const Ltpz00504 = () => {
                     domLayout={expectedUwLimitedCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
+                    animateRows={false}
                   />
                 </div>
               </TableFoldBody>
@@ -411,6 +412,7 @@ const Ltpz00504 = () => {
                     domLayout={expectedUwPremiumSurchargeRowData.length >= 4 ? 'normal' : 'autoHeight'}
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
+                    animateRows={false}
                   />
                 </div>
               </TableFoldBody>
@@ -444,6 +446,7 @@ const Ltpz00504 = () => {
                     domLayout={expectedUwExclusionCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
+                    animateRows={false}
                   />
                 </div>
               </TableFoldBody>

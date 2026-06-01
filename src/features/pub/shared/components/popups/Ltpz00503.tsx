@@ -202,6 +202,7 @@ const Ltpz00503 = () => {
               domLayout="normal"
               tooltipShowMode="whenTruncated"
               tooltipShowDelay={0}
+              animateRows={false}
             />
           </div>
         </Gcol>

@@ -210,7 +210,9 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           </Grow>
         ),
         field: 'insuredAmount',
-        width: attributeColumnWidth[9],
+        flex: 1,
+        minWidth: 80,
+        // width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         cellClassRules: {
           'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
@@ -506,7 +508,8 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   autoGroupColumnDef={{
                     headerComponent: productNameHeader,
                     field: 'id',
-                    flex: 1,
+                    flex: 7,
+                    minWidth: 560,
                     cellClass: (_) => 'text-left !p-0',
                     cellRenderer: productNameCellRenderer<AgGridRow>,
                     tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시

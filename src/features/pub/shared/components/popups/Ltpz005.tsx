@@ -188,7 +188,7 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
                     타사정액담보해약확인서 등록
                   </Button>
                   <Button variant={'contained'} size={'xl'}>
-                    보험료지침(지침)
+                    보험료계산(지침)
                   </Button>
                   <DialogClose asChild>
                     <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
