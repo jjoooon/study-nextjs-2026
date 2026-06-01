@@ -82,19 +82,20 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa250Section() {
+  // 2026-06-01 width, flex 수정
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '',
       field: 'id',
-      width: 40,
+      width: 30,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '보장내용',
       field: 'field01',
-      flex: 1,
+      flex: 1.2,
       cellClass: 'text-left',
       autoHeight: true,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -138,7 +139,7 @@ export default function Ltpa250Section() {
           headerName: '(단위:천원)',
           cellClass: 'text-right',
           field: 'field04',
-          width: 80,
+          width: 70,
           autoHeight: true,
           valueFormatter: numberValueFormatter<DummyDataType>,
         },
@@ -192,7 +193,7 @@ export default function Ltpa250Section() {
     {
       headerName: '보험상태',
       cellClass: 'text-center',
-      width: 70,
+      width: 60,
       field: 'field10',
       autoHeight: true,
     },
@@ -200,7 +201,7 @@ export default function Ltpa250Section() {
       headerName: '상태변경일자',
       cellClass: 'text-center',
       field: 'field11',
-      width: 90,
+      width: 80,
       autoHeight: true,
     },
     {
@@ -324,7 +325,7 @@ export default function Ltpa250Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr]" gap={3}>
+          <Grid className="h-full grid-rows-[auto_1fr]" gap={3}> { /* 2026-06-01 h-full 추가 */ }
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable
                 variant={'head'}
@@ -342,7 +343,7 @@ export default function Ltpa250Section() {
               </FormTable>
             </Grow>
             <Gcol className="w-full" gap={1}>
-              <div className="ag-theme-alpine min-h-150">
+              <div className="ag-theme-alpine"> {/* 2026-06-01 높이값 삭제 */}
                 <AgGridReact<DummyDataType>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={DummyData}
