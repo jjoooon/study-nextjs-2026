@@ -105,7 +105,7 @@ const Ltpz027 = () => {
     },
     {
       headerName: '확인필요',
-      width: 90,
+      flex: 1,
       field: 'field07',
       cellClass: 'text-center px-0!',
       autoHeight: true,

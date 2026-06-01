@@ -256,8 +256,8 @@ export default function Ltpa010Section() {
                     rowData={rowData}
                     columnDefs={columnDefs}
                     defaultColDef={{
-                      sortable: false,
-                      resizable: false,
+                      sortable: true,
+                      resizable: true,
                     }}
                     domLayout="autoHeight"
                   />

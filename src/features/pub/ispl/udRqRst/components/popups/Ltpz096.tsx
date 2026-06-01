@@ -173,7 +173,7 @@ const Ltpz096 = () => {
     {
       headerName: '질병명',
       field: 'field02',
-      width: 150,
+      flex: 3,
     },
     {
       headerName: '원사고발생일',
@@ -188,27 +188,27 @@ const Ltpz096 = () => {
     {
       headerName: '입원',
       field: 'field05',
-      width: 180,
+      width: 200,
     },
     {
       headerName: '통원',
       field: 'field06',
-      width: 70,
+      width: 50,
     },
     {
       headerName: '수술',
       field: 'field07',
-      flex: 1,
+      width: 40,
     },
     {
       headerName: '고지여부',
       field: 'field08',
-      width: 90,
+      width: 70,
     },
     {
       headerName: '체크',
       field: 'field09',
-      width: 90,
+      flex: 1,
       cellStyle: (params) => {
         return params.value ? { color: '#006FF2' } : undefined;
       },

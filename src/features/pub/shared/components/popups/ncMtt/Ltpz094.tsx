@@ -186,6 +186,7 @@ const Ltpz094 = () => {
               }}
               enableCellSpan={true}
               domLayout="normal"
+              animateRows={false}
             />
           </div>
         </DialogSection>

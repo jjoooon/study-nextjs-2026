@@ -24,7 +24,6 @@ import {
 import { Input } from '@uiux/Input';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { useState } from 'react';
 
 type DummyDataType = {
@@ -108,26 +107,26 @@ const Ltpz060 = () => {
       headerName: '구분',
       field: 'field02',
       wrapText: true,
-      width: 200,
+      flex: 2.4,
       cellClass: 'text-center h-full',
     },
     {
       field: 'field03',
       headerName: '급수',
-      flex: 1,
+      width: 60,
       cellClass: 'text-center h-full',
     },
     {
       headerName: '목적물가입금액',
       field: 'field04',
-      width: 150,
+      flex: 1,
       cellClass: 'text-right h-full',
       valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     },
     {
       headerName: '가입금액',
       field: 'field05',
-      width: 150,
+      flex: 1,
       cellClass: 'text-right h-full',
       valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     },

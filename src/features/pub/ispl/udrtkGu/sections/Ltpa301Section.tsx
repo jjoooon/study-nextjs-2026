@@ -90,12 +90,12 @@ export default function Ltpa301Section() {
     {
       headerName: '순번',
       field: 'field02',
-      width: 60,
+      width: 40,
     },
     {
       headerName: '점검일자',
       field: 'field03',
-      width: 90,
+      width: 80,
     },
 
     {
@@ -121,28 +121,32 @@ export default function Ltpa301Section() {
     {
       headerName: '가입한도',
       field: 'field08',
-      width: 100,
+      flex: 1,
+      minWidth: 100,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '초과금액',
       field: 'field09',
-      width: 100,
+      flex: 1,
+      minWidth: 100,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '당사금액',
       field: 'field10',
-      width: 100,
+      flex: 1,
+      minWidth: 100,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '타사금액',
       field: 'field11',
-      width: 100,
+      flex: 1,
+      minWidth: 100,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -160,6 +164,7 @@ export default function Ltpa301Section() {
       headerName: '처리내용',
       field: 'field14',
       flex: 1,
+      minWidth: 120,
       cellClass: 'text-left ',
     },
   ];

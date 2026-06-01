@@ -257,7 +257,7 @@ const Ltpz061 = () => {
       field: 'field02',
       wrapText: true,
       autoHeight: true,
-      width: 200,
+      flex: 6,
       cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
       cellRenderer: (params: ICellRendererParams<DummyDataType1>) => {
         return (
@@ -275,7 +275,7 @@ const Ltpz061 = () => {
       children: [
         {
           field: 'field03',
-          width: 130,
+          width: 60,
           singleClickEdit: false,
           headerName: '',
           cellClass: (params: CellClassParams<DummyDataType1>) => {
@@ -292,7 +292,7 @@ const Ltpz061 = () => {
         },
         {
           field: 'field04',
-          width: 130,
+          width: 60,
           editable: (params: EditableCallbackParams<DummyDataType1>) => params.data?.isRowSelected === true,
           singleClickEdit: false,
           headerName: '',
@@ -326,7 +326,7 @@ const Ltpz061 = () => {
     {
       headerName: '부담보사유',
       field: 'field05',
-      flex: 1,
+      flex: 5,
       cellClass: 'text-center h-full',
       editable: true,
       cellEditor: ReasonCellEditor,
@@ -335,7 +335,7 @@ const Ltpz061 = () => {
     {
       headerName: '수정',
       field: 'isCheck',
-      width: 60,
+      flex: 1,
       cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
       cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
       editable: true,
@@ -355,7 +355,7 @@ const Ltpz061 = () => {
       field: 'field02',
       wrapText: true,
       autoHeight: true,
-      width: 200,
+      flex: 6,
       cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
         return (
@@ -373,7 +373,7 @@ const Ltpz061 = () => {
       children: [
         {
           field: 'field03',
-          width: 130,
+          width: 60,
           editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
           singleClickEdit: false,
           headerName: '',
@@ -389,7 +389,7 @@ const Ltpz061 = () => {
         },
         {
           field: 'field04',
-          width: 130,
+          width: 60,
           editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
           singleClickEdit: false,
           headerName: '',
@@ -423,7 +423,7 @@ const Ltpz061 = () => {
     {
       headerName: '부담보사유',
       field: 'field05',
-      flex: 1,
+      flex: 5,
       cellClass: 'text-center h-full aligns-center',
       editable: true,
       cellEditor: ReasonCellEditor,
@@ -432,7 +432,7 @@ const Ltpz061 = () => {
     {
       headerName: '수정',
       field: 'isCheck',
-      width: 60,
+      flex: 1,
       cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
       cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
       editable: true,

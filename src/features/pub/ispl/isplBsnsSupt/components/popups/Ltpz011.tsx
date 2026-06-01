@@ -161,7 +161,7 @@ const Ltpz011 = () => {
     {
       headerName: '세부담보명',
       field: 'coverage',
-      flex: 1,
+      flex: 2,
       tooltipValueGetter: createTooltipValueGetter<ComparisonRow>({ field: 'coverage' }),
       cellClass: (params) => (params.data?.isSumRow ? 'text-left font-bold' : 'text-left'),
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
@@ -170,7 +170,7 @@ const Ltpz011 = () => {
     {
       headerName: '보험료(원)',
       field: 'premium',
-      width: 120,
+      flex: 1,
       cellClass: 'text-right',
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
         params.data?.isSumRow ? (

@@ -223,7 +223,7 @@ export default function Ltpa060Section() {
     {
       headerName: '질병명',
       field: 'field2',
-      flex: 1,
+      flex: 4,
       cellClass: 'text-left',
     },
     {
@@ -265,7 +265,7 @@ export default function Ltpa060Section() {
     {
       headerName: '체크',
       field: 'field9',
-      width: 70,
+      flex: 1,
       cellClass: 'text-center',
       cellRenderer: (params: { data: DummyDataType }) => (
         <Gcol placement="cc" className="h-full">
@@ -288,7 +288,7 @@ export default function Ltpa060Section() {
     {
       headerName: '질병명',
       field: 'field2',
-      flex: 1,
+      flex: 4,
       cellClass: 'text-left',
     },
     {
@@ -330,7 +330,7 @@ export default function Ltpa060Section() {
     {
       headerName: '체크',
       field: 'field9',
-      width: 70,
+      flex: 1,
       cellClass: 'text-center',
       cellRenderer: (params: { data: DummyDataType }) => (
         <Gcol placement="cc" className="h-full">

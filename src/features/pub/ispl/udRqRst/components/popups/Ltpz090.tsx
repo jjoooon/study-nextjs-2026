@@ -161,7 +161,7 @@ const Ltpz090 = () => {
     {
       headerName: '작업구분',
       field: 'field04',
-      flex: 1,
+      flex: 3,
       cellClass: 'text-center',
     },
     {
@@ -199,7 +199,7 @@ const Ltpz090 = () => {
     {
       headerName: '보기',
       field: 'field07',
-      width: 70,
+      flex: 1,
       autoHeight: true,
       cellClass: 'text-center',
       cellRenderer: () => (

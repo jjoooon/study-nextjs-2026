@@ -159,21 +159,21 @@ const Ltpz042 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '직원번호',
-      flex: 1,
+      width: 80,
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
     {
       headerName: '직원명',
-      flex: 1,
+      width: 80,
       field: 'field02',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
     {
       headerName: '지점번호',
-      flex: 1,
+      width: 80,
       field: 'field03',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
@@ -187,14 +187,14 @@ const Ltpz042 = () => {
     },
     {
       headerName: '유자격자번호',
-      flex: 1,
+      width: 80,
       field: 'field05',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
     {
       headerName: '유자격자명',
-      flex: 1,
+      width: 80,
       field: 'field06',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
@@ -225,7 +225,7 @@ const Ltpz042 = () => {
     () => ({ mode: 'singleRow' as const, checkboxes: true, enableClickSelection: false }),
     []
   );
-  const selectionColumnDef = React.useMemo(() => ({ headerName: '선택' }), []);
+  const selectionColumnDef = React.useMemo(() => ({ headerName: '선택', width: 30 }), []);
 
   return (
     <Dialog open>

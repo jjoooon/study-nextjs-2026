@@ -88,24 +88,24 @@ const Ltpz017 = () => {
     {
       headerName: '회사플랜명',
       field: 'planName',
-      flex: 1,
+      flex: 6,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'planName' }),
     },
     {
       headerName: '나만의플랜명',
       field: 'myPlanName',
-      width: 120,
+      flex: 1,
     },
     {
       headerName: '등록일자',
       field: 'registrationDate',
-      width: 100,
+      width: 80,
       cellClass: 'text-center',
     },
     {
       headerName: '적용대상',
       field: 'target',
-      width: 80,
+      flex: 1,
       cellClass: 'text-center',
       cellRenderer: attributeRenderer,
     },

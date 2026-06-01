@@ -435,26 +435,26 @@ const Ltpz026 = () => {
     {
       headerName: '대표질병코드',
       field: 'field01',
-      width: 100,
+      width: 80,
       cellClass: 'text-center',
     },
     {
       headerName: '질병명',
       field: 'field02',
-      width: 200,
-      cellClass: 'text-center',
+      flex: 2,
+      cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '원사고발생일',
       field: 'field03',
-      width: 110,
+      width: 100,
       cellClass: 'text-center',
     },
     {
       headerName: '최종사고발생일',
       field: 'field04',
-      width: 110,
+      width: 100,
       cellClass: 'text-center',
     },
     {
@@ -466,13 +466,13 @@ const Ltpz026 = () => {
     {
       headerName: '통원',
       field: 'field06',
-      width: 80,
+      width: 60,
       cellClass: 'text-center',
     },
     {
       headerName: '수술',
       field: 'field07',
-      flex: 1,
+      width: 50,
       cellClass: 'text-center',
     },
     {
@@ -484,7 +484,7 @@ const Ltpz026 = () => {
     {
       headerName: '체크',
       field: 'field09',
-      width: 90,
+      flex: 1,
       cellClass: 'text-center',
       cellStyle: (params) => {
         return params.value ? { color: '#006FF2' } : undefined;
@@ -497,14 +497,14 @@ const Ltpz026 = () => {
     {
       headerName: '제한 담보명',
       field: 'field01',
-      flex: 1,
+      flex: 3,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeT1>({ field: 'field01' }),
     },
     {
       headerName: '가입금액(원)',
       field: 'field02',
-      width: 90,
+      flex: 1,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -514,14 +514,14 @@ const Ltpz026 = () => {
     {
       headerName: '제한 담보명',
       field: 'field01',
-      flex: 1,
+      flex: 3,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeT2>({ field: 'field01' }),
     },
     {
       headerName: '가입금액(원)',
       field: 'field02',
-      width: 90,
+      flex: 1,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -531,14 +531,14 @@ const Ltpz026 = () => {
     {
       headerName: '부담보부위명',
       field: 'field01',
-      flex: 1,
+      flex: 3,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeT3>({ field: 'field01' }),
     },
     {
       headerName: '기간',
       field: 'field02',
-      width: 90,
+      flex: 1,
       cellClass: 'text-center',
     },
   ];

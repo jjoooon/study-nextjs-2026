@@ -148,7 +148,7 @@ const Ltpz062 = () => {
     {
       headerName: '체크',
       field: 'field7',
-      width: 60,
+      flex: 1,
       cellClass: 'text-center',
       cellRenderer: (params: { data: DummyDataType }) => (
         <Gcol placement="cc" className="h-full">

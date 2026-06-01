@@ -121,7 +121,7 @@ const Ltpz046 = () => {
     },
     {
       headerName: '가입금액',
-      width: 120,
+      flex: 1,
       field: 'field05',
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,

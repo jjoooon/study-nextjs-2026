@@ -288,7 +288,7 @@ const Ltpz019 = () => {
       headerName: '상품분류',
       field: 'field1',
       cellClass: 'text-center',
-      width: 100,
+      width: 80,
     },
     {
       headerName: '상품명',

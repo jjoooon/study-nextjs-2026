@@ -103,7 +103,7 @@ const Ltpz066 = () => {
     {
       headerName: '담보명',
       field: 'field02',
-      flex: 1,
+      flex: 3,
       resizable: true,
       cellClass: `text-left`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
@@ -111,7 +111,7 @@ const Ltpz066 = () => {
     {
       headerName: '가입금액',
       field: 'field03',
-      width: 120,
+      flex: 1,
       resizable: true,
       cellClass: `text-center`,
       editable: true,
@@ -132,7 +132,7 @@ const Ltpz066 = () => {
     {
       headerName: '담보명',
       field: 'field02',
-      flex: 1,
+      flex: 3,
       resizable: true,
       cellClass: `text-left`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field02' }),
@@ -140,7 +140,7 @@ const Ltpz066 = () => {
     {
       headerName: '가입금액(만원)',
       field: 'field03',
-      width: 120,
+      flex: 1,
       resizable: true,
       cellClass: `text-right`,
       valueParser: (params) => Number(params.newValue) || 0,

@@ -95,7 +95,7 @@ const Ltpz072 = () => {
     },
     {
       headerName: '대상이 되는 부위 또는 질병',
-      flex: 1,
+      flex: 3,
       field: 'field03',
       cellClass: 'text-left',
       minWidth: 150,
@@ -115,7 +115,7 @@ const Ltpz072 = () => {
     },
     {
       headerName: '사유코드',
-      width: 100,
+      flex: 1,
       field: 'field07',
       cellClass: 'text-center',
     },

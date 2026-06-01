@@ -286,19 +286,18 @@ const Ltpz039 = () => {
     },
     {
       headerName: '실손의료비',
-      width: 140,
       autoHeight: true,
       children: [
         {
           headerName: '납입보험료',
           field: 'field15',
-          width: 80,
+          flex: 1,
           cellClass: 'text-right flex [&>div>span]:h-auto!',
         },
         {
           headerName: '환급금',
           field: 'field16',
-          width: 60,
+          flex: 1,
           cellClass: 'text-right flex [&>div>span]:h-auto!',
         },
       ],

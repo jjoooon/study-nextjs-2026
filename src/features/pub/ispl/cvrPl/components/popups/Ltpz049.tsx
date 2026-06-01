@@ -97,7 +97,7 @@ const Ltpz049 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '할증담보',
-      flex: 1,
+      flex: 2,
       field: 'field01',
       colSpan: (params: ColSpanParams<DummyDataType>) => (params.data?.isSumRow ? 2 : 1),
     },
@@ -123,7 +123,7 @@ const Ltpz049 = () => {
     },
     {
       headerName: '적용보험료(원)',
-      width: 170,
+      flex: 1,
       field: 'field05',
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,

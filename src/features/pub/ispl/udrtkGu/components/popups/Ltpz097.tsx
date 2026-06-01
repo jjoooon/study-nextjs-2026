@@ -125,7 +125,7 @@ const Ltpz097 = () => {
     {
       headerName: '누적위험명',
       field: 'accRisk',
-      width: 250,
+      flex: 2,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -136,7 +136,7 @@ const Ltpz097 = () => {
     {
       headerName: '설계별 누적금액',
       field: 'accDesignAmt',
-      flex: 1,
+      width: 100,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -148,7 +148,7 @@ const Ltpz097 = () => {
     {
       headerName: '전체누적금액',
       field: 'accTotalAmt',
-      flex: 1,
+      width: 100,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -171,7 +171,7 @@ const Ltpz097 = () => {
     {
       headerName: '누적위험명',
       field: 'upperAccRisk',
-      width: 250,
+      flex: 2,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -182,7 +182,7 @@ const Ltpz097 = () => {
     {
       headerName: '설계별 누적금액',
       field: 'upperDesignAmt',
-      flex: 1,
+      width: 100,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -194,7 +194,7 @@ const Ltpz097 = () => {
     {
       headerName: '전체누적금액',
       field: 'upperTotalAmt',
-      flex: 1,
+      width: 100,
       sortable: false,
       filter: false,
       suppressMovable: true,

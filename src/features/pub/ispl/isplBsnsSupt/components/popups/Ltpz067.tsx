@@ -199,8 +199,8 @@ const Ltpz067 = () => {
                       rowData={DummyData1}
                       columnDefs={columnDefs1}
                       defaultColDef={{
-                        sortable: false,
-                        resizable: false,
+                        sortable: true,
+                        resizable: true,
                       }}
                       enableCellSpan={true}
                     />

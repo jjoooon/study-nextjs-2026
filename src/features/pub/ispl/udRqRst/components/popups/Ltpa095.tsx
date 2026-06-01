@@ -108,7 +108,7 @@ const Ltpa095 = () => {
     {
       headerName: '사유코드',
       field: 'field05',
-      width: 100,
+      flex: 1,
       cellClass: 'text-center',
     },
   ];
@@ -123,7 +123,7 @@ const Ltpa095 = () => {
     {
       headerName: '보험기간',
       field: 'field02',
-      flex: 1,
+      flex: 2,
       cellClass: 'text-center',
     },
     {
@@ -143,7 +143,7 @@ const Ltpa095 = () => {
     {
       headerName: '적용보험료(원)',
       field: 'field05',
-      width: 120,
+      flex: 1,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
