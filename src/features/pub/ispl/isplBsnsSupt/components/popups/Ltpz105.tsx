@@ -168,7 +168,6 @@ const Ltpz105 = () => {
                 singleClickEdit={true}
                 rowClassRules={{}}
                 domLayout="normal"
-                alwaysShowVerticalScroll={true}
               />
             </div>
             <Gcol className="w-full" placement="ss" variant="box-warning">
@@ -190,7 +189,6 @@ const Ltpz105 = () => {
               singleClickEdit={true}
               rowClassRules={{}}
               domLayout="normal"
-              alwaysShowVerticalScroll={true}
             />
           </div>
         </DialogSection>

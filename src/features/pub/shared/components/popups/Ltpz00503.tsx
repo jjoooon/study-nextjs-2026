@@ -94,19 +94,19 @@ const Ltpz00503 = () => {
     {
       headerName: '대상여부',
       field: 'targetStatus',
-      width: 100,
+      width: 70,
       cellClass: 'text-center',
     },
     {
       headerName: '증권번호',
       field: 'policyNumber',
-      width: 100,
+      width: 80,
       cellClass: 'text-center',
     },
     {
       headerName: '변경설계번호',
       field: 'changedDesignNumber',
-      width: 140,
+      width: 120,
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">

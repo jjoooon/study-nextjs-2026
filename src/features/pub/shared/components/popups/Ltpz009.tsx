@@ -108,17 +108,17 @@ const Ltpz009 = () => {
     {
       headerName: '입력일',
       field: 'field1',
-      width: 100,
+      width: 80,
     },
     {
       headerName: '입력자사번',
       field: 'field2',
-      width: 100,
+      width: 80,
     },
     {
       headerName: '입력자명',
       field: 'field3',
-      width: 100,
+      width: 70,
     },
     {
       headerName: '소속기관',

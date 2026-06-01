@@ -71,7 +71,8 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
             <Typo tag={'strong'} variant={'heading-lg'}>
               꼭 해야할 일
             </Typo>
-            <Typo tag={'p'} variant={'body-xl'}> {/* 2026-05-29 텍스트 수정 */}
+            <Typo tag={'p'} variant={'body-xl'}>
+              {/* 2026-05-29 텍스트 수정 */}
               (LTPZ005)
             </Typo>
           </DialogTitle>

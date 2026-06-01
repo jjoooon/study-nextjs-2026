@@ -420,7 +420,7 @@ const Ltpz021 = () => {
                         resizable: false,
                       }}
                       // 2026-05-29 tooltip 추가
-                      tooltipShowMode="whenTruncated" 
+                      tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
                     />
 

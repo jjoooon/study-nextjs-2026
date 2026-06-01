@@ -42,7 +42,7 @@ const Ltpz351 = () => {
     {
       headerName: '구분',
       field: 'field1',
-      width: 80,
+      width: 70,
       cellClass: 'text-center',
     },
     {
@@ -98,13 +98,16 @@ const Ltpz351 = () => {
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={{
-                  sortable: false,
-                  resizable: false,
+                  sortable: true,
+                  resizable: true,
+                }}
+                selectionColumnDef={{
+                  width: 30,
                 }}
                 rowSelection={{
                   mode: 'singleRow',
                   checkboxes: true,
-                  enableClickSelection: false,
+                  enableClickSelection: true,
                 }}
                 singleClickEdit={true}
                 rowClassRules={{}}

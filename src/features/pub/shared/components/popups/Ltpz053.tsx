@@ -62,7 +62,7 @@ const Ltpz053 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '고객명',
-      width: 100,
+      width: 60,
       field: 'field01',
       cellClass: 'text-center',
       autoHeight: true,
@@ -143,6 +143,7 @@ const Ltpz053 = () => {
               }}
               selectionColumnDef={{
                 headerName: '선택',
+                width: 30,
               }}
               onGridReady={(params) => {
                 gridApiRef.current = params.api;
