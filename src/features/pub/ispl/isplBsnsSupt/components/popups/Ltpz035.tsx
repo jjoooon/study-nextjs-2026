@@ -78,7 +78,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz035 = () => {
-  // 2026-05-29 width 수정
+  // 2026-06-01 width 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상품 코드',

@@ -90,7 +90,7 @@ export default function Ltpa690Section() {
     {
       headerName: '등록일',
       field: 'field4',
-      flex: 1, // 2026-05-29 수정
+      flex: 1, // 2026-06-01 수정
       cellClass: 'text-center',
     },
   ];
@@ -163,7 +163,7 @@ export default function Ltpa690Section() {
                 </TableFoldHead>
                 <TableFoldBody className="grid grid-rows-[1fr_auto] gap-1">
                   <div className="ag-theme-alpine">
-                    {/* 2026-05-29 resizable true로 수정, selectionColumnDef 추가 */}
+                    {/* 2026-06-01 resizable true로 수정, selectionColumnDef 추가 */}
                     <AgGridReact<DummyDataType>
                       key={loadedCount}
                       noRowsOverlayComponent={AgGridEmptyComponent}
