@@ -204,7 +204,8 @@ const Ltpz001 = () => {
     {
       headerName: '모바일',
       field: 'field8',
-      width: 50,
+      minWidth: 50,
+      flex: 1,
     },
   ];
 
@@ -281,7 +282,7 @@ const Ltpz001 = () => {
                         autoGroupColumnDef={{
                           headerName: '출력물',
                           field: 'field1',
-                          flex: 1,
+                          flex: 6,
                           tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
                         }}
                         // selection 설정

@@ -105,7 +105,8 @@ const Ltpz105 = () => {
     {
       headerName: '동의종료일',
       field: 'field4',
-      flex: 0.8,
+      flex: 1,
+      minWidth: 120,
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => {
         return (

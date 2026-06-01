@@ -119,7 +119,7 @@ export default function Ltpa260Section() {
         autoHeight: true,
         headerComponent: () => {
           return (
-            <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
+            <Grid className="h-[5.6rem] w-full grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
               <Grow placement="cc" className="w-full border-b px-2 border-(--color-gray-10)">
                 증권번호
               </Grow>
@@ -203,7 +203,7 @@ export default function Ltpa260Section() {
       {
         headerName: '계약상태',
         field: 'field12',
-        width: 120,
+        flex: 1,
         cellClass: 'text-center flex! items-center justify-center',
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => String(params.data?.field12 ?? ''),
       },
