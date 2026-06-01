@@ -76,11 +76,12 @@ const DummyData1: DummyData1Type[] = [
 ];
 
 const Ltpz080 = () => {
+  // 2026-06-01 width, flex 수정
   const columnDefs1: ColDef<DummyData1Type>[] = [
     {
       headerName: '담보코드',
       field: 'field1',
-      width: 90,
+      width: 80,
       cellClass: 'text-center',
     },
     {
@@ -92,7 +93,7 @@ const Ltpz080 = () => {
     {
       headerName: '담보그룹',
       field: 'field3',
-      width: 110,
+      width: 100,
       cellClass: 'text-center',
     },
     {

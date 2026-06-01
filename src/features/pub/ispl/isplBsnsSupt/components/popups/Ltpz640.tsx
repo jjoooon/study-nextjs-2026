@@ -457,6 +457,7 @@ const Ltpz640 = () => {
     setOpenCellMerge(false);
   }, [mergePackageName, setRowData]);
 
+  // 2026-06-01 width, flex 수정
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
     () => [
       // {

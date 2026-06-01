@@ -181,7 +181,7 @@ export default function Ltpa630Section() {
       {
         headerName: '세부',
         field: 'field2',
-        flex: 1,
+        flex: 6,
         autoHeight: true,
       },
     ],
@@ -210,12 +210,13 @@ export default function Ltpa630Section() {
     idKey: 'id',
   });
 
+  // 2026-06-01 width, flex 수정
   const columnDefs2: ColDef<DummyData2Type>[] = useMemo(
     () => [
       {
         headerName: '담보명',
         field: 'field2',
-        flex: 1,
+        flex: 6,
         cellClass: (params) =>
           params.data && params.data.filePath.length === 1
             ? 'editable-cell'
@@ -226,7 +227,7 @@ export default function Ltpa630Section() {
         headerName: '구분',
         field: 'field3',
         cellClass: 'text-center',
-        width: attributeColumnWidth[8],
+        flex: 1,
         cellRenderer: treeNameCellRenderer,
         cellRendererParams: {
           className: 'block w-full text-center',
@@ -265,7 +266,7 @@ export default function Ltpa630Section() {
                   columnDefs={columnDefs1}
                   defaultColDef={{
                     sortable: true,
-                    resizable: false,
+                    resizable: true, // 2026-06-01 true로 수정
                   }}
                   singleClickEdit={true}
                   domLayout="normal"

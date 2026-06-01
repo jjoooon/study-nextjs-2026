@@ -199,7 +199,7 @@ export default function Ltpa220Section() {
     {
       headerName: '피보험자',
       field: 'field01',
-      width: 110,
+      width: 70,
       cellClass: 'text-center',
       colSpan: (params: ColSpanParams<DummyDataType>) => {
         if (params.node?.rowPinned === 'bottom') {
@@ -211,33 +211,34 @@ export default function Ltpa220Section() {
     {
       headerName: '담보명',
       field: 'field02',
-      flex: 1,
+      flex: 10,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '실납입기간',
       field: 'field03',
-      width: 110,
+      width: 90,
       cellClass: 'text-center',
     },
     {
       headerName: '보험료(원)',
       field: 'field04',
-      width: 100,
+      width: 80,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: 'CSM배수',
       field: 'field05',
-      width: 100,
+      width: 80,
       cellClass: 'text-center',
     },
     {
       headerName: 'CSM총액',
       field: 'field06',
-      width: 100,
+      flex: 1,
+      minWidth: 85,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },

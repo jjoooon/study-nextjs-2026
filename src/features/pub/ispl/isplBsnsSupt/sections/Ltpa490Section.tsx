@@ -264,13 +264,13 @@ export default function Ltpa490Section() {
     },
     {
       headerName: '계명자명',
-      width: 70,
-      cellClass: 'text-center',
+      width: 75,
+      cellClass: 'text-center px-0!',
       autoHeight: true,
       children: [
         {
           headerName: '피보험자명',
-          width: 70,
+          width: 75,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field02', 'field03'),
@@ -309,7 +309,7 @@ export default function Ltpa490Section() {
     {
       headerName: '설계시작~유효일자',
       field: 'field08',
-      flex: 1,
+      flex: 0.9,
       cellClass: 'text-center',
       autoHeight: true,
     },
