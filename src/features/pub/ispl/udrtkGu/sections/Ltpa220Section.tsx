@@ -238,7 +238,7 @@ export default function Ltpa220Section() {
       headerName: 'CSM총액',
       field: 'field06',
       flex: 1,
-      minWidth: 85,
+      minWidth: 80,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
