@@ -199,7 +199,7 @@ export default function Ltpa220Section() {
     {
       headerName: '피보험자',
       field: 'field01',
-      width: 110,
+      width: 80,
       cellClass: 'text-center',
       colSpan: (params: ColSpanParams<DummyDataType>) => {
         if (params.node?.rowPinned === 'bottom') {
@@ -211,7 +211,7 @@ export default function Ltpa220Section() {
     {
       headerName: '담보명',
       field: 'field02',
-      flex: 1,
+      flex: 7,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
@@ -231,13 +231,13 @@ export default function Ltpa220Section() {
     {
       headerName: 'CSM배수',
       field: 'field05',
-      width: 100,
+      width: 80,
       cellClass: 'text-center',
     },
     {
       headerName: 'CSM총액',
       field: 'field06',
-      width: 100,
+      flex: 1,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },

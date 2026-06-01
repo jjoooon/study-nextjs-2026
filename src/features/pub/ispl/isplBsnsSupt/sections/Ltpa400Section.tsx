@@ -214,7 +214,7 @@ export default function Ltpa400Section() {
     {
       headerName: '지점',
       field: 'field02',
-      width: 150,
+      flex: 2,
       cellClass: 'truncate',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field02' }),
     },
@@ -271,20 +271,20 @@ export default function Ltpa400Section() {
     {
       headerName: '진행상태',
       field: 'field09',
-      width: 130,
+      width: 100,
       cellClass: 'text-center',
     },
     {
       headerName: '담당SM',
       field: 'field10',
-      width: 120,
+      width: 100,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field10' }),
     },
     {
       headerName: '지원SM',
       field: 'field11',
-      width: 120,
+      width: 100,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field11' }),
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
@@ -296,7 +296,8 @@ export default function Ltpa400Section() {
     {
       headerName: '설계번호',
       field: 'field12',
-      width: 110,
+      flex: 1,
+      minWidth: 100,
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
@@ -324,7 +325,7 @@ export default function Ltpa400Section() {
       headerName: '대리점코드',
       field: 'field02_01',
       cellClass: 'text-center',
-      flex: 1,
+      flex: 0.8,
     },
     {
       headerName: '대리점명',
@@ -342,7 +343,7 @@ export default function Ltpa400Section() {
       headerName: '사용인명',
       field: 'field05_01',
       cellClass: 'text-center',
-      flex: 0.8,
+      flex: 0.6,
     },
     {
       headerName: '상품명',
@@ -361,13 +362,13 @@ export default function Ltpa400Section() {
       headerName: '고객명',
       field: 'field08_01',
       cellClass: 'text-center',
-      flex: 0.7,
+      flex: 0.6,
     },
     {
       headerName: '설계일자',
       field: 'field09_01',
       cellClass: 'text-center',
-      flex: 1,
+      flex: 0.8,
     },
     {
       headerName: '담당SM',

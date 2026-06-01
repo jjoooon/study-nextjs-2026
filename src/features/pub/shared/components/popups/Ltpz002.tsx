@@ -103,23 +103,24 @@ const Ltpz002 = () => {
     {
       headerName: '구분',
       field: 'field1',
-      width: 100,
+      width: 80,
     },
     {
       headerName: '보험종목명',
       field: 'field2',
-      flex: 1,
+      flex: 4,
+      cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
     },
     {
       headerName: '설계번호',
       field: 'field3',
-      width: 100,
+      width: 80,
     },
     {
       headerName: '계약자',
       field: 'field4',
-      width: 100,
+      width: 80,
     },
     {
       headerName: '보험료(원)',
@@ -136,7 +137,8 @@ const Ltpz002 = () => {
     {
       headerName: '상태',
       field: 'field7',
-      width: 80,
+      flex: 1,
+      minWidth: 60,
     },
   ];
 
@@ -145,7 +147,7 @@ const Ltpz002 = () => {
       headerName: '담보명',
       field: 'field1',
       cellClass: 'text-left',
-      flex: 1,
+      flex: 3,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
     },
     {
@@ -158,7 +160,8 @@ const Ltpz002 = () => {
     {
       headerName: '보험기간',
       field: 'field3',
-      width: 80,
+      minWidth: 80,
+      flex: 1,
       cellClass: 'text-center',
     },
   ];
@@ -167,7 +170,7 @@ const Ltpz002 = () => {
       headerName: '담보명',
       field: 'field1',
       cellClass: 'text-left',
-      flex: 1,
+      flex: 3,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
     },
     {
@@ -180,7 +183,8 @@ const Ltpz002 = () => {
     {
       headerName: '보험기간',
       field: 'field3',
-      width: 80,
+      minWidth: 80,
+      flex: 1,
       cellClass: 'text-center',
     },
   ];

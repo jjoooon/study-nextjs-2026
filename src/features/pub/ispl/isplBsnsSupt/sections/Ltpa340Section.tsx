@@ -142,20 +142,20 @@ export default function Ltpa340Section() {
     {
       headerName: '상품코드',
       field: 'field02',
-      width: 110,
+      width: 90,
       cellClass: 'text-center editable-cell',
       editable: true,
     },
     {
       headerName: '상품명',
       field: 'field03',
-      flex: 1,
+      flex: 4,
       cellClass: 'text-left',
     },
     {
       headerName: '출력물구분',
       field: 'field04',
-      width: 120,
+      width: 90,
       editable: true,
       cellClass: 'text-center editable-cell',
       cellEditor: 'agSelectCellEditor',
@@ -170,7 +170,7 @@ export default function Ltpa340Section() {
     {
       headerName: '보험시기',
       field: 'field06',
-      width: 120,
+      width: 100,
       cellClass: 'text-center',
     },
     {
@@ -188,7 +188,8 @@ export default function Ltpa340Section() {
     {
       headerName: '발행성공여부',
       field: 'field09',
-      width: 100,
+      minWidth: 60,
+      flex: 1,
       cellClass: 'text-center',
     },
   ];

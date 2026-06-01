@@ -247,7 +247,7 @@ export default function Ltpa500Section() {
     {
       headerName: '보험료(원)',
       field: 'field09',
-      width: 120,
+      width: 100,
       cellClass: 'text-center',
       valueFormatter: numberValueFormatter<DummyDataType>,
     },
@@ -263,7 +263,8 @@ export default function Ltpa500Section() {
     {
       headerName: '승인',
       field: 'field11',
-      width: 80,
+      minWidth: 80,
+      flex: 1,
       cellClass: 'editable-cell text-center',
       editable: true,
       cellEditor: 'agSelectCellEditor',
