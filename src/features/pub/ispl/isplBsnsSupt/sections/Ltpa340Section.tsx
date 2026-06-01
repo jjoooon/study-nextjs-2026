@@ -48,7 +48,7 @@ const DummyData: DummyDataType[] = [
     field05: 'TM',
     field06: 'YYYY-MM-DD',
     field07: '수납완료',
-    field08: '김한화(4404732)',
+    field08: '김한화화(4404732)',
     field09: '미발행',
   },
   {
@@ -149,13 +149,13 @@ export default function Ltpa340Section() {
     {
       headerName: '상품명',
       field: 'field03',
-      flex: 4,
+      flex: 5,
       cellClass: 'text-left',
     },
     {
       headerName: '출력물구분',
       field: 'field04',
-      width: 90,
+      width: 85,
       editable: true,
       cellClass: 'text-center editable-cell',
       cellEditor: 'agSelectCellEditor',
@@ -164,7 +164,7 @@ export default function Ltpa340Section() {
     {
       headerName: '판매허용채널',
       field: 'field05',
-      width: 100,
+      width: 80,
       cellClass: 'text-center',
     },
     {
@@ -176,20 +176,20 @@ export default function Ltpa340Section() {
     {
       headerName: '설계상태',
       field: 'field07',
-      width: 80,
+      width: 70,
       cellClass: 'text-center',
     },
     {
       headerName: '설계자',
       field: 'field08',
-      width: 120,
+      width: 110,
       cellClass: 'text-center',
     },
     {
       headerName: '발행성공여부',
       field: 'field09',
-      minWidth: 60,
       flex: 1,
+      minWidth: 85,
       cellClass: 'text-center',
     },
   ];

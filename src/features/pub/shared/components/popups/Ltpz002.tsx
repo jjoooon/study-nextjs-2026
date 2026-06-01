@@ -44,7 +44,7 @@ const dummyData: DummyDataType[] = [
     id: 1,
     field1: '구분정보',
     field2: '보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명 ',
-    field3: '설계번호',
+    field3: '1234567890123456',
     field4: '계약자',
     field5: '290000',
     field6: '2023-01-01',
@@ -98,6 +98,7 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
+// 2026-06-01 agGrid width, flex, cellClass 수정
 const Ltpz002 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -108,37 +109,36 @@ const Ltpz002 = () => {
     {
       headerName: '보험종목명',
       field: 'field2',
-      flex: 4,
+      flex: 6,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
     },
     {
       headerName: '설계번호',
       field: 'field3',
-      width: 80,
+      width: 120,
     },
     {
       headerName: '계약자',
       field: 'field4',
-      width: 80,
+      width: 70,
     },
     {
       headerName: '보험료(원)',
       field: 'field5',
       cellClass: 'text-right',
-      width: 120,
+      width: 70,
       cellRenderer: numberValueFormatter,
     },
     {
       headerName: '설계일자',
       field: 'field6',
-      width: 100,
+      width: 80,
     },
     {
       headerName: '상태',
       field: 'field7',
       flex: 1,
-      minWidth: 60,
     },
   ];
 
@@ -147,20 +147,19 @@ const Ltpz002 = () => {
       headerName: '담보명',
       field: 'field1',
       cellClass: 'text-left',
-      flex: 3,
+      flex: 4,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
     },
     {
       headerName: '가입금액(만원)',
       field: 'field2',
-      width: 100,
+      width: 90,
       cellClass: 'text-right',
       cellRenderer: numberValueFormatter,
     },
     {
       headerName: '보험기간',
       field: 'field3',
-      minWidth: 80,
       flex: 1,
       cellClass: 'text-center',
     },
@@ -170,20 +169,19 @@ const Ltpz002 = () => {
       headerName: '담보명',
       field: 'field1',
       cellClass: 'text-left',
-      flex: 3,
+      flex: 4,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
     },
     {
       headerName: '가입금액(만원)',
       field: 'field2',
-      width: 100,
+      width: 90,
       cellClass: 'text-right',
       cellRenderer: numberValueFormatter,
     },
     {
       headerName: '보험기간',
       field: 'field3',
-      minWidth: 80,
       flex: 1,
       cellClass: 'text-center',
     },

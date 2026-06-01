@@ -53,15 +53,15 @@ const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
   {
     id: 1,
     field01: '26020923141',
-    field02: '신부산GA지점 신부산GA지점 신부산GA지점',
-    field03: '에이플러스에이플러스에이플러스-서면(34577)',
-    field04: '김한화김한화김한화김한화(4649111)',
+    field02: '신부산GA지점',
+    field03: '에이플러스-서면(34577)',
+    field04: '김한화(4649111)',
     field05: '기타',
-    field06: '박한화박한화박한화박한화박한화박한화박한화',
+    field06: '김한화김',
     field07: '2026-03-11 14:33',
     field08: '2026-03-11 15:33',
     field09: '신청중',
-    field10: '김한화김한화김한화김한화김한화',
+    field10: '김한화김',
     field11: '심한화',
     field12: 'LA251028678825',
   },
@@ -70,7 +70,7 @@ const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
     field01: '26020923141',
     field02: '신부산GA지점',
     field03: '에이플러스-서면(34577)',
-    field04: '김한화(4649111)',
+    field04: '김한화화(4649111)',
     field05: '종합보험',
     field06: '박한화',
     field07: '2026-03-11 14:33',
@@ -204,18 +204,19 @@ export default function Ltpa400Section() {
 
   // 2026-05-22 지원SM 버튼으로 변경
   // 2026-05-27 담당SM 버튼으로 변경
+  // 2026-06-01 width, flex, cellClass 수정, tooltipValueGetter 추가
   const columnDefs: ColDef<Ltpa400DummyDataRow>[] = [
     {
       headerName: '설계접수번호',
       field: 'field01',
-      width: 110,
+      width: 100,
       cellClass: 'text-center',
     },
     {
       headerName: '지점',
       field: 'field02',
-      flex: 2,
-      cellClass: 'truncate',
+      width: 110,
+      cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field02' }),
     },
     {
@@ -223,13 +224,13 @@ export default function Ltpa400Section() {
       field: 'field03',
       flex: 1,
       minWidth: 150,
-      cellClass: 'truncate',
+      cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field03' }),
     },
     {
       headerName: '사용인',
       field: 'field04',
-      width: 120,
+      width: 110,
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -246,45 +247,47 @@ export default function Ltpa400Section() {
     {
       headerName: '상품',
       field: 'field05',
-      width: 120,
-      cellClass: 'text-center',
+      flex: 5,
+      minWidth: 200,
+      cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field05' }),
     },
     {
       headerName: '고객명',
       field: 'field06',
-      width: 130,
+      width: 70,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field06' }),
     },
     {
       headerName: '요청일시',
       field: 'field07',
-      width: 120,
+      width: 110,
       cellClass: 'text-center',
     },
     {
       headerName: '처리일시',
       field: 'field08',
-      width: 120,
+      width: 110,
       cellClass: 'text-center',
     },
     {
       headerName: '진행상태',
       field: 'field09',
-      width: 100,
+      width: 70,
       cellClass: 'text-center',
     },
     {
       headerName: '담당SM',
       field: 'field10',
-      width: 100,
+      width: 70,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field10' }),
     },
     {
       headerName: '지원SM',
       field: 'field11',
-      width: 100,
+      width: 70,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field11' }),
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
@@ -297,7 +300,7 @@ export default function Ltpa400Section() {
       headerName: '설계번호',
       field: 'field12',
       flex: 1,
-      minWidth: 100,
+      minWidth: 105,
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
@@ -312,75 +315,78 @@ export default function Ltpa400Section() {
     {
       headerName: 'No',
       field: 'id',
-      width: 40,
+      width: 30,
       cellClass: 'text-center',
     },
     {
       headerName: '지점',
       field: 'field01_01',
       cellClass: 'text-center',
-      flex: 1,
+      width: 100,
     },
     {
       headerName: '대리점코드',
       field: 'field02_01',
       cellClass: 'text-center',
-      flex: 0.8,
+      width: 80,
     },
     {
       headerName: '대리점명',
       field: 'field03_01',
       cellClass: 'text-center',
-      flex: 1.2,
+      width: 110,
     },
     {
       headerName: '사용인코드',
       field: 'field04_01',
       cellClass: 'text-center',
-      flex: 0.8,
+      width: 80,
     },
     {
       headerName: '사용인명',
       field: 'field05_01',
       cellClass: 'text-center',
-      flex: 0.6,
+      width: 70,
     },
     {
       headerName: '상품명',
       field: 'field06_01',
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow2>({ field: 'field06_01' }),
-      flex: 1.4,
+      flex: 3,
+      minWidth: 200,
     },
     {
       headerName: '플랜명',
       field: 'field07_01',
       cellClass: 'text-left',
-      flex: 1,
+      flex: 3,
+      minWidth: 200,
+      tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow2>({ field: 'field07_01' }),
     },
     {
       headerName: '고객명',
       field: 'field08_01',
       cellClass: 'text-center',
-      flex: 0.6,
+      width: 70,
     },
     {
       headerName: '설계일자',
       field: 'field09_01',
       cellClass: 'text-center',
-      flex: 0.8,
+      width: 80,
     },
     {
       headerName: '담당SM',
       field: 'field10_01',
       cellClass: 'text-center',
-      flex: 1,
+      width: 110,
     },
     {
       headerName: '설계번호',
       field: 'field11_01',
       cellClass: 'text-center',
-      flex: 1,
+      width: 100,
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow2>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
           {params.data?.field11_01 ?? ''}
@@ -392,6 +398,7 @@ export default function Ltpa400Section() {
       field: 'field12_01',
       cellClass: 'text-center',
       flex: 1,
+      minWidth: 105,
     },
   ];
 
@@ -683,6 +690,9 @@ export default function Ltpa400Section() {
                           resizable: true,
                         }}
                         domLayout="normal"
+                        tooltipShowMode="whenTruncated" // 2026-06-01 tooltip(3가지) 추가
+                        tooltipShowDelay={0}
+                        tooltipHideDelay={3000}
                       />
                     </div>
                     {/* 2026-05-22 페이징 추가 */}

@@ -337,6 +337,7 @@ export default function Ltpa600Section() {
   );
 
   const getExpiryRenderer = createExpiryCellRenderer<DummyData2Type>;
+  // 2026-06-01 flex 수정
   const columnDefs2: (ColDef<DummyData2Type> | ColGroupDef<DummyData2Type>)[] = useMemo(
     () => [
       {
@@ -368,7 +369,7 @@ export default function Ltpa600Section() {
       {
         headerName: '담보명',
         field: 'field4',
-        flex: 1,
+        flex: 5,
         autoHeight: true,
         tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field4' }),
       },
@@ -398,7 +399,7 @@ export default function Ltpa600Section() {
       {
         headerName: '중복',
         field: 'rowCopy',
-        width: attributeColumnWidth[4],
+        flex: 1,
         cellRenderer: duplicateButtonRenderer,
       },
     ],
@@ -516,7 +517,7 @@ export default function Ltpa600Section() {
                     columnDefs={columnDefs2}
                     defaultColDef={{
                       sortable: true,
-                      resizable: false,
+                      resizable: true, // 2026-06-01 true로 변경
                     }}
                     singleClickEdit={true}
                     domLayout="normal"

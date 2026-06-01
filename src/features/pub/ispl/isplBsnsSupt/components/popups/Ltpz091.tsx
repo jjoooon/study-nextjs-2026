@@ -185,11 +185,12 @@ const DummyData: DummyDataType[] = [
 const Ltpz091 = () => {
   // AgGrid Column
   const { tabs, active, setActive } = useTabs(DATA_TABS);
+  // 2026-06-01 width, flex 수정
   // 각 컬럼별 cellRenderer 예시 명확화
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '제목',
-      flex: 1,
+      flex: 2.5,
       cellClass: 'text-left',
       cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
@@ -199,7 +200,7 @@ const Ltpz091 = () => {
     },
     {
       headerName: '요약내용',
-      flex: 1,
+      flex: 6,
       field: 'field02',
       cellClass: 'text-left editable-cell',
       editable: true,
@@ -231,7 +232,7 @@ const Ltpz091 = () => {
     },
     {
       headerName: '다운허용',
-      width: 60,
+      flex: 1,
       field: 'field06',
       cellClass: 'text-center editable-cell',
       editable: true,
