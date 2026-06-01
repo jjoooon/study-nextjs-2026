@@ -20,7 +20,7 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, ColumnResizedEvent, GridReadyEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
@@ -65,7 +65,7 @@ const DummyData: DummyDataType[] = [
     field06: 'Y',
     field07: 'CLA23321',
     field08: '나눔의행복(상해사망)',
-    field09: 98,
+    field09: 220,
     field10: 'Y',
   },
   {
@@ -203,17 +203,18 @@ export default function Ltpa540Section() {
   // 기존정보보기 체크 상태
   const [showExisting, setShowExisting] = React.useState(false);
 
+  // 2026-06-01 width, flex 수정
   // 직접 수정된 셀 추적: Set<"rowId:fieldName">
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = React.useMemo(
     () => [
       {
         headerName: '기준담보',
+        flex: 4,
         children: [
           {
             headerName: '담보코드',
             field: 'field01',
-            width: 100,
-            minWidth: 70,
+            width: 80,
             cellClass: 'text-center',
             autoHeight: true,
             spanRows: true,
@@ -221,7 +222,7 @@ export default function Ltpa540Section() {
           {
             headerName: '담보명',
             field: 'field02',
-            flex: 1,
+            flex: 7,
             cellClass: 'text-left',
             autoHeight: true,
             spanRows: true,
@@ -231,19 +232,19 @@ export default function Ltpa540Section() {
       },
       {
         headerName: '기존',
+        flex: 4,
         children: [
           {
             headerName: '담보코드',
             field: 'field03',
-            width: 100,
-            minWidth: 70,
+            width: 80,
             hide: !showExisting,
             cellClass: 'text-center',
           },
           {
             headerName: '유사 담보명',
             field: 'field04',
-            flex: 1,
+            flex: 7,
             hide: !showExisting,
             cellClass: 'text-left',
             tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
@@ -251,14 +252,16 @@ export default function Ltpa540Section() {
           {
             headerName: '순위',
             field: 'field05',
-            width: 80,
+            flex: 1,
+            suppressSizeToFit: true,
             hide: !showExisting,
             cellClass: 'text-center',
           },
           {
             headerName: '예외',
             field: 'field06',
-            width: 80,
+            flex: 1,
+            suppressSizeToFit: true,
             hide: !showExisting,
             cellClass: 'text-center',
           },
@@ -266,18 +269,18 @@ export default function Ltpa540Section() {
       },
       {
         headerName: '변경 후 (조회)',
+        flex: 4,
         children: [
           {
             headerName: '담보코드',
             field: 'field07',
-            width: 100,
-            minWidth: 70,
+            width: 80,
             cellClass: 'text-center',
           },
           {
             headerName: '유사 담보명',
             field: 'field08',
-            flex: 1,
+            flex: 7,
             cellClass: 'text-left',
             tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field08' }),
           },
@@ -285,7 +288,7 @@ export default function Ltpa540Section() {
             // 순위 — 직접 수정했을 때만 색상
             headerName: '순위',
             field: 'field09',
-            width: 80,
+            flex: 1,
             cellClass: 'text-center',
             autoHeight: true,
             editable: true,
@@ -300,7 +303,7 @@ export default function Ltpa540Section() {
             // 예외 — 직접 수정했을 때만 색상
             headerName: '예외',
             field: 'field10',
-            width: 80,
+            flex: 1,
             cellClass: 'text-center',
             autoHeight: true,
             editable: true,
