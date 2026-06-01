@@ -44,7 +44,7 @@ function NativeSelect({
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
   const baseStyle = cn(
-    'w-full rounded-[0.4rem] px-2 pr-7 text-[1.3rem] border box-border tracking-[-0.13rem] appearance-none truncate',
+    'w-full rounded-[0.4rem] px-2 pr-6 text-[1.3rem] border box-border tracking-[-0.13rem] appearance-none truncate',
     isInvalid || error
       ? 'text-[var(--color-danger-50)] bg-[var(--color-danger-5)] border-[var(--color-danger-50)] border-[0.2rem] ring-1 ring-[var(--color-danger-5)]'
       : required
@@ -81,10 +81,10 @@ function NativeSelect({
     isInvalid || error
       ? 'var(--color-danger-50)'
       : required
-        ? 'var(--color-icon-gray)'
+        ? 'var(--color-gray-50)'
         : readOnly
-          ? 'var(--color-icon-gray-lighter)'
-          : 'var(--color-icon-secondary)';
+          ? 'var(--color-gray-30)'
+          : 'var(--color-gray-50)';
 
   return (
     <div className={cn('relative', className)} style={widthStyle}>
@@ -102,8 +102,8 @@ function NativeSelect({
             />
             <SelectDropIcon
               className={cn(
-                'pointer-events-none absolute top-1/2 right-[0.8rem] -translate-y-1/2 select-none text-[var(--color-icon-basic)]',
-                size === 'lg' ? 'size-[1.6rem]' : 'size-[1.2rem]'
+                'pointer-events-none absolute top-1/2 right-[0.8rem]  select-none text-[var(--color-icon-basic)]',
+                size === 'lg' ? 'size-[1.4rem] -translate-y-[0.6rem]' : 'size-[1.2rem] -translate-y-[0.5rem]'
               )}
               aria-hidden="true"
               color={arrowStateStyle}

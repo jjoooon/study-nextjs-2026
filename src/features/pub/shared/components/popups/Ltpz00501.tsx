@@ -212,14 +212,14 @@ const Ltpz00501 = () => {
     {
       headerName: '설계',
       field: 'field01',
-      width: 100,
+      width: 80,
       spanRows: true,
       cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '인수제한',
       field: 'field02',
-      width: 100,
+      width: 80,
       spanRows: true,
       cellClass: 'flex! items-center! justify-center!',
       cellStyle: ({ value }) => {
@@ -239,8 +239,9 @@ const Ltpz00501 = () => {
       headerName: '위배내용',
       field: 'field03',
       flex: 1,
-      cellClass: 'flex! items-center! justify-start! whitespace-normal!',
+      cellClass: 'flex! !items-center !justify-start !whitespace-normal !leading-[1.4] !py-1',
       autoHeight: true,
+      resizable: false,
     },
   ];
 
@@ -464,7 +465,7 @@ const Ltpz00501 = () => {
         <TableFold>
           <TableFoldHead title="필수지침"></TableFoldHead>
           <TableFoldBody>
-            <div className="ag-theme-alpine min-h-[24rem]">
+            <div className="ag-theme-alpine ">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}

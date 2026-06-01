@@ -44,7 +44,7 @@ export function Ltpa35003Side<TData extends InfoContractBaseData = InfoContractB
     );
   }
   return (
-    <Gcol gap={3}>
+    <Gcol gap={3} className="pt-2">
       <Gcol>
         <Grow gap={2} placement={'bwc'}>
           <Grow gap={1.5} placement={'bwc'} className="overflow-hidden">

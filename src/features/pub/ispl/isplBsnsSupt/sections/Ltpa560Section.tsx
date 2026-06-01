@@ -234,7 +234,7 @@ export default function Ltpa560Section() {
     },
     {
       headerName: '채널',
-      flex: 2,
+      flex: 1.5,
       field: 'field02',
       cellClass: 'text-center',
       spanRows: true,
@@ -477,13 +477,13 @@ export default function Ltpa560Section() {
                       ))}
                     </NativeSelect>
                     <NativeSelect
-                      aria-label="자점구분"
+                      aria-label="지점구분"
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
                     >
                       {[
-                        { value: 'selection0401', label: '자점1' },
-                        { value: 'selection0402', label: '자점2' },
+                        { value: 'selection0401', label: '지점1' },
+                        { value: 'selection0402', label: '지점2' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}

@@ -208,22 +208,23 @@ const Ltpz00502 = () => {
     {
       headerName: '누적명',
       field: 'accumName',
-      width: 200,
+      flex: 1,
       spanRows: true,
-      cellClass: 'flex! items-center! justify-start!', // 2026-05-29 justify-start로 변경
+      autoHeight: true,
+      cellClass: 'flex! !items-center !justify-start !whitespace-normal !leading-[1.4] !py-1',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'accumName' }),
     },
     {
       headerName: '누적유형',
       field: 'accumType',
-      width: 80,
+      width: 60,
       spanRows: true,
       cellClass: 'flex! items-center! justify-center!',
     },
     {
-      headerName: '기누적금액(원)',
+      headerName: '기누적금액',
       field: 'pseudoAccumAmount',
-      width: 90,
+      width: 70,
       spanRows: true,
       cellClass: 'flex! items-center! justify-end!',
       valueFormatter: numberValueFormatter,
@@ -242,17 +243,17 @@ const Ltpz00502 = () => {
       },
     },
     {
-      headerName: '합계(원)',
+      headerName: '합계',
       field: 'totalAmount',
-      width: 80,
+      width: 70,
       spanRows: true,
       cellClass: 'flex! items-center! justify-end!',
       valueFormatter: numberValueFormatter,
     },
     {
-      headerName: '한도(원)',
+      headerName: '한도',
       field: 'limitAmount',
-      width: 80,
+      width: 70,
       spanRows: true,
       cellClass: 'flex! items-center! justify-end!',
       valueFormatter: numberValueFormatter,
@@ -260,15 +261,15 @@ const Ltpz00502 = () => {
     {
       headerName: '담보명',
       field: 'guaranteeName',
-      flex: 1,
+      flex: 2,
       cellClass: 'flex! items-center! justify-start!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'guaranteeName' }),
     },
     {
-      headerName: '설계금액(원)',
+      headerName: '설계금액',
       field: 'designAmount',
-      width: 80,
-      cellClass: 'text-right bg-[#EFF8FF]',
+      width: 70,
+      cellClass: 'text-right bg-[#EFF8FF] [&_input]:text-right',
       editable: true,
       valueFormatter: designAmountValueFormatter,
       valueParser: designAmountValueParser,
@@ -280,16 +281,16 @@ const Ltpz00502 = () => {
       cellClass: 'text-center',
     },
     {
-      headerName: '반영금액(원)',
+      headerName: '반영금액',
       field: 'appliedAmount',
-      width: 80,
+      width: 70,
       cellClass: 'text-right',
-      valueFormatter: numberValueFormatter, 
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '초과금액',
       field: 'excessAmount',
-      flex: 1,
+      width: 70,
       spanRows: true,
       cellClass: 'flex! items-center! justify-end! border-r-0',
       cellStyle: { borderRight: 'none' },
@@ -299,9 +300,10 @@ const Ltpz00502 = () => {
         const numericValue = Number(rawValue.replace(/,/g, ''));
 
         if (!Number.isNaN(numericValue) && numericValue === 0) {
-          return `${rawValue}(누적해소)`;
+          return <span className="text-[var(--color-success-50)]">(누적해소)</span>;
+        } else {
+          return <span className="text-[var(--color-danger-50)]">{rawValue}</span>;
         }
-        return params.value;
       },
     },
   ];
@@ -400,26 +402,33 @@ const Ltpz00502 = () => {
           </RadioGroup>
         </div>
       </TabPager>
-      <Typo tag={'strong'} variant={'body-lg'}>
-        확인사항
-      </Typo>
-      <div className="ag-theme-alpine min-h-[12.3rem]">
-        <AgGridReact<DummyDataType2>
-          getRowId={(params) => String(params.data.id)}
-          noRowsOverlayComponent={AgGridEmptyComponent}
-          rowData={selectedAccumRowData}
-          columnDefs={columnDefs2}
-          defaultColDef={{
-            sortable: true,
-            resizable: true,
-          }}
-          rowClassRules={{}}
-          enableCellSpan={true}
-          domLayout="autoHeight"
-          tooltipShowMode="whenTruncated"
-          tooltipShowDelay={0}
-        />
-      </div>
+      <Gcol>
+        <Grow className="f-full" placement="bwe">
+          <Typo tag={'strong'} variant={'body-lg'}>
+            확인사항
+          </Typo>
+          <Typo variant={'body-md'}>단위:원</Typo>
+        </Grow>
+
+        <div className="ag-theme-alpine min-h-[12.3rem]">
+          <AgGridReact<DummyDataType2>
+            getRowId={(params) => String(params.data.id)}
+            noRowsOverlayComponent={AgGridEmptyComponent}
+            rowData={selectedAccumRowData}
+            columnDefs={columnDefs2}
+            defaultColDef={{
+              sortable: true,
+              resizable: true,
+            }}
+            singleClickEdit={true}
+            enableCellSpan={true}
+            domLayout="autoHeight"
+            tooltipShowMode="whenTruncated"
+            tooltipShowDelay={0}
+            animateRows={false}
+          />
+        </div>
+      </Gcol>
     </Gcol>
   );
 };

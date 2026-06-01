@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { Grow, Gcol, Typo } from '@atoms';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
@@ -89,7 +89,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                   {/* 인보험 */}
                   {viewKey === 'view1' && (
                     <>
-                      <FormTable cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                      <FormTable cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                         <FormRow>
                           <FormCell title={'보험시기'}>
                             <DatePickerInput mode={'single'} />
@@ -227,7 +227,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </Grow>
                         }
                       >
-                        <FormTable lineTop={false} cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                        <FormTable lineTop={false} cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                           {/* 상세 화면 전용 */}
                           {!_simpleMode ? (
                             <FormRow>
@@ -238,11 +238,11 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 tdClassName="justify-between flex-wrap"
                               >
                                 <Grow placement="sc">
-                                  <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
+                                  <Input aria-label="피보험자명" width={84} value={'김환화환화'} readOnly />
                                   <Input
                                     aria-label="주민등록번호 마스킹"
-                                    width={120}
-                                    value={'900101-1234567'}
+                                    width={114}
+                                    value={'900101-2234567'}
                                     readOnly
                                   />
                                   <Button
@@ -254,8 +254,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                   >
                                     <SearchIcon color={'var(--color-primary-50)'} />
                                   </Button>
-                                  <Input aria-label="피보험자 나이" width={56} value={'134세'} readOnly />
-                                  <Input aria-label="피보험자 성별" width={32} value={'남'} readOnly />
+                                  <Input aria-label="피보험자 나이" width={53} value={'134세'} align="right" readOnly />
+                                  <Input aria-label="피보험자 성별" width={32} value={'남'} align="center" readOnly />
                                 </Grow>
 
                                 {/* M1. 간격수정 */}
@@ -294,7 +294,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                   col={2}
                                   required
                                   value=""
-                                  width={75}
+                                  width={84}
                                 />
                                 <Button
                                   aria-label="피보험자 검색"
@@ -318,7 +318,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </FormCell>
                               <FormCell title="연령" tdClassName="gap-3">
                                 <Grow>
-                                  <Input aria-label="피보험자 나이" width={70} required />세
+                                  <Input aria-label="피보험자 나이" width={40} align="right" required />세
                                 </Grow>
                                 <DatePickerInput mode={'single'} required />
                               </FormCell>
@@ -327,7 +327,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
 
                           <FormRow>
                             <FormCell title="직업" colSpan={3}>
-                              <Input aria-label="직업코드" width={76} value={'32254'} readOnly />
+                              <Input aria-label="직업코드" width={56} value={'32254'} align="center" readOnly />
                               <Input
                                 aria-label="직업분류"
                                 width={274}
@@ -343,7 +343,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               >
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
-                              <Input aria-label="등급" width={50} value={'2급'} readOnly />
+                              <Input aria-label="등급" width={40} value={'3급'} align="center" readOnly />
                             </FormCell>
                           </FormRow>
                           <FormRow>
@@ -375,7 +375,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </FormRow>
                           <FormRow>
                             <FormCell title="주피와 관계">
-                              <Input aria-label="피보험자명" width={76} value={'김한화'} readOnly />는
+                              <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는
                               <NativeSelect aria-label="주피와 관계 선택" width={156} className="ml-[0.4rem]" required>
                                 {[
                                   { value: '본인', id: 'motorcycle-drives', label: '본인' },
@@ -388,8 +388,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </NativeSelect>
                             </FormCell>
                             <FormCell title="(실손)동시설계">
-                              <Input aria-label="코드" width={130} value={'LA260219319244'} readOnly />
-                              <Input aria-label="코드" width={130} value={89492940} commaAmount readOnly />
+                              <Input aria-label="코드" width={131} value={'LA12345678901234'} readOnly />
+                              <Input aria-label="코드" width={120} value={11189492940} commaAmount readOnly />
                             </FormCell>
                           </FormRow>
                           <FormRow>
@@ -413,7 +413,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                   {/* 태아 */}
                   {viewKey === 'view2' && (
                     <>
-                      <FormTable caption="보험정보" cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                      <FormTable caption="보험정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                         <FormRow>
                           <FormCell title={'보험시기'}>
                             <DatePickerInput mode={'single'} />
@@ -520,17 +520,17 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                         <FormTable
                           caption="피보험자 정보"
                           lineTop={false}
-                          cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}
+                          cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}
                         >
                           {!_simpleMode ? (
                             <FormRow>
                               <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
                                 <Grow className="flex-nowrap w-full" placement={'bwc'}>
                                   <Grow>
-                                    <Input aria-label="피보험자명" width={76} value={'태아'} readOnly />
+                                    <Input aria-label="피보험자명" width={84} value={'태아'} readOnly />
                                     <Input
                                       aria-label="주민등록번호 마스킹"
-                                      width={120}
+                                      width={114}
                                       value={'200101-0000000'}
                                       readOnly
                                     />
@@ -543,8 +543,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                     >
                                       <SearchIcon color={'var(--color-primary-50)'} />
                                     </Button>
-                                    <Input aria-label="피보험자 나이" width={56} value={'0세'} readOnly />
-                                    <Input aria-label="피보험자 성별" width={32} value={'남'} readOnly />
+                                    <Input aria-label="피보험자 나이" width={53} value={'0세'} align="right" readOnly />
+                                    <Input aria-label="피보험자 성별" width={32} value={'남'} align="center" readOnly />
                                   </Grow>
                                   <Grow gap={2}>
                                     <KeyValueItem label={'상령일'}>
@@ -602,7 +602,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </FormCell>
                               <FormCell title="연령" tdClassName="gap-3">
                                 <Grow>
-                                  <Input aria-label="피보험자 나이" width={70} required />세
+                                  <Input aria-label="피보험자 나이" width={40} align="right" required />세
                                 </Grow>
                                 <DatePickerInput mode={'single'} required />
                               </FormCell>
@@ -610,7 +610,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           )}
                           <FormRow>
                             <FormCell title="직업" colSpan={3}>
-                              <Input aria-label="직업코드" width={76} value={'32254'} readOnly />
+                              <Input aria-label="직업코드" width={56} value={'32254'} align="center" readOnly />
                               <Input
                                 aria-label="직업분류"
                                 width={274}
@@ -626,7 +626,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               >
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
-                              <Input aria-label="등급" width={50} value={'2급'} readOnly />
+                              <Input aria-label="등급" width={40} value={'2급'} align="center" readOnly />
                             </FormCell>
                           </FormRow>
                           <FormRow>
@@ -658,7 +658,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </FormRow>
                           <FormRow>
                             <FormCell title="주피와 관계">
-                              <Input aria-label="피보험자명" width={76} value={'김한화'} readOnly />는
+                              <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는
                               <NativeSelect aria-label="주피와 관계 선택" width={156} className="ml-[0.4rem]" required>
                                 {[
                                   { value: '본인', id: 'motorcycle-drives', label: '본인' },
@@ -671,8 +671,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </NativeSelect>
                             </FormCell>
                             <FormCell title="(실손)동시설계">
-                              <Input aria-label="코드" width={130} value={'LA260219319244'} readOnly />
-                              <Input aria-label="코드" width={130} value={'89492940'} commaAmount readOnly />
+                              <Input aria-label="코드" width={131} value={'LA20234472050000'} readOnly />
+                              <Input aria-label="코드" width={120} value={'89492940'} commaAmount readOnly />
                             </FormCell>
                           </FormRow>
                           <FormRow>
@@ -690,7 +690,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                             </FormCell>
 
                             <FormCell title="임신주수">
-                              <Input aria-label="임신주수" width={'5rem'} value={20} required />
+                              <Input aria-label="임신주수" width={32} align="right" value={'20'} required />
                               주 (출산예정일
                               <DatePickerInput mode={'single'} value={'2026-03-10'} required />)
                             </FormCell>
@@ -703,7 +703,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                   {/* 재물 */}
                   {viewKey === 'view3' && (
                     <>
-                      <FormTable caption="재물보험 정보" cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                      <FormTable caption="재물보험 정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                         <FormRow>
                           <FormCell title={'보험시기'}>
                             <DatePickerInput mode={'single'} />
@@ -804,7 +804,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           <FormTable
                             caption="피보험자 정보"
                             lineTop={false}
-                            cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}
+                            cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}
                           >
                             {!_simpleMode ? (
                               <FormRow>
@@ -815,10 +815,10 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                   tdClassName="justify-between flex-wrap"
                                 >
                                   <Grow placement="sc">
-                                    <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
+                                    <Input aria-label="피보험자명" width={84} value={'김환화'} readOnly />
                                     <Input
                                       aria-label="주민등록번호 마스킹"
-                                      width={120}
+                                      width={114}
                                       value={'900101-1234567'}
                                       readOnly
                                     />
@@ -831,8 +831,14 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                     >
                                       <SearchIcon color={'var(--color-primary-50)'} />
                                     </Button>
-                                    <Input aria-label="피보험자 나이" width={56} value={'134세'} readOnly />
-                                    <Input aria-label="피보험자 성별" width={32} value={'남'} readOnly />
+                                    <Input
+                                      aria-label="피보험자 나이"
+                                      width={53}
+                                      value={'134세'}
+                                      align="right"
+                                      readOnly
+                                    />
+                                    <Input aria-label="피보험자 성별" width={32} value={'남'} align="center" readOnly />
                                   </Grow>
                                   <Grow gap={2}>
                                     <KeyValueItem label={'상령일'}>
@@ -893,7 +899,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 </FormCell>
                                 <FormCell title="연령" tdClassName="gap-3">
                                   <Grow>
-                                    <Input aria-label="피보험자 나이" width={70} required />세
+                                    <Input aria-label="피보험자 나이" width={40} align="right" required />세
                                   </Grow>
                                   <DatePickerInput mode={'single'} required />
                                 </FormCell>
@@ -917,7 +923,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 >
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input aria-label="등급" width={50} value={'2급'} readOnly />
+                                <Input aria-label="등급" width={40} value={'2급'} align="center" readOnly />
                               </FormCell>
                             </FormRow>
                             <FormRow>
@@ -949,7 +955,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                             </FormRow>
                             <FormRow>
                               <FormCell title="주피와 관계" colSpan={3}>
-                                <Input aria-label="피보험자명" width={76} value={'김한화'} readOnly />는
+                                <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는
                                 <NativeSelect
                                   aria-label="주피와 관계 선택"
                                   width={156}
@@ -973,16 +979,16 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           <FormTable
                             caption="목적물 정보"
                             lineTop={false}
-                            cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}
+                            cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}
                           >
                             <FormRow>
                               <FormCell colSpan={3} title={'소유자'} titleVariant="section">
                                 <Grow className="flex-nowrap w-full" placement={'bwc'}>
                                   <Grow placement="sc">
-                                    <Input aria-label="소유자명" width={75} value={'김환화'} readOnly />
+                                    <Input aria-label="소유자명" width={84} value={'김환화'} readOnly />
                                     <Input
                                       aria-label="주민등록번호 마스킹"
-                                      width={120}
+                                      width={114}
                                       value={'900101-1234567'}
                                       readOnly
                                     />
@@ -995,8 +1001,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                     >
                                       <SearchIcon color={'var(--color-primary-50)'} />
                                     </Button>
-                                    <Input aria-label="소유자 나이" width={56} value={'134세'} readOnly />
-                                    <Input aria-label="소유자 성별" width={32} value={'남'} readOnly />
+                                    <Input aria-label="소유자 나이" width={53} value={'134세'} align="right" readOnly />
+                                    <Input aria-label="소유자 성별" width={32} value={'남'} align="center" readOnly />
                                   </Grow>
                                   <Grow gap={2}>
                                     <Checkbox color="primary">계약자와 동일</Checkbox>
@@ -1013,8 +1019,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </FormCell>
                             </FormRow>
                             <FormRow>
-                              <FormCell title="소재지" colSpan={3}>
-                                <Input aria-label="목적물명" width={76} value={'목적물1'} />
+                              <FormCell title="소재지" colSpan={3} tdClassName="grid grid-cols-[auto_auto_1fr]">
+                                <Input aria-label="목적물명" width={84} value={'목적물1'} />
                                 <Button
                                   aria-label="목적물 주소찾기"
                                   variant={'outlined'}
@@ -1023,13 +1029,15 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 >
                                   주소찾기
                                 </Button>
-                                <Input aria-label="목적물 소재지" width={'auto'} readOnly />
-                                <Input aria-label="목적물 소재지" width={'auto'} />
-                                <Input aria-label="목적물 소재지" width={'auto'} readOnly />
+                                <Grid className="grid-cols-[1fr_1fr_1fr]">
+                                  <Input aria-label="목적물 소재지" width={'auto'} readOnly />
+                                  <Input aria-label="목적물 소재지" width={'auto'} />
+                                  <Input aria-label="목적물 소재지" width={'auto'} readOnly />
+                                </Grid>
                               </FormCell>
                             </FormRow>
                             <FormRow>
-                              <FormCell title="가입업종">
+                              <FormCell title="가입업종" tdClassName="grid grid-cols-[auto_auto_1fr]">
                                 <Input aria-label="가입업종코드" width={76} value={'12345'} readOnly />
                                 <Button
                                   aria-label="가입업종 검색"
@@ -1040,35 +1048,31 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 >
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input
-                                  aria-label="가입업종명"
-                                  width={260}
-                                  value={'학원(기원및 교육목적의 가죽목공방'}
-                                  readOnly
-                                />
+                                <Input aria-label="가입업종명" value={'학원(기원및 교육목적의 가죽목공방'} readOnly />
                               </FormCell>
                               <FormCell title="건물급수">
-                                <Input aria-label="건물급수" width={40} value={'2'} readOnly /> 급 (적용급수
-                                <Input aria-label="적용급수" width={40} value={'2'} readOnly /> 급)
+                                <Input aria-label="건물급수" width={26} align="right" value={'2'} readOnly /> 급
+                                (적용급수
+                                <Input aria-label="적용급수" width={26} align="right" value={'2'} readOnly /> 급)
                                 <Button aria-label="건물구조입력" variant={'outlined'} size={'lg'} color={'gray-light'}>
                                   건물구조입력
                                 </Button>
                               </FormCell>
                             </FormRow>
                             <FormRow>
-                              <FormCell title="요율적용업종">
+                              <FormCell title="요율적용업종" tdClassName="grid grid-cols-[auto_1fr]">
                                 <Input aria-label="요율적용업종코드" width={76} value={'12345'} readOnly />
                                 <Input
                                   aria-label="요율적용업종명"
-                                  width={274}
                                   value={'학원(기원및 교육목적의 가죽목공방'}
                                   readOnly
                                 />
                               </FormCell>
                               <FormCell title="건물상세">
-                                지상 <Input aria-label="건물 지상층" width={46} value={'2'} readOnly /> 층 / 지하
-                                <Input aria-label="건물 지하층" width={46} value={'1'} readOnly /> 층 /
-                                <Input aria-label="건물 폭" width={46} value={'10'} readOnly /> ㎡
+                                지상 <Input aria-label="건물 지상층" width={40} align="right" value={'2'} readOnly /> 층
+                                / 지하
+                                <Input aria-label="건물 지하층" width={26} align="center" value={'1'} readOnly /> 층 /
+                                <Input aria-label="건물 폭" width={40} align="right" value={'100'} readOnly /> ㎡
                               </FormCell>
                             </FormRow>
                             <FormRow>
@@ -1110,7 +1114,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                   {/* 단체 */}
                   {viewKey === 'view4' && (
                     <>
-                      <FormTable caption="보험정보" cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                      <FormTable caption="보험정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                         <FormRow>
                           <FormCell title={'보험시기'}>
                             <DatePickerInput mode={'single'} />
@@ -1204,12 +1208,12 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                         </FormRow>
                         <FormRow>
                           <FormCell title={'총인원수'}>
-                            <Input aria-label="총인원" width={60} />
+                            <Input aria-label="총인원" width={50} align="right" value={1000} />
                             명(전체 근로자 수)
                           </FormCell>
                           <FormCell title={'인원현황'}>
-                            <Input aria-label="가입인원" width={60} readOnly />명 / 가입비율
-                            <Input aria-label="가입비율" width={60} readOnly />%
+                            <Input aria-label="가입인원" width={50} align="right" value={1000} readOnly />명 / 가입비율
+                            <Input aria-label="가입비율" width={50} align="right" value={99.99} readOnly />%
                           </FormCell>
                         </FormRow>
                       </FormTable>
@@ -1243,14 +1247,14 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           <FormTable
                             caption="그룹 정보"
                             lineTop={false}
-                            cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}
+                            cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}
                           >
                             <FormRow>
                               <FormCell title={'그룹명'} titleVariant="section">
-                                <Input aria-label="그룹명" width={120} />
+                                <Input aria-label="그룹명" />
                               </FormCell>
                               <FormCell title="보험나이">
-                                <Input aria-label="보험나이" width={50} />세
+                                <Input aria-label="보험나이" width={40} align="right" />세
                               </FormCell>
                             </FormRow>
                             <FormRow>
@@ -1267,12 +1271,12 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 </RadioGroup>
                               </FormCell>
                               <FormCell title="인원">
-                                <Input aria-label="인원" width={50} value={40} />명
+                                <Input aria-label="인원" width={60} align="right" />명
                               </FormCell>
                             </FormRow>
                             <FormRow>
                               <FormCell title="직업" colSpan={3}>
-                                <Input aria-label="직업코드" width={76} value={'32254'} readOnly />
+                                <Input aria-label="직업코드" width={56} value={'32254'} readOnly />
                                 <Input
                                   aria-label="직업분류"
                                   width={274}
@@ -1288,7 +1292,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 >
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input aria-label="등급" width={50} value={'2급'} readOnly />
+                                <Input aria-label="등급" width={40} value={'2급'} align="center" readOnly />
                               </FormCell>
                             </FormRow>
                             <FormRow>
@@ -1315,7 +1319,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                   {viewKey === 'view5' && (
                     <>
                       <Gcol placement={'ss'} className={'w-full'}>
-                        <FormTable caption="보험정보" cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                        <FormTable caption="보험정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                           <FormRow>
                             <FormCell title={'보험시기'}>
                               <DatePickerInput mode={'single'} />
@@ -1329,7 +1333,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </FormRow>
                           <FormRow>
                             <FormCell title={'개시연령'}>
-                              <NativeSelect aria-label="개시연령 선택" width={120}>
+                              <NativeSelect aria-label="개시연령 선택" width={80}>
                                 {[
                                   { value: '50세', id: 'pension-age-50', label: '50세' },
                                   { value: '55세', id: 'pension-age-55', label: '55세' },
@@ -1343,7 +1347,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </NativeSelect>
                             </FormCell>
                             <FormCell title={'지급기간'}>
-                              <NativeSelect aria-label="지급기간 선택" width={120}>
+                              <NativeSelect aria-label="지급기간 선택" width={80}>
                                 {[
                                   { value: '5년', id: 'pension-payout-5', label: '5년' },
                                   { value: '10년', id: 'pension-payout-10', label: '10년' },
@@ -1444,7 +1448,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           )}
                         </FormTable>
                         {_simpleMode && (
-                          <FormTable caption="계약자 정보" cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}>
+                          <FormTable caption="계약자 정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                             <FormRow>
                               <FormCell title={'계약자'} titleVariant="section">
                                 <InputCombo
@@ -1460,7 +1464,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                   col={2}
                                   required
                                   value=""
-                                  width={75}
+                                  width={84}
                                 />
                                 <Button
                                   aria-label="피보험자 검색"
@@ -1479,7 +1483,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
 
                             <FormRow>
                               <FormCell title="주피와 관계">
-                                <Input aria-label="피보험자명" width={76} value={'김한화'} readOnly />는 계약자의
+                                <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는 계약자의
                                 <NativeSelect
                                   aria-label="주피와 관계 선택"
                                   width={156}
@@ -1497,7 +1501,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 </NativeSelect>
                               </FormCell>
                               <FormCell title="개인정보취득경로">
-                                <NativeSelect aria-label="개인정보취득경로 선택" width={200} required>
+                                <NativeSelect aria-label="개인정보취득경로 선택" required>
                                   {[
                                     { value: '선택', id: 'personalinfo-1', label: '선택' },
                                     { value: '다른경로', id: 'personalinfo-2', label: '다른경로' },
@@ -1584,13 +1588,13 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                     // M1. className="-mt-2" 추가
                     <FormTable
                       caption="계약자 정보"
-                      cols={['w-[14rem]', 'w-[auto]', 'w-[14rem]', 'w-[auto]']}
+                      cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}
                       className="-mt-1"
                     >
                       <FormRow>
                         <FormCell title={'계약자'} titleVariant="section">
-                          <Input aria-label="피보험자명" width={75} value={'김환화'} readOnly />
-                          <Input aria-label="주민등록번호 마스킹" width={120} value={'900101-1234567'} readOnly />
+                          <Input aria-label="피보험자명" width={84} value={'김환화'} readOnly />
+                          <Input aria-label="주민등록번호 마스킹" width={114} value={'900101-1234567'} readOnly />
                           <Button
                             aria-label="피보험자 검색"
                             variant={'outlined'}
@@ -1607,7 +1611,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </Button>
                         </FormCell>
                         <FormCell title="개인정보취득경로">
-                          <NativeSelect aria-label="개인정보취득경로 선택" width={200} required>
+                          <NativeSelect aria-label="개인정보취득경로 선택" required>
                             {[
                               { value: '선택', id: 'personalinfo-1', label: '선택' },
                               { value: '다른경로', id: 'personalinfo-2', label: '다른경로' },
@@ -1622,7 +1626,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
 
                       <FormRow>
                         <FormCell title="계약자와 관계" colSpan={3}>
-                          <Input aria-label="피보험자명" width={76} value={'김한화'} readOnly />는 계약자의
+                          <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는 계약자의
                           <NativeSelect aria-label="주피와 관계 선택" width={156} className="ml-[0.4rem]" required>
                             {[
                               { value: '본인', id: 'motorcycle-drives', label: '본인' },

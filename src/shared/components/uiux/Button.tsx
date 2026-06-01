@@ -50,7 +50,7 @@ const buttonVariants = cva(
         xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 min-w-[6rem] `,
         lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pb-[0.15rem] px-2.5 gap-1`,
         md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0rem] px-1.5 gap-[0.2rem]`,
-        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem]`,
+        sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem] leading-[2rem]`,
         xs: `h-[1.6rem] rounded-[0.3rem] text-[1.1rem] font-normal p-1 gap-[0.2rem]`,
       },
     },

@@ -30,8 +30,9 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   forceFocused?: boolean;
   formatter?: string;
   isFocused?: boolean;
-  width?: 'auto' | 'full' | string | number;
+  width?: 'auto' | 'full' | 'quoteNo' | string | number;
   restrictChars?: boolean;
+  align?: 'left' | 'center' | 'right';
   // debug?: boolean;
 }
 function formatAmount(value: string) {
@@ -94,6 +95,7 @@ function Input({
   clear = false,
   forceFocused = false,
   restrictChars = true,
+  align = 'left',
   onChange,
   value,
   formatter,
@@ -117,7 +119,15 @@ function Input({
   }
 
   const resolvedWidth =
-    typeof width === 'number' ? `${width / 10}rem` : width === 'full' ? '100%' : width === 'auto' ? 'auto' : width;
+    typeof width === 'number'
+      ? `${width / 10}rem`
+      : width === 'full'
+        ? '100%'
+        : width === 'auto'
+          ? 'auto'
+          : width === 'quoteNo'
+            ? '12rem'
+            : width;
   const widthStyle = resolvedWidth ? { width: resolvedWidth } : undefined;
 
   const createSyntheticChangeEvent = (
@@ -222,7 +232,7 @@ function Input({
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
   const baseStyle = cn(
-    'w-full rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate',
+    'w-full rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate pb-[0.1rem]',
     isInvalid || error
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
@@ -293,7 +303,7 @@ function Input({
               ref={inputRef}
               type={type}
               data-slot="input"
-              className={cn(after && 'text-right')}
+              className={cn(align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left')}
               required={required}
               readOnly={readOnly}
               aria-invalid={error || undefined}
@@ -351,7 +361,13 @@ function Input({
               data-slot="input"
               className={cn(
                 variantStyles[variant],
-                commaAmount && 'text-right tracking-[-0.03rem]',
+                commaAmount
+                  ? 'text-right tracking-[-0.03rem]'
+                  : align === 'right'
+                    ? 'text-right'
+                    : align === 'center'
+                      ? 'text-center'
+                      : 'text-left',
                 'w-[100%] [:focus]:px-[0.7rem]'
               )}
               required={required}

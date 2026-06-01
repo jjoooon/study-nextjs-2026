@@ -256,14 +256,14 @@ const Ltpz022 = () => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable variant={'none'}>
+            <FormTable variant={'head'}>
               <FormRow>
-                <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={'23rem'} value={'LA260305361023'} readOnly />
-                  <Input aria-label="" width={'full'} value={'한화 시그니처 여성 건강보험4.0'} readOnly />
-                  <Input aria-label="" width={'auto'} value={''} readOnly />
+                <FormCell title={'설계번호'} className="whitespace-nowrap">
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} align="center" readOnly />
+                  <Input aria-label="" width={300} value={'한화 시그니처 여성 건강보험4.0'} readOnly />
+                  <Input aria-label="" width={80} value={''} readOnly />
                 </FormCell>
-                <FormCell title={'플랜명'}>
+                <FormCell title={'플랜명'} className="whitespace-nowrap">
                   <Input aria-label="" value={'올인원 플랜(15~40세)'} readOnly />
                 </FormCell>
               </FormRow>

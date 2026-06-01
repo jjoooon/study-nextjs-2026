@@ -48,7 +48,7 @@ export function Ltpa35004Side({ info }: InfoContractProps) {
   }
 
   return (
-    <Gcol className="w-full" gap={2}>
+    <Gcol className="w-full pt-2" gap={2}>
       <Gcol>
         <Grow gap={1.5} placement={'bwc'} className="overflow-hidden">
           <Typo variant={'heading-md'}>심사진행현황</Typo>
