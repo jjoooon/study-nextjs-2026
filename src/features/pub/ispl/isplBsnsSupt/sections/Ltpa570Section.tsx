@@ -173,7 +173,7 @@ export default function Ltpa570Section() {
 
   // AgGrid Column
   const columnDefs = React.useMemo<ColDef<Ltpa570DummyDataRow>[]>(() => {
-    // 2026-05-29 width, flex 수정
+    // 2026-06-01 width, flex 수정
     const organizationColumnsByGroupBy: Record<
       'option1' | 'option2' | 'option3' | 'option4',
       ColDef<Ltpa570DummyDataRow>[]
