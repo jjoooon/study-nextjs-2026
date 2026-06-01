@@ -290,7 +290,7 @@ export default function Ltpa010Section() {
     // M5. 수정
     {
       headerName: '보험료(원)',
-      headerClass: 'ag-header-right-divider text-[1.3rem] !px-0',
+      headerClass: 'ag-header-right-divider text-[1.3rem] !px-0 text-right', // 2026-05-29 text-right 추가
       autoHeight: true,
       children: [
         {

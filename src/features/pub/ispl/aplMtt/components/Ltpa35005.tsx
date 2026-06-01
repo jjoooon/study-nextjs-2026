@@ -243,7 +243,7 @@ export const Ltpa35005 = () => {
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
                   {/* M5. cols 수정 */}
-                  <FormTable cols={['w-[14rem]', 'w-[auto]', 'w-[13rem]', 'w-[auto]']}>
+                  <FormTable cols={['w-[13rem]', 'w-[auto] min-w-[32rem]', 'w-[14.8rem]', 'w-[auto]']}>
                     <FormRow>
                       <FormCell title={'만기수익자'} colSpan={3}>
                         <NativeSelect aria-label="주피와 관계 선택" width={100} className="ml-[0.4rem]">
@@ -362,14 +362,7 @@ export const Ltpa35005 = () => {
                       >
                         <Grow className="w-full">
                           <Grow className="flex w-[8rem]">
-                            <CheckboxGroup
-                              className="gap-3"
-                              color="primary"
-                              minSelected={0}
-                              size="lg"
-                              width="auto"
-                              variant="default"
-                            >
+                            <CheckboxGroup color="primary" minSelected={0} size="lg" width="auto" variant="default">
                               {[
                                 { value: '예', label: '예' },
                                 { value: '아니오', label: '아니오', disabled: true },
@@ -385,12 +378,12 @@ export const Ltpa35005 = () => {
                             <Grow className="w-full flex-wrap" placement="sc">
                               <Grow className="whitespace-nowrap">
                                 (승환(
-                                <Input aria-label="" width={40} value={''} readOnly />
+                                <Input aria-label="" width={40} value={'13'} readOnly />
                                 )건,
                               </Grow>
                               <Grow className="whitespace-nowrap">
                                 승환예정(
-                                <Input aria-label="" width={40} value={''} readOnly />
+                                <Input aria-label="" width={40} value={'333'} readOnly />
                                 )건)
                               </Grow>
                             </Grow>
@@ -548,14 +541,7 @@ export const Ltpa35005 = () => {
                     <FormRow>
                       <FormCell title={'장애인보험 전환'}>
                         <Grow placement="bwc">
-                          <CheckboxGroup
-                            className="gap-3"
-                            color="primary"
-                            minSelected={0}
-                            size="lg"
-                            width="auto"
-                            variant="default"
-                          >
+                          <CheckboxGroup color="primary" minSelected={0} size="lg" width="auto" variant="default">
                             {[
                               { label: '피보험자장애인', value: '1' },
                               { label: '수익자장애인', value: '2' },
@@ -572,7 +558,7 @@ export const Ltpa35005 = () => {
                       </FormCell>
                       <FormCell
                         title={
-                          <Grow gap={0} placement="sc">
+                          <Grow gap={1} placement="sc">
                             성년후견인 지정여부
                             <TooltipQ>
                               <b>성년후견제도란?</b>
