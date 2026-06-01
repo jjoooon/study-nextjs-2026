@@ -48,7 +48,7 @@ export const LayoutTemplateLTPA350 = ({
       <LayoutProcess>{pageProcess}</LayoutProcess>
       {mainBody}
       {/* M1. 간격수정 gap-3 */}
-      <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-3 ${hideAside ? 'hidden' : ''}`}>
+      <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-1 ${hideAside ? 'hidden' : ''}`}>
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>
         <LayoutAsideBody>
           <LayoutScrollWrap>

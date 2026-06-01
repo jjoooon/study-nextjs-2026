@@ -190,7 +190,7 @@ export const FormCell = ({
             variant={'body-md'}
             weight="bold"
             color={titleTypoColor}
-            className={`${titleVariant === 'section' ? '!text-[1.5rem]' : ''}`}
+            className={`${titleVariant === 'section' ? '!text-[1.5rem]' : ''} leading-[1.1]`}
           >
             {title}
           </Typo>

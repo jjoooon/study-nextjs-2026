@@ -1251,10 +1251,10 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           >
                             <FormRow>
                               <FormCell title={'그룹명'} titleVariant="section">
-                                <Input aria-label="그룹명" width={120} />
+                                <Input aria-label="그룹명" />
                               </FormCell>
                               <FormCell title="보험나이">
-                                <Input aria-label="보험나이" width={50} />세
+                                <Input aria-label="보험나이" width={40} align="right" />세
                               </FormCell>
                             </FormRow>
                             <FormRow>
@@ -1271,12 +1271,12 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 </RadioGroup>
                               </FormCell>
                               <FormCell title="인원">
-                                <Input aria-label="인원" width={50} value={40} />명
+                                <Input aria-label="인원" width={60} align="right" />명
                               </FormCell>
                             </FormRow>
                             <FormRow>
                               <FormCell title="직업" colSpan={3}>
-                                <Input aria-label="직업코드" width={76} value={'32254'} readOnly />
+                                <Input aria-label="직업코드" width={56} value={'32254'} readOnly />
                                 <Input
                                   aria-label="직업분류"
                                   width={274}
@@ -1292,7 +1292,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 >
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input aria-label="등급" width={50} value={'2급'} readOnly />
+                                <Input aria-label="등급" width={40} value={'2급'} align="center" readOnly />
                               </FormCell>
                             </FormRow>
                             <FormRow>
@@ -1333,7 +1333,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </FormRow>
                           <FormRow>
                             <FormCell title={'개시연령'}>
-                              <NativeSelect aria-label="개시연령 선택" width={120}>
+                              <NativeSelect aria-label="개시연령 선택" width={80}>
                                 {[
                                   { value: '50세', id: 'pension-age-50', label: '50세' },
                                   { value: '55세', id: 'pension-age-55', label: '55세' },
@@ -1347,7 +1347,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </NativeSelect>
                             </FormCell>
                             <FormCell title={'지급기간'}>
-                              <NativeSelect aria-label="지급기간 선택" width={120}>
+                              <NativeSelect aria-label="지급기간 선택" width={80}>
                                 {[
                                   { value: '5년', id: 'pension-payout-5', label: '5년' },
                                   { value: '10년', id: 'pension-payout-10', label: '10년' },
@@ -1464,7 +1464,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                   col={2}
                                   required
                                   value=""
-                                  width={75}
+                                  width={84}
                                 />
                                 <Button
                                   aria-label="피보험자 검색"
@@ -1483,7 +1483,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
 
                             <FormRow>
                               <FormCell title="주피와 관계">
-                                <Input aria-label="피보험자명" width={76} value={'김한화'} readOnly />는 계약자의
+                                <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는 계약자의
                                 <NativeSelect
                                   aria-label="주피와 관계 선택"
                                   width={156}
@@ -1501,7 +1501,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                 </NativeSelect>
                               </FormCell>
                               <FormCell title="개인정보취득경로">
-                                <NativeSelect aria-label="개인정보취득경로 선택" width={200} required>
+                                <NativeSelect aria-label="개인정보취득경로 선택" required>
                                   {[
                                     { value: '선택', id: 'personalinfo-1', label: '선택' },
                                     { value: '다른경로', id: 'personalinfo-2', label: '다른경로' },
@@ -1626,7 +1626,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
 
                       <FormRow>
                         <FormCell title="계약자와 관계" colSpan={3}>
-                          <Input aria-label="피보험자명" width={76} value={'김한화'} readOnly />는 계약자의
+                          <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는 계약자의
                           <NativeSelect aria-label="주피와 관계 선택" width={156} className="ml-[0.4rem]" required>
                             {[
                               { value: '본인', id: 'motorcycle-drives', label: '본인' },
