@@ -194,7 +194,7 @@ const Ltpz00504 = () => {
     {
       headerName: '가입금액(원)',
       field: 'amount',
-      width: 100,
+      width: 70,
       cellClass: 'text-right',
       cellRenderer: (params: { value: string | number }) => {
         const value = String(params.value ?? '');
@@ -205,6 +205,7 @@ const Ltpz00504 = () => {
 
         return value;
       },
+      resizable: false,
     },
   ];
 
@@ -230,7 +231,7 @@ const Ltpz00504 = () => {
     {
       headerName: '기간',
       field: 'date',
-      width: 100,
+      width: 60,
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => {
         const value = String(params.value ?? '');
@@ -241,6 +242,7 @@ const Ltpz00504 = () => {
 
         return value;
       },
+      resizable: false,
     },
   ];
 

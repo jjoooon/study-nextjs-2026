@@ -62,17 +62,14 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
   };
 
   return (
-    // M2. 디자인 변경으로 수정
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl" className="max-h-[calc(100vh-4rem)] h-full">
         <DialogHeader>
           <DialogTitle>
-            {/* M3. 제목변경 */}
             <Typo tag={'strong'} variant={'heading-lg'}>
               꼭 해야할 일
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              {/* 2026-05-29 텍스트 수정 */}
               (LTPZ005)
             </Typo>
           </DialogTitle>
@@ -112,22 +109,22 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
                 <Typo tag="strong" className="w-[6rem]" variant={'body-lg'} color={'blueGray'}>
                   설계번호
                 </Typo>
-                <Input aria-label="" width={'15rem'} value={'LA260209313558'} />
+                <Input width={'quoteNo'} value={'LA123456789012'} readOnly />
                 -
-                <Input aria-label="" width={'3rem'} value={'1'} />
+                <Input width={26} value={'1'} readOnly />
               </Grow>
             </Grow>
           </Gcol>
 
           <Grid className="w-full grid-cols-[auto_1fr] h-full" gap={0}>
             <Grid
-              className="w-[6.4rem] grid-rows-[1fr_1fr_1fr_1fr] pb-[0.8rem] h-full max-h-[44rem] mr-[-0.1rem] place-self-start"
+              className="-ml-[1rem] w-[6.4rem] grid-rows-[1fr_1fr_1fr_1fr] pb-[0.8rem] h-full max-h-[44rem] mr-[-0.1rem] place-self-start"
               gap={0}
             >
               {tabs.map((tab, index) => {
                 const isActive = active === tab.value;
                 return (
-                  <div key={tab.value} className={index > 0 ? 'mt-[-0.1rem]' : ''}>
+                  <div key={tab.value} className={`${index > 0 ? 'mt-[-0.1rem]' : ''}`}>
                     <Button
                       variant="outlined"
                       color="gray-light"
@@ -151,17 +148,19 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
             </Grid>
             <div
               className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc[+
-            100%+1rem]] h-full overflow-x-hidden overflow-y-auto rounded-tr-[1rem] rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]"
+            100%+1rem]] h-full rounded-tr-[1rem] overflow-hidden rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]"
             >
-              {active === 'common' ? (
-                <Ltpz00501 />
-              ) : active === 'accum' ? (
-                <Ltpz00502 />
-              ) : active === 'job' ? (
-                <Ltpz00503 />
-              ) : (
-                <Ltpz00504 />
-              )}
+              <div className="overflow-x-hidden overflow-y-auto w-full h-full">
+                {active === 'common' ? (
+                  <Ltpz00501 />
+                ) : active === 'accum' ? (
+                  <Ltpz00502 />
+                ) : active === 'job' ? (
+                  <Ltpz00503 />
+                ) : (
+                  <Ltpz00504 />
+                )}
+              </div>
             </div>
           </Grid>
         </DialogSection>

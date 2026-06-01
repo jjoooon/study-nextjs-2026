@@ -30,7 +30,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   forceFocused?: boolean;
   formatter?: string;
   isFocused?: boolean;
-  width?: 'auto' | 'full' | string | number;
+  width?: 'auto' | 'full' | 'quoteNo' | string | number;
   restrictChars?: boolean;
   align?: 'left' | 'center' | 'right';
   // debug?: boolean;
@@ -119,7 +119,15 @@ function Input({
   }
 
   const resolvedWidth =
-    typeof width === 'number' ? `${width / 10}rem` : width === 'full' ? '100%' : width === 'auto' ? 'auto' : width;
+    typeof width === 'number'
+      ? `${width / 10}rem`
+      : width === 'full'
+        ? '100%'
+        : width === 'auto'
+          ? 'auto'
+          : width === 'quoteNo'
+            ? '12rem'
+            : width;
   const widthStyle = resolvedWidth ? { width: resolvedWidth } : undefined;
 
   const createSyntheticChangeEvent = (
