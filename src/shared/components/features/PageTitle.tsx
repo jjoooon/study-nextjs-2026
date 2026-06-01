@@ -133,7 +133,7 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
               <InputCombo
                 aria-label="설계번호 입력"
                 type="text"
-                width={144}
+                width={131}
                 options={sampleOptions}
                 value={planNumber[0]}
                 clear={true}

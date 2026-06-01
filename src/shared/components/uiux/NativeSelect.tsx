@@ -81,10 +81,10 @@ function NativeSelect({
     isInvalid || error
       ? 'var(--color-danger-50)'
       : required
-        ? 'var(--color-icon-gray)'
+        ? 'var(--color-gray-50)'
         : readOnly
-          ? 'var(--color-icon-gray-lighter)'
-          : 'var(--color-icon-secondary)';
+          ? 'var(--color-gray-30)'
+          : 'var(--color-gray-50)';
 
   return (
     <div className={cn('relative', className)} style={widthStyle}>
@@ -102,8 +102,8 @@ function NativeSelect({
             />
             <SelectDropIcon
               className={cn(
-                'pointer-events-none absolute top-1/2 right-[0.8rem] -translate-y-1/2 select-none text-[var(--color-icon-basic)]',
-                size === 'lg' ? 'size-[1.6rem]' : 'size-[1.2rem]'
+                'pointer-events-none absolute top-1/2 right-[0.8rem]  select-none text-[var(--color-icon-basic)]',
+                size === 'lg' ? 'size-[1.4rem] -translate-y-[0.6rem]' : 'size-[1.2rem] -translate-y-[0.5rem]'
               )}
               aria-hidden="true"
               color={arrowStateStyle}
