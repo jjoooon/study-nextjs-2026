@@ -226,7 +226,6 @@ const Ltpz058 = () => {
                     singleClickEdit={true}
                     rowClassRules={{}}
                     domLayout="autoHeight"
-                    alwaysShowVerticalScroll={true}
                   />
                 </div>
                 <div className="ag-theme-alpine">

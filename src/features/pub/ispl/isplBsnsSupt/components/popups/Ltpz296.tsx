@@ -259,7 +259,7 @@ export const Ltpz296 = () => {
     {
       headerName: '등록인원',
       field: 'field10',
-      width: 80,
+      flex: 0.2,
       editable: true,
       cellClass: 'editable-cell text-right',
       sortable: false,

@@ -356,14 +356,14 @@ const Ltpz029 = () => {
     {
       headerName: '번호',
       field: 'id',
-      width: 50,
+      width: 40,
       cellClass: 'editable-center-input text-center',
       editable: true,
     },
     {
       headerName: '그룹',
       field: 'field1',
-      width: 120,
+      width: 80,
       cellClass: 'editable-cell editable-center-input text-center',
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -372,7 +372,7 @@ const Ltpz029 = () => {
     {
       headerName: '화면코드',
       field: 'field2',
-      width: 100,
+      width: 70,
       cellClass: 'editable-cell editable-center-input text-center',
       editable: true,
     },
@@ -386,7 +386,7 @@ const Ltpz029 = () => {
     {
       headerName: '상태',
       field: 'field4',
-      width: 100,
+      width: 50,
       editable: true,
       cellClass: 'editable-cell editable-center-input text-center',
       cellEditor: 'agSelectCellEditor',
@@ -395,7 +395,7 @@ const Ltpz029 = () => {
     {
       headerName: '기본값',
       field: 'field5',
-      width: 100,
+      width: 50,
       editable: true,
       cellClass: 'editable-cell editable-center-input text-center',
       cellEditor: 'agSelectCellEditor',
@@ -404,7 +404,7 @@ const Ltpz029 = () => {
     {
       headerName: '필수값',
       field: 'field6',
-      width: 100,
+      width: 50,
       editable: true,
       cellClass: 'editable-cell editable-center-input text-center',
       cellEditor: 'agSelectCellEditor',
@@ -413,7 +413,7 @@ const Ltpz029 = () => {
     {
       headerName: '화면표시순서',
       field: 'field7',
-      width: 100,
+      width: 80,
       cellClass: 'editable-cell editable-center-input text-center',
       editable: true,
     },

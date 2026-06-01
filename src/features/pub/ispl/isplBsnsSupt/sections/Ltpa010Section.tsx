@@ -172,6 +172,7 @@ export default function Ltpa010Section() {
   });
 
   // AgGrid Column
+  // 2026-05-29 width 수정
   const columnDefs: (ColDef<Ltpa010DummyDataRow> | ColGroupDef<Ltpa010DummyDataRow>)[] = [
     // M5. 수정
     {
@@ -279,7 +280,7 @@ export default function Ltpa010Section() {
       children: [
         {
           headerName: '생년월일',
-          width: 90,
+          width: 80,
           cellClass: 'text-center !px-0',
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field05', 'field06'),
@@ -289,13 +290,13 @@ export default function Ltpa010Section() {
     // M5. 수정
     {
       headerName: '보험료(원)',
-      headerClass: 'ag-header-right-divider text-[1.3rem] !px-0',
+      headerClass: 'ag-header-right-divider text-[1.3rem] !px-0 text-right', // 2026-05-29 text-right 추가
       autoHeight: true,
       children: [
         {
           headerName: '환급률',
           cellClass: 'text-center !px-0 text-[1.3rem]',
-          width: 80,
+          width: 70,
           autoHeight: true,
           cellRenderer: (params: { data?: Ltpa010DummyDataRow }) => (
             <Grid className="w-full grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
@@ -314,7 +315,7 @@ export default function Ltpa010Section() {
         {
           headerName: '유효기간',
           cellClass: 'text-center !px-0 text-[1.3rem]',
-          width: 90,
+          width: 80,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>(
             <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
@@ -334,7 +335,7 @@ export default function Ltpa010Section() {
         {
           headerName: '심사결과',
           cellClass: 'text-center !px-0 text-[1.3rem]',
-          width: 80,
+          width: 70,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>('field09', 'field10'),
         },
@@ -347,7 +348,7 @@ export default function Ltpa010Section() {
         {
           headerName: '스캔여부',
           cellClass: 'text-center !px-0 text-[1.3rem]',
-          width: 80,
+          width: 70,
           autoHeight: true,
           cellRenderer: createFieldRenderer<Ltpa010DummyDataRow>(
             <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">

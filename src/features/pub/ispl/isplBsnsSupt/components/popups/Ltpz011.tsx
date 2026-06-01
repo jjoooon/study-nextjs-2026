@@ -132,6 +132,7 @@ const comparisonRows: ComparisonRow[] = [
 
 const Ltpz011 = () => {
   // 2026-05-28 cellClass 수정
+  // 2026-05-29 width 수정
   const columnDefs2: ColDef<ComparisonRow>[] = [
     {
       headerName: '담보상태',

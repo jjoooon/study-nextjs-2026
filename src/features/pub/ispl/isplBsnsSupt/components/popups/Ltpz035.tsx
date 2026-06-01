@@ -35,7 +35,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '',
+    field01: 'LA2414313',
     field02: '',
     field03: '',
     field04: '',
@@ -78,11 +78,12 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz035 = () => {
+  // 2026-05-29 width 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상품 코드',
       field: 'field01',
-      width: 100,
+      width: 70,
       cellClass: 'text-center',
     },
     {
@@ -95,7 +96,7 @@ const Ltpz035 = () => {
     {
       headerName: '동시가입 담보코드',
       field: 'field03',
-      width: 100,
+      width: 106, 
       cellClass: 'text-center',
     },
     {

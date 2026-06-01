@@ -13,6 +13,7 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { ArrowDoubleIcon, ResetIcon, SearchIcon, ZoomOutIcon } from '@icons';
+import { LayoutTemplate } from '@layout/LayoutTemplate'; // 2026-05-29 경로 변경
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -20,7 +21,6 @@ import type { ColDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
-import { LayoutTemplate } from '@layout/LayoutTemplate'; // 2026-05-29 경로 변경
 
 import '@/shared/lib/agGridPub';
 
@@ -106,7 +106,7 @@ export default function Ltpa110Section() {
     {
       headerName: '설계번호',
       field: 'field01',
-      width: 160,
+      width: 120,
       cellClass: 'text-center',
     },
     {
@@ -118,13 +118,13 @@ export default function Ltpa110Section() {
     {
       headerName: '계약자',
       field: 'field03',
-      width: 100,
+      width: 80,
       cellClass: 'text-center',
     },
     {
       headerName: '보험시기',
       field: 'field04',
-      width: 140,
+      width: 100,
       cellClass: 'text-center',
     },
     {
@@ -152,7 +152,7 @@ export default function Ltpa110Section() {
     {
       headerName: '설계번호',
       field: 'field01',
-      width: 160,
+      width: 120,
       cellClass: 'text-center',
     },
     {
@@ -164,13 +164,13 @@ export default function Ltpa110Section() {
     {
       headerName: '계약자',
       field: 'field03',
-      width: 100,
+      width: 80,
       cellClass: 'text-center',
     },
     {
       headerName: '보험시기',
       field: 'field04',
-      width: 140,
+      width: 100,
       cellClass: 'text-center',
     },
     {
@@ -291,7 +291,7 @@ export default function Ltpa110Section() {
                 <TableFoldHead title="기본사항" />
                 <TableFoldBody className="gap-2">
                   <div className="ag-theme-alpine">
-                    { /* 2026-05-29 onGridReady 삭제 */ }
+                    {/* 2026-05-29 onGridReady 삭제 */}
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
@@ -332,7 +332,7 @@ export default function Ltpa110Section() {
                   </Grow>
                 </TableFoldBody>
               </TableFold>
-              
+
               <TableFold className="h-full grid-rows-[auto_1fr]">
                 <TableFoldHead title="선택설계">
                   <Grow>
@@ -364,7 +364,7 @@ export default function Ltpa110Section() {
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
                       domLayout="autoHeight"
-                      //2026-05-29 코드 추가 
+                      //2026-05-29 코드 추가
                       onGridReady={(params) => {
                         gridApiRef.current = params.api;
                       }}

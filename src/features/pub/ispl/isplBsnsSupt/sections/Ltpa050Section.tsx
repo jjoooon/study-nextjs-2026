@@ -302,13 +302,13 @@ export default function Ltpa050Section() {
     {
       headerName: '피보험자',
       field: 'field1',
-      width: 80,
+      width: 60,
       cellClass: `text-center `,
     },
     {
       headerName: '연령',
       field: 'field2',
-      width: 80,
+      width: 50,
       cellClass: `text-center `,
     },
     {
@@ -320,7 +320,7 @@ export default function Ltpa050Section() {
     {
       headerName: '급수',
       field: 'field4',
-      width: 80,
+      width: 60,
       cellClass: `text-center `,
     },
     {
@@ -366,7 +366,7 @@ export default function Ltpa050Section() {
     {
       headerName: '소유자',
       field: 'field1',
-      width: 80,
+      width: 70,
       cellClass: `text-center`,
     },
     {
@@ -378,7 +378,7 @@ export default function Ltpa050Section() {
     {
       headerName: '급수',
       field: 'field3',
-      width: 80,
+      width: 60,
       cellClass: `text-center`,
     },
     {
@@ -489,13 +489,13 @@ export default function Ltpa050Section() {
     {
       headerName: '피보험자',
       field: 'field1',
-      width: 80,
+      width: 60,
       cellClass: `text-center `,
     },
     {
       headerName: '연령',
       field: 'field2',
-      width: 80,
+      width: 50,
       cellClass: `text-center `,
     },
     {
@@ -507,7 +507,7 @@ export default function Ltpa050Section() {
     {
       headerName: '급수',
       field: 'field4',
-      width: 80,
+      width: 60,
       cellClass: `text-center `,
     },
     {
@@ -565,7 +565,7 @@ export default function Ltpa050Section() {
     {
       headerName: '급수',
       field: 'field3',
-      width: 80,
+      width: 60,
       cellClass: `text-center`,
     },
     {

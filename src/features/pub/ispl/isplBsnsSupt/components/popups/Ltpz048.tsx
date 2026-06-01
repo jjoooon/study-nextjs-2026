@@ -67,14 +67,14 @@ const Ltpz048 = () => {
     },
     {
       headerName: '결과',
-      flex: 1,
+      flex: 0.4,
       field: 'field02',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '처리자',
-      width: 60,
+      flex: 0.8,
       field: 'field03',
       cellClass: 'text-center',
       autoHeight: true,

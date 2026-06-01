@@ -59,9 +59,9 @@ type DummyDataType1 = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '-',
-    field02: '-',
-    field03: 'LA20234472050000',
+    field01: '변경대상',
+    field02: 'LA123456789012',
+    field03: '계약변경설계이동',
     field04: '1급',
     field05: '회사원',
     field06: '1급',
@@ -69,9 +69,9 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
-    field01: '-',
-    field02: '-',
-    field03: 'LA20234472050001',
+    field01: '변경대상',
+    field02: 'LA123456789013',
+    field03: '계약변경설계이동',
     field04: '1급',
     field05: '회사원',
     field06: '1급',
@@ -101,18 +101,19 @@ const DummyData1: DummyDataType1[] = [
 
 const Ltpz051 = () => {
   // AgGrid Column
+  // 2026-05-29 width 수정
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '대상여부',
-      flex: 1,
+      width: 60,
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
     {
       headerName: '증권번호',
-      flex: 1,
+      width: 100,
       field: 'field02',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
@@ -120,7 +121,7 @@ const Ltpz051 = () => {
     // 2026-05-27 링크로 변경
     {
       headerName: '변경설계번호',
-      flex: 1,
+      width: 100,
       field: 'field03',
       cellClass: 'text-center px-0!',
       autoHeight: true,
@@ -136,7 +137,7 @@ const Ltpz051 = () => {
       children: [
         {
           headerName: '상해급수',
-          flex: 1,
+          width: 60,
           cellClass: 'text-center px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field04 ?? '')}</Typo>
@@ -157,7 +158,7 @@ const Ltpz051 = () => {
       children: [
         {
           headerName: '상해급수',
-          flex: 1,
+          width: 60,
           cellClass: 'text-center px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field06 ?? '')}</Typo>
@@ -176,25 +177,26 @@ const Ltpz051 = () => {
   ];
 
   // 2026-05-27 agGrid 추가
+  // 2026-05-29 width 수정
   const columnDefs1: ColDef<DummyDataType1>[] = [
     {
       headerName: '대상여부',
       field: 'field01',
-      width: 110,
+      width: 60,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '증권번호',
       field: 'field02',
-      width: 140,
+      width: 100,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '변경설계번호',
       field: 'field03',
-      width: 130,
+      width: 100,
       cellClass: 'text-center',
       autoHeight: true,
       cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
@@ -206,7 +208,6 @@ const Ltpz051 = () => {
     {
       headerName: '변경전 가입여부',
       flex: 1,
-      minWidth: 120,
       field: 'field04',
       cellClass: 'text-center',
       autoHeight: true,
@@ -214,7 +215,6 @@ const Ltpz051 = () => {
     {
       headerName: '변경후 가입여부',
       flex: 1,
-      minWidth: 120,
       field: 'field05',
       cellClass: 'text-center',
       autoHeight: true,

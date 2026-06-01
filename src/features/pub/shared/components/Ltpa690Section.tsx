@@ -55,7 +55,7 @@ const DummyData: DummyDataType[] = [
     field1: '질의',
     field2: '',
     field3: '자료가 존재하지 않습니다.',
-    field4: 'YYYY.MM.DD',
+    field4: '2026.08.31',
   },
   {
     id: 4,
@@ -84,13 +84,13 @@ export default function Ltpa690Section() {
     {
       headerName: '메시지',
       field: 'field3',
-      flex: 1,
+      flex: 3,
       cellClass: 'text-left',
     },
     {
       headerName: '등록일',
       field: 'field4',
-      width: 100,
+      flex: 1, // 2026-05-29 수정
       cellClass: 'text-center',
     },
   ];
@@ -163,6 +163,7 @@ export default function Ltpa690Section() {
                 </TableFoldHead>
                 <TableFoldBody className="grid grid-rows-[1fr_auto] gap-1">
                   <div className="ag-theme-alpine">
+                    {/* 2026-05-29 resizable true로 수정, selectionColumnDef 추가 */}
                     <AgGridReact<DummyDataType>
                       key={loadedCount}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -171,7 +172,7 @@ export default function Ltpa690Section() {
                       columnDefs={columnDefs}
                       defaultColDef={{
                         sortable: true,
-                        resizable: false,
+                        resizable: true,
                       }}
                       domLayout="normal"
                       rowSelection={{
@@ -183,6 +184,9 @@ export default function Ltpa690Section() {
                       cacheBlockSize={pageSize}
                       maxBlocksInCache={2}
                       datasource={dataSource}
+                      selectionColumnDef={{
+                        width: 30,
+                      }}
                     />
                   </div>
                   <TableMore

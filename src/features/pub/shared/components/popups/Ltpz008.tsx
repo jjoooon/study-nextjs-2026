@@ -280,7 +280,7 @@ const Ltpz008 = () => {
                   }}
                   selectionColumnDef={{
                     headerName: '선택',
-                    width: 40,
+                    width: 30,
                     cellClass: 'text-center editable-cell',
                   }}
                 />

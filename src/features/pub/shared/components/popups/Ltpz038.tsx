@@ -111,14 +111,14 @@ const Ltpz038 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
-      width: 60,
+      width: 40,
       field: 'id',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '보종군',
-      width: 80,
+      width: 60,
       field: 'field02',
       cellClass: 'text-center',
       autoHeight: true,
@@ -144,7 +144,7 @@ const Ltpz038 = () => {
     },
     {
       headerName: '계약자',
-      width: 80,
+      width: 70,
       field: 'field05',
       cellClass: 'text-center',
       autoHeight: true,
@@ -165,7 +165,7 @@ const Ltpz038 = () => {
     },
     {
       headerName: '설계일자',
-      width: 100,
+      width: 90,
       field: 'field08',
       cellClass: 'text-center',
       autoHeight: true,
@@ -223,9 +223,7 @@ const Ltpz038 = () => {
                 {/* 2026-05-27 설계번호, 차량번호 선택시 input만 노출로 수정 */}
                 <FormCell
                   title={'조회구분'}
-                  tdClassName={
-                    isInputOnlyCategory ? 'grid grid-cols-[16rem_1fr]' : 'grid grid-cols-[16rem_1fr_auto]'
-                  }
+                  tdClassName={isInputOnlyCategory ? 'grid grid-cols-[16rem_1fr]' : 'grid grid-cols-[16rem_1fr_auto]'}
                 >
                   <NativeSelect
                     aria-label="조회구분 선택"

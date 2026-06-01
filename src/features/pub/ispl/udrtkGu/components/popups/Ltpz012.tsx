@@ -200,7 +200,7 @@ const Ltpz012 = () => {
     {
       headerName: '구분',
       field: 'field1',
-      width: 110,
+      width: 90,
       cellClass: (params) => {
         if (isMergedSumRow(params.data)) {
           return 'text-center';
@@ -272,7 +272,7 @@ const Ltpz012 = () => {
     {
       headerName: '가입금액(만원)',
       field: 'field5',
-      width: 110,
+      width: 100,
       cellClass: 'text-right',
       colSpan: (params) => {
         if (isMergedSumRow(params.data)) {
@@ -290,7 +290,7 @@ const Ltpz012 = () => {
     {
       headerName: '청약포인트',
       field: 'field6',
-      width: 100,
+      width: 80,
       cellClass: 'text-right',
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
         if (params.data?.isSumRow) {
