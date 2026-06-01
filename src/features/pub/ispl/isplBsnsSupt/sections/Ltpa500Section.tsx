@@ -195,11 +195,12 @@ export default function Ltpa500Section() {
 
   // AgGrid Column
   // 2026-05-29 수정 cellClass 수정
+  // 2026-06-01 width, flex 수정 및 cellClass 수정
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '업무구분',
       field: 'field01',
-      flex: 1,
+      flex: 2,
       cellClass: 'text-center',
     },
     {
@@ -217,45 +218,45 @@ export default function Ltpa500Section() {
     {
       headerName: '상품명',
       field: 'field04',
-      flex: 1.4,
+      flex: 3,
       cellClass: 'text-left',
     },
     {
       headerName: '계약자',
       field: 'field05',
-      width: 80,
+      width: 70,
       cellClass: 'text-center',
     },
     {
       headerName: '모집자명',
       field: 'field06',
-      width: 80,
+      width: 60,
       cellClass: 'text-center',
     },
     {
       headerName: '모집자코드',
       field: 'field07',
-      width: 100,
+      width: 70,
       cellClass: 'text-center',
     },
     {
       headerName: '지점',
       field: 'field08',
-      flex: 1,
+      width: 105,
       cellClass: 'text-center',
     },
     {
       headerName: '보험료(원)',
       field: 'field09',
-      width: 120,
-      cellClass: 'text-center',
+      width: 90,
+      cellClass: 'text-right',
       valueFormatter: numberValueFormatter<DummyDataType>,
     },
     {
       headerName: '사유',
       field: 'field10',
-      flex: 1,
-      cellClass: 'editable-cell text-center',
+      flex: 1.2,
+      cellClass: 'editable-cell text-left',
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '선택1'] },
@@ -263,7 +264,7 @@ export default function Ltpa500Section() {
     {
       headerName: '승인',
       field: 'field11',
-      width: 80,
+      flex: 1,
       cellClass: 'editable-cell text-center',
       editable: true,
       cellEditor: 'agSelectCellEditor',

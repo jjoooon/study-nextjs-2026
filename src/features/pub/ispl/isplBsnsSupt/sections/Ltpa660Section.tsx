@@ -111,6 +111,7 @@ export default function Ltpa660Section() {
       allRows: DummyData1,
       pageSize,
     });
+  // 2026-06-01 width, flex 수정
   const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
     () => [
       {
@@ -131,25 +132,25 @@ export default function Ltpa660Section() {
       {
         headerName: '담보명',
         field: 'field2',
-        flex: 1,
+        flex: 8,
       },
       {
         headerName: '판매건수',
         field: 'field3',
-        width: attributeColumnWidth[10],
+        width: attributeColumnWidth[9],
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<DummyData1Type>,
       },
       {
         headerName: '판매순위',
         field: 'field4',
-        width: attributeColumnWidth[10],
+        width: attributeColumnWidth[9],
         cellClass: 'text-center',
       },
       {
         headerName: '순위조정',
         field: 'field5',
-        width: attributeColumnWidth[10],
+        width: attributeColumnWidth[9],
         cellClass: 'px-[0.2rem]! editable-cell text-center',
         editable: true,
         cellEditor: 'agSelectCellEditor',
@@ -161,7 +162,7 @@ export default function Ltpa660Section() {
       {
         headerName: '추천제외',
         field: 'field6',
-        width: attributeColumnWidth[10],
+        flex: 1,
         cellClass: 'text-center',
         editable: true,
         cellDataType: 'boolean',

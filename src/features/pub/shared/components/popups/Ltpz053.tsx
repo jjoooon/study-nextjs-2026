@@ -7,6 +7,7 @@ import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { SearchIcon } from '@icons';
@@ -194,16 +195,16 @@ const Ltpz053 = () => {
                   </FormRow>
                 )}
                 {form.type02 === '운전면허증' && (
-                  // 2026-05-27 생년월일, 발급일자 input으로 수정
+                  // 2026-06-01 생년월일, 발급일자 DatePickerInput으로 원복
                   <FormRow>
                     <FormCell title={'성명'}>
                       <Input aria-label="" value={''} required />
                     </FormCell>
                     <FormCell title={'생년월일'}>
-                      <Input aria-label="" value={''} width={90} placeholder="____-__-__" required />
+                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
                     </FormCell>
                     <FormCell title={'발급일자'}>
-                      <Input aria-label="" value={''} width={90} placeholder="____-__-__" required />
+                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
                       <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                         신원확인
                       </Button>
@@ -211,7 +212,7 @@ const Ltpz053 = () => {
                   </FormRow>
                 )}
                 {form.type02 === '외국인등록증' && (
-                  // 2026-05-27 생년월일, 발급일자 input으로 수정
+                  // 2026-06-01 발급일자 DatePickerInput으로 원복
                   <>
                     <FormRow>
                       <FormCell title={'성명'}>
@@ -221,7 +222,7 @@ const Ltpz053 = () => {
                         <Input aria-label="" value={''} required />
                       </FormCell>
                       <FormCell title={'발급일자'}>
-                        <Input aria-label="" value={''} width={90} placeholder="____-__-__" required />
+                        <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
                         <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                           신원확인
                         </Button>

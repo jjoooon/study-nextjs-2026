@@ -92,6 +92,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa140Section() {
+  // 2026-06-01 width, flex 수정
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -100,7 +101,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '상품코드',
-          width: 125,
+          width: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field01', 'field02'),
@@ -113,7 +114,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '의료비보종',
-          width: 125,
+          width: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field03', 'field04'),
@@ -126,7 +127,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '상해급수',
-          width: 125,
+          width: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field05', 'field06'),
@@ -139,7 +140,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '보험시기',
-          width: 125,
+          width: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field07', 'field08'),
@@ -152,7 +153,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '보험종기',
-          width: 125,
+          width: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field09', 'field10'),
@@ -162,10 +163,13 @@ export default function Ltpa140Section() {
     {
       headerName: '등록구분',
       autoHeight: true,
+      // flex: 1.5,
+      // minWidth: 120,
       children: [
         {
           headerName: '배서번호',
-          width: 125,
+          flex: 1.5,
+          minWidth: 120,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field11', 'field12'),
@@ -179,7 +183,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '배서기준일',
-          width: 125,
+          width: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field13', 'field14'),
@@ -192,7 +196,8 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '계약상태',
-          width: 125,
+          flex: 1.5,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field15', 'field16'),
@@ -205,7 +210,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '상태변경일',
-          width: 125,
+          width: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field17', 'field18'),
@@ -218,7 +223,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '부활일자',
-          width: 125,
+          width: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field19', 'field20'),
@@ -232,7 +237,7 @@ export default function Ltpa140Section() {
         {
           headerName: '담보건수',
           field: 'field22',
-          width: 125,
+          width: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field21', 'field22'),
@@ -256,12 +261,13 @@ export default function Ltpa140Section() {
     {
       headerName: '피보험자명',
       autoHeight: true,
+      flex: 1,
       children: [
         {
           headerName: '피보험자명',
           field: 'field25',
           flex: 1,
-          minWidth: 100,
+          minWidth: 80,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           colSpan: () => 2,
@@ -285,7 +291,7 @@ export default function Ltpa140Section() {
           headerName: '유효',
           field: 'field27',
           flex: 1,
-          minWidth: 110,
+          minWidth: 80,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           colSpan: () => 0,

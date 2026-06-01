@@ -192,6 +192,7 @@ export default function Ltpa650Section() {
   // 담보관리 -------------
   const gridApiRef = React.useRef<GridApi<DummyData2Type> | null>(null);
 
+  // 2026-06-01 width, flex 수정
   const columnDefs2: ColDef<DummyData2Type>[] = useMemo(
     () => [
       {
@@ -205,14 +206,14 @@ export default function Ltpa650Section() {
         headerName: '담보코드',
         field: 'field1',
         cellClass: 'text-center',
-        width: attributeColumnWidth[10],
+        width: attributeColumnWidth[9],
         autoHeight: true,
         spanRows: true,
       },
       {
         headerName: '담보명',
         field: 'field2',
-        flex: 1,
+        flex: 5,
         cellClass: (params) =>
           params.data && params.data.filePath.length === 1
             ? ''
@@ -223,7 +224,7 @@ export default function Ltpa650Section() {
         headerName: '구분',
         field: 'field3',
         cellClass: 'text-center',
-        width: attributeColumnWidth[8],
+        flex: 1,
         cellRenderer: treeNameCellRenderer,
         cellRendererParams: {
           className: 'block w-full text-center',
@@ -294,7 +295,7 @@ export default function Ltpa650Section() {
                   columnDefs={columnDefs1}
                   defaultColDef={{
                     sortable: true,
-                    resizable: false,
+                    resizable: true, // 2026-06-01 true로 변경
                   }}
                   singleClickEdit={true}
                   domLayout="normal"

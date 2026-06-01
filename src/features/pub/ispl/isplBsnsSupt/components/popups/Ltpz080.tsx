@@ -76,29 +76,30 @@ const DummyData1: DummyData1Type[] = [
 ];
 
 const Ltpz080 = () => {
+  // 2026-06-01 width, flex 수정
   const columnDefs1: ColDef<DummyData1Type>[] = [
     {
       headerName: '담보코드',
       field: 'field1',
-      width: 140,
+      width: 80,
       cellClass: 'text-center',
     },
     {
       headerName: '담보명',
       field: 'field2',
-      flex: 1,
+      flex: 8,
       tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
     },
     {
       headerName: '담보그룹',
       field: 'field3',
-      width: 140,
+      width: 100,
       cellClass: 'text-center',
     },
     {
       headerName: '예외',
       field: 'field4',
-      width: 140,
+      flex: 1,
       cellClass: 'text-center',
     },
   ];
@@ -187,7 +188,7 @@ const Ltpz080 = () => {
                 columnDefs={columnDefs1}
                 defaultColDef={{
                   sortable: true,
-                  resizable: false,
+                  resizable: true, // 2026-06-01 true로 변경
                 }}
                 singleClickEdit={true}
                 domLayout="normal"

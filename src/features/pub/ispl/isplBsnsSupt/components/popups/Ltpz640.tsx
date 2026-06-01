@@ -457,6 +457,7 @@ const Ltpz640 = () => {
     setOpenCellMerge(false);
   }, [mergePackageName, setRowData]);
 
+  // 2026-06-01 width, flex 수정
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
     () => [
       // {
@@ -474,7 +475,7 @@ const Ltpz640 = () => {
         headerName: '패키지명',
         field: 'field1',
         cellClass: '',
-        width: attributeColumnWidth[13],
+        flex: 0.7,
         autoHeight: true,
         spanRows: true,
         editable: true,
@@ -496,7 +497,7 @@ const Ltpz640 = () => {
         headerName: '담보그룹명',
         field: 'field2',
         cellClass: '',
-        flex: 1,
+        flex: 2,
         autoHeight: true,
         editable: true,
         cellEditor: 'agTextCellEditor',

@@ -198,12 +198,13 @@ export default function Ltpa460Section() {
   });
   const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
+  // 2026-06-01 width, flex 수정
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '번호',
       field: 'field01',
-      width: 60,
+      width: 30,
       cellClass: 'text-center',
       autoHeight: true,
       pinned: 'left',
@@ -211,7 +212,7 @@ export default function Ltpa460Section() {
     {
       headerName: '로그구분',
       field: 'field02',
-      width: 150,
+      flex: 0.8,
       cellClass: 'text-left',
       autoHeight: true,
       pinned: 'left',
@@ -219,7 +220,7 @@ export default function Ltpa460Section() {
     {
       headerName: '거래코드',
       field: 'field03',
-      width: 130,
+      width: 90,
       cellClass: 'text-left',
       autoHeight: true,
       pinned: 'left',
@@ -227,7 +228,7 @@ export default function Ltpa460Section() {
     {
       headerName: '시작일시',
       field: 'field04',
-      width: 110,
+      width: 90,
       cellClass: 'text-center',
       pinned: 'left',
     },

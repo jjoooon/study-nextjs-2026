@@ -152,7 +152,7 @@ const Ltpz071 = () => {
               onCellValueChanged={handleOrderChanged}
               defaultColDef={{
                 sortable: true,
-                resizable: false,
+                resizable: true, // 2026-06-01 true로 변경
               }}
               singleClickEdit={true}
               rowSelection={{
