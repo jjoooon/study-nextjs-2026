@@ -178,7 +178,7 @@ const Ltpz053 = () => {
                   </FormCell>
                 </FormRow>
                 {form.type02 === '주민등록증' && (
-                  // 2026-05-27 생년월일, 발급일자 input으로 수정
+                  // 2026-05-27 생년월일, 발급일자 input으로 원복
                   <FormRow>
                     <FormCell title={'성명'}>
                       <Input aria-label="" value={''} required />
