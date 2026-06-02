@@ -106,14 +106,16 @@ const Ltpz051 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '대상여부',
-      width: 60,
+      minWidth: 60,
+      flex: 1,
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
     {
       headerName: '증권번호',
-      width: 100,
+      minWidth: 100,
+      flex: 2,
       field: 'field02',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
@@ -121,7 +123,8 @@ const Ltpz051 = () => {
     // 2026-05-27 링크로 변경
     {
       headerName: '변경설계번호',
-      width: 100,
+      minWidth: 100,
+      flex: 2,
       field: 'field03',
       cellClass: 'text-center px-0!',
       autoHeight: true,
@@ -137,7 +140,8 @@ const Ltpz051 = () => {
       children: [
         {
           headerName: '상해급수',
-          width: 60,
+          minWidth: 60,
+          flex: 0.4,
           cellClass: 'text-center px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field04 ?? '')}</Typo>
@@ -145,6 +149,7 @@ const Ltpz051 = () => {
         },
         {
           headerName: '직업',
+          minWidth: 157,
           flex: 1,
           cellClass: 'text-center px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
@@ -158,7 +163,8 @@ const Ltpz051 = () => {
       children: [
         {
           headerName: '상해급수',
-          width: 60,
+          minWidth: 60,
+          flex: 0.4,
           cellClass: 'text-center px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field06 ?? '')}</Typo>
@@ -166,6 +172,7 @@ const Ltpz051 = () => {
         },
         {
           headerName: '직업',
+          minWidth: 157,
           flex: 1,
           cellClass: 'text-center px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
@@ -182,21 +189,24 @@ const Ltpz051 = () => {
     {
       headerName: '대상여부',
       field: 'field01',
-      width: 60,
+      minWidth: 60,
+      flex: 0.4,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '증권번호',
       field: 'field02',
-      width: 100,
+      minWidth: 100,
+      flex: 1,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '변경설계번호',
       field: 'field03',
-      width: 100,
+      minWidth: 100,
+      flex: 1,
       cellClass: 'text-center',
       autoHeight: true,
       cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
@@ -207,6 +217,7 @@ const Ltpz051 = () => {
     },
     {
       headerName: '변경전 가입여부',
+      minWidth: 200,
       flex: 1,
       field: 'field04',
       cellClass: 'text-center',
@@ -214,6 +225,7 @@ const Ltpz051 = () => {
     },
     {
       headerName: '변경후 가입여부',
+      minWidth: 200,
       flex: 1,
       field: 'field05',
       cellClass: 'text-center',

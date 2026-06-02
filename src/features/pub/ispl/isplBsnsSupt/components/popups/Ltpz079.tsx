@@ -171,51 +171,59 @@ const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
     {
       headerName: '증권번호',
       field: 'field01',
-      width: 90,
+      minWidth: 90,
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '문서명',
       field: 'field02',
-      flex: 1,
+      flex: 4,
       cellClass: 'text-left', // 2026-05-29 text-left로 변경
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '순번',
       field: 'field03',
-      width: 50,
+      minWidth: 30,
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '피보험자',
       field: 'field04',
-      width: 70,
+      minWidth: 70,
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '소재지(발생순번)',
       field: 'field05',
-      width: 100,
+      minWidth: 100,
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '스캔일시',
       field: 'field06',
-      width: 150,
+      minWidth: 150,
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '스캔처리자',
       field: 'field07',
-      width: 70,
+      minWidth: 70,
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '비고',
       field: 'field08',
-      flex: 1,
+      minWidth: 120,
+      flex: 2,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field08' }),
     },
   ];
 
@@ -281,6 +289,9 @@ const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
                   headerCheckbox: true,
                   checkboxes: true,
                   enableClickSelection: false,
+                }}
+                selectionColumnDef={{
+                  width: 30,
                 }}
                 domLayout="normal"
                 tooltipShowMode="whenTruncated"

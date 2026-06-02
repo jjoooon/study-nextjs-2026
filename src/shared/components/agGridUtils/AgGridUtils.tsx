@@ -735,7 +735,7 @@ export function createDuplicateButtonCellRenderer<
     if (!isVisible(params))
       return (
         <Grow className="w-full h-full flex items-center justify-center">
-          {/* <Button
+          <Button
             aria-label={ariaLabel}
             variant={'outlined'}
             only={'icon'}
@@ -745,7 +745,7 @@ export function createDuplicateButtonCellRenderer<
             disabled
           >
             <PlusIcon color={'var(--color-gray-30)'} />
-          </Button> */}
+          </Button>
         </Grow>
       );
 

@@ -147,7 +147,7 @@ const Ltpz010 = () => {
           isCheck: true,
           isDuplicate: true,
         }),
-        isVisible: () => true, // 원본 행에만 렌더되므로 항상 true
+        isVisible: (p) => Boolean(p.data?.isCheck), // checked 행에만 활성화
         ariaLabel: '동일 담보 추가',
       })(params);
     },
@@ -195,27 +195,30 @@ const Ltpz010 = () => {
     {
       headerName: '중복',
       field: 'isDuplicate',
-      width: 50,
+      width: 30,
       cellClass: 'text-center',
+      sortable: false,
       cellRenderer: duplicateRenderer,
     },
     {
       headerName: '담보명',
       field: 'productName',
-      flex: 1,
+      flex: 10,
       cellRenderer: titleRenderer,
     },
     {
       headerName: '속성',
       field: 'attribute',
-      width: 50,
+      width: 30,
       cellClass: 'text-center',
       cellRenderer: attributeRenderer,
+      sortable: false,
     },
     {
       headerName: '가입금액(만원)',
       field: 'coverageAmount',
-      width: 200,
+      minWidth: 160,
+      flex: 1,
       cellClass: () => 'w-auto text-centerleft editable-cell [&_input]:text-left!',
       sortable: false,
       filter: false,
@@ -232,7 +235,8 @@ const Ltpz010 = () => {
     {
       headerName: '보험료(만원)',
       field: 'premium',
-      width: 100,
+      minWidth: 100,
+      flex: 1,
       cellClass: 'text-right',
       headerClass: 'px-0!',
       sortable: false,
@@ -242,7 +246,8 @@ const Ltpz010 = () => {
     {
       headerName: '만기',
       field: 'expiryPeriod',
-      width: 80,
+      minWidth: 70,
+      flex: 1,
       cellClass: 'text-center px-[0.2rem]!',
       sortable: false,
       filter: false,
@@ -250,7 +255,8 @@ const Ltpz010 = () => {
     {
       headerName: '납기',
       field: 'paymentPeriod',
-      width: 80,
+      minWidth: 70,
+      flex: 1,
       cellClass: 'text-center px-[0.2rem]!',
       sortable: false,
       filter: false,
@@ -420,7 +426,9 @@ const Ltpz010 = () => {
 
               <TableFold variant={'accordion'}>
                 <TableFoldHead title="피보험자/계약자"></TableFoldHead>
-                <TableFoldBody className="gap-2"> {/* 2026-05-27 gap 추가 */ }
+                <TableFoldBody className="gap-2">
+                  {' '}
+                  {/* 2026-05-27 gap 추가 */}
                   <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'피보험자'}>
@@ -507,6 +515,7 @@ const Ltpz010 = () => {
                     selectionColumnDef={{
                       headerName: '선택',
                       cellClass: 'text-center editable-cell',
+                      width: 30,
                     }}
                     domLayout="normal"
                     onRowDataUpdated={handleRowDataUpdated}
