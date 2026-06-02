@@ -102,6 +102,11 @@ const Ltpz027 = () => {
       field: 'field06',
       cellClass: 'text-center px-0!',
       autoHeight: true,
+      cellRenderer: () => ( // 2026-06-02 버튼 추가
+        <Button variant={'outlined'} size={'md'} color={'gray'}>
+          보기
+        </Button>
+      ),
     },
     {
       headerName: '확인필요',
@@ -187,6 +192,15 @@ const Ltpz027 = () => {
                 심사상태(심사중 또는 심사승인) / 설계상태(설계수정 불가상태)
               </Typo>
             </Grow>
+            {/* 2026-06-02  */}
+            <Gcol placement={'ss'} variant={'box-info'} className="w-full">
+              <Typo variant={'body-md'} icon={'info'}>
+                <b>필수 확인 사항</b>
+              </Typo>
+              <Typo variant="body-sm" color={'gray'} className='break-all tracking-normal'>https://mscfadev.hwgeneralins.com:3443/pages/mcsfaLaucher?token=%2B9KJdLIxDfn046Jv9BUJN2fPeYtkm8Zg5bBmUSFvB1uGethPAvVXaSLISXHk55VwmijfXVLT20DTWz0%2Ba9F98dLCdZvseSH80HsvmiNt0Z38659LhINnYtXU8dzykyi</Typo>
+            </Gcol>
+
+
           </Grid>
         </DialogSection>
         <DialogFooter>
