@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid'; // 2026-06-02 numberValueFormatter 추가
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -96,7 +96,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz040 = () => {
-  // 2026-06-02 cellClass, width 수정
+  // 2026-06-02 width, cellClass 수정, valueFormatter 추가
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {

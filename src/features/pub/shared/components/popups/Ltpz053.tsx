@@ -178,7 +178,7 @@ const Ltpz053 = () => {
                   </FormCell>
                 </FormRow>
                 {form.type02 === '주민등록증' && (
-                  // 2026-05-27 생년월일, 발급일자 input으로 원복
+                  // 2026-06-02 발급일자 DatePickerInput으로 원복
                   <FormRow>
                     <FormCell title={'성명'}>
                       <Input aria-label="" value={''} required />
@@ -195,7 +195,7 @@ const Ltpz053 = () => {
                   </FormRow>
                 )}
                 {form.type02 === '운전면허증' && (
-                  // 2026-06-01 생년월일, 발급일자 DatePickerInput으로 원복
+                  // 2026-06-02 생년월일, 발급일자 DatePickerInput으로 원복
                   <FormRow>
                     <FormCell title={'성명'}>
                       <Input aria-label="" value={''} required />
@@ -212,7 +212,7 @@ const Ltpz053 = () => {
                   </FormRow>
                 )}
                 {form.type02 === '외국인등록증' && (
-                  // 2026-06-01 발급일자 DatePickerInput으로 원복
+                  // 2026-06-02 발급일자 DatePickerInput으로 원복
                   <>
                     <FormRow>
                       <FormCell title={'성명'}>

@@ -740,10 +740,10 @@ export const Ltpa3500301 = ({
                   입력된 질병 6건
                 </Typo>
                 <Grow gap={1}>
-                  <Button color="gray" onClick={() => {}} size="lg" variant="outlined">
+                  <Button color="gray" onClick={() => {}} size="lg" variant="outlined" disabled={simpleMode}>
                     질병목록 일괄보기
                   </Button>
-                  <Button color="primary" onClick={() => {}} size="lg" variant="outlined">
+                  <Button color="primary" onClick={() => {}} size="lg" variant="outlined" disabled={simpleMode}>
                     질병 입력/수정
                   </Button>
                   <TooltipQ>

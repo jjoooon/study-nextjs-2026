@@ -1162,6 +1162,7 @@ const Ltpa04002 = () => {
       headerName: '일자',
       field: 'field01',
       flex: 1,
+      minWidth: 120,
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
       cellRenderer: renderConsentCell,
@@ -1170,7 +1171,8 @@ const Ltpa04002 = () => {
     {
       headerName: '추천설계 이용건수',
       field: 'field02',
-      width: 220,
+      flex: 1,
+      minWidth: 220,
       cellClass: 'text-center',
       autoHeight: true,
       unSortIcon: true,
@@ -1178,7 +1180,8 @@ const Ltpa04002 = () => {
     {
       headerName: '상품 선택 건수',
       field: 'field03',
-      width: 400,
+      flex: 1,
+      minWidth: 400,
       cellClass: 'text-center',
       autoHeight: true,
       spanRows: true,
@@ -1186,16 +1189,18 @@ const Ltpa04002 = () => {
       unSortIcon: true,
     },
     {
-      headerName: '총 선택 건수',
+      headerName: '종 선택 건수',
       field: 'field05',
-      width: 220,
+      flex: 1,
+      minWidth: 220,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '플랜 선택 건수',
       field: 'field06',
-      width: 220,
+      flex: 1,
+      minWidth: 220,
       cellClass: 'text-center',
       autoHeight: true,
     },
@@ -1787,7 +1792,7 @@ const Ltpa04002 = () => {
                   size="lg"
                   variant="default"
                 >
-                  총 포함
+                  종 포함
                 </Checkbox>
               </FormCell>
             )}
