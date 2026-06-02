@@ -99,6 +99,7 @@ const Ltpz049 = () => {
       headerName: '할증담보',
       flex: 2,
       field: 'field01',
+      cellClass: 'text-center', // 2026-06-02 추가
       colSpan: (params: ColSpanParams<DummyDataType>) => (params.data?.isSumRow ? 2 : 1),
     },
     {

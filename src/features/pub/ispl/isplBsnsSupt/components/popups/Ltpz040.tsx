@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -96,6 +96,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz040 = () => {
+  // 2026-06-02 cellClass, width 수정
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -116,27 +117,30 @@ const Ltpz040 = () => {
       field: 'field03',
       spanRows: true,
       flex: 1.6,
-      cellClass: 'flex! items-center! justify-center! text-center',
+      cellClass: 'flex! items-center! justify-start!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
     {
       headerName: '담보명',
       field: 'field04',
       flex: 3,
-      cellClass: 'text-center',
+      cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
     {
       headerName: '가입금액(원)',
       field: 'field05',
-      width: 100,
-      cellClass: 'text-center',
+      width: 85,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
+
     },
     {
       headerName: '보험료',
       field: 'field06',
-      width: 100,
-      cellClass: 'text-center',
+      width: 85,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보코드',
