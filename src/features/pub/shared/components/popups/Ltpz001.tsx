@@ -169,7 +169,8 @@ const Ltpz001 = () => {
     {
       headerName: '미리보기',
       field: 'field2',
-      width: 60,
+      minWidth: 60,
+      flex: 1,
       cellRenderer: () => (
         <Button variant={'text'} size={'lg'} color={'link'}>
           미리보기
@@ -179,27 +180,32 @@ const Ltpz001 = () => {
     {
       headerName: '출력방식',
       field: 'field3',
-      width: 60,
+      minWidth: 60,
+      flex: 1,
     },
     {
       headerName: '출력여부',
       field: 'field4',
-      width: 60,
+      minWidth: 60,
+      flex: 1,
     },
     {
       headerName: '스캔대상',
       field: 'field5',
-      width: 60,
+      minWidth: 60,
+      flex: 1,
     },
     {
       headerName: '이메일',
       field: 'field6',
-      width: 50,
+      minWidth: 50,
+      flex: 1,
     },
     {
       headerName: '팩스',
       field: 'field7',
-      width: 50,
+      minWidth: 50,
+      flex: 1,
     },
     {
       headerName: '모바일',
