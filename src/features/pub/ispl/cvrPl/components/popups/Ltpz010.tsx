@@ -517,6 +517,7 @@ const Ltpz010 = () => {
                       cellClass: 'text-center editable-cell',
                       width: 30,
                     }}
+                    animateRows={false}
                     domLayout="normal"
                     onRowDataUpdated={handleRowDataUpdated}
                     onRowSelected={handleRowSelected}
