@@ -306,7 +306,7 @@ const Ltpz012 = () => {
       headerName: '최종',
       field: 'label',
       width: 110,
-      cellClass: 'text-center',
+      cellClass: 'text-center font-bold',
       cellStyle: { borderRight: '1px solid #E5E7EB' },
       cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => <span>{params.data?.label}</span>,
     },
@@ -314,7 +314,7 @@ const Ltpz012 = () => {
       headerName: '내용',
       field: 'formula',
       flex: 1,
-      cellClass: 'text-right pr-2',
+      cellClass: 'text-right pr-2 font-bold',
       cellStyle: { borderRight: '1px solid #E5E7EB' },
       cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => <span>{params.data?.formula}</span>,
     },
@@ -322,7 +322,7 @@ const Ltpz012 = () => {
       headerName: '청약포인트',
       field: 'point',
       width: 100,
-      cellClass: 'text-right',
+      cellClass: 'text-right font-bold',
       cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => (
         <div className="flex h-full w-full items-center justify-end pl-2">{params.value}</div>
       ),

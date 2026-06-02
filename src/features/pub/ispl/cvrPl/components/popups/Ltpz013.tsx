@@ -239,7 +239,7 @@ const Ltpz013 = () => {
               <CardBox
                 bottom={
                   <div>
-                    <b>70000</b>원(39.4%)
+                    <b>70,000</b>원(39.4%)
                   </div>
                 }
               >
@@ -355,7 +355,7 @@ const Ltpz013 = () => {
                   color="var(--color-information-50)"
                   bottom={
                     <div>
-                      <b>70000</b>원(39.4%)
+                      <b>70,000</b>원(39.4%)
                     </div>
                   }
                   key={i}

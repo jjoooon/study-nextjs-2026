@@ -59,6 +59,7 @@ const Ltpz048 = () => {
     },
     {
       headerName: '구분',
+      minWidth: 108,
       flex: 1,
       field: 'field01',
       cellClass: 'text-center',
@@ -67,6 +68,7 @@ const Ltpz048 = () => {
     },
     {
       headerName: '결과',
+      minWidth: 44,
       flex: 0.4,
       field: 'field02',
       cellClass: 'text-center',
@@ -74,7 +76,8 @@ const Ltpz048 = () => {
     },
     {
       headerName: '처리자',
-      flex: 0.8,
+      flex: 1,
+      minWidth: 80,
       field: 'field03',
       cellClass: 'text-center',
       autoHeight: true,

@@ -432,7 +432,7 @@ export default function Ltpa490Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'설계시작월'}>
-                    <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" />
+                    <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" monthOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -442,6 +442,7 @@ export default function Ltpa490Section() {
                       width={108}
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
+                      className="text-left"
                     >
                       {[
                         { value: 'selection', id: '', label: '선택' },

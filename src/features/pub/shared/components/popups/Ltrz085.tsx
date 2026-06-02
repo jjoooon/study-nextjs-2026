@@ -142,7 +142,8 @@ export const Ltrz085 = () => {
     {
       headerName: '구분',
       field: 'type',
-      width: 100,
+      minWidth: 100,
+      flex: 1,
       cellClass: 'text-center editable-cell',
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -153,32 +154,36 @@ export const Ltrz085 = () => {
     {
       headerName: '설계번호/증권번호',
       field: 'designNo',
-      width: 140,
+      minWidth: 140,
+      flex: 2,
       cellClass: 'text-center p-0!',
       cellRenderer: designNoCellRenderer,
     },
     {
       headerName: '상태',
       field: 'status',
-      width: 60,
+      minWidth: 60,
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '변경일자',
       field: 'changeDate',
-      width: 100,
+      minWidth: 100,
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '지급여부',
       field: 'paymentStatus',
-      width: 60,
+      minWidth: 50,
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '상품명',
       field: 'productName',
-      flex: 1,
+      flex: 4,
       minWidth: 180,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'productName' }),
@@ -186,27 +191,31 @@ export const Ltrz085 = () => {
     {
       headerName: '계약자',
       field: 'contractor',
-      width: 60,
+      minWidth: 60,
+      flex: 1,
       cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'contractor' }),
     },
     {
       headerName: '피보험자(명)',
       field: 'insured',
-      width: 110,
+      minWidth: 110,
+      flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '상세조건',
       field: 'detailCondition',
-      width: 60,
+      minWidth: 60,
+      flex: 1,
       cellClass: 'text-center px-0!',
       cellRenderer: detailConditionRenderer,
     },
     {
       headerName: '필수이행여부',
       field: 'mandatoryYn',
-      width: 80,
+      minWidth: 80,
+      flex: 1,
       cellClass: 'text-center editable-cell',
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -313,7 +322,7 @@ export const Ltrz085 = () => {
                     cellClass: 'text-center editable-cell',
                   }}
                   domLayout="normal"
-                  alwaysShowVerticalScroll={true}
+                  // alwaysShowVerticalScroll={true}
                   onGridReady={(params) => {
                     params.api.forEachNode((node) => {
                       if (node.data?.isCheck) {

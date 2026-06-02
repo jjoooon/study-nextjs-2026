@@ -93,6 +93,7 @@ const Ltpz105 = () => {
       headerName: '상령일',
       field: 'field3',
       flex: 1,
+      minWidth: 120,
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => {
         return (
