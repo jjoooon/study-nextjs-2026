@@ -628,9 +628,8 @@ export const Ltpz063 = () => {
     headerName: '타사기존',
     headerComponent: ThirdGridHeaderWithDelete,
     headerClass: '[&_.ag-header-cell-text]:font-bold',
-    cellClass: getSelectableValueCellClass,
-    flex: 1,
-    minWidth: 200,
+    cellClass: getSelectableValueCellClass + ' editable-cell',
+    width: 200,
     field,
     editable: ({ data }) => isType3EditableRow(data),
     cellEditorSelector: getType3CellEditorSelector,
@@ -735,8 +734,8 @@ export const Ltpz063 = () => {
       field: 'ourInsurance1',
       pinned: 'left',
     },
-    createThirdExternalColumn('externalInsurance1'),
-    createThirdExternalColumn('externalInsurance2'),
+    createThirdExternalColumn('externalInsurance3'),
+    createThirdExternalColumn('externalInsurance3'),
     createThirdExternalColumn('externalInsurance3'),
   ];
   return (
