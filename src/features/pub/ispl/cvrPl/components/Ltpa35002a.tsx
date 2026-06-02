@@ -193,12 +193,15 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         cellClass: 'text-center',
         cellRenderer: searchButtonRenderer<AgGridRow>,
         resizable: false,
+        sortable: false,
       },
       {
         headerName: '가능금액',
         // unSortIcon: true,
         field: 'field4',
-        width: attributeColumnWidth[7],
+        flex: 1,
+        minWidth: attributeColumnWidth[7],
+        // width: attributeColumnWidth[7],
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
       },
@@ -211,7 +214,9 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         sortable: true,
         field: 'insuredAmount',
         // flex: 1,
-        width: attributeColumnWidth[9],
+        flex: 1,
+        minWidth: attributeColumnWidth[9],
+        // width: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         cellClassRules: {
           'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
@@ -255,7 +260,9 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
         sortable: true,
         field: 'field7',
-        width: attributeColumnWidth[7],
+        flex: 1,
+        minWidth: attributeColumnWidth[7],
+        // width: attributeColumnWidth[7],
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
       },
@@ -263,7 +270,9 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         headerName: '만기',
         // 행 선택 시에만 편집 가능 클래스 적용
         field: 'field5',
-        width: attributeColumnWidth[7],
+        flex: 1,
+        minWidth: attributeColumnWidth[7],
+        // width: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -281,7 +290,9 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       {
         headerName: '납기',
         field: 'field6',
-        width: attributeColumnWidth[7],
+        flex: 1,
+        minWidth: attributeColumnWidth[7],
+        // width: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -307,6 +318,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         sortable: true,
         field: 'field8',
         flex: 1,
+        minWidth: attributeColumnWidth[6],
         // width: attributeColumnWidth[6],
         cellClass: 'text-center px-0! tracking-tighter',
         cellRenderer: uwIconRenderer,
@@ -317,6 +329,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         width: attributeColumnWidth[4],
         cellRenderer: duplicateRenderer,
         resizable: false,
+        sortable: false,
       },
     ],
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]
@@ -533,7 +546,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   headerComponent: productNameHeader,
                   field: 'id',
                   minWidth: 470,
-                  flex: 8,
+                  flex: 12,
                   cellClass: (_) => 'text-left !p-0',
                   cellRenderer: productNameCellRenderer<AgGridRow>,
                   tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시
