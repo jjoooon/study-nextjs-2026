@@ -8,10 +8,13 @@ import { FileItemIcon, InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 
-type FileDownLoadProps = {
+export type DownloadFileItem = {
   filename: string;
   filesize: string | number;
   fileAddress: string;
+};
+
+type FileDownLoadProps = DownloadFileItem & {
   download?: boolean;
 };
 
@@ -75,7 +78,7 @@ export function FileDownLoad({ filename, filesize, fileAddress, download = true 
   );
 }
 
-export function formatTotalFileSize(files: Array<{ filesize: string | number }>): string {
+export function formatTotalFileSize(files: DownloadFileItem[]): string {
   const totalBytes = files.reduce((total, file) => total + toBytes(file.filesize), 0);
   return formatFileSizeFromBytes(totalBytes);
 }
