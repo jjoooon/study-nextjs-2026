@@ -187,7 +187,7 @@ const Ltpz053 = () => {
                       <Input aria-label="" value={''} required />
                     </FormCell>
                     <FormCell title={'발급일자'}>
-                      <Input aria-label="" value={''} width={90} placeholder="____-__-__" required />
+                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
                       <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                         신원확인
                       </Button>
