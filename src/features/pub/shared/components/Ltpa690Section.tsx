@@ -68,6 +68,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa690Section() {
+  // 2026-06-02 flex, minWidth 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '메시지 구분',
@@ -84,13 +85,15 @@ export default function Ltpa690Section() {
     {
       headerName: '메시지',
       field: 'field3',
-      flex: 3,
+      flex: 5,
+      minWidth: 300,
       cellClass: 'text-left',
     },
     {
       headerName: '등록일',
       field: 'field4',
       flex: 1, // 2026-06-01 수정
+      minWidth: 80,
       cellClass: 'text-center',
     },
   ];
@@ -163,6 +166,8 @@ export default function Ltpa690Section() {
                 </TableFoldHead>
                 <TableFoldBody className="grid grid-rows-[1fr_auto] gap-1">
                   <div className="ag-theme-alpine">
+
+
                     {/* 2026-06-01 resizable true로 수정, selectionColumnDef 추가 */}
                     <AgGridReact<DummyDataType>
                       key={loadedCount}

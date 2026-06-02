@@ -174,6 +174,7 @@ export default function Ltpa570Section() {
   // AgGrid Column
   const columnDefs = React.useMemo<ColDef<Ltpa570DummyDataRow>[]>(() => {
     // 2026-06-01 width, flex 수정
+    // 2026-06-02 minWidth 추가, flex 수정
     const organizationColumnsByGroupBy: Record<
       'option1' | 'option2' | 'option3' | 'option4',
       ColDef<Ltpa570DummyDataRow>[]
@@ -190,12 +191,14 @@ export default function Ltpa570Section() {
         {
           headerName: '채널',
           width: 70,
+          minWidth: 70,
           field: 'field01',
           cellClass: 'text-center',
         },
         {
           headerName: '본부명',
-          width: 170,
+          flex: 1,
+          minWidth: 170,
           field: 'field02',
           cellClass: 'text-center',
         },
@@ -209,13 +212,15 @@ export default function Ltpa570Section() {
         },
         {
           headerName: '본부명',
-          width: 170,
+          flex: 1,
+          minWidth: 170,
           field: 'field02',
           cellClass: 'text-center',
         },
         {
           headerName: '사업단',
-          width: 150,
+          flex: 1,
+          minWidth: 150,
           field: 'field03',
           cellClass: 'text-center',
         },
@@ -229,19 +234,22 @@ export default function Ltpa570Section() {
         },
         {
           headerName: '본부명',
-          width: 180,
+          flex: 1,
+          minWidth: 180,
           field: 'field02',
           cellClass: 'text-center',
         },
         {
           headerName: '사업단',
-          width: 150,
+          flex: 1,
+          minWidth: 150,
           field: 'field03',
           cellClass: 'text-center',
         },
         {
           headerName: '지점명',
-          width: 150,
+          flex: 1,
+          minWidth: 150,
           field: 'field04',
           cellClass: 'text-center',
         },
@@ -252,54 +260,63 @@ export default function Ltpa570Section() {
       {
         headerName: '단순설계',
         flex:1,
+        minWidth: 70,
         field: 'field05',
         cellClass: 'text-center',
       },
       {
         headerName: '설계중',
         flex:1,
+        minWidth: 70,
         field: 'field06',
         cellClass: 'text-center',
       },
       {
         headerName: '설계완료',
-        flex:1,
+        flex: 1,
+        minWidth: 70,
         field: 'field07',
         cellClass: 'text-center',
       },
       {
         headerName: '청약중',
-        flex:1,
+        flex: 1,
+        minWidth: 70,
         field: 'field08',
         cellClass: 'text-center',
       },
       {
         headerName: '청약심사완료',
         flex:1,
+        minWidth: 80,
         field: 'field09',
         cellClass: 'text-center',
       },
       {
         headerName: '청약완료',
         flex:1,
+        minWidth: 70,
         field: 'field10',
         cellClass: 'text-center',
       },
       {
         headerName: '수납완료',
         flex:1,
+        minWidth: 70,
         field: 'field11',
         cellClass: 'text-center',
       },
       {
         headerName: '총합계',
         flex:1.1,
+        minWidth: 70,
         field: 'field12',
         cellClass: 'text-center',
       },
       {
         headerName: '순위',
-        flex:1.1,
+        flex:1,
+        minWidth: 70,
         field: 'field13',
         cellClass: 'text-center',
       },
