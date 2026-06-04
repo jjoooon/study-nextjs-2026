@@ -212,7 +212,7 @@ export default function Ltpa340Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr]" gap={3}>
+          <Grid className="grid-rows-[auto_1fr] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}
@@ -273,7 +273,7 @@ export default function Ltpa340Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Gcol className="w-full grid-rows-[auto_1fr]" gap={1}>
+            <Gcol className="w-full grid-rows-[auto_1fr] h-full" gap={1}>
               <Grow className="w-full" placement="ec">
                 <Grow>
                   <Typo>서명방법</Typo>
@@ -298,7 +298,7 @@ export default function Ltpa340Section() {
                   <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
               </Grow>
-              <div className="ag-theme-alpine min-h-150">
+              <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData}

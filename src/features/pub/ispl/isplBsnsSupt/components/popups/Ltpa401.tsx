@@ -91,12 +91,12 @@ const Ltpa401 = () => {
             </TableFold>
 
             <TableFold>
-              <TableFoldHead title="처리결과" />
-              <TableFoldBody className="gap-1">
+              <TableFoldHead title="처리결과 등록" />
+              <TableFoldBody className="gap-2">
                 <FormTable caption="처리결과 등록 테이블" cols={['w-[12rem] flex-1']}>
                   <FormRow>
                     <FormCell title={'처리결과'}>
-                      <RadioGroup className="gap-2" defaultValue="option1" onValueChange={() => {}} width="full">
+                      <RadioGroup className="gap-3" defaultValue="option1" onValueChange={() => {}} width="full">
                         {[
                           { id: 'option1', label: '설계완료' },
                           { id: 'option2', label: '반려' },
@@ -119,7 +119,9 @@ const Ltpa401 = () => {
                     </FormCell>
                   </FormRow>
                 </FormTable>
-                <Typo icon={'info'}>처리결과 저장 시, 신청하신 분께 알림톡이 발송되오니 참고 바랍니다.</Typo>
+                <Grow variant="box-info" placement="ss">
+                  <Typo icon={'info'}>처리결과 저장 시, 신청하신 분께 알림톡이 발송되오니 참고 바랍니다.</Typo>
+                </Grow>
               </TableFoldBody>
             </TableFold>
           </Gcol>

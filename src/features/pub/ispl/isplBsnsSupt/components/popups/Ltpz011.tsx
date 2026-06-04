@@ -164,8 +164,7 @@ const Ltpz011 = () => {
       flex: 2,
       tooltipValueGetter: createTooltipValueGetter<ComparisonRow>({ field: 'coverage' }),
       cellClass: (params) => (params.data?.isSumRow ? 'text-left font-bold' : 'text-left'),
-      cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
-        params.data?.isSumRow ? <b>합계</b> : params.value,
+      cellRenderer: (params: ICellRendererParams<ComparisonRow>) => (params.data?.isSumRow ? '합계' : params.value),
     },
     {
       headerName: '보험료(원)',
@@ -173,11 +172,7 @@ const Ltpz011 = () => {
       flex: 1,
       cellClass: 'text-right',
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
-        params.data?.isSumRow ? (
-          <b>{Number(params.value ?? 0).toLocaleString()}</b>
-        ) : (
-          Number(params.value ?? 0).toLocaleString()
-        ),
+        params.data?.isSumRow ? Number(params.value ?? 0).toLocaleString() : Number(params.value ?? 0).toLocaleString(),
     },
   ];
 

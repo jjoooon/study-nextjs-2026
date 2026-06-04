@@ -196,14 +196,15 @@
   border-top: 0.1rem solid var(--color-gray-10);
   /* background-color: var(--color-primary-10); */
 }
-
+.ag-floating-bottom,
 .ag-floating-bottom .ag-row {
-  background: var(--color-primary-10);
+  background: var(--color-primary-10) !important;
+  overflow-y: hidden;
 }
 
 .ag-floating-bottom {
   background: var(--color-primary-10);
-  overflow: hidden;
+  overflow: hidden !important;
   border-top: 0.1rem solid var(--color-primary-50);
 }
 
@@ -876,13 +877,22 @@
   font-weight: 700;
   color:var(--color-primary-50) !important;
 }
-.ag-body-horizontal-scroll{
-  height: 0.8rem;         /* 세로 스크롤바 높이 */
-  min-height: 0.8rem;
-  max-height: 0.8rem;
+.ag-invisible.ag-body-horizontal-scroll {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
 }
-.ag-body-horizontal-scroll-viewport {
-  height: 0.8rem !important;         /* 세로 스크롤바 높이 */
+.ag-body-horizontal-scroll{
+  height: 0.8rem !important;
   min-height: 0.8rem !important;
   max-height: 0.8rem !important;
 }
+.ag-body-horizontal-scroll-viewport {
+  height: 0.8rem !important; 
+  min-height: 0.8rem !important;
+  max-height: 0.8rem !important;
+}
+.ag-cell-value[role="presentation"] {
+  letter-spacing: -0.08rem !important;
+  padding-right: 0.08rem !important;
+} 

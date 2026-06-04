@@ -222,12 +222,12 @@ const Ltpz076 = () => {
             </FormTable>
           </Grow>
           {/* 2026-05-27 버튼 이동으로 전체수정 */}
-          <Grid className="w-full grid grid-flow-col grid-cols-[6fr_4fr]" placement="ss">
+          <Grid className="w-full grid grid-flow-col grid-cols-[6fr_4fr] gap-3" placement="ss">
             <TableFold className="w-full">
               <TableFoldHead title="대상" />
               <TableFoldBody className="grid grid-rows-[auto_1fr] gap-[1.2rem]">
-                <Grid className="w-full grid-flow-col grid-cols-[1fr] gap-1">
-                  <Gcol>
+                <Grid className="w-full grid-flow-col grid-cols-[1fr] gap-3">
+                  <Gcol gap={3}>
                     <Grow placement="bwe" className="w-full" variant={'box-round'}>
                       <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[1rem]', 'w-auto']}>
                         <FormRow>

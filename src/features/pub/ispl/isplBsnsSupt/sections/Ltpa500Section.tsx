@@ -201,7 +201,7 @@ export default function Ltpa500Section() {
       headerName: '업무구분',
       field: 'field01',
       flex: 2,
-      cellClass: 'text-center',
+      cellClass: 'text-left',
     },
     {
       headerName: '증권번호',
@@ -293,10 +293,10 @@ export default function Ltpa500Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr_auto]" gap={3}>
+          <Grid className="grid-rows-[auto_1fr_auto] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
-                variant={'none'}
+                variant={'head'}
                 caption="장기신계약가입설계결재정보 테이블"
                 cols={['w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-1', 'w-auto']}
               >
@@ -386,11 +386,11 @@ export default function Ltpa500Section() {
                 </Button>
               </Grow>
             </Grow>
-            <TableFold className="grid-rows-[auto_1fr_auto]">
+            <TableFold>
               <TableFoldHead title="대상리스트"></TableFoldHead>
               <TableFoldBody>
                 <Gcol className="w-full" gap={1}>
-                  <div className="ag-theme-alpine min-h-150">
+                  <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={visibleRows}

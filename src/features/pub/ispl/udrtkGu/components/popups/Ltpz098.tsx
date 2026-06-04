@@ -258,8 +258,8 @@ const Ltpz098 = () => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
-                  <div className="ag-theme-alpine min-h-[16rem]">
+                <Grid className="w-full grid-rows-[1fr_auto] gap-2 h-full">
+                  <div className="ag-theme-alpine min-h-[16.2rem]">
                     <AgGridReact<DummyDataType>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       ref={gridRef}
