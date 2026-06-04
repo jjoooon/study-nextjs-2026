@@ -99,24 +99,28 @@ const dummyData2: DummyDataType2[] = [
 ];
 
 // 2026-06-01 agGrid width, flex, cellClass 수정
+// 2026-06-01 agGrid minWidth, flex 수정
 const Ltpz002 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
       field: 'field1',
-      width: 80,
+      flex: 1,
+      minWidth: 80,
     },
     {
       headerName: '보험종목명',
       field: 'field2',
       flex: 6,
+      minWidth: 150,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
     },
     {
       headerName: '설계번호',
       field: 'field3',
-      width: 120,
+      flex: 1,
+      minWidth: 120,
     },
     {
       headerName: '계약자',
@@ -127,18 +131,20 @@ const Ltpz002 = () => {
       headerName: '보험료(원)',
       field: 'field5',
       cellClass: 'text-right',
-      width: 70,
+      flex: 0.9,
+      minWidth: 75,
       cellRenderer: numberValueFormatter,
     },
     {
       headerName: '설계일자',
       field: 'field6',
-      width: 80,
+      flex: 0.9,
+      minWidth: 80,
     },
     {
       headerName: '상태',
       field: 'field7',
-      flex: 1,
+      width: 65,
     },
   ];
 

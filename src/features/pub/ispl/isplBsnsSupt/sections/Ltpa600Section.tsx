@@ -256,26 +256,30 @@ export default function Ltpa600Section() {
     );
   }, []);
 
+  // 2026-06-04 flex, minWidth 수정
   const columnDefs1: ColDef<DummyData1Type>[] = useMemo(
     () => [
       {
         headerName: '순서',
         field: 'field1',
-        width: attributeColumnWidth[5],
+        flex: 0.5,
+        minWidth: attributeColumnWidth[5],
         cellClass: 'text-center',
         autoHeight: true,
       },
       {
         headerName: '담보그룹',
         field: 'field2',
-        width: attributeColumnWidth[8],
+        flex: 1,
+        minWidth: attributeColumnWidth[8],
         cellClass: 'text-center',
         autoHeight: true,
       },
       {
         headerName: '구분',
         field: 'field3',
-        flex: 1,
+        flex: 5,
+        minWidth: attributeColumnWidth[20],
         cellClass: 'text-center !p-0',
         autoHeight: true,
         sortable: false,
@@ -308,7 +312,8 @@ export default function Ltpa600Section() {
       {
         headerName: '담보',
         field: 'field4',
-        width: attributeColumnWidth[5],
+        flex: 0.5,
+        minWidth: attributeColumnWidth[5],
         cellClass: 'text-center',
         autoHeight: true,
       },
@@ -338,6 +343,7 @@ export default function Ltpa600Section() {
 
   const getExpiryRenderer = createExpiryCellRenderer<DummyData2Type>;
   // 2026-06-01 flex 수정
+  // 2026-06-04 flex, minWidth 수정
   const columnDefs2: (ColDef<DummyData2Type> | ColGroupDef<DummyData2Type>)[] = useMemo(
     () => [
       {
@@ -346,14 +352,16 @@ export default function Ltpa600Section() {
           {
             headerName: '현재',
             field: 'field1',
-            width: attributeColumnWidth[8],
+            flex: 1,
+            minWidth: attributeColumnWidth[8],
             cellClass: 'text-center',
             autoHeight: true,
           },
           {
             headerName: '변경 후',
             field: 'field2',
-            width: attributeColumnWidth[8],
+            flex: 1,
+            minWidth: attributeColumnWidth[8],
             cellClass: 'text-center',
             autoHeight: true,
           },
@@ -362,7 +370,8 @@ export default function Ltpa600Section() {
       {
         headerName: '담보코드',
         field: 'field3',
-        width: attributeColumnWidth[9],
+        flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellClass: 'text-center',
         autoHeight: true,
       },
@@ -370,13 +379,15 @@ export default function Ltpa600Section() {
         headerName: '담보명',
         field: 'field4',
         flex: 5,
+        minWidth: attributeColumnWidth[20],
         autoHeight: true,
         tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field4' }),
       },
       {
         headerName: '예외',
         field: 'field5',
-        width: attributeColumnWidth[10],
+        flex: 1,
+        minWidth: attributeColumnWidth[10],
         editable: true,
         cellClass: 'text-center editable-cell',
         cellEditor: 'agSelectCellEditor',
@@ -399,7 +410,8 @@ export default function Ltpa600Section() {
       {
         headerName: '중복',
         field: 'rowCopy',
-        flex: 1,
+        width: 50,
+        sortable: false,
         cellRenderer: duplicateButtonRenderer,
       },
     ],

@@ -186,11 +186,13 @@ const Ltpz091 = () => {
   // AgGrid Column
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   // 2026-06-01 width, flex 수정
+  // 2026-06-04 flex, minWidth 수정
   // 각 컬럼별 cellRenderer 예시 명확화
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '제목',
       flex: 2.5,
+      minWidth: 150,
       cellClass: 'text-left',
       cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
@@ -201,6 +203,7 @@ const Ltpz091 = () => {
     {
       headerName: '요약내용',
       flex: 6,
+      minWidth: 300,
       field: 'field02',
       cellClass: 'text-left editable-cell',
       editable: true,
@@ -208,13 +211,15 @@ const Ltpz091 = () => {
     },
     {
       headerName: '등록일',
-      width: 80,
+      flex: 1,
+      minWidth: 80,
       cellClass: 'text-center',
       field: 'field03',
     },
     {
       headerName: '표시여부',
-      width: 60,
+      flex: 1,
+      minWidth: 60,
       field: 'field04',
       cellClass: 'text-center editable-cell',
       editable: true,
@@ -225,7 +230,8 @@ const Ltpz091 = () => {
     },
     {
       headerName: '표시순서',
-      width: 60,
+      flex: 1,
+      minWidth: 60,
       cellClass: 'text-center',
       field: 'field05',
       editable: true,
@@ -233,6 +239,7 @@ const Ltpz091 = () => {
     {
       headerName: '다운허용',
       flex: 1,
+      minWidth: 60,
       field: 'field06',
       cellClass: 'text-center editable-cell',
       editable: true,

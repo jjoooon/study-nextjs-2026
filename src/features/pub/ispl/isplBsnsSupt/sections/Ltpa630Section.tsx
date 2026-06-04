@@ -167,14 +167,16 @@ const treeNameCellRenderer = createTreeNameCellRenderer<DummyData2Type>();
 
 export default function Ltpa630Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-
+  
+  // 2026-06-04 flex, minWidth 수정
   // 담보분류 -------------
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
     () => [
       {
         headerName: '패키지명',
         field: 'field1',
-        width: attributeColumnWidth[13],
+        flex: 1,
+        minWidth: attributeColumnWidth[13],
         autoHeight: true,
         spanRows: true,
       },
@@ -182,12 +184,14 @@ export default function Ltpa630Section() {
         headerName: '세부',
         field: 'field2',
         flex: 6,
+        minWidth: attributeColumnWidth[30],
         autoHeight: true,
       },
     ],
     [attributeColumnWidth]
   );
 
+  // 2026-06-04 flex, minWidth 수정
   // 담보관리 -------------
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
   const gridApiRef = React.useRef<GridApi<DummyData2Type> | null>(null);
@@ -217,6 +221,7 @@ export default function Ltpa630Section() {
         headerName: '담보명',
         field: 'field2',
         flex: 6,
+        minWdith: attributeColumnWidth[30],
         cellClass: (params) =>
           params.data && params.data.filePath.length === 1
             ? 'editable-cell'
@@ -228,6 +233,7 @@ export default function Ltpa630Section() {
         field: 'field3',
         cellClass: 'text-center',
         flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellRenderer: treeNameCellRenderer,
         cellRendererParams: {
           className: 'block w-full text-center',

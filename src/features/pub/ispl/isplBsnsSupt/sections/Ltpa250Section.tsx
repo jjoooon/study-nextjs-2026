@@ -82,7 +82,8 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa250Section() {
-  // 2026-06-01 width, flex 수정
+  // 2026-06-01 width, flex 수정, animateRows 추가
+  // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -96,6 +97,7 @@ export default function Ltpa250Section() {
       headerName: '보장내용',
       field: 'field01',
       flex: 1.2,
+      minWidth: 250,
       cellClass: 'text-left',
       autoHeight: true,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -139,7 +141,8 @@ export default function Ltpa250Section() {
           headerName: '(단위:천원)',
           cellClass: 'text-right',
           field: 'field04',
-          width: 70,
+          flex: 1,
+          minWidth: 75,
           autoHeight: true,
           valueFormatter: numberValueFormatter<DummyDataType>,
         },
@@ -150,7 +153,8 @@ export default function Ltpa250Section() {
       children: [
         {
           headerName: '의원',
-          width: 70,
+          flex: 1,
+          minWidth: 70,
           cellClass: 'text-right',
           field: 'field05',
           autoHeight: true,
@@ -158,7 +162,8 @@ export default function Ltpa250Section() {
         },
         {
           headerName: '병원',
-          width: 70,
+          flex: 1,
+          minWidth: 70,
           cellClass: 'text-right',
           field: 'field06',
           autoHeight: true,
@@ -166,7 +171,8 @@ export default function Ltpa250Section() {
         },
         {
           headerName: '요양기관',
-          width: 70,
+          flex: 1,
+          minWidth: 70,
           cellClass: 'text-right',
           field: 'field07',
           autoHeight: true,
@@ -174,7 +180,8 @@ export default function Ltpa250Section() {
         },
         {
           headerName: '약제비',
-          width: 70,
+          flex: 1,
+          minWidth: 70,
           cellClass: 'text-right',
           field: 'field08',
           autoHeight: true,
@@ -182,7 +189,8 @@ export default function Ltpa250Section() {
         },
         {
           headerName: '구공체',
-          width: 70,
+          flex: 1,
+          minWidth: 70,
           cellClass: 'text-right',
           field: 'field09',
           autoHeight: true,
@@ -193,7 +201,8 @@ export default function Ltpa250Section() {
     {
       headerName: '보험상태',
       cellClass: 'text-center',
-      width: 60,
+      flex: 1,
+      minWidth: 60,
       field: 'field10',
       autoHeight: true,
     },
@@ -201,7 +210,8 @@ export default function Ltpa250Section() {
       headerName: '상태변경일자',
       cellClass: 'text-center',
       field: 'field11',
-      width: 80,
+      flex: 1,
+      minWidth: 80,
       autoHeight: true,
     },
     {
@@ -210,6 +220,7 @@ export default function Ltpa250Section() {
         {
           headerName: '보상기간',
           flex: 1,
+          minWidth: 120,
           cellClass: 'text-left px-0!',
           autoHeight: true,
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -246,6 +257,7 @@ export default function Ltpa250Section() {
         {
           headerName: '병실차액',
           flex: 1,
+          minWidth: 120,
           cellClass: 'text-left px-0!',
           autoHeight: true,
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -282,6 +294,7 @@ export default function Ltpa250Section() {
         {
           headerName: '보험미적용보상',
           flex: 1,
+          minWidth: 120,
           cellClass: 'text-left px-0!',
           autoHeight: true,
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -348,6 +361,7 @@ export default function Ltpa250Section() {
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={DummyData}
                   columnDefs={columnDefs}
+                  animateRows={false}
                   domLayout="normal"
                 />
               </div>

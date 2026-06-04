@@ -93,6 +93,7 @@ const DummyData: DummyDataType[] = [
 
 export default function Ltpa140Section() {
   // 2026-06-01 width, flex 수정
+  // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -101,7 +102,8 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '상품코드',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field01', 'field02'),
@@ -114,7 +116,8 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '의료비보종',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field03', 'field04'),
@@ -127,7 +130,8 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '상해급수',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field05', 'field06'),
@@ -140,7 +144,8 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '보험시기',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field07', 'field08'),
@@ -153,7 +158,8 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '보험종기',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field09', 'field10'),
@@ -163,12 +169,10 @@ export default function Ltpa140Section() {
     {
       headerName: '등록구분',
       autoHeight: true,
-      // flex: 1.5,
-      // minWidth: 120,
       children: [
         {
           headerName: '배서번호',
-          flex: 1.5,
+          flex: 1,
           minWidth: 120,
           cellClass: 'text-center px-0!',
           autoHeight: true,
@@ -183,7 +187,8 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '배서기준일',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field13', 'field14'),
@@ -210,7 +215,8 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '상태변경일',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field17', 'field18'),
@@ -223,7 +229,8 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '부활일자',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field19', 'field20'),
@@ -237,7 +244,8 @@ export default function Ltpa140Section() {
         {
           headerName: '담보건수',
           field: 'field22',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field21', 'field22'),
@@ -251,7 +259,8 @@ export default function Ltpa140Section() {
         {
           headerName: '변경후피보험자',
           field: 'field24',
-          width: 100,
+          flex: 1,
+          minWidth: 100,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field23', 'field24'),
