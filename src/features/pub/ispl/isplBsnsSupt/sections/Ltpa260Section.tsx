@@ -275,6 +275,7 @@ export default function Ltpa260Section() {
                     selectionColumnDef={{
                       cellClass: 'text-center',
                     }}
+                    animateRows={false}
                   />
                 </div>
               </TableFoldBody>

@@ -289,7 +289,7 @@ const Ltpz058 = () => {
             <FormRow>
               <FormCell title={'업종설명'}>
                 <Grow className="w-full [&>div]:w-full!" placement="ss">
-                  <Textarea placeholder="내용을 입력하세요" showMinLengthCount />
+                  <Textarea placeholder="내용을 입력하세요" showMinLengthCount readOnly />
                 </Grow>
               </FormCell>
             </FormRow>

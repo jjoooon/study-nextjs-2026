@@ -20,8 +20,11 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { useState } from 'react';
 
 const Ltpz081 = () => {
+  const [receiptType, setReceiptType] = useState('영수증발행안함');
+
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="sm" className="">
@@ -36,7 +39,11 @@ const Ltpz081 = () => {
           <FormTable caption="영수증 ">
             <FormRow>
               <FormCell title={'영수증선택'}>
-                <NativeSelect aria-label="업무구분1 선택">
+                <NativeSelect
+                  aria-label="업무구분1 선택"
+                  value={receiptType}
+                  onChange={(e) => setReceiptType(e.target.value)}
+                >
                   {[
                     { value: '영수증발행안함', label: '영수증발행안함' },
                     { value: '전자영수증', label: '전자영수증' },
@@ -57,7 +64,7 @@ const Ltpz081 = () => {
                   errorMsg="영수증 번호가 규칙에 맞지 않습니다."
                   errorPs="tl"
                   width={'full'}
-                  value={''}
+                  readOnly={receiptType !== '수기영수증'}
                 />
               </FormCell>
             </FormRow>

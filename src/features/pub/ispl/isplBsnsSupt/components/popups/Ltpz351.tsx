@@ -2,7 +2,6 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-
 import { AgGridEmptyComponent } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -49,7 +48,7 @@ const Ltpz351 = () => {
       headerName: '성명',
       field: 'field2',
       flex: 1,
-      cellClass: 'text-center',
+      cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
       editable: (params) => params.data?.field1 === '계약자',
       cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
         <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
@@ -64,7 +63,7 @@ const Ltpz351 = () => {
       headerName: '휴대폰',
       field: 'field3',
       flex: 1,
-      cellClass: 'text-center',
+      cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
       editable: (params) => params.data?.field1 === '계약자',
       cellEditor: 'agTextCellEditor',
       cellEditorParams: {

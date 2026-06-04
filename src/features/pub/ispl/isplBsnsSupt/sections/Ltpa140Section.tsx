@@ -320,7 +320,7 @@ export default function Ltpa140Section() {
                     <Input value={'LA2414313498143'} required />
                   </FormCell>
                   <FormCell title={'유효여부'}>
-                    <RadioGroup className="gap-1" onValueChange={() => {}} width="full">
+                    <RadioGroup className="gap-1" value={'전체'} onValueChange={() => {}} width="full">
                       {[
                         { value: '전체', label: '전체' },
                         { value: '유효', label: '유효' },

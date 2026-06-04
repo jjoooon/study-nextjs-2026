@@ -330,7 +330,7 @@ const Ltpz010 = () => {
                   <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
                   -
                   <Input aria-label="" width={30} value={'1'} readOnly />
-                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                  <Input aria-label="" variant="info" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>

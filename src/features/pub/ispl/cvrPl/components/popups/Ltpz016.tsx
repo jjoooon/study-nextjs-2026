@@ -10,6 +10,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { EssentialIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -59,7 +60,14 @@ const Ltpz016 = () => {
             <TableFoldBody className="gap-2">
               <FormTable caption="설계번호" cols={['w-[21rem]', 'w-[auto]']}>
                 <FormRow>
-                  <FormCell title={'자택주소동일'}>
+                  <FormCell
+                    title={
+                      <Grow placement="ss">
+                        자택주소동일
+                        <Checkbox color="primary" onCheckedChange={() => {}} size="md" variant="default"></Checkbox>
+                      </Grow>
+                    }
+                  >
                     <Input value={'서울 영등포구 63로 328호(여의도동, 은하아파트)'} readOnly />
                   </FormCell>
                 </FormRow>
@@ -75,7 +83,7 @@ const Ltpz016 = () => {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" value={''} readOnly />
+                    <Input aria-label="" value={''} readOnly required />
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -87,8 +95,8 @@ const Ltpz016 = () => {
                       </Grow>
                     }
                   >
-                    <Input aria-label="" value={''} readOnly />
-                    <Input aria-label="" value={''} readOnly />
+                    <Input aria-label="" value={''} readOnly required />
+                    <Input aria-label="" value={''} readOnly required />
                   </FormCell>
                 </FormRow>
                 <FormRow>

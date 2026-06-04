@@ -189,13 +189,18 @@ const Ltpz060 = () => {
             <TableFold variant={'default'}>
               <TableFoldHead title="계약기본사항"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption={'계약기본사항'} cols={['w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
+                <FormTable caption={'계약기본사항'} cols={['w-[rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'담보명'}>
                       <Input width={'full'} value={'풍수재손해(실손전부보상비)'} readOnly />
                     </FormCell>
                     <FormCell title={'가입금액'}>
-                      <Input width={'full'} value={'0'} readOnly />원
+                      <Grow placement="sc" gap={2}>
+                        <Input width={'full'} value={'0'} readOnly className="[&>input]:text-right" />
+                        <Typo variant={'body-sm'} className="w-[3rem]">
+                          만원
+                        </Typo>
+                      </Grow>
                     </FormCell>
                   </FormRow>
                 </FormTable>

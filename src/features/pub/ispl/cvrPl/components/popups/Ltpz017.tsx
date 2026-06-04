@@ -56,7 +56,7 @@ const DummyData: DummyDataType[] = [
     id: 3,
     isCheck: true,
     planName: '(355간편지형)(프리미엄을인원플랜)(1.7.8',
-    myPlanName: '3대진단형',
+    myPlanName: '60대 3만원 암관련',
     registrationDate: '2026-03-22',
     target: true,
   },
@@ -94,7 +94,7 @@ const Ltpz017 = () => {
     {
       headerName: '나만의플랜명',
       field: 'myPlanName',
-      flex: 1,
+      flex: 2,
     },
     {
       headerName: '등록일자',

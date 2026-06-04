@@ -13,6 +13,7 @@ import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -32,7 +33,6 @@ import * as React from 'react';
 import { useCallback } from 'react';
 
 import '@/shared/lib/agGridPub';
-import { ZoomInIcon, ZoomOutIcon } from '@icons';
 
 type DummyDataType = {
   id: number;

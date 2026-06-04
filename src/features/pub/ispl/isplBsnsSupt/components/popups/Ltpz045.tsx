@@ -52,9 +52,9 @@ const Ltpz045 = () => {
               <FormTable variant="head" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input aria-label="" variant="info" value={'LA26020945959594'} readOnly />
+                    <Input aria-label="" value={'LA26020945959594'} readOnly />
                     -
-                    <Input aria-label="" variant="info" width={30} value={'1'} readOnly />
+                    <Input aria-label="" width={30} value={'1'} readOnly />
                   </FormCell>
                   <FormCell title={'계약자'}>
                     <Input aria-label="" variant="info" value={'김한화(901212-1234567)'} readOnly />
