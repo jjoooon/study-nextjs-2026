@@ -42,16 +42,16 @@ const Ltpz050 = () => {
             variant="default"
           >
             <FormRow>
-              <FormCell title={'상품명'}>Text</FormCell>
-              <FormCell title={'설계번호'}>Text</FormCell>
+              <FormCell title={'상품명'}>무배당 마은든든 계속보장암보험</FormCell>
+              <FormCell title={'설계번호'}>LA141231231231</FormCell>
             </FormRow>
             <FormRow>
-              <FormCell title={'계약자'}>Text</FormCell>
-              <FormCell title={'주피보험자'}>Text</FormCell>
+              <FormCell title={'계약자'}>김한화</FormCell>
+              <FormCell title={'주피보험자'}>김손보</FormCell>
             </FormRow>
             <FormRow>
               <FormCell title={'모집자'} colSpan={3}>
-                Text
+                박한화
               </FormCell>
             </FormRow>
           </FormTable>
@@ -69,14 +69,23 @@ const Ltpz050 = () => {
               <FormRow>
                 <FormCell title={'부실유의계약 대상 사유'}>
                   <Grow className="w-full [&>div]:w-full!" placement="ss">
-                    <Textarea placeholder="내용을 입력하세요" showMinLengthCount readOnly />
+                    <Textarea
+                      placeholder="내용을 입력하세요"
+                      value={'계약자의 12차월(1년)이내 미유지 계약이 직전 1년간 3건(3건이상)입니다.'}
+                      showMinLengthCount
+                      readOnly
+                    />
                   </Grow>
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'선별인수 사유[지점장(BM)]'}>
                   <Grow className="w-full [&>div]:w-full!" placement="ss">
-                    <Textarea placeholder="내용을 입력하세요" showMinLengthCount />
+                    <Textarea
+                      placeholder="내용을 입력하세요"
+                      value={'현재 계약은 정상 유지되고 있으면 암보험담보 추가 계약입니다.'}
+                      showMinLengthCount
+                    />
                   </Grow>
                 </FormCell>
               </FormRow>
@@ -85,14 +94,23 @@ const Ltpz050 = () => {
               <FormRow>
                 <FormCell title={'부실유의계약 대상 사유'}>
                   <Grow className="w-full [&>div]:w-full!" placement="ss">
-                    <Textarea placeholder="내용을 입력하세요" showMinLengthCount readOnly />
+                    <Textarea
+                      placeholder="내용을 입력하세요"
+                      value={'계약자의 12차월(1년)이내 미유지 계약이 직전 1년간 3건(3건이상)입니다.'}
+                      showMinLengthCount
+                      readOnly
+                    />
                   </Grow>
                 </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'선별인수 사유[지점장(BM)]'}>
                   <Grow className="w-full [&>div]:w-full!" placement="ss">
-                    <Textarea placeholder="내용을 입력하세요" showMinLengthCount />
+                    <Textarea
+                      placeholder="내용을 입력하세요"
+                      value={'현재 계약은 정상 유지되고 있으면 암보험담보 추가 계약입니다.'}
+                      showMinLengthCount
+                    />
                   </Grow>
                 </FormCell>
               </FormRow>

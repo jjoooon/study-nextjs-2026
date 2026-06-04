@@ -170,19 +170,22 @@ export default function Ltpa650Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // 담보분류 -------------
+  // 2026-06-04 flex, minWidth 수정
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
     () => [
       {
         headerName: '패키지명',
         field: 'field1',
-        width: attributeColumnWidth[13],
+        flex: 1,
+        minWidth: attributeColumnWidth[13],
         autoHeight: true,
         spanRows: true,
       },
       {
         headerName: '세부',
         field: 'field2',
-        flex: 1,
+        flex: 3.5,
+        minWidth: attributeColumnWidth[30],
         autoHeight: true,
       },
     ],
@@ -198,7 +201,8 @@ export default function Ltpa650Section() {
       {
         headerName: '패키지명',
         field: 'packageName',
-        width: attributeColumnWidth[15],
+        flex: 1,
+        minWidth: attributeColumnWidth[15],
         autoHeight: true,
         spanRows: true,
       },
@@ -206,7 +210,8 @@ export default function Ltpa650Section() {
         headerName: '담보코드',
         field: 'field1',
         cellClass: 'text-center',
-        width: attributeColumnWidth[9],
+        flex: 1,
+        minWidth: attributeColumnWidth[9],
         autoHeight: true,
         spanRows: true,
       },
@@ -214,6 +219,7 @@ export default function Ltpa650Section() {
         headerName: '담보명',
         field: 'field2',
         flex: 5,
+        minWidth: attributeColumnWidth[20],
         cellClass: (params) =>
           params.data && params.data.filePath.length === 1
             ? ''
@@ -225,6 +231,7 @@ export default function Ltpa650Section() {
         field: 'field3',
         cellClass: 'text-center',
         flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellRenderer: treeNameCellRenderer,
         cellRendererParams: {
           className: 'block w-full text-center',

@@ -130,32 +130,37 @@ export default function Ltpa340Section() {
   );
   //  ---------------------------------- 행추가 삭제
 
+  // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '설계번호',
       field: 'field01',
-      width: 110,
+      flex: 1,
+      minWidth: 110,
       cellClass: 'text-center editable-cell',
       editable: true,
     },
     {
       headerName: '상품코드',
       field: 'field02',
-      width: 90,
+      flex: 1,
+      minWidth: 90,
       cellClass: 'text-center editable-cell',
       editable: true,
     },
     {
       headerName: '상품명',
       field: 'field03',
-      flex: 5,
+      flex: 6,
+      minWidth: 250,
       cellClass: 'text-left',
     },
     {
       headerName: '출력물구분',
       field: 'field04',
-      width: 85,
+      flex: 1,
+      minWidth: 85,
       editable: true,
       cellClass: 'text-center editable-cell',
       cellEditor: 'agSelectCellEditor',
@@ -164,25 +169,29 @@ export default function Ltpa340Section() {
     {
       headerName: '판매허용채널',
       field: 'field05',
-      width: 80,
+      flex: 1,
+      minWidth: 80,
       cellClass: 'text-center',
     },
     {
       headerName: '보험시기',
       field: 'field06',
-      width: 100,
+      flex: 1,
+      minWidth: 90,
       cellClass: 'text-center',
     },
     {
       headerName: '설계상태',
       field: 'field07',
-      width: 70,
+      flex: 1,
+      minWidth: 70,
       cellClass: 'text-center',
     },
     {
       headerName: '설계자',
       field: 'field08',
-      width: 110,
+      flex: 1,
+      minWidth: 110,
       cellClass: 'text-center',
     },
     {

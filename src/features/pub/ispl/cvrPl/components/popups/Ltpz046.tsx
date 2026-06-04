@@ -47,45 +47,45 @@ const DummyData: DummyDataType[] = [
   {
     id: 2,
     isCheck: false,
-    field01: '',
-    field02: '',
-    field03: '',
+    field01: '4',
+    field02: '시설(실손)',
+    field03: '1급',
     field04: '9999999999',
     field05: '9999999999',
   },
   {
     id: 3,
     isCheck: false,
-    field01: '',
-    field02: '',
-    field03: '',
+    field01: '5',
+    field02: '재고자산(실손)',
+    field03: '1급',
     field04: '9999999999',
     field05: '9999999999',
   },
   {
     id: 4,
     isCheck: false,
-    field01: '',
-    field02: '',
-    field03: '',
+    field01: '6',
+    field02: '재고자산(실손)',
+    field03: '1급',
     field04: '9999999999',
     field05: '9999999999',
   },
   {
     id: 5,
     isCheck: false,
-    field01: '5',
-    field02: '',
-    field03: '',
+    field01: '7',
+    field02: '재고자산(실손)',
+    field03: '1급',
     field04: '9999999999',
     field05: '9999999999',
   },
   {
     id: 6,
     isCheck: false,
-    field01: '',
-    field02: '',
-    field03: '',
+    field01: '8',
+    field02: '재고자산(실손)',
+    field03: '1급',
     field04: '9999999999',
     field05: '9999999999',
   },
@@ -102,7 +102,7 @@ const Ltpz046 = () => {
     },
     {
       headerName: '구분',
-      flex: 1,
+      flex: 2,
       field: 'field02',
       cellClass: 'text-left',
     },
@@ -114,13 +114,15 @@ const Ltpz046 = () => {
     },
     {
       headerName: '목적물가입금액',
-      width: 120,
+      minWidth: 110,
+      flex: 1,
       field: 'field04',
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '가입금액',
+      minWidth: 100,
       flex: 1,
       field: 'field05',
       cellClass: 'text-right',
@@ -201,10 +203,10 @@ const Ltpz046 = () => {
             <FormTable caption="담보" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'담보명'}>
-                  <Input value="" readOnly />
+                  <Input value="풍수재손해(실손번부보상, 비특수)" readOnly />
                 </FormCell>
                 <FormCell title={' 가입금액'} tdClassName="grid grid-cols-[1fr_auto] items-center gap-1">
-                  <Input value="0" commaAmount readOnly />
+                  <Input value="100" commaAmount readOnly />
                   만원
                 </FormCell>
               </FormRow>

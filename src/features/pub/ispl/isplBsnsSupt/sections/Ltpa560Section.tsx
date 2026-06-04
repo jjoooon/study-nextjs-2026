@@ -222,10 +222,12 @@ export default function Ltpa560Section() {
 
   // AgGrid Column
   // 2026-05-29 수정 cellClass 추가, width 수정
+  // 2026-06-04 flex, minWidth 수정
   const columnDefs: (ColDef<Ltpa560DummyDataRow> | ColGroupDef<Ltpa560DummyDataRow>)[] = [
     {
       headerName: '상품',
       flex: 3,
+      minWidth: 220,
       field: 'field01',
       cellClass: 'text-left [&>div]:whitespace-normal [&_span]:leading-normal',
       spanRows: true,
@@ -234,7 +236,8 @@ export default function Ltpa560Section() {
     },
     {
       headerName: '채널',
-      flex: 1.5,
+      flex: 1.2,
+      minWidth: 100,
       field: 'field02',
       cellClass: 'text-center',
       spanRows: true,
@@ -244,6 +247,7 @@ export default function Ltpa560Section() {
     {
       headerName: '본부명',
       flex: 2.5,
+      minWidth: 140,
       field: 'field03',
       cellClass: 'text-center',
       autoHeight: true,
@@ -251,21 +255,24 @@ export default function Ltpa560Section() {
     },
     {
       headerName: '단순설계',
-      width: 75,
+      flex: 1,
+      minWidth: 75,
       field: 'field04',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '설계중',
-      width: 75,
+      flex: 1,
+      minWidth: 75,
       field: 'field05',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '설계완료',
-      width: 75,
+      flex: 1,
+      minWidth: 75,
       field: 'field06',
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
@@ -280,28 +287,32 @@ export default function Ltpa560Section() {
     },
     {
       headerName: '청약중',
-      width: 75,
+      flex: 1,
+      minWidth: 75,
       field: 'field07',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '청약심사완료',
-      width: 90,
+      flex: 1,
+      minWidth: 90,
       field: 'field08',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '청약완료',
-      width: 75,
+      flex: 1,
+      minWidth: 75,
       field: 'field09',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '수납완료',
-      width: 75,
+      flex: 1,
+      minWidth: 75,
       field: 'field10',
       cellClass: 'text-center',
       autoHeight: true,
@@ -309,6 +320,7 @@ export default function Ltpa560Section() {
     {
       headerName: '총합계',
       flex: 1,
+      minWidth: 75,
       field: 'field11',
       cellClass: 'text-center truncate',
       autoHeight: true,
@@ -337,6 +349,7 @@ export default function Ltpa560Section() {
         </Grow>
       ),
       flex: 1,
+      minWidth: 90,
       field: 'field12',
       cellClass: 'text-center',
       autoHeight: true,

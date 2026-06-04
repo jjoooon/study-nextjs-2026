@@ -87,19 +87,22 @@ const Ltpz080 = () => {
     {
       headerName: '담보명',
       field: 'field2',
-      flex: 8,
+      flex: 7,
+      minWidth: 200,
       tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
     },
     {
       headerName: '담보그룹',
       field: 'field3',
-      width: 100,
+      flex: 1,
+      minWidth: 100,
       cellClass: 'text-center',
     },
     {
       headerName: '예외',
       field: 'field4',
       flex: 1,
+      minWidth: 90,
       cellClass: 'text-center',
     },
   ];

@@ -20,14 +20,8 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 const Ltpz041 = () => {
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-  });
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -50,12 +44,12 @@ const Ltpz041 = () => {
                 <FormTable caption="사업자" cols={['w-[9rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'사업자명'}>
-                      <Input value={form.type01} onChange={(e) => setFormField('type01', e.target.value)} readOnly />
+                      <Input value={'김한화'} readOnly />
                     </FormCell>
                   </FormRow>
                   <FormRow>
                     <FormCell title={'사업자번호'}>
-                      <Input value={form.type02} onChange={(e) => setFormField('type02', e.target.value)} readOnly />
+                      <Input value={'123-45-67890'} readOnly />
                     </FormCell>
                   </FormRow>
                 </FormTable>

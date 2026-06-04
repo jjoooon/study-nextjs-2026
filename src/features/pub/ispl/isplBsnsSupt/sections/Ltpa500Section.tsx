@@ -2,8 +2,9 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+//2026-06-04 tooltip, flex, minWidth, cellClass, cellEditor, cellEditorParams 수정 및 추가
 
-import { AgGridEmptyComponent, numberValueFormatter, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useAgGridInfiniteAppend } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -200,31 +201,36 @@ export default function Ltpa500Section() {
     {
       headerName: '업무구분',
       field: 'field01',
-      flex: 2,
-      cellClass: 'text-left',
+      flex: 1.5,
+      minWidth: 160,
+      cellClass: 'text-center',
     },
     {
       headerName: '증권번호',
       field: 'field02',
-      width: 120,
+      flex: 1,
+      minWidth: 120,
       cellClass: 'text-center',
     },
     {
       headerName: '설계번호',
       field: 'field03',
-      width: 120,
+      flex: 1,
+      minWidth: 120,
       cellClass: 'text-center',
     },
     {
       headerName: '상품명',
       field: 'field04',
       flex: 3,
+      minWidth: 230,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
     {
       headerName: '계약자',
       field: 'field05',
-      width: 70,
+      width: 60,
       cellClass: 'text-center',
     },
     {
@@ -242,13 +248,14 @@ export default function Ltpa500Section() {
     {
       headerName: '지점',
       field: 'field08',
-      width: 105,
+      width: 100,
       cellClass: 'text-center',
     },
     {
       headerName: '보험료(원)',
       field: 'field09',
-      width: 90,
+      flex: 1,
+      minWidth: 80,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter<DummyDataType>,
     },
@@ -256,19 +263,19 @@ export default function Ltpa500Section() {
       headerName: '사유',
       field: 'field10',
       flex: 1.2,
+      minWidth: 120,
       cellClass: 'editable-cell text-left',
       editable: true,
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택', '선택1'] },
+      cellEditor: 'agInputCellEditor',
     },
     {
       headerName: '승인',
       field: 'field11',
-      flex: 1,
+      width: 85,
       cellClass: 'editable-cell text-center',
       editable: true,
       cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택', '선택1'] },
+      cellEditorParams: { values: ['선택', '승인', '거절'] },
     },
   ];
 
@@ -406,6 +413,8 @@ export default function Ltpa500Section() {
                         width: 40,
                         cellClass: 'text-center editable-cell',
                       }}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                     />
                   </div>
                   <TableMore

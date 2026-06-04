@@ -111,14 +111,15 @@ export default function Ltpa660Section() {
       allRows: DummyData1,
       pageSize,
     });
-  // 2026-06-01 width, flex 수정
+  // 2026-06-01 minWidth, flex 수정, valueParser, valueFormatter 추가
   const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
     () => [
       {
         headerName: '담보코드',
         field: 'field1',
         cellClass: 'text-center',
-        width: attributeColumnWidth[10],
+        flex: 1,
+        minWidth: attributeColumnWidth[10],
         autoHeight: true,
         cellRenderer: (params: ICellRendererParams<DummyData1Type>) =>
           params.data?.field1 ? (
@@ -133,36 +134,43 @@ export default function Ltpa660Section() {
         headerName: '담보명',
         field: 'field2',
         flex: 8,
+        minWidth: attributeColumnWidth[30],
       },
       {
         headerName: '판매건수',
         field: 'field3',
-        width: attributeColumnWidth[9],
+        flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<DummyData1Type>,
       },
       {
         headerName: '판매순위',
         field: 'field4',
-        width: attributeColumnWidth[9],
+        flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellClass: 'text-center',
       },
       {
         headerName: '순위조정',
         field: 'field5',
-        width: attributeColumnWidth[9],
-        cellClass: 'px-[0.2rem]! editable-cell text-center',
+        flex: 1,
+        minWidth: attributeColumnWidth[9],
+        cellClass: 'text-center editable-cell',
         editable: true,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         },
+        valueParser: (params) => Number(params.newValue), // 저장 시 숫자로
+        valueFormatter: (params) => String(params.value ?? ''), // 표시 시 문자열로
         cellRenderer: getExpiryRenderer('center'),
       },
       {
         headerName: '추천제외',
         field: 'field6',
         flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellClass: 'text-center',
         editable: true,
         cellDataType: 'boolean',
@@ -249,6 +257,7 @@ export default function Ltpa660Section() {
                 </Button>
               </Grow>
               <div className="ag-theme-alpine">
+                {/* 2026-06-04 suppressClickEdit={true} 삭제 */}
                 <AgGridReact<DummyData1Type>
                   onGridReady={(event) => {
                     gridApiRef.current = event.api;
@@ -266,13 +275,11 @@ export default function Ltpa660Section() {
                   }}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
-                  rowData={DummyData1}
                   columnDefs={columnDefs2}
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
                   }}
-                  suppressClickEdit={true}
                   singleClickEdit={true}
                   rowSelection={{
                     mode: 'multiRow',

@@ -199,6 +199,7 @@ export default function Ltpa460Section() {
   const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
   // 2026-06-01 width, flex 수정
+  // 2026-06-04 minWidth, flex 수정
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -212,7 +213,7 @@ export default function Ltpa460Section() {
     {
       headerName: '로그구분',
       field: 'field02',
-      flex: 0.8,
+      width: 90,
       cellClass: 'text-left',
       autoHeight: true,
       pinned: 'left',
@@ -235,7 +236,8 @@ export default function Ltpa460Section() {
     {
       headerName: 'KEY1',
       field: 'field05',
-      width: 200,
+      flex: 1,
+      minWidth: 200,
       cellClass: 'text-left',
       sortable: false,
       filter: false,
@@ -252,7 +254,8 @@ export default function Ltpa460Section() {
     {
       headerName: 'KEY2',
       field: 'field06',
-      width: 200,
+      flex: 1,
+      minWidth: 200,
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -267,7 +270,8 @@ export default function Ltpa460Section() {
     {
       headerName: 'KEY3',
       field: 'field07',
-      width: 200,
+      flex: 1,
+      minWidth: 200,
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -282,7 +286,8 @@ export default function Ltpa460Section() {
     {
       headerName: 'KEY4',
       field: 'field08',
-      width: 200,
+      flex: 1,
+      minWidth: 200,
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -297,7 +302,8 @@ export default function Ltpa460Section() {
     {
       headerName: 'KEY5',
       field: 'field09',
-      width: 200,
+      flex: 1,
+      minWidth: 200,
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -312,7 +318,8 @@ export default function Ltpa460Section() {
     {
       headerName: 'KEY6',
       field: 'field10',
-      width: 200,
+      flex: 1,
+      minWidth: 200,
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -327,7 +334,8 @@ export default function Ltpa460Section() {
     {
       headerName: 'KEY7',
       field: 'field11',
-      width: 200,
+      flex: 1,
+      minWidth: 200,
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
