@@ -12,7 +12,7 @@ import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
+import { EssentialIcon, FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -142,6 +142,12 @@ export const Ltpz064 = () => {
       children: [
         {
           headerName: '이름',
+          headerComponent: () => (
+            <Grow placement="cc" className="w-full">
+              <span>이름</span>
+              <EssentialIcon />
+            </Grow>
+          ),
           field: 'field1',
           width: 100,
           editable: true,
@@ -157,7 +163,12 @@ export const Ltpz064 = () => {
           ),
         },
         {
-          headerName: '주민등록번호',
+          headerComponent: () => (
+            <Grow placement="cc" className="w-full">
+              <span>주민등록번호</span>
+              <EssentialIcon />
+            </Grow>
+          ),
           field: 'field2',
           width: 110,
           editable: true,

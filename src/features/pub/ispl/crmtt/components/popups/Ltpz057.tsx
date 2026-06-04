@@ -187,7 +187,12 @@ const Ltpz057 = () => {
               <FormTable caption="월클릭스켄" cols={['w-[15rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title="오율적용업종">
-                    <Input />
+                    <Gcol placement="ss" gap={2}>
+                      <Input />
+                      <Typo icon="detail" tag="span" variant="body-md" weight="normal">
+                        건물내 입주업종 중 가장 높은 업종이 &lsquo;요율&rsquo;로 적용된니다.
+                      </Typo>
+                    </Gcol>
                   </FormCell>
                 </FormRow>
               </FormTable>
