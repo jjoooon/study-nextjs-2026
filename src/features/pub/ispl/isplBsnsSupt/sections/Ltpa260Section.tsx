@@ -2,6 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+// 2026-06-04 flex, minWidth, autoHeight, DummyData 값 수정
 
 import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Grid, Grow } from '@atoms';
@@ -42,59 +43,61 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '',
+    field01: '1',
     field02: '한화손해보험',
-    field03: '보험종목',
+    field03: '일반단체(손보)',
     field04: 'LA20148716422000',
     field05: '한화 더건강한 한아름종합보험2601',
     field06: '33',
     field07: '김한화',
-    field08: '1급수',
+    field08: '1',
     field09: '2026-TEXT',
     field10: '2026-03-01',
     field11: '2099-03-01',
-    field12: 'TEXT',
+    field12: '정상',
   },
   {
     id: 2,
-    field01: '',
+    field01: '2',
     field02: '한화손해보험',
-    field03: '보험종목',
+    field03: '일반단체(손보)',
     field04: 'LA20148716422000',
     field05: '한화 더건강한 한아름종합보험2601',
     field06: '33',
     field07: '김한화',
-    field08: '1급수',
+    field08: '1',
     field09: '2026-TEXT',
     field10: '2026-03-01',
     field11: '2099-03-01',
-    field12: 'TEXT',
+    field12: '정상',
   },
   {
     id: 3,
-    field01: '',
+    field01: '3',
     field02: '한화손해보험',
-    field03: '보험종목',
+    field03: '일반단체(손보)',
     field04: 'LA20148716422000',
     field05: '한화 더건강한 한아름종합보험2601',
     field06: '33',
     field07: '김한화',
-    field08: '1급수',
+    field08: '1',
     field09: '2026-TEXT',
     field10: '2026-03-01',
     field11: '2099-03-01',
-    field12: 'TEXT',
+    field12: '정상',
   },
 ];
 
 export default function Ltpa260Section() {
+  
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
     () => [
       {
         headerName: '',
         field: 'field01',
-        width: 50,
+        width: 40,
+        autoHeight: true,
         cellClass: 'text-center',
       },
       {
@@ -104,7 +107,8 @@ export default function Ltpa260Section() {
           {
             headerName: '보험종목',
             field: 'field03',
-            width: 170,
+            flex: 1,
+            minWidth: 170,
             cellClass: 'text-center px-0!',
             autoHeight: true,
             cellRenderer: createFieldRenderer<DummyDataType>('field02', 'field03'),
@@ -114,12 +118,13 @@ export default function Ltpa260Section() {
       {
         headerName: '',
         field: 'field05',
-        width: 360,
+        flex: 1,
+        minWidth: 400,
         cellClass: 'text-center px-0!',
         autoHeight: true,
         headerComponent: () => {
           return (
-            <Grid className="h-[5.6rem] w-full grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
+            <Grid className="h-[5.6rem] w-full grid-cols-[20rem_20rem] grid-rows-[2.9rem_2.9rem] gap-0">
               <Grow placement="cc" className="w-full border-b px-2 border-(--color-gray-10)">
                 증권번호
               </Grow>
@@ -134,7 +139,7 @@ export default function Ltpa260Section() {
         },
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
           return (
-            <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
+            <Grid className="h-[5.6rem] grid-cols-[20rem_20rem] grid-rows-[2.8rem_2.8rem] gap-0">
               <Grow placement="cc" className="w-full border-b px-2 border-(--color-gray-10)">
                 {String(params.data?.field04 ?? '')}
               </Grow>
@@ -157,6 +162,7 @@ export default function Ltpa260Section() {
             headerName: '상해급수',
             field: 'field08',
             flex: 1,
+            minWidth: 120,
             cellClass: 'text-center px-0!',
             autoHeight: true,
             cellRenderer: createFieldRenderer<DummyDataType>('field07', 'field08'),
@@ -166,12 +172,13 @@ export default function Ltpa260Section() {
       {
         headerName: '보장기간',
         field: 'field09',
-        width: 360,
+        flex: 1,
+        minWidth: 300,
         cellClass: 'text-center px-0!',
         autoHeight: true,
         headerComponent: () => {
           return (
-            <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
+            <Grid className="h-[5.6rem] grid-cols-[15rem_15rem] grid-rows-[2.8rem_2.8rem] gap-0">
               <Grow placement="cc" className="col-span-2 w-full px-2 justify-center">
                 보장기간
               </Grow>
@@ -186,14 +193,11 @@ export default function Ltpa260Section() {
         },
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
           return (
-            <Grid className="h-[5.6rem] grid-cols-[18rem_18rem] grid-rows-[2.8rem_2.8rem] gap-0">
-              <Grow placement="cc" className="col-span-2 w-full px-2 justify-center">
-                {String(params.data?.field09 ?? '')}
-              </Grow>
-              <Grow placement="cc" className="w-full h-full border-t px-2 border-(--color-gray-10)">
+            <Grid className="h-[5.9rem] grid-cols-[15rem_15rem] grid-rows-[5.9rem] gap-0">
+              <Grow placement="cc" className="w-full h-full px-2 border-(--color-gray-10)">
                 {String(params.data?.field10 ?? '')}
               </Grow>
-              <Grow placement="cc" className="w-full px-2 border-l border-t border-(--color-gray-10)">
+              <Grow placement="cc" className="w-full h-full px-2 border-l border-(--color-gray-10)">
                 {String(params.data?.field11 ?? '')}
               </Grow>
             </Grid>
@@ -204,6 +208,7 @@ export default function Ltpa260Section() {
         headerName: '계약상태',
         field: 'field12',
         flex: 1,
+        minWidth: 100,
         cellClass: 'text-center flex! items-center justify-center',
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => String(params.data?.field12 ?? ''),
       },
