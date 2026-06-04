@@ -61,11 +61,15 @@ const Ltpz057 = () => {
                   >
                     <Gcol placement="ss" gap={2}>
                       <Grid className="grid-cols-[auto_auto_1fr] w-full">
-                        <Input aria-label="가입업종" width={160} value={''} />
+                        <Input aria-label="가입업종" width={160} value={'090200'} />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="" value={'상품명 text'} readOnly />
+                        <Input
+                          aria-label=""
+                          value={'(2)여관, 여인숙, 유스호스텔, 펜션 등 일반 숙박시설 및 생활숙박시설'}
+                          readOnly
+                        />
                       </Grid>
                       <Grow>
                         <Checkbox>가입업종 외 건물 내 다른업종 없음</Checkbox>
@@ -140,7 +144,7 @@ const Ltpz057 = () => {
                     <Grid className="grid-cols-[1fr_1fr_1fr] gap-x-6 gap-y-2 w-full">
                       <Grid className="grid-cols-[auto_1fr_auto]">
                         <Checkbox aria-label="주변업종 선택"></Checkbox>
-                        <Input aria-label="주변업종 직접 검색" />
+                        <Input aria-label="주변업종 직접 검색" value={'(1)여객자동차터미널, 물류터미널'} />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -186,9 +190,9 @@ const Ltpz057 = () => {
               </FormTable>
               <FormTable caption="월클릭스켄" cols={['w-[15rem]', 'w-auto']}>
                 <FormRow>
-                  <FormCell title="오율적용업종">
+                  <FormCell title="요율적용업종">
                     <Gcol placement="ss" gap={2}>
-                      <Input />
+                      <Input value={'목공 및 목재가공(목선제조 포함)'} />
                       <Typo icon="detail" tag="span" variant="body-md" weight="normal">
                         건물내 입주업종 중 가장 높은 업종이 &lsquo;요율&rsquo;로 적용된니다.
                       </Typo>

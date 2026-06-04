@@ -351,11 +351,11 @@ const Ltpz01602 = () => {
                       aria-label=""
                       width={160}
                       value={form.type06}
-                      after={'만원'}
                       onChange={(e) => setFormField('type06', e.target.value)}
                       commaAmount
                       required
                     />
+                    만원
                   </FormCell>
                 </FormRow>
               </FormTable>

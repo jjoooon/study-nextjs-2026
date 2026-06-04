@@ -9,7 +9,6 @@ import { AgGridEmptyComponent, createFieldRenderer, renderTbodyTh, numberValueFo
 import { Gcol, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
@@ -273,17 +272,6 @@ export default function Ltpa010Section() {
               </Gcol>
             </Gcol>
           </>
-        }
-        mainFoot={
-          <MainBottom>
-            <MainBottomItem>
-              <Grow gap={1}>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  닫기
-                </Button>
-              </Grow>
-            </MainBottomItem>
-          </MainBottom>
         }
       />
       <LayoutFoot>

@@ -274,8 +274,8 @@ const Ltpz045 = () => {
                             onChange={(e) => setFormField('type01', e.target.value)}
                           >
                             {[
-                              { value: 'selection', label: '선택1' },
-                              { value: 'selection2', label: '선택2' },
+                              { value: 'selection', label: '법정대리인' },
+                              { value: 'selection2', label: '법정대리인' },
                             ].map((option) => (
                               <NativeSelectOption key={option.value} value={option.value}>
                                 {option.label}

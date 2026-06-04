@@ -82,6 +82,10 @@ const DummyDataAll: DummyDataTypeAll[] = [
   { id: 7, field1: '일반', field2: '근린생활시설', field3: '010100', field4: '(1)휴게음식점' },
   { id: 8, field1: '공장', field2: '근린생활시설', field3: '010200', field4: '(2)일반음식점' },
   { id: 9, field1: '공장', field2: '화학공업', field3: '043400', field4: '의약품제조' },
+  { id: 10, field1: '공장', field2: '화학공업', field3: '043400', field4: '의약품제조' },
+  { id: 11, field1: '일반', field2: '근린생활시설', field3: '010100', field4: '(1)휴게음식점' },
+  { id: 12, field1: '공장', field2: '근린생활시설', field3: '010200', field4: '(2)일반음식점' },
+  { id: 13, field1: '공장', field2: '화학공업', field3: '043400', field4: '의약품제조' },
 ];
 
 const Ltpz058 = () => {
@@ -164,7 +168,7 @@ const Ltpz058 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -213,7 +217,7 @@ const Ltpz058 = () => {
             <>
               {/* 분류기준  */}
               <Grid className="w-full h-full grid-cols-[1fr_2fr_3fr] gap-3">
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[24rem]">
                   <AgGridReact<DummyDataTypeA>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -225,10 +229,10 @@ const Ltpz058 = () => {
                     }}
                     singleClickEdit={true}
                     rowClassRules={{}}
-                    domLayout="autoHeight"
+                    domLayout="normal"
                   />
                 </div>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[24rem]">
                   <AgGridReact<DummyDataTypeB>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -240,10 +244,10 @@ const Ltpz058 = () => {
                     }}
                     singleClickEdit={true}
                     rowClassRules={{}}
-                    domLayout="autoHeight"
+                    domLayout="normal"
                   />
                 </div>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine min-h-[24rem]">
                   <AgGridReact<DummyDataTypeAll>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -255,7 +259,7 @@ const Ltpz058 = () => {
                     }}
                     singleClickEdit={true}
                     rowClassRules={{}}
-                    domLayout="autoHeight"
+                    domLayout="normal"
                     groupHeaderHeight={30}
                     headerHeight={0}
                   />
@@ -266,7 +270,7 @@ const Ltpz058 = () => {
           )}
           {searchCategory === '업종명' && (
             <Grid>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine min-h-[18.4rem]">
                 <AgGridReact<DummyDataTypeAll>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -278,7 +282,7 @@ const Ltpz058 = () => {
                   }}
                   singleClickEdit={true}
                   rowClassRules={{}}
-                  domLayout="autoHeight"
+                  domLayout="normal"
                   groupHeaderHeight={30}
                   headerHeight={0}
                 />
