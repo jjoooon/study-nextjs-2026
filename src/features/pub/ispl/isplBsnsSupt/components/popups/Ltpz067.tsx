@@ -202,7 +202,7 @@ const Ltpz067 = () => {
                         sortable: true,
                         resizable: true,
                       }}
-                      enableCellSpan={true}
+                      animateRows={false}
                     />
                   </div>
                   <Gcol variant="box-info" className="w-full" placement="ss">
@@ -227,7 +227,7 @@ const Ltpz067 = () => {
                       sortable: false,
                       resizable: false,
                     }}
-                    enableCellSpan={true}
+                    animateRows={false}
                   />
                 </div>
               </TableFoldBody>

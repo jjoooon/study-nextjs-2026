@@ -278,7 +278,8 @@ export const Ltpz064 = () => {
         {
           headerName: '운전형태',
           field: 'field14',
-          width: 80,
+          flex: 1,
+          minWidth: 80,
           editable: true,
           cellClass: 'editable-cell text-center',
           cellEditor: 'agSelectCellEditor',
@@ -288,7 +289,8 @@ export const Ltpz064 = () => {
         {
           headerName: '이륜차',
           field: 'field15',
-          width: 80,
+          flex: 1,
+          minWidth: 80,
           editable: true,
           cellClass: 'editable-cell text-center',
           cellEditor: 'agSelectCellEditor',
@@ -298,7 +300,8 @@ export const Ltpz064 = () => {
         {
           headerName: '병력여부',
           field: 'field16',
-          width: 80,
+          flex: 1,
+          minWidth: 80,
           editable: true,
           cellClass: 'editable-cell text-center',
           cellEditor: 'agSelectCellEditor',
@@ -308,7 +311,8 @@ export const Ltpz064 = () => {
         {
           headerName: '알릴사항',
           field: 'field17',
-          width: 80,
+          flex: 1,
+          minWidth: 80,
           editable: true,
           cellClass: 'editable-cell text-center',
           sortable: false,
