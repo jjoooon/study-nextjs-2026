@@ -110,55 +110,63 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz098 = () => {
   // 2026-05-28 cellClass 수정
+  // 2026-06-04 flex, minWidth 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '증권(설계번호)',
       field: 'field01',
-      width: 130,
+      flex: 1,
+      minWidth: 130,
       cellClass: 'text-center',
     },
     {
       headerName: '상품명',
       field: 'field02',
-      width: 270,
+      flex: 3,
+      minWidth: 280,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '보험시기',
       field: 'field03',
-      width: 90,
+      flex: 1,
+      minWidth: 85,
       cellClass: 'text-center',
     },
     {
       headerName: '보험종기',
       field: 'field04',
-      width: 90,
+      flex: 1,
+      minWidth: 85,
       cellClass: 'text-center',
     },
     {
       headerName: '최종월드',
       field: 'field05',
-      width: 90,
+      width: 75,
       cellClass: 'truncate text-center',
     },
     {
       headerName: '담보명',
       field: 'field06',
-      width: 200,
+      flex: 1.5,
+      minWidth: 200,
       cellClass: 'text-left',
     },
     {
       headerName: '가입금액',
       field: 'field07',
-      width: 110,
+      flex: 1,
+      minWidth: 80,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '누적위험명',
       field: 'field08',
-      width: 130,
+      flex: 1,
+      minWidth: 150,
       cellClass: 'text-left',
     },
     {
@@ -170,14 +178,16 @@ const Ltpz098 = () => {
     {
       headerName: '누적반영금액',
       field: 'field10',
-      width: 110,
+      flex: 1,
+      minWidth: 90,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '계약(설계상태)',
       field: 'field11',
-      width: 110,
+      flex: 1,
+      minWidth: 90,
       cellClass: 'text-center',
     },
   ];
