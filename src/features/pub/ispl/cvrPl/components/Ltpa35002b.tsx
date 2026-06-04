@@ -193,7 +193,8 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       {
         headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" col={true} />,
         field: 'insuredAmount',
-        width: attributeColumnWidth[9],
+        flex: 1,
+        minWidth: attributeColumnWidth[7],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         cellClassRules: {
           'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
@@ -234,14 +235,16 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           {
             headerName: '출생전',
             field: 'field4',
-            width: attributeColumnWidth[7],
+            flex: 1,
+            minWidth: attributeColumnWidth[7],
             cellClass: 'text-right',
             valueFormatter: numberValueFormatter<AgGridRow>,
           },
           {
             headerName: '출생후',
             field: 'field4b',
-            width: attributeColumnWidth[7],
+            flex: 1,
+            minWidth: attributeColumnWidth[7],
             cellClass: 'text-right',
             valueFormatter: numberValueFormatter<AgGridRow>,
           },
@@ -252,7 +255,8 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         children: [
           {
             headerName: '출생전',
-            width: attributeColumnWidth[7],
+            flex: 1,
+            minWidth: attributeColumnWidth[7],
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
               const base = 'px-[0.2rem]! tracking-tighter';
@@ -284,7 +288,8 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           {
             headerName: '출생후',
             field: 'field5b',
-            width: attributeColumnWidth[7],
+            flex: 1,
+            minWidth: attributeColumnWidth[7],
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
               const base = 'px-[0.2rem]! tracking-tighter';
@@ -328,7 +333,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         headerComponent: () => <HeaderWithUnit label="UW" unit="예상" className="flex-row-reverse" />,
         field: 'field8',
         flex: 1,
-        // width: attributeColumnWidth[6],
+        minWidth: attributeColumnWidth[6],
         cellClass: 'text-center px-0! tracking-tighter',
         cellRenderer: uwIconRenderer,
       },

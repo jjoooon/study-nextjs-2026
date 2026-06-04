@@ -285,6 +285,7 @@ export const Ltpa3500301 = ({
   ];
 
   const pageSize = 4;
+  const [isAllLoaded, setIsAllLoaded] = React.useState(false);
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext, setLoadedCount } = useAgGridInfiniteAppend({
     allRows: DummyData,
     pageSize,
@@ -740,8 +741,21 @@ export const Ltpa3500301 = ({
                   입력된 질병 6건
                 </Typo>
                 <Grow gap={1}>
-                  <Button color="gray" onClick={() => {}} size="lg" variant="outlined" disabled={simpleMode}>
-                    질병목록 일괄보기
+                  <Button
+                    color="gray"
+                    onClick={() => {
+                      if (isAllLoaded) {
+                        setLoadedCount(pageSize);
+                        setIsAllLoaded(false);
+                      } else {
+                        handleLoadAll();
+                        setIsAllLoaded(true);
+                      }
+                    }}
+                    size="lg"
+                    variant="outlined"
+                  >
+                    {isAllLoaded ? '접기' : '전체조회'}
                   </Button>
                   <Button color="primary" onClick={() => {}} size="lg" variant="outlined" disabled={simpleMode}>
                     질병 입력/수정
@@ -782,6 +796,7 @@ export const Ltpa3500301 = ({
                   onLoadAll={handleLoadAll}
                   onLoadNext={handleLoadNext}
                   isNext={false}
+                  isAll={false}
                   onLoadReset={() => setLoadedCount(pageSize)}
                   only={'all'}
                 />

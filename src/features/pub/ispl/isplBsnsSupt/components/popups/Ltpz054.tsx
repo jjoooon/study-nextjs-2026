@@ -148,9 +148,9 @@ const Ltpz054 = () => {
             <FormTable className="flex" variant={'none'} lineTop={false} cols={['w-1', 'w-1', 'w-1', 'w-auto']}>
               <FormRow>
                 <FormCell title={'가입설계번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
-                  <Input width={130} value={'LA260204310632'} />
+                  <Input width={'quoteNo'} value={'LA260204310632'} required />
                   -
-                  <Input width={30} value={'1'} readOnly />
+                  <Input width={26} value={'1'} readOnly />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
@@ -189,7 +189,7 @@ const Ltpz054 = () => {
 
           {/* 조회 정보 */}
           {/* 2026.05.27 */}
-          <Grid placement="ss" className="w-full grid-rows-[auto_auto]" gap={5}>
+          <Grid placement="ss" className="w-full grid-rows-[auto_auto]" gap={3}>
             <TableFold className="grid-rows-[1fr]">
               <TableFoldHead title="당사 스캔대상 발급물"></TableFoldHead>
               <TableFoldBody>
@@ -265,8 +265,8 @@ const Ltpz054 = () => {
               </Button>
             </Grow>
             <Grow>
-              <Input onChange={() => {}} size="lg" value="177777 133777777" />
-              <Input onChange={() => {}} size="lg" value="" />
+              <Input width={'quoteNo'} value={'LA260204310632'} />
+              <Input width={'quoteNo'} value="" />
               <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 수정
               </Button>

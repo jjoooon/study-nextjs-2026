@@ -101,7 +101,7 @@ export function Ltpa35002c() {
       {
         headerName: '구분',
         field: 'field1',
-        flex: 3,
+        flex: 9,
         cellClass: 'text-left',
       },
       {
@@ -112,7 +112,8 @@ export function Ltpa35002c() {
         },
         sortable: true,
         field: 'insuredAmount',
-        width: attributeColumnWidth[9],
+        flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         cellClassRules: {
           'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
@@ -152,7 +153,8 @@ export function Ltpa35002c() {
         },
         sortable: true,
         field: 'field3',
-        width: attributeColumnWidth[10],
+        flex: 1,
+        minWidth: attributeColumnWidth[10],
         cellClass: 'text-right [&_input]:text-right',
         headerClass: 'px-0!',
         valueParser: (params) => Number(params.newValue) || 0,
@@ -161,7 +163,8 @@ export function Ltpa35002c() {
       {
         headerName: '목적물상세',
         field: 'insuredAmount',
-        width: attributeColumnWidth[10],
+        flex: 1,
+        minWidth: attributeColumnWidth[10],
         cellClass: 'editable-cell',
         cellClassRules: editableCellClassRules<AgGridRow>(),
         editable: true,
@@ -170,7 +173,7 @@ export function Ltpa35002c() {
         headerName: '수용장소상세',
         field: 'field5',
         flex: 1,
-        // width: attributeColumnWidth[10],
+        minWidth: attributeColumnWidth[10],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: 'editable-cell',
         editable: true,
@@ -178,7 +181,8 @@ export function Ltpa35002c() {
       {
         headerName: '건물내/외',
         field: 'field6',
-        width: attributeColumnWidth[10],
+        flex: 1,
+        minWidth: attributeColumnWidth[10],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter ';
@@ -196,7 +200,8 @@ export function Ltpa35002c() {
       {
         headerName: '지하수용',
         field: 'field7',
-        width: attributeColumnWidth[10],
+        flex: 1,
+        minWidth: attributeColumnWidth[10],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -214,7 +219,8 @@ export function Ltpa35002c() {
       {
         headerName: '야적물건',
         field: 'field8',
-        width: attributeColumnWidth[10],
+        flex: 1,
+        minWidth: attributeColumnWidth[10],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -257,7 +263,7 @@ export function Ltpa35002c() {
       {
         headerName: '',
         field: 'title',
-        flex: 1,
+        flex: 9,
         cellClass: 'text-left',
         suppressMovable: true, // 이동 방지
         headerComponent: productNameHeader,
@@ -276,7 +282,8 @@ export function Ltpa35002c() {
         headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" />,
         sortable: true,
         field: 'insuredAmount',
-        width: attributeColumnWidth[9],
+        flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         cellClassRules: {
           'style-select': (params: CellClassParams<AgGridRow2>) => !!params.data?.isSelectedInsuredAmount,
@@ -319,14 +326,16 @@ export function Ltpa35002c() {
         },
         sortable: true,
         field: 'field7',
-        width: attributeColumnWidth[7],
+        flex: 1,
+        minWidth: attributeColumnWidth[7],
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow2>,
       },
       {
         headerName: '만기',
         field: 'field5',
-        width: attributeColumnWidth[7],
+        flex: 1,
+        minWidth: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -344,7 +353,8 @@ export function Ltpa35002c() {
       {
         headerName: '납기',
         field: 'field6',
-        width: attributeColumnWidth[7],
+        flex: 1,
+        minWidth: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
           const base = 'px-[0.2rem]! tracking-tighter';

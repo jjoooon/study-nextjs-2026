@@ -262,24 +262,26 @@ const Ltpz051 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid className="w-full grid-rows-[auto_auto_1fr]" gap={2}>
-            <Gcol variant={'box-info'}>
-              <Typo variant="body-sm" icon={'info'}>
-                고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당
-                신계약 청약완료 이전에 기계약의 직업변경 또는 이윤차부담보 변경 완료 필요. 또한, 신계약 청약서 발행
-                이전에 배서(청약중 이후) 진행 필요
-              </Typo>
-            </Gcol>
-            <Gcol className="w-full" placement="ss" variant="box-warning">
-              <Typo variant="body-sm">
-                <Checkbox>
-                  계약변경 설계 청약서 발급 및 확인서명을 조건으로 청약 진행 (단, 계약변경 미완료시{' '}
-                  <Typo weight="bold" color="primary">
-                    신계약 청약완료불가
-                  </Typo>
-                  )
-                </Checkbox>
-              </Typo>
+          <Grid className="w-full grid-rows-[auto_auto_1fr]" gap={3}>
+            <Gcol gap={2}>
+              <Gcol variant={'box-info'}>
+                <Typo variant="body-sm" icon={'info'}>
+                  고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당
+                  신계약 청약완료 이전에 기계약의 직업변경 또는 이윤차부담보 변경 완료 필요. 또한, 신계약 청약서 발행
+                  이전에 배서(청약중 이후) 진행 필요
+                </Typo>
+              </Gcol>
+              <Gcol className="w-full" placement="ss" variant="box-warning-line">
+                <Typo variant="body-sm">
+                  <Checkbox>
+                    계약변경 설계 청약서 발급 및 확인서명을 조건으로 청약 진행 (단, 계약변경 미완료시{' '}
+                    <Typo weight="bold" color="primary">
+                      신계약 청약완료불가
+                    </Typo>
+                    )
+                  </Checkbox>
+                </Typo>
+              </Gcol>
             </Gcol>
             <TabPager
               data={tabs}
@@ -291,9 +293,9 @@ const Ltpz051 = () => {
               visibleCount={4}
               removable={false}
             >
-              <Grid className="grid-rows-[1fr_auto] h-full">
+              <Grid className="grid-rows-[1fr_auto] h-full" gap={2}>
                 {active === 'basic' ? (
-                  <Grid className="w-full grid-rows-[auto_auto_1fr] h-full" gap={4}>
+                  <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
                     <FormTable
                       caption="직업 상세"
                       cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}
@@ -313,23 +315,23 @@ const Ltpz051 = () => {
                           99건
                         </Typo>
                       </Grow>
+                      <div className="ag-theme-alpine min-h-[18.4rem]">
+                        <AgGridReact<DummyDataType>
+                          getRowId={(params) => String(params.data.id)}
+                          rowData={rowData}
+                          columnDefs={columnDefs}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          defaultColDef={{
+                            sortable: true,
+                            resizable: true,
+                          }}
+                          domLayout="normal"
+                        />
+                      </div>
                     </Gcol>
-                    <div className="ag-theme-alpine min-h-[18.4rem]">
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        defaultColDef={{
-                          sortable: true,
-                          resizable: true,
-                        }}
-                        domLayout="normal"
-                      />
-                    </div>
                   </Grid>
                 ) : (
-                  <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={4}>
+                  <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
                     <FormTable
                       caption="직업 상세"
                       cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}

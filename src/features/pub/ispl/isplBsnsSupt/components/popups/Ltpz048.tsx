@@ -106,8 +106,8 @@ const Ltpz048 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[1fr]">
-          <TableFold variant="default">
-            <TableFoldHead title="QA 심사이력"></TableFoldHead>
+          <TableFold variant="accordion">
+            <TableFoldHead title="QA 심사이력" />
             <TableFoldBody>
               <Grow className="w-full" placement="ss" gap={3}>
                 <Grid className="w-[30rem] shrink-0 h-full grid-rows-[1fr_auto]">

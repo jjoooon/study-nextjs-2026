@@ -568,7 +568,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid grid-rows-[1fr]">
+        <DialogSection className="flex flex-col w-full">
           <TableFold variant="accordion" className="grid grid-rows-[auto_1fr]">
             <TableFoldHead title="건물구조입력">
               <Grow>
@@ -585,7 +585,11 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
             </TableFoldHead>
             <TableFoldBody className="gap-3 flex flex-col">
               <Grow placement="bwc" className="w-full" variant={'box-round'}>
-                <RadioGroup defaultValue="건물구조선택" onValueChange={(value) => setBuildingSelectType(value)}>
+                <RadioGroup
+                  defaultValue="건물구조선택"
+                  onValueChange={(value) => setBuildingSelectType(value)}
+                  className="gap-3"
+                >
                   {[
                     { value: '건물구조선택', label: '건물구조선택' },
                     { value: '이미지로선택', label: '이미지로선택' },
@@ -597,7 +601,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </RadioGroup>
               </Grow>
               {buildingSelectType === '건물구조선택' && (
-                <Grid className="w-full h-full grid-cols-[2fr_2fr_2fr_4fr]">
+                <Grid className="w-full h-full grid-cols-[2fr_2fr_2fr_4fr] gap-3">
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
@@ -723,121 +727,121 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                   </FormTable>
                 </Gcol>
               )}
-              <TableFold variant="accordion">
-                <TableFoldHead title="소재지">
-                  <Grow>
-                    <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
-                      층/면적반영
-                    </Button>
-                    {/* 2026-05-22 button 추가 */}
-                    <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
-                      복합건물
-                    </Button>
-                  </Grow>
-                </TableFoldHead>
-                <TableFoldBody>
-                  <FormTable
-                    caption="사업자"
-                    cols={['w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem]', 'w-[calc(50%-14rem)]']}
+            </TableFoldBody>
+          </TableFold>
+          <TableFold variant="accordion">
+            <TableFoldHead title="소재지">
+              <Grow>
+                <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
+                  층/면적반영
+                </Button>
+                {/* 2026-05-22 button 추가 */}
+                <Button variant={'outlined'} color={'secondary'} onClick={() => {}}>
+                  복합건물
+                </Button>
+              </Grow>
+            </TableFoldHead>
+            <TableFoldBody>
+              <FormTable
+                caption="사업자"
+                cols={['w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem]', 'w-[calc(50%-14rem)]']}
+              >
+                <FormRow>
+                  <FormCell
+                    title={
+                      <Grow placement="sc">
+                        소재지
+                        <EssentialIcon />
+                      </Grow>
+                    }
+                    colSpan={3}
                   >
-                    <FormRow>
-                      <FormCell
-                        title={
-                          <Grow placement="sc">
-                            소재지
-                            <EssentialIcon />
-                          </Grow>
-                        }
-                        colSpan={3}
+                    소재지정보 text text text
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'건물급수'} colSpan={3}>
+                    <Grow>
+                      <Input value={'김한화'} width={75} readOnly />
+                      <Typo variant="body-sm" className="shrink-0">
+                        급(적용급수)
+                      </Typo>
+                      <NativeSelect
+                        aria-label="조회구분 선택"
+                        width="20rem"
+                        value={'선택'}
+                        required
+                        onChange={() => ''}
                       >
-                        소재지정보 text text text
-                      </FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'건물급수'} colSpan={3}>
-                        <Grow>
-                          <Input value={'김한화'} width={75} readOnly />
-                          <Typo variant="body-sm" className="shrink-0">
-                            급(적용급수)
-                          </Typo>
-                          <NativeSelect
-                            aria-label="조회구분 선택"
-                            width="20rem"
-                            value={'선택'}
-                            required
-                            onChange={() => ''}
-                          >
-                            {[
-                              { value: 'selection', id: 'type01', label: '선택1' },
-                              { value: 'selection2', id: 'type02', label: '선택2' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.id} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                          <Typo variant="body-sm" className="shrink-0">
-                            건축년도
-                          </Typo>
-                          <Input value={''} width={75} readOnly />
-                        </Grow>
-                        <Input value={''} width={'full'} readOnly />
-                      </FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'전체증수'} colSpan={3}>
-                        지상
-                        <Input value={''} width={75} required />
-                        층 / 지하
-                        <Input value={''} width={75} required />층
-                      </FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'보험가입층수'}>
-                        {/* 2026-05-27 radio 수정 */}
-                        <RadioGroup
-                          value={insuredFloorType ?? ''}
-                          onValueChange={(value) => {
-                            if (value === '전체' || value === '일부') {
-                              setInsuredFloorType(value);
-                              if (value === '일부') {
-                                setDetailPlace('');
-                              }
-                            }
-                          }}
-                        >
-                          {[
-                            { value: '전체', label: '전체' },
-                            { value: '일부', label: '일부' },
-                          ].map((option) => (
-                            <RadioGroupItem key={option.value} value={option.value}>
-                              {option.label}
-                            </RadioGroupItem>
-                          ))}
-                        </RadioGroup>
-                      </FormCell>
-                      <FormCell title={'가입면적'}>
-                        <Input value={''} width={70} readOnly />
-                        ㎡ ↔
-                        <Input value={''} width={70} readOnly />평
-                      </FormCell>
-                    </FormRow>
-                    <FormRow>
-                      <FormCell title={'세부장소'} colSpan={3}>
-                        {/* 2026-05-27 placeholder 수정 */}
-                        <Input
-                          value={detailPlace}
-                          width={400}
-                          onChange={(e) => setDetailPlace(e.target.value)}
-                          readOnly={insuredFloorType === '전체'}
-                          placeholder={insuredFloorType === '전체' ? '건물전체' : undefined}
-                        />
-                        입력예시: 2층 201호
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </TableFoldBody>
-              </TableFold>
+                        {[
+                          { value: 'selection', id: 'type01', label: '선택1' },
+                          { value: 'selection2', id: 'type02', label: '선택2' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.id} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
+                      <Typo variant="body-sm" className="shrink-0">
+                        건축년도
+                      </Typo>
+                      <Input width={75} readOnly />
+                    </Grow>
+                    <Input width={'full'} readOnly />
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'전체증수'} colSpan={3}>
+                    지상
+                    <Input width={40} align="right" required />
+                    층 / 지하
+                    <Input width={32} align="right" required />층
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'보험가입층수'}>
+                    {/* 2026-05-27 radio 수정 */}
+                    <RadioGroup
+                      value={insuredFloorType ?? ''}
+                      onValueChange={(value) => {
+                        if (value === '전체' || value === '일부') {
+                          setInsuredFloorType(value);
+                          if (value === '일부') {
+                            setDetailPlace('');
+                          }
+                        }
+                      }}
+                    >
+                      {[
+                        { value: '전체', label: '전체' },
+                        { value: '일부', label: '일부' },
+                      ].map((option) => (
+                        <RadioGroupItem key={option.value} value={option.value}>
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}
+                    </RadioGroup>
+                  </FormCell>
+                  <FormCell title={'가입면적'}>
+                    <Input width={70} readOnly />
+                    ㎡ ↔
+                    <Input width={70} readOnly />평
+                  </FormCell>
+                </FormRow>
+                <FormRow>
+                  <FormCell title={'세부장소'} colSpan={3}>
+                    {/* 2026-05-27 placeholder 수정 */}
+                    <Input
+                      value={detailPlace}
+                      width={400}
+                      onChange={(e) => setDetailPlace(e.target.value)}
+                      readOnly={insuredFloorType === '전체'}
+                      placeholder={insuredFloorType === '전체' ? '건물전체' : undefined}
+                    />
+                    입력예시: 2층 201호
+                  </FormCell>
+                </FormRow>
+              </FormTable>
             </TableFoldBody>
           </TableFold>
         </DialogSection>

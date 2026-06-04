@@ -81,7 +81,7 @@ const Ltpz104 = () => {
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input value={'LA123123123123-1'} variant="info" readOnly />
-                  <Input value={'테아'} variant="info" readOnly />
+                  <Input value={'태아'} variant="info" readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -100,7 +100,6 @@ const Ltpz104 = () => {
               singleClickEdit={true}
               rowClassRules={{}}
               domLayout="autoHeight"
-              alwaysShowVerticalScroll={true}
             />
           </div>
         </DialogSection>

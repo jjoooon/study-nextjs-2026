@@ -315,7 +315,7 @@ export default function Ltpa110Section() {
                     />
                   </div>
                   <Gcol variant={'box-info'} placement={'ss'} className="w-full">
-                    <Typo variant={'body-sm'} icon={'info'}>
+                    <Typo variant={'body-sm'} icon={'info'} weight={'bold'}>
                       등록사항을 확인하여 주십시오
                     </Typo>
                     <BulletList>
