@@ -25,9 +25,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import * as React from 'react';
-
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -92,7 +91,7 @@ const Ltpz01602 = () => {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
-      cellRenderer: selectCellRenderer, 
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '규모',
@@ -124,7 +123,7 @@ const Ltpz01602 = () => {
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
       cellEditor: 'agSelectCellEditor',
-      cellRenderer: selectCellRenderer, 
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '자가부담금',
@@ -135,7 +134,7 @@ const Ltpz01602 = () => {
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
       cellEditor: 'agSelectCellEditor',
-      cellRenderer: selectCellRenderer, 
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '보험료',
@@ -159,7 +158,7 @@ const Ltpz01602 = () => {
         </div>
       ),
       cellEditor: 'agSelectCellEditor',
-      cellRenderer: selectCellRenderer, 
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '요양병원여부',
@@ -329,7 +328,7 @@ const Ltpz01602 = () => {
                   <FormCell
                     title={
                       <Grow placement="sc">
-                        자기부담금
+                        자기부담금 <EssentialIcon />
                       </Grow>
                     }
                     titleColSpan={3}

@@ -6,6 +6,7 @@
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { EssentialIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,7 +20,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { EssentialIcon } from '@/shared/components/icons/CommonIcons';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 const Ltpz047 = () => {
@@ -61,7 +61,7 @@ const Ltpz047 = () => {
             </FormTable>
           </Grow>
           <Grow className="w-full">
-            <FormTable caption="화재배상" cols={['w-[7rem]', 'w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
+            <FormTable caption="화재배상" cols={['w-[8rem]', 'w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'업주성명(법인명)'} titleColSpan={2}>
                   <Input size="lg" value="" variant="default" width="18rem" readOnly />
@@ -142,7 +142,15 @@ const Ltpz047 = () => {
               </FormRow>
               <FormRow>
                 <FormCell title={'보상한도'} titleRowSpan={2} tdNone={true}></FormCell>
-                <FormCell title={'대인(1인당)'} colSpan={2}>
+                <FormCell
+                  title={
+                    <Grow placement="sc">
+                      대인(1인당)
+                      <EssentialIcon />
+                    </Grow>
+                  }
+                  colSpan={2}
+                >
                   <Input
                     errorMsg="입력은 필수입니다."
                     errorPs="bl"

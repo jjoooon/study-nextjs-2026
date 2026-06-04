@@ -82,6 +82,15 @@ const Ltpz083 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
+            <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[5rem]', 'w-auto']}>
+              <FormRow>
+                <FormCell title={'설계번호'}>
+                  <Input aria-label="설계번호" variant={'info'} value={'LA260209312558'} readOnly />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+          <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[10rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'견종검색(한글명)'}>

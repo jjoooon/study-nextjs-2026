@@ -709,6 +709,7 @@ export default function Ltpa010Section() {
                     cacheBlockSize={pageSize}
                     maxBlocksInCache={2}
                     datasource={dataSource}
+                    animateRows={false}
                   />
                 </div>
                 <TableMore
