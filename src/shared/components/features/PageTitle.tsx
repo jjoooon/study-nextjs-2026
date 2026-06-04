@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { FormItem, Grid, Grow, Typo } from '@atoms';
+import { FormItem, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
 import { ViewMode } from '@common/ViewMode';
@@ -98,17 +98,17 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
   }));
 
   return (
-    <Grow placement="bwc" className="w-full py-[4px] gap-[6px]">
-      <Grow className="gap-[8px] flex-1" placement="sc">
+    <Grow placement="bwc" className="w-full py-1 gap-1.5 overflow-x-auto">
+      <Grow className="gap-2 flex-1" placement="sc">
         <ViewMode label={['간편', '상세']} state={resolvedSimpleMode} onChange={handleSimpleModeChange} />
 
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="none" color="gray" className="px-0">
-              <Typo tag="h2" variant="heading-lg" className="!text-[16px] !tracking-[-0.8px]">
+              <Typo tag="h2" variant="heading-lg">
                 {safeData.title}
               </Typo>
-              <ArrowIcon color="var(--color-gray-60)" className="rotate-180 !w-[16px] !h-[16px]" />
+              <ArrowIcon color="var(--color-gray-60)" className="rotate-180" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="top" sideOffset={0}>
@@ -148,14 +148,14 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
                 width={26}
                 onChange={(e) => setPlanNumber([planNumber[0], e.target.value])}
               />
-              <Grid className="w-[19.8rem] ml-1.5 grid-cols-[1fr_2.5rem]">
+              <Grow className="ml-1.5">
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Input
                       aria-label="계약자명 입력"
                       type="text"
                       value={contractHolder}
-                      width={'full'}
+                      width={166}
                       onChange={(e) => setContractHolder(e.target.value)}
                     />
                   </TooltipTrigger>
@@ -166,7 +166,7 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
                 <Button variant="outlined" color="gray-light" aria-label="계약자 추가" only="icon" size="lg">
                   <SearchIcon color="var(--color-primary-50)" />
                 </Button>
-              </Grid>
+              </Grow>
             </FormCell>
           </FormRow>
         </FormTable>

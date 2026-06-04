@@ -526,7 +526,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       </TooltipContent>
                     </Tooltip>
                   ),
-                  width: 30,
+                  width: attributeColumnWidth[3],
                   cellClass: 'text-center p-0! editable-cell',
                   cellClassRules: {
                     'pointer-events-none': (params) => !!params.data?.locked,
