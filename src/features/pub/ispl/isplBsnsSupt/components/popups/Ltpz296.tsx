@@ -589,9 +589,11 @@ export const Ltpz296 = () => {
                 <Grow>
                   <Button color="gray" variant="outlined" onClick={handleAddRowA}>
                     그룹추가
+                    <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
                   <Button color="gray" variant="outlined" onClick={handleDeleteRowA}>
                     그룹삭제
+                    <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
                 </Grow>
               </TableFoldHead>

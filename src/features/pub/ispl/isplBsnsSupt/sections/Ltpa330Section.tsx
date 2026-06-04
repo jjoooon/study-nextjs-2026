@@ -211,7 +211,7 @@ export default function Ltpa330Section() {
               </Grow>
             </Grow>
 
-            <Grid className="grid-rows-[1fr_auto] gap-1">
+            <Grid className="grid-rows-[1fr_auto] gap-2">
               <div className="ag-theme-alpine">
                 <AgGridReact<Ltpa330DummyDataRow>
                   getRowId={(params) => String(params.data.id)}
@@ -261,15 +261,11 @@ export default function Ltpa330Section() {
               {/* 2026-05-27 전체 수정 */}
               <Grow placement={'ec'} className="p-2.5 bg-[#EFF8FF] rounded-lg gap-2.5">
                 <Grow gap={2}>
-                  <Typo variant="body-md" weight={'bold'}  className="text-[#6B7280]">설계번호</Typo>
-                  <Input
-                    size={'lg'}
-                    width={150}
-                    value={'LA20233591906000'}
-                    onChange={() => {}}
-                    readOnly
-                  />
-                </Grow>              
+                  <Typo variant="body-md" weight={'bold'} className="text-[#6B7280]">
+                    설계번호
+                  </Typo>
+                  <Input width={'quoteNo'} value={'LA123456789012'} onChange={() => {}} readOnly />
+                </Grow>
                 <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'coolgray'} size={'lg'}>
                   이미지전송
                 </Button>

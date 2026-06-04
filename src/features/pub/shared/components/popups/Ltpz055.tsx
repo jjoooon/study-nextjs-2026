@@ -47,7 +47,9 @@ const Ltpz055 = () => {
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
-                <FormCell title={'발송대상 설계번호'}>$LA260212123123$</FormCell>
+                <FormCell title={'발송대상 설계번호'}>
+                  <Input value={'LA260212123123'} readOnly variant="info" size="lg" width="full" />
+                </FormCell>
               </FormRow>
             </FormTable>
           </Grow>

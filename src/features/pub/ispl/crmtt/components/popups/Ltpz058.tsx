@@ -180,7 +180,7 @@ const Ltpz058 = () => {
           <Grow className="w-full" variant="box-round" placement={'sc'}>
             <RadioGroup
               value={searchCategory}
-              className="flex"
+              className="flex gap-3"
               onValueChange={(value) => {
                 if (value === '분류기준' || value === '업종명') {
                   setSearchCategory(value);
