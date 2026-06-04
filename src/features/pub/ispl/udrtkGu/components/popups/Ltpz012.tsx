@@ -200,7 +200,8 @@ const Ltpz012 = () => {
     {
       headerName: '구분',
       field: 'field1',
-      width: 90,
+      minWidth: 90,
+      flex: 1,
       cellClass: (params) => {
         if (isMergedSumRow(params.data)) {
           return 'text-center';
@@ -220,7 +221,8 @@ const Ltpz012 = () => {
     {
       headerName: '누적위험명',
       field: 'field2',
-      flex: 1,
+      flex: 3,
+      minWidth: 224,
       cellClass: (params) => {
         if (isMergedSumRow(params.data)) {
           return 'text-right pr-2 font-bold';
@@ -244,7 +246,8 @@ const Ltpz012 = () => {
     {
       headerName: '환산포인트',
       field: 'field3',
-      width: 220,
+      minWidth: 220,
+      flex: 1,
       cellClass: 'text-center',
       colSpan: (params) => {
         if (isMergedSumRow(params.data)) {
@@ -272,7 +275,8 @@ const Ltpz012 = () => {
     {
       headerName: '가입금액(만원)',
       field: 'field5',
-      width: 100,
+      minWidth: 100,
+      flex: 1,
       cellClass: 'text-right',
       colSpan: (params) => {
         if (isMergedSumRow(params.data)) {
@@ -290,7 +294,8 @@ const Ltpz012 = () => {
     {
       headerName: '청약포인트',
       field: 'field6',
-      width: 80,
+      minWidth: 80,
+      flex: 1,
       cellClass: 'text-right',
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
         if (params.data?.isSumRow) {
@@ -305,7 +310,8 @@ const Ltpz012 = () => {
     {
       headerName: '최종',
       field: 'label',
-      width: 110,
+      minWidth: 110,
+      flex: 1,
       cellClass: 'text-center font-bold',
       cellStyle: { borderRight: '1px solid #E5E7EB' },
       cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => <span>{params.data?.label}</span>,
@@ -313,7 +319,7 @@ const Ltpz012 = () => {
     {
       headerName: '내용',
       field: 'formula',
-      flex: 1,
+      flex: 6,
       cellClass: 'text-right pr-2 font-bold',
       cellStyle: { borderRight: '1px solid #E5E7EB' },
       cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => <span>{params.data?.formula}</span>,
@@ -321,7 +327,8 @@ const Ltpz012 = () => {
     {
       headerName: '청약포인트',
       field: 'point',
-      width: 100,
+      minWidth: 100,
+      flex: 1,
       cellClass: 'text-right font-bold',
       cellRenderer: (params: ICellRendererParams<FinalSummaryData>) => (
         <div className="flex h-full w-full items-center justify-end pl-2">{params.value}</div>

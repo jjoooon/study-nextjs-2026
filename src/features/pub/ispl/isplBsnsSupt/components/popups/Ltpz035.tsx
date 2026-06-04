@@ -78,7 +78,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz035 = () => {
-  // 2026-06-01 width 수정
+  // 2026-06-02 flex, minWidth 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상품 코드',
@@ -89,20 +89,23 @@ const Ltpz035 = () => {
     {
       headerName: '상품명',
       field: 'field02',
-      flex: 1,
+      flex: 2,
+      minWidth: 150,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '동시가입 담보코드',
       field: 'field03',
-      width: 106, 
+      flex: 1, 
+      minWidth: 100,
       cellClass: 'text-center',
     },
     {
       headerName: '동시가입 담보명',
       field: 'field04',
       flex: 1,
+      minWidth: 150,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
