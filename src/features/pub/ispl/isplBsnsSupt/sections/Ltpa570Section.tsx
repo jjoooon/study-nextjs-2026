@@ -191,7 +191,6 @@ export default function Ltpa570Section() {
         {
           headerName: '채널',
           width: 70,
-          minWidth: 70,
           field: 'field01',
           cellClass: 'text-center',
         },
@@ -228,14 +227,14 @@ export default function Ltpa570Section() {
       option4: [
         {
           headerName: '채널',
-          width: 50,
+          width: 70,
           field: 'field01',
           cellClass: 'text-center',
         },
         {
           headerName: '본부명',
           flex: 1,
-          minWidth: 180,
+          minWidth: 170,
           field: 'field02',
           cellClass: 'text-center',
         },

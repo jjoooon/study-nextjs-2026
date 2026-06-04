@@ -457,7 +457,7 @@ const Ltpz640 = () => {
     setOpenCellMerge(false);
   }, [mergePackageName, setRowData]);
 
-  // 2026-06-01 width, flex 수정
+  // 2026-06-01 width, flex 수정, sortable 추가
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
     () => [
       // {
@@ -476,6 +476,7 @@ const Ltpz640 = () => {
         field: 'field1',
         cellClass: '',
         flex: 0.7,
+        minWidth: attributeColumnWidth[9],
         autoHeight: true,
         spanRows: true,
         editable: true,
@@ -486,6 +487,7 @@ const Ltpz640 = () => {
         headerName: '선택',
         field: 'cheked',
         width: 30,
+        sortable: false,
         editable: true,
         cellDataType: 'boolean',
         cellRenderer: 'agCheckboxCellRenderer',
@@ -498,6 +500,7 @@ const Ltpz640 = () => {
         field: 'field2',
         cellClass: '',
         flex: 2,
+        minWidth: attributeColumnWidth[20],
         autoHeight: true,
         editable: true,
         cellEditor: 'agTextCellEditor',

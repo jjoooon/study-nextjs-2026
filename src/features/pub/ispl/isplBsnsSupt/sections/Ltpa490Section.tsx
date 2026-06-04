@@ -246,11 +246,13 @@ export default function Ltpa490Section() {
 
   // AgGrid Column
   // 2026-06-01 width, flex 수정
+  // 2026-06-04 flex, minWidth 수정
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '설계번호',
       field: 'field01',
-      width: 120,
+      flex: 1,
+      minWidth: 120,
       cellClass: 'text-center',
       autoHeight: true,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -264,13 +266,15 @@ export default function Ltpa490Section() {
     },
     {
       headerName: '계명자명',
-      width: 75,
+      flex: 0.8,
+      minWidth: 75,
       cellClass: 'text-center px-0!',
       autoHeight: true,
       children: [
         {
           headerName: '피보험자명',
-          width: 75,
+          flex: 0.8,
+          minWidth: 75,
           cellClass: 'text-center px-0!',
           autoHeight: true,
           cellRenderer: createFieldRenderer<DummyDataType>('field02', 'field03'),
@@ -280,19 +284,22 @@ export default function Ltpa490Section() {
     {
       headerName: '설계상태',
       field: 'field04',
-      width: 70,
+      flex: 0.8,
+      minWidth: 70,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '취급지점',
-      width: 110,
+      flex: 1,
+      minWidth: 110,
       cellClass: 'text-center',
       children: [
         {
           headerName: '취급자',
           field: 'field06',
-          width: 110,
+          flex: 1,
+          minWidth: 110,
           autoHeight: true,
           cellClass: 'text-center px-0!',
           cellRenderer: createFieldRenderer<DummyDataType>('field05', 'field06'),
@@ -302,21 +309,24 @@ export default function Ltpa490Section() {
     {
       headerName: '설계자',
       field: 'field07',
-      width: 70,
+      flex: 0.8,
+      minWidth: 70,
       autoHeight: true,
       cellClass: 'text-center',
     },
     {
       headerName: '설계시작~유효일자',
       field: 'field08',
-      flex: 0.9,
+      flex: 1,
+      minWidth: 160,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '고액여부',
       field: 'field09',
-      width: 80,
+      flex: 0.8,
+      minWidth: 75,
       cellClass: 'text-center',
       autoHeight: true,
     },
@@ -324,14 +334,16 @@ export default function Ltpa490Section() {
       headerName: '유효기간초과여부',
       headerComponent: ExceedPeriodHeader,
       field: 'field10',
-      width: 80,
+      flex: 0.8,
+      minWidth: 75,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '파기여부',
       field: 'field11',
-      width: 80,
+      flex: 0.8,
+      minWidth: 75,
       cellClass: 'editable-cell text-center',
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -341,7 +353,8 @@ export default function Ltpa490Section() {
     {
       headerName: '미파기 사유',
       field: 'field12',
-      flex: 2,
+      flex: 5,
+      minWidth: 230,
       cellClass: 'text-left',
       editable: true,
       autoHeight: true,

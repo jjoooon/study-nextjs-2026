@@ -117,13 +117,15 @@ export default function Ltpa660Section() {
       pageSize,
     });
   // 2026-06-01 width, flex 수정
+  // 2026-06-01 minWidth, flex 수정, valueParser, valueFormatter 추가
   const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
     () => [
       {
         headerName: '상품코드',
         field: 'field1',
+        flex: 1,
+        minWidth: attributeColumnWidth[10],
         cellClass: 'text-center',
-        width: attributeColumnWidth[10],
         autoHeight: true,
         cellRenderer: (params: ICellRendererParams<DummyData1Type>) =>
           params.data?.field1 ? (
@@ -137,31 +139,36 @@ export default function Ltpa660Section() {
       {
         headerName: '상품명',
         field: 'field2',
-        flex: 8,
+        flex: 6,
+        minWidth: attributeColumnWidth[30],
       },
       {
         headerName: '종명',
         field: 'field7',
         cellClass: 'text-center',
-        width: 90,
+        flex: 2,
+        minWidth: attributeColumnWidth[20],
       },
       {
         headerName: '판매건수',
         field: 'field3',
-        width: 70,
+        flex: 1,
+        minWidth: attributeColumnWidth[10],
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<DummyData1Type>,
       },
       {
         headerName: '판매순위',
         field: 'field4',
-        width: 70,
+        flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellClass: 'text-center',
       },
       {
         headerName: '순위조정',
         field: 'field5',
-        width: 70,
+        flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellClass: 'px-[0.2rem]! editable-cell text-center',
         editable: true,
         cellEditor: 'agSelectCellEditor',
@@ -169,11 +176,14 @@ export default function Ltpa660Section() {
           values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         },
         cellRenderer: getExpiryRenderer('center'),
+        valueParser: (params) => Number(params.newValue), // 저장 시 숫자로
+        valueFormatter: (params) => String(params.value ?? ''), // 표시 시 문자열로
       },
       {
         headerName: '추천제외',
         field: 'field6',
         flex: 1,
+        minWidth: attributeColumnWidth[9],
         cellClass: 'text-center',
         editable: true,
         cellDataType: 'boolean',
@@ -247,6 +257,7 @@ export default function Ltpa660Section() {
                 </Button>
               </Grow>
               <div className="ag-theme-alpine">
+                {/* 2026-06-04 suppressClickEdit 삭제 */}
                 <AgGridReact<DummyData1Type>
                   onGridReady={(event) => {
                     gridApiRef.current = event.api;
@@ -270,7 +281,6 @@ export default function Ltpa660Section() {
                     sortable: true,
                     resizable: true,
                   }}
-                  suppressClickEdit={true}
                   singleClickEdit={true}
                   rowSelection={{
                     mode: 'multiRow',

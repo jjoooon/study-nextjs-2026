@@ -204,6 +204,7 @@ export default function Ltpa540Section() {
   const [showExisting, setShowExisting] = React.useState(false);
 
   // 2026-06-01 width, flex 수정
+  // 2026-06-04 flex, minWidth 수정
   // 직접 수정된 셀 추적: Set<"rowId:fieldName">
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = React.useMemo(
     () => [
@@ -214,7 +215,8 @@ export default function Ltpa540Section() {
           {
             headerName: '담보코드',
             field: 'field01',
-            width: 80,
+            flex: 1,
+            minWidth: 80,
             cellClass: 'text-center',
             autoHeight: true,
             spanRows: true,
@@ -223,6 +225,7 @@ export default function Ltpa540Section() {
             headerName: '담보명',
             field: 'field02',
             flex: 7,
+            minWidth: 240,
             cellClass: 'text-left',
             autoHeight: true,
             spanRows: true,
@@ -233,11 +236,13 @@ export default function Ltpa540Section() {
       {
         headerName: '기존',
         flex: 4,
+        minWidth: 495,
         children: [
           {
             headerName: '담보코드',
             field: 'field03',
-            width: 80,
+            flex: 1,
+            minWidth: 80,
             hide: !showExisting,
             cellClass: 'text-center',
           },
@@ -245,6 +250,7 @@ export default function Ltpa540Section() {
             headerName: '유사 담보명',
             field: 'field04',
             flex: 7,
+            minWidth: 240,
             hide: !showExisting,
             cellClass: 'text-left',
             tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
@@ -253,6 +259,7 @@ export default function Ltpa540Section() {
             headerName: '순위',
             field: 'field05',
             flex: 1,
+            minWidth: 50,
             suppressSizeToFit: true,
             hide: !showExisting,
             cellClass: 'text-center',
@@ -261,6 +268,7 @@ export default function Ltpa540Section() {
             headerName: '예외',
             field: 'field06',
             flex: 1,
+            minWidth: 50,
             suppressSizeToFit: true,
             hide: !showExisting,
             cellClass: 'text-center',
@@ -270,17 +278,20 @@ export default function Ltpa540Section() {
       {
         headerName: '변경 후 (조회)',
         flex: 4,
+        minWidth: 495,
         children: [
           {
             headerName: '담보코드',
             field: 'field07',
-            width: 80,
+            flex: 1,
+            minWidth: 80,
             cellClass: 'text-center',
           },
           {
             headerName: '유사 담보명',
             field: 'field08',
             flex: 7,
+            minWidth: 240,
             cellClass: 'text-left',
             tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field08' }),
           },
@@ -289,6 +300,7 @@ export default function Ltpa540Section() {
             headerName: '순위',
             field: 'field09',
             flex: 1,
+            minWidth: 50,
             cellClass: 'text-center',
             autoHeight: true,
             editable: true,
@@ -304,6 +316,7 @@ export default function Ltpa540Section() {
             headerName: '예외',
             field: 'field10',
             flex: 1,
+            minWidth: 50,
             cellClass: 'text-center',
             autoHeight: true,
             editable: true,
