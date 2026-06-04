@@ -22,7 +22,10 @@ export const LayoutDoc = ({ children, className }: LayoutProps) => {
 
 export const LayoutHead = ({ children, className }: LayoutProps) => {
   return (
-    <header data-layout="head" className={cn('relative flex justify-between items-center flex-col px-2.5', className)}>
+    <header
+      data-layout="head"
+      className={cn('relative flex justify-between items-center flex-col px-[10px]', className)}
+    >
       {children}
     </header>
   );

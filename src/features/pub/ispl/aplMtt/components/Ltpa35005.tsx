@@ -360,30 +360,32 @@ export const Ltpa35005 = () => {
                         rowSpan={2}
                         titleRowSpan={2}
                       >
-                        <Grow className="w-full">
-                          <Gcol placement="se" className="w-full">
-                            {/* M1. 정렬관련 수정 */}
-                            <Grow className="w-full flex-wrap" placement="sc">
-                              <Checkbox>예</Checkbox>
-                              <Grow className="whitespace-nowrap">
-                                (승환(
-                                <Input aria-label="" width={40} value={'13'} align="right" readOnly />
-                                )건,
+                        <Grow className="w-full" placement="ss">
+                          <RadioGroup defaultValue="아니요" className="w-full" width={'full'}>
+                            <Gcol placement="se" className="w-full">
+                              {/* M1. 정렬관련 수정 */}
+                              <Grow className="w-full flex-wrap" placement="sc">
+                                <RadioGroupItem value="예">예</RadioGroupItem>
+                                <Grow className="whitespace-nowrap">
+                                  (승환(
+                                  <Input aria-label="" width={40} value={'13'} align="right" readOnly />
+                                  )건,
+                                </Grow>
+                                <Grow className="whitespace-nowrap">
+                                  승환예정(
+                                  <Input aria-label="" width={40} value={'333'} align="right" readOnly />
+                                  )건)
+                                </Grow>
                               </Grow>
-                              <Grow className="whitespace-nowrap">
-                                승환예정(
-                                <Input aria-label="" width={40} value={'333'} align="right" readOnly />
-                                )건)
+                              {/* //M1. 정렬관련 수정 */}
+                              <Grow placement="bwc" className="w-full">
+                                <RadioGroupItem value="아니요">아니요</RadioGroupItem>
+                                <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                                  유사계약현황
+                                </Button>
                               </Grow>
-                            </Grow>
-                            {/* //M1. 정렬관련 수정 */}
-                            <Grow placement="bwc">
-                              <Checkbox>아니요</Checkbox>
-                              <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                                유사계약현황
-                              </Button>
-                            </Grow>
-                          </Gcol>
+                            </Gcol>
+                          </RadioGroup>
                         </Grow>
                       </FormCell>
                     </FormRow>

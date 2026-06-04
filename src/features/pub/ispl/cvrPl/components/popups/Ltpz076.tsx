@@ -166,13 +166,14 @@ const Ltpz076 = () => {
     {
       headerName: '성명/상호명',
       field: 'field02',
-      flex: 1,
+      flex: 8,
       cellClass: 'text-left',
     },
     {
       headerName: '구분',
       field: 'field03',
-      width: 80,
+      flex: 1,
+      minWidth: 80,
       cellClass: 'text-center',
     },
   ];
@@ -180,13 +181,14 @@ const Ltpz076 = () => {
     {
       headerName: '코드',
       field: 'field01',
-      width: 70,
+      flex: 1,
+      minWidth: 70,
       cellClass: 'text-center',
     },
     {
       headerName: '성명/상호명',
       field: 'field02',
-      flex: 1,
+      flex: 8,
       cellClass: 'text-left',
     },
   ];

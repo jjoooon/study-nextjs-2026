@@ -53,14 +53,32 @@ export const ZoomControl = () => {
 
   return (
     <Grow className="items-center">
-      <Button variant={'none'} only={'icon'} className="text-[var(--color-primary-50)]" onClick={handleZoomOut}>
-        <ZoomOutIcon size={20} />
+      <Button
+        variant={'none'}
+        only={'icon'}
+        className="text-[var(--color-primary-50)] !w-[20px] !h-[20px]"
+        onClick={handleZoomOut}
+      >
+        <ZoomOutIcon size={20} className="!w-[20px] !h-[20px]" />
       </Button>
-      <Typo variant={'button-sm'}>{zoomPercent}%</Typo>
-      <Button variant={'none'} only={'icon'} className="text-[var(--color-primary-50)]" onClick={handleZoomIn}>
-        <ZoomInIcon size={20} />
+      <Typo variant={'button-sm'} className="!text-[12px]">
+        {zoomPercent}%
+      </Typo>
+      <Button
+        variant={'none'}
+        only={'icon'}
+        className="text-[var(--color-primary-50)] !w-[20px] !h-[20px]"
+        onClick={handleZoomIn}
+      >
+        <ZoomInIcon size={20} className="!w-[20px] !h-[20px]" />
       </Button>
-      <Button variant={'outlined'} color={'gray'} size={'sm'} onClick={handleZoomRest}>
+      <Button
+        variant={'outlined'}
+        color={'gray'}
+        size={'sm'}
+        onClick={handleZoomRest}
+        className="!w-[47px] !h-[22px] !text-[12px] !p-[0px]"
+      >
         초기화
       </Button>
     </Grow>

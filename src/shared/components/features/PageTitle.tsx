@@ -98,17 +98,17 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
   }));
 
   return (
-    <Grow placement="bwc" className="w-full py-1 gap-1.5">
-      <Grow className="gap-[.8rem] flex-1" placement="sc">
+    <Grow placement="bwc" className="w-full py-[4px] gap-[6px]">
+      <Grow className="gap-[8px] flex-1" placement="sc">
         <ViewMode label={['간편', '상세']} state={resolvedSimpleMode} onChange={handleSimpleModeChange} />
 
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="none" color="gray" className="px-0">
-              <Typo tag="h2" variant="heading-lg">
+              <Typo tag="h2" variant="heading-lg" className="!text-[16px] !tracking-[-0.8px]">
                 {safeData.title}
               </Typo>
-              <ArrowIcon className="rotate-180" color="var(--color-gray-60)" />
+              <ArrowIcon color="var(--color-gray-60)" className="rotate-180 !w-[16px] !h-[16px]" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="top" sideOffset={0}>

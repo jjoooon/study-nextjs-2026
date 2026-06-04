@@ -315,7 +315,7 @@ const Ltpz051 = () => {
                           99건
                         </Typo>
                       </Grow>
-                      <div className="ag-theme-alpine min-h-[18.4rem]">
+                      <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                         <AgGridReact<DummyDataType>
                           getRowId={(params) => String(params.data.id)}
                           rowData={rowData}
@@ -352,7 +352,7 @@ const Ltpz051 = () => {
                         </Typo>
                       </Grow>
                       {/* 2026-05-27 agGrid 수정 */}
-                      <div className="ag-theme-alpine min-h-[18.4rem]">
+                      <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
                         <AgGridReact<DummyDataType1>
                           getRowId={(params) => String(params.data.id)}
                           rowData={rowData1}
