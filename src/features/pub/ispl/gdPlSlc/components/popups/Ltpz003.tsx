@@ -28,11 +28,14 @@ const Ltpz003 = () => {
             <Typo tag={'strong'} variant={'heading-lg'}>
               알릴사항 미리보기
             </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ003)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
         {/* M1. 전체적으로 수정 */}
         <DialogSection className="grid-rows-[1fr]">
-          <div className="!relative min-h-[30rem] h-full">
+          <div className="!relative min-h-[60vh] h-full">
             <Ltpa3500301 sampleMode={true} />
           </div>
         </DialogSection>

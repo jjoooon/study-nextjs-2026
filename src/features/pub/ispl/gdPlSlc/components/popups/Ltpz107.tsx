@@ -4,8 +4,10 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
+
 import {
   Dialog,
   DialogContent,
@@ -26,6 +28,9 @@ const Ltpz107 = () => {
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
               보험표 납입면제 안내
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ107)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -104,6 +109,7 @@ const Ltpz107 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

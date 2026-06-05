@@ -3,7 +3,7 @@
  */
 
 'use client';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -43,13 +43,13 @@ type DummyDataTypeA01 = {
 const DummyDataA01: DummyDataTypeA01[] = [
   {
     id: 1,
-    field1: 99,
-    field2: 99,
-    field3: 99,
-    field4: 99,
-    field5: 99,
-    field6: 99,
-    field7: 99,
+    field1: 2399,
+    field2: 2399,
+    field3: 2399,
+    field4: 2399,
+    field5: 2399,
+    field6: 2399,
+    field7: 2399,
   },
 ];
 
@@ -68,7 +68,7 @@ const DummyDataA02: DummyDataTypeA02[] = [
     field2: 30,
     field3: '회사사무직종사자',
     field4: '1급',
-    field5: 0,
+    field5: 1200,
   },
 ];
 
@@ -83,11 +83,12 @@ type DummyDataTypeA03 = {
 const DummyDataA03: DummyDataTypeA03[] = [
   {
     id: 1,
-    field1: '',
-    field2: '',
-    field3: '',
-    field4: '',
-    field5: '',
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
   },
 ];
 
@@ -104,7 +105,7 @@ const DummyDataA04: DummyDataTypeA04[] = [
     field1: '김한화',
     field2: 30,
     field3: '1급',
-    field4: 0,
+    field4: 15000,
   },
 ];
 type DummyDataTypeA05 = {
@@ -116,9 +117,9 @@ type DummyDataTypeA05 = {
 const DummyDataA05: DummyDataTypeA05[] = [
   {
     id: 1,
-    field1: '김한화',
-    field2: 30,
-    field3: 0,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
   },
 ];
 type DummyDataTypeA06 = {
@@ -132,11 +133,11 @@ type DummyDataTypeA06 = {
 const DummyDataA06: DummyDataTypeA06[] = [
   {
     id: 1,
-    field1: '김한화',
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
     field2: 30,
-    field3: 0,
-    field4: 0,
-    field5: 0,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
   },
 ];
 
@@ -174,11 +175,11 @@ type DummyDataTypeB02 = {
 const DummyDataB02: DummyDataTypeB02[] = [
   {
     id: 1,
-    field1: '김현화',
+    field1: 'B김현화',
     field2: 30,
     field3: '회사사무직종사자',
     field4: '1급',
-    field5: 0,
+    field5: 1000,
   },
 ];
 
@@ -193,11 +194,12 @@ type DummyDataTypeB03 = {
 const DummyDataB03: DummyDataTypeB03[] = [
   {
     id: 1,
-    field1: '',
-    field2: '',
-    field3: '',
-    field4: '',
-    field5: '',
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
   },
 ];
 
@@ -226,9 +228,9 @@ type DummyDataTypeB05 = {
 const DummyDataB05: DummyDataTypeB05[] = [
   {
     id: 1,
-    field1: '김한화',
-    field2: 30,
-    field3: 0,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
   },
 ];
 type DummyDataTypeB06 = {
@@ -242,15 +244,16 @@ type DummyDataTypeB06 = {
 const DummyDataB06: DummyDataTypeB06[] = [
   {
     id: 1,
-    field1: '김한화',
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
     field2: 30,
-    field3: 0,
-    field4: 0,
-    field5: 0,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
   },
 ];
 
 export default function Ltpa050Section() {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const { tabs: tabsA, active: activeA, setActive: setActiveA, handleRemove: handleRemoveA } = useTabs(DATA_TABS);
   const { tabs: tabsB, active: activeB, setActive: setActiveB, handleRemove: handleRemoveB } = useTabs(DATA_TABS);
 
@@ -260,371 +263,216 @@ export default function Ltpa050Section() {
       field: 'field1',
       flex: 1,
       cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '적입P',
       field: 'field2',
       flex: 1,
       cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '일시납P',
       field: 'field3',
       flex: 1,
       cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="합계P" unit="(할인전)" col={true} />,
       field: 'field4',
       flex: 1,
       cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="합계P" unit="(할인후)" col={true} />,
       field: 'field5',
       flex: 1,
       cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="만기환급금" unit="(예상)" col={true} />,
       field: 'field6',
       flex: 1,
       cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="환급률" unit="(예상)" col={true} />,
       field: 'field7',
       flex: 1,
       cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
     },
   ];
   const columnDefsA02: ColDef<DummyDataTypeA02>[] = [
     {
       headerName: '피보험자',
       field: 'field1',
-      width: 60,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: `text-center `,
     },
     {
       headerName: '연령',
       field: 'field2',
-      width: 50,
+      flex: 1,
+      minWidth: attributeColumnWidth(50),
       cellClass: `text-center `,
     },
     {
       headerName: '직업명',
       field: 'field3',
-      flex: 1,
+      flex: 10,
       cellClass: `text-center `,
     },
     {
       headerName: '급수',
       field: 'field4',
-      width: 60,
+      flex: 1,
+      minWidth: attributeColumnWidth(50),
       cellClass: `text-center `,
     },
     {
       headerName: '보장P',
       field: 'field5',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
     },
   ];
   const columnDefsA03: ColDef<DummyDataTypeA03>[] = [
     {
       headerName: '담보명',
       field: 'field1',
-      flex: 1,
+      flex: 10,
       cellClass: `text-center `,
     },
     {
       headerName: '보험기간',
       field: 'field2',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: `text-center `,
     },
     {
       headerName: '납입기간',
       field: 'field3',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: `text-center `,
     },
     {
       headerName: '가압금액',
-      field: 'field3',
-      width: 80,
-      cellClass: `text-center `,
+      field: 'field4',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보P',
-      field: 'field3',
-      width: 80,
-      cellClass: `text-center `,
+      field: 'field5',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
     },
   ];
   const columnDefsA04: ColDef<DummyDataTypeA04>[] = [
     {
       headerName: '소유자',
       field: 'field1',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: `text-center`,
     },
     {
       headerName: '적용업종',
       field: 'field2',
-      flex: 1,
+      flex: 10,
       cellClass: `text-center`,
     },
     {
       headerName: '급수',
       field: 'field3',
-      width: 60,
+      flex: 1,
+      minWidth: attributeColumnWidth(50),
       cellClass: `text-center`,
     },
     {
       headerName: '보장P',
       field: 'field4',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: `text-center`,
+      valueFormatter: numberValueFormatter,
     },
   ];
   const columnDefsA05: ColDef<DummyDataTypeA05>[] = [
     {
       headerName: '화재기본담보',
       field: 'field1',
-      flex: 1,
+      flex: 10,
       cellClass: `text-center`,
     },
     {
       headerName: '가입금액',
       field: 'field2',
       flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보P',
       field: 'field3',
-      width: 120,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
     },
   ];
   const columnDefsA06: ColDef<DummyDataTypeA06>[] = [
     {
       headerName: '화재특약담보',
       field: 'field1',
-      flex: 1,
+      flex: 10,
       cellClass: `text-center `,
     },
     {
       headerName: '보험기간',
       field: 'field2',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-center `,
     },
     {
       headerName: '납입기간',
       field: 'field3',
-      width: 80,
-      cellClass: `text-right`,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-center`,
     },
     {
       headerName: '가압금액',
-      field: 'field3',
-      width: 80,
+      field: 'field4',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보P',
-      field: 'field3',
-      width: 80,
-      cellClass: `text-right`,
-    },
-  ];
-
-  const columnDefsB01: ColDef<DummyDataTypeB01>[] = [
-    {
-      headerName: '보장P',
-      field: 'field1',
-      flex: 1,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '적입P',
-      field: 'field2',
-      flex: 1,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '일시납P',
-      field: 'field3',
-      flex: 1,
-      cellClass: `text-center `,
-    },
-    {
-      headerComponent: () => <HeaderWithUnit label="합계P" unit="(할인전)" col={true} />,
-      field: 'field4',
-      flex: 1,
-      cellClass: `text-center `,
-    },
-    {
-      headerComponent: () => <HeaderWithUnit label="합계P" unit="(할인후)" col={true} />,
       field: 'field5',
       flex: 1,
-      cellClass: `text-center `,
-    },
-    {
-      headerComponent: () => <HeaderWithUnit label="만기환급금" unit="(예상)" col={true} />,
-      field: 'field6',
-      flex: 1,
-      cellClass: `text-center `,
-    },
-    {
-      headerComponent: () => <HeaderWithUnit label="환급률" unit="(예상)" col={true} />,
-      field: 'field7',
-      flex: 1,
-      cellClass: `text-center `,
-    },
-  ];
-  const columnDefsB02: ColDef<DummyDataTypeB02>[] = [
-    {
-      headerName: '피보험자',
-      field: 'field1',
-      width: 60,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '연령',
-      field: 'field2',
-      width: 50,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '직업명',
-      field: 'field3',
-      flex: 1,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '급수',
-      field: 'field4',
-      width: 60,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '보장P',
-      field: 'field5',
-      width: 80,
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-right`,
-    },
-  ];
-  const columnDefsB03: ColDef<DummyDataTypeB03>[] = [
-    {
-      headerName: '담보명',
-      field: 'field1',
-      flex: 1,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '보험기간',
-      field: 'field2',
-      width: 80,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '납입기간',
-      field: 'field3',
-      width: 80,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '가압금액',
-      field: 'field3',
-      width: 80,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '담보P',
-      field: 'field3',
-      width: 80,
-      cellClass: `text-center `,
-    },
-  ];
-  const columnDefsB04: ColDef<DummyDataTypeB04>[] = [
-    {
-      headerName: '소유자',
-      field: 'field1',
-      width: 80,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '적용업종',
-      field: 'field2',
-      flex: 1,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '급수',
-      field: 'field3',
-      width: 60,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '보장P',
-      field: 'field4',
-      width: 80,
-      cellClass: `text-center`,
-    },
-  ];
-  const columnDefsB05: ColDef<DummyDataTypeB05>[] = [
-    {
-      headerName: '화재기본담보',
-      field: 'field1',
-      flex: 1,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '가입금액',
-      field: 'field2',
-      flex: 1,
-      cellClass: `text-right`,
-    },
-    {
-      headerName: '담보P',
-      field: 'field3',
-      width: 120,
-      cellClass: `text-right`,
-    },
-  ];
-  const columnDefsB06: ColDef<DummyDataTypeB06>[] = [
-    {
-      headerName: '화재특약담보',
-      field: 'field1',
-      flex: 1,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '보험기간',
-      field: 'field2',
-      width: 80,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '납입기간',
-      field: 'field3',
-      width: 80,
-      cellClass: `text-right`,
-    },
-    {
-      headerName: '가압금액',
-      field: 'field3',
-      width: 80,
-      cellClass: `text-right`,
-    },
-    {
-      headerName: '담보P',
-      field: 'field3',
-      width: 80,
-      cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
     },
   ];
 
@@ -857,7 +705,7 @@ export default function Ltpa050Section() {
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={DummyDataB01}
-                      columnDefs={columnDefsB01}
+                      columnDefs={columnDefsA01}
                       defaultColDef={{ sortable: true, resizable: true }}
                       domLayout="autoHeight"
                       headerHeight={40}
@@ -893,7 +741,7 @@ export default function Ltpa050Section() {
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB02}
-                            columnDefs={columnDefsB02}
+                            columnDefs={columnDefsA02}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
                           />
@@ -903,7 +751,7 @@ export default function Ltpa050Section() {
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB03}
-                            columnDefs={columnDefsB03}
+                            columnDefs={columnDefsA03}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
                           />
@@ -917,7 +765,7 @@ export default function Ltpa050Section() {
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB04}
-                            columnDefs={columnDefsB04}
+                            columnDefs={columnDefsA04}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
                           />
@@ -932,7 +780,7 @@ export default function Ltpa050Section() {
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB05}
-                            columnDefs={columnDefsB05}
+                            columnDefs={columnDefsA05}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
                           />
@@ -942,7 +790,7 @@ export default function Ltpa050Section() {
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB06}
-                            columnDefs={columnDefsB06}
+                            columnDefs={columnDefsA06}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
                           />

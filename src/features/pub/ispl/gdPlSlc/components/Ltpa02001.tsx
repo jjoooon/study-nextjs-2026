@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useCloneTopRows } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useCloneTopRows, useDynamicColumnWidths } from '@aggrid';
 import type { ClonedTopRow } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -353,6 +353,7 @@ const dummyData3Tab: Array<{ value: string; label: string; count: number }> = [
 ];
 
 export function Ltpa02001() {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const [productCategory, setProductCategory] = React.useState<string>('');
   const [productFeature, setProductFeature] = React.useState<string[]>(['simple', 'shortTerm']);
@@ -470,16 +471,18 @@ export function Ltpa02001() {
       </Button>
     );
   };
+
   const columnDefs: ColDef<ProductGridRow>[] = [
     {
       headerName: '상품분류',
       field: 'field1',
       cellClass: 'text-center',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '상품명',
-      flex: 1,
+      flex: 10,
       field: 'field2',
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<ProductGridRow>({ field: 'field2' }),
@@ -490,14 +493,15 @@ export function Ltpa02001() {
       headerName: '가입연령',
       field: 'field3',
       cellClass: 'text-center',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
     },
   ];
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '종구분',
       field: 'field1',
-      flex: 1,
+      flex: 10,
       cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
       cellRenderer: designCellRenderer,
@@ -505,7 +509,8 @@ export function Ltpa02001() {
     {
       headerName: '알릴사항',
       cellClass: 'text-center',
-      width: 60,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellRenderer: moreCellRenderer,
     },
   ];
@@ -513,13 +518,14 @@ export function Ltpa02001() {
     {
       headerName: '플랜명',
       field: 'field1',
-      flex: 1,
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field1' }),
     },
     {
       headerName: '담보보기',
       cellClass: 'text-center',
-      width: 60,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellRenderer: moreCellRenderer,
     },
   ];

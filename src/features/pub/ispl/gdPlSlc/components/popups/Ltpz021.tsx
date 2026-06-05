@@ -3,8 +3,10 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid'; // 2026-05-29 tooltip 추가
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths, numberValueFormatter } from '@aggrid'; // 2026-05-29 tooltip 추가
 import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -19,35 +21,11 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef } from 'ag-grid-enterprise';
+import type { BodyScrollEvent, ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 
 import '@/shared/lib/agGridPub';
-
-function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
-  if (typeof column.width === 'number') {
-    const width = `${column.width}px`;
-
-    return {
-      flex: '0 0 auto',
-      minWidth: width,
-      width,
-    };
-  }
-
-  if (typeof column.flex === 'number') {
-    return {
-      flex: `${column.flex} ${column.flex} 0%`,
-      minWidth: 0,
-    };
-  }
-
-  return {
-    flex: '1 1 0%',
-    minWidth: 0,
-  };
-}
 
 type DummyDataType = {
   id: number;
@@ -261,6 +239,8 @@ const DummyData2: DummyDataType[] = [
 ];
 
 const Ltpz021 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+
   const [rowData1] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2] = React.useState<DummyDataType[]>(DummyData1);
   const [rowData3] = React.useState<DummyDataType[]>(DummyData2);
@@ -270,59 +250,65 @@ const Ltpz021 = () => {
     {
       headerName: '담보명',
       field: 'field1',
-      flex: 1,
-      colSpan: (params) => {
-        // 합계 행이면 이름+서브레이블 합치기
-        if (params.data?.id === 0) return 2;
-        return 1;
-      },
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }), // 2026-05-29 tooltip 추가
+      flex: 10,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
     },
     {
       headerName: '가입금액(만원)',
       field: 'field2',
-      width: 90,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
+      cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
-      colSpan: (params) => {
-        // 합계 행이면 숨김
-        if (params.data?.id === 0) return 0;
-        return 1;
-      },
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'hidden';
-        return 'text-right';
-      },
     },
     {
       headerName: '보험료(원)',
       field: 'field3',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
+      cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
-        return 'text-right';
-      },
-      editable: false,
     },
   ];
 
-  // 013페이지 방식: 외부 스크롤 div 동기화
-  const scrollRefs = React.useRef<(HTMLDivElement | null)[]>([]);
-  const isSyncing = React.useRef(false);
-  const handleSyncScroll = (idx: number, e: React.UIEvent<HTMLDivElement>) => {
-    if (isSyncing.current) return;
-    isSyncing.current = true;
-    const target = e.target as HTMLDivElement;
-    const scrollTop = target.scrollTop;
-    scrollRefs.current.forEach((ref, i) => {
-      if (i !== idx && ref && Math.abs(ref.scrollTop - scrollTop) > 1) {
-        ref.scrollTop = scrollTop;
+  // AG Grid 내부 스크롤(Body viewport) 동기화
+  const gridContainerRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+  const isSyncingBodyScroll = React.useRef(false);
+
+  const setGridBodyScrollTop = React.useCallback((container: HTMLDivElement, top: number) => {
+    const viewport = container.querySelector('.ag-body-viewport');
+
+    if (!(viewport instanceof HTMLDivElement)) {
+      return;
+    }
+
+    if (Math.abs(viewport.scrollTop - top) > 1) {
+      viewport.scrollTop = top;
+    }
+  }, []);
+
+  const handleGridBodyScroll = React.useCallback(
+    (sourceIndex: number, event: BodyScrollEvent<DummyDataType>) => {
+      if (isSyncingBodyScroll.current || event.direction !== 'vertical') {
+        return;
       }
-    });
-    setTimeout(() => {
-      isSyncing.current = false;
-    }, 0);
-  };
+
+      isSyncingBodyScroll.current = true;
+
+      gridContainerRefs.current.forEach((container, index) => {
+        if (!container || index === sourceIndex) {
+          return;
+        }
+
+        setGridBodyScrollTop(container, event.top);
+      });
+
+      requestAnimationFrame(() => {
+        isSyncingBodyScroll.current = false;
+      });
+    },
+    [setGridBodyScrollTop]
+  );
 
   return (
     <Dialog open>
@@ -331,6 +317,9 @@ const Ltpz021 = () => {
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
               추천설계비교
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ021)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -377,78 +366,56 @@ const Ltpz021 = () => {
                     <Checkbox color="info" onCheckedChange={() => {}} size="lg" variant="default"></Checkbox>
                   </Grow>
                 </Grow>
-                <Grow
-                  className="w-full h-full px-[1rem] pb-[2rem] [&_.ag-floating-bottom]:!sticky [&_.ag-floating-bottom]:bottom-0"
-                  placement="ss"
-                >
+                <Gcol className="w-full h-full px-[1rem] pb-[2rem]" placement="ss" gap={0}>
                   {/* scrollable content */}
                   <div
-                    className="ag-theme-alpine no-header w-full min-h-[34rem] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                    className="ag-theme-alpine w-full min-h-[20.8rem] "
                     ref={(el) => {
-                      scrollRefs.current[i + 1] = el;
+                      gridContainerRefs.current[i] = el;
                     }}
-                    onScroll={(e) => handleSyncScroll(i + 1, e)}
                   >
-                    <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-                      {columnDefs.map((column, index) => {
-                        const key = column.field ?? column.headerName ?? `column-${index}`;
-
-                        return (
-                          <div
-                            key={key}
-                            className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                            style={getComparisonHeaderCellStyle(column)}
-                          >
-                            <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
-                              {column.headerName}
-                            </Typo>
-                          </div>
-                        );
-                      })}
-                    </div>
                     <AgGridReact<DummyDataType>
-                      // 합계 행 설정
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={i === 0 ? rowData1 : i === 1 ? rowData2 : rowData3}
                       columnDefs={columnDefs}
-                      headerHeight={0}
-                      groupHeaderHeight={0}
                       defaultColDef={{
                         suppressMovable: true,
                         sortable: false,
-                        resizable: false,
+                        resizable: true,
                       }}
-                      // 2026-05-29 tooltip 추가
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
+                      onBodyScroll={(event) => {
+                        handleGridBodyScroll(i, event);
+                      }}
+                      animateRows={false}
                     />
-
-                    <Grow
-                      className="sticky bottom-[-0.1rem] z-10 flex h-[3rem] w-full border-t border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem]"
-                      placement="bwc"
-                    >
-                      <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
-                        예상보험료
-                      </Typo>
-                      <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
-                        {(() => {
-                          // 각 그리드의 데이터 합계 계산
-                          const data = i === 0 ? rowData1 : i === 1 ? rowData2 : rowData3;
-                          const sum = data.reduce(
-                            (acc, cur) =>
-                              acc +
-                              (typeof cur.field3 === 'number'
-                                ? cur.field3
-                                : Number(cur.field3.toString().replace(/[^\d.-]/g, ''))),
-                            0
-                          );
-                          return sum.toLocaleString();
-                        })()}
-                      </Typo>
-                    </Grow>
                   </div>
-                </Grow>
+                  <Grow
+                    className="flex h-[3rem] w-full border-t border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem]"
+                    placement="bwc"
+                  >
+                    <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
+                      예상보험료
+                    </Typo>
+                    <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
+                      {(() => {
+                        // 각 그리드의 데이터 합계 계산
+                        const data = i === 0 ? rowData1 : i === 1 ? rowData2 : rowData3;
+                        const sum = data.reduce(
+                          (acc, cur) =>
+                            acc +
+                            (typeof cur.field3 === 'number'
+                              ? cur.field3
+                              : Number(cur.field3.toString().replace(/[^\d.-]/g, ''))),
+                          0
+                        );
+                        return sum.toLocaleString();
+                      })()}
+                    </Typo>
+                  </Grow>
+                </Gcol>
               </Grid>
             ))}
           </Grow>
@@ -467,6 +434,7 @@ const Ltpz021 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -587,12 +587,12 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
       nextRows.splice(boundedIndex, 0, newRow);
 
       if (gridApiRef?.current) {
-        const rowId = String(nextId);
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            const rowNode = gridApiRef.current?.getRowNode(rowId);
-            if (rowNode) {
-              gridApiRef.current?.ensureNodeVisible(rowNode, 'middle');
+            const viewportElement = document.querySelector('.ag-body-viewport');
+            if (viewportElement) {
+              // 최하단으로 스크롤
+              viewportElement.scrollTop = viewportElement.scrollHeight;
             }
           });
         });

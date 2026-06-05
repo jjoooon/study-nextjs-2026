@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -25,75 +25,78 @@ import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
+type DummyDataType = {
+  id: number;
+  field1: string | number;
+  field2: string | number;
+};
+const DummyData: DummyDataType[] = [
+  { id: 1, field1: '설계일 ~ 최대 30일', field2: '2026-04-18' },
+  { id: 2, field1: '보험나이변경일', field2: '2026-03-24' },
+  { id: 3, field1: '상품판매종료일', field2: '2026-03-31' },
+  { id: 4, field1: '담보판매종료일', field2: '9999-12-30' },
+  { id: 5, field1: '직업코드 변경 종료일자', field2: '' },
+];
+type DummyDataType2 = {
+  id: number;
+  field1: string | number;
+  field2: string | number;
+  field3: string | number;
+  field4: string | number;
+};
+
+const DummyData2: DummyDataType2[] = [
+  { id: 1, field1: '계약자', field2: '홍길순', field3: 'YYYY-MM-DD (D-00)', field4: 'YYYY-MM-DD (D-00)' },
+  { id: 2, field1: '피보험자', field2: '홍길순', field3: 'YYYY-MM-DD (D-00)', field4: 'YYYY-MM-DD (D-00)' },
+  { id: 3, field1: '피보험자', field2: '홍길동', field3: 'YYYY-MM-DD (D-00)', field4: 'YYYY-MM-DD (D-00)' },
+  {
+    id: 4,
+    field1: '피보험자',
+    field2: '반짝반짝빛나리영원히',
+    field3: 'YYYY-MM-DD (D-00)',
+    field4: 'YYYY-MM-DD (D-00)',
+  },
+  { id: 5, field1: '피보험자', field2: '-', field3: 'YYYY-MM-DD (D-00)', field4: 'YYYY-MM-DD (D-00)' },
+  { id: 6, field1: '피보험자', field2: '-', field3: 'YYYY-MM-DD (D-00)', field4: 'YYYY-MM-DD (D-00)' },
+];
+
 const Ltpz105 = () => {
-  type DummyDataType = {
-    id: number;
-    field1: string | number;
-    field2: string | number;
-  };
-  const DummyData: DummyDataType[] = [
-    { id: 1, field1: '설계일 ~ 최대 30일', field2: '2026-04-18' },
-    { id: 2, field1: '보험나이변경일', field2: '2026-03-24' },
-    { id: 3, field1: '상품판매종료일', field2: '2026-03-31' },
-    { id: 4, field1: '담보판매종료일', field2: '9999-12-30' },
-    { id: 5, field1: '직업코드 변경 종료일자', field2: '' },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '유료설계 기한항목',
       field: 'field1',
-      flex: 1.7,
+      flex: 10,
       cellClass: 'text-center',
     },
     {
       headerName: '유효일자',
       field: 'field2',
       flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-center',
     },
-  ];
-
-  type DummyDataType2 = {
-    id: number;
-    field1: string | number;
-    field2: string | number;
-    field3: string | number;
-    field4: string | number;
-  };
-
-  const DummyData2: DummyDataType2[] = [
-    { id: 1, field1: '계약자', field2: '홍길순', field3: 'YYYY-MM-DD (D-00)', field4: 'YYYY-MM-DD (D-00)' },
-    { id: 2, field1: '피보험자', field2: '홍길순', field3: 'YYYY-MM-DD (D-00)', field4: 'YYYY-MM-DD (D-00)' },
-    { id: 3, field1: '피보험자', field2: '홍길동', field3: 'YYYY-MM-DD (D-00)', field4: 'YYYY-MM-DD (D-00)' },
-    {
-      id: 4,
-      field1: '피보험자',
-      field2: '반짝반짝빛나리영원히',
-      field3: 'YYYY-MM-DD (D-00)',
-      field4: 'YYYY-MM-DD (D-00)',
-    },
-    { id: 5, field1: '피보험자', field2: '-', field3: 'YYYY-MM-DD (D-00)', field4: 'YYYY-MM-DD (D-00)' },
   ];
 
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '구분',
       field: 'field1',
-      width: 70,
+      width: attributeColumnWidth(70),
       cellClass: 'text-center',
     },
     {
       headerName: '고객명',
       field: 'field2',
-      flex: 1,
+      flex: 10,
       cellClass: 'text-center', // 2026-05-29 text-center 수정
     },
     {
       headerName: '상령일',
       field: 'field3',
       flex: 1,
-      minWidth: 120,
+      minWidth: attributeColumnWidth(126),
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => {
         return (
@@ -107,7 +110,7 @@ const Ltpz105 = () => {
       headerName: '동의종료일',
       field: 'field4',
       flex: 1,
-      minWidth: 120,
+      minWidth: attributeColumnWidth(126),
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => {
         return (
@@ -129,6 +132,9 @@ const Ltpz105 = () => {
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
               보험계약 중요기한 안내
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ105)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -155,7 +161,7 @@ const Ltpz105 = () => {
             </Grow>
           </Gcol>
           <Gcol className="w-full" placement="ss" gap={2}>
-            <div className="ag-theme-alpine min-h-[18.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
@@ -176,7 +182,7 @@ const Ltpz105 = () => {
               </Typo>
             </Gcol>
           </Gcol>
-          <div className="ag-theme-alpine min-h-[18.4rem]">
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
             <AgGridReact<DummyDataType2>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}
