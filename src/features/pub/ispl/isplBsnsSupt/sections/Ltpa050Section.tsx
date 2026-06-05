@@ -3,7 +3,7 @@
  */
 
 'use client';
-import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -315,6 +315,7 @@ export default function Ltpa050Section() {
       flex: 1,
       minWidth: attributeColumnWidth(80),
       cellClass: `text-center `,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA02>({ field: 'field1' }),
     },
     {
       headerName: '연령',
@@ -328,6 +329,7 @@ export default function Ltpa050Section() {
       field: 'field3',
       flex: 10,
       cellClass: `text-center `,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA02>({ field: 'field3' }),
     },
     {
       headerName: '급수',
@@ -351,6 +353,7 @@ export default function Ltpa050Section() {
       field: 'field1',
       flex: 10,
       cellClass: `text-center `,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA03>({ field: 'field1' }),
     },
     {
       headerName: '보험기간',
@@ -390,12 +393,14 @@ export default function Ltpa050Section() {
       flex: 1,
       minWidth: attributeColumnWidth(90),
       cellClass: `text-center`,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA04>({ field: 'field1' }),
     },
     {
       headerName: '적용업종',
       field: 'field2',
       flex: 10,
       cellClass: `text-center`,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA04>({ field: 'field2' }),
     },
     {
       headerName: '급수',
@@ -419,6 +424,7 @@ export default function Ltpa050Section() {
       field: 'field1',
       flex: 10,
       cellClass: `text-center`,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA05>({ field: 'field1' }),
     },
     {
       headerName: '가입금액',
@@ -443,6 +449,7 @@ export default function Ltpa050Section() {
       field: 'field1',
       flex: 10,
       cellClass: `text-center `,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA06>({ field: 'field1' }),
     },
     {
       headerName: '보험기간',
@@ -476,6 +483,231 @@ export default function Ltpa050Section() {
     },
   ];
 
+  const columnDefsB01: ColDef<DummyDataTypeB01>[] = [
+    {
+      headerName: '보장P',
+      field: 'field1',
+      flex: 1,
+      cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '적입P',
+      field: 'field2',
+      flex: 1,
+      cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '일시납P',
+      field: 'field3',
+      flex: 1,
+      cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerComponent: () => <HeaderWithUnit label="합계P" unit="(할인전)" col={true} />,
+      field: 'field4',
+      flex: 1,
+      cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerComponent: () => <HeaderWithUnit label="합계P" unit="(할인후)" col={true} />,
+      field: 'field5',
+      flex: 1,
+      cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerComponent: () => <HeaderWithUnit label="만기환급금" unit="(예상)" col={true} />,
+      field: 'field6',
+      flex: 1,
+      cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerComponent: () => <HeaderWithUnit label="환급률" unit="(예상)" col={true} />,
+      field: 'field7',
+      flex: 1,
+      cellClass: `text-center `,
+      valueFormatter: numberValueFormatter,
+    },
+  ];
+  const columnDefsB02: ColDef<DummyDataTypeB02>[] = [
+    {
+      headerName: '피보험자',
+      field: 'field1',
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
+      cellClass: `text-center `,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB02>({ field: 'field1' }),
+    },
+    {
+      headerName: '연령',
+      field: 'field2',
+      flex: 1,
+      minWidth: attributeColumnWidth(50),
+      cellClass: `text-center `,
+    },
+    {
+      headerName: '직업명',
+      field: 'field3',
+      flex: 10,
+      cellClass: `text-center `,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB02>({ field: 'field3' }),
+    },
+    {
+      headerName: '급수',
+      field: 'field4',
+      flex: 1,
+      minWidth: attributeColumnWidth(50),
+      cellClass: `text-center `,
+    },
+    {
+      headerName: '보장P',
+      field: 'field5',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
+    },
+  ];
+  const columnDefsB03: ColDef<DummyDataTypeB03>[] = [
+    {
+      headerName: '담보명',
+      field: 'field1',
+      flex: 10,
+      cellClass: `text-center `,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB03>({ field: 'field1' }),
+    },
+    {
+      headerName: '보험기간',
+      field: 'field2',
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
+      cellClass: `text-center `,
+    },
+    {
+      headerName: '납입기간',
+      field: 'field3',
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
+      cellClass: `text-center `,
+    },
+    {
+      headerName: '가압금액',
+      field: 'field4',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '담보P',
+      field: 'field5',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
+    },
+  ];
+  const columnDefsB04: ColDef<DummyDataTypeB04>[] = [
+    {
+      headerName: '소유자',
+      field: 'field1',
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
+      cellClass: `text-center`,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB04>({ field: 'field1' }),
+    },
+    {
+      headerName: '적용업종',
+      field: 'field2',
+      flex: 10,
+      cellClass: `text-center`,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB04>({ field: 'field2' }),
+    },
+    {
+      headerName: '급수',
+      field: 'field3',
+      flex: 1,
+      minWidth: attributeColumnWidth(50),
+      cellClass: `text-center`,
+    },
+    {
+      headerName: '보장P',
+      field: 'field4',
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
+      cellClass: `text-center`,
+      valueFormatter: numberValueFormatter,
+    },
+  ];
+  const columnDefsB05: ColDef<DummyDataTypeB05>[] = [
+    {
+      headerName: '화재기본담보',
+      field: 'field1',
+      flex: 10,
+      cellClass: `text-center`,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB05>({ field: 'field1' }),
+    },
+    {
+      headerName: '가입금액',
+      field: 'field2',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '담보P',
+      field: 'field3',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
+    },
+  ];
+  const columnDefsB06: ColDef<DummyDataTypeB06>[] = [
+    {
+      headerName: '화재특약담보',
+      field: 'field1',
+      flex: 10,
+      cellClass: `text-center `,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB06>({ field: 'field1' }),
+    },
+    {
+      headerName: '보험기간',
+      field: 'field2',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-center `,
+    },
+    {
+      headerName: '납입기간',
+      field: 'field3',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-center`,
+    },
+    {
+      headerName: '가압금액',
+      field: 'field4',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '담보P',
+      field: 'field5',
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
+      valueFormatter: numberValueFormatter,
+    },
+  ];
   return (
     <>
       <LayoutHead>
@@ -553,6 +785,8 @@ export default function Ltpa050Section() {
                       defaultColDef={{ sortable: true, resizable: true }}
                       domLayout="autoHeight"
                       headerHeight={40}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                     />
                   </div>
                   <Gcol className="w-full" placement="ss" variant="box-info">
@@ -588,6 +822,8 @@ export default function Ltpa050Section() {
                             columnDefs={columnDefsA02}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                         <div className="ag-theme-alpine">
@@ -598,6 +834,8 @@ export default function Ltpa050Section() {
                             columnDefs={columnDefsA03}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                       </Gcol>
@@ -612,6 +850,8 @@ export default function Ltpa050Section() {
                             columnDefs={columnDefsA04}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                         <FormTable cols={['w-[8rem]', 'w-auto']}>
@@ -627,6 +867,8 @@ export default function Ltpa050Section() {
                             columnDefs={columnDefsA05}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                         <div className="ag-theme-alpine">
@@ -637,6 +879,8 @@ export default function Ltpa050Section() {
                             columnDefs={columnDefsA06}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                       </Gcol>
@@ -705,9 +949,11 @@ export default function Ltpa050Section() {
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={DummyDataB01}
-                      columnDefs={columnDefsA01}
+                      columnDefs={columnDefsB01}
                       defaultColDef={{ sortable: true, resizable: true }}
                       domLayout="autoHeight"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                       headerHeight={40}
                     />
                   </div>
@@ -741,9 +987,11 @@ export default function Ltpa050Section() {
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB02}
-                            columnDefs={columnDefsA02}
+                            columnDefs={columnDefsB02}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                         <div className="ag-theme-alpine">
@@ -751,9 +999,11 @@ export default function Ltpa050Section() {
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB03}
-                            columnDefs={columnDefsA03}
+                            columnDefs={columnDefsB03}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                       </Gcol>
@@ -765,9 +1015,11 @@ export default function Ltpa050Section() {
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB04}
-                            columnDefs={columnDefsA04}
+                            columnDefs={columnDefsB04}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                         <FormTable cols={['w-[8rem]', 'w-auto']}>
@@ -780,9 +1032,11 @@ export default function Ltpa050Section() {
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB05}
-                            columnDefs={columnDefsA05}
+                            columnDefs={columnDefsB05}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                         <div className="ag-theme-alpine">
@@ -790,9 +1044,11 @@ export default function Ltpa050Section() {
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB06}
-                            columnDefs={columnDefsA06}
+                            columnDefs={columnDefsB06}
                             defaultColDef={{ sortable: true, resizable: true }}
                             domLayout="autoHeight"
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
                           />
                         </div>
                       </Gcol>
