@@ -777,13 +777,13 @@ export default function Ltpa010Section() {
                       rowSelection={{
                         mode: 'multiRow',
                         checkboxes: true,
-                        headerCheckbox: false, // M5.추가
+                        headerCheckbox: false,
                         enableClickSelection: false,
                       }}
                       selectionColumnDef={{
                         headerName: '선택',
-                        cellClass: 'editable-cell p-0!', // M5.추가
-                        width: 30, // M5.추가
+                        cellClass: 'editable-cell p-0!',
+                        width: 30,
                       }}
                       onGridReady={(params) => {
                         params.api.forEachNode((node) => {

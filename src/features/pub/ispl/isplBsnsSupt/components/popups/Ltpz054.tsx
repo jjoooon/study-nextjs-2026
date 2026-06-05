@@ -2,7 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -28,8 +28,9 @@ import { AgGridReact } from 'ag-grid-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-type DummyDataType = {
+type DummyData1Type = {
   id: number;
+  num: number;
   field1: string | number;
   field2: string | number;
   field3: string | number;
@@ -38,9 +39,21 @@ type DummyDataType = {
   field6: string | number;
   field7: string | number;
 };
-const DummyData: DummyDataType[] = [
+type DummyData2Type = {
+  id: number;
+  num: number;
+  field1: string | number;
+  field2: string | number;
+  field3: string | number;
+  field4: string | number;
+  field5: string | number;
+  field6: string | number;
+  field7: string | number;
+};
+const DummyData1: DummyData1Type[] = [
   {
     id: 1,
+    num: 1,
     field1: '청약서(계약자, 주피용)',
     field2: 1,
     field3: 1,
@@ -51,6 +64,33 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
+    num: 2,
+    field1: '청약서(계약자, 주피용)',
+    field2: 1,
+    field3: 1,
+    field4: '김***화화화화',
+    field5: '2026-04-21 14:41',
+    field6: '박한화박한화박한화박한화(9091999)',
+    field7:
+      '비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.',
+  },
+  {
+    id: 3,
+    num: 3,
+    field1:
+      '청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용청약서(계약자, 주피용)',
+    field2: 1,
+    field3: 1,
+    field4: '김*화',
+    field5: '2026-04-21 14:41',
+    field6: '박한화(9091999)',
+    field7: '',
+  },
+];
+const DummyData2: DummyData2Type[] = [
+  {
+    id: 1,
+    num: 1,
     field1: '청약서(계약자, 주피용)',
     field2: 1,
     field3: 1,
@@ -60,7 +100,20 @@ const DummyData: DummyDataType[] = [
     field7: '',
   },
   {
+    id: 2,
+    num: 2,
+    field1: '청약서(계약자, 주피용)',
+    field2: 1,
+    field3: 1,
+    field4: '김***화화화화',
+    field5: '2026-04-21 14:41',
+    field6: '박한화박한화박한화(9091999)',
+    field7:
+      '비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.',
+  },
+  {
     id: 3,
+    num: 3,
     field1: '청약서(계약자, 주피용)',
     field2: 1,
     field3: 1,
@@ -70,68 +123,83 @@ const DummyData: DummyDataType[] = [
     field7: '',
   },
 ];
-
 const Ltpz054 = () => {
-  const handleCellDoubleClicked = (event: CellDoubleClickedEvent<DummyDataType>) => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  const handleCellDoubleClicked = (event: CellDoubleClickedEvent<DummyData1Type>) => {
+    if (event.column?.getColId() === 'field1') {
+      alert('문서명 더블클릭:');
+    }
+  };
+  const handleCellDoubleClicked2 = (event: CellDoubleClickedEvent<DummyData2Type>) => {
     if (event.column?.getColId() === 'field1') {
       alert('문서명 더블클릭:');
     }
   };
 
-  const columnDefs: ColDef<DummyDataType>[] = [
+  const columnDefs: ColDef<DummyData1Type>[] = [
     {
       headerName: '순번',
-      field: 'id',
-      width: 40,
+      field: 'num',
+      width: attributeColumnWidth(36),
       cellClass: `text-center `,
     },
     {
       headerName: '문서명',
       field: 'field1',
-      flex: 3,
+      flex: 10,
       cellClass: `text-left`,
+      tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field1' }),
     },
     {
       headerName: '출력순번',
       field: 'field2',
-      width: 60,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-center `,
     },
     {
       headerName: '발행순번',
       field: 'field3',
-      width: 60,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-center `,
     },
     {
       headerName: '고객명',
       field: 'field4',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellClass: `text-center `,
+      tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field4' }),
     },
     {
       headerName: '스캔일시',
       field: 'field5',
-      width: 110,
+      flex: 1,
+      minWidth: attributeColumnWidth(110),
       cellClass: `text-center bg-[#E9FEF2]`,
     },
     {
       headerName: '스캔처리자',
       field: 'field6',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-center`,
+      tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field6' }),
     },
     {
       headerName: '비고',
       field: 'field7',
-      flex: 1,
+      flex: 3,
       cellClass: `text-center`,
+      tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field7' }),
     },
   ];
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -148,7 +216,7 @@ const Ltpz054 = () => {
             <FormTable className="flex" variant={'none'} lineTop={false} cols={['w-1', 'w-1', 'w-1', 'w-auto']}>
               <FormRow>
                 <FormCell title={'가입설계번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
-                  <Input width={'quoteNo'} value={'LA260204310632'} required />
+                  <Input width={'quoteNo'} value={'LA123456789012'} required />
                   -
                   <Input width={26} value={'1'} readOnly />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
@@ -194,11 +262,11 @@ const Ltpz054 = () => {
               <TableFoldHead title="당사 스캔대상 발급물"></TableFoldHead>
               <TableFoldBody>
                 {/* 2026-05-28 <Grid> 삭제 */}
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<DummyDataType>
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyData1.length}>
+                  <AgGridReact<DummyData1Type>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={DummyData}
+                    rowData={DummyData1}
                     columnDefs={columnDefs}
                     defaultColDef={{ sortable: false }}
                     rowSelection={{
@@ -226,11 +294,11 @@ const Ltpz054 = () => {
               </TableFoldHead>
               <TableFoldBody>
                 {/* 2026-05-28 Grid 삭제 */}
-                <div className="ag-theme-alpine min-h-[18.4rem]">
-                  <AgGridReact<DummyDataType>
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyData2.length}>
+                  <AgGridReact<DummyData2Type>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={DummyData}
+                    rowData={DummyData2}
                     columnDefs={columnDefs}
                     defaultColDef={{ sortable: false }}
                     rowSelection={{
@@ -243,7 +311,7 @@ const Ltpz054 = () => {
                     }}
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
-                    onCellDoubleClicked={handleCellDoubleClicked}
+                    onCellDoubleClicked={handleCellDoubleClicked2}
                   />
                 </div>
               </TableFoldBody>

@@ -25,7 +25,6 @@ import { Input } from '@uiux/Input';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 import '@/shared/lib/agGridPub';
 
@@ -70,7 +69,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz079 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -138,7 +137,7 @@ const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
   // rowSelection 사용시
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
@@ -199,6 +198,13 @@ const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
               }}
               selectionColumnDef={{
                 width: 30,
+              }}
+              onGridReady={(params) => {
+                params.api.forEachNode((node) => {
+                  if (node.data?.isCheck) {
+                    node.setSelected(true);
+                  }
+                });
               }}
               domLayout="normal"
               tooltipShowMode="whenTruncated"
