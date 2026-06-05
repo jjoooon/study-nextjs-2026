@@ -3,8 +3,8 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { ResetIcon, SearchIcon } from '@icons';
@@ -44,183 +44,91 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    isCheck: false,
+    isCheck: true,
     field01: 'LA12345678',
-    field02: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT',
-    field03: '1',
-    field04: '김한화',
-    field05: 'TEXT',
-    field06: 'YYYY-MM-DD HH:MM:SS',
-    field07: '김한화',
-    field08: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXT',
+    field02:
+      '문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.',
+    field03: 1,
+    field04: '김한화한화김한화한화',
+    field05: '소재소재지소재지소재지소재지소재지지(12)',
+    field06: '2026-06-01 12:20:56',
+    field07: '김한화한화김한화한화',
+    field08:
+      '비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.',
   },
   {
     id: 2,
     isCheck: false,
     field01: 'LA12345679',
-    field02: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
-    field08: '',
-  },
-  {
-    id: 3,
-    isCheck: false,
-    field01: '',
-    field02: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
-    field08: '',
-  },
-  {
-    id: 4,
-    isCheck: false,
-    field01: '',
-    field02: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
-    field08: '',
-  },
-  {
-    id: 5,
-    isCheck: false,
-    field01: '',
-    field02: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
-    field08: '',
-  },
-  {
-    id: 6,
-    isCheck: false,
-    field01: '',
-    field02: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
-    field08: '',
-  },
-  {
-    id: 7,
-    isCheck: false,
-    field01: '',
-    field02: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
-    field08: '',
-  },
-  {
-    id: 8,
-    isCheck: false,
-    field01: '',
-    field02: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
-    field08: '',
-  },
-  {
-    id: 9,
-    isCheck: false,
-    field01: '',
-    field02: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
-    field08: '',
-  },
-  {
-    id: 10,
-    isCheck: false,
-    field01: '',
-    field02: 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
-    field08: '',
+    field02: '문서명 내용이 들어갑니다.',
+    field03: 2,
+    field04: '김한화',
+    field05: '소재지(12)',
+    field06: '2026-06-01 12:20:56',
+    field07: '김한화',
+    field08: '비고 내용이 들어갑니다.비고 내용이 들어갑니다.',
   },
 ];
 
 const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
-  // AgGrid Column
-  // 2026-05-29 width, cellClass 수정
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '증권번호',
       field: 'field01',
-      minWidth: 90,
+      minWidth: attributeColumnWidth(90),
       flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '문서명',
       field: 'field02',
-      flex: 4,
+      flex: 10,
       cellClass: 'text-left', // 2026-05-29 text-left로 변경
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '순번',
       field: 'field03',
-      minWidth: 30,
+      minWidth: attributeColumnWidth(30),
       flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '피보험자',
       field: 'field04',
-      minWidth: 70,
+      minWidth: attributeColumnWidth(70),
       flex: 1,
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
     {
       headerName: '소재지(발생순번)',
       field: 'field05',
-      minWidth: 100,
+      minWidth: attributeColumnWidth(100),
       flex: 1,
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field05' }),
     },
     {
       headerName: '스캔일시',
       field: 'field06',
-      minWidth: 150,
+      minWidth: attributeColumnWidth(120),
       flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '스캔처리자',
       field: 'field07',
-      minWidth: 70,
+      minWidth: attributeColumnWidth(70),
       flex: 1,
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field07' }),
     },
     {
       headerName: '비고',
       field: 'field08',
-      minWidth: 120,
+      minWidth: attributeColumnWidth(120),
       flex: 2,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field08' }),
@@ -247,7 +155,7 @@ const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'가입설계번호'}>
-                  <Input aria-label="" width={'12rem'} value={'12345678'} required />
+                  <Input aria-label="" width={131} value={'LA12345678901234'} required />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
@@ -273,32 +181,30 @@ const Ltpz079 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Button>
             </Grow>
           </Grow>
-          <Gcol className="w-full h-full min-h-[30rem]">
-            <div className="ag-theme-alpine ">
-              <AgGridReact<DummyDataType>
-                getRowId={(params) => String(params.data.id)}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={rowData}
-                columnDefs={columnDefs}
-                defaultColDef={{
-                  sortable: true,
-                  resizable: true,
-                }}
-                rowSelection={{
-                  mode: 'multiRow',
-                  headerCheckbox: true,
-                  checkboxes: true,
-                  enableClickSelection: false,
-                }}
-                selectionColumnDef={{
-                  width: 30,
-                }}
-                domLayout="normal"
-                tooltipShowMode="whenTruncated"
-                tooltipShowDelay={0}
-              />
-            </div>
-          </Gcol>
+          <div className="ag-theme-alpine  inner-scroll" data-row={rowData.length}>
+            <AgGridReact<DummyDataType>
+              getRowId={(params) => String(params.data.id)}
+              noRowsOverlayComponent={AgGridEmptyComponent}
+              rowData={rowData}
+              columnDefs={columnDefs}
+              defaultColDef={{
+                sortable: true,
+                resizable: true,
+              }}
+              rowSelection={{
+                mode: 'multiRow',
+                headerCheckbox: true,
+                checkboxes: true,
+                enableClickSelection: false,
+              }}
+              selectionColumnDef={{
+                width: 30,
+              }}
+              domLayout="normal"
+              tooltipShowMode="whenTruncated"
+              tooltipShowDelay={0}
+            />
+          </div>
         </DialogSection>
 
         <DialogFooter>

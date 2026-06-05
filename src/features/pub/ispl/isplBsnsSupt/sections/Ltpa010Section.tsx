@@ -200,10 +200,7 @@ export default function Ltpa010Section() {
     type09: '',
   });
 
-  // AgGrid Column
-  // 2026-05-29 width 수정
   const columnDefs: (ColDef<DummyDataRow> | ColGroupDef<DummyDataRow>)[] = [
-    // M5. 수정
     {
       headerName: '설계번호',
       flex: 1,
@@ -217,7 +214,6 @@ export default function Ltpa010Section() {
         </Button>
       ),
     },
-    // M5. 수정
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -561,9 +557,6 @@ export default function Ltpa010Section() {
         mainBody={
           <Grid className="grid-rows-[auto_1fr] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
-              {/* 2026-05-22 설계구분 삭제 및 간격 조정, select value값 수정 */}
-              {/* M1. variant={'none'} */}
-
               <FormTable
                 variant={'none'}
                 lineTop={false}
@@ -574,7 +567,7 @@ export default function Ltpa010Section() {
                   <FormCell title={'조회구분'}>
                     <NativeSelect
                       aria-label="조회구분 선택"
-                      width={140}
+                      width={120}
                       value={form.type01}
                       onChange={(e) => setFormField('type01', e.target.value)}
                       required
@@ -591,14 +584,14 @@ export default function Ltpa010Section() {
                       ))}
                     </NativeSelect>
                     {form.type01 === 'selection' || form.type01 === 'selection2' ? (
-                      <Grow className="w-full" placement="ss">
-                        <Input aria-label="이름" value={'김현화'} width={100} required />
+                      <Grow placement="ss">
+                        <Input aria-label="이름" value={'김현화현화'} width={84} required />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
                       </Grow>
                     ) : (
-                      <Input aria-label="번호" width={150} value={'1234556556'} readOnly />
+                      <Input aria-label="번호" width={90} value={'1234556556'} readOnly />
                     )}
                   </FormCell>
                   <FormCell title={'설계상태'}>
@@ -666,7 +659,7 @@ export default function Ltpa010Section() {
                     <NativeSelect
                       aria-label="설계조직 선택"
                       value={form.type07}
-                      width={120}
+                      width={90}
                       required
                       onChange={(e) => setFormField('type07', e.target.value)}
                     >
@@ -680,7 +673,7 @@ export default function Ltpa010Section() {
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <Input aria-label="" width={80} value={'1301097'} required />
+                    <Input aria-label="" width={70} value={'1301097'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
