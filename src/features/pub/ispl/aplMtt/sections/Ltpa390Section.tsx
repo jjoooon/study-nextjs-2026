@@ -84,7 +84,7 @@ export default function Ltpa390Section() {
                 </Typo>
               </Gcol>
               <Gcol placement="ss" className="w-full" gap={5}>
-                <div className="ag-theme-alpine min-h-[30rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

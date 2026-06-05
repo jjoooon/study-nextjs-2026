@@ -1037,13 +1037,17 @@ export default function Ltpa680Section() {
                       더보기 <ChevronDownIcon size={14} color="#545454" className="-rotate-90" />
                     </Button>
                   </Grow>
-                  <div className="ag-theme-alpine no-header" style={{ borderTop: '0.2rem solid #000' }}>
+                  <div
+                    className="ag-theme-alpine no-header inner-scroll"
+                    data-row={3}
+                    style={{ borderTop: '0.2rem solid #000' }}
+                  >
                     <AgGridReact<DummyDataType2>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData2}
                       columnDefs={columnDefs2}
-                      domLayout="autoHeight"
+                      domLayout="normal"
                       headerHeight={0}
                       groupHeaderHeight={0}
                     />
@@ -1058,7 +1062,11 @@ export default function Ltpa680Section() {
                       더보기 <ChevronDownIcon size={14} color="#545454" className="-rotate-90" />
                     </Button>
                   </Grow>
-                  <div className="ag-theme-alpine no-header" style={{ borderTop: '0.2rem solid #000' }}>
+                  <div
+                    className="ag-theme-alpine no-header inner-scroll"
+                    data-row={3}
+                    style={{ borderTop: '0.2rem solid #000' }}
+                  >
                     <AgGridReact<DummyDataType3>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
@@ -1079,7 +1087,11 @@ export default function Ltpa680Section() {
                       더보기 <ChevronDownIcon size={14} color="#545454" className="-rotate-90" />
                     </Button>
                   </Grow>
-                  <div className="ag-theme-alpine no-header" style={{ borderTop: '0.2rem solid #000' }}>
+                  <div
+                    className="ag-theme-alpine no-header inner-scroll"
+                    data-row={3}
+                    style={{ borderTop: '0.2rem solid #000' }}
+                  >
                     <AgGridReact<DummyDataType4>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
@@ -1211,7 +1223,7 @@ export default function Ltpa680Section() {
                               </TableFoldHead>
                               <TableFoldBody>
                                 {guidelineType === '일반고지형' && (
-                                  <div className="ag-theme-alpine w-full">
+                                  <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData5.length}>
                                     <AgGridReact<DummyDataType5>
                                       getRowId={(params) => String(params.data.id)}
                                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1230,7 +1242,7 @@ export default function Ltpa680Section() {
                                   </div>
                                 )}
                                 {guidelineType === '간편고지형' && (
-                                  <div className="ag-theme-alpine w-full">
+                                  <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData6.length}>
                                     <AgGridReact<DummyDataType6>
                                       getRowId={(params) => String(params.data.id)}
                                       noRowsOverlayComponent={AgGridEmptyComponent}
