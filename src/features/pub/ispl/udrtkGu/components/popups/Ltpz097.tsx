@@ -262,7 +262,6 @@ const Ltpz097 = () => {
                       aria-label="항목 선택"
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
-                      required
                     >
                       {[
                         { value: 'selection', id: 'type03-1', label: '김한화(890823-1******)' },

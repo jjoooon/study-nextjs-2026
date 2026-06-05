@@ -238,10 +238,10 @@ const Ltpz053 = () => {
                 {form.type02 === '사업자등록번호' && (
                   <FormRow>
                     <FormCell title={'사업자명'}>
-                      <Input aria-label="" width={160} value={''} required />
+                      <Input aria-label="" value={''} required />
                     </FormCell>
-                    <FormCell title={'사업자등록번호'} colSpan={5}>
-                      <Input aria-label="" width={160} value={''} required />
+                    <FormCell title={'사업자등록번호'} colSpan={5} tdClassName="grid grid-cols-[1fr_auto] gap-1">
+                      <Input aria-label="" value={''} required />
                       <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                         사업자등록번호조회
                       </Button>
@@ -257,10 +257,10 @@ const Ltpz053 = () => {
               <FormTable caption="월클릭스켄" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'진위여부'}>
-                    <Input aria-label="" width={160} value={'12345678'} readOnly />
+                    <Input aria-label="" value={'12345678'} readOnly />
                   </FormCell>
-                  <FormCell title={'사유'}>
-                    <Input aria-label="" width={300} value={'12345678'} readOnly />
+                  <FormCell title={'사유'} tdClassName="grid grid-cols-[1fr_auto] gap-1">
+                    <Input aria-label="" value={'12345678'} readOnly />
                     <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                       확인서발행
                     </Button>

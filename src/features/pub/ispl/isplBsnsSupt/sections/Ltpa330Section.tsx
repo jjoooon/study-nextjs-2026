@@ -155,7 +155,6 @@ export default function Ltpa330Section() {
                       aria-label="조회구분 선택"
                       value={form.type01}
                       width={100}
-                      required
                       onChange={(e) => setFormField('type01', e.target.value)}
                     >
                       {[

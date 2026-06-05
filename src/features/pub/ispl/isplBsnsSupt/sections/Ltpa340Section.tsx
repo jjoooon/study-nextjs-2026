@@ -17,7 +17,7 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, GridApi } from 'ag-grid-enterprise';
+import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 
 import * as React from 'react';
@@ -92,7 +92,7 @@ const DummyData: DummyDataType[] = [
 export default function Ltpa340Section() {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
-  // 행추가 삭제 ----------------------------------
+  // 행추가, 삭제----------------------------------
   const handleAddRow = React.useMemo(
     () =>
       createAddRowHandler<DummyDataType, number>(setRowData, {
@@ -128,7 +128,26 @@ export default function Ltpa340Section() {
       }),
     [setRowData, gridApiRef]
   );
-  //  ---------------------------------- 행추가 삭제
+  const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
+    const value = params.value == null ? '' : String(params.value);
+    const hasValue = value.trim().length > 0;
+
+    if (hasValue) {
+      return (
+        <div className="flex h-full w-full items-center justify-center px-1">
+          <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
+        <span className="block min-w-0 flex-1" />
+        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+      </div>
+    );
+  }, []);
+  //  ---------------------------------- 행추가 ,삭제
 
   // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
@@ -138,7 +157,7 @@ export default function Ltpa340Section() {
       field: 'field01',
       flex: 1,
       minWidth: 110,
-      cellClass: 'text-center editable-cell',
+      cellClass: 'editable-cell',
       editable: true,
     },
     {
@@ -146,7 +165,7 @@ export default function Ltpa340Section() {
       field: 'field02',
       flex: 1,
       minWidth: 90,
-      cellClass: 'text-center editable-cell',
+      cellClass: 'editable-cell',
       editable: true,
     },
     {
@@ -162,9 +181,10 @@ export default function Ltpa340Section() {
       flex: 1,
       minWidth: 85,
       editable: true,
-      cellClass: 'text-center editable-cell',
+      cellClass: 'editable-cell',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['전체', '문서서명'] },
+      cellRenderer: selectCellRenderer,
     },
     {
       headerName: '판매허용채널',

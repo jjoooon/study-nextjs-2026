@@ -89,7 +89,6 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa260Section() {
-  
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
     () => [
@@ -242,7 +241,7 @@ export default function Ltpa260Section() {
                     <Input width={170} value={''} readOnly />
                   </FormCell>
                   <FormCell title={'기준일자'}>
-                    <DatePickerInput mode={'single'} value={''} required />
+                    <DatePickerInput mode={'single'} value={''} />
                   </FormCell>
                 </FormRow>
               </FormTable>
