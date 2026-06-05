@@ -133,7 +133,6 @@ const Ltpz040 = () => {
       width: 85,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
-
     },
     {
       headerName: '보험료',
@@ -225,7 +224,7 @@ const Ltpz040 = () => {
             <TableFoldBody className="grid-rows-[auto_1fr] gap-2">
               <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'피보험자'}>김한화(901231-1234567)</FormCell>
+                  <FormCell title={'피보험자'}>김한화(901231-1******)</FormCell>
                 </FormRow>
               </FormTable>
               <Gcol className="w-full" gap={4}>

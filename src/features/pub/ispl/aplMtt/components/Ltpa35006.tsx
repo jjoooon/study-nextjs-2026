@@ -775,7 +775,7 @@ export const Ltpa35006 = () => {
                       </Grow>
                     </TableFoldHead>
                     <TableFoldBody>
-                      <div className="ag-theme-alpine">
+                      <div className="ag-theme-alpine  inner-scroll" data-row={depositGridRows.length}>
                         <AgGridReact<Ltpa35006GridRow>
                           getRowId={(params) => String(params.data.id)}
                           rowData={depositGridRows}
