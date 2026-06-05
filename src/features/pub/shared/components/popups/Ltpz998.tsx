@@ -135,7 +135,7 @@ const Ltpz998 = () => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <div className="ag-theme-alpine min-h-[18.4rem]">
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}

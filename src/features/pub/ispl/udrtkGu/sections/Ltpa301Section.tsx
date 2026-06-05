@@ -80,12 +80,14 @@ const Ltpa301DummyData: Ltpa301DummyDataRow[] = [
 ];
 
 export default function Ltpa301Section() {
+  // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
   const columnDefs: (ColDef<Ltpa301DummyDataRow> | ColGroupDef<Ltpa301DummyDataRow>)[] = [
     {
       headerName: '점검결과',
       field: 'field01',
-      width: 90,
+      flex: 1,
+      minWidth: 80,
     },
     {
       headerName: '순번',
@@ -95,18 +97,21 @@ export default function Ltpa301Section() {
     {
       headerName: '점검일자',
       field: 'field03',
-      width: 80,
+      flex: 1,
+      minWidth: 90,
     },
 
     {
       headerName: '점검방법',
       field: 'field04',
-      width: 100,
+      flex: 1,
+      minWidth: 80,
     },
     {
       headerName: '점검구분',
       field: 'field05',
-      width: 100,
+      flex: 1,
+      minWidth: 80,
     },
     {
       headerName: '피보험자',
@@ -116,13 +121,14 @@ export default function Ltpa301Section() {
     {
       headerName: '정액담보한도분류',
       field: 'field07',
-      width: 130,
+      flex: 1,
+      minWidth: 110,
     },
     {
       headerName: '가입한도',
       field: 'field08',
       flex: 1,
-      minWidth: 100,
+      minWidth: 85,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -130,7 +136,7 @@ export default function Ltpa301Section() {
       headerName: '초과금액',
       field: 'field09',
       flex: 1,
-      minWidth: 100,
+      minWidth: 85,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -138,7 +144,7 @@ export default function Ltpa301Section() {
       headerName: '당사금액',
       field: 'field10',
       flex: 1,
-      minWidth: 100,
+      minWidth: 85,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -146,25 +152,26 @@ export default function Ltpa301Section() {
       headerName: '타사금액',
       field: 'field11',
       flex: 1,
-      minWidth: 100,
+      minWidth: 85,
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '처리직원',
       field: 'field12',
-      width: 90,
+      width: 80,
     },
     {
       headerName: '처리일시',
       field: 'field13',
-      width: 100,
+      flex: 1,
+      minWidth: 90,
     },
     {
       headerName: '처리내용',
       field: 'field14',
-      flex: 1,
-      minWidth: 120,
+      flex: 3,
+      minWidth: 250,
       cellClass: 'text-left ',
     },
   ];

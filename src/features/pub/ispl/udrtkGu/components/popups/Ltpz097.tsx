@@ -110,11 +110,13 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz097 = () => {
   // 2026-05-28 cellClass 수정
+  // 2026-06-04 flex, minWidth 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상위누적명',
       field: 'accName',
       flex: 1,
+      minWidth: 120,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -126,6 +128,7 @@ const Ltpz097 = () => {
       headerName: '누적위험명',
       field: 'accRisk',
       flex: 2,
+      minWidth: 200,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -136,7 +139,7 @@ const Ltpz097 = () => {
     {
       headerName: '설계별 누적금액',
       field: 'accDesignAmt',
-      width: 100,
+      width: 90,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -148,7 +151,7 @@ const Ltpz097 = () => {
     {
       headerName: '전체누적금액',
       field: 'accTotalAmt',
-      width: 100,
+      width: 90,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -161,6 +164,7 @@ const Ltpz097 = () => {
       headerName: '상위누적명',
       field: 'upperAccName',
       flex: 1,
+      minWidth: 120,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -172,6 +176,7 @@ const Ltpz097 = () => {
       headerName: '누적위험명',
       field: 'upperAccRisk',
       flex: 2,
+      minWidth: 200,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -182,7 +187,7 @@ const Ltpz097 = () => {
     {
       headerName: '설계별 누적금액',
       field: 'upperDesignAmt',
-      width: 100,
+      width: 90,
       sortable: false,
       filter: false,
       suppressMovable: true,
@@ -194,7 +199,7 @@ const Ltpz097 = () => {
     {
       headerName: '전체누적금액',
       field: 'upperTotalAmt',
-      width: 100,
+      width: 90,
       sortable: false,
       filter: false,
       suppressMovable: true,
