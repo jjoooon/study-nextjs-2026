@@ -6,6 +6,7 @@
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { ErrorIcon, NotiIcon, QueryIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -45,7 +46,8 @@ const DummyData: DummyDataType[] = [
     id: 2,
     type: '질의',
     code: 'LTRE007(trandZomH111)',
-    field0: '환급금분할지급방법을 수정할 수 없습니다. 배서기준일이 환급금 최초 도래일보다 같거나 큽니다.',
+    field0:
+      '환급금분할지급방법을 수정할 수 없습니다. 배서기준일이 환급금 최초 도래일보다 같거나 큽니다. 환급금분할지급방법을 수정할 수 없습니다. 배서기준일이 환급금 최초 도래일보다 같거나 큽니다. 환급금분할지급방법을 수정할 수 없습니다. 배서기준일이 환급금 최초 도래일보다 같거나 큽니다.',
     field1:
       '환급금분할지금방법을 수정할 수 없습니다. 배서기준일이 환급금 최초 도래일보다 같거나 큽니다. 환급금분할지금방법을 수정할 수 없습니다. 배서기준일이 환급금 최초 도래일보다 같거나 큽니다.',
   },
@@ -222,6 +224,7 @@ const Ltpz998 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

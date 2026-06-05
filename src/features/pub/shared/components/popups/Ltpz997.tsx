@@ -4,8 +4,8 @@
 'use client';
 
 import { Typo } from '@atoms';
-import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
-
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
 type DummyDataType = {
@@ -63,6 +63,9 @@ const Ltpz997 = () => {
             </TableBody>
           </Table>
         </DialogSection>
+        <DialogFooter>
+          <DialogBottomInfo />
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

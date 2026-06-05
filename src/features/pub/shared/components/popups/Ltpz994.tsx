@@ -39,7 +39,7 @@ export const Ltpz994 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection>
           <Gcol className="w-full h-full gap-1">
             <Gcol
               variant="box-round"

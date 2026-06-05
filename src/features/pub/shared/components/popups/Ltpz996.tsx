@@ -6,7 +6,8 @@
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Typo } from '@atoms';
-import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -27,7 +28,8 @@ const DummyData: DummyDataType[] = [
     field2: 'transComG100',
     field3: 'RB',
     field4: 'COM10107',
-    field5: '자료가 조회되었습니다.',
+    field5:
+      '자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.',
   },
   {
     id: 2,
@@ -49,25 +51,29 @@ const Ltpz996 = () => {
       {
         headerName: '통신레코드',
         field: 'field1',
-        width: attributeColumnWidth(100),
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
         cellClass: 'text-center',
       },
       {
         headerName: '서비스코드',
         field: 'field2',
-        width: attributeColumnWidth(110),
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
         cellClass: 'text-center',
       },
       {
         headerName: '거래코드',
         field: 'field3',
-        width: attributeColumnWidth(60),
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '메세지코드',
         field: 'field4',
-        width: attributeColumnWidth(90),
+        flex: 1,
+        minWidth: attributeColumnWidth(90),
         cellClass: 'text-center',
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
           if (!params.value) return null;
@@ -81,7 +87,7 @@ const Ltpz996 = () => {
       {
         headerName: '메세지상세',
         field: 'field5',
-        flex: 1,
+        flex: 9,
         cellClass: 'text-left',
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field5' }),
       },
@@ -120,6 +126,9 @@ const Ltpz996 = () => {
             />
           </div>
         </DialogSection>
+        <DialogFooter>
+          <DialogBottomInfo />
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

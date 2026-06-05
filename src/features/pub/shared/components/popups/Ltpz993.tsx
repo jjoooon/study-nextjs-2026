@@ -4,9 +4,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Typo } from '@atoms';
-import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
@@ -20,7 +21,12 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   { id: 1, field1: '예산-리스크관리', field2: '경영기획 관리자', field3: '조회' },
   { id: 2, field1: '계약관리-신계약', field2: '영업지점 담당자', field3: '조회,등록' },
-  { id: 3, field1: '계약관리-보험료', field2: '영업지점 관리자', field3: '조회,수정' },
+  {
+    id: 3,
+    field1: '계약관리-보험료계약관리-보험료계약관리-보험료계약관리-보험료계약관리-보험료',
+    field2: '영업지점 관리자 영업지점 관리자 영업지점 관리자영업지점 관리자',
+    field3: '조회,수정조회,수정조회,수정조회,수정조회,수정조회,수정조회,수정',
+  },
   { id: 4, field1: '보상관리-사고접수', field2: '보상센터 담당자', field3: '조회,등록,수정' },
   { id: 5, field1: '보상관리-지급심사', field2: '보상센터 관리자', field3: '조회,승인' },
   { id: 6, field1: '고객관리-고객정보', field2: '고객서비스 담당자', field3: '조회' },
@@ -38,18 +44,21 @@ const Ltpz993 = () => {
       field: 'field1',
       flex: 1,
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
     },
     {
       headerName: '역할명',
       field: 'field2',
       flex: 1,
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
     },
     {
       headerName: '역할권한',
       field: 'field3',
       flex: 1,
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field3' }),
     },
   ];
 
@@ -79,9 +88,14 @@ const Ltpz993 = () => {
                 sortable: true,
                 resizable: true,
               }}
+              tooltipShowMode="whenTruncated"
+              tooltipShowDelay={0}
             />
           </div>
         </DialogSection>
+        <DialogFooter>
+          <DialogBottomInfo />
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

@@ -9,6 +9,7 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type {
   ICellEditorParams,
   CellClickedEvent,
@@ -1194,6 +1195,75 @@ type FieldRendererResolver<T> = (data?: T) => React.ReactNode;
 type FieldRendererComponent<T> = React.ComponentType<FieldRendererComponentProps<T>>;
 type FieldRendererSource<T> = keyof T | React.ReactNode | FieldRendererResolver<T> | FieldRendererComponent<T>;
 
+type OverflowTooltipTextProps = {
+  text?: string;
+  children: React.ReactNode;
+};
+
+export function OverflowTooltipText({ text, children }: OverflowTooltipTextProps) {
+  const textRef = React.useRef<HTMLSpanElement>(null);
+  const [isOverflowed, setIsOverflowed] = React.useState(false);
+
+  const updateOverflowState = React.useCallback(() => {
+    const element = textRef.current;
+
+    if (!element) {
+      setIsOverflowed(false);
+      return;
+    }
+
+    const hasHorizontalOverflow = element.scrollWidth > element.clientWidth;
+    const hasVerticalOverflow = element.scrollHeight > element.clientHeight;
+    setIsOverflowed(hasHorizontalOverflow || hasVerticalOverflow);
+  }, []);
+
+  React.useEffect(() => {
+    updateOverflowState();
+
+    const element = textRef.current;
+    if (!element) {
+      return;
+    }
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateOverflowState);
+
+      return () => {
+        window.removeEventListener('resize', updateOverflowState);
+      };
+    }
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateOverflowState();
+    });
+
+    resizeObserver.observe(element);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [updateOverflowState, text, children]);
+
+  const content = (
+    <span ref={textRef} className="inline-block w-full truncate-no">
+      {children}
+    </span>
+  );
+
+  if (!text || !isOverflowed) {
+    return content;
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{content}</TooltipTrigger>
+      <TooltipContent variant="default" side="top" align="start">
+        {text}
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
 /**
  * 2단 셀 렌더러 팩토리.
  * - `field` 키, 렌더 함수, 컴포넌트, ReactNode를 모두 입력으로 지원
@@ -1262,9 +1332,35 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
 
     const aNode = resolveNode(parsedField1.source);
     const bNode = resolveNode(parsedField2.source);
+
+    const resolveTooltipText = (value: React.ReactNode): string | undefined => {
+      if (value === null || value === undefined) {
+        return undefined;
+      }
+
+      if (typeof value === 'string') {
+        return value;
+      }
+
+      if (typeof value === 'number' || typeof value === 'bigint' || typeof value === 'boolean') {
+        return String(value);
+      }
+
+      return undefined;
+    };
+
+    const aTooltipText = resolveTooltipText(aNode);
+    const bTooltipText = resolveTooltipText(bNode);
+
     const renderCell = (value: React.ReactNode) => {
       if (React.isValidElement(value)) return value;
       return <Typo>{String(value ?? '')}</Typo>;
+    };
+
+    const renderCellWithTooltip = (value: React.ReactNode, tooltipText?: string) => {
+      const content = renderCell(value);
+
+      return <OverflowTooltipText text={tooltipText}>{content}</OverflowTooltipText>;
     };
 
     const getRowCellStyle = (size?: number): React.CSSProperties => {
@@ -1284,16 +1380,20 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
 
     return div === 'col' ? (
       <Grid className="w-full grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
-        <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{renderCell(aNode)}</div>
-        <div className="h-[3rem] w-full leading-[3rem] truncate-no px-1">{renderCell(bNode)}</div>
+        <div className="h-[3rem] w-full leading-[3rem] truncate-no pl-1">
+          {renderCellWithTooltip(aNode, aTooltipText)}
+        </div>
+        <div className="h-[3rem] w-full leading-[3rem] truncate-no pl-1">
+          {renderCellWithTooltip(bNode, bTooltipText)}
+        </div>
       </Grid>
     ) : (
       <div className="flex w-full h-full justify-start divide-x divide-gray-200">
         <div className="truncate-no" style={getRowCellStyle(parsedField1.size)}>
-          {renderCell(aNode)}
+          {renderCellWithTooltip(aNode, aTooltipText)}
         </div>
         <div className="truncate-no" style={getRowCellStyle(parsedField2.size)}>
-          {renderCell(bNode)}
+          {renderCellWithTooltip(bNode, bTooltipText)}
         </div>
       </div>
     );

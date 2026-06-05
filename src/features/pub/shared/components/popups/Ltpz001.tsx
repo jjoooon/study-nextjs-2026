@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -52,7 +52,8 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     filePath: ['folderA'],
-    field1: '가입제안서',
+    field1:
+      '가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서가입제안서 가입제안서',
     field2: '미리보기',
     field3: '고객용',
     field4: '미출력',
@@ -68,7 +69,8 @@ const DummyData: DummyDataType[] = [
   {
     id: 2,
     filePath: ['folderA', 'folderA-1'],
-    field1: '가입제안서 adddfa',
+    field1:
+      '가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa가입제안서 adddfa',
     field2: '미리보기',
     field3: '고객용',
     field4: '미출력',
@@ -165,11 +167,12 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz001 = () => {
   // 2026-05-29 width 수정
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '미리보기',
       field: 'field2',
-      minWidth: 60,
+      minWidth: attributeColumnWidth(60),
       flex: 1,
       cellRenderer: () => (
         <Button variant={'text'} size={'lg'} color={'link'}>
@@ -180,37 +183,37 @@ const Ltpz001 = () => {
     {
       headerName: '출력방식',
       field: 'field3',
-      minWidth: 60,
+      minWidth: attributeColumnWidth(60),
       flex: 1,
     },
     {
       headerName: '출력여부',
       field: 'field4',
-      minWidth: 60,
+      minWidth: attributeColumnWidth(60),
       flex: 1,
     },
     {
       headerName: '스캔대상',
       field: 'field5',
-      minWidth: 60,
+      minWidth: attributeColumnWidth(60),
       flex: 1,
     },
     {
       headerName: '이메일',
       field: 'field6',
-      minWidth: 50,
+      minWidth: attributeColumnWidth(50),
       flex: 1,
     },
     {
       headerName: '팩스',
       field: 'field7',
-      minWidth: 50,
+      minWidth: attributeColumnWidth(50),
       flex: 1,
     },
     {
       headerName: '모바일',
       field: 'field8',
-      minWidth: 50,
+      minWidth: attributeColumnWidth(50),
       flex: 1,
     },
   ];
@@ -254,18 +257,13 @@ const Ltpz001 = () => {
                       <FormTable variant={'head'} className="w-full">
                         <FormRow>
                           <FormCell title={'설계번호'}>
-                            <Input value={'LA26029313558'} variant="info" width={120} readOnly />
+                            <Input value={'LA26029313558'} variant="info" readOnly />
                           </FormCell>
                           <FormCell title={'계약자명'}>
-                            <Input value={'김한화'} readOnly variant="info" width={80} />
+                            <Input value={'김한화'} readOnly variant="info" />
                           </FormCell>
                           <FormCell title={'상품명'}>
-                            <Input
-                              value={'한화시그니처여성 건강 보험 3.0 무배당'}
-                              readOnly
-                              variant="info"
-                              width={'full'}
-                            />
+                            <Input value={'한화시그니처여성 건강 보험 3.0 무배당'} readOnly variant="info" />
                           </FormCell>
                         </FormRow>
                       </FormTable>
@@ -288,7 +286,7 @@ const Ltpz001 = () => {
                         autoGroupColumnDef={{
                           headerName: '출력물',
                           field: 'field1',
-                          flex: 6,
+                          flex: 10,
                           tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
                         }}
                         // selection 설정
