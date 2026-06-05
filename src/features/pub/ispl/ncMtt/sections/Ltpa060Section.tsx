@@ -3,7 +3,7 @@
  */
 'use client';
 // M1. 팝업에서 화면으로, 전체 수정
-import { AgGridEmptyComponent, createCellValueChangedHandler } from '@aggrid';
+import { AgGridEmptyComponent, createCellValueChangedHandler, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -136,6 +136,19 @@ const dummyData: DummyDataType[] = [
     field8: '고지',
     field9: '',
   },
+  {
+    id: 6,
+    isChecked: false,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '',
+    field7: 'Y',
+    field8: '고지',
+    field9: '',
+  },
 ];
 const dummyData2: DummyDataType2[] = [
   {
@@ -172,7 +185,7 @@ const dummyData2: DummyDataType2[] = [
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '',
+    field6: '3',
     field7: 'Y',
     field8: '미고지',
     field9: '',
@@ -185,7 +198,7 @@ const dummyData2: DummyDataType2[] = [
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '',
+    field6: '3',
     field7: 'Y',
     field8: '미고지',
     field9: '',
@@ -198,7 +211,7 @@ const dummyData2: DummyDataType2[] = [
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '',
+    field6: '3',
     field7: 'Y',
     field8: '고지',
     field9: '',
@@ -208,6 +221,7 @@ const dummyData2: DummyDataType2[] = [
 export default function Ltpa060Section() {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(dummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
 
@@ -217,56 +231,51 @@ export default function Ltpa060Section() {
     {
       headerName: '대표질병코드',
       field: 'field1',
-      width: 120,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(100),
     },
     {
       headerName: '질병명',
       field: 'field2',
-      flex: 4,
+      flex: 8,
+      minWidth: attributeColumnWidth(250),
       cellClass: 'text-left',
     },
     {
       headerName: '원사고발생일',
       field: 'field3',
-      width: 120,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(100),
     },
     {
       headerName: '최종사고발생일',
       field: 'field4',
-      width: 120,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(100),
     },
     {
       headerName: '입원',
       field: 'field5',
-      width: 180,
-      cellClass: 'text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(180),
     },
     {
       headerName: '통원',
       field: 'field6',
-      width: 70,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '수술',
       field: 'field7',
-      width: 70,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '고지여부',
       field: 'field8',
-      width: 70,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(80),
     },
     {
       headerName: '체크',
       field: 'field9',
       flex: 1,
-      cellClass: 'text-center',
+      minWidth: attributeColumnWidth(70),
       cellRenderer: (params: { data: DummyDataType }) => (
         <Gcol placement="cc" className="h-full">
           <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
@@ -282,56 +291,51 @@ export default function Ltpa060Section() {
     {
       headerName: '대표질병코드',
       field: 'field1',
-      width: 120,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(100),
     },
     {
       headerName: '질병명',
       field: 'field2',
-      flex: 4,
+      flex: 8,
+      minWidth: attributeColumnWidth(250),
       cellClass: 'text-left',
     },
     {
       headerName: '원사고발생일',
       field: 'field3',
-      width: 120,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(100),
     },
     {
       headerName: '최종사고발생일',
       field: 'field4',
-      width: 120,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(100),
     },
     {
       headerName: '입원',
       field: 'field5',
-      width: 180,
-      cellClass: 'text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(180),
     },
     {
       headerName: '통원',
       field: 'field6',
-      width: 70,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '수술',
       field: 'field7',
-      width: 70,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '고지여부',
       field: 'field8',
-      width: 70,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(80),
     },
     {
       headerName: '체크',
       field: 'field9',
       flex: 1,
-      cellClass: 'text-center',
+      minWidth: attributeColumnWidth(70),
       cellRenderer: (params: { data: DummyDataType }) => (
         <Gcol placement="cc" className="h-full">
           <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
@@ -392,7 +396,7 @@ export default function Ltpa060Section() {
                   <TableFold>
                     <TableFoldHead title="필수고지" />
                     <TableFoldBody>
-                      <div className="ag-theme-alpine min-h-[18.5rem]">
+                      <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                         <AgGridReact<DummyDataType>
                           getRowId={(params) => String(params.data.id)}
                           rowData={rowData}
@@ -405,12 +409,12 @@ export default function Ltpa060Section() {
                           defaultColDef={{
                             sortable: true,
                             resizable: true,
+                            cellClass: 'text-center',
                           }}
                           rowSelection={{
                             mode: 'multiRow',
                             isRowSelectable: (node) => node.data?.field8 !== '고지',
                             checkboxes: true,
-                            hideDisabledCheckboxes: false,
                             enableClickSelection: false,
                           }}
                           onGridReady={(params) => {
@@ -421,7 +425,6 @@ export default function Ltpa060Section() {
                             });
                           }}
                           domLayout="normal"
-                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>
@@ -429,7 +432,7 @@ export default function Ltpa060Section() {
                   <TableFold>
                     <TableFoldHead title="고지확인대상" />
                     <TableFoldBody>
-                      <div className="ag-theme-alpine min-h-[18.5rem]">
+                      <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                         <AgGridReact<DummyDataType2>
                           getRowId={(params) => String(params.data.id)}
                           rowData={rowData2}
@@ -442,12 +445,12 @@ export default function Ltpa060Section() {
                           defaultColDef={{
                             sortable: true,
                             resizable: true,
+                            cellClass: 'text-center',
                           }}
                           rowSelection={{
                             mode: 'multiRow',
                             isRowSelectable: (node) => node.data?.field8 !== '고지',
                             checkboxes: true,
-                            hideDisabledCheckboxes: false,
                             enableClickSelection: false,
                           }}
                           onGridReady={(params) => {
@@ -458,7 +461,6 @@ export default function Ltpa060Section() {
                             });
                           }}
                           domLayout="normal"
-                          alwaysShowVerticalScroll={true}
                         />
                       </div>
                     </TableFoldBody>
@@ -487,7 +489,7 @@ export default function Ltpa060Section() {
                 <TableFold>
                   <TableFoldHead title="필수고지" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[18.5rem]">
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData}
@@ -500,12 +502,12 @@ export default function Ltpa060Section() {
                         defaultColDef={{
                           sortable: true,
                           resizable: true,
+                          cellClass: 'text-center',
                         }}
                         rowSelection={{
                           mode: 'multiRow',
                           isRowSelectable: (node) => node.data?.field8 !== '고지',
                           checkboxes: true,
-                          hideDisabledCheckboxes: false,
                           enableClickSelection: false,
                         }}
                         onGridReady={(params) => {
@@ -524,7 +526,7 @@ export default function Ltpa060Section() {
                 <TableFold>
                   <TableFoldHead title="고지확인대상" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[18.5rem]">
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData2}
@@ -537,12 +539,12 @@ export default function Ltpa060Section() {
                         defaultColDef={{
                           sortable: true,
                           resizable: true,
+                          cellClass: 'text-center',
                         }}
                         rowSelection={{
                           mode: 'multiRow',
                           isRowSelectable: (node) => node.data?.field8 !== '고지',
                           checkboxes: true,
-                          hideDisabledCheckboxes: false,
                           enableClickSelection: false,
                         }}
                         onGridReady={(params) => {

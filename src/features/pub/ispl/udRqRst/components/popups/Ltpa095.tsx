@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Gcol, Grid } from '@atoms';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
@@ -19,7 +19,6 @@ import {
 } from '@uiux/Dialog';
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
@@ -43,65 +42,68 @@ type DummyDataType2 = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '',
-    field02: '',
-    field03: '',
-    field04: '',
+    field01: '040',
+    field02: '위, 십이지장',
+    field03: '0년 0개월',
+    field04: '사유 텍스트 노출',
     field05: '',
   },
   {
     id: 2,
-    field01: '',
-    field02: '',
-    field03: '',
-    field04: '',
+    field01: '040',
+    field02: '위, 십이지장',
+    field03: '0년 0개월',
+    field04: '사유 텍스트 노출',
     field05: '',
   },
 ];
 const DummyData2: DummyDataType2[] = [
   {
     id: 1,
-    field01: '',
-    field02: '',
-    field03: '',
-    field04: '',
-    field05: '',
+    field01: '상해후유장해(3-100%)(갱신형)',
+    field02: '2020-01-01~2050-01-01',
+    field03: '10,000',
+    field04: '10,000,000',
+    field05: '10,000',
   },
   {
     id: 2,
-    field01: '',
-    field02: '',
-    field03: '',
-    field04: '',
-    field05: '',
+    field01: '상해후유장해(3-100%)(갱신형)',
+    field02: '2020-01-01~2050-01-01',
+    field03: '10,000',
+    field04: '10,000,000',
+    field05: '10,000',
   },
 ];
 const Ltpa095 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '분류',
       field: 'field01',
-      width: 100,
-      cellClass: 'text-center',
+      width: attributeColumnWidth(70),
     },
     {
       headerName: '대상이되는 부위 또는 질병',
       field: 'field02',
-      width: 180,
+      flex: 2,
+      minWidth: attributeColumnWidth(160),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '부담보기간',
       field: 'field03',
-      width: 120,
-      cellClass: 'text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
     },
     {
       headerName: '사유내용',
       field: 'field04',
       flex: 1,
+      minWidth: attributeColumnWidth(180),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
@@ -109,7 +111,7 @@ const Ltpa095 = () => {
       headerName: '사유코드',
       field: 'field05',
       flex: 1,
-      cellClass: 'text-center',
+      minWidth: attributeColumnWidth(70),
     },
   ];
 
@@ -117,26 +119,28 @@ const Ltpa095 = () => {
     {
       headerName: '할증담보',
       field: 'field01',
-      width: 120,
-      cellClass: 'text-center',
+      flex: 10,
+      minWidth: attributeColumnWidth(150),
     },
     {
       headerName: '보험기간',
       field: 'field02',
-      flex: 2,
-      cellClass: 'text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(145),
     },
     {
       headerName: '표준체보험료(원)',
       field: 'field03',
-      width: 120,
+      flex: 1,
+      minWidth: attributeColumnWidth(95),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '할증보험료(원)',
       field: 'field04',
-      width: 120,
+      flex: 1,
+      minWidth: attributeColumnWidth(95),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -144,6 +148,7 @@ const Ltpa095 = () => {
       headerName: '적용보험료(원)',
       field: 'field05',
       flex: 1,
+      minWidth: attributeColumnWidth(95),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -174,6 +179,7 @@ const Ltpa095 = () => {
                       defaultColDef={{
                         sortable: true,
                         resizable: true,
+                        cellClass: 'text-center',
                       }}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
@@ -196,6 +202,7 @@ const Ltpa095 = () => {
                       defaultColDef={{
                         sortable: true,
                         resizable: true,
+                        cellClass: 'text-center',
                       }}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"

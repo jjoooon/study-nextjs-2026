@@ -38,10 +38,10 @@ const Ltpz037 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_auto_1fr]">
           <Typo variant="body-lg">정확한 알릴사항 자동고지를 위해 동의 문자동의(LMS)로 발송합니다.</Typo>
 
-          <Gcol placement={'ss'} className="w-full" gap={2}>
+          <Gcol placement={'ss'} gap={2}>
             <Typo variant="body-lg" weight={'bold'}>
               취급자 정보
             </Typo>
@@ -64,7 +64,7 @@ const Ltpz037 = () => {
             </Gcol>
           </Gcol>
 
-          <Gcol placement={'ss'} className="w-full">
+          <Gcol placement={'ss'} gap={2}>
             <Typo variant="body-lg" weight={'bold'}>
               고객정보
             </Typo>
@@ -124,7 +124,7 @@ const Ltpz037 = () => {
                 </TableRow>
               </TableBody>
             </Table>
-            <Grow className="w-full items-start mt-1" placement="bwc" variant="box-info">
+            <Grow placement="bwc" variant="box-info">
               <BulletItem className="w-full" type="dotBig">
                 최근 동의이력
               </BulletItem>
