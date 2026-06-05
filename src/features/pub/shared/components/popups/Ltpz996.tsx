@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Typo } from '@atoms';
 import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
@@ -41,6 +41,7 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz996 = () => {
   const rowData = DummyData;
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   // 2026-05-28 cellClass 수정
   // 2026-05-29 width 수정
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
@@ -48,25 +49,25 @@ const Ltpz996 = () => {
       {
         headerName: '통신레코드',
         field: 'field1',
-        width: 100,
+        width: attributeColumnWidth(100),
         cellClass: 'text-center',
       },
       {
         headerName: '서비스코드',
         field: 'field2',
-        width: 90,
+        width: attributeColumnWidth(110),
         cellClass: 'text-center',
       },
       {
         headerName: '거래코드',
         field: 'field3',
-        width: 60,
+        width: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '메세지코드',
         field: 'field4',
-        width: 80,
+        width: attributeColumnWidth(90),
         cellClass: 'text-center',
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
           if (!params.value) return null;
@@ -85,7 +86,7 @@ const Ltpz996 = () => {
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field5' }),
       },
     ],
-    []
+    [attributeColumnWidth]
   );
 
   return (
@@ -102,8 +103,8 @@ const Ltpz996 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
-          <div className="ag-theme-alpine min-h-[18.4rem]">
+        <DialogSection>
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               noRowsOverlayComponent={AgGridEmptyComponent}
               getRowId={(params) => String(params.data.id)}

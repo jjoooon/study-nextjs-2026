@@ -1699,94 +1699,76 @@ export function renderTbodyTh(children: React.ReactNode) {
 }
 
 export function useDynamicColumnWidths() {
-  const colWidth0 = useDynamicPx(0);
-  const colWidth10 = useDynamicPx(10);
-  const colWidth20 = useDynamicPx(20);
-  const colWidth30 = useDynamicPx(30);
-  const colWidth40 = useDynamicPx(40);
-  const colWidth50 = useDynamicPx(50);
-  const colWidth60 = useDynamicPx(60);
-  const colWidth70 = useDynamicPx(70);
-  const colWidth80 = useDynamicPx(80);
-  const colWidth90 = useDynamicPx(90);
-  const colWidth100 = useDynamicPx(100);
-  const colWidth110 = useDynamicPx(110);
-  const colWidth120 = useDynamicPx(120);
-  const colWidth130 = useDynamicPx(130);
-  const colWidth140 = useDynamicPx(140);
-  const colWidth150 = useDynamicPx(150);
-  const colWidth160 = useDynamicPx(160);
-  const colWidth170 = useDynamicPx(170);
-  const colWidth180 = useDynamicPx(180);
-  const colWidth190 = useDynamicPx(190);
-  const colWidth200 = useDynamicPx(200);
-  const colWidth210 = useDynamicPx(210);
-  const colWidth220 = useDynamicPx(220);
-  const colWidth230 = useDynamicPx(230);
-  const colWidth240 = useDynamicPx(240);
-  const colWidth250 = useDynamicPx(250);
-  const colWidth260 = useDynamicPx(260);
-
-  const attributeColumnWidth = useMemo(
-    () => [
-      colWidth0,
-      colWidth10,
-      colWidth20,
-      colWidth30,
-      colWidth40,
-      colWidth50,
-      colWidth60,
-      colWidth70,
-      colWidth80,
-      colWidth90,
-      colWidth100,
-      colWidth110,
-      colWidth120,
-      colWidth130,
-      colWidth140,
-      colWidth150,
-      colWidth160,
-      colWidth170,
-      colWidth180,
-      colWidth190,
-      colWidth200,
-      colWidth210,
-      colWidth220,
-      colWidth230,
-      colWidth240,
-      colWidth250,
-      colWidth260,
-    ],
-    [
-      colWidth0,
-      colWidth10,
-      colWidth20,
-      colWidth30,
-      colWidth40,
-      colWidth50,
-      colWidth60,
-      colWidth70,
-      colWidth80,
-      colWidth90,
-      colWidth100,
-      colWidth110,
-      colWidth120,
-      colWidth130,
-      colWidth140,
-      colWidth150,
-      colWidth160,
-      colWidth170,
-      colWidth180,
-      colWidth190,
-      colWidth200,
-      colWidth210,
-      colWidth220,
-      colWidth230,
-      colWidth240,
-      colWidth250,
-      colWidth260,
-    ]
+  const standardFontSize = 10;
+  const [scaleRatio, setScaleRatio] = useState<number>(
+    () => getCurrentRootFontSize(standardFontSize) / standardFontSize
   );
+
+  useEffect(() => {
+    const updateScaleRatio = () => {
+      setScaleRatio(getCurrentRootFontSize(standardFontSize) / standardFontSize);
+    };
+
+    updateScaleRatio();
+
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.addEventListener(SCALE_CHANGE_EVENT, updateScaleRatio);
+
+    return () => {
+      window.removeEventListener(SCALE_CHANGE_EVENT, updateScaleRatio);
+    };
+  }, [standardFontSize]);
+
+  const attributeColumnWidthPx = useMemo<number[]>(() => {
+    const maxWidth = 260;
+    return Array.from({ length: maxWidth + 1 }, (_, px) => px * scaleRatio);
+  }, [scaleRatio]);
+
+  const colWidth0 = attributeColumnWidthPx[0] ?? 0;
+  const colWidth10 = attributeColumnWidthPx[10] ?? 0;
+  const colWidth20 = attributeColumnWidthPx[20] ?? 0;
+  const colWidth30 = attributeColumnWidthPx[30] ?? 0;
+  const colWidth40 = attributeColumnWidthPx[40] ?? 0;
+  const colWidth50 = attributeColumnWidthPx[50] ?? 0;
+  const colWidth60 = attributeColumnWidthPx[60] ?? 0;
+  const colWidth70 = attributeColumnWidthPx[70] ?? 0;
+  const colWidth80 = attributeColumnWidthPx[80] ?? 0;
+  const colWidth90 = attributeColumnWidthPx[90] ?? 0;
+  const colWidth100 = attributeColumnWidthPx[100] ?? 0;
+  const colWidth110 = attributeColumnWidthPx[110] ?? 0;
+  const colWidth120 = attributeColumnWidthPx[120] ?? 0;
+  const colWidth130 = attributeColumnWidthPx[130] ?? 0;
+  const colWidth140 = attributeColumnWidthPx[140] ?? 0;
+  const colWidth150 = attributeColumnWidthPx[150] ?? 0;
+  const colWidth160 = attributeColumnWidthPx[160] ?? 0;
+  const colWidth170 = attributeColumnWidthPx[170] ?? 0;
+  const colWidth180 = attributeColumnWidthPx[180] ?? 0;
+  const colWidth190 = attributeColumnWidthPx[190] ?? 0;
+  const colWidth200 = attributeColumnWidthPx[200] ?? 0;
+  const colWidth210 = attributeColumnWidthPx[210] ?? 0;
+  const colWidth220 = attributeColumnWidthPx[220] ?? 0;
+  const colWidth230 = attributeColumnWidthPx[230] ?? 0;
+  const colWidth240 = attributeColumnWidthPx[240] ?? 0;
+  const colWidth250 = attributeColumnWidthPx[250] ?? 0;
+  const colWidth260 = attributeColumnWidthPx[260] ?? 0;
+
+  const attributeColumnWidth = useMemo<((px: number) => number) & { [index: number]: number }>(() => {
+    const resolveWidth = ((px: number) => {
+      const safePx = Math.max(0, Math.min(260, Math.trunc(px)));
+      return attributeColumnWidthPx[safePx] ?? 0;
+    }) as ((px: number) => number) & { [index: number]: number };
+
+    for (let index = 0; index <= 26; index += 1) {
+      resolveWidth[index] = attributeColumnWidthPx[index * 10] ?? 0;
+    }
+
+    return resolveWidth;
+  }, [attributeColumnWidthPx]);
+
+  const getAttributeColumnWidth = attributeColumnWidth;
 
   return {
     colWidth0,
@@ -1816,7 +1798,9 @@ export function useDynamicColumnWidths() {
     colWidth240,
     colWidth250,
     colWidth260,
+    attributeColumnWidthPx,
     attributeColumnWidth,
+    getAttributeColumnWidth,
   };
 }
 
