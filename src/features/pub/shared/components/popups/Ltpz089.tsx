@@ -156,7 +156,7 @@ const Ltpz089 = () => {
                     </NativeSelect>
                   </FormCell>
                   <FormCell className="" title={'야적물건구분'} variant="default">
-                    <NativeSelect aria-label="야적물건구분 선택" width={'full'} required value={''} onChange={() => {}}>
+                    <NativeSelect aria-label="야적물건구분 선택" width={'full'} value={''} onChange={() => {}}>
                       {[
                         { value: 'selection', label: '선택' },
                         { value: 'selection2', label: '선택2' },

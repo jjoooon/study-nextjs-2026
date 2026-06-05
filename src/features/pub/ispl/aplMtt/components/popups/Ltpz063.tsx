@@ -62,6 +62,12 @@ type CheckboxRendererParams<TData> = {
   colDef: ColDef<TData>;
 };
 
+type WonUnitCellEditorProps = {
+  value: GridCellValue;
+  onValueChange: (value: string) => void;
+  stopEditing: () => void;
+};
+
 const TYPE3_NUMBER_FORMAT_TYPES = new Set(['보험료', '보험가입금액', '해약환급금']);
 const TYPE3_EDITABLE_TEXT_TYPES = new Set([
   '상품명',
@@ -152,8 +158,8 @@ const DummyData: DummyDataType[] = [
   {
     id: 10,
     type: '해약환급금',
-    ourInsurance1: '30,000,000원',
-    ourInsurance2: '30,000,000원',
+    ourInsurance1: '3,000만원',
+    ourInsurance2: '3,000만원',
     externalInsurance1: '',
     externalInsurance2: '',
   },
@@ -269,8 +275,8 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 10,
     type: '해약환급금',
-    ourInsurance1: '30,000,000원',
-    ourInsurance2: '30,000,000원',
+    ourInsurance1: '3,000만원',
+    ourInsurance2: '3,000만원',
     externalInsurance1: '',
     externalInsurance2: '',
   },
@@ -387,17 +393,17 @@ const DummyData3: DummyDataType3[] = [
     id: 9,
     type: '보험가입금액',
     ourInsurance1: '3,000만원 등',
-    externalInsurance1: '3,000만원 등',
-    externalInsurance2: '3,000만원 등',
-    externalInsurance3: '3,000만원 등',
+    externalInsurance1: '3,000만원',
+    externalInsurance2: '3,000만원',
+    externalInsurance3: '3,000만원',
   },
   {
     id: 10,
     type: '해약환급금',
     ourInsurance1: '30,000,000원',
-    externalInsurance1: '30,000,000원',
-    externalInsurance2: '30,000,000원',
-    externalInsurance3: '30,000,000원',
+    externalInsurance1: '3,000만원',
+    externalInsurance2: '3,000만원',
+    externalInsurance3: '3,000만원',
   },
   {
     id: 11,
@@ -457,9 +463,85 @@ export const Ltpz063 = () => {
   const isType3DateRow = (row: DummyDataType3 | undefined) => row?.type === '보험기간';
   const isType3NumberFormatRow = (row: DummyDataType3 | undefined) => TYPE3_NUMBER_FORMAT_TYPES.has(getTypeLabel(row));
   const isType3EditableTextRow = (row: DummyDataType3 | undefined) => TYPE3_EDITABLE_TEXT_TYPES.has(getTypeLabel(row));
+  const isMainRefundRow = (row: { type: string | number } | undefined) => getTypeLabel(row) === '해약환급금';
+  const isMainInterestRateRow = (row: { type: string | number } | undefined) => getTypeLabel(row) === '예정이율';
   const isType3EditableRow = (row: DummyDataType3 | undefined) =>
     !!row &&
     (isType3CompanyRow(row) || isType3DateRow(row) || isType3NumberFormatRow(row) || isType3EditableTextRow(row));
+
+  const WonUnitCellEditor = (props: WonUnitCellEditorProps) => {
+    const editorValue = props.value == null ? '' : String(props.value).replace(/원/g, '').trim();
+
+    return (
+      <div className="flex h-full w-full items-center gap-1 px-1">
+        <input
+          className="ag-input-field-input ag-text-field-input w-full text-right"
+          value={editorValue}
+          onChange={(event) => props.onValueChange(event.target.value.replace(/원/g, '').trim())}
+          onBlur={props.stopEditing}
+          autoFocus
+        />
+        <span className="shrink-0">원</span>
+      </div>
+    );
+  };
+
+  const PercentUnitCellEditor = (props: WonUnitCellEditorProps) => {
+    const editorValue = props.value == null ? '' : String(props.value).replace(/%/g, '').trim();
+
+    return (
+      <div className="flex h-full w-full items-center gap-1 px-1">
+        <input
+          className="ag-input-field-input ag-text-field-input w-full text-right"
+          value={editorValue}
+          onChange={(event) => props.onValueChange(event.target.value.replace(/%/g, '').trim())}
+          onBlur={props.stopEditing}
+          autoFocus
+        />
+        <span className="shrink-0">%</span>
+      </div>
+    );
+  };
+
+  const getMainCellEditorSelector = <TData extends { type: string | number }>(
+    params: EditableCallbackParams<TData>
+  ): CellEditorSelectorResult | undefined => {
+    if (isMainRefundRow(params.data)) {
+      return {
+        component: WonUnitCellEditor,
+      };
+    }
+
+    if (isMainInterestRateRow(params.data)) {
+      return {
+        component: PercentUnitCellEditor,
+      };
+    }
+
+    return undefined;
+  };
+
+  const getValueWithUnit = (row: { type: string | number } | undefined, value: GridCellValue): GridCellValue => {
+    if (typeof value !== 'string') {
+      return value;
+    }
+
+    const trimmed = value.trim();
+
+    if (trimmed.length === 0) {
+      return value;
+    }
+
+    if (getTypeLabel(row) === '해약환급금') {
+      return trimmed.endsWith('원') ? trimmed : `${trimmed}원`;
+    }
+
+    if (getTypeLabel(row) === '예정이율') {
+      return trimmed.endsWith('%') ? trimmed : `${trimmed}%`;
+    }
+
+    return value;
+  };
 
   const getType3CellEditorSelector = (
     params: EditableCallbackParams<AgGridRow>
@@ -600,7 +682,7 @@ export const Ltpz063 = () => {
           단일
         </Checkbox>
       ) : (
-        params.value
+        getValueWithUnit(params.data, params.value)
       );
 
     CheckboxCellRenderer.displayName = 'CheckboxCellRenderer';
@@ -621,6 +703,7 @@ export const Ltpz063 = () => {
     minWidth: 200,
     field,
     editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
+    cellEditorSelector: getMainCellEditorSelector,
     cellRenderer: checkboxRenderer,
   });
 
@@ -703,6 +786,7 @@ export const Ltpz063 = () => {
       minWidth: 200,
       field: 'externalInsurance1',
       editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
+      cellEditorSelector: getMainCellEditorSelector,
       cellRenderer: checkboxRenderer2,
     },
     {
@@ -714,6 +798,7 @@ export const Ltpz063 = () => {
       minWidth: 200,
       field: 'externalInsurance2',
       editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
+      cellEditorSelector: getMainCellEditorSelector,
       cellRenderer: checkboxRenderer2,
     },
   ];

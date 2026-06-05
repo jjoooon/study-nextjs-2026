@@ -20,7 +20,7 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
@@ -194,6 +194,16 @@ export default function Ltpa500Section() {
   });
   const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
+  const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
+    const value = params.value == null ? '' : String(params.value);
+
+    return (
+      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
+        <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
+        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+      </div>
+    );
+  }, []);
   // AgGrid Column
   // 2026-05-29 수정 cellClass 수정
   // 2026-06-01 width, flex 수정 및 cellClass 수정
@@ -276,6 +286,7 @@ export default function Ltpa500Section() {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '승인', '거절'] },
+      cellRenderer: selectCellRenderer,
     },
   ];
 

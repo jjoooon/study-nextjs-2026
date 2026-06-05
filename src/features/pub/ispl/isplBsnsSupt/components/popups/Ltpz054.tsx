@@ -156,7 +156,7 @@ const Ltpz054 = () => {
                   </Button>
                 </FormCell>
                 <FormCell title={'상품명'}>
-                  <Input width={'full'} value={'무배당 1등 엄마의 똑똑한 자녀보험 1404'} readOnly />
+                  <Input width={'full'} variant={'info'} value={'무배당 1등 엄마의 똑똑한 자녀보험 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>

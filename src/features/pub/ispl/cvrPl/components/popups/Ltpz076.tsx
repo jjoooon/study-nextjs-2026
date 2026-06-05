@@ -234,7 +234,7 @@ const Ltpz076 = () => {
                       <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[1rem]', 'w-auto']}>
                         <FormRow>
                           <FormCell title={'직업구분'}>
-                            <NativeSelect aria-label="직업구분 선택" width={80} required>
+                            <NativeSelect aria-label="직업구분 선택" width={80}>
                               {[
                                 { value: 'selection', label: '설계사' },
                                 { value: 'selection2', label: '대리점' },
@@ -250,7 +250,7 @@ const Ltpz076 = () => {
                         </FormRow>
                         <FormRow>
                           <FormCell title={'조회구분'}>
-                            <NativeSelect aria-label="조회구분 선택" width={80} required>
+                            <NativeSelect aria-label="조회구분 선택" width={80}>
                               {[
                                 { value: 'selection', label: '코드' },
                                 { value: 'selection2', label: '상호명' },
@@ -260,7 +260,7 @@ const Ltpz076 = () => {
                                 </NativeSelectOption>
                               ))}
                             </NativeSelect>
-                            <Input aria-label="" width={75} value={'1234567'} required />
+                            <Input aria-label="" width={75} value={'1234567'} />
                           </FormCell>
                         </FormRow>
                       </FormTable>

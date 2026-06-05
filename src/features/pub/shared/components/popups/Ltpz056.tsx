@@ -50,7 +50,7 @@ const Ltpz056 = () => {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={'8rem'} value={''} readOnly />
+                    <Input aria-label="" width={'8rem'} value={'123123'} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
