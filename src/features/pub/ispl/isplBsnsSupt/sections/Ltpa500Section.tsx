@@ -429,7 +429,7 @@ export default function Ltpa500Section() {
                     />
                   </div>
                   <TableMore
-                    isAll={false}
+                    isAll={true}
                     loadedCount={loadedCount}
                     totalCount={totalCount}
                     pageSize={pageSize}

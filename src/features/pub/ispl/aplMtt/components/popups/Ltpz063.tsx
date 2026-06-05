@@ -150,16 +150,16 @@ const DummyData: DummyDataType[] = [
   {
     id: 9,
     type: '보험가입금액',
-    ourInsurance1: '3,000만원 등',
-    ourInsurance2: '3,000만원 등',
-    externalInsurance1: '3,000만원 등',
-    externalInsurance2: '3,000만원 등',
+    ourInsurance1: '3,000만원',
+    ourInsurance2: '3,000만원',
+    externalInsurance1: '3,000만원',
+    externalInsurance2: '3,000만원',
   },
   {
     id: 10,
     type: '해약환급금',
-    ourInsurance1: '3,000만원',
-    ourInsurance2: '3,000만원',
+    ourInsurance1: '3,000,000원',
+    ourInsurance2: '3,000,000원',
     externalInsurance1: '',
     externalInsurance2: '',
   },
@@ -267,16 +267,16 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 9,
     type: '보험가입금액',
-    ourInsurance1: '3,000만원 등',
-    ourInsurance2: '3,000만원 등',
-    externalInsurance1: '3,000만원 등',
-    externalInsurance2: '3,000만원 등',
+    ourInsurance1: '3,000만원',
+    ourInsurance2: '3,000만원',
+    externalInsurance1: '3,000만원',
+    externalInsurance2: '3,000만원',
   },
   {
     id: 10,
     type: '해약환급금',
-    ourInsurance1: '3,000만원',
-    ourInsurance2: '3,000만원',
+    ourInsurance1: '3,000,000원',
+    ourInsurance2: '3,000,000원',
     externalInsurance1: '',
     externalInsurance2: '',
   },
@@ -461,6 +461,8 @@ export const Ltpz063 = () => {
 
   const isType3CompanyRow = (row: DummyDataType3 | undefined) => row?.type === '보험회사명';
   const isType3DateRow = (row: DummyDataType3 | undefined) => row?.type === '보험기간';
+  const isType3PremiumRow = (row: DummyDataType3 | undefined) => row?.type === '보험료';
+  const isType3CoverageAmountRow = (row: DummyDataType3 | undefined) => row?.type === '보험가입금액';
   const isType3NumberFormatRow = (row: DummyDataType3 | undefined) => TYPE3_NUMBER_FORMAT_TYPES.has(getTypeLabel(row));
   const isType3EditableTextRow = (row: DummyDataType3 | undefined) => TYPE3_EDITABLE_TEXT_TYPES.has(getTypeLabel(row));
   const isMainRefundRow = (row: { type: string | number } | undefined) => getTypeLabel(row) === '해약환급금';
@@ -503,6 +505,23 @@ export const Ltpz063 = () => {
     );
   };
 
+  const ManwonUnitCellEditor = (props: WonUnitCellEditorProps) => {
+    const editorValue = props.value == null ? '' : String(props.value).replace(/만원/g, '').trim();
+
+    return (
+      <div className="flex h-full w-full items-center gap-1 px-1">
+        <input
+          className="ag-input-field-input ag-text-field-input w-full text-right"
+          value={editorValue}
+          onChange={(event) => props.onValueChange(event.target.value.replace(/만원/g, '').trim())}
+          onBlur={props.stopEditing}
+          autoFocus
+        />
+        <span className="shrink-0">만원</span>
+      </div>
+    );
+  };
+
   const getMainCellEditorSelector = <TData extends { type: string | number }>(
     params: EditableCallbackParams<TData>
   ): CellEditorSelectorResult | undefined => {
@@ -540,6 +559,14 @@ export const Ltpz063 = () => {
       return trimmed.endsWith('%') ? trimmed : `${trimmed}%`;
     }
 
+    if (row && 'externalInsurance3' in row && getTypeLabel(row) === '보험가입금액') {
+      return trimmed.endsWith('만원') ? trimmed : `${trimmed}만원`;
+    }
+
+    if (row && 'externalInsurance3' in row && getTypeLabel(row) === '보험료') {
+      return trimmed.endsWith('원') ? trimmed : `${trimmed}원`;
+    }
+
     return value;
   };
 
@@ -556,6 +583,30 @@ export const Ltpz063 = () => {
     if (isType3DateRow(params.data)) {
       return {
         component: DatePickerCellEditor,
+      };
+    }
+
+    if (isMainRefundRow(params.data)) {
+      return {
+        component: WonUnitCellEditor,
+      };
+    }
+
+    if (isMainInterestRateRow(params.data)) {
+      return {
+        component: PercentUnitCellEditor,
+      };
+    }
+
+    if (isType3CoverageAmountRow(params.data)) {
+      return {
+        component: ManwonUnitCellEditor,
+      };
+    }
+
+    if (isType3PremiumRow(params.data)) {
+      return {
+        component: WonUnitCellEditor,
       };
     }
 
