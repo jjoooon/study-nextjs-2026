@@ -268,7 +268,7 @@ const Ltpz065 = () => {
                           aria-label="주민등록번호 마스킹"
                           width={120}
                           variant="info"
-                          value={'900101-1234567'}
+                          value={'900101-1******'}
                           readOnly
                         />
                       </FormCell>

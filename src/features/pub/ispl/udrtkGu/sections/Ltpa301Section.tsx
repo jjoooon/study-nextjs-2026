@@ -299,7 +299,7 @@ export default function Ltpa301Section() {
                     <Button color="gray" variant="outlined">
                       업계한도조회
                     </Button>
-                    <Button color="primary" variant="contained">
+                    <Button color="gray" variant="outlined">
                       저장
                     </Button>
                   </Grow>

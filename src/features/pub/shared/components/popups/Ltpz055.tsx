@@ -27,7 +27,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useState } from 'react';
 
 const Ltpz055 = () => {
-  const [sendType, setSendType] = useState<string>('');
+  const [sendType, setSendType] = useState<string>('option1');
 
   return (
     <Dialog open>

@@ -95,7 +95,7 @@ const Ltpa401 = () => {
                 <FormTable caption="처리결과 등록 테이블" cols={['w-[12rem] flex-1']}>
                   <FormRow>
                     <FormCell title={'처리결과'}>
-                      <RadioGroup className="gap-3" defaultValue="option1" onValueChange={() => {}} width="full">
+                      <RadioGroup className="gap-3" defaultValue="" onValueChange={() => {}} width="full">
                         {[
                           { id: 'option1', label: '설계완료' },
                           { id: 'option2', label: '반려' },
