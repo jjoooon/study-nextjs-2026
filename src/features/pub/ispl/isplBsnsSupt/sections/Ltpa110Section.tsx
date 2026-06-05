@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -52,7 +52,7 @@ type DummyDataType2 = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    isCheck: false,
+    isCheck: true,
     field01: 'LA26020945959594',
     field02: '',
     field03: '김한화',
@@ -90,7 +90,7 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 2,
-    isCheck: false,
+    isCheck: true,
     field01: '',
     field02: '',
     field03: '',
@@ -102,97 +102,107 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 export default function Ltpa110Section() {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '설계번호',
-      field: 'field01',
-      width: 120,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '증권번호',
-      field: 'field02',
-      width: 160,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '계약자',
-      field: 'field03',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '보험시기',
-      field: 'field04',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '보험료',
-      field: 'field05',
-      width: 100,
-      cellClass: 'text-right',
-    },
-    {
-      headerName: '상품명',
-      field: 'field06',
-      flex: 1,
-      cellClass: 'text-left',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field06' }),
-    },
-    {
-      headerName: '상태',
-      field: 'field07',
-      width: 100,
-      cellClass: 'text-center',
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '설계번호',
+        field: 'field01',
+        flex: 1,
+        minwidth: attributeColumnWidth(120),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '증권번호',
+        field: 'field02',
+        width: attributeColumnWidth(160),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '계약자',
+        field: 'field03',
+        width: attributeColumnWidth(70),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '보험시기',
+        field: 'field04',
+        width: attributeColumnWidth(100),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '보험료',
+        field: 'field05',
+        width: attributeColumnWidth(100),
+        cellClass: 'text-right',
+      },
+      {
+        headerName: '상품명',
+        field: 'field06',
+        flex: 10,
+        cellClass: 'text-left',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field06' }),
+      },
+      {
+        headerName: '상태',
+        field: 'field07',
+        flex: 1,
+        minWidth: 100,
+        cellClass: 'text-center',
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '설계번호',
-      field: 'field01',
-      width: 120,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '증권번호',
-      field: 'field02',
-      width: 160,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '계약자',
-      field: 'field03',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '보험시기',
-      field: 'field04',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '보험료',
-      field: 'field05',
-      width: 100,
-      cellClass: 'text-right',
-    },
-    {
-      headerName: '상품명',
-      field: 'field06',
-      flex: 1,
-      cellClass: 'text-left',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field06' }),
-    },
-    {
-      headerName: '상태',
-      field: 'field07',
-      width: 100,
-      cellClass: 'text-center',
-    },
-  ];
+  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
+    () => [
+      {
+        headerName: '설계번호',
+        field: 'field01',
+        width: attributeColumnWidth(120),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '증권번호',
+        field: 'field02',
+        width: attributeColumnWidth(160),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '계약자',
+        field: 'field03',
+        width: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '보험시기',
+        field: 'field04',
+        width: attributeColumnWidth(100),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '보험료',
+        field: 'field05',
+        width: attributeColumnWidth(100),
+        cellClass: 'text-right',
+      },
+      {
+        headerName: '상품명',
+        field: 'field06',
+        flex: 10,
+        cellClass: 'text-left',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field06' }),
+      },
+      {
+        headerName: '상태',
+        field: 'field07',
+        flex: 1,
+        minWidth: 100,
+        cellClass: 'text-center',
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
@@ -290,8 +300,7 @@ export default function Ltpa110Section() {
               <TableFold>
                 <TableFoldHead title="기본사항" />
                 <TableFoldBody className="gap-2">
-                  <div className="ag-theme-alpine">
-                    {/* 2026-05-29 onGridReady 삭제 */}
+                  <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
@@ -311,7 +320,14 @@ export default function Ltpa110Section() {
                       }}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
-                      domLayout="autoHeight"
+                      domLayout="normal"
+                      onGridReady={(params) => {
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isCheck) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
                     />
                   </div>
                   <Gcol variant={'box-info'} placement={'ss'} className="w-full">
@@ -343,7 +359,7 @@ export default function Ltpa110Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody>
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData2}
@@ -367,6 +383,11 @@ export default function Ltpa110Section() {
                       //2026-05-29 코드 추가
                       onGridReady={(params) => {
                         gridApiRef.current = params.api;
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isCheck) {
+                            node.setSelected(true);
+                          }
+                        });
                       }}
                     />
                   </div>

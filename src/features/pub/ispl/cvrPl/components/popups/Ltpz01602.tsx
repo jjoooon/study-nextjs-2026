@@ -355,6 +355,7 @@ const Ltpz01602 = () => {
                       commaAmount
                       required
                     />
+                    만원
                   </FormCell>
                 </FormRow>
               </FormTable>

@@ -143,6 +143,7 @@ const QuestionDataList: Array<'Y' | 'N' | ''> = [
   'N',
   'Y',
   'N',
+  '',
   'Y',
   'Y',
   'Y',
@@ -151,6 +152,7 @@ const QuestionDataList: Array<'Y' | 'N' | ''> = [
   'Y',
   'Y',
   'Y',
+  'N',
   'N',
 ];
 
@@ -169,12 +171,14 @@ export const Ltpa3500301 = ({
   warningMessage = '[홍길순 Self고지중] Self고지 완료(또는 취소)처리시 알릴사항 입력 가능',
   allNoDisabled = false,
 }: Ltpa3500301Props) => {
+  type BadgeId = number | '6-1';
+
   const [periodType, setPeriodType] = useState<string>('');
-  const [highlightBadgeNum, setHighlightBadgeNum] = useState<number | null>(null);
+  const [highlightBadgeNum, setHighlightBadgeNum] = useState<BadgeId | null>(null);
   const [qAnswerList, setQAnswerList] = React.useState<Array<'Y' | 'N' | ''>>(QuestionDataList);
   const [isCollapsed, setIsCollapsed] = React.useState(false);
 
-  const badgeLabelNumbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+  const badgeLabelIds: BadgeId[] = [1, 2, 3, 4, 5, 6, '6-1', 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
   // sampleMode가 true로 변경될 때 한 번만 모든 답변을 빈값으로 초기화
   React.useEffect(() => {
@@ -202,9 +206,10 @@ export const Ltpa3500301 = ({
     type13: '',
     type14: '',
     type15: '',
+    type16: '',
   });
 
-  const scrollToCard = (badgeNum: number) => {
+  const scrollToCard = (badgeNum: BadgeId) => {
     const anchor = document.getElementById(`question-card-${badgeNum}`);
     if (!anchor) return;
 
@@ -220,6 +225,16 @@ export const Ltpa3500301 = ({
       anchor.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - stickyHeight;
 
     container.scrollTo({ top: targetTop - 3, behavior: 'smooth' });
+  };
+
+  const getAnswerByBadgeId = (badgeId: BadgeId): 'Y' | 'N' | '' => {
+    if (badgeId === '6-1') {
+      return qAnswerList[6] ?? '';
+    }
+
+    const index = badgeId >= 7 ? badgeId : badgeId - 1;
+
+    return qAnswerList[index] ?? '';
   };
 
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -731,10 +746,125 @@ export const Ltpa3500301 = ({
               </Gcol>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
+          <QuestionRadioCard
+            id="question-card-6"
+            className={highlightBadgeNum === 6 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
+            <QuestionRadioCardHeader>
+              <QuestionRadioCardHeaderTitle badgeLabel="6">
+                <Grid className="gap-0.5 grid-flow-col items-baseline gap-0.5">
+                  (여성의 경우) 현재 임신중입니까?(임신
+                  <Input
+                    size="xl"
+                    variant="default"
+                    className="w-[3.3rem]  [&>input]:!w-[3.3rem]"
+                    readOnly={simpleMode}
+                  />{' '}
+                  주)
+                </Grid>
+              </QuestionRadioCardHeaderTitle>
+              <RadioGroup
+                className={'gap-[1.2rem] w-[11rem]'}
+                width="auto"
+                value={qAnswerList[5] === 'Y' ? '예' : qAnswerList[5] === 'N' ? '아니오' : undefined}
+                onValueChange={(val) => {
+                  setQAnswerList((prev) => {
+                    const next = [...prev];
+                    next[5] = val === '예' ? 'Y' : 'N';
+                    return next;
+                  });
+                }}
+                disabled={simpleMode}
+              >
+                {[
+                  { value: '예', label: '예' },
+                  { value: '아니오', label: '아니오' },
+                ].map((option) => (
+                  <RadioGroupItem key={option.value} value={option.value}>
+                    {option.label}
+                  </RadioGroupItem>
+                ))}
+              </RadioGroup>
+            </QuestionRadioCardHeader>
+          </QuestionRadioCard>
+          <QuestionRadioCard
+            id="question-card-6-1"
+            className={highlightBadgeNum === '6-1' ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+          >
+            <QuestionRadioCardHeader>
+              <QuestionRadioCardHeaderTitle badgeLabel="6-1">
+                <Grid className="gap-0.5 grid-flow-col items-baseline gap-0.5">
+                  (태아의 경우) 임신과정 또는 산전검사에서 아래와 같은 태아 이상 가능성이 발견되었거나 진단을 받은 적이
+                  있습니까?
+                </Grid>
+              </QuestionRadioCardHeaderTitle>
+              <RadioGroup
+                className={'gap-[1.2rem] w-[11rem]'}
+                width="auto"
+                value={qAnswerList[6] === 'Y' ? '예' : qAnswerList[6] === 'N' ? '아니오' : undefined}
+                onValueChange={(val) => {
+                  setQAnswerList((prev) => {
+                    const next = [...prev];
+                    next[6] = val === '예' ? 'Y' : 'N';
+                    return next;
+                  });
+                }}
+                disabled={simpleMode}
+              >
+                {[
+                  { value: '예', label: '예' },
+                  { value: '아니오', label: '아니오' },
+                ].map((option) => (
+                  <RadioGroupItem key={option.value} value={option.value}>
+                    {option.label}
+                  </RadioGroupItem>
+                ))}
+              </RadioGroup>
+            </QuestionRadioCardHeader>
+            <QuestionRadioCardContents>
+              <Grid className="w-full grid-cols-5 gap-[0.8rem] px-[1rem]">
+                {[
+                  '선천성기형,장애',
+                  '신경학적결손',
+                  '염색체이상',
+                  '태아감염',
+                  '자궁경관무력',
+                  '자궁내발육부전',
+                  '양수과다(소)증',
+                  '태아수종',
+                  '용혈성진환',
+                  '전치태반',
+                  '태반조기박리',
+                  '기타',
+                ].map((label) => (
+                  <React.Fragment key={label}>
+                    <Checkbox
+                      color="primary"
+                      onCheckedChange={() => {}}
+                      size="lg"
+                      variant="default"
+                      disabled={simpleMode}
+                    >
+                      {label}
+                      {label === '기타' ? (
+                        <Input
+                          size="xl"
+                          variant="default"
+                          className="absolute left-[6rem] top-[-0.2rem]"
+                          width={120}
+                          readOnly={simpleMode}
+                        />
+                      ) : null}
+                    </Checkbox>
+                  </React.Fragment>
+                ))}
+              </Grid>
+            </QuestionRadioCardContents>
+          </QuestionRadioCard>
           <QuestionRadioCard>
             <QuestionRadioCardHeader bg={'#EFF8FF'}>
               <QuestionRadioCardHeaderTitle icon={<InfoBoxInfoIcon />} className={'items-center'}>
-                상기 1~5번 질문에 대한 상세내용 기재해주세요.
+                상기 1~6번 질문에 대한 상세내용 기재해주세요.
               </QuestionRadioCardHeaderTitle>
               <Grow gap={2.5}>
                 <Typo variant={'body-sm'} color="information" weight={'bold'}>
@@ -754,6 +884,7 @@ export const Ltpa3500301 = ({
                     }}
                     size="lg"
                     variant="outlined"
+                    disabled={simpleMode}
                   >
                     {isAllLoaded ? '접기' : '전체조회'}
                   </Button>
@@ -787,6 +918,7 @@ export const Ltpa3500301 = ({
                     className="text-center"
                     domLayout="autoHeight"
                     rowData={DummyData.slice(0, loadedCount)}
+                    animateRows={false}
                   />
                 </div>
                 <TableMore
@@ -804,21 +936,21 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
-            id="question-card-6"
-            className={highlightBadgeNum === 6 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+            id="question-card-7"
+            className={highlightBadgeNum === 7 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
-              <QuestionRadioCardHeaderTitle badgeLabel="6">
+              <QuestionRadioCardHeaderTitle badgeLabel="7">
                 청약서 상의 피보험자 직업을 확인했는지 여부
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
                 width="auto"
-                value={qAnswerList[5] === 'Y' ? '예' : qAnswerList[5] === 'N' ? '아니오' : undefined}
+                value={qAnswerList[7] === 'Y' ? '예' : qAnswerList[7] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
                   setQAnswerList((prev) => {
                     const next = [...prev];
-                    next[5] = val === '예' ? 'Y' : 'N';
+                    next[7] = val === '예' ? 'Y' : 'N';
                     return next;
                   });
                 }}
@@ -871,22 +1003,22 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
-            id="question-card-7"
-            className={highlightBadgeNum === 7 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+            id="question-card-8"
+            className={highlightBadgeNum === 8 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
-              <QuestionRadioCardHeaderTitle className="items-center" badgeLabel="7">
+              <QuestionRadioCardHeaderTitle className="items-center" badgeLabel="8">
                 현재 운전을 하고 있습니까? 운전하고 계신다면 다음 중 어느 것입니까? (해당하는 것에{' '}
                 <CheckIcon color="#FF5C2E" />표 하세요.)
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
                 width="auto"
-                value={qAnswerList[6] === 'Y' ? '예' : qAnswerList[6] === 'N' ? '아니오' : undefined}
+                value={qAnswerList[8] === 'Y' ? '예' : qAnswerList[8] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
                   setQAnswerList((prev) => {
                     const next = [...prev];
-                    next[6] = val === '예' ? 'Y' : 'N';
+                    next[8] = val === '예' ? 'Y' : 'N';
                     return next;
                   });
                 }}
@@ -972,22 +1104,22 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
-            id="question-card-8"
-            className={highlightBadgeNum === 8 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+            id="question-card-9"
+            className={highlightBadgeNum === 9 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
-              <QuestionRadioCardHeaderTitle badgeLabel="8">
+              <QuestionRadioCardHeaderTitle badgeLabel="9">
                 원동기장치 자전거(전동킥보드, 전동이륜평행차, 전동기의 동력만으로 움직일 수 있는 자전거 등 개인형
                 이동장치를 포함)를 사용하십니까? (다만, 전동휠체어, 의료용 스쿠터 등 보행보조용 의자차는 제외합니다.)
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
                 width="auto"
-                value={qAnswerList[7] === 'Y' ? '예' : qAnswerList[7] === 'N' ? '아니오' : undefined}
+                value={qAnswerList[9] === 'Y' ? '예' : qAnswerList[9] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
                   setQAnswerList((prev) => {
                     const next = [...prev];
-                    next[7] = val === '예' ? 'Y' : 'N';
+                    next[9] = val === '예' ? 'Y' : 'N';
                     return next;
                   });
                 }}
@@ -1019,22 +1151,22 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
-            id="question-card-9"
-            className={highlightBadgeNum === 9 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+            id="question-card-10"
+            className={highlightBadgeNum === 10 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
-              <QuestionRadioCardHeaderTitle badgeLabel="9">
+              <QuestionRadioCardHeaderTitle badgeLabel="10">
                 최근 1년 이내에 다음과 같은 취미를 자주 반복적으로 하고 있거나 관련 자격증을 가지고 있습니까? (해당하는
                 것에 <CheckIcon color="#FF5C2E" />표 하세요.)
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
                 width="auto"
-                value={qAnswerList[8] === 'Y' ? '예' : qAnswerList[8] === 'N' ? '아니오' : undefined}
+                value={qAnswerList[10] === 'Y' ? '예' : qAnswerList[10] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
                   setQAnswerList((prev) => {
                     const next = [...prev];
-                    next[8] = val === '예' ? 'Y' : 'N';
+                    next[10] = val === '예' ? 'Y' : 'N';
                     return next;
                   });
                 }}
@@ -1127,21 +1259,21 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
-            id="question-card-10"
-            className={highlightBadgeNum === 10 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+            id="question-card-11"
+            className={highlightBadgeNum === 11 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
-              <QuestionRadioCardHeaderTitle badgeLabel="10">
+              <QuestionRadioCardHeaderTitle badgeLabel="11">
                 부업 또는 겸업, 계절적으로 종사하는 업무가 있습니까? (“예”인 경우 업무명을 작성하세요.)
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
                 width="auto"
-                value={qAnswerList[9] === 'Y' ? '예' : qAnswerList[9] === 'N' ? '아니오' : undefined}
+                value={qAnswerList[11] === 'Y' ? '예' : qAnswerList[11] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
                   setQAnswerList((prev) => {
                     const next = [...prev];
-                    next[9] = val === '예' ? 'Y' : 'N';
+                    next[11] = val === '예' ? 'Y' : 'N';
                     return next;
                   });
                 }}
@@ -1167,22 +1299,22 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
-            id="question-card-11"
-            className={highlightBadgeNum === 11 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+            id="question-card-12"
+            className={highlightBadgeNum === 12 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
-              <QuestionRadioCardHeaderTitle badgeLabel="11">
+              <QuestionRadioCardHeaderTitle badgeLabel="12">
                 향후 3개월 이내에 다음과 같은 해외위험지역으로 출국할 예정이 있습니까? [전쟁지역, 미개척지(열대, 한대),
                 등반산악지대]
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
                 width="auto"
-                value={qAnswerList[10] === 'Y' ? '예' : qAnswerList[10] === 'N' ? '아니오' : undefined}
+                value={qAnswerList[12] === 'Y' ? '예' : qAnswerList[12] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
                   setQAnswerList((prev) => {
                     const next = [...prev];
-                    next[10] = val === '예' ? 'Y' : 'N';
+                    next[12] = val === '예' ? 'Y' : 'N';
                     return next;
                   });
                 }}
@@ -1245,19 +1377,19 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
-            id="question-card-12"
-            className={highlightBadgeNum === 12 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+            id="question-card-13"
+            className={highlightBadgeNum === 13 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
-              <QuestionRadioCardHeaderTitle badgeLabel="12">음주여부</QuestionRadioCardHeaderTitle>
+              <QuestionRadioCardHeaderTitle badgeLabel="13">음주여부</QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
                 width="auto"
-                value={qAnswerList[11] === 'Y' ? '예' : qAnswerList[11] === 'N' ? '아니오' : undefined}
+                value={qAnswerList[13] === 'Y' ? '예' : qAnswerList[13] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
                   setQAnswerList((prev) => {
                     const next = [...prev];
-                    next[11] = val === '예' ? 'Y' : 'N';
+                    next[13] = val === '예' ? 'Y' : 'N';
                     return next;
                   });
                 }}
@@ -1313,21 +1445,21 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
-            id="question-card-13"
-            className={highlightBadgeNum === 13 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+            id="question-card-14"
+            className={highlightBadgeNum === 14 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
-              <QuestionRadioCardHeaderTitle badgeLabel="13">
+              <QuestionRadioCardHeaderTitle badgeLabel="14">
                 흡연여부, 1일 흡연량과 흡연기간은?
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
                 width="auto"
-                value={qAnswerList[12] === 'Y' ? '예' : qAnswerList[12] === 'N' ? '아니오' : undefined}
+                value={qAnswerList[14] === 'Y' ? '예' : qAnswerList[14] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
                   setQAnswerList((prev) => {
                     const next = [...prev];
-                    next[12] = val === '예' ? 'Y' : 'N';
+                    next[14] = val === '예' ? 'Y' : 'N';
                     return next;
                   });
                 }}
@@ -1382,22 +1514,22 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
-            id="question-card-14"
-            className={highlightBadgeNum === 14 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
+            id="question-card-15"
+            className={highlightBadgeNum === 15 ? 'border-[0.2rem] border-[#FF5C2E] blink-border' : ''}
           >
             <QuestionRadioCardHeader>
-              <QuestionRadioCardHeaderTitle badgeLabel="14">
+              <QuestionRadioCardHeaderTitle badgeLabel="15">
                 다른 보험회사(우체국보험 및 각종 공제계약 판매사 포함)에 생명보험, 손해보험, 제3보험 또는 각종
                 공제계약을 가입하고 있습니까? (단, 단체보험 제외)
               </QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
                 width="auto"
-                value={qAnswerList[13] === 'Y' ? '예' : qAnswerList[13] === 'N' ? '아니오' : undefined}
+                value={qAnswerList[15] === 'Y' ? '예' : qAnswerList[15] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
                   setQAnswerList((prev) => {
                     const next = [...prev];
-                    next[13] = val === '예' ? 'Y' : 'N';
+                    next[15] = val === '예' ? 'Y' : 'N';
                     return next;
                   });
                 }}
@@ -1460,19 +1592,19 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardContents>
           </QuestionRadioCard>
           <QuestionRadioCard
-            id="question-card-15"
-            className={highlightBadgeNum === 15 ? 'border-[0.2rem] border-[#FF5C2E] mb-[1.4rem]' : 'mb-[1.4rem]'}
+            id="question-card-16"
+            className={highlightBadgeNum === 16 ? 'border-[0.2rem] border-[#FF5C2E] mb-[1.4rem]' : 'mb-[1.4rem]'}
           >
             <QuestionRadioCardHeader>
-              <QuestionRadioCardHeaderTitle badgeLabel="15">현재 키와 몸무게</QuestionRadioCardHeaderTitle>
+              <QuestionRadioCardHeaderTitle badgeLabel="16">현재 키와 몸무게</QuestionRadioCardHeaderTitle>
               <RadioGroup
                 className={'gap-[1.2rem] w-[11rem]'}
                 width="auto"
-                value={qAnswerList[14] === 'Y' ? '예' : qAnswerList[14] === 'N' ? '아니오' : undefined}
+                value={qAnswerList[16] === 'Y' ? '예' : qAnswerList[16] === 'N' ? '아니오' : undefined}
                 onValueChange={(val) => {
                   setQAnswerList((prev) => {
                     const next = [...prev];
-                    next[14] = val === '예' ? 'Y' : 'N';
+                    next[16] = val === '예' ? 'Y' : 'N';
                     return next;
                   });
                 }}
@@ -1551,25 +1683,21 @@ export const Ltpa3500301 = ({
             </Gcol>
             {!isCollapsed && (
               <Gcol className="w-full mb-2 rounded-b-[0.6rem]" gap={1}>
-                {qAnswerList.map((answer, idx) => {
-                  const badgeNum = idx + 1;
-                  const isSelectable = badgeLabelNumbers.includes(badgeNum);
+                {badgeLabelIds.map((badgeNum) => {
+                  const answer = getAnswerByBadgeId(badgeNum);
                   return (
-                    <Grow className="w-full" gap={1} key={idx}>
+                    <Grow className="w-full" gap={1} key={String(badgeNum)}>
                       <Badge color={'secondary'} size={'md'} variant={'contained'} className="w-[1.8rem]">
                         {badgeNum}
                       </Badge>
                       <Button
                         className="w-[1.8rem] h-[1.8rem] text-center"
                         onClick={() => {
-                          if (isSelectable) {
-                            setHighlightBadgeNum(badgeNum);
-                            scrollToCard(badgeNum);
-                          }
+                          setHighlightBadgeNum(badgeNum);
+                          scrollToCard(badgeNum);
                         }}
                         only="default"
                         variant="none"
-                        disabled={!isSelectable}
                       >
                         <Typo variant={'body-sm'} weight={'bold'} color={answer === 'Y' ? 'danger' : 'green'}>
                           {answer}

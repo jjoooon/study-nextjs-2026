@@ -240,7 +240,7 @@ const Ltpz097 = () => {
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] w-full"
                   className="whitespace-nowrap"
                 >
-                  <NativeSelect aria-label="항목 선택" width={100} value={form.type01} required>
+                  <NativeSelect aria-label="항목 선택" width={100} value={form.type01}>
                     {[
                       { value: 'selection', id: 'type01-1', label: '설계번호' },
                       { value: 'selection2', id: 'type01-2', label: '증권번호' },
