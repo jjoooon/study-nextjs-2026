@@ -28,6 +28,9 @@ const Ltpz006 = () => {
             <Typo tag={'strong'} variant={'heading-lg'}>
               가족연계할인 안내 및 기계약 찾기
             </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ006)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
 

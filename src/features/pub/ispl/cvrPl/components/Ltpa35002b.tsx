@@ -185,7 +185,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       {
         headerName: '속성',
         field: 'field2',
-        width: attributeColumnWidth[4],
+        width: attributeColumnWidth(30),
         cellClass: 'text-center',
         cellRenderer: searchButtonRenderer,
         resizable: false,
@@ -194,7 +194,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" col={true} />,
         field: 'insuredAmount',
         flex: 1,
-        minWidth: attributeColumnWidth[7],
+        minWidth: attributeColumnWidth(60),
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         cellClassRules: {
           'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
@@ -236,7 +236,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
             headerName: '출생전',
             field: 'field4',
             flex: 1,
-            minWidth: attributeColumnWidth[7],
+            minWidth: attributeColumnWidth(60),
             cellClass: 'text-right',
             valueFormatter: numberValueFormatter<AgGridRow>,
           },
@@ -244,7 +244,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
             headerName: '출생후',
             field: 'field4b',
             flex: 1,
-            minWidth: attributeColumnWidth[7],
+            minWidth: attributeColumnWidth(60),
             cellClass: 'text-right',
             valueFormatter: numberValueFormatter<AgGridRow>,
           },
@@ -256,7 +256,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           {
             headerName: '출생전',
             flex: 1,
-            minWidth: attributeColumnWidth[7],
+            minWidth: attributeColumnWidth(60),
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
               const base = 'px-[0.2rem]! tracking-tighter';
@@ -289,7 +289,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
             headerName: '출생후',
             field: 'field5b',
             flex: 1,
-            minWidth: attributeColumnWidth[7],
+            minWidth: attributeColumnWidth(60),
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
               const base = 'px-[0.2rem]! tracking-tighter';
@@ -312,7 +312,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           {
             headerName: '출생후',
             field: 'field6',
-            width: attributeColumnWidth[7],
+            width: attributeColumnWidth(70),
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
               const base = 'px-[0.2rem]! tracking-tighter';
@@ -333,14 +333,14 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         headerComponent: () => <HeaderWithUnit label="UW" unit="예상" className="flex-row-reverse" />,
         field: 'field8',
         flex: 1,
-        minWidth: attributeColumnWidth[6],
+        minWidth: attributeColumnWidth(50),
         cellClass: 'text-center px-0! tracking-tighter',
         cellRenderer: uwIconRenderer,
       },
       {
         headerName: '중복',
         field: 'rowCopy',
-        width: attributeColumnWidth[4],
+        width: attributeColumnWidth(30),
         cellRenderer: duplicateRenderer,
         resizable: false,
       },
@@ -548,8 +548,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 autoGroupColumnDef={{
                   headerComponent: productNameHeader,
                   field: 'id',
-                  minWidth: 400,
-                  flex: 8,
+                  flex: 10,
                   cellClass: (_) => 'text-left !p-0',
                   cellRenderer: productNameCellRenderer,
                   tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시

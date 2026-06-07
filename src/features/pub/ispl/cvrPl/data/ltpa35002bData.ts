@@ -66,7 +66,7 @@ export const dummyData: DummyDataType[] = [
     isSelectedInsuredAmount: false,
 
     field4: 4500,
-    field4b: 100,
+    field4b: 1200,
 
     field5: '05개월',
     field5b: '80세',

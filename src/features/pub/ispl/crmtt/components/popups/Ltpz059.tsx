@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -338,6 +338,7 @@ const DummyData4: DummyDataType4[] = [
 ];
 
 const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [editableFieldName, setEditableFieldName] = React.useState<string | null>(null);
   const [insuredFloorType, setInsuredFloorType] = React.useState<InsuredFloorType>(null);
   const [detailPlace, setDetailPlace] = React.useState<string>('');
@@ -477,7 +478,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
         {
           headerName: '',
           field: 'field01',
-          width: 80,
+          width: attributeColumnWidth(80),
           cellClass: 'text-left flex!',
           colSpan: ({ data }) => (data?.rowType === 'spacer' ? 3 : 1),
           cellRenderer: ({ data }: { data?: DummyDataType4 }) =>
@@ -557,7 +558,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
   const [buildingSelectType, setBuildingSelectType] = React.useState<string>('건물구조선택');
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="full">
+      <DialogContent showCloseButton resizable={true} className="w-[110.4rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -708,7 +709,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
               )}
               {buildingSelectType === '이미지로선택' && (
                 <Gcol className="w-full h-full" placement="ss">
-                  <FormTable caption="사업자" cols={['w-[14rem]', 'w-[calc(100%-14rem)]']}>
+                  <FormTable caption="사업자" cols={['w-[6rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'기둥'} className="h-auto">
                         {renderImageSelectorRow('기둥')}
@@ -742,10 +743,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <FormTable
-                caption="사업자"
-                cols={['w-[14rem]', 'w-[calc(50%-14rem)]', 'w-[14rem]', 'w-[calc(50%-14rem)]']}
-              >
+              <FormTable caption="사업자" cols={['w-[10rem]', 'w-[20rem]', 'w-[10rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell
                     title={
@@ -761,18 +759,10 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'건물급수'} colSpan={3}>
-                    <Grow>
-                      <Input value={'김한화'} width={75} readOnly />
-                      <Typo variant="body-sm" className="shrink-0">
-                        급(적용급수)
-                      </Typo>
-                      <NativeSelect
-                        aria-label="조회구분 선택"
-                        width="20rem"
-                        value={'선택'}
-                        required
-                        onChange={() => ''}
-                      >
+                    <Grid className="w-full grid-cols-[8.6rem_auto_10rem_auto_8rem_1fr] place-items-center">
+                      <Input value={'김한화한화'} readOnly />
+                      <Typo variant="body-sm">급(적용급수)</Typo>
+                      <NativeSelect aria-label="조회구분 선택" value={'선택'} required onChange={() => ''}>
                         {[
                           { value: 'selection', id: 'type01', label: '선택1' },
                           { value: 'selection2', id: 'type02', label: '선택2' },
@@ -782,12 +772,10 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                           </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                      <Typo variant="body-sm" className="shrink-0">
-                        건축년도
-                      </Typo>
-                      <Input width={75} readOnly />
-                    </Grow>
-                    <Input width={'full'} readOnly />
+                      <Typo variant="body-sm">건축년도</Typo>
+                      <Input readOnly />
+                      <Input readOnly />
+                    </Grid>
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -802,6 +790,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                   <FormCell title={'보험가입층수'}>
                     {/* 2026-05-27 radio 수정 */}
                     <RadioGroup
+                      className="gap-3"
                       value={insuredFloorType ?? ''}
                       onValueChange={(value) => {
                         if (value === '전체' || value === '일부') {
@@ -823,22 +812,22 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
                     </RadioGroup>
                   </FormCell>
                   <FormCell title={'가입면적'}>
-                    <Input width={70} readOnly />
+                    <Input width={70} align="right" readOnly />
                     ㎡ ↔
-                    <Input width={70} readOnly />평
+                    <Input width={70} align="right" readOnly />평
                   </FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title={'세부장소'} colSpan={3}>
-                    {/* 2026-05-27 placeholder 수정 */}
-                    <Input
-                      value={detailPlace}
-                      width={400}
-                      onChange={(e) => setDetailPlace(e.target.value)}
-                      readOnly={insuredFloorType === '전체'}
-                      placeholder={insuredFloorType === '전체' ? '건물전체' : undefined}
-                    />
-                    입력예시: 2층 201호
+                    <Grid className="w-full grid-cols-[1fr_auto] place-items-center">
+                      <Input
+                        value={detailPlace}
+                        onChange={(e) => setDetailPlace(e.target.value)}
+                        readOnly={insuredFloorType === '전체'}
+                        placeholder={insuredFloorType === '전체' ? '건물전체' : undefined}
+                      />
+                      <p>입력예시: 2층 201호</p>
+                    </Grid>
                   </FormCell>
                 </FormRow>
               </FormTable>

@@ -4,7 +4,13 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createFieldRenderer, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  numberValueFormatter,
+  useAgGridInfiniteAppend,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -26,7 +32,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
+import Link from 'next/link';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 // dummy data
 type DummyDataType = {
@@ -45,12 +52,12 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     field01: '',
-    field02: '',
-    field03: '한화보험한화보험한화보험한화보험한화보험한화보험',
-    field04: 'LA26234242342',
-    field05: '김한화',
+    field02: '한화보험한',
+    field03: '한화보험한화보험한화보험한화보험한화보험한화보험 한화보험한화보험한화보험한화보험한화보험한화보험',
+    field04: 'LA123456789012',
+    field05: '김한화김한화',
     field06: '',
-    field07: '',
+    field07: 1000,
     field08: '2026-03-01',
     field09: '',
   },
@@ -59,8 +66,8 @@ const DummyData: DummyDataType[] = [
     field01: '',
     field02: '',
     field03: '',
-    field04: 'LA26234242342',
-    field05: '김한화',
+    field04: 'LA123456789012',
+    field05: '김한화한화',
     field06: '',
     field07: '',
     field08: '2026-03-01',
@@ -102,93 +109,210 @@ const DummyData: DummyDataType[] = [
     field08: '2026-03-01',
     field09: '',
   },
+  {
+    id: 6,
+    field01: '',
+    field02: '장기보험',
+    field03: '무배당 장기보장플랜',
+    field04: 'LA777700000001',
+    field05: '이한화',
+    field06: '',
+    field07: 25000,
+    field08: '2026-03-02',
+    field09: '진행중',
+  },
+  {
+    id: 7,
+    field01: '',
+    field02: '자동차보험',
+    field03: '스마트 자동차보험',
+    field04: 'LA777700000002',
+    field05: '박한화',
+    field06: '',
+    field07: 18000,
+    field08: '2026-03-03',
+    field09: '완료',
+  },
+  {
+    id: 8,
+    field01: '',
+    field02: '화재특종',
+    field03: '종합 화재보장 특약',
+    field04: 'LA777700000003',
+    field05: '최한화',
+    field06: '',
+    field07: 32000,
+    field08: '2026-03-03',
+    field09: '진행중',
+  },
+  {
+    id: 9,
+    field01: '',
+    field02: '해상보험',
+    field03: '해상 적하보험 기본형',
+    field04: 'LA777700000004',
+    field05: '정한화',
+    field06: '',
+    field07: 41000,
+    field08: '2026-03-04',
+    field09: '',
+  },
+  {
+    id: 10,
+    field01: '',
+    field02: '퇴직연금',
+    field03: '퇴직연금 안정형 플랜',
+    field04: 'LA777700000005',
+    field05: '오한화',
+    field06: '',
+    field07: 27500,
+    field08: '2026-03-05',
+    field09: '검토중',
+  },
+  {
+    id: 11,
+    field01: '',
+    field02: '단체증권',
+    field03: '단체 상해보장형',
+    field04: 'LA777700000006',
+    field05: '조한화',
+    field06: '',
+    field07: 36500,
+    field08: '2026-03-06',
+    field09: '완료',
+  },
+  {
+    id: 12,
+    field01: '',
+    field02: '장기보험',
+    field03: '장기 건강보장 특약',
+    field04: 'LA777700000007',
+    field05: '윤한화',
+    field06: '',
+    field07: 29000,
+    field08: '2026-03-07',
+    field09: '진행중',
+  },
 ];
 
 const Ltpz038 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [searchCategory, setSearchCategory] = useState('selection');
+  const gridRef = useRef<AgGridReact<DummyDataType>>(null);
+  const [pendingScrollIndex, setPendingScrollIndex] = useState<number | null>(null);
   const isInputOnlyCategory = searchCategory === 'selection4' || searchCategory === 'selection5';
 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
-      width: 40,
+      flex: 1,
+      minWidth: attributeColumnWidth(40),
       field: 'id',
       cellClass: 'text-center',
-      autoHeight: true,
     },
     {
       headerName: '보종군',
-      width: 60,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       field: 'field02',
       cellClass: 'text-center',
-      autoHeight: true,
     },
     {
       headerName: '보험종목명',
-      flex: 1,
+      flex: 10,
       field: 'field03',
-      cellClass: 'text-center',
-      autoHeight: true,
+      cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
     {
       headerName: '설계번호',
-      width: 110,
+      flex: 1,
+      field: 'field04',
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center',
-      autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataType>((data?: DummyDataType) => (
-        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-          {data?.field04}
+      cellRenderer: (params: { value: string | number }) => (
+        <Button asChild color="link" only="default" size="lg" variant="text">
+          <Link href={`/pub/ispl/LTPA050?designNumber=${encodeURIComponent(String(params.value ?? ''))}`}>
+            {params.value}
+          </Link>
         </Button>
-      )),
+      ),
     },
     {
       headerName: '계약자',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       field: 'field05',
-      cellClass: 'text-center',
-      autoHeight: true,
+      cellClass: 'text-center !px-0',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field05' }),
     },
     {
       headerName: '목적물',
       flex: 1,
+      minWidth: attributeColumnWidth(70),
       field: 'field06',
       cellClass: 'text-center',
-      autoHeight: true,
     },
     {
       headerName: '보험료',
       flex: 1,
+      minWidth: attributeColumnWidth(70),
       field: 'field07',
       cellClass: 'text-right',
-      autoHeight: true,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '설계일자',
-      width: 90,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       field: 'field08',
       cellClass: 'text-center',
-      autoHeight: true,
     },
     {
       headerName: '상태',
       flex: 1,
+      minWidth: attributeColumnWidth(100),
       field: 'field09',
       cellClass: 'text-center',
-      autoHeight: true,
     },
   ];
 
   // pagination
-  const pageSize = 3;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+  const pageSize = 10;
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
     pageSize,
   });
 
+  const visibleRows = useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
+
+  useEffect(() => {
+    if (pendingScrollIndex === null) {
+      return;
+    }
+
+    if (loadedCount <= pendingScrollIndex) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      gridRef.current?.api.ensureIndexVisible(pendingScrollIndex, 'top');
+      setPendingScrollIndex(null);
+    });
+  }, [loadedCount, pendingScrollIndex]);
+
+  const handleLoadNextWithScroll = () => {
+    if (loadedCount >= totalCount) {
+      return;
+    }
+
+    setPendingScrollIndex(loadedCount);
+    handleLoadNext();
+  };
+
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl" className="">
+      <DialogContent showCloseButton resizable={true} size="xl" className="">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -223,7 +347,7 @@ const Ltpz038 = () => {
                 {/* 2026-05-27 설계번호, 차량번호 선택시 input만 노출로 수정 */}
                 <FormCell
                   title={'조회구분'}
-                  tdClassName={isInputOnlyCategory ? 'grid grid-cols-[16rem_1fr]' : 'grid grid-cols-[16rem_1fr_auto]'}
+                  tdClassName={isInputOnlyCategory ? 'grid grid-cols-[12rem_1fr]' : 'grid grid-cols-[12rem_1fr_auto]'}
                 >
                   <NativeSelect
                     aria-label="조회구분 선택"
@@ -249,9 +373,8 @@ const Ltpz038 = () => {
                     </Button>
                   )}
                 </FormCell>
-                {/* 2026-05-27 가로 수정 */}
                 <FormCell title={'설계상태'}>
-                  <NativeSelect aria-label="설계상태 선택" width={212} required>
+                  <NativeSelect aria-label="설계상태 선택" required>
                     {[
                       { value: 'selection', label: '전체' },
                       { value: 'selection2', label: '전체2' },
@@ -264,8 +387,8 @@ const Ltpz038 = () => {
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell title={'설계조직'} colSpan={3} tdClassName="grid grid-cols-[1fr_auto_auto_1fr]">
-                  <NativeSelect aria-label="설계조직 선택">
+                <FormCell title={'설계조직'} colSpan={3} tdClassName="grid grid-cols-[auto_auto_auto_1fr]">
+                  <NativeSelect aria-label="설계조직 선택" width={100}>
                     {[
                       { value: 'selection', label: '취급기관' },
                       { value: 'selection2', label: '취급기관2' },
@@ -275,7 +398,7 @@ const Ltpz038 = () => {
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input aria-label="" width={160} value={'12345678'} />
+                  <Input aria-label="" width={80} value={'12345678'} />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>
@@ -316,19 +439,17 @@ const Ltpz038 = () => {
           </Grow>
 
           <Gcol className="w-full">
-            <div className="ag-theme-alpine min-h-[18.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-page={pageSize}>
               <AgGridReact<DummyDataType>
-                key={loadedCount}
+                ref={gridRef}
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
+                rowData={visibleRows}
                 columnDefs={columnDefs}
                 domLayout="normal"
-                rowModelType="infinite"
-                cacheBlockSize={pageSize}
-                maxBlocksInCache={2}
-                datasource={dataSource}
                 tooltipShowMode="whenTruncated"
                 tooltipShowDelay={0}
+                animateRows={false}
               />
             </div>
             <TableMore
@@ -336,7 +457,7 @@ const Ltpz038 = () => {
               totalCount={totalCount}
               pageSize={pageSize}
               onLoadAll={handleLoadAll}
-              onLoadNext={handleLoadNext}
+              onLoadNext={handleLoadNextWithScroll}
             />
           </Gcol>
         </DialogSection>

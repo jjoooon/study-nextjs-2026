@@ -23,7 +23,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
 const Ltpz075 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -40,36 +40,36 @@ const Ltpz075 = () => {
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={'15rem'} value={'LA260209313558'} readOnly />
+                  <Input width={'quoteNo'} value={'LA123456789012'} readOnly />
                   -
-                  <Input aria-label="" width={'3rem'} value={'1'} readOnly />
+                  <Input width={26} value={'1'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
           <Table variant="default">
             <colgroup>
-              <col style={{ width: '28%' }} />
-              <col style={{ width: '24%' }} />
-              <col style={{ width: '24%' }} />
-              <col style={{ width: '24%' }} />
+              <col style={{ width: '14rem' }} />
+              <col style={{ width: 'auto' }} />
+              <col style={{ width: 'auto' }} />
+              <col style={{ width: 'auto' }} />
             </colgroup>
             <TableBody>
               <TableRow>
                 <TableHead className="text-left">1급 바닥면적</TableHead>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} />㎡
+                    <Input align="right" value="1" />㎡
                   </Grow>
                 </TableCell>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />평
+                    <Input align="right" value="1" readOnly />평
                   </Grow>
                 </TableCell>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />%
+                    <Input align="right" value="1" readOnly />%
                   </Grow>
                 </TableCell>
               </TableRow>
@@ -77,17 +77,17 @@ const Ltpz075 = () => {
                 <TableHead className="text-left">2급 바닥면적</TableHead>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} />㎡
+                    <Input align="right" value="1" />㎡
                   </Grow>
                 </TableCell>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />평
+                    <Input align="right" value="1" readOnly />평
                   </Grow>
                 </TableCell>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />%
+                    <Input align="right" value="1" readOnly />%
                   </Grow>
                 </TableCell>
               </TableRow>
@@ -95,17 +95,17 @@ const Ltpz075 = () => {
                 <TableHead className="text-left">3급 바닥면적</TableHead>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} />㎡
+                    <Input align="right" value="1" />㎡
                   </Grow>
                 </TableCell>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />평
+                    <Input align="right" value="1" readOnly />평
                   </Grow>
                 </TableCell>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />%
+                    <Input align="right" value="1" readOnly />%
                   </Grow>
                 </TableCell>
               </TableRow>
@@ -113,17 +113,17 @@ const Ltpz075 = () => {
                 <TableHead className="text-left">4급 바닥면적</TableHead>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} />㎡
+                    <Input align="right" value="1" />㎡
                   </Grow>
                 </TableCell>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />평
+                    <Input align="right" value="1" readOnly />평
                   </Grow>
                 </TableCell>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />%
+                    <Input align="right" value="1" readOnly />%
                   </Grow>
                 </TableCell>
               </TableRow>
@@ -131,17 +131,17 @@ const Ltpz075 = () => {
                 <TableHead className="text-left">복합건물 바닥면적 합계</TableHead>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />㎡
+                    <Input align="right" value="1" readOnly />㎡
                   </Grow>
                 </TableCell>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />평
+                    <Input align="right" value="1" readOnly />평
                   </Grow>
                 </TableCell>
                 <TableCell>
                   <Grow>
-                    <Input onChange={() => {}} readOnly />%
+                    <Input align="right" value="1" readOnly />%
                   </Grow>
                 </TableCell>
               </TableRow>
@@ -152,8 +152,8 @@ const Ltpz075 = () => {
               <b>[복합구조건물 적용조건]</b>
             </Typo>
             <BulletList color={'warning'} size="md">
-              <BulletListItem type="dotBig">공장업종(적용업종 기준)</BulletListItem>
-              <BulletListItem type="dotBig">건물 구조 2종 이상 & 최열급 바닥 면적이 전체의 30% 이하</BulletListItem>
+              <BulletListItem type="dot">공장업종(적용업종 기준)</BulletListItem>
+              <BulletListItem type="dot">건물 구조 2종 이상 & 최열급 바닥 면적이 전체의 30% 이하</BulletListItem>
               <Typo variant={'body-md'} weight={'bold'}>
                 [참고]
               </Typo>

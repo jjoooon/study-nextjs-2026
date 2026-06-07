@@ -6,7 +6,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -41,44 +41,43 @@ const DummyData: DummyDataType[] = [
     field2:
       '내용이 들어갑니다.내용이 들어갑니다. 내용이 들어갑니다.내용이 들어갑니다. 내용이 들어갑니다.내용이 들어갑니다.내용이 들어갑니다.내용이 들어갑니다.내용이 들어갑니다.',
   },
-  { id: 2, field1: '', field2: '내용이 들어갑니다.내용이 들어갑니다.' },
-  { id: 3, field1: '', field2: '내용이 들어갑니다.' },
+  { id: 2, field1: '홍길동이름홍길동이름', field2: '내용이 들어갑니다.내용이 들어갑니다.' },
+  { id: 3, field1: '홍길동', field2: '내용이 들어갑니다.' },
   { id: 4, field1: '', field2: '' },
   { id: 5, field1: '', field2: '' },
   { id: 6, field1: '', field2: '' },
 ];
 
 const Ltpz101 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: 'No',
       field: 'id',
-      width: 40,
+      width: attributeColumnWidth(40),
       cellClass: 'text-center',
     },
     {
       headerName: '피보험자',
       field: 'field1',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
     },
     {
       headerName: '위배내용',
       field: 'field2',
-      flex: 2,
+      flex: 20,
       // resizable: false,
       cellClass: 'text-left', // 2026-05-29 text-left으로 변경
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
     },
   ];
 
-  const rowData = DummyData;
-
-  {
-    /* 2026-05-26 전체 수정 */
-  }
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -114,13 +113,16 @@ const Ltpz101 = () => {
                   <FileExportIcon />
                 </Button>
               </Grow>
-              <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData}
+                  rowData={DummyData}
                   columnDefs={columnDefs}
                   domLayout="normal"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                  animateRows={false}
                   // suppressMovableColumns={true}
                 />
               </div>

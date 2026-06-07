@@ -327,7 +327,7 @@ export default function Ltpa050Section() {
     {
       headerName: '직업명',
       field: 'field3',
-      flex: 10,
+      flex: 20,
       cellClass: `text-center `,
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA02>({ field: 'field3' }),
     },
@@ -335,7 +335,7 @@ export default function Ltpa050Section() {
       headerName: '급수',
       field: 'field4',
       flex: 1,
-      minWidth: attributeColumnWidth(50),
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-center `,
     },
     {
@@ -406,15 +406,15 @@ export default function Ltpa050Section() {
       headerName: '급수',
       field: 'field3',
       flex: 1,
-      minWidth: attributeColumnWidth(50),
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-center`,
     },
     {
       headerName: '보장P',
       field: 'field4',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
-      cellClass: `text-center`,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
   ];
@@ -422,7 +422,7 @@ export default function Ltpa050Section() {
     {
       headerName: '화재기본담보',
       field: 'field1',
-      flex: 10,
+      flex: 20,
       cellClass: `text-center`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA05>({ field: 'field1' }),
     },
@@ -553,7 +553,7 @@ export default function Ltpa050Section() {
     {
       headerName: '직업명',
       field: 'field3',
-      flex: 10,
+      flex: 20,
       cellClass: `text-center `,
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB02>({ field: 'field3' }),
     },
@@ -561,7 +561,7 @@ export default function Ltpa050Section() {
       headerName: '급수',
       field: 'field4',
       flex: 1,
-      minWidth: attributeColumnWidth(50),
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-center `,
     },
     {
@@ -632,15 +632,15 @@ export default function Ltpa050Section() {
       headerName: '급수',
       field: 'field3',
       flex: 1,
-      minWidth: attributeColumnWidth(50),
+      minWidth: attributeColumnWidth(60),
       cellClass: `text-center`,
     },
     {
       headerName: '보장P',
       field: 'field4',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
-      cellClass: `text-center`,
+      minWidth: attributeColumnWidth(60),
+      cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
   ];
@@ -648,7 +648,7 @@ export default function Ltpa050Section() {
     {
       headerName: '화재기본담보',
       field: 'field1',
-      flex: 10,
+      flex: 20,
       cellClass: `text-center`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB05>({ field: 'field1' }),
     },
@@ -751,7 +751,7 @@ export default function Ltpa050Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody className="gap-2">
-                  <FormTable caption="계약정보" cols={['w-[20%]', 'w-[30%]', 'w-[20%]', 'w-[30%]']}>
+                  <FormTable caption="계약정보" cols={['w-[9rem]', 'w-[40%]', 'w-[9rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell className="" title={'계약자'} colSpan={3}>
                         김한화
@@ -919,7 +919,7 @@ export default function Ltpa050Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody className="gap-2">
-                  <FormTable caption="계약정보" cols={['w-[20%]', 'w-[30%]', 'w-[20%]', 'w-[30%]']}>
+                  <FormTable caption="계약정보" cols={['w-[9rem]', 'w-[40%]', 'w-[9rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell className="" title={'계약자'} colSpan={3}>
                         김한화

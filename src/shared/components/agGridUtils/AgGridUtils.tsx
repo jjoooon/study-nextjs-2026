@@ -992,7 +992,7 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
               >
                 <MinusIcon color={'var(--color-primary-50)'} />
               </Button>
-              <Input size={'md'} value={value} after={'만'} readOnly className="w-[11.2rem]" />
+              <Input size={'md'} value={value} after={'만'} readOnly className="w-[11.2rem]" align="right" />
               <Button
                 aria-label={'백만원 추가'}
                 variant={'outlined'}
