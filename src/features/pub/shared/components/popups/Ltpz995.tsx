@@ -39,16 +39,16 @@ export interface FileItem {
   fileType: string;
 }
 
-export interface FileUploadResult {
+export interface Ltpz995Result {
   action: 'search' | 'select' | 'close';
   files?: FileItem[];
 }
 
-export interface FileUploaderProps {
-  open?: boolean;
+export interface Ltpz995Props {
+  files?: FileItem[];
   onOpenChange?: (open: boolean) => void;
   /** Promise resolve 함수 (결과 반환) */
-  resolve: (result: FileUploadResult) => void;
+  resolve: (result: Ltpz995Result) => void;
 }
 
 // 파일 크기를 읽기 쉬운 단위로 변환
@@ -81,7 +81,7 @@ const ACCEPTED_FILE_TYPES: MimeType[] = [
 
 const MAX_FILE_SIZE = '1024MB'; // 1GB
 
-export default function Ltpz995({ resolve }: FileUploaderProps) {
+export default function Ltpz995({ resolve }: Ltpz995Props) {
   const pondRef = useRef<FilePondInstance>(null);
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
