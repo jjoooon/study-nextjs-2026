@@ -79,7 +79,11 @@ const dialogRegistry: DialogRegistry = {
     import('@common/ConfirmDialog') as unknown as Promise<{
       default: ComponentType<Record<string, unknown>>;
     }>,
-
+  LTPZ995: () =>
+    // eslint-disable-next-line boundaries/dependencies
+    import('@/features/pub/shared/components/popups/Ltpz995') as unknown as Promise<{
+      default: ComponentType<Record<string, unknown>>;
+    }>,
   // Feature 팝업은 각 feature에서 registerDialog()로 동적 등록
   // 예: 'products/detail', 'products/delete', 'shared/table' 등
 };

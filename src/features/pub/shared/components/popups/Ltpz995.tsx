@@ -6,23 +6,23 @@
 import { FilePondErrorDescription, FilePondFile } from 'filepond';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
-import { IMAGE_TYPES, APPLICATION_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
+import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
 import log from '@/shared/utils/logger';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogFooterArea,
-  DialogClose,
+  DialogHeader,
   DialogSection,
+  DialogTitle,
 } from '@uiux/Dialog';
 import 'filepond/dist/filepond.min.css';
 
@@ -40,7 +40,7 @@ export interface FileItem {
 }
 
 export interface FileUploadResult {
-  action: 'search' | 'select' | 'cancel';
+  action: 'search' | 'select' | 'close';
   files?: FileItem[];
 }
 
@@ -62,42 +62,30 @@ function formatFileSize(bytes: number): string {
   return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
 }
 
-export default function FileUploader({ open }: FileUploaderProps) {
+// 허용할 파일 MIME 타입 설정
+const ACCEPTED_FILE_TYPES: MimeType[] = [
+  IMAGE_TYPES.JPEG,
+  IMAGE_TYPES.PNG,
+  IMAGE_TYPES.GIF,
+  APPLICATION_TYPES.PDF,
+  APPLICATION_TYPES.MSWORD,
+  APPLICATION_TYPES.WORD_XML,
+  APPLICATION_TYPES.EXCEL,
+  APPLICATION_TYPES.EXCEL_XML,
+  APPLICATION_TYPES.POWERPOINT,
+  APPLICATION_TYPES.POWERPOINT_XML,
+  TEXT_TYPES.PLAIN,
+  APPLICATION_TYPES.ZIP,
+  APPLICATION_TYPES.SEVEN_Z,
+];
+
+const MAX_FILE_SIZE = '1024MB'; // 1GB
+
+export default function Ltpz995({ resolve }: FileUploaderProps) {
   const pondRef = useRef<FilePondInstance>(null);
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
   const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
-
-  // 모달 닫힐 때 파일 상태 초기화
-  useEffect(() => {
-    if (!open) {
-      // setState를 마이크로태스크로 비동기 처리하여 React 경고 방지
-      Promise.resolve().then(() => {
-        setPondFiles([]);
-        setFileCount(0);
-        setTotalSize(0);
-      });
-    }
-  }, [open]);
-
-  // 허용할 파일 MIME 타입 설정
-  const ACCEPTED_FILE_TYPES: MimeType[] = [
-    IMAGE_TYPES.JPEG,
-    IMAGE_TYPES.PNG,
-    IMAGE_TYPES.GIF,
-    APPLICATION_TYPES.PDF,
-    APPLICATION_TYPES.MSWORD,
-    APPLICATION_TYPES.WORD_XML,
-    APPLICATION_TYPES.EXCEL,
-    APPLICATION_TYPES.EXCEL_XML,
-    APPLICATION_TYPES.POWERPOINT,
-    APPLICATION_TYPES.POWERPOINT_XML,
-    TEXT_TYPES.PLAIN,
-    APPLICATION_TYPES.ZIP,
-    APPLICATION_TYPES.SEVEN_Z,
-  ];
-
-  const MAX_FILE_SIZE = '1024MB'; // 1GB
 
   const handleBeforeAddFile = (item: FilePondFile) => {
     // 파일명 확인 (임시 파일 차단 같은 커스텀 로직만 처리)
@@ -183,8 +171,27 @@ export default function FileUploader({ open }: FileUploaderProps) {
     pondRef.current?.browse();
   };
 
+  const handleSelect = () => {
+    resolve({
+      action: 'select',
+      files: pondFiles.map((f) => ({
+        id: f.id,
+        filename: f.filename,
+        fileSize: f.fileSize,
+        fileExtension: f.fileExtension,
+        fileType: f.fileType,
+      })),
+    });
+  };
+
+  const handleClose = () => {
+    resolve({
+      action: 'close',
+    });
+  };
+
   return (
-    <Dialog open>
+    <Dialog open onOpenChange={handleClose}>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -192,7 +199,7 @@ export default function FileUploader({ open }: FileUploaderProps) {
               파일업로드
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ994)
+              (LTPZ995)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -245,11 +252,11 @@ export default function FileUploader({ open }: FileUploaderProps) {
               <Button variant={'outlined'} size={'xl'} color={'gray'} onClick={handleSearch}>
                 파일찾기
               </Button>
-              <Button variant={'contained'} size={'xl'}>
+              <Button variant={'contained'} size={'xl'} disabled={fileCount === 0} onClick={handleSelect}>
                 선택완료
               </Button>
               <DialogClose asChild>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={handleClose}>
                   닫기
                 </Button>
               </DialogClose>
