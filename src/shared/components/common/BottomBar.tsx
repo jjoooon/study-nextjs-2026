@@ -8,6 +8,12 @@ import { DialogListIcon, DialogResetIcon, SrPermIcon, SrDecIcon, NewWin } from '
 import { TextBabbleIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
+/**
+ * BottomBar 화면 컴포넌트.
+ *
+ * - 화면 하단에 고정되는 바 형태의 UI를 제공한다.
+ * - 상태 메시지와 여러 액션 버튼을 포함한다.
+ */
 export const BottomBar = () => {
   const stateText = '자료가 조회되었습니다.';
 
