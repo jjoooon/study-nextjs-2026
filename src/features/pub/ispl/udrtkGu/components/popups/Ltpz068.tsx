@@ -355,14 +355,14 @@ const Ltpz068 = () => {
       {
         headerName: '가입금액(만원)',
         field: 'field09',
-        width: 90,
+        width: attributeColumnWidth(90),
         cellClass: 'text-right',
         valueFormatter: (p) => numericFormatter(p.value),
       },
       {
         headerName: '보험료(원)',
         field: 'field10',
-        width: 70,
+        width: attributeColumnWidth(70),
         cellClass: 'text-right',
         valueFormatter: (p) => numericFormatter(p.value),
       },
@@ -370,14 +370,14 @@ const Ltpz068 = () => {
         {
           headerName: '가입금액(만원)',
           field: leftField,
-          width: 90,
+          width: attributeColumnWidth(90),
           cellClass: 'text-right',
           valueFormatter: (p) => numericFormatter(p.value),
         },
         {
           headerName: '보험료(원)',
           field: rightField,
-          width: 70,
+          width: attributeColumnWidth(70),
           cellClass: 'text-right',
           valueFormatter: (p) => numericFormatter(p.value),
         },
