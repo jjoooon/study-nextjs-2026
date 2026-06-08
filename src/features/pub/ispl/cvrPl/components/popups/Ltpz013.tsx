@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CalendarIcon2, CheckboxIcon, CircleCheckIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
@@ -141,6 +141,7 @@ function CardBox({
 }
 
 const Ltpz013 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   // AG Grid 내부 스크롤(Body viewport) 동기화
@@ -186,7 +187,7 @@ const Ltpz013 = () => {
     {
       headerName: '담보명',
       field: 'field1',
-      flex: 1,
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
       colSpan: (params) => {
         // 합계 행이면 이름+서브레이블 합치기
@@ -197,7 +198,8 @@ const Ltpz013 = () => {
     {
       headerName: '가입금액(만원)',
       field: 'field2',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       valueFormatter: numberValueFormatter,
       colSpan: (params) => {
         // 합계 행이면 숨김
@@ -212,7 +214,8 @@ const Ltpz013 = () => {
     {
       headerName: '보험료(원)',
       field: 'field3',
-      width: 65,
+      flex: 1,
+      minWidth: attributeColumnWidth(65),
       valueFormatter: numberValueFormatter,
       cellClass: (params) => {
         if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
