@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -22,7 +22,7 @@ import {
 
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
@@ -150,56 +150,66 @@ const DummyData4: DummyDataType4[] = [
 ];
 
 const Ltpz042 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
   });
 
   // AgGrid Column
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: '직원번호',
-      width: 80,
-      field: 'field01',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '직원명',
-      width: 80,
-      field: 'field02',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '지점번호',
-      width: 80,
-      field: 'field03',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '지점명',
-      flex: 1,
-      field: 'field04',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '유자격자번호',
-      width: 80,
-      field: 'field05',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-    {
-      headerName: '유자격자명',
-      width: 80,
-      field: 'field06',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-    },
-  ];
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '직원번호',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        field: 'field01',
+        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+      },
+      {
+        headerName: '직원명',
+        flex: 3,
+        minWidth: attributeColumnWidth(80),
+        field: 'field02',
+        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+      },
+      {
+        headerName: '지점번호',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        field: 'field03',
+        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+      },
+      {
+        headerName: '지점명',
+        flex: 3,
+        minWidth: attributeColumnWidth(80),
+        field: 'field04',
+        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+      },
+      {
+        headerName: '유자격자번호',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        field: 'field05',
+        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+      },
+      {
+        headerName: '유자격자명',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        field: 'field06',
+        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+      },
+    ],
+    [attributeColumnWidth]
+  );
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   const columnDefs2: ColDef<DummyDataType2>[] = [
@@ -292,7 +302,7 @@ const Ltpz042 = () => {
 
           {/* 유자격자: Grid1 단독 */}
           {!isEmpNo && (
-            <div className="ag-theme-alpine ltpa010-grid w-full min-h-[18.5rem]">
+            <div className="ag-theme-alpine ltpa010-grid w-full inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 key="ltpz042-grid-qualified"
                 getRowId={(params) => `qualified-${params.data.id}`}
@@ -310,7 +320,7 @@ const Ltpz042 = () => {
           {isEmpNo && (
             <Grow className="w-full" gap={1} placement="ss">
               {/* Grid2 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3 min-h-[18.5rem]">
+              <div className="ag-theme-alpine ltpa010-grid w-1/3 inner-scroll" data-row={rowData2.length}>
                 <AgGridReact<DummyDataType2>
                   key="ltpz042-grid-empno-1"
                   getRowId={(params) => `empno-1-${params.data.id}`}
@@ -325,7 +335,7 @@ const Ltpz042 = () => {
                 />
               </div>
               {/* Grid3 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3 min-h-[18.5rem]">
+              <div className="ag-theme-alpine ltpa010-grid w-1/3 inner-scroll" data-row={rowData3.length}>
                 <AgGridReact<DummyDataType3>
                   key="ltpz042-grid-empno-2"
                   getRowId={(params) => `empno-2-${params.data.id}`}
@@ -340,7 +350,7 @@ const Ltpz042 = () => {
                 />
               </div>
               {/* Grid4 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3 min-h-[18.5rem]">
+              <div className="ag-theme-alpine ltpa010-grid w-1/3 inner-scroll" data-row={rowData4.length}>
                 <AgGridReact<DummyDataType4>
                   key="ltpz042-grid-empno-3"
                   getRowId={(params) => `empno-3-${params.data.id}`}

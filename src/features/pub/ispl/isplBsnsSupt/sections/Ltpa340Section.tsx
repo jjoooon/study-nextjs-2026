@@ -337,7 +337,7 @@ export default function Ltpa340Section() {
                   rowSelection={{
                     mode: 'multiRow',
                     checkboxes: true,
-                    enableClickSelection: true,
+                    enableClickSelection: false,
                   }}
                   selectionColumnDef={{
                     width: 40,
