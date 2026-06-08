@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -44,7 +44,7 @@ const comparisonRows: ComparisonRow[] = [
     code: 'A001',
     term1: '2026-11-11',
     term2: '2026-11-11',
-    coverage: '보통약관(상해80%이상후유장해)',
+    coverage: '보통약관(상해80%이상후유장해) 보통약관(상해80%이상후유장해)',
     premium: 3000,
   },
   {
@@ -63,7 +63,7 @@ const comparisonRows: ComparisonRow[] = [
     term1: '2026-11-11',
     term2: '2026-11-11',
     coverage: '상해사망(간편)',
-    premium: 15000,
+    premium: 15000000,
   },
   {
     id: 4,
@@ -133,35 +133,41 @@ const comparisonRows: ComparisonRow[] = [
 const Ltpz011 = () => {
   // 2026-05-28 cellClass 수정
   // 2026-05-29 width 수정
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs2: ColDef<ComparisonRow>[] = [
     {
       headerName: '담보상태',
       field: 'state',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(110),
       cellClass: 'text-center',
     },
     {
       headerName: '담보코드',
       field: 'code',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: 'text-center',
     },
     {
       headerName: '담보보험시기',
       field: 'term1',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '담보보험종기',
       field: 'term2',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '세부담보명',
       field: 'coverage',
-      flex: 2,
+      flex: 3,
+      minWidth: attributeColumnWidth(120),
       tooltipValueGetter: createTooltipValueGetter<ComparisonRow>({ field: 'coverage' }),
       cellClass: (params) => (params.data?.isSumRow ? 'text-left font-bold' : 'text-left'),
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) => (params.data?.isSumRow ? '합계' : params.value),
@@ -170,6 +176,7 @@ const Ltpz011 = () => {
       headerName: '보험료(원)',
       field: 'premium',
       flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-right',
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
         params.data?.isSumRow ? Number(params.value ?? 0).toLocaleString() : Number(params.value ?? 0).toLocaleString(),
@@ -229,7 +236,7 @@ const Ltpz011 = () => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[21.4rem]">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                 <AgGridReact<ComparisonRow>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -240,8 +247,6 @@ const Ltpz011 = () => {
                     sortable: true,
                     resizable: true,
                   }}
-                  singleClickEdit={true}
-                  rowClassRules={{}}
                   domLayout="normal"
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}

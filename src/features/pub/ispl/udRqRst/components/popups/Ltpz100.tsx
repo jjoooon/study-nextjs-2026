@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -48,7 +48,7 @@ const DummyData1: DummyDataType1[] = [
   {
     id: 1,
     field01: '보험료납입면제대상보장(8대사유Ⅱ)',
-    field02: '10000',
+    field02: '10000000',
   },
   {
     id: 2,
@@ -187,20 +187,23 @@ const Ltpz100 = () => {
   const [rowData1] = React.useState<DummyDataType1[]>(DummyData1);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
   const [rowData3] = React.useState<DummyDataType3[]>(DummyData3);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // AgGrid Column
   const columnDefs1: ColDef<DummyDataType1>[] = [
     {
       headerName: '제한 담보명',
       field: 'field01',
-      flex: 1,
+      flex: 3,
+      minWidth: attributeColumnWidth(220),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType1>({ field: 'field01' }),
     },
     {
       headerName: '가입금액(원)',
       field: 'field02',
-      width: 90,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -220,14 +223,16 @@ const Ltpz100 = () => {
     {
       headerName: '부담보부위명',
       field: 'field01',
-      flex: 1,
+      flex: 3,
+      minWidth: attributeColumnWidth(220),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field01' }),
     },
     {
       headerName: '기간',
       field: 'field02',
-      width: 90,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-center',
       valueFormatter: numberValueFormatter,
     },
