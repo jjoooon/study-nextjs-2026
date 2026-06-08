@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -89,24 +89,28 @@ const JobDummyData: JobDataType[] = [
 ];
 
 const Ltpz00503 = () => {
-  // 직업
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const jobColumnDefs: (ColDef<JobDataType> | ColGroupDef<JobDataType>)[] = [
     {
       headerName: '대상여부',
       field: 'targetStatus',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
+      width: attributeColumnWidth(70),
       cellClass: 'text-center',
     },
     {
       headerName: '증권번호',
       field: 'policyNumber',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center',
     },
     {
       headerName: '변경설계번호',
       field: 'changedDesignNumber',
-      width: 120,
+      flex: 1,
+      minWidth: attributeColumnWidth(120),
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
@@ -121,14 +125,14 @@ const Ltpz00503 = () => {
         {
           headerName: '상해급수',
           field: 'beforeInjuryGrade',
-          width: 60,
+          flex: 1,
+          minWidth: attributeColumnWidth(60),
           cellClass: 'text-center',
         },
         {
           headerName: '직업',
           field: 'beforeJobName',
-          minWidth: 180,
-          flex: 1,
+          flex: 10,
           cellClass: 'text-center',
         },
       ],
@@ -140,14 +144,14 @@ const Ltpz00503 = () => {
         {
           headerName: '상해급수',
           field: 'afterInjuryGrade',
-          width: 60,
+          flex: 1,
+          minWidth: attributeColumnWidth(60),
           cellClass: 'text-center',
         },
         {
           headerName: '직업',
           field: 'afterJobName',
-          minWidth: 180,
-          flex: 1,
+          flex: 10,
           headerClass: 'border-r-0!',
           cellStyle: { borderRight: 'none' },
           cellClass: 'text-center border-r-0!',
@@ -186,7 +190,7 @@ const Ltpz00503 = () => {
         </FormTable>
 
         <Gcol className="gap-1 relative">
-          <div className="ag-theme-alpine h-full min-h-[12.3rem]">
+          <div className="ag-theme-alpine h-full inner-scroll" data-row={JobDummyData.length}>
             <AgGridReact<JobDataType>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}

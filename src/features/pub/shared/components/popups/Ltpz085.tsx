@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -24,41 +24,56 @@ import * as React from 'react';
 
 type DummyDataType = {
   id: number;
+  isEdit: boolean;
   field01: string | number;
   field02: string | number;
 };
 const DummyData: DummyDataType[] = [
-  { id: 1, field01: '여성통합암(4대유사암 제외)진단비', field02: 0 },
+  {
+    id: 1,
+    field01: '여성통합암(4대유사암 제외)진단비',
+    isEdit: false,
+    field02: 0,
+  },
   {
     id: 2,
     field01:
       '여성통합암(4대유사암 제외)진단비 여성통합암(4대유사암 제외)진단비여성통합암(4대유사암 제외)진단비 여성통합암(4대유사암 제외)진단비 여성통합암(4대유사암 제외)진단비여성통합암(4대유사암 제외)진단비',
-    field02: 100,
+    isEdit: true,
+    field02: 1000,
   },
-  { id: 3, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
-  { id: 4, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
-  { id: 5, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
-  { id: 6, field01: '여성통합암(4대유사암 제외)진단비', field02: 7000 },
+  {
+    id: 3,
+    field01: '여성통합암(4대유사암 제외)진단비 여성통합암(4대유사암 제외)',
+    isEdit: false,
+    field02: 1000,
+  },
+  {
+    id: 4,
+    field01: '여성통합암(4대유사암 제외)진단비 ',
+    isEdit: true,
+    field02: 1000,
+  },
 ];
 
 const Ltrz085 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '할증담보',
-      flex: 1,
+      flex: 10,
       field: 'field01',
-      cellClass: 'text-left',
-      autoHeight: true,
+      cellClass: (params) => `text-left ${params.node.rowIndex !== 0 ? '!pl-4' : ''}`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
       headerName: '설계금액',
-      width: 120,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       field: 'field02',
-      cellClass: 'text-right editable-cell [&_.ag-cell-value]:-tracking-[0.03rem]! [&_input]:-tracking-[0.03rem]!',
-      autoHeight: true,
+      cellClass: (params) => `text-right ${params.data?.isEdit ? 'editable-cell' : ''}`,
       valueFormatter: numberValueFormatter,
-      editable: true,
+      editable: (params) => params.data?.isEdit === true,
     },
   ];
 
@@ -84,8 +99,8 @@ const Ltrz085 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[1fr]">
-          <div className="ag-theme-alpine min-h-[18.4rem]">
+        <DialogSection>
+          <div className="ag-theme-alpine inner-scroll" data-row={gridRowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={gridRowData}

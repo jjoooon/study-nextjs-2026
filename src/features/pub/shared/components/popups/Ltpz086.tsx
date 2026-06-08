@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths, numberValueFormatter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
@@ -19,7 +19,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@uiux/Table';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -47,10 +46,10 @@ const DummyData: DummyDataType[] = [
     field04: '2010-09-30',
     field05: '2099-12-31',
     field06: '암(4대유사암제외)진단비',
-    field07: '2,000',
+    field07: 2000,
     field08: '1.0',
     field09: '정상',
-    field10: '1,000',
+    field10: 1000,
   },
   {
     id: 2,
@@ -60,10 +59,10 @@ const DummyData: DummyDataType[] = [
     field04: '2010-09-30',
     field05: '2099-12-31',
     field06: '암(4대유사암제외)진단비',
-    field07: '2,000',
+    field07: 2000,
     field08: '1.0',
-    field09: '정상',
-    field10: '1,000',
+    field09: '청약완료',
+    field10: 1000,
   },
   {
     id: 3,
@@ -73,10 +72,10 @@ const DummyData: DummyDataType[] = [
     field04: '2010-09-30',
     field05: '2099-12-31',
     field06: '암(4대유사암제외)진단비 암(4대유사암제외)진단비',
-    field07: '2,000',
+    field07: 2000,
     field08: '20.0',
     field09: '정상',
-    field10: '1,000',
+    field10: 1000,
   },
   {
     id: 4,
@@ -86,40 +85,63 @@ const DummyData: DummyDataType[] = [
     field04: '2010-09-30',
     field05: '2099-12-31',
     field06: '암(4대유사암제외)진단비',
-    field07: '2,000',
+    field07: 2000,
     field08: '1.0',
     field09: '정상',
-    field10: '1,000',
+    field10: 1000,
+  },
+];
+
+type DummyData2Type = {
+  id: number;
+  field01: string;
+  field02: string;
+  field03: string;
+  field04: number;
+  field05: number;
+  field06: number;
+};
+const DummyData2: DummyData2Type[] = [
+  {
+    id: 1,
+    field01: '청약완료불가(업계누적)',
+    field02: '암진단비(손생보)',
+    field03: '-',
+    field04: 4500,
+    field05: 4500,
+    field06: 30000,
   },
 ];
 const Ltpz086 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '회사명',
       field: 'field01',
-      minWidth: 100,
+      minWidth: attributeColumnWidth(80),
       flex: 1,
       spanRows: true,
+      autoHeight: true,
       colSpan: (params) => (params.node?.rowPinned ? 9 : 1),
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'text-center',
       cellStyle: (params) => (params.node?.rowPinned ? { textAlign: 'center' } : undefined),
     },
     {
       headerName: '증권번호/설계번호',
       field: 'field02',
-      minWidth: 140,
+      minWidth: attributeColumnWidth(120),
       flex: 1,
+      autoHeight: true,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'text-center',
     },
     {
       headerName: '상품명',
       field: 'field03',
       wrapText: true,
       autoHeight: true,
-      flex: 3,
+      flex: 10,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
         return (
           <div
@@ -132,24 +154,27 @@ const Ltpz086 = () => {
     {
       headerName: '보험시기',
       field: 'field04',
-      minWidth: 80,
+      minWidth: attributeColumnWidth(76),
       flex: 1,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'text-center',
+      autoHeight: true,
     },
     {
       headerName: '보험종기',
       field: 'field05',
-      minWidth: 80,
+      minWidth: attributeColumnWidth(76),
       flex: 1,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'text-center',
+      autoHeight: true,
     },
     {
       headerName: '담보명',
       field: 'field06',
-      flex: 3,
+      flex: 15,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
+      autoHeight: true,
       cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
         return (
@@ -163,33 +188,84 @@ const Ltpz086 = () => {
     {
       headerName: '가입금액',
       field: 'field07',
-      minWidth: 80,
+      minWidth: attributeColumnWidth(70),
       flex: 1,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'flex! items-center! justify-end!',
+      cellClass: 'text-right',
+      autoHeight: true,
+      valueFormatter: numberValueFormatter,
     },
     {
       headerName: '배수',
       field: 'field08',
-      minWidth: 60,
+      minWidth: attributeColumnWidth(46),
       flex: 1,
+      autoHeight: true,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'flex! items-center! justify-end!',
+      cellClass: 'text-center',
     },
     {
       headerName: '상태',
       field: 'field09',
-      minWidth: 60,
+      minWidth: attributeColumnWidth(60),
       flex: 1,
+      autoHeight: true,
       colSpan: (params) => (params.node?.rowPinned ? 0 : 1),
-      cellClass: 'flex! items-center! justify-center!',
+      cellClass: 'text-center',
     },
     {
       headerName: '반영금액',
       field: 'field10',
-      minWidth: 80,
+      minWidth: attributeColumnWidth(70),
       flex: 1,
-      cellClass: 'flex! items-center! justify-end!',
+      autoHeight: true,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
+    },
+  ];
+
+  const columnDefs2: ColDef<DummyData2Type>[] = [
+    {
+      headerName: '인수제한',
+      field: 'field01',
+      flex: 10,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '누적명',
+      field: 'field02',
+      flex: 10,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '누적유형',
+      field: 'field03',
+      flex: 5,
+      cellClass: 'text-center',
+    },
+    {
+      headerName: '기누적금액',
+      field: 'field04',
+      minWidth: attributeColumnWidth(100),
+      flex: 1,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '합계',
+      field: 'field05',
+      minWidth: attributeColumnWidth(100),
+      flex: 1,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
+    },
+    {
+      headerName: '한도',
+      field: 'field06',
+      minWidth: attributeColumnWidth(100),
+      flex: 1,
+      cellClass: 'text-right',
+      valueFormatter: numberValueFormatter,
     },
   ];
 
@@ -221,7 +297,7 @@ const Ltpz086 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -232,7 +308,7 @@ const Ltpz086 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr] gap-3">
+        <DialogSection className="grid-rows-[auto_auto] gap-3">
           <TableFold>
             <TableFoldHead title="위배내용">
               <Typo tag="span" variant={'body-md'}>
@@ -240,35 +316,26 @@ const Ltpz086 = () => {
               </Typo>
             </TableFoldHead>
             <TableFoldBody>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>인수제한</TableHead>
-                    <TableHead>누적명</TableHead>
-                    <TableHead>누적유형</TableHead>
-                    <TableHead>기누적금액</TableHead>
-                    <TableHead>합계</TableHead>
-                    <TableHead>한도</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell className="text-center">홍길동</TableCell>
-                    <TableCell className="text-center">Admin</TableCell>
-                    <TableCell className="text-center">활성</TableCell>
-                    <TableCell className="text-right">5,700</TableCell>
-                    <TableCell className="text-right">4,700</TableCell>
-                    <TableCell className="text-right">30,000</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+              <div className="ag-theme-alpine inner-scroll" data-row={DummyData2.length}>
+                <AgGridReact<DummyData2Type>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={DummyData2}
+                  columnDefs={columnDefs2}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  domLayout="normal"
+                />
+              </div>
             </TableFoldBody>
           </TableFold>
 
           <TableFold>
             <TableFoldHead title="기계약 사항" />
-            <TableFoldBody className="grid-rows-[1fr]">
-              <div className="ag-theme-alpine min-h-[18.4rem]">
+            <TableFoldBody>
+              <div className="ag-theme-alpine min-h-[30vh]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -279,7 +346,6 @@ const Ltpz086 = () => {
                     sortable: true,
                     resizable: true,
                   }}
-                  rowClassRules={{}}
                   enableCellSpan={true}
                   domLayout="normal"
                 />

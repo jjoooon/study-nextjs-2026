@@ -14,7 +14,7 @@ import {
 import { Gcol, Grow, Typo } from '@atoms';
 
 import { TabPager } from '@common/TabPager';
-import { AiIcon, NotificationIcon } from '@icons';
+import { AiIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-enterprise';
@@ -463,12 +463,11 @@ const Ltpz00502 = () => {
   return (
     // M2. 디자인 변경으로 수정
     <Gcol className="w-full" gap={2} placement="ss">
-      <Grow className="w-full bg-[#374151]" variant={'box-round'} placement="sc">
-        <NotificationIcon />
-        <Typo tag={'p'} variant={'body-md'} weight={'normal'} className="text-white">
+      <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+        <Typo variant={'body-sm'} icon={'info'}>
           청약완료불가(당사누적) 및 청약완료불가(업계누적)은 청약완료 전 까지만 해소하면 됩니다.
         </Typo>
-      </Grow>
+      </Gcol>
       <TabPager
         active={groupTabValue}
         data={groupTabs}

@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { RecommendCard } from '@common/RecommendCard';
@@ -181,6 +181,7 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
 ];
 
 const Ltpz00504 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [aiReasonOpen, setAiReasonOpen] = React.useState(false);
 
   // 제한담보
@@ -188,13 +189,14 @@ const Ltpz00504 = () => {
     {
       headerName: '제한 담보명',
       field: 'coverageName',
-      flex: 1,
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<ExpectedUwAmountRow>({ field: 'coverageName' }),
     },
     {
       headerName: '가입금액(원)',
       field: 'amount',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-right',
       cellRenderer: (params: { value: string | number }) => {
         const value = String(params.value ?? '');
@@ -225,13 +227,14 @@ const Ltpz00504 = () => {
     {
       headerName: '부담보부위명',
       field: 'coverageName',
-      flex: 1,
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<ExpectedUw03Row>({ field: 'coverageName' }),
     },
     {
       headerName: '기간',
       field: 'date',
-      width: 60,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: 'text-center',
       cellRenderer: (params: { value: string | number }) => {
         const value = String(params.value ?? '');
