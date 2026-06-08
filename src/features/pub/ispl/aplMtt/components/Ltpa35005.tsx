@@ -3,8 +3,6 @@
  */
 'use client';
 
-import React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -20,6 +18,8 @@ import { Checkbox, CheckboxGroupItem, CheckboxGroup } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 interface TabDataType {
   id: string | number;
@@ -363,7 +363,6 @@ export const Ltpa35005 = () => {
                         <Grow className="w-full" placement="ss">
                           <RadioGroup defaultValue="아니요" className="w-full" width={'full'}>
                             <Gcol placement="se" className="w-full">
-                              {/* M1. 정렬관련 수정 */}
                               <Grow className="w-full flex-wrap" placement="sc">
                                 <RadioGroupItem value="예">예</RadioGroupItem>
                                 <Grow className="whitespace-nowrap">
