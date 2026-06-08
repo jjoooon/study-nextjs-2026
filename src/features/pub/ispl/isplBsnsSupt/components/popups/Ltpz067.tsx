@@ -3,10 +3,7 @@
  */
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Grid, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -23,6 +20,10 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -144,73 +145,85 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 const Ltpz067 = () => {
-  const columnDefs1: ColDef<DummyDataType1>[] = [
-    {
-      headerName: '납입회차',
-      field: 'field01',
-      width: 100,
-      autoHeight: true,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '보장보험료',
-      field: 'field02',
-      width: 100,
-      autoHeight: true,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '적립보험료',
-      field: 'field03',
-      width: 100,
-      autoHeight: true,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '합계보험료',
-      field: 'field04',
-      width: 100,
-      autoHeight: true,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '납입보험료',
-      field: 'field05',
-      width: 100,
-      autoHeight: true,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '상세',
-      field: 'field06',
-      flex: 1,
-      autoHeight: true,
-      wrapText: true,
-      cellClass: '!leading-[1.4] !py-1',
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs1 = React.useMemo<ColDef<DummyDataType1>[]>(
+    () => [
+      {
+        headerName: '납입회차',
+        field: 'field01',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        autoHeight: true,
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '보장보험료',
+        field: 'field02',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        autoHeight: true,
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '적립보험료',
+        field: 'field03',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        autoHeight: true,
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '합계보험료',
+        field: 'field04',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        autoHeight: true,
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '납입보험료',
+        field: 'field05',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        autoHeight: true,
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '상세',
+        field: 'field06',
+        flex: 1,
+        autoHeight: true,
+        wrapText: true,
+        cellClass: '!leading-[1.4] !py-1',
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '할인명',
-      field: 'field01',
-      width: 200,
-      autoHeight: true,
-    },
-    {
-      headerName: '할인상세',
-      field: 'field02',
-      flex: 1,
-      autoHeight: true,
-      wrapText: true,
-      cellClass: '!leading-[1.4] !py-1 !whitespace-pre-line',
-    },
-  ];
-
+  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
+    () => [
+      {
+        headerName: '할인명',
+        field: 'field01',
+        flex: 1,
+        width: attributeColumnWidth(200),
+        autoHeight: true,
+      },
+      {
+        headerName: '할인상세',
+        field: 'field02',
+        flex: 2,
+        autoHeight: true,
+        wrapText: true,
+        cellClass: '!leading-[1.4] !py-1 !whitespace-pre-line',
+      },
+    ],
+    [attributeColumnWidth]
+  );
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
@@ -246,7 +259,7 @@ const Ltpz067 = () => {
               <TableFoldBody className="gap-2">
                 {/* 2026-05-27 Grid 추가 */}
                 <Grid placement={'ss'} className="grid-rows-[1fr_auto] gap-2">
-                  <div className="ag-theme-alpine min-h-[19.6rem]">
+                  <div className="ag-theme-alpine inner-scroll" data-row={DummyData1.length}>
                     <AgGridReact<DummyDataType1>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -271,7 +284,7 @@ const Ltpz067 = () => {
             <TableFold>
               <TableFoldHead title="할인종류" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyData2.length}>
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

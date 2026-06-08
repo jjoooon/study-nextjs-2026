@@ -4,13 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useState } from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { useTabs } from '@/shared/hooks/useTabs';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo, Grid, Divider } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
@@ -35,6 +29,12 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 type DummyDataType = {
   id: number;
@@ -50,6 +50,195 @@ const DataTabs = [
   { label: '대장·직장용종', value: 'TAB3' },
   { label: '추간판장애', value: 'TAB4' },
   { label: '어깨병변', value: 'TAB5' },
+];
+
+type DummyDataType3 = {
+  id: number;
+  field1: string | number;
+  field2: boolean;
+  field3: string | number;
+  field4: boolean;
+  field5: string | number;
+  field6: string | number;
+  field7: string | number;
+  field8: string | number;
+  field9: string | number;
+  field10: string | number;
+  field11: string | number;
+  field12: string | number;
+  field13: string | number;
+  field14: string | number;
+  field15: string | number;
+  field16: string | number;
+  field17: string | number;
+  field18: string | number;
+  field19: string | number;
+  field20: string | number;
+  field21: string | number;
+  field22: string | number;
+  field23: string | number;
+};
+
+const dummyData2: DummyDataType3[] = [
+  {
+    id: 1,
+    field1: '15일이하',
+    field2: true,
+    field3: '즉시',
+    field4: false,
+    field5: '인수',
+    field6: '할증(20)',
+    field7: '거절',
+    field8: '할증(10)',
+    field9: '거절',
+    field10: '거절',
+    field11: '할증(30)',
+    field12: '인수',
+    field13: '인수',
+    field14: '인수',
+    field15: '인수',
+    field16: '인수',
+    field17: '인수',
+    field18: '서류',
+    field19: '서류',
+    field20: '서류',
+    field21: '진단',
+    field22: '',
+    field23: '',
+  },
+  {
+    id: 2,
+    field1: '15일이하',
+    field2: true,
+    field3: '3개월이내',
+    field4: false,
+    field5: '인수',
+    field6: '할증(20)',
+    field7: '거절',
+    field8: '할증(10)',
+    field9: '거절',
+    field10: '거절',
+    field11: '할증(30)',
+    field12: '인수',
+    field13: '인수',
+    field14: '인수',
+    field15: '인수',
+    field16: '인수',
+    field17: '인수',
+    field18: '서류',
+    field19: '서류',
+    field20: '서류',
+    field21: '진단',
+    field22: '',
+    field23: '',
+  },
+  {
+    id: 3,
+    field1: '15일이하',
+    field2: true,
+    field3: '즉시',
+    field4: false,
+    field5: '인수',
+    field6: '할증(20)',
+    field7: '거절',
+    field8: '할증(10)',
+    field9: '거절',
+    field10: '거절',
+    field11: '할증(30)',
+    field12: '인수',
+    field13: '인수',
+    field14: '인수',
+    field15: '인수',
+    field16: '인수',
+    field17: '인수',
+    field18: '서류',
+    field19: '서류',
+    field20: '서류',
+    field21: '진단',
+    field22: '',
+    field23: '',
+  },
+];
+
+const dummyData3: DummyDataType3[] = [
+  {
+    id: 1,
+    field1: '15일이하',
+    field2: true,
+    field3: '즉시',
+    field4: false,
+    field5: '인수',
+    field6: '할증(20)',
+    field7: '거절',
+    field8: '할증(10)',
+    field9: '거절',
+    field10: '거절',
+    field11: '할증(30)',
+    field12: '인수',
+    field13: '인수',
+    field14: '인수',
+    field15: '인수',
+    field16: '인수',
+    field17: '인수',
+    field18: '서류',
+    field19: '서류',
+    field20: '서류',
+    field21: '진단',
+    field22: '',
+    field23: '',
+  },
+  {
+    id: 2,
+    field1: '15일이하',
+    field2: true,
+    field3: '3개월이내',
+    field4: false,
+    field5: '인수',
+    field6: '할증(20)',
+    field7: '거절',
+    field8: '할증(10)',
+    field9: '거절',
+    field10: '거절',
+    field11: '할증(30)',
+    field12: '인수',
+    field13: '인수',
+    field14: '인수',
+    field15: '인수',
+    field16: '인수',
+    field17: '인수',
+    field18: '서류',
+    field19: '서류',
+    field20: '서류',
+    field21: '진단',
+    field22: '',
+    field23: '',
+  },
+  {
+    id: 3,
+    field1: '15일이하',
+    field2: true,
+    field3: '즉시',
+    field4: false,
+    field5: '인수',
+    field6: '할증(20)',
+    field7: '거절',
+    field8: '할증(10)',
+    field9: '거절',
+    field10: '거절',
+    field11: '할증(30)',
+    field12: '인수',
+    field13: '인수',
+    field14: '인수',
+    field15: '인수',
+    field16: '인수',
+    field17: '인수',
+    field18: '서류',
+    field19: '서류',
+    field20: '서류',
+    field21: '진단',
+    field22: '',
+    field23: '',
+  },
 ];
 
 const Ltpz031 = () => {
@@ -166,523 +355,383 @@ const Ltpz031 = () => {
     field22: string | number;
     field23: string | number;
   };
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '위험분류',
-      width: 240,
-      cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
-        return (
-          <div className="grid h-full w-full items-stretch [grid-template-columns:35%_15%_35%_15%]">
-            <span className="flex h-full items-center justify-center">{params.data?.field1}</span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200">
-              {typeof params.data?.field2 === 'boolean' ? (params.data.field2 ? 'Y' : 'N') : params.data?.field2}
-            </span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200">
-              {params.data?.field3}
-            </span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200">
-              {typeof params.data?.field4 === 'boolean' ? (params.data.field4 ? 'Y' : 'N') : params.data?.field4}
-            </span>
-          </div>
-        );
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
+    () => [
+      {
+        headerName: '위험분류',
+        cellClass: 'text-center',
+        cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+          return (
+            <div className="grid h-full w-full items-stretch [grid-template-columns:35%_15%_35%_15%]">
+              <span className="flex h-full items-center justify-center">{params.data?.field1}</span>
+              <span className="flex h-full items-center justify-center border-l border-gray-200">
+                {typeof params.data?.field2 === 'boolean' ? (params.data.field2 ? 'Y' : 'N') : params.data?.field2}
+              </span>
+              <span className="flex h-full items-center justify-center border-l border-gray-200">
+                {params.data?.field3}
+              </span>
+              <span className="flex h-full items-center justify-center border-l border-gray-200">
+                {typeof params.data?.field4 === 'boolean' ? (params.data.field4 ? 'Y' : 'N') : params.data?.field4}
+              </span>
+            </div>
+          );
+        },
       },
-    },
-    {
-      field: 'field5',
-      width: 80,
-      cellClass: 'text-center',
-      wrapText: true,
-      autoHeight: true,
-      headerComponent: () => (
-        <div className="w-full text-center whitespace-normal px-1">
-          질병사망
-          <br />
-          고도후유
-        </div>
-      ),
-    },
-    {
-      field: 'field6',
-      width: 80,
-      cellClass: 'text-center',
-      headerComponent: () => (
-        <div className="w-full text-center whitespace-normal px-1">
-          질병휴우
-          <br />
-          (경증)
-        </div>
-      ),
-    },
-    {
-      headerName: '2대질병',
-      field: 'field7',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '암',
-      field: 'field8',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '질병수술',
-      field: 'field9',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      field: 'field10',
-      width: 80,
-      cellClass: 'text-center',
-      headerComponent: () => (
-        <div className="w-full text-center whitespace-normal px-1">
-          질병중환
-          <br />
-          자실입원
-        </div>
-      ),
-    },
-    {
-      headerName: '질병입원',
-      field: 'field11',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '질병치료',
-      field: 'field12',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      field: 'field13',
-      width: 80,
-      cellClass: 'text-center',
-      headerComponent: () => (
-        <div className="w-full text-center whitespace-normal px-1">
-          상해사망
-          <br />
-          고도후유
-        </div>
-      ),
-    },
-    {
-      headerName: '상해50%',
-      field: 'field14',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '상해수술',
-      field: 'field15',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '상해입원',
-      field: 'field16',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '상해치료',
-      field: 'field17',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '장기요양',
-      field: 'field18',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '치매',
-      field: 'field19',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '치아',
-      field: 'field20',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '실손',
-      field: 'field21',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '서류',
-      field: 'field22',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '참고사항',
-      field: 'field23',
-      width: 80,
-      cellClass: 'text-center',
-    },
-  ];
-  const dummyData2: DummyDataType3[] = [
-    {
-      id: 1,
-      field1: '15일이하',
-      field2: true,
-      field3: '즉시',
-      field4: false,
-      field5: '인수',
-      field6: '할증(20)',
-      field7: '거절',
-      field8: '할증(10)',
-      field9: '거절',
-      field10: '거절',
-      field11: '할증(30)',
-      field12: '인수',
-      field13: '인수',
-      field14: '인수',
-      field15: '인수',
-      field16: '인수',
-      field17: '인수',
-      field18: '서류',
-      field19: '서류',
-      field20: '서류',
-      field21: '진단',
-      field22: '',
-      field23: '',
-    },
-    {
-      id: 2,
-      field1: '15일이하',
-      field2: true,
-      field3: '3개월이내',
-      field4: false,
-      field5: '인수',
-      field6: '할증(20)',
-      field7: '거절',
-      field8: '할증(10)',
-      field9: '거절',
-      field10: '거절',
-      field11: '할증(30)',
-      field12: '인수',
-      field13: '인수',
-      field14: '인수',
-      field15: '인수',
-      field16: '인수',
-      field17: '인수',
-      field18: '서류',
-      field19: '서류',
-      field20: '서류',
-      field21: '진단',
-      field22: '',
-      field23: '',
-    },
-    {
-      id: 3,
-      field1: '15일이하',
-      field2: true,
-      field3: '즉시',
-      field4: false,
-      field5: '인수',
-      field6: '할증(20)',
-      field7: '거절',
-      field8: '할증(10)',
-      field9: '거절',
-      field10: '거절',
-      field11: '할증(30)',
-      field12: '인수',
-      field13: '인수',
-      field14: '인수',
-      field15: '인수',
-      field16: '인수',
-      field17: '인수',
-      field18: '서류',
-      field19: '서류',
-      field20: '서류',
-      field21: '진단',
-      field22: '',
-      field23: '',
-    },
-  ];
+      {
+        field: 'field5',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        wrapText: true,
+        autoHeight: true,
+        headerComponent: () => (
+          <div className="w-full text-center whitespace-normal px-1">
+            질병사망
+            <br />
+            고도후유
+          </div>
+        ),
+      },
+      {
+        field: 'field6',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        headerComponent: () => (
+          <div className="w-full text-center whitespace-normal px-1">
+            질병휴우
+            <br />
+            (경증)
+          </div>
+        ),
+      },
+      {
+        headerName: '2대질병',
+        field: 'field7',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '암',
+        field: 'field8',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '질병수술',
+        field: 'field9',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        field: 'field10',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        headerComponent: () => (
+          <div className="w-full text-center whitespace-normal px-1">
+            질병중환
+            <br />
+            자실입원
+          </div>
+        ),
+      },
+      {
+        headerName: '질병입원',
+        field: 'field11',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '질병치료',
+        field: 'field12',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        field: 'field13',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        headerComponent: () => (
+          <div className="w-full text-center whitespace-normal px-1">
+            상해사망
+            <br />
+            고도후유
+          </div>
+        ),
+      },
+      {
+        headerName: '상해50%',
+        field: 'field14',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '상해수술',
+        field: 'field15',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '상해입원',
+        field: 'field16',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '상해치료',
+        field: 'field17',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '장기요양',
+        field: 'field18',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '치매',
+        field: 'field19',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '치아',
+        field: 'field20',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '실손',
+        field: 'field21',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '서류',
+        field: 'field22',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '참고사항',
+        field: 'field23',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
-  type DummyDataType3 = {
-    id: number;
-    field1: string | number;
-    field2: boolean;
-    field3: string | number;
-    field4: boolean;
-    field5: string | number;
-    field6: string | number;
-    field7: string | number;
-    field8: string | number;
-    field9: string | number;
-    field10: string | number;
-    field11: string | number;
-    field12: string | number;
-    field13: string | number;
-    field14: string | number;
-    field15: string | number;
-    field16: string | number;
-    field17: string | number;
-    field18: string | number;
-    field19: string | number;
-    field20: string | number;
-    field21: string | number;
-    field22: string | number;
-    field23: string | number;
-  };
-  const columnDefs3: ColDef<DummyDataType3>[] = [
-    {
-      headerName: '입원일수',
-      field: 'field1',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '수술유무',
-      field: 'field2',
-      width: 80,
-      cellClass: 'text-center',
-      cellRenderer: ({ value }: { value: boolean }) => (value ? 'Y' : 'N'),
-    },
-    {
-      headerName: '경과일수',
-      field: 'field3',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '재발',
-      field: 'field4',
-      width: 80,
-      cellClass: 'text-center',
-      cellRenderer: ({ value }: { value: boolean }) => (value ? 'Y' : 'N'),
-    },
-    {
-      field: 'field5',
-      width: 80,
-      cellClass: 'text-center',
-      headerComponent: () => (
-        <div className="w-full text-center whitespace-normal px-1">
-          질병사망
-          <br />
-          고도후유
-        </div>
-      ),
-    },
-    {
-      field: 'field6',
-      width: 80,
-      cellClass: 'text-center',
-      headerComponent: () => (
-        <div className="w-full text-center whitespace-normal px-1">
-          질병휴우
-          <br />
-          (경증)
-        </div>
-      ),
-    },
-    {
-      headerName: '2대질병',
-      field: 'field7',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '암',
-      field: 'field8',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '질병수술',
-      field: 'field9',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      field: 'field10',
-      width: 80,
-      cellClass: 'text-center',
-      headerComponent: () => (
-        <div className="w-full text-center whitespace-normal px-1">
-          질병중환
-          <br />
-          자실입원
-        </div>
-      ),
-    },
-    {
-      headerName: '질병입원',
-      field: 'field11',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '질병치료',
-      field: 'field12',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      field: 'field13',
-      width: 80,
-      cellClass: 'text-center',
-      headerComponent: () => (
-        <div className="w-full text-center whitespace-normal px-1">
-          상해사망
-          <br />
-          고도후유
-        </div>
-      ),
-    },
-    {
-      headerName: '상해50%',
-      field: 'field14',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '상해수술',
-      field: 'field15',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '상해입원',
-      field: 'field16',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '상해치료',
-      field: 'field17',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '장기요양',
-      field: 'field18',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '치매',
-      field: 'field19',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '치아',
-      field: 'field20',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '실손',
-      field: 'field21',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '서류',
-      field: 'field22',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '참고사항',
-      field: 'field23',
-      width: 80,
-      cellClass: 'text-center',
-    },
-  ];
-  const dummyData3: DummyDataType3[] = [
-    {
-      id: 1,
-      field1: '15일이하',
-      field2: true,
-      field3: '즉시',
-      field4: false,
-      field5: '인수',
-      field6: '할증(20)',
-      field7: '거절',
-      field8: '할증(10)',
-      field9: '거절',
-      field10: '거절',
-      field11: '할증(30)',
-      field12: '인수',
-      field13: '인수',
-      field14: '인수',
-      field15: '인수',
-      field16: '인수',
-      field17: '인수',
-      field18: '서류',
-      field19: '서류',
-      field20: '서류',
-      field21: '진단',
-      field22: '',
-      field23: '',
-    },
-    {
-      id: 2,
-      field1: '15일이하',
-      field2: true,
-      field3: '3개월이내',
-      field4: false,
-      field5: '인수',
-      field6: '할증(20)',
-      field7: '거절',
-      field8: '할증(10)',
-      field9: '거절',
-      field10: '거절',
-      field11: '할증(30)',
-      field12: '인수',
-      field13: '인수',
-      field14: '인수',
-      field15: '인수',
-      field16: '인수',
-      field17: '인수',
-      field18: '서류',
-      field19: '서류',
-      field20: '서류',
-      field21: '진단',
-      field22: '',
-      field23: '',
-    },
-    {
-      id: 3,
-      field1: '15일이하',
-      field2: true,
-      field3: '즉시',
-      field4: false,
-      field5: '인수',
-      field6: '할증(20)',
-      field7: '거절',
-      field8: '할증(10)',
-      field9: '거절',
-      field10: '거절',
-      field11: '할증(30)',
-      field12: '인수',
-      field13: '인수',
-      field14: '인수',
-      field15: '인수',
-      field16: '인수',
-      field17: '인수',
-      field18: '서류',
-      field19: '서류',
-      field20: '서류',
-      field21: '진단',
-      field22: '',
-      field23: '',
-    },
-  ];
-
+  const columnDefs3 = React.useMemo<ColDef<DummyDataType3>[]>(
+    () => [
+      {
+        headerName: '입원일수',
+        field: 'field1',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '수술유무',
+        field: 'field2',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        cellRenderer: ({ value }: { value: boolean }) => (value ? 'Y' : 'N'),
+      },
+      {
+        headerName: '경과일수',
+        field: 'field3',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '재발',
+        field: 'field4',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        cellRenderer: ({ value }: { value: boolean }) => (value ? 'Y' : 'N'),
+      },
+      {
+        field: 'field5',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        headerComponent: () => (
+          <div className="w-full text-center whitespace-normal px-1">
+            질병사망
+            <br />
+            고도후유
+          </div>
+        ),
+      },
+      {
+        field: 'field6',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        headerComponent: () => (
+          <div className="w-full text-center whitespace-normal px-1">
+            질병휴우
+            <br />
+            (경증)
+          </div>
+        ),
+      },
+      {
+        headerName: '2대질병',
+        field: 'field7',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '암',
+        field: 'field8',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '질병수술',
+        field: 'field9',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        field: 'field10',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        headerComponent: () => (
+          <div className="w-full text-center whitespace-normal px-1">
+            질병중환
+            <br />
+            자실입원
+          </div>
+        ),
+      },
+      {
+        headerName: '질병입원',
+        field: 'field11',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '질병치료',
+        field: 'field12',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        field: 'field13',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        headerComponent: () => (
+          <div className="w-full text-center whitespace-normal px-1">
+            상해사망
+            <br />
+            고도후유
+          </div>
+        ),
+      },
+      {
+        headerName: '상해50%',
+        field: 'field14',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '상해수술',
+        field: 'field15',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+      },
+      {
+        headerName: '상해입원',
+        field: 'field16',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '상해치료',
+        field: 'field17',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '장기요양',
+        field: 'field18',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '치매',
+        field: 'field19',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '치아',
+        field: 'field20',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '실손',
+        field: 'field21',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '서류',
+        field: 'field22',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '참고사항',
+        field: 'field23',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+    ],
+    [attributeColumnWidth]
+  );
   const [subTabs, setSubTabs] = useState('tab1');
 
   return (
@@ -1273,7 +1322,7 @@ const Ltpz031 = () => {
                           </RadioGroup>
 
                           {subTabs === 'tab1' && (
-                            <div className="ag-theme-alpine w-full min-h-[15rem]">
+                            <div className="ag-theme-alpine w-full inner-scroll" data-row={dummyData2.length}>
                               <AgGridReact<DummyDataType2>
                                 getRowId={(params) => String(params.data.id)}
                                 noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1291,7 +1340,7 @@ const Ltpz031 = () => {
                             </div>
                           )}
                           {subTabs === 'tab2' && (
-                            <div className="ag-theme-alpine w-full min-h-[15rem]">
+                            <div className="ag-theme-alpine w-full inner-scroll" data-row={dummyData3.length}>
                               <AgGridReact<DummyDataType3>
                                 getRowId={(params) => String(params.data.id)}
                                 noRowsOverlayComponent={AgGridEmptyComponent}

@@ -3,10 +3,12 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { AgGridEmptyComponent, createCellValueChangedHandler, numberValueFormatter } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createCellValueChangedHandler,
+  numberValueFormatter,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -22,8 +24,12 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
+import { useMemo } from 'storybook/internal/preview-api';
 
 type DummyDataType = {
   id: number;
@@ -93,42 +99,48 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz046 = () => {
   // AgGrid Column
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: '부호',
-      width: 50,
-      field: 'field01',
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '구분',
-      flex: 2,
-      field: 'field02',
-      cellClass: 'text-left',
-    },
-    {
-      headerName: '급수',
-      width: 60,
-      field: 'field03',
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '목적물가입금액',
-      minWidth: 110,
-      flex: 1,
-      field: 'field04',
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '가입금액',
-      minWidth: 100,
-      flex: 1,
-      field: 'field05',
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
+    () => [
+      {
+        headerName: '부호',
+        flex: 1,
+        width: attributeColumnWidth(50),
+        field: 'field01',
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '구분',
+        flex: 2,
+        field: 'field02',
+        cellClass: 'text-left',
+      },
+      {
+        headerName: '급수',
+        width: attributeColumnWidth(60),
+        flex: 1,
+        field: 'field03',
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '목적물가입금액',
+        minWidth: attributeColumnWidth(110),
+        flex: 1,
+        field: 'field04',
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '가입금액',
+        minWidth: attributeColumnWidth(100),
+        flex: 1,
+        field: 'field05',
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
@@ -165,7 +177,7 @@ const Ltpz046 = () => {
             </FormTable>
           </Grow>
           <Grow className="w-full">
-            <div className="ag-theme-alpine min-h-[18.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData}

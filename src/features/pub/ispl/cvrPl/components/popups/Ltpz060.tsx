@@ -4,10 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -25,6 +22,9 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 
 type DummyDataType = {
   id: number;
@@ -95,12 +95,13 @@ const dummyData: DummyDataType[] = [
 
 const Ltpz060 = () => {
   const [rowData] = useState<DummyDataType[]>(dummyData);
-
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '부호',
       field: 'field01',
-      width: 50,
+      flex: 1,
+      width: attributeColumnWidth(50),
       cellClass: 'text-center',
     },
     {
@@ -113,7 +114,7 @@ const Ltpz060 = () => {
     {
       field: 'field03',
       headerName: '급수',
-      width: 60,
+      width: attributeColumnWidth(60),
       cellClass: 'text-center h-full',
     },
     {
@@ -161,7 +162,7 @@ const Ltpz060 = () => {
           </Grow>
 
           <Grid placement={'ss'} className="w-full grid-rows-[1fr_auto] gap-3">
-            <div className="ag-theme-alpine min-h-[18.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
@@ -179,7 +180,7 @@ const Ltpz060 = () => {
                 }}
                 selectionColumnDef={{
                   headerName: '선택',
-                  width: 50,
+                  width: 30,
                 }}
                 domLayout="normal"
                 tooltipShowMode="whenTruncated"

@@ -3,10 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -24,8 +21,12 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
+import { useMemo } from 'storybook/internal/preview-api';
 
 // dummy data
 type DummyDataType = {
@@ -147,158 +148,175 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz039 = () => {
   // AgGrid Column
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerComponent: () => (
-        <Grow className="w-full" placement="cc">
-          경과
-          <br />
-          시간
-        </Grow>
-      ),
-      width: 50,
-      field: 'field01',
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '기본계약 및 특약담보(실손의료비 제외)',
-      cellClass: 'text-center',
-      headerClass: 'ag-header-right-divider',
-      children: [
-        {
-          headerName: '납입보험료',
-          field: 'field02',
-          flex: 1,
-          cellClass: 'text-right',
-          valueFormatter: numberValueFormatter<DummyDataType>,
-        },
-        {
-          headerName: '최저보증이율 적용시',
-          cellClass: 'text-right',
-          headerClass: 'ag-header-right-divider',
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
+    () => [
+      {
+        headerComponent: () => (
+          <Grow className="w-full" placement="cc">
+            경과
+            <br />
+            시간
+          </Grow>
+        ),
+        flex: 1,
+        width: attributeColumnWidth(50),
+        field: 'field01',
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '기본계약 및 특약담보(실손의료비 제외)',
+        cellClass: 'text-center',
+        headerClass: 'ag-header-right-divider',
+        children: [
+          {
+            headerName: '납입보험료',
+            field: 'field02',
+            flex: 1,
+            cellClass: 'text-right',
+            valueFormatter: numberValueFormatter<DummyDataType>,
+          },
+          {
+            headerName: '최저보증이율 적용시',
+            cellClass: 'text-right',
+            headerClass: 'ag-header-right-divider',
 
-          children: [
-            {
-              headerName: '적립부분',
-              field: 'field03',
-              width: 70,
-              cellClass: 'text-right',
-              valueFormatter: numberValueFormatter<DummyDataType>,
-            },
-            {
-              headerName: '보장부분',
-              field: 'field04',
-              width: 70,
-              cellClass: 'text-right',
-              valueFormatter: numberValueFormatter<DummyDataType>,
-            },
-            {
-              headerName: '합계',
-              field: 'field05',
-              width: 70,
-              cellClass: 'text-right',
-              valueFormatter: numberValueFormatter<DummyDataType>,
-            },
-            {
-              headerName: '환급율',
-              field: 'field06',
-              width: 50,
-              cellClass: 'text-center',
-            },
-          ],
-        },
-        {
-          headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
-          cellClass: 'text-right',
-          headerClass: 'ag-header-right-divider',
+            children: [
+              {
+                headerName: '적립부분',
+                field: 'field03',
+                flex: 1,
+                width: attributeColumnWidth(70),
+                cellClass: 'text-right',
+                valueFormatter: numberValueFormatter<DummyDataType>,
+              },
+              {
+                headerName: '보장부분',
+                field: 'field04',
+                flex: 1,
+                width: attributeColumnWidth(70),
+                cellClass: 'text-right',
+                valueFormatter: numberValueFormatter<DummyDataType>,
+              },
+              {
+                headerName: '합계',
+                field: 'field05',
+                flex: 1,
+                width: attributeColumnWidth(70),
+                cellClass: 'text-right',
+                valueFormatter: numberValueFormatter<DummyDataType>,
+              },
+              {
+                headerName: '환급율',
+                field: 'field06',
+                flex: 1,
+                width: attributeColumnWidth(50),
+                cellClass: 'text-center',
+              },
+            ],
+          },
+          {
+            headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
+            cellClass: 'text-right',
+            headerClass: 'ag-header-right-divider',
 
-          children: [
-            {
-              headerName: '적립부분',
-              field: 'field07',
-              width: 70,
-              cellClass: 'text-right',
-              valueFormatter: numberValueFormatter<DummyDataType>,
-            },
-            {
-              headerName: '보장부분',
-              field: 'field08',
-              width: 70,
-              cellClass: 'text-right',
-              valueFormatter: numberValueFormatter<DummyDataType>,
-            },
-            {
-              headerName: '합계',
-              field: 'field09',
-              width: 70,
-              cellClass: 'text-right',
-              valueFormatter: numberValueFormatter<DummyDataType>,
-            },
-            {
-              headerName: '환급율',
-              field: 'field10',
-              width: 50,
-              cellClass: 'text-center',
-            },
-          ],
-        },
-        {
-          headerName: '평균공시이율(1.5%) 적용시',
-          cellClass: 'text-center',
-          headerClass: 'ag-header-right-divider',
+            children: [
+              {
+                headerName: '적립부분',
+                field: 'field07',
+                flex: 1,
+                width: attributeColumnWidth(70),
+                cellClass: 'text-right',
+                valueFormatter: numberValueFormatter<DummyDataType>,
+              },
+              {
+                headerName: '보장부분',
+                field: 'field08',
+                flex: 1,
+                width: attributeColumnWidth(70),
+                cellClass: 'text-right',
+                valueFormatter: numberValueFormatter<DummyDataType>,
+              },
+              {
+                headerName: '합계',
+                field: 'field09',
+                flex: 1,
+                width: attributeColumnWidth(70),
+                cellClass: 'text-right',
+                valueFormatter: numberValueFormatter<DummyDataType>,
+              },
+              {
+                headerName: '환급율',
+                field: 'field10',
+                flex: 1,
+                width: attributeColumnWidth(50),
+                cellClass: 'text-center',
+              },
+            ],
+          },
+          {
+            headerName: '평균공시이율(1.5%) 적용시',
+            cellClass: 'text-center',
+            headerClass: 'ag-header-right-divider',
 
-          children: [
-            {
-              headerName: '적립부분',
-              field: 'field11',
-              width: 70,
-              cellClass: 'text-right',
-              valueFormatter: numberValueFormatter<DummyDataType>,
-            },
-            {
-              headerName: '보장부분',
-              field: 'field12',
-              width: 70,
-              cellClass: 'text-right',
-              valueFormatter: numberValueFormatter<DummyDataType>,
-            },
-            {
-              headerName: '합계',
-              field: 'field13',
-              width: 70,
-              cellClass: 'text-right',
-              valueFormatter: numberValueFormatter<DummyDataType>,
-            },
-            {
-              headerName: '환급율',
-              field: 'field14',
-              width: 50,
-              cellClass: 'text-center',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      headerName: '실손의료비',
-      children: [
-        {
-          headerName: '납입보험료',
-          field: 'field15',
-          flex: 1,
-          cellClass: 'text-right',
-          valueFormatter: numberValueFormatter<DummyDataType>,
-        },
-        {
-          headerName: '환급금',
-          field: 'field16',
-          flex: 1,
-          cellClass: 'text-right',
-          valueFormatter: numberValueFormatter<DummyDataType>,
-        },
-      ],
-    },
-  ];
+            children: [
+              {
+                headerName: '적립부분',
+                field: 'field11',
+                flex: 1,
+                width: attributeColumnWidth(70),
+                cellClass: 'text-right',
+                valueFormatter: numberValueFormatter<DummyDataType>,
+              },
+              {
+                headerName: '보장부분',
+                field: 'field12',
+                flex: 1,
+                width: attributeColumnWidth(70),
+                cellClass: 'text-right',
+                valueFormatter: numberValueFormatter<DummyDataType>,
+              },
+              {
+                headerName: '합계',
+                field: 'field13',
+                flex: 1,
+                width: attributeColumnWidth(70),
+                cellClass: 'text-right',
+                valueFormatter: numberValueFormatter<DummyDataType>,
+              },
+              {
+                headerName: '환급율',
+                field: 'field14',
+                flex: 1,
+                width: attributeColumnWidth(50),
+                cellClass: 'text-center',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        headerName: '실손의료비',
+        children: [
+          {
+            headerName: '납입보험료',
+            field: 'field15',
+            flex: 1,
+            cellClass: 'text-right',
+            valueFormatter: numberValueFormatter<DummyDataType>,
+          },
+          {
+            headerName: '환급금',
+            field: 'field16',
+            flex: 1,
+            cellClass: 'text-right',
+            valueFormatter: numberValueFormatter<DummyDataType>,
+          },
+        ],
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   // rowSelection 사용시
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
@@ -335,7 +353,7 @@ const Ltpz039 = () => {
             </FormTable>
           </Grow>
           <Gcol className="w-full grid-rows-[auto_1fr]" gap={2}>
-            <div className="ag-theme-alpine min-h-[24.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}

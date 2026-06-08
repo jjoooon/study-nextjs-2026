@@ -4,10 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -23,6 +20,9 @@ import {
 } from '@uiux/Dialog';
 import { TableCell } from '@uiux/Table';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 // Grid2 dummy data
 type DummyDataType = {
@@ -59,64 +59,72 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz027 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '대상',
-      width: 70,
-      field: 'field01',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-      spanRows: true,
-    },
-    {
-      headerName: '차수',
-      width: 70,
-      field: 'field02',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-    },
-    {
-      headerName: '의뢰일시',
-      width: 130,
-      field: 'field03',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-    },
-    {
-      headerName: '완료(취소)일시',
-      width: 130,
-      field: 'field04',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-    },
-    {
-      headerName: '진행상태',
-      width: 90,
-      field: 'field05',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-    },
-    {
-      headerName: '답변내용',
-      flex: 1,
-      field: 'field06',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-      cellRenderer: () => (
-        // 2026-06-02 버튼 추가
-        <Button variant={'outlined'} size={'md'} color={'gray'}>
-          보기
-        </Button>
-      ),
-    },
-    {
-      headerName: '확인필요',
-      flex: 1,
-      field: 'field07',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '대상',
+        flex: 1,
+        width: attributeColumnWidth(70),
+        field: 'field01',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+        spanRows: true,
+      },
+      {
+        headerName: '차수',
+        width: attributeColumnWidth(70),
+        field: 'field02',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '의뢰일시',
+        flex: 2,
+        width: attributeColumnWidth(130),
+        field: 'field03',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '완료(취소)일시',
+        flex: 2,
+        width: attributeColumnWidth(130),
+        field: 'field04',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '진행상태',
+        flex: 1,
+        width: attributeColumnWidth(90),
+        field: 'field05',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '답변내용',
+        flex: 1,
+        field: 'field06',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+        cellRenderer: () => (
+          // 2026-06-02 버튼 추가
+          <Button variant={'outlined'} size={'md'} color={'gray'}>
+            보기
+          </Button>
+        ),
+      },
+      {
+        headerName: '확인필요',
+        flex: 1,
+        field: 'field07',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+    ],
+    [attributeColumnWidth]
+  );
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
@@ -171,7 +179,7 @@ const Ltpz027 = () => {
             <Typo variant="heading-sm" color="default">
               진행이력
             </Typo>
-            <div className="ag-theme-alpine min-h-[15.3rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}

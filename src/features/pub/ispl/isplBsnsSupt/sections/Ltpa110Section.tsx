@@ -3,10 +3,6 @@
  */
 'use client';
 
-import type { ColDef, GridApi } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -21,6 +17,10 @@ import { LayoutTemplate } from '@layout/LayoutTemplate'; // 2026-05-29 경로 �
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef, GridApi } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 
 import '@/shared/lib/agGridPub';
 
@@ -165,7 +165,7 @@ export default function Ltpa110Section() {
       {
         headerName: '설계번호',
         field: 'field01',
-        flex: 1.2,
+        flex: 2,
         minwidth: attributeColumnWidth(120),
         cellClass: 'text-center',
       },

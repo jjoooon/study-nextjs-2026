@@ -3,11 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams, IHeaderParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-import { Grow, Typo } from '@/shared/components/atoms';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -23,6 +19,10 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef, ICellRendererParams, IHeaderParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React, { useMemo } from 'react';
+import { Grow, Typo } from '@/shared/components/atoms';
 
 import '@/shared/lib/agGridPub';
 
@@ -130,27 +130,32 @@ const Ltpz028 = () => {
     );
   };
 
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: '질문정보',
-      field: 'field02',
-      flex: 1,
-      minWidth: 240,
-      cellClass: 'p-0! flex',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
-      headerComponent: CombinedQuestionHeader,
-      cellRenderer: CombinedQuestionCell,
-    },
-    {
-      headerName: '답변',
-      flex: 1,
-      autoHeight: true,
-      wrapText: true,
-      cellClass: 'p-0! flex',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
-      cellRenderer: CombinedAnswerCell,
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
+    () => [
+      {
+        headerName: '질문정보',
+        field: 'field02',
+        flex: 1,
+        minWidth: attributeColumnWidth(240),
+        cellClass: 'p-0! flex',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
+        headerComponent: CombinedQuestionHeader,
+        cellRenderer: CombinedQuestionCell,
+      },
+      {
+        headerName: '답변',
+        flex: 1,
+        autoHeight: true,
+        wrapText: true,
+        cellClass: 'p-0! flex',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
+        cellRenderer: CombinedAnswerCell,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   return (
     <Dialog open>
@@ -182,7 +187,7 @@ const Ltpz028 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="ag-theme-alpine min-h-[21rem]">
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
@@ -193,6 +198,7 @@ const Ltpz028 = () => {
                 resizable: true,
               }}
               domLayout="normal"
+              animateRows={false}
             />
           </div>
         </DialogSection>

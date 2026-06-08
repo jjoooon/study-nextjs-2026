@@ -3,10 +3,7 @@
  */
 'use client';
 
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -25,6 +22,10 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -77,122 +78,137 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz065 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '회사명',
-      field: 'field01',
-      width: 150,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
-    },
-    {
-      headerName: '증권번호',
-      field: 'field02',
-      width: 120,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '보험시기',
-      field: 'field03',
-      width: 120,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '보험종기',
-      field: 'field04',
-      width: 120,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '담보상태 변경일자',
-      field: 'field05',
-      width: 120,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center `,
-    },
-    {
-      headerName: '담보상태',
-      field: 'field06',
-      width: 70,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '보장내용코드',
-      field: 'field07',
-      width: 100,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '담보특성코드',
-      field: 'field08',
-      width: 100,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '담보명',
-      field: 'field09',
-      width: 200,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-left`,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field09' }),
-    },
-    {
-      headerName: '담보코드',
-      field: 'field10',
-      width: 100,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-center`,
-    },
-    {
-      headerName: '가입액(원)',
-      field: 'field11',
-      width: 100,
-      sortable: false,
-      filter: false,
-      suppressMovable: true,
-      resizable: true,
-      cellClass: `text-right`,
-      valueParser: (params) => Number(params.newValue) || 0,
-      valueFormatter: numberValueFormatter,
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '회사명',
+        field: 'field01',
+        flex: 1,
+        width: attributeColumnWidth(150),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
+      },
+      {
+        headerName: '증권번호',
+        field: 'field02',
+        flex: 1,
+        width: attributeColumnWidth(120),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `text-center`,
+      },
+      {
+        headerName: '보험시기',
+        field: 'field03',
+        flex: 1,
+        width: attributeColumnWidth(120),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `text-center`,
+      },
+      {
+        headerName: '보험종기',
+        field: 'field04',
+        flex: 1,
+        width: attributeColumnWidth(120),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `text-center`,
+      },
+      {
+        headerName: '담보상태 변경일자',
+        field: 'field05',
+        flex: 1,
+        width: attributeColumnWidth(120),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `text-center `,
+      },
+      {
+        headerName: '담보상태',
+        field: 'field06',
+        flex: 1,
+        width: attributeColumnWidth(70),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `text-center`,
+      },
+      {
+        headerName: '보장내용코드',
+        field: 'field07',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `text-center`,
+      },
+      {
+        headerName: '담보특성코드',
+        field: 'field08',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `text-center`,
+      },
+      {
+        headerName: '담보명',
+        field: 'field09',
+        flex: 1,
+        width: attributeColumnWidth(200),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `text-left`,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field09' }),
+      },
+      {
+        headerName: '담보코드',
+        field: 'field10',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `text-center`,
+      },
+      {
+        headerName: '가입액(원)',
+        field: 'field11',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        sortable: false,
+        filter: false,
+        suppressMovable: true,
+        resizable: true,
+        cellClass: `text-right`,
+        valueParser: (params) => Number(params.newValue) || 0,
+        valueFormatter: numberValueFormatter,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   return (
     <Dialog open>
@@ -298,6 +314,7 @@ const Ltpz065 = () => {
                       }}
                       selectionColumnDef={{
                         headerName: '선택',
+                        width: 30,
                       }}
                     />
                   </div>

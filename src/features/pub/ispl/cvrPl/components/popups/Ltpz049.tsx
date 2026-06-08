@@ -3,10 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, ColSpanParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -22,8 +19,12 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef, ColSpanParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
+import { useMemo } from 'storybook/internal/preview-api';
 
 type DummyDataType = {
   id: number;
@@ -94,42 +95,50 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz049 = () => {
   // AgGrid Column
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: '할증담보',
-      flex: 2,
-      field: 'field01',
-      cellClass: 'text-center', // 2026-06-02 추가
-      colSpan: (params: ColSpanParams<DummyDataType>) => (params.data?.isSumRow ? 2 : 1),
-    },
-    {
-      headerName: '보험기간',
-      width: 100,
-      field: 'field02',
-      colSpan: (params: ColSpanParams<DummyDataType>) => (params.data?.isSumRow ? 0 : 1),
-    },
-    {
-      headerName: '표준체보험료(원)',
-      width: 170,
-      field: 'field03',
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '할증보험료(원)',
-      width: 170,
-      field: 'field04',
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '적용보험료(원)',
-      flex: 1,
-      field: 'field05',
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
+    () => [
+      {
+        headerName: '할증담보',
+        flex: 2,
+        field: 'field01',
+        cellClass: 'text-center', // 2026-06-02 추가
+        colSpan: (params: ColSpanParams<DummyDataType>) => (params.data?.isSumRow ? 2 : 1),
+      },
+      {
+        headerName: '보험기간',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        field: 'field02',
+        cellClass: 'text-center',
+        colSpan: (params: ColSpanParams<DummyDataType>) => (params.data?.isSumRow ? 0 : 1),
+      },
+      {
+        headerName: '표준체보험료(원)',
+        flex: 1,
+        width: attributeColumnWidth(170),
+        field: 'field03',
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '할증보험료(원)',
+        flex: 1,
+        width: attributeColumnWidth(170),
+        field: 'field04',
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '적용보험료(원)',
+        flex: 1,
+        field: 'field05',
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const sumRow = React.useMemo(() => {
@@ -182,7 +191,7 @@ const Ltpz049 = () => {
             </FormTable>
           </Grow>
           <Gcol placement="ss" className="gap-2">
-            <div className="ag-theme-alpine min-h-[18.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData}
