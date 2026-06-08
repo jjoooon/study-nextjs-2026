@@ -3,16 +3,9 @@
  */
 'use client';
 
-import { FilePondErrorDescription, FilePondFile } from 'filepond';
-import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import { useRef, useState } from 'react';
-import type { FilePond as FilePondInstance } from 'react-filepond';
-import { FilePond, registerPlugin } from 'react-filepond';
-import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
-import log from '@/shared/utils/logger';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FileUpload } from '@common/FileUpload';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,6 +17,14 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { FilePondErrorDescription, FilePondFile } from 'filepond';
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import { useRef, useState } from 'react';
+import type { FilePond as FilePondInstance } from 'react-filepond';
+import { FilePond, registerPlugin } from 'react-filepond';
+import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
+import log from '@/shared/utils/logger';
 import 'filepond/dist/filepond.min.css';
 
 // Register FilePond plugins
@@ -86,6 +87,9 @@ export default function Ltpz995({ resolve }: Ltpz995Props) {
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
   const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
+
+  // FileUpload에 실제 표시할 파일 목록 (선택완료 시점)
+  // const [filesForUpload, setFilesForUpload] = useState<{ name: string; key: string }[]>([]);
 
   const handleBeforeAddFile = (item: FilePondFile) => {
     // 파일명 확인 (임시 파일 차단 같은 커스텀 로직만 처리)
@@ -190,8 +194,39 @@ export default function Ltpz995({ resolve }: Ltpz995Props) {
     });
   };
 
+  // const handleUpload = async () => {
+  //   // FileUpload에 파일 목록 반영
+  //   setFilesForUpload(pondFiles.map((file) => ({ name: file.filename, key: file.id })));
+  //   // 기존 resolve 로직 유지 (필요시 수정)
+  //   const filesWithSource = pondFiles.map((file) => ({
+  //     id: file.id,
+  //     filename: file.filename,
+  //     fileSize: file.fileSize,
+  //     fileExtension: file.fileExtension,
+  //     fileType: file.fileType,
+  //   }));
+  //   logger.info('선택된 파일 목록:', filesWithSource);
+
+  //   resolve({
+  //     action: 'select',
+  //     files: [],
+  //   });
+  //   // 업로드 후 창 닫기
+  //   onOpenChange?.(false);
+  // };
+
   return (
     <Dialog open onOpenChange={handleClose}>
+      <FileUpload
+        // files={filesForUpload}
+        // onClickButton={() => {
+        //   onOpenChange?.(true);
+        // }}
+        onRemove={() => {
+          /* 목록에서 제거 */
+        }}
+        className="w-[26rem]"
+      />
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
