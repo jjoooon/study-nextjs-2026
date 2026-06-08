@@ -6,7 +6,7 @@
 import { FilePondErrorDescription, FilePondFile } from 'filepond';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import { useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
@@ -83,16 +83,15 @@ const MAX_FILE_SIZE = '1024MB'; // 1GB
 
 export default function Ltpz995({ files, resolve }: Ltpz995Props) {
   const pondRef = useRef<FilePondInstance>(null);
-  const [fileCount, setFileCount] = useState(files?.length ?? 0);
+  const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
-  const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
 
-  const initialPondFiles = useMemo(
-    () => files?.map((f) => ({ source: f.id, options: { type: 'local' as const } })) ?? [],
-    // eslint-disable-next-line react-compiler/react-compiler
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const handleInit = () => {
+    if (!files?.length || !pondRef.current) return;
+    files.forEach((f) => {
+      pondRef.current!.addFile(f.id, { type: 'local' });
+    });
+  };
 
   // FileUpload에 실제 표시할 파일 목록 (선택완료 시점)
   // const [filesForUpload, setFilesForUpload] = useState<{ name: string; key: string }[]>([]);
@@ -107,38 +106,30 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
     return true;
   };
 
+  const syncStats = (currentFiles: FilePondFile[]) => {
+    setFileCount(currentFiles.length);
+    setTotalSize(currentFiles.reduce((sum, f) => sum + (f.fileSize || 0), 0));
+  };
+
   const handleAddFile = (error: FilePondErrorDescription | null, file: FilePondFile) => {
     if (error) {
       logger.error('파일 추가 오류:', error);
       return;
     }
 
-    // 함수형 업데이트로 클로저 문제 해결
-    setPondFiles((prev) => {
-      // 중복 파일 체크 (파일명과 크기로 비교)
-      const isDuplicate = prev.some((f) => f.filename === file.filename && f.fileSize === file.fileSize);
+    const currentFiles = pondRef.current?.getFiles() ?? [];
+    const isDuplicate = currentFiles
+      .filter((f) => f.id !== file.id)
+      .some((f) => f.filename === file.filename && f.fileSize === file.fileSize);
 
-      if (isDuplicate) {
-        logger.info('중복 파일 무시:', file.filename);
-        // FilePond에서 파일 제거
-        pondRef.current?.removeFile(file.id);
-        return prev; // 기존 파일 목록 반환 (추가 안 함)
-      }
+    if (isDuplicate) {
+      logger.info('중복 파일 무시:', file.filename);
+      pondRef.current?.removeFile(file.id);
+      return;
+    }
 
-      const updatedFiles = [...prev, file];
-      logger.info('파일 추가됨:', file.filename, '전체 파일 수:', updatedFiles.length);
-
-      // 파일 개수 업데이트
-      setFileCount(updatedFiles.length);
-
-      // 전체 파일 크기 계산
-      const total = updatedFiles.reduce((sum, f) => {
-        return sum + (f.fileSize || 0);
-      }, 0);
-      setTotalSize(total);
-
-      return updatedFiles;
-    });
+    logger.info('파일 추가됨:', file.filename, '전체 파일 수:', currentFiles.length);
+    syncStats(currentFiles);
   };
 
   const handleRemoveFile = (error: FilePondErrorDescription | null, file: FilePondFile) => {
@@ -147,26 +138,13 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
       return;
     }
 
-    setPondFiles((prev) => {
-      const updatedFiles = prev.filter((f) => f.id !== file.id);
-      logger.info('파일 제거됨:', file.filename, '전체 파일 수:', updatedFiles.length);
-
-      // 파일 개수 업데이트
-      setFileCount(updatedFiles.length);
-
-      // 전체 파일 크기 계산
-      const total = updatedFiles.reduce((sum, f) => {
-        return sum + (f.fileSize || 0);
-      }, 0);
-      setTotalSize(total);
-
-      return updatedFiles;
-    });
+    const currentFiles = pondRef.current?.getFiles() ?? [];
+    logger.info('파일 제거됨:', file.filename, '전체 파일 수:', currentFiles.length);
+    syncStats(currentFiles);
   };
 
   const handleReorderFiles = (files: FilePondFile[]) => {
     logger.info('파일 순서 변경됨, 전체 파일 수:', files.length);
-    setPondFiles(files);
   };
 
   const handleError = (error: FilePondErrorDescription) => {
@@ -182,9 +160,10 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
   };
 
   const handleSelect = () => {
+    const currentFiles = pondRef.current?.getFiles() ?? [];
     resolve({
       action: 'select',
-      files: pondFiles.map((f) => ({
+      files: currentFiles.map((f) => ({
         id: f.id,
         filename: f.filename,
         fileSize: f.fileSize,
@@ -237,7 +216,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
         <DialogSection className="grid-rows-[1fr_auto] gap-1">
           <FilePond
             ref={pondRef}
-            files={initialPondFiles}
+            oninit={handleInit}
             onaddfile={handleAddFile}
             onremovefile={handleRemoveFile}
             onreorderfiles={handleReorderFiles}
@@ -260,6 +239,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
             // stylePanelLayout="compact"
             dropValidation
             instantUpload={false}
+            // TODO: @YunJunmo Server load URL 변경
             server={{
               load: (source, load, error) => {
                 const item = files?.find((f) => f.id === source);
