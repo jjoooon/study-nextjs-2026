@@ -13,6 +13,7 @@ import {
   editableSelectCellRenderer,
   numberValueFormatter,
   createInsertCopiedRowButtonCellRenderer,
+  useDynamicColumnWidths,
 } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -36,6 +37,8 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+
+import * as React from 'react';
 
 type DummyDataType = {
   id: number;
@@ -191,77 +194,81 @@ const Ltpz010 = () => {
   const coverageAmountCellRenderer = (params: ICellRendererParams<DummyDataType>) =>
     editableSelectCellRenderer<DummyDataType>(params);
 
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '중복',
-      field: 'isDuplicate',
-      width: 30,
-      cellClass: 'text-center',
-      sortable: false,
-      cellRenderer: duplicateRenderer,
-    },
-    {
-      headerName: '담보명',
-      field: 'productName',
-      flex: 10,
-      cellRenderer: titleRenderer,
-    },
-    {
-      headerName: '속성',
-      field: 'attribute',
-      width: 30,
-      cellClass: 'text-center',
-      cellRenderer: attributeRenderer,
-      sortable: false,
-    },
-    {
-      headerName: '가입금액(만원)',
-      field: 'coverageAmount',
-      minWidth: 160,
-      flex: 1,
-      cellClass: () => 'w-auto text-centerleft editable-cell [&_input]:text-left!',
-      sortable: false,
-      filter: false,
-      editable: (params: EditableCallbackParams<DummyDataType>) => {
-        // canEditExpiry가 true인 행만 수정 가능
-        return params.data?.canEditExpiry === true;
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '중복',
+        field: 'isDuplicate',
+        width: attributeColumnWidth(30),
+        cellClass: 'text-center',
+        sortable: false,
+        cellRenderer: duplicateRenderer,
       },
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: {
-        values: ['5천만원(통원20만원)', '2천만원(통원20만원)', '3천만원(통원20만원)', '4천만원(통원20만원)'],
+      {
+        headerName: '담보명',
+        field: 'productName',
+        flex: 10,
+        cellRenderer: titleRenderer,
       },
-      cellRenderer: coverageAmountCellRenderer,
-    },
-    {
-      headerName: '보험료(만원)',
-      field: 'premium',
-      minWidth: 100,
-      flex: 1,
-      cellClass: 'text-right',
-      headerClass: 'px-0!',
-      sortable: false,
-      filter: false,
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '만기',
-      field: 'expiryPeriod',
-      minWidth: 70,
-      flex: 1,
-      cellClass: 'text-center px-[0.2rem]!',
-      sortable: false,
-      filter: false,
-    },
-    {
-      headerName: '납기',
-      field: 'paymentPeriod',
-      minWidth: 70,
-      flex: 1,
-      cellClass: 'text-center px-[0.2rem]!',
-      sortable: false,
-      filter: false,
-    },
-  ];
+      {
+        headerName: '속성',
+        field: 'attribute',
+        width: attributeColumnWidth(30),
+        cellClass: 'text-center',
+        cellRenderer: attributeRenderer,
+        sortable: false,
+      },
+      {
+        headerName: '가입금액(만원)',
+        field: 'coverageAmount',
+        minWidth: attributeColumnWidth(160),
+        flex: 1,
+        cellClass: () => 'w-auto text-centerleft editable-cell [&_input]:text-left!',
+        sortable: false,
+        filter: false,
+        editable: (params: EditableCallbackParams<DummyDataType>) => {
+          // canEditExpiry가 true인 행만 수정 가능
+          return params.data?.canEditExpiry === true;
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['5천만원(통원20만원)', '2천만원(통원20만원)', '3천만원(통원20만원)', '4천만원(통원20만원)'],
+        },
+        cellRenderer: coverageAmountCellRenderer,
+      },
+      {
+        headerName: '보험료(만원)',
+        field: 'premium',
+        minWidth: attributeColumnWidth(100),
+        flex: 1,
+        cellClass: 'text-right',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '만기',
+        field: 'expiryPeriod',
+        minWidth: attributeColumnWidth(70),
+        flex: 1,
+        cellClass: 'text-center px-[0.2rem]!',
+        sortable: false,
+        filter: false,
+      },
+      {
+        headerName: '납기',
+        field: 'paymentPeriod',
+        minWidth: attributeColumnWidth(70),
+        flex: 1,
+        cellClass: 'text-center px-[0.2rem]!',
+        sortable: false,
+        filter: false,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const onCellValueChanged = useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),

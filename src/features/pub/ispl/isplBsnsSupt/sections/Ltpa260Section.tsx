@@ -222,7 +222,7 @@ export default function Ltpa260Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '보험신용정보 통합조회',
+            pageName: '실손특약세부계약조회',
             pageId: 'LTPA260',
           }}
         />
@@ -234,14 +234,14 @@ export default function Ltpa260Section() {
               <FormTable variant={'head'} caption="실손특약세부계약조회 테이블" cols={['w-1', 'w-1', 'w-1', 'w-1']}>
                 <FormRow>
                   <FormCell title={'주민번호'}>
-                    <Input width={110} value={'1234567'} required />
+                    <Input width={120} value={'901212-1234567'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input width={170} value={''} readOnly />
+                    <Input width={170} value={'김한화'} readOnly />
                   </FormCell>
                   <FormCell title={'기준일자'}>
-                    <DatePickerInput mode={'single'} value={''} />
+                    <DatePickerInput mode={'single'} value={'2026-01-01'} />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -262,7 +262,7 @@ export default function Ltpa260Section() {
               </Grow>
             </Grow>
             <TableFold variant={'accordion'}>
-              <TableFoldHead title="실손보상담보 총등록건수" />
+              <TableFoldHead title="계약정보 총등록건수" />
               <TableFoldBody className="h-full">
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>

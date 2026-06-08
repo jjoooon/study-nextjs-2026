@@ -4,10 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { createTooltipValueGetter } from '@aggrid';
+import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Ai2Icon } from '@icons';
@@ -23,6 +20,9 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 type DummyDataType = {
   id: number;
@@ -322,18 +322,20 @@ const Ltpz068 = () => {
     return Number.isFinite(num) ? num.toLocaleString() : String(value);
   }, []);
 
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(() => {
     return [
       {
         headerName: '순번',
         field: 'field01',
-        width: 60,
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center px-0!',
       },
       {
         headerName: '담보명',
         field: 'field02',
-        flex: 1,
+        flex: 7,
         cellClass: 'text-left ',
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
       },

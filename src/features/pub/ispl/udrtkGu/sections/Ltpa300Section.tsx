@@ -175,7 +175,7 @@ export default function Ltpa300Section() {
     () => [
       { headerName: '취급기관', field: 'field01', flex: 1, minWidth: 120, cellClass: 'text-center' },
       { headerName: '모집직원번호', field: 'field02', flex: 1, minWidth: 85, cellClass: 'text-center' },
-      { headerName: '모집직원명', field: 'field03', width: 85, cellClass: 'text-center' },
+      { headerName: '모집직원', field: 'field03', width: 85, cellClass: 'text-center' },
       { headerName: '사용인번호', field: 'field04', flex: 1, minWidth: 90, cellClass: 'text-center' },
       { headerName: '사용인', field: 'field05', width: 80, cellClass: 'text-center' },
       {
@@ -196,8 +196,8 @@ export default function Ltpa300Section() {
         tooltipValueGetter: createTooltipValueGetter<Ltpa300DummyDataRow>({ field: 'field09' }),
       },
       { headerName: '점검일자', field: 'field10', flex: 1, minWidth: 100, cellClass: 'text-center' },
-      { headerName: '결과순번', field: 'field11', flex: 1, minWidth: 80, cellClass: 'text-center' },
-      { headerName: '사전확인시사용여부', field: 'field12', flex: 1, minWidth: 120, cellClass: 'text-center' },
+      { headerName: '점검순번', field: 'field11', flex: 1, minWidth: 80, cellClass: 'text-center' },
+      { headerName: '사전예외사용여부', field: 'field12', flex: 1, minWidth: 120, cellClass: 'text-center' },
       { headerName: '점검방법', field: 'field13', flex: 1, minWidth: 90, cellClass: 'text-center' },
       { headerName: '한도초과건수', field: 'field14', flex: 1, minWidth: 95, cellClass: 'text-center' },
     ],
