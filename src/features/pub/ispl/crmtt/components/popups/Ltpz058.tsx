@@ -186,7 +186,7 @@ const Ltpz058 = () => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <Grow className="w-full" variant="box-round" placement={'sc'}>
+          <Grow className="w-full" variant="box-round" placement={'sc'} gap={2}>
             <RadioGroup
               value={searchCategory}
               className="flex gap-3"
@@ -205,24 +205,26 @@ const Ltpz058 = () => {
                 </RadioGroupItem>
               ))}
             </RadioGroup>
-            <Input
-              aria-label="설계번호 검색"
-              value={''}
-              width={180}
-              onChange={() => {}}
-              readOnly={searchCategory === '분류기준'}
-            />
-            {searchCategory !== '분류기준' && (
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                <SearchIcon color={'var(--color-primary-50)'} />
-              </Button>
-            )}
+            <Grow>
+              <Input
+                aria-label="설계번호 검색"
+                value={''}
+                width={180}
+                onChange={() => {}}
+                readOnly={searchCategory === '분류기준'}
+              />
+              {searchCategory !== '분류기준' && (
+                <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                  <SearchIcon color={'var(--color-primary-50)'} />
+                </Button>
+              )}
+            </Grow>
           </Grow>
           {searchCategory === '분류기준' && (
             <>
               {/* 분류기준  */}
               <Grid className="w-full h-full grid-cols-[1fr_2fr_3fr] gap-3">
-                <div className="ag-theme-alpine min-h-[24rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyDataAll.length}>
                   <AgGridReact<DummyDataTypeA>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -237,7 +239,7 @@ const Ltpz058 = () => {
                     domLayout="normal"
                   />
                 </div>
-                <div className="ag-theme-alpine min-h-[24rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyDataAll.length}>
                   <AgGridReact<DummyDataTypeB>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -252,7 +254,7 @@ const Ltpz058 = () => {
                     domLayout="normal"
                   />
                 </div>
-                <div className="ag-theme-alpine min-h-[24rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyDataAll.length}>
                   <AgGridReact<DummyDataTypeAll>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -275,7 +277,7 @@ const Ltpz058 = () => {
           )}
           {searchCategory === '업종명' && (
             <Grid>
-              <div className="ag-theme-alpine min-h-[18.4rem]">
+              <div className="ag-theme-alpine inner-scroll" data-row={DummyDataAll.length}>
                 <AgGridReact<DummyDataTypeAll>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}

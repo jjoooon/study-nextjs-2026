@@ -5,7 +5,7 @@
 
 import '@/shared/lib/agGridPub';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -207,19 +207,21 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz00501 = () => {
-  // 공통
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '설계',
       field: 'field01',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       spanRows: true,
       cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '인수제한',
       field: 'field02',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       spanRows: true,
       cellClass: 'flex! items-center! justify-center!',
       cellStyle: ({ value }) => {
@@ -238,8 +240,8 @@ const Ltpz00501 = () => {
     {
       headerName: '위배내용',
       field: 'field03',
-      flex: 1,
-      cellClass: 'flex! !items-center !justify-start !whitespace-normal !leading-[1.4] !py-1',
+      flex: 20,
+      cellClass: 'flex! !items-center !justify-start !whitespace-normal !leading-[1.4] !py-1 !pl-2.5',
       autoHeight: true,
       resizable: false,
     },

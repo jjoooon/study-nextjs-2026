@@ -13,6 +13,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type {
   ICellEditorParams,
   CellClickedEvent,
+  SpanRowsParams,
   ValueFormatterParams,
   ICellRendererParams,
   SelectionChangedEvent,
@@ -295,6 +296,19 @@ export function createEditableCallback<T>(
   if (mode === 'always') return () => true;
   if (mode === 'whenSelected') return (params) => params.node?.isSelected?.() ?? false;
   return mode;
+}
+
+/**
+ * AG Grid spanRows 콜백 생성기 (공용)
+ * - 지정한 필드값이 연속 행에서 동일할 때만 병합
+ */
+export function createSpanRowsByField<T extends Record<string, unknown>, K extends keyof T>(field: K) {
+  return (params: SpanRowsParams<T>): boolean => {
+    const valueA = params.nodeA?.data?.[field];
+    const valueB = params.nodeB?.data?.[field];
+
+    return valueA !== undefined && valueA === valueB;
+  };
 }
 
 /**
