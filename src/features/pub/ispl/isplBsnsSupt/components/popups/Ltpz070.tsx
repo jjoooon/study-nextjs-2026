@@ -3,20 +3,17 @@
  */
 'use client';
 
-<<<<<<< HEAD
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent, createModifiedCellClassRules, createTooltipValueGetter } from '@aggrid';
-=======
+import { useMemo } from 'react';
 import {
   AgGridEmptyComponent,
   createModifiedCellClassRules,
   createTooltipValueGetter,
+  numberValueFormatter,
   useDynamicColumnWidths,
 } from '@aggrid';
->>>>>>> 03a3d6a7df60b64d0fd8e7ac7e6c733a954fbfbf
-import { numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -26,17 +23,16 @@ import { ArrowDoubleIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
 
 import '@/shared/lib/agGridPub';
-import { useMemo } from 'react';
 
 // dummy data
 type DummyDataType = {
