@@ -6,14 +6,13 @@
 import { FilePondErrorDescription, FilePondFile } from 'filepond';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
 import log from '@/shared/utils/logger';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FileUpload } from '@common/FileUpload';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -84,9 +83,16 @@ const MAX_FILE_SIZE = '1024MB'; // 1GB
 
 export default function Ltpz995({ files, resolve }: Ltpz995Props) {
   const pondRef = useRef<FilePondInstance>(null);
-  const [fileCount, setFileCount] = useState(0);
+  const [fileCount, setFileCount] = useState(files?.length ?? 0);
   const [totalSize, setTotalSize] = useState(0);
   const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
+
+  const initialPondFiles = useMemo(
+    () => files?.map((f) => ({ source: f.id, options: { type: 'local' as const } })) ?? [],
+    // eslint-disable-next-line react-compiler/react-compiler
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   // FileUpload에 실제 표시할 파일 목록 (선택완료 시점)
   // const [filesForUpload, setFilesForUpload] = useState<{ name: string; key: string }[]>([]);
@@ -217,16 +223,6 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
 
   return (
     <Dialog open onOpenChange={handleClose}>
-      <FileUpload
-        // files={filesForUpload}
-        // onClickButton={() => {
-        //   onOpenChange?.(true);
-        // }}
-        onRemove={() => {
-          /* 목록에서 제거 */
-        }}
-        className="w-[26rem]"
-      />
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -241,7 +237,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
         <DialogSection className="grid-rows-[1fr_auto] gap-1">
           <FilePond
             ref={pondRef}
-            files={pondFiles.map((f) => f.source)}
+            files={initialPondFiles}
             onaddfile={handleAddFile}
             onremovefile={handleRemoveFile}
             onreorderfiles={handleReorderFiles}
@@ -264,7 +260,16 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
             // stylePanelLayout="compact"
             dropValidation
             instantUpload={false}
-            server={{}}
+            server={{
+              load: (source, load, error) => {
+                const item = files?.find((f) => f.id === source);
+                if (!item) {
+                  error('not found');
+                  return;
+                }
+                load(new File([''], item.filename, { type: item.fileType }));
+              },
+            }}
             styleButtonRemoveItemPosition="right"
             styleButtonProcessItemPosition="right"
             styleLoadIndicatorPosition="right"
