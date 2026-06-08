@@ -4,6 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { useState } from 'react';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -20,7 +21,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { useState } from 'react';
 
 const Ltpz081 = () => {
   const [receiptType, setReceiptType] = useState('영수증발행안함');

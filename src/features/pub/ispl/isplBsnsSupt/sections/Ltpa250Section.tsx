@@ -3,6 +3,8 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -12,8 +14,6 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Input } from '@uiux/Input';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 
 import '@/shared/lib/agGridPub';
 
@@ -338,7 +338,9 @@ export default function Ltpa250Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="h-full grid-rows-[auto_1fr]" gap={3}> { /* 2026-06-01 h-full 추가 */ }
+          <Grid className="h-full grid-rows-[auto_1fr]" gap={3}>
+            {' '}
+            {/* 2026-06-01 h-full 추가 */}
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable
                 variant={'head'}
@@ -356,7 +358,9 @@ export default function Ltpa250Section() {
               </FormTable>
             </Grow>
             <Gcol className="w-full" gap={1}>
-              <div className="ag-theme-alpine"> {/* 2026-06-01 높이값 삭제 */}
+              <div className="ag-theme-alpine">
+                {' '}
+                {/* 2026-06-01 높이값 삭제 */}
                 <AgGridReact<DummyDataType>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={DummyData}

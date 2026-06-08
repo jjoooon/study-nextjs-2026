@@ -3,6 +3,14 @@
  */
 'use client';
 
+import { FilePondErrorDescription, FilePondFile } from 'filepond';
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import { useRef, useState, useEffect } from 'react';
+import type { FilePond as FilePondInstance } from 'react-filepond';
+import { FilePond, registerPlugin } from 'react-filepond';
+import { IMAGE_TYPES, APPLICATION_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
+import log from '@/shared/utils/logger';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -16,14 +24,6 @@ import {
   DialogClose,
   DialogSection,
 } from '@uiux/Dialog';
-import { FilePondErrorDescription, FilePondFile } from 'filepond';
-import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import { useRef, useState, useEffect } from 'react';
-import type { FilePond as FilePondInstance } from 'react-filepond';
-import { FilePond, registerPlugin } from 'react-filepond';
-import { IMAGE_TYPES, APPLICATION_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
-import log from '@/shared/utils/logger';
 import 'filepond/dist/filepond.min.css';
 
 // Register FilePond plugins

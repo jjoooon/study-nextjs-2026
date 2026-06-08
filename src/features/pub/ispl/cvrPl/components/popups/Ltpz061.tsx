@@ -4,6 +4,18 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type {
+  ColDef,
+  ColGroupDef,
+  ICellEditorParams,
+  ICellRendererParams,
+  CellClassParams,
+  EditableCallbackParams,
+  SelectionChangedEvent,
+} from 'ag-grid-enterprise'; // 2026-05-27 EditableCallbackParams, SelectionChangedEvent 추가
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useCallback, useState } from 'react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo, Gcol } from '@atoms'; // 2026-05-27 Grid 삭제
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -24,18 +36,6 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type {
-  ColDef,
-  ColGroupDef,
-  ICellEditorParams,
-  ICellRendererParams,
-  CellClassParams,
-  EditableCallbackParams,
-  SelectionChangedEvent,
-} from 'ag-grid-enterprise'; // 2026-05-27 EditableCallbackParams, SelectionChangedEvent 추가
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback, useState } from 'react';
 
 type DummyDataType1 = {
   id: number;

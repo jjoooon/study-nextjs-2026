@@ -3,6 +3,8 @@
  */
 'use client';
 
+import { useEffect } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -21,8 +23,6 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { useEffect } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 const DUMMY_DATA = {
   view1: [

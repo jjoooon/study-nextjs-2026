@@ -2,6 +2,9 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -18,9 +21,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
 
 import '@/shared/lib/agGridPub';
 

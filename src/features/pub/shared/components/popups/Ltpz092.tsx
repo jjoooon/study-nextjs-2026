@@ -4,6 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -21,7 +22,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import * as React from 'react';
 
 const Ltpz092 = () => {
   const [isExistingCustomer, setIsExistingCustomer] = React.useState(false);

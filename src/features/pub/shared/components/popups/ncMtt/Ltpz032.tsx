@@ -4,6 +4,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -26,10 +30,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 type Ltpz032TabType = {
   name: string;
@@ -609,7 +609,8 @@ const DummyData21: DummyDataType21[] = [
     field2_07: '완치',
     field2_08: '없음',
     field2_09: '한화병원한화병원한화병원한화병원한화병원한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601',
+    field2_10:
+      '한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601',
     field2_11: '납입면제형, 기본형',
     field2_12: 'LA2401521476365',
     field2_13: '2026-01-01',
@@ -1131,231 +1132,229 @@ const Ltpz032 = () => {
         tooltipValueGetter: createTooltipValueGetter<DummyDataType11>({ field: 'field36' }),
       },
     ];
-  }, 
-  [[attributeColumnWidth]]
-);
+  }, [[attributeColumnWidth]]);
   const columnDefs12 = React.useMemo<ColDef<DummyDataType12>[]>(
-  () => [
-    {
-      headerName: '입력일자',
-      field: 'field02',
-      width: attributeColumnWidth(85),
-    },
-    {
-      headerName: '설계번호',
-      field: 'field03',
-      width: attributeColumnWidth(120),
-    },
-    {
-      headerName: '상품명',
-      field: 'field04',
-      flex: 1,
-      minWidth: attributeColumnWidth(200),
-      cellClass: 'text-left',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType12>({ field: 'field04' }),
-    },
-    {
-      headerName: '고지유형',
-      field: 'field05',
-      width: attributeColumnWidth(140),
-    },
-    {
-      headerName: '질병미리보기',
-      field: 'field06',
-      width: attributeColumnWidth(85),
-      sortable: false,
-      cellRenderer: (_params: ICellRendererParams<DummyDataType12>) => (
-        <Grow className="w-full px-1">
-          보기
-          <Button aria-label="질병 상세내용 보기" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grow>
-      ),
-    },
-    {
-      headerName: '질병명1',
-      field: 'field07',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명2',
-      field: 'field08',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명3',
-      field: 'field09',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명4',
-      field: 'field10',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명5',
-      field: 'field11',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명6',
-      field: 'field12',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명7',
-      field: 'field13',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명8',
-      field: 'field14',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명9',
-      field: 'field15',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명10',
-      field: 'field16',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명11',
-      field: 'field17',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명12',
-      field: 'field18',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명13',
-      field: 'field19',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명14',
-      field: 'field20',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명15',
-      field: 'field21',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명16',
-      field: 'field22',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명17',
-      field: 'field23',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명18',
-      field: 'field24',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명19',
-      field: 'field25',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명20',
-      field: 'field26',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명21',
-      field: 'field27',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명22',
-      field: 'field28',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명23',
-      field: 'field29',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명24',
-      field: 'field30',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명25',
-      field: 'field31',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명26',
-      field: 'field32',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명27',
-      field: 'field33',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명28',
-      field: 'field34',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명29',
-      field: 'field35',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-    {
-      headerName: '질병명30',
-      field: 'field36',
-      flex: 1,
-      minWidth: attributeColumnWidth(130),
-    },
-  ],
-  [attributeColumnWidth]
-);
+    () => [
+      {
+        headerName: '입력일자',
+        field: 'field02',
+        width: attributeColumnWidth(85),
+      },
+      {
+        headerName: '설계번호',
+        field: 'field03',
+        width: attributeColumnWidth(120),
+      },
+      {
+        headerName: '상품명',
+        field: 'field04',
+        flex: 1,
+        minWidth: attributeColumnWidth(200),
+        cellClass: 'text-left',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType12>({ field: 'field04' }),
+      },
+      {
+        headerName: '고지유형',
+        field: 'field05',
+        width: attributeColumnWidth(140),
+      },
+      {
+        headerName: '질병미리보기',
+        field: 'field06',
+        width: attributeColumnWidth(85),
+        sortable: false,
+        cellRenderer: (_params: ICellRendererParams<DummyDataType12>) => (
+          <Grow className="w-full px-1">
+            보기
+            <Button aria-label="질병 상세내용 보기" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </Grow>
+        ),
+      },
+      {
+        headerName: '질병명1',
+        field: 'field07',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명2',
+        field: 'field08',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명3',
+        field: 'field09',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명4',
+        field: 'field10',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명5',
+        field: 'field11',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명6',
+        field: 'field12',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명7',
+        field: 'field13',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명8',
+        field: 'field14',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명9',
+        field: 'field15',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명10',
+        field: 'field16',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명11',
+        field: 'field17',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명12',
+        field: 'field18',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명13',
+        field: 'field19',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명14',
+        field: 'field20',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명15',
+        field: 'field21',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명16',
+        field: 'field22',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명17',
+        field: 'field23',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명18',
+        field: 'field24',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명19',
+        field: 'field25',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명20',
+        field: 'field26',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명21',
+        field: 'field27',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명22',
+        field: 'field28',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명23',
+        field: 'field29',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명24',
+        field: 'field30',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명25',
+        field: 'field31',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명26',
+        field: 'field32',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명27',
+        field: 'field33',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명28',
+        field: 'field34',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명29',
+        field: 'field35',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+      {
+        headerName: '질병명30',
+        field: 'field36',
+        flex: 1,
+        minWidth: attributeColumnWidth(130),
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const columnDefs21 = React.useMemo<ColDef<DummyDataType21>[]>(
     () => [

@@ -4,6 +4,9 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -20,9 +23,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 type DummyDataType = {
   id: number;

@@ -3,6 +3,9 @@
  */
 'use client';
 
+import type { CellClassParams, ColDef, EditableCallbackParams, CellEditorSelectorResult } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   numberValueFormatter,
   useDynamicColumnWidths,
@@ -22,9 +25,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@uiux/Resizable';
-import type { CellClassParams, ColDef, EditableCallbackParams, CellEditorSelectorResult } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData, dummyData2 } from '../data/ltpa35002cData';
 import type { DummyData2Type, DummyDataType } from '../data/ltpa35002cData';

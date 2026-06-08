@@ -3,12 +3,14 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
-import { createTooltipValueGetter } from '@aggrid';
-import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -24,9 +26,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Textarea } from '@uiux/Textarea';
-import { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 

@@ -3,6 +3,8 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -22,9 +24,6 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 
 import '@/shared/lib/agGridPub';
 // dummy data

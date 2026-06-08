@@ -3,6 +3,9 @@
  */
 'use client';
 
+import { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -17,9 +20,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -97,7 +97,7 @@ const Ltpz035 = () => {
     {
       headerName: '동시가입 담보코드',
       field: 'field03',
-      flex: 1, 
+      flex: 1,
       minWidth: 100,
       cellClass: 'text-center',
     },

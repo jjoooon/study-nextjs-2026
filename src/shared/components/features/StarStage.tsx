@@ -3,9 +3,9 @@
  */
 'use client';
 
+import React from 'react';
 import { Gcol, Grow } from '@atoms';
 import { StageIcon } from '@icons';
-import React from 'react';
 
 const LOW_PROFITABILITY_TEXT = '수익성 저조';
 const HIGH_PROFITABILITY_TEXT = '수익성 우량';
