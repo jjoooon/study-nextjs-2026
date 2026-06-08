@@ -120,6 +120,8 @@ const DummyData2: DummyDataType2[] = [
   { id: 8, isCheck: false, field01: '300001', field02: '윤한화' },
   { id: 9, isCheck: false, field01: '300002', field02: '조한화' },
   { id: 10, isCheck: false, field01: '300003', field02: '임한화' },
+  { id: 11, isCheck: false, field01: '300002', field02: '조한화' },
+  { id: 12, isCheck: false, field01: '300003', field02: '임한화' },
 ];
 // Grid3 dummy data (직원번호)
 type DummyDataType3 = {
@@ -324,7 +326,7 @@ const Ltpz042 = () => {
           {isEmpNo && (
             <Grid className="w-full grid-cols-3" gap={3} placement="ss">
               {/* Grid2 */}
-              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={Math.max(rowData2.length, 10)}>
                 <AgGridReact<DummyDataType2>
                   key="ltpz042-grid-empno-1"
                   getRowId={(params) => `empno-1-${params.data.id}`}
@@ -335,11 +337,11 @@ const Ltpz042 = () => {
                   rowSelection={rowSelection}
                   selectionColumnDef={selectionColumnDef}
                   domLayout="normal"
-                  alwaysShowVerticalScroll={true}
+                  // alwaysShowVerticalScroll={true}
                 />
               </div>
               {/* Grid3 */}
-              <div className="ag-theme-alpine inner-scroll" data-row={rowData3.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={Math.max(rowData3.length, 10)}>
                 <AgGridReact<DummyDataType3>
                   key="ltpz042-grid-empno-2"
                   getRowId={(params) => `empno-2-${params.data.id}`}
@@ -350,11 +352,11 @@ const Ltpz042 = () => {
                   rowSelection={rowSelection}
                   selectionColumnDef={selectionColumnDef}
                   domLayout="normal"
-                  alwaysShowVerticalScroll={true}
+                  // alwaysShowVerticalScroll={true}
                 />
               </div>
               {/* Grid4 */}
-              <div className="ag-theme-alpine inner-scroll" data-row={rowData4.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={Math.max(rowData4.length, 10)}>
                 <AgGridReact<DummyDataType4>
                   key="ltpz042-grid-empno-3"
                   getRowId={(params) => `empno-3-${params.data.id}`}
@@ -365,7 +367,7 @@ const Ltpz042 = () => {
                   rowSelection={rowSelection}
                   selectionColumnDef={selectionColumnDef}
                   domLayout="normal"
-                  alwaysShowVerticalScroll={true}
+                  // alwaysShowVerticalScroll={true}
                 />
               </div>
             </Grid>
