@@ -4,7 +4,7 @@
 'use client';
 
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
-import { Grow, Typo } from '@atoms';
+import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { ResetIcon } from '@icons';
@@ -116,6 +116,10 @@ const DummyData2: DummyDataType2[] = [
   { id: 4, isCheck: false, field01: '300001', field02: '윤한화' },
   { id: 5, isCheck: false, field01: '300002', field02: '조한화' },
   { id: 6, isCheck: false, field01: '300003', field02: '임한화' },
+  { id: 7, isCheck: false, field01: '300003', field02: '임한화' },
+  { id: 8, isCheck: false, field01: '300001', field02: '윤한화' },
+  { id: 9, isCheck: false, field01: '300002', field02: '조한화' },
+  { id: 10, isCheck: false, field01: '300003', field02: '임한화' },
 ];
 // Grid3 dummy data (직원번호)
 type DummyDataType3 = {
@@ -214,19 +218,19 @@ const Ltpz042 = () => {
 
   const columnDefs2: ColDef<DummyDataType2>[] = [
     { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
+    { headerName: '직원명', flex: 2, field: 'field02', cellClass: 'text-left', autoHeight: true },
   ];
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   const columnDefs3: ColDef<DummyDataType3>[] = [
-    { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
+    { headerName: '지점번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
+    { headerName: '지점명', flex: 2, field: 'field02', cellClass: 'text-left', autoHeight: true },
   ];
   const [rowData3] = React.useState<DummyDataType3[]>(DummyData3);
 
   const columnDefs4: ColDef<DummyDataType4>[] = [
-    { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '직원명', flex: 1, field: 'field02', cellClass: 'text-center px-0!', autoHeight: true },
+    { headerName: '유자격자번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
+    { headerName: '유자격자명', flex: 2, field: 'field02', cellClass: 'text-left', autoHeight: true },
   ];
   const [rowData4] = React.useState<DummyDataType4[]>(DummyData4);
 
@@ -302,7 +306,7 @@ const Ltpz042 = () => {
 
           {/* 유자격자: Grid1 단독 */}
           {!isEmpNo && (
-            <div className="ag-theme-alpine ltpa010-grid w-full inner-scroll" data-row={rowData.length}>
+            <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 key="ltpz042-grid-qualified"
                 getRowId={(params) => `qualified-${params.data.id}`}
@@ -318,9 +322,9 @@ const Ltpz042 = () => {
           )}
           {/* 직원번호: Grid2~4 1/3씩 */}
           {isEmpNo && (
-            <Grow className="w-full" gap={1} placement="ss">
+            <Grid className="w-full grid-cols-3" gap={3} placement="ss">
               {/* Grid2 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3 inner-scroll" data-row={rowData2.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                 <AgGridReact<DummyDataType2>
                   key="ltpz042-grid-empno-1"
                   getRowId={(params) => `empno-1-${params.data.id}`}
@@ -335,7 +339,7 @@ const Ltpz042 = () => {
                 />
               </div>
               {/* Grid3 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3 inner-scroll" data-row={rowData3.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData3.length}>
                 <AgGridReact<DummyDataType3>
                   key="ltpz042-grid-empno-2"
                   getRowId={(params) => `empno-2-${params.data.id}`}
@@ -350,7 +354,7 @@ const Ltpz042 = () => {
                 />
               </div>
               {/* Grid4 */}
-              <div className="ag-theme-alpine ltpa010-grid w-1/3 inner-scroll" data-row={rowData4.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData4.length}>
                 <AgGridReact<DummyDataType4>
                   key="ltpz042-grid-empno-3"
                   getRowId={(params) => `empno-3-${params.data.id}`}
@@ -364,7 +368,7 @@ const Ltpz042 = () => {
                   alwaysShowVerticalScroll={true}
                 />
               </div>
-            </Grow>
+            </Grid>
           )}
         </DialogSection>
 
