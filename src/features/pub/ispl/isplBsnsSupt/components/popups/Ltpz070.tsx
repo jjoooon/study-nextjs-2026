@@ -3,10 +3,6 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useMemo } from 'react';
 import {
   AgGridEmptyComponent,
   createModifiedCellClassRules,
@@ -31,6 +27,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useMemo } from 'react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -426,7 +426,7 @@ const Ltpz070 = () => {
         ],
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, field06ModifiedCellClassRules3]
   );
   const columnDefs4: (ColDef<DummyDataType4> | ColGroupDef<DummyDataType4>)[] = useMemo(
     () => [
@@ -515,7 +515,7 @@ const Ltpz070 = () => {
         ],
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, field06ModifiedCellClassRules4]
   );
   return (
     <Dialog open>
