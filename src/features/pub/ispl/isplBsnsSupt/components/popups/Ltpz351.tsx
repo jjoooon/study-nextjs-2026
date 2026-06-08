@@ -2,10 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -21,6 +18,9 @@ import {
   DialogTitle,
   DialogClose,
 } from '@uiux/Dialog';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -37,40 +37,45 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz351 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '구분',
-      field: 'field1',
-      width: 70,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '성명',
-      field: 'field2',
-      flex: 1,
-      cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
-      editable: (params) => params.data?.field1 === '계약자',
-      cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
-        <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-          <Typo>{_params.value}</Typo>
-          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grid>
-      ),
-    },
-    {
-      headerName: '휴대폰',
-      field: 'field3',
-      flex: 1,
-      cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
-      editable: (params) => params.data?.field1 === '계약자',
-      cellEditor: 'agTextCellEditor',
-      cellEditorParams: {
-        maxLength: 13,
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '구분',
+        field: 'field1',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        cellClass: 'text-center',
       },
-    },
-  ];
+      {
+        headerName: '성명',
+        field: 'field2',
+        flex: 1,
+        cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
+        editable: (params) => params.data?.field1 === '계약자',
+        cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
+          <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
+            <Typo>{_params.value}</Typo>
+            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </Grid>
+        ),
+      },
+      {
+        headerName: '휴대폰',
+        field: 'field3',
+        flex: 1,
+        cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
+        editable: (params) => params.data?.field1 === '계약자',
+        cellEditor: 'agTextCellEditor',
+        cellEditorParams: {
+          maxLength: 13,
+        },
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 

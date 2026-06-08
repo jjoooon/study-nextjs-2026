@@ -4,10 +4,8 @@
 'use client';
 
 import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
 import { Grid, Gcol, Grow, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -15,6 +13,9 @@ import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+
 import {
   Dialog,
   DialogClose,
@@ -431,61 +432,60 @@ const DummyDataT3: DummyDataTypeT3[] = [
 ];
 
 const Ltpz026 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대표질병코드',
       field: 'field01',
-      width: 80,
-      cellClass: 'text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '질병명',
       field: 'field02',
-      flex: 2,
+      flex: 7,
+      minWidth: attributeColumnWidth(150),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '원사고발생일',
       field: 'field03',
-      width: 100,
-      cellClass: 'text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
     },
     {
       headerName: '최종사고발생일',
       field: 'field04',
-      width: 100,
-      cellClass: 'text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
     },
     {
       headerName: '입원',
       field: 'field05',
-      width: 180,
-      cellClass: 'text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(180),
     },
     {
       headerName: '통원',
       field: 'field06',
       width: 60,
-      cellClass: 'text-center',
     },
     {
       headerName: '수술',
       field: 'field07',
-      width: 50,
-      cellClass: 'text-center',
+      width: 60,
     },
     {
       headerName: '고지여부',
       field: 'field08',
       width: 90,
-      cellClass: 'text-center',
     },
     {
       headerName: '체크',
       field: 'field09',
       flex: 1,
-      cellClass: 'text-center',
+      minWidth: attributeColumnWidth(80),
       cellStyle: (params) => {
         return params.value ? { color: '#006FF2' } : undefined;
       },
@@ -498,6 +498,7 @@ const Ltpz026 = () => {
       headerName: '제한 담보명',
       field: 'field01',
       flex: 3,
+      minWidth: attributeColumnWidth(220),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeT1>({ field: 'field01' }),
     },
@@ -505,6 +506,7 @@ const Ltpz026 = () => {
       headerName: '가입금액(원)',
       field: 'field02',
       flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -515,6 +517,7 @@ const Ltpz026 = () => {
       headerName: '제한 담보명',
       field: 'field01',
       flex: 3,
+      minWidth: attributeColumnWidth(220),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeT2>({ field: 'field01' }),
     },
@@ -522,6 +525,7 @@ const Ltpz026 = () => {
       headerName: '가입금액(원)',
       field: 'field02',
       flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -532,6 +536,7 @@ const Ltpz026 = () => {
       headerName: '부담보부위명',
       field: 'field01',
       flex: 3,
+      minWidth: attributeColumnWidth(220),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeT3>({ field: 'field01' }),
     },
@@ -539,6 +544,7 @@ const Ltpz026 = () => {
       headerName: '기간',
       field: 'field02',
       flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center',
     },
   ];
@@ -592,7 +598,7 @@ const Ltpz026 = () => {
           >
             {active === 'tab1' ? (
               <Grid placement="ss" className="w-full h-full pt-3 grid-rows-[1fr_auto]" gap={3}>
-                <Grid className="grid-rows-[auto_1fr] ">
+                <Grid className="grid-rows-[auto_1fr]">
                   <Grow placement="sc">
                     <Typo tag={'strong'} variant={'heading-md'}>
                       고지콕콕 안내대상
@@ -606,7 +612,7 @@ const Ltpz026 = () => {
                       안내 비대상 상품입니다.
                     </Typo>
                   </Grow>
-                  <div className="ag-theme-alpine min-h-[15.7rem]">
+                  <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -625,7 +631,7 @@ const Ltpz026 = () => {
                         enableClickSelection: false,
                       }}
                       selectionColumnDef={{
-                        width: 40,
+                        width: 30,
                         cellClass: 'text-center',
                       }}
                       onGridReady={(params) => {

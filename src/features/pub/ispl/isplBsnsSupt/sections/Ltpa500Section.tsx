@@ -335,14 +335,14 @@ export default function Ltpa500Section() {
                       ))}
                     </NativeSelect>
                     {form.type01 === 'selection2' ? (
-                      <Input aria-label="" width={110} value={''} />
+                      <Input aria-label="" width={110} value={'12345678'} />
                     ) : (
                       <>
-                        <Input aria-label="" width={90} value={''} />
+                        <Input aria-label="" width={90} value={'12345678'} />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="" width={120} value={'김한화'} readOnly />
+                        <Input aria-label="" width={120} value={'신부산GA지점'} readOnly />
                       </>
                     )}
                   </FormCell>
@@ -383,7 +383,12 @@ export default function Ltpa500Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'설계일자'}>
-                    <DatePickerInput mode="range" onChange={() => {}} size="lg" value="" />
+                    <DatePickerInput
+                      mode="range"
+                      onChange={() => {}}
+                      size="lg"
+                      rangeValue={{ from: '2026-05-03', to: '2026-05-11' }}
+                    />
                   </FormCell>
                 </FormRow>
               </FormTable>

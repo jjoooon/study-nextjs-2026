@@ -18,6 +18,7 @@ import {
 } from '@uiux/Dialog';
 
 import '@/shared/lib/agGridPub';
+import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
 
 const Ltpz082 = () => {
   return (
@@ -27,6 +28,9 @@ const Ltpz082 = () => {
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
               65세이상 가입사유확인
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ082)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -68,6 +72,7 @@ const Ltpz082 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -6,8 +6,14 @@
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent, createModifiedCellClassRules, createTooltipValueGetter } from '@aggrid';
-import { numberValueFormatter } from '@aggrid';
+import { useMemo } from 'react';
+import {
+  AgGridEmptyComponent,
+  createModifiedCellClassRules,
+  createTooltipValueGetter,
+  numberValueFormatter,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -17,13 +23,13 @@ import { ArrowDoubleIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
 
 import '@/shared/lib/agGridPub';
@@ -241,248 +247,276 @@ const Ltpz070 = () => {
   );
 
   // AgGrid Column
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: '현재 (보장 보험료: 50,000원)',
-      children: [
-        {
-          headerName: '수익성',
-          field: 'field01',
-          width: 180,
-          cellClass: 'text-center',
-          autoHeight: true,
-          sortable: false,
-          cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
-            <StarStage profitabilityText={String(params.value ?? '')} />
-          ),
-        },
-        {
-          headerName: '가치배수',
-          field: 'field02',
-          flex: 1,
-          cellClass: 'text-right',
-          autoHeight: true,
-        },
-        {
-          headerName: '예상손해율',
-          field: 'field03',
-          flex: 1,
-          cellClass: 'text-right',
-          autoHeight: true,
-        },
-        {
-          headerName: '수정률',
-          field: 'field04',
-          flex: 1,
-          cellClass: 'text-right',
-          autoHeight: true,
-        },
-      ],
-    },
-  ];
-  const columnDefs2: (ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>)[] = [
-    {
-      headerName: '변경후 (보장 보험료: 500,000원)',
-      headerClass: 'ag-header-color',
-      children: [
-        {
-          headerName: '수익성',
-          field: 'field01',
-          width: 180,
-          headerClass: 'ag-header-color',
-          cellClass: 'text-center',
-          autoHeight: true,
-          cellRenderer: (params: ICellRendererParams<DummyDataType2, string | number>) => (
-            <StarStage profitabilityText={String(params.value ?? '')} />
-          ),
-        },
-        {
-          headerName: '가치배수',
-          field: 'field02',
-          flex: 1,
-          headerClass: 'ag-header-color',
-          cellClass: 'text-right',
-          autoHeight: true,
-        },
-        {
-          headerName: '예상손해율',
-          field: 'field03',
-          flex: 1,
-          headerClass: 'ag-header-color',
-          cellClass: 'text-right',
-          autoHeight: true,
-        },
-        {
-          headerName: '수정률',
-          field: 'field04',
-          flex: 1,
-          headerClass: 'ag-header-color',
-          cellClass: 'text-right',
-          autoHeight: true,
-        },
-      ],
-    },
-  ];
-  const columnDefs3: (ColDef<DummyDataType3> | ColGroupDef<DummyDataType3>)[] = [
-    {
-      headerName: '담보명',
-      field: 'field01',
-      flex: 1,
-      cellClass: 'text-left',
-      sortable: false,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field01' }),
-    },
-    {
-      headerName: '수정률',
-      field: 'field02',
-      width: 80,
-      cellClass: 'text-right',
-    },
-    {
-      headerName: '현재',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      headerClass: 'ag-header-right-divider',
-      children: [
-        {
-          headerName: '가입금액(만원)',
-          field: 'field03',
-          width: 120,
-          cellClass: 'text-right',
-          valueParser: (params) => Number(params.newValue) || 0,
-          valueFormatter: numberValueFormatter, // 천단위 콤마 표시
-        },
-        {
-          headerName: '보험료(원)',
-          field: 'field04',
-          width: 120,
-          cellClass: 'text-right',
-          valueParser: (params) => Number(params.newValue) || 0,
-          valueFormatter: numberValueFormatter, // 천단위 콤마 표시
-        },
-        {
-          headerName: '가치배수',
-          field: 'field05',
-          width: 120,
-          cellClass: 'text-right',
-        },
-      ],
-    },
-    {
-      headerName: '변경후',
-      headerClass: 'ag-header-color',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      children: [
-        {
-          headerName: '가입금액(만원)',
-          field: 'field06',
-          width: 120,
-          headerClass: 'ag-header-color',
-          cellClass: 'text-right editable-cell',
-          cellClassRules: field06ModifiedCellClassRules3,
-          editable: true,
-          cellEditor: 'agInputCellEditor',
-          valueParser: (params) => Number(params.newValue) || 0,
-          valueFormatter: numberValueFormatter, // 천단위 콤마 표시
-        },
-        {
-          headerName: '보험료(원)',
-          field: 'field07',
-          width: 120,
-          headerClass: 'ag-header-color',
-          cellClass: 'text-right',
-          valueParser: (params) => Number(params.newValue) || 0,
-          valueFormatter: numberValueFormatter, // 천단위 콤마 표시
-        },
-        {
-          headerName: '가치배수',
-          field: 'field08',
-          width: 120,
-          headerClass: 'ag-header-color',
-          cellClass: 'text-right',
-        },
-      ],
-    },
-  ];
-  const columnDefs4: (ColDef<DummyDataType4> | ColGroupDef<DummyDataType4>)[] = [
-    {
-      headerName: '담보명',
-      field: 'field01',
-      flex: 1,
-      cellClass: 'text-left',
-      sortable: false,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType4>({ field: 'field01' }),
-    },
-    {
-      headerName: '수정률',
-      field: 'field02',
-      width: 80,
-      cellClass: 'text-right',
-    },
-    {
-      headerName: '현재',
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      headerClass: 'ag-header-right-divider',
-      children: [
-        {
-          headerName: '가입금액(만원)',
-          field: 'field03',
-          width: 120,
-          cellClass: 'text-right',
-          valueParser: (params) => Number(params.newValue) || 0,
-          valueFormatter: numberValueFormatter, // 천단위 콤마 표시
-        },
-        {
-          headerName: '보험료(원)',
-          field: 'field04',
-          width: 120,
-          cellClass: 'text-right',
-          valueParser: (params) => Number(params.newValue) || 0,
-          valueFormatter: numberValueFormatter, // 천단위 콤마 표시
-        },
-        {
-          headerName: '가치배수',
-          field: 'field05',
-          width: 120,
-          cellClass: 'text-right',
-        },
-      ],
-    },
-    {
-      headerName: '변경후',
-      headerClass: 'ag-header-color',
-      children: [
-        {
-          headerName: '가입금액(만원)',
-          field: 'field06',
-          width: 120,
-          headerClass: 'ag-header-color',
-          cellClass: 'text-right editable-cell',
-          cellClassRules: field06ModifiedCellClassRules4,
-          editable: true,
-          cellEditor: 'agInputCellEditor',
-          valueParser: (params) => Number(params.newValue) || 0,
-          valueFormatter: numberValueFormatter, // 천단위 콤마 표시
-        },
-        {
-          headerName: '보험료(원)',
-          field: 'field07',
-          width: 120,
-          headerClass: 'ag-header-color',
-          cellClass: 'text-right',
-          valueParser: (params) => Number(params.newValue) || 0,
-          valueFormatter: numberValueFormatter, // 천단위 콤마 표시
-        },
-        {
-          headerName: '가치배수',
-          field: 'field08',
-          width: 120,
-          headerClass: 'ag-header-color',
-          cellClass: 'text-right',
-        },
-      ],
-    },
-  ];
-
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
+    () => [
+      {
+        headerName: '현재 (보장 보험료: 50,000원)',
+        children: [
+          {
+            headerName: '수익성',
+            field: 'field01',
+            flex: 1,
+            minWidth: attributeColumnWidth(180),
+            cellClass: 'text-center',
+            autoHeight: true,
+            sortable: false,
+            cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
+              <StarStage profitabilityText={String(params.value ?? '')} />
+            ),
+          },
+          {
+            headerName: '가치배수',
+            field: 'field02',
+            flex: 1,
+            cellClass: 'text-right',
+            autoHeight: true,
+          },
+          {
+            headerName: '예상손해율',
+            field: 'field03',
+            flex: 1,
+            cellClass: 'text-right',
+            autoHeight: true,
+          },
+          {
+            headerName: '수정률',
+            field: 'field04',
+            flex: 1,
+            cellClass: 'text-right',
+            autoHeight: true,
+          },
+        ],
+      },
+    ],
+    [attributeColumnWidth]
+  );
+  const columnDefs2: (ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>)[] = useMemo(
+    () => [
+      {
+        headerName: '변경후 (보장 보험료: 500,000원)',
+        headerClass: 'ag-header-color',
+        children: [
+          {
+            headerName: '수익성',
+            field: 'field01',
+            flex: 1,
+            minWidth: attributeColumnWidth(180),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-center',
+            autoHeight: true,
+            cellRenderer: (params: ICellRendererParams<DummyDataType2, string | number>) => (
+              <StarStage profitabilityText={String(params.value ?? '')} />
+            ),
+          },
+          {
+            headerName: '가치배수',
+            field: 'field02',
+            flex: 1,
+            headerClass: 'ag-header-color',
+            cellClass: 'text-right',
+            autoHeight: true,
+          },
+          {
+            headerName: '예상손해율',
+            field: 'field03',
+            flex: 1,
+            headerClass: 'ag-header-color',
+            cellClass: 'text-right',
+            autoHeight: true,
+          },
+          {
+            headerName: '수정률',
+            field: 'field04',
+            flex: 1,
+            headerClass: 'ag-header-color',
+            cellClass: 'text-right',
+            autoHeight: true,
+          },
+        ],
+      },
+    ],
+    [attributeColumnWidth]
+  );
+  const columnDefs3: (ColDef<DummyDataType3> | ColGroupDef<DummyDataType3>)[] = useMemo(
+    () => [
+      {
+        headerName: '담보명',
+        field: 'field01',
+        flex: 4,
+        cellClass: 'text-left',
+        sortable: false,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field01' }),
+      },
+      {
+        headerName: '수정률',
+        field: 'field02',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-right',
+      },
+      {
+        headerName: '현재',
+        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+        headerClass: 'ag-header-right-divider',
+        children: [
+          {
+            headerName: '가입금액(만원)',
+            field: 'field03',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            cellClass: 'text-right',
+            valueParser: (params) => Number(params.newValue) || 0,
+            valueFormatter: numberValueFormatter, // 천단위 콤마 표시
+          },
+          {
+            headerName: '보험료(원)',
+            field: 'field04',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            cellClass: 'text-right',
+            valueParser: (params) => Number(params.newValue) || 0,
+            valueFormatter: numberValueFormatter, // 천단위 콤마 표시
+          },
+          {
+            headerName: '가치배수',
+            field: 'field05',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            cellClass: 'text-right',
+          },
+        ],
+      },
+      {
+        headerName: '변경후',
+        headerClass: 'ag-header-color',
+        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+        children: [
+          {
+            headerName: '가입금액(만원)',
+            field: 'field06',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-right editable-cell',
+            cellClassRules: field06ModifiedCellClassRules3,
+            editable: true,
+            cellEditor: 'agInputCellEditor',
+            valueParser: (params) => Number(params.newValue) || 0,
+            valueFormatter: numberValueFormatter, // 천단위 콤마 표시
+          },
+          {
+            headerName: '보험료(원)',
+            field: 'field07',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-right',
+            valueParser: (params) => Number(params.newValue) || 0,
+            valueFormatter: numberValueFormatter, // 천단위 콤마 표시
+          },
+          {
+            headerName: '가치배수',
+            field: 'field08',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-right',
+          },
+        ],
+      },
+    ],
+    [attributeColumnWidth]
+  );
+  const columnDefs4: (ColDef<DummyDataType4> | ColGroupDef<DummyDataType4>)[] = useMemo(
+    () => [
+      {
+        headerName: '담보명',
+        field: 'field01',
+        flex: 4,
+        cellClass: 'text-left',
+        sortable: false,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType4>({ field: 'field01' }),
+      },
+      {
+        headerName: '수정률',
+        field: 'field02',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-right',
+      },
+      {
+        headerName: '현재',
+        cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
+        headerClass: 'ag-header-right-divider',
+        children: [
+          {
+            headerName: '가입금액(만원)',
+            field: 'field03',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            cellClass: 'text-right',
+            valueParser: (params) => Number(params.newValue) || 0,
+            valueFormatter: numberValueFormatter, // 천단위 콤마 표시
+          },
+          {
+            headerName: '보험료(원)',
+            field: 'field04',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            cellClass: 'text-right',
+            valueParser: (params) => Number(params.newValue) || 0,
+            valueFormatter: numberValueFormatter, // 천단위 콤마 표시
+          },
+          {
+            headerName: '가치배수',
+            field: 'field05',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            cellClass: 'text-right',
+          },
+        ],
+      },
+      {
+        headerName: '변경후',
+        headerClass: 'ag-header-color',
+        children: [
+          {
+            headerName: '가입금액(만원)',
+            field: 'field06',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-right editable-cell',
+            cellClassRules: field06ModifiedCellClassRules4,
+            editable: true,
+            cellEditor: 'agInputCellEditor',
+            valueParser: (params) => Number(params.newValue) || 0,
+            valueFormatter: numberValueFormatter, // 천단위 콤마 표시
+          },
+          {
+            headerName: '보험료(원)',
+            field: 'field07',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-right',
+            valueParser: (params) => Number(params.newValue) || 0,
+            valueFormatter: numberValueFormatter, // 천단위 콤마 표시
+          },
+          {
+            headerName: '가치배수',
+            field: 'field08',
+            flex: 1,
+            minWidth: attributeColumnWidth(120),
+            headerClass: 'ag-header-color',
+            cellClass: 'text-right',
+          },
+        ],
+      },
+    ],
+    [attributeColumnWidth]
+  );
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="2xl">
@@ -503,7 +537,7 @@ const Ltpz070 = () => {
               <TableFoldBody>
                 <Grow className="w-full" gap={3}>
                   <div className="w-full border border-(--color-gray-30) box-border rounded-md p-3">
-                    <div className="ag-theme-alpine">
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData}
@@ -525,7 +559,7 @@ const Ltpz070 = () => {
                     className="w-full border-[0.2rem] border-(--color-primary-50) box-border rounded-md p-3 bg-(--color-primary-5)"
                     style={{ boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)' }}
                   >
-                    <div className="ag-theme-alpine ag-header-color-grid">
+                    <div className="ag-theme-alpine ag-header-color-grid inner-scroll" data-row={rowData2.length}>
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData2}
@@ -558,7 +592,7 @@ const Ltpz070 = () => {
                       boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)',
                     }}
                   />
-                  <div className="ag-theme-alpine min-h-[15.4rem]">
+                  <div className="ag-theme-alpine min-h-[15.4rem] inner-scroll" data-row={3}>
                     <AgGridReact<DummyDataType3>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData3}
@@ -592,7 +626,7 @@ const Ltpz070 = () => {
                       boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)',
                     }}
                   />
-                  <div className="ag-theme-alpine min-h-[15.4rem]">
+                  <div className="ag-theme-alpine min-h-[15.4rem] inner-scroll" data-row={3}>
                     <AgGridReact<DummyDataType4>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData4}

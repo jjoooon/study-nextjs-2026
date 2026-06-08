@@ -3,10 +3,7 @@
  */
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
+import { useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -25,6 +22,10 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
 
 // M2. 신규페이지
 import '@/shared/lib/agGridPub';
@@ -155,42 +156,49 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 const Ltpz076 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '코드',
-      field: 'field01',
-      width: 70,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '성명/상호명',
-      field: 'field02',
-      flex: 8,
-      cellClass: 'text-left',
-    },
-    {
-      headerName: '구분',
-      field: 'field03',
-      flex: 1,
-      minWidth: 80,
-      cellClass: 'text-center',
-    },
-  ];
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '코드',
-      field: 'field01',
-      flex: 1,
-      minWidth: 70,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '성명/상호명',
-      field: 'field02',
-      flex: 8,
-      cellClass: 'text-left',
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '코드',
+        field: 'field01',
+        width: attributeColumnWidth(70),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '성명/상호명',
+        field: 'field02',
+        flex: 8,
+        cellClass: 'text-left',
+      },
+      {
+        headerName: '구분',
+        field: 'field03',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+    ],
+    [attributeColumnWidth]
+  );
+  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
+    () => [
+      {
+        headerName: '코드',
+        field: 'field01',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '성명/상호명',
+        field: 'field02',
+        flex: 8,
+        cellClass: 'text-left',
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
