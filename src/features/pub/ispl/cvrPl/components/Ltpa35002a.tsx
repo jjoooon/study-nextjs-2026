@@ -3,19 +3,6 @@
  */
 'use client';
 
-import type {
-  CellClassParams,
-  ICellRendererParams,
-  ColDef,
-  GridApi,
-  SelectionChangedEvent,
-  EditableCallbackParams,
-  CellEditorSelectorResult,
-  ValueFormatterParams,
-} from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import Ltpz020 from '@/features/pub/ispl/cvrPl/components/popups/Ltpz020';
 import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
@@ -51,6 +38,18 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import type {
+  CellClassParams,
+  ICellRendererParams,
+  ColDef,
+  GridApi,
+  SelectionChangedEvent,
+  EditableCallbackParams,
+  CellEditorSelectorResult,
+  ValueFormatterParams,
+} from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002aData';
 import type { DummyDataType } from '../data/ltpa35002aData';
@@ -58,6 +57,7 @@ import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
 import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChangedHandler';
 import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
 import { editableCellClassRules, ensureLockedRowsSelected } from '../utils/agGridUtils';
+import Ltpz020 from '@/features/pub/ispl/cvrPl/components/popups/Ltpz020';
 import '@/shared/lib/agGridPub';
 
 type AgGridRow = DummyDataType & {
@@ -266,7 +266,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         headerName: '만기',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(64),
+        minWidth: attributeColumnWidth(80),
         // width: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
@@ -278,9 +278,9 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
-          values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+          values: ['05년만기', '20세만기', '100세만기', '무제한'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('center'),
       },
       {
         headerName: '납기',
@@ -297,9 +297,9 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
-          values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
+          values: ['5년납', '10년납', '15년납', '20년납', '25년납', '30년납', '35년납', '전기납'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('center'),
       },
 
       {
@@ -400,24 +400,24 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
             <TextSelectChange
               items={[
                 [
-                  { checked: false, label: '100세만기', value: '100세만기' },
-                  { checked: true, label: '30세만기', value: '30세만기' },
+                  { checked: true, label: '100세만기', value: '100세만기' },
+                  { checked: false, label: '30세만기', value: '30세만기' },
                 ],
                 [
-                  { checked: false, label: '20년납입', value: '20년납입' },
-                  { checked: true, label: '30년납입', value: '30년납입' },
+                  { checked: true, label: '20년납입', value: '20년납입' },
+                  { checked: false, label: '30년납입', value: '30년납입' },
                 ],
                 [
-                  { checked: false, label: '월납', value: '월납' },
-                  { checked: true, label: '연납', value: '연납' },
+                  { checked: true, label: '월납', value: '월납' },
+                  { checked: false, label: '연납', value: '연납' },
                 ],
                 [
-                  { checked: false, label: '20년 갱신', value: '20년 갱신' },
-                  { checked: true, label: '30년 갱신', value: '30년 갱신' },
+                  { checked: true, label: '20년 갱신', value: '20년 갱신' },
+                  { checked: false, label: '30년 갱신', value: '30년 갱신' },
                 ],
                 [
-                  { checked: false, label: '1형', value: '1형' },
-                  { checked: true, label: '2형', value: '2형' },
+                  { checked: true, label: '1형', value: '1형' },
+                  { checked: false, label: '2형', value: '2형' },
                 ],
               ]}
             />
@@ -589,7 +589,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     <Input
                       type="tel"
                       commaAmount={true}
-                      value={100000}
+                      value={0}
                       size={'md'}
                       readOnly={true}
                       className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
@@ -600,7 +600,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                           <Input
                             type="text"
                             commaAmount={true}
-                            value={39.4}
+                            value={0}
                             size={'md'}
                             width={44}
                             className="[&_input]:text-right shrink-0 cursor-pointer"
@@ -629,7 +629,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       <Input
                         type="tel"
                         commaAmount={true}
-                        value={Number(100000).toLocaleString()}
+                        value={Number(72531).toLocaleString()}
                         size={'md'}
                         readOnly={true}
                         className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
@@ -649,7 +649,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   <Input
                     type="tel"
                     commaAmount={true}
-                    value={100000}
+                    value={0}
                     width={'full'}
                     size={'md'}
                     readOnly={true}
@@ -663,7 +663,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       <Input
                         type="tel"
                         commaAmount={true}
-                        value={0}
+                        value={72531}
                         clear={true}
                         width={'full'}
                         size={'md'}

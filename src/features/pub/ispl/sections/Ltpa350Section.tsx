@@ -3,10 +3,6 @@
  */
 'use client';
 
-import type { ReactNode } from 'react';
-import { useState } from 'react';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
-import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
 import { BottomBar } from '@common/BottomBar';
 import { AsideFoot } from '@features/AsideFoot';
@@ -17,6 +13,8 @@ import { QuickLinks } from '@features/QuickLinks';
 import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { useState } from 'react';
+import type { ReactNode } from 'react';
 
 import { Ltpa35003Side } from '../../shared/components/Ltpa35003Side';
 import { Ltpa35004Side } from '../../shared/components/Ltpa35004Side';
@@ -29,6 +27,8 @@ import { Ltpa35001 } from '../crmtt/components/Ltpa35001'; // 01. 가입설계
 import { Ltpa35002 } from '../cvrPl/components/Ltpa35002'; // 02. 담보설계
 import { Ltpa35003 } from '../ncMtt/components/Ltpa35003'; // 04. 심사요청
 import { Ltpa35004 } from '../udRqRst/components/Ltpa35004'; // 04. 심사요청
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
+import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
@@ -77,13 +77,13 @@ const data: Ltpa350DataType = {
     },
     pageTitle: {
       simpleMode: false,
-      title: '한화 시그니처 여성 건강보험 3.0 2504',
-      options: ['납입면제 강화형', '기본형'],
+      title: '한화 시그니처 여성 간편건강보험4.0 무배당2604',
+      options: ['납입면제형', '납입후50%해약환급금지급형'],
       planNumber: ['LA20234472050000', '2'],
-      contractHolder: '6012345 박하늘별님달박하늘별님달',
+      contractHolder: '3999999 김한손',
       planNumberList: [
-        { label: 'LA20234472050000', value: 'LA20234472050000', name: '김은빈', amount: '23,000', state: '설계중' },
-        { label: 'LA23234472050001', value: 'LA23234472050001', name: '박하늘', amount: '45,500', state: '계약완료' },
+        { label: 'LA20234472050000', value: 'LA20234472050000', name: '김한손', amount: '23,000', state: '설계중' },
+        { label: 'LA20234472050001', value: 'LA20234472050001', name: '박하늘', amount: '45,500', state: '계약완료' },
         { label: 'LA20234472050002', value: 'LA20234472050002', name: '이도현', amount: '12,300', state: '심사중' },
         { label: 'LA20234472050003', value: 'LA20234472050003', name: '최수영', amount: '99,900', state: '청약완료' },
         { label: 'LA20234472050004', value: 'LA20234472050004', name: '한지민', amount: '77,700', state: '설계중' },
@@ -109,13 +109,13 @@ const data: Ltpa350DataType = {
 const asideFoot = {
   step1: {
     insGen: 0,
-    paymentAmount: 3450,
-    point: 640,
+    paymentAmount: 0,
+    point: 0,
   },
   step2: {
-    insGen: 3456,
-    paymentAmount: 3450,
-    point: 640,
+    insGen: 0,
+    paymentAmount: 72531,
+    point: 0,
   },
   step3: {
     insGen: 3456,
@@ -173,7 +173,7 @@ export default function Ltpa350Section() {
   return (
     <>
       {/* 퍼블 페이지확인용 (섹션에서 통합 관리) */}
-      <NativeSelect
+      {/* <NativeSelect
         width={'auto'}
         className="fixed top-1 left-[50%] z-100 opacity-80"
         value={currentViewKey}
@@ -186,7 +186,7 @@ export default function Ltpa350Section() {
         <NativeSelectOption value="view3">임시 화면확인용: 재물</NativeSelectOption>
         <NativeSelectOption value="view4">임시 화면확인용: 단체</NativeSelectOption>
         <NativeSelectOption value="view5">임시 화면확인용: 연금/저축</NativeSelectOption>
-      </NativeSelect>
+      </NativeSelect> */}
       {/* 퍼블 페이지확인용 */}
 
       <LayoutHead>
@@ -278,16 +278,16 @@ export default function Ltpa350Section() {
           ) : (
             <Ltpa350Side
               info={{
-                date: '2024-05-08',
-                polName: '홍길동',
-                insName: '홍길동',
+                date: '2026-06-30', //보험시기
+                polName: '김한화',
+                insName: '김한화',
                 insAge: '32',
-                insGender: '남',
+                insGender: '여',
                 insGrade: '1급',
-                quoteExpiryDate: '2024-06-30',
-                insuranceAgeDate: '2024-05-08',
-                consentEndDate: '2024-06-30',
-                note: '알릴사항 비대상',
+                quoteExpiryDate: '2026-06-30', //설계유효기간
+                insuranceAgeDate: '2026-08-16', //상령일
+                consentEndDate: '2026-06-30', //동의종료일
+                note: '알릴사항 대상',
                 docPrint: true,
                 docScan: false,
                 eGuideDiscount: [1230, 39990],

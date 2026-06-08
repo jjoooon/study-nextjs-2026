@@ -3,14 +3,14 @@
  */
 'use client';
 
-import type { ICellRendererParams, IGroupCellRendererParams, IRowNode } from 'ag-grid-enterprise';
-import type { ReactNode } from 'react';
 import { editableSelectCellRenderer } from '@aggrid';
 import { CoveragePopover } from '@aggrid';
 import { Gcol, Grow } from '@atoms';
 import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
+import type { ICellRendererParams, IGroupCellRendererParams, IRowNode } from 'ag-grid-enterprise';
+import type { ReactNode } from 'react';
 
 type ProductNameCellBase = {
   id: string | number;
@@ -91,10 +91,12 @@ export function productNameCellRenderer<
 
   return (
     <Grow className={`h-full ${data.badge ? 'pr-1.5' : 'pr-0'}`} placement="bwc">
-      {displayOrder && (
+      {displayOrder ? (
         <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">
           <span>{displayOrder}</span>
         </Grow>
+      ) : (
+        <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center"></Grow>
       )}
 
       {!data.isDuplicate ? (
