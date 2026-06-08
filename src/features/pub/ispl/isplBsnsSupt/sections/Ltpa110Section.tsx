@@ -110,7 +110,7 @@ export default function Ltpa110Section() {
       {
         headerName: '설계번호',
         field: 'field01',
-        flex: 1.2,
+        flex: 2,
         minwidth: attributeColumnWidth(120),
         cellClass: 'text-center',
       },

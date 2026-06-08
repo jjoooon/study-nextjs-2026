@@ -180,7 +180,7 @@ const Ltpz079 = () => {
               </Button>
             </Grow>
           </Grow>
-          <div className="ag-theme-alpine  inner-scroll" data-row={rowData.length}>
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}

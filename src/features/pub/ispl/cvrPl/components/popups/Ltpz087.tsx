@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -62,36 +62,43 @@ const dummyData: DummyDataType[] = [
 ];
 
 const Ltpz087 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '유형',
-      field: 'field01',
-      flex: 1,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '가입금액(원)',
-      field: 'field02',
-      width: 180,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '타질권금액(원)',
-      field: 'field03',
-      width: 180,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '유형',
+        field: 'field01',
+        flex: 1,
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '가입금액(원)',
+        field: 'field02',
+        flex: 1,
+        width: attributeColumnWidth(180),
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '타질권금액(원)',
+        field: 'field03',
+        flex: 1,
+        width: attributeColumnWidth(180),
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
 
-    {
-      headerName: '보험료(만원)',
-      field: 'field04',
-      width: 180,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-  ];
+      {
+        headerName: '보험료(만원)',
+        field: 'field04',
+        flex: 1,
+        width: attributeColumnWidth(180),
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = useState<DummyDataType[]>(dummyData);
   const sumRow = React.useMemo(() => {
@@ -198,7 +205,7 @@ const Ltpz087 = () => {
             <TableFold variant={'accordion'}>
               <TableFoldHead title="질권설정금액" />
               <TableFoldBody className="gap-2">
-                <div className="ag-theme-alpine min-h-[15.4rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                   <AgGridReact<DummyDataType>
                     // ref={gridRef}
                     getRowId={(params) => String(params.data.id)}

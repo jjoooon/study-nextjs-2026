@@ -3,7 +3,6 @@
  */
 'use client';
 
-
 import '@/shared/lib/agGridPub';
 import { useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
@@ -106,7 +105,7 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz094 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  
+
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '병명',

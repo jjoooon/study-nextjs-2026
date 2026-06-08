@@ -4,7 +4,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createCellValueChangedHandler, createTooltipValueGetter } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createCellValueChangedHandler,
+  createTooltipValueGetter,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -78,38 +83,42 @@ const Ltpz017 = () => {
     );
   };
 
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '순번',
-      field: 'id',
-      width: 50,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '회사플랜명',
-      field: 'planName',
-      flex: 6,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'planName' }),
-    },
-    {
-      headerName: '나만의플랜명',
-      field: 'myPlanName',
-      flex: 2,
-    },
-    {
-      headerName: '등록일자',
-      field: 'registrationDate',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '적용대상',
-      field: 'target',
-      flex: 1,
-      cellClass: 'text-center',
-      cellRenderer: attributeRenderer,
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '순번',
+        field: 'id',
+        width: attributeColumnWidth(50),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '회사플랜명',
+        field: 'planName',
+        flex: 6,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'planName' }),
+      },
+      {
+        headerName: '나만의플랜명',
+        field: 'myPlanName',
+        flex: 2,
+      },
+      {
+        headerName: '등록일자',
+        field: 'registrationDate',
+        width: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '적용대상',
+        field: 'target',
+        flex: 1,
+        cellClass: 'text-center',
+        cellRenderer: attributeRenderer,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);

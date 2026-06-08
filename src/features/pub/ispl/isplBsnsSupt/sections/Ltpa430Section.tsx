@@ -5,7 +5,13 @@
 
 // 2026-05-27 팝업에서 화면으로 변경, 전체 수정
 
-import { AgGridEmptyComponent, createFieldRenderer, renderTbodyTh, numberValueFormatter } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createFieldRenderer,
+  renderTbodyTh,
+  numberValueFormatter,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -54,153 +60,168 @@ const simpleNumberFormatter = (value?: number) => {
 export default function Ltpa010Section() {
   // M1. div 추가
   // AgGrid Column
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: '구분',
-      width: 80,
-      cellClass: 'text-center px-0! bg-[#f4f4f4]!',
-      autoHeight: true,
-      cellRenderer: (_params: ICellRendererParams<DummyDataType>) => renderTbodyTh('보장보험료 합계(원)'),
-    },
-    {
-      headerName: '1형(355간편고지형)',
-      flex: 1,
-      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-      valueGetter: (params) => params.data?.field01?.[0],
-      valueFormatter: numberValueFormatter,
-      cellRenderer: createFieldRenderer<DummyDataType>(
-        (data?: DummyDataType) => <span className="tracking-normal">{simpleNumberFormatter(data?.field01?.[0])}</span>,
-        (data?: DummyDataType) => (
-          <div className="text-center!">
-            <Button color="secondary" onClick={() => {}} size="sm" variant="outlined" disabled={data?.field01[1]}>
-              설계생성
-            </Button>
-          </div>
-        )
-      ),
-    },
-    {
-      headerName: '2형(305간편고지형)',
-      flex: 1,
-      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataType>(
-        (data?: DummyDataType) => <span className="tracking-normal">{simpleNumberFormatter(data?.field02?.[0])}</span>,
-        (data?: DummyDataType) => (
-          <div className="text-center!">
-            <Button
-              color="secondary"
-              onClick={() => {}}
-              only="default"
-              size="sm"
-              variant="outlined"
-              disabled={data?.field02[1]}
-            >
-              설계생성
-            </Button>
-          </div>
-        )
-      ),
-    },
-    {
-      headerName: '3형(305간편고지형)',
-      flex: 1,
-      field: 'field03',
-      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataType>(
-        (data?: DummyDataType) => <span className="tracking-normal">{simpleNumberFormatter(data?.field03?.[0])}</span>,
-        (data?: DummyDataType) => (
-          <div className="text-center!">
-            <Button
-              color="secondary"
-              onClick={() => {}}
-              only="default"
-              size="sm"
-              variant="outlined"
-              disabled={data?.field03[1]}
-            >
-              설계생성
-            </Button>
-          </div>
-        )
-      ),
-    },
-    {
-      headerName: '4형(305간편고지형)',
-      flex: 1,
-      field: 'field04',
-      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataType>(
-        (data?: DummyDataType) => <span className="tracking-normal">{simpleNumberFormatter(data?.field04?.[0])}</span>,
-        (data?: DummyDataType) => (
-          <div className="text-center!">
-            <Button
-              color="secondary"
-              onClick={() => {}}
-              only="default"
-              size="sm"
-              variant="outlined"
-              disabled={data?.field04[1]}
-            >
-              설계생성
-            </Button>
-          </div>
-        )
-      ),
-    },
-    {
-      headerName: '5형(305간편고지형)',
-      flex: 1,
-      field: 'field05',
-      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataType>(
-        (data?: DummyDataType) => <span className="tracking-normal">{simpleNumberFormatter(data?.field05?.[0])}</span>,
-        (data?: DummyDataType) => (
-          <div className="text-center!">
-            <Button
-              color="secondary"
-              onClick={() => {}}
-              only="default"
-              size="sm"
-              variant="outlined"
-              disabled={data?.field05[1]}
-            >
-              설계생성
-            </Button>
-          </div>
-        )
-      ),
-    },
-    {
-      headerName: '6형(305간편고지형)',
-      flex: 1,
-      field: 'field06',
-      cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataType>(
-        (data?: DummyDataType) => <span className="tracking-normal">{simpleNumberFormatter(data?.field06?.[0])}</span>,
-        (data?: DummyDataType) => (
-          <div className="text-center!">
-            <Button
-              color="secondary"
-              onClick={() => {}}
-              only="default"
-              size="sm"
-              variant="outlined"
-              disabled={data?.field06[1]}
-            >
-              설계생성
-            </Button>
-          </div>
-        )
-      ),
-    },
-  ];
-
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = React.useMemo(
+    () => [
+      {
+        headerName: '구분',
+        width: attributeColumnWidth(80),
+        cellClass: 'text-center px-0! bg-[#f4f4f4]!',
+        autoHeight: true,
+        cellRenderer: (_params: ICellRendererParams<DummyDataType>) => renderTbodyTh('보장보험료 합계(원)'),
+      },
+      {
+        headerName: '1형(355간편고지형)',
+        flex: 1,
+        cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+        valueGetter: (params) => params.data?.field01?.[0],
+        valueFormatter: numberValueFormatter,
+        cellRenderer: createFieldRenderer<DummyDataType>(
+          (data?: DummyDataType) => (
+            <span className="tracking-normal">{simpleNumberFormatter(data?.field01?.[0])}</span>
+          ),
+          (data?: DummyDataType) => (
+            <div className="text-center!">
+              <Button color="secondary" onClick={() => {}} size="sm" variant="outlined" disabled={data?.field01[1]}>
+                설계생성
+              </Button>
+            </div>
+          )
+        ),
+      },
+      {
+        headerName: '2형(305간편고지형)',
+        flex: 1,
+        cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+        cellRenderer: createFieldRenderer<DummyDataType>(
+          (data?: DummyDataType) => (
+            <span className="tracking-normal">{simpleNumberFormatter(data?.field02?.[0])}</span>
+          ),
+          (data?: DummyDataType) => (
+            <div className="text-center!">
+              <Button
+                color="secondary"
+                onClick={() => {}}
+                only="default"
+                size="sm"
+                variant="outlined"
+                disabled={data?.field02[1]}
+              >
+                설계생성
+              </Button>
+            </div>
+          )
+        ),
+      },
+      {
+        headerName: '3형(305간편고지형)',
+        flex: 1,
+        field: 'field03',
+        cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+        cellRenderer: createFieldRenderer<DummyDataType>(
+          (data?: DummyDataType) => (
+            <span className="tracking-normal">{simpleNumberFormatter(data?.field03?.[0])}</span>
+          ),
+          (data?: DummyDataType) => (
+            <div className="text-center!">
+              <Button
+                color="secondary"
+                onClick={() => {}}
+                only="default"
+                size="sm"
+                variant="outlined"
+                disabled={data?.field03[1]}
+              >
+                설계생성
+              </Button>
+            </div>
+          )
+        ),
+      },
+      {
+        headerName: '4형(305간편고지형)',
+        flex: 1,
+        field: 'field04',
+        cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+        cellRenderer: createFieldRenderer<DummyDataType>(
+          (data?: DummyDataType) => (
+            <span className="tracking-normal">{simpleNumberFormatter(data?.field04?.[0])}</span>
+          ),
+          (data?: DummyDataType) => (
+            <div className="text-center!">
+              <Button
+                color="secondary"
+                onClick={() => {}}
+                only="default"
+                size="sm"
+                variant="outlined"
+                disabled={data?.field04[1]}
+              >
+                설계생성
+              </Button>
+            </div>
+          )
+        ),
+      },
+      {
+        headerName: '5형(305간편고지형)',
+        flex: 1,
+        field: 'field05',
+        cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+        cellRenderer: createFieldRenderer<DummyDataType>(
+          (data?: DummyDataType) => (
+            <span className="tracking-normal">{simpleNumberFormatter(data?.field05?.[0])}</span>
+          ),
+          (data?: DummyDataType) => (
+            <div className="text-center!">
+              <Button
+                color="secondary"
+                onClick={() => {}}
+                only="default"
+                size="sm"
+                variant="outlined"
+                disabled={data?.field05[1]}
+              >
+                설계생성
+              </Button>
+            </div>
+          )
+        ),
+      },
+      {
+        headerName: '6형(305간편고지형)',
+        flex: 1,
+        field: 'field06',
+        cellClass: 'text-right px-0! flex [&>div>span]:h-auto!',
+        autoHeight: true,
+        cellRenderer: createFieldRenderer<DummyDataType>(
+          (data?: DummyDataType) => (
+            <span className="tracking-normal">{simpleNumberFormatter(data?.field06?.[0])}</span>
+          ),
+          (data?: DummyDataType) => (
+            <div className="text-center!">
+              <Button
+                color="secondary"
+                onClick={() => {}}
+                only="default"
+                size="sm"
+                variant="outlined"
+                disabled={data?.field06[1]}
+              >
+                설계생성
+              </Button>
+            </div>
+          )
+        ),
+      },
+    ],
+    [attributeColumnWidth]
+  );
   // rowSelection 사용시
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
@@ -253,7 +274,7 @@ export default function Ltpa010Section() {
                 <Typo variant="body-md" className="w-full text-right">
                   기준 : 가입담보 사항에 해당하는 보장보험료 합계
                 </Typo>
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

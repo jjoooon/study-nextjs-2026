@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -29,6 +29,7 @@ import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { useCallback, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 
@@ -282,31 +283,35 @@ const Ltpz019 = () => {
   const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
     return <p className="truncate w-full pl-1.5">{params.data?.field2 ?? ''}</p>;
   }, []);
-
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '상품분류',
-      field: 'field1',
-      cellClass: 'text-center',
-      width: 80,
-    },
-    {
-      headerName: '상품명',
-      flex: 1,
-      cellClass: 'text-left p-0!',
-      sortable: false,
-      filter: false,
-      autoHeight: true,
-      suppressMovable: true, // 이동 방지
-      lockPinned: true, // 고정 열에서 제외 방지
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
-        label: '상품명',
-        field: 'field2',
-      }),
-      headerComponent: productNameHeader,
-      cellRenderer: titleRenderer,
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '상품분류',
+        field: 'field1',
+        cellClass: 'text-center',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+      },
+      {
+        headerName: '상품명',
+        flex: 6,
+        cellClass: 'text-left p-0!',
+        sortable: false,
+        filter: false,
+        autoHeight: true,
+        suppressMovable: true, // 이동 방지
+        lockPinned: true, // 고정 열에서 제외 방지
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
+          label: '상품명',
+          field: 'field2',
+        }),
+        headerComponent: productNameHeader,
+        cellRenderer: titleRenderer,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const designCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
     return (
@@ -319,25 +324,31 @@ const Ltpz019 = () => {
     );
   };
 
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '종구분',
-      field: 'field1',
-      flex: 1,
-      cellClass: '[&>div]:flex! [&>div]:justify-between!',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
-      cellRenderer: designCellRenderer,
-    },
-  ];
+  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
+    () => [
+      {
+        headerName: '종구분',
+        field: 'field1',
+        flex: 1,
+        cellClass: '[&>div]:flex! [&>div]:justify-between!',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
+        cellRenderer: designCellRenderer,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
-  const columnDefs3: ColDef<DummyDataType3>[] = [
-    {
-      headerName: '플랜명',
-      field: 'field1',
-      flex: 1,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field1' }),
-    },
-  ];
+  const columnDefs3 = React.useMemo<ColDef<DummyDataType3>[]>(
+    () => [
+      {
+        headerName: '플랜명',
+        field: 'field1',
+        flex: 1,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field1' }),
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
@@ -417,7 +428,8 @@ const Ltpz019 = () => {
                   </TableFoldHead>
                   <TableFoldBody className="w-full">
                     <div
-                      className={`h-full tooltip-hidden-toggle ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                      className={`h-full tooltip-hidden-toggle ag-theme-alpine inner-scroll ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                      data-row={dummyData.length}
                     >
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
@@ -440,7 +452,7 @@ const Ltpz019 = () => {
                   <TableFoldBody>
                     <Gcol className="w-full" gap={3}>
                       <Gcol className="w-full">
-                        <div className="ag-theme-alpine w-full h-70!">
+                        <div className="ag-theme-alpine w-full inner-scroll" data-row={dummyData2.length}>
                           <AgGridReact<DummyDataType2>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -450,8 +462,6 @@ const Ltpz019 = () => {
                               sortable: true,
                               resizable: true,
                             }}
-                            headerHeight={30}
-                            rowHeight={30}
                             domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
@@ -474,7 +484,7 @@ const Ltpz019 = () => {
                           renderTab={(tab) => <span>{tab.label}</span>}
                           renderDropdownItem={false}
                         >
-                          <div className="ag-theme-alpine w-full h-70! ag-border-t">
+                          <div className="ag-theme-alpine w-full ag-border-t inner-scroll" data-row={dummyData3.length}>
                             <AgGridReact<DummyDataType3>
                               getRowId={(params) => String(params.data.id)}
                               noRowsOverlayComponent={AgGridEmptyComponent}
@@ -484,8 +494,6 @@ const Ltpz019 = () => {
                                 sortable: true,
                                 resizable: true,
                               }}
-                              headerHeight={30}
-                              rowHeight={30}
                               domLayout="normal"
                               tooltipShowMode="whenTruncated"
                               tooltipShowDelay={0}

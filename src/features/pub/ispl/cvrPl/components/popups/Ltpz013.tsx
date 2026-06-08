@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CalendarIcon2, CheckboxIcon, CircleCheckIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
@@ -178,45 +178,51 @@ const Ltpz013 = () => {
       minWidth: 0,
     };
   }
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '담보명',
-      field: 'field1',
-      flex: 1,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
-      colSpan: (params) => {
-        // 합계 행이면 이름+서브레이블 합치기
-        if (params.data?.id === 0) return 2;
-        return 1;
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '담보명',
+        field: 'field1',
+        flex: 1,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
+        colSpan: (params) => {
+          // 합계 행이면 이름+서브레이블 합치기
+          if (params.data?.id === 0) return 2;
+          return 1;
+        },
       },
-    },
-    {
-      headerName: '가입금액(만원)',
-      field: 'field2',
-      width: 80,
-      valueFormatter: numberValueFormatter,
-      colSpan: (params) => {
-        // 합계 행이면 숨김
-        if (params.data?.id === 0) return 0;
-        return 1;
+      {
+        headerName: '가입금액(만원)',
+        field: 'field2',
+        flex: 1,
+        minwidth: attributeColumnWidth(80),
+        valueFormatter: numberValueFormatter,
+        colSpan: (params) => {
+          // 합계 행이면 숨김
+          if (params.data?.id === 0) return 0;
+          return 1;
+        },
+        cellClass: (params) => {
+          if (params.data?.id === 0) return 'hidden';
+          return 'text-right';
+        },
       },
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'hidden';
-        return 'text-right';
+      {
+        headerName: '보험료(원)',
+        field: 'field3',
+        flex: 1,
+        minwidth: attributeColumnWidth(65),
+        valueFormatter: numberValueFormatter,
+        cellClass: (params) => {
+          if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
+          return 'text-right';
+        },
+        editable: false,
       },
-    },
-    {
-      headerName: '보험료(원)',
-      field: 'field3',
-      width: 65,
-      valueFormatter: numberValueFormatter,
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
-        return 'text-right';
-      },
-      editable: false,
-    },
-  ];
+    ],
+    [attributeColumnWidth]
+  );
 
   return (
     <Dialog open>
