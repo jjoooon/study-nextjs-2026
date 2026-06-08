@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { useAgGridInfiniteAppend } from '@aggrid';
+import { useAgGridInfiniteAppend, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -24,7 +24,7 @@ import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
-type Ltpa330DummyDataRow = {
+type DummyDataType = {
   id: number;
   isCheck: boolean;
   field01: string | number;
@@ -38,17 +38,17 @@ type Ltpa330DummyDataRow = {
   field09: string | number;
   field10: string | number;
 };
-const Ltpa330DummyData: Ltpa330DummyDataRow[] = [
+const Ltpa330DummyData: DummyDataType[] = [
   {
     id: 1,
-    isCheck: false,
+    isCheck: true,
     field01: 'TEXT',
     field02: 'TEXT',
-    field03: 'TEXT',
+    field03: '문서종류명문서종류명문서종류명문서종류명 문서종류명문서종류명문서종류명문서종류명문서종류명문서종류명',
     field04: 'TEXT',
     field05: 'TEXT',
-    field06: 'TEXT',
-    field07: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
     field08: 'TEXT',
     field09: 'TEXT',
     field10: 'YYYY-MM-DD HH:MM:SS',
@@ -58,11 +58,11 @@ const Ltpa330DummyData: Ltpa330DummyDataRow[] = [
     isCheck: false,
     field01: 'TEXT',
     field02: 'TEXT',
-    field03: 'TEXT',
+    field03: '문서종류명',
     field04: 'TEXT',
     field05: 'TEXT',
-    field06: 'TEXT',
-    field07: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
     field08: 'TEXT',
     field09: 'TEXT',
     field10: 'YYYY-MM-DD HH:MM:SS',
@@ -72,11 +72,11 @@ const Ltpa330DummyData: Ltpa330DummyDataRow[] = [
     isCheck: false,
     field01: 'TEXT',
     field02: 'TEXT',
-    field03: 'TEXT',
+    field03: '문서종류명',
     field04: 'TEXT',
     field05: 'TEXT',
-    field06: 'TEXT',
-    field07: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
     field08: 'TEXT',
     field09: 'TEXT',
     field10: 'YYYY-MM-DD HH:MM:SS',
@@ -86,11 +86,375 @@ const Ltpa330DummyData: Ltpa330DummyDataRow[] = [
     isCheck: false,
     field01: 'TEXT',
     field02: 'TEXT',
-    field03: 'TEXT',
+    field03: '문서종류명',
     field04: 'TEXT',
     field05: 'TEXT',
-    field06: 'TEXT',
-    field07: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 5,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 6,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 7,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 8,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 9,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 10,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 11,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 12,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 13,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 14,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 15,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 16,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 17,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 18,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 19,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 20,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 21,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 22,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 23,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 24,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 25,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 26,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 27,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 28,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 29,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
+    field08: 'TEXT',
+    field09: 'TEXT',
+    field10: 'YYYY-MM-DD HH:MM:SS',
+  },
+  {
+    id: 30,
+    isCheck: false,
+    field01: 'TEXT',
+    field02: 'TEXT',
+    field03: '문서종류명',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: 'YYYY-MM-DD',
+    field07: 'YYYY-MM-DD',
     field08: 'TEXT',
     field09: 'TEXT',
     field10: 'YYYY-MM-DD HH:MM:SS',
@@ -98,32 +462,80 @@ const Ltpa330DummyData: Ltpa330DummyDataRow[] = [
 ];
 
 export default function Ltpa330Section() {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
     type03: '',
   });
-  const columnDefs = React.useMemo<ColDef<Ltpa330DummyDataRow>[]>(
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
         headerName: '고객정보',
         field: 'field01',
         flex: 1,
+        minWidth: attributeColumnWidth(110),
       },
-      { headerName: '문서종류코드', field: 'field02', width: 110 },
-      { headerName: '문서종류명', field: 'field03', flex: 1 },
-      { headerName: '전자문서ID', field: 'field04', width: 120 },
-      { headerName: '문서묶음ID', field: 'field05', width: 120 },
-      { headerName: '문서발급일자', field: 'field06', flex: 1 },
-      { headerName: '전문일자', field: 'field07', width: 110 },
-      { headerName: '설계상태', field: 'field08', width: 110 },
-      { headerName: '이미지', field: 'field09', flex: 1 },
-      { headerName: '이미지저장시간', field: 'field10', width: 200 },
+      {
+        headerName: '문서종류코드',
+        field: 'field02',
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
+      },
+      {
+        headerName: '문서종류명',
+        field: 'field03',
+        cellClass: 'text-left',
+        flex: 10,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
+      },
+      {
+        headerName: '전자문서ID',
+        field: 'field04',
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
+      },
+      {
+        headerName: '문서묶음ID',
+        field: 'field05',
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
+      },
+      {
+        headerName: '문서발급일자',
+        field: 'field06',
+        flex: 1,
+        minWidth: attributeColumnWidth(90),
+      },
+      {
+        headerName: '전문일자',
+        field: 'field07',
+        flex: 1,
+        minWidth: attributeColumnWidth(90),
+      },
+      {
+        headerName: '설계상태',
+        field: 'field08',
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
+      },
+      {
+        headerName: '이미지',
+        field: 'field09',
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
+      },
+      {
+        headerName: '이미지저장시간',
+        field: 'field10',
+        flex: 1,
+        minWidth: attributeColumnWidth(170),
+      },
     ],
     []
   );
-  const pageSize = 3;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+  const pageSize = 10;
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa330DummyData,
     pageSize,
   });
@@ -143,12 +555,7 @@ export default function Ltpa330Section() {
         mainBody={
           <Grid className="w-full grid-rows-[auto_1fr] gap-4 h-full">
             <Grow className="w-full items-center" variant="box-round" placement={'bwe'} gap={6}>
-              <FormTable
-                variant={'none'}
-                lineTop={false}
-                caption="전자증명서(정부24) 등록 현황 조회"
-                cols={['w-[6rem]', 'w-[38rem]', 'w-[8rem]', 'w-[auto]']}
-              >
+              <FormTable variant={'head'} lineTop={false} caption="전자증명서(정부24) 등록 현황 조회">
                 <FormRow>
                   <FormCell title={'조회구분'}>
                     <NativeSelect
@@ -175,7 +582,7 @@ export default function Ltpa330Section() {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="조직구분명 입력" width={140} value={'901212-1234567'} readOnly />
+                    <Input aria-label="조직구분명 입력" width={114} value={'901212-1234567'} readOnly />
                   </FormCell>
                   <FormCell title={'문서발급일자'}>
                     <DatePickerInput
@@ -212,17 +619,16 @@ export default function Ltpa330Section() {
 
             <Grid className="grid-rows-[1fr_auto] gap-2">
               <div className="ag-theme-alpine">
-                <AgGridReact<Ltpa330DummyDataRow>
+                <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   columnDefs={columnDefs}
-                  rowData={Ltpa330DummyData}
+                  rowData={Ltpa330DummyData.slice(0, loadedCount)}
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
                     editable: false,
                     cellClass: 'text-center',
                   }}
-                  rowClassRules={{}}
                   onGridReady={(params) => {
                     params.api.forEachNode((node) => {
                       if (node.data?.isCheck) {
@@ -240,13 +646,9 @@ export default function Ltpa330Section() {
                     width: 30,
                     cellClass: 'text-center editable-cell',
                   }}
-                  enableCellSpan={true}
                   domLayout="normal"
-                  key={loadedCount}
-                  // rowModelType="infinite"
-                  cacheBlockSize={pageSize}
-                  maxBlocksInCache={2}
-                  datasource={dataSource}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
               <TableMore
@@ -257,7 +659,6 @@ export default function Ltpa330Section() {
                 onLoadNext={handleLoadNext}
                 isAll={false}
               />
-              {/* 2026-05-27 전체 수정 */}
               <Grow placement={'ec'} className="p-2.5 bg-[#EFF8FF] rounded-lg gap-2.5">
                 <Grow gap={2}>
                   <Typo variant="body-md" weight={'bold'} className="text-[#6B7280]">
@@ -265,7 +666,7 @@ export default function Ltpa330Section() {
                   </Typo>
                   <Input width={'quoteNo'} value={'LA123456789012'} onChange={() => {}} readOnly />
                 </Grow>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'coolgray'} size={'lg'}>
+                <Button variant={'contained'} color={'coolgray'} size={'lg'}>
                   이미지전송
                 </Button>
               </Grow>
@@ -275,7 +676,6 @@ export default function Ltpa330Section() {
         mainFoot={
           <MainBottom>
             <MainBottomItem>
-              {/* 2026-05-27 className 추가 */}
               <Grow className="justify-start!">
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   이미지조회

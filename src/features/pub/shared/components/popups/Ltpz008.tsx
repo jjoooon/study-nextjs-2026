@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -48,6 +48,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz008 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [rightRowData, setRightRowData] = React.useState<DummyDataType[]>(DummyData);
   const rightGridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
 
@@ -153,7 +154,7 @@ const Ltpz008 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
-      width: 40,
+      width: attributeColumnWidth(40),
       field: 'id',
       cellClass: 'text-center',
       spanRows: true,
@@ -189,7 +190,7 @@ const Ltpz008 = () => {
                   <Input value={'한화 시그니처 여성 검강보험 3.0 2504 '} readOnly />
                 </FormCell>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={130} value={'LA123123123123'} readOnly />
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
                   -
                   <Input aria-label="" width={30} value={'1'} readOnly />
                 </FormCell>
@@ -214,12 +215,13 @@ const Ltpz008 = () => {
                   columnDefs={columnDefs}
                   defaultColDef={{
                     sortable: true,
-                    resizable: true,
+                    resizable: false,
                     cellClass: 'text-center',
                   }}
                   domLayout="normal"
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
+                  animateRows={false}
                 />
               </div>
             </Gcol>
@@ -265,7 +267,7 @@ const Ltpz008 = () => {
                   columnDefs={columnDefs}
                   defaultColDef={{
                     sortable: true,
-                    resizable: true,
+                    resizable: false,
                     cellClass: 'text-center',
                   }}
                   domLayout="normal"
@@ -283,6 +285,7 @@ const Ltpz008 = () => {
                     width: 30,
                     cellClass: 'text-center editable-cell',
                   }}
+                  animateRows={false}
                 />
               </div>
             </Gcol>

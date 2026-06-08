@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -89,6 +89,7 @@ const DummyDataAll: DummyDataTypeAll[] = [
 ];
 
 const Ltpz058 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   type SearchCategoryType = '분류기준' | '업종명';
 
   const [searchCategory, setSearchCategory] = React.useState<SearchCategoryType>('분류기준');
@@ -114,30 +115,33 @@ const Ltpz058 = () => {
     {
       headerName: '대분류',
       field: 'field1',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '중분류',
       field: 'field2',
-      width: 150,
+      flex: 1,
+      minWidth: attributeColumnWidth(140),
       cellClass: 'text-center',
     },
     {
       headerName: '영업위종',
-      flex: 1,
+      flex: 10,
       cellClass: 'text-center',
       children: [
         {
           headerName: '',
           field: 'field3',
-          width: 80,
+          flex: 1,
+          minWidth: attributeColumnWidth(60),
           cellClass: 'text-center justify-center',
         },
         {
           headerName: '',
           field: 'field4',
-          flex: 1,
+          flex: 10,
           cellClass: 'text-left',
         },
       ],
@@ -153,13 +157,14 @@ const Ltpz058 = () => {
         {
           headerName: '',
           field: 'field3',
-          width: 80,
+          flex: 1,
+          minWidth: attributeColumnWidth(60),
           cellClass: 'text-center justify-center',
         },
         {
           headerName: '',
           field: 'field4',
-          flex: 1,
+          flex: 10,
           cellClass: 'text-left',
         },
       ],
@@ -168,7 +173,7 @@ const Ltpz058 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

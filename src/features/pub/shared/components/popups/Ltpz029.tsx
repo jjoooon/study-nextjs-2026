@@ -6,10 +6,10 @@
 import '@/shared/lib/agGridPub';
 import {
   AgGridEmptyComponent,
-  createAddRowHandler,
   createDeleteSelectedRowsHandler,
   createSequentialRowReorderHandler,
   getNextNumericRowId,
+  useDynamicColumnWidths,
 } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -25,9 +25,11 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+
 import type { CellEditingStartedEvent, ColDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 
 type DummyDataType = {
   id: number;
@@ -78,21 +80,21 @@ const DummyData: DummyDataType[] = [
   {
     id: 4,
     isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
-    field5: 'N',
-    field6: 'Y',
+    field1: '공통(기본)1',
+    field2: 'LTPZ003',
+    field3: '가입설계조회',
+    field4: '정상',
+    field5: 'Y',
+    field6: 'N',
     field7: 4,
   },
   {
     id: 5,
     isChecked: false,
     field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
+    field2: 'LTPZ004',
+    field3: '계약변경',
+    field4: '정상',
     field5: 'N',
     field6: 'Y',
     field7: 5,
@@ -100,21 +102,21 @@ const DummyData: DummyDataType[] = [
   {
     id: 6,
     isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
+    field1: '공통(기본)1',
+    field2: 'LTPZ005',
+    field3: '보험료계산',
     field4: '해지',
-    field5: 'N',
-    field6: 'Y',
+    field5: 'Y',
+    field6: 'N',
     field7: 6,
   },
   {
     id: 7,
     isChecked: false,
     field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
+    field2: 'LTPZ006',
+    field3: '청약서발행',
+    field4: '정상',
     field5: 'N',
     field6: 'Y',
     field7: 7,
@@ -122,20 +124,20 @@ const DummyData: DummyDataType[] = [
   {
     id: 8,
     isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
-    field5: 'N',
-    field6: 'Y',
+    field1: '공통(기본)1',
+    field2: 'LTPZ007',
+    field3: '계약조회',
+    field4: '정상',
+    field5: 'Y',
+    field6: 'N',
     field7: 8,
   },
   {
     id: 9,
     isChecked: false,
     field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
+    field2: 'LTPZ008',
+    field3: '약관조회',
     field4: '해지',
     field5: 'N',
     field6: 'Y',
@@ -144,21 +146,21 @@ const DummyData: DummyDataType[] = [
   {
     id: 10,
     isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
-    field5: 'N',
-    field6: 'Y',
+    field1: '공통(기본)1',
+    field2: 'LTPZ009',
+    field3: '보험금청구',
+    field4: '정상',
+    field5: 'Y',
+    field6: 'N',
     field7: 10,
   },
   {
     id: 11,
     isChecked: false,
     field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
+    field2: 'LTPZ010',
+    field3: '배서처리',
+    field4: '정상',
     field5: 'N',
     field6: 'Y',
     field7: 11,
@@ -166,21 +168,21 @@ const DummyData: DummyDataType[] = [
   {
     id: 12,
     isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
+    field1: '공통(기본)1',
+    field2: 'LTPZ011',
+    field3: '해약청구',
     field4: '해지',
-    field5: 'N',
-    field6: 'Y',
+    field5: 'Y',
+    field6: 'N',
     field7: 12,
   },
   {
     id: 13,
     isChecked: false,
     field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
+    field2: 'LTPZ012',
+    field3: '환급금조회',
+    field4: '정상',
     field5: 'N',
     field6: 'Y',
     field7: 13,
@@ -188,20 +190,20 @@ const DummyData: DummyDataType[] = [
   {
     id: 14,
     isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
-    field5: 'N',
-    field6: 'Y',
+    field1: '공통(기본)1',
+    field2: 'LTPZ013',
+    field3: '설계변경',
+    field4: '정상',
+    field5: 'Y',
+    field6: 'N',
     field7: 14,
   },
   {
     id: 15,
     isChecked: false,
     field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
+    field2: 'LTPZ014',
+    field3: '특약조회',
     field4: '해지',
     field5: 'N',
     field6: 'Y',
@@ -210,21 +212,21 @@ const DummyData: DummyDataType[] = [
   {
     id: 16,
     isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
-    field5: 'N',
-    field6: 'Y',
+    field1: '공통(기본)1',
+    field2: 'LTPZ015',
+    field3: '증권발급',
+    field4: '정상',
+    field5: 'Y',
+    field6: 'N',
     field7: 16,
   },
   {
     id: 17,
     isChecked: false,
     field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
+    field2: 'LTPZ016',
+    field3: '고객정보변경',
+    field4: '정상',
     field5: 'N',
     field6: 'Y',
     field7: 17,
@@ -232,21 +234,21 @@ const DummyData: DummyDataType[] = [
   {
     id: 18,
     isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
+    field1: '공통(기본)1',
+    field2: 'LTPZ017',
+    field3: '보장분석',
     field4: '해지',
-    field5: 'N',
-    field6: 'Y',
+    field5: 'Y',
+    field6: 'N',
     field7: 18,
   },
   {
     id: 19,
     isChecked: false,
     field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
+    field2: 'LTPZ018',
+    field3: '제증명발급',
+    field4: '정상',
     field5: 'N',
     field6: 'Y',
     field7: 19,
@@ -254,80 +256,54 @@ const DummyData: DummyDataType[] = [
   {
     id: 20,
     isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
-    field5: 'N',
-    field6: 'Y',
+    field1: '공통(기본)1',
+    field2: 'LTPZ019',
+    field3: '대출신청',
+    field4: '정상',
+    field5: 'Y',
+    field6: 'N',
     field7: 20,
-  },
-  {
-    id: 21,
-    isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
-    field5: 'N',
-    field6: 'Y',
-    field7: 21,
-  },
-  {
-    id: 22,
-    isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
-    field5: 'N',
-    field6: 'Y',
-    field7: 22,
-  },
-  {
-    id: 23,
-    isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
-    field5: 'N',
-    field6: 'Y',
-    field7: 23,
-  },
-  {
-    id: 24,
-    isChecked: false,
-    field1: '공통(기본)2',
-    field2: 'LTPZ002',
-    field3: '실손정액조회',
-    field4: '해지',
-    field5: 'N',
-    field6: 'Y',
-    field7: 24,
   },
 ];
 
 const Ltpz029 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType>;
+
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+  const gridContainerRef = React.useRef<HTMLDivElement | null>(null);
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const handleAddRow = createAddRowHandler<DummyDataType, number>(setRowData, {
-    idKey: 'id',
-    getNextId: getNextNumericRowId,
-    createRow: (nextId) => ({
-      isChecked: false,
-      id: nextId,
-      field1: '',
-      field2: '',
-      field3: '',
-      field4: '',
-      field5: '',
-      field6: '',
-      field7: undefined,
-    }),
-    insertAt: 'end',
-    gridApiRef,
-  });
+
+  const handleAddRow = React.useCallback(() => {
+    setRowData((prev) => {
+      const nextId = getNextNumericRowId(prev);
+      const newRow: DummyDataType = {
+        isChecked: false,
+        id: nextId,
+        field1: '',
+        field2: '',
+        field3: '',
+        field4: '',
+        field5: '',
+        field6: '',
+        field7: undefined,
+      };
+
+      const nextRows = [...prev, newRow];
+
+      // 최하단 스크롤
+      setTimeout(() => {
+        if (gridContainerRef.current) {
+          const viewport = gridContainerRef.current.querySelector('.ag-body-viewport');
+          if (viewport instanceof HTMLDivElement) {
+            viewport.scrollTop = viewport.scrollHeight;
+          }
+        }
+      }, 0);
+
+      return nextRows;
+    });
+  }, []);
 
   const handleDeleteRow = createDeleteSelectedRowsHandler<DummyDataType>(setRowData, gridApiRef, {
     idKey: 'id',
@@ -356,72 +332,82 @@ const Ltpz029 = () => {
     {
       headerName: '번호',
       field: 'id',
-      width: 40,
+      width: attributeColumnWidth(40),
       cellClass: 'editable-center-input text-center',
       editable: true,
     },
     {
       headerName: '그룹',
       field: 'field1',
-      width: 80,
-      cellClass: 'editable-cell editable-center-input text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
+      cellClass: 'editable-cell !px-0 text-center ag-row-selected',
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['공통(기본)1', '공통(기본)2'] },
+      cellRenderer: getExpiryRenderer('center'),
     },
     {
       headerName: '화면코드',
       field: 'field2',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'editable-cell editable-center-input text-center',
       editable: true,
     },
     {
       headerName: '바로가기명',
       field: 'field3',
-      flex: 1,
+      flex: 10,
       cellClass: 'editable-cell text-left',
       editable: true,
     },
     {
       headerName: '상태',
       field: 'field4',
-      width: 50,
+      flex: 1,
+      minWidth: attributeColumnWidth(50),
       editable: true,
-      cellClass: 'editable-cell editable-center-input text-center',
+      cellClass: 'editable-cell !px-0 text-center ag-row-selected',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['정상', '해지'] },
+      cellRenderer: getExpiryRenderer('center'),
     },
     {
       headerName: '기본값',
       field: 'field5',
-      width: 50,
+      flex: 1,
+      minWidth: attributeColumnWidth(50),
       editable: true,
-      cellClass: 'editable-cell editable-center-input text-center',
+      cellClass: 'editable-cell !px-0 text-center ag-row-selected',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['Y', 'N'] },
+      cellRenderer: getExpiryRenderer('center'),
     },
     {
       headerName: '필수값',
       field: 'field6',
-      width: 50,
+      flex: 1,
+      minWidth: attributeColumnWidth(50),
       editable: true,
-      cellClass: 'editable-cell editable-center-input text-center',
+      cellClass: 'editable-cell !px-0 text-center ag-row-selected',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['Y', 'N'] },
+      cellRenderer: getExpiryRenderer('center'),
     },
     {
       headerName: '화면표시순서',
       field: 'field7',
-      width: 80,
-      cellClass: 'editable-cell editable-center-input text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
+      cellClass: 'editable-cell !px-0 text-center ag-row-selected',
       editable: true,
     },
   ];
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -444,12 +430,15 @@ const Ltpz029 = () => {
               <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
             </Button>
           </Grow>
-          <div className="ag-theme-alpine min-h-[33rem]">
+          <div className="ag-theme-alpine min-h-[50vh]" ref={gridContainerRef}>
             <AgGridReact<DummyDataType>
               noRowsOverlayComponent={AgGridEmptyComponent}
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
               columnDefs={columnDefs}
+              onGridReady={(event) => {
+                gridApiRef.current = event.api;
+              }}
               onCellValueChanged={handleOrderChanged}
               onCellEditingStarted={handleCellEditingStarted}
               defaultColDef={{

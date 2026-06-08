@@ -91,12 +91,10 @@ export function productNameCellRenderer<
 
   return (
     <Grow className={`h-full ${data.badge ? 'pr-1.5' : 'pr-0'}`} placement="bwc">
-      {displayOrder ? (
+      {displayOrder && (
         <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center">
           <span>{displayOrder}</span>
         </Grow>
-      ) : (
-        <Grow className="border-r border-(--color-gray-10) h-full items-center w-[3rem] justify-center"></Grow>
       )}
 
       {!data.isDuplicate ? (

@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { createCellClickSelectionToggleHandler, numberValueFormatter } from '@aggrid';
+import { createCellClickSelectionToggleHandler, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -69,7 +69,7 @@ const DummyData: DummyDataType = {
 };
 
 export const Ltpa35006 = () => {
-  // const [isLtpz014Open, setIsLtpz014Open] = useState(false);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -127,36 +127,41 @@ export const Ltpa35006 = () => {
       {
         headerName: '구분',
         field: 'field1',
-        width: 50,
+        flex: 1,
+        minWidth: attributeColumnWidth(40),
         cellClass: 'text-center',
+        cellRenderer: (params: ICellRendererParams<Ltpa35006GridRow>) => (params.node.rowPinned ? '' : params.value),
       },
       {
         headerName: '입금일자',
         field: 'field2',
         sortable: false,
-        width: 140,
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
         cellRenderer: (params: ICellRendererParams<Ltpa35006GridRow>) => params.value,
       },
       {
         headerName: '금액',
         field: 'field3',
-        width: 150,
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
       },
       {
         headerName: '적요',
         field: 'field4',
-        width: 200,
+        flex: 1,
+        minWidth: attributeColumnWidth(200),
       },
       {
         headerName: '비고',
         field: 'field5',
-        flex: 1,
+        flex: 20,
       },
     ],
-    []
+    [attributeColumnWidth]
   );
 
   const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<Ltpa35006GridRow>(), []);
@@ -795,10 +800,13 @@ export const Ltpa35006 = () => {
                           onSelectionChanged={handleDepositSelectionChanged}
                           selectionColumnDef={{
                             headerName: '',
-                            width: 50,
-                            cellClass: 'text-center p-0!',
+                            width: attributeColumnWidth(30),
+                            ...({
+                              colSpan: (params: { node?: { rowPinned?: boolean } }) => (params.node?.rowPinned ? 2 : 1),
+                            } as Record<string, unknown>),
+                            cellClass: 'text-center p-0! editable-cell',
                             cellRenderer: (params: ICellRendererParams<Ltpa35006GridRow>) =>
-                              params.node.rowPinned ? '선택건수' : null,
+                              params.node.rowPinned ? `선택건수 ${params.data?.field1 ?? ''}` : null,
                             cellClassRules: {
                               'pointer-events-none': (params) => !!params.data?.locked,
                             },

@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -35,7 +35,7 @@ const DATA_TABS: LTPZ051Tab[] = [
   { name: '이륜차부담보 변경대상(d건)', value: 'detail', label: '이륜차부담보 변경대상(d건)' },
 ];
 
-type DummyDataType = {
+type DummyData1Type = {
   id: number;
   field01: string | number;
   field02: string | number;
@@ -45,9 +45,7 @@ type DummyDataType = {
   field06: string | number;
   field07: string | number;
 };
-
-// 2026-05-27 agGrid 추가
-type DummyDataType1 = {
+type DummyData2Type = {
   id: number;
   field01: string | number;
   field02: string | number;
@@ -56,11 +54,11 @@ type DummyDataType1 = {
   field05: string | number;
 };
 
-const DummyData: DummyDataType[] = [
+const DummyData1: DummyData1Type[] = [
   {
     id: 1,
     field01: '변경대상',
-    field02: 'LA123456789012',
+    field02: 'LA12345678901234',
     field03: '계약변경설계이동',
     field04: '1급',
     field05: '회사원',
@@ -70,7 +68,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 2,
     field01: '변경대상',
-    field02: 'LA123456789013',
+    field02: 'LA12345678901234',
     field03: '계약변경설계이동',
     field04: '1급',
     field05: '회사원',
@@ -80,47 +78,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 3,
     field01: '변경대상',
-    field02: 'LA123456789013',
-    field03: '계약변경설계이동',
-    field04: '1급',
-    field05: '회사원',
-    field06: '1급',
-    field07: '회사원',
-  },
-  {
-    id: 4,
-    field01: '변경대상',
-    field02: 'LA123456789013',
-    field03: '계약변경설계이동',
-    field04: '1급',
-    field05: '회사원',
-    field06: '1급',
-    field07: '회사원',
-  },
-  {
-    id: 5,
-    field01: '변경대상',
-    field02: 'LA123456789013',
-    field03: '계약변경설계이동',
-    field04: '1급',
-    field05: '회사원',
-    field06: '1급',
-    field07: '회사원',
-  },
-  {
-    id: 6,
-    field01: '변경대상',
-    field02: 'LA123456789013',
-    field03: '계약변경설계이동',
-    field04: '1급',
-    field05: '회사원',
-    field06: '1급',
-    field07: '회사원',
-  },
-  {
-    id: 7,
-    field01: '변경대상',
-    field02: 'LA123456789013',
+    field02: 'LA12345678901234',
     field03: '계약변경설계이동',
     field04: '1급',
     field05: '회사원',
@@ -128,13 +86,11 @@ const DummyData: DummyDataType[] = [
     field07: '회사원',
   },
 ];
-
-// 2026-05-27 agGrid 추가
-const DummyData1: DummyDataType1[] = [
+const DummyData2: DummyData2Type[] = [
   {
     id: 1,
     field01: '변경대상',
-    field02: 'LA20253419197000',
+    field02: 'LA12345678901234',
     field03: '계약변경설계이동',
     field04: 'TEXT',
     field05: 'TEXT',
@@ -142,7 +98,7 @@ const DummyData1: DummyDataType1[] = [
   {
     id: 2,
     field01: '변경대상',
-    field02: 'LA20253419197000',
+    field02: 'LA12345678901234',
     field03: '계약변경설계이동',
     field04: 'TEXT',
     field05: 'TEXT',
@@ -150,7 +106,7 @@ const DummyData1: DummyDataType1[] = [
   {
     id: 3,
     field01: '변경대상',
-    field02: 'LA20253419197000',
+    field02: 'LA12345678901234',
     field03: '계약변경설계이동',
     field04: 'TEXT',
     field05: 'TEXT',
@@ -158,7 +114,7 @@ const DummyData1: DummyDataType1[] = [
   {
     id: 4,
     field01: '변경대상',
-    field02: 'LA20253419197000',
+    field02: 'LA12345678901234',
     field03: '계약변경설계이동',
     field04: 'TEXT',
     field05: 'TEXT',
@@ -166,7 +122,7 @@ const DummyData1: DummyDataType1[] = [
   {
     id: 5,
     field01: '변경대상',
-    field02: 'LA20253419197000',
+    field02: 'LA12345678901234',
     field03: '계약변경설계이동',
     field04: 'TEXT',
     field05: 'TEXT',
@@ -174,7 +130,7 @@ const DummyData1: DummyDataType1[] = [
   {
     id: 6,
     field01: '변경대상',
-    field02: 'LA20253419197000',
+    field02: 'LA12345678901234',
     field03: '계약변경설계이동',
     field04: 'TEXT',
     field05: 'TEXT',
@@ -182,7 +138,7 @@ const DummyData1: DummyDataType1[] = [
   {
     id: 7,
     field01: '변경대상',
-    field02: 'LA20253419197000',
+    field02: 'LA12345678901234',
     field03: '계약변경설계이동',
     field04: 'TEXT',
     field05: 'TEXT',
@@ -190,13 +146,12 @@ const DummyData1: DummyDataType1[] = [
 ];
 
 const Ltpz051 = () => {
-  // AgGrid Column
-  // 2026-05-29 width 수정
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const { tabs, active, setActive } = useTabs(DATA_TABS);
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
+  const columnDefs: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = [
     {
       headerName: '대상여부',
-      minWidth: 60,
+      minWidth: attributeColumnWidth(60),
       flex: 1,
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
@@ -204,8 +159,8 @@ const Ltpz051 = () => {
     },
     {
       headerName: '증권번호',
-      minWidth: 100,
-      flex: 2,
+      minWidth: attributeColumnWidth(120),
+      flex: 1,
       field: 'field02',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
@@ -213,12 +168,12 @@ const Ltpz051 = () => {
     // 2026-05-27 링크로 변경
     {
       headerName: '변경설계번호',
-      minWidth: 100,
-      flex: 2,
+      minWidth: attributeColumnWidth(110),
+      flex: 1,
       field: 'field03',
       cellClass: 'text-center px-0!',
       autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
+      cellRenderer: (params: ICellRendererParams<DummyData1Type, string | number>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
           {params.data?.field03}
         </Button>
@@ -230,19 +185,18 @@ const Ltpz051 = () => {
       children: [
         {
           headerName: '상해급수',
-          minWidth: 60,
-          flex: 0.4,
+          minWidth: attributeColumnWidth(60),
+          flex: 1,
           cellClass: 'text-center px-0! whitespace-nowrap',
-          cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
+          cellRenderer: (params: ICellRendererParams<DummyData1Type>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field04 ?? '')}</Typo>
           ),
         },
         {
           headerName: '직업',
-          minWidth: 157,
-          flex: 1,
+          flex: 5,
           cellClass: 'text-center px-0! whitespace-nowrap',
-          cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
+          cellRenderer: (params: ICellRendererParams<DummyData1Type>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field05 ?? '')}</Typo>
           ),
         },
@@ -253,19 +207,18 @@ const Ltpz051 = () => {
       children: [
         {
           headerName: '상해급수',
-          minWidth: 60,
-          flex: 0.4,
+          minWidth: attributeColumnWidth(60),
+          flex: 1,
           cellClass: 'text-center px-0! whitespace-nowrap',
-          cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
+          cellRenderer: (params: ICellRendererParams<DummyData1Type>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field06 ?? '')}</Typo>
           ),
         },
         {
           headerName: '직업',
-          minWidth: 157,
-          flex: 1,
+          flex: 5,
           cellClass: 'text-center px-0! whitespace-nowrap',
-          cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
+          cellRenderer: (params: ICellRendererParams<DummyData1Type>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field07 ?? '')}</Typo>
           ),
         },
@@ -273,21 +226,19 @@ const Ltpz051 = () => {
     },
   ];
 
-  // 2026-05-27 agGrid 추가
-  // 2026-05-29 width 수정
-  const columnDefs1: ColDef<DummyDataType1>[] = [
+  const columnDefs1: ColDef<DummyData2Type>[] = [
     {
       headerName: '대상여부',
       field: 'field01',
-      minWidth: 60,
-      flex: 0.4,
+      minWidth: attributeColumnWidth(60),
+      flex: 1,
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '증권번호',
       field: 'field02',
-      minWidth: 100,
+      minWidth: attributeColumnWidth(120),
       flex: 1,
       cellClass: 'text-center',
       autoHeight: true,
@@ -295,11 +246,11 @@ const Ltpz051 = () => {
     {
       headerName: '변경설계번호',
       field: 'field03',
-      minWidth: 100,
+      minWidth: attributeColumnWidth(110),
       flex: 1,
       cellClass: 'text-center',
       autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
+      cellRenderer: (params: ICellRendererParams<DummyData1Type, string | number>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
           {params.data?.field03}
         </Button>
@@ -307,28 +258,26 @@ const Ltpz051 = () => {
     },
     {
       headerName: '변경전 가입여부',
-      minWidth: 200,
-      flex: 1,
+      flex: 10,
       field: 'field04',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '변경후 가입여부',
-      minWidth: 200,
-      flex: 1,
+      flex: 10,
       field: 'field05',
       cellClass: 'text-center',
       autoHeight: true,
     },
   ];
 
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
-  const [rowData1] = React.useState<DummyDataType1[]>(DummyData1); // 2026-05-27 agGrid 추가
+  const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
+  const [rowData2] = React.useState<DummyData2Type[]>(DummyData2); // 2026-05-27 agGrid 추가
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -405,10 +354,10 @@ const Ltpz051 = () => {
                           99건
                         </Typo>
                       </Grow>
-                      <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
-                        <AgGridReact<DummyDataType>
+                      <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
+                        <AgGridReact<DummyData1Type>
                           getRowId={(params) => String(params.data.id)}
-                          rowData={rowData}
+                          rowData={rowData1}
                           columnDefs={columnDefs}
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           defaultColDef={{
@@ -442,10 +391,10 @@ const Ltpz051 = () => {
                         </Typo>
                       </Grow>
                       {/* 2026-05-27 agGrid 수정 */}
-                      <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
-                        <AgGridReact<DummyDataType1>
+                      <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
+                        <AgGridReact<DummyData2Type>
                           getRowId={(params) => String(params.data.id)}
-                          rowData={rowData1}
+                          rowData={rowData2}
                           columnDefs={columnDefs1}
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           defaultColDef={{

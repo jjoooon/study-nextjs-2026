@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { createTooltipValueGetter } from '@aggrid';
+import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Gcol, Grid, ConTit, ConTitName } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -278,7 +278,7 @@ const DummyData: AgGridRow[] = [
 ];
 
 export function Ltpa35004() {
-  // 1) INLINED STATE (default)
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [isHeightExpanded] = useState(false);
   const [gridKey] = useState(0);
 
@@ -299,14 +299,16 @@ export function Ltpa35004() {
       {
         headerName: '순번',
         field: 'id',
-        width: 50,
+        flex: 1,
+        minWidth: attributeColumnWidth(40),
         cellClass: 'text-center',
         autoHeight: true,
       },
       {
         headerName: '심사구분',
         field: 'field02',
-        width: 100,
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
         autoHeight: true,
         cellClass: 'text-center',
         cellStyle: (params) => (params.value === '인수기준' ? { color: 'var(--color-danger-50)' } : undefined),
@@ -314,13 +316,14 @@ export function Ltpa35004() {
       {
         headerName: '세부내용',
         field: 'field03',
-        flex: 1,
+        flex: 10,
+        minWidth: attributeColumnWidth(200),
         autoHeight: true,
         cellClass: 'text-left',
         tooltipValueGetter: createTooltipValueGetter<AgGridRow>({ field: 'field03' }),
       },
     ],
-    []
+    [attributeColumnWidth]
   );
 
   return (

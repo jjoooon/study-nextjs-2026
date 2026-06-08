@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridPagination } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridPagination, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -33,8 +33,8 @@ type DummyDataType = {
   field03: string | number;
 };
 const DummyData: DummyDataType[] = [
-  { id: 1, field01: '심사요청', field02: '승인', field03: '김한화' },
-  { id: 2, field01: '심사중', field02: '', field03: '김한화' },
+  { id: 1, field01: '심사요청', field02: '승인', field03: '김한화김한화김한화' },
+  { id: 2, field01: '심사중', field02: '', field03: '김한화한화' },
   { id: 3, field01: '심사처리', field02: '', field03: '김한화' },
   { id: 4, field01: '심사요청', field02: '승인', field03: '김한화' },
   { id: 5, field01: '심사중', field02: '', field03: '김한화' },
@@ -48,19 +48,19 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz048 = () => {
-  // AgGrid Column
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '',
-      width: 40,
+      width: attributeColumnWidth(40),
       field: 'id',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '구분',
-      minWidth: 108,
-      flex: 1,
+      minWidth: attributeColumnWidth(108),
+      flex: 10,
       field: 'field01',
       cellClass: 'text-center',
       autoHeight: true,
@@ -68,16 +68,16 @@ const Ltpz048 = () => {
     },
     {
       headerName: '결과',
-      minWidth: 44,
-      flex: 0.4,
+      minWidth: attributeColumnWidth(44),
+      flex: 1,
       field: 'field02',
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '처리자',
-      flex: 1,
-      minWidth: 80,
+      flex: 10,
+      minWidth: attributeColumnWidth(80),
       field: 'field03',
       cellClass: 'text-center',
       autoHeight: true,

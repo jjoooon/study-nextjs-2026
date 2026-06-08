@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, AiIcon } from '@icons';
@@ -257,19 +257,21 @@ export function Ltpa02002({
   dataNone: boolean;
   setDataNone: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const dataList = dummyDataList;
   const columnDefs4: ColDef<DummyDataListDetailType>[] = [
     {
       headerName: '담보명',
       field: 'field1',
-      flex: 1,
+      flex: 10,
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
       tooltipValueGetter: createTooltipValueGetter<DummyDataListDetailType>({ field: 'field1' }),
     },
     {
       headerName: '가입금액(만원)',
       field: 'field2',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-right',
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
       valueFormatter: numberValueFormatter<DummyDataListDetailType>,
@@ -277,7 +279,8 @@ export function Ltpa02002({
     {
       headerName: '보험료(원)',
       field: 'field3',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: 'text-right',
       headerClass: '!text-[1.1rem] leading-[2.6rem]',
       valueFormatter: numberValueFormatter<DummyDataListDetailType>,

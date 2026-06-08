@@ -27,7 +27,7 @@ import {
   productNameCellRenderer,
   searchButtonRenderer,
 } from '@grid/CellRenderers';
-import { ProductNameHeader } from '@grid/HeadRenderers';
+import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
 import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
@@ -35,6 +35,7 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type {
   CellClassParams,
   ICellRendererParams,
@@ -198,7 +199,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       {
         headerName: '속성',
         field: 'field2',
-        width: attributeColumnWidth[4],
+        width: attributeColumnWidth(30),
         cellClass: 'text-center',
         cellRenderer: searchButtonRenderer<AgGridRow>,
         resizable: false,
@@ -211,8 +212,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         ),
         field: 'insuredAmount',
         flex: 1,
-        minWidth: 80,
-        // width: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(74),
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         cellClassRules: {
           'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
@@ -248,21 +248,23 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
       },
       {
-        headerComponent: () => (
-          <Grow className="w-full" placement={'cc'} gap={0}>
-            보험료<span className="text-[1.1rem]">(원)</span>
-          </Grow>
-        ),
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '보험료',
+          unit: '(원)',
+        },
+        sortable: true,
         field: 'field7',
-        width: attributeColumnWidth[9],
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
       },
       {
         headerName: '만기',
-        // 행 선택 시에만 편집 가능 클래스 적용
         field: 'field5',
-        width: attributeColumnWidth[7],
+        flex: 1,
+        minWidth: attributeColumnWidth(64),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -280,7 +282,8 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       {
         headerName: '납기',
         field: 'field6',
-        width: attributeColumnWidth[7],
+        flex: 1,
+        minWidth: attributeColumnWidth(64),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -298,7 +301,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       {
         headerName: '중복',
         field: 'rowCopy',
-        width: attributeColumnWidth[4],
+        width: attributeColumnWidth(30),
         cellRenderer: duplicateRenderer,
         resizable: false,
       },
@@ -487,9 +490,24 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   }}
                   onCellClicked={handleGridCellClickToggle}
                   selectionColumnDef={{
-                    width: 30,
-                    // pinned: 'left',
-                    cellClass: 'text-center p-0!',
+                    headerComponent: () => (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant={'text'}
+                            color={'gray'}
+                            className="justify-center flex items-center gap-1 w-full text-[var(--color-gray-100)]"
+                          >
+                            해제
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent variant="default" side="top" align="start" sideOffset={-4}>
+                          담보 전체 해지
+                        </TooltipContent>
+                      </Tooltip>
+                    ),
+                    width: attributeColumnWidth[3],
+                    cellClass: 'text-center p-0! editable-cell',
                     cellClassRules: {
                       'pointer-events-none': (params) => !!params.data?.locked,
                     },
@@ -508,8 +526,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   autoGroupColumnDef={{
                     headerComponent: productNameHeader,
                     field: 'id',
-                    flex: 7,
-                    minWidth: 560,
+                    flex: 107,
                     cellClass: (_) => 'text-left !p-0',
                     cellRenderer: productNameCellRenderer<AgGridRow>,
                     tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시

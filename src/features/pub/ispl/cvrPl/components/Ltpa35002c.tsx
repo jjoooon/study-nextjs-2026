@@ -96,12 +96,12 @@ export function Ltpa35002c() {
         headerName: '부호',
         field: 'id',
         cellClass: 'text-center',
-        width: attributeColumnWidth[5],
+        width: attributeColumnWidth(50),
       },
       {
         headerName: '구분',
         field: 'field1',
-        flex: 9,
+        flex: 10,
         cellClass: 'text-left',
       },
       {
@@ -113,8 +113,9 @@ export function Ltpa35002c() {
         sortable: true,
         field: 'insuredAmount',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(80),
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
+        valueFormatter: numberValueFormatter<AgGridRow>,
         cellClassRules: {
           'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
           'tooltip-on': (params) => !!params.data?._tooltipOn,
@@ -154,7 +155,7 @@ export function Ltpa35002c() {
         sortable: true,
         field: 'field3',
         flex: 1,
-        minWidth: attributeColumnWidth[10],
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-right [&_input]:text-right',
         headerClass: 'px-0!',
         valueParser: (params) => Number(params.newValue) || 0,
@@ -162,10 +163,10 @@ export function Ltpa35002c() {
       },
       {
         headerName: '목적물상세',
-        field: 'insuredAmount',
+        field: 'field4',
         flex: 1,
-        minWidth: attributeColumnWidth[10],
-        cellClass: 'editable-cell',
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'editable-cell text-center',
         cellClassRules: editableCellClassRules<AgGridRow>(),
         editable: true,
       },
@@ -173,16 +174,16 @@ export function Ltpa35002c() {
         headerName: '수용장소상세',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth[10],
+        minWidth: attributeColumnWidth(80),
         cellClassRules: editableCellClassRules<AgGridRow>(),
-        cellClass: 'editable-cell',
+        cellClass: 'editable-cell text-center',
         editable: true,
       },
       {
         headerName: '건물내/외',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth[10],
+        minWidth: attributeColumnWidth(80),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter ';
@@ -195,13 +196,13 @@ export function Ltpa35002c() {
         cellEditorParams: {
           values: ['건물내', '건물밖야적'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('center'),
       },
       {
         headerName: '지하수용',
         field: 'field7',
         flex: 1,
-        minWidth: attributeColumnWidth[10],
+        minWidth: attributeColumnWidth(80),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -214,13 +215,13 @@ export function Ltpa35002c() {
         cellEditorParams: {
           values: ['예', '아니오'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('center'),
       },
       {
         headerName: '야적물건',
         field: 'field8',
         flex: 1,
-        minWidth: attributeColumnWidth[10],
+        minWidth: attributeColumnWidth(80),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -233,7 +234,7 @@ export function Ltpa35002c() {
         cellEditorParams: {
           values: ['가연성', '가연성2'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('center'),
       },
     ],
     [attributeColumnWidth, getExpiryRenderer]
@@ -244,7 +245,8 @@ export function Ltpa35002c() {
       {
         headerName: '담보군',
         field: 'field1',
-        width: attributeColumnWidth[8],
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
         spanRows: true,
         cellClass: (_params: CellClassParams<AgGridRow2>) => 'flex! items-center! justify-center! text-center',
       } as ColDef<AgGridRow2>,
@@ -255,7 +257,7 @@ export function Ltpa35002c() {
         cellEditor: 'agCheckboxCellEditor',
         editable: true,
         cellClass: 'text-center editable-cell',
-        width: 30,
+        width: attributeColumnWidth(30),
         cellClassRules: {
           'pointer-events-none': (params: CellClassParams<AgGridRow2>) => !!params.data?.locked,
         },
@@ -263,7 +265,7 @@ export function Ltpa35002c() {
       {
         headerName: '',
         field: 'title',
-        flex: 9,
+        flex: 10,
         cellClass: 'text-left',
         suppressMovable: true, // 이동 방지
         headerComponent: productNameHeader,
@@ -273,7 +275,7 @@ export function Ltpa35002c() {
       {
         headerName: '속성',
         field: 'field3',
-        width: attributeColumnWidth[4],
+        width: attributeColumnWidth(30),
         cellClass: 'text-center',
         cellRenderer: searchButtonRenderer,
         resizable: false,
@@ -283,8 +285,9 @@ export function Ltpa35002c() {
         sortable: true,
         field: 'insuredAmount',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(74),
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
+        valueFormatter: numberValueFormatter<AgGridRow2>,
         cellClassRules: {
           'style-select': (params: CellClassParams<AgGridRow2>) => !!params.data?.isSelectedInsuredAmount,
           isStandardGroup: (params: CellClassParams<AgGridRow2>) =>
@@ -327,7 +330,7 @@ export function Ltpa35002c() {
         sortable: true,
         field: 'field7',
         flex: 1,
-        minWidth: attributeColumnWidth[7],
+        minWidth: attributeColumnWidth(70),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<AgGridRow2>,
       },
@@ -335,7 +338,7 @@ export function Ltpa35002c() {
         headerName: '만기',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth[7],
+        minWidth: attributeColumnWidth(70),
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -348,13 +351,13 @@ export function Ltpa35002c() {
         cellEditorParams: {
           values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('center'),
       },
       {
         headerName: '납기',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth[7],
+        minWidth: attributeColumnWidth(70),
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
@@ -367,7 +370,7 @@ export function Ltpa35002c() {
         cellEditorParams: {
           values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('center'),
       },
     ],
     [attributeColumnWidth, getExpiryRenderer, productNameHeader]

@@ -3,7 +3,9 @@
  */
 'use client';
 
+
 import '@/shared/lib/agGridPub';
+import { useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -53,7 +55,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 3,
     field01: '등통증',
-    field02: '2026-03-03~2026-03-06, 통원(1일)',
+    field02: '2026-03-03~2026-03-06, 통원(10일)',
     field03:
       '진단/검사/검진,추가질문답변: ①발생부위:목(경추) ②척추질환(디스크.관절염,척추만곡 등)동반:없음 ③추가검사/수술 예정(필요):없음 ④발생원인:교통사고 外원인',
     field04: '한화병원',
@@ -103,11 +105,13 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz094 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '병명',
       field: 'field01',
-      width: 150,
+      width: attributeColumnWidth(150),
       autoHeight: true,
       wrapText: true,
       cellClass: 'text-center !leading-[1.4] !py-1',
@@ -116,7 +120,7 @@ const Ltpz094 = () => {
     {
       headerName: '치료기간',
       field: 'field02',
-      width: 200,
+      width: attributeColumnWidth(200),
       autoHeight: true,
       wrapText: true,
       cellClass: 'text-center !leading-[1.4] !py-1',
@@ -126,7 +130,8 @@ const Ltpz094 = () => {
     {
       headerName: '치료내용',
       field: 'field03',
-      flex: 1,
+      flex: 2,
+      minWidth: attributeColumnWidth(270),
       autoHeight: true,
       wrapText: true,
       cellClass: 'text-left !leading-[1.4] !py-1',
@@ -135,7 +140,7 @@ const Ltpz094 = () => {
     {
       headerName: '치료병원',
       field: 'field04',
-      width: 80,
+      width: attributeColumnWidth(80),
       autoHeight: true,
       wrapText: true,
       cellClass: 'text-center !leading-[1.4] !py-1',
@@ -145,7 +150,7 @@ const Ltpz094 = () => {
     {
       headerName: '완치여부',
       field: 'field05',
-      width: 80,
+      width: attributeColumnWidth(70),
       autoHeight: true,
       cellClass: 'text-center',
       suppressMovable: true,
@@ -153,7 +158,7 @@ const Ltpz094 = () => {
     {
       headerName: '재발유무',
       field: 'field06',
-      width: 80,
+      width: attributeColumnWidth(70),
       autoHeight: true,
       cellClass: 'text-center',
       suppressMovable: true,
@@ -175,7 +180,7 @@ const Ltpz094 = () => {
         </DialogHeader>
 
         <DialogSection>
-          <div className="ag-theme-alpine w-full min-h-[24.4rem]">
+          <div className="ag-theme-alpine w-full min-h-100">
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={DummyData}

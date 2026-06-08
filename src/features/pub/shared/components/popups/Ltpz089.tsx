@@ -4,7 +4,7 @@
 
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import '@/shared/lib/agGridPub';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -48,44 +48,56 @@ const dummyData: DummyDataType[] = [
     field05: '',
     field06: '',
   },
+  {
+    id: 2,
+    field01: '',
+    field02: '',
+    field03: '',
+    field04: '',
+    field05: '',
+    field06: '',
+  },
 ];
 
 const Ltpz089 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '가입',
       field: 'field01',
       flex: 1,
+      minWidth: attributeColumnWidth(60),
       cellClass: 'text-center',
     },
     {
       headerName: '건물순번',
       field: 'field02',
       flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '기둥',
       field: 'field03',
-      flex: 1,
+      flex: 2,
       cellClass: 'text-center',
     },
     {
       headerName: '지붕',
       field: 'field04',
-      flex: 1,
+      flex: 2,
       cellClass: 'text-center',
     },
     {
       headerName: '외벽',
       field: 'field05',
-      flex: 1,
+      flex: 2,
       cellClass: 'text-center',
     },
     {
       headerName: '지하수용여부',
       field: 'field06',
-      flex: 1,
+      flex: 2,
       cellClass: 'text-center',
     },
   ];
@@ -121,14 +133,14 @@ const Ltpz089 = () => {
               <Typo variant={'body-sm'}>수용장소 건물 형태</Typo>
             </TableFoldHead>
             <TableFoldBody className="gap-2">
-              <FormTable caption="목적물세부사항" className="" cols={['w-[22%]', 'w-full']} lineTop variant="default">
+              <FormTable caption="목적물세부사항" className="" cols={['w-[12rem]', 'w-auto']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'목적물세부사항'} variant="default">
                     <Input onChange={() => {}} size="lg" value={''} variant="default" width="full" required />
                   </FormCell>
                 </FormRow>
               </FormTable>
-              <FormTable caption="세부수용장소" className="" cols={['w-[22%]', 'w-full']} lineTop variant="default">
+              <FormTable caption="세부수용장소" className="" cols={['w-[12rem]', 'w-auto']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'세부수용장소'} variant="default">
                     <Input onChange={() => {}} size="lg" value={''} variant="default" width="full" required />
@@ -138,7 +150,7 @@ const Ltpz089 = () => {
               <FormTable
                 caption="수용장소구분"
                 className=""
-                cols={['w-[22%]', 'w-[28%]', 'w-[22%]', 'w-[28%]']}
+                cols={['w-[12rem]', 'w-auto', 'w-[12rem]', 'w-auto']}
                 lineTop
                 variant="default"
               >
@@ -174,7 +186,7 @@ const Ltpz089 = () => {
           <TableFold variant="accordion">
             <TableFoldHead title="목적물(건물) 형태"></TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[12.4rem]">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}

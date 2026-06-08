@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -26,6 +26,7 @@ import * as React from 'react';
 import '@/shared/lib/agGridPub';
 
 const Ltpz104 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   type DummyDataType = {
     id: number;
     field1: string;
@@ -35,7 +36,13 @@ const Ltpz104 = () => {
 
   const DummyData: DummyDataType[] = [
     { id: 1, field1: '최종설계저장', field2: '간편설계', field3: '수정일시:2016-03-14 김한화(12312312)' },
-    { id: 2, field1: '가입설계동의', field2: '', field3: '' },
+    {
+      id: 2,
+      field1: '가입설계동의',
+      field2: '',
+      field3:
+        '수정일시:2016-03-14 김한화(12312312)수정일시:2016-03-14 김한화(12312312)수정일시:2016-03-14 김한화(12312312)수정일시:2016-03-14 김한화(12312312)수정일시:2016-03-14 김한화(12312312)',
+    },
     { id: 3, field1: '설계심사', field2: '', field3: '' },
     { id: 4, field1: '서류출력', field2: '미출력', field3: '' },
     { id: 5, field1: '서류스캔', field2: '미스캔', field3: '' },
@@ -45,20 +52,23 @@ const Ltpz104 = () => {
     {
       headerName: '업무구분',
       field: 'field1',
-      width: 120,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center font-bold',
     },
     {
       headerName: '업무상태',
       field: 'field2',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '주요내용',
       field: 'field3',
-      flex: 1,
+      flex: 10,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field3' }),
     },
   ];
 
@@ -71,6 +81,9 @@ const Ltpz104 = () => {
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
               가입설계 이력조회
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ104)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -94,12 +107,14 @@ const Ltpz104 = () => {
               rowData={rowData}
               columnDefs={columnDefs}
               defaultColDef={{
-                sortable: false,
-                resizable: false,
+                sortable: true,
+                resizable: true,
               }}
               singleClickEdit={true}
               rowClassRules={{}}
               domLayout="autoHeight"
+              tooltipShowMode="whenTruncated"
+              tooltipShowDelay={0}
             />
           </div>
         </DialogSection>

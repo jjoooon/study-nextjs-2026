@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -59,9 +59,10 @@ const dummyData: DummyDataType[] = [
     id: 3,
     field1: '2026-02-24',
     field2: 80939583,
-    field3: '홍길순3',
-    field4: '여의도 GA 지점',
-    field5: '메모 테스트 글입니다.',
+    field3: '홍길순3홍길순3홍길순3',
+    field4: '여의도 GA 지점여의도 GA 지점여의도 GA 지점여의도 GA 지점',
+    field5:
+      '메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.',
     field6: false,
   },
   {
@@ -94,6 +95,7 @@ const dummyData: DummyDataType[] = [
 ];
 
 const Ltpz009 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [memoContent, setMemoContent] = useState('');
 
   const showSelectionLimitToast = () => {
@@ -108,28 +110,35 @@ const Ltpz009 = () => {
     {
       headerName: '입력일',
       field: 'field1',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
     },
     {
       headerName: '입력자사번',
       field: 'field2',
-      width: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '입력자명',
       field: 'field3',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field3' }),
     },
     {
       headerName: '소속기관',
       field: 'field4',
-      width: 150,
+      flex: 1,
+      minWidth: attributeColumnWidth(150),
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field4' }),
     },
     {
       headerName: '내용',
       field: 'field5',
       cellClass: 'text-left',
-      flex: 1,
+      flex: 10,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field5' }),
     },
   ];
 
@@ -155,7 +164,11 @@ const Ltpz009 = () => {
                   <Input aria-label="" value={'LA26020945959594'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'설계별명'}>
-                  <Input aria-label="" width={240} placeholder="한글 20자 이내로 등록가능" value={''} />
+                  <Input
+                    width={280}
+                    placeholder="한글 20자 이내로 등록가능"
+                    value={'가나다라마가나다라마가나다라마가나다라마'}
+                  />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -167,7 +180,7 @@ const Ltpz009 = () => {
           </Grow>
 
           <Gcol placement={'ss'} className="w-full gap-4">
-            <div className="ag-theme-alpine min-h-[12.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={dummyData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
@@ -179,6 +192,8 @@ const Ltpz009 = () => {
                   cellClass: 'text-center',
                 }}
                 domLayout="normal"
+                tooltipShowMode="whenTruncated"
+                tooltipShowDelay={0}
               />
             </div>
 
