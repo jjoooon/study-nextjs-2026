@@ -257,9 +257,13 @@ const Ltpz022 = () => {
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant={'head'}>
               <FormRow>
-                <FormCell title={'설계번호'} className="whitespace-nowrap">
-                  <Input aria-label="" width={'quoteNo'} value={'LA20234472050000'} align="center" readOnly />
-                  <Input aria-label="" width={200} value={'한화 시그니처 여성 간편건강보험4.0 무배당2604'} readOnly />
+                <FormCell
+                  title={'설계번호'}
+                  className="whitespace-nowrap "
+                  tdClassName="grid grid-cols-[auto_1fr_auto] w-full"
+                >
+                  <Input aria-label="" width={'quoteNo'} value={'LA202344720500'} align="center" readOnly />
+                  <Input aria-label="" value={'한화 시그니처 여성 간편건강보험4.0 무배당2604'} readOnly />
                   <Input aria-label="" width={80} value={''} readOnly />
                 </FormCell>
                 <FormCell title={'플랜명'} className="whitespace-nowrap">
