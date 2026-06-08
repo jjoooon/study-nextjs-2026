@@ -3,14 +3,14 @@
  */
 'use client';
 
+import type { ICellRendererParams, IGroupCellRendererParams, IRowNode } from 'ag-grid-enterprise';
+import type { ReactNode } from 'react';
 import { editableSelectCellRenderer } from '@aggrid';
 import { CoveragePopover } from '@aggrid';
 import { Gcol, Grow } from '@atoms';
 import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import type { ICellRendererParams, IGroupCellRendererParams, IRowNode } from 'ag-grid-enterprise';
-import type { ReactNode } from 'react';
 
 type ProductNameCellBase = {
   id: string | number;

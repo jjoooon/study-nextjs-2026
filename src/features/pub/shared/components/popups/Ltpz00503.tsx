@@ -4,13 +4,13 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
-import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 
 // 직업
 type JobDataType = {

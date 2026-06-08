@@ -4,6 +4,9 @@
 
 'use client';
 
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -19,9 +22,6 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -178,7 +178,7 @@ export default function Ltpa570Section() {
     const organizationColumnsByGroupBy: Record<
       'option1' | 'option2' | 'option3' | 'option4',
       ColDef<Ltpa570DummyDataRow>[]
-    > = { 
+    > = {
       option1: [
         {
           headerName: '채널',
@@ -258,14 +258,14 @@ export default function Ltpa570Section() {
     const metricColumns: ColDef<Ltpa570DummyDataRow>[] = [
       {
         headerName: '단순설계',
-        flex:1,
+        flex: 1,
         minWidth: 70,
         field: 'field05',
         cellClass: 'text-center',
       },
       {
         headerName: '설계중',
-        flex:1,
+        flex: 1,
         minWidth: 70,
         field: 'field06',
         cellClass: 'text-center',
@@ -286,35 +286,35 @@ export default function Ltpa570Section() {
       },
       {
         headerName: '청약심사완료',
-        flex:1,
+        flex: 1,
         minWidth: 80,
         field: 'field09',
         cellClass: 'text-center',
       },
       {
         headerName: '청약완료',
-        flex:1,
+        flex: 1,
         minWidth: 70,
         field: 'field10',
         cellClass: 'text-center',
       },
       {
         headerName: '수납완료',
-        flex:1,
+        flex: 1,
         minWidth: 70,
         field: 'field11',
         cellClass: 'text-center',
       },
       {
         headerName: '총합계',
-        flex:1.1,
+        flex: 1.1,
         minWidth: 70,
         field: 'field12',
         cellClass: 'text-center',
       },
       {
         headerName: '순위',
-        flex:1,
+        flex: 1,
         minWidth: 70,
         field: 'field13',
         cellClass: 'text-center',

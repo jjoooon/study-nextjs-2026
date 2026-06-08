@@ -3,6 +3,8 @@
  */
 'use client';
 
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -18,9 +20,6 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
-
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 
 import '@/shared/lib/agGridPub';
 
@@ -166,8 +165,6 @@ export default function Ltpa690Section() {
                 </TableFoldHead>
                 <TableFoldBody className="grid grid-rows-[1fr_auto] gap-1">
                   <div className="ag-theme-alpine">
-
-
                     {/* 2026-06-01 resizable true로 수정, selectionColumnDef 추가 */}
                     <AgGridReact<DummyDataType>
                       key={loadedCount}

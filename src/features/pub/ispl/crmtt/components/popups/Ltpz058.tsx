@@ -3,6 +3,10 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -21,12 +25,8 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Textarea } from '@uiux/Textarea';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 // 대분류
 type DummyDataTypeA = {
   id: number;

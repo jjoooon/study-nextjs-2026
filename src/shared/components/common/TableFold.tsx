@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Grow, Typo, Grid } from '@atoms';
 import React, { createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Grow, Typo, Grid } from '@atoms';
 
 type TableFoldVariant = 'default' | 'accordion';
 type TableFoldProps = {

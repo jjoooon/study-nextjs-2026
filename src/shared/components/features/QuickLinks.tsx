@@ -3,10 +3,10 @@
  */
 'use client';
 
+import Link from 'next/link';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { AddIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import Link from 'next/link';
 
 const DummyList = [
   { fix: true, name: '설계매뉴얼', link: '/login' },

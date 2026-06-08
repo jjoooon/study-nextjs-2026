@@ -3,6 +3,7 @@
  */
 'use client';
 
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -20,7 +21,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 const Ltpz047 = () => {
   const [form, setFormField] = useFormFields({

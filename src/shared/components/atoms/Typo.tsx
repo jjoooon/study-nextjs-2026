@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ReactNode, createElement } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 
 // M1. 수정
 

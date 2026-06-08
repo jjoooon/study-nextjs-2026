@@ -3,12 +3,12 @@
  */
 'use client';
 
-import { Button } from '@uiux/Button';
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Button } from '@uiux/Button';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;

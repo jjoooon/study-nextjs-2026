@@ -3,6 +3,7 @@
  */
 'use client';
 
+import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -21,7 +22,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 
 const Ltpz037 = () => {
   return (

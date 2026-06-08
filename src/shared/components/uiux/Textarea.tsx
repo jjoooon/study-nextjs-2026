@@ -1,12 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Grow } from '@atoms';
-import { ErrorMsg } from '@common/ErrorMsg';
-import { ReSizeIcon } from '@icons';
 import * as React from 'react';
 import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Grow } from '@atoms';
+import { ErrorMsg } from '@common/ErrorMsg';
+import { ReSizeIcon } from '@icons';
 
 interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   variant?: 'default' | 'outline';

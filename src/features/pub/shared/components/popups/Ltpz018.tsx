@@ -4,6 +4,8 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { Fragment, useMemo, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grid, Grow, Typo, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TabPager } from '@common/TabPager';
@@ -21,8 +23,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { toast } from '@uiux/Sonner';
-import { Fragment, useMemo, useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 type MenuItem = {
   code: string;

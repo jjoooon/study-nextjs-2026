@@ -3,13 +3,12 @@
  */
 'use client';
 
-import { Gcol, Grow, Typo, Grid } from '@atoms';
+import Ltpa120 from '@/features/pub/shared/components/popups/Ltpa120';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-
-import Ltpa120 from '@/features/pub/shared/components/popups/Ltpa120';
 
 type AsideFootDataTotal = {
   insGen: number | boolean;

@@ -3,9 +3,12 @@
  */
 'use client';
 
+import '@/shared/lib/agGridPub';
+import { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { AgGridEmptyComponent, createFieldRenderer, createTooltipValueGetter } from '@/shared/components/agGridUtils';
 import { Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
-import '@/shared/lib/agGridPub';
 
 import {
   Dialog,
@@ -17,9 +20,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, createFieldRenderer, createTooltipValueGetter } from '@/shared/components/agGridUtils';
 
 type DummyDataType = {
   id: number;

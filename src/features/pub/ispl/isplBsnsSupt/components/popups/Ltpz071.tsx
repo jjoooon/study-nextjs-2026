@@ -3,6 +3,9 @@
  */
 'use client';
 
+import type { ColDef, GridApi } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import {
   AgGridEmptyComponent,
   createAddRowHandler,
@@ -24,9 +27,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef, GridApi } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 

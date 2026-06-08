@@ -3,6 +3,10 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useMemo } from 'react';
+import * as React from 'react';
 import {
   AgGridEmptyComponent,
   getNextNumericRowId,
@@ -19,11 +23,6 @@ import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
-
-import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -167,7 +166,7 @@ const treeNameCellRenderer = createTreeNameCellRenderer<DummyData2Type>();
 
 export default function Ltpa630Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  
+
   // 2026-06-04 flex, minWidth 수정
   // 담보분류 -------------
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(

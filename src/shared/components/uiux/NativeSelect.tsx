@@ -1,12 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Typo } from '@atoms';
-import { ErrorMsg } from '@common/ErrorMsg';
-import { SelectDropIcon } from '@icons';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
+import { Typo } from '@atoms';
+import { ErrorMsg } from '@common/ErrorMsg';
+import { SelectDropIcon } from '@icons';
 
 interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size'> {
   variant?: 'default' | 'text';

@@ -4,6 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -21,8 +22,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-
-import * as React from 'react';
 
 const Ltpa073 = () => {
   return (

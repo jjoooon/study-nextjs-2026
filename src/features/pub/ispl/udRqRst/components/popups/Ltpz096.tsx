@@ -3,12 +3,14 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { createTooltipValueGetter } from '@aggrid';
-import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -24,9 +26,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Textarea } from '@uiux/Textarea';
-import { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -160,6 +159,7 @@ const DummyData2: DummyDataType2[] = [
 const Ltpz096 = () => {
   const [rowData1] = React.useState<DummyDataType1[]>(DummyData1);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // 보완요청 체크박스 그룹 상태
   const [requestCheck] = React.useState<string[]>(['고지', '제한담보', '고지유형변경', '서류', '검토불가', '기타']);
@@ -168,27 +168,32 @@ const Ltpz096 = () => {
     {
       headerName: '대표질병코드',
       field: 'field01',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
     },
     {
       headerName: '질병명',
       field: 'field02',
       flex: 3,
+      minWidth: attributeColumnWidth(200),
     },
     {
       headerName: '원사고발생일',
       field: 'field03',
-      width: 110,
+      flex: 1,
+      minWidth: attributeColumnWidth(110),
     },
     {
       headerName: '최종사고발생일',
       field: 'field04',
-      width: 110,
+      flex: 1,
+      minWidth: attributeColumnWidth(110),
     },
     {
       headerName: '입원',
       field: 'field05',
-      width: 200,
+      flex: 1,
+      minWidth: attributeColumnWidth(180),
     },
     {
       headerName: '통원',
@@ -198,7 +203,7 @@ const Ltpz096 = () => {
     {
       headerName: '수술',
       field: 'field07',
-      width: 40,
+      width: 50,
     },
     {
       headerName: '고지여부',
@@ -209,6 +214,7 @@ const Ltpz096 = () => {
       headerName: '체크',
       field: 'field09',
       flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellStyle: (params) => {
         return params.value ? { color: '#006FF2' } : undefined;
       },
@@ -219,14 +225,16 @@ const Ltpz096 = () => {
     {
       headerName: '제한 담보명',
       field: 'field01',
-      flex: 1,
+      flex: 5,
+      minWidth: attributeColumnWidth(400),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field01' }),
     },
     {
       headerName: '가입금액(원)',
       field: 'field02',
-      width: 150,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -279,7 +287,7 @@ const Ltpz096 = () => {
             <TableFold variant="default">
               <TableFoldHead title="질병고지" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
                   <AgGridReact<DummyDataType1>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -312,10 +320,10 @@ const Ltpz096 = () => {
                 제한 담보
               </Typo>
               <Badge color="primary" variant="contained">
-                15개
+                {rowData2.length}개
               </Badge>
             </Grow>
-            <div className="ag-theme-alpine min-h-[18.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
               <AgGridReact<DummyDataType2>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
