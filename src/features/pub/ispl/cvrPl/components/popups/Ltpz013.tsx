@@ -22,7 +22,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-enterprise';
+import type { BodyScrollEvent, ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
@@ -104,12 +104,22 @@ const DummyData: DummyDataType[] = [
   { id: 16, field1: '질병사망(간편)', field2: 10000, field3: 10000 },
 ];
 
-function CardBox({ children, bottom, color }: { children: React.ReactNode; bottom: React.ReactNode; color?: string }) {
+function CardBox({
+  children,
+  bottom,
+  color,
+  className,
+}: {
+  children: React.ReactNode;
+  bottom: React.ReactNode;
+  color?: string;
+  className?: string;
+}) {
   return (
     <Grid
       placement="ss"
       data-recommend-item="true"
-      className={`group gap-0 rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative max-w-[31.2rem] min-w-[31.2rem] grid-rows-[1fr_auto] `}
+      className={`group gap-0 rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative w-auto min-w-[31.2rem] grid-rows-[1fr_auto] ${className || ''}`}
       style={{
         background: color
           ? `linear-gradient(to bottom, white, ${color})`
@@ -133,51 +143,45 @@ function CardBox({ children, bottom, color }: { children: React.ReactNode; botto
 const Ltpz013 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
-  // 외부 스크롤 div ref 배열
-  const scrollRefs = React.useRef<(HTMLDivElement | null)[]>([]);
-  // 스크롤 이벤트 동기화 중복 방지 플래그
-  const isSyncing = React.useRef(false);
+  // AG Grid 내부 스크롤(Body viewport) 동기화
+  const gridContainerRefs = React.useRef<(HTMLDivElement | null)[]>([]);
+  const isSyncingBodyScroll = React.useRef(false);
 
-  // 스크롤 동기화 핸들러
-  const handleSyncScroll = (idx: number, e: React.UIEvent<HTMLDivElement>) => {
-    if (isSyncing.current) return;
-    isSyncing.current = true;
-    const target = e.target as HTMLDivElement;
-    const scrollTop = target.scrollTop;
-    scrollRefs.current.forEach((ref, i) => {
-      if (i !== idx && ref && Math.abs(ref.scrollTop - scrollTop) > 1) {
-        ref.scrollTop = scrollTop;
+  const setGridBodyScrollTop = React.useCallback((container: HTMLDivElement, top: number) => {
+    const viewport = container.querySelector('.ag-body-viewport');
+
+    if (!(viewport instanceof HTMLDivElement)) {
+      return;
+    }
+
+    if (Math.abs(viewport.scrollTop - top) > 1) {
+      viewport.scrollTop = top;
+    }
+  }, []);
+
+  const handleGridBodyScroll = React.useCallback(
+    (sourceIndex: number, event: BodyScrollEvent<DummyDataType>) => {
+      if (isSyncingBodyScroll.current || event.direction !== 'vertical') {
+        return;
       }
-    });
-    // 다음 이벤트 루프에서 플래그 해제
-    setTimeout(() => {
-      isSyncing.current = false;
-    }, 0);
-  };
 
-  function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
-    if (typeof column.width === 'number') {
-      const width = `${column.width}px`;
+      isSyncingBodyScroll.current = true;
 
-      return {
-        flex: '0 0 auto',
-        minWidth: width,
-        width,
-      };
-    }
+      gridContainerRefs.current.forEach((container, index) => {
+        if (!container || index === sourceIndex) {
+          return;
+        }
 
-    if (typeof column.flex === 'number') {
-      return {
-        flex: `${column.flex} ${column.flex} 0%`,
-        minWidth: 0,
-      };
-    }
+        setGridBodyScrollTop(container, event.top);
+      });
 
-    return {
-      flex: '1 1 0%',
-      minWidth: 0,
-    };
-  }
+      requestAnimationFrame(() => {
+        isSyncingBodyScroll.current = false;
+      });
+    },
+    [setGridBodyScrollTop]
+  );
+
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '담보명',
@@ -233,9 +237,9 @@ const Ltpz013 = () => {
         </DialogHeader>
 
         <DialogSection>
-          <Grid className="w-full grid-cols-[auto_1fr] gap-6">
+          <Grid className="w-full h-full grid-cols-[auto_1fr] gap-3">
             {/* 기준설계 */}
-            <Grid className="h-full pb-[1.6rem] grid-rows-[1fr]">
+            <Grid className="h-full pb-[1.8rem] grid-rows-[1fr] max-w-[31.2rem]">
               <CardBox
                 bottom={
                   <div>
@@ -244,11 +248,11 @@ const Ltpz013 = () => {
                 }
               >
                 <Grid className="grid-rows-[auto_1fr]">
-                  <Grow className="bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem] font-[700]">
+                  <Grow className="bg-[var(--color-primary-50)] text-white w-full h-[3.8rem] items-center justify-start p-[1.6rem] font-[700]">
                     <FixingPinIcon className="" />
                     기준설계
                   </Grow>
-                  <Grid className="p-[1.6rem] gap-5 grid-rows-[1fr_auto]" placement="ss">
+                  <Grid className="p-[1.6rem] gap-5 grid-rows-[auto_1fr]" placement="ss">
                     <Gcol className="gap-2" placement="ss">
                       <Gcol placement="ss">
                         <Typo tag="h3" variant={'body-xl'} weight={'bold'} className="">
@@ -258,14 +262,13 @@ const Ltpz013 = () => {
                       <Gcol
                         variant="box-warning"
                         placement="ss"
-                        className="border border-[var(--color-primary-15)] gap-1 min-h-[13.9rem]"
+                        className="border border-[var(--color-primary-15)] gap-1 min-h-[14.4rem]"
                       >
                         {InfoData.옵션.map((option, index) => {
                           const optionKey = `옵션${index + 1}` as keyof typeof option;
                           return (
                             <Grow key={index} placement="ss" className="text-[1.3rem]">
                               {index === 0 && (
-                                // M1. 수정
                                 <ShieldIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -273,7 +276,6 @@ const Ltpz013 = () => {
                                 />
                               )}
                               {index === 1 && (
-                                // M1. 수정
                                 <NoteIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -281,7 +283,6 @@ const Ltpz013 = () => {
                                 />
                               )}
                               {index === 2 && (
-                                // M1. 수정
                                 <CalendarIcon2
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -289,7 +290,6 @@ const Ltpz013 = () => {
                                 />
                               )}
                               {index === 3 && (
-                                // M1. 수정
                                 <CheckboxIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -303,45 +303,28 @@ const Ltpz013 = () => {
                       </Gcol>
                     </Gcol>
                     <div
-                      className="ag-theme-alpine no-header w-full max-h-[calc(100vh-53rem)] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                      className="ag-theme-alpine w-full min-h-[20.8rem] "
                       ref={(el) => {
-                        scrollRefs.current[0] = el;
+                        gridContainerRefs.current[0] = el;
                       }}
-                      onScroll={(e) => handleSyncScroll(0, e)}
                     >
-                      <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-                        {columnDefs.map((column, index) => {
-                          const key = column.field ?? column.headerName ?? `column-${index}`;
-
-                          return (
-                            <div
-                              key={key}
-                              className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                              style={getComparisonHeaderCellStyle(column)}
-                            >
-                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#000]">
-                                {column.headerName}
-                              </Typo>
-                            </div>
-                          );
-                        })}
-                      </div>
                       <AgGridReact<DummyDataType>
                         // 합계 행 설정
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={rowData}
                         columnDefs={columnDefs}
-                        headerHeight={0}
-                        groupHeaderHeight={0}
                         defaultColDef={{
                           suppressMovable: true,
-                          sortable: true,
+                          sortable: false,
                           resizable: true,
                         }}
-                        domLayout="autoHeight"
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
+                        onBodyScroll={(event) => {
+                          handleGridBodyScroll(0, event);
+                        }}
+                        animateRows={false}
                       />
                     </div>
                   </Grid>
@@ -349,7 +332,7 @@ const Ltpz013 = () => {
               </CardBox>
             </Grid>
 
-            <Grow placement="ss" className="overflow-y-hidden overflow-x-auto h-full pb-[1rem]" gap={3}>
+            <Grow placement="ss" className="overflow-y-hidden overflow-x-auto w-full flex-row pr-[1.6rem]" gap={3}>
               {[...Array(3)].map((_, i) => (
                 <CardBox
                   color="var(--color-information-50)"
@@ -446,44 +429,28 @@ const Ltpz013 = () => {
                       </Gcol>
                     </Gcol>
                     <div
-                      className="ag-theme-alpine no-header w-full max-h-[calc(100vh-53rem)] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                      className="ag-theme-alpine w-full min-h-[20.8rem] "
                       ref={(el) => {
-                        scrollRefs.current[i + 1] = el;
+                        gridContainerRefs.current[i + 1] = el;
                       }}
-                      onScroll={(e) => handleSyncScroll(i + 1, e)}
                     >
-                      <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-                        {columnDefs.map((column, index) => {
-                          const key = column.field ?? column.headerName ?? `column-${index}`;
-                          return (
-                            <div
-                              key={key}
-                              className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                              style={getComparisonHeaderCellStyle(column)}
-                            >
-                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#000]">
-                                {column.headerName}
-                              </Typo>
-                            </div>
-                          );
-                        })}
-                      </div>
                       <AgGridReact<DummyDataType>
                         // 합계 행 설정
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={rowData}
                         columnDefs={columnDefs}
-                        headerHeight={0}
-                        groupHeaderHeight={0}
                         defaultColDef={{
                           suppressMovable: true,
                           sortable: true,
                           resizable: true,
                         }}
-                        domLayout="autoHeight"
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
+                        onBodyScroll={(event) => {
+                          handleGridBodyScroll(i + 1, event);
+                        }}
+                        animateRows={false}
                       />
                     </div>
                   </Gcol>
