@@ -109,7 +109,7 @@ const Ltpz045 = () => {
                   <FormRow>
                     <FormCell title={'법인명'}>
                       <Input aria-label="법인명 검색" width={120} value={''} readOnly />
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
                     </FormCell>
@@ -206,7 +206,7 @@ const Ltpz045 = () => {
                   <FormRow>
                     <FormCell title={'성명'}>
                       <Input aria-label="성명 검색" width={108} value={''} readOnly />
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
                     </FormCell>
@@ -254,7 +254,7 @@ const Ltpz045 = () => {
                           기타
                         </RadioGroupItem>
                       </RadioGroup>
-                      <Input size="md" value={cddEtcValue} readOnly={form.type03 !== 'option2'} />
+                      <Input value={cddEtcValue} readOnly={form.type03 !== 'option2'} />
                     </FormCell>
                   </FormRow>
                 </FormTable>
