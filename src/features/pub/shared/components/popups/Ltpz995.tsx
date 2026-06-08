@@ -82,7 +82,7 @@ const ACCEPTED_FILE_TYPES: MimeType[] = [
 
 const MAX_FILE_SIZE = '1024MB'; // 1GB
 
-export default function Ltpz995({ resolve }: Ltpz995Props) {
+export default function Ltpz995({ files, resolve }: Ltpz995Props) {
   const pondRef = useRef<FilePondInstance>(null);
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
