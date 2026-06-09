@@ -3,15 +3,12 @@
  */
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
   numberValueFormatter,
   useAgGridColumnVisibility,
-  useDynamicColumnWidths
+  useDynamicColumnWidths,
 } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -31,6 +28,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -279,7 +279,7 @@ const Ltpz098 = () => {
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
-                      defaultColDef={{ sortable: true, resizable: true, }}
+                      defaultColDef={{ sortable: true, resizable: true }}
                       enableCellSpan={true}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"

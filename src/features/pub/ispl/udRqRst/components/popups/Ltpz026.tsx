@@ -3,9 +3,7 @@
  */
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { Grid, Gcol, Grow, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -13,9 +11,6 @@ import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-
 import {
   Dialog,
   DialogClose,
@@ -26,6 +21,11 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+
+import { useTabs } from '@/shared/hooks/useTabs';
 import '@/shared/lib/agGridPub';
 type Ltpz026TabType = {
   name: string;

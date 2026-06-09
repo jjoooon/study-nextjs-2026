@@ -4,8 +4,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -19,6 +17,8 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 
 type DummyDataType = {
   id: number;

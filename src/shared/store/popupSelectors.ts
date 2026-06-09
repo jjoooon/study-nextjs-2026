@@ -1,5 +1,5 @@
-import { RootState } from '@/redux';
 import type { PopupInstance } from './popupSlice';
+import { RootState } from '@/redux';
 
 // ============================================================================
 // SELECTORS

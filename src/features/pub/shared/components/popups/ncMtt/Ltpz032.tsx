@@ -4,10 +4,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -30,6 +26,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 type Ltpz032TabType = {
   name: string;

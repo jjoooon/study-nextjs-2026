@@ -3,7 +3,6 @@
  */
 'use client';
 
-import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -19,6 +18,7 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Textarea } from '@uiux/Textarea';
+import * as React from 'react';
 
 const Ltpz050 = () => {
   return (

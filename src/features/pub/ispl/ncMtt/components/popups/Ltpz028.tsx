@@ -3,10 +3,6 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams, IHeaderParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-import { Grow, Typo } from '@/shared/components/atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -23,6 +19,10 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef, ICellRendererParams, IHeaderParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+import { Grow, Typo } from '@/shared/components/atoms';
 
 import '@/shared/lib/agGridPub';
 

@@ -4,7 +4,6 @@
 
 'use client';
 
-import { SearchIcon } from '@/shared/components/icons';
 import { Gcol, Typo, Grow } from '@atoms';
 import { BulletList } from '@common/BulletList';
 import { BulletListItem } from '@common/BulletList';
@@ -23,6 +22,7 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { SearchIcon } from '@/shared/components/icons';
 
 const Ltpz056 = () => {
   return (

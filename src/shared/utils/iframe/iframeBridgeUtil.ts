@@ -1,9 +1,9 @@
 /**
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
+import { gParentIframeUrlHost } from '../authUtils';
 import { EventMessage } from '@/shared/types/externalTypes';
 import log from '@/shared/utils/logger';
-import { gParentIframeUrlHost } from '../authUtils';
 
 const logger = log.getLogger('IFrameMessage');
 

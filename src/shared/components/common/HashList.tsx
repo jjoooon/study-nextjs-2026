@@ -3,13 +3,13 @@
  */
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { HashIcon, PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from '@uiux/DropdownMenu';
+import { useState, useRef, useEffect } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 export const HashList = ({ data }: { data: string[] }) => {
   const wrapRef = useRef<HTMLDivElement>(null);

@@ -320,7 +320,7 @@ const Ltpz097 = () => {
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={DummyData}
                       columnDefs={columnDefs}
-                      defaultColDef={{ 
+                      defaultColDef={{
                         sortable: true,
                         resizable: true,
                       }}

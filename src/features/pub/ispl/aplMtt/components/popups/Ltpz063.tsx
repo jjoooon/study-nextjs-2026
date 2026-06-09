@@ -9,11 +9,7 @@ import type {
   EditableCallbackParams,
   IHeaderParams,
 } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import { AgGridEmptyComponent, DatePickerCellEditor, useDynamicColumnWidths
- } from '@aggrid';
+import { AgGridEmptyComponent, DatePickerCellEditor, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -35,6 +31,9 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 type LTPZ051Tab = { name: string; value: string; label: string };
 const DATA_TABS: LTPZ051Tab[] = [

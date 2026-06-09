@@ -3,9 +3,6 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
 import { createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
@@ -22,6 +19,9 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 

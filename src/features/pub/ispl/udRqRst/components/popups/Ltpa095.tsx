@@ -3,8 +3,6 @@
  */
 'use client';
 
-import { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -20,6 +18,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {

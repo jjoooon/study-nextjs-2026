@@ -49,24 +49,24 @@ const TabData: TabDataType[] = [
     error: true,
     info: ['추가정보1', '추가정보2', '추가정보3'],
   },
-  // {
-  //   id: 3,
-  //   name: '목적물',
-  //   age: '3',
-  //   gender: '여',
-  //   value: 'tab3',
-  //   error: false,
-  //   info: ['추가정보1', '추가정보2'],
-  // },
-  // {
-  //   id: 4,
-  //   name: '연금/저축',
-  //   age: '2',
-  //   gender: '남',
-  //   value: 'tab4',
-  //   error: true,
-  //   info: ['추가정보1', '추가정보2', '추가정보3'],
-  // },
+  {
+    id: 3,
+    name: '목적물',
+    age: '3',
+    gender: '여',
+    value: 'tab3',
+    error: false,
+    info: ['추가정보1', '추가정보2'],
+  },
+  {
+    id: 4,
+    name: '연금/저축',
+    age: '2',
+    gender: '남',
+    value: 'tab4',
+    error: true,
+    info: ['추가정보1', '추가정보2', '추가정보3'],
+  },
 ];
 
 export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {

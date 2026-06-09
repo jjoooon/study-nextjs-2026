@@ -80,7 +80,6 @@ const dialogRegistry: DialogRegistry = {
       default: ComponentType<Record<string, unknown>>;
     }>,
   LTPZ995: () =>
-    // eslint-disable-next-line boundaries/dependencies
     import('@/features/pub/shared/components/popups/Ltpz995') as unknown as Promise<{
       default: ComponentType<Record<string, unknown>>;
     }>,

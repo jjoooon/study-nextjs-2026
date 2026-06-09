@@ -2,9 +2,6 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
 import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
 import { createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
@@ -17,6 +14,9 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -1818,11 +1818,7 @@ const Ltpa04002 = () => {
           </FormRow>
           <FormRow>
             <FormCell title={'조회기간'}>
-              <DatePickerInput
-                mode="range"
-                onChange={() => {}}
-                rangeValue={{ from: '2026-02', to: '2026-03' }}
-              />
+              <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} />
               <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="전일">
                 전일
               </Button>

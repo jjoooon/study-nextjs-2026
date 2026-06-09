@@ -2,8 +2,8 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */ 'use client';
 
-import * as React from 'react';
 import { Grow } from '@atoms';
+import * as React from 'react';
 import LinkGo, { getStoryIframeUrl } from './Link';
 
 import iaJhm from './ia-jhm.json';

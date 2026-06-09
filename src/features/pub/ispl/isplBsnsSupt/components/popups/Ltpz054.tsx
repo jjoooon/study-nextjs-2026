@@ -3,9 +3,6 @@
  */
 'use client';
 import '@/shared/lib/agGridPub';
-import type { CellDoubleClickedEvent, ColDef } from 'ag-grid-enterprise';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -25,6 +22,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
+import type { CellDoubleClickedEvent, ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 

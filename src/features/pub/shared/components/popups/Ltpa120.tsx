@@ -3,14 +3,14 @@
  */
 'use client';
 
+import { Grow } from '@atoms';
+import { Dialog, DialogContent, DialogHeader } from '@uiux/Dialog';
 import Image from 'next/image';
 import * as React from 'react';
 import { publicConfig } from '@/shared/config/env';
 import useMounted from '@/shared/hooks/useMounted';
 import { chatbotUtils } from '@/shared/utils/chatbotUtils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
-import { Grow } from '@atoms';
-import { Dialog, DialogContent, DialogHeader } from '@uiux/Dialog';
 
 const CHATBOT_DIALOG_WIDTH = 198;
 const CHATBOT_DIALOG_HEIGHT = 560;
