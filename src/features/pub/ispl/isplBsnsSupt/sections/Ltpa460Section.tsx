@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useAgGridInfiniteAppend, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -158,6 +158,7 @@ const DummyData: DummyDataType[] = [
 export default function Ltpa460Section() {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [coverageName, setCoverageName] = useState('');
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   const productNameHeader = useCallback(
     ({ displayName }: { displayName: string }) => {
@@ -205,7 +206,7 @@ export default function Ltpa460Section() {
     {
       headerName: '번호',
       field: 'field01',
-      width: 30,
+      width: attributeColumnWidth(30),
       cellClass: 'text-center',
       autoHeight: true,
       pinned: 'left',
@@ -213,7 +214,7 @@ export default function Ltpa460Section() {
     {
       headerName: '로그구분',
       field: 'field02',
-      width: 90,
+      width: attributeColumnWidth(90),
       cellClass: 'text-left',
       autoHeight: true,
       pinned: 'left',
@@ -221,7 +222,7 @@ export default function Ltpa460Section() {
     {
       headerName: '거래코드',
       field: 'field03',
-      width: 90,
+      width: attributeColumnWidth(90),
       cellClass: 'text-left',
       autoHeight: true,
       pinned: 'left',
@@ -229,7 +230,7 @@ export default function Ltpa460Section() {
     {
       headerName: '시작일시',
       field: 'field04',
-      width: 90,
+      width: attributeColumnWidth(90),
       cellClass: 'text-center',
       pinned: 'left',
     },
@@ -237,7 +238,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY1',
       field: 'field05',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left',
       sortable: false,
       filter: false,
@@ -255,7 +256,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY2',
       field: 'field06',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -271,7 +272,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY3',
       field: 'field07',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -287,7 +288,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY4',
       field: 'field08',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -303,7 +304,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY5',
       field: 'field09',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -319,7 +320,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY6',
       field: 'field10',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -335,7 +336,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY7',
       field: 'field11',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left',
       autoHeight: true,
       suppressMovable: true, // 이동 방지
@@ -446,7 +447,7 @@ export default function Ltpa460Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Gcol className="w-full grid-rows-[auto_1fr_auto]" gap={1}>
+            <Gcol className="w-full grid-rows-[auto_1fr_auto]">
               <Grow className="w-full flex justify-end">
                 <Button color="success" variant="outlined">
                   엑셀가져오기
@@ -455,6 +456,7 @@ export default function Ltpa460Section() {
               </Grow>
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={visibleRows}
                   columnDefs={columnDefs}

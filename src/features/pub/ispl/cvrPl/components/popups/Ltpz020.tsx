@@ -205,7 +205,7 @@ const Ltpz020 = ({ open }: { open: boolean }) => {
       {
         headerName: '선택',
         field: 'cheked',
-        width: 30,
+        width: attributeColumnWidth(30),
         editable: true,
         cellDataType: 'boolean',
         cellClass: 'editable-cell text-center',

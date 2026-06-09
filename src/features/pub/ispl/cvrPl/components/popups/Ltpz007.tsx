@@ -3,8 +3,9 @@
  */
 'use client';
 
+import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Gcol } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
@@ -174,82 +175,88 @@ const Ltpz007 = () => {
     );
   }, []);
 
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerComponent: () => renderRadioHeader('세만기형', 'field02'),
-      width: 100,
-      field: 'field02',
-      headerClass: '!justify-center',
-      cellClass: 'text-center justify-center',
-      cellClassRules: {
-        'bg-[var(--color-primary-5)]': (params) => Boolean(params.data?.field02),
-      },
-      autoHeight: false,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        const row = params.data;
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerComponent: () => renderRadioHeader('세만기형', 'field02'),
+        width: attributeColumnWidth(100),
+        flex: 1,
+        field: 'field02',
+        headerClass: '!justify-center',
+        cellClass: 'text-center justify-center',
+        cellClassRules: {
+          'bg-[var(--color-primary-5)]': (params) => Boolean(params.data?.field02),
+        },
+        autoHeight: false,
+        cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+          const row = params.data;
 
-        if (!row) {
-          return null;
-        }
+          if (!row) {
+            return null;
+          }
 
-        return (
-          <div
-            className="flex h-full w-full cursor-pointer items-center justify-center"
-            onClick={(event) => {
-              event.stopPropagation();
-              handleRadioChange(row.id, 'field02');
-            }}
-          >
-            <RadioGroup
-              value={row.field02 ? 'field02' : row.field03 ? 'field03' : ''}
-              onValueChange={() => handleRadioChange(row.id, 'field02')}
-              width="auto"
-              className="justify-center gap-0"
+          return (
+            <div
+              className="flex h-full w-full cursor-pointer items-center justify-center"
+              onClick={(event) => {
+                event.stopPropagation();
+                handleRadioChange(row.id, 'field02');
+              }}
             >
-              <RadioGroupItem value="field02" id={`field02-${row.id}`} variant="default" size="lg" />
-            </RadioGroup>
-          </div>
-        );
+              <RadioGroup
+                value={row.field02 ? 'field02' : row.field03 ? 'field03' : ''}
+                onValueChange={() => handleRadioChange(row.id, 'field02')}
+                width="auto"
+                className="justify-center gap-0"
+              >
+                <RadioGroupItem value="field02" id={`field02-${row.id}`} variant="default" size="lg" />
+              </RadioGroup>
+            </div>
+          );
+        },
       },
-    },
-    {
-      headerComponent: () => renderRadioHeader('갱신형', 'field03'),
-      width: 100,
-      field: 'field03',
-      headerClass: '!justify-center',
-      cellClass: 'text-center',
-      cellClassRules: {
-        'bg-[var(--color-primary-5)]': (params) => Boolean(params.data?.field03),
-      },
-      autoHeight: false,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        const row = params.data;
+      {
+        headerComponent: () => renderRadioHeader('갱신형', 'field03'),
+        width: attributeColumnWidth(100),
+        flex: 1,
+        field: 'field03',
+        headerClass: '!justify-center',
+        cellClass: 'text-center',
+        cellClassRules: {
+          'bg-[var(--color-primary-5)]': (params) => Boolean(params.data?.field03),
+        },
+        autoHeight: false,
+        cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+          const row = params.data;
 
-        if (!row) {
-          return null;
-        }
+          if (!row) {
+            return null;
+          }
 
-        return (
-          <div
-            className="flex h-full w-full cursor-pointer items-center justify-center"
-            onClick={(event) => {
-              event.stopPropagation();
-              handleRadioChange(row.id, 'field03');
-            }}
-          >
-            <RadioGroup
-              value={row.field02 ? 'field02' : row.field03 ? 'field03' : ''}
-              onValueChange={() => handleRadioChange(row.id, 'field03')}
-              width="auto"
-              className="justify-center gap-0"
+          return (
+            <div
+              className="flex h-full w-full cursor-pointer items-center justify-center"
+              onClick={(event) => {
+                event.stopPropagation();
+                handleRadioChange(row.id, 'field03');
+              }}
             >
-              <RadioGroupItem value="field03" id={`field03-${row.id}`} variant="default" size="lg" />
-            </RadioGroup>
-          </div>
-        );
+              <RadioGroup
+                value={row.field02 ? 'field02' : row.field03 ? 'field03' : ''}
+                onValueChange={() => handleRadioChange(row.id, 'field03')}
+                width="auto"
+                className="justify-center gap-0"
+              >
+                <RadioGroupItem value="field03" id={`field03-${row.id}`} variant="default" size="lg" />
+              </RadioGroup>
+            </div>
+          );
+        },
       },
-    },
-  ];
+    ],
+    [attributeColumnWidth]
+  );
 
   return (
     <Dialog open>
@@ -266,7 +273,7 @@ const Ltpz007 = () => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr] gap-2">
-          <div className="ag-theme-alpine min-h-[33.4rem]">
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}
@@ -286,7 +293,7 @@ const Ltpz007 = () => {
               autoGroupColumnDef={{
                 headerName: '담보명',
                 field: 'field01',
-                flex: 1,
+                flex: 6,
                 tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
               }}
             />
@@ -314,6 +321,7 @@ const Ltpz007 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

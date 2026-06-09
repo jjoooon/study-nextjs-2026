@@ -261,7 +261,7 @@ export default function Ltpa600Section() {
       {
         headerName: '순서',
         field: 'field1',
-        flex: 0.5,
+        flex: 1,
         minWidth: attributeColumnWidth[5],
         cellClass: 'text-center',
         autoHeight: true,
@@ -269,7 +269,7 @@ export default function Ltpa600Section() {
       {
         headerName: '담보그룹',
         field: 'field2',
-        flex: 1,
+        flex: 2,
         minWidth: attributeColumnWidth[8],
         cellClass: 'text-center',
         autoHeight: true,
@@ -277,7 +277,7 @@ export default function Ltpa600Section() {
       {
         headerName: '구분',
         field: 'field3',
-        flex: 5,
+        flex: 10,
         minWidth: attributeColumnWidth[20],
         cellClass: 'text-center !p-0',
         autoHeight: true,
@@ -311,7 +311,7 @@ export default function Ltpa600Section() {
       {
         headerName: '담보',
         field: 'field4',
-        flex: 0.5,
+        flex: 1,
         minWidth: attributeColumnWidth[5],
         cellClass: 'text-center',
         autoHeight: true,
@@ -409,7 +409,7 @@ export default function Ltpa600Section() {
       {
         headerName: '중복',
         field: 'rowCopy',
-        width: 50,
+        width: attributeColumnWidth(50),
         sortable: false,
         cellRenderer: duplicateButtonRenderer,
       },
