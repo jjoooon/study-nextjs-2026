@@ -4,10 +4,7 @@
 
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -22,6 +19,9 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -172,6 +172,7 @@ export default function Ltpa570Section() {
   const [rowData] = React.useState<Ltpa570DummyDataRow[]>(Ltpa570DummyData);
 
   // AgGrid Column
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs = React.useMemo<ColDef<Ltpa570DummyDataRow>[]>(() => {
     // 2026-06-01 width, flex 수정
     // 2026-06-02 minWidth 추가, flex 수정
@@ -182,7 +183,7 @@ export default function Ltpa570Section() {
       option1: [
         {
           headerName: '채널',
-          width: 70,
+          width: attributeColumnWidth(70),
           field: 'field01',
           cellClass: 'text-center',
         },
@@ -190,14 +191,14 @@ export default function Ltpa570Section() {
       option2: [
         {
           headerName: '채널',
-          width: 70,
+          width: attributeColumnWidth(70),
           field: 'field01',
           cellClass: 'text-center',
         },
         {
           headerName: '본부명',
           flex: 1,
-          minWidth: 170,
+          minWidth: attributeColumnWidth(170),
           field: 'field02',
           cellClass: 'text-center',
         },
@@ -205,21 +206,21 @@ export default function Ltpa570Section() {
       option3: [
         {
           headerName: '채널',
-          width: 70,
+          width: attributeColumnWidth(70),
           field: 'field01',
           cellClass: 'text-center',
         },
         {
           headerName: '본부명',
           flex: 1,
-          minWidth: 170,
+          minWidth: attributeColumnWidth(170),
           field: 'field02',
           cellClass: 'text-center',
         },
         {
           headerName: '사업단',
           flex: 1,
-          minWidth: 150,
+          minWidth: attributeColumnWidth(150),
           field: 'field03',
           cellClass: 'text-center',
         },
@@ -227,28 +228,28 @@ export default function Ltpa570Section() {
       option4: [
         {
           headerName: '채널',
-          width: 70,
+          width: attributeColumnWidth(70),
           field: 'field01',
           cellClass: 'text-center',
         },
         {
           headerName: '본부명',
           flex: 1,
-          minWidth: 170,
+          minWidth: attributeColumnWidth(170),
           field: 'field02',
           cellClass: 'text-center',
         },
         {
           headerName: '사업단',
           flex: 1,
-          minWidth: 150,
+          minWidth: attributeColumnWidth(150),
           field: 'field03',
           cellClass: 'text-center',
         },
         {
           headerName: '지점명',
           flex: 1,
-          minWidth: 150,
+          minWidth: attributeColumnWidth(150),
           field: 'field04',
           cellClass: 'text-center',
         },
@@ -259,70 +260,70 @@ export default function Ltpa570Section() {
       {
         headerName: '단순설계',
         flex: 1,
-        minWidth: 70,
+        minWidth: attributeColumnWidth(70),
         field: 'field05',
         cellClass: 'text-center',
       },
       {
         headerName: '설계중',
         flex: 1,
-        minWidth: 70,
+        minWidth: attributeColumnWidth(70),
         field: 'field06',
         cellClass: 'text-center',
       },
       {
         headerName: '설계완료',
         flex: 1,
-        minWidth: 70,
+        minWidth: attributeColumnWidth(70),
         field: 'field07',
         cellClass: 'text-center',
       },
       {
         headerName: '청약중',
         flex: 1,
-        minWidth: 70,
+        minWidth: attributeColumnWidth(70),
         field: 'field08',
         cellClass: 'text-center',
       },
       {
         headerName: '청약심사완료',
         flex: 1,
-        minWidth: 80,
+        minWidth: attributeColumnWidth(80),
         field: 'field09',
         cellClass: 'text-center',
       },
       {
         headerName: '청약완료',
         flex: 1,
-        minWidth: 70,
+        minWidth: attributeColumnWidth(70),
         field: 'field10',
         cellClass: 'text-center',
       },
       {
         headerName: '수납완료',
         flex: 1,
-        minWidth: 70,
+        minWidth: attributeColumnWidth(70),
         field: 'field11',
         cellClass: 'text-center',
       },
       {
         headerName: '총합계',
         flex: 1.1,
-        minWidth: 70,
+        minWidth: attributeColumnWidth(70),
         field: 'field12',
         cellClass: 'text-center',
       },
       {
         headerName: '순위',
         flex: 1,
-        minWidth: 70,
+        minWidth: attributeColumnWidth(70),
         field: 'field13',
         cellClass: 'text-center',
       },
     ];
 
     return [...organizationColumnsByGroupBy[groupBy], ...metricColumns];
-  }, [groupBy]);
+  }, [groupBy, attributeColumnWidth]);
 
   const pageSize = 2;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({

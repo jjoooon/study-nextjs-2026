@@ -3,11 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, createFieldRenderer, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -24,6 +20,10 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -246,119 +246,123 @@ export default function Ltpa490Section() {
   // AgGrid Column
   // 2026-06-01 width, flex 수정
   // 2026-06-04 flex, minWidth 수정
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: '설계번호',
-      field: 'field01',
-      flex: 1,
-      minWidth: 120,
-      cellClass: 'text-center',
-      autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        if (!params.value) return null;
-        return (
-          <Button color="link" onClick={() => {}} variant="text">
-            {params.value}
-          </Button>
-        );
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = React.useMemo(
+    () => [
+      {
+        headerName: '설계번호',
+        field: 'field01',
+        flex: 1,
+        minWidth: attributeColumnWidth(120),
+        cellClass: 'text-center',
+        autoHeight: true,
+        cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+          if (!params.value) return null;
+          return (
+            <Button color="link" onClick={() => {}} variant="text">
+              {params.value}
+            </Button>
+          );
+        },
       },
-    },
-    {
-      headerName: '계명자명',
-      flex: 0.8,
-      minWidth: 75,
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-      children: [
-        {
-          headerName: '피보험자명',
-          flex: 0.8,
-          minWidth: 75,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
-          cellRenderer: createFieldRenderer<DummyDataType>('field02', 'field03'),
-        },
-      ],
-    },
-    {
-      headerName: '설계상태',
-      field: 'field04',
-      flex: 0.8,
-      minWidth: 70,
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '취급지점',
-      flex: 1,
-      minWidth: 110,
-      cellClass: 'text-center',
-      children: [
-        {
-          headerName: '취급자',
-          field: 'field06',
-          flex: 1,
-          minWidth: 110,
-          autoHeight: true,
-          cellClass: 'text-center px-0!',
-          cellRenderer: createFieldRenderer<DummyDataType>('field05', 'field06'),
-        },
-      ],
-    },
-    {
-      headerName: '설계자',
-      field: 'field07',
-      flex: 0.8,
-      minWidth: 70,
-      autoHeight: true,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '설계시작~유효일자',
-      field: 'field08',
-      flex: 1,
-      minWidth: 160,
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '고액여부',
-      field: 'field09',
-      flex: 0.8,
-      minWidth: 75,
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '유효기간초과여부',
-      headerComponent: ExceedPeriodHeader,
-      field: 'field10',
-      flex: 0.8,
-      minWidth: 75,
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '파기여부',
-      field: 'field11',
-      flex: 0.8,
-      minWidth: 75,
-      cellClass: 'editable-cell text-center',
-      editable: true,
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택', '파기', '미파기', '미입력'] },
-      autoHeight: true,
-    },
-    {
-      headerName: '미파기 사유',
-      field: 'field12',
-      flex: 5,
-      minWidth: 230,
-      cellClass: 'text-left',
-      editable: true,
-      autoHeight: true,
-    },
-  ];
+      {
+        headerName: '계명자명',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+        children: [
+          {
+            headerName: '피보험자명',
+            flex: 1,
+            minWidth: attributeColumnWidth(75),
+            cellClass: 'text-center px-0!',
+            autoHeight: true,
+            cellRenderer: createFieldRenderer<DummyDataType>('field02', 'field03'),
+          },
+        ],
+      },
+      {
+        headerName: '설계상태',
+        field: 'field04',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '취급지점',
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
+        cellClass: 'text-center',
+        children: [
+          {
+            headerName: '취급자',
+            field: 'field06',
+            flex: 1,
+            minWidth: attributeColumnWidth(110),
+            autoHeight: true,
+            cellClass: 'text-center px-0!',
+            cellRenderer: createFieldRenderer<DummyDataType>('field05', 'field06'),
+          },
+        ],
+      },
+      {
+        headerName: '설계자',
+        field: 'field07',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        autoHeight: true,
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '설계시작~유효일자',
+        field: 'field08',
+        flex: 1,
+        minWidth: attributeColumnWidth(160),
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '고액여부',
+        field: 'field09',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '유효기간초과여부',
+        headerComponent: ExceedPeriodHeader,
+        field: 'field10',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '파기여부',
+        field: 'field11',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        cellClass: 'editable-cell text-center',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: { values: ['선택', '파기', '미파기', '미입력'] },
+        autoHeight: true,
+      },
+      {
+        headerName: '미파기 사유',
+        field: 'field12',
+        flex: 5,
+        minWidth: attributeColumnWidth(230),
+        cellClass: 'text-left',
+        editable: true,
+        autoHeight: true,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   // form event
   const [form, setFormField] = useFormFields({

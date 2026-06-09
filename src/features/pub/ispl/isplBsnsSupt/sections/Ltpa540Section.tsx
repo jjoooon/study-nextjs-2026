@@ -5,10 +5,12 @@
 
 // 2026-05-26 페이징 추가
 
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { AgGridEmptyComponent, createModifiedCellClassRules, createTooltipValueGetter } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createModifiedCellClassRules,
+  createTooltipValueGetter,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -23,6 +25,9 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -206,6 +211,7 @@ export default function Ltpa540Section() {
   // 2026-06-01 width, flex 수정
   // 2026-06-04 flex, minWidth 수정
   // 직접 수정된 셀 추적: Set<"rowId:fieldName">
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = React.useMemo(
     () => [
       {
@@ -216,7 +222,7 @@ export default function Ltpa540Section() {
             headerName: '담보코드',
             field: 'field01',
             flex: 1,
-            minWidth: 80,
+            minWidth: attributeColumnWidth(80),
             cellClass: 'text-center',
             autoHeight: true,
             spanRows: true,
@@ -225,7 +231,7 @@ export default function Ltpa540Section() {
             headerName: '담보명',
             field: 'field02',
             flex: 7,
-            minWidth: 240,
+            minWidth: attributeColumnWidth(240),
             cellClass: 'text-left',
             autoHeight: true,
             spanRows: true,
@@ -236,13 +242,13 @@ export default function Ltpa540Section() {
       {
         headerName: '기존',
         flex: 4,
-        minWidth: 495,
+        minWidth: attributeColumnWidth(495),
         children: [
           {
             headerName: '담보코드',
             field: 'field03',
             flex: 1,
-            minWidth: 80,
+            minWidth: attributeColumnWidth(80),
             hide: !showExisting,
             cellClass: 'text-center',
           },
@@ -250,7 +256,7 @@ export default function Ltpa540Section() {
             headerName: '유사 담보명',
             field: 'field04',
             flex: 7,
-            minWidth: 240,
+            minWidth: attributeColumnWidth(240),
             hide: !showExisting,
             cellClass: 'text-left',
             tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
@@ -259,7 +265,7 @@ export default function Ltpa540Section() {
             headerName: '순위',
             field: 'field05',
             flex: 1,
-            minWidth: 50,
+            minWidth: attributeColumnWidth(50),
             suppressSizeToFit: true,
             hide: !showExisting,
             cellClass: 'text-center',
@@ -268,7 +274,7 @@ export default function Ltpa540Section() {
             headerName: '예외',
             field: 'field06',
             flex: 1,
-            minWidth: 50,
+            minWidth: attributeColumnWidth(50),
             suppressSizeToFit: true,
             hide: !showExisting,
             cellClass: 'text-center',
@@ -278,20 +284,20 @@ export default function Ltpa540Section() {
       {
         headerName: '변경 후 (조회)',
         flex: 4,
-        minWidth: 495,
+        minWidth: attributeColumnWidth(495),
         children: [
           {
             headerName: '담보코드',
             field: 'field07',
             flex: 1,
-            minWidth: 80,
+            minWidth: attributeColumnWidth(80),
             cellClass: 'text-center',
           },
           {
             headerName: '유사 담보명',
             field: 'field08',
             flex: 7,
-            minWidth: 240,
+            minWidth: attributeColumnWidth(240),
             cellClass: 'text-left',
             tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field08' }),
           },
@@ -300,7 +306,7 @@ export default function Ltpa540Section() {
             headerName: '순위',
             field: 'field09',
             flex: 1,
-            minWidth: 50,
+            minWidth: attributeColumnWidth(50),
             cellClass: 'text-center',
             autoHeight: true,
             editable: true,
@@ -316,7 +322,7 @@ export default function Ltpa540Section() {
             headerName: '예외',
             field: 'field10',
             flex: 1,
-            minWidth: 50,
+            minWidth: attributeColumnWidth(50),
             cellClass: 'text-center',
             autoHeight: true,
             editable: true,
@@ -332,7 +338,7 @@ export default function Ltpa540Section() {
         ],
       },
     ],
-    [showExisting, EditCellColor, EditCellColor2, rowData]
+    [showExisting, EditCellColor, EditCellColor2, rowData, attributeColumnWidth]
   );
   return (
     <>
@@ -405,7 +411,7 @@ export default function Ltpa540Section() {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody className="gap-2">
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

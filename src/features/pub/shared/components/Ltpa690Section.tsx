@@ -3,9 +3,7 @@
  */
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
@@ -20,6 +18,8 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Textarea } from '@uiux/Textarea';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 
 import '@/shared/lib/agGridPub';
 
@@ -68,31 +68,32 @@ const DummyData: DummyDataType[] = [
 
 export default function Ltpa690Section() {
   // 2026-06-02 flex, minWidth 수정
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '메시지 구분',
       field: 'field1',
-      width: 80,
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '메시지코드',
       field: 'field2',
-      width: 80,
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '메시지',
       field: 'field3',
       flex: 5,
-      minWidth: 300,
+      minWidth: attributeColumnWidth(300),
       cellClass: 'text-left',
     },
     {
       headerName: '등록일',
       field: 'field4',
       flex: 1, // 2026-06-01 수정
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
   ];
@@ -164,7 +165,7 @@ export default function Ltpa690Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody className="grid grid-rows-[1fr_auto] gap-1">
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                     {/* 2026-06-01 resizable true로 수정, selectionColumnDef 추가 */}
                     <AgGridReact<DummyDataType>
                       key={loadedCount}
