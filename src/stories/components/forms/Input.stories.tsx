@@ -254,14 +254,14 @@ import { Input } from '@uiux/Input';
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
-                  <Input error errorMsg="입력은 필수입니다." errorPs="tl" />
-                  <Input error errorMsg="입력은 필수입니다." errorPs="tc" />
-                  <Input error errorMsg="입력은 필수입니다." errorPs="tr" />
+                  <Input error={true} errorMsg="입력은 필수입니다." errorPs="tl" />
+                  <Input error={true} errorMsg="입력은 필수입니다." errorPs="tc" />
+                  <Input error={true} errorMsg="입력은 필수입니다." errorPs="tr" />
                 </Grow>
                 <Grow gap={8}>
-                  <Input error errorMsg="입력은 필수입니다." errorPs="bl" />
-                  <Input error errorMsg="입력은 필수입니다." errorPs="bc" />
-                  <Input error errorMsg="입력은 필수입니다." errorPs="br" />
+                  <Input error={true} errorMsg="입력은 필수입니다." errorPs="bl" />
+                  <Input error={true} errorMsg="입력은 필수입니다." errorPs="bc" />
+                  <Input error={true} errorMsg="입력은 필수입니다." errorPs="br" />
                 </Grow>
               </Gcol>
             </Unstyled>
