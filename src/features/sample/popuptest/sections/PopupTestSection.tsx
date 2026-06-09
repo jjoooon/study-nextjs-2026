@@ -1,31 +1,41 @@
 'use client';
 
-import { FileItem, FileUpload } from '@/shared/components/common/FileUpload';
+import { useState } from 'react';
+
+import { FileUpload } from '@/shared/components/common/FileUpload';
+import { FileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
 
 const logger = log.getLogger('Popup');
 
-const filesForButton = [
+const initialFiles: FileItem[] = [
   {
-    ext: 'png',
-    name: 'file1',
-    key: '000',
+    fileExtension: 'png',
+    fileSize: 6770,
+    fileType: 'image/png',
+    filename: 'file1',
+    id: '000',
   },
   {
-    ext: 'png',
-    name: 'file2',
-    key: '111',
+    fileExtension: 'png',
+    fileSize: 5000,
+    fileType: 'image/png',
+    filename: 'file2',
+    id: '111',
   },
 ];
 
 export default function PopupTestSection() {
+  const [files, setFiles] = useState<FileItem[]>(initialFiles);
+
   const handleClickButton = async () => {
     logger.debug('파일업로드 팝업 오픈 버튼 클릭 시 호출');
   };
 
-  const handleRemove = (file: FileItem, index: number) => {
-    logger.debug('파일업로드 팝업에서 파일 삭제 시 호출', file, index);
+  const handleChange = (nextFiles: FileItem[]) => {
+    logger.debug('파일 목록 변경', nextFiles);
+    setFiles(nextFiles);
   };
 
-  return <FileUpload files={filesForButton} onClickButton={handleClickButton} onRemove={handleRemove} />;
+  return <FileUpload files={files} onClickButton={handleClickButton} onChange={handleChange} />;
 }

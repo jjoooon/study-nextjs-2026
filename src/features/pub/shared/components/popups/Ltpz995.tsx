@@ -10,6 +10,7 @@ import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
+import { FileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -30,14 +31,6 @@ import 'filepond/dist/filepond.min.css';
 registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
 
 const logger = log.getLogger('FileUploader');
-
-export interface FileItem {
-  id: string;
-  filename: string;
-  fileSize: number;
-  fileExtension: string;
-  fileType: string;
-}
 
 export interface Ltpz995Result {
   action: 'search' | 'select' | 'close';
