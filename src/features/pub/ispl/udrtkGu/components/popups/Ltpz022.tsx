@@ -221,6 +221,7 @@ const Ltpz022 = () => {
       field: 'details',
       wrapText: true,
       autoHeight: true,
+      resizable: false,
       flex: 1,
       cellStyle: (params) => ({
         whiteSpace: 'normal',
@@ -248,7 +249,7 @@ const Ltpz022 = () => {
               지침확인결과
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (Ltpz022)
+              (LTPZ022)
             </Typo>
           </DialogTitle>
         </DialogHeader>
