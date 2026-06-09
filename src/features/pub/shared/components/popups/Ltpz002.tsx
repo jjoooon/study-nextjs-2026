@@ -4,7 +4,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -25,9 +28,6 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
 
 type DummyDataType = {
   id: number;
@@ -44,8 +44,8 @@ const dummyData: DummyDataType[] = [
     id: 1,
     field1: '구분정보',
     field2: '보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명 ',
-    field3: '1234567890123456',
-    field4: '계약자',
+    field3: 'LA26020945959594',
+    field4: '한화한화',
     field5: '290000',
     field6: '2023-01-01',
     field7: '상태',
@@ -54,7 +54,7 @@ const dummyData: DummyDataType[] = [
     id: 2,
     field1: '구분정보',
     field2: '보험종목명 ',
-    field3: '설계번호',
+    field3: 'LA26020945959594',
     field4: '계약자',
     field5: '290000',
     field6: '2023-01-01',
@@ -64,7 +64,7 @@ const dummyData: DummyDataType[] = [
     id: 3,
     field1: '구분정보',
     field2: '보험종목명 ',
-    field3: '설계번호',
+    field3: 'LA26020945959594',
     field4: '계약자',
     field5: '290000',
     field6: '2023-01-01',
@@ -86,13 +86,13 @@ const dummyData2: DummyDataType2[] = [
   },
   {
     id: 2,
-    field1: '담보명',
+    field1: '암진단(유병자)',
     field2: '28990',
     field3: '20년납',
   },
   {
     id: 3,
-    field1: '담보명',
+    field1: '암(4대유사암제외)진단비',
     field2: '28990',
     field3: '20년납',
   },
@@ -101,6 +101,8 @@ const dummyData2: DummyDataType2[] = [
 // 2026-06-01 agGrid width, flex, cellClass 수정
 // 2026-06-01 agGrid minWidth, flex 수정
 const Ltpz002 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
@@ -112,7 +114,7 @@ const Ltpz002 = () => {
       headerName: '보험종목명',
       field: 'field2',
       flex: 6,
-      minWidth: 150,
+      minWidth: attributeColumnWidth(150),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
     },
@@ -120,31 +122,31 @@ const Ltpz002 = () => {
       headerName: '설계번호',
       field: 'field3',
       flex: 1,
-      minWidth: 120,
+      minWidth: attributeColumnWidth(120),
     },
     {
       headerName: '계약자',
       field: 'field4',
-      width: 70,
+      width: attributeColumnWidth(70),
     },
     {
       headerName: '보험료(원)',
       field: 'field5',
       cellClass: 'text-right',
-      flex: 0.9,
-      minWidth: 75,
+      flex: 1,
+      minWidth: attributeColumnWidth(75),
       cellRenderer: numberValueFormatter,
     },
     {
       headerName: '설계일자',
       field: 'field6',
-      flex: 0.9,
-      minWidth: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '상태',
       field: 'field7',
-      width: 65,
+      width: attributeColumnWidth(60),
     },
   ];
 
@@ -154,12 +156,14 @@ const Ltpz002 = () => {
       field: 'field1',
       cellClass: 'text-left',
       flex: 4,
+      minWidth: attributeColumnWidth(150),
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
     },
     {
       headerName: '가입금액(만원)',
       field: 'field2',
-      width: 90,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right',
       cellRenderer: numberValueFormatter,
     },
@@ -167,6 +171,7 @@ const Ltpz002 = () => {
       headerName: '보험기간',
       field: 'field3',
       flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-center',
     },
   ];
@@ -176,12 +181,14 @@ const Ltpz002 = () => {
       field: 'field1',
       cellClass: 'text-left',
       flex: 4,
+      minWidth: attributeColumnWidth(150),
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
     },
     {
       headerName: '가입금액(만원)',
       field: 'field2',
-      width: 90,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right',
       cellRenderer: numberValueFormatter,
     },
@@ -189,6 +196,7 @@ const Ltpz002 = () => {
       headerName: '보험기간',
       field: 'field3',
       flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-center',
     },
   ];
@@ -213,7 +221,7 @@ const Ltpz002 = () => {
         <DialogSection className="grid-rows-[1fr]">
           <TableFold variant={'default'}>
             <TableFoldHead title={'고객정보'} />
-            <TableFoldBody className="grid-rows-[auto_1fr] gap-[2rem]">
+            <TableFoldBody className="grid-rows-[auto_1fr] gap-[1.2rem]">
               <Grow className="w-full" variant="box-round" placement={'bwe'}>
                 <FormTable variant={'none'} cols={['w-1', 'w-[30rem]', 'w-[10rem]', 'w-auto']}>
                   <FormRow>
@@ -304,7 +312,7 @@ const Ltpz002 = () => {
                   </FormRow>
                 </FormTable>
 
-                <div className="ag-theme-alpine min-h-[12.4rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                   <AgGridReact<DummyDataType>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
@@ -329,36 +337,36 @@ const Ltpz002 = () => {
                   />
                 </div>
 
-                <Grow className="w-full" placement="ss" gap={5}>
+                <Grow className="w-full" placement="ss" gap={3}>
                   <TableFold>
                     <TableFoldHead title={'현재 설계'} />
-                    <TableFoldBody className="grid-rows-[auto_1fr] gap-[1rem]">
-                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[9rem]']}>
+                    <TableFoldBody className="grid-rows-[auto_1fr] gap-[0.8rem]">
+                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[14.5rem]']}>
                         <FormRow>
                           <FormCell title={'설계번호'}>
-                            <b>234234</b>
+                            LA260112297637
                           </FormCell>
                           <FormCell title={'설계상태'}>
-                            <b>ㅁㅁㅁㅁ</b>
+                            설계완료
                           </FormCell>
                         </FormRow>
                         <FormRow>
                           <FormCell title={'취급기관'}>
-                            <b>ㅇㅇㅇㅇㅇㅇ</b>
+                            강동 GA지점
                           </FormCell>
                           <FormCell title={'취급자'}>
                             <Tooltip>
                               <TooltipTrigger>
-                                <b className="truncate block w-[8rem]">
-                                  홍길동홍 길동홍길 동홍길동홍길동 홍길동홍길동 홍길동홍길동
-                                </b>
+                                <span className="text-left block w-auto overflow-hidden h-[1.95rem]">
+                                  (3494035)인카금융-제이
+                                </span>
                               </TooltipTrigger>
-                              <TooltipContent>{`홍길동홍길동`}</TooltipContent>
+                              <TooltipContent>{`(3494035)인카금융-제이`}</TooltipContent>
                             </Tooltip>
                           </FormCell>
                         </FormRow>
                       </FormTable>
-                      <div className="ag-theme-alpine min-h-[15rem]">
+                      <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                         <AgGridReact<DummyDataType2>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
@@ -376,33 +384,33 @@ const Ltpz002 = () => {
                   </TableFold>
                   <TableFold>
                     <TableFoldHead title={'비교 설계'} />
-                    <TableFoldBody className="grid-rows-[auto_1fr] gap-[1rem]">
-                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[9rem]']}>
+                    <TableFoldBody className="grid-rows-[auto_1fr] gap-[0.8rem]">
+                      <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[14.5rem]']}>
                         <FormRow>
                           <FormCell title={'설계번호'}>
-                            <b>234234</b>
+                            LA260112297637
                           </FormCell>
                           <FormCell title={'설계상태'}>
-                            <b>ㅁㅁㅁㅁ</b>
+                            설계완료
                           </FormCell>
                         </FormRow>
                         <FormRow>
                           <FormCell title={'취급기관'}>
-                            <b>ㅇㅇㅇㅇㅇㅇ</b>
+                            강동 GA지점
                           </FormCell>
-                          <FormCell title={'취급자'}>
+                          <FormCell title={'취급자'} tdStyle={{ paddingRight: 0 }}>
                             <Tooltip>
                               <TooltipTrigger>
-                                <b className="truncate block w-[8rem]">
-                                  홍길동홍 길동홍길 동홍길동홍길동 홍길동홍길동 홍길동홍길동
-                                </b>
+                                <span className="text-left block w-auto overflow-hidden h-[1.95rem]">
+                                  d(3494035)인카금융-제이금융제이금융제이
+                                </span>
                               </TooltipTrigger>
-                              <TooltipContent>{`홍길동홍길동`}</TooltipContent>
+                              <TooltipContent>{`(3494035)인카금융-제이금융제이금융제이`}</TooltipContent>
                             </Tooltip>
                           </FormCell>
                         </FormRow>
                       </FormTable>
-                      <div className="ag-theme-alpine min-h-[15rem]">
+                      <div className="ag-theme-alpine inner-scroll" data-row={rowData3.length}>
                         <AgGridReact<DummyDataType2>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
