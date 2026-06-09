@@ -183,7 +183,7 @@ const Ltpz080 = () => {
           </FormTable>
 
           <Gcol>
-            <div className="ag-theme-alpine min-h-[24.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
               <AgGridReact<DummyData1Type>
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 getRowId={(params) => String(params.data.id)}
