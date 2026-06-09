@@ -2100,7 +2100,7 @@ export const CoveragePopover = ({
           {text}
         </button>
       </PopoverTrigger>
-      <PopoverContent side="bottom" align="start" className="max-w-[42.5rem]" closeButton={true}>
+      <PopoverContent side="bottom" align="start" className="max-w-[42.5rem] select-text" closeButton={true}>
         <Gcol>
           <Grow className="w-full" placement="bws">
             <Typo variant={'heading-sm'}>{items?.title}</Typo>
@@ -2108,7 +2108,7 @@ export const CoveragePopover = ({
               AI 질문하기
             </Button>
           </Grow>
-          <Gcol className="w-full" placement="ss">
+          <Gcol className="w-full select-text" placement="ss">
             <Typo variant={'body-sm'} color={'gray'}>
               {items?.description}
             </Typo>
