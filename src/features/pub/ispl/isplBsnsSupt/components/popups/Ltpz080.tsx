@@ -3,7 +3,12 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  useAgGridInfiniteAppend,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -77,35 +82,39 @@ const DummyData1: DummyData1Type[] = [
 
 const Ltpz080 = () => {
   // 2026-06-01 width, flex 수정
-  const columnDefs1: ColDef<DummyData1Type>[] = [
-    {
-      headerName: '담보코드',
-      field: 'field1',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '담보명',
-      field: 'field2',
-      flex: 7,
-      minWidth: 200,
-      tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
-    },
-    {
-      headerName: '담보그룹',
-      field: 'field3',
-      flex: 1,
-      minWidth: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '예외',
-      field: 'field4',
-      flex: 1,
-      minWidth: 90,
-      cellClass: 'text-center',
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs1 = React.useMemo<ColDef<DummyData1Type>[]>(
+    () => [
+      {
+        headerName: '담보코드',
+        field: 'field1',
+        width: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '담보명',
+        field: 'field2',
+        flex: 7,
+        minWidth: attributeColumnWidth(200),
+        tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
+      },
+      {
+        headerName: '담보그룹',
+        field: 'field3',
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '예외',
+        field: 'field4',
+        flex: 1,
+        minWidth: attributeColumnWidth(90),
+        cellClass: 'text-center',
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
   const pageSize = 3;
