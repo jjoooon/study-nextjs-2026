@@ -5,7 +5,7 @@
 
 import '@/shared/lib/agGridPub';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Grid, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 
@@ -21,6 +21,7 @@ import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
+import { TooltipQ } from '@common/TooltipQ';
 
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
@@ -410,6 +411,7 @@ const DummyData6: DummyDataType6[] = [
 ];
 
 export default function Ltpa680Section() {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   // 할증심사방법 체크박스 그룹 상태
   const [surchargeChecks, setSurchargeChecks] = useState<string[]>([]);
   const [surchargeChecks2, setSurchargeChecks2] = useState<string[]>([]);
@@ -439,7 +441,7 @@ export default function Ltpa680Section() {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: 'KCD코드',
-      width: 70,
+      width: attributeColumnWidth(70),
       field: 'field01',
       cellClass: 'text-center px-0!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
@@ -447,6 +449,7 @@ export default function Ltpa680Section() {
     {
       headerName: '질병명',
       flex: 1,
+      minWidth: attributeColumnWidth(150),
       field: 'field02',
       cellClass: 'text-left',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -475,26 +478,17 @@ export default function Ltpa680Section() {
                 side="bottom"
                 sideOffset={0}
                 variant="default"
-                className="z-[60] w-[22.1rem] block"
+                className="z-[60] w-auto block"
               >
-                <Gcol placement={'ss'} gap={1.5}>
-                  <Typo className="body-md font-bold">척추염좌</Typo>
-                  <Grow>
-                    <Badge color="primary" size="md" variant="contained">
-                      할증
-                    </Badge>
-                    <Badge color="green" size="md" variant="contained">
-                      부담보
-                    </Badge>
-                    <Badge color="blue" size="md" variant="contained">
-                      SI경증
-                    </Badge>
-                  </Grow>
-                  <Typo tag={'p'} className="text-wrap">
-                    경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및 간장, 흉추의 염좌 및 긴장,
-                    요추의 염좌 및 긴장
-                  </Typo>
-                </Gcol>
+                {parts.map((part: string, idx: number) =>
+                  part === searchWord ? (
+                    <b key={idx} style={{ fontWeight: 'bold', color: '#ff5c2e' }}>
+                      {part}
+                    </b>
+                  ) : (
+                    <React.Fragment key={idx}>{part}</React.Fragment>
+                  )
+                )}
               </TooltipContent>
             </Tooltip>
           </div>
@@ -547,7 +541,7 @@ export default function Ltpa680Section() {
     {
       headerName: '위험분류',
       flex: 1,
-      minWidth: 240,
+      minWidth: attributeColumnWidth(240),
       cellClass: 'text-center',
       editable: isEditMode,
       cellRenderer: (params: ICellRendererParams<DummyDataType5>) => {
@@ -570,7 +564,7 @@ export default function Ltpa680Section() {
     {
       field: 'field5',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       wrapText: true,
       autoHeight: true,
@@ -586,7 +580,7 @@ export default function Ltpa680Section() {
     {
       field: 'field6',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
       headerComponent: () => (
@@ -601,7 +595,7 @@ export default function Ltpa680Section() {
       headerName: '2대질병',
       field: 'field7',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -609,7 +603,7 @@ export default function Ltpa680Section() {
       headerName: '암',
       field: 'field8',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -617,14 +611,14 @@ export default function Ltpa680Section() {
       headerName: '질병수술',
       field: 'field9',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
     {
       field: 'field10',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
       headerComponent: () => (
@@ -639,7 +633,7 @@ export default function Ltpa680Section() {
       headerName: '질병입원',
       field: 'field11',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -647,14 +641,14 @@ export default function Ltpa680Section() {
       headerName: '질병치료',
       field: 'field12',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
     {
       field: 'field13',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
       headerComponent: () => (
@@ -669,7 +663,7 @@ export default function Ltpa680Section() {
       headerName: '상해50%',
       field: 'field14',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -677,7 +671,7 @@ export default function Ltpa680Section() {
       headerName: '상해수술',
       field: 'field15',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -685,7 +679,7 @@ export default function Ltpa680Section() {
       headerName: '상해입원',
       field: 'field16',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -693,7 +687,7 @@ export default function Ltpa680Section() {
       headerName: '상해치료',
       field: 'field17',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -701,7 +695,7 @@ export default function Ltpa680Section() {
       headerName: '장기요양',
       field: 'field18',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -709,7 +703,7 @@ export default function Ltpa680Section() {
       headerName: '치매',
       field: 'field19',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -717,7 +711,7 @@ export default function Ltpa680Section() {
       headerName: '치아',
       field: 'field20',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -725,7 +719,7 @@ export default function Ltpa680Section() {
       headerName: '실손',
       field: 'field21',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -733,7 +727,7 @@ export default function Ltpa680Section() {
       headerName: '서류',
       field: 'field22',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -741,7 +735,7 @@ export default function Ltpa680Section() {
       headerName: '참고사항',
       field: 'field23',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       editable: isEditMode,
     },
@@ -1005,28 +999,43 @@ export default function Ltpa680Section() {
                       { value: '척주염좌', label: '척주염좌' },
                       { value: '등통증', label: '등통증' },
                       { value: '후천성 백내장', label: '후천성 백내장' },
-                      { value: '열상·표재성손상', label: '열상·표재성손상' },
+                      { value: '열상·표재성손상에 의한 질병', label: '열상·표재성손상에 의한 질병' },
                       { value: '추간판장애', label: '추간판장애' },
                       { value: '금성 비인두염', label: '금성 비인두염' },
                       { value: '교통사고', label: '교통사고' },
                       { value: '치액/치질', label: '치액/치질' },
                       { value: '자궁근종', label: '자궁근종' },
-                    ].map((option) => (
-                      <RadioGroupItem
-                        key={option.value}
-                        value={option.value}
-                        color="primary"
-                        size="lg"
-                        variant="button"
-                      >
-                        {option.label}
-                      </RadioGroupItem>
-                    ))}
+                    ].map((option) => {
+                      const label = option.label;
+                      const isLongLabel = label.length > 8;
+                      const item = (
+                        <RadioGroupItem value={option.value} color="primary" size="lg" variant="button">
+                          {label.slice(0, 8)}
+                        </RadioGroupItem>
+                      );
+
+                      if (!isLongLabel) {
+                        return (
+                          <React.Fragment key={option.value}>
+                            {item}
+                          </React.Fragment>
+                        );
+                      }
+
+                      return (
+                        <Tooltip key={option.value}>
+                          <TooltipTrigger asChild>{item}</TooltipTrigger>
+                          <TooltipContent side="top" align="center" sideOffset={8} variant="default">
+                            {label}
+                          </TooltipContent>
+                        </Tooltip>
+                      );
+                    })}
                   </RadioGroup>
                 </Gcol>
               </Gcol>
             </Grid>
-            <Grid placement="ss" className="grid-rows-[auto_1fr]">
+            <Grid placement="ss" className="grid-rows-[auto_1fr]" gap={3}>
               <Grid className="grid-cols-[1fr_1fr_1fr] w-full" placement="ss" gap={3}>
                 <Gcol className="w-full" placement="ss">
                   <Grow className="w-full" placement="bwc">
@@ -1104,11 +1113,34 @@ export default function Ltpa680Section() {
                   </div>
                 </Gcol>
               </Grid>
-              <Grid className="w-full" variant={'box-line'} placement="ss" gap={2}>
+              <Grid className="w-full p-2.5" variant={'box-line'} placement="ss" gap={3}>
+                
                 {selectedDisease && (
-                  <Typo variant={'body-lg'} weight={'bold'} color={'primary'}>
-                    {selectedDisease}
-                  </Typo>
+                  <Grow placement="sc">
+                    <Typo variant={'body-lg'} weight={'bold'} color={'primary'}>
+                      {selectedDisease}
+                    </Typo>
+                    <TooltipQ>
+                      <Gcol placement={'ss'} gap={1.5}>
+                        <Typo className="body-md font-bold">척추염좌</Typo>
+                        <Grow>
+                          <Badge color="primary" size="md" variant="contained">
+                            할증
+                          </Badge>
+                          <Badge color="green" size="md" variant="contained">
+                            부담보
+                          </Badge>
+                          <Badge color="blue" size="md" variant="contained">
+                            SI경증
+                          </Badge>
+                        </Grow>
+                        <Typo tag={'p'} className="text-wrap">
+                          경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및 간장, 흉추의 염좌 및 긴장,
+                          요추의 염좌 및 긴장
+                        </Typo>
+                      </Gcol>
+                    </TooltipQ>
+                  </Grow>
                 )}
                 <TabPager
                   data={tabs}
@@ -1390,7 +1422,7 @@ export default function Ltpa680Section() {
                           <FormRow>
                             <FormCell title={'부담보'}>
                               <Checkbox onCheckedChange={() => {}} size="lg" variant="default">
-                                단일
+                                부담보대상
                               </Checkbox>
                             </FormCell>
                           </FormRow>

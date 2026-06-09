@@ -213,23 +213,18 @@ export default function Ltpa460Section() {
       field: 'field01',
       width: attributeColumnWidth(30),
       cellClass: 'text-center',
-      autoHeight: true,
       pinned: 'left',
     },
     {
       headerName: '로그구분',
       field: 'field02',
       width: attributeColumnWidth(90),
-      cellClass: 'text-left',
-      autoHeight: true,
       pinned: 'left',
     },
     {
       headerName: '거래코드',
       field: 'field03',
       width: attributeColumnWidth(90),
-      cellClass: 'text-left',
-      autoHeight: true,
       pinned: 'left',
     },
     {
@@ -243,11 +238,9 @@ export default function Ltpa460Section() {
       headerName: 'KEY1',
       field: 'field05',
       flex: 1,
-      minWidth: attributeColumnWidth(200),
-      cellClass: 'text-left',
+      minWidth: attributeColumnWidth(180),
       sortable: false,
       filter: false,
-      autoHeight: true,
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -261,9 +254,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY2',
       field: 'field06',
       flex: 1,
-      minWidth: attributeColumnWidth(200),
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -277,9 +268,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY3',
       field: 'field07',
       flex: 1,
-      minWidth: attributeColumnWidth(200),
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -293,9 +282,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY4',
       field: 'field08',
       flex: 1,
-      minWidth: attributeColumnWidth(200),
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -309,9 +296,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY5',
       field: 'field09',
       flex: 1,
-      minWidth: attributeColumnWidth(200),
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -325,9 +310,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY6',
       field: 'field10',
       flex: 1,
-      minWidth: attributeColumnWidth(200),
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -341,9 +324,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY7',
       field: 'field11',
       flex: 1,
-      minWidth: attributeColumnWidth(200),
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -385,8 +366,6 @@ export default function Ltpa460Section() {
                         from: '2026-03-01',
                         to: '2026-03-07',
                       }}
-                      size="lg"
-                      width="sm"
                     />
                   </FormCell>
                   <FormCell title={'검증업무구분'}>
