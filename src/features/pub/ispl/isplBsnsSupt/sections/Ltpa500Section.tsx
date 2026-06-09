@@ -412,9 +412,10 @@ export default function Ltpa500Section() {
             <TableFold>
               <TableFoldHead title="대상리스트"></TableFoldHead>
               <TableFoldBody>
-                <Gcol className="w-full" gap={1}>
+                <Gcol>
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={visibleRows}
                       columnDefs={columnDefs}
