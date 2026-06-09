@@ -3,7 +3,6 @@
  */
 'use client';
 
-import * as React from 'react';
 import { Grow, Typo, Gcol } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -21,6 +20,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 

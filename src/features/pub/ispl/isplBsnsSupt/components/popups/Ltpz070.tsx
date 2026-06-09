@@ -7,9 +7,9 @@ import {
   AgGridEmptyComponent,
   createModifiedCellClassRules,
   createTooltipValueGetter,
+  numberValueFormatter,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -19,20 +19,20 @@ import { ArrowDoubleIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
+  DialogFooterArea,
   DialogHeader,
   DialogSection,
   DialogTitle,
-  DialogFooterArea,
-  DialogClose,
 } from '@uiux/Dialog';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import { useMemo } from 'react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { useMemo } from 'react';
 
 // dummy data
 type DummyDataType = {
@@ -426,7 +426,7 @@ const Ltpz070 = () => {
         ],
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, field06ModifiedCellClassRules3]
   );
   const columnDefs4: (ColDef<DummyDataType4> | ColGroupDef<DummyDataType4>)[] = useMemo(
     () => [
@@ -515,7 +515,7 @@ const Ltpz070 = () => {
         ],
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, field06ModifiedCellClassRules4]
   );
   return (
     <Dialog open>

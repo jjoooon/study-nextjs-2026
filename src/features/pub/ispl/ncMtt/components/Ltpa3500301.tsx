@@ -3,11 +3,6 @@
  */
 'use client';
 
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useState } from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -29,6 +24,11 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -1661,7 +1661,7 @@ export const Ltpa3500301 = ({
       </LayoutScrollItem>
       {!sampleMode && (
         <LayoutScrollItem
-          className={`w-full h-[100% - 3rem] gap-1 flex flex-col sticky ${mtValue === '-3rem' ? 'mt-[-3rem]' : ''}`}
+          className={`h-[100% - 3rem] w-full gap-1 flex flex-col sticky ${mtValue === '-3rem' ? 'mt-[-3rem]' : ''}`}
         >
           <Gcol
             className="top-0 z-20 w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem]"

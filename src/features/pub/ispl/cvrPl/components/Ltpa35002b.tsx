@@ -3,17 +3,6 @@
  */
 'use client';
 
-import type {
-  CellClassParams,
-  ICellRendererParams,
-  ColDef,
-  GridApi,
-  EditableCallbackParams,
-  CellEditorSelectorResult,
-  ValueFormatterParams,
-} from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useRef, useState } from 'react';
 import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
@@ -49,6 +38,17 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import type {
+  CellClassParams,
+  ICellRendererParams,
+  ColDef,
+  GridApi,
+  EditableCallbackParams,
+  CellEditorSelectorResult,
+  ValueFormatterParams,
+} from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { dummyData } from '../data/ltpa35002bData';
 import type { DummyDataType } from '../data/ltpa35002bData';
 import { useGridReadyHandler } from '../hooks/useGridReadyHandler';

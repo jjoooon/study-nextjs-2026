@@ -1,12 +1,11 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
+ */ import { Gcol } from '@atoms';
+import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
 
-import { Gcol } from '@atoms';
 import { ProductCard } from '@/shared/components/features/ProductCard';
-
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
 import type { ProductCardProps } from '@/shared/components/features/ProductCard';
 
@@ -25,8 +24,8 @@ const meta: Meta<ProductCardProps> = {
           <p>
             보험 상품 목록에서 사용되는 카드 아이템 컴포넌트입니다.
             <br />
-            오른쪽 상단 <code>FlagCheckDoutoneIcon</code>에 순위 번호를 표시하고,
-            인수가능/불가 배지, 체크박스, 상품 특징 불릿 리스트, 추천화법 버튼을 제공합니다.
+            오른쪽 상단 <code>FlagCheckDoutoneIcon</code>에 순위 번호를 표시하고, 인수가능/불가 배지, 체크박스, 상품
+            특징 불릿 리스트, 추천화법 버튼을 제공합니다.
           </p>
           <Primary />
           <Controls />
@@ -62,14 +61,46 @@ import { InsuranceProductCard } from '@features/InsuranceProductCard';
               </tr>
             </thead>
             <tbody>
-              <tr><td>rank</td><td>number</td><td>오른쪽 상단 플래그에 표시할 순위 (01, 02…)</td></tr>
-              <tr><td>title</td><td>string</td><td>상품명</td></tr>
-              <tr><td>subtitle</td><td>string</td><td>납입 유형 등 부제목 설명</td></tr>
-              <tr><td>features</td><td>string[]</td><td>상품 특징 불릿 리스트 항목</td></tr>
-              <tr><td>status</td><td>{'\'accept\' | \'reject\''}</td><td>인수 가능 여부</td></tr>
-              <tr><td>checked</td><td>boolean</td><td>체크박스 선택 상태</td></tr>
-              <tr><td>onCheckedChange</td><td>{'(checked: boolean) => void'}</td><td>체크박스 변경 핸들러</td></tr>
-              <tr><td>onChatClick</td><td>{'() => void'}</td><td>추천화법 버튼 클릭 핸들러</td></tr>
+              <tr>
+                <td>rank</td>
+                <td>number</td>
+                <td>오른쪽 상단 플래그에 표시할 순위 (01, 02…)</td>
+              </tr>
+              <tr>
+                <td>title</td>
+                <td>string</td>
+                <td>상품명</td>
+              </tr>
+              <tr>
+                <td>subtitle</td>
+                <td>string</td>
+                <td>납입 유형 등 부제목 설명</td>
+              </tr>
+              <tr>
+                <td>features</td>
+                <td>string[]</td>
+                <td>상품 특징 불릿 리스트 항목</td>
+              </tr>
+              <tr>
+                <td>status</td>
+                <td>{"'accept' | 'reject'"}</td>
+                <td>인수 가능 여부</td>
+              </tr>
+              <tr>
+                <td>checked</td>
+                <td>boolean</td>
+                <td>체크박스 선택 상태</td>
+              </tr>
+              <tr>
+                <td>onCheckedChange</td>
+                <td>{'(checked: boolean) => void'}</td>
+                <td>체크박스 변경 핸들러</td>
+              </tr>
+              <tr>
+                <td>onChatClick</td>
+                <td>{'() => void'}</td>
+                <td>추천화법 버튼 클릭 핸들러</td>
+              </tr>
             </tbody>
           </table>
         </>
@@ -145,11 +176,7 @@ export const Rejected: Story = {
     status: 'reject',
     title: '한화 생명 실버케어 간편보험 2504',
     subtitle: '1종. 기본형.\n납입후 0% 해약환급금지급형',
-    features: [
-      '10형(간편고지형)',
-      '20년납/80세만기',
-      '암/뇌/심장',
-    ],
+    features: ['10형(간편고지형)', '20년납/80세만기', '암/뇌/심장'],
   },
 };
 
@@ -215,12 +242,7 @@ export const List: Story = {
     return (
       <Gcol className="w-lg gap-4">
         {items.map((item, idx) => (
-          <ProductCard
-            key={idx}
-            {...item}
-            checked={checkedSet.has(idx)}
-            onCheckedChange={() => toggle(idx)}
-          />
+          <ProductCard key={idx} {...item} checked={checkedSet.has(idx)} onCheckedChange={() => toggle(idx)} />
         ))}
       </Gcol>
     );

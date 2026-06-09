@@ -4,12 +4,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
-import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { ArrowIcon, ErrorIcon, QueryIcon, NotiIcon } from '@icons';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 
 import { Button } from '@uiux/Button';
 import {
@@ -21,6 +20,7 @@ import {
   DialogClose,
   DialogTitle,
 } from '@uiux/Dialog';
+import * as React from 'react';
 
 type Ltpz999Props = {
   errorType: string;

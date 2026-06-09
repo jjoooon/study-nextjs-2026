@@ -3,7 +3,11 @@
  */
 'use client';
 
+<<<<<<< HEAD
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+=======
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+>>>>>>> 08a82133bee210f3d61a591a4401f1ab12e052dc
 import { Grow, Typo, Grid, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -24,7 +28,10 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback } from 'react';
+<<<<<<< HEAD
 import * as React from 'react';
+=======
+>>>>>>> 08a82133bee210f3d61a591a4401f1ab12e052dc
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 ModuleRegistry.registerModules([AllCommunityModule]);

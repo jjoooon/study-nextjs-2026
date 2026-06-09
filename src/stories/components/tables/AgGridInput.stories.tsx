@@ -1,12 +1,22 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import * as React from 'react';
-import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+ */ import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
+import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Canvas,
+  Source,
+  Markdown,
+  Unstyled,
+} from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
-import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule, ICellRendererParams } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
-import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -28,7 +38,6 @@ const Dummy2Data: Dummy2DataType[] = [
   { id: 6, label: '수박', code: null },
 ];
 
-
 // 커스텀 cellRenderer: 셀 내부에서 input과 ErrorMsg를 함께 렌더링
 const columnDefs: ColDef<DummyDataType>[] = [
   {
@@ -47,12 +56,12 @@ const columnDefs: ColDef<DummyDataType>[] = [
     cellEditorParams: {
       min: 0,
       max: 1000000,
-      step:10
+      step: 10,
     },
-    valueParser: params => Number(params.newValue) || 0,
+    valueParser: (params) => Number(params.newValue) || 0,
     valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     cellClassRules: {
-      'ag-cell-error-border': params => params.value === '' || params.value === undefined,
+      'ag-cell-error-border': (params) => params.value === '' || params.value === undefined,
     },
   },
 ];
@@ -68,27 +77,26 @@ const columnDefsString: ColDef<Dummy2DataType>[] = [
     field: 'code',
     flex: 1,
     cellClass: 'required editable-cell',
-    editable: true, // 코드 직접 입력 가능 
-    valueSetter: params => {
+    editable: true, // 코드 직접 입력 가능
+    valueSetter: (params) => {
       const newVal = params.newValue ?? null;
       params.data.code = newVal;
-      return true; 
+      return true;
     },
     cellClassRules: {
       // 저장된 값을 기준으로 실시간 에러 테두리 표시
       'ag-cell-error-border': (params: { value: string | null | undefined }) => {
         const val = params.value;
-        if (val === null || val === undefined ) return false;
+        if (val === null || val === undefined) return false;
         if (Number(val) === 0) return true;
         if (typeof val === 'string' && val.length <= 2) return true;
         return false;
       },
       // 에러 메시지용 클래스 추가
       'has-error-msg': (params: { value: string | null | undefined }) => {
-        return (typeof params.value === 'string' && params.value.length <= 2);
-      }
+        return typeof params.value === 'string' && params.value.length <= 2;
+      },
     },
-
   },
 ];
 
@@ -108,9 +116,10 @@ export const Default: StoryObj = {
       if (params.colDef.field !== 'code') return;
       const val = params.value;
       // 에러 조건: null/undefined 제외, 0 또는 2글자 이하
-      const isError = val !== null && val !== undefined && (Number(val) === 0 || (typeof val === 'string' && val.length <= 2));
+      const isError =
+        val !== null && val !== undefined && (Number(val) === 0 || (typeof val === 'string' && val.length <= 2));
       // rowData2를 강제로 갱신하여 cellClassRules가 즉시 반영되게 함
-      setRowData2(prev => [...prev]);
+      setRowData2((prev) => [...prev]);
     }, []);
 
     return (
@@ -122,7 +131,7 @@ export const Default: StoryObj = {
             columnDefs={columnDefs}
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
-            domLayout='autoHeight'
+            domLayout="autoHeight"
           />
         </div>
         <div className="ag-theme-alpine">
@@ -132,7 +141,7 @@ export const Default: StoryObj = {
             columnDefs={columnDefsString}
             singleClickEdit={true}
             onCellEditingStopped={onCellEditingStopped}
-            domLayout='autoHeight'
+            domLayout="autoHeight"
           />
         </div>
       </>
@@ -149,12 +158,15 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
       page: () => (
         <>
           <Title />
-          <br /><br />
+          <br />
+          <br />
           <h2>Overview</h2>
           <div>
             <p>
-              Ag Grid는 셀을 직접 수정할 수 있도록 다양한 Cell Editor(입력 요소) 옵션을 제공합니다.<br/>
-              기본적으로 텍스트, 숫자, 셀렉트박스 등 다양한 입력 UI를 지원하며, 커스텀 React 컴포넌트도 에디터로 지정할 수 있습니다.
+              Ag Grid는 셀을 직접 수정할 수 있도록 다양한 Cell Editor(입력 요소) 옵션을 제공합니다.
+              <br />
+              기본적으로 텍스트, 숫자, 셀렉트박스 등 다양한 입력 UI를 지원하며, 커스텀 React 컴포넌트도 에디터로 지정할
+              수 있습니다.
             </p>
             <ul>
               <li>Text Cell Editor (기본값): 일반 텍스트 입력</li>
@@ -233,7 +245,7 @@ const onCellValueChanged = React.useMemo(
 \`\`\`
           `}
           </Markdown>
-          
+
           <h2>주요 옵션</h2>
           <table style={{ minWidth: 600, borderCollapse: 'collapse', marginBottom: 24 }}>
             <thead>
@@ -261,7 +273,9 @@ const onCellValueChanged = React.useMemo(
                 <td style={{ border: '1px solid #ddd', padding: 8 }}>valueParser</td>
                 <td style={{ border: '1px solid #ddd', padding: 8 }}>입력값 → 저장값 변환 함수</td>
                 <td style={{ border: '1px solid #ddd', padding: 8 }}>(params) =&gt; any</td>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>valueParser: params =&gt; Number(params.newValue) || 0</td>
+                <td style={{ border: '1px solid #ddd', padding: 8 }}>
+                  valueParser: params =&gt; Number(params.newValue) || 0
+                </td>
               </tr>
               <tr>
                 <td style={{ border: '1px solid #ddd', padding: 8 }}>valueFormatter</td>
@@ -273,7 +287,9 @@ const onCellValueChanged = React.useMemo(
                 <td style={{ border: '1px solid #ddd', padding: 8 }}>cellClassRules</td>
                 <td style={{ border: '1px solid #ddd', padding: 8 }}>조건부 셀 클래스 지정</td>
                 <td style={{ border: '1px solid #ddd', padding: 8 }}>Record&lt;string, (params) =&gt; boolean&gt;</td>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>cellClassRules: {'{"ag-cell-error-border": params =&gt; params.value === ""}'}</td>
+                <td style={{ border: '1px solid #ddd', padding: 8 }}>
+                  cellClassRules: {'{"ag-cell-error-border": params =&gt; params.value === ""}'}
+                </td>
               </tr>
               <tr>
                 <td style={{ border: '1px solid #ddd', padding: 8 }}>singleClickEdit</td>
@@ -291,8 +307,11 @@ const onCellValueChanged = React.useMemo(
           </table>
 
           <h2>커스텀 Cell Editor 사용법</h2>
-          <p>cellEditor에 React 컴포넌트 할당<br/>
-          컴포넌트는 props.value, props.onValueChange, props.stopEditing 등 다양한 prop을 받음</p>
+          <p>
+            cellEditor에 React 컴포넌트 할당
+            <br />
+            컴포넌트는 props.value, props.onValueChange, props.stopEditing 등 다양한 prop을 받음
+          </p>
           <Markdown>
             {`
 \`\`\`tsx

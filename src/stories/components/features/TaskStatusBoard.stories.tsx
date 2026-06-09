@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import { TaskStatusBoard } from '@features/TaskStatusBoard';
+ */ import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 
 // 꼭 확인해야 할 일!
 type DataTaskState = {
@@ -34,8 +34,7 @@ const meta: Meta<typeof TaskStatusBoard> = {
           <div>
             <p>
               TaskStatusBoard 컴포넌트는 사용자가 확인해야 할 주요 업무의 상태를 시각적으로 보여주는 보드입니다.
-              <br />
-              각 항목의 상태(정상, 경고, 중지)에 따라 다른 아이콘과 스타일이 적용됩니다.
+              <br />각 항목의 상태(정상, 경고, 중지)에 따라 다른 아이콘과 스타일이 적용됩니다.
             </p>
           </div>
 

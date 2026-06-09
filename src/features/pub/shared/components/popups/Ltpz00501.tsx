@@ -5,9 +5,6 @@
 
 import '@/shared/lib/agGridPub';
 
-import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
 
@@ -18,6 +15,9 @@ import { TooltipQ } from '@common/TooltipQ';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 // 공통
 type DummyDataType = {

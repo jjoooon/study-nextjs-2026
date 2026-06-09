@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
+ */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { QuickLinks } from '@/shared/components/features/QuickLinks';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof QuickLinks> = {
   title: 'Components/Features/Aside/바로가기(QuickLinks)',
@@ -20,7 +20,8 @@ const meta: Meta<typeof QuickLinks> = {
           <h2>Overview</h2>
           <div>
             <p>
-              QuickLinks 컴포넌트는 우측 사이드바(Aside) 영역에서 자주 사용하는 기능으로 빠르게 이동할 수 있는 바로가기 버튼 그룹을 제공합니다.
+              QuickLinks 컴포넌트는 우측 사이드바(Aside) 영역에서 자주 사용하는 기능으로 빠르게 이동할 수 있는 바로가기
+              버튼 그룹을 제공합니다.
             </p>
           </div>
 
@@ -53,7 +54,5 @@ export default meta;
 type Story = StoryObj<typeof QuickLinks>;
 
 export const Default: Story = {
-  render: () => (
-    <QuickLinks />
-  ),
+  render: () => <QuickLinks />,
 };

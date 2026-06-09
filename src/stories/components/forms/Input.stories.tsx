@@ -1,10 +1,20 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import * as React from 'react';
-import { Input } from '@uiux/Input';
+ */ import { Grow, Gcol } from '@atoms';
+import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Canvas,
+  Source,
+  Markdown,
+  Unstyled,
+} from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Grow, Gcol } from '@atoms';
-import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import { Input } from '@uiux/Input';
+import * as React from 'react';
 
 const meta: Meta<typeof Input> = {
   title: 'Components/Forms/Input',
@@ -16,20 +26,23 @@ const meta: Meta<typeof Input> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>History</h2>
             <ul>
               <li>2026.03.29</li>
             </ul>
-            
+
             <h2>Overview</h2>
-            <div> 
+            <div>
               <p>
-                Input 컴포넌트는 사용자로부터 텍스트 기반의 데이터를 입력받기 위한 UI 요소입니다.<br />
+                Input 컴포넌트는 사용자로부터 텍스트 기반의 데이터를 입력받기 위한 UI 요소입니다.
+                <br />
                 일관된 디자인 시스템을 유지하며 다양한 입력 시나리오에 대응할 수 있도록 설계되었습니다.
               </p>
             </div>
-            
+
             <Primary />
             <Controls />
 
@@ -43,7 +56,7 @@ const meta: Meta<typeof Input> = {
               <li>before/after로 커스텀 요소 추가</li>
             </ul>
             <Markdown>
-            {`
+              {`
 \`\`\`tsx
 import { Input } from '@uiux/Input';
 
@@ -80,28 +93,76 @@ import { Input } from '@uiux/Input';
                 </tr>
               </thead>
               <tbody>
-                <tr><td>variant</td><td>'default', 'ghost'</td><td>인풋 스타일</td></tr>
-                <tr><td>size</td><td>'md', 'sm'</td><td>인풋 크기</td></tr>
-                <tr><td>width</td><td>'full', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'</td><td>인풋 너비</td></tr>
-                <tr><td>required</td><td>boolean</td><td>필수 입력 여부</td></tr>
-                <tr><td>readOnly</td><td>boolean</td><td>읽기 전용</td></tr>
-                <tr><td>error</td><td>boolean</td><td>에러 상태</td></tr>
-                <tr><td>errorMsg</td><td>ReactNode</td><td>에러 메시지</td></tr>
-                <tr><td>errorPs</td><td>'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'</td><td>에러 메시지 위치</td></tr>
-                <tr><td>after</td><td>ReactNode</td><td>인풋 뒤에 붙는 요소</td></tr>
-                <tr><td>before</td><td>ReactNode</td><td>인풋 앞에 붙는 요소</td></tr>
-                <tr><td>commaAmount</td><td>boolean</td><td>입력값 콤마 자동 포맷팅</td></tr>
-                <tr><td>clear</td><td>boolean</td><td>클리어 버튼 표시</td></tr>
+                <tr>
+                  <td>variant</td>
+                  <td>'default', 'ghost'</td>
+                  <td>인풋 스타일</td>
+                </tr>
+                <tr>
+                  <td>size</td>
+                  <td>'md', 'sm'</td>
+                  <td>인풋 크기</td>
+                </tr>
+                <tr>
+                  <td>width</td>
+                  <td>'full', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'</td>
+                  <td>인풋 너비</td>
+                </tr>
+                <tr>
+                  <td>required</td>
+                  <td>boolean</td>
+                  <td>필수 입력 여부</td>
+                </tr>
+                <tr>
+                  <td>readOnly</td>
+                  <td>boolean</td>
+                  <td>읽기 전용</td>
+                </tr>
+                <tr>
+                  <td>error</td>
+                  <td>boolean</td>
+                  <td>에러 상태</td>
+                </tr>
+                <tr>
+                  <td>errorMsg</td>
+                  <td>ReactNode</td>
+                  <td>에러 메시지</td>
+                </tr>
+                <tr>
+                  <td>errorPs</td>
+                  <td>'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'</td>
+                  <td>에러 메시지 위치</td>
+                </tr>
+                <tr>
+                  <td>after</td>
+                  <td>ReactNode</td>
+                  <td>인풋 뒤에 붙는 요소</td>
+                </tr>
+                <tr>
+                  <td>before</td>
+                  <td>ReactNode</td>
+                  <td>인풋 앞에 붙는 요소</td>
+                </tr>
+                <tr>
+                  <td>commaAmount</td>
+                  <td>boolean</td>
+                  <td>입력값 콤마 자동 포맷팅</td>
+                </tr>
+                <tr>
+                  <td>clear</td>
+                  <td>boolean</td>
+                  <td>클리어 버튼 표시</td>
+                </tr>
               </tbody>
             </table>
 
             <h2>Variant</h2>
             <p>Input 컴포넌트에서 사용할 수 있는 variant 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16" >
+              <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <Input size="full" variant="default" value="default: 기본 라인,배경 스타일" />
-                  <Input size="full" variant="ghost" value="ghost: 라인,배경색 없는 스타일"  />
+                  <Input size="full" variant="ghost" value="ghost: 라인,배경색 없는 스타일" />
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -109,19 +170,18 @@ import { Input } from '@uiux/Input';
             <h2>Size</h2>
             <p>Input 컴포넌트에서 사용할 수 있는 size 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16" >
+              <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <Input size="lg" value="lg: 28" />
-                  <Input size="sm" value="sm: 25"  />
+                  <Input size="sm" value="sm: 25" />
                 </Grow>
               </Gcol>
             </Unstyled>
 
-
             <h2>Width</h2>
             <p>Input 컴포넌트에서 사용할 수 있는 width 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-8" >
+              <Gcol gap={4} variant="box-line" className="p-8">
                 <Gcol gap={2} className="w-[60rem] p-2">
                   <Input width="full" value="full" />
                   <Input width="max" value="max" />
@@ -140,7 +200,7 @@ import { Input } from '@uiux/Input';
             <h2>commaAmount</h2>
             <p>Input 컴포넌트에서 사용할 수 있는 금액에 자동으로 생성되는 콤마 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16" >
+              <Gcol gap={4} variant="box-line" className="p-16">
                 <Input width="lg" commaAmount={true} value="9123814000" />
               </Gcol>
             </Unstyled>
@@ -148,7 +208,7 @@ import { Input } from '@uiux/Input';
             <h2>Clear</h2>
             <p>Input 컴포넌트에서 사용할 수 있는 클리어 버튼 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16" >
+              <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <Input width="30rem" clear={true} value="포커스 + 입력값 = clear 버튼" />
                   <Input width="30rem" clear={true} size="sm" value="포커스 + 입력값 = clear 버튼" />
@@ -156,11 +216,10 @@ import { Input } from '@uiux/Input';
               </Gcol>
             </Unstyled>
 
-            
             <h2>Required</h2>
             <p>Input 컴포넌트에서 사용할 수 있는 필수 입력 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16" >
+              <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <Input required placeholder="placeholder" />
                   <Input required value="입력된 값" />
@@ -171,7 +230,7 @@ import { Input } from '@uiux/Input';
             <h2>ReadOnly</h2>
             <p>Input 컴포넌트에서 사용할 수 있는 읽기 전용 옵션은 다음과 같습니다. diabled 옵션은 사용하지 않습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16" >
+              <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <Input readOnly placeholder="placeholder" />
                   <Input readOnly value="입력된 값" />
@@ -182,7 +241,7 @@ import { Input } from '@uiux/Input';
             <h2>Before/After</h2>
             <p>Input 컴포넌트에서 사용할 수 있는 before/after 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16" >
+              <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <Input before="$" value="230" />
                   <Input after="만원" value="230" className="text-right" />
@@ -193,7 +252,7 @@ import { Input } from '@uiux/Input';
             <h2>Error</h2>
             <p>Input 컴포넌트에서 사용할 수 있는 에러 메시지 위치 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16" >
+              <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
                   <Input error errorMsg="입력은 필수입니다." errorPs="tl" />
                   <Input error errorMsg="입력은 필수입니다." errorPs="tc" />
@@ -236,7 +295,7 @@ import { Input } from '@uiux/Input';
 
     required: {
       control: { type: 'boolean' },
-      table: { category: '설정 props',},
+      table: { category: '설정 props' },
     },
     readOnly: {
       control: { type: 'boolean' },
@@ -249,17 +308,17 @@ import { Input } from '@uiux/Input';
 
     before: {
       table: { category: '설정 props' },
-       control: { type: 'text' },
+      control: { type: 'text' },
     },
     after: {
       table: { category: '설정 props' },
-       control: { type: 'text' },
+      control: { type: 'text' },
     },
     formatter: {
       table: { category: '설정 props' },
-       control: { type: 'text' },
+      control: { type: 'text' },
     },
-     commaAmount: {
+    commaAmount: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
     },
@@ -282,10 +341,10 @@ import { Input } from '@uiux/Input';
       control: { type: 'boolean' },
       table: { category: '에러 props' },
     },
-   
+
     // 숨기고 싶은 prop 예시
-    value: {table: { disable: true },},
-    onChange: {table: { disable: true },},
+    value: { table: { disable: true } },
+    onChange: { table: { disable: true } },
   },
   args: {
     variant: 'default',
@@ -322,15 +381,8 @@ export const Default: Story = {
 
     return (
       <Grow style={{ width: '30rem' }}>
-        <Input
-          {...restArgs}
-          value={value}
-          onChange={handleChange}
-          forceFocused={forceFocused ?? args.clear}
-        />
+        <Input {...restArgs} value={value} onChange={handleChange} forceFocused={forceFocused ?? args.clear} />
       </Grow>
-     
     );
   },
 };
-

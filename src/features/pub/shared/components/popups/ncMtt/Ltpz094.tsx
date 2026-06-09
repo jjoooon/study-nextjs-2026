@@ -4,8 +4,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 import { useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -20,6 +18,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 
 type DummyDataType = {
   id: number;

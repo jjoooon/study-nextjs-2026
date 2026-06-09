@@ -1,6 +1,15 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
+import { Typo, Grow, Grid, Gcol } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DatePickerInput } from '@common/DatePicker';
+import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type {
   ICellEditorParams,
   CellClickedEvent,
@@ -18,36 +27,60 @@ import type {
   CellValueChangedEvent,
 } from 'ag-grid-enterprise';
 import type { AgGridReact } from 'ag-grid-react';
-import type { RefObject } from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import * as React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
+import type { RefObject } from 'react';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
-import { Typo, Grow, Grid, Gcol } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DatePickerInput } from '@common/DatePicker';
-import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
-import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
+/**
+ * 상단 토글 정렬에 필요한 메타 정보를 원본 행 타입 `T`에 결합한 타입.
+ *
+ * - `originalIndex`: 최초 rows 입력 순서(안정 정렬 기준)
+ * - `toggleOrder`: 토글된 시점 순서(최근 토글 우선 정렬용)
+ *   - `null`이면 현재 비토글 상태로 간주
+ */
 export type ToggleTopRow<T> = T & {
   originalIndex: number;
   toggleOrder: number | null;
 };
 
+/**
+ * "상단 복제 행"임을 식별하기 위한 내부 메타 타입.
+ *
+ * - `isClonedTopRow`: 타입 가드에서 복제 행 여부를 구분하는 플래그
+ * - `cloneBaseId`: 복제의 기준이 되는 원본 행 id(문자열 정규화)
+ */
 type CloneTopRowMeta = {
   isClonedTopRow: true;
   cloneBaseId: string;
 };
 
+/**
+ * 원본 행 `T` + 복제 메타를 결합한 최종 복제 행 타입.
+ *
+ * `useCloneTopRows`에서 반환되는 `rowData`는
+ * 원본 행(`T`)과 복제 행(`ClonedTopRow<T>`)이 함께 존재할 수 있으므로,
+ * 호출부는 `hasCloneTopRowMeta()` 같은 타입 가드로 안전하게 분기한다.
+ */
 export type ClonedTopRow<T extends Record<string, unknown>> = T & CloneTopRowMeta;
 
+/**
+ * id로 허용하는 원시 타입 별칭.
+ * - 그리드 row id 비교/문자열 정규화 기준으로 사용.
+ */
 type PrimitiveId = string | number;
 
 /**
  * T에서 순서값으로 사용할 수 있는 number 키만 추출.
+ *
+ * 동작 방식:
+ * 1) `keyof T`의 각 키 `K`를 순회
+ * 2) `T[K] extends number`이면 `K`, 아니면 `never`
+ * 3) 최종적으로 유니온으로 합쳐 "number 타입 필드명"만 남김
+ *
+ * 예)
+ * type Row = { id: string; seq: number; name: string }
+ * NumberKeyOf<Row> -> 'seq'
  */
 type NumberKeyOf<T> = {
   [K in keyof T]-?: T[K] extends number ? K : never;
@@ -55,6 +88,13 @@ type NumberKeyOf<T> = {
 
 /**
  * T에서 id로 사용할 수 있는 키(string | number 값)만 추출.
+ *
+ * `PrimitiveId`(string | number)를 만족하는 필드만 선택하므로,
+ * id 키를 잘못 지정하는 실수를 타입 레벨에서 방지한다.
+ *
+ * 예)
+ * type Row = { id: number; uuid: string; active: boolean }
+ * IdKeyOf<Row> -> 'id' | 'uuid'
  */
 type IdKeyOf<T> = {
   [K in keyof T]-?: T[K] extends PrimitiveId ? K : never;
@@ -62,16 +102,42 @@ type IdKeyOf<T> = {
 
 /**
  * T에서 토글 플래그로 사용할 수 있는 boolean 키만 추출.
+ *
+ * 체크박스/즐겨찾기/활성화 같은 토글성 필드만 허용하여
+ * 토글 훅에서 숫자/문자열 필드를 실수로 전달하는 것을 예방한다.
+ *
+ * 예)
+ * type Row = { id: number; isFavorite: boolean; name: string }
+ * BooleanKeyOf<Row> -> 'isFavorite'
  */
 type BooleanKeyOf<T> = {
   [K in keyof T]-?: T[K] extends boolean ? K : never;
 }[keyof T];
 
+/**
+ * `useCloneTopRows` 입력 파라미터 타입.
+ *
+ * - `rows`: 원본 행 배열
+ * - `idKey`: `rows`의 요소 타입 `T`에서 실제 id로 사용할 필드명
+ *
+ * 제네릭 제약(`IdKey extends IdKeyOf<T>`)으로 인해
+ * `idKey`는 반드시 string/number 값 필드만 선택 가능하다.
+ */
 interface UseCloneTopRowsParams<T extends Record<string, unknown>, IdKey extends IdKeyOf<T>> {
   rows: T[];
   idKey: IdKey;
 }
 
+/**
+ * `useToggleTopRows` 입력 파라미터 타입.
+ *
+ * - `rows`: 원본 행 배열
+ * - `idKey`: 행 식별용 필드명 (`string | number` 값 필드만 허용)
+ * - `toggleKey`: 토글 상태 필드명 (`boolean` 값 필드만 허용)
+ *
+ * 즉, 훅 사용 시 "식별 키"와 "토글 키"가 타입으로 강제되어
+ * 런타임 전에 잘못된 설정을 최대한 차단한다.
+ */
 interface UseToggleTopRowsParams<T extends Record<string, unknown>> {
   rows: T[];
   idKey: IdKeyOf<T>;
@@ -80,6 +146,15 @@ interface UseToggleTopRowsParams<T extends Record<string, unknown>> {
 
 /**
  * 토글된 행을 상단으로 올리되, 원본 순서를 안정적으로 유지하는 정렬 유틸.
+ *
+ * 정렬 우선순위:
+ * 1) 토글 여부: `true`가 항상 위
+ * 2) 둘 다 토글된 경우: `toggleOrder`가 큰(최근 토글) 행이 위
+ * 3) 그 외: 최초 입력 순서(`originalIndex`) 유지
+ *
+ * 운영 관점:
+ * - 사용자 체감상 "방금 체크한 항목"을 즉시 상단에서 확인 가능
+ * - 동일 상태 그룹 내에서 순서가 흔들리지 않아 화면 안정성이 높음
  */
 function sortToggleRows<T extends Record<string, unknown>>(rows: ToggleTopRow<T>[], toggleKey: BooleanKeyOf<T>) {
   return [...rows].sort((prevRow, nextRow) => {
@@ -108,6 +183,14 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
   idKey,
   toggleKey,
 }: UseToggleTopRowsParams<T>) {
+  /**
+   * 행의 토글 상태를 기준으로 상단 정렬을 관리하는 훅.
+   *
+   * 제공 기능:
+   * - `rowData`: 정렬 규칙 적용 결과
+   * - `toggleById(id)`: 특정 행 토글 반전 + 재정렬
+   * - `setRowData`: 외부 수동 제어(필요 시)
+   */
   /**
    * 최근 토글 순서를 기록하기 위한 증가 시퀀스.
    * - 더 최근에 토글된 항목이 상단에서 먼저 오도록 사용.
@@ -162,6 +245,13 @@ export function useToggleTopRows<T extends Record<string, unknown>>({
 }
 
 function hasCloneTopRowMeta<T extends Record<string, unknown>>(row: T | ClonedTopRow<T>): row is ClonedTopRow<T> {
+  /**
+   * 복제 메타 존재 여부를 판별하는 타입 가드.
+   *
+   * 목적:
+   * - 런타임 분기와 타입 분기를 일치시켜 안전한 속성 접근 보장
+   * - `cloneBaseId` 같은 복제 전용 필드 접근 시 타입 오류 방지
+   */
   return (row as Partial<CloneTopRowMeta>).isClonedTopRow === true;
 }
 
@@ -169,8 +259,20 @@ export function useCloneTopRows<T extends Record<string, unknown>, IdKey extends
   rows,
   idKey,
 }: UseCloneTopRowsParams<T, IdKey>) {
+  /**
+   * "상단 복제" 상태를 실제 행 전체가 아닌 base id 집합으로만 관리.
+   *
+   * 이유:
+   * 1) 원본 데이터(rows)가 교체되어도 id 기준으로 복제 상태를 유지/정리하기 쉽다.
+   * 2) 복제 행을 별도 배열로 들고 있지 않아 데이터 동기화 충돌을 줄인다.
+   * 3) Set 기반 조회로 즐겨찾기/복제 여부 판별이 O(1)이다.
+   */
   const [clonedBaseIds, setClonedBaseIds] = useState<Set<string>>(new Set());
 
+  /**
+   * 입력된 행이 원본인지 복제본인지와 상관없이
+   * "원본 기준 id"(base id)를 문자열로 표준화하여 반환.
+   */
   const resolveBaseId = useCallback(
     (row?: T | ClonedTopRow<T>) => {
       if (!row) {
@@ -186,6 +288,14 @@ export function useCloneTopRows<T extends Record<string, unknown>, IdKey extends
     [idKey]
   );
 
+  /**
+   * rows 변경 시(조회 재실행/필터링/삭제 등) 더 이상 존재하지 않는 id를 복제 집합에서 제거.
+   *
+   * 예)
+   * - 이전에 101, 102를 복제해둠
+   * - 새 조회 결과에서 102가 사라짐
+   * -> clonedBaseIds에서도 102 제거
+   */
   useEffect(() => {
     const validIds = new Set(rows.map((row) => String(row[idKey] as PrimitiveId)));
 
@@ -204,6 +314,11 @@ export function useCloneTopRows<T extends Record<string, unknown>, IdKey extends
 
   const toggleCloneByRow = useCallback(
     (row: T | ClonedTopRow<T> | undefined, checked: boolean) => {
+      /**
+       * 행 단위 체크 상태를 받아 복제 대상 집합을 증감.
+       * - checked=true  -> 상단 복제 대상에 추가
+       * - checked=false -> 상단 복제 대상에서 제거
+       */
       const baseId = resolveBaseId(row);
       if (!baseId) {
         return;
@@ -224,6 +339,10 @@ export function useCloneTopRows<T extends Record<string, unknown>, IdKey extends
     [resolveBaseId]
   );
 
+  /**
+   * 현재 행이 "상단 복제 대상"인지 판별.
+   * - 원본 행/복제 행 어디서 호출해도 동일한 base id 기준으로 동작.
+   */
   const isFavoriteRow = useCallback(
     (row?: T | ClonedTopRow<T>) => {
       const baseId = resolveBaseId(row);
@@ -232,6 +351,13 @@ export function useCloneTopRows<T extends Record<string, unknown>, IdKey extends
     [clonedBaseIds, resolveBaseId]
   );
 
+  /**
+   * 최종 rowData 구성 규칙:
+   * 1) 복제 대상 id에 해당하는 행을 먼저 "복제 행"으로 생성
+   * 2) 복제 행 배열 + 원본 rows 배열을 결합
+   *
+   * 결과적으로 그리드 상단에 복제 행이 먼저 렌더링된다.
+   */
   const rowData = useMemo<Array<T | ClonedTopRow<T>>>(() => {
     const clonedRows = rows
       .filter((row) => clonedBaseIds.has(String(row[idKey] as PrimitiveId)))
@@ -244,6 +370,13 @@ export function useCloneTopRows<T extends Record<string, unknown>, IdKey extends
     return [...clonedRows, ...rows];
   }, [clonedBaseIds, idKey, rows]);
 
+  /**
+   * ag-Grid row id 생성 규칙.
+   * - 복제 행: `cloned-{baseId}`
+   * - 원본 행: `{id}`
+   *
+   * 복제/원본이 같은 base id를 공유하더라도 row id 충돌이 나지 않게 보장한다.
+   */
   const getRowId = useCallback(
     (row?: T | ClonedTopRow<T>) => {
       if (!row) {
@@ -260,6 +393,10 @@ export function useCloneTopRows<T extends Record<string, unknown>, IdKey extends
   );
 
   const getCloneRowClass = useCallback((row?: T | ClonedTopRow<T>, className = 'row-cloning') => {
+    /**
+     * 복제 행에만 강조 class를 부여하기 위한 헬퍼.
+     * 운영 화면에서 "원본/복제" 시각 구분에 사용.
+     */
     if (!row) {
       return '';
     }
@@ -408,12 +545,20 @@ export function createCellClickSelectionToggleHandler<RowType>() {
 }
 
 export type TreeNameCellRendererOptions = {
+  /** 텍스트 span에 적용할 커스텀 class */
   className?: string;
+  /** 그룹 토글 버튼에 적용할 커스텀 class */
   buttonClassName?: string;
+  /** 자식 행 값 앞에 붙일 prefix (기본값: '- ') */
   childPrefix?: string;
+  /** 그룹 행 클릭 시 expand/collapse 토글 여부 */
   toggleOnGroupClick?: boolean;
 };
 
+/**
+ * TreeName 렌더러가 받는 전체 파라미터 타입.
+ * - ag-Grid 기본 `ICellRendererParams` + 옵션 확장
+ */
 export type TreeNameCellRendererParams<RowType> = ICellRendererParams<RowType> & TreeNameCellRendererOptions;
 
 /**
@@ -833,9 +978,13 @@ export function createInsertCopiedRowButtonCellRenderer<
 }
 
 export type DuplicateRowBase = {
+  /** 행 고유 식별자 */
   id: string | number;
+  /** 복제 생성 행 여부 */
   isDuplicate?: boolean;
+  /** 체크 상태(업무 화면별 의미 확장 가능) */
   isChecked?: boolean;
+  /** 파일 경로 세그먼트 이력(업무 정책에 따라 누적) */
   filePath?: string[];
 };
 
@@ -1050,12 +1199,14 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
 AmountWithPopoverCellEditor.displayName = 'AmountWithPopoverCellEditor';
 
 /**
- * 만기/납기 셀 렌더러 (셀 편집 가능 여부에 따라 화살표 색상 변경)
- */
-/**
- * editableSelectCellRenderer
- * @param params ICellRendererParams
- * @param align 'left' | 'center' | 'right' (default: 'right')
+ * 선택형 셀 UI 렌더러.
+ *
+ * 역할:
+ * - 값 텍스트 + 우측 드롭다운 화살표 아이콘을 일관된 레이아웃으로 표시
+ * - 클릭 토글 핸들러에서 입력성 컴포넌트로 인식되도록 `editor-select` class 제공
+ *
+ * @param params ag-Grid 셀 렌더 파라미터
+ * @param params.align 텍스트 정렬(`left` | `center` | `right`, 기본 `right`)
  */
 export function editableSelectCellRenderer<RowType>(
   params: ICellRendererParams<RowType> & { align?: 'left' | 'center' | 'right' }
@@ -1078,18 +1229,23 @@ export function editableSelectCellRenderer<RowType>(
   );
 }
 
+/** DatePicker 편집기 동작 모드: 단일 날짜 / 범위 날짜 */
 type DatePickerEditorMode = 'single' | 'range';
 
 type DatePickerRangeValue = {
+  /** 범위 시작일 문자열 */
   from?: string;
+  /** 범위 종료일 문자열 */
   to?: string;
 };
 
 type DatePickerCellEditorParams = {
+  /** 셀 편집 모드 지정(미지정 시 single) */
   mode?: DatePickerEditorMode;
 };
 
 function parseRangeFromValue(rawValue: unknown): DatePickerRangeValue {
+  // 1) 이미 객체 형태({ from, to })로 들어온 경우
   if (rawValue && typeof rawValue === 'object' && !Array.isArray(rawValue)) {
     const fromValue = 'from' in rawValue ? rawValue.from : undefined;
     const toValue = 'to' in rawValue ? rawValue.to : undefined;
@@ -1100,14 +1256,28 @@ function parseRangeFromValue(rawValue: unknown): DatePickerRangeValue {
     };
   }
 
+  // 2) 비어있거나 문자열이 아닌 경우: 빈 범위로 정규화
   if (typeof rawValue !== 'string' || !rawValue.trim()) {
     return { from: '', to: '' };
   }
 
+  // 3) "YYYY-MM-DD ~ YYYY-MM-DD" 같은 문자열을 분해
   const [from = '', to = ''] = rawValue.split('~').map((part) => part.trim());
   return { from, to };
 }
 
+/**
+ * ag-Grid 셀 편집기용 DatePicker 래퍼.
+ *
+ * 지원 모드:
+ * - single: 단일 날짜 문자열 편집
+ * - range : "from ~ to" 범위 문자열 편집
+ *
+ * 구현 포인트:
+ * 1) 그리드 재렌더/재진입 시 props.value와 내부 상태를 항상 동기화
+ * 2) 날짜 선택 즉시 node.setDataValue로 셀 값 반영
+ * 3) ag-Grid가 요구하는 imperative API(getValue, isCancelAfterEnd) 제공
+ */
 export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams<RowType>) {
   const editorParams = (props.colDef?.cellEditorParams ?? {}) as DatePickerCellEditorParams;
   const mode: DatePickerEditorMode = editorParams.mode ?? 'single';
@@ -1204,13 +1374,25 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
   );
 }
 
+/**
+ * 필드 렌더러 컴포넌트가 받는 최소 props 계약.
+ * - 행 데이터 전체를 옵션으로 전달한다.
+ */
 type FieldRendererComponentProps<T> = { data?: T };
+/** 행 데이터를 받아 ReactNode를 반환하는 렌더 함수 시그니처 */
 type FieldRendererResolver<T> = (data?: T) => React.ReactNode;
+/** 컴포넌트 형태의 렌더러 타입 */
 type FieldRendererComponent<T> = React.ComponentType<FieldRendererComponentProps<T>>;
+/**
+ * 필드 렌더 소스 유니온.
+ * - 키 문자열 / 정적 노드 / 함수 / 컴포넌트 모두 허용
+ */
 type FieldRendererSource<T> = keyof T | React.ReactNode | FieldRendererResolver<T> | FieldRendererComponent<T>;
 
 type OverflowTooltipTextProps = {
+  /** 툴팁에 표시할 원문(없으면 툴팁 미표시) */
   text?: string;
+  /** 실제 셀에 렌더할 콘텐츠 */
   children: React.ReactNode;
 };
 
@@ -1218,6 +1400,10 @@ export function OverflowTooltipText({ text, children }: OverflowTooltipTextProps
   const textRef = React.useRef<HTMLSpanElement>(null);
   const [isOverflowed, setIsOverflowed] = React.useState(false);
 
+  /**
+   * 실제 렌더된 DOM 크기를 기준으로 overflow 여부 계산.
+   * - 가로/세로 어느 한쪽이라도 넘치면 툴팁 표시 대상으로 간주.
+   */
   const updateOverflowState = React.useCallback(() => {
     const element = textRef.current;
 
@@ -1240,6 +1426,7 @@ export function OverflowTooltipText({ text, children }: OverflowTooltipTextProps
     }
 
     if (typeof ResizeObserver === 'undefined') {
+      // 구형 환경 fallback: window resize 이벤트만 감시
       window.addEventListener('resize', updateOverflowState);
 
       return () => {
@@ -1451,13 +1638,19 @@ export function useAgGridPagination<TData>(gridRef: React.RefObject<AgGridReact<
 }
 
 interface UseAgGridInfiniteAppendParams<TData> {
+  /** 전체 원본 행(서버 응답 또는 상위 상태) */
   allRows: TData[];
+  /** 한 번에 확장할 단위 건수 */
   pageSize: number;
+  /** 초기 노출 건수(미지정 시 pageSize) */
   initialLoadedCount?: number;
 }
 
+/** ag-Grid sortModel 최소 표현 타입 */
 type SortState = Array<{
+  /** 정렬 대상 컬럼 id */
   colId: string;
+  /** 정렬 방향 */
   sort: 'asc' | 'desc';
 }>;
 
@@ -1682,8 +1875,11 @@ export function AgGridEmptyComponent({ className: _className }: React.ComponentP
 type FieldKey<TData> = Extract<keyof TData, string>;
 
 interface UseAgGridColumnVisibilityParams<TData extends object> {
+  /** 제어 대상 ag-Grid 인스턴스 ref */
   gridRef: RefObject<AgGridReact<TData> | null>;
+  /** 토글 허용 컬럼 목록(화이트리스트) */
   toggleFields: readonly FieldKey<TData>[];
+  /** 초기 표시 컬럼 목록(미지정 시 toggleFields 전체) */
   initialVisibleFields?: readonly FieldKey<TData>[];
 }
 
@@ -1692,6 +1888,11 @@ export function useAgGridColumnVisibility<TData extends object>({
   toggleFields,
   initialVisibleFields,
 }: UseAgGridColumnVisibilityParams<TData>) {
+  /**
+   * 현재 사용자에게 노출 중인 컬럼 key 목록.
+   * - 초기값은 initialVisibleFields 우선
+   * - 없으면 toggleFields 전체 노출
+   */
   const [visibleFields, setVisibleFields] = useState<FieldKey<TData>[]>(() => {
     if (initialVisibleFields && initialVisibleFields.length > 0) {
       return [...initialVisibleFields];
@@ -1704,6 +1905,8 @@ export function useAgGridColumnVisibility<TData extends object>({
       const api = gridRef.current?.api;
       if (!api) return;
 
+      // 먼저 대상 컬럼(toggleFields)을 모두 숨긴 뒤,
+      // 선택된 컬럼만 다시 표시하여 상태를 단순/명확하게 유지.
       api.setColumnsVisible([...toggleFields], false);
       api.setColumnsVisible([...selectedFields], true);
       api.refreshHeader();
@@ -1724,6 +1927,7 @@ export function useAgGridColumnVisibility<TData extends object>({
 
   const onVisibleFieldsChange = useCallback(
     (fields: string[]) => {
+      // 외부에서 들어온 임의 문자열 중 실제 토글 가능한 필드만 필터링
       const next = fields.filter((field): field is FieldKey<TData> => toggleFields.includes(field as FieldKey<TData>));
       setVisibleFields(next);
     },
@@ -1753,6 +1957,10 @@ export function useAsideToggleState(initialState = false) {
 }
 
 export const getCurrentRootFontSize = (fallbackFontSize = 10): number => {
+  /**
+   * html(root) 기준 font-size를 읽어 반응형 px 계산의 기준값으로 사용.
+   * SSR 환경에서는 `window`가 없으므로 fallback을 반환한다.
+   */
   if (typeof window === 'undefined') return fallbackFontSize;
 
   const computedFontSize = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
@@ -1838,43 +2046,18 @@ export function useDynamicColumnWidths() {
 
   const attributeColumnWidthPx = useMemo<number[]>(() => {
     const maxWidth = 260;
+    // 인덱스 = 원본 px, 값 = 현재 스케일 적용 px
     return Array.from({ length: maxWidth + 1 }, (_, px) => px * scaleRatio);
   }, [scaleRatio]);
 
-  const colWidth0 = attributeColumnWidthPx[0] ?? 0;
-  const colWidth10 = attributeColumnWidthPx[10] ?? 0;
-  const colWidth20 = attributeColumnWidthPx[20] ?? 0;
-  const colWidth30 = attributeColumnWidthPx[30] ?? 0;
-  const colWidth40 = attributeColumnWidthPx[40] ?? 0;
-  const colWidth50 = attributeColumnWidthPx[50] ?? 0;
-  const colWidth60 = attributeColumnWidthPx[60] ?? 0;
-  const colWidth70 = attributeColumnWidthPx[70] ?? 0;
-  const colWidth80 = attributeColumnWidthPx[80] ?? 0;
-  const colWidth90 = attributeColumnWidthPx[90] ?? 0;
-  const colWidth100 = attributeColumnWidthPx[100] ?? 0;
-  const colWidth110 = attributeColumnWidthPx[110] ?? 0;
-  const colWidth120 = attributeColumnWidthPx[120] ?? 0;
-  const colWidth130 = attributeColumnWidthPx[130] ?? 0;
-  const colWidth140 = attributeColumnWidthPx[140] ?? 0;
-  const colWidth150 = attributeColumnWidthPx[150] ?? 0;
-  const colWidth160 = attributeColumnWidthPx[160] ?? 0;
-  const colWidth170 = attributeColumnWidthPx[170] ?? 0;
-  const colWidth180 = attributeColumnWidthPx[180] ?? 0;
-  const colWidth190 = attributeColumnWidthPx[190] ?? 0;
-  const colWidth200 = attributeColumnWidthPx[200] ?? 0;
-  const colWidth210 = attributeColumnWidthPx[210] ?? 0;
-  const colWidth220 = attributeColumnWidthPx[220] ?? 0;
-  const colWidth230 = attributeColumnWidthPx[230] ?? 0;
-  const colWidth240 = attributeColumnWidthPx[240] ?? 0;
-  const colWidth250 = attributeColumnWidthPx[250] ?? 0;
-  const colWidth260 = attributeColumnWidthPx[260] ?? 0;
-
   const attributeColumnWidth = useMemo<((px: number) => number) & { [index: number]: number }>(() => {
+    // 함수 호출 방식: attributeColumnWidth(37)
     const resolveWidth = ((px: number) => {
       const safePx = Math.max(0, Math.min(260, Math.trunc(px)));
       return attributeColumnWidthPx[safePx] ?? 0;
     }) as ((px: number) => number) & { [index: number]: number };
 
+    // 프로퍼티 접근 방식도 지원: attributeColumnWidth[10] (== 100px 대응)
     for (let index = 0; index <= 26; index += 1) {
       resolveWidth[index] = attributeColumnWidthPx[index * 10] ?? 0;
     }
@@ -1885,33 +2068,6 @@ export function useDynamicColumnWidths() {
   const getAttributeColumnWidth = attributeColumnWidth;
 
   return {
-    colWidth0,
-    colWidth10,
-    colWidth20,
-    colWidth30,
-    colWidth40,
-    colWidth50,
-    colWidth60,
-    colWidth70,
-    colWidth80,
-    colWidth90,
-    colWidth100,
-    colWidth110,
-    colWidth120,
-    colWidth130,
-    colWidth140,
-    colWidth150,
-    colWidth160,
-    colWidth170,
-    colWidth180,
-    colWidth190,
-    colWidth200,
-    colWidth210,
-    colWidth220,
-    colWidth230,
-    colWidth240,
-    colWidth250,
-    colWidth260,
     attributeColumnWidthPx,
     attributeColumnWidth,
     getAttributeColumnWidth,
@@ -1922,7 +2078,9 @@ export const CoveragePopover = ({
   text,
   items,
 }: {
+  /** 트리거 버튼에 표시할 요약 텍스트 */
   text: string;
+  /** 팝오버 상세 정보(없으면 일부 영역은 비어 있을 수 있음) */
   items?: { title: string; description: string; info: string[] };
 }) => {
   /** 팝오버 열림 상태 */

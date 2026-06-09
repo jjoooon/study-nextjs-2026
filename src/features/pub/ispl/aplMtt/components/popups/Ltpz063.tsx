@@ -9,10 +9,7 @@ import type {
   EditableCallbackParams,
   IHeaderParams,
 } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import { AgGridEmptyComponent, DatePickerCellEditor } from '@aggrid';
+import { AgGridEmptyComponent, DatePickerCellEditor, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -34,6 +31,9 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 type LTPZ051Tab = { name: string; value: string; label: string };
 const DATA_TABS: LTPZ051Tab[] = [
@@ -442,6 +442,7 @@ export const Ltpz063 = () => {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
   const [rowData3, setRowData3] = React.useState<DummyDataType3[]>(DummyData3);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   const getTypeLabel = (row: { type: string | number } | undefined) => (row ? String(row.type) : '');
   const isSwitchoverRow = (row: { type: string | number } | undefined) => getTypeLabel(row) === '승환';
@@ -794,7 +795,7 @@ export const Ltpz063 = () => {
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getSelectableValueCellClass,
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       field: 'ourInsurance2',
       cellRenderer: checkboxRenderer,
     },
@@ -823,7 +824,7 @@ export const Ltpz063 = () => {
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getSelectableValueCellClass,
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       field: 'ourInsurance2',
       cellRenderer: checkboxRenderer2,
     },
@@ -833,7 +834,7 @@ export const Ltpz063 = () => {
       cellClass: getSelectableValueCellClass,
       cellClassRules: externalInsuranceCellClassRules,
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       field: 'externalInsurance1',
       editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
       cellEditorSelector: getMainCellEditorSelector,
@@ -845,7 +846,7 @@ export const Ltpz063 = () => {
       cellClass: getSelectableValueCellClass,
       cellClassRules: externalInsuranceCellClassRules,
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       field: 'externalInsurance2',
       editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
       cellEditorSelector: getMainCellEditorSelector,

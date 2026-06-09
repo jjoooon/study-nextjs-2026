@@ -3,14 +3,12 @@
  */
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
   numberValueFormatter,
   useAgGridColumnVisibility,
+  useDynamicColumnWidths,
 } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -30,6 +28,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -58,10 +59,10 @@ const DummyData: DummyDataType[] = [
     field04: '2027-03-22',
     field05: '2026-02',
     field06: '보통약관(일반상해사망)',
-    field07: '9999999',
+    field07: '109999999',
     field08: '일반상해사망',
     field09: '1.0',
-    field10: '9999999',
+    field10: '109999999',
     field11: '정상',
   },
   {
@@ -109,21 +110,21 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz098 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   // 2026-05-28 cellClass 수정
-  // 2026-06-04 flex, minWidth 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '증권(설계번호)',
       field: 'field01',
       flex: 1,
-      minWidth: 130,
+      minWidth: attributeColumnWidth(130),
       cellClass: 'text-center',
     },
     {
       headerName: '상품명',
       field: 'field02',
       flex: 3,
-      minWidth: 280,
+      minWidth: attributeColumnWidth(280),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
@@ -131,34 +132,36 @@ const Ltpz098 = () => {
       headerName: '보험시기',
       field: 'field03',
       flex: 1,
-      minWidth: 85,
+      minWidth: attributeColumnWidth(85),
       cellClass: 'text-center',
     },
     {
       headerName: '보험종기',
       field: 'field04',
       flex: 1,
-      minWidth: 85,
+      minWidth: attributeColumnWidth(85),
       cellClass: 'text-center',
     },
     {
       headerName: '최종월드',
       field: 'field05',
-      width: 75,
-      cellClass: 'truncate text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(75),
+      cellClass: 'text-center',
     },
     {
       headerName: '담보명',
       field: 'field06',
       flex: 1.5,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field06' }),
     },
     {
       headerName: '가입금액',
       field: 'field07',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -166,7 +169,7 @@ const Ltpz098 = () => {
       headerName: '누적위험명',
       field: 'field08',
       flex: 1,
-      minWidth: 150,
+      minWidth: attributeColumnWidth(150),
       cellClass: 'text-left',
     },
     {
@@ -179,7 +182,7 @@ const Ltpz098 = () => {
       headerName: '누적반영금액',
       field: 'field10',
       flex: 1,
-      minWidth: 90,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -187,7 +190,7 @@ const Ltpz098 = () => {
       headerName: '계약(설계상태)',
       field: 'field11',
       flex: 1,
-      minWidth: 90,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-center',
     },
   ];
@@ -223,7 +226,7 @@ const Ltpz098 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
+          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={3}>
             <TableFold>
               <TableFoldHead title="피보험자의 위험정보(고객정보)"></TableFoldHead>
               <TableFoldBody>
@@ -250,7 +253,6 @@ const Ltpz098 = () => {
                     color="primary"
                     minSelected={0}
                     onValueChange={onVisibleFieldsChange}
-                    size="lg"
                     value={visibleFields}
                     variant="default"
                     width="auto"
@@ -269,7 +271,7 @@ const Ltpz098 = () => {
               </TableFoldHead>
               <TableFoldBody>
                 <Grid className="w-full grid-rows-[1fr_auto] gap-2 h-full">
-                  <div className="ag-theme-alpine min-h-[16.2rem]">
+                  <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                     <AgGridReact<DummyDataType>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       ref={gridRef}
@@ -277,7 +279,7 @@ const Ltpz098 = () => {
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
-                      defaultColDef={{ sortable: false }}
+                      defaultColDef={{ sortable: true, resizable: true }}
                       enableCellSpan={true}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"

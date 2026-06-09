@@ -4,10 +4,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { CellClickedEvent, CellStyle, ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -26,6 +22,10 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import type { CellClickedEvent, CellStyle, ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 
 type Ltpz022TabType = {
   name: string;
@@ -39,16 +39,16 @@ const DATA_TABS: Ltpz022TabType[] = [
     value: 'tab1',
     label: '설계',
   },
-  {
-    name: '홍길순',
-    value: 'tab2',
-    label: '홍길순',
-  },
-  {
-    name: '목적물1',
-    value: 'tab3',
-    label: '목적물1',
-  },
+  // {
+  //   name: '홍길순',
+  //   value: 'tab2',
+  //   label: '홍길순',
+  // },
+  // {
+  //   name: '목적물1',
+  //   value: 'tab3',
+  //   label: '목적물1',
+  // },
 ];
 
 type UnderwritingViolationRow = {
@@ -257,9 +257,13 @@ const Ltpz022 = () => {
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant={'head'}>
               <FormRow>
-                <FormCell title={'설계번호'} className="whitespace-nowrap">
-                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} align="center" readOnly />
-                  <Input aria-label="" width={200} value={'한화 시그니처 여성 건강보험4.0'} readOnly />
+                <FormCell
+                  title={'설계번호'}
+                  className="whitespace-nowrap "
+                  tdClassName="grid grid-cols-[auto_1fr_auto] w-full"
+                >
+                  <Input aria-label="" width={'quoteNo'} value={'LA202344720500'} align="center" readOnly />
+                  <Input aria-label="" value={'한화 시그니처 여성 간편건강보험4.0 무배당2604'} readOnly />
                   <Input aria-label="" width={80} value={''} readOnly />
                 </FormCell>
                 <FormCell title={'플랜명'} className="whitespace-nowrap">

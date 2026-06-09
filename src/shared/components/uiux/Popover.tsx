@@ -3,10 +3,10 @@
  */
 'use client';
 
+import { CloseIcon } from '@icons';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { CloseIcon } from '@icons';
 
 interface PopoverProps extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Root> {
   className?: string;

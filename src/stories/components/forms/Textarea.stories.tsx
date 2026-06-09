@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import { Grow, Gcol } from '@atoms';
-import { Textarea } from '@uiux/Textarea';
+ */ import { Grow, Gcol } from '@atoms';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Textarea } from '@uiux/Textarea';
 
 const meta: Meta<typeof Textarea> = {
   title: 'Components/Forms/Textarea',
@@ -63,7 +63,6 @@ import { Textarea } from '@uiux/Textarea';
 \`\`\`
               `}
             </Markdown>
- 
           </>
         );
       },
@@ -71,7 +70,7 @@ import { Textarea } from '@uiux/Textarea';
     controls: { expanded: false },
   },
   argTypes: {
-    variant:{table: { disable: true },},
+    variant: { table: { disable: true } },
 
     readOnly: {
       control: { type: 'boolean' },
@@ -99,9 +98,9 @@ import { Textarea } from '@uiux/Textarea';
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },
-    minLength:  {table: { disable: true },},
-    showMinLengthCount: {table: { disable: true },},
-    className: {table: { disable: true },},
+    minLength: { table: { disable: true } },
+    showMinLengthCount: { table: { disable: true } },
+    className: { table: { disable: true } },
     value: {
       table: { disable: true },
     },
@@ -127,4 +126,3 @@ type Story = StoryObj<typeof Textarea>;
 export const Default: Story = {
   render: (args) => <Textarea {...args} />,
 };
- 

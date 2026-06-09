@@ -8,6 +8,12 @@ import { DialogListIcon, DialogResetIcon, DialogPocIcon } from '@icons';
 import { TextBabbleIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
+/**
+ * BottomBar 팝업 컴포넌트.
+ *
+ * - 팝업 하단에 고정되는 바 형태의 UI를 제공한다.
+ * - 상태 메시지와 여러 액션 버튼을 포함한다.
+ */
 export const DialogBottomInfo = () => {
   const stateText = '자료가 조회되었습니다.';
 
@@ -20,7 +26,6 @@ export const DialogBottomInfo = () => {
         </Typo>
       </Grow>
       <Grow>
-        {/* M1. 화면담당자추가 */}
         <Button variant={'none'} className="text-[1.1rem]">
           <DialogPocIcon color={'var(--color-secondary-50)'} />
           화면담당자

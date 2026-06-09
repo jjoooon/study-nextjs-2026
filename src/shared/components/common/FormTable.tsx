@@ -1,13 +1,20 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { cva, type VariantProps } from 'class-variance-authority';
-import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Typo, Grow } from '@atoms';
 import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
+import { cva, type VariantProps } from 'class-variance-authority';
+import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 
+/**
+ * FormCell 제목(th) 스타일 variant 토큰.
+ *
+ * 목적:
+ * - 입력형 테이블의 헤더/라벨 셀을 용도별(기본/무테/헤더영역 등)로 통일
+ * - 호출부에서 클래스 하드코딩 없이 의미 기반으로 선택
+ */
 const FormCellVariants = cva('', {
   variants: {
     variant: {
@@ -26,6 +33,14 @@ const FormCellVariants = cva('', {
   },
 });
 
+/**
+ * FormCell(제목+값 셀) props.
+ *
+ * 주요 시나리오:
+ * - 일반 입력형 테이블: `title + children`
+ * - 헤드/무테 레이아웃: `variant='head' | 'none' | 'bottom'`
+ * - 복합 셀: `colSpan`/`rowSpan`, 제목/값 분리 span 제어
+ */
 interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   title?: ReactNode;
   titleVariant?: 'default' | 'primary' | 'section' | 'blueGray';
@@ -43,6 +58,12 @@ interface FormCellProps extends VariantProps<typeof FormCellVariants> {
   tdStyle?: React.CSSProperties;
 }
 
+/**
+ * FormTable 루트 props.
+ * - `cols`: colgroup 클래스 배열
+ * - `variant`: 테이블 스킨 프리셋
+ * - `after`: 테이블 하단 추가 영역(요약/버튼 등)
+ */
 interface FormTableProps {
   caption?: string;
   variant?: string;
@@ -54,6 +75,10 @@ interface FormTableProps {
   after?: React.ReactNode;
 }
 
+/**
+ * FormHead/FormRow 공통 props.
+ * - `vertical=true`: 입력형 테이블을 세로형(헤더/값 2행) 레이아웃으로 렌더
+ */
 interface FormTrProps {
   children?: ReactNode;
   vertical?: boolean;
@@ -62,14 +87,25 @@ interface FormTrProps {
   style?: React.CSSProperties;
 }
 
-// vertical context 생성
+/**
+ * 행 렌더링 시 vertical 모드 여부를 하위 셀에 전달하는 컨텍스트.
+ */
 const VerticalContext = createContext<boolean | undefined>(undefined);
 
-// variant context: allow FormTable to provide a default variant for FormCell
+/**
+ * FormTable에서 기본 variant를 하위 FormCell/FormRow로 전달하기 위한 컨텍스트.
+ */
 type FormVariant = VariantProps<typeof FormCellVariants>['variant'];
 const VariantContext = createContext<FormVariant | undefined>(undefined);
 
-// Grow(혹은 그 내부 텍스트)가 잘릴 때 Tooltip을 보여주는 HOC
+/**
+ * 텍스트 overflow 시에만 Tooltip을 노출하는 래퍼.
+ *
+ * 동작:
+ * - 실제 렌더 너비(`scrollWidth > clientWidth`)를 기준으로 판정
+ * - 문자열 텍스트만 툴팁 원문으로 사용
+ * - ResizeObserver + window resize로 반응형 재판정
+ */
 function TooltipIfOverflow({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOverflow, setIsOverflow] = useState(false);
@@ -142,9 +178,18 @@ export const FormCell = ({
   tdStyle,
   tdNone = false,
 }: FormCellProps) => {
+  /** 상위 Row의 vertical 여부 */
   const contextVertical = useContext(VerticalContext);
+  /** 상위 Table 기본 variant */
   const contextVariant = useContext(VariantContext);
+  /** 셀 자체 variant가 있으면 우선, 없으면 상위 variant 상속 */
   const usedVariant = variant ?? contextVariant ?? 'default';
+
+  /**
+   * 제목 텍스트 색상 정책.
+   * - section 제목은 primary 고정
+   * - head/none/bottom 등 특수 variant는 별도 색상 정책 적용
+   */
   const titleTypoColor =
     titleVariant === 'section'
       ? 'primary'
@@ -203,6 +248,7 @@ export const FormCell = ({
           {...(rowSpan && { rowSpan })}
           style={tdStyle}
         >
+          {/* vertical 모드에서는 overflow 시 툴팁, 일반 모드에서는 Grow 정렬 컨테이너 사용 */}
           {contextVertical ? (
             <TooltipIfOverflow>{children}</TooltipIfOverflow>
           ) : (
@@ -223,6 +269,13 @@ export const FormTable = ({
   lineTop = true,
   after,
 }: FormTableProps) => {
+  /**
+   * 테이블 외형 프리셋.
+   * - `default`: 표준 입력형 테이블
+   * - `setting`/`boxIn`: 설정/내부박스 특화
+   * - `none`/`bottom`: 무테/하단영역 특화
+   * - `head`: table 태그 대신 head 전용 레이아웃 분기
+   */
   const variantStyles = {
     default: `table-fixed w-full border-collapse ` + className,
     primary: 'table-fixed data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
@@ -281,9 +334,13 @@ export const FormTable = ({
     [&>table>tbody>tr>td+th]:pl-[2.4rem]`,
   };
 
-  // variant가 'none'이면 lineTop을 무시
+  /** variant가 'none'이면 상단 구분선 비활성 */
   const showLineTop = lineTop && variant !== 'none';
 
+  /**
+   * `head` variant는 semantic table 대신
+   * dl/dt/dd 기반 헤드 요약 레이아웃을 사용한다.
+   */
   if (variant === 'head') {
     return (
       <div className={cn('formtable-head-root w-full', className)} data-variant={variant}>
@@ -291,6 +348,7 @@ export const FormTable = ({
         <VariantContext.Provider value={variant as FormVariant}>
           <div className="formtable-head-body">{children}</div>
         </VariantContext.Provider>
+        {/* 테이블 하단 확장 슬롯 */}
         {after}
       </div>
     );
@@ -309,6 +367,7 @@ export const FormTable = ({
       >
         {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
         {cols && cols.length > 0 && (
+          /** 열 너비 제어를 위한 colgroup */
           <colgroup>
             {cols.map((colClass, index) => (
               <col key={index} className={colClass || undefined} />
@@ -319,10 +378,16 @@ export const FormTable = ({
           <TableBody>{children}</TableBody>
         </VariantContext.Provider>
       </Table>
+      {/* 테이블 하단 확장 슬롯 */}
       {after}
     </>
   );
 };
+
+/**
+ * 입력형 테이블의 head 래퍼.
+ * - 필요 시 vertical 컨텍스트를 함께 전달.
+ */
 export const FormHead = ({ children, vertical, cols: _cols }: FormTrProps) => {
   return (
     <VerticalContext.Provider value={vertical}>
@@ -333,6 +398,14 @@ export const FormHead = ({ children, vertical, cols: _cols }: FormTrProps) => {
   );
 };
 
+/**
+ * 입력형 테이블 행 컴포넌트.
+ *
+ * 분기:
+ * - `head` variant: dl/dt/dd 기반 헤드 레이아웃
+ * - 그 외: tr 기반 일반 테이블 행
+ *   - vertical=true면 2행 grid 형태로 셀 재배치
+ */
 export const FormRow = ({ children, vertical, cols: _cols, className, style }: FormTrProps) => {
   const contextVariant = useContext(VariantContext);
   if (contextVariant === 'head') {

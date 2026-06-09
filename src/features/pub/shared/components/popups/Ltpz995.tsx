@@ -6,23 +6,24 @@
 import { FilePondErrorDescription, FilePondFile } from 'filepond';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
-import { IMAGE_TYPES, APPLICATION_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
+import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
+import { FileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogFooterArea,
-  DialogClose,
+  DialogHeader,
   DialogSection,
+  DialogTitle,
 } from '@uiux/Dialog';
 import 'filepond/dist/filepond.min.css';
 
@@ -31,24 +32,16 @@ registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
 
 const logger = log.getLogger('FileUploader');
 
-export interface FileItem {
-  id: string;
-  filename: string;
-  fileSize: number;
-  fileExtension: string;
-  fileType: string;
-}
-
-export interface FileUploadResult {
-  action: 'search' | 'select' | 'cancel';
+export interface Ltpz995Result {
+  action: 'search' | 'select' | 'close';
   files?: FileItem[];
 }
 
-export interface FileUploaderProps {
-  open?: boolean;
+export interface Ltpz995Props {
+  files?: FileItem[];
   onOpenChange?: (open: boolean) => void;
   /** Promise resolve 함수 (결과 반환) */
-  resolve: (result: FileUploadResult) => void;
+  resolve: (result: Ltpz995Result) => void;
 }
 
 // 파일 크기를 읽기 쉬운 단위로 변환
@@ -62,42 +55,39 @@ function formatFileSize(bytes: number): string {
   return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
 }
 
-export default function FileUploader({ open }: FileUploaderProps) {
+// 허용할 파일 MIME 타입 설정
+const ACCEPTED_FILE_TYPES: MimeType[] = [
+  IMAGE_TYPES.JPEG,
+  IMAGE_TYPES.PNG,
+  IMAGE_TYPES.GIF,
+  APPLICATION_TYPES.PDF,
+  APPLICATION_TYPES.MSWORD,
+  APPLICATION_TYPES.WORD_XML,
+  APPLICATION_TYPES.EXCEL,
+  APPLICATION_TYPES.EXCEL_XML,
+  APPLICATION_TYPES.POWERPOINT,
+  APPLICATION_TYPES.POWERPOINT_XML,
+  TEXT_TYPES.PLAIN,
+  APPLICATION_TYPES.ZIP,
+  APPLICATION_TYPES.SEVEN_Z,
+];
+
+const MAX_FILE_SIZE = '1024MB'; // 1GB
+
+export default function Ltpz995({ files, resolve }: Ltpz995Props) {
   const pondRef = useRef<FilePondInstance>(null);
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
-  const [pondFiles, setPondFiles] = useState<FilePondFile[]>([]);
 
-  // 모달 닫힐 때 파일 상태 초기화
-  useEffect(() => {
-    if (!open) {
-      // setState를 마이크로태스크로 비동기 처리하여 React 경고 방지
-      Promise.resolve().then(() => {
-        setPondFiles([]);
-        setFileCount(0);
-        setTotalSize(0);
-      });
-    }
-  }, [open]);
+  const handleInit = () => {
+    if (!files?.length || !pondRef.current) return;
+    files.forEach((f) => {
+      pondRef.current!.addFile(f.id, { type: 'local' });
+    });
+  };
 
-  // 허용할 파일 MIME 타입 설정
-  const ACCEPTED_FILE_TYPES: MimeType[] = [
-    IMAGE_TYPES.JPEG,
-    IMAGE_TYPES.PNG,
-    IMAGE_TYPES.GIF,
-    APPLICATION_TYPES.PDF,
-    APPLICATION_TYPES.MSWORD,
-    APPLICATION_TYPES.WORD_XML,
-    APPLICATION_TYPES.EXCEL,
-    APPLICATION_TYPES.EXCEL_XML,
-    APPLICATION_TYPES.POWERPOINT,
-    APPLICATION_TYPES.POWERPOINT_XML,
-    TEXT_TYPES.PLAIN,
-    APPLICATION_TYPES.ZIP,
-    APPLICATION_TYPES.SEVEN_Z,
-  ];
-
-  const MAX_FILE_SIZE = '1024MB'; // 1GB
+  // FileUpload에 실제 표시할 파일 목록 (선택완료 시점)
+  // const [filesForUpload, setFilesForUpload] = useState<{ name: string; key: string }[]>([]);
 
   const handleBeforeAddFile = (item: FilePondFile) => {
     // 파일명 확인 (임시 파일 차단 같은 커스텀 로직만 처리)
@@ -109,38 +99,30 @@ export default function FileUploader({ open }: FileUploaderProps) {
     return true;
   };
 
+  const syncStats = (currentFiles: FilePondFile[]) => {
+    setFileCount(currentFiles.length);
+    setTotalSize(currentFiles.reduce((sum, f) => sum + (f.fileSize || 0), 0));
+  };
+
   const handleAddFile = (error: FilePondErrorDescription | null, file: FilePondFile) => {
     if (error) {
       logger.error('파일 추가 오류:', error);
       return;
     }
 
-    // 함수형 업데이트로 클로저 문제 해결
-    setPondFiles((prev) => {
-      // 중복 파일 체크 (파일명과 크기로 비교)
-      const isDuplicate = prev.some((f) => f.filename === file.filename && f.fileSize === file.fileSize);
+    const currentFiles = pondRef.current?.getFiles() ?? [];
+    const isDuplicate = currentFiles
+      .filter((f) => f.id !== file.id)
+      .some((f) => f.filename === file.filename && f.fileSize === file.fileSize);
 
-      if (isDuplicate) {
-        logger.info('중복 파일 무시:', file.filename);
-        // FilePond에서 파일 제거
-        pondRef.current?.removeFile(file.id);
-        return prev; // 기존 파일 목록 반환 (추가 안 함)
-      }
+    if (isDuplicate) {
+      logger.info('중복 파일 무시:', file.filename);
+      pondRef.current?.removeFile(file.id);
+      return;
+    }
 
-      const updatedFiles = [...prev, file];
-      logger.info('파일 추가됨:', file.filename, '전체 파일 수:', updatedFiles.length);
-
-      // 파일 개수 업데이트
-      setFileCount(updatedFiles.length);
-
-      // 전체 파일 크기 계산
-      const total = updatedFiles.reduce((sum, f) => {
-        return sum + (f.fileSize || 0);
-      }, 0);
-      setTotalSize(total);
-
-      return updatedFiles;
-    });
+    logger.info('파일 추가됨:', file.filename, '전체 파일 수:', currentFiles.length);
+    syncStats(currentFiles);
   };
 
   const handleRemoveFile = (error: FilePondErrorDescription | null, file: FilePondFile) => {
@@ -149,26 +131,13 @@ export default function FileUploader({ open }: FileUploaderProps) {
       return;
     }
 
-    setPondFiles((prev) => {
-      const updatedFiles = prev.filter((f) => f.id !== file.id);
-      logger.info('파일 제거됨:', file.filename, '전체 파일 수:', updatedFiles.length);
-
-      // 파일 개수 업데이트
-      setFileCount(updatedFiles.length);
-
-      // 전체 파일 크기 계산
-      const total = updatedFiles.reduce((sum, f) => {
-        return sum + (f.fileSize || 0);
-      }, 0);
-      setTotalSize(total);
-
-      return updatedFiles;
-    });
+    const currentFiles = pondRef.current?.getFiles() ?? [];
+    logger.info('파일 제거됨:', file.filename, '전체 파일 수:', currentFiles.length);
+    syncStats(currentFiles);
   };
 
   const handleReorderFiles = (files: FilePondFile[]) => {
     logger.info('파일 순서 변경됨, 전체 파일 수:', files.length);
-    setPondFiles(files);
   };
 
   const handleError = (error: FilePondErrorDescription) => {
@@ -183,8 +152,49 @@ export default function FileUploader({ open }: FileUploaderProps) {
     pondRef.current?.browse();
   };
 
+  const handleSelect = () => {
+    const currentFiles = pondRef.current?.getFiles() ?? [];
+    resolve({
+      action: 'select',
+      files: currentFiles.map((f) => ({
+        id: f.id,
+        filename: f.filename,
+        fileSize: f.fileSize,
+        fileExtension: f.fileExtension,
+        fileType: f.fileType,
+      })),
+    });
+  };
+
+  const handleClose = () => {
+    resolve({
+      action: 'close',
+    });
+  };
+
+  // const handleUpload = async () => {
+  //   // FileUpload에 파일 목록 반영
+  //   setFilesForUpload(pondFiles.map((file) => ({ name: file.filename, key: file.id })));
+  //   // 기존 resolve 로직 유지 (필요시 수정)
+  //   const filesWithSource = pondFiles.map((file) => ({
+  //     id: file.id,
+  //     filename: file.filename,
+  //     fileSize: file.fileSize,
+  //     fileExtension: file.fileExtension,
+  //     fileType: file.fileType,
+  //   }));
+  //   logger.info('선택된 파일 목록:', filesWithSource);
+
+  //   resolve({
+  //     action: 'select',
+  //     files: [],
+  //   });
+  //   // 업로드 후 창 닫기
+  //   onOpenChange?.(false);
+  // };
+
   return (
-    <Dialog open>
+    <Dialog open onOpenChange={handleClose}>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -192,14 +202,14 @@ export default function FileUploader({ open }: FileUploaderProps) {
               파일업로드
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ994)
+              (LTPZ995)
             </Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[1fr_auto] gap-1">
           <FilePond
             ref={pondRef}
-            files={pondFiles.map((f) => f.source)}
+            oninit={handleInit}
             onaddfile={handleAddFile}
             onremovefile={handleRemoveFile}
             onreorderfiles={handleReorderFiles}
@@ -222,7 +232,17 @@ export default function FileUploader({ open }: FileUploaderProps) {
             // stylePanelLayout="compact"
             dropValidation
             instantUpload={false}
-            server={{}}
+            // TODO: @YunJunmo Server load URL 변경
+            server={{
+              load: (source, load, error) => {
+                const item = files?.find((f) => f.id === source);
+                if (!item) {
+                  error('not found');
+                  return;
+                }
+                load(new File([''], item.filename, { type: item.fileType }));
+              },
+            }}
             styleButtonRemoveItemPosition="right"
             styleButtonProcessItemPosition="right"
             styleLoadIndicatorPosition="right"
@@ -245,11 +265,11 @@ export default function FileUploader({ open }: FileUploaderProps) {
               <Button variant={'outlined'} size={'xl'} color={'gray'} onClick={handleSearch}>
                 파일찾기
               </Button>
-              <Button variant={'contained'} size={'xl'}>
+              <Button variant={'contained'} size={'xl'} disabled={fileCount === 0} onClick={handleSelect}>
                 선택완료
               </Button>
               <DialogClose asChild>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={handleClose}>
                   닫기
                 </Button>
               </DialogClose>

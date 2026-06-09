@@ -16,8 +16,8 @@
  * @example
  * /products?search=laptop&category=electronics&sortBy=price&sortOrder=asc
  */
-import { URL_PARAMS as SHARED_URL_PARAMS } from '@/shared/utils/url/urlParams';
 import type { ProductsFilters, ProductsSort } from '../types/uiTypes';
+import { URL_PARAMS as SHARED_URL_PARAMS } from '@/shared/utils/url/urlParams';
 
 const last30DaysRange = () => {
   const now = new Date();

@@ -3,6 +3,8 @@
  */
 'use client';
 
+import { Grid } from '@atoms';
+import { CloseIcon } from '@icons';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
@@ -14,8 +16,6 @@ import {
   getDialogLayerIndex,
   subscribeOverlay,
 } from '@/shared/utils/popup/dialogOverlayRegistry';
-import { Grid } from '@atoms';
-import { CloseIcon } from '@icons';
 
 type DialogSizeValue = number | string;
 

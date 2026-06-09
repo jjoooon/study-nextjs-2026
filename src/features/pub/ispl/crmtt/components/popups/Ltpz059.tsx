@@ -3,12 +3,6 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { editableCellClassRules } from '@/features/pub/ispl/cvrPl/utils/agGridUtils';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -33,6 +27,12 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { editableCellClassRules } from '@/features/pub/ispl/cvrPl/utils/agGridUtils';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 
 import '@/shared/lib/agGridPub';
 
@@ -337,7 +337,7 @@ const DummyData4: DummyDataType4[] = [
   },
 ];
 
-const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz059 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [editableFieldName, setEditableFieldName] = React.useState<string | null>(null);
   const [insuredFloorType, setInsuredFloorType] = React.useState<InsuredFloorType>(null);
@@ -557,7 +557,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   const [buildingSelectType, setBuildingSelectType] = React.useState<string>('건물구조선택');
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} className="w-[110.4rem]">
         <DialogHeader>
           <DialogTitle>

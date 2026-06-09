@@ -1,32 +1,55 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
-import { Gcol, Grow } from '@atoms';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@uiux/Carousel';
+ */ import { Gcol, Grow } from '@atoms';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@uiux/Carousel';
+import * as React from 'react';
 
-const slides = ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5', 'Slide 6', 'Slide 7', 'Slide 8', 'Slide 9', 'Slide 10', 'Slide 11', 'Slide 12', 'Slide 13', 'Slide 14', 'Slide 15', 'Slide 16', 'Slide 17', 'Slide 18', 'Slide 19', 'Slide 20'];
+const slides = [
+  'Slide 1',
+  'Slide 2',
+  'Slide 3',
+  'Slide 4',
+  'Slide 5',
+  'Slide 6',
+  'Slide 7',
+  'Slide 8',
+  'Slide 9',
+  'Slide 10',
+  'Slide 11',
+  'Slide 12',
+  'Slide 13',
+  'Slide 14',
+  'Slide 15',
+  'Slide 16',
+  'Slide 17',
+  'Slide 18',
+  'Slide 19',
+  'Slide 20',
+];
 
-function CarouselPreview({ orientation = 'horizontal', className = 'w-lg' }: { orientation?: 'horizontal' | 'vertical'; className?: string }) {
+function CarouselPreview({
+  orientation = 'horizontal',
+  className = 'w-lg',
+}: {
+  orientation?: 'horizontal' | 'vertical';
+  className?: string;
+}) {
   const hasHeightClass = /(^|\s)h-/.test(className);
   const resolvedClassName = orientation === 'vertical' && !hasHeightClass ? `${className} h-104` : className;
 
   return (
     <div className={orientation === 'vertical' ? 'py-12' : 'px-12'}>
-      <Carousel opts={{slidesToScroll: 5,}} orientation={orientation} className={resolvedClassName}>
+      <Carousel opts={{ slidesToScroll: 5 }} orientation={orientation} className={resolvedClassName}>
         <CarouselContent>
           {slides.map((text) => (
-            <CarouselItem key={text} className='basis-1/5'>
+            <CarouselItem key={text} className="basis-1/5">
               <div
                 className={`${orientation === 'vertical' ? 'h-10' : 'h-32'} rounded-md border flex items-center justify-center text-[1.3rem]`}
-              >{text}</div>
+              >
+                {text}
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -47,11 +70,14 @@ const meta: Meta<typeof Carousel> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>Overview</h2>
             <div>
               <p>
-                Carousel 컴포넌트는 여러 콘텐츠를 슬라이드 형태로 탐색하기 위한 UI 요소입니다.<br />
+                Carousel 컴포넌트는 여러 콘텐츠를 슬라이드 형태로 탐색하기 위한 UI 요소입니다.
+                <br />
                 orientation과 Embla 옵션을 통해 수평/수직 레이아웃을 유연하게 구성할 수 있습니다.
               </p>
             </div>
@@ -102,11 +128,31 @@ import {
                 </tr>
               </thead>
               <tbody>
-                <tr><td>orientation</td><td>'horizontal' | 'vertical'</td><td>슬라이드 방향</td></tr>
-                <tr><td>className</td><td>string</td><td>루트 컨테이너 클래스</td></tr>
-                <tr><td>opts</td><td>EmblaOptionsType</td><td>Embla 캐러셀 옵션</td></tr>
-                <tr><td>plugins</td><td>EmblaPluginType[]</td><td>Embla 플러그인</td></tr>
-                <tr><td>setApi</td><td>(api) =&gt; void</td><td>Carousel API 콜백</td></tr>
+                <tr>
+                  <td>orientation</td>
+                  <td>'horizontal' | 'vertical'</td>
+                  <td>슬라이드 방향</td>
+                </tr>
+                <tr>
+                  <td>className</td>
+                  <td>string</td>
+                  <td>루트 컨테이너 클래스</td>
+                </tr>
+                <tr>
+                  <td>opts</td>
+                  <td>EmblaOptionsType</td>
+                  <td>Embla 캐러셀 옵션</td>
+                </tr>
+                <tr>
+                  <td>plugins</td>
+                  <td>EmblaPluginType[]</td>
+                  <td>Embla 플러그인</td>
+                </tr>
+                <tr>
+                  <td>setApi</td>
+                  <td>(api) =&gt; void</td>
+                  <td>Carousel API 콜백</td>
+                </tr>
               </tbody>
             </table>
 

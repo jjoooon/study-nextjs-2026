@@ -4,7 +4,6 @@
 
 // 2026-05-21 import 수정
 'use client';
-import { useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 
 import { BulletList } from '@common/BulletList';
@@ -25,6 +24,7 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { useState } from 'react';
 
 const Ltpz055 = () => {
   const [sendType, setSendType] = useState<string>('option1');

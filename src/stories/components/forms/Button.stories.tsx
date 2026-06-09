@@ -1,11 +1,11 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
+ */ import { Gcol, Grow } from '@atoms';
 import { SearchIcon } from '@icons';
-import { Button } from '@uiux/Button';
-import { Gcol, Grow } from '@atoms';
-import Link from 'next/link';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@uiux/Button';
+import Link from 'next/link';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Forms/Button',
@@ -17,11 +17,14 @@ const meta: Meta<typeof Button> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>Overview</h2>
             <div>
               <p>
-                Button 컴포넌트는 사용자 액션을 실행하는 핵심 인터랙션 요소입니다.<br />
+                Button 컴포넌트는 사용자 액션을 실행하는 핵심 인터랙션 요소입니다.
+                <br />
                 variant, color, size, only 조합으로 일반 버튼과 아이콘 버튼을 일관된 규칙으로 구성할 수 있습니다.
               </p>
             </div>
@@ -75,12 +78,39 @@ import { Button } from '@uiux/Button';
                 </tr>
               </thead>
               <tbody>
-                <tr><td>variant</td><td>'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state' | 'rounded'</td><td>버튼 스타일</td></tr>
-                <tr><td>color</td><td>'primary' | 'secondary' | 'gray' | 'gray-light' | 'coolgray' | 'coolgray-light' | 'success' | 'link' | 'transparent'</td><td>버튼 색상</td></tr>
-                <tr><td>size</td><td>'xl' | 'lg' | 'md' | 'sm' | 'xs'</td><td>버튼 크기</td></tr>
-                <tr><td>only</td><td>'default' | 'icon'</td><td>일반/아이콘 전용 모드</td></tr>
-                <tr><td>asChild</td><td>boolean</td><td>자식 요소로 렌더링</td></tr>
-                <tr><td>disabled</td><td>boolean</td><td>비활성 상태</td></tr>
+                <tr>
+                  <td>variant</td>
+                  <td>'contained' | 'outlined' | 'text' | 'none' | 'banner' | 'state' | 'rounded'</td>
+                  <td>버튼 스타일</td>
+                </tr>
+                <tr>
+                  <td>color</td>
+                  <td>
+                    'primary' | 'secondary' | 'gray' | 'gray-light' | 'coolgray' | 'coolgray-light' | 'success' | 'link'
+                    | 'transparent'
+                  </td>
+                  <td>버튼 색상</td>
+                </tr>
+                <tr>
+                  <td>size</td>
+                  <td>'xl' | 'lg' | 'md' | 'sm' | 'xs'</td>
+                  <td>버튼 크기</td>
+                </tr>
+                <tr>
+                  <td>only</td>
+                  <td>'default' | 'icon'</td>
+                  <td>일반/아이콘 전용 모드</td>
+                </tr>
+                <tr>
+                  <td>asChild</td>
+                  <td>boolean</td>
+                  <td>자식 요소로 렌더링</td>
+                </tr>
+                <tr>
+                  <td>disabled</td>
+                  <td>boolean</td>
+                  <td>비활성 상태</td>
+                </tr>
               </tbody>
             </table>
 
@@ -94,8 +124,12 @@ import { Button } from '@uiux/Button';
                   <Button variant="rounded">rounded</Button>
                   <Button variant="text">text</Button>
                   <Button variant="none">none</Button>
-                  <Button variant="banner" size="md" className="w-[16rem]">banner</Button>
-                  <Button variant="state" size="md" className="w-[16rem]">state</Button>
+                  <Button variant="banner" size="md" className="w-[16rem]">
+                    banner
+                  </Button>
+                  <Button variant="state" size="md" className="w-[16rem]">
+                    state
+                  </Button>
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -123,16 +157,28 @@ import { Button } from '@uiux/Button';
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={2} className="flex-wrap">
-                  <Button variant="contained" color="coolgray">contained coolgray</Button>
-                  <Button variant="contained" color="coolgray-light">contained coolgray-light</Button>
+                  <Button variant="contained" color="coolgray">
+                    contained coolgray
+                  </Button>
+                  <Button variant="contained" color="coolgray-light">
+                    contained coolgray-light
+                  </Button>
                 </Grow>
                 <Grow gap={2} className="flex-wrap">
-                  <Button variant="outlined" color="coolgray">outlined coolgray</Button>
-                  <Button variant="outlined" color="coolgray-light">outlined coolgray-light</Button>
+                  <Button variant="outlined" color="coolgray">
+                    outlined coolgray
+                  </Button>
+                  <Button variant="outlined" color="coolgray-light">
+                    outlined coolgray-light
+                  </Button>
                 </Grow>
                 <Grow gap={2} className="flex-wrap">
-                  <Button variant="text" color="coolgray">text coolgray</Button>
-                  <Button variant="text" color="coolgray-light">text coolgray-light</Button>
+                  <Button variant="text" color="coolgray">
+                    text coolgray
+                  </Button>
+                  <Button variant="text" color="coolgray-light">
+                    text coolgray-light
+                  </Button>
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -183,7 +229,17 @@ import { Button } from '@uiux/Button';
     },
     color: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'gray', 'gray-light', 'coolgray', 'coolgray-light', 'success', 'link', 'transparent'],
+      options: [
+        'primary',
+        'secondary',
+        'gray',
+        'gray-light',
+        'coolgray',
+        'coolgray-light',
+        'success',
+        'link',
+        'transparent',
+      ],
       table: { category: '스타일 props' },
     },
     size: {
@@ -196,7 +252,7 @@ import { Button } from '@uiux/Button';
       options: ['default', 'icon'],
       table: { category: '스타일 props' },
     },
-  
+
     disabled: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },

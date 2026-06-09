@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
+ */ import { Gcol, Grow, Typo } from '@atoms';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 
 const VARIANT_OPTIONS = [
   'heading-lg',
@@ -27,7 +27,16 @@ const VARIANT_OPTIONS = [
 ] as const;
 
 const WEIGHT_OPTIONS = ['normal', 'bold', 'semibold'] as const;
-const COLOR_OPTIONS = ['default', 'gray-light', 'gray', 'danger', 'primary', 'secondary', 'information', 'green'] as const;
+const COLOR_OPTIONS = [
+  'default',
+  'gray-light',
+  'gray',
+  'danger',
+  'primary',
+  'secondary',
+  'information',
+  'green',
+] as const;
 const TAG_OPTIONS = ['span', 'p', 'div', 'strong', 'label', 'h1', 'h2', 'h3'] as const;
 
 const ICON_OPTIONS = [null, 'info', 'warning', 'detail', 'dot', 'dotBig', 'hash', 'dash', 'star'] as const;
@@ -42,17 +51,19 @@ const meta: Meta<typeof Typo> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>History</h2>
             <ul>
               <li>2026.03.30</li>
             </ul>
-            
+
             <h2>Overview</h2>
             <div>
               <p>
-                Typo는 프로젝트의 텍스트 스타일을 일관되게 적용하기 위한 타이포그래피 컴포넌트입니다.
-                `variant`, `weight`, `color`, `tag` 조합으로 제목/본문/버튼/금액 텍스트를 표현합니다.
+                Typo는 프로젝트의 텍스트 스타일을 일관되게 적용하기 위한 타이포그래피 컴포넌트입니다. `variant`,
+                `weight`, `color`, `tag` 조합으로 제목/본문/버튼/금액 텍스트를 표현합니다.
               </p>
             </div>
 
@@ -89,12 +100,36 @@ import { Typo } from '@atoms';
                 </tr>
               </thead>
               <tbody>
-                <tr><td>tag</td><td>{TAG_OPTIONS.join(' | ')}</td><td>렌더링 HTML 태그</td></tr>
-                <tr><td>variant</td><td>{VARIANT_OPTIONS.join(' | ')}</td><td>텍스트 스타일 유형</td></tr>
-                <tr><td>weight</td><td>{WEIGHT_OPTIONS.join(' | ')}</td><td>텍스트 굵기</td></tr>
-                <tr><td>color</td><td>{COLOR_OPTIONS.join(' | ')}</td><td>텍스트 색상</td></tr>
-                <tr><td>icon</td><td>{ICON_OPTIONS.join(' | ')}</td><td>텍스트 왼쪽에 아이콘 표시</td></tr>
-                <tr><td>children</td><td>ReactNode</td><td>표시할 텍스트</td></tr>
+                <tr>
+                  <td>tag</td>
+                  <td>{TAG_OPTIONS.join(' | ')}</td>
+                  <td>렌더링 HTML 태그</td>
+                </tr>
+                <tr>
+                  <td>variant</td>
+                  <td>{VARIANT_OPTIONS.join(' | ')}</td>
+                  <td>텍스트 스타일 유형</td>
+                </tr>
+                <tr>
+                  <td>weight</td>
+                  <td>{WEIGHT_OPTIONS.join(' | ')}</td>
+                  <td>텍스트 굵기</td>
+                </tr>
+                <tr>
+                  <td>color</td>
+                  <td>{COLOR_OPTIONS.join(' | ')}</td>
+                  <td>텍스트 색상</td>
+                </tr>
+                <tr>
+                  <td>icon</td>
+                  <td>{ICON_OPTIONS.join(' | ')}</td>
+                  <td>텍스트 왼쪽에 아이콘 표시</td>
+                </tr>
+                <tr>
+                  <td>children</td>
+                  <td>ReactNode</td>
+                  <td>표시할 텍스트</td>
+                </tr>
               </tbody>
             </table>
 
@@ -194,9 +229,12 @@ export const Default: Story = {
   render: (args) => {
     return (
       <>
-        <Typo {...args}>샘플용 Typography 0123<br/>샘플용 Typography 0123</Typo>
+        <Typo {...args}>
+          샘플용 Typography 0123
+          <br />
+          샘플용 Typography 0123
+        </Typo>
       </>
-      
     );
   },
 };

@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
+ */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import { ScrollArea } from '@uiux/ScrollArea';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof ScrollArea> = {
   title: 'Components/Containers/ScrollArea',
@@ -28,9 +28,7 @@ const meta: Meta<typeof ScrollArea> = {
                 <li>
                   <b>className</b>으로 높이/너비를 지정해 스크롤 영역을 정의합니다.
                 </li>
-                <li>
-                  내부 콘텐츠 길이에 따라 스크롤바가 자동으로 표시됩니다.
-                </li>
+                <li>내부 콘텐츠 길이에 따라 스크롤바가 자동으로 표시됩니다.</li>
               </ul>
             </div>
 
@@ -103,7 +101,9 @@ export const Default: Story = {
     <ScrollArea className="h-72 w-lg rounded-md border p-4">
       <div className="space-y-2">
         {Array.from({ length: 30 }).map((_, i) => (
-          <div key={i} className="text-sm">항목 {i + 1}</div>
+          <div key={i} className="text-sm">
+            항목 {i + 1}
+          </div>
         ))}
       </div>
     </ScrollArea>

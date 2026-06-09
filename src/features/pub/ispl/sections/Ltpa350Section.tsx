@@ -3,38 +3,63 @@
  */
 'use client';
 
-import type { ReactNode } from 'react';
-import { useState } from 'react';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
-import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
+// ag-grid 연동 유틸 훅: 우측 aside 접힘 상태를 전역 그리드 레이아웃 상태와 동기화할 때 사용
 import { useAsideToggleState } from '@aggrid';
-import { BottomBar } from '@common/BottomBar';
-import { AsideFoot } from '@features/AsideFoot';
-import { PageID } from '@features/PageID';
-import { PageProcess } from '@features/PageProcess';
-import { PageTitleProduct as PageTitle } from '@features/PageTitle';
-import { QuickLinks } from '@features/QuickLinks';
-import { TaskStatusBoard } from '@features/TaskStatusBoard';
-import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
-import { Ltpa35003Side } from '../../shared/components/Ltpa35003Side';
-import { Ltpa35004Side } from '../../shared/components/Ltpa35004Side';
-import { Ltpa350Side } from '../../shared/components/Ltpa350Side';
+// 하단 고정 액션 바(저장/다음 등 공통 액션 영역)
+import { BottomBar } from '@common/BottomBar';
+
+// 우측 aside 하단 요약 정보(보험료/포인트 등) 표시
+import { AsideFoot } from '@features/AsideFoot';
+
+// 페이지 식별 영역(업무명 + 화면ID)
+import { PageID } from '@features/PageID';
+
+// 단계 네비게이션(계약사항/담보설계/알릴사항...) UI
+import { PageProcess } from '@features/PageProcess';
+
+// 상품 타이틀/플랜번호/계약자 정보 영역
+import { PageTitleProduct as PageTitle } from '@features/PageTitle';
+
+// 우측 aside 바로가기 링크 묶음
+import { QuickLinks } from '@features/QuickLinks';
+
+// 우측 신호등 상태 보드(공통/누적/직업/예상UW)
+import { TaskStatusBoard } from '@features/TaskStatusBoard';
+
+// LTPA350 전용 페이지 레이아웃 템플릿(상단/본체/aside/하단 구조를 props로 조립)
+import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
+
+import { useState } from 'react';
+import type { ReactNode } from 'react';
+
+// 단계별 aside 상세 컴포넌트(심사요청/알릴사항/공통 요약)
+import { Ltpa35003Side } from '../../shared/components/Ltpa35003Side'; //사이드 3.알림사항
+import { Ltpa35004Side } from '../../shared/components/Ltpa35004Side'; //사이드 4.심사요청
+import { Ltpa350Side } from '../../shared/components/Ltpa350Side'; //사이드 공통 1.가입설계,2.담보설계,5.추가사항,6.수납
+
+// 신호등 클릭 시 열리는 팝업 탭 타입 + 팝업 컴포넌트
 import type { Ltpz005TabValue } from '../../shared/components/popups/Ltpz005';
 import Ltpz005 from '../../shared/components/popups/Ltpz005';
+
+// 단계별 메인 본문 컴포넌트(1~6단계)
+
 import { Ltpa35005 } from '../aplMtt/components/Ltpa35005'; // 05. 추가사항
 import { Ltpa35006 } from '../aplMtt/components/Ltpa35006'; // 06. 수납
 import { Ltpa35001 } from '../crmtt/components/Ltpa35001'; // 01. 가입설계
 import { Ltpa35002 } from '../cvrPl/components/Ltpa35002'; // 02. 담보설계
-import { Ltpa35003 } from '../ncMtt/components/Ltpa35003'; // 04. 심사요청
+import { Ltpa35003 } from '../ncMtt/components/Ltpa35003'; // 03. 알림사항
 import { Ltpa35004 } from '../udRqRst/components/Ltpa35004'; // 04. 심사요청
+
+// 공통 페이지 shell 상/하단 슬롯 + URL query 기반 step 동기화 훅
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
+import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
 // types
-type Ltpa350ProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
+type Ltpa350ProcessStep = 1 | 2 | 3 | 4 | 5 | 6; //단계번호
 type Ltpa350ProcessItem = {
   step: Ltpa350ProcessStep;
   label: string;
@@ -76,20 +101,24 @@ const data: Ltpa350DataType = {
       pageId: 'LTPA350',
     },
     pageTitle: {
-      simpleMode: false,
-      title: '한화 시그니처 여성 건강보험 3.0 2504',
-      options: ['납입면제 강화형', '기본형'],
+      simpleMode: false, // true 심플모드 | false 상세모드
+      title: '한화 시그니처 여성 간편건강보험4.0 무배당2604',
+      options: ['납입면제형', '납입후50%해약환급금지급형'], //셀렉트박스 옵션값
       planNumber: ['LA20234472050000', '2'],
-      contractHolder: '6012345 박하늘별님달박하늘별님달',
+      contractHolder: '3999999 김한손',
+      //planNumberList는 설계번호 검색시 나오는 리스트목록
       planNumberList: [
-        { label: 'LA20234472050000', value: 'LA20234472050000', name: '김은빈', amount: '23,000', state: '설계중' },
-        { label: 'LA23234472050001', value: 'LA23234472050001', name: '박하늘', amount: '45,500', state: '계약완료' },
+        { label: 'LA20234472050000', value: 'LA20234472050000', name: '김한손', amount: '23,000', state: '설계중' },
+        { label: 'LA20234472050001', value: 'LA20234472050001', name: '박하늘', amount: '45,500', state: '계약완료' },
         { label: 'LA20234472050002', value: 'LA20234472050002', name: '이도현', amount: '12,300', state: '심사중' },
         { label: 'LA20234472050003', value: 'LA20234472050003', name: '최수영', amount: '99,900', state: '청약완료' },
         { label: 'LA20234472050004', value: 'LA20234472050004', name: '한지민', amount: '77,700', state: '설계중' },
       ],
     },
   },
+
+  // process.list는 좌측 페이지 프로세스 단계 네비게이션에 사용되는 단계 정보 배열
+  // process.state는 현재 단계(active)와 완료 단계 배열(complete)을 관리하는 객체 완료가 여러개일 경우는 [1,2,...] 이런식으로 관리
   process: {
     list: [
       { step: 1, label: '계약사항' },
@@ -106,16 +135,18 @@ const data: Ltpa350DataType = {
   },
 };
 
+// 우측 하단 asideFoot 영역에 단계별로 보여줄 요약 정보(보험료/포인트 등) 매핑
+// step1 계약사항, step2 담보설계, step3 알릴사항, step4 심사요청, step5 추가사항, step6 수납
 const asideFoot = {
   step1: {
-    insGen: 0,
-    paymentAmount: 3450,
-    point: 640,
+    insGen: 0, //4세대
+    paymentAmount: 0, //납입보험료
+    point: 0, //청약포인트
   },
   step2: {
-    insGen: 3456,
-    paymentAmount: 3450,
-    point: 640,
+    insGen: 0,
+    paymentAmount: 72531,
+    point: 0,
   },
   step3: {
     insGen: 3456,
@@ -140,29 +171,47 @@ const asideFoot = {
 };
 
 // pageProcessStep 타입 가드 및 URL 파싱 함수 ---------------------------------
+
+//isPageProcessStep- URL query(step)에서 추출한 값이 유효한 페이지 프로세스 단계(Ltpa350ProcessStep)인지 판별하는 타입 가드 함수. 주소뒤에 ?step=1 이런식으로 입력했을때 1~6단계까지만 허용하는 함수
 const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
-  if (!Number.isInteger(value)) return false;
-  return data.process.list.some((item) => item.step === value);
+  if (!Number.isInteger(value)) return false; // 정수가 아니면 false
+  return data.process.list.some((item) => item.step === value); // 허용 단계(1~6)에 있는지 확인
 };
 
 export default function Ltpa350Section() {
+  // simpleMode: 페이지를 간략 모드로 보여줄지 여부 (PageTitle와 step별 본문에서 같이 사용)
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
+
+  // 신호등(TaskStatusBoard) 클릭으로 열리는 상세 팝업(LTPZ005) open 상태/초기 탭
   const [isTaskStatusPopupOpen, setIsTaskStatusPopupOpen] = useState<boolean>(false);
   const [taskStatusActiveTab, setTaskStatusActiveTab] = useState<Ltpz005TabValue>('common');
+
+  // 2단계 화면에서 좌/우 폭 확장 시 aside를 강제로 숨기기 위한 상태
   const [isWidthExpanded, setIsWidthExpanded] = useState<boolean>(false);
   const defaultStep = data.process.state.active;
+
+  // URL query(step)와 현재 단계 상태를 동기화
+  // - defaultStep: query가 없을 때 기본 진입 단계
+  // - isValidStep: 허용 단계(1~6)만 반영하는 가드
   const { activeStep, setActiveStep } = useStepFromQuery<Ltpa350ProcessStep>({
     defaultStep,
     isValidStep: isPageProcessStep,
   });
+
+  // 전역 aside 접힘 상태 + 화면 확장 상태를 합성하여 최종 hideAside 결정
   const { hideAside: asideToggleState } = useAsideToggleState();
   const hideAside = isWidthExpanded ? true : asideToggleState;
 
   // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
-  const [currentViewKey, setCurrentViewKey] = useState<ViewKey>('view1');
+  const [currentViewKey] = useState<ViewKey>('view1');
 
+  // 단계별 메인 콘텐츠 매핑
+  // viewKey는 필요없다면 삭제해되 됨. 현재는 1단계에서만 사용되고 있지만, 향후 단계별로 다른 viewKey가 필요할 수도 있어서 일단 유지하는 방향으로 함. (예: 1단계는 인보험, 2단계는 태아보험 이런식으로 viewKey로 구분하여 퍼블 확인할 수도 있어서)
+  // - `simpleMode`: 1/3단계에서 간략 UI 여부 제어
+  // - `viewKey`: 퍼블 검증용 화면 분기값(현재는 view1 고정 상태)
+  // - `onIsWidthExpandedChange`: 2단계에서 본문 폭 변경 시 상위의 aside 표시 정책 동기화
   const stepMainBody: Record<number, ReactNode> = {
-    1: <Ltpa35001 simpleMode={simpleMode} viewKey={currentViewKey} />, // prop 추가
+    1: <Ltpa35001 simpleMode={simpleMode} viewKey={currentViewKey} />,
     2: <Ltpa35002 onIsWidthExpandedChange={setIsWidthExpanded} />,
     3: <Ltpa35003 simpleMode={simpleMode} />,
     4: <Ltpa35004 />,
@@ -173,7 +222,7 @@ export default function Ltpa350Section() {
   return (
     <>
       {/* 퍼블 페이지확인용 (섹션에서 통합 관리) */}
-      <NativeSelect
+      {/* <NativeSelect
         width={'auto'}
         className="fixed top-1 left-[50%] z-100 opacity-80"
         value={currentViewKey}
@@ -186,10 +235,15 @@ export default function Ltpa350Section() {
         <NativeSelectOption value="view3">임시 화면확인용: 재물</NativeSelectOption>
         <NativeSelectOption value="view4">임시 화면확인용: 단체</NativeSelectOption>
         <NativeSelectOption value="view5">임시 화면확인용: 연금/저축</NativeSelectOption>
-      </NativeSelect>
+      </NativeSelect> */}
       {/* 퍼블 페이지확인용 */}
 
       <LayoutHead>
+        {/*
+          PageID props
+          - pageName: 상단 업무명(사용자에게 보이는 이름)
+          - pageId: 시스템 화면 식별자(운영/문의 시 기준 코드)
+        */}
         <PageID
           data={{
             pageName: '가입설계',
@@ -199,8 +253,17 @@ export default function Ltpa350Section() {
       </LayoutHead>
 
       <LayoutTemplateLTPA350
+        // pageTitle: 상단 상품 타이틀 영역 슬롯
+        // - data: 상품명/플랜번호/계약자 등 렌더링 데이터
+        // - simpleMode: 간략모드 현재값
+        // - onSimpleModeChange: 토글 이벤트 핸들러
         pageTitle={<PageTitle data={data.head.pageTitle} simpleMode={simpleMode} onSimpleModeChange={setSimpleMode} />}
-        // LayoutBody: process
+        // pageProcess: 단계 이동 UI 슬롯
+        // - items: 단계 목록(라벨/step)
+        // - completeSteps: 완료 표시할 step 배열
+        // - defaultActiveStep: 초기 활성 단계
+        // - activeStep: 현재 활성 단계(단방향 상태 주입)
+        // - onStepChange: 사용자 클릭 시 단계 변경 처리
         pageProcess={
           <PageProcess
             items={data.process.list}
@@ -214,9 +277,11 @@ export default function Ltpa350Section() {
             }}
           />
         }
-        // LayoutBody: main
+        // mainBody: 현재 단계에 해당하는 실제 업무 컴포넌트
         mainBody={stepMainBody[activeStep]}
-        // 신호등
+        // asideHead: 우측 상단 신호등 보드
+        // - state: 카드별 상태값(상태/라벨/건수)
+        // - onItemClick: 클릭 시 팝업 탭 이동 + 필요 시 step=2 강제 이동
         asideHead={
           <TaskStatusBoard
             state={[
@@ -244,33 +309,37 @@ export default function Ltpa350Section() {
             }}
           />
         }
-        // 각단계별정보
+        // asideInfo: 우측 중단 상세 정보 슬롯(단계별로 다른 컴포넌트 렌더링)
+        // - step 3: 알릴사항 요약(Ltpa35003Side)
+        // - step 4: 심사요청 요약(Ltpa35004Side)
+        // - step 1: 공백/기본 처리(Ltpa350Side info=null)
+        // - 그 외: 공통 계약 요약(Ltpa350Side info=객체)
         asideInfo={
           activeStep === 3 ? (
             <Ltpa35003Side
               info={{
-                FP: true,
+                FP: true, //FP질병제공 동의 Y | N
                 name: '홍길동',
-                consentEndDate: '2024-06-30',
-                noticeType: '1형(일반고지형)',
-                diseaseCount: 6,
+                consentEndDate: '2024-06-30', //동의종료일
+                noticeType: '1형(일반고지형)', //공지사항 유형(1형/2형)
+                diseaseCount: 6, //질병개수
                 reviewers: [
                   ['M40', '척추만곡증'],
                   ['M40', '척추만곡증'],
                   ['M40', '척추만곡증'],
                   ['M40', '척추만곡증'],
-                ],
-                systems: 4,
+                ], //심사자 정보 배열(심사자명, 심사자코드) - 최대 4명까지 노출, 넘칠 경우 "외 n명"으로 표시
+                systems: 4, //심사 시스템 개수
               }}
             />
           ) : activeStep === 4 ? (
             <Ltpa35004Side
               info={{
-                reviewType: '특인심사',
-                reviewStatus: '배정대기',
-                msg: '[심사운용 시간 이후 요청]\n심사 자배정대기 중입니다.',
+                reviewType: '특인심사', //심사유형(특인심사/일반심사)
+                reviewStatus: '배정대기', //심사상태(배정대기/심사중/심사완료)
+                msg: '[심사운용 시간 이후 요청]\n심사 자배정대기 중입니다.', //심사 상태 메시지
                 notice:
-                  '3월 질병 심사기준 안내 두줄까지 공지사항제목 노출 3월 질병 심사기준 안내 두줄까지 공지사항제목 노출',
+                  '3월 질병 심사기준 안내 두줄까지 공지사항제목 노출 3월 질병 심사기준 안내 두줄까지 공지사항제목 노출', //심사 관련 공지사항(길면 줄바꿈 최대2줄)
               }}
             />
           ) : activeStep === 1 ? (
@@ -278,30 +347,34 @@ export default function Ltpa350Section() {
           ) : (
             <Ltpa350Side
               info={{
-                date: '2024-05-08',
-                polName: '홍길동',
-                insName: '홍길동',
-                insAge: '32',
-                insGender: '남',
-                insGrade: '1급',
-                quoteExpiryDate: '2024-06-30',
-                insuranceAgeDate: '2024-05-08',
-                consentEndDate: '2024-06-30',
-                note: '알릴사항 비대상',
-                docPrint: true,
-                docScan: false,
-                eGuideDiscount: [1230, 39990],
+                date: '2026-06-30', //보험시기
+                polName: '김한화', //계약자명
+                insName: '김한화', //피보험자명
+                insAge: '32', //피보험자 나이
+                insGender: '여', //피보험자 성별
+                insGrade: '1급', //피보험자 등급
+                quoteExpiryDate: '2026-06-30', //설계유효기간
+                insuranceAgeDate: '2026-08-16', //상령일
+                consentEndDate: '2026-06-30', //동의종료일
+                note: '알릴사항 대상', //특이사항 메모
+                docPrint: true, //문서 출력 여부
+                docScan: false, //문서 스캔 여부
+                eGuideDiscount: [1230, 39990], //전자적안내동의할인 금액 배열
               }}
             />
           )
         }
-        // 바로가기
+        // asideLinks: 우측 하단 바로가기 메뉴 슬롯
         asideLinks={
           <>
             <QuickLinks />
           </>
         }
+        // asideFoot: 단계별 보험료/포인트 요약
+        // - dataTotal: `activeStep`에 맞는 데이터 선택 전달
+        // - viewKey: 퍼블 분기키(aside 내부 표시 분기에 활용)
         asideFoot={<AsideFoot dataTotal={asideFoot[`step${activeStep}`]} viewKey={currentViewKey} />}
+        // hideAside: 우측 aside 노출 여부
         hideAside={hideAside}
       />
 
@@ -310,6 +383,10 @@ export default function Ltpa350Section() {
       </LayoutFoot>
 
       {isTaskStatusPopupOpen && (
+        // Ltpz005 props
+        // - open: 다이얼로그 열림 상태(제어 컴포넌트 패턴)
+        // - onOpenChange: 닫힘/열림 이벤트를 부모 상태와 동기화
+        // - initialActiveTab: 팝업 진입 시 기본 탭(신호등 클릭 라벨과 매핑)
         <Ltpz005
           open={isTaskStatusPopupOpen}
           onOpenChange={setIsTaskStatusPopupOpen}

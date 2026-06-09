@@ -4,11 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -27,6 +23,9 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 type DummyDataType = {
   id: number;
@@ -109,41 +108,36 @@ const DummyData: DummyDataType[] = [
 ];
 
 const Ltpz097 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   // 2026-05-28 cellClass 수정
-  // 2026-06-04 flex, minWidth 수정
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '상위누적명',
       field: 'accName',
       flex: 1,
-      minWidth: 120,
-      sortable: false,
+      minWidth: attributeColumnWidth(120),
       filter: false,
       suppressMovable: true,
-      resizable: true,
       spanRows: true,
-      cellClass: `flex! items-center! justify-start! whitespace-pre-line text-left `,
+      autoHeight: true,
+      cellClass: `whitespace-pre-line`,
     },
     {
       headerName: '누적위험명',
       field: 'accRisk',
-      flex: 2,
-      minWidth: 200,
-      sortable: false,
+      flex: 3,
+      minWidth: attributeColumnWidth(200),
       filter: false,
       suppressMovable: true,
-      resizable: true,
-      cellClass: `text-left`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'accRisk' }),
     },
     {
       headerName: '설계별 누적금액',
       field: 'accDesignAmt',
-      width: 90,
-      sortable: false,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       filter: false,
       suppressMovable: true,
-      resizable: true,
       cellClass: `text-right`,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
@@ -151,11 +145,10 @@ const Ltpz097 = () => {
     {
       headerName: '전체누적금액',
       field: 'accTotalAmt',
-      width: 90,
-      sortable: false,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       filter: false,
       suppressMovable: true,
-      resizable: true,
       cellClass: `text-right`,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
@@ -164,34 +157,29 @@ const Ltpz097 = () => {
       headerName: '상위누적명',
       field: 'upperAccName',
       flex: 1,
-      minWidth: 120,
-      sortable: false,
+      minWidth: attributeColumnWidth(120),
       filter: false,
       suppressMovable: true,
-      resizable: true,
       spanRows: true,
-      cellClass: `flex! items-center! justify-start! whitespace-pre-line text-left `,
+      autoHeight: true,
+      cellClass: `whitespace-pre-line`,
     },
     {
       headerName: '누적위험명',
       field: 'upperAccRisk',
-      flex: 2,
-      minWidth: 200,
-      sortable: false,
+      flex: 3,
+      minWidth: attributeColumnWidth(200),
       filter: false,
       suppressMovable: true,
-      resizable: true,
-      cellClass: `text-left`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'upperAccRisk' }),
     },
     {
       headerName: '설계별 누적금액',
       field: 'upperDesignAmt',
-      width: 90,
-      sortable: false,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       filter: false,
       suppressMovable: true,
-      resizable: true,
       cellClass: `text-right`,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
@@ -199,11 +187,10 @@ const Ltpz097 = () => {
     {
       headerName: '전체누적금액',
       field: 'upperTotalAmt',
-      width: 90,
-      sortable: false,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       filter: false,
       suppressMovable: true,
-      resizable: true,
       cellClass: `text-right`,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
@@ -296,7 +283,7 @@ const Ltpz097 = () => {
 
           {/* 조회 정보 */}
           {/* 2026-05-27 */}
-          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={5}>
+          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={3}>
             <TableFold>
               <TableFoldHead title="피보험자의 위험정보(고객정보)"></TableFoldHead>
               <TableFoldBody>
@@ -326,14 +313,17 @@ const Ltpz097 = () => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                <Grid className="w-full grid-rows-[1fr_auto] gap-2 h-full">
+                  <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={DummyData}
                       columnDefs={columnDefs}
-                      defaultColDef={{ sortable: false }}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
                       enableCellSpan={true}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}

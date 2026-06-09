@@ -4,7 +4,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+<<<<<<< HEAD
 import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+=======
+import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+>>>>>>> 08a82133bee210f3d61a591a4401f1ab12e052dc
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';

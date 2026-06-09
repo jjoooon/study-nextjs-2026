@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
 import { LayoutDoc } from '@layout/BaseLayout';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 export function StoryWrap({ children, className }: { children: React.ReactNode; className?: string }) {
   return (

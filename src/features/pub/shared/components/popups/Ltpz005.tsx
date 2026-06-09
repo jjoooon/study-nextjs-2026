@@ -4,9 +4,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CircleCheckIcon, InfoToastIcon } from '@icons';
@@ -22,11 +19,14 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import * as React from 'react';
 
 import Ltpz00501 from './Ltpz00501';
 import Ltpz00502 from './Ltpz00502';
 import Ltpz00503 from './Ltpz00503';
 import Ltpz00504 from './Ltpz00504';
+import { useTabs } from '@/shared/hooks/useTabs';
+import type { PopupBaseProps } from '@/shared/types/uiTypes';
 
 type CheckTab = {
   name: string;

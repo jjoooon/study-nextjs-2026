@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import { Gcol, Grow } from '@atoms';
-import { Badge } from '@uiux/Badge';
+ */ import { Gcol, Grow } from '@atoms';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Badge } from '@uiux/Badge';
 
 const meta: Meta<typeof Badge> = {
   title: 'Components/Common/Badge',
@@ -15,16 +15,19 @@ const meta: Meta<typeof Badge> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>History</h2>
             <ul>
               <li>2026.03.30</li>
             </ul>
-            
+
             <h2>Overview</h2>
             <div>
               <p>
-                Badge 컴포넌트는 상태, 카테고리, 중요 정보를 짧게 강조해 표시하는 UI 요소입니다.<br />
+                Badge 컴포넌트는 상태, 카테고리, 중요 정보를 짧게 강조해 표시하는 UI 요소입니다.
+                <br />
                 variant, color, size 조합으로 같은 의미를 일관된 시각 스타일로 표현할 수 있습니다.
               </p>
             </div>
@@ -38,7 +41,7 @@ const meta: Meta<typeof Badge> = {
               <li>기본 상태 표시</li>
               <li>variant + color 조합</li>
               <li>크기 변경 (sm, md, lg)</li>
-              <li>asChild를 통한 링크/버튼 형태</li> 
+              <li>asChild를 통한 링크/버튼 형태</li>
             </ul>
             <Markdown>
               {`
@@ -71,11 +74,31 @@ import { Badge } from '@uiux/Badge';
                 </tr>
               </thead>
               <tbody>
-                <tr><td>variant</td><td>'contained' | 'soft' | 'outlined' | 'ghost'</td><td>배지 스타일</td></tr>
-                <tr><td>color</td><td>'blue' | 'red' | 'green' | 'primary' | 'gray' | 'bluegray' | 'secondary'</td><td>배지 색상</td></tr>
-                <tr><td>size</td><td>'sm' | 'md' | 'lg'</td><td>배지 크기</td></tr>
-                <tr><td>asChild</td><td>boolean</td><td>자식 요소로 렌더링</td></tr>
-                <tr><td>children</td><td>ReactNode</td><td>배지 라벨</td></tr>
+                <tr>
+                  <td>variant</td>
+                  <td>'contained' | 'soft' | 'outlined' | 'ghost'</td>
+                  <td>배지 스타일</td>
+                </tr>
+                <tr>
+                  <td>color</td>
+                  <td>'blue' | 'red' | 'green' | 'primary' | 'gray' | 'bluegray' | 'secondary'</td>
+                  <td>배지 색상</td>
+                </tr>
+                <tr>
+                  <td>size</td>
+                  <td>'sm' | 'md' | 'lg'</td>
+                  <td>배지 크기</td>
+                </tr>
+                <tr>
+                  <td>asChild</td>
+                  <td>boolean</td>
+                  <td>자식 요소로 렌더링</td>
+                </tr>
+                <tr>
+                  <td>children</td>
+                  <td>ReactNode</td>
+                  <td>배지 라벨</td>
+                </tr>
               </tbody>
             </table>
 
@@ -84,10 +107,18 @@ import { Badge } from '@uiux/Badge';
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={2}>
-                  <Badge variant="contained" color="red">contained</Badge>
-                  <Badge variant="soft" color="red">soft</Badge>
-                  <Badge variant="outlined" color="red">outlined</Badge>
-                  <Badge variant="ghost" color="red">ghost</Badge>
+                  <Badge variant="contained" color="red">
+                    contained
+                  </Badge>
+                  <Badge variant="soft" color="red">
+                    soft
+                  </Badge>
+                  <Badge variant="outlined" color="red">
+                    outlined
+                  </Badge>
+                  <Badge variant="ghost" color="red">
+                    ghost
+                  </Badge>
                 </Grow>
               </Gcol>
             </Unstyled>

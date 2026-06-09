@@ -3,13 +3,13 @@
  */
 'use client';
 
-import { useState } from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grow, Grid } from '@atoms';
 import { FormRow, FormTable, FormCell } from '@common/FormTable';
 import { ArrowNext, ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
+import { useState } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 
 export function DesignStart() {
   return (

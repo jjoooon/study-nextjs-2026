@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
+ */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { PageID } from '@/shared/components/features/PageID';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
 
 const MOCK_DATA = {
   pageName: '장기 신규설계',

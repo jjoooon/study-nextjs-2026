@@ -4,7 +4,6 @@
 
 'use client';
 
-import { SearchIcon } from '@/shared/components/icons';
 import { Gcol, Typo, Grow } from '@atoms';
 import { BulletList } from '@common/BulletList';
 import { BulletListItem } from '@common/BulletList';
@@ -23,6 +22,7 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { SearchIcon } from '@/shared/components/icons';
 
 const Ltpz056 = () => {
   return (
@@ -46,7 +46,7 @@ const Ltpz056 = () => {
               <FormTable caption="FormTable 예시" className="" cols={['w-[20%]', 'w-auto']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'취급자'} variant="default">
-                    <Input aria-label="" width={'16rem'} value={'이한화'} readOnly />
+                    <Input aria-label="" width={'11rem'} value={'이한화'} readOnly />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>

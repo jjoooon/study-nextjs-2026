@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import { Title, Subtitle, Primary, Controls, Canvas, Markdown } from '@storybook/addon-docs/blocks';
-import { Gcol } from '@atoms';
+ */ import { Gcol } from '@atoms';
 import { DesignStart, DesignGeneration, LTPA350Step1, LTPA350Step2 } from '@features/MainFoot';
+import { Title, Subtitle, Primary, Controls, Canvas, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof DesignStart> = {
   title: 'Components/Features/MainFoot',
@@ -15,11 +15,13 @@ const meta: Meta<typeof DesignStart> = {
       page: () => (
         <>
           <Title />
-          <br /><br />
+          <br />
+          <br />
           <h2>Overview</h2>
           <div>
             <p>
-              MainFoot 컴포넌트는 페이지 하단의 주요 정보 및 안내, 저작권, 링크 등을 표시하는 영역입니다.<br />
+              MainFoot 컴포넌트는 페이지 하단의 주요 정보 및 안내, 저작권, 링크 등을 표시하는 영역입니다.
+              <br />
               레이아웃의 일관성을 위해 사용합니다.
             </p>
           </div>

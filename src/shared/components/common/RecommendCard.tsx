@@ -3,11 +3,11 @@
  */
 'use client';
 
-import { useState, type ReactNode } from 'react';
 import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { AiIcon, CircleCheckIcon } from '@icons';
 import { Checkbox } from '@uiux/Checkbox';
+import { useState, type ReactNode } from 'react';
 import { Badge } from '../uiux/Badge';
 import { Button } from '../uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../uiux/Tooltip';
