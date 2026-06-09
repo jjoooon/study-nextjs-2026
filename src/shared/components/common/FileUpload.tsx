@@ -5,7 +5,7 @@
 
 import { useId } from 'react';
 // TODO: @YunJunmo 경로 이동 고려
-// eslint-disable-next-line boundaries/dependencies
+// eslint-disable-next-line boundaries/element-types
 import { Ltpz995Result } from '@/features/pub/shared/components/popups/Ltpz995';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { FileItem } from '@/shared/types/fileTypes';
