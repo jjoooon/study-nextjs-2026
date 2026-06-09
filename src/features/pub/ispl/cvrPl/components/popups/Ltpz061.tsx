@@ -4,11 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-<<<<<<< HEAD
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
-=======
-import { AgGridEmptyComponent } from '@aggrid';
->>>>>>> 08a82133bee210f3d61a591a4401f1ab12e052dc
 import { Grow, Typo, Gcol } from '@atoms'; // 2026-05-27 Grid 삭제
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
