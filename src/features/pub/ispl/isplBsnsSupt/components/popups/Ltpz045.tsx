@@ -3,8 +3,6 @@
  */
 'use client';
 
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -24,6 +22,8 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 const Ltpz045 = () => {
   const [form, setFormField] = useFormFields({
@@ -52,12 +52,13 @@ const Ltpz045 = () => {
               <FormTable variant="head" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input aria-label="" value={'LA26020945959594'} readOnly />
+                    <Input value={'LA26020945959594'} width={'quoteNo'} readOnly />
                     -
-                    <Input aria-label="" width={30} value={'1'} readOnly />
+                    <Input width={26} value={'1'} readOnly />
                   </FormCell>
                   <FormCell title={'계약자'}>
-                    <Input aria-label="" variant="info" value={'김한화(901212-1234567)'} readOnly />
+                    <Input width={84} value={'김한화'} readOnly />
+                    <Input width={114} value={'901212-1234567'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -265,6 +266,10 @@ const Ltpz045 = () => {
                     <FormTable caption="법정대리인 정보" cols={['w-[13rem]', 'w-auto']}>
                       <FormRow>
                         <FormCell title={'이름/주민번호'}>
+                          <Input aria-label="성명 검색" width={108} value={''} readOnly />
+                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
                           박환화(900101-1234567)와의 관계
                           <NativeSelect
                             aria-label="선택"
