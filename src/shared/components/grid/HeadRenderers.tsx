@@ -76,7 +76,7 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
   return (
     <button
       type="button"
-      className="h-full w-full flex justify-center items-center cursor-pointer select-none"
+      className="h-full w-full flex justify-center items-center cursor-pointer"
       onClick={handleSort}
       aria-label={`${label} 정렬`}
       aria-disabled={!enableSorting}

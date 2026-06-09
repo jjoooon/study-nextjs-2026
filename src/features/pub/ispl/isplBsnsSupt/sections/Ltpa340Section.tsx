@@ -3,7 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createAddRowHandler, createDeleteSelectedRowsHandler } from '@aggrid';
+import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { AgGridEmptyComponent, createAddRowHandler, createDeleteSelectedRowsHandler, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -17,10 +21,6 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -40,7 +40,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: 'LA260204310632',
+    field01: 'LA250826291588',
     field02: 'LA00102001',
     field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
     field04: '문서서명',
@@ -90,6 +90,7 @@ const DummyData: DummyDataType[] = [
 
 export default function Ltpa340Section() {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // 행추가, 삭제----------------------------------
   const handleAddRow = React.useMemo(
@@ -155,69 +156,66 @@ export default function Ltpa340Section() {
       headerName: '설계번호',
       field: 'field01',
       flex: 1,
-      minWidth: 110,
-      cellClass: 'editable-cell',
+      minWidth: attributeColumnWidth(120),
+      cellClass: 'text-center editable-cell',
       editable: true,
     },
     {
       headerName: '상품코드',
       field: 'field02',
       flex: 1,
-      minWidth: 90,
-      cellClass: 'editable-cell',
+      minWidth: attributeColumnWidth(90),
+      cellClass: 'text-center editable-cell',
       editable: true,
     },
     {
       headerName: '상품명',
       field: 'field03',
       flex: 6,
-      minWidth: 250,
+      minWidth: attributeColumnWidth(250),
       cellClass: 'text-left',
     },
     {
       headerName: '출력물구분',
       field: 'field04',
-      flex: 1,
-      minWidth: 85,
+      width: attributeColumnWidth(85),
       editable: true,
       cellClass: 'editable-cell',
       cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['전체', '문서서명'] },
+      cellEditorParams: { values: ['문서서명', '전자서명', '전체'] },
       cellRenderer: selectCellRenderer,
     },
     {
       headerName: '판매허용채널',
       field: 'field05',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '보험시기',
       field: 'field06',
-      flex: 1,
-      minWidth: 90,
+      width: attributeColumnWidth(90),
       cellClass: 'text-center',
     },
     {
       headerName: '설계상태',
       field: 'field07',
       flex: 1,
-      minWidth: 70,
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-center',
     },
     {
       headerName: '설계자',
       field: 'field08',
       flex: 1,
-      minWidth: 110,
+      minWidth: attributeColumnWidth(110),
       cellClass: 'text-center',
     },
     {
       headerName: '발행성공여부',
       field: 'field09',
-      flex: 1,
-      minWidth: 85,
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
   ];
@@ -305,9 +303,9 @@ export default function Ltpa340Section() {
               <Grow className="w-full" placement="ec">
                 <Grow>
                   <Typo>서명방법</Typo>
-                  <NativeSelect aria-label="검색조건 선택" width={108} size={'md'}>
+                  <NativeSelect aria-label="검색조건 선택" width={90} size={'md'}>
                     {[
-                      { value: 'selection01', label: '전체' },
+                      { value: 'selection01', label: '선택' },
                       { value: 'selection02', label: '문서서명' },
                       { value: 'selection03', label: '전자서명' },
                     ].map((option) => (
@@ -339,7 +337,7 @@ export default function Ltpa340Section() {
                     enableClickSelection: false,
                   }}
                   selectionColumnDef={{
-                    width: 40,
+                    width: 30,
                     cellClass: 'text-center editable-cell',
                   }}
                   onGridReady={(params) => {

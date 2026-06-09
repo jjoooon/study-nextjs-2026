@@ -528,7 +528,7 @@ const Ltpz00502 = () => {
           <Typo tag={'strong'} variant={'body-lg'}>
             확인사항
           </Typo>
-          <Typo variant={'body-md'}>단위:원</Typo>
+          <Typo variant={'body-md'}>단위: 원</Typo>
         </Grow>
 
         <div className="ag-theme-alpine min-h-[12.3rem]">

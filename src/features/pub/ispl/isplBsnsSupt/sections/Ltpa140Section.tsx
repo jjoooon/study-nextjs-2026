@@ -3,7 +3,9 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 
@@ -22,8 +24,6 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 
 import '@/shared/lib/agGridPub';
 // dummy data
@@ -60,6 +60,36 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
+    field01: '2026-05-01',
+    field02: 'LA2414313',
+    field03: 'TEXT',
+    field04: 'TEXT',
+    field05: 'TEXT',
+    field06: '2A',
+    field07: 'TEXT',
+    field08: '2026-05-01',
+    field09: 'TEXT',
+    field10: '2026-05-01',
+    field11: 'TEXT',
+    field12: 'TEXT',
+    field13: 'TEXT',
+    field14: '2026-05-01',
+    field15: 'TEXT',
+    field16: 'TEXT',
+    field17: '김한화',
+    field18: '2026-05-01',
+    field19: '김한화',
+    field20: '2026-05-01',
+    field21: '관계순번',
+    field22: 'TEXT',
+    field23: '김한화',
+    field24: '김한화',
+    field25: '김한화',
+    field26: 'TEXT',
+    field27: 'TEXT',
+  },
+  {
+    id: 2,
     field01: 'YYYY-MM-DD',
     field02: 'LA2414313',
     field03: 'TEXT',
@@ -91,6 +121,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa140Section() {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   // 2026-06-01 width, flex 수정
   // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
@@ -102,9 +133,7 @@ export default function Ltpa140Section() {
         {
           headerName: '상품코드',
           flex: 1,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          minWidth: attributeColumnWidth(100),
           cellRenderer: createFieldRenderer<DummyDataType>('field01', 'field02'),
         },
       ],
@@ -116,9 +145,7 @@ export default function Ltpa140Section() {
         {
           headerName: '의료비보종',
           flex: 1,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          minWidth: attributeColumnWidth(100),
           cellRenderer: createFieldRenderer<DummyDataType>('field03', 'field04'),
         },
       ],
@@ -130,9 +157,7 @@ export default function Ltpa140Section() {
         {
           headerName: '상해급수',
           flex: 1,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          minWidth: attributeColumnWidth(100),
           cellRenderer: createFieldRenderer<DummyDataType>('field05', 'field06'),
         },
       ],
@@ -144,9 +169,7 @@ export default function Ltpa140Section() {
         {
           headerName: '보험시기',
           flex: 1,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          minWidth: attributeColumnWidth(100),
           cellRenderer: createFieldRenderer<DummyDataType>('field07', 'field08'),
         },
       ],
@@ -158,9 +181,7 @@ export default function Ltpa140Section() {
         {
           headerName: '보험종기',
           flex: 1,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          minWidth: attributeColumnWidth(100),
           cellRenderer: createFieldRenderer<DummyDataType>('field09', 'field10'),
         },
       ],
@@ -172,9 +193,7 @@ export default function Ltpa140Section() {
         {
           headerName: '배서번호',
           flex: 1,
-          minWidth: 120,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          minWidth: attributeColumnWidth(100),
           cellRenderer: createFieldRenderer<DummyDataType>('field11', 'field12'),
         },
       ],
@@ -187,9 +206,7 @@ export default function Ltpa140Section() {
         {
           headerName: '배서기준일',
           flex: 1,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          minWidth: attributeColumnWidth(100),
           cellRenderer: createFieldRenderer<DummyDataType>('field13', 'field14'),
         },
       ],
@@ -201,9 +218,7 @@ export default function Ltpa140Section() {
         {
           headerName: '계약상태',
           flex: 1.5,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          minWidth: attributeColumnWidth(100),
           cellRenderer: createFieldRenderer<DummyDataType>('field15', 'field16'),
         },
       ],
@@ -214,10 +229,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '상태변경일',
-          flex: 1,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          width: attributeColumnWidth(90),
           cellRenderer: createFieldRenderer<DummyDataType>('field17', 'field18'),
         },
       ],
@@ -228,10 +240,7 @@ export default function Ltpa140Section() {
       children: [
         {
           headerName: '부활일자',
-          flex: 1,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          width: attributeColumnWidth(90),
           cellRenderer: createFieldRenderer<DummyDataType>('field19', 'field20'),
         },
       ],
@@ -243,10 +252,7 @@ export default function Ltpa140Section() {
         {
           headerName: '담보건수',
           field: 'field22',
-          flex: 1,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          width: attributeColumnWidth(90),
           cellRenderer: createFieldRenderer<DummyDataType>('field21', 'field22'),
         },
       ],
@@ -258,10 +264,7 @@ export default function Ltpa140Section() {
         {
           headerName: '변경후피보험자',
           field: 'field24',
-          flex: 1,
-          minWidth: 100,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          width: attributeColumnWidth(100),
           cellRenderer: createFieldRenderer<DummyDataType>('field23', 'field24'),
         },
       ],
@@ -269,15 +272,11 @@ export default function Ltpa140Section() {
     {
       headerName: '피보험자명',
       autoHeight: true,
-      flex: 1,
       children: [
         {
-          headerName: '피보험자명',
+          headerName: '수신기관',
           field: 'field25',
-          flex: 1,
-          minWidth: 80,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          width: attributeColumnWidth(80),
           colSpan: () => 2,
           cellRenderer: (params: { data?: DummyDataType }) => {
             const field25 = String(params.data?.field25 ?? '');
@@ -299,9 +298,7 @@ export default function Ltpa140Section() {
           headerName: '유효',
           field: 'field27',
           flex: 1,
-          minWidth: 80,
-          cellClass: 'text-center px-0!',
-          autoHeight: true,
+          minWidth: attributeColumnWidth(80),
           colSpan: () => 0,
         },
       ],
@@ -328,12 +325,12 @@ export default function Ltpa140Section() {
                     <Input value={'LA2414313498143'} required />
                   </FormCell>
                   <FormCell title={'유효여부'}>
-                    <RadioGroup className="gap-1" value={'전체'} onValueChange={() => {}} width="full">
+                    <RadioGroup defaultValue={'전체'} onValueChange={() => {}} width="full">
                       {[
                         { value: '전체', label: '전체' },
                         { value: '유효', label: '유효' },
                       ].map((option) => (
-                        <RadioGroupItem key={option.value} value={option.value} size="lg">
+                        <RadioGroupItem key={option.value} value={option.value}>
                           {option.label}
                         </RadioGroupItem>
                       ))}
@@ -364,6 +361,12 @@ export default function Ltpa140Section() {
                   rowData={DummyData}
                   columnDefs={columnDefs}
                   domLayout="normal"
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                    cellClass: 'text-center px-0!',
+                    autoHeight: true,
+                  }}
                 />
               </div>
             </Gcol>
@@ -386,8 +389,11 @@ export default function Ltpa140Section() {
                         onChange={() => {}}
                       >
                         {[
-                          { value: 'selection0401', label: '선택1' },
-                          { value: 'selection0402', label: '선택2' },
+                          { value: '선택', label: '선택' },
+                          { value: '전송결과생성', label: '전송결과생성' },
+                          { value: '전문전송처리', label: '전문전송처리' },
+                          { value: '전송전DB저장', label: '전송전DB저장' },
+                          { value: 'DB저장후전송', label: 'DB저장후전송' },
                         ].map((option) => (
                           <NativeSelectOption key={option.value} value={option.value}>
                             {option.label}
@@ -405,8 +411,10 @@ export default function Ltpa140Section() {
                         onChange={() => {}}
                       >
                         {[
-                          { value: 'selection0403', label: '선택1' },
-                          { value: 'selection0404', label: '선택2' },
+                          { value: '선택', label: '선택' },
+                          { value: '제외', label: '제외' },
+                          { value: '온라인처리', label: '온라인처리' },
+                          { value: '배치처리', label: '배치처리' },
                         ].map((option) => (
                           <NativeSelectOption key={option.value} value={option.value}>
                             {option.label}

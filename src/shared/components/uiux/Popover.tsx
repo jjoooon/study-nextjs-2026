@@ -109,7 +109,6 @@ const PopoverContent = React.forwardRef<React.ElementRef<typeof PopoverPrimitive
             e.preventDefault();
             // inputRef.current?.focus(); // trigger input ref를 여기서 받아서 focus
           }}
-          onMouseDown={(e) => e.preventDefault()}
           {...rest}
         >
           {closeButton && (

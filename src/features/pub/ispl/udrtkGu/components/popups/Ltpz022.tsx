@@ -253,7 +253,7 @@ const Ltpz022 = () => {
               지침확인결과
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (Ltpz022)
+              (LTPZ022)
             </Typo>
           </DialogTitle>
         </DialogHeader>

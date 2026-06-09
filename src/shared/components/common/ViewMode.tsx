@@ -21,7 +21,7 @@ export const ViewMode = ({ state = true, label, onChange }: ViewModeProps) => {
       />
       <label
         htmlFor="docType"
-        className={`relative h-[2.8rem] p-[0.1rem] rounded-full border bg-white border-[var(--color-gray-15)] flex justify-center items-center gap-0 cursor-pointer select-none 
+        className={`relative h-[2.8rem] p-[0.1rem] rounded-full border bg-white border-[var(--color-gray-15)] flex justify-center items-center gap-0 cursor-pointer  
           [&>.peer-1]:text-[var(--color-gray-0)] 
           [&>.peer-1]:bg-gradient-to-r 
           [&>.peer-1]:from-[#ff5c2e] 
