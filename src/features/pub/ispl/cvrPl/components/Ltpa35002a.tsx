@@ -205,6 +205,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         valueFormatter: numberValueFormatter<AgGridRow>,
       },
       {
+        headerName: '가입금액(만원)',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: '가입금액',
@@ -250,6 +251,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       },
 
       {
+        headerName: '보험료(원)',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: '보험료',
@@ -303,6 +305,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       },
 
       {
+        headerName: 'UW예상',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: 'UW',
@@ -324,6 +327,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         cellRenderer: duplicateRenderer,
         resizable: false,
         sortable: false,
+        suppressCellSelection: true,
       },
     ],
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]
@@ -537,6 +541,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 groupDefaultExpanded={0}
                 getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
                 autoGroupColumnDef={{
+                  headerName: '담보명',
                   headerComponent: productNameHeader,
                   field: 'id',
                   flex: 20,
