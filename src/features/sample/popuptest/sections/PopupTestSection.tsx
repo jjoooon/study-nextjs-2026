@@ -1,28 +1,9 @@
 'use client';
 
-import { FileUpload } from '@/shared/components/common/FileUpload';
-import useMounted from '@/shared/hooks/useMounted';
+import { FileItem, FileUpload } from '@/shared/components/common/FileUpload';
 import log from '@/shared/utils/logger';
-import { open } from '@/shared/utils/popup/popupApi';
 
 const logger = log.getLogger('Popup');
-
-const filesForPopup = [
-  {
-    fileExtension: 'png',
-    fileSize: 6770,
-    fileType: 'image/png',
-    filename: 'file1',
-    id: '000',
-  },
-  {
-    fileExtension: 'png',
-    fileSize: 5000,
-    fileType: 'image/png',
-    filename: 'file2',
-    id: '111',
-  },
-];
 
 const filesForButton = [
   {
@@ -38,16 +19,13 @@ const filesForButton = [
 ];
 
 export default function PopupTestSection() {
-  useMounted(() => {
-    logger.info('PopupTestSection mounted');
-  });
-
   const handleClickButton = async () => {
-    const result = await open('LTPZ995', { files: filesForPopup });
-    logger.debug(result);
+    logger.debug('파일업로드 팝업 오픈 버튼 클릭 시 호출');
   };
 
-  const handleRemove = () => {};
+  const handleRemove = (file: FileItem, index: number) => {
+    logger.debug('파일업로드 팝업에서 파일 삭제 시 호출', file, index);
+  };
 
   return <FileUpload files={filesForButton} onClickButton={handleClickButton} onRemove={handleRemove} />;
 }

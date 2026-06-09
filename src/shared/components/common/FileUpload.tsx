@@ -2,15 +2,36 @@
 
 import { useId, useState, useEffect } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import log from '@/shared/utils/logger';
+import { open } from '@/shared/utils/popup/popupApi';
 import { Grow, Gcol, Typo } from '@atoms';
 import { FileUploadIcon, InputClearIcon } from '@icons';
 import { FileItemIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
+const logger = log.getLogger('FileUpload');
+
+const filesForPopup = [
+  {
+    fileExtension: 'png',
+    fileSize: 6770,
+    fileType: 'image/png',
+    filename: 'file1',
+    id: '000',
+  },
+  {
+    fileExtension: 'png',
+    fileSize: 5000,
+    fileType: 'image/png',
+    filename: 'file2',
+    id: '111',
+  },
+];
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-type FileItem = {
+export type FileItem = {
   name: string;
   ext?: string;
   key?: string;
@@ -52,6 +73,12 @@ export function FileUpload({
     onRemove?.(file, index); // 콜백 호출
   };
 
+  const handleClickButton = async () => {
+    onClickButton?.();
+    const result = await open('LTPZ995', { files: filesForPopup });
+    logger.debug(result);
+  };
+
   return (
     <Grow placement={'ss'} gap={1.5} className={className}>
       {/* ── 파일선택 버튼 ── */}
@@ -63,7 +90,7 @@ export function FileUpload({
           aria-label="파일선택"
           aria-describedby={errorMessage ? `${baseId}-error` : undefined}
           aria-invalid={!!errorMessage}
-          onClick={onClickButton}
+          onClick={handleClickButton}
         >
           <FileUploadIcon size={12} />
           파일선택
@@ -79,7 +106,7 @@ export function FileUpload({
             ext={file.ext}
             hasError={!!errorMessage}
             onNameClick={() => {
-              onClickButton?.();
+              handleClickButton();
               onClickFileName?.(file, index);
             }}
             onRemove={() => handleRemove(file, index)}
