@@ -2,7 +2,6 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 import { LayoutDoc } from '@layout/BaseLayout';
-import * as React from 'react';
 import Ltpz995 from '@/features/pub/shared/components/popups/Ltpz995';
 
 export default {
@@ -13,9 +12,7 @@ export default {
 export const Default = () => {
   return (
     <LayoutDoc>
-      <div className="flex w-full h-screen items-center justify-center max-w-[118rem] outline outline-1 outline-[red] -outline-offset-2 mx-auto">
-        <Ltpz995 resolve={() => {}} />
-      </div>
+      <Ltpz995 resolve={() => {}} />
     </LayoutDoc>
   );
 };

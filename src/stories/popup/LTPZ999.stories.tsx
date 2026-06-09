@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { LayoutDoc } from '@layout/BaseLayout';
-import type { Meta, StoryObj } from '@storybook/react';
 
+import { LayoutDoc } from '@layout/BaseLayout';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import Ltpz999 from '@/features/pub/shared/components/popups/Ltpz999';
 
 const meta: Meta<typeof Ltpz999> = {
