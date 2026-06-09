@@ -4,9 +4,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -28,6 +25,9 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 
 type DummyDataType = {
   id: number;
@@ -343,17 +343,11 @@ const Ltpz002 = () => {
                     <TableFoldBody className="grid-rows-[auto_1fr] gap-[0.8rem]">
                       <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[14.5rem]']}>
                         <FormRow>
-                          <FormCell title={'설계번호'}>
-                            LA260112297637
-                          </FormCell>
-                          <FormCell title={'설계상태'}>
-                            설계완료
-                          </FormCell>
+                          <FormCell title={'설계번호'}>LA260112297637</FormCell>
+                          <FormCell title={'설계상태'}>설계완료</FormCell>
                         </FormRow>
                         <FormRow>
-                          <FormCell title={'취급기관'}>
-                            강동 GA지점
-                          </FormCell>
+                          <FormCell title={'취급기관'}>강동 GA지점</FormCell>
                           <FormCell title={'취급자'}>
                             <Tooltip>
                               <TooltipTrigger>
@@ -387,17 +381,11 @@ const Ltpz002 = () => {
                     <TableFoldBody className="grid-rows-[auto_1fr] gap-[0.8rem]">
                       <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[14.5rem]']}>
                         <FormRow>
-                          <FormCell title={'설계번호'}>
-                            LA260112297637
-                          </FormCell>
-                          <FormCell title={'설계상태'}>
-                            설계완료
-                          </FormCell>
+                          <FormCell title={'설계번호'}>LA260112297637</FormCell>
+                          <FormCell title={'설계상태'}>설계완료</FormCell>
                         </FormRow>
                         <FormRow>
-                          <FormCell title={'취급기관'}>
-                            강동 GA지점
-                          </FormCell>
+                          <FormCell title={'취급기관'}>강동 GA지점</FormCell>
                           <FormCell title={'취급자'} tdStyle={{ paddingRight: 0 }}>
                             <Tooltip>
                               <TooltipTrigger>
