@@ -98,7 +98,8 @@ const Ltpz072 = () => {
     () => [
       {
         headerName: '분류',
-        width: 120,
+        flex: 1,
+        width: attributeColumnWidth(120),
         cellClass: 'text-center px-0!',
         cellRenderer: createFieldRenderer<DummyDataType>('field01', '[field02,40]', 'row'),
       },
@@ -112,13 +113,14 @@ const Ltpz072 = () => {
       },
       {
         headerName: '부담보기간',
-        width: 100,
+        width: attributeColumnWidth(100),
         cellClass: 'text-center px-0!',
         cellRenderer: createFieldRenderer<DummyDataType>('[field04,50]', '[field05,50]', 'row'),
       },
       {
         headerName: '사유내용',
-        width: 120,
+        flex: 1,
+        width: attributeColumnWidth(120),
         field: 'field06',
         cellClass: 'text-center',
       },
@@ -144,7 +146,7 @@ const Ltpz072 = () => {
         </DialogHeader>
 
         <DialogSection>
-          <div className="ag-theme-alpine min-h-[18.4rem]">
+          <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={DummyData}

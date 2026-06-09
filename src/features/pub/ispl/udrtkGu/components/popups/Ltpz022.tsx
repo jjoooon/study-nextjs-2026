@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -191,51 +191,56 @@ const Ltpz022 = () => {
     suppressMovable: true,
     headerClass: 'ag-header-center',
   };
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
-  const spanColumnDefs: ColDef<UnderwritingViolationRow>[] = [
-    {
-      headerName: '인수제한',
-      field: 'criteria',
-      width: 80,
-      spanRows: true,
-      cellClass: 'flex! items-center! justify-center! whitespace-pre-line text-center',
-      cellStyle: (params) => ({
-        ...getCriteriaCellStyle(params.data?.criteria ?? ''),
-        ...getSelectedCellStyle(isCriteriaSelected(params.data?.criteria ?? '')),
-      }),
-      cellRenderer: (params: ICellRendererParams<UnderwritingViolationRow>) => {
-        const criteria = params.data?.criteria ?? '';
-        const color = criteriaColorMap[criteria];
+  const spanColumnDefs = React.useMemo<ColDef<UnderwritingViolationRow>[]>(
+    () => [
+      {
+        headerName: '인수제한',
+        field: 'criteria',
+        flex: 1,
+        width: attributeColumnWidth(80),
+        spanRows: true,
+        cellClass: 'flex! items-center! justify-center! whitespace-pre-line text-center',
+        cellStyle: (params) => ({
+          ...getCriteriaCellStyle(params.data?.criteria ?? ''),
+          ...getSelectedCellStyle(isCriteriaSelected(params.data?.criteria ?? '')),
+        }),
+        cellRenderer: (params: ICellRendererParams<UnderwritingViolationRow>) => {
+          const criteria = params.data?.criteria ?? '';
+          const color = criteriaColorMap[criteria];
 
-        return (
-          <div
-            className="w-full leading-[1.3]"
-            style={color ? { color } : undefined}
-            dangerouslySetInnerHTML={{ __html: String(criteria).replace(/\n/g, '<br/>') }}
-          />
-        );
+          return (
+            <div
+              className="w-full leading-[1.3]"
+              style={color ? { color } : undefined}
+              dangerouslySetInnerHTML={{ __html: String(criteria).replace(/\n/g, '<br/>') }}
+            />
+          );
+        },
       },
-    },
-    {
-      headerName: '위배내용',
-      field: 'details',
-      wrapText: true,
-      autoHeight: true,
-      flex: 1,
-      cellStyle: (params) => ({
-        whiteSpace: 'normal',
-        wordWrap: 'break-word',
-        ...getAlternatingCellStyle(params.node.rowIndex),
-        ...getSelectedCellStyle(isDetailsSelected(params.data?.id ?? -1)),
-      }),
-      cellRenderer: (params: ICellRendererParams<UnderwritingViolationRow>) => (
-        <div
-          className="h-full w-full py-1.5 pl-1 leading-[1.3] whitespace-normal"
-          dangerouslySetInnerHTML={{ __html: applyDetailsColor(String(params.data?.details ?? '')) }}
-        />
-      ),
-    },
-  ];
+      {
+        headerName: '위배내용',
+        field: 'details',
+        wrapText: true,
+        autoHeight: true,
+        flex: 4,
+        cellStyle: (params) => ({
+          whiteSpace: 'normal',
+          wordWrap: 'break-word',
+          ...getAlternatingCellStyle(params.node.rowIndex),
+          ...getSelectedCellStyle(isDetailsSelected(params.data?.id ?? -1)),
+        }),
+        cellRenderer: (params: ICellRendererParams<UnderwritingViolationRow>) => (
+          <div
+            className="h-full w-full py-1.5 pl-1 leading-[1.3] whitespace-normal"
+            dangerouslySetInnerHTML={{ __html: applyDetailsColor(String(params.data?.details ?? '')) }}
+          />
+        ),
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
@@ -303,7 +308,7 @@ const Ltpz022 = () => {
               ></Button>
             )}
           >
-            <div className="ag-theme-alpine ag-border-t min-h-[16rem]">
+            <div className="ag-theme-alpine ag-border-t inner-scroll" data-row={violationRowData.length}>
               <AgGridReact<UnderwritingViolationRow>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}

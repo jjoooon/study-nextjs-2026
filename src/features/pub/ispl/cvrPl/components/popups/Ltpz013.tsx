@@ -184,7 +184,7 @@ const Ltpz013 = () => {
       {
         headerName: '담보명',
         field: 'field1',
-        flex: 1,
+        flex: 2,
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
         colSpan: (params) => {
           // 합계 행이면 이름+서브레이블 합치기
@@ -195,8 +195,8 @@ const Ltpz013 = () => {
       {
         headerName: '가입금액(만원)',
         field: 'field2',
-        flex: 1,
-        minwidth: attributeColumnWidth(80),
+        flex: 2,
+        minwidth: attributeColumnWidth(100),
         valueFormatter: numberValueFormatter,
         colSpan: (params) => {
           // 합계 행이면 숨김

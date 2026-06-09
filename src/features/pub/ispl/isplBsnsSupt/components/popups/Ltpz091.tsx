@@ -3,8 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -24,8 +23,10 @@ import {
 
 import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { useMemo } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 
 type LTPZ091Tab = { value: string; label: string };
@@ -188,67 +189,71 @@ const Ltpz091 = () => {
   // 2026-06-01 width, flex 수정
   // 2026-06-04 flex, minWidth 수정
   // 각 컬럼별 cellRenderer 예시 명확화
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: '제목',
-      flex: 2.5,
-      minWidth: 150,
-      cellClass: 'text-left',
-      cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
-        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-          {params.data?.field01}
-        </Button>
-      ),
-    },
-    {
-      headerName: '요약내용',
-      flex: 6,
-      minWidth: 300,
-      field: 'field02',
-      cellClass: 'text-left editable-cell',
-      editable: true,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
-    },
-    {
-      headerName: '등록일',
-      flex: 1,
-      minWidth: 80,
-      cellClass: 'text-center',
-      field: 'field03',
-    },
-    {
-      headerName: '표시여부',
-      flex: 1,
-      minWidth: 60,
-      field: 'field04',
-      cellClass: 'text-center editable-cell',
-      editable: true,
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: {
-        values: ['Y', 'N'],
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
+    () => [
+      {
+        headerName: '제목',
+        flex: 3,
+        minWidth: attributeColumnWidth(150),
+        cellClass: 'text-left',
+        cellRenderer: (params: ICellRendererParams<DummyDataType, string | number>) => (
+          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+            {params.data?.field01}
+          </Button>
+        ),
       },
-    },
-    {
-      headerName: '표시순서',
-      flex: 1,
-      minWidth: 60,
-      cellClass: 'text-center',
-      field: 'field05',
-      editable: true,
-    },
-    {
-      headerName: '다운허용',
-      flex: 1,
-      minWidth: 60,
-      field: 'field06',
-      cellClass: 'text-center editable-cell',
-      editable: true,
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: {
-        values: ['Y', 'N'],
+      {
+        headerName: '요약내용',
+        flex: 6,
+        minWidth: attributeColumnWidth(300),
+        field: 'field02',
+        cellClass: 'text-left editable-cell',
+        editable: true,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
       },
-    },
-  ];
+      {
+        headerName: '등록일',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+        field: 'field03',
+      },
+      {
+        headerName: '표시여부',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        field: 'field04',
+        cellClass: 'text-center editable-cell',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['Y', 'N'],
+        },
+      },
+      {
+        headerName: '표시순서',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        cellClass: 'text-center',
+        field: 'field05',
+        editable: true,
+      },
+      {
+        headerName: '다운허용',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        field: 'field06',
+        cellClass: 'text-center editable-cell',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['Y', 'N'],
+        },
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
@@ -314,7 +319,7 @@ const Ltpz091 = () => {
                     </Grow>
                   </Grow>
                   <Grid className="w-full">
-                    <div className="ag-theme-alpine">
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
