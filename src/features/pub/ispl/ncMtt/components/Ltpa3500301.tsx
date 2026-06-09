@@ -1661,7 +1661,7 @@ export const Ltpa3500301 = ({
       </LayoutScrollItem>
       {!sampleMode && (
         <LayoutScrollItem
-          className={`w-full h-[100% - 3rem] gap-1 flex flex-col sticky ${mtValue === '-3rem' ? 'mt-[-3rem]' : ''}`}
+          className={`h-[100% - 3rem] w-full gap-1 flex flex-col sticky ${mtValue === '-3rem' ? 'mt-[-3rem]' : ''}`}
         >
           <Gcol
             className="top-0 z-20 w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem]"

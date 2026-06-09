@@ -1,12 +1,19 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */import type { Meta, StoryObj } from '@storybook/react';
-import { Gcol, Grow } from '@atoms';
+import { Gcol } from '@atoms';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 import { FileUpload } from '@common/FileUpload';
 
-const SAMPLE_FILES = [{ name: '매우 긴 파일명 입니다.이렇게 길면 잘립니다 확인용' }];
-
+const SAMPLE_FILES = [
+  {
+    id: 'file-1',
+    filename: '매우 긴 파일명 입니다.이렇게 길면 잘립니다 확인용.png',
+    fileSize: 1024,
+    fileExtension: 'png',
+    fileType: 'image/png',
+  },
+];
 
 const meta: Meta<typeof FileUpload> = {
   title: 'Components/Forms/FileUpload',
@@ -48,9 +55,17 @@ const meta: Meta<typeof FileUpload> = {
 import { FileUpload } from '@common/FileUpload';
 
 <FileUpload
-  files={[{ name: '첨부파일.png', key: 'file-1' }]}
+  files={[
+    {
+      id: 'file-1',
+      filename: '첨부파일.png',
+      fileSize: 1024,
+      fileExtension: 'png',
+      fileType: 'image/png',
+    },
+  ]}
   onClickButton={() => { /* 파일 선택 다이얼로그 */ }}
-  onRemove={(file, index) => { /* 목록에서 제거 */ }}
+  onChange={(files) => { /* 변경된 목록 반영 */ }}
 />
 \`\`\`
             `}
@@ -67,10 +82,10 @@ import { FileUpload } from '@common/FileUpload';
               </tr>
             </thead>
             <tbody>
-              <tr><td>files</td><td>{'{ name: string; key?: string }[]'}</td><td>표시할 파일 목록</td></tr>
+              <tr><td>files</td><td>{'FileItem[]'}</td><td>표시할 파일 목록</td></tr>
               <tr><td>errorMessage</td><td>string</td><td>에러 문구 표시 + 파일명 빨간색 밑줄</td></tr>
               <tr><td>onClickButton</td><td>{'() => void'}</td><td>파일선택 버튼 클릭 콜백</td></tr>
-              <tr><td>onRemove</td><td>{'(file, index) => void'}</td><td>파일 태그 X 클릭 콜백</td></tr>
+              <tr><td>onChange</td><td>{'(files: FileItem[]) => void'}</td><td>파일 목록 변경 콜백</td></tr>
             </tbody>
           </table>
 
@@ -78,7 +93,7 @@ import { FileUpload } from '@common/FileUpload';
           <p>파일이 선택되지 않은 기본 상태입니다.</p>
           <Unstyled>
             <Gcol gap={4} variant="box-line" className="p-16">
-              <FileUpload files={[]} onClickButton={() => {}} onRemove={() => {}} />
+              <FileUpload files={[]} onClickButton={() => {}} onChange={() => {}} />
             </Gcol>
           </Unstyled>
 
@@ -86,7 +101,7 @@ import { FileUpload } from '@common/FileUpload';
           <p>파일명 hover 시 <strong style={{ color: '#006FF2' }}>#006FF2</strong> 파란색 + 밑줄로 변경되며, 파일명 전체가 툴팁으로 표시됩니다.</p>
           <Unstyled>
             <Gcol gap={4} variant="box-line" className="p-16">
-              <FileUpload files={SAMPLE_FILES} onClickButton={() => {}} onRemove={() => {}} />
+              <FileUpload files={SAMPLE_FILES} onClickButton={() => {}} onChange={() => {}} />
             </Gcol>
           </Unstyled>
 
@@ -98,7 +113,7 @@ import { FileUpload } from '@common/FileUpload';
                 files={SAMPLE_FILES}
                 errorMessage="파일 형식이 올바르지 않습니다."
                 onClickButton={() => {}}
-                onRemove={() => {}}
+                onChange={() => {}}
               />
             </Gcol>
           </Unstyled>
@@ -121,8 +136,8 @@ import { FileUpload } from '@common/FileUpload';
       description: '파일선택 버튼 클릭 콜백',
       table: { category: '이벤트 props' },
     },
-    onRemove: {
-      description: '파일 태그 X 클릭 콜백 (file, index)',
+    onChange: {
+      description: '파일 목록 변경 콜백',
       table: { category: '이벤트 props' },
     },
     id: { table: { disable: true } },
@@ -132,7 +147,7 @@ import { FileUpload } from '@common/FileUpload';
     files: [],
     errorMessage: '',
     onClickButton: () => {},
-    onRemove: () => {},
+    onChange: () => {},
   },
 };
 
