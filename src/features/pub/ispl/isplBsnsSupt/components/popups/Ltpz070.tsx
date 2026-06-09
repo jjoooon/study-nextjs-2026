@@ -585,14 +585,14 @@ const Ltpz070 = () => {
                   <div
                     className="absolute top-0 bottom-0 right-0 z-10 border rounded-md pointer-events-none"
                     style={{
-                      width: '36.7rem',
+                      width: '37.7rem',
                       height: 'auto',
                       borderColor: 'var(--color-primary-50)',
                       borderWidth: '0.2rem',
                       boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)',
                     }}
                   />
-                  <div className="ag-theme-alpine min-h-[15.4rem] inner-scroll" data-row={3}>
+                  <div className="ag-theme-alpine min-h-[15.4rem] inner-scroll Ltpz070" data-row={3}>
                     <AgGridReact<DummyDataType3>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData3}
@@ -619,14 +619,14 @@ const Ltpz070 = () => {
                   <div
                     className="absolute top-0 bottom-0 right-0 z-10 border rounded-md pointer-events-none"
                     style={{
-                      width: '36.7rem',
+                      width: '37.7rem',
                       height: 'auto',
                       borderColor: 'var(--color-primary-50)',
                       borderWidth: '0.2rem',
                       boxShadow: '0 0.4rem 0.8rem 0 rgba(255, 92, 46, 0.2)',
                     }}
                   />
-                  <div className="ag-theme-alpine min-h-[15.4rem] inner-scroll" data-row={3}>
+                  <div className="ag-theme-alpine min-h-[15.4rem] inner-scroll Ltpz070" data-row={3}>
                     <AgGridReact<DummyDataType4>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData4}

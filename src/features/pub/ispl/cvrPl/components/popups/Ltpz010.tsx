@@ -501,7 +501,7 @@ const Ltpz010 = () => {
             <TableFold variant={'accordion'}>
               <TableFoldHead title="담보가입사항" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[15.4rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                   <AgGridReact<DummyDataType>
                     ref={gridRef}
                     getRowId={(params) => String(params.data.id)}

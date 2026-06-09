@@ -95,7 +95,7 @@ const Ltpz351 = () => {
 
         <DialogSection>
           <Gcol className="w-full" placement="ss" gap={2}>
-            <div className="ag-theme-alpine radio-selection min-h-[9.4rem]">
+            <div className="ag-theme-alpine radio-selection inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}

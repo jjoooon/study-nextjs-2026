@@ -95,7 +95,7 @@ const Ltpz017 = () => {
       {
         headerName: '회사플랜명',
         field: 'planName',
-        flex: 6,
+        flex: 5,
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'planName' }),
       },
       {
@@ -106,6 +106,7 @@ const Ltpz017 = () => {
       {
         headerName: '등록일자',
         field: 'registrationDate',
+        flex: 1,
         width: attributeColumnWidth(80),
         cellClass: 'text-center',
       },

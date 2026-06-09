@@ -3,7 +3,6 @@
  */
 'use client';
 
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Gcol } from '@atoms';
@@ -22,6 +21,7 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
 
 type DummyDataType = {
   id: number;
@@ -272,7 +272,7 @@ const Ltpz007 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr] gap-2">
+        <DialogSection className="grid-rows-[1fr_auto] gap-2">
           <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
