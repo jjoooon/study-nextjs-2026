@@ -532,7 +532,7 @@ export default function Ltpa400Section() {
                     </Button>
                   </Grow>
                 </Grow>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+                <div className="ag-theme-alpine">
                   <AgGridReact<Ltpa400DummyDataRow>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
@@ -688,8 +688,8 @@ export default function Ltpa400Section() {
                       <FileExportIcon />
                     </Button>
                   </Grow>
-                  <Gcol className="w-full" gap={1}>
-                    <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <Gcol className="w-full">
+                    <div className="ag-theme-alpine">
                       {/* 2026-05-22 체크박스 삭제 */}
                       <AgGridReact<Ltpa400DummyDataRow2>
                         noRowsOverlayComponent={AgGridEmptyComponent}

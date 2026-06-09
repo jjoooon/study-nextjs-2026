@@ -4,7 +4,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -14,10 +18,6 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 type DummyDataType = {
   id: number;
@@ -31,7 +31,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '홍길동',
+    field01: '홍길동동',
     field02:
       '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
     field03: '2016-01-01',
@@ -181,13 +181,15 @@ export default function Ltpa220Section() {
     }
     return 0;
   };
+  
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '순번',
       field: 'id',
-      width: 40,
+      width: attributeColumnWidth(40),
       cellClass: 'text-center',
       valueFormatter: (params: ValueFormatterParams<DummyDataType>) => {
         if (params.node?.rowPinned === 'bottom') {
@@ -199,7 +201,7 @@ export default function Ltpa220Section() {
     {
       headerName: '피보험자',
       field: 'field01',
-      width: 70,
+      width: attributeColumnWidth(70),
       cellClass: 'text-center',
       colSpan: (params: ColSpanParams<DummyDataType>) => {
         if (params.node?.rowPinned === 'bottom') {
@@ -211,8 +213,8 @@ export default function Ltpa220Section() {
     {
       headerName: '담보명',
       field: 'field02',
-      flex: 10,
-      minWidth: 280,
+      flex: 8,
+      minWidth: attributeColumnWidth(280),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
@@ -220,14 +222,14 @@ export default function Ltpa220Section() {
       headerName: '실납입기간',
       field: 'field03',
       flex: 1,
-      minWidth: 90,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-center',
     },
     {
       headerName: '보험료(원)',
       field: 'field04',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -235,14 +237,14 @@ export default function Ltpa220Section() {
       headerName: 'CSM배수',
       field: 'field05',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-center',
     },
     {
       headerName: 'CSM총액',
       field: 'field06',
       flex: 1,
-      minWidth: 90,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -331,6 +333,8 @@ export default function Ltpa220Section() {
                     pinnedBottomRowData={pinnedBottomRowData}
                     columnDefs={columnDefs}
                     defaultColDef={{
+                      sortable: true,
+                      resizable: true,
                       suppressMovable: true,
                     }}
                     domLayout="normal"

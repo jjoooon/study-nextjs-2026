@@ -3,7 +3,9 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -12,8 +14,6 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Input } from '@uiux/Input';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 
 import '@/shared/lib/agGridPub';
 
@@ -44,7 +44,7 @@ const DummyData: DummyDataType[] = [
     field01: '상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),',
     field02: '2026-03-01',
     field03: '2027-07-01',
-    field04: 9999999,
+    field04: 109999999,
     field05: 9999999,
     field06: 9999999,
     field07: 9999999,
@@ -82,6 +82,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa250Section() {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   // 2026-06-01 width, flex 수정, animateRows 추가
   // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
@@ -89,30 +90,18 @@ export default function Ltpa250Section() {
     {
       headerName: '',
       field: 'id',
-      width: 30,
+      width: attributeColumnWidth(30),
       cellClass: 'text-center',
       autoHeight: true,
     },
     {
       headerName: '보장내용',
       field: 'field01',
-      flex: 1.2,
-      minWidth: 250,
-      cellClass: 'text-left',
+      flex: 3,
+      minWidth: attributeColumnWidth(200),
+      cellClass: 'text-left pr-0!',
       autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        const val = String(params.value ?? '');
-        return (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="truncate-no px-1">{val}</div>
-            </TooltipTrigger>
-            <TooltipContent side="top" hideArrow>
-              {val}
-            </TooltipContent>
-          </Tooltip>
-        );
-      },
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
       headerName: '담보보장기간',
@@ -123,14 +112,14 @@ export default function Ltpa250Section() {
           cellClass: 'text-center',
           field: 'field02',
           autoHeight: true,
-          width: 80,
+          width: attributeColumnWidth(75),
         },
         {
           headerName: '종기',
           cellClass: 'text-center',
           field: 'field03',
           autoHeight: true,
-          width: 80,
+          width: attributeColumnWidth(75),
         },
       ],
     },
@@ -142,7 +131,7 @@ export default function Ltpa250Section() {
           cellClass: 'text-right',
           field: 'field04',
           flex: 1,
-          minWidth: 75,
+          minWidth: attributeColumnWidth(75),
           autoHeight: true,
           valueFormatter: numberValueFormatter<DummyDataType>,
         },
@@ -154,7 +143,7 @@ export default function Ltpa250Section() {
         {
           headerName: '의원',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(70),
           cellClass: 'text-right',
           field: 'field05',
           autoHeight: true,
@@ -163,7 +152,7 @@ export default function Ltpa250Section() {
         {
           headerName: '병원',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(70),
           cellClass: 'text-right',
           field: 'field06',
           autoHeight: true,
@@ -172,7 +161,7 @@ export default function Ltpa250Section() {
         {
           headerName: '요양기관',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(70),
           cellClass: 'text-right',
           field: 'field07',
           autoHeight: true,
@@ -181,7 +170,7 @@ export default function Ltpa250Section() {
         {
           headerName: '약제비',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(70),
           cellClass: 'text-right',
           field: 'field08',
           autoHeight: true,
@@ -190,7 +179,7 @@ export default function Ltpa250Section() {
         {
           headerName: '구공체',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(70),
           cellClass: 'text-right',
           field: 'field09',
           autoHeight: true,
@@ -201,8 +190,7 @@ export default function Ltpa250Section() {
     {
       headerName: '보험상태',
       cellClass: 'text-center',
-      flex: 1,
-      minWidth: 60,
+      width: attributeColumnWidth(60),
       field: 'field10',
       autoHeight: true,
     },
@@ -210,8 +198,7 @@ export default function Ltpa250Section() {
       headerName: '상태변경일자',
       cellClass: 'text-center',
       field: 'field11',
-      flex: 1,
-      minWidth: 80,
+      width: attributeColumnWidth(80),
       autoHeight: true,
     },
     {
@@ -220,7 +207,7 @@ export default function Ltpa250Section() {
         {
           headerName: '보상기간',
           flex: 1,
-          minWidth: 120,
+          minWidth: attributeColumnWidth(120),
           cellClass: 'text-left px-0!',
           autoHeight: true,
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -257,7 +244,7 @@ export default function Ltpa250Section() {
         {
           headerName: '병실차액',
           flex: 1,
-          minWidth: 120,
+          minWidth: attributeColumnWidth(120),
           cellClass: 'text-left px-0!',
           autoHeight: true,
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -294,7 +281,7 @@ export default function Ltpa250Section() {
         {
           headerName: '보험미적용보상',
           flex: 1,
-          minWidth: 120,
+          minWidth: attributeColumnWidth(120),
           cellClass: 'text-left px-0!',
           autoHeight: true,
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -357,19 +344,19 @@ export default function Ltpa250Section() {
                 </FormRow>
               </FormTable>
             </Grow>
-            <Gcol className="w-full" gap={1}>
-              <div className="ag-theme-alpine">
-                {' '}
-                {/* 2026-06-01 높이값 삭제 */}
-                <AgGridReact<DummyDataType>
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyData}
-                  columnDefs={columnDefs}
-                  animateRows={false}
-                  domLayout="normal"
-                />
-              </div>
-            </Gcol>
+            <div className="ag-theme-alpine">
+              {/* 2026-06-01 높이값 삭제 */}
+              <AgGridReact<DummyDataType>
+                getRowId={(params) => String(params.data.id)}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                rowData={DummyData}
+                columnDefs={columnDefs}
+                animateRows={false}
+                domLayout="normal"
+                tooltipShowMode="whenTruncated"
+                tooltipShowDelay={0}
+              />
+            </div>
           </Grid>
         }
       />
