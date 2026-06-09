@@ -1,14 +1,22 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import * as React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-
-import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
-import { Button } from '@uiux/Button';
+ */ import { Gcol, Grow, Typo } from '@atoms';
 import { PlusIcon } from '@icons';
-import { Gcol, Grow, Typo } from '@atoms';
-
+import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Canvas,
+  Source,
+  Markdown,
+  Unstyled,
+} from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@uiux/Button';
+import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
+import * as React from 'react';
 
 type PopoverContentProps = React.ComponentProps<typeof PopoverContent>;
 
@@ -23,7 +31,8 @@ const meta: Meta<PopoverContentProps> = {
         return (
           <>
             <Title />
-            <br /><br />
+            <br />
+            <br />
             <h2>History</h2>
             <ul>
               <li>2026.03.30</li>
@@ -31,7 +40,8 @@ const meta: Meta<PopoverContentProps> = {
             <h2>Overview</h2>
             <div>
               <p>
-                Popover 컴포넌트는 다양한 트리거와 컨텐츠, 애니메이션, 커스텀 스타일을 지원하는 오버레이 UI입니다.<br />
+                Popover 컴포넌트는 다양한 트리거와 컨텐츠, 애니메이션, 커스텀 스타일을 지원하는 오버레이 UI입니다.
+                <br />
                 <b>PopoverContent</b>의 props를 통해 다양한 동작과 스타일을 제어할 수 있습니다.
               </p>
             </div>
@@ -62,12 +72,36 @@ const meta: Meta<PopoverContentProps> = {
                 </tr>
               </thead>
               <tbody>
-                <tr><td>motion</td><td>'fade' | 'scale' | 'none'</td><td>애니메이션 효과</td></tr>
-                <tr><td>variant</td><td>'default' 등</td><td>스타일 variant</td></tr>
-                <tr><td>closeButton</td><td>boolean</td><td>닫기 버튼 표시</td></tr>
-                <tr><td>align</td><td>'start' | 'center' | 'end'</td><td>정렬</td></tr>
-                <tr><td>side</td><td>'top' | 'right' | 'bottom' | 'left'</td><td>위치</td></tr>
-                <tr><td>className</td><td>string</td><td>커스텀 클래스</td></tr>
+                <tr>
+                  <td>motion</td>
+                  <td>'fade' | 'scale' | 'none'</td>
+                  <td>애니메이션 효과</td>
+                </tr>
+                <tr>
+                  <td>variant</td>
+                  <td>'default' 등</td>
+                  <td>스타일 variant</td>
+                </tr>
+                <tr>
+                  <td>closeButton</td>
+                  <td>boolean</td>
+                  <td>닫기 버튼 표시</td>
+                </tr>
+                <tr>
+                  <td>align</td>
+                  <td>'start' | 'center' | 'end'</td>
+                  <td>정렬</td>
+                </tr>
+                <tr>
+                  <td>side</td>
+                  <td>'top' | 'right' | 'bottom' | 'left'</td>
+                  <td>위치</td>
+                </tr>
+                <tr>
+                  <td>className</td>
+                  <td>string</td>
+                  <td>커스텀 클래스</td>
+                </tr>
               </tbody>
             </table>
           </>
@@ -106,7 +140,7 @@ const meta: Meta<PopoverContentProps> = {
       table: { category: 'PopoverContent' },
     },
 
-    children: {table: { disable: true } },
+    children: { table: { disable: true } },
     portalContainer: { table: { disable: true } },
     classWrap: { table: { disable: true } },
     variantStyles: { table: { disable: true } },
@@ -139,8 +173,12 @@ export const Default: Story = {
           </PopoverTrigger>
           <PopoverContent {...args}>
             <Gcol className="w-[11rem] [&>*]:w-full">
-              <Button variant={'outlined'} color={'coolgray'}>옵션 1</Button>
-              <Button variant={'outlined'} color={'coolgray'}>옵션 2</Button>
+              <Button variant={'outlined'} color={'coolgray'}>
+                옵션 1
+              </Button>
+              <Button variant={'outlined'} color={'coolgray'}>
+                옵션 2
+              </Button>
             </Gcol>
           </PopoverContent>
         </Popover>
@@ -155,16 +193,17 @@ export const Default: Story = {
             <Gcol className="w-[11rem] [&>*]:w-full">
               <Grow>
                 <Typo variant={'body-xl'}>안면부창상봉합술치료발생금(1일1회,급여)(CLA09217)</Typo>
-
               </Grow>
               <Gcol>
-                <Typo variant={'body-sm'}>질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여 “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)</Typo>
+                <Typo variant={'body-sm'}>
+                  질병 또는 상해의 직접결과로써 안면부에 입원중 ”급여 안부창상봉합술(3cm이상)”를 받은 경우 또는 통원하여
+                  “급여 안면부창상봉합술(3cm이상)”를 받은경우 보험가입금액 지급(입원 및 통원 각각 1일 1회에 한함)
+                </Typo>
               </Gcol>
             </Gcol>
           </PopoverContent>
         </Popover>
       </Grow>
     );
-},
+  },
 };
- 

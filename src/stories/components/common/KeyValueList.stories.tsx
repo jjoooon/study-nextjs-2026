@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
-import { KeyValueList } from '@common/KeyValueList';
+ */ import { KeyValueList } from '@common/KeyValueList';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 
 type KeyValueListStoryProps = React.ComponentProps<typeof KeyValueList>;
 
@@ -23,11 +23,14 @@ const meta: Meta<typeof KeyValueList> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>Overview</h2>
             <div>
               <p>
-                KeyValueList는 key-value 형태의 정보를 가로 목록으로 표시하는 컴포넌트입니다.<br />
+                KeyValueList는 key-value 형태의 정보를 가로 목록으로 표시하는 컴포넌트입니다.
+                <br />
                 항목 사이 구분자(|)를 자동으로 넣어 요약 정보 영역에 적합합니다.
               </p>
             </div>
@@ -63,19 +66,29 @@ const data = [
                 </tr>
               </thead>
               <tbody>
-                <tr><td>data</td><td>{`{ key: string; value: ReactNode; }[]`}</td><td>표시할 key-value 데이터 배열</td></tr>
-                <tr><td>className</td><td>string</td><td>추가 스타일 클래스</td></tr>
+                <tr>
+                  <td>data</td>
+                  <td>{`{ key: string; value: ReactNode; }[]`}</td>
+                  <td>표시할 key-value 데이터 배열</td>
+                </tr>
+                <tr>
+                  <td>className</td>
+                  <td>string</td>
+                  <td>추가 스타일 클래스</td>
+                </tr>
               </tbody>
             </table>
 
             <h2>Examples</h2>
             <p>다양한 데이터 구성을 통해 KeyValueList를 활용할 수 있습니다.</p>
             <Unstyled>
-              <KeyValueList data={[
-                { key: '계약자', value: '김한화' },
-                { key: '피보험자', value: '김한화' },
-                { key: '보험기간', value: '2026.01.01 ~ 2036.01.01' },
-              ]} />
+              <KeyValueList
+                data={[
+                  { key: '계약자', value: '김한화' },
+                  { key: '피보험자', value: '김한화' },
+                  { key: '보험기간', value: '2026.01.01 ~ 2036.01.01' },
+                ]}
+              />
             </Unstyled>
           </>
         );

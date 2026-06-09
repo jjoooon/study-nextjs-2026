@@ -1,12 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import { Gcol, Grow } from '@atoms';
+ */ import { Gcol, Grow } from '@atoms';
+import { TooltipQ } from '@common/TooltipQ';
+import { QuestionMark } from '@icons';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { TooltipQ } from '@common/TooltipQ';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import { QuestionMark } from '@icons';
 
 const meta: Meta<typeof TooltipContent> = {
   title: 'Components/Common/Tooltip',
@@ -18,11 +18,14 @@ const meta: Meta<typeof TooltipContent> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>Overview</h2>
             <div>
               <p>
-                Tooltip 컴포넌트는 사용자 액션(hover, focus) 시 보조 설명을 표시하는 UI 요소입니다.<br />
+                Tooltip 컴포넌트는 사용자 액션(hover, focus) 시 보조 설명을 표시하는 UI 요소입니다.
+                <br />
                 variant, side, sideOffset 조합으로 표현 스타일과 위치를 조정할 수 있습니다.
               </p>
             </div>
@@ -71,11 +74,31 @@ import { TooltipQ } from '@common/TooltipQ';
                 </tr>
               </thead>
               <tbody>
-                <tr><td>variant</td><td>'default' | 'dark' | 'light'</td><td>툴팁 색상 스타일</td></tr>
-                <tr><td>side</td><td>'top' | 'right' | 'bottom' | 'left'</td><td>트리거 기준 표시 위치</td></tr>
-                <tr><td>align</td><td>'start' | 'center' | 'end'</td><td>트리거 기준 정렬 방향</td></tr>
-                <tr><td>sideOffset</td><td>number</td><td>트리거와의 간격</td></tr>
-                <tr><td>children</td><td>ReactNode</td><td>툴팁 내용</td></tr>
+                <tr>
+                  <td>variant</td>
+                  <td>'default' | 'dark' | 'light'</td>
+                  <td>툴팁 색상 스타일</td>
+                </tr>
+                <tr>
+                  <td>side</td>
+                  <td>'top' | 'right' | 'bottom' | 'left'</td>
+                  <td>트리거 기준 표시 위치</td>
+                </tr>
+                <tr>
+                  <td>align</td>
+                  <td>'start' | 'center' | 'end'</td>
+                  <td>트리거 기준 정렬 방향</td>
+                </tr>
+                <tr>
+                  <td>sideOffset</td>
+                  <td>number</td>
+                  <td>트리거와의 간격</td>
+                </tr>
+                <tr>
+                  <td>children</td>
+                  <td>ReactNode</td>
+                  <td>툴팁 내용</td>
+                </tr>
               </tbody>
             </table>
 
@@ -86,29 +109,35 @@ import { TooltipQ } from '@common/TooltipQ';
                 <Grow gap={6} placement="cc">
                   <Tooltip defaultOpen>
                     <TooltipTrigger asChild>
-                      <Button variant={'none'}  size={'md'} only={'icon'}>
+                      <Button variant={'none'} size={'md'} only={'icon'}>
                         <QuestionMark color="#61554F" />
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent variant="dark" side="top" sideOffset={8}>Default Tooltip</TooltipContent>
+                    <TooltipContent variant="dark" side="top" sideOffset={8}>
+                      Default Tooltip
+                    </TooltipContent>
                   </Tooltip>
 
                   <Tooltip defaultOpen>
                     <TooltipTrigger asChild>
-                      <Button variant={'none'}  size={'md'} only={'icon'}>
+                      <Button variant={'none'} size={'md'} only={'icon'}>
                         <QuestionMark color="#61554F" />
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent variant="dark" side="top" sideOffset={8}>Dark Tooltip</TooltipContent>
+                    <TooltipContent variant="dark" side="top" sideOffset={8}>
+                      Dark Tooltip
+                    </TooltipContent>
                   </Tooltip>
 
                   <Tooltip defaultOpen>
                     <TooltipTrigger asChild>
-                      <Button variant={'none'}  size={'md'} only={'icon'}>
+                      <Button variant={'none'} size={'md'} only={'icon'}>
                         <QuestionMark color="#61554F" />
-                    </Button>
+                      </Button>
                     </TooltipTrigger>
-                    <TooltipContent variant="dark" side="top" sideOffset={8}>Light Tooltip</TooltipContent>
+                    <TooltipContent variant="dark" side="top" sideOffset={8}>
+                      Light Tooltip
+                    </TooltipContent>
                   </Tooltip>
                 </Grow>
               </Gcol>
@@ -135,8 +164,8 @@ import { TooltipQ } from '@common/TooltipQ';
       table: { category: '위치 props' },
     },
     children: {
-        control: { type: 'text' },
-        table: { category: '설정 props' },
+      control: { type: 'text' },
+      table: { category: '설정 props' },
     },
     sideOffset: {
       table: { disable: true },
@@ -156,7 +185,8 @@ import { TooltipQ } from '@common/TooltipQ';
     side: 'top',
     align: 'center',
     sideOffset: 0,
-    children: '문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br /> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.',
+    children:
+      '문서서명/IM은 청약서상 고객이 청약서로 [전자적 방법의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.<br /> 전자서명/전자청약은 전자적 안내동의가 필수사항입니다.',
   },
 };
 
@@ -170,14 +200,14 @@ export const Default: Story = {
         <Gcol>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant={'outlined'} size={'md'} >
+              <Button variant={'outlined'} size={'md'}>
                 툴팁
               </Button>
             </TooltipTrigger>
             <TooltipContent {...args}>{args.children}</TooltipContent>
           </Tooltip>
         </Gcol>
-       
+
         <Gcol>
           <TooltipQ>{args.children}</TooltipQ>
         </Gcol>

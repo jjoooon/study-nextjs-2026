@@ -1,7 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import LTPA190 from '@/app/pub/ispl/pages/LTPA190';
+ */
 import { LayoutDoc } from '@layout/BaseLayout';
+import LTPA190 from '@/app/pub/ispl/pages/LTPA190';
 
 export default {
   title: 'app/ispl/isplBsnsSupt/LTPA190',

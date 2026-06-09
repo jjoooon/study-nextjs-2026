@@ -1,13 +1,23 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import * as React from 'react';
-import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+ */ import { createCellValueChangedHandler } from '@aggrid';
+import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Canvas,
+  Source,
+  Markdown,
+  Unstyled,
+} from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
-import { AgGridReact } from 'ag-grid-react';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
-import { createCellValueChangedHandler } from '@aggrid';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
 
@@ -33,14 +43,13 @@ const columnDefs: ColDef<DummyDataType>[] = [
     cellClass: 'text-right editable-cell',
     editable: true, // 나이 직접 입력 가능
     cellEditor: 'agSelectCellEditor',
-    cellEditorParams: { 
+    cellEditorParams: {
       values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
       valueListMaxHeight: 60,
-      valueListMaxWidth: 120 
+      valueListMaxWidth: 120,
     },
   },
 ];
-
 
 const columnDefsRich: ColDef<DummyDataType>[] = [
   {
@@ -68,12 +77,11 @@ const columnDefsRich: ColDef<DummyDataType>[] = [
         );
       },
       searchType: 'matchAny', // 검색 방식 설정
-      allowTyping: true,      // 직접 타이핑 허용
-      filterList: true,       // 타이핑 시 리스트 필터링
+      allowTyping: true, // 직접 타이핑 허용
+      filterList: true, // 타이핑 시 리스트 필터링
     },
   },
 ];
-
 
 const meta: Meta<typeof AgGridReact<DummyDataType>> = {
   title: 'Components/Tables/AgGrid/CellEditor Select',
@@ -84,13 +92,18 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
       page: () => (
         <>
           <Title />
-          <br /><br />
+          <br />
+          <br />
           <h2>Overview</h2>
           <div>
             <p>
-              <b>agSelectCellEditor</b>와 <b>agRichSelectCellEditor</b>를 사용하면 드롭다운 선택 UI를 셀에서 바로 사용할 수 있습니다.<br/>
-              Rich Select는 옵션 커스텀 렌더링, 검색, 직접 입력 등 고급 기능을 지원합니다.<br/>
-              <b>셀 클릭 → 리스트 선택/검색/직접입력 모두 지원</b>하며, cellRenderer로 옵션 UI를 자유롭게 꾸밀 수 있습니다.
+              <b>agSelectCellEditor</b>와 <b>agRichSelectCellEditor</b>를 사용하면 드롭다운 선택 UI를 셀에서 바로 사용할
+              수 있습니다.
+              <br />
+              Rich Select는 옵션 커스텀 렌더링, 검색, 직접 입력 등 고급 기능을 지원합니다.
+              <br />
+              <b>셀 클릭 → 리스트 선택/검색/직접입력 모두 지원</b>하며, cellRenderer로 옵션 UI를 자유롭게 꾸밀 수
+              있습니다.
             </p>
             <ul>
               <li>Select Cell Editor (agSelectCellEditor): 기본 드롭다운 선택</li>
@@ -209,7 +222,7 @@ export const Default: StoryObj = {
   render: () => {
     const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
     const [errorRows, setErrorRows] = React.useState<number[]>(
-      DummyData.filter(row => !row.age).map(row => row.id)
+      DummyData.filter((row) => !row.age).map((row) => row.id)
     );
 
     // 공용 핸들러 활용
@@ -219,7 +232,6 @@ export const Default: StoryObj = {
     );
 
     return (
-
       <>
         <div className="ag-theme-alpine">
           <AgGridReact<DummyDataType>
@@ -227,7 +239,6 @@ export const Default: StoryObj = {
             rowData={rowData}
             columnDefs={columnDefs}
             domLayout="autoHeight"
-
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
           />
@@ -238,7 +249,6 @@ export const Default: StoryObj = {
             rowData={rowData}
             columnDefs={columnDefsRich}
             domLayout="autoHeight"
-
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
           />

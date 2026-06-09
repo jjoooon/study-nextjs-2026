@@ -1,15 +1,14 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import * as React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+ */ import { InputTag } from '@common/InputTag';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-
-import { InputTag } from "@common/InputTag";
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 
 const meta: Meta<typeof InputTag> = {
-  title: "Components/Forms/InputTag",
+  title: 'Components/Forms/InputTag',
   component: InputTag,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
     docs: {
@@ -25,7 +24,8 @@ const meta: Meta<typeof InputTag> = {
           <h2>Overview</h2>
           <div>
             <p>
-              InputTag 컴포넌트는 태그 입력을 위한 폼 UI 요소입니다.<br />
+              InputTag 컴포넌트는 태그 입력을 위한 폼 UI 요소입니다.
+              <br />
               최대 입력 개수와 플레이스홀더를 설정할 수 있으며, 현재 입력된 태그를 표시할 수 있습니다.
             </p>
           </div>
@@ -46,9 +46,9 @@ import { InputTag } from '@common/InputTag';
     controls: { expanded: false },
   },
   argTypes: {
-    value: {table: { disable: true },},
-    onChange:{table: { disable: true },},
-    variant : {
+    value: { table: { disable: true } },
+    onChange: { table: { disable: true } },
+    variant: {
       control: { type: 'inline-radio' },
       options: ['default', 'box-line'],
       description: 'Input 스타일 variant',
@@ -63,7 +63,7 @@ import { InputTag } from '@common/InputTag';
       description: '최대 입력 가능한 태그 개수',
       table: { type: { summary: 'number' } },
     },
-    disabled:{table: { disable: true },},
+    disabled: { table: { disable: true } },
 
     error: {
       control: { type: 'boolean' },
@@ -78,9 +78,9 @@ import { InputTag } from '@common/InputTag';
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },
-    className: {table: { disable: true },},
+    className: { table: { disable: true } },
   },
-   args: {
+  args: {
     variant: 'default',
     value: [],
     placeholder: '태그를 입력하세요',
@@ -89,7 +89,7 @@ import { InputTag } from '@common/InputTag';
     error: false,
     errorMsg: '선택은 필수입니다.',
     errorPs: 'bl',
-   }
+  },
 };
 export default meta;
 
@@ -100,13 +100,7 @@ export const Default: Story = {
     const [tags, setTags] = React.useState<string[]>([]);
     return (
       <div style={{ maxWidth: 400 }}>
-        <InputTag
-          {...args}
-          value={tags}
-          onChange={setTags}
-          placeholder="태그를 입력하세요"
-          maxTags={3}
-        />
+        <InputTag {...args} value={tags} onChange={setTags} placeholder="태그를 입력하세요" maxTags={3} />
         <div style={{ marginTop: 12, fontSize: 14, color: '#888' }}>
           현재 태그: {tags.length === 0 ? '없음' : tags.join(', ')}
         </div>
@@ -114,4 +108,3 @@ export const Default: Story = {
     );
   },
 };
-

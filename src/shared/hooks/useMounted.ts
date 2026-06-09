@@ -6,7 +6,6 @@
 import { useEffect } from 'react';
 
 function useMounted(mounted: () => void, unmounted?: () => void) {
-  // eslint-disable-next-line no-restricted-syntax
   useEffect(() => {
     mounted();
 

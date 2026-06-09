@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
-import { Toaster, toast } from '@uiux/Sonner';
+ */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@uiux/Button';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import { Toaster, toast } from '@uiux/Sonner';
+import * as React from 'react';
 
 type ToasterProps = React.ComponentProps<typeof Toaster>;
 
@@ -22,7 +22,8 @@ const meta: Meta<ToasterProps> = {
           <h2>Overview</h2>
           <div>
             <p>
-              Sonner는 전역 Toast 알림을 위한 UI 컴포넌트입니다.<br />
+              Sonner는 전역 Toast 알림을 위한 UI 컴포넌트입니다.
+              <br />
               next-themes와 연동하여 테마에 따라 스타일이 자동 적용됩니다.
             </p>
             <ul>
@@ -105,7 +106,7 @@ export const Default: Story = {
   args: {},
   render: (args) => {
     return (
-      <div className='h-[50vh] w-[100%] flex items-center justify-center'>
+      <div className="h-[50vh] w-[100%] flex items-center justify-center">
         <Toaster {...args} />
         <Button
           variant={'outlined'}

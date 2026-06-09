@@ -1,8 +1,18 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
+ */ import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Canvas,
+  Source,
+  Markdown,
+  Unstyled,
+} from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import { PageTitle, PageTitleProduct } from '@/shared/components/features/PageTitle';
-import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
 
 const meta: Meta<typeof PageTitleProduct> = {
   title: 'Components/Features/header/페이지제목(PageTitle)',
@@ -14,11 +24,13 @@ const meta: Meta<typeof PageTitleProduct> = {
       page: () => (
         <>
           <Title />
-          <br /><br />
+          <br />
+          <br />
           <h2>Overview</h2>
           <div>
             <p>
-              PageTitle, PageTitleProduct 컴포넌트는 보험/상품 설계 화면의 타이틀 및 주요 정보 영역을 담당합니다.<br />
+              PageTitle, PageTitleProduct 컴포넌트는 보험/상품 설계 화면의 타이틀 및 주요 정보 영역을 담당합니다.
+              <br />
               <b>PageTitleProduct</b>는 상품 설계에 특화된 확장형, <b>PageTitle</b>은 기본형입니다.
             </p>
           </div>
@@ -53,12 +65,36 @@ import { PageTitle, PageTitleProduct } from '@/shared/components/features/PageTi
               </tr>
             </thead>
             <tbody>
-              <tr><td>title</td><td>string</td><td>타이틀 텍스트</td></tr>
-              <tr><td>simpleMode</td><td>boolean</td><td>간소화 모드</td></tr>
-              <tr><td>options</td><td>string[]</td><td>옵션 목록</td></tr>
-              <tr><td>planNumber</td><td>string[]</td><td>설계번호</td></tr>
-              <tr><td>contractHolder</td><td>string</td><td>계약자명</td></tr>
-              <tr><td>planNumberList</td><td>object[]</td><td>설계번호 상세 리스트</td></tr>
+              <tr>
+                <td>title</td>
+                <td>string</td>
+                <td>타이틀 텍스트</td>
+              </tr>
+              <tr>
+                <td>simpleMode</td>
+                <td>boolean</td>
+                <td>간소화 모드</td>
+              </tr>
+              <tr>
+                <td>options</td>
+                <td>string[]</td>
+                <td>옵션 목록</td>
+              </tr>
+              <tr>
+                <td>planNumber</td>
+                <td>string[]</td>
+                <td>설계번호</td>
+              </tr>
+              <tr>
+                <td>contractHolder</td>
+                <td>string</td>
+                <td>계약자명</td>
+              </tr>
+              <tr>
+                <td>planNumberList</td>
+                <td>object[]</td>
+                <td>설계번호 상세 리스트</td>
+              </tr>
             </tbody>
           </table>
         </>

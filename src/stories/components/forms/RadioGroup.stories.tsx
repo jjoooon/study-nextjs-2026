@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
-import { Gcol, Grow } from '@atoms';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+ */ import { Gcol, Grow } from '@atoms';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import * as React from 'react';
 
 type RadioGroupStoryProps = React.ComponentProps<typeof RadioGroup> &
   // RadioGroupItem props를 Storybook controls에서 함께 제어
@@ -267,7 +267,14 @@ const [value, setValue] = useState('option1');
                       Error 2
                     </RadioGroupItem>
                   </RadioGroup>
-                  <RadioGroup defaultValue="1" error errorMsg="bottom center" errorPs="bc" className="gap-2" width="auto">
+                  <RadioGroup
+                    defaultValue="1"
+                    error
+                    errorMsg="bottom center"
+                    errorPs="bc"
+                    className="gap-2"
+                    width="auto"
+                  >
                     <RadioGroupItem value="1" id="doc-e-bc-1">
                       Error 1
                     </RadioGroupItem>
@@ -275,7 +282,14 @@ const [value, setValue] = useState('option1');
                       Error 2
                     </RadioGroupItem>
                   </RadioGroup>
-                  <RadioGroup defaultValue="1" error errorMsg="bottom right" errorPs="br" className="gap-2" width="auto">
+                  <RadioGroup
+                    defaultValue="1"
+                    error
+                    errorMsg="bottom right"
+                    errorPs="br"
+                    className="gap-2"
+                    width="auto"
+                  >
                     <RadioGroupItem value="1" id="doc-e-br-1">
                       Error 1
                     </RadioGroupItem>
@@ -383,9 +397,15 @@ export const Default: Story = {
 
     return (
       <RadioGroup {...groupArgs} value={value} onValueChange={setValue} className="gap-2">
-        <RadioGroupItem variant={variant} size={size} color={color} value="option1" id="d1">Option1</RadioGroupItem>
-        <RadioGroupItem variant={variant} size={size} color={color} value="option2" id="d2">Option2</RadioGroupItem>
-        <RadioGroupItem variant={variant} size={size} color={color} value="option3" id="d3" disabled>Option3</RadioGroupItem>
+        <RadioGroupItem variant={variant} size={size} color={color} value="option1" id="d1">
+          Option1
+        </RadioGroupItem>
+        <RadioGroupItem variant={variant} size={size} color={color} value="option2" id="d2">
+          Option2
+        </RadioGroupItem>
+        <RadioGroupItem variant={variant} size={size} color={color} value="option3" id="d3" disabled>
+          Option3
+        </RadioGroupItem>
       </RadioGroup>
     );
   },

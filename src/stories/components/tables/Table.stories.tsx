@@ -1,13 +1,13 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import * as React from 'react';
+ */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import * as React from 'react';
 
 type ContentTableStoryProps = React.ComponentProps<typeof Table> & {
   tableVariant?: 'default' | 'sub';
-  showCaption?: boolean; 
+  showCaption?: boolean;
   showSecondRow?: boolean;
 };
 
@@ -21,7 +21,9 @@ const meta: Meta<ContentTableStoryProps> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>Overview</h2>
             <div>
               <p>
@@ -70,12 +72,30 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@
                 </tr>
               </thead>
               <tbody>
-                <tr><td>Table</td><td>전체 테이블 컨테이너</td></tr>
-                <tr><td>TableHeader</td><td>헤더 영역</td></tr>
-                <tr><td>TableBody</td><td>바디 영역</td></tr>
-                <tr><td>TableRow</td><td>행 컨테이너</td></tr>
-                <tr><td>TableHead</td><td>헤더 셀</td></tr>
-                <tr><td>TableCell</td><td>바디 셀</td></tr>
+                <tr>
+                  <td>Table</td>
+                  <td>전체 테이블 컨테이너</td>
+                </tr>
+                <tr>
+                  <td>TableHeader</td>
+                  <td>헤더 영역</td>
+                </tr>
+                <tr>
+                  <td>TableBody</td>
+                  <td>바디 영역</td>
+                </tr>
+                <tr>
+                  <td>TableRow</td>
+                  <td>행 컨테이너</td>
+                </tr>
+                <tr>
+                  <td>TableHead</td>
+                  <td>헤더 셀</td>
+                </tr>
+                <tr>
+                  <td>TableCell</td>
+                  <td>바디 셀</td>
+                </tr>
               </tbody>
             </table>
           </>
@@ -95,7 +115,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@
       description: 'caption 렌더 여부',
       table: { category: 'Table' },
     },
-    
+
     showSecondRow: {
       control: 'boolean',
       description: '두 번째 행 렌더 여부',

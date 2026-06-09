@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
+ */ import { InfoContract } from '@common/InfoContract';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import { InfoContract } from '@common/InfoContract';
+import type { Meta, StoryObj } from '@storybook/react';
 
 // types
 type LTPA350ProcessStep = number;
@@ -61,7 +61,6 @@ interface LTPA350DataType {
       note: string;
     };
   };
-  
 }
 const data: LTPA350DataType = {
   head: {
@@ -119,7 +118,7 @@ const data: LTPA350DataType = {
       note: '알릴사항 비대상',
     },
   },
-}
+};
 
 const meta: Meta<typeof InfoContract> = {
   title: 'Components/Features/Aside/계약정보(InfoContract)',
@@ -130,11 +129,14 @@ const meta: Meta<typeof InfoContract> = {
     docs: {
       page: () => (
         <>
-          <Title /><br /><br />
+          <Title />
+          <br />
+          <br />
           <h2>Overview</h2>
           <div>
             <p>
-              InfoContract 컴포넌트는 보험 계약의 주요 정보를 Aside 영역에 표시하는 UI 요소입니다.<br />
+              InfoContract 컴포넌트는 보험 계약의 주요 정보를 Aside 영역에 표시하는 UI 요소입니다.
+              <br />
               설계중, 보험시기, 계약자/피보험자, 유효기간 등 다양한 정보를 시각적으로 제공합니다.
             </p>
           </div>
@@ -160,7 +162,7 @@ import { LTPA350Data } from '@/features/pub/proto/data/LTPA350Data';
   },
   argTypes: {
     data: {
-      description: '계약정보 데이터 (LTPA350DataType[\'aside\'])',
+      description: "계약정보 데이터 (LTPA350DataType['aside'])",
       control: { type: 'object' },
       table: { category: 'Data' },
     },

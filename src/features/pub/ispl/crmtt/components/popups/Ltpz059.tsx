@@ -337,7 +337,7 @@ const DummyData4: DummyDataType4[] = [
   },
 ];
 
-const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
+const Ltpz059 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [editableFieldName, setEditableFieldName] = React.useState<string | null>(null);
   const [insuredFloorType, setInsuredFloorType] = React.useState<InsuredFloorType>(null);
@@ -557,7 +557,7 @@ const Ltpz059 = ({ open, onOpenChange }: PopupBaseProps) => {
 
   const [buildingSelectType, setBuildingSelectType] = React.useState<string>('건물구조선택');
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} className="w-[110.4rem]">
         <DialogHeader>
           <DialogTitle>

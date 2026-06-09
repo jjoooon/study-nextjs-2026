@@ -1,12 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
+ */ import { Gcol, Grow } from '@atoms';
 import { ConfirmDialog } from '@common/ConfirmDialog';
-import { Button } from '@uiux/Button';
-import { Gcol, Grow } from '@atoms';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
- 
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@uiux/Button';
+import * as React from 'react';
+
 type ConfirmDialogStoryProps = React.ComponentProps<typeof ConfirmDialog>;
 
 const meta: Meta<ConfirmDialogStoryProps> = {
@@ -26,7 +26,7 @@ const meta: Meta<ConfirmDialogStoryProps> = {
             <ul>
               <li>2026.03.27 수정</li>
             </ul>
-            
+
             <h2>Overview</h2>
             <div>
               <p>
@@ -132,22 +132,74 @@ import { Button } from '@uiux/Button';
             <Unstyled>
               <Gcol gap={4} className="w-full">
                 <h3 className="font-bold">Tone</h3>
-                <p className="text-sm">tone 속성을 사용하여 확인 버튼의 스타일을 'info'(기본) 또는 'danger'(파괴적 동작)로 설정할 수 있습니다.</p>
+                <p className="text-sm">
+                  tone 속성을 사용하여 확인 버튼의 스타일을 'info'(기본) 또는 'danger'(파괴적 동작)로 설정할 수
+                  있습니다.
+                </p>
                 <Grow gap={4} variant="box-line" className="p-16">
-                  <ConfirmDialog defaultOpen={false} title="변경사항 저장" description="작성 중인 내용을 저장하시겠습니까?" confirmLabel="저장" cancelLabel="닫기" tone="info" trigger={<Button variant="contained">Info (Default)</Button>} />
-                  <ConfirmDialog defaultOpen={false} title="데이터 삭제" description="삭제된 데이터는 복구할 수 없습니다." confirmLabel="삭제" cancelLabel="취소" tone="danger" trigger={<Button variant="outlined" color="secondary">Danger</Button>} />
+                  <ConfirmDialog
+                    defaultOpen={false}
+                    title="변경사항 저장"
+                    description="작성 중인 내용을 저장하시겠습니까?"
+                    confirmLabel="저장"
+                    cancelLabel="닫기"
+                    tone="info"
+                    trigger={<Button variant="contained">Info (Default)</Button>}
+                  />
+                  <ConfirmDialog
+                    defaultOpen={false}
+                    title="데이터 삭제"
+                    description="삭제된 데이터는 복구할 수 없습니다."
+                    confirmLabel="삭제"
+                    cancelLabel="취소"
+                    tone="danger"
+                    trigger={
+                      <Button variant="outlined" color="secondary">
+                        Danger
+                      </Button>
+                    }
+                  />
                 </Grow>
 
                 <h3 className="font-bold mt-4">Alert Mode</h3>
-                <p className="text-sm">alertMode를 true로 설정하면 취소 버튼이 사라지고, 확인 버튼만 있는 알림 형태의 다이얼로그가 됩니다.</p>
+                <p className="text-sm">
+                  alertMode를 true로 설정하면 취소 버튼이 사라지고, 확인 버튼만 있는 알림 형태의 다이얼로그가 됩니다.
+                </p>
                 <Grow gap={4} variant="box-line" className="p-16">
-                  <ConfirmDialog defaultOpen={false} alertMode title="처리가 완료되었습니다" description="다음 단계로 이동해 주세요." confirmLabel="확인" trigger={<Button variant="outlined" color="gray">Alert Mode</Button>} />
+                  <ConfirmDialog
+                    defaultOpen={false}
+                    alertMode
+                    title="처리가 완료되었습니다"
+                    description="다음 단계로 이동해 주세요."
+                    confirmLabel="확인"
+                    trigger={
+                      <Button variant="outlined" color="gray">
+                        Alert Mode
+                      </Button>
+                    }
+                  />
                 </Grow>
 
                 <h3 className="font-bold mt-4">Async Confirm</h3>
-                <p className="text-sm">onConfirm 핸들러가 Promise를 반환하면, Promise가 resolve될 때까지 확인 버튼에 로딩 상태가 표시됩니다.</p>
+                <p className="text-sm">
+                  onConfirm 핸들러가 Promise를 반환하면, Promise가 resolve될 때까지 확인 버튼에 로딩 상태가 표시됩니다.
+                </p>
                 <Grow gap={4} variant="box-line" className="p-16">
-                  <ConfirmDialog defaultOpen={false} title="비동기 처리 확인" description="확인을 누르면 1.2초 동안 비동기 작업을 수행합니다." confirmLabel="실행" cancelLabel="취소" onConfirm={async () => { await new Promise((resolve) => setTimeout(resolve, 1200)); }} trigger={<Button variant="contained" color="secondary">Async Confirm</Button>} />
+                  <ConfirmDialog
+                    defaultOpen={false}
+                    title="비동기 처리 확인"
+                    description="확인을 누르면 1.2초 동안 비동기 작업을 수행합니다."
+                    confirmLabel="실행"
+                    cancelLabel="취소"
+                    onConfirm={async () => {
+                      await new Promise((resolve) => setTimeout(resolve, 1200));
+                    }}
+                    trigger={
+                      <Button variant="contained" color="secondary">
+                        Async Confirm
+                      </Button>
+                    }
+                  />
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -219,7 +271,8 @@ import { Button } from '@uiux/Button';
   args: {
     defaultOpen: false,
     title: '알림',
-    description: '시스템의 중요한 상태 변화, 처리 결과, <br />또는 즉각적인 주의가 필요한 정보를 <br />사용자에게 전달합니다.',
+    description:
+      '시스템의 중요한 상태 변화, 처리 결과, <br />또는 즉각적인 주의가 필요한 정보를 <br />사용자에게 전달합니다.',
     confirmLabel: '확인',
     cancelLabel: '취소',
     tone: 'info',
@@ -237,13 +290,6 @@ export const Default: Story = {
   },
   render: ({ open: _open, defaultOpen: _defaultOpen, onOpenChange: _onOpenChange, ...args }) => {
     const [open, setOpen] = React.useState(false);
-    return (
-      <ConfirmDialog
-        {...args}
-        open={open}
-        onOpenChange={setOpen}
-        trigger={<Button>Open Dialog</Button>}
-      />
-    );
+    return <ConfirmDialog {...args} open={open} onOpenChange={setOpen} trigger={<Button>Open Dialog</Button>} />;
   },
 };

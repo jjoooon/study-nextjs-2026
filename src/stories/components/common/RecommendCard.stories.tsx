@@ -1,11 +1,11 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-
+ */
 import { Grow, Typo } from '@atoms';
 import { RecommendCard } from '@common/RecommendCard';
 import { CircleCheckIcon, ChevronDownIcon } from '@icons';
+import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@uiux/Button';
 
 const comparisonRows: Array<{ id: number; coverage: string; amount: string; premium: string }> = [
@@ -250,7 +250,10 @@ export const FreeFigma67931385: Story = {
 
           <div className="max-h-120 overflow-y-auto">
             {comparisonRows.map((row, index) => (
-              <div key={row.id} className={`grid grid-cols-[1fr_8rem_8rem] ${index % 2 === 1 ? 'bg-[#F4F4F4]' : 'bg-white'}`}>
+              <div
+                key={row.id}
+                className={`grid grid-cols-[1fr_8rem_8rem] ${index % 2 === 1 ? 'bg-[#F4F4F4]' : 'bg-white'}`}
+              >
                 <div className="border-r border-b border-[#E5E5E5] px-[0.6rem] py-[0.4rem]">
                   <Typo tag={'p'} variant={'body-md'} className="truncate text-[#000]">
                     {row.coverage}

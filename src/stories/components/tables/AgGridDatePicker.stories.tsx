@@ -1,13 +1,23 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import * as React from 'react';
-import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+ */ import { createCellValueChangedHandler, DatePickerCellEditor } from '@aggrid';
+import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Canvas,
+  Source,
+  Markdown,
+  Unstyled,
+} from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
-import { AgGridReact } from 'ag-grid-react';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
-import { createCellValueChangedHandler, DatePickerCellEditor } from '@aggrid';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
 
@@ -35,7 +45,6 @@ const columnDefs: ColDef<DummyDataType>[] = [
   },
 ];
 
-
 const meta: Meta<typeof AgGridReact<DummyDataType>> = {
   title: 'Components/Tables/AgGrid/CellEditor DatePicker',
   component: AgGridReact,
@@ -45,13 +54,15 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
       page: () => (
         <>
           <Title />
-          <br /><br />
+          <br />
+          <br />
           <h2>Overview</h2>
           <div>
             <p>
-              <b>DatePickerCellEditor</b>를 cellEditor로 지정하면 날짜 입력이 가능합니다.<br/>
-              <code>shared/components/common/DatePicker</code>를 활용한 커스텀 달력/직접입력 UI를 제공합니다.<br/>
-              셀 클릭 시 달력 또는 직접 입력(YYYY-MM-DD) 모두 지원합니다.
+              <b>DatePickerCellEditor</b>를 cellEditor로 지정하면 날짜 입력이 가능합니다.
+              <br />
+              <code>shared/components/common/DatePicker</code>를 활용한 커스텀 달력/직접입력 UI를 제공합니다.
+              <br />셀 클릭 시 달력 또는 직접 입력(YYYY-MM-DD) 모두 지원합니다.
             </p>
             <ul>
               <li>DatePicker Cell Editor: 커스텀 달력/직접입력 지원</li>
@@ -136,7 +147,7 @@ export const Default: StoryObj = {
   render: () => {
     const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
     const [errorRows, setErrorRows] = React.useState<number[]>(
-      DummyData.filter(row => !row.date).map(row => row.id)
+      DummyData.filter((row) => !row.date).map((row) => row.id)
     );
 
     // 공용 핸들러 활용
@@ -152,7 +163,7 @@ export const Default: StoryObj = {
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
-            domLayout='autoHeight'
+            domLayout="autoHeight"
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
           />

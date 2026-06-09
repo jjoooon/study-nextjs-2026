@@ -26,15 +26,25 @@
 // 예시 데이터와 컬럼 정의는 아래 코드 참고
 //
 
-import * as React from 'react';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Grow, Gcol } from '@atoms';
-import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Canvas,
+  Source,
+  Markdown,
+  Unstyled,
+} from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
-import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 
@@ -52,7 +62,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 const columnDefs: ColDef<DummyDataType>[] = [
-   {
+  {
     headerName: '내용',
     field: 'desc',
     flex: 1,
@@ -68,11 +78,13 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
       page: () => (
         <>
           <Title />
-          <br /><br />
+          <br />
+          <br />
           <h2>Overview</h2>
           <div>
             <p>
-              AgGrid의 <b>treeData</b> 옵션을 사용하면 폴더/파일 구조처럼 계층형 데이터를 시각화할 수 있습니다.<br />
+              AgGrid의 <b>treeData</b> 옵션을 사용하면 폴더/파일 구조처럼 계층형 데이터를 시각화할 수 있습니다.
+              <br />
               <b>getDataPath</b>로 각 row의 경로 배열을 지정하면 자동으로 트리 구조가 생성됩니다.
             </p>
           </div>
@@ -133,7 +145,6 @@ export default meta;
 export const Default: StoryObj = {
   render: () => (
     <div>
-
       <div className="ag-theme-alpine">
         <AgGridReact<DummyDataType>
           // 필수
@@ -141,19 +152,16 @@ export const Default: StoryObj = {
           rowData={DummyData} // 표시할 데이터 배열
           columnDefs={columnDefs} // 컬럼 정의
           noRowsOverlayComponent={AgGridEmptyComponent} // 데이터 없을 때 표시할 컴포넌트
-
           // 선택
           domLayout="autoHeight" // 높이 선택 normal, autoHeight, print
-
           treeData={true}
-          getDataPath={row => row.filePath}
+          getDataPath={(row) => row.filePath}
           groupDefaultExpanded={-1}
-          autoGroupColumnDef={{ 
-            headerName: '이름', 
+          autoGroupColumnDef={{
+            headerName: '이름',
             field: 'name',
           }}
         />
-
       </div>
     </div>
   ),
