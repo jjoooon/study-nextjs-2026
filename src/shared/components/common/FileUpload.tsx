@@ -1,12 +1,12 @@
 'use client';
 
+import { useId, useState, useEffect } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow, Gcol, Typo } from '@atoms';
 import { FileUploadIcon, InputClearIcon } from '@icons';
 import { FileItemIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { useId, useState, useEffect } from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -90,7 +90,7 @@ export function FileUpload({
       {/* ── 에러 메시지 ── */}
       {errorMessage && (
         <p id={`${baseId}-error`} role="alert" className="w-full mt-0.5">
-          <Typo variant="body-sm" tag="span" className="text-[var(--color-text-danger)]">
+          <Typo variant="body-sm" tag="span" className="text-(--color-text-danger)">
             {errorMessage}
           </Typo>
         </p>
@@ -143,7 +143,7 @@ function FileTag({ name, ext, onRemove, hasError = false, onNameClick }: FileTag
               tag="div"
               className={cn(
                 'grid grid-cols-[1fr_auto] transition-colors duration-100 tracking-0 pr-[0.3rem] w-full',
-                hasError ? 'text-[var(--color-text-danger)] underline' : 'hover:text-[#006FF2] hover:underline'
+                hasError ? 'text-(--color-text-danger) underline' : 'hover:text-[#006FF2] hover:underline'
               )}
             >
               {baseWithoutLast.length > 0 ? (
@@ -174,7 +174,7 @@ function FileTag({ name, ext, onRemove, hasError = false, onNameClick }: FileTag
         className={cn(
           'shrink-0 inline-flex items-center justify-center',
           'w-[1.6rem] h-[1.6rem] rounded-full',
-          'text-[var(--color-text-subtle)] translate-y-[0.1rem]'
+          'text-(--color-text-subtle) translate-y-px'
         )}
       >
         <InputClearIcon color={'#6B7280'} size={16} />
