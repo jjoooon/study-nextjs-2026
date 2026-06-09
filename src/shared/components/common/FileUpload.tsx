@@ -1,20 +1,24 @@
+/*
+ * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
+ */
 'use client';
 
-import { Grow, Gcol, Typo } from '@atoms';
-import { FileUploadIcon, InputClearIcon } from '@icons';
-import { FileItemIcon } from '@icons';
+import { Gcol, Grow, Typo } from '@atoms';
+import { FileItemIcon, FileUploadIcon, InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { useId, useState, useEffect } from 'react';
+import { useId } from 'react';
+// TODO: @YunJunmo 경로 이동 고려
+
+import { Ltpz995Result } from '@/features/pub/shared/components/popups/Ltpz995';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { FileItem } from '@/shared/types/fileTypes';
+import log from '@/shared/utils/logger';
+import { open } from '@/shared/utils/popup/popupApi';
+
+const logger = log.getLogger('FileUpload');
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-
-type FileItem = {
-  name: string;
-  ext?: string;
-  key?: string;
-};
 
 type FileUploadProps = {
   id?: string;
@@ -23,33 +27,34 @@ type FileUploadProps = {
   errorMessage?: string;
   onClickButton?: () => void;
   onClickFileName?: (file: FileItem, index: number) => void;
-  onRemove?: (file: FileItem, index: number) => void;
+  onChange?: (files: FileItem[]) => void;
 };
 
 // ─── FileUpload ───────────────────────────────────────────────────────────────
 
 export function FileUpload({
   id,
-  files: filesProp = [],
+  files = [],
   errorMessage,
   onClickButton,
   onClickFileName,
-  onRemove,
+  onChange,
   className,
 }: FileUploadProps) {
   const generatedId = useId();
   const baseId = id ?? generatedId;
 
-  const [files, setFiles] = useState<FileItem[]>(filesProp);
-
-  // 외부 props가 바뀔 때 내부 state 동기화
-  useEffect(() => {
-    setFiles(filesProp);
-  }, [filesProp]);
-
   const handleRemove = (file: FileItem, index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index)); // 화면 즉시 반영
-    onRemove?.(file, index); // 콜백 호출
+    onChange?.(files.filter((_, i) => i !== index));
+  };
+
+  const handleClickButton = async () => {
+    onClickButton?.();
+    const result = await open<Ltpz995Result>('LTPZ995', { files });
+    logger.debug(result);
+    if (result.action === 'select' && result.files) {
+      onChange?.(result.files);
+    }
   };
 
   return (
@@ -63,7 +68,7 @@ export function FileUpload({
           aria-label="파일선택"
           aria-describedby={errorMessage ? `${baseId}-error` : undefined}
           aria-invalid={!!errorMessage}
-          onClick={onClickButton}
+          onClick={handleClickButton}
         >
           <FileUploadIcon size={12} />
           파일선택
@@ -74,12 +79,12 @@ export function FileUpload({
       <Gcol className="pt-[0.2rem]" gap={1.5} placement={'ss'}>
         {files.map((file, index) => (
           <FileTag
-            key={file.key ?? `${file.name}-${index}`}
-            name={file.name}
-            ext={file.ext}
+            key={file.id ?? `${file.filename}-${index}`}
+            name={file.filename}
+            ext={file.fileExtension}
             hasError={!!errorMessage}
             onNameClick={() => {
-              onClickButton?.();
+              handleClickButton();
               onClickFileName?.(file, index);
             }}
             onRemove={() => handleRemove(file, index)}

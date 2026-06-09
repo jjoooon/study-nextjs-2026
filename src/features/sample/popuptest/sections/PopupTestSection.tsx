@@ -1,13 +1,14 @@
 'use client';
 
+import { useState } from 'react';
+
 import { FileUpload } from '@/shared/components/common/FileUpload';
-import useMounted from '@/shared/hooks/useMounted';
+import { FileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
-import { open } from '@/shared/utils/popup/popupApi';
 
 const logger = log.getLogger('Popup');
 
-const filesForPopup = [
+const initialFiles: FileItem[] = [
   {
     fileExtension: 'png',
     fileSize: 6770,
@@ -24,30 +25,17 @@ const filesForPopup = [
   },
 ];
 
-const filesForButton = [
-  {
-    ext: 'png',
-    name: 'file1',
-    key: '000',
-  },
-  {
-    ext: 'png',
-    name: 'file2',
-    key: '111',
-  },
-];
-
 export default function PopupTestSection() {
-  useMounted(() => {
-    logger.info('PopupTestSection mounted');
-  });
+  const [files, setFiles] = useState<FileItem[]>(initialFiles);
 
   const handleClickButton = async () => {
-    const result = await open('LTPZ995', { files: filesForPopup });
-    logger.debug(result);
+    logger.debug('파일업로드 팝업 오픈 버튼 클릭 시 호출');
   };
 
-  const handleRemove = () => {};
+  const handleChange = (nextFiles: FileItem[]) => {
+    logger.debug('파일 목록 변경', nextFiles);
+    setFiles(nextFiles);
+  };
 
-  return <FileUpload files={filesForButton} onClickButton={handleClickButton} onRemove={handleRemove} />;
+  return <FileUpload files={files} onClickButton={handleClickButton} onChange={handleChange} />;
 }
