@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -181,6 +181,7 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 export const Ltpz099 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   // 021 페이지 방식: 외부 스크롤 div 동기화
   const scrollRefs = useRef<(HTMLDivElement | null)[]>([]);
   const isSyncing = useRef(false);
@@ -210,21 +211,24 @@ export const Ltpz099 = () => {
     {
       headerName: '담보명',
       field: 'field01',
-      flex: 1,
+      flex: 4,
+      minWidth: attributeColumnWidth(150),
       cellClass: 'text-left flex [&>div>span]:h-auto!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
       headerName: '가입금액',
       field: 'field02',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '보험료',
       field: 'field03',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
@@ -234,26 +238,31 @@ export const Ltpz099 = () => {
     {
       headerName: '담보명',
       field: 'field01',
-      flex: 1,
+      flex: 4,
+      minWidth: attributeColumnWidth(150),
       cellClass: 'text-left flex [&>div>span]:h-auto!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field01' }),
     },
     {
       headerName: '가입금액',
       field: 'field02',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '보험료',
       field: 'field03',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
   ];
   function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
+    const minWidth = typeof column.minWidth === 'number' ? `${column.minWidth}px` : '0px';
+
     if (typeof column.width === 'number') {
       const width = `${column.width}px`;
 
@@ -266,14 +275,14 @@ export const Ltpz099 = () => {
 
     if (typeof column.flex === 'number') {
       return {
-        flex: `${column.flex} ${column.flex} 0%`,
-        minWidth: 0,
+        flex: `${column.flex} 1 0%`,
+        minWidth,
       };
     }
 
     return {
       flex: '1 1 0%',
-      minWidth: 0,
+      minWidth,
     };
   }
   return (

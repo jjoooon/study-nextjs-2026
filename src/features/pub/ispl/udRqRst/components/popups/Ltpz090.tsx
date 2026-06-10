@@ -145,7 +145,7 @@ const Ltpz090 = () => {
     {
       headerName: '순번',
       field: 'field01',
-      width: 50,
+      width: attributeColumnWidth(50),
       cellClass: 'text-center',
     },
     {
@@ -205,8 +205,7 @@ const Ltpz090 = () => {
     {
       headerName: '보기',
       field: 'field07',
-      flex: 1,
-      minWidth: attributeColumnWidth(70),
+      width: attributeColumnWidth(70),
       autoHeight: true,
       cellClass: 'text-center',
       sortable: false,

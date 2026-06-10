@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -175,13 +175,14 @@ const getUnderwritingDecision = (value: string | number) => {
 };
 
 const Ltpz030 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   /* 2026.05.28 className 추가 */
   const columnDefs1T1 = React.useMemo<ColDef<DummyDataType1T1>[]>(
     () => [
       {
         headerName: '분류',
         field: 'field01',
-        width: 70,
+        width: attributeColumnWidth(70),
         autoHeight: true,
         editable: false,
         spanRows: true,
@@ -189,14 +190,15 @@ const Ltpz030 = () => {
       {
         headerName: '고지유형',
         field: 'field02',
-        width: 70,
+        width: attributeColumnWidth(70),
         autoHeight: true,
         editable: false,
       },
       {
         headerName: '가능여부',
         field: 'field03',
-        width: 100,
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
         autoHeight: true,
         editable: false,
         cellRenderer: ({ value }: { value: string | number | null | undefined }) => {
@@ -219,15 +221,18 @@ const Ltpz030 = () => {
       {
         headerName: '제한담보',
         field: 'field04',
-        width: 100,
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
         autoHeight: true,
       },
       {
         headerName: '비고',
         field: 'field05',
         flex: 1,
+        minWidth: attributeColumnWidth(220),
         autoHeight: true,
         cellClass: 'truncate text-left!',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType1T1>({ field: 'field05' }),
       },
     ],
     []
@@ -334,6 +339,8 @@ const Ltpz030 = () => {
                         domLayout="autoHeight"
                         className="text-center"
                         enableCellSpan={true}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
                       />
                     </div>
                     <Gcol className="h-full">
