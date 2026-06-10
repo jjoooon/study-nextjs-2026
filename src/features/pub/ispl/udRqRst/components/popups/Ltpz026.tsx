@@ -469,17 +469,17 @@ const Ltpz026 = () => {
     {
       headerName: '통원',
       field: 'field06',
-      width: 60,
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '수술',
       field: 'field07',
-      width: 60,
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '고지여부',
       field: 'field08',
-      width: 90,
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '체크',
