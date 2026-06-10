@@ -127,14 +127,12 @@ export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
         - Ltpa120 팝업 트리거 컴포넌트
       */}
       <Grow className="[&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>
-        {/* M1. color={'gray'} 수정, className삭제 */}
         <Button variant={'outlined'} color={'gray'} size={'lg'}>
           제안서
           <PlusIcon />
         </Button>
         <Popover>
           <PopoverTrigger asChild>
-            {/* M1. color={'gray'} 수정, className삭제 */}
             <Button variant={'outlined'} color={'gray'} size={'lg'}>
               출력
               <PlusIcon />

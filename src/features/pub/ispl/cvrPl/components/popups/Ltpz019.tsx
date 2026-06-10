@@ -3,14 +3,14 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useState } from 'react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ResetIcon, SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -27,12 +27,11 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useState } from 'react';
-import * as React from 'react';
-
-import { useTabs } from '@/shared/hooks/useTabs';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -311,7 +310,7 @@ const Ltpz019 = () => {
         cellRenderer: titleRenderer,
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, titleRenderer, productNameHeader]
   );
 
   const designCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
@@ -336,7 +335,7 @@ const Ltpz019 = () => {
         cellRenderer: designCellRenderer,
       },
     ],
-    [attributeColumnWidth]
+    []
   );
 
   const columnDefs3 = React.useMemo<ColDef<DummyDataType3>[]>(
@@ -348,14 +347,14 @@ const Ltpz019 = () => {
         tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field1' }),
       },
     ],
-    [attributeColumnWidth]
+    []
   );
 
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -418,8 +417,7 @@ const Ltpz019 = () => {
             </Gcol>
 
             <Grow placement={'ss'} className="w-full gap-3">
-              {/* M2. 수정  */}
-              <Grid className="w-full grid-cols-[1fr_1fr] gap-3">
+              <Grid className="w-full grid-cols-[5fr_2fr] gap-3">
                 <TableFold variant={'default'}>
                   <TableFoldHead title="상품정보">
                     <Grow>

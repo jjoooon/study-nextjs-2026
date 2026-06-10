@@ -3,39 +3,6 @@
  */
 'use client';
 
-import {
-  createCellClickSelectionToggleHandler,
-  createInsertCopiedRowButtonCellRenderer,
-  getNextNumericRowId,
-  numberValueFormatter,
-  patchCopiedDuplicateRow,
-  rowDataWithTrackingFactory,
-  useDynamicColumnWidths,
-  AgGridEmptyComponent,
-  AmountWithPopoverCellEditor,
-} from '@aggrid';
-import { Divider, Gcol, Grow, Grid } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { KeyValueList } from '@common/KeyValueList';
-import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
-import { TextSelectChange } from '@common/TextSelectChange';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { MyPlanSelect } from '@features/MyPlanSelect';
-import {
-  createExpiryCellRenderer,
-  groupEditableButtonRenderer,
-  productNameCellRenderer,
-  searchButtonRenderer,
-} from '@grid/CellRenderers';
-import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
-import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type {
   CellClassParams,
   ICellRendererParams,
@@ -48,6 +15,39 @@ import type {
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { Divider, Gcol, Grow, Grid } from '@atoms';
+import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
+import {
+  createCellClickSelectionToggleHandler,
+  createInsertCopiedRowButtonCellRenderer,
+  getNextNumericRowId,
+  numberValueFormatter,
+  patchCopiedDuplicateRow,
+  rowDataWithTrackingFactory,
+  useDynamicColumnWidths,
+  AgGridEmptyComponent,
+  AmountWithPopoverCellEditor,
+} from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { KeyValueList } from '@common/KeyValueList';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
+import { TextSelectChange } from '@common/TextSelectChange';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { MyPlanSelect } from '@features/MyPlanSelect';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import {
+  createExpiryCellRenderer,
+  groupEditableButtonRenderer,
+  productNameCellRenderer,
+  searchButtonRenderer,
+} from '@grid/CellRenderers';
+import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002dData';
 import type { DummyDataType } from '../data/ltpa35002dData';
@@ -510,7 +510,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                         </TooltipContent>
                       </Tooltip>
                     ),
-                    width: attributeColumnWidth[3],
+                    width: attributeColumnWidth(30),
                     cellClass: 'text-center p-0! editable-cell',
                     cellClassRules: {
                       'pointer-events-none': (params) => !!params.data?.locked,
