@@ -14,6 +14,7 @@ import { Grow, Typo } from '@atoms';
 import { ConfirmDialog } from '@common/ConfirmDialog';
 import { ZoomInIcon, ZoomOutIcon, ArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import {
   Dialog,
   DialogClose,
@@ -45,7 +46,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 1,
     field1: '간병',
     field2: '간병인사용',
-    cheked: false,
+    cheked: true,
   },
   {
     id: 2,
@@ -460,23 +461,22 @@ const Ltpz640 = () => {
   // 2026-06-01 width, flex 수정, sortable 추가
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
     () => [
-      // {
-      //   headerName: '순서',
-      //   field: 'field0',
-      //   width: 40,
-      //   editable: true,
-      //   cellClass: 'text-center',
-      //   cellEditor: 'agNumberCellEditor',
-      //   sortable: false,
-      //   autoHeight: true,
-      //   spanRows: true,
-      // },
+      {
+        headerName: '순서',
+        field: 'field0',
+        width: attributeColumnWidth(40),
+        editable: true,
+        cellClass: 'text-center',
+        cellEditor: 'agNumberCellEditor',
+        sortable: false,
+        autoHeight: true,
+        spanRows: true,
+      },
       {
         headerName: '패키지명',
         field: 'field1',
         cellClass: '',
-        flex: 0.7,
-        minWidth: attributeColumnWidth[9],
+        width: attributeColumnWidth(140),
         autoHeight: true,
         spanRows: true,
         editable: true,
@@ -498,9 +498,8 @@ const Ltpz640 = () => {
       {
         headerName: '담보그룹명',
         field: 'field2',
-        cellClass: '',
         flex: 2,
-        minWidth: attributeColumnWidth[20],
+        minWidth: attributeColumnWidth(200),
         autoHeight: true,
         editable: true,
         cellEditor: 'agTextCellEditor',
@@ -516,6 +515,9 @@ const Ltpz640 = () => {
             <DialogTitle>
               <Typo tag={'strong'} variant={'heading-lg'}>
                 보장패키지유형관리
+              </Typo>
+              <Typo tag={'p'} variant={'body-xl'}>
+                (LTPZ640)
               </Typo>
             </DialogTitle>
           </DialogHeader>
@@ -595,6 +597,7 @@ const Ltpz640 = () => {
                 </DialogClose>
               </Grow>
             </DialogFooterArea>
+            <DialogBottomInfo />
           </DialogFooter>
         </DialogContent>
       </Dialog>
