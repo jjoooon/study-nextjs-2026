@@ -3,13 +3,15 @@
  */
 'use client';
 
-import { Grow, Gcol, Grid, Typo } from '@atoms';
-import { BulletItem } from '@common/BulletList';
-import { Button } from '@uiux/Button';
-import { Textarea } from '@uiux/Textarea';
 import React, { useRef, useState } from 'react';
 import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
+import { Grow, Gcol, Grid, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
+import { Textarea } from '@uiux/Textarea';
+import { BulletItem } from '@common/BulletList';
 
+// 단일 대화(요청자/심사팀) 묶음 데이터 타입
+// - 하나의 배열 원소가 화면의 한 페이지(한 묶음 카드)를 구성한다.
 export interface ChatResultItem {
   name: string;
   title: string;
@@ -24,11 +26,14 @@ export interface ChatResultItem {
   uw_detail: string;
 }
 
+// ChatResult 컴포넌트 입력값
+// - chatData 순서가 곧 페이지 순서(1페이지, 2페이지, ...)가 된다.
 export interface ChatResultProps {
   chatData: ChatResultItem[];
 }
 
-// br 태그를 실제 줄바꿈으로 렌더링하는 컴포넌트
+// 문자열 내 <br> 태그를 실제 줄바꿈(<br />)으로 변환해 렌더링한다.
+// 예: "A<br/>B" -> A(줄바꿈)B
 const HtmlLineBreak: React.FC<{ content: string; className?: string }> = ({ content, className }) => {
   const lines = content.split(/<br\s*\/?>/i);
   return (
@@ -44,22 +49,32 @@ const HtmlLineBreak: React.FC<{ content: string; className?: string }> = ({ cont
 };
 
 export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
+  // 현재 표시 중인 페이지 번호(1-based)
   const [page, setPage] = useState(1);
+  // 전체 페이지 수 = 대화 묶음 개수
   const pageCount = chatData.length;
+
+  // 스크롤 컨테이너 DOM 참조
   const scrollRef = useRef<HTMLDivElement>(null);
+  // 각 페이지 카드 DOM 참조(인덱스 = 페이지 - 1)
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // 버튼으로 smooth scroll 중일 때 onScroll 계산을 잠시 무시하기 위한 플래그
   const isScrollingRef = useRef(false);
+  // smooth scroll 종료 시점을 추정해 플래그를 해제하기 위한 타이머
   const scrollEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // 아이템의 스크롤 컨테이너 기준 offsetTop 계산
+  // 아이템의 offsetTop을 "문서 기준"이 아닌 "스크롤 컨테이너 기준"으로 계산한다.
+  // scrollTo 대상 위치를 정확히 맞추기 위해 상대 좌표를 사용한다.
   const getItemOffsetTop = (item: HTMLDivElement) => {
     const container = scrollRef.current;
     if (!container) return 0;
-    // item.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop
+    // 공식: (item.top - container.top) + container.scrollTop
     return item.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop;
   };
 
-  // 스크롤 위치 기준으로 현재 페이지 계산
+  // 현재 스크롤 위치(scrollTop)에서 활성 페이지를 계산한다.
+  // "아이템 상단 <= 현재 스크롤 위치" 조건을 만족하는 마지막 아이템을 현재 페이지로 본다.
   const getCurrentPageFromScroll = () => {
     const el = scrollRef.current;
     if (!el) return 1;
@@ -70,7 +85,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
       const item = itemRefs.current[i];
       if (!item) continue;
       const itemTop = getItemOffsetTop(item);
-      // 아이템 상단이 스크롤 위치 이하이면 해당 페이지
+      // +1 보정: 소수점/브라우저 렌더링 오차로 경계가 떨리는 현상을 줄인다.
       if (itemTop <= scrollTop + 1) {
         currentPage = i + 1;
       }
@@ -78,26 +93,30 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
     return currentPage;
   };
 
-  // 수동 스크롤 시 페이지 계산 (버튼 이동 중에는 무시)
+  // 사용자가 직접 스크롤할 때 페이지 인디케이터를 동기화한다.
+  // 단, 버튼 기반 smooth scroll 중에는 이 핸들러를 무시해 페이지 깜빡임을 방지한다.
   const handleScroll = () => {
     if (isScrollingRef.current) return;
     setPage(getCurrentPageFromScroll());
   };
 
-  // 특정 페이지의 아이템 위치로 스크롤 이동
+  // 이전/다음 버튼으로 특정 페이지 위치까지 smooth scroll 이동한다.
+  // - 페이지 범위를 벗어나는 값은 1~pageCount로 보정
+  // - 이동 시작 시 페이지 숫자를 즉시 갱신해 버튼 체감 반응성을 높임
   const scrollToPage = (nextPage: number) => {
     const safePage = Math.max(1, Math.min(nextPage, pageCount));
     const el = scrollRef.current;
     const targetItem = itemRefs.current[safePage - 1];
     if (!el || !targetItem) return;
 
-    // 스크롤 이동 전 getItemOffsetTop으로 정확한 위치 계산
+    // 대상 카드의 컨테이너 기준 위치를 계산해 스크롤 목적지로 사용
     const targetTop = getItemOffsetTop(targetItem);
 
     setPage(safePage);
     isScrollingRef.current = true;
     el.scrollTo({ top: targetTop, behavior: 'smooth' });
 
+    // smooth scroll 완료 이벤트가 없어 타이머로 종료 시점을 추정한다.
     if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
     scrollEndTimerRef.current = setTimeout(() => {
       isScrollingRef.current = false;
@@ -126,6 +145,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
         <div
           ref={scrollRef}
           style={{
+            // 페이지 단위 탐색 UX를 위해 세로 스냅 사용
             overflowY: 'auto',
             position: 'absolute',
             inset: 0,
@@ -143,7 +163,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
                 style={{ scrollSnapAlign: 'start' }}
                 className="py-2"
               >
-                {/* 심부산 */}
+                {/* 요청자 영역 */}
                 <Gcol className="px-3 gap-2">
                   <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-end">
                     {item.name}
@@ -177,7 +197,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
                   </Gcol>
                 </Gcol>
 
-                {/* UW심사팀 */}
+                {/* UW 심사팀 영역 */}
                 <Gcol className="px-3 gap-2 mt-4">
                   <Typo tag="strong" variant={'body-sm'} weight="bold" className="w-full flex justify-start">
                     {item.uw_name}
@@ -208,7 +228,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
                           type="dash"
                           before={undefined}
                         >
-                          {/* br 태그 처리 */}
+                          {/* 서버 문자열의 <br> 태그를 실제 줄바꿈으로 변환 */}
                           <HtmlLineBreak content={item.uw_content} />
                         </BulletItem>
                         <BulletItem
@@ -247,7 +267,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
           </Gcol>
         </div>
 
-        {/* 페이지 버튼 */}
+        {/* 페이지 인디케이터 + 이전/다음 탐색 버튼 */}
         <Gcol className="w-auto items-end gap-2 absolute bottom-2 right-3 z-50">
           <Button
             variant="outlined"
@@ -287,7 +307,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
         </Gcol>
       </Gcol>
 
-      {/* 요청자 의견 */}
+      {/* 하단 고정 입력: 요청자 의견 + 심사요청 액션 */}
       <Gcol className="shrink-0 w-full h-[13.2rem] py-2.5 px-3 bg-[var(--color-gray-5)] border border-[var(--color-gray-15)] rounded-b-[0.8rem]">
         <Grow placement="bwc">
           <b className="text-[1.3rem]">요청자 의견</b>

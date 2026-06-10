@@ -3,13 +3,16 @@
  */
 'use client';
 
-import { Grow } from '@atoms';
-import { ErrorMsg } from '@common/ErrorMsg';
-import { CheckIcon, Favorite } from '@icons';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Grow } from '@atoms';
+import { CheckIcon, Favorite } from '@icons';
+import { ErrorMsg } from '@common/ErrorMsg';
 
+// 단일 Checkbox 컴포넌트 props
+// - variant/size/color로 UI 모양을 바꾼다.
+// - required/error/errorMsg로 검증 상태를 표시할 수 있다.
 interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   children?: React.ReactNode;
   variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipBox';
@@ -24,6 +27,8 @@ interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof Checkbox
 
 type ErrorMsgPosition = 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 
+// CheckboxGroup 내부 공유 상태
+// - 개별 아이템은 Context를 통해 선택 여부/토글 함수/공통 옵션을 받는다.
 type CheckboxGroupContextValue = {
   values: string[];
   required: boolean;
@@ -39,6 +44,9 @@ type CheckboxGroupContextValue = {
 
 const CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | null>(null);
 
+// 단일 Checkbox
+// - controlled / uncontrolled 둘 다 지원
+// - variant에 따라 체크박스, 버튼형, 텍스트형, 칩형, 즐겨찾기형으로 렌더링 분기
 function Checkbox({
   className,
   children,
@@ -69,6 +77,7 @@ function Checkbox({
   const checkboxId = propsId || generatedId;
   const errorId = React.useId();
 
+  // 크기별 스타일 맵
   const sizeStyles = {
     xl: 'size-[2.4rem] rounded-[0.5rem]',
     lg: 'size-[2rem] rounded-[0.4rem]',
@@ -144,7 +153,7 @@ function Checkbox({
     secondary: 'var(--color-secondary-90)',
   };
 
-  // support both controlled and uncontrolled usage
+  // controlled/ uncontrolled 공용 상태 처리
   const [internalChecked, setInternalChecked] = React.useState<boolean | 'indeterminate'>(false);
   const isControlled = propsChecked !== undefined;
   const checkedState: boolean | 'indeterminate' = isControlled
@@ -162,6 +171,7 @@ function Checkbox({
 
   const hasErrorState = error && checkedState !== true;
 
+  // text variant는 실제 체크박스를 숨기고 텍스트만 클릭 가능하게 만든다.
   if (isText) {
     const checkedColor =
       color === 'info' ? 'text-[var(--color-information-50, #006ff2)]' : 'text-[var(--color-primary-50)]';
@@ -267,6 +277,7 @@ function Checkbox({
         )}
         {...restProps}
       >
+        {/* variant별 내부 표시 분기 */}
         {isFavorite ? (
           <Favorite color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
         ) : isButton || isChipBox ? (
@@ -287,6 +298,7 @@ function Checkbox({
         )}
       </CheckboxPrimitive.Root>
 
+      {/* 일반 variant는 우측 라벨 텍스트를 별도 label로 렌더링 */}
       {children && !isNoneText && !isButton && !isChipBox && !isFavorite && (
         <label
           htmlFor={checkboxId}
@@ -307,6 +319,10 @@ function Checkbox({
   );
 }
 
+// CheckboxGroup props
+// - value/defaultValue: 선택값 배열
+// - minSelected/required: 최소 선택 개수 검증
+// - validateMode: manual(외부 에러 시작), auto(항상 즉시 검증)
 interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
   value?: string[];
   defaultValue?: string[];
@@ -330,8 +346,10 @@ type CheckboxGroupItemRegistration = {
   selectAll: boolean;
 };
 
+// 중복 제거 유틸
 const uniq = (values: string[]) => Array.from(new Set(values));
 
+// 배열 값이 같은지 순서까지 포함해 비교
 const areSameValues = (left: string[], right: string[]) => {
   if (left.length !== right.length) {
     return false;
@@ -340,6 +358,9 @@ const areSameValues = (left: string[], right: string[]) => {
   return left.every((value, index) => value === right[index]);
 };
 
+// CheckboxGroup
+// - 여러 Checkbox를 하나의 값 배열로 제어
+// - selectAll 항목과 최소 선택 개수 검증을 지원
 function CheckboxGroup({
   className,
   children,
@@ -361,17 +382,21 @@ function CheckboxGroup({
   ...props
 }: CheckboxGroupProps) {
   const [internalValues, setInternalValues] = React.useState<string[]>(defaultValue);
+  // manual 검증 모드에서 "에러 표시 시작 여부"를 제어
   const [hasValidationStarted, setHasValidationStarted] = React.useState(false);
+  // 그룹에 등록된 아이템 메타 정보(disabled/selectAll)
   const [registeredItems, setRegisteredItems] = React.useState<Record<string, CheckboxGroupItemRegistration>>({});
   const isControlled = valueProp !== undefined;
   const values = isControlled ? valueProp : internalValues;
   const errorId = React.useId();
 
+  // selectAll 역할을 가진 항목 value 추출(있으면 1개만 사용)
   const selectAllValue = React.useMemo(
     () => Object.entries(registeredItems).find(([, item]) => item.selectAll)?.[0],
     [registeredItems]
   );
 
+  // 실제 선택 대상이 되는 항목 목록(selectAll/disabled 제외)
   const selectableValues = React.useMemo(
     () =>
       Object.entries(registeredItems)
@@ -380,11 +405,13 @@ function CheckboxGroup({
     [registeredItems, selectAllValue]
   );
 
+  // 선택 가능한 항목이 모두 선택되었는지 계산
   const isAllSelectableChecked = React.useMemo(
     () => selectableValues.length > 0 && selectableValues.every((itemValue) => values.includes(itemValue)),
     [selectableValues, values]
   );
 
+  // controlled/uncontrolled 공용 값 업데이트 함수
   const setValues = React.useCallback(
     (nextValues: string[]) => {
       if (!isControlled) {
@@ -395,6 +422,8 @@ function CheckboxGroup({
     [isControlled, onValueChange]
   );
 
+  // 그룹 아이템 등록/해제
+  // - disabled/selectAll 정보를 그룹이 알고 있어야 전체 선택/검증 계산이 가능하다.
   const registerItem = React.useCallback((value: string, options?: { disabled?: boolean; selectAll?: boolean }) => {
     setRegisteredItems((prev) => {
       const nextItem: CheckboxGroupItemRegistration = {
@@ -425,6 +454,8 @@ function CheckboxGroup({
     };
   }, []);
 
+  // 특정 항목의 체크 상태 계산
+  // - selectAll 항목은 전체 선택 상태를 그대로 따른다.
   const isItemChecked = React.useCallback(
     (value: string, selectAll?: boolean) => {
       if (selectAll) {
@@ -436,6 +467,9 @@ function CheckboxGroup({
     [isAllSelectableChecked, values]
   );
 
+  // 값 토글 처리
+  // - selectAll 클릭 시 전체 선택/해제
+  // - 일반 항목 클릭 시 개별 선택 후 selectAll 상태 재계산
   const toggleValue = React.useCallback(
     (value: string, checked: boolean | 'indeterminate', selectAll?: boolean) => {
       if (selectAll && selectAllValue) {
@@ -469,12 +503,15 @@ function CheckboxGroup({
     [selectAllValue, selectableValues, setValues, values]
   );
 
+  // manual 모드에서는 외부 error prop이 들어온 시점부터 검증 표시 시작
   React.useEffect(() => {
     if (validateMode === 'manual') {
       setHasValidationStarted(error);
     }
   }, [error, validateMode]);
 
+  // 검증 로직
+  // - required 또는 minSelected > 1 이면 "선택 개수 기반 검증" 사용
   const usesCountValidation = required || minSelected > 1;
   const selectedCount = selectAllValue ? values.filter((item) => item !== selectAllValue).length : values.length;
   const countError = selectedCount < minSelected;
@@ -487,6 +524,7 @@ function CheckboxGroup({
 
   const resolvedErrorMsg = errorMsg ?? `${minSelected}개 이상 선택해 주세요.`;
 
+  // 일반 항목 선택 상태가 바뀌면 selectAll 값도 자동 동기화
   React.useEffect(() => {
     if (!selectAllValue) {
       return;
@@ -543,6 +581,8 @@ function CheckboxGroup({
   );
 }
 
+// CheckboxGroup 내부에서 사용하는 개별 아이템
+// - 그룹 Context를 통해 checked/onChange/공통 옵션을 주입받는다.
 interface CheckboxGroupItemProps extends Omit<
   UICheckboxProps,
   'checked' | 'defaultChecked' | 'onCheckedChange' | 'value'
@@ -560,6 +600,7 @@ function CheckboxGroupItem({ value, selectAll = false, ...props }: CheckboxGroup
 
   const { registerItem } = context;
 
+  // 마운트 시 그룹에 자기 자신을 등록하고, 언마운트 시 해제
   React.useEffect(() => {
     return registerItem(value, { disabled: props.disabled, selectAll });
   }, [props.disabled, registerItem, selectAll, value]);

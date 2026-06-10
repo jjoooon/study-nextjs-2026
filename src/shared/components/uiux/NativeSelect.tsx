@@ -1,13 +1,16 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Typo } from '@atoms';
-import { ErrorMsg } from '@common/ErrorMsg';
-import { SelectDropIcon } from '@icons';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
+import { Typo } from '@atoms';
+import { SelectDropIcon } from '@icons';
+import { ErrorMsg } from '@common/ErrorMsg';
 
+// NativeSelect 공통 props
+// - width: 숫자면 rem으로 변환, 문자열이면 그대로 사용
+// - readOnly: 실제 disabled 대신 선택/포커스만 막고 스타일은 유지
 interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size'> {
   variant?: 'default' | 'text';
   size?: UIUXsize;
@@ -19,11 +22,15 @@ interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 }
 
+// optgroup 전용 props
 type NativeSelectOptGroupProps = React.HTMLAttributes<HTMLOptGroupElement> & {
   disabled?: boolean;
   label?: string;
 };
 
+// 기본 HTML select 기반 컴포넌트
+// - default: 일반 select UI
+// - text: 읽기 전용 텍스트처럼 표시하는 변형
 function NativeSelect({
   className,
   variant = 'default',
@@ -36,13 +43,16 @@ function NativeSelect({
   errorPs = 'bl',
   ...props
 }: UINativeSelectProps) {
+  // width 값을 실제 CSS width로 정규화
   const resolvedWidth =
     typeof width === 'number' ? `${width / 10}rem` : width === 'full' ? '100%' : width === 'auto' ? 'auto' : width;
   const widthStyle = resolvedWidth ? { width: resolvedWidth } : undefined;
 
   const errorId = React.useId();
+  // 외부에서 aria-invalid를 직접 넘긴 경우도 invalid 상태로 취급
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
+  // 상태별 기본 스타일(에러 / 필수 / 일반)
   const baseStyle = cn(
     'w-full rounded-[0.4rem] px-2 pr-6 text-[1.3rem] border box-border tracking-[-0.13rem] appearance-none truncate',
     isInvalid || error
@@ -69,14 +79,17 @@ function NativeSelect({
     ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
     : '';
   const disabledStyle = 'disabled:opacity-50 disabled:cursor-not-allowed';
+  // text variant는 select처럼 보이지 않게 최소 스타일만 남긴다.
   const disabledStyle2 = 'disabled:opacity-100 !border-0 !p-0 !w-auto';
   const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
+  // variant별 최종 스타일 조합
   const variantStyles = {
     default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
     text: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle2, sizeStyle),
   };
 
+  // 화살표 아이콘 색상도 상태에 맞춰 변경
   const arrowStateStyle =
     isInvalid || error
       ? 'var(--color-danger-50)'
@@ -89,6 +102,7 @@ function NativeSelect({
   return (
     <div className={cn('relative', className)} style={widthStyle}>
       <div className="group/native-select relative tracking-[-0.13rem]" data-slot="native-select-wrapper">
+        {/* text variant가 아니고 disabled가 아니면 실제 select 렌더링 */}
         {variant !== 'text' && !props.disabled ? (
           <>
             <select
@@ -100,6 +114,7 @@ function NativeSelect({
               // disabled={readOnly || props.disabled}
               {...props}
             />
+            {/* 우측 드롭다운 화살표 아이콘 */}
             <SelectDropIcon
               className={cn(
                 'pointer-events-none absolute top-1/2 right-[0.8rem]  select-none text-[var(--color-icon-basic)]',
@@ -110,8 +125,10 @@ function NativeSelect({
             />
           </>
         ) : (
+          // text variant 또는 disabled 상태에서는 선택된 값을 텍스트처럼만 표시
           <Typo variant="heading-sm" className="whitespace-nowrap">
             {(() => {
+              // children 중 현재 value/defaultValue와 일치하는 option label을 찾아 표시
               const selectedValue = props.value ?? props.defaultValue;
               const matched = (
                 React.Children.toArray(props.children) as React.ReactElement<
@@ -132,10 +149,12 @@ function NativeSelect({
   );
 }
 
+// option 래퍼
 function NativeSelectOption({ ...props }: React.ComponentProps<'option'>) {
   return <option data-slot="native-select-option" {...props} />;
 }
 
+// optgroup 래퍼
 function NativeSelectOptGroup({ className, ...props }: NativeSelectOptGroupProps) {
   return React.createElement('optgroup', {
     'data-slot': 'native-select-optgroup',
