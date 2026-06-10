@@ -4,13 +4,13 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grow, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,10 +24,10 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -67,6 +67,7 @@ const Ltpz053 = () => {
       field: 'field01',
       cellClass: 'text-center !px-0',
       autoHeight: true,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
       headerName: '실명증표진위여부 확인서',
@@ -154,6 +155,8 @@ const Ltpz053 = () => {
                   }
                 });
               }}
+              tooltipShowMode="whenTruncated"
+              tooltipShowDelay={0}
             />
           </div>
           <TableFold variant="accordion">
