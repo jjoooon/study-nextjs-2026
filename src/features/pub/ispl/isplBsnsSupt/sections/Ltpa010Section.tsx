@@ -3,6 +3,11 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { SearchIcon, ResetIcon, FileExportIcon, PenIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -11,27 +16,23 @@ import {
   useAgGridInfiniteAppend,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, FileExportIcon, PenIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { useFormFields } from '@hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
+// 통합가입설계조회 그리드에서 사용하는 단일 행 데이터 타입 정의
 type DummyDataRow = {
   id: number;
   isCheck: boolean;
@@ -187,7 +188,11 @@ const DummyData: DummyDataRow[] = [
   },
 ];
 
+/**
+ * Ltpa010Section: 통합가입설계조회 화면 섹션 컴포넌트
+ */
 export default function Ltpa010Section() {
+  // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [form, setFormField] = useFormFields({
     type01: '',
@@ -200,7 +205,9 @@ export default function Ltpa010Section() {
     type09: '',
   });
 
+  // Ag-Grid 컬럼 정의
   const columnDefs: (ColDef<DummyDataRow> | ColGroupDef<DummyDataRow>)[] = [
+    // 1. 설계번호: 클릭 시 상세 조회 기능을 위한 링크 버튼 형태로 렌더링
     {
       headerName: '설계번호',
       flex: 1,
@@ -214,6 +221,7 @@ export default function Ltpa010Section() {
         </Button>
       ),
     },
+    // 2. 상품명/구분 & 고지유형/플랜명: 2행 구조의 헤더와 커스텀 필드 렌더러를 사용하여 복합 정보 표시
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -229,6 +237,7 @@ export default function Ltpa010Section() {
       cellClass: '!px-0',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>('field02', (data?: DummyDataRow) => {
+        // 메모가 있는 경우 펜 아이콘 버튼 표시 및 닉네임 툴팁 연동
         const hasTooltip = data?.memo;
         const hasMemoButton = !data?.memo || hasTooltip;
 
@@ -280,7 +289,7 @@ export default function Ltpa010Section() {
         );
       }),
     },
-
+    // 3. 계약자 & 생년월일: 두 필드를 하나의 컬럼에 상하로 배치
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -298,7 +307,7 @@ export default function Ltpa010Section() {
       minWidth: attributeColumnWidth(70),
       cellRenderer: createFieldRenderer<DummyDataRow>('field05', 'field06'),
     },
-
+    // 4. 피보험자 & 생년월일
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -317,6 +326,7 @@ export default function Ltpa010Section() {
       minWidth: attributeColumnWidth(70),
       cellRenderer: createFieldRenderer<DummyDataRow>('field20', 'field21'),
     },
+    // 5. 보험료 & 환급률
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -343,6 +353,7 @@ export default function Ltpa010Section() {
         </Grid>
       ),
     },
+    // 6. 설계일자 & 유효기간
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -377,6 +388,7 @@ export default function Ltpa010Section() {
         </Grid>
       ),
     },
+    // 7. 설계상태 & 심사결과
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -394,6 +406,7 @@ export default function Ltpa010Section() {
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>('field09', 'field10'),
     },
+    // 8. 청약서출력 & 스캔여부
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -428,6 +441,7 @@ export default function Ltpa010Section() {
         </Grid>
       ),
     },
+    // 9. 취급기관/팀 & 취급자
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -445,6 +459,7 @@ export default function Ltpa010Section() {
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>('field12', 'field13'),
     },
+    // 10. 최초설계자 & SM
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -486,6 +501,7 @@ export default function Ltpa010Section() {
         </Grid>
       )),
     },
+    // 11. 사용인 & 부실유의
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -503,6 +519,7 @@ export default function Ltpa010Section() {
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>('field16', 'field17'),
     },
+    // 12. 설계종료 & 증권번호
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -533,16 +550,19 @@ export default function Ltpa010Section() {
   // rowSelection 사용시
   const [rowData, setRowData] = React.useState<DummyDataRow[]>(DummyData);
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
+  // 체크박스 선택 변경 핸들러
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataRow, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
 
+  // 무한 스크롤(더보기) 기능을 위한 설정
   const pageSize = 10;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
     pageSize,
   });
+
   return (
     <>
       <LayoutHead>
@@ -556,6 +576,7 @@ export default function Ltpa010Section() {
       <LayoutTemplate
         mainBody={
           <Grid className="grid-rows-[auto_1fr] h-full" gap={3}>
+            {/* 상단: 조회 조건 필터 영역 */}
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}
@@ -748,6 +769,7 @@ export default function Ltpa010Section() {
                 </Button>
               </Grow>
             </Grow>
+
             <Grid className="grid-rows-[1fr_auto] h-full" gap={2}>
               <Grid className="grid-rows-[auto_1fr]" gap={1}>
                 <Grow className="w-full" placement="ec">
@@ -756,12 +778,15 @@ export default function Ltpa010Section() {
                     <FileExportIcon />
                   </Button>
                 </Grow>
+
+                {/* 그리드 영역: 데이터 개수에 따라 높이가 조절되며 내부 스크롤을 지원합니다. */}
                 <Gcol gap={1}>
                   <div className="ag-theme-alpine ltpa010-grid">
                     <AgGridReact<DummyDataRow>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
                       rowClassRules={{
+                        // 판매중지 상품인 경우 배경색을 다르게 표시
                         'ag-row-state-true': (params) => params.data?.isState === true,
                       }}
                       rowData={rowData.slice(0, loadedCount)}
@@ -801,6 +826,7 @@ export default function Ltpa010Section() {
                       animateRows={false}
                     />
                   </div>
+                  {/* 그리드 하단: 데이터 더보기(페이징) 컨트롤 */}
                   <TableMore
                     loadedCount={loadedCount}
                     totalCount={totalCount}
@@ -810,6 +836,7 @@ export default function Ltpa010Section() {
                   />
                 </Gcol>
               </Grid>
+              {/* 조회 가능 기간에 대한 하단 안내 문구 */}
               <Gcol variant="box-info" placement="ss">
                 <Typo variant="body-sm" color="primary" icon="info">
                   <b>설계조회 가능기간</b> 취급기간(7일), 법인대리점(30일), FC/사용인/개인대리점 등(60일)
@@ -818,6 +845,7 @@ export default function Ltpa010Section() {
             </Grid>
           </Grid>
         }
+        /* 하단 푸터 영역: 각종 설계 관리 및 저장/삭제 버튼 */
         mainFoot={
           <MainBottom>
             <MainBottomItem>

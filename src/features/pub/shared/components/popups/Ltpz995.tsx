@@ -24,6 +24,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import 'filepond/dist/filepond.min.css';
 
 // Register FilePond plugins
