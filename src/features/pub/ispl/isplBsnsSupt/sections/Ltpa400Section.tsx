@@ -505,8 +505,11 @@ export default function Ltpa400Section() {
                           onChange={(e) => setFormField('type03', e.target.value)}
                         >
                           {[
-                            { value: 'selection', id: 'type03-1', label: '전체' },
-                            { value: 'selection2', id: 'type03-2', label: '진행중' },
+                            { value: '선택', id: 'type03-1', label: '선택' },
+                            { value: '신청중', id: 'type03-2', label: '신청중' },
+                            { value: '처리중', id: 'type03-3', label: '처리중' },
+                            { value: '처리완료', id: 'type03-4', label: '처리완료' },
+                            { value: '요청취소', id: 'type03-5', label: '요청취소' },
                           ].map((option) => (
                             <NativeSelectOption key={option.id} value={option.value}>
                               {option.label}

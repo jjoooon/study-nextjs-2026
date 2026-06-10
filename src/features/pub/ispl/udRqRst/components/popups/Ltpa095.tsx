@@ -153,7 +153,7 @@ const Ltpa095 = () => {
     {
       headerName: '대상이되는 부위 또는 질병',
       field: 'field02',
-      flex: 2,
+      flex: 3,
       minWidth: attributeColumnWidth(160),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
