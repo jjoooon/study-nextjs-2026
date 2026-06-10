@@ -4,10 +4,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { ErrorIcon, NotiIcon, QueryIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,10 +21,9 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
+// 업무 처리 안내 데이터 타입 정의 (오류, 질의, 알림 등)
 type DummyDataType = {
   id: number;
   type: '오류' | '질의' | '알림';
@@ -31,6 +32,7 @@ type DummyDataType = {
   field1: string;
   field2?: string;
 };
+
 const DummyData: DummyDataType[] = [
   {
     id: 1,
@@ -109,9 +111,15 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+/**
+ * Ltpz998: 여러 건의 업무 처리 안내(오류/질의/알림) 목록을 보여주고,
+ * 선택한 항목의 상세 내용 및 조치 방안을 하단에 표시하는 팝업 컴포넌트입니다.
+ */
 const Ltpz998 = () => {
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
-  const [selectedData, setSelectedData] = React.useState<DummyDataType | null>(null);
+  const [rowData] = React.useState<DummyDataType[]>(DummyData); // 그리드에 표시할 데이터 목록
+  const [selectedData, setSelectedData] = React.useState<DummyDataType | null>(null); // 현재 선택된 상세 데이터
+
+  // 선택된 데이터의 '처리방안(field2)' 텍스트를 줄바꿈 단위로 나누어 배열로 관리합니다.
   const detailLines = React.useMemo(() => selectedData?.field2?.split('\n') ?? [], [selectedData]);
 
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -137,11 +145,13 @@ const Ltpz998 = () => {
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
+          {/* 상단: 안내 목록 그리드 영역 */}
           <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
               columnDefs={columnDefs}
+              // 행 클릭 시 해당 데이터를 상세 영역(하단)에 표시하도록 설정
               onCellClicked={(params) => {
                 if (params.data) {
                   setSelectedData(params.data);
@@ -159,6 +169,8 @@ const Ltpz998 = () => {
               tooltipShowDelay={0}
             />
           </div>
+
+          {/* 하단: 선택된 항목의 상세 정보 및 처리 방안 영역 */}
           <div className="w-full h-[calc(100vh-42rem)] max-h-[24rem] min-h-[10rem]">
             {selectedData && (
               <Grid
@@ -166,12 +178,15 @@ const Ltpz998 = () => {
                 className="h-full pb-5 bg-[var(--color-gray-5)] rounded-[0.8rem] grid-rows-[auto_1fr]"
                 variant="box-line"
               >
+                {/* 오류 코드 표시 */}
                 <Grow placement="ec" className="w-full text-right">
                   <Typo variant={'body-lg'} color={'gray'}>
                     코드 {selectedData.code}
                   </Typo>
                 </Grow>
+
                 <Grow placement="ss" gap={5} className="w-full h-full">
+                  {/* 타입별 아이콘 및 레이블 (오류/질의/알림) */}
                   <Grow className="w-[7.1rem] py-1.5 pl-1.5 shrink-0">
                     {selectedData.type === '오류' && <ErrorIcon />}
                     {selectedData.type === '질의' && <QueryIcon />}
@@ -180,6 +195,8 @@ const Ltpz998 = () => {
                       {selectedData.type}
                     </Typo>
                   </Grow>
+
+                  {/* 상세 메시지 및 조치 방안 텍스트 */}
                   <Gcol
                     className="h-full flex-1 overflow-y-auto border-l border-[var(--color-gray-15)] relative"
                     placement="ss"
@@ -188,6 +205,7 @@ const Ltpz998 = () => {
                     <Gcol className="absolute top-0 w-full pl-5" placement="ss" gap={3}>
                       <div>{selectedData.field1}</div>
 
+                      {/* 상세 조치 방안 (내용이 있을 경우만 표시) */}
                       {selectedData.field2 && (
                         <div className="w-full rounded-[0.8rem] border border-[var(--color-gray-15)] bg-white p-3">
                           {detailLines.map((line, index) => (

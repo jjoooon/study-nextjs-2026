@@ -1,15 +1,17 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Divider, Grow, Gcol } from '@atoms';
-import { InputHash } from '@common/InputHash';
-import { ResetIcon, SearchIcon, SortArrowIcon, SortArrowDefaultIcon } from '@icons';
-import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
 import type { IHeaderParams, SortDirection } from 'ag-grid-enterprise';
 import React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Divider, Grow, Gcol } from '@atoms';
+import { ResetIcon, SearchIcon, SortArrowIcon, SortArrowDefaultIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { InputHash } from '@common/InputHash';
 
+// 단위 포함 헤더 공통 props
+// - ag-grid의 column/enableSorting/progressSort를 받으면 정렬 가능한 헤더로 동작
 interface HeaderWithUnitProps {
   label: string;
   unit: string;
@@ -35,9 +37,12 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
   view = false,
   progressSort,
 }: HeaderWithUnitProps) {
+  // ag-grid 정렬 제어 함수가 모두 주입된 경우에만 정렬 활성화
   const isSortable = !!(column && enableSorting && progressSort);
+  // 현재 정렬 상태(asc/desc/undefined)
   const [sort, setSort] = React.useState<SortDirection | undefined>(column?.getSort());
 
+  // grid 내부 정렬 변경 이벤트와 로컬 상태 동기화
   React.useEffect(() => {
     if (!column) return;
 
@@ -51,12 +56,15 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
     };
   }, [column]);
 
+  // 헤더 클릭 시 ag-grid 기본 정렬 순환 함수를 호출
+  // shiftKey가 있으면 다중 정렬 동작(ag-grid 규칙)
   const handleSort = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (!isSortable) return;
     if (!progressSort) return;
     progressSort(event.shiftKey);
   };
 
+  // col=true면 세로 배치, 아니면 가로 배치로 라벨+단위를 렌더링
   const content = col ? (
     <Gcol className={cn('w-full leading-[1.4rem]', className)} placement={'cc'} gap={gap}>
       {label}
@@ -70,6 +78,7 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
   );
 
   if (!isSortable) {
+    // 정렬 기능이 없으면 일반 텍스트 헤더만 표시
     return content;
   }
 
@@ -84,6 +93,7 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
       <Grow placement={'cc'} gap={0.4}>
         {content}
         <span className="text-[1rem] leading-none text-[var(--color-gray-60)]">
+          {/* 정렬 상태별 아이콘 표시: asc / desc / 기본(view=true일 때만) */}
           {sort === 'asc' ? (
             <SortArrowIcon size={12} color="var(--color-gray-100)" className="rotate-180 shrink-0" />
           ) : sort === 'desc' ? (
@@ -110,6 +120,7 @@ interface ProductNameHeaderProps {
   onCheckedChange?: (key: string) => (checked: boolean | 'indeterminate') => void;
 }
 
+// 상품명 헤더(체크 필터 + 담보명 검색 + 말풍선 옵션)
 export const ProductNameHeader = React.memo(function ProductNameHeader({
   coverageName,
   onCoverageNameChange,
@@ -121,6 +132,7 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
   return (
     <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
       <Grow gap={1.5} placement={'sc'}>
+        {/* 외부 상태 제어 props가 있으면 controlled 체크박스로 렌더링 */}
         {checkedMap && onCheckedChange ? (
           <>
             <Checkbox variant={'text'} checked={checkedMap.selected} onCheckedChange={onCheckedChange('selected')}>
@@ -136,6 +148,7 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
             </Checkbox> */}
           </>
         ) : (
+          // 제어 props가 없으면 기본(비제어) 체크박스 UI만 표시
           <>
             <Checkbox variant={'text'}>선택 24건</Checkbox>
             <Divider />
@@ -146,6 +159,7 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
         )}
       </Grow>
       <Grow>
+        {/* 담보명 입력/선택용 해시형 입력 */}
         <InputHash
           options={[
             { value: '암암암암2', label: '암암암암2' },
@@ -166,6 +180,7 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
           value={coverageName}
           onChange={(value) => onCoverageNameChange(value)}
         />
+        {/* 검색/초기화 액션 버튼(UI) */}
         <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
           <SearchIcon color={'var(--color-primary-50)'} />
         </Button>

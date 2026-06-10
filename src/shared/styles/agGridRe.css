@@ -1013,3 +1013,8 @@
 .ag-theme-alpine.inner-scroll[data-page="30"] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height:100%; max-height: 90rem !important;
 }
+
+.Ltpz070 .ag-header .ag-header-viewport,
+.Ltpz070 .ag-header-container {
+  background-color: #ffccbe;
+}

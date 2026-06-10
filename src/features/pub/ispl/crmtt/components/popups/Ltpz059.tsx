@@ -3,16 +3,15 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import type { CellClickedEvent, ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { editableCellClassRules } from '@/features/pub/ispl/cvrPl/utils/agGridUtils';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { createExpiryCellRenderer } from '@grid/CellRenderers';
 import { ArrowIcon, EssentialIcon } from '@icons';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
-
 import {
   Dialog,
   DialogContent,
@@ -25,14 +24,12 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { editableCellClassRules } from '@/features/pub/ispl/cvrPl/utils/agGridUtils';
-import type { PopupBaseProps } from '@/shared/types/uiTypes';
-import { withPublicUrl } from '@/shared/utils/url/publicUrl';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
 
 import '@/shared/lib/agGridPub';
 
@@ -156,6 +153,9 @@ type DummyDataType3 = {
   isCheck: boolean;
   field01: string | number;
 };
+
+type SelectableStructureDataType = DummyDataType | DummyDataType2 | DummyDataType3;
+
 const DummyData3: DummyDataType3[] = [
   {
     id: 1,
@@ -347,6 +347,13 @@ const Ltpz059 = () => {
     지붕: 0,
     외벽: 0,
   });
+  const [selectedImageIdBySection, setSelectedImageIdBySection] = React.useState<
+    Record<ImageSectionType, number | null>
+  >({
+    기둥: null,
+    지붕: null,
+    외벽: null,
+  });
   const getExpiryRenderer = createExpiryCellRenderer<DummyDataType4>;
 
   const getEditableFieldNameByTitle = (title: string | number | undefined): string | null => {
@@ -403,6 +410,16 @@ const Ltpz059 = () => {
     return imageItemsBySection[section].slice(startIndex, startIndex + IMAGE_PAGE_SIZE);
   };
 
+  const handleStructureLabelCellClicked = (params: CellClickedEvent<SelectableStructureDataType>) => {
+    if (params.colDef.field !== 'field01') {
+      return;
+    }
+
+    const isSelected = params.node.isSelected();
+
+    params.node.setSelected(!isSelected);
+  };
+
   const renderImageSelectorRow = (section: ImageSectionType) => {
     const currentPage = imagePageBySection[section];
     const visibleItems = getVisibleImageItems(section);
@@ -425,7 +442,17 @@ const Ltpz059 = () => {
               <img
                 src={withPublicUrl(item.src)}
                 alt={item.label}
-                className="border border-solid border-[#D8D8D8] w-[175rem] h-[13rem] aspect-square object-cover"
+                onClick={() => {
+                  setSelectedImageIdBySection((prev) => ({
+                    ...prev,
+                    [section]: item.id,
+                  }));
+                }}
+                className={`border border-solid w-[175rem] h-[13rem] aspect-square object-cover cursor-pointer ${
+                  selectedImageIdBySection[section] === item.id
+                    ? 'border-[#FF5C2E] shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.20)]'
+                    : 'border-[#D8D8D8]'
+                }`}
               />
               <Typo className="text-center w-full h-[4.3rem] min-h-[4.3rem]">{item.label}</Typo>
             </Gcol>
@@ -614,17 +641,18 @@ const Ltpz059 = () => {
                         resizable: true,
                       }}
                       rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: true,
+                        mode: 'singleRow',
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
                       selectionColumnDef={{
+                        headerName: '선택',
                         width: 30,
                       }}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
+                      onCellClicked={handleStructureLabelCellClicked}
                     />
                   </div>
                   <div className="ag-theme-alpine">
@@ -638,17 +666,18 @@ const Ltpz059 = () => {
                         resizable: true,
                       }}
                       rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: true,
+                        mode: 'singleRow',
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
                       selectionColumnDef={{
+                        headerName: '선택',
                         width: 30,
                       }}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
+                      onCellClicked={handleStructureLabelCellClicked}
                     />
                   </div>
                   <div className="ag-theme-alpine">
@@ -662,17 +691,18 @@ const Ltpz059 = () => {
                         resizable: true,
                       }}
                       rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: true,
+                        mode: 'singleRow',
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
                       selectionColumnDef={{
+                        headerName: '선택',
                         width: 30,
                       }}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
+                      onCellClicked={handleStructureLabelCellClicked}
                     />
                   </div>
                   <Grid className="grid-rows-[1fr_auto]">

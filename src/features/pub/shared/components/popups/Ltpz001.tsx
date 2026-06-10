@@ -4,12 +4,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -27,11 +27,12 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Textarea } from '@uiux/Textarea';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 
+// 출력물 데이터 타입 정의: 트리 구조를 위한 filePath와 각종 상태 값을 포함합니다.
 type DummyDataType = {
   id: number;
   filePath: string[];
@@ -165,8 +166,12 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+/**
+ * Ltpz001: 장기 보험의 각종 제안서 및 청약 서류를 조회하고, 프린트/이메일/팩스 등으로 발행하는 팝업입니다.
+ */
 const Ltpz001 = () => {
   // 2026-05-29 width 수정
+  // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -219,6 +224,7 @@ const Ltpz001 = () => {
   ];
 
   const [rowData] = useState<DummyDataType[]>(DummyData);
+  // 발행 방법별(이메일, 팩스 등) 입력 폼 상태 관리
   const [form, setFormField] = useFormFields({
     type01: '',
     emailId: '',
@@ -247,10 +253,11 @@ const Ltpz001 = () => {
         </DialogHeader>
 
         <DialogSection className="grid-cols-[1fr_auto]">
-          {/* M2. 구조 변경 수정 */}
+          {/* 왼쪽 영역: 설계 정보 및 트리형 출력물 리스트 */}
           <Grid className="grid-rows-[1fr_auto] h-full gap-3">
             <div className=" w-full h-full relative min-h-[30rem] overflow-y-auto ">
               <Gcol gap={5} placement={'ss'} className="absolute">
+                {/* 설계 정보 요약 영역 (예시로 2회 반복 렌더링) */}
                 {[0, 1].map((idx) => (
                   <Gcol gap={2} placement={'ss'} key={idx}>
                     <Grow variant={'box-info-line'} className="w-full">
@@ -279,10 +286,11 @@ const Ltpz001 = () => {
                           cellClass: 'text-center',
                         }}
                         domLayout="autoHeight"
-                        // tree data 설정
+                        // 트리 데이터 설정: filePath 배열을 기준으로 계층 구조 형성
                         treeData={true}
                         getDataPath={(row) => row.filePath}
                         groupDefaultExpanded={-1}
+                        // 그룹 컬럼(출력물 명칭) 정의
                         autoGroupColumnDef={{
                           headerName: '출력물',
                           field: 'field1',
@@ -317,6 +325,7 @@ const Ltpz001 = () => {
                 ))}
               </Gcol>
             </div>
+            {/* 필수 스캔 대상 안내 문구 */}
             <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
                 기타 필수 스캔 대상 서류안내
@@ -327,6 +336,7 @@ const Ltpz001 = () => {
             </Gcol>
           </Grid>
 
+          {/* 오른쪽 영역: 발행 방법 설정 (프린트, 이메일, 팩스, 모바일) */}
           <Grid gap={2} placement={'ss'} className="w-[26.4rem] shrink-0 grid-rows-[auto_1fr] overflow-hidden">
             <Typo tag={'h3'} variant={'heading-lg'}>
               발행방법
@@ -350,7 +360,7 @@ const Ltpz001 = () => {
                 gap={4}
                 placement={'ss'}
               >
-                {/* 프린트 */}
+                {/* 1. 프린트 설정 */}
                 {tabActive === 'tab1' && (
                   <>
                     <Gcol placement={'ss'} gap={2}>
@@ -417,6 +427,7 @@ const Ltpz001 = () => {
                       </RadioGroup>
                     </Gcol>
 
+                    {/* 스캔 대상 서류의 출력 필요 상태 안내 */}
                     <Gcol placement={'ss'} gap={2}>
                       <Typo tag={'h3'} variant={'heading-sm'}>
                         필수 스캔문서 출력일시
@@ -446,7 +457,7 @@ const Ltpz001 = () => {
                     </Gcol>
                   </>
                 )}
-                {/* 이메일 */}
+                {/* 2. 이메일 설정 */}
                 {tabActive === 'tab2' && (
                   <>
                     <Gcol placement={'ss'} gap={2}>
@@ -495,7 +506,7 @@ const Ltpz001 = () => {
                     </Gcol>
                   </>
                 )}
-                {/* 팩스 */}
+                {/* 3. 팩스 설정 */}
                 {tabActive === 'tab3' && (
                   <>
                     <Gcol placement={'ss'} gap={2}>
@@ -535,7 +546,7 @@ const Ltpz001 = () => {
                     </Gcol>
                   </>
                 )}
-                {/* 모바일 */}
+                {/* 4. 모바일 설정 (알림톡/한손愛) */}
                 {tabActive === 'tab4' && (
                   <>
                     <Gcol placement={'ss'} gap={2}>
@@ -622,7 +633,7 @@ const Ltpz001 = () => {
                   </>
                 )}
 
-                {/* 리포트내용선택 */}
+                {/* 공통: 리포트 내용 선택 옵션 */}
                 <Divider dir="row" className="w-full" />
                 <Gcol placement={'ss'} gap={2}>
                   <Typo tag={'h3'} variant={'heading-sm'}>

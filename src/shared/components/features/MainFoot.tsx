@@ -3,14 +3,16 @@
  */
 'use client';
 
+import { useState } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grow, Grid } from '@atoms';
-import { FormRow, FormTable, FormCell } from '@common/FormTable';
 import { ArrowNext, ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { useState } from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
+import { FormRow, FormTable, FormCell } from '@common/FormTable';
 
+// 화면 하단 기본 액션(초기화/설계시작)
+// - 설계시작 버튼은 page2-MainForm 제출을 트리거한다.
 export function DesignStart() {
   return (
     <Grow placement={'ec'} className="w-full px-2.5 pt-2 pb-2.5">
@@ -25,6 +27,10 @@ export function DesignStart() {
     </Grow>
   );
 }
+
+// 설계 생성 단계의 하단 액션 영역
+// - 좌측: 비교 버튼
+// - 우측: 초기화/설계생성 버튼 그룹
 export function DesignGeneration() {
   return (
     <Grow placement={'bwc'} className="w-full px-2.5 pt-2 pb-2.5">
@@ -45,9 +51,16 @@ export function DesignGeneration() {
   );
 }
 
+// LTPA350 2단계 하단 패널
+// - 보험료 요약값 표시
+// - 합계보험료 입력 검증
+// - 하단 액션 버튼(보험료계산 포함)
 export function LTPA350Step2({ onCalcGuidelineClick }: { onCalcGuidelineClick?: () => void }) {
+  // 합계보험료 입력값
   const [amount, setAmount] = useState('0');
+  // 환급률 입력값
   const [refundRate, setRefundRate] = useState('39.4');
+  // 합계보험료 필수값 검증 에러 표시 여부
   const [testError, setTestError] = useState(false);
 
   return (
@@ -56,6 +69,7 @@ export function LTPA350Step2({ onCalcGuidelineClick }: { onCalcGuidelineClick?: 
         id="page2-MainForm"
         className="w-full"
         onSubmit={(event) => {
+          // 데모용 submit 처리: 기본 제출 막고 에러 표시 상태를 토글
           event.preventDefault();
           setTestError(!testError);
         }}
@@ -114,6 +128,7 @@ export function LTPA350Step2({ onCalcGuidelineClick }: { onCalcGuidelineClick?: 
                   clear={true}
                   width={'lg'}
                   onChange={(e) => {
+                    // 값이 비면 에러 표시, 값이 있으면 에러 해제
                     setAmount(e.target.value);
                     setTestError(!e.target.value);
                   }}
@@ -159,6 +174,7 @@ export function LTPA350Step2({ onCalcGuidelineClick }: { onCalcGuidelineClick?: 
   );
 }
 
+// LTPA350 1단계 하단 패널(저장 중심)
 export function LTPA350Step1() {
   return (
     <Gcol className="w-full rounded-tl-[1rem] overflow-hidden rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]">
@@ -176,6 +192,9 @@ export function LTPA350Step1() {
   );
 }
 
+// 공통 하단 래퍼
+// - variant='box': 박스형(배경/보더/쉐도우)
+// - variant='default': 최소 스타일
 export function MainBottom({
   children,
   className,
@@ -196,6 +215,8 @@ export function MainBottom({
   );
 }
 
+// 공통 하단 아이템 1줄 레이아웃
+// - 좌/우 버튼 그룹 배치에 맞춘 기본 간격/정렬을 제공한다.
 export function MainBottomItem({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <Grow

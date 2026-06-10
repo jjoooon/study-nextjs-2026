@@ -8,9 +8,17 @@ import * as RechartsPrimitive from 'recharts';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 
-// Format: { THEME_NAME: CSS_SELECTOR }
+// 테마 이름과 실제 CSS 적용 범위를 매핑한다.
+// - light: 기본 문서 영역
+// - dark: .dark 하위 영역
 const THEMES = { light: '', dark: '.dark' } as const;
 
+// 차트 시리즈별 설정 타입
+// - label: 범례/툴팁에 표시할 이름
+// - icon: 범례/툴팁에서 사용할 아이콘
+// - color 또는 theme 중 하나만 사용
+//   - color: 단일 색상
+//   - theme: light/dark 테마별 색상
 export type ChartConfig = {
   [k in string]: {
     label?: React.ReactNode;
@@ -18,12 +26,14 @@ export type ChartConfig = {
   } & ({ color?: string; theme?: never } | { color?: never; theme: Record<keyof typeof THEMES, string> });
 };
 
+// ChartContext에 전달되는 최소 정보
 type ChartContextProps = {
   config: ChartConfig;
 };
 
 const ChartContext = React.createContext<ChartContextProps | null>(null);
 
+// 차트 내부 보조 컴포넌트에서 공통 설정을 안전하게 꺼내기 위한 훅
 function useChart() {
   const context = React.useContext(ChartContext);
 
@@ -34,6 +44,10 @@ function useChart() {
   return context;
 }
 
+// 차트 공통 컨테이너
+// - config를 Context로 하위 컴포넌트에 전달
+// - ChartStyle로 CSS 변수 주입
+// - ResponsiveContainer로 recharts 크기 반응형 처리
 const ChartContainer = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<'div'> & {
@@ -42,6 +56,7 @@ const ChartContainer = React.forwardRef<
   }
 >(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId();
+  // CSS 변수 충돌 방지를 위해 차트별 고유 data-chart 값을 만든다.
   const chartId = `chart-${id || uniqueId.replace(/:/g, '')}`;
 
   return (
@@ -63,7 +78,9 @@ const ChartContainer = React.forwardRef<
 });
 ChartContainer.displayName = 'Chart';
 
+// 차트별 색상을 CSS 변수(--color-*)로 주입하는 스타일 컴포넌트
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
+  // 실제 색상 정보가 있는 항목만 추린다.
   const colorConfig = Object.entries(config).filter(([, config]) => config.theme || config.color);
 
   if (!colorConfig.length) {
@@ -73,6 +90,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   return (
     <style
       dangerouslySetInnerHTML={{
+        // 각 테마(light/dark)별로 data-chart 범위에 CSS 변수를 생성한다.
         __html: Object.entries(THEMES)
           .map(
             ([theme, prefix]) => `
@@ -92,8 +110,12 @@ ${colorConfig
   );
 };
 
+// recharts 기본 Tooltip을 그대로 다시 export
 const ChartTooltip = RechartsPrimitive.Tooltip;
 
+// 차트 공통 툴팁 콘텐츠
+// - config를 기준으로 label/icon/name을 해석
+// - indicator 모양(dot/line/dashed) 변경 가능
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
@@ -125,6 +147,9 @@ const ChartTooltipContent = React.forwardRef<
   ) => {
     const { config } = useChart();
 
+    // 툴팁 상단 라벨 계산
+    // - hideLabel이면 숨김
+    // - labelKey/dataKey/name 기준으로 config label을 찾아 표시
     const tooltipLabel = React.useMemo(() => {
       if (hideLabel || !payload?.length) {
         return null;
@@ -153,6 +178,7 @@ const ChartTooltipContent = React.forwardRef<
       return null;
     }
 
+    // 단일 payload + dot 이외 indicator일 때는 라벨을 항목 내부로 중첩 표시
     const nestLabel = payload.length === 1 && indicator !== 'dot';
 
     return (
@@ -168,6 +194,7 @@ const ChartTooltipContent = React.forwardRef<
           {payload
             .filter((item) => item.type !== 'none')
             .map((item, index) => {
+              // 현재 payload 항목에 대응하는 config를 찾는다.
               const key = `${nameKey || item.name || item.dataKey || 'value'}`;
               const itemConfig = getPayloadConfigFromPayload(config, item, key);
               const indicatorColor = color || item.payload.fill || item.color;
@@ -181,6 +208,7 @@ const ChartTooltipContent = React.forwardRef<
                   )}
                 >
                   {formatter && item?.value !== undefined && item.name ? (
+                    // formatter가 있으면 외부 포맷 결과를 우선 사용
                     formatter(item.value, item.name, item, index, item.payload)
                   ) : (
                     <>
@@ -211,6 +239,7 @@ const ChartTooltipContent = React.forwardRef<
                         )}
                       >
                         <div className="grid gap-1.5">
+                          {/* 단일 항목일 때는 라벨을 항목 내부에 함께 노출 */}
                           {nestLabel ? tooltipLabel : null}
                           <span className="text-muted-foreground">{itemConfig?.label || item.name}</span>
                         </div>
@@ -232,8 +261,12 @@ const ChartTooltipContent = React.forwardRef<
 );
 ChartTooltipContent.displayName = 'ChartTooltip';
 
+// recharts 기본 Legend를 그대로 다시 export
 const ChartLegend = RechartsPrimitive.Legend;
 
+// 차트 공통 범례 콘텐츠
+// - config에 icon이 있으면 아이콘 우선
+// - 없으면 색상 사각형 표시
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<'div'> &
@@ -256,6 +289,7 @@ const ChartLegendContent = React.forwardRef<
       {payload
         .filter((item) => item.type !== 'none')
         .map((item) => {
+          // 범례 항목도 payload 값을 기준으로 config를 찾아 label/icon을 맞춘다.
           const key = `${nameKey || item.dataKey || 'value'}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
@@ -285,7 +319,9 @@ const ChartLegendContent = React.forwardRef<
 });
 ChartLegendContent.displayName = 'ChartLegend';
 
-// Helper to extract item config from a payload.
+// payload에서 config 키를 추출하는 헬퍼
+// - recharts payload 구조가 상황에 따라 달라질 수 있어
+//   payload 자신과 payload.payload를 모두 검사한다.
 function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key: string) {
   if (typeof payload !== 'object' || payload === null) {
     return undefined;
@@ -298,6 +334,7 @@ function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key:
 
   let configLabelKey: string = key;
 
+  // 1) payload[key]가 문자열이면 우선 사용
   if (key in payload && typeof payload[key as keyof typeof payload] === 'string') {
     configLabelKey = payload[key as keyof typeof payload] as string;
   } else if (
@@ -305,9 +342,11 @@ function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key:
     key in payloadPayload &&
     typeof payloadPayload[key as keyof typeof payloadPayload] === 'string'
   ) {
+    // 2) payload.payload[key]가 문자열이면 대체 사용
     configLabelKey = payloadPayload[key as keyof typeof payloadPayload] as string;
   }
 
+  // 찾은 키가 config에 있으면 그 설정을, 없으면 원래 key 기준 설정을 반환
   return configLabelKey in config ? config[configLabelKey] : config[key as keyof typeof config];
 }
 

@@ -162,6 +162,7 @@ const Ltpz076 = () => {
       {
         headerName: '코드',
         field: 'field01',
+        flex: 1,
         width: attributeColumnWidth(70),
         cellClass: 'text-center',
       },

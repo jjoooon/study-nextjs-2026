@@ -3,11 +3,11 @@
  */
 'use client';
 
+import { getHeader } from '@/shared/utils/authUtils';
 import { Grow, Typo } from '@atoms';
-import { ZoomControl } from '@common/ZoomControl';
 import { CloseIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { getHeader } from '@/shared/utils/authUtils';
+import { ZoomControl } from '@common/ZoomControl';
 
 type DefaultPageID = {
   pageName?: string;

@@ -410,7 +410,7 @@ const Ltpz068 = () => {
 
           {/* A안 / B안 / C안 상단 탭 */}
           <div className="relative">
-            <Grid className="grid-cols-[16rem_16rem_16rem_16.6rem]  h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
+            <Grid className="grid-cols-[15.8rem_16rem_16.2rem_17.6rem]  h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
               <div className="flex flex-col w-full cursor-pointer h-[100%]">
                 {/* 탭 헤더 */}
                 <Grow className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 ">
