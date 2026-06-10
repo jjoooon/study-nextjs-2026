@@ -3,11 +3,13 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { ResetIcon } from '@icons';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,13 +21,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -168,15 +167,15 @@ const Ltpz042 = () => {
       {
         headerName: '직원번호',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         field: 'field01',
         cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
         autoHeight: true,
       },
       {
         headerName: '직원명',
-        flex: 3,
-        minWidth: attributeColumnWidth(80),
+        flex: 10,
+        minWidth: attributeColumnWidth(70),
         field: 'field02',
         cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
         autoHeight: true,
@@ -184,15 +183,14 @@ const Ltpz042 = () => {
       {
         headerName: '지점번호',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         field: 'field03',
         cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
         autoHeight: true,
       },
       {
         headerName: '지점명',
-        flex: 3,
-        minWidth: attributeColumnWidth(80),
+        flex: 20,
         field: 'field04',
         cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
         autoHeight: true,
@@ -208,7 +206,7 @@ const Ltpz042 = () => {
       {
         headerName: '유자격자명',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(70),
         field: 'field06',
         cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
         autoHeight: true,
@@ -245,7 +243,7 @@ const Ltpz042 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl" className="">
+      <DialogContent showCloseButton resizable={true} size="md" className="">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

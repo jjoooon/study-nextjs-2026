@@ -5,7 +5,7 @@
 
 import '@/shared/lib/agGridPub';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -212,59 +212,62 @@ const dummyData2: DummyDataType2[] = [
 export const Ltpa060 = () => {
   const [rowData] = React.useState<DummyDataType[]>(dummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대표질병코드',
       field: 'field1',
-      width: 80,
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '질병명',
       field: 'field2',
-      width: 100,
+      flex: 2,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-center',
     },
     {
       headerName: '원사고발생일',
       field: 'field3',
-      width: 100,
+      width: attributeColumnWidth(100),
       cellClass: 'text-center',
     },
     {
       headerName: '최종사고발생일',
       field: 'field4',
-      width: 100,
+      width: attributeColumnWidth(100),
       cellClass: 'text-center',
     },
     {
       headerName: '입원',
       field: 'field5',
       flex: 1,
+      minWidth: attributeColumnWidth(170),
       cellClass: 'text-center',
     },
     {
       headerName: '통원',
       field: 'field6',
-      width: 40,
+      width: attributeColumnWidth(50),
       cellClass: 'text-center',
     },
     {
       headerName: '수술',
       field: 'field7',
-      width: 40,
+      width: attributeColumnWidth(50),
       cellClass: 'text-center',
     },
     {
       headerName: '고지여부',
       field: 'field8',
-      width: 60,
+      width: attributeColumnWidth(60),
       cellClass: 'text-center',
     },
     {
       headerName: '체크',
       field: 'field9',
-      width: 60,
+      width: attributeColumnWidth(60),
       cellClass: 'text-center',
       cellRenderer: (params: { data: DummyDataType }) => (
         <Gcol placement="cc" className="h-full">
@@ -280,55 +283,57 @@ export const Ltpa060 = () => {
     {
       headerName: '대표질병코드',
       field: 'field1',
-      width: 80,
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '질병명',
       field: 'field2',
-      width: 100,
+      flex: 2,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-center',
     },
     {
       headerName: '원사고발생일',
       field: 'field3',
-      width: 100,
+      width: attributeColumnWidth(100),
       cellClass: 'text-center',
     },
     {
       headerName: '최종사고발생일',
       field: 'field4',
-      width: 100,
+      width: attributeColumnWidth(100),
       cellClass: 'text-center',
     },
     {
       headerName: '입원',
       field: 'field5',
       flex: 1,
+      minWidth: attributeColumnWidth(170),
       cellClass: 'text-center',
     },
     {
       headerName: '통원',
       field: 'field6',
-      width: 40,
+      width: attributeColumnWidth(50),
       cellClass: 'text-center',
     },
     {
       headerName: '수술',
       field: 'field7',
-      width: 40,
+      width: attributeColumnWidth(50),
       cellClass: 'text-center',
     },
     {
       headerName: '고지여부',
       field: 'field8',
-      width: 60,
+      width: attributeColumnWidth(60),
       cellClass: 'text-center',
     },
     {
       headerName: '체크',
       field: 'field9',
-      width: 60,
+      width: attributeColumnWidth(60),
       cellClass: 'text-center',
       cellRenderer: (params: { data: DummyDataType }) => (
         <Gcol placement="cc" className="h-full">

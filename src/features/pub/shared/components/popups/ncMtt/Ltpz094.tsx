@@ -129,7 +129,7 @@ const Ltpz094 = () => {
     {
       headerName: '치료내용',
       field: 'field03',
-      flex: 2,
+      flex: 4,
       minWidth: attributeColumnWidth(270),
       autoHeight: true,
       wrapText: true,
@@ -139,7 +139,8 @@ const Ltpz094 = () => {
     {
       headerName: '치료병원',
       field: 'field04',
-      width: attributeColumnWidth(80),
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       autoHeight: true,
       wrapText: true,
       cellClass: 'text-center !leading-[1.4] !py-1',
@@ -185,8 +186,8 @@ const Ltpz094 = () => {
               rowData={DummyData}
               columnDefs={columnDefs}
               defaultColDef={{
-                sortable: false,
-                resizable: false,
+                sortable: true,
+                resizable: true,
               }}
               enableCellSpan={true}
               domLayout="normal"

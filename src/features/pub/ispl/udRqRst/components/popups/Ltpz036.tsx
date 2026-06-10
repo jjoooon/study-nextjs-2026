@@ -91,7 +91,7 @@ const Ltpz036 = () => {
     {
       headerName: '순번',
       field: 'field01',
-      width: 50,
+      width: attributeColumnWidth(50),
       cellClass: 'text-center',
     },
     {

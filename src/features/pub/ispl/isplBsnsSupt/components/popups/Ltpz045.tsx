@@ -3,10 +3,9 @@
  */
 'use client';
 
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -22,8 +21,9 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 const Ltpz045 = () => {
   const [form, setFormField] = useFormFields({
@@ -108,8 +108,8 @@ const Ltpz045 = () => {
               <TableFoldBody>
                 <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
                   <FormRow>
-                    <FormCell title={'법인명'}>
-                      <Input aria-label="법인명 검색" width={120} value={''} readOnly />
+                    <FormCell title={'법인명'} tdClassName="grid grid-cols-[1fr_auto]">
+                      <Input aria-label="법인명 검색" value={''} readOnly />
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
@@ -206,7 +206,7 @@ const Ltpz045 = () => {
                 <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'성명'}>
-                      <Input aria-label="성명 검색" width={108} value={''} readOnly />
+                      <Input aria-label="성명 검색" width={84} value={''} readOnly />
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
@@ -266,11 +266,12 @@ const Ltpz045 = () => {
                     <FormTable caption="법정대리인 정보" cols={['w-[13rem]', 'w-auto']}>
                       <FormRow>
                         <FormCell title={'이름/주민번호'}>
-                          <Input aria-label="성명 검색" width={108} value={''} readOnly />
+                          <Input aria-label="성명 검색" width={84} value={''} readOnly />
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          박환화(900101-1234567)와의 관계
+                          <Input aria-label="주민번호" width={114} value={'900101-1234567'} readOnly />
+                          김한화 와의 관계
                           <NativeSelect
                             aria-label="선택"
                             width={100}

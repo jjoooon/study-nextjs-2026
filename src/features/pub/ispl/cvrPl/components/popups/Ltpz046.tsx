@@ -29,7 +29,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
-import { useMemo } from 'storybook/internal/preview-api';
+import { useMemo } from 'react';
 
 type DummyDataType = {
   id: number;

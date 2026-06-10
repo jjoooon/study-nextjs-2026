@@ -751,7 +751,7 @@ export const Ltpz063 = () => {
     cellClass: getSelectableValueCellClass,
     cellClassRules: externalInsuranceCellClassRules,
     flex: 1,
-    minWidth: 200,
+    minWidth: attributeColumnWidth(200),
     field,
     editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
     cellEditorSelector: getMainCellEditorSelector,
@@ -762,8 +762,8 @@ export const Ltpz063 = () => {
     headerName: '타사기존',
     headerComponent: ThirdGridHeaderWithDelete,
     headerClass: '[&_.ag-header-cell-text]:font-bold',
-    cellClass: getSelectableValueCellClass + ' editable-cell',
-    width: 200,
+    cellClass: (params) => `${getSelectableValueCellClass(params)} editable-cell`,
+    width: attributeColumnWidth(200),
     field,
     editable: ({ data }) => isType3EditableRow(data),
     cellEditorSelector: getType3CellEditorSelector,
@@ -776,7 +776,7 @@ export const Ltpz063 = () => {
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
-      width: 150,
+      width: attributeColumnWidth(150),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center font-bold',
       field: 'type',
@@ -784,7 +784,7 @@ export const Ltpz063 = () => {
     },
     {
       headerName: '당사신규',
-      width: 200,
+      width: attributeColumnWidth(200),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getValueCellClass,
       field: 'ourInsurance1',
@@ -805,7 +805,7 @@ export const Ltpz063 = () => {
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '구분',
-      width: 150,
+      width: attributeColumnWidth(150),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center font-bold',
       field: 'type',
@@ -813,7 +813,7 @@ export const Ltpz063 = () => {
     },
     {
       headerName: '당사신규',
-      width: 200,
+      width: attributeColumnWidth(200),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getValueCellClass,
       field: 'ourInsurance1',
@@ -856,7 +856,7 @@ export const Ltpz063 = () => {
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
       headerName: '구분',
-      width: 150,
+      width: attributeColumnWidth(150),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center font-bold',
       field: 'type',
@@ -864,7 +864,7 @@ export const Ltpz063 = () => {
     },
     {
       headerName: '당사신규',
-      width: 200,
+      width: attributeColumnWidth(200),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getValueCellClass,
       field: 'ourInsurance1',

@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import { useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -162,6 +162,7 @@ const Ltpa300DummyData: Ltpa300DummyDataRow[] = [
 ];
 
 export default function Ltpa300Section() {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -173,35 +174,84 @@ export default function Ltpa300Section() {
   // 2026-06-04 flex, minWidth 수정
   const columnDefs = React.useMemo<ColDef<Ltpa300DummyDataRow>[]>(
     () => [
-      { headerName: '취급기관', field: 'field01', flex: 1, minWidth: 120, cellClass: 'text-center' },
-      { headerName: '모집직원번호', field: 'field02', flex: 1, minWidth: 85, cellClass: 'text-center' },
-      { headerName: '모집직원', field: 'field03', width: 85, cellClass: 'text-center' },
-      { headerName: '사용인번호', field: 'field04', flex: 1, minWidth: 90, cellClass: 'text-center' },
-      { headerName: '사용인', field: 'field05', width: 80, cellClass: 'text-center' },
+      { 
+        headerName: '취급기관', 
+        field: 'field01', 
+        flex: 2, 
+        minWidth: attributeColumnWidth(120), 
+      },
+      { headerName: '모집직원번호', 
+        field: 'field02', 
+        flex: 1, 
+        minWidth: attributeColumnWidth(90), 
+      },
+      { headerName: '모집직원', 
+        field: 'field03', 
+        width: attributeColumnWidth(75), 
+      },
+      { headerName: '사용인번호', 
+        field: 'field04', 
+        flex: 1, 
+        minWidth: attributeColumnWidth(90), 
+      },
+      { 
+        headerName: '사용인', 
+        field: 'field05', 
+        width: attributeColumnWidth(75), 
+      },
       {
         headerName: '증권번호',
         field: 'field06',
         flex: 1,
-        minWidth: 125,
-        cellClass: 'text-center',
-        tooltipValueGetter: createTooltipValueGetter<Ltpa300DummyDataRow>({ field: 'field06' }),
+        minWidth: attributeColumnWidth(130),
       },
-      { headerName: '점검설계번호', field: 'field07', flex: 1, minWidth: 90, cellClass: 'text-center' },
-      { headerName: '점검', field: 'field08', flex: 1, minWidth: 120, cellClass: 'text-center' },
+      { 
+        headerName: '점검설계번호', 
+        field: 'field07', 
+        flex: 1, 
+        minWidth: attributeColumnWidth(90), 
+      },
+      { 
+        headerName: '점검', 
+        field: 'field08', 
+        flex: 1, 
+        minWidth: attributeColumnWidth(110), 
+      },
       {
         headerName: '피보험자명',
         field: 'field09',
-        width: 85,
-        cellClass: 'text-center',
-        tooltipValueGetter: createTooltipValueGetter<Ltpa300DummyDataRow>({ field: 'field09' }),
+        width: attributeColumnWidth(75),
       },
-      { headerName: '점검일자', field: 'field10', flex: 1, minWidth: 100, cellClass: 'text-center' },
-      { headerName: '점검순번', field: 'field11', flex: 1, minWidth: 80, cellClass: 'text-center' },
-      { headerName: '사전예외사용여부', field: 'field12', flex: 1, minWidth: 120, cellClass: 'text-center' },
-      { headerName: '점검방법', field: 'field13', flex: 1, minWidth: 90, cellClass: 'text-center' },
-      { headerName: '한도초과건수', field: 'field14', flex: 1, minWidth: 95, cellClass: 'text-center' },
+      { headerName: '점검일자', 
+        field: 'field10', 
+        width: attributeColumnWidth(90), 
+      },
+      { 
+        headerName: '점검순번', 
+        field: 'field11', 
+        flex: 1, 
+        minWidth: attributeColumnWidth(80), 
+      },
+      { 
+        headerName: '사전예외사용여부', 
+        field: 'field12', 
+        flex: 1, 
+        minWidth: attributeColumnWidth(110), 
+      },
+      { 
+        headerName: '점검방법', 
+        field: 'field13', 
+        flex: 1, 
+        minWidth: attributeColumnWidth(70), 
+      },
+      { 
+        headerName: '한도초과건수', 
+        field: 'field14', 
+        flex: 1, 
+        minWidth: attributeColumnWidth(80), 
+      },
     ],
-    []
+    [attributeColumnWidth]
   );
   const pageSize = 4;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
@@ -251,8 +301,9 @@ export default function Ltpa300Section() {
                       onChange={(e) => setFormField('type01', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type01-1', label: '선택1' },
-                        { value: 'selection2', id: 'type01-2', label: '선택2' },
+                        { value: '취급기관', id: 'type01-1', label: '취급기관' },
+                        { value: '취급직원', id: 'type01-2', label: '취급직원' },
+                        { value: '사용인', id: 'type01-3', label: '사용인' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
@@ -280,8 +331,9 @@ export default function Ltpa300Section() {
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type03-1', label: '전체' },
-                        { value: 'selection2', id: 'type03-2', label: '전체2' },
+                        { value: '전체', id: 'type03-1', label: '전체' },
+                        { value: '배치', id: 'type03-2', label: '배치' },
+                        { value: '온라인', id: 'type03-3', label: '온라인' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
@@ -310,8 +362,8 @@ export default function Ltpa300Section() {
                       onChange={(e) => setFormField('type05', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type05-1', label: '전체' },
-                        { value: 'selection2', id: 'type05-2', label: '전체2' },
+                        { value: '활성(전체)', id: 'type05-1', label: '활성(전체)' },
+                        { value: '비활성(직원처리)', id: 'type05-2', label: '비활성(직원처리)' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
@@ -327,8 +379,9 @@ export default function Ltpa300Section() {
                       onChange={(e) => setFormField('type06', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type06-1', label: '전체' },
-                        { value: 'selection2', id: 'type06-2', label: '전체2' },
+                        { value: '전체', id: 'type06-1', label: '전체' },
+                        { value: '사후', id: 'type06-2', label: '사후' },
+                        { value: '사전', id: 'type06-3', label: '사전' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
@@ -373,6 +426,7 @@ export default function Ltpa300Section() {
                       sortable: true,
                       resizable: true,
                       editable: false,
+                      cellClass: 'text-center',
                     }}
                     domLayout="normal"
                     key={loadedCount}
@@ -380,8 +434,6 @@ export default function Ltpa300Section() {
                     cacheBlockSize={pageSize}
                     maxBlocksInCache={2}
                     datasource={dataSource}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
                   />
                 </div>
                 <TableMore
