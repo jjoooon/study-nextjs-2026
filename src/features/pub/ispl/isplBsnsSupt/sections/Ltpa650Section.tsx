@@ -210,7 +210,7 @@ export default function Ltpa650Section() {
         field: 'field1',
         cellClass: 'text-center',
         flex: 1,
-        minWidth: attributeColumnWidth(90),
+        minWidth: attributeColumnWidth(80),
         autoHeight: true,
         spanRows: true,
       },
@@ -228,14 +228,10 @@ export default function Ltpa650Section() {
       {
         headerName: '구분',
         field: 'field3',
-        cellClass: 'text-center',
+        cellClass: '[&>button]:justify-center',
         flex: 1,
-        minWidth: attributeColumnWidth(90),
+        minWidth: attributeColumnWidth(70),
         cellRenderer: treeNameCellRenderer,
-        cellRendererParams: {
-          className: 'block w-full text-center',
-          buttonClassName: 'justify-center text-center',
-        },
       },
     ],
     [attributeColumnWidth]
