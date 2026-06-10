@@ -3,10 +3,6 @@
  */
 'use client';
 
-import { Gcol, Grow, Typo } from '@atoms';
-import { FileItemIcon, FileUploadIcon, InputClearIcon } from '@icons';
-import { Button } from '@uiux/Button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { useId } from 'react';
 // TODO: @YunJunmo 경로 이동 고려
 
@@ -15,6 +11,10 @@ import { cn } from '@/shared/lib/shadcn/utils';
 import { FileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
 import { open } from '@/shared/utils/popup/popupApi';
+import { Gcol, Grow, Typo } from '@atoms';
+import { FileItemIcon, FileUploadIcon, InputClearIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 const logger = log.getLogger('FileUpload');
 
