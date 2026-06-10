@@ -187,7 +187,6 @@ const Ltpz091 = () => {
   // AgGrid Column
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   // 2026-06-01 width, flex 수정
-  // 2026-06-04 flex, minWidth 수정
   // 각 컬럼별 cellRenderer 예시 명확화
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
@@ -263,10 +262,10 @@ const Ltpz091 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              고객 직업정보(상해급수)변경안내
+              장기심사가이드 더보기
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ051)
+              (LTPZ091)
             </Typo>
           </DialogTitle>
         </DialogHeader>

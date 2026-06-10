@@ -191,6 +191,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         resizable: false,
       },
       {
+        headerName: '가입금액(만원)',
         headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" col={true} />,
         field: 'insuredAmount',
         flex: 1,
@@ -230,6 +231,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
       },
       {
+        headerName: '보험료(만원)',
         headerGroupComponent: () => <HeaderWithUnit label="보험료" unit="(만원)" />,
         children: [
           {
@@ -330,6 +332,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         ],
       },
       {
+        headerName: 'UW예상',
         headerComponent: () => <HeaderWithUnit label="UW" unit="예상" className="flex-row-reverse" />,
         field: 'field8',
         flex: 1,
@@ -343,6 +346,8 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         width: attributeColumnWidth(30),
         cellRenderer: duplicateRenderer,
         resizable: false,
+        sortable: false,
+        suppressMovable: true,
       },
     ],
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]

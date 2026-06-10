@@ -105,6 +105,7 @@ export function Ltpa35002c() {
         cellClass: 'text-left',
       },
       {
+        headerName: '가입금액(만원)',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: '가입금액',
@@ -147,6 +148,7 @@ export function Ltpa35002c() {
         },
       },
       {
+        headerName: '보험료(원)',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: '보험료',
@@ -263,11 +265,10 @@ export function Ltpa35002c() {
         },
       },
       {
-        headerName: '',
+        headerName: '담보명',
         field: 'title',
         flex: 10,
         cellClass: 'text-left',
-        suppressMovable: true, // 이동 방지
         headerComponent: productNameHeader,
         cellRenderer: productNameCellRenderer,
         tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시
@@ -281,6 +282,7 @@ export function Ltpa35002c() {
         resizable: false,
       },
       {
+        headerName: '가입금액(만원)',
         headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" />,
         sortable: true,
         field: 'insuredAmount',
@@ -322,6 +324,7 @@ export function Ltpa35002c() {
         },
       },
       {
+        headerName: '보험료(원)',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: '보험료',

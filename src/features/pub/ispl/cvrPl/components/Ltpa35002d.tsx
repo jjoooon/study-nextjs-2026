@@ -205,6 +205,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         resizable: false,
       },
       {
+        headerName: '가입금액(만원)',
         headerComponent: () => (
           <Grow className="w-full" placement={'cc'} gap={0}>
             가입금액<span className="text-[1.1rem]">(만원)</span>
@@ -248,6 +249,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
       },
       {
+        headerName: '보험료(원)',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: '보험료',
@@ -304,6 +306,8 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         width: attributeColumnWidth(30),
         cellRenderer: duplicateRenderer,
         resizable: false,
+        sortable: false,
+        suppressMovable: true,
       },
     ],
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]
@@ -524,6 +528,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   groupDefaultExpanded={0}
                   getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
                   autoGroupColumnDef={{
+                    headerName: '담보명',
                     headerComponent: productNameHeader,
                     field: 'id',
                     flex: 107,

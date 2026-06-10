@@ -4,10 +4,6 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -18,6 +14,10 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 
 import { Input } from '@uiux/Input';
+import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 
 type DummyDataType = {
   id: number;
@@ -181,7 +181,7 @@ export default function Ltpa220Section() {
     }
     return 0;
   };
-  
+
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // AgGrid Column

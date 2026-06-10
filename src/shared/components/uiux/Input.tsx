@@ -33,6 +33,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   width?: 'auto' | 'full' | 'quoteNo' | string | number;
   restrictChars?: boolean;
   align?: 'left' | 'center' | 'right';
+  onErrorChange?: (nextError: boolean) => void;
   // debug?: boolean;
 }
 function formatAmount(value: string) {
@@ -100,11 +101,14 @@ function Input({
   value,
   formatter,
   isFocused,
+  onErrorChange,
   className,
   ...props
 }: UIInputProps) {
   const [focused, setFocused] = useState(false);
+  const [isErrorDismissed, setIsErrorDismissed] = useState(false);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const focusStartValueRef = React.useRef<string>('');
   const isInputFocused = typeof isFocused === 'boolean' ? isFocused : focused;
   const isControlled = value !== undefined;
   const { onFocus: onFocusProp, onBlur: onBlurProp, style: styleProp, ...inputProps } = props;
@@ -149,6 +153,21 @@ function Input({
     const normalizedValue = normalizeFormattedInput(e.target.value);
     onChange?.(createSyntheticChangeEvent(e, normalizedValue));
   };
+
+  const getComparableValue = React.useCallback(
+    (nextValue: string): string => {
+      if (commaAmount) {
+        return sanitizeAmountInput(nextValue);
+      }
+
+      if (formatter) {
+        return normalizeFormattedInput(nextValue);
+      }
+
+      return restrictChars ? applyRestrictedCharsFilter(nextValue) : nextValue;
+    },
+    [commaAmount, formatter, restrictChars]
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = restrictChars ? applyRestrictedCharsFilter(e.target.value) : e.target.value;
@@ -221,19 +240,35 @@ function Input({
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    focusStartValueRef.current = getComparableValue(e.currentTarget.value);
     setFocused(true);
     onFocusProp?.(e);
   };
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const currentValue = getComparableValue(e.currentTarget.value);
+    const hasValueChanged = focusStartValueRef.current !== currentValue;
+
+    if (error && hasValueChanged) {
+      setIsErrorDismissed(true);
+      onErrorChange?.(false);
+    }
+
     setFocused(false);
     onBlurProp?.(e);
   };
+  React.useEffect(() => {
+    if (!error) {
+      setIsErrorDismissed(false);
+    }
+  }, [error]);
+
   const errorId = React.useId();
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
+  const shouldShowError = error && !isErrorDismissed;
 
   const baseStyle = cn(
     'w-full rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate pb-[0.1rem]',
-    isInvalid || error
+    isInvalid || shouldShowError
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
@@ -243,19 +278,19 @@ function Input({
     'w-full rounded-[0.4rem] p-0 text-[1.3rem] bg-[transparent] focus:bg-[#fff] focus:border focus:border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate'
   );
   const hoverStyle =
-    isInvalid || error
+    isInvalid || shouldShowError
       ? 'hover:border-[var(--color-input-border-error)]'
       : required
         ? 'hover:border-[var(--color-input-border-highlight-bold)]'
         : 'hover:border-[var(--color-input-border-hover)]';
   const focusStyle = `${
-    isInvalid || error
+    isInvalid || shouldShowError
       ? 'focus:border-[var(--color-input-border-error)] focus:ring-[var(--color-input-surface-error)] focus:border-[0.2rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.20)]'
       : required
         ? 'focus:border-[var(--color-input-border-highlight-bold)] focus:border-[0.2rem]'
         : 'focus:border-[var(--color-gray-100)]! focus:border-[0.2rem]'
   } 
-      focus:ring-1 ${!isInvalid && !error ? 'focus:ring-[var(--color-gray-5)]' : ''} focus:outline-none`;
+      focus:ring-1 ${!isInvalid && !shouldShowError ? 'focus:ring-[var(--color-gray-5)]' : ''} focus:outline-none`;
   const readonlyStyle = readOnly
     ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none outline-none'
     : '';
@@ -267,7 +302,7 @@ function Input({
 
   const infoStyle = cn(
     'rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate',
-    isInvalid || error
+    isInvalid || shouldShowError
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
@@ -306,8 +341,8 @@ function Input({
               className={cn(align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left')}
               required={required}
               readOnly={readOnly}
-              aria-invalid={error || undefined}
-              aria-describedby={error ? errorId : undefined}
+              aria-invalid={shouldShowError || undefined}
+              aria-describedby={shouldShowError ? errorId : undefined}
               value={isControlled ? displayValue : undefined}
               onChange={handleChange}
               onKeyDown={handleFormatterKeyDown}
@@ -372,8 +407,8 @@ function Input({
               )}
               required={required}
               readOnly={readOnly}
-              aria-invalid={error || undefined}
-              aria-describedby={error ? errorId : undefined}
+              aria-invalid={shouldShowError || undefined}
+              aria-describedby={shouldShowError ? errorId : undefined}
               value={isControlled ? displayValue : undefined}
               onChange={handleChange}
               onKeyDown={handleFormatterKeyDown}
@@ -409,7 +444,7 @@ function Input({
         </>
       )}
 
-      {error && (
+      {shouldShowError && (
         <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
           {errorMsg}
         </ErrorMsg>

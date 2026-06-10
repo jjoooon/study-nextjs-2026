@@ -139,8 +139,28 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-        alphabetize: { order: 'asc' }
+        groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
+        pathGroups: [
+          // @/ 경로 별칭 → internal 그룹 맨 앞
+          {
+            pattern: '@/**',
+            group: 'internal',
+            position: 'before',
+          },
+          // 로컬 컴포넌트 별칭 → internal 그룹 맨 뒤 (filepond/react 이후에 위치)
+          { pattern: '@atoms',       group: 'internal', position: 'after' },
+          { pattern: '@icons',       group: 'internal', position: 'after' },
+          { pattern: '@aggrid',      group: 'internal', position: 'after' },
+          { pattern: '@uiux/**',     group: 'internal', position: 'after' },
+          { pattern: '@common/**',   group: 'internal', position: 'after' },
+          { pattern: '@features/**', group: 'internal', position: 'after' },
+          { pattern: '@layout/**',   group: 'internal', position: 'after' },
+          { pattern: '@hooks/**',    group: 'internal', position: 'after' },
+          { pattern: '@grid/**',     group: 'internal', position: 'after' },
+        ],
+        // 'external' 을 제외 목록에서 빼야 scoped 별칭(@atoms 등)에도 pathGroups 가 적용됨
+        pathGroupsExcludedImportTypes: ['builtin'],
+        alphabetize: { order: 'asc' },
       }
     ],
     'boundaries/element-types': [

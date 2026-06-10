@@ -327,7 +327,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         cellRenderer: duplicateRenderer,
         resizable: false,
         sortable: false,
-        suppressCellSelection: true,
+        suppressMovable: true,
       },
     ],
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]
