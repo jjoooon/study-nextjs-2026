@@ -3,6 +3,8 @@
  */
 'use client';
 
+import { useState } from 'react';
+import { ArrowIcon } from '@/shared/components/icons';
 import { Grow, Typo, Gcol } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
@@ -17,8 +19,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@uiux/Table';
-import { useState } from 'react';
-import { ArrowIcon } from '@/shared/components/icons';
 
 const Ltpz023 = () => {
   // 초기 키워드 값
@@ -58,7 +58,7 @@ const Ltpz023 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="sm">
+      <DialogContent showCloseButton resizable={false} className="w-[37.6rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
