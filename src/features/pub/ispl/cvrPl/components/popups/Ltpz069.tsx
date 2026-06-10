@@ -11,7 +11,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 const Ltpz069 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="sm">
+      <DialogContent showCloseButton resizable={false} size="xs">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

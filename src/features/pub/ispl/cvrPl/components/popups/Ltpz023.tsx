@@ -58,7 +58,7 @@ const Ltpz023 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} className="w-[37.6rem]">
+      <DialogContent showCloseButton resizable={true} className="w-[37.6rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -145,7 +145,6 @@ const Ltpz023 = () => {
                         size="lg"
                         value={keyword}
                         variant="default"
-                        width={220}
                         onFocus={() => setSelectedIdx(i)}
                         placeholder="최대 한글 6자"
                         clear

@@ -4,8 +4,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
 import { Grow, Typo, Gcol } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,10 +22,6 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
 
 type DummyDataType = {
   id: number;
@@ -180,7 +180,7 @@ const Ltpz007 = () => {
     () => [
       {
         headerComponent: () => renderRadioHeader('세만기형', 'field02'),
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
         flex: 1,
         field: 'field02',
         headerClass: '!justify-center',
@@ -218,7 +218,7 @@ const Ltpz007 = () => {
       },
       {
         headerComponent: () => renderRadioHeader('갱신형', 'field03'),
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
         flex: 1,
         field: 'field03',
         headerClass: '!justify-center',
@@ -255,12 +255,12 @@ const Ltpz007 = () => {
         },
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, renderRadioHeader, handleRadioChange]
   );
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
