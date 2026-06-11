@@ -90,26 +90,26 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
-    field01: 'YYYY-MM-DD',
+    field01: '2026-05-01',
     field02: 'LA2414313',
     field03: 'TEXT',
     field04: 'TEXT',
     field05: 'TEXT',
     field06: '2A',
     field07: 'TEXT',
-    field08: 'YYYY-MM-DD',
+    field08: '2026-05-01',
     field09: 'TEXT',
-    field10: 'YYYY-MM-DD',
+    field10: '2026-05-01',
     field11: 'TEXT',
     field12: 'TEXT',
     field13: 'TEXT',
-    field14: 'YYYY-MM-DD',
+    field14: '2026-05-01',
     field15: 'TEXT',
     field16: 'TEXT',
     field17: '김한화',
-    field18: 'YYYY-MM-DD',
+    field18: '2026-05-01',
     field19: '김한화',
-    field20: 'YYYY-MM-DD',
+    field20: '2026-05-01',
     field21: '관계순번',
     field22: 'TEXT',
     field23: '김한화',
@@ -123,7 +123,6 @@ const DummyData: DummyDataType[] = [
 export default function Ltpa140Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   // 2026-06-01 width, flex 수정
-  // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
@@ -133,7 +132,7 @@ export default function Ltpa140Section() {
         {
           headerName: '상품코드',
           flex: 1,
-          minWidth: attributeColumnWidth(100),
+          minWidth: attributeColumnWidth(80),
           cellRenderer: createFieldRenderer<DummyDataType>('field01', 'field02'),
         },
       ],

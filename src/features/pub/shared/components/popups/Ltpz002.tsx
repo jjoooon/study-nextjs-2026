@@ -5,11 +5,13 @@
 
 import '@/shared/lib/agGridPub';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { AgGridReact } from 'ag-grid-react';
+import type { ColDef } from 'ag-grid-enterprise';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { useState } from 'react';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -22,12 +24,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
 
 type DummyDataType = {
   id: number;
@@ -223,13 +223,13 @@ const Ltpz002 = () => {
             <TableFoldHead title={'고객정보'} />
             <TableFoldBody className="grid-rows-[auto_1fr] gap-[1.2rem]">
               <Grow className="w-full" variant="box-round" placement={'bwe'}>
-                <FormTable variant={'none'} cols={['w-1', 'w-[30rem]', 'w-[10rem]', 'w-auto']}>
+                <FormTable variant={'none'} cols={['w-1', 'w-[28.8rem]', 'w-[10rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'조회구분'}>
-                      <NativeSelect required>
+                      <NativeSelect width={120}  required>
                         <NativeSelectOption value="">피보험자번호</NativeSelectOption>
                       </NativeSelect>
-                      <Input value={'000000-0******'} readOnly />
+                      <Input value={'000000-0******'} width={120} readOnly />
                       <Button variant={'outlined'} only={'icon'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>

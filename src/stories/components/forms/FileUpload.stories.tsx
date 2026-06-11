@@ -1,19 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol } from '@atoms';
-import { FileUpload } from '@common/FileUpload';
+ */
+// eslint-disable-next-line check-file/filename-naming-convention
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+// eslint-disable-next-line storybook/no-renderer-packages
 import type { Meta, StoryObj } from '@storybook/react';
-
-const SAMPLE_FILES = [
-  {
-    id: 'file-1',
-    filename: '매우 긴 파일명 입니다.이렇게 길면 잘립니다 확인용.png',
-    fileSize: 1024,
-    fileExtension: 'png',
-    fileType: 'image/png',
-  },
-];
+import { Gcol } from '@atoms';
+import { FileUpload } from '@common/FileUpload';
 
 const meta: Meta<typeof FileUpload> = {
   title: 'Components/Forms/FileUpload',
@@ -126,7 +119,7 @@ import { FileUpload } from '@common/FileUpload';
           </p>
           <Unstyled>
             <Gcol gap={4} variant="box-line" className="p-16">
-              <FileUpload files={SAMPLE_FILES} onClickButton={() => {}} onChange={() => {}} />
+              <FileUpload files={[]} onClickButton={() => {}} onChange={() => {}} />
             </Gcol>
           </Unstyled>
 
@@ -135,7 +128,7 @@ import { FileUpload } from '@common/FileUpload';
           <Unstyled>
             <Gcol gap={4} variant="box-line" className="p-16">
               <FileUpload
-                files={SAMPLE_FILES}
+                files={[]}
                 errorMessage="파일 형식이 올바르지 않습니다."
                 onClickButton={() => {}}
                 onChange={() => {}}

@@ -9,8 +9,9 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
+import { publicConfig } from '@/shared/config/env';
 import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
-import { FileItem } from '@/shared/types/fileTypes';
+import { Ltpz995Result, UploadFileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
 import { Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
@@ -32,13 +33,8 @@ registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
 
 const logger = log.getLogger('FileUploader');
 
-export interface Ltpz995Result {
-  action: 'search' | 'select' | 'close';
-  files?: FileItem[];
-}
-
 export interface Ltpz995Props {
-  files?: FileItem[];
+  files?: UploadFileItem[];
   onOpenChange?: (open: boolean) => void;
   /** Promise resolve 함수 (결과 반환) */
   resolve: (result: Ltpz995Result) => void;
@@ -78,16 +74,13 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
   const pondRef = useRef<FilePondInstance>(null);
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleInit = () => {
-    if (!files?.length || !pondRef.current) return;
-    files.forEach((f) => {
-      pondRef.current!.addFile(f.id, { type: 'local' });
+    files?.forEach((f) => {
+      pondRef.current!.addFile(f.edmsId, { type: 'limbo' });
     });
   };
-
-  // FileUpload에 실제 표시할 파일 목록 (선택완료 시점)
-  // const [filesForUpload, setFilesForUpload] = useState<{ name: string; key: string }[]>([]);
 
   const handleBeforeAddFile = (item: FilePondFile) => {
     // 파일명 확인 (임시 파일 차단 같은 커스텀 로직만 처리)
@@ -152,18 +145,23 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
     pondRef.current?.browse();
   };
 
-  const handleSelect = () => {
-    const currentFiles = pondRef.current?.getFiles() ?? [];
-    resolve({
-      action: 'select',
-      files: currentFiles.map((f) => ({
-        id: f.id,
-        filename: f.filename,
-        fileSize: f.fileSize,
-        fileExtension: f.fileExtension,
-        fileType: f.fileType,
-      })),
-    });
+  const handleSelect = async () => {
+    setIsUploading(true);
+    try {
+      await pondRef.current?.processFiles();
+      const currentFiles = pondRef.current?.getFiles() ?? [];
+      resolve({
+        action: 'select',
+        files: currentFiles.map((f) => {
+          const response = JSON.parse(f.serverId);
+          return response.payload.payload[0] as UploadFileItem;
+        }),
+      });
+    } catch (error) {
+      logger.error('파일 업로드 오류:', error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleClose = () => {
@@ -171,27 +169,6 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
       action: 'close',
     });
   };
-
-  // const handleUpload = async () => {
-  //   // FileUpload에 파일 목록 반영
-  //   setFilesForUpload(pondFiles.map((file) => ({ name: file.filename, key: file.id })));
-  //   // 기존 resolve 로직 유지 (필요시 수정)
-  //   const filesWithSource = pondFiles.map((file) => ({
-  //     id: file.id,
-  //     filename: file.filename,
-  //     fileSize: file.fileSize,
-  //     fileExtension: file.fileExtension,
-  //     fileType: file.fileType,
-  //   }));
-  //   logger.info('선택된 파일 목록:', filesWithSource);
-
-  //   resolve({
-  //     action: 'select',
-  //     files: [],
-  //   });
-  //   // 업로드 후 창 닫기
-  //   onOpenChange?.(false);
-  // };
 
   return (
     <Dialog open onOpenChange={handleClose}>
@@ -209,6 +186,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
         <DialogSection className="grid-rows-[1fr_auto] gap-1">
           <FilePond
             ref={pondRef}
+            name="files"
             oninit={handleInit}
             onaddfile={handleAddFile}
             onremovefile={handleRemoveFile}
@@ -232,15 +210,10 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
             // stylePanelLayout="compact"
             dropValidation
             instantUpload={false}
-            // TODO: @YunJunmo Server load URL 변경
             server={{
-              load: (source, load, error) => {
-                const item = files?.find((f) => f.id === source);
-                if (!item) {
-                  error('not found');
-                  return;
-                }
-                load(new File([''], item.filename, { type: item.fileType }));
+              process: {
+                url: `${publicConfig.apiUrl}/ltp/file/uploadFiles`,
+                method: 'POST',
               },
             }}
             styleButtonRemoveItemPosition="right"
@@ -265,8 +238,13 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
               <Button variant={'outlined'} size={'xl'} color={'gray'} onClick={handleSearch}>
                 파일찾기
               </Button>
-              <Button variant={'contained'} size={'xl'} disabled={fileCount === 0} onClick={handleSelect}>
-                선택완료
+              <Button
+                variant={'contained'}
+                size={'xl'}
+                disabled={fileCount === 0 || isUploading}
+                onClick={handleSelect}
+              >
+                {isUploading ? '업로드 중...' : '선택완료'}
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={handleClose}>
