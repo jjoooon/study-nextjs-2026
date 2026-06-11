@@ -9,14 +9,14 @@ import log from '@/shared/utils/logger';
 const logger = log.getLogger('Popup');
 
 const initialFiles: UploadFileItem[] = [
-  {
-    storedFilename: 'file1',
-    edmsId: '000',
-  },
-  {
-    storedFilename: 'file2',
-    edmsId: '111',
-  },
+  // {
+  //   storedFilename: 'file1',
+  //   edmsId: '000',
+  // },
+  // {
+  //   storedFilename: 'file2',
+  //   edmsId: '111',
+  // },
 ];
 
 export default function PopupTestSection() {
