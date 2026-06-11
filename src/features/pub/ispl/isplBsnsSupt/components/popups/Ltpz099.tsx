@@ -260,9 +260,13 @@ export const Ltpz099 = () => {
       valueFormatter: numberValueFormatter,
     },
   ];
+
+  // 비교 테이블 커스텀 헤더 셀의 너비/유연 비율 스타일을 ag-Grid 컬럼 정의로 계산
   function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
+    // 최소 너비가 없으면 0으로 두어 flex 계산 시 레이아웃 깨짐 방지
     const minWidth = typeof column.minWidth === 'number' ? `${column.minWidth}px` : '0px';
 
+    // width가 고정된 컬럼은 flex 확장을 막고 고정 폭으로 렌더링
     if (typeof column.width === 'number') {
       const width = `${column.width}px`;
 
@@ -273,6 +277,7 @@ export const Ltpz099 = () => {
       };
     }
 
+    // flex 컬럼은 비율 기반으로 너비를 나누되 minWidth는 유지
     if (typeof column.flex === 'number') {
       return {
         flex: `${column.flex} 1 0%`,
@@ -280,6 +285,7 @@ export const Ltpz099 = () => {
       };
     }
 
+    // width/flex 정보가 모두 없으면 기본 균등 분할 규칙 사용
     return {
       flex: '1 1 0%',
       minWidth,

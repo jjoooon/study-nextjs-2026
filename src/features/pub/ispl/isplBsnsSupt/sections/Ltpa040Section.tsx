@@ -47,7 +47,7 @@ export default function Ltpa040Section() {
             renderTab={(tab) => <span>{tab.label}</span>}
             renderDropdownItem={false}
           >
-            {active === 'tab1' ? <Ltpa04001 /> : active === 'tab2' ? <Ltpa04002 /> : null}
+            {active === 'tab1' ? <Ltpa04001 /> : active === 'tab2' ? <Ltpa04002 /> : null} { /* Tab1, Tab2 컴포넌트 렌더링 */ }
           </TabPager>
         }
         mainFoot={

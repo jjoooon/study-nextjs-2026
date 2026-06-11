@@ -218,7 +218,7 @@ export default function Ltpa301Section() {
                 </Button>
               </Grow>
             </Grow>
-
+            { /* 정액담보점검내역 FormTable */ }
             <Grid className="w-full grid-rows-[auto_auto_auto]" gap={3}>
               <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검내역" />
@@ -254,7 +254,7 @@ export default function Ltpa301Section() {
                   </FormTable>
                 </TableFoldBody>
               </TableFold>
-
+              {/* 정액담보점검결과 agGrid */}
               <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검결과">
                   <Typo variant="body-md">(단위: 만원)</Typo>
@@ -290,7 +290,7 @@ export default function Ltpa301Section() {
                   </div>
                 </TableFoldBody>
               </TableFold>
-
+              { /* 정액담보점검 관리 Table */ }
               <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검 관리">
                   <Grow className="w-full justify-end" placement="ee">

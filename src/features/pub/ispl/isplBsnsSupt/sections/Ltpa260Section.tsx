@@ -121,6 +121,7 @@ export default function Ltpa260Section() {
         minWidth: attributeColumnWidth(500),
         cellClass: 'text-center px-0!',
         autoHeight: true,
+        // 2행 2열 헤더 레이아웃: 상단(증권번호/담보건수), 하단(상품명)
         headerComponent: () => {
           return (
             <Grid className="h-[6rem] w-full grid-cols-2 grid-rows-[3rem_3rem] gap-0">
@@ -136,16 +137,20 @@ export default function Ltpa260Section() {
             </Grid>
           );
         },
+        // 각 행 데이터도 헤더와 동일한 2행 2열 구조로 표시
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
           return (
             <Grid className="h-[6rem] w-full grid-cols-2 grid-rows-[3rem_3rem] gap-0">
               <Grow placement="cc" className="w-full border-b px-2 border-(--color-gray-10)">
+                {/* 증권번호 */}
                 {String(params.data?.field04 ?? '')}
               </Grow>
               <Grow placement="cc" className="w-full px-2 border-l border-b border-(--color-gray-10)">
+                {/* 담보건수 */}
                 {String(params.data?.field06 ?? '')}
               </Grow>
               <Grow placement="cc" className="col-span-2 w-full px-2 justify-start">
+                {/* 상품명 */}
                 {String(params.data?.field05 ?? '')}
               </Grow>
             </Grid>
