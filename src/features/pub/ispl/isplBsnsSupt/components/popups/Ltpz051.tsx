@@ -3,12 +3,12 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -22,10 +22,10 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 
 import '@/shared/lib/agGridPub';
 
@@ -35,6 +35,7 @@ const DATA_TABS: LTPZ051Tab[] = [
   { name: '이륜차부담보 변경대상(d건)', value: 'detail', label: '이륜차부담보 변경대상(d건)' },
 ];
 
+// '직업정보(상해급수)변경대상' 탭의 그리드 데이터 타입 정의
 type DummyData1Type = {
   id: number;
   field01: string | number;
@@ -46,6 +47,7 @@ type DummyData1Type = {
   field07: string | number;
 };
 type DummyData2Type = {
+  // '이륜차부담보 변경대상' 탭의 그리드 데이터 타입 정의
   id: number;
   field01: string | number;
   field02: string | number;
@@ -54,6 +56,7 @@ type DummyData2Type = {
   field05: string | number;
 };
 
+// '직업정보(상해급수)변경대상' 탭의 샘플 데이터
 const DummyData1: DummyData1Type[] = [
   {
     id: 1,
@@ -86,6 +89,7 @@ const DummyData1: DummyData1Type[] = [
     field07: '회사원',
   },
 ];
+// '이륜차부담보 변경대상' 탭의 샘플 데이터
 const DummyData2: DummyData2Type[] = [
   {
     id: 1,
@@ -145,9 +149,13 @@ const DummyData2: DummyData2Type[] = [
   },
 ];
 
+// Ltpz051: 고객 직업정보(상해급수) 또는 이륜차부담보 변경 안내 팝업 컴포넌트
 const Ltpz051 = () => {
+  // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  // 탭 상태 관리 (직업정보 변경대상 / 이륜차부담보 변경대상)
   const { tabs, active, setActive } = useTabs(DATA_TABS);
+  // '직업정보(상해급수)변경대상' 탭의 Ag-Grid 컬럼 정의
   const columnDefs: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = [
     {
       headerName: '대상여부',
@@ -156,6 +164,7 @@ const Ltpz051 = () => {
       field: 'field01',
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
+      // 2026-05-27 링크로 변경
     },
     {
       headerName: '증권번호',
@@ -165,7 +174,6 @@ const Ltpz051 = () => {
       cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
       autoHeight: true,
     },
-    // 2026-05-27 링크로 변경
     {
       headerName: '변경설계번호',
       minWidth: attributeColumnWidth(110),
@@ -178,6 +186,7 @@ const Ltpz051 = () => {
           {params.data?.field03}
         </Button>
       ),
+      // 변경전 직업정보 그룹 헤더
     },
     {
       headerName: '변경전 직업정보',
@@ -200,6 +209,7 @@ const Ltpz051 = () => {
             <Typo className="whitespace-nowrap">{String(params.data?.field05 ?? '')}</Typo>
           ),
         },
+        // 변경후 직업정보 그룹 헤더
       ],
     },
     {
@@ -226,6 +236,7 @@ const Ltpz051 = () => {
     },
   ];
 
+  // '이륜차부담보 변경대상' 탭의 Ag-Grid 컬럼 정의
   const columnDefs1: ColDef<DummyData2Type>[] = [
     {
       headerName: '대상여부',
@@ -240,6 +251,7 @@ const Ltpz051 = () => {
       field: 'field02',
       minWidth: attributeColumnWidth(120),
       flex: 1,
+      // 2026-05-27 링크로 변경
       cellClass: 'text-center',
       autoHeight: true,
     },
@@ -248,7 +260,6 @@ const Ltpz051 = () => {
       field: 'field03',
       minWidth: attributeColumnWidth(110),
       flex: 1,
-      cellClass: 'text-center',
       autoHeight: true,
       cellRenderer: (params: ICellRendererParams<DummyData1Type, string | number>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
@@ -272,10 +283,13 @@ const Ltpz051 = () => {
     },
   ];
 
+  // '직업정보(상해급수)변경대상' 탭의 그리드 데이터
   const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
+  // '이륜차부담보 변경대상' 탭의 그리드 데이터
   const [rowData2] = React.useState<DummyData2Type[]>(DummyData2); // 2026-05-27 agGrid 추가
 
   return (
+    // Dialog 컴포넌트: 팝업 창을 렌더링합니다.
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
@@ -290,6 +304,7 @@ const Ltpz051 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round">
+            {/* 상품명 및 설계번호 표시 폼 */}
             <FormTable variant={'head'} lineTop={false} caption="">
               <FormRow>
                 <FormCell title={'상품명'}>
@@ -301,10 +316,12 @@ const Ltpz051 = () => {
               </FormRow>
             </FormTable>
           </Grow>
+          {/* 팝업 본문 영역 */}
           <Grid className="w-full grid-rows-[auto_auto_1fr]" gap={3}>
             <Gcol gap={2}>
               <Gcol variant={'box-info'}>
                 <Typo variant="body-sm" icon={'info'}>
+                  {/* 안내 메시지 */}
                   고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당
                   신계약 청약완료 이전에 기계약의 직업변경 또는 이윤차부담보 변경 완료 필요. 또한, 신계약 청약서 발행
                   이전에 배서(청약중 이후) 진행 필요
@@ -312,6 +329,7 @@ const Ltpz051 = () => {
               </Gcol>
               <Gcol className="w-full" placement="ss" variant="box-warning-line">
                 <Typo variant="body-sm">
+                  {/* 체크박스 옵션 */}
                   <Checkbox>
                     계약변경 설계 청약서 발급 및 확인서명을 조건으로 청약 진행 (단, 계약변경 미완료시{' '}
                     <Typo weight="bold" color="primary">
@@ -322,6 +340,7 @@ const Ltpz051 = () => {
                 </Typo>
               </Gcol>
             </Gcol>
+            {/* 탭 페이저 컴포넌트 */}
             <TabPager
               data={tabs}
               active={active}
@@ -333,8 +352,10 @@ const Ltpz051 = () => {
               removable={false}
             >
               <Grid className="grid-rows-[1fr_auto] h-full" gap={2}>
+                {/* '직업정보(상해급수)변경대상' 탭 내용 */}
                 {active === 'basic' ? (
                   <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
+                    {/* 고객명 및 직업정보 폼 */}
                     <FormTable
                       caption="직업 상세"
                       cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}
@@ -345,6 +366,7 @@ const Ltpz051 = () => {
                         <FormCell title={'직업정보'}>1급/회사원</FormCell>
                       </FormRow>
                     </FormTable>
+                    {/* 직업정보(상해급수) 상이 계약 그리드 */}
                     <Gcol>
                       <Grow className="w-full" gap={1} placement="se">
                         <Typo variant="body-md" color="default">
@@ -370,7 +392,9 @@ const Ltpz051 = () => {
                     </Gcol>
                   </Grid>
                 ) : (
+                  // '이륜차부담보 변경대상' 탭 내용
                   <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
+                    {/* 고객명 및 직업정보 폼 */}
                     <FormTable
                       caption="직업 상세"
                       cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}
@@ -381,6 +405,7 @@ const Ltpz051 = () => {
                         <FormCell title={'직업정보'}>1급/회사원2</FormCell>
                       </FormRow>
                     </FormTable>
+                    {/* 이륜차부담보 가입 상이 계약 그리드 */}
                     <Gcol>
                       <Grow className="w-full" gap={1} placement="se">
                         <Typo variant="body-md" color="default">
@@ -437,6 +462,7 @@ const Ltpz051 = () => {
                 </Gcol>
               </Grid>
             </TabPager>
+            {/* 팝업 푸터 영역 */}
           </Grid>
         </DialogSection>
 
@@ -453,6 +479,7 @@ const Ltpz051 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          {/* 하단 공통 정보 (연락처 등) */}
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
