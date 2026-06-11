@@ -4,17 +4,17 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Gcol, Grow, Typo } from '@atoms';
+import { SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
   createTooltipValueGetter,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -27,9 +27,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -89,7 +89,7 @@ const Ltpz017 = () => {
       {
         headerName: '순번',
         field: 'id',
-        width: attributeColumnWidth(50),
+        width: attributeColumnWidth(40),
         cellClass: 'text-center',
       },
       {
@@ -101,19 +101,20 @@ const Ltpz017 = () => {
       {
         headerName: '나만의플랜명',
         field: 'myPlanName',
-        flex: 2,
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
       },
       {
         headerName: '등록일자',
         field: 'registrationDate',
         flex: 1,
-        width: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
       },
       {
         headerName: '적용대상',
         field: 'target',
-        flex: 1,
+        width: attributeColumnWidth(50),
         cellClass: 'text-center',
         cellRenderer: attributeRenderer,
       },
@@ -131,7 +132,7 @@ const Ltpz017 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="ml">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

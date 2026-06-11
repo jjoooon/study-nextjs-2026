@@ -19,7 +19,7 @@ import { CloseIcon } from '@icons';
 
 type DialogSizeValue = number | string;
 
-type DialogSizePreset = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+type DialogSizePreset = 'xs' | 'sm' | 'md' | 'ml' | 'lg' | 'xl' | '2xl' | 'full';
 
 type DialogSizeConfig = {
   width?: DialogSizeValue;
@@ -42,6 +42,7 @@ const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
   xs: '32rem',
   sm: '48rem',
   md: '56rem',
+  ml: '62rem',
   lg: '76rem',
   xl: '96rem',
   '2xl': '118rem',
@@ -65,7 +66,15 @@ const resolveDialogSize = (size?: DialogSize) => {
     };
   }
 
-  if (size === 'xs' || size === 'sm' || size === 'md' || size === 'lg' || size === 'xl' || size === '2xl') {
+  if (
+    size === 'xs' ||
+    size === 'sm' ||
+    size === 'md' ||
+    size === 'ml' ||
+    size === 'lg' ||
+    size === 'xl' ||
+    size === '2xl'
+  ) {
     return {
       width: DIALOG_PRESET_WIDTH[size],
       maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,

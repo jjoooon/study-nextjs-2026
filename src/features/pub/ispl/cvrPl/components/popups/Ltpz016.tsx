@@ -5,9 +5,6 @@
 
 import '@/shared/lib/agGridPub';
 import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { EssentialIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -23,11 +20,14 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 const Ltpz016 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="lg">
+      <DialogContent showCloseButton resizable={false} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -47,10 +47,10 @@ const Ltpz016 = () => {
                   title={'설계번호'}
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                 >
-                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
                   -
-                  <Input aria-label="" width={30} value={'1'} readOnly />
-                  <Input aria-label="" variant="info" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                  <Input aria-label="" width={26} value={'1'} readOnly />
+                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -58,7 +58,7 @@ const Ltpz016 = () => {
           <TableFold>
             <TableFoldHead title="가족일상생활배상책임Ⅲ(대물 20만원(누수50만원)공제)(갱신형)" />
             <TableFoldBody className="gap-2">
-              <FormTable caption="설계번호" cols={['w-[21rem]', 'w-[auto]']}>
+              <FormTable caption="설계번호" cols={['w-[12rem]', 'w-[auto]']}>
                 <FormRow>
                   <FormCell
                     title={
@@ -89,10 +89,10 @@ const Ltpz016 = () => {
                 <FormRow>
                   <FormCell
                     title={
-                      <Grow placement="sc">
+                      <span>
                         상세주소(동번호/층수/호수 입력)
-                        <EssentialIcon />
-                      </Grow>
+                        <EssentialIcon className="inline-block ml-1" />
+                      </span>
                     }
                   >
                     <Input aria-label="" value={''} readOnly required />

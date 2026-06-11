@@ -3,11 +3,12 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -21,12 +22,11 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
-import { useMemo } from 'react';
 
 // dummy data
 type DummyDataType = {
@@ -160,7 +160,6 @@ const Ltpz039 = () => {
           </Grow>
         ),
         flex: 1,
-        width: attributeColumnWidth(50),
         field: 'field01',
         cellClass: 'text-center',
       },
@@ -173,6 +172,7 @@ const Ltpz039 = () => {
             headerName: '납입보험료',
             field: 'field02',
             flex: 1,
+            minWidth: attributeColumnWidth(60),
             cellClass: 'text-right',
             valueFormatter: numberValueFormatter<DummyDataType>,
           },
@@ -186,7 +186,7 @@ const Ltpz039 = () => {
                 headerName: '적립부분',
                 field: 'field03',
                 flex: 1,
-                width: attributeColumnWidth(70),
+                minWidth: attributeColumnWidth(60),
                 cellClass: 'text-right',
                 valueFormatter: numberValueFormatter<DummyDataType>,
               },
@@ -194,7 +194,7 @@ const Ltpz039 = () => {
                 headerName: '보장부분',
                 field: 'field04',
                 flex: 1,
-                width: attributeColumnWidth(70),
+                minWidth: attributeColumnWidth(60),
                 cellClass: 'text-right',
                 valueFormatter: numberValueFormatter<DummyDataType>,
               },
@@ -202,7 +202,7 @@ const Ltpz039 = () => {
                 headerName: '합계',
                 field: 'field05',
                 flex: 1,
-                width: attributeColumnWidth(70),
+                minWidth: attributeColumnWidth(60),
                 cellClass: 'text-right',
                 valueFormatter: numberValueFormatter<DummyDataType>,
               },
@@ -210,7 +210,7 @@ const Ltpz039 = () => {
                 headerName: '환급율',
                 field: 'field06',
                 flex: 1,
-                width: attributeColumnWidth(50),
+                minWidth: attributeColumnWidth(40),
                 cellClass: 'text-center',
               },
             ],
@@ -225,7 +225,7 @@ const Ltpz039 = () => {
                 headerName: '적립부분',
                 field: 'field07',
                 flex: 1,
-                width: attributeColumnWidth(70),
+                minWidth: attributeColumnWidth(60),
                 cellClass: 'text-right',
                 valueFormatter: numberValueFormatter<DummyDataType>,
               },
@@ -233,7 +233,7 @@ const Ltpz039 = () => {
                 headerName: '보장부분',
                 field: 'field08',
                 flex: 1,
-                width: attributeColumnWidth(70),
+                minWidth: attributeColumnWidth(60),
                 cellClass: 'text-right',
                 valueFormatter: numberValueFormatter<DummyDataType>,
               },
@@ -241,7 +241,7 @@ const Ltpz039 = () => {
                 headerName: '합계',
                 field: 'field09',
                 flex: 1,
-                width: attributeColumnWidth(70),
+                minWidth: attributeColumnWidth(60),
                 cellClass: 'text-right',
                 valueFormatter: numberValueFormatter<DummyDataType>,
               },
@@ -249,7 +249,7 @@ const Ltpz039 = () => {
                 headerName: '환급율',
                 field: 'field10',
                 flex: 1,
-                width: attributeColumnWidth(50),
+                minWidth: attributeColumnWidth(40),
                 cellClass: 'text-center',
               },
             ],
@@ -264,7 +264,7 @@ const Ltpz039 = () => {
                 headerName: '적립부분',
                 field: 'field11',
                 flex: 1,
-                width: attributeColumnWidth(70),
+                minWidth: attributeColumnWidth(60),
                 cellClass: 'text-right',
                 valueFormatter: numberValueFormatter<DummyDataType>,
               },
@@ -272,7 +272,7 @@ const Ltpz039 = () => {
                 headerName: '보장부분',
                 field: 'field12',
                 flex: 1,
-                width: attributeColumnWidth(70),
+                minWidth: attributeColumnWidth(60),
                 cellClass: 'text-right',
                 valueFormatter: numberValueFormatter<DummyDataType>,
               },
@@ -280,7 +280,7 @@ const Ltpz039 = () => {
                 headerName: '합계',
                 field: 'field13',
                 flex: 1,
-                width: attributeColumnWidth(70),
+                minWidth: attributeColumnWidth(60),
                 cellClass: 'text-right',
                 valueFormatter: numberValueFormatter<DummyDataType>,
               },
@@ -288,7 +288,7 @@ const Ltpz039 = () => {
                 headerName: '환급율',
                 field: 'field14',
                 flex: 1,
-                width: attributeColumnWidth(50),
+                minWidth: attributeColumnWidth(40),
                 cellClass: 'text-center',
               },
             ],
@@ -302,6 +302,7 @@ const Ltpz039 = () => {
             headerName: '납입보험료',
             field: 'field15',
             flex: 1,
+            minWidth: attributeColumnWidth(60),
             cellClass: 'text-right',
             valueFormatter: numberValueFormatter<DummyDataType>,
           },
@@ -309,6 +310,7 @@ const Ltpz039 = () => {
             headerName: '환급금',
             field: 'field16',
             flex: 1,
+            minWidth: attributeColumnWidth(60),
             cellClass: 'text-right',
             valueFormatter: numberValueFormatter<DummyDataType>,
           },
@@ -323,7 +325,7 @@ const Ltpz039 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl" className="">
+      <DialogContent showCloseButton resizable={true} size="xl" className="">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
