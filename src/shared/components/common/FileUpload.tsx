@@ -4,10 +4,8 @@
 'use client';
 
 import { useId } from 'react';
-// TODO: @YunJunmo 경로 이동 고려
-// eslint-disable-next-line boundaries/element-types
-import { Ltpz995Result } from '@/features/pub/shared/components/popups/Ltpz995';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Ltpz995Result } from '@/shared/types/fileTypes';
 import { UploadFileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
 import { open } from '@/shared/utils/popup/popupApi';
@@ -81,8 +79,6 @@ export function FileUpload({
           <FileTag
             key={file.edmsId}
             name={file.storedFilename}
-            // TODO: @YunJunmo 유틸로 변경
-            ext={'png'}
             hasError={!!errorMessage}
             onNameClick={() => {
               handleClickButton();

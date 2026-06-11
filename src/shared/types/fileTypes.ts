@@ -9,3 +9,11 @@ export interface UploadFileItem {
   edmsId: string;
   storedFilename: string;
 }
+
+/**
+ * 파일 업로드 팝업 결과
+ */
+export interface Ltpz995Result {
+  action: 'search' | 'select' | 'close';
+  files?: UploadFileItem[];
+}
