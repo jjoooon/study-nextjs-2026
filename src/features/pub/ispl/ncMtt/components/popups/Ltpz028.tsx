@@ -3,10 +3,11 @@
  */
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React, { useMemo } from 'react';
+import { Grow, Typo, Grid } from '@/shared/components/atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
-
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,10 +20,8 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellRendererParams, IHeaderParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React, { useMemo } from 'react';
-import { Grow, Typo } from '@/shared/components/atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -67,86 +66,71 @@ const DUMMY_DATA: DummyDataType[] = [
 const Ltpz028 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DUMMY_DATA);
 
-  const CombinedQuestionHeader = (_props: IHeaderParams<DummyDataType>) => {
-    const headerAreaStyle: React.CSSProperties = {
-      width: 'calc(100% + (var(--ag-cell-horizontal-padding) * 2))',
-    };
-
-    return (
-      <div className="h-full w-full overflow-hidden" style={headerAreaStyle}>
-        <div className="grid h-full w-full grid-cols-[60px_minmax(0,1fr)]">
-          <div className="flex items-center justify-center border-r border-(--ag-border-color) text-center">순서</div>
-          <div className="flex items-center justify-center text-center">질문명</div>
-        </div>
-      </div>
-    );
-  };
-
-  const CombinedQuestionCell = ({ data }: ICellRendererParams<DummyDataType>) => {
-    const field01 = data?.field01;
-    const field02 = data?.field02 ?? '';
-    const isDetails = data?.isDetails === true;
-
-    return (
-      <div className="h-full w-full">
-        <div className={isDetails ? 'flex h-full w-full' : 'grid h-full w-full grid-cols-[60px_minmax(0,1fr)]'}>
-          {isDetails ? (
-            <div className="flex h-full w-full items-center justify-start text-left">{field02}</div>
-          ) : (
-            <>
-              <div className="flex items-center justify-center border-r border-(--ag-border-color) text-center">
-                {field01}
-              </div>
-              <div className="flex items-center justify-start text-left pl-1">{field02}</div>
-            </>
-          )}
-        </div>
-      </div>
-    );
-  };
-
   const CombinedAnswerCell = ({ data }: ICellRendererParams<DummyDataType>) => {
     const field03 = data?.field03;
     const field04 = data?.field04;
     const isDetails = data?.isDetails === true;
 
     return (
-      <div className={isDetails ? 'flex w-full' : 'grid w-full grid-cols-[30%_70%]'}>
+      <Grid className={isDetails ? 'h-full min-h-[2.9rem]' : 'w-full h-full grid-cols-[7rem_70%] min-h-[2.9rem]'}>
         {isDetails ? (
-          <div className="flex min-h-[2.5rem] w-full items-start self-stretch wrap-break-word whitespace-normal px-2 py-1 text-left">
+          <div className="flex w-full h-full items-start self-stretch wrap-break-word whitespace-normal px-2 py-2 text-left leading-[1.2]">
             {field04 || '\u00A0'}
           </div>
         ) : (
           <>
-            <div className="flex min-h-[2.5rem] items-center justify-center border-r border-(--ag-border-color) px-2 text-center">
+            <div className="flex h-full items-center justify-center border-r border-(--color-gray-10) px-2 text-center">
               {field03 || '\u00A0'}
             </div>
-            <div className="flex min-h-[2.5rem] items-start self-stretch wrap-break-word whitespace-normal px-2 py-1 text-left">
+            <div className="flex h-full items-start self-stretch wrap-break-word whitespace-normal px-2 py-2 text-left leading-[1.2]">
               {field04 || '\u00A0'}
             </div>
           </>
         )}
-      </div>
+      </Grid>
     );
   };
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
+  const columnDefs: ColDef<DummyDataType>[] = useMemo(
     () => [
+      {
+        headerName: '순서',
+        field: 'field01',
+        autoHeight: true,
+        width: attributeColumnWidth(40),
+        cellClass: 'text-center',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
+        colSpan: (params) => {
+          if (params.data && (params.data.field01 === null || params.data.field01 === undefined)) {
+            return 2; // field01과 field02를 병합
+          }
+          return 1; // 기본값
+        },
+        // ⭐ 2. 병합되었을 때 field02의 데이터가 보이도록 셀 렌더러 처리
+        valueGetter: (params) => {
+          if (params.data && (params.data.field01 === null || params.data.field01 === undefined)) {
+            return params.data.field02; // field02 내용을 출력
+          }
+          return params.data?.field01; // field01이 null/undefined가 아니면 빈 문자열 반환
+        },
+      },
       {
         headerName: '질문정보',
         field: 'field02',
-        flex: 1,
-        minWidth: attributeColumnWidth(240),
-        cellClass: 'p-0! flex',
+        autoHeight: true,
+        flex: 3,
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
-        headerComponent: CombinedQuestionHeader,
-        cellRenderer: CombinedQuestionCell,
+        cellClassRules: {
+          'hidden-by-colspan': (params) => {
+            return !!(params.data && (params.data.field01 === null || params.data.field01 === undefined));
+          },
+        },
       },
       {
         headerName: '답변',
-        flex: 1,
+        flex: 5,
         autoHeight: true,
         wrapText: true,
         cellClass: 'p-0! flex',
@@ -159,7 +143,7 @@ const Ltpz028 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable size="lg">
+      <DialogContent showCloseButton resizable size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
