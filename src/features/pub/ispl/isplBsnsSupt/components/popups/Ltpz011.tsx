@@ -3,11 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,9 +20,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -139,7 +139,7 @@ const Ltpz011 = () => {
       headerName: '담보상태',
       field: 'state',
       flex: 1,
-      minWidth: attributeColumnWidth(110),
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-center',
     },
     {
@@ -166,17 +166,16 @@ const Ltpz011 = () => {
     {
       headerName: '세부담보명',
       field: 'coverage',
-      flex: 3,
-      minWidth: attributeColumnWidth(120),
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<ComparisonRow>({ field: 'coverage' }),
       cellClass: (params) => (params.data?.isSumRow ? 'text-left font-bold' : 'text-left'),
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) => (params.data?.isSumRow ? '합계' : params.value),
     },
     {
-      headerName: '보험료(원)',
+      headerName: '보험료',
       field: 'premium',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-right',
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
         params.data?.isSumRow ? Number(params.value ?? 0).toLocaleString() : Number(params.value ?? 0).toLocaleString(),

@@ -3,26 +3,26 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import { Grow, Grid } from '@atoms';
+import { SearchIcon, ResetIcon } from '@icons';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
-import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { useFormFields } from '@hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
-import { useMemo } from 'react';
 
 type Ltpa560DummyDataRow = {
   id: number;
@@ -229,8 +229,7 @@ export default function Ltpa560Section() {
     () => [
       {
         headerName: '상품',
-        flex: 3,
-        minWidth: attributeColumnWidth(220),
+        flex: 20,
         field: 'field01',
         cellClass: 'text-left [&>div]:whitespace-normal [&_span]:leading-normal',
         spanRows: true,
@@ -239,7 +238,7 @@ export default function Ltpa560Section() {
       },
       {
         headerName: '채널',
-        flex: 2,
+        flex: 1,
         minWidth: attributeColumnWidth(100),
         field: 'field02',
         cellClass: 'text-center',
@@ -249,8 +248,7 @@ export default function Ltpa560Section() {
       },
       {
         headerName: '본부명',
-        flex: 2,
-        minWidth: attributeColumnWidth(140),
+        flex: 10,
         field: 'field03',
         cellClass: 'text-center',
         autoHeight: true,
