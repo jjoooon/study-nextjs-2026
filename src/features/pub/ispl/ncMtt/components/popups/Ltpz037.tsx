@@ -3,9 +3,8 @@
  */
 'use client';
 
+import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { BulletItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -21,12 +20,13 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { BulletItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 const Ltpz037 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={true} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

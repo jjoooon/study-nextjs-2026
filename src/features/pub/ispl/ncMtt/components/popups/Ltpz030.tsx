@@ -3,13 +3,13 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
 import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon } from '@icons';
+import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
@@ -25,10 +25,10 @@ import {
 import { Input } from '@uiux/Input';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 
 import '@/shared/lib/agGridPub';
 
@@ -521,6 +521,15 @@ const Ltpz030 = () => {
                 <Gcol className="h-full">
                   <Table variant="default">
                     <caption className="a11y-hidden">일반/건강고지유형 피보험자 정보 테이블</caption>
+                    <colgroup>
+                      <col style={{ width: '12rem' }} />
+                      <col style={{ width: '8rem' }} />
+                      <col style={{ width: '8rem' }} />
+                      <col style={{ width: '8rem' }} />
+                      <col style={{ width: '9rem' }} />
+                      <col style={{ width: '8rem' }} />
+                      <col style={{ width: 'auto' }} />
+                    </colgroup>
                     <TableHeader>
                       <TableRow>
                         <TableHead>고지유형</TableHead>
