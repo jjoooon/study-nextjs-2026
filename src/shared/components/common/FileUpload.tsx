@@ -5,10 +5,10 @@
 
 import { useId } from 'react';
 // TODO: @YunJunmo 경로 이동 고려
-
+// eslint-disable-next-line boundaries/element-types
 import { Ltpz995Result } from '@/features/pub/shared/components/popups/Ltpz995';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { FileItem } from '@/shared/types/fileTypes';
+import { UploadFileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
 import { open } from '@/shared/utils/popup/popupApi';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -22,12 +22,12 @@ const logger = log.getLogger('FileUpload');
 
 type FileUploadProps = {
   id?: string;
-  files?: FileItem[];
+  files?: UploadFileItem[];
   className?: string;
   errorMessage?: string;
   onClickButton?: () => void;
-  onClickFileName?: (file: FileItem, index: number) => void;
-  onChange?: (files: FileItem[]) => void;
+  onClickFileName?: (file: UploadFileItem, index: number) => void;
+  onChange?: (files: UploadFileItem[]) => void;
 };
 
 // ─── FileUpload ───────────────────────────────────────────────────────────────
@@ -44,7 +44,7 @@ export function FileUpload({
   const generatedId = useId();
   const baseId = id ?? generatedId;
 
-  const handleRemove = (file: FileItem, index: number) => {
+  const handleRemove = (file: UploadFileItem, index: number) => {
     onChange?.(files.filter((_, i) => i !== index));
   };
 
@@ -79,9 +79,10 @@ export function FileUpload({
       <Gcol className="pt-[0.2rem]" gap={1.5} placement={'ss'}>
         {files.map((file, index) => (
           <FileTag
-            key={file.id ?? `${file.filename}-${index}`}
-            name={file.filename}
-            ext={file.fileExtension}
+            key={file.edmsId}
+            name={file.storedFilename}
+            // TODO: @YunJunmo 유틸로 변경
+            ext={'png'}
             hasError={!!errorMessage}
             onNameClick={() => {
               handleClickButton();

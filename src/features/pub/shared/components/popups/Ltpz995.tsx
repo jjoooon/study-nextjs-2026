@@ -10,7 +10,7 @@ import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
-import { FileItem } from '@/shared/types/fileTypes';
+import { UploadFileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
 import { Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
@@ -34,11 +34,11 @@ const logger = log.getLogger('FileUploader');
 
 export interface Ltpz995Result {
   action: 'search' | 'select' | 'close';
-  files?: FileItem[];
+  files?: UploadFileItem[];
 }
 
 export interface Ltpz995Props {
-  files?: FileItem[];
+  files?: UploadFileItem[];
   onOpenChange?: (open: boolean) => void;
   /** Promise resolve 함수 (결과 반환) */
   resolve: (result: Ltpz995Result) => void;
@@ -78,11 +78,11 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
   const pondRef = useRef<FilePondInstance>(null);
   const [fileCount, setFileCount] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleInit = () => {
-    if (!files?.length || !pondRef.current) return;
-    files.forEach((f) => {
-      pondRef.current!.addFile(f.id, { type: 'local' });
+    files?.forEach((f) => {
+      pondRef.current!.addFile(f.edmsId, { type: 'limbo' });
     });
   };
 
@@ -152,18 +152,23 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
     pondRef.current?.browse();
   };
 
-  const handleSelect = () => {
-    const currentFiles = pondRef.current?.getFiles() ?? [];
-    resolve({
-      action: 'select',
-      files: currentFiles.map((f) => ({
-        id: f.id,
-        filename: f.filename,
-        fileSize: f.fileSize,
-        fileExtension: f.fileExtension,
-        fileType: f.fileType,
-      })),
-    });
+  const handleSelect = async () => {
+    setIsUploading(true);
+    try {
+      await pondRef.current?.processFiles();
+      const currentFiles = pondRef.current?.getFiles() ?? [];
+      resolve({
+        action: 'select',
+        files: currentFiles.map((f) => ({
+          edmsId: f.serverId ?? f.id,
+          storedFilename: f.filename,
+        })),
+      });
+    } catch (error) {
+      logger.error('파일 업로드 오류:', error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleClose = () => {
@@ -209,6 +214,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
         <DialogSection className="grid-rows-[1fr_auto] gap-1">
           <FilePond
             ref={pondRef}
+            name="files"
             oninit={handleInit}
             onaddfile={handleAddFile}
             onremovefile={handleRemoveFile}
@@ -232,15 +238,11 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
             // stylePanelLayout="compact"
             dropValidation
             instantUpload={false}
-            // TODO: @YunJunmo Server load URL 변경
+            // TODO: @YunJunmo 내부 머지 시 수정
             server={{
-              load: (source, load, error) => {
-                const item = files?.find((f) => f.id === source);
-                if (!item) {
-                  error('not found');
-                  return;
-                }
-                load(new File([''], item.filename, { type: item.fileType }));
+              process: {
+                url: 'http://localhost:8080/api/ltp/file/uploadFiles',
+                method: 'POST',
               },
             }}
             styleButtonRemoveItemPosition="right"
@@ -265,8 +267,13 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
               <Button variant={'outlined'} size={'xl'} color={'gray'} onClick={handleSearch}>
                 파일찾기
               </Button>
-              <Button variant={'contained'} size={'xl'} disabled={fileCount === 0} onClick={handleSelect}>
-                선택완료
+              <Button
+                variant={'contained'}
+                size={'xl'}
+                disabled={fileCount === 0 || isUploading}
+                onClick={handleSelect}
+              >
+                {isUploading ? '업로드 중...' : '선택완료'}
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={handleClose}>
