@@ -26,11 +26,13 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 const Ltpz045 = () => {
+  // 폼 필드 상태를 관리하는 훅 (type01, type02, type03)
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
     type03: '',
   });
+  // CDD 기타 값 상태
   const [cddEtcValue] = React.useState('');
   return (
     // 2026-05-27
@@ -48,6 +50,7 @@ const Ltpz045 = () => {
         </DialogHeader>
         <DialogSection>
           <Gcol className="w-full" gap={3}>
+            {/* 상단 설계번호 및 계약자 정보 표시 영역 */}
             <Grow className="w-full" variant="box-round">
               <FormTable variant="head" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
                 <FormRow>

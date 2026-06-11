@@ -849,7 +849,10 @@ const Ltpz032 = () => {
   const [rowData22, setRowData22] = React.useState<DummyDataType22[]>(DummyData22);
   const [rowData23, setRowData23] = React.useState<DummyDataType23[]>(DummyData23);
 
+  // 에러 행 상태 관리 (현재는 사용하지 않음)
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
+  
+  // 셀 값 변경 시 실행 - isCheck 필드 변경을 감지하고 rowData 업데이트
   const onCellValueChanged11 = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType11, number>('isCheck', setRowData11, setErrorRows, 'id'),
     [setErrorRows]
@@ -871,10 +874,14 @@ const Ltpz032 = () => {
     [setErrorRows]
   );
 
+  // 데이터의 isCheck 필드와 체크박스 선택을 동기화하는 함수
+  // rowData에서 isCheck=true인 행을 찾아 grid의 체크박스를 선택 상태로 변경
   const syncSelectionByIsCheck = React.useCallback(
     <T extends { id: number; isCheck: boolean }>(api: GridApi<T>, rows: T[]) => {
+      // isCheck가 true인 행들의 id를 Set으로 저장
       const checkedIdSet = new Set(rows.filter((row) => row.isCheck).map((row) => String(row.id)));
 
+      // grid의 모든 행을 순회하며 체크박스 선택 상태 동기화
       api.forEachNode((node) => {
         node.setSelected(checkedIdSet.has(node.id ?? ''));
       });
@@ -882,7 +889,11 @@ const Ltpz032 = () => {
     []
   );
 
+  // 화면 크기에 따라 컬럼 너비를 동적으로 조정하는 함수
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  
+  // Tab1-1: 일반/건강고지 테이블 컬럼 정의
+  // useMemo로 감싼 이유: 불필요한 re-render 방지
   const columnDefs11 = React.useMemo<ColDef<DummyDataType11>[]>(() => {
     return [
       {
@@ -912,6 +923,7 @@ const Ltpz032 = () => {
         headerName: '질병미리보기',
         field: 'field06',
         width: attributeColumnWidth(85),
+        sortable: false,
         cellRenderer: (_params: ICellRendererParams<DummyDataType11>) => (
           <Grow className="w-full px-1">
             보기
@@ -1356,6 +1368,7 @@ const Ltpz032 = () => {
     [attributeColumnWidth]
   );
 
+  // Tab2-1: 일반고지(질병코드별) 테이블 컬럼 정의
   const columnDefs21 = React.useMemo<ColDef<DummyDataType21>[]>(
     () => [
       {
@@ -1426,6 +1439,8 @@ const Ltpz032 = () => {
     ],
     [attributeColumnWidth]
   );
+  
+  // Tab2-2: 건강고지(질병코드별) 테이블 컬럼 정의
   const columnDefs22 = React.useMemo<ColDef<DummyDataType22>[]>(
     () => [
       {
@@ -1500,6 +1515,8 @@ const Ltpz032 = () => {
     ],
     [attributeColumnWidth]
   );
+  
+  // Tab2-3: 간편고지(질병코드별) 테이블 컬럼 정의
   const columnDefs23 = React.useMemo<ColDef<DummyDataType23>[]>(
     () => [
       {
@@ -1611,16 +1628,17 @@ const Ltpz032 = () => {
                     <TableFoldBody>
                       <div className="ag-theme-alpine w-full radio-selection inner-scroll" data-row={rowData11.length}>
                         <AgGridReact<DummyDataType11>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={rowData11}
-                          columnDefs={columnDefs11}
+                          getRowId={(params) => String(params.data.id)} // 행의 고유 ID 설정
+                          noRowsOverlayComponent={AgGridEmptyComponent} // 데이터가 없을 때 표시할 컴포넌트
+                          rowData={rowData11} // 테이블에 표시할 실제 데이터
+                          columnDefs={columnDefs11} // 컬럼 설정
+                          // 모든 컬럼의 기본 설정
                           defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                            cellClass: 'text-center',
+                            sortable: true,      // 정렬 가능 여부
+                            resizable: true,     // 열 크기 조정 가능 여부
+                            cellClass: 'text-center', // 셀의 기본 스타일
                           }}
-                          // selection 설정
+                          // 체크박스 선택 모드 설정
                           rowSelection={{
                             mode: 'singleRow',
                             checkboxes: true,
@@ -1631,10 +1649,12 @@ const Ltpz032 = () => {
                             width: 30,
                             cellClass: 'text-center editable-cell',
                           }}
+                          // Grid 레이아웃 설정
                           domLayout="normal"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                          onCellValueChanged={onCellValueChanged11}
+                          tooltipShowMode="whenTruncated" // 텍스트가 길면 툴팁 표시
+                          tooltipShowDelay={0}             // 툴팁 표시 지연 시간
+                          onCellValueChanged={onCellValueChanged11} // 셀 값 변경 시 실행
+                          // Grid 초기화 완료 시 실행 - isCheck가 true인 행들을 체크
                           onGridReady={(params) => {
                             params.api.forEachNode((node) => {
                               if (node.data?.isCheck) {
@@ -1656,11 +1676,11 @@ const Ltpz032 = () => {
                           rowData={rowData12}
                           columnDefs={columnDefs12}
                           defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                            cellClass: 'text-center',
+                            sortable: true,      // 정렬 가능 여부
+                            resizable: true,     // 열 크기 조정 가능 여부
+                            cellClass: 'text-center', // 셀의 기본 스타일
                           }}
-                          // selection 설정
+                          // 체크박스 선택 모드 설정
                           rowSelection={{
                             mode: 'singleRow',
                             checkboxes: true,
@@ -1713,15 +1733,15 @@ const Ltpz032 = () => {
                           rowData={rowData21}
                           columnDefs={columnDefs21}
                           defaultColDef={{
-                            sortable: true,
-                            resizable: true,
+                            sortable: true,      // 정렬 가능
+                            resizable: true,     // 열 크기 조정 가능
                             cellClass: 'text-center',
                           }}
-                          // selection 설정
+                          //멀티 선택 모드 - 여러 개 행을 동시에 선택 가능
                           rowSelection={{
-                            mode: 'multiRow',
-                            checkboxes: true,
-                            enableClickSelection: false,
+                            mode: 'multiRow',               // 여러 행 선택 가능
+                            checkboxes: true,               // 체크박스 표시
+                            enableClickSelection: false,    // 체크박스로만 선택
                           }}
                           selectionColumnDef={{
                             headerName: '선택',
@@ -1732,13 +1752,13 @@ const Ltpz032 = () => {
                           tooltipShowMode="whenTruncated"
                           tooltipShowDelay={0}
                           onCellValueChanged={onCellValueChanged21}
-                          onGridReady={(params) => {
+                          onGridReady={(params) => { // Grid 초기화 후 isCheck 필드로 체크박스 동기화
                             syncSelectionByIsCheck(params.api, rowData21);
                           }}
-                          onFirstDataRendered={(params) => {
+                          onFirstDataRendered={(params) => { // 첫 데이터 렌더링 후 동기화
                             syncSelectionByIsCheck(params.api, rowData21);
                           }}
-                          onRowDataUpdated={(params) => {
+                          onRowDataUpdated={(params) => { // rowData 업데이트 후 동기화
                             syncSelectionByIsCheck(params.api, rowData21);
                           }}
                         />
@@ -1761,11 +1781,11 @@ const Ltpz032 = () => {
                             resizable: true,
                             cellClass: 'text-center',
                           }}
-                          // selection 설정
+                          // 멀티 선택 모드
                           rowSelection={{
-                            mode: 'multiRow',
-                            checkboxes: true,
-                            enableClickSelection: false,
+                            mode: 'multiRow',               // 여러 행 선택 가능
+                            checkboxes: true,               // 체크박스 표시
+                            enableClickSelection: false,    // 체크박스로만 선택
                           }}
                           selectionColumnDef={{
                             headerName: '선택',
@@ -1776,8 +1796,8 @@ const Ltpz032 = () => {
                           tooltipShowMode="whenTruncated"
                           tooltipShowDelay={0}
                           onCellValueChanged={onCellValueChanged22}
-                          onGridReady={(params) => {
-                            syncSelectionByIsCheck(params.api, rowData22);
+                          onGridReady={(params) => { // Grid 초기화, 데이터 렌더링, 업데이트 시 체크박스 동기화
+                            syncSelectionByIsCheck(params.api, rowData22) ;
                           }}
                           onFirstDataRendered={(params) => {
                             syncSelectionByIsCheck(params.api, rowData22);
@@ -1805,11 +1825,11 @@ const Ltpz032 = () => {
                             resizable: true,
                             cellClass: 'text-center',
                           }}
-                          // selection 설정
+                          // 멀티 선택 모드
                           rowSelection={{
-                            mode: 'multiRow',
-                            checkboxes: true,
-                            enableClickSelection: false,
+                            mode: 'multiRow',               // 여러 행 선택 가능
+                            checkboxes: true,               // 체크박스 표시
+                            enableClickSelection: false,    // 체크박스로만 선택
                           }}
                           selectionColumnDef={{
                             headerName: '선택',
@@ -1818,6 +1838,7 @@ const Ltpz032 = () => {
                           }}
                           domLayout="normal"
                           onCellValueChanged={onCellValueChanged23}
+                          // Grid 초기화, 데이터 렌더링, 업데이트 시 체크박스 동기화
                           onGridReady={(params) => {
                             syncSelectionByIsCheck(params.api, rowData23);
                           }}

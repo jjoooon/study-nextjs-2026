@@ -22,7 +22,14 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 
 import '@/shared/lib/agGridPub';
 
-// Tab 정의
+/**
+ * LTPA060 섹션 컴포넌트
+ * 자동고지(ICIS/심평원) 질병정보 관리 화면
+ * - Tab1: 자동고지(ICIS) - 필수고지/고지확인대상
+ * - Tab2: 자동고지(심평원) - 필수고지/고지확인대상
+ */
+
+// ===== Tab 정의 =====
 type LTPZ060TabType = {
   name: string;
   value: string;
@@ -42,6 +49,8 @@ const DATA_TABS: LTPZ060TabType[] = [
   },
 ];
 
+// ===== 데이터 타입 정의 =====
+// 자동고지(ICIS) 테이블 데이터 타입
 type DummyDataType = {
   id: number;
   isChecked: boolean;
@@ -55,6 +64,7 @@ type DummyDataType = {
   field8: string;
   field9: string;
 };
+// 자동고지(심평원) 테이블 데이터 타입
 type DummyDataType2 = {
   id: number;
   isChecked: boolean;
@@ -69,6 +79,8 @@ type DummyDataType2 = {
   field9: string;
 };
 
+// ===== 샘플 데이터 =====
+// Tab1: 자동고지(ICIS) 샘플 데이터
 const dummyData: DummyDataType[] = [
   {
     id: 1,
@@ -149,6 +161,7 @@ const dummyData: DummyDataType[] = [
     field9: '',
   },
 ];
+// Tab2: 자동고지(심평원) 샘플 데이터
 const dummyData2: DummyDataType2[] = [
   {
     id: 1,
@@ -217,15 +230,19 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
+// ===== 컴포넌트 시작 =====
 export default function Ltpa060Section() {
+  // 테이블 데이터 상태 관리
   const [rowData, setRowData] = React.useState<DummyDataType[]>(dummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
+  // 화면 크기에 따라 컬럼 너비를 동적으로 조정
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
+  // 에러 행 상태 관리 (체크박스 처리용)
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
 
-  // Tab1 AGGrid Column/
-  // 2026-05-28: cellClass 변경
+  // ===== ag-Grid 컬럼 정의 =====
+  // Tab1: 자동고지(ICIS) 테이블 컬럼
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대표질병코드',
@@ -284,8 +301,8 @@ export default function Ltpa060Section() {
       ),
     },
   ];
-  // Tab2 AGGrid Column
-  // 2026-05-28: cellClass 변경
+  
+  // Tab2: 자동고지(심평원) 테이블 컬럼
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '대표질병코드',
@@ -321,6 +338,7 @@ export default function Ltpa060Section() {
       width: attributeColumnWidth(60),
     },
     {
+      // 수술 여부
       headerName: '수술',
       field: 'field7',
       width: attributeColumnWidth(60),
@@ -345,13 +363,18 @@ export default function Ltpa060Section() {
     },
   ];
 
+  // ===== 셀 값 변경 핸들러 =====
+  // 체크박스 변경 시 데이터 업데이트 처리
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isChecked', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
 
+  // 탭 상태 관리 (ICIS / 심평원)
   const { tabs, active, setActive } = useTabs(DATA_TABS);
 
+  // ===== 페이지 렌더링 =====
+  // LTPA060 자동고지 관리 화면
   return (
     <>
       <LayoutHead>
@@ -364,6 +387,7 @@ export default function Ltpa060Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
+          // 탭 페이저: Tab1(ICIS), Tab2(심평원)
           <TabPager
             data={tabs}
             active={active}
@@ -373,8 +397,10 @@ export default function Ltpa060Section() {
             getValue={(tab) => String(tab.value)}
             renderTab={(tab) => <span>{tab.label}</span>}
           >
+            {/* ===== Tab1: 자동고지(ICIS) ===== */}
             {active === 'tab1' && (
               <Gcol placement="ss" className="w-full" gap={3}>
+                {/* FP정보제공 동의 및 조회 기간 입력 섹션 */}
                 <Grow className="w-full" variant="box-round-b">
                   <FormTable variant={'head'} lineTop={false} caption="">
                     <FormRow>
@@ -392,9 +418,11 @@ export default function Ltpa060Section() {
                   </FormTable>
                 </Grow>
                 <Gcol placement="ss" className="w-full" gap={3}>
+                  {/* 펼침메뉴: 필수고지 */}
                   <TableFold>
                     <TableFoldHead title="필수고지" />
                     <TableFoldBody>
+                      {/* ag-Grid 테이블: 필수고지 데이터 */}
                       <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                         <AgGridReact<DummyDataType>
                           getRowId={(params) => String(params.data.id)}
@@ -405,17 +433,20 @@ export default function Ltpa060Section() {
                           }}
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           onCellValueChanged={onCellValueChanged}
+                          // ag-Grid 기본 설정
                           defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                            cellClass: 'text-center',
+                            sortable: true,  // 컬럼 정렬 가능
+                            resizable: true,  // 컬럼 너비 조절 가능
+                            cellClass: 'text-center',  // 중앙 정렬
                           }}
+                          // 다중행 선택 모드 (고지 상태 행 제외)
                           rowSelection={{
                             mode: 'multiRow',
-                            isRowSelectable: (node) => node.data?.field8 !== '고지',
-                            checkboxes: true,
-                            enableClickSelection: false,
+                            isRowSelectable: (node) => node.data?.field8 !== '고지',  // '고지' 상태 행은 선택 불가
+                            checkboxes: true,  // 체크박스 표시
+                            enableClickSelection: false,  // 행 클릭으로 선택 안됨
                           }}
+                          // 그리드 초기화 후 체크 상태 복원
                           onGridReady={(params) => {
                             params.api.forEachNode((node) => {
                               if (node.data?.isChecked) {
@@ -428,9 +459,11 @@ export default function Ltpa060Section() {
                       </div>
                     </TableFoldBody>
                   </TableFold>
+                  {/* 펼침메뉴: 고지확인대상 */}
                   <TableFold>
                     <TableFoldHead title="고지확인대상" />
                     <TableFoldBody>
+                      {/* ag-Grid 테이블: 고지확인대상 데이터 */}
                       <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                         <AgGridReact<DummyDataType2>
                           getRowId={(params) => String(params.data.id)}
@@ -467,8 +500,10 @@ export default function Ltpa060Section() {
                 </Gcol>
               </Gcol>
             )}
+            {/* ===== Tab2: 자동고지(심평원) ===== */}
             {active === 'tab2' && (
               <Gcol placement="ss" className="w-full h-full" gap={3}>
+                {/* 정보제공 동의 및 조회 기간 입력 섹션 */}
                 <Grow className="w-full" variant="box-round-b">
                   <FormTable variant={'head'} lineTop={false} caption="">
                     <FormRow>
@@ -485,9 +520,11 @@ export default function Ltpa060Section() {
                     </FormRow>
                   </FormTable>
                 </Grow>
+                {/* 펼침메뉴: 필수고지 */}
                 <TableFold>
                   <TableFoldHead title="필수고지" />
                   <TableFoldBody>
+                    {/* ag-Grid 테이블: 필수고지 데이터 */}
                     <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
@@ -522,9 +559,11 @@ export default function Ltpa060Section() {
                     </div>
                   </TableFoldBody>
                 </TableFold>
+                {/* 펼침메뉴: 고지확인대상 */}
                 <TableFold>
                   <TableFoldHead title="고지확인대상" />
                   <TableFoldBody>
+                    {/* ag-Grid 테이블: 고지확인대상 데이터 */}
                     <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
@@ -564,6 +603,7 @@ export default function Ltpa060Section() {
           </TabPager>
         }
         mainFoot={
+          // 하단 버튼: "알릴사항 반영하기"
           <MainBottom>
             <MainBottomItem>
               <Grow gap={1} placement={'ee'} className="w-full">

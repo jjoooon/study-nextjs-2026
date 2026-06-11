@@ -3,9 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -17,9 +19,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import '@/shared/lib/agGridPub';
 
@@ -90,8 +90,7 @@ const Ltpz035 = () => {
     {
       headerName: '상품명',
       field: 'field02',
-      flex: 2,
-      minWidth: attributeColumnWidth(150),
+      flex: 10,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
@@ -105,8 +104,7 @@ const Ltpz035 = () => {
     {
       headerName: '동시가입 담보명',
       field: 'field04',
-      flex: 1,
-      minWidth: attributeColumnWidth(150),
+      flex: 10,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },

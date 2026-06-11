@@ -4,15 +4,15 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo, Grid, Divider } from '@atoms';
-import { BulletItem } from '@common/BulletList';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { QuestionMark, ResetIcon, SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -29,12 +29,12 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { BulletItem } from '@common/BulletList';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -360,7 +360,9 @@ const Ltpz031 = () => {
     () => [
       {
         headerName: '위험분류',
-        cellClass: 'text-center',
+        flex: 1,
+        minWidth: attributeColumnWidth(200),
+        cellClass: 'text-center !px-0',
         cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
           return (
             <div className="grid h-full w-full items-stretch [grid-template-columns:35%_15%_35%_15%]">
@@ -379,9 +381,10 @@ const Ltpz031 = () => {
         },
       },
       {
+        headerName: '질병사망 고도후유',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
         wrapText: true,
         autoHeight: true,
@@ -394,9 +397,10 @@ const Ltpz031 = () => {
         ),
       },
       {
+        headerName: '질병휴우 (경증)',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
         headerComponent: () => (
           <div className="w-full text-center whitespace-normal px-1">
@@ -410,27 +414,28 @@ const Ltpz031 = () => {
         headerName: '2대질병',
         field: 'field7',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '암',
         field: 'field8',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '질병수술',
         field: 'field9',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
+        headerName: '질병중환 자실입원',
         field: 'field10',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
         headerComponent: () => (
           <div className="w-full text-center whitespace-normal px-1">
@@ -444,20 +449,21 @@ const Ltpz031 = () => {
         headerName: '질병입원',
         field: 'field11',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '질병치료',
         field: 'field12',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
+        headerName: '상해사망 고도후유',
         field: 'field13',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
         headerComponent: () => (
           <div className="w-full text-center whitespace-normal px-1">
@@ -471,70 +477,70 @@ const Ltpz031 = () => {
         headerName: '상해50%',
         field: 'field14',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '상해수술',
         field: 'field15',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '상해입원',
         field: 'field16',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '상해치료',
         field: 'field17',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '장기요양',
         field: 'field18',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '치매',
         field: 'field19',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '치아',
         field: 'field20',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '실손',
         field: 'field21',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '서류',
         field: 'field22',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '참고사항',
         field: 'field23',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
     ],
@@ -547,14 +553,14 @@ const Ltpz031 = () => {
         headerName: '입원일수',
         field: 'field1',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(70),
         cellClass: 'text-center',
       },
       {
         headerName: '수술유무',
         field: 'field2',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
         cellRenderer: ({ value }: { value: boolean }) => (value ? 'Y' : 'N'),
       },
@@ -562,21 +568,22 @@ const Ltpz031 = () => {
         headerName: '경과일수',
         field: 'field3',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '재발',
         field: 'field4',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
         cellRenderer: ({ value }: { value: boolean }) => (value ? 'Y' : 'N'),
       },
       {
+        headerName: '질병사망 고도후유',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
         headerComponent: () => (
           <div className="w-full text-center whitespace-normal px-1">
@@ -587,9 +594,10 @@ const Ltpz031 = () => {
         ),
       },
       {
+        headerName: '질병휴우 (경증)',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
         headerComponent: () => (
           <div className="w-full text-center whitespace-normal px-1">
@@ -603,27 +611,28 @@ const Ltpz031 = () => {
         headerName: '2대질병',
         field: 'field7',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '암',
         field: 'field8',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '질병수술',
         field: 'field9',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
+        headerName: '질병중환 자실입원',
         field: 'field10',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
         headerComponent: () => (
           <div className="w-full text-center whitespace-normal px-1">
@@ -637,20 +646,21 @@ const Ltpz031 = () => {
         headerName: '질병입원',
         field: 'field11',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '질병치료',
         field: 'field12',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
+        headerName: '상해사망 고도후유',
         field: 'field13',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
         headerComponent: () => (
           <div className="w-full text-center whitespace-normal px-1">
@@ -664,69 +674,69 @@ const Ltpz031 = () => {
         headerName: '상해50%',
         field: 'field14',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '상해수술',
         field: 'field15',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
       },
       {
         headerName: '상해입원',
         field: 'field16',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '상해치료',
         field: 'field17',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '장기요양',
         field: 'field18',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '치매',
         field: 'field19',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '치아',
         field: 'field20',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '실손',
         field: 'field21',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '서류',
         field: 'field22',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '참고사항',
         field: 'field23',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
     ],
@@ -1262,7 +1272,7 @@ const Ltpz031 = () => {
                             <FormRow vertical={false}>
                               <FormCell title={'발생부위'}>
                                 <Grow className="w-full" gap={3} placement="sc">
-                                  <RadioGroup className="gap-3" onValueChange={() => {}}>
+                                  <RadioGroup className="gap-x-3 gap-y-1" onValueChange={() => {}}>
                                     {[
                                       { value: '경추', label: '경추' },
                                       { value: '흉추', label: '흉추' },

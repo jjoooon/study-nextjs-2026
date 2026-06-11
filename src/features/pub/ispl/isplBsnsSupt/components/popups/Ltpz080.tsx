@@ -131,6 +131,9 @@ const Ltpz080 = () => {
             <Typo tag={'strong'} variant={'heading-lg'}>
               담보그룹관리
             </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ080)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_auto_1fr] gap-3">

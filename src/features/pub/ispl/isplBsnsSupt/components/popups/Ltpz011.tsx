@@ -3,11 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,9 +20,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -139,7 +139,7 @@ const Ltpz011 = () => {
       headerName: '담보상태',
       field: 'state',
       flex: 1,
-      minWidth: attributeColumnWidth(110),
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-center',
     },
     {
@@ -166,24 +166,26 @@ const Ltpz011 = () => {
     {
       headerName: '세부담보명',
       field: 'coverage',
-      flex: 3,
-      minWidth: attributeColumnWidth(120),
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<ComparisonRow>({ field: 'coverage' }),
-      cellClass: (params) => (params.data?.isSumRow ? 'text-left font-bold' : 'text-left'),
+      cellClass: (params) => (params.data?.isSumRow ? 'text-left font-bold' : 'text-left'), // 합계 행일 경우 폰트를 굵게 표시
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) => (params.data?.isSumRow ? '합계' : params.value),
     },
     {
-      headerName: '보험료(원)',
+      headerName: '보험료',
       field: 'premium',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-right',
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
+        // 숫자에 천 단위 콤마(,)를 찍어서 보기 좋게 표시
         params.data?.isSumRow ? Number(params.value ?? 0).toLocaleString() : Number(params.value ?? 0).toLocaleString(),
     },
   ];
 
   const rowData2 = comparisonRows;
+
+  // 테이블 하단에 고정될 '합계' 행 데이터 계산
   const sumRow2 = React.useMemo<ComparisonRow[]>(
     () => [
       {
@@ -193,8 +195,8 @@ const Ltpz011 = () => {
         term1: '',
         term2: '',
         coverage: '합계',
-        premium: rowData2.reduce((sum, row) => sum + row.premium, 0),
-        isSumRow: true,
+        premium: rowData2.reduce((sum, row) => sum + row.premium, 0), // 리스트에 있는 모든 보험료(premium)를 하나씩 더해서 총합을 구함
+        isSumRow: true, // 이 행이 합계 전용 행임을 알려주는 구분값
       },
     ],
     [rowData2]

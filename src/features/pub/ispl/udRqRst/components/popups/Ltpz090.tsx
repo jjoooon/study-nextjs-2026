@@ -3,10 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -20,9 +21,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Textarea } from '@uiux/Textarea';
-import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -145,14 +145,14 @@ const Ltpz090 = () => {
     {
       headerName: '순번',
       field: 'field01',
-      width: attributeColumnWidth(50),
+      width: attributeColumnWidth(40),
       cellClass: 'text-center',
     },
     {
       headerName: '일시',
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(120),
+      minWidth: attributeColumnWidth(110),
       cellClass: 'text-center',
     },
     {
@@ -165,21 +165,20 @@ const Ltpz090 = () => {
       headerName: '작업구분',
       field: 'field04',
       flex: 1,
-      minWidth: attributeColumnWidth(150),
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center',
     },
     {
       headerName: '심사결과',
       field: 'field05',
       flex: 1,
-      minWidth: attributeColumnWidth(130),
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center',
     },
     {
       headerName: '심사결과 상세',
       field: 'field06',
-      flex: 6,
-      minWidth: attributeColumnWidth(500),
+      flex: 10,
       cellClass: 'text-left',
       autoHeight: true,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -205,7 +204,7 @@ const Ltpz090 = () => {
     {
       headerName: '보기',
       field: 'field07',
-      width: attributeColumnWidth(70),
+      width: attributeColumnWidth(48),
       autoHeight: true,
       cellClass: 'text-center',
       sortable: false,
@@ -219,7 +218,7 @@ const Ltpz090 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

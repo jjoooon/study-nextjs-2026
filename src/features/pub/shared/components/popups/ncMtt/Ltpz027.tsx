@@ -4,9 +4,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,11 +20,9 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { TableCell } from '@uiux/Table';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { TableCell } from '@uiux/Table';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 // Grid2 dummy data
 type DummyDataType = {
@@ -58,6 +58,23 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+type DummyData2Type = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+};
+const DummyData2: DummyData2Type[] = [
+  {
+    id: 1,
+    field01: '김한화',
+    field02: '1990-01-01',
+    field03: '010-1234-5678',
+    field04: '진행중',
+  },
+];
+
 const Ltpz027 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
@@ -65,7 +82,7 @@ const Ltpz027 = () => {
       {
         headerName: '대상',
         flex: 1,
-        width: attributeColumnWidth(70),
+        minWidth: attributeColumnWidth(80),
         field: 'field01',
         cellClass: 'text-center px-0!',
         autoHeight: true,
@@ -73,7 +90,8 @@ const Ltpz027 = () => {
       },
       {
         headerName: '차수',
-        width: attributeColumnWidth(70),
+        flex: 1,
+        minWidth: attributeColumnWidth(40),
         field: 'field02',
         cellClass: 'text-center px-0!',
         autoHeight: true,
@@ -81,7 +99,7 @@ const Ltpz027 = () => {
       {
         headerName: '의뢰일시',
         flex: 2,
-        width: attributeColumnWidth(130),
+        minWidth: attributeColumnWidth(120),
         field: 'field03',
         cellClass: 'text-center px-0!',
         autoHeight: true,
@@ -89,7 +107,7 @@ const Ltpz027 = () => {
       {
         headerName: '완료(취소)일시',
         flex: 2,
-        width: attributeColumnWidth(130),
+        minWidth: attributeColumnWidth(120),
         field: 'field04',
         cellClass: 'text-center px-0!',
         autoHeight: true,
@@ -97,7 +115,7 @@ const Ltpz027 = () => {
       {
         headerName: '진행상태',
         flex: 1,
-        width: attributeColumnWidth(90),
+        minWidth: attributeColumnWidth(60),
         field: 'field05',
         cellClass: 'text-center px-0!',
         autoHeight: true,
@@ -105,6 +123,7 @@ const Ltpz027 = () => {
       {
         headerName: '답변내용',
         flex: 1,
+        minWidth: attributeColumnWidth(60),
         field: 'field06',
         cellClass: 'text-center px-0!',
         autoHeight: true,
@@ -117,7 +136,7 @@ const Ltpz027 = () => {
       },
       {
         headerName: '확인필요',
-        flex: 1,
+        flex: 10,
         field: 'field07',
         cellClass: 'text-center px-0!',
         autoHeight: true,
@@ -129,7 +148,7 @@ const Ltpz027 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg" className="">
+      <DialogContent showCloseButton resizable={true} size="ml" className="">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

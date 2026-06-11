@@ -4,10 +4,6 @@
 'use client';
 
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -21,6 +17,10 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 const Ltpz024 = () => {
   return (
@@ -47,7 +47,7 @@ const Ltpz024 = () => {
                     className="whitespace-nowrap"
                     tdClassName="grid grid-cols-[auto_auto_1fr_auto] gap-1"
                   >
-                    <Input width={120} value={'LA260209313558'} readOnly />
+                    <Input width={'quoteNo'} value={'LA260209313558'} readOnly />
                     {/* 2026-05-26 버튼 비활성화 */}
                     <Button
                       aria-label="검색"
@@ -60,7 +60,7 @@ const Ltpz024 = () => {
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input value={'김한화'} readOnly />
-                    <Input width={120} value={'010-1234-1234'} readOnly />
+                    <Input width={110} value={'010-1234-1234'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -120,7 +120,7 @@ const Ltpz024 = () => {
                       <FormCell title={'고객명'}>
                         <Grid className="grid-cols-[1fr_auto_auto] items-center gap-1 w-full">
                           <Input placeholder="" value="김한화" readOnly />
-                          <Input placeholder="" value="900101-1******" width={120} readOnly />
+                          <Input placeholder="" value="900101-1******" width={114} readOnly />
                           {/* M1. 수정 */}
                           <Button
                             aria-label="검색"

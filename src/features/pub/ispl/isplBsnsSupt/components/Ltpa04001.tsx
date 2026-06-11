@@ -41,7 +41,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 1,
     isCheck: true,
-    field01: 'YYYY-MM-DD HH:MM',
+    field01: '2026-06-01 12:00',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
     field04: '홍길동',
@@ -60,7 +60,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 2,
     isCheck: false,
-    field01: 'YYYY-MM-DD HH:MM',
+    field01: '2026-06-01 12:00',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
     field04: '홍길동동(8090001)',
@@ -79,7 +79,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 3,
     isCheck: false,
-    field01: 'YYYY-MM-DD HH:MM',
+    field01: '2026-06-01 12:00',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
     field04: '홍길동(8090001)',
@@ -98,7 +98,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 4,
     isCheck: false,
-    field01: 'YYYY-MM-DD HH:MM',
+    field01: '2026-06-01 12:00',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
     field04: '홍길동(8090001)',
@@ -117,7 +117,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 5,
     isCheck: false,
-    field01: 'YYYY-MM-DD HH:MM',
+    field01: '2026-06-01 12:00',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
     field04: '홍길동(8090001)',
@@ -136,7 +136,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 6,
     isCheck: false,
-    field01: 'YYYY-MM-DD HH:MM',
+    field01: '2026-06-01 12:00',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
     field04: '홍길동(8090001)',
@@ -163,7 +163,7 @@ const Ltpa04001 = () => {
         {
           headerName: '추천일시',
           field: 'field01',
-          width: attributeColumnWidth(130),
+          width: attributeColumnWidth(110),
           cellClass: 'text-center',
           unSortIcon: true,
         },

@@ -565,6 +565,22 @@
     background-color: #9ca3af;
   } 
  */
+ /* ::-webkit-scrollbar {
+  width: 1.5rem !important; 
+  height: 1.5rem !important; 
+}
+::-webkit-scrollbar-track {
+  background: transparent; 
+  border-radius: 0rem;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius:2rem; 
+  border: 0.4rem solid #ffffff;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8; 
+} */
 
 
   input::placeholder {

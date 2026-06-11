@@ -824,6 +824,7 @@ export default function Ltpa010Section() {
                       maxBlocksInCache={2}
                       datasource={dataSource}
                       animateRows={false}
+                      headerHeight={60}
                     />
                   </div>
                   {/* 그리드 하단: 데이터 더보기(페이징) 컨트롤 */}
