@@ -651,18 +651,23 @@ export const Ltpz063 = () => {
     return Component;
   }, []);
 
+  // value1/value2 탭: 필드명이 체크박스 선택 가능 필드인지 판별하는 타입 가드
   const isSelectableField = (field: string): field is MainSelectableField =>
     field === 'ourInsurance2' || field === 'externalInsurance1' || field === 'externalInsurance2';
 
+  // value3 탭: 필드명이 체크박스 선택 가능 필드인지 판별하는 타입 가드 (externalInsurance3 포함)
   const isSelectableField3 = (field: string): field is ExtraSelectableField =>
     field === 'externalInsurance1' || field === 'externalInsurance2' || field === 'externalInsurance3';
 
+  // 행 타입이 편집 가능 대상 타입인지 확인 (해약환급금, 예정이율, 보험목적, 면책사유)
   const isEditableTargetRow = (fieldName: DummyDataType['type']) => EDITABLE_TARGET_TYPES.has(String(fieldName));
 
+  // ag-Grid 셀 스타일 규칙: 편집 가능 행에 'editable-cell' 클래스 적용
   const externalInsuranceCellClassRules = {
     'editable-cell': ({ data }: { data: DummyDataType | undefined }) => (data ? isEditableTargetRow(data.type) : false),
   };
 
+  // 값을 체크박스의 체크 여부로 변환: null/undefined/빈 문자열 → false, 'true' 문자열 → true, 1 → true
   const isCheckedValue = (value: GridCellValue) => {
     if (value === null || value === undefined || value === '') {
       return false;
