@@ -3,17 +3,17 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { Grid, Grow, Gcol } from '@atoms';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import { Input } from '@uiux/Input';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { PageID } from '@features/PageID';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Input } from '@uiux/Input';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 
 import '@/shared/lib/agGridPub';
 
@@ -336,7 +336,7 @@ export default function Ltpa250Section() {
               >
                 <FormRow>
                   <FormCell title={'주민번호'}>
-                    <Input className="text-[1.3rem]" value={'김한화(900101-1******)'} readOnly variant="info" />
+                    <Input className="text-[1.3rem]" value={'김한화(000000-0******)'} readOnly variant="info" />
                   </FormCell>
                   <FormCell title={'담보건수'}>
                     <Input className="text-[1.3rem]" value={'32건'} readOnly variant="info" />

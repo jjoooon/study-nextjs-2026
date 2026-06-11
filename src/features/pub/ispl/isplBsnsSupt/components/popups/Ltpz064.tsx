@@ -2,6 +2,11 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { EssentialIcon, FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createAddRowHandler,
@@ -9,11 +14,6 @@ import {
   getNextNumericRowId,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { EssentialIcon, FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -25,14 +25,15 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-
-import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
+import '@/shared/lib/agGridPub';
+
+/** 피보험자 명세 데이터 타입 정의 */
 type DummyDataType = {
   id: number;
   isChecked: boolean;
@@ -60,7 +61,7 @@ const DummyData: DummyDataType[] = [
     id: 1,
     isChecked: true,
     field1: '김한화',
-    field2: '900101-1234567',
+    field2: '000000-0******',
     field3: '010',
     field4: '1234',
     field5: '5678',
@@ -78,11 +79,16 @@ const DummyData: DummyDataType[] = [
     field17: 'text',
   },
 ];
+
+/**
+ * Ltpz064: 다수의 피보험자 명세를 관리하고 일괄 입력을 지원하는 팝업 컴포넌트입니다.
+ */
 export const Ltpz064 = () => {
-  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const { attributeColumnWidth } = useDynamicColumnWidths(); // 화면 배율별 컬럼 너비 계산 훅
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
 
+  /** 행 추가 핸들러: 빈 데이터를 가진 신규 행을 하단에 추가 */
   const handleAddRow = createAddRowHandler<DummyDataType, number>(setRowData, {
     idKey: 'id',
     getNextId: getNextNumericRowId,
@@ -111,11 +117,12 @@ export const Ltpz064 = () => {
     gridApiRef: gridApiRef,
   });
 
+  /** 행 삭제 핸들러: 체크박스로 선택된 행들을 삭제 */
   const handleDeleteRow = createDeleteSelectedRowsHandler<DummyDataType>(setRowData, gridApiRef, {
     idKey: 'id',
   });
 
-  // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
+  /** 셀 렌더러: 셀에 값이 없을 때만 드롭다운 화살표 아이콘을 표시 (Select UI 연출) */
   const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
     const value = params.value == null ? '' : String(params.value);
     const hasValue = value.trim().length > 0;
@@ -136,7 +143,7 @@ export const Ltpz064 = () => {
     );
   }, []);
 
-  // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
+  /** Ag-Grid 컬럼 정의 */
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
@@ -144,6 +151,7 @@ export const Ltpz064 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(100),
         children: [
+          // 이름 및 검색 버튼
           {
             headerName: '이름',
             headerComponent: () => (
@@ -167,6 +175,7 @@ export const Ltpz064 = () => {
               </Grid>
             ),
           },
+          // 주민등록번호
           {
             headerComponent: () => (
               <Grow placement="cc" className="w-full">
@@ -181,6 +190,7 @@ export const Ltpz064 = () => {
             cellClass: 'editable-cell text-center',
             sortable: false,
           },
+          // 전화번호 (3개 필드 분할)
           {
             headerName: '전화번호(휴대폰)',
             children: [
@@ -209,6 +219,7 @@ export const Ltpz064 = () => {
           },
         ],
       } as ColDef<DummyDataType>,
+      // 동의 여부
       {
         headerComponent: () => (
           <div className="w-full flex flex-col items-center justify-center leading-[1.1]">
@@ -223,9 +234,11 @@ export const Ltpz064 = () => {
         cellClass: 'editable-cell text-center',
         sortable: false,
       },
+      // 고객 및 설계 기본 정보 그룹
       {
         headerName: '고객 및 설계 기본 정보',
         children: [
+          // 관계 선택
           {
             headerName: '주피와의관계',
             field: 'field7',
@@ -237,6 +250,7 @@ export const Ltpz064 = () => {
             cellEditorParams: { values: ['선택1', '선택2'] },
             cellRenderer: selectCellRenderer,
           },
+          // 연령
           {
             headerName: '연령',
             field: 'field8',
@@ -246,6 +260,7 @@ export const Ltpz064 = () => {
             cellClass: 'editable-cell text-center',
             sortable: false,
           },
+          // 상해급수
           {
             headerName: '상해급수',
             field: 'field9',
@@ -255,6 +270,7 @@ export const Ltpz064 = () => {
             cellClass: 'editable-cell text-center',
             sortable: false,
           },
+          // 직업 검색
           {
             headerName: '직업',
             field: 'field10',
@@ -272,6 +288,7 @@ export const Ltpz064 = () => {
               </Grid>
             ),
           },
+          // 직업명/업종/직무
           {
             headerName: '직업명',
             field: 'field11',
@@ -299,6 +316,7 @@ export const Ltpz064 = () => {
             cellClass: 'editable-cell text-center',
             sortable: false,
           },
+          // 운전형태/이륜차/병력여부 (Select 박스 형태)
           {
             headerName: '운전형태',
             field: 'field14',
@@ -332,6 +350,7 @@ export const Ltpz064 = () => {
             cellEditorParams: { values: ['선택1', '선택2'] },
             cellRenderer: selectCellRenderer,
           },
+          // 알릴사항
           {
             headerName: '알릴사항',
             field: 'field17',
@@ -361,6 +380,7 @@ export const Ltpz064 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
+          {/* 상단: 설계번호 및 피보험자 조회 조건 영역 */}
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable
               variant={'head'}
@@ -404,6 +424,7 @@ export const Ltpz064 = () => {
           </Grow>
           {/* 2026-05-27 구조변경, div, Gcol 추가 */}
           <div className="flex flex-col gap-3">
+            {/* 피보험자 명세 그리드 영역 */}
             <TableFold>
               <TableFoldHead title="피보험자 명세">
                 <Grow>
@@ -461,6 +482,7 @@ export const Ltpz064 = () => {
                 </div>
               </TableFoldBody>
             </TableFold>
+            {/* 수익자 정보 일괄입력 영역 */}
             <TableFold>
               <TableFoldHead title="피보험자 수익자 일괄입력"></TableFoldHead>
               <TableFoldBody>
@@ -514,6 +536,7 @@ export const Ltpz064 = () => {
                 </FormTable>
               </TableFoldBody>
             </TableFold>
+            {/* 주소 및 연락처 일괄입력 영역 */}
             <TableFold>
               <TableFoldHead title="피보험자 주소 및 연락처 일괄입력"></TableFoldHead>
               <TableFoldBody>
@@ -581,6 +604,7 @@ export const Ltpz064 = () => {
                 </FormTable>
               </TableFoldBody>
             </TableFold>
+            {/* 기타 정보 일괄 등록 (직장, 직무 등) */}
             <Gcol className="gap-2">
               <TableFold>
                 <TableFoldHead title="피보험자 주소 및 연락처 일괄입력"></TableFoldHead>

@@ -61,7 +61,7 @@ const Ltpz045 = () => {
                   </FormCell>
                   <FormCell title={'계약자'}>
                     <Input width={84} value={'김한화'} readOnly />
-                    <Input width={114} value={'901212-1234567'} readOnly />
+                    <Input width={114} value={'000000-0******'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -76,7 +76,7 @@ const Ltpz045 = () => {
                     <FormCell title={'영문명'}>Kim Hanhwa</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'주민번호(여권번호)'}>901212-1234567</FormCell>
+                    <FormCell title={'주민번호(여권번호)'}>000000-0******</FormCell>
                     <FormCell title={'국적'}>대한민국</FormCell>
                   </FormRow>
                   <FormRow>
@@ -273,7 +273,7 @@ const Ltpz045 = () => {
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />
                           </Button>
-                          <Input aria-label="주민번호" width={114} value={'900101-1234567'} readOnly />
+                          <Input aria-label="주민번호" width={114} value={'000000-0******'} readOnly />
                           김한화 와의 관계
                           <NativeSelect
                             aria-label="선택"

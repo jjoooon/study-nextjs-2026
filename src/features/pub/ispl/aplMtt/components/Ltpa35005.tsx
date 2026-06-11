@@ -255,7 +255,7 @@ export const Ltpa35005 = () => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <Input aria-label="만기수익자 주민등록번호" width={114} value={'900101-1234567'} readOnly />
+                        <Input aria-label="만기수익자 주민등록번호" width={114} value={'000000-0******'} readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -802,7 +802,7 @@ export const Ltpa35005 = () => {
                           {firstPay === '즉시이체' && (
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -811,13 +811,13 @@ export const Ltpa35005 = () => {
                           {firstPay === '현금' && (
                             <FormCell title="계약자">
                               <Input aria-label="계약자명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                             </FormCell>
                           )}
                           {firstPay === '카드납입' && (
                             <FormCell title="카드주">
                               <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -826,7 +826,7 @@ export const Ltpa35005 = () => {
                           {firstPay === '예약이체' && (
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -836,7 +836,7 @@ export const Ltpa35005 = () => {
                           {morePay === '자동이체' && (
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -845,7 +845,7 @@ export const Ltpa35005 = () => {
                           {morePay === '급여이체' && (
                             <FormCell title="직원명">
                               <Input aria-label="직원명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -854,7 +854,7 @@ export const Ltpa35005 = () => {
                           {morePay === '카드이체' && (
                             <FormCell title="카드주">
                               <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -1061,7 +1061,7 @@ export const Ltpa35005 = () => {
                         </FormCell>
                         <FormCell title="사망외수익자">
                           <Input aria-label="사망외수익자명" width={84} value={'김한화'} readOnly />
-                          <Input aria-label="사망외수익자 주민등록번호" width={114} value={'900101-1234567'} readOnly />
+                          <Input aria-label="사망외수익자 주민등록번호" width={114} value={'000000-0000000'} readOnly />
                           <Button
                             aria-label="사망외수익자 검색"
                             variant={'outlined'}

@@ -3,11 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid'; // 2026-06-02 numberValueFormatter 추가
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid'; // 2026-06-02 numberValueFormatter 추가
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,11 +19,10 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -117,14 +116,14 @@ const Ltpz040 = () => {
       headerName: '상품명',
       field: 'field03',
       spanRows: true,
-      flex: 1.6,
+      flex: 2,
       cellClass: 'flex! items-center! justify-start!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
     {
       headerName: '담보명',
       field: 'field04',
-      flex: 3,
+      flex: 4,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
@@ -225,7 +224,7 @@ const Ltpz040 = () => {
             <TableFoldBody className="grid-rows-[auto_1fr] gap-2">
               <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'피보험자'}>김한화(901231-1******)</FormCell>
+                  <FormCell title={'피보험자'}>김한화(000000-0******)</FormCell>
                 </FormRow>
               </FormTable>
               <Gcol className="w-full" gap={4}>

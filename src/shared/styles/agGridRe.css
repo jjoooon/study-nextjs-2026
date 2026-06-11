@@ -1025,3 +1025,12 @@
 .cell-less {
   background-color: var(--color-information-15) !important;
 }
+
+
+.ag-cell-value .ag-cell-expandable .ag-group-value{
+  padding-right: 0.1rem;
+}
+
+.ag-cell-value .ag-row-group-leaf-indent .ag-group-value{
+  padding-right: 0.1rem;
+}

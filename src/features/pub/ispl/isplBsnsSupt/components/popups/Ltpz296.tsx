@@ -2,6 +2,11 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Grid, Grow, Typo } from '@atoms';
+import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createAddRowHandler,
@@ -9,11 +14,6 @@ import {
   getNextNumericRowId,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -25,13 +25,13 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-
-import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+
+import '@/shared/lib/agGridPub';
 
 type DummyDataTypeA = {
   id: number;
@@ -98,7 +98,7 @@ const DummyDataB: DummyDataTypeB[] = [
     isChecked: true,
     field1: 'Text',
     field2: '김한화',
-    field3: '900101-1234567',
+    field3: '000000-0******',
     field4: '010',
     field5: '1234',
     field6: '5678',

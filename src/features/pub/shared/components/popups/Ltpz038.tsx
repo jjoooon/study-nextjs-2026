@@ -4,6 +4,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import Link from 'next/link';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Gcol, Grow, Typo } from '@atoms';
+import { ResetIcon, SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
@@ -11,12 +17,6 @@ import {
   useAgGridInfiniteAppend,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableMore } from '@common/TablePagination';
-import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -30,15 +30,14 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableMore } from '@common/TablePagination';
 
 // dummy data
 type DummyDataType = {
   id: number;
-  field01: string | number;
   field02: string | number;
   field03: string | number;
   field04: string | number;
@@ -51,7 +50,6 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '',
     field02: '한화보험한',
     field03: '한화보험한화보험한화보험한화보험한화보험한화보험 한화보험한화보험한화보험한화보험한화보험한화보험',
     field04: 'LA123456789012',
@@ -59,11 +57,10 @@ const DummyData: DummyDataType[] = [
     field06: '',
     field07: 1000,
     field08: '2026-03-01',
-    field09: '',
+    field09: '진행중',
   },
   {
     id: 2,
-    field01: '',
     field02: '',
     field03: '',
     field04: 'LA123456789012',
@@ -75,7 +72,6 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
-    field01: '',
     field02: '',
     field03: '',
     field04: 'LA26234242342',
@@ -87,7 +83,6 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
-    field01: '',
     field02: '',
     field03: '',
     field04: 'LA26234242342',
@@ -99,7 +94,6 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 5,
-    field01: '',
     field02: '',
     field03: '',
     field04: 'LA26234242342',
@@ -111,7 +105,6 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 6,
-    field01: '',
     field02: '장기보험',
     field03: '무배당 장기보장플랜',
     field04: 'LA777700000001',
@@ -123,7 +116,6 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 7,
-    field01: '',
     field02: '자동차보험',
     field03: '스마트 자동차보험',
     field04: 'LA777700000002',
@@ -135,7 +127,6 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 8,
-    field01: '',
     field02: '화재특종',
     field03: '종합 화재보장 특약',
     field04: 'LA777700000003',
@@ -147,7 +138,6 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 9,
-    field01: '',
     field02: '해상보험',
     field03: '해상 적하보험 기본형',
     field04: 'LA777700000004',
@@ -159,7 +149,6 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 10,
-    field01: '',
     field02: '퇴직연금',
     field03: '퇴직연금 안정형 플랜',
     field04: 'LA777700000005',
@@ -171,7 +160,6 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 11,
-    field01: '',
     field02: '단체증권',
     field03: '단체 상해보장형',
     field04: 'LA777700000006',
@@ -183,7 +171,6 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 12,
-    field01: '',
     field02: '장기보험',
     field03: '장기 건강보장 특약',
     field04: 'LA777700000007',
@@ -208,13 +195,6 @@ const Ltpz038 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(40),
       field: 'id',
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '보종군',
-      flex: 1,
-      minWidth: attributeColumnWidth(90),
-      field: 'field02',
       cellClass: 'text-center',
     },
     {
@@ -327,23 +307,6 @@ const Ltpz038 = () => {
           <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
             <FormTable variant={'none'} lineTop={false} cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}>
               <FormRow>
-                <FormCell title={'보종군'}>
-                  <NativeSelect aria-label="보종군 선택" required>
-                    {[
-                      { value: 'selection', label: '전체' },
-                      { value: 'selection2', label: '장기보험' },
-                      { value: 'selection3', label: '자동차보험' },
-                      { value: 'selection4', label: '화재특종' },
-                      { value: 'selection5', label: '해상보험' },
-                      { value: 'selection6', label: '퇴직연금' },
-                      { value: 'selection7', label: '단체증권' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.value} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                </FormCell>
                 {/* 2026-05-27 설계번호, 차량번호 선택시 input만 노출로 수정 */}
                 <FormCell
                   title={'조회구분'}

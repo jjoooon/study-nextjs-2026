@@ -3,7 +3,16 @@
  */
 'use client';
 
+import { useEffect } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { SearchIcon, AddIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
@@ -11,18 +20,8 @@ import { KeyValueItem } from '@common/KeyValueList';
 import { TabPager } from '@common/TabPager';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { SearchIcon, AddIcon } from '@icons';
 import { LayoutMain, LayoutScrollWrap, LayoutMainFoot, LayoutMainBody, LayoutScrollItem } from '@layout/BaseLayout';
 import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
-
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { useEffect } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 const DUMMY_DATA = {
   view1: [
@@ -242,7 +241,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                   <Input
                                     aria-label="주민등록번호 마스킹"
                                     width={114}
-                                    value={'900101-2234567'}
+                                    value={'000000-0******'}
                                     readOnly
                                   />
                                   <Button
@@ -531,7 +530,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                     <Input
                                       aria-label="주민등록번호 마스킹"
                                       width={114}
-                                      value={'200101-0000000'}
+                                      value={'000000-0******'}
                                       readOnly
                                     />
                                     <Button
@@ -819,7 +818,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                     <Input
                                       aria-label="주민등록번호 마스킹"
                                       width={114}
-                                      value={'900101-1234567'}
+                                      value={'000000-0******'}
                                       readOnly
                                     />
                                     <Button
@@ -989,7 +988,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                                     <Input
                                       aria-label="주민등록번호 마스킹"
                                       width={114}
-                                      value={'900101-1234567'}
+                                      value={'000000-0******'}
                                       readOnly
                                     />
                                     <Button
@@ -1594,7 +1593,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                       <FormRow>
                         <FormCell title={'계약자'} titleVariant="section">
                           <Input aria-label="피보험자명" width={84} value={'김환화'} readOnly />
-                          <Input aria-label="주민등록번호 마스킹" width={114} value={'900101-1234567'} readOnly />
+                          <Input aria-label="주민등록번호 마스킹" width={114} value={'000000-0******'} readOnly />
                           <Button
                             aria-label="피보험자 검색"
                             variant={'outlined'}

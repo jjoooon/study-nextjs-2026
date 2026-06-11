@@ -159,7 +159,7 @@ const Ltpz039 = () => {
             시간
           </Grow>
         ),
-        flex: 1,
+        width: attributeColumnWidth(50),
         field: 'field01',
         cellClass: 'text-center',
       },

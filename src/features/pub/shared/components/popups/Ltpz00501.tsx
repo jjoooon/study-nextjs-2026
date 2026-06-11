@@ -5,28 +5,29 @@
 
 import '@/shared/lib/agGridPub';
 
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TooltipQ } from '@common/TooltipQ';
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
-// 공통
+/** 인수 지침 위배 내역 및 청약 제한 사항 데이터 타입 */
 type DummyDataType = {
   id: number;
-  field01: string | number;
-  field02: string | number;
-  field03: string | number;
+  field01: string | number; // 대상 (설계/피보험자명 등)
+  field02: string | number; // 구분 (인수제한/인수기준 등)
+  field03: string | number; // 상세 위배 내용
 };
-// 공통
+
+/** 하단 '필수지침' 그리드에 표시될 임시 데이터 */
 const DummyData: DummyDataType[] = [
   {
     id: 1,
@@ -206,8 +207,15 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+/**
+ * Ltpz00501: '꼭 해야할 일' 팝업 내의 '공통' 탭 컨텐츠입니다.
+ * 유사계약 확인, 고객확인(CDD/EDD), 청약 완료 불가 사유 등을 리스트업하여 보여줍니다.
+ */
 const Ltpz00501 = () => {
+  /** 화면 해상도에 따른 동적 컬럼 너비 계산 */
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  /** 하단 필수지침 그리드 컬럼 정의 */
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '설계',
@@ -224,6 +232,7 @@ const Ltpz00501 = () => {
       minWidth: attributeColumnWidth(80),
       spanRows: true,
       cellClass: 'flex! items-center! justify-center!',
+      // 구분값에 따라 텍스트 색상을 다르게 표시
       cellStyle: ({ value }) => {
         if (value === '인수기준' || value === '인수금지') {
           return { color: '#E43939' };
@@ -247,13 +256,12 @@ const Ltpz00501 = () => {
     },
   ];
 
-  // 공통
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    // M2. 디자인 변경으로 수정
     <Gcol className="w-full" placement="ss" gap={3}>
       <Gcol gap={3} placement="ss">
+        {/* 1. 청약완료 전 필수 확인사항 영역 */}
         <Gcol placement="ss">
           <Typo tag={'strong'} variant={'body-lg'}>
             청약완료 전 필수 확인사항
@@ -366,6 +374,8 @@ const Ltpz00501 = () => {
             </FormRow>
           </FormTable>
         </Gcol>
+
+        {/* 2. 청약완료 불가사항 영역: 반드시 해소해야 청약 진행 가능 */}
         <Gcol placement="ss">
           <Typo tag={'strong'} variant={'body-lg'}>
             청약완료 불가사항
@@ -452,6 +462,8 @@ const Ltpz00501 = () => {
             </FormRow>
           </FormTable>
         </Gcol>
+
+        {/* 3. 단순 참고사항 영역 */}
         <Gcol placement="ss">
           <Typo tag={'strong'} variant={'body-lg'}>
             참고사항
@@ -463,6 +475,8 @@ const Ltpz00501 = () => {
           </FormTable>
         </Gcol>
       </Gcol>
+
+      {/* 4. 하단 필수지침 그리드 영역: Ag-Grid 활용 */}
       <Gcol>
         <TableFold>
           <TableFoldHead title="필수지침"></TableFoldHead>
