@@ -3,9 +3,8 @@
  */
 'use client';
 
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { EssentialIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -20,7 +19,8 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 const Ltpz047 = () => {
   const [form, setFormField] = useFormFields({
@@ -61,7 +61,7 @@ const Ltpz047 = () => {
             </FormTable>
           </Grow>
           <Grow className="w-full">
-            <FormTable caption="화재배상" cols={['w-[8rem]', 'w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
+            <FormTable caption="화재배상" cols={['w-[7.4rem]', 'w-[10rem]', 'w-auto', 'w-[10.6rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'업주성명(법인명)'} titleColSpan={2}>
                   <Input size="lg" value="" variant="default" width="18rem" readOnly />

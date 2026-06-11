@@ -3,12 +3,13 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo, Grid } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { ResetIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -22,10 +23,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -49,10 +49,10 @@ const DummyData: DummyDataType[] = [
     id: 1,
     isCheck: false,
     field01: 'text',
-    field02: 'text',
-    field03: 'YYYY-MM-DD',
-    field04: 'YYYY-MM-DD',
-    field05: 'YYYY-MM-DD',
+    field02: 'ls12345678901234',
+    field03: '2026-12-31',
+    field04: '2026-12-31',
+    field05: '2026-12-31',
     field06: 'text',
     field07: 'text',
     field08: 'text',
@@ -65,9 +65,9 @@ const DummyData: DummyDataType[] = [
     isCheck: false,
     field01: 'text',
     field02: 'text',
-    field03: 'YYYY-MM-DD',
-    field04: 'YYYY-MM-DD',
-    field05: 'YYYY-MM-DD',
+    field03: '2026-12-31',
+    field04: '2026-12-31',
+    field05: '2026-12-31',
     field06: 'text',
     field07: 'text',
     field08: 'text',
@@ -84,8 +84,7 @@ const Ltpz065 = () => {
       {
         headerName: '회사명',
         field: 'field01',
-        flex: 1,
-        width: attributeColumnWidth(150),
+        flex: 10,
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -97,7 +96,7 @@ const Ltpz065 = () => {
         headerName: '증권번호',
         field: 'field02',
         flex: 1,
-        width: attributeColumnWidth(120),
+        minWidth: attributeColumnWidth(110),
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -108,7 +107,7 @@ const Ltpz065 = () => {
         headerName: '보험시기',
         field: 'field03',
         flex: 1,
-        width: attributeColumnWidth(120),
+        minWidth: attributeColumnWidth(70),
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -119,7 +118,7 @@ const Ltpz065 = () => {
         headerName: '보험종기',
         field: 'field04',
         flex: 1,
-        width: attributeColumnWidth(120),
+        minWidth: attributeColumnWidth(70),
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -130,7 +129,7 @@ const Ltpz065 = () => {
         headerName: '담보상태 변경일자',
         field: 'field05',
         flex: 1,
-        width: attributeColumnWidth(120),
+        minWidth: attributeColumnWidth(100),
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -141,7 +140,7 @@ const Ltpz065 = () => {
         headerName: '담보상태',
         field: 'field06',
         flex: 1,
-        width: attributeColumnWidth(70),
+        minWidth: attributeColumnWidth(60),
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -152,7 +151,7 @@ const Ltpz065 = () => {
         headerName: '보장내용코드',
         field: 'field07',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(90),
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -163,7 +162,7 @@ const Ltpz065 = () => {
         headerName: '담보특성코드',
         field: 'field08',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(90),
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -173,8 +172,7 @@ const Ltpz065 = () => {
       {
         headerName: '담보명',
         field: 'field09',
-        flex: 1,
-        width: attributeColumnWidth(200),
+        flex: 20,
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -186,7 +184,7 @@ const Ltpz065 = () => {
         headerName: '담보코드',
         field: 'field10',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(90),
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -197,7 +195,7 @@ const Ltpz065 = () => {
         headerName: '가입액(원)',
         field: 'field11',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
         sortable: false,
         filter: false,
         suppressMovable: true,
@@ -274,7 +272,7 @@ const Ltpz065 = () => {
                 <Grow className="w-full">
                   <FormTable
                     caption="단체실손의료비 전환대상 테이블"
-                    cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'flex-1']}
+                    cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
                   >
                     {/* 2026-05-27 variant 추가 */}
                     <FormRow>

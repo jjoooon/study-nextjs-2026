@@ -3,11 +3,14 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback } from 'react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grow, Typo, Grid, Gcol } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,12 +23,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback } from 'react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -123,15 +123,14 @@ const Ltpz066 = () => {
         headerName: '담보코드',
         field: 'field01',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(70),
         resizable: true,
         cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
       },
       {
         headerName: '담보명',
         field: 'field02',
-        flex: 3,
-        width: attributeColumnWidth(200),
+        flex: 10,
         resizable: true,
         cellClass: `text-left`,
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
@@ -140,6 +139,7 @@ const Ltpz066 = () => {
         headerName: '가입금액',
         field: 'field03',
         flex: 1,
+        minWidth: attributeColumnWidth(100),
         resizable: true,
         cellClass: `text-center`,
         editable: true,
@@ -157,14 +157,14 @@ const Ltpz066 = () => {
         headerName: '담보코드',
         field: 'field01',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(70),
         resizable: true,
         cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
       },
       {
         headerName: '담보명',
         field: 'field02',
-        flex: 3,
+        flex: 10,
         resizable: true,
         cellClass: `text-left`,
         tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field02' }),
@@ -173,6 +173,7 @@ const Ltpz066 = () => {
         headerName: '가입금액(만원)',
         field: 'field03',
         flex: 1,
+        minWidth: attributeColumnWidth(85),
         resizable: true,
         cellClass: `text-right`,
         valueParser: (params) => Number(params.newValue) || 0,
