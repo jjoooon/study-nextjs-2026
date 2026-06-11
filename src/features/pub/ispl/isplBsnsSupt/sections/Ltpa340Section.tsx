@@ -13,7 +13,6 @@ import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { ResetIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
@@ -50,7 +49,7 @@ const DummyData: DummyDataType[] = [
     field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
     field04: '문서서명',
     field05: 'TM',
-    field06: 'YYYY-MM-DD',
+    field06: '2026-06-01',
     field07: '수납완료',
     field08: '김한화화(4404732)',
     field09: '미발행',
@@ -62,7 +61,7 @@ const DummyData: DummyDataType[] = [
     field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
     field04: '문서서명',
     field05: 'TM',
-    field06: 'YYYY-MM-DD',
+    field06: '2026-06-01',
     field07: 'TEXT',
     field08: '김한화(4404732)',
     field09: 'TEXT',
@@ -74,7 +73,7 @@ const DummyData: DummyDataType[] = [
     field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
     field04: '문서서명',
     field05: 'TM',
-    field06: 'YYYY-MM-DD',
+    field06: '2026-06-01',
     field07: 'TEXT',
     field08: '김한화(4404732)',
     field09: 'TEXT',
@@ -86,7 +85,7 @@ const DummyData: DummyDataType[] = [
     field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
     field04: '문서서명',
     field05: 'TM',
-    field06: 'YYYY-MM-DD',
+    field06: '2026-06-01',
     field07: 'TEXT',
     field08: '김한화(4404732)',
     field09: 'TEXT',

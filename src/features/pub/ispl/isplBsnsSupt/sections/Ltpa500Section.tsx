@@ -359,10 +359,10 @@ export default function Ltpa500Section() {
                       onChange={(e) => setFormField('type02', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type02-1', label: '전체' },
-                        { value: 'selection1', id: 'type02-2', label: '유지율부실예상' },
-                        { value: 'selection1', id: 'type02-2', label: '유의승환' },
-                        { value: 'selection1', id: 'type02-2', label: '(전속)/영업관리자승인계약' },
+                        { value: '전체', id: 'type02-1', label: '전체' },
+                        { value: '유지율부실예상', id: 'type02-2', label: '유지율부실예상' },
+                        { value: '유의승환', id: 'type02-3', label: '유의승환' },
+                        { value: '(전속)/영업관리자승인계약', id: 'type02-4', label: '(전속)/영업관리자승인계약' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
@@ -373,15 +373,15 @@ export default function Ltpa500Section() {
                   <FormCell title={'승인여부'}>
                     <NativeSelect
                       aria-label="승인여부 선택"
-                      width={110}
+                      width={80}
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type03-1', label: '전체' },
-                        { value: 'selection1', id: 'type03-2', label: '승인' },
-                        { value: 'selection2', id: 'type03-2', label: '거절' },
-                        { value: 'selection3', id: 'type03-2', label: '미결재' },
+                        { value: '전체', id: 'type03-1', label: '전체' },
+                        { value: '승인', id: 'type03-2', label: '승인' },
+                        { value: '거절', id: 'type03-3', label: '거절' },
+                        { value: '미결재', id: 'type03-4', label: '미결재' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
