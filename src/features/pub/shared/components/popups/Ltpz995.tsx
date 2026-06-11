@@ -9,6 +9,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { useRef, useState } from 'react';
 import type { FilePond as FilePondInstance } from 'react-filepond';
 import { FilePond, registerPlugin } from 'react-filepond';
+import { publicConfig } from '@/shared/config/env';
 import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/shared/constants/mimeTypes';
 import { Ltpz995Result, UploadFileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
@@ -80,9 +81,6 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
       pondRef.current!.addFile(f.edmsId, { type: 'limbo' });
     });
   };
-
-  // FileUpload에 실제 표시할 파일 목록 (선택완료 시점)
-  // const [filesForUpload, setFilesForUpload] = useState<{ name: string; key: string }[]>([]);
 
   const handleBeforeAddFile = (item: FilePondFile) => {
     // 파일명 확인 (임시 파일 차단 같은 커스텀 로직만 처리)
@@ -172,27 +170,6 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
     });
   };
 
-  // const handleUpload = async () => {
-  //   // FileUpload에 파일 목록 반영
-  //   setFilesForUpload(pondFiles.map((file) => ({ name: file.filename, key: file.id })));
-  //   // 기존 resolve 로직 유지 (필요시 수정)
-  //   const filesWithSource = pondFiles.map((file) => ({
-  //     id: file.id,
-  //     filename: file.filename,
-  //     fileSize: file.fileSize,
-  //     fileExtension: file.fileExtension,
-  //     fileType: file.fileType,
-  //   }));
-  //   logger.info('선택된 파일 목록:', filesWithSource);
-
-  //   resolve({
-  //     action: 'select',
-  //     files: [],
-  //   });
-  //   // 업로드 후 창 닫기
-  //   onOpenChange?.(false);
-  // };
-
   return (
     <Dialog open onOpenChange={handleClose}>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -233,10 +210,9 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
             // stylePanelLayout="compact"
             dropValidation
             instantUpload={false}
-            // TODO: @YunJunmo 내부 머지 시 수정
             server={{
               process: {
-                url: 'http://localhost:8080/api/ltp/file/uploadFiles',
+                url: `${publicConfig.apiUrl}/ltp/file/uploadFiles`,
                 method: 'POST',
               },
             }}
