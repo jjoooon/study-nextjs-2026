@@ -3,24 +3,24 @@
  */
 'use client';
 
-import { useAgGridInfiniteAppend, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grid, Grow, Typo } from '@atoms';
+import { SearchIcon, ResetIcon } from '@icons';
+import { useAgGridInfiniteAppend, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon } from '@icons';
 import { LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { useFormFields } from '@hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -582,7 +582,7 @@ export default function Ltpa330Section() {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="조직구분명 입력" width={114} value={'901212-1234567'} readOnly />
+                    <Input aria-label="조직구분명 입력" width={114} value={'000000-0000000'} readOnly />
                   </FormCell>
                   <FormCell title={'문서발급일자'}>
                     <DatePickerInput

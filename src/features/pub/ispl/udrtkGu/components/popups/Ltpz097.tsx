@@ -4,12 +4,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { FileExportIcon, ResetIcon, SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -23,9 +23,9 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -251,8 +251,8 @@ const Ltpz097 = () => {
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type03-1', label: '김한화(890823-1******)' },
-                        { value: 'selection2', id: 'type03-2', label: '박한화(890823-1******)' },
+                        { value: 'selection', id: 'type03-1', label: '김한화(000000-1******)' },
+                        { value: 'selection2', id: 'type03-2', label: '박한화(000000-1******)' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
