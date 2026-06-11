@@ -559,7 +559,7 @@ export default function Ltpa010Section() {
   // 무한 스크롤(더보기) 기능을 위한 설정
   const pageSize = 10;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: DummyData,
+    allRows: 20,
     pageSize,
   });
 

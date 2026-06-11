@@ -1624,7 +1624,7 @@ export function useAgGridPagination<TData>(gridRef: React.RefObject<AgGridReact<
 
 interface UseAgGridInfiniteAppendParams<TData> {
   /** 전체 원본 행(서버 응답 또는 상위 상태) */
-  allRows: TData[];
+  allRows: TData[] | number;
   /** 한 번에 확장할 단위 건수 */
   pageSize: number;
   /** 초기 노출 건수(미지정 시 pageSize) */
@@ -1650,7 +1650,7 @@ export function useAgGridInfiniteAppend<TData>({
   pageSize,
   initialLoadedCount,
 }: UseAgGridInfiniteAppendParams<TData>) {
-  const totalCount = allRows.length;
+  const totalCount = typeof allRows === 'number' ? allRows : allRows.length;
   const safeInitial = Math.max(0, Math.min(initialLoadedCount ?? pageSize, totalCount));
 
   const [loadedCount, setLoadedCount] = React.useState<number>(safeInitial);
@@ -1717,7 +1717,7 @@ export function useAgGridInfiniteAppend<TData>({
     return {
       getRows: (params: IGetRowsParams) => {
         // 정렬 적용 후 슬라이싱
-        const sortedRows = getSortedRows(allRows);
+        const sortedRows = Array.isArray(allRows) ? getSortedRows(allRows) : [];
         const safeEnd = Math.min(params.endRow, loadedCount);
         const rowsThisBlock = sortedRows.slice(params.startRow, safeEnd);
         const lastRow = loadedCount >= totalCount ? totalCount : loadedCount;
