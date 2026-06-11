@@ -5,8 +5,11 @@
  * 공통 파일업로드 아이템
  */
 export interface UploadFileItem {
-  edmsId: string;
-  storedFilename: string;
+  originalFilename: string; // 원본파일명
+  fileSize: number; // 파일사이즈
+  extension: string; // 파일확장자
+  edmsId: string; // 저장파일명
+  storedFilename: string; // EDMSID
 }
 
 /**

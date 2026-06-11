@@ -152,10 +152,10 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
       const currentFiles = pondRef.current?.getFiles() ?? [];
       resolve({
         action: 'select',
-        files: currentFiles.map((f) => ({
-          edmsId: f.serverId ?? f.id,
-          storedFilename: f.filename,
-        })),
+        files: currentFiles.map((f) => {
+          const response = JSON.parse(f.serverId);
+          return response.payload.payload[0] as UploadFileItem;
+        }),
       });
     } catch (error) {
       logger.error('파일 업로드 오류:', error);
