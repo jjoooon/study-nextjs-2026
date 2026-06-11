@@ -169,21 +169,24 @@ const Ltpz011 = () => {
       flex: 3,
       minWidth: attributeColumnWidth(120),
       tooltipValueGetter: createTooltipValueGetter<ComparisonRow>({ field: 'coverage' }),
-      cellClass: (params) => (params.data?.isSumRow ? 'text-left font-bold' : 'text-left'),
+      cellClass: (params) => (params.data?.isSumRow ? 'text-left font-bold' : 'text-left'), // 합계 행일 경우 폰트를 굵게 표시
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) => (params.data?.isSumRow ? '합계' : params.value),
     },
     {
       headerName: '보험료(원)',
       field: 'premium',
-      flex: 1,
+      flex: 1, 
       minWidth: attributeColumnWidth(80),
-      cellClass: 'text-right',
+      cellClass: 'text-right', 
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
+        // 숫자에 천 단위 콤마(,)를 찍어서 보기 좋게 표시
         params.data?.isSumRow ? Number(params.value ?? 0).toLocaleString() : Number(params.value ?? 0).toLocaleString(),
     },
   ];
 
   const rowData2 = comparisonRows;
+
+  // 테이블 하단에 고정될 '합계' 행 데이터 계산
   const sumRow2 = React.useMemo<ComparisonRow[]>(
     () => [
       {
@@ -193,8 +196,8 @@ const Ltpz011 = () => {
         term1: '',
         term2: '',
         coverage: '합계',
-        premium: rowData2.reduce((sum, row) => sum + row.premium, 0),
-        isSumRow: true,
+        premium: rowData2.reduce((sum, row) => sum + row.premium, 0), // 리스트에 있는 모든 보험료(premium)를 하나씩 더해서 총합을 구함
+        isSumRow: true, // 이 행이 합계 전용 행임을 알려주는 구분값
       },
     ],
     [rowData2]
