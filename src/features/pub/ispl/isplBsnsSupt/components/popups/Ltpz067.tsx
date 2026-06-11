@@ -3,11 +3,12 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo, Grid, Gcol } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,10 +21,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -152,7 +152,7 @@ const Ltpz067 = () => {
         headerName: '납입회차',
         field: 'field01',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(60),
         autoHeight: true,
         cellClass: 'text-center',
       },
@@ -160,7 +160,7 @@ const Ltpz067 = () => {
         headerName: '보장보험료',
         field: 'field02',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
         autoHeight: true,
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
@@ -169,7 +169,7 @@ const Ltpz067 = () => {
         headerName: '적립보험료',
         field: 'field03',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
         autoHeight: true,
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
@@ -178,7 +178,7 @@ const Ltpz067 = () => {
         headerName: '합계보험료',
         field: 'field04',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
         autoHeight: true,
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
@@ -187,7 +187,7 @@ const Ltpz067 = () => {
         headerName: '납입보험료',
         field: 'field05',
         flex: 1,
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
         autoHeight: true,
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter,
@@ -195,7 +195,7 @@ const Ltpz067 = () => {
       {
         headerName: '상세',
         field: 'field06',
-        flex: 1,
+        flex: 10,
         autoHeight: true,
         wrapText: true,
         cellClass: '!leading-[1.4] !py-1',
@@ -209,14 +209,13 @@ const Ltpz067 = () => {
       {
         headerName: '할인명',
         field: 'field01',
-        flex: 1,
         width: attributeColumnWidth(200),
         autoHeight: true,
       },
       {
         headerName: '할인상세',
         field: 'field02',
-        flex: 2,
+        flex: 10,
         autoHeight: true,
         wrapText: true,
         cellClass: '!leading-[1.4] !py-1 !whitespace-pre-line',
@@ -226,7 +225,7 @@ const Ltpz067 = () => {
   );
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -291,8 +290,8 @@ const Ltpz067 = () => {
                     rowData={DummyData2}
                     columnDefs={columnDefs2}
                     defaultColDef={{
-                      sortable: false,
-                      resizable: false,
+                      sortable: true,
+                      resizable: true,
                     }}
                     animateRows={false}
                   />
