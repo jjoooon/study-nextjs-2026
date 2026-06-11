@@ -3,13 +3,12 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
+import type { ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo, Grid } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TablePagination } from '@common/TablePagination';
 import { QuestionMark, ResetIcon, SearchIcon, FileExportIcon } from '@icons';
+import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -26,9 +25,10 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Table, TableBody, TableHead, TableHeader, TableCell, TableRow } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, GridReadyEvent, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TablePagination } from '@common/TablePagination';
 
 import '@/shared/lib/agGridPub';
 
@@ -58,7 +58,7 @@ const DummyData: DummyDataType[] = [
     isCheck: false,
     field01: '안형민',
     field02: '1234567',
-    field03: '900101',
+    field03: '000000',
     field04: '김한화',
     field05: '106289225',
     field06: '스캔(개인)',
@@ -77,7 +77,7 @@ const DummyData: DummyDataType[] = [
     isCheck: false,
     field01: '에이플러스',
     field02: '3484604',
-    field03: '900101',
+    field03: '000000',
     field04: '김한화',
     field05: '106289225',
     field06: '',
@@ -96,7 +96,7 @@ const DummyData: DummyDataType[] = [
     isCheck: false,
     field01: '안형민',
     field02: '1234567',
-    field03: '900101',
+    field03: '000000',
     field04: '',
     field05: '고객찾기',
     field06: '넷팩스(개인)',
@@ -115,7 +115,7 @@ const DummyData: DummyDataType[] = [
     isCheck: false,
     field01: '안형민',
     field02: '1234567',
-    field03: '900101',
+    field03: '000000',
     field04: '',
     field05: '고객찾기',
     field06: '휴대폰(LMS)',
@@ -153,7 +153,7 @@ const DummyData: DummyDataType[] = [
     isCheck: false,
     field01: '안형민',
     field02: '1234567',
-    field03: '900101',
+    field03: '000000',
     field04: '김한화',
     field05: '123456789',
     field06: '카카오인증',
@@ -172,7 +172,7 @@ const DummyData: DummyDataType[] = [
     isCheck: false,
     field01: '안형민',
     field02: '1234567',
-    field03: '900101',
+    field03: '000000',
     field04: '김한화',
     field05: '123456789',
     field06: '카카오인증',

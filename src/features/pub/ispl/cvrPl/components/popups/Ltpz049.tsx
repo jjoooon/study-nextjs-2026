@@ -3,7 +3,6 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import type { ColDef, ColGroupDef, ColSpanParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -11,6 +10,7 @@ import * as React from 'react';
 import '@/shared/lib/agGridPub';
 import { useMemo } from 'react';
 import { Grow, Typo, Gcol } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -187,7 +187,7 @@ const Ltpz049 = () => {
                   <Input value={'LA123123123123'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'피보험자'}>
-                  <Input value={'김한화(901212-1111111)'} readOnly variant="info" />
+                  <Input value={'김한화(000000-1******)'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>

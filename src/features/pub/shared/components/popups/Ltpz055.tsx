@@ -103,7 +103,7 @@ const Ltpz055 = () => {
                       errorPs="bl"
                       onChange={() => {}}
                       size="lg"
-                      value={'010-****-1234'}
+                      value={'010-****-0000'}
                       variant="default"
                       width="full"
                       readOnly
