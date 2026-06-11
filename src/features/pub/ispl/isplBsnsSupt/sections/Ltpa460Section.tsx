@@ -165,6 +165,7 @@ export default function Ltpa460Section() {
   const [coverageName, setCoverageName] = useState('');
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
+  // KEY 컬럼 공통 헤더: 제목 + 상품명 검색 입력 UI
   const productNameHeader = useCallback(
     ({ displayName }: { displayName: string }) => {
       return (
@@ -193,6 +194,7 @@ export default function Ltpa460Section() {
     [coverageName]
   );
 
+  // KEY 컬럼 공통 셀 렌더러: 긴 텍스트는 한 줄 말줄임으로 표시
   const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
     return <p className="truncate w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
   }, []);
@@ -247,6 +249,7 @@ export default function Ltpa460Section() {
         label: 'KEY1',
         field: 'field05',
       }),
+      // KEY1~KEY7 컬럼은 동일한 헤더/셀 렌더러 패턴을 재사용
       headerComponent: productNameHeader,
       cellRenderer: titleRenderer,
     },

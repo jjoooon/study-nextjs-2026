@@ -456,6 +456,7 @@ export default function Ltpa680Section() {
         if (!params.data) return null;
         const { field02 } = params.data;
         const text = String(field02);
+        // 검색어와 일치하는 부분만 분리해서 하이라이트 렌더링
         const parts = text.split(new RegExp(`(${searchWord})`, 'g'));
         return (
           <div className="truncate-no cursor-pointer">
@@ -945,6 +946,7 @@ export default function Ltpa680Section() {
     { label: 'Mobile용', value: 'tab3' },
   ];
 
+  // 탭 상태 관리: 선택값(active)에 따라 하단 컨텐츠 분기 렌더링
   const { tabs, active, setActive } = useTabs(DATA_TABS);
 
   return (
@@ -1255,6 +1257,7 @@ export default function Ltpa680Section() {
                               </TableFoldHead>
                               <TableFoldBody>
                                 {guidelineType === '일반고지형' && (
+                                  // 일반고지형 선택 시 편집 가능한 심사가이드라인 그리드 표시
                                   <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData5.length}>
                                     <AgGridReact<DummyDataType5>
                                       getRowId={(params) => String(params.data.id)}
@@ -1274,6 +1277,7 @@ export default function Ltpa680Section() {
                                   </div>
                                 )}
                                 {guidelineType === '간편고지형' && (
+                                  // 간편고지형 선택 시 전용 가이드라인 그리드로 전환
                                   <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData6.length}>
                                     <AgGridReact<DummyDataType6>
                                       getRowId={(params) => String(params.data.id)}
