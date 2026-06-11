@@ -49,7 +49,7 @@ const Ltpz037 = () => {
               질병정보는 민감정보로서 <b>알릴사항의 목적으로만 활용</b>바랍니다.<br></br>이외의 용도로 활용 또는{' '}
               <b>외부 유출시 법적처벌</b>을 받습니다.
             </Typo>
-            <Grid className="w-full grid-cols-[12rem_auto_1fr_12rem] items-center gap-1 px-5 py-4 bg-[var(--color-gray-5)] rounded-[0.6rem]">
+            <Grid className="w-full grid-cols-[8rem_2.8rem_8rem_11rem] items-center gap-1 px-5 py-4 bg-[var(--color-gray-5)] rounded-[0.6rem]">
               <Input value={'1234567'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                 <SearchIcon color={'var(--color-primary-50)'} />
