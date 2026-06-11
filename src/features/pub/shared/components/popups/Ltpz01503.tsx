@@ -3,19 +3,19 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createAddRowHandler, createDeleteSelectedRowsHandler } from '@aggrid';
+import type { ColDef, ColGroupDef, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Grid } from '@atoms';
-import { BulletItem } from '@common/BulletList';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
+import { AgGridEmptyComponent, createAddRowHandler, createDeleteSelectedRowsHandler } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ColGroupDef, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { BulletItem } from '@common/BulletList';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
@@ -30,14 +30,14 @@ const DummyData: DummyDataType[] = [
     id: 1,
     isCheck: true,
     field01: '010-5678-1234',
-    field02: '910101-1234567',
+    field02: '000000-0000000',
     field03: '이한화',
   },
   {
     id: 2,
     isCheck: false,
     field01: '010-5678-1234',
-    field02: '910101-1234567',
+    field02: '000000-0000000',
     field03: '김한화',
   },
 ];

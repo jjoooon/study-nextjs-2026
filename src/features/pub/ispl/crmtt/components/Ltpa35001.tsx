@@ -1525,7 +1525,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                             <FormRow>
                               <FormCell title="연락처">
                                 <Grow placement="bwc">
-                                  <Grow>010-1234-5678</Grow>
+                                  <Grow>010-0000-0000</Grow>
                                   <KeyValueItem label="전자적안내동의">
                                     <Grow placement="sc">
                                       <Badge color="green" size="md" className="text-[1.4rem]">
@@ -1651,7 +1651,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                       <FormRow>
                         <FormCell title="연락처">
                           <Grow placement="bwc">
-                            <Grow>010-1234-5678</Grow>
+                            <Grow>010-0000-0000</Grow>
                             <KeyValueItem label="전자적안내동의">
                               <Grow placement="sc">
                                 <Badge color="green" size="md">

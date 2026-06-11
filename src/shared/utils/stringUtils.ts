@@ -565,7 +565,7 @@ export function maskEmail(email: StringInput, visibleChars: number = 1): string 
  *
  * @example
  * maskPhone('01012345678'); // '010-****-5678'
- * maskPhone('010-1234-5678'); // '010-****-5678'
+ * maskPhone('010-0000-0000'); // '010-****-5678'
  * maskPhone('01012345678', false); // '01012345678' (마스킹 없이 원본 반환)
  * maskPhone('0212345678'); // '02-****-5678' (서울 지역번호)
  */
@@ -580,7 +580,7 @@ export function maskPhone(phone: StringInput, maskMiddle: boolean = true): strin
       // 010-123-4567
       return `${cleaned.slice(0, 3)}-***-${cleaned.slice(6)}`;
     } else if (cleaned.length === 10) {
-      // 010-1234-5678 or 02-1234-5678
+      // 010-0000-0000 or 02-0000-0000
       const firstPart = cleaned.slice(0, 3);
       const isSeoul = firstPart === '02';
       if (isSeoul) {
@@ -588,7 +588,7 @@ export function maskPhone(phone: StringInput, maskMiddle: boolean = true): strin
       }
       return `${cleaned.slice(0, 3)}-****-${cleaned.slice(7)}`;
     } else if (cleaned.length === 11) {
-      // 010-1234-5678
+      // 010-0000-0000
       return `${cleaned.slice(0, 3)}-****-${cleaned.slice(7)}`;
     }
   }
@@ -621,7 +621,7 @@ export function maskName(name: StringInput): string {
  *
  * @example
  * maskCardNumber('1234567890123456'); // '1234-****-****-3456'
- * maskCardNumber('1234-5678-9012-3456'); // '1234-****-****-3456'
+ * maskCardNumber('0000-0000-9012-3456'); // '1234-****-****-3456'
  */
 export function maskCardNumber(cardNumber: StringInput): string {
   if (isEmpty(cardNumber)) return '';

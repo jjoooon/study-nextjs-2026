@@ -85,7 +85,7 @@ const Ltpz045 = () => {
                     </FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'휴대폰'}>010-1234-5678</FormCell>
+                    <FormCell title={'휴대폰'}>010-0000-0000</FormCell>
                     <FormCell title={'전화번호'}>02-123-4567</FormCell>
                   </FormRow>
                   <FormRow>
@@ -120,11 +120,11 @@ const Ltpz045 = () => {
                     <FormCell title={'영문명'}>Kim Hanhwa</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'사업자번호'}>901212-1234567</FormCell>
+                    <FormCell title={'사업자번호'}>000000-0000000</FormCell>
                     <FormCell title={'설립일'}>2025-01-01</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'대표전화번호'}>010-1234-5678</FormCell>
+                    <FormCell title={'대표전화번호'}>010-0000-0000</FormCell>
                     <FormCell title={'설립목적'}>02-123-4567</FormCell>
                   </FormRow>
                   <FormRow>

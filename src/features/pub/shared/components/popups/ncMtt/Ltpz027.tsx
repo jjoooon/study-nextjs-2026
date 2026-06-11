@@ -70,7 +70,7 @@ const DummyData2: DummyData2Type[] = [
     id: 1,
     field01: '김한화',
     field02: '1990-01-01',
-    field03: '010-1234-5678',
+    field03: '010-0000-0000',
     field04: '진행중',
   },
 ];
@@ -178,7 +178,7 @@ const Ltpz027 = () => {
                 <TableRow className="text-center">
                   <TableCell>김한화</TableCell>
                   <TableCell>1990-01-01</TableCell>
-                  <TableCell>010-1234-5678</TableCell>
+                  <TableCell>010-0000-0000</TableCell>
                   <TableCell>
                     <Button aria-label="발송" variant={'contained'} size={'md'} color={'primary'}>
                       발송

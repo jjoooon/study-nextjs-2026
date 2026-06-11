@@ -32,7 +32,7 @@ type DummyDataType = {
   field3: string | number;
 };
 const DummyData: DummyDataType[] = [
-  { id: 1, isChecked: true, field1: '취급자', field2: '안손보', field3: '010-1234-5678' },
+  { id: 1, isChecked: true, field1: '취급자', field2: '안손보', field3: '010-0000-0000' },
   { id: 2, isChecked: false, field1: '계약자', field2: '', field3: '' },
 ];
 
