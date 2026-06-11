@@ -69,7 +69,7 @@ const Ltpz083 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="sm">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

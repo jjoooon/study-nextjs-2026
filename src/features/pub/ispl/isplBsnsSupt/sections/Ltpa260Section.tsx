@@ -4,22 +4,22 @@
 'use client';
 // 2026-06-04 flex, minWidth, autoHeight, DummyData 값 수정
 
-import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import { Grid, Grow } from '@atoms';
+import { ResetIcon, SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { PageID } from '@features/PageID';
-import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useMemo } from 'react';
 import '@/shared/lib/agGridPub';
 
 // dummy data
@@ -218,7 +218,7 @@ export default function Ltpa260Section() {
               <FormTable variant={'head'} caption="실손특약세부계약조회 테이블" cols={['w-1', 'w-1', 'w-1', 'w-1']}>
                 <FormRow>
                   <FormCell title={'주민번호'}>
-                    <Input width={120} value={'901212-1234567'} required />
+                    <Input width={120} value={'000000-0******'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>

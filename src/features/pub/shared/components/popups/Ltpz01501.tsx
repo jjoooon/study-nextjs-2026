@@ -3,20 +3,19 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createAddRowHandler, createDeleteSelectedRowsHandler } from '@aggrid';
+import type { ColDef, ColGroupDef, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Grid } from '@atoms';
+import { FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
+import { AgGridEmptyComponent, createAddRowHandler, createDeleteSelectedRowsHandler } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 import { BulletItem } from '@common/BulletList';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
-import { Button } from '@uiux/Button';
-
-import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -31,13 +30,13 @@ const DummyData: DummyDataType[] = [
     id: 1,
     isCheck: true,
     field01: '김한화',
-    field02: '900101-1234567',
+    field02: '000000-0******',
   },
   {
     id: 2,
     isCheck: false,
     field01: '김한화2',
-    field02: '910101-1234567',
+    field02: '000000-0******',
   },
 ];
 

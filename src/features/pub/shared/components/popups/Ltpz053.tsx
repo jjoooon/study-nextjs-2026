@@ -126,7 +126,7 @@ const Ltpz053 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="ag-theme-alpine min-h-[12.4rem]">
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
@@ -193,7 +193,7 @@ const Ltpz053 = () => {
                       <Input aria-label="" value={'김환화환하'} required />
                     </FormCell>
                     <FormCell title={'주민등록번호'}>
-                      <Input aria-label="" value={'123456-1234567'} required />
+                      <Input aria-label="" value={'000000-0******'} required />
                     </FormCell>
                     <FormCell title={'발급일자'}>
                       <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />

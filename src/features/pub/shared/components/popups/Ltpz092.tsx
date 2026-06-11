@@ -4,9 +4,8 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -21,7 +20,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import * as React from 'react';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 const Ltpz092 = () => {
   const [isExistingCustomer, setIsExistingCustomer] = React.useState(false);
@@ -43,12 +43,12 @@ const Ltpz092 = () => {
             <FormRow>
               <FormCell title={'인증대상'}>
                 <Input width={80} value={'김한화'} readOnly />
-                <Input width={120} value={'900101-1'} readOnly />
+                <Input width={120} value={'000000-0'} readOnly />
               </FormCell>
             </FormRow>
             <FormRow>
               <FormCell title={'주민등록번호'}>
-                <Input width={120} value={'900101-2134123'} />
+                <Input width={120} value={'000000-0******'} />
                 <Button
                   aria-label="검색"
                   variant={'outlined'}
@@ -90,7 +90,7 @@ const Ltpz092 = () => {
               </FormRow>
               <FormRow>
                 <FormCell title={'친권자 주민등록번호'}>
-                  <Input width={120} value={'900101-2134123'} />
+                  <Input width={120} value={'000000-0******'} />
                   <Button
                     aria-label="검색"
                     variant={'outlined'}
@@ -132,7 +132,7 @@ const Ltpz092 = () => {
               </FormRow>
               <FormRow>
                 <FormCell title={'후견인 주민등록번호'}>
-                  <Input width={120} value={'900101-2134123'} />
+                  <Input width={120} value={'000000-0******'} />
                   <Button
                     aria-label="검색"
                     variant={'outlined'}

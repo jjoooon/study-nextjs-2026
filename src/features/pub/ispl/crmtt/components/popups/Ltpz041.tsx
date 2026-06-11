@@ -23,7 +23,7 @@ import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 const Ltpz041 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={true} size="xs">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

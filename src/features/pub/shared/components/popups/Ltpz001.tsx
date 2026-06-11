@@ -212,7 +212,7 @@ const Ltpz001 = () => {
     {
       headerName: '팩스',
       field: 'field7',
-      minWidth: attributeColumnWidth(50),
+      minWidth: attributeColumnWidth(30),
       flex: 1,
     },
     {
@@ -255,7 +255,7 @@ const Ltpz001 = () => {
         <DialogSection className="grid-cols-[1fr_auto]">
           {/* 왼쪽 영역: 설계 정보 및 트리형 출력물 리스트 */}
           <Grid className="grid-rows-[1fr_auto] h-full gap-3">
-            <div className=" w-full h-full relative min-h-[30rem] overflow-y-auto ">
+            <div className=" w-full h-full relative min-h-[30rem] overflow-y-auto">
               <Gcol gap={5} placement={'ss'} className="absolute">
                 {/* 설계 정보 요약 영역 (예시로 2회 반복 렌더링) */}
                 {[0, 1].map((idx) => (
@@ -294,7 +294,7 @@ const Ltpz001 = () => {
                         autoGroupColumnDef={{
                           headerName: '출력물',
                           field: 'field1',
-                          flex: 10,
+                          flex: 11,
                           tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
                         }}
                         // selection 설정

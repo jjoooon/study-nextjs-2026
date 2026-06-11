@@ -29,7 +29,7 @@ const Ltpz997 = () => {
   return (
     <Dialog open>
       {/* showCloseButton: 닫기 버튼 노출, resizable: 크기 조절 불가, size: 중간 크기 */}
-      <DialogContent showCloseButton resizable={false} size="md">
+      <DialogContent showCloseButton resizable={false} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

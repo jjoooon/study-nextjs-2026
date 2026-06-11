@@ -4,12 +4,9 @@
 
 // 2026-05-21 import 수정
 'use client';
+import { useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 
-import { BulletList } from '@common/BulletList';
-import { BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,14 +21,17 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { useState } from 'react';
+import { BulletListItem } from '@common/BulletList';
+import { BulletList } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 const Ltpz055 = () => {
   const [sendType, setSendType] = useState<string>('option1');
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="md">
+      <DialogContent showCloseButton resizable={false} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -58,7 +58,7 @@ const Ltpz055 = () => {
             <Table>
               <caption className="a11y-hidden">화면담당자 정보입니다.</caption>
               <colgroup>
-                <col className="w-[10rem]" />
+                <col className="w-[6rem]" />
                 <col className="w-auto" />
                 <col className="w-auto" />
                 <col className="w-[14rem]" />
@@ -134,7 +134,7 @@ const Ltpz055 = () => {
                       errorPs="bl"
                       onChange={() => {}}
                       size="lg"
-                      value={'010-****-1234'}
+                      value={'010-****-5678'}
                       variant="default"
                       width="full"
                       readOnly
@@ -165,7 +165,7 @@ const Ltpz055 = () => {
                       errorPs="bl"
                       onChange={() => {}}
                       size="lg"
-                      value={'010-****-1234'}
+                      value={'010-****-9876'}
                       variant="default"
                       width="full"
                       readOnly

@@ -58,14 +58,14 @@ const Ltpz996 = () => {
         headerName: '통신레코드',
         field: 'field1',
         flex: 1,
-        minWidth: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
       },
       {
         headerName: '서비스코드',
         field: 'field2',
         flex: 1,
-        minWidth: attributeColumnWidth(110),
+        minWidth: attributeColumnWidth(90),
         cellClass: 'text-center',
       },
       {
@@ -79,7 +79,7 @@ const Ltpz996 = () => {
         headerName: '메세지코드',
         field: 'field4',
         flex: 1,
-        minWidth: attributeColumnWidth(90),
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
         // 메세지 코드를 클릭 가능한 파란색 밑줄 버튼 형태로 렌더링합니다.
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -94,7 +94,7 @@ const Ltpz996 = () => {
       {
         headerName: '메세지상세',
         field: 'field5',
-        flex: 9,
+        flex: 10,
         cellClass: 'text-left',
         // 내용이 길어질 경우를 대비해 마우스 호버 시 툴팁을 표시합니다.
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field5' }),

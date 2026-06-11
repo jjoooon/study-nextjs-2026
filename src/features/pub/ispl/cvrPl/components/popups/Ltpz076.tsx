@@ -236,7 +236,7 @@ const Ltpz076 = () => {
             <TableFold className="w-full">
               <TableFoldHead title="대상" />
               <TableFoldBody className="grid grid-rows-[auto_1fr] gap-[1.2rem]">
-                <Grid className="w-full grid-flow-col grid-cols-[1fr] gap-3">
+                <Grid className="w-full grid-flow-col grid-cols-[auto_1fr] gap-3">
                   <Gcol gap={3}>
                     <Grow placement="bwe" className="w-full" variant={'box-round'}>
                       <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[1rem]', 'w-auto']}>

@@ -440,7 +440,7 @@ const Ltpz010 = () => {
                     <FormRow>
                       <FormCell title={'피보험자'}>
                         <Input aria-label="" width={84} value={'김한화'} readOnly />
-                        <Input aria-label="" width={114} value={'910101-1******'} readOnly />
+                        <Input aria-label="" width={114} value={'000000-0******'} readOnly />
                       </FormCell>
                       <FormCell title={'알림사항'}>
                         <Grow placement={'bwc'}>
