@@ -3,12 +3,12 @@
  */
 'use client';
 
-import { useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { TableFold } from '@common/TableFold';
+import { useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -22,10 +22,10 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TableFold } from '@common/TableFold';
 
 // M2. 신규페이지
 import '@/shared/lib/agGridPub';
@@ -163,20 +163,20 @@ const Ltpz076 = () => {
         headerName: '코드',
         field: 'field01',
         flex: 1,
-        width: attributeColumnWidth(70),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '성명/상호명',
         field: 'field02',
-        flex: 8,
+        flex: 10,
         cellClass: 'text-left',
       },
       {
         headerName: '구분',
         field: 'field03',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(70),
         cellClass: 'text-center',
       },
     ],
@@ -188,13 +188,13 @@ const Ltpz076 = () => {
         headerName: '코드',
         field: 'field01',
         flex: 1,
-        minWidth: attributeColumnWidth(70),
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center',
       },
       {
         headerName: '성명/상호명',
         field: 'field02',
-        flex: 8,
+        flex: 10,
         cellClass: 'text-left',
       },
     ],

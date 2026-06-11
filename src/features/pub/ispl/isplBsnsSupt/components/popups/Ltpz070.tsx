@@ -3,6 +3,12 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useMemo } from 'react';
+import * as React from 'react';
+import { Gcol, Grow, Typo } from '@atoms';
+import { ArrowDoubleIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createModifiedCellClassRules,
@@ -10,12 +16,6 @@ import {
   numberValueFormatter,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { StarStage } from '@features/StarStage';
-import { ArrowDoubleIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -27,10 +27,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
-import * as React from 'react';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { StarStage } from '@features/StarStage';
 
 import '@/shared/lib/agGridPub';
 
@@ -364,7 +364,7 @@ const Ltpz070 = () => {
             headerName: '가입금액(만원)',
             field: 'field03',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             cellClass: 'text-right',
             valueParser: (params) => Number(params.newValue) || 0,
             valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -373,7 +373,7 @@ const Ltpz070 = () => {
             headerName: '보험료(원)',
             field: 'field04',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             cellClass: 'text-right',
             valueParser: (params) => Number(params.newValue) || 0,
             valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -382,7 +382,7 @@ const Ltpz070 = () => {
             headerName: '가치배수',
             field: 'field05',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             cellClass: 'text-right',
           },
         ],
@@ -396,7 +396,7 @@ const Ltpz070 = () => {
             headerName: '가입금액(만원)',
             field: 'field06',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             headerClass: 'ag-header-color',
             cellClass: 'text-right editable-cell',
             cellClassRules: field06ModifiedCellClassRules3,
@@ -409,7 +409,7 @@ const Ltpz070 = () => {
             headerName: '보험료(원)',
             field: 'field07',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             headerClass: 'ag-header-color',
             cellClass: 'text-right',
             valueParser: (params) => Number(params.newValue) || 0,
@@ -419,7 +419,7 @@ const Ltpz070 = () => {
             headerName: '가치배수',
             field: 'field08',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             headerClass: 'ag-header-color',
             cellClass: 'text-right',
           },
@@ -454,7 +454,7 @@ const Ltpz070 = () => {
             headerName: '가입금액(만원)',
             field: 'field03',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             cellClass: 'text-right',
             valueParser: (params) => Number(params.newValue) || 0,
             valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -463,7 +463,7 @@ const Ltpz070 = () => {
             headerName: '보험료(원)',
             field: 'field04',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             cellClass: 'text-right',
             valueParser: (params) => Number(params.newValue) || 0,
             valueFormatter: numberValueFormatter, // 천단위 콤마 표시
@@ -472,7 +472,7 @@ const Ltpz070 = () => {
             headerName: '가치배수',
             field: 'field05',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             cellClass: 'text-right',
           },
         ],
@@ -485,7 +485,7 @@ const Ltpz070 = () => {
             headerName: '가입금액(만원)',
             field: 'field06',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             headerClass: 'ag-header-color',
             cellClass: 'text-right editable-cell',
             cellClassRules: field06ModifiedCellClassRules4,
@@ -498,7 +498,7 @@ const Ltpz070 = () => {
             headerName: '보험료(원)',
             field: 'field07',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             headerClass: 'ag-header-color',
             cellClass: 'text-right',
             valueParser: (params) => Number(params.newValue) || 0,
@@ -508,7 +508,7 @@ const Ltpz070 = () => {
             headerName: '가치배수',
             field: 'field08',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(90),
             headerClass: 'ag-header-color',
             cellClass: 'text-right',
           },
@@ -519,7 +519,7 @@ const Ltpz070 = () => {
   );
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="2xl">
+      <DialogContent showCloseButton resizable={false} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -585,7 +585,7 @@ const Ltpz070 = () => {
                   <div
                     className="absolute top-0 bottom-0 right-0 z-10 border rounded-md pointer-events-none"
                     style={{
-                      width: '37.7rem',
+                      width: '28.7rem',
                       height: 'auto',
                       borderColor: 'var(--color-primary-50)',
                       borderWidth: '0.2rem',
@@ -619,7 +619,7 @@ const Ltpz070 = () => {
                   <div
                     className="absolute top-0 bottom-0 right-0 z-10 border rounded-md pointer-events-none"
                     style={{
-                      width: '37.7rem',
+                      width: '28.7rem',
                       height: 'auto',
                       borderColor: 'var(--color-primary-50)',
                       borderWidth: '0.2rem',

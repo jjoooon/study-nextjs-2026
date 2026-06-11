@@ -198,8 +198,10 @@ const Ltpz020 = ({ open }: { open: boolean }) => {
       {
         headerName: '패키지명',
         field: 'field1',
-        width: attributeColumnWidth[11],
+        width: attributeColumnWidth(90),
+        wrapText: true,
         autoHeight: true,
+        cellClass: 'whitespace-normal break-words !leading-[1.3] !py-2',
         spanRows: true,
       },
       {
@@ -243,7 +245,7 @@ const Ltpz020 = ({ open }: { open: boolean }) => {
   // 검수:체크시 트리구조 열림.
   return (
     <Dialog open={open}>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

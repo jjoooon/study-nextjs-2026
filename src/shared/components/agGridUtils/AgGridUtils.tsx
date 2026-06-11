@@ -1,15 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Typo, Grow, Grid, Gcol } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DatePickerInput } from '@common/DatePicker';
-import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
-import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type {
   ICellEditorParams,
   CellClickedEvent,
@@ -31,6 +22,15 @@ import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import type { RefObject } from 'react';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
+import { Typo, Grow, Grid, Gcol } from '@atoms';
+import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DatePickerInput } from '@common/DatePicker';
 
 /**
  * 상단 토글 정렬에 필요한 메타 정보를 원본 행 타입 `T`에 결합한 타입.
@@ -892,22 +892,7 @@ export function createDuplicateButtonCellRenderer<
   };
 
   const renderer = (params: ICellRendererParams<RowType>) => {
-    if (!isVisible(params))
-      return (
-        <Grow className="w-full h-full flex items-center justify-center">
-          <Button
-            aria-label={ariaLabel}
-            variant={'outlined'}
-            only={'icon'}
-            className="uiux-duplicate-btn"
-            size={'sm'}
-            color={'gray'}
-            disabled
-          >
-            <PlusIcon color={'var(--color-gray-30)'} />
-          </Button>
-        </Grow>
-      );
+    if (!isVisible(params)) return <Grow className="w-full h-full flex items-center justify-center"></Grow>;
 
     const row = params.data;
     if (!row) return '';
@@ -923,14 +908,14 @@ export function createDuplicateButtonCellRenderer<
           only={'icon'}
           className="uiux-duplicate-btn"
           size={'sm'}
-          color={'gray'}
+          color={'gray-light'}
           onMouseDown={(event) => event.stopPropagation()}
           onClick={(event) => {
             event.stopPropagation();
             onDuplicate(rowId);
           }}
         >
-          <PlusIcon color={'var(--color-gray-70)'} />
+          <PlusIcon color={'var(--color-primary-50)'} />
         </Button>
       </Grow>
     );

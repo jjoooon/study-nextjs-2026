@@ -5,6 +5,10 @@
 
 // 2026-05-27 팝업에서 화면으로 변경, 전체 수정
 
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Gcol, Grow, Typo } from '@atoms';
 import {
   AgGridEmptyComponent,
   createFieldRenderer,
@@ -12,18 +16,13 @@ import {
   numberValueFormatter,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { PageID } from '@features/PageID';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-
-import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -79,7 +78,7 @@ export default function Ltpa010Section() {
         valueFormatter: numberValueFormatter,
         cellRenderer: createFieldRenderer<DummyDataType>(
           (data?: DummyDataType) => (
-            <span className="tracking-normal">{simpleNumberFormatter(data?.field01?.[0])}</span>
+            <div className="tracking-normal px-2">{simpleNumberFormatter(data?.field01?.[0])}</div>
           ),
           (data?: DummyDataType) => (
             <div className="text-center!">
@@ -97,7 +96,7 @@ export default function Ltpa010Section() {
         autoHeight: true,
         cellRenderer: createFieldRenderer<DummyDataType>(
           (data?: DummyDataType) => (
-            <span className="tracking-normal">{simpleNumberFormatter(data?.field02?.[0])}</span>
+            <div className="tracking-normal px-2">{simpleNumberFormatter(data?.field02?.[0])}</div>
           ),
           (data?: DummyDataType) => (
             <div className="text-center!">
@@ -123,7 +122,7 @@ export default function Ltpa010Section() {
         autoHeight: true,
         cellRenderer: createFieldRenderer<DummyDataType>(
           (data?: DummyDataType) => (
-            <span className="tracking-normal">{simpleNumberFormatter(data?.field03?.[0])}</span>
+            <div className="tracking-normal px-2">{simpleNumberFormatter(data?.field03?.[0])}</div>
           ),
           (data?: DummyDataType) => (
             <div className="text-center!">
@@ -149,7 +148,7 @@ export default function Ltpa010Section() {
         autoHeight: true,
         cellRenderer: createFieldRenderer<DummyDataType>(
           (data?: DummyDataType) => (
-            <span className="tracking-normal">{simpleNumberFormatter(data?.field04?.[0])}</span>
+            <div className="tracking-normal px-2">{simpleNumberFormatter(data?.field04?.[0])}</div>
           ),
           (data?: DummyDataType) => (
             <div className="text-center!">
@@ -175,7 +174,7 @@ export default function Ltpa010Section() {
         autoHeight: true,
         cellRenderer: createFieldRenderer<DummyDataType>(
           (data?: DummyDataType) => (
-            <span className="tracking-normal">{simpleNumberFormatter(data?.field05?.[0])}</span>
+            <div className="tracking-normal px-2">{simpleNumberFormatter(data?.field05?.[0])}</div>
           ),
           (data?: DummyDataType) => (
             <div className="text-center!">
@@ -201,7 +200,7 @@ export default function Ltpa010Section() {
         autoHeight: true,
         cellRenderer: createFieldRenderer<DummyDataType>(
           (data?: DummyDataType) => (
-            <span className="tracking-normal">{simpleNumberFormatter(data?.field06?.[0])}</span>
+            <div className="tracking-normal px-2">{simpleNumberFormatter(data?.field06?.[0])}</div>
           ),
           (data?: DummyDataType) => (
             <div className="text-center!">

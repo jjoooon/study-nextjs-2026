@@ -4,8 +4,8 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -17,12 +17,12 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 const Ltpz108 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

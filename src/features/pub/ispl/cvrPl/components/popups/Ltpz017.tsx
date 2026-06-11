@@ -89,7 +89,7 @@ const Ltpz017 = () => {
       {
         headerName: '순번',
         field: 'id',
-        width: attributeColumnWidth(50),
+        width: attributeColumnWidth(40),
         cellClass: 'text-center',
       },
       {
@@ -101,18 +101,20 @@ const Ltpz017 = () => {
       {
         headerName: '나만의플랜명',
         field: 'myPlanName',
-        flex: 2,
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
       },
       {
         headerName: '등록일자',
         field: 'registrationDate',
-        width: attributeColumnWidth(80),
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
       },
       {
         headerName: '적용대상',
         field: 'target',
-        flex: 1,
+        width: attributeColumnWidth(50),
         cellClass: 'text-center',
         cellRenderer: attributeRenderer,
       },
@@ -130,7 +132,7 @@ const Ltpz017 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="ml">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

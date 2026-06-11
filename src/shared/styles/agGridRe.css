@@ -1018,3 +1018,10 @@
 .Ltpz070 .ag-header-container {
   background-color: #ffccbe;
 }
+
+.cell-greater {
+  background-color: var(--color-danger-15) !important;
+}
+.cell-less {
+  background-color: var(--color-information-15) !important;
+}

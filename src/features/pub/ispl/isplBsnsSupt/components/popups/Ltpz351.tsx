@@ -2,11 +2,12 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { SearchIcon } from '@icons';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,9 +19,8 @@ import {
   DialogTitle,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import '@/shared/lib/agGridPub';
 
@@ -81,7 +81,7 @@ const Ltpz351 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={true} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

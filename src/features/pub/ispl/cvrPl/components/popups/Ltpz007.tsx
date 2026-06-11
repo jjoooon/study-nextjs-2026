@@ -180,7 +180,8 @@ const Ltpz007 = () => {
     () => [
       {
         headerComponent: () => renderRadioHeader('세만기형', 'field02'),
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
+        flex: 1,
         field: 'field02',
         headerClass: '!justify-center',
         cellClass: 'text-center justify-center',
@@ -217,7 +218,8 @@ const Ltpz007 = () => {
       },
       {
         headerComponent: () => renderRadioHeader('갱신형', 'field03'),
-        width: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
+        flex: 1,
         field: 'field03',
         headerClass: '!justify-center',
         cellClass: 'text-center',
@@ -253,12 +255,12 @@ const Ltpz007 = () => {
         },
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, renderRadioHeader, handleRadioChange]
   );
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
