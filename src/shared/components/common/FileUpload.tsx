@@ -78,7 +78,7 @@ export function FileUpload({
         {files.map((file, index) => (
           <FileTag
             key={file.edmsId}
-            name={file.storedFilename}
+            name={file.originalFilename}
             hasError={!!errorMessage}
             onNameClick={() => {
               handleClickButton();
