@@ -187,7 +187,7 @@ const Ltpz049 = () => {
                   <Input value={'LA123123123123'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'피보험자'}>
-                  <Input value={'김한화(901212-1111111)'} readOnly variant="info" />
+                  <Input value={'김한화(000000-0000000)'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
