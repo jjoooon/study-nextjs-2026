@@ -9,9 +9,13 @@ import {
   numberValueFormatter,
   useDynamicColumnWidths,
 } from '@aggrid';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+
+import '@/shared/lib/agGridPub';
+import { useMemo } from 'react';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,12 +28,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
-import '@/shared/lib/agGridPub';
-import { useMemo } from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 type DummyDataType = {
   id: number;
@@ -105,26 +105,26 @@ const Ltpz046 = () => {
       {
         headerName: '부호',
         flex: 1,
-        width: attributeColumnWidth(50),
+        minWidth: attributeColumnWidth(40),
         field: 'field01',
         cellClass: 'text-center',
       },
       {
         headerName: '구분',
-        flex: 2,
+        flex: 10,
         field: 'field02',
         cellClass: 'text-left',
       },
       {
         headerName: '급수',
-        width: attributeColumnWidth(60),
+        minWidth: attributeColumnWidth(40),
         flex: 1,
         field: 'field03',
         cellClass: 'text-center',
       },
       {
         headerName: '목적물가입금액',
-        minWidth: attributeColumnWidth(110),
+        minWidth: attributeColumnWidth(90),
         flex: 1,
         field: 'field04',
         cellClass: 'text-right',
@@ -132,7 +132,7 @@ const Ltpz046 = () => {
       },
       {
         headerName: '가입금액',
-        minWidth: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(90),
         flex: 1,
         field: 'field05',
         cellClass: 'text-right',
@@ -212,7 +212,7 @@ const Ltpz046 = () => {
             </div>
           </Grow>
           <Grow className="w-full">
-            <FormTable caption="담보" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+            <FormTable caption="담보" cols={['w-[6rem]', 'w-auto', 'w-[7rem]', 'w-[12rem]']}>
               <FormRow>
                 <FormCell title={'담보명'}>
                   <Input value="풍수재손해(실손번부보상, 비특수)" readOnly />
