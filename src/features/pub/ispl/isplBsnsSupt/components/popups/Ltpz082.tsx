@@ -18,12 +18,12 @@ import {
 } from '@uiux/Dialog';
 
 import '@/shared/lib/agGridPub';
-import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 const Ltpz082 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="md">
+      <DialogContent showCloseButton resizable={false} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

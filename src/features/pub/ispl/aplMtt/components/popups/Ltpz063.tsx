@@ -461,13 +461,13 @@ export const Ltpz063 = () => {
   // 숫자/비율 입력 행은 우측 정렬, 그 외는 중앙 정렬
   const getValueCellClass = <TData extends { type: string | number }>(params: CellClassParams<TData>) =>
     isLeftAlignTargetRow(params.data)
-      ? 'text-right [&_.ag-input-field-input]:text-right'
-      : 'text-center [&_.ag-input-field-input]:text-center';
+      ? 'text-right [&_.ag-input-field-input]:text-right !leading-[1.3] !py-2'
+      : 'text-center [&_.ag-input-field-input]:text-center !leading-[1.3] !py-2';
 
   const getSelectableValueCellClass = <TData extends { type: string | number }>(params: CellClassParams<TData>) =>
     isLeftAlignTargetRow(params.data)
-      ? 'text-right [&_.ag-input-field-input]:text-right'
-      : 'text-center flex! items-center! justify-center! [&_.ag-input-field-input]:text-center';
+      ? 'text-right [&_.ag-input-field-input]:text-right !leading-[1.3] !py-2'
+      : 'text-center flex! items-center! justify-center! !leading-[1.3] !py-2 [&_.ag-input-field-input]:text-center';
 
   const isType3CompanyRow = (row: DummyDataType3 | undefined) => row?.type === '보험회사명';
   const isType3DateRow = (row: DummyDataType3 | undefined) => row?.type === '보험기간';
@@ -1030,6 +1030,7 @@ export const Ltpz063 = () => {
                   }}
                   rowClassRules={{}}
                   domLayout="autoHeight"
+                  animateRows={false}
                 />
               </div>
             ) : active === 'value2' ? (
@@ -1046,6 +1047,7 @@ export const Ltpz063 = () => {
                   }}
                   rowClassRules={{}}
                   domLayout="autoHeight"
+                  animateRows={false}
                 />
               </div>
             ) : active === 'value3' ? (
@@ -1062,6 +1064,7 @@ export const Ltpz063 = () => {
                   }}
                   rowClassRules={{}}
                   domLayout="autoHeight"
+                  animateRows={false}
                 />
               </div>
             ) : null}

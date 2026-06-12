@@ -229,7 +229,6 @@ export const Ltpa35005 = () => {
   }));
   const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
 
-  // M5. useState 추가
   const [firstPay, setFirstPay] = React.useState<string>('선택');
   const [morePay, setMorePay] = React.useState<string>('선택');
   const isSimilarContractCheckRequired = true; //4-1 특정조건인 경우 문구 노출

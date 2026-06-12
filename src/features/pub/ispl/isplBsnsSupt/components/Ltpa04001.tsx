@@ -2,17 +2,17 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { Grid, Grow } from '@atoms';
+import { ResetIcon, SearchIcon } from '@icons';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { createTooltipValueGetter } from '@aggrid';
-import { Grid, Grow } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -204,8 +204,7 @@ const Ltpa04001 = () => {
         {
           headerName: '입력조건',
           field: 'field07',
-          flex: 2,
-          minWidth: attributeColumnWidth(200),
+          flex: 20,
           cellClass: 'text-left',
           tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRow>({ field: 'field07' }),
         },
@@ -219,8 +218,7 @@ const Ltpa04001 = () => {
         {
           headerName: '추천상품',
           field: 'field09',
-          flex: 4,
-          minWidth: attributeColumnWidth(200),
+          flex: 40,
           cellClass: 'text-left',
           tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRow>({ field: 'field09' }),
         },
