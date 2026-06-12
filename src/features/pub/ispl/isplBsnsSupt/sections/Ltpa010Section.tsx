@@ -103,7 +103,6 @@ const DummyData: DummyDataRow[] = [
     field25: '2026-03-11',
     field26: '김한화',
     field27: '(야탑동)',
-    
   },
   {
     id: 2,
@@ -212,7 +211,7 @@ const DummyData: DummyDataRow[] = [
     isCheck: true,
     isState: false,
     field01: 'LA123456789012',
-    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field02: '55555 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
     field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
     memo: true,
     field05: '김한화김한',
@@ -236,6 +235,9 @@ const DummyData: DummyDataRow[] = [
     field18: '배서설계',
     field19: 'LA20143129023123912',
     nickname: '',
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
   },
   {
     id: 6,
@@ -266,6 +268,9 @@ const DummyData: DummyDataRow[] = [
     field18: '배서설계',
     field19: 'LA20143129023123912',
     nickname: '',
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
   },
   {
     id: 7,
@@ -296,6 +301,9 @@ const DummyData: DummyDataRow[] = [
     field18: '배서설계',
     field19: 'LA20143129023123912',
     nickname: '',
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
   },
   {
     id: 8,
@@ -326,6 +334,9 @@ const DummyData: DummyDataRow[] = [
     field18: '배서설계',
     field19: 'LA20143129023123912',
     nickname: '',
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
   },
   {
     id: 9,
@@ -356,6 +367,9 @@ const DummyData: DummyDataRow[] = [
     field18: '배서설계',
     field19: 'LA20143129023123912',
     nickname: '',
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
   },
 ];
 
@@ -575,16 +589,14 @@ export default function Ltpa010Section() {
       flex: 1,
       minWidth: attributeColumnWidth(70),
       autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataRow>(
-        'field09',
-        (data?: DummyDataRow) =>
-          data?.field10 === '심사결과' ? (
-            <Button color="link" only="default" size="lg" variant="text">
-              {data.field10}
-            </Button>
-          ) : (
-            data?.field10
-          )
+      cellRenderer: createFieldRenderer<DummyDataRow>('field09', (data?: DummyDataRow) =>
+        data?.field10 === '심사결과' ? (
+          <Button color="link" only="default" size="lg" variant="text">
+            {data.field10}
+          </Button>
+        ) : (
+          data?.field10
+        )
       ),
     },
     // 8. 청약서출력 & 스캔여부
@@ -735,7 +747,6 @@ export default function Ltpa010Section() {
       minWidth: attributeColumnWidth(90),
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>('field25', 'field14'),
-
     },
     // 11. 사용인 & 부실유의
     {
@@ -798,6 +809,7 @@ export default function Ltpa010Section() {
     allRows: 20,
     pageSize,
   });
+  const gridRef = React.useRef<AgGridReact<DummyDataRow>>(null);
 
   return (
     <>
@@ -850,7 +862,7 @@ export default function Ltpa010Section() {
                         </Button>
                       </Grow>
                     ) : (
-                      <Input aria-label="번호" width={130}  value={'LA2608902384509'} readOnly />
+                      <Input aria-label="번호" width={130} value={'LA2608902384509'} readOnly />
                     )}
                   </FormCell>
                   <FormCell title={'설계상태'}>
@@ -1059,6 +1071,7 @@ export default function Ltpa010Section() {
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
+                      ref={gridRef}
                       cacheBlockSize={pageSize}
                       maxBlocksInCache={2}
                       datasource={dataSource}
@@ -1068,6 +1081,7 @@ export default function Ltpa010Section() {
                   </div>
                   {/* 그리드 하단: 데이터 더보기(페이징) 컨트롤 */}
                   <TableMore
+                    gridRef={gridRef}
                     loadedCount={loadedCount}
                     totalCount={totalCount}
                     pageSize={pageSize}

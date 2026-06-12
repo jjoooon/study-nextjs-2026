@@ -520,7 +520,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent variant="default" side="top" align="start" sideOffset={-4}>
-                        담보 전체 해지
+                        담보 전체 해제
                       </TooltipContent>
                     </Tooltip>
                   ),
