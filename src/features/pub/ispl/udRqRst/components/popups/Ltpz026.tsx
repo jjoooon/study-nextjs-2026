@@ -3,12 +3,12 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grid, Gcol, Grow, Typo, Divider } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
@@ -21,11 +21,11 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
-import { useTabs } from '@/shared/hooks/useTabs';
 import '@/shared/lib/agGridPub';
 type Ltpz026TabType = {
   name: string;
@@ -443,8 +443,7 @@ const Ltpz026 = () => {
     {
       headerName: '질병명',
       field: 'field02',
-      flex: 7,
-      minWidth: attributeColumnWidth(150),
+      flex: 10,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
@@ -452,40 +451,40 @@ const Ltpz026 = () => {
       headerName: '원사고발생일',
       field: 'field03',
       flex: 1,
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '최종사고발생일',
       field: 'field04',
       flex: 1,
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '입원',
       field: 'field05',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(160),
     },
     {
       headerName: '통원',
       field: 'field06',
-      width: attributeColumnWidth(60),
+      width: attributeColumnWidth(40),
     },
     {
       headerName: '수술',
       field: 'field07',
-      width: attributeColumnWidth(60),
+      width: attributeColumnWidth(40),
     },
     {
       headerName: '고지여부',
       field: 'field08',
-      width: attributeColumnWidth(90),
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '체크',
       field: 'field09',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: attributeColumnWidth(60),
       cellStyle: (params) => {
         return params.value ? { color: '#006FF2' } : undefined;
       },
@@ -497,8 +496,7 @@ const Ltpz026 = () => {
     {
       headerName: '제한 담보명',
       field: 'field01',
-      flex: 3,
-      minWidth: attributeColumnWidth(220),
+      flex: 10,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeT1>({ field: 'field01' }),
     },
@@ -506,7 +504,7 @@ const Ltpz026 = () => {
       headerName: '가입금액(원)',
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -516,8 +514,7 @@ const Ltpz026 = () => {
     {
       headerName: '제한 담보명',
       field: 'field01',
-      flex: 3,
-      minWidth: attributeColumnWidth(220),
+      flex: 10,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeT2>({ field: 'field01' }),
     },
@@ -525,7 +522,7 @@ const Ltpz026 = () => {
       headerName: '가입금액(원)',
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -535,8 +532,7 @@ const Ltpz026 = () => {
     {
       headerName: '부담보부위명',
       field: 'field01',
-      flex: 3,
-      minWidth: attributeColumnWidth(220),
+      flex: 10,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeT3>({ field: 'field01' }),
     },
@@ -544,7 +540,7 @@ const Ltpz026 = () => {
       headerName: '기간',
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-center',
     },
   ];
@@ -557,7 +553,7 @@ const Ltpz026 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="full">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

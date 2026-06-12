@@ -37,7 +37,7 @@ const Ltpz045 = () => {
   return (
     // 2026-05-27
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="ml">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -70,7 +70,7 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="고객정보(CDD 확인사항)"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
+                <FormTable caption="고객정보" cols={['w-[12.4rem]', 'w-[16rem]', 'w-[7rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'성명'}>김한화</FormCell>
                     <FormCell title={'영문명'}>Kim Hanhwa</FormCell>
@@ -109,7 +109,7 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="고객정보(CDD 확인사항)"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
+                <FormTable caption="고객정보" cols={['w-[9.4rem]', 'w-[18rem]', 'w-[9.4rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'법인명'} tdClassName="grid grid-cols-[1fr_auto]">
                       <Input aria-label="법인명 검색" value={''} readOnly />
@@ -172,7 +172,7 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="실소유자 확인사항"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
+                <FormTable caption="고객정보" cols={['w-[10rem]', 'w-[16rem]', 'w-[6rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'실소유자구분'} colSpan={3}>
                       <RadioGroup className="gap-1 flex-col items-start">
@@ -206,7 +206,7 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="대리인 확인사항(대리인 고객등록 필수)"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
+                <FormTable caption="고객정보" cols={['w-[10rem]', 'w-[16rem]', 'w-[6rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'성명'}>
                       <Input aria-label="성명 검색" width={84} value={''} readOnly />
@@ -243,7 +243,7 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="CDD 검증정보"></TableFoldHead>
               <TableFoldBody className="gap-3">
-                <FormTable caption="" cols={['w-[13rem]', 'w-auto']}>
+                <FormTable caption="" cols={['w-[10rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'실명확인증표'} tdClassName="grid grid-cols-[auto_1fr] gap-2">
                       <RadioGroup
@@ -266,7 +266,7 @@ const Ltpz045 = () => {
                 <TableFold>
                   <TableFoldHead title="법정대리인 정보"></TableFoldHead>
                   <TableFoldBody>
-                    <FormTable caption="법정대리인 정보" cols={['w-[13rem]', 'w-auto']}>
+                    <FormTable caption="법정대리인 정보" cols={['w-[10rem]', 'w-auto']}>
                       <FormRow>
                         <FormCell title={'이름/주민번호'}>
                           <Input aria-label="성명 검색" width={84} value={''} readOnly />

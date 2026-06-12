@@ -3,10 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
@@ -20,9 +21,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -133,14 +133,6 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 3,
     field01: '상해사망(체증형)',
-  },
-  {
-    id: 4,
-    field01: '상해사망추가',
-  },
-  {
-    id: 5,
-    field01: '보장보험료50%납입지원Ⅱ(4대유사암)',
   },
 ];
 
@@ -260,7 +252,7 @@ const Ltpz100 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid gap={3} className="w-full grid-cols-[1fr_1fr_1fr] min-h-[20.9rem]">
+          <Grid gap={3} className="w-full grid-cols-[1fr_1fr_1fr]">
             <Grid className="grid-rows-[auto_1fr]">
               <Grow placement="sc">
                 <Typo tag={'strong'} variant={'heading-md'}>
@@ -270,7 +262,7 @@ const Ltpz100 = () => {
                   {rowData1.length}개
                 </Badge>
               </Grow>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
                 <AgGridReact<DummyDataType1>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -295,7 +287,7 @@ const Ltpz100 = () => {
                   {rowData2.length}개
                 </Badge>
               </Grow>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                 <AgGridReact<DummyDataType2>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -318,7 +310,7 @@ const Ltpz100 = () => {
                   {rowData3.length}개
                 </Badge>
               </Grow>
-              <div className="w-full ag-theme-alpine">
+              <div className="w-full ag-theme-alpine inner-scroll" data-row={rowData3.length}>
                 <AgGridReact<DummyDataType3>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}

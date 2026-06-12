@@ -3,11 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -23,9 +23,9 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Textarea } from '@uiux/Textarea';
-import { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -169,31 +169,30 @@ const Ltpz096 = () => {
       headerName: '대표질병코드',
       field: 'field01',
       flex: 1,
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '질병명',
       field: 'field02',
-      flex: 3,
-      minWidth: attributeColumnWidth(200),
+      flex: 10,
     },
     {
       headerName: '원사고발생일',
       field: 'field03',
       flex: 1,
-      minWidth: attributeColumnWidth(110),
+      minWidth: attributeColumnWidth(90),
     },
     {
       headerName: '최종사고발생일',
       field: 'field04',
       flex: 1,
-      minWidth: attributeColumnWidth(110),
+      minWidth: attributeColumnWidth(90),
     },
     {
       headerName: '입원',
       field: 'field05',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(160),
     },
     {
       headerName: '통원',
@@ -208,13 +207,13 @@ const Ltpz096 = () => {
     {
       headerName: '고지여부',
       field: 'field08',
-      width: attributeColumnWidth(70),
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '체크',
       field: 'field09',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(60),
       cellStyle: (params) => {
         return params.value ? { color: '#006FF2' } : undefined;
       },
@@ -225,8 +224,7 @@ const Ltpz096 = () => {
     {
       headerName: '제한 담보명',
       field: 'field01',
-      flex: 5,
-      minWidth: attributeColumnWidth(400),
+      flex: 20,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field01' }),
     },
@@ -234,7 +232,7 @@ const Ltpz096 = () => {
       headerName: '가입금액(원)',
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -242,7 +240,7 @@ const Ltpz096 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

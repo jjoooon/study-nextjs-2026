@@ -4,12 +4,8 @@
 
 'use client';
 
+import { SearchIcon } from '@/shared/components/icons';
 import { Gcol, Typo, Grow } from '@atoms';
-import { BulletList } from '@common/BulletList';
-import { BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -22,12 +18,16 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { SearchIcon } from '@/shared/components/icons';
+import { BulletList } from '@common/BulletList';
+import { BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 const Ltpz056 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="md">
+      <DialogContent showCloseButton resizable={false} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
