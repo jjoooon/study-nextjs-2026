@@ -405,14 +405,14 @@ export default function Ltpa060Section() {
                   <FormTable variant={'head'} lineTop={false} caption="">
                     <FormRow>
                       <FormCell title={'FP정보제공동의(유효일자)'}>
-                        <Input aria-label="FP정보제공동의 유효일자" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                       <FormCell title={'전문호출기간'}>
-                        <Input aria-label="전문호출기간 시작일" width={100} value={'2026-03-01'} readOnly />-
-                        <Input aria-label="전문호출기간 종료일" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="전문호출기간 시작일" width={90} value={'2026-03-01'} readOnly />-
+                        <Input aria-label="전문호출기간 종료일" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                       <FormCell title={'최종적재일'}>
-                        <Input aria-label="최종적재일" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                     </FormRow>
                   </FormTable>
@@ -510,14 +510,14 @@ export default function Ltpa060Section() {
                   <FormTable variant={'head'} lineTop={false} caption="">
                     <FormRow>
                       <FormCell title={'정보제공동의(유효일자)'}>
-                        <Input aria-label="FP정보제공동의 유효일자" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                       <FormCell title={'전문호출기간'}>
-                        <Input aria-label="전문호출기간 시작일" width={100} value={'2026-03-01'} readOnly />-
-                        <Input aria-label="전문호출기간 종료일" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="전문호출기간 시작일" width={90} value={'2026-03-01'} readOnly />-
+                        <Input aria-label="전문호출기간 종료일" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                       <FormCell title={'최종적재일'}>
-                        <Input aria-label="최종적재일" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                     </FormRow>
                   </FormTable>

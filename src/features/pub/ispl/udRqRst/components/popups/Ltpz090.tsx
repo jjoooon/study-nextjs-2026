@@ -165,7 +165,7 @@ const Ltpz090 = () => {
       headerName: '작업구분',
       field: 'field04',
       flex: 1,
-      minWidth: attributeColumnWidth(100),
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {

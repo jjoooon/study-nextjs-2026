@@ -97,8 +97,7 @@ const Ltpz036 = () => {
     {
       headerName: '변경사유',
       field: 'field02',
-      flex: 1,
-      minWidth: attributeColumnWidth(200),
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
       autoHeight: true,
       spanRows: true,
@@ -106,22 +105,19 @@ const Ltpz036 = () => {
     {
       headerName: '변경항목',
       field: 'field03',
-      flex: 1,
-      minWidth: attributeColumnWidth(200),
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
     {
       headerName: '변경전',
       field: 'field04',
-      flex: 1,
-      minWidth: attributeColumnWidth(200),
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
     {
       headerName: '변경후',
       field: 'field05',
-      flex: 1,
-      minWidth: attributeColumnWidth(200),
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field05' }),
     },
   ];

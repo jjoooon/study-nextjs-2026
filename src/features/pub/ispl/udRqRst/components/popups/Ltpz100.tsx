@@ -46,8 +46,8 @@ type DummyDataType3 = {
 const DummyData1: DummyDataType1[] = [
   {
     id: 1,
-    field01: '보험료납입면제대상보장(8대사유Ⅱ)',
-    field02: '10000000',
+    field01: '보험료납입면제대상보장(8대사유Ⅱ) 보험료납입면제대상보장(8대사유Ⅱ)',
+    field02: '100000000',
   },
   {
     id: 2,
@@ -128,7 +128,7 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 2,
-    field01: '보장 보험료50% 납입지원Ⅱ(4대유사암)',
+    field01: '보장 보험료50% 납입지원Ⅱ(4대유사암) 보장 보험료50% 납입지원Ⅱ(4대유사암)',
   },
   {
     id: 3,
@@ -139,8 +139,8 @@ const DummyData2: DummyDataType2[] = [
 const DummyData3: DummyDataType3[] = [
   {
     id: 1,
-    field01: '보험료납입면제대상보장(8대사유Ⅱ)',
-    field02: '5년 0개월',
+    field01: '보험료납입면제대상보장(8대사유Ⅱ) 보험료납입면제대상보장(8대사유Ⅱ)',
+    field02: '05년 00개월',
   },
   {
     id: 2,
@@ -185,8 +185,7 @@ const Ltpz100 = () => {
     {
       headerName: '제한 담보명',
       field: 'field01',
-      flex: 3,
-      minWidth: attributeColumnWidth(220),
+      flex: 10,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType1>({ field: 'field01' }),
     },
@@ -214,7 +213,7 @@ const Ltpz100 = () => {
     {
       headerName: '부담보부위명',
       field: 'field01',
-      flex: 3,
+      flex: 10,
       minWidth: attributeColumnWidth(220),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field01' }),
@@ -223,7 +222,7 @@ const Ltpz100 = () => {
       headerName: '기간',
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(90),
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       valueFormatter: numberValueFormatter,
     },
@@ -298,6 +297,8 @@ const Ltpz100 = () => {
                     resizable: true,
                   }}
                   domLayout={'normal'}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
             </Grid>
@@ -321,6 +322,8 @@ const Ltpz100 = () => {
                     resizable: true,
                   }}
                   domLayout={'normal'}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
             </Grid>

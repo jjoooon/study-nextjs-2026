@@ -42,8 +42,8 @@ const comparisonRows: ComparisonRow[] = [
     id: 1,
     state: '보통약관',
     code: 'A001',
-    term1: '2026-11-11',
-    term2: '2026-11-11',
+    term1: '2026-00-00',
+    term2: '2026-00-00',
     coverage: '보통약관(상해80%이상후유장해) 보통약관(상해80%이상후유장해)',
     premium: 3000,
   },
@@ -63,7 +63,7 @@ const comparisonRows: ComparisonRow[] = [
     term1: '2026-11-11',
     term2: '2026-11-11',
     coverage: '상해사망(간편)',
-    premium: 15000000,
+    premium: 150000000,
   },
   {
     id: 4,
@@ -175,7 +175,7 @@ const Ltpz011 = () => {
       headerName: '보험료',
       field: 'premium',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(75),
       cellClass: 'text-right',
       cellRenderer: (params: ICellRendererParams<ComparisonRow>) =>
         // 숫자에 천 단위 콤마(,)를 찍어서 보기 좋게 표시
