@@ -43,14 +43,14 @@ const Ltpz056 = () => {
           <TableFold variant="default">
             <TableFoldHead title="카카오알림톡 발송대상"></TableFoldHead>
             <TableFoldBody>
-              <FormTable caption="FormTable 예시" className="" cols={['w-[20%]', 'w-auto']} lineTop variant="default">
+              <FormTable caption="FormTable 예시" className="" cols={['w-[8rem]', 'w-auto']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'취급자'} variant="default">
-                    <Input aria-label="" width={'11rem'} value={'이한화'} readOnly />
+                    <Input aria-label="" width={'9rem'} value={'이한화화'} readOnly />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={'8rem'} value={'123123'} readOnly />
+                    <Input aria-label="" width={'9rem'} value={'123123'} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
