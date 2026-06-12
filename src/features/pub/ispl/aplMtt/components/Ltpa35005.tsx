@@ -232,6 +232,7 @@ export const Ltpa35005 = () => {
   // M5. useState 추가
   const [firstPay, setFirstPay] = React.useState<string>('선택');
   const [morePay, setMorePay] = React.useState<string>('선택');
+  const isSimilarContractCheckRequired = true; //4-1 특정조건인 경우 문구 노출
 
   return (
     <LayoutTemplateLTPA350MainBody
@@ -377,7 +378,11 @@ export const Ltpa35005 = () => {
                               </Grow>
                               {/* //M1. 정렬관련 수정 */}
                               <Grow placement="bwc" className="w-full">
-                                <RadioGroupItem value="아니요">아니요</RadioGroupItem>
+                                <RadioGroupItem value="아니요">
+                                  아니요
+                                  {isSimilarContractCheckRequired && '(타사 정상 유사계약현황 확인 필수)'}
+                                </RadioGroupItem>
+
                                 <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                                   유사계약현황
                                 </Button>

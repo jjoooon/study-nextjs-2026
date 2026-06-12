@@ -199,7 +199,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
             beforeAddFile={handleBeforeAddFile}
             credits={false}
             allowMultiple={true}
-            allowReorder={true}
+            allowReorder={false}
             maxFiles={500}
             acceptedFileTypes={ACCEPTED_FILE_TYPES}
             maxFileSize={MAX_FILE_SIZE}
@@ -223,6 +223,9 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
             styleButtonProcessItemPosition="right"
             styleLoadIndicatorPosition="right"
             styleProgressIndicatorPosition="right"
+            itemInsertInterval={0}
+            stylePanelLayout="compact"
+            styleItemPanelAspectRatio={null}
           />
 
           <Grow className="w-full" placement="ec">
