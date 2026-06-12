@@ -861,6 +861,7 @@
 .ag-select-list {
   max-height: 200px !important; /* 원하시는 높이로 조절 */
   overflow-y: auto !important;   /* 항목이 많으면 스크롤 생성 */
+  letter-spacing: 0 !important;
 }
 .ltpz012-final-grid .ag-cell b{
   font-weight: 700;
