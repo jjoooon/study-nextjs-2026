@@ -2,14 +2,18 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import type { CellClassParams, CellEditorSelectorResult, ColDef, EditableCallbackParams, IHeaderParams, } from 'ag-grid-enterprise';
-import { AgGridEmptyComponent, DatePickerCellEditor, useDynamicColumnWidths } from '@aggrid';
+import type {
+  CellClassParams,
+  CellEditorSelectorResult,
+  ColDef,
+  EditableCallbackParams,
+  IHeaderParams,
+} from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo } from '@atoms';
-import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
-
+import { AgGridEmptyComponent, DatePickerCellEditor, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -22,12 +26,13 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 
 import '@/shared/lib/agGridPub';
-import { Input } from '@uiux/Input';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 type LTPZ051Tab = { name: string; value: string; label: string };
 const DATA_TABS: LTPZ051Tab[] = [
@@ -54,16 +59,16 @@ type ExtraSelectableField = 'externalInsurance1' | 'externalInsurance2' | 'exter
 
 // 체크박스 렌더러에 전달되는 파라미터
 type CheckboxRendererParams<TData> = {
-  data: TData | undefined;  // 현재 행 데이터
-  value: GridCellValue;     // 셀의 현재 값
-  colDef: ColDef<TData>;    // 컬럼 정의
+  data: TData | undefined; // 현재 행 데이터
+  value: GridCellValue; // 셀의 현재 값
+  colDef: ColDef<TData>; // 컬럼 정의
 };
 
 // 원(₩) 단위 입력 에디터 props
 type WonUnitCellEditorProps = {
-  value: GridCellValue;           // 에디터의 현재 값
-  onValueChange: (value: string) => void;  // 값 변경 콜백
-  stopEditing: () => void;        // 에디팅 종료
+  value: GridCellValue; // 에디터의 현재 값
+  onValueChange: (value: string) => void; // 값 변경 콜백
+  stopEditing: () => void; // 에디팅 종료
 };
 
 // value3(추가계약정보) 탭에서 행 타입별 편집/표시 규칙에 사용
@@ -298,7 +303,8 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 13,
     type: '면책사유 및 면책사항',
-    ourInsurance1: '계약자,피보험자,수익자의 고의사고 등',
+    ourInsurance1:
+      '계약자,피보험자,수익자의 고의사고 등계약자,피보험자,수익자의 고의사고 등계약자,피보험자,수익자의 고의사고 등',
     ourInsurance2: '계약자,피보험자,수익자의 고의사고 등',
     externalInsurance1: '',
     externalInsurance2: '',
@@ -772,11 +778,12 @@ export const Ltpz063 = () => {
     cellClass: getSelectableValueCellClass,
     cellClassRules: externalInsuranceCellClassRules,
     flex: 1,
-    minWidth: attributeColumnWidth(200),
     field,
     editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
     cellEditorSelector: getMainCellEditorSelector,
     cellRenderer: checkboxRenderer,
+    autoHeight: true,
+    wrapText: true,
   });
 
   // value3 탭의 타사기존 컬럼 팩토리 (헤더 삭제 버튼 포함)
@@ -785,7 +792,7 @@ export const Ltpz063 = () => {
     headerComponent: ThirdGridHeaderWithDelete,
     headerClass: '[&_.ag-header-cell-text]:font-bold',
     cellClass: (params) => `${getSelectableValueCellClass(params)} editable-cell`,
-    width: attributeColumnWidth(200),
+    flex: 1,
     field,
     editable: ({ data }) => isType3EditableRow(data),
     cellEditorSelector: getType3CellEditorSelector,
@@ -793,34 +800,41 @@ export const Ltpz063 = () => {
       mode: 'range',
     },
     cellRenderer: checkboxRenderer3,
+    autoHeight: true,
+    wrapText: true,
   });
 
   // value1: 승환계약정보 컬럼
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
-      width: attributeColumnWidth(150),
+      width: attributeColumnWidth(130),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center font-bold',
       field: 'type',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '당사신규',
-      width: attributeColumnWidth(200),
+      flex: 1,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getValueCellClass,
       field: 'ourInsurance1',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '당사기존',
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getSelectableValueCellClass,
       flex: 1,
-      minWidth: attributeColumnWidth(200),
       field: 'ourInsurance2',
       cellRenderer: checkboxRenderer,
+      autoHeight: true,
+      wrapText: true,
     },
     createMainExternalColumn('externalInsurance1'),
     createMainExternalColumn('externalInsurance2'),
@@ -829,28 +843,33 @@ export const Ltpz063 = () => {
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '구분',
-      width: attributeColumnWidth(150),
+      width: attributeColumnWidth(130),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center font-bold',
       field: 'type',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '당사신규',
-      width: attributeColumnWidth(200),
+      flex: 1,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getValueCellClass,
       field: 'ourInsurance1',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '당사기존',
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getSelectableValueCellClass,
       flex: 1,
-      minWidth: attributeColumnWidth(200),
       field: 'ourInsurance2',
       cellRenderer: checkboxRenderer2,
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '타사기존',
@@ -858,11 +877,12 @@ export const Ltpz063 = () => {
       cellClass: getSelectableValueCellClass,
       cellClassRules: externalInsuranceCellClassRules,
       flex: 1,
-      minWidth: attributeColumnWidth(200),
       field: 'externalInsurance1',
       editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
       cellEditorSelector: getMainCellEditorSelector,
       cellRenderer: checkboxRenderer2,
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '타사기존',
@@ -870,30 +890,35 @@ export const Ltpz063 = () => {
       cellClass: getSelectableValueCellClass,
       cellClassRules: externalInsuranceCellClassRules,
       flex: 1,
-      minWidth: attributeColumnWidth(200),
       field: 'externalInsurance2',
       editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
       cellEditorSelector: getMainCellEditorSelector,
       cellRenderer: checkboxRenderer2,
+      autoHeight: true,
+      wrapText: true,
     },
   ];
   // value3: 추가계약정보 컬럼
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
       headerName: '구분',
-      width: attributeColumnWidth(150),
+      width: attributeColumnWidth(130),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center font-bold',
       field: 'type',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '당사신규',
-      width: attributeColumnWidth(200),
+      flex: 1,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getValueCellClass,
       field: 'ourInsurance1',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     createThirdExternalColumn('externalInsurance3'),
     createThirdExternalColumn('externalInsurance3'),
@@ -903,7 +928,7 @@ export const Ltpz063 = () => {
   // 탭 선택값에 따라 그리드를 분기 렌더링
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="full">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

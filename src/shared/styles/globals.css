@@ -661,7 +661,7 @@
     transform: none !important;
     height: auto !important;
     bottom: 0 !important;
-    padding: 0 0 2rem !important;
+    padding: 2rem 0 !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     /* min-height: 12rem !important; */
@@ -754,8 +754,23 @@
     top: 1.6rem !important;
     right: 1rem !important;
     cursor: pointer;
+    display: none !important;
   }
-
+  .filepond--file-action-button.filepond--action-remove-item {
+    display: flex !important;
+    cursor: pointer !important;
+    background-color: var(--color-blue-gray-50) !important;
+  }
+  .filepond--browser[name="files"] + .filepond--drop-label {
+    display: flex !important;
+  }
+  .filepond--browser[name="files"] ~ .filepond--list-scroller {
+    padding: 0 !important;
+  }
+  .filepond--drop-label{
+    height: 100% !important;
+    display: none !important;
+  }
   .filepond--drop-label::before {
     content: "";
     display: block;
@@ -787,7 +802,9 @@
     background: transparent !important;
     border: none !important;
   }
-
+  .filepond--root {
+    justify-content: flex-start !important;
+  }
   .filepond--root .filepond--list-scroller {
     margin: 0 !important;
   }
