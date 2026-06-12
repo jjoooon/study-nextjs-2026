@@ -995,6 +995,13 @@ export default function Ltpa680Section() {
                   많이 찾는 질병
                 </Typo>
                 <Gcol variant={'box-round'} placement={'bwc'}>
+                  {/*
+                    많이 찾는 질병 목록을 라디오 버튼으로 표시
+                    [selectedDisease 연동]
+                    - onValueChange={setSelectedDisease}: 항목 클릭 시 selectedDisease 상태 업데이트
+                    - value={selectedDisease}: 현재 선택된 질병을 라디오 버튼에 반영
+                    - selectedDisease가 변경되면 우측 패널 상단(질병명 + TooltipQ)이 조건부 표시됨
+                  */}
                   <RadioGroup className="gap-1" onValueChange={setSelectedDisease} value={selectedDisease} width="full">
                     {[
                       { value: '대장·직장용종', label: '대장·직장용종' },
@@ -1009,13 +1016,16 @@ export default function Ltpa680Section() {
                       { value: '자궁근종', label: '자궁근종' },
                     ].map((option) => {
                       const label = option.label;
+                      // 8자 초과 라벨은 말줄임 처리 후 툴팁으로 전체 텍스트 표시
                       const isLongLabel = label.length > 8;
                       const item = (
+                        // 버튼 텍스트는 최대 8자까지만 표시
                         <RadioGroupItem value={option.value} color="primary" size="lg" variant="button">
                           {label.slice(0, 8)}
                         </RadioGroupItem>
                       );
 
+                      // 8자 이하: 툴팁 불필요, 그대로 렌더링
                       if (!isLongLabel) {
                         return (
                           <React.Fragment key={option.value}>
@@ -1024,6 +1034,7 @@ export default function Ltpa680Section() {
                         );
                       }
 
+                      // 8자 초과: 호버 시 전체 라벨을 툴팁으로 노출
                       return (
                         <Tooltip key={option.value}>
                           <TooltipTrigger asChild>{item}</TooltipTrigger>
@@ -1117,14 +1128,22 @@ export default function Ltpa680Section() {
               </Grid>
               <Grid className="w-full p-2.5" variant={'box-line'} placement="ss" gap={3}>
                 
+                {/*
+                  [selectedDisease 연동] 좌측 '많이 찾는 질병' 라디오 버튼 선택 시 렌더링
+                  - selectedDisease가 빈 문자열('')이면 이 블록 전체가 숨겨짐
+                  - 라디오 버튼 클릭 → setSelectedDisease 호출 → selectedDisease 업데이트 → 이 블록 표시
+                */}
                 {selectedDisease && (
                   <Grow placement="sc">
+                    {/* 라디오 버튼에서 선택된 질병명을 그대로 표시 */}
                     <Typo variant={'body-lg'} weight={'bold'} color={'primary'}>
                       {selectedDisease}
                     </Typo>
+                    {/* 질병 상세 정보 툴팁 (할증·부담보·SI경증 뱃지 및 관련 질병명 목록) */}
                     <TooltipQ>
                       <Gcol placement={'ss'} gap={1.5}>
                         <Typo className="body-md font-bold">척추염좌</Typo>
+                        {/* 심사 유형 뱃지 */}
                         <Grow>
                           <Badge color="primary" size="md" variant="contained">
                             할증
@@ -1136,6 +1155,7 @@ export default function Ltpa680Section() {
                             SI경증
                           </Badge>
                         </Grow>
+                        {/* 관련 질병명 목록 */}
                         <Typo tag={'p'} className="text-wrap">
                           경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및 간장, 흉추의 염좌 및 긴장,
                           요추의 염좌 및 긴장
