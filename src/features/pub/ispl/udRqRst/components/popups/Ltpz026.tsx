@@ -133,7 +133,7 @@ const DummyData: DummyDataType[] = [
     id: 1,
     isChecked: true,
     field01: 'S92',
-    field02: '발등골절',
+    field02: '발등골절 발등골절 발등골절 발등골절 발등골절 발등골절 발등골절 발등골절 발등골절 발등골절 발등골절 발등골절',
     field03: '2020-09-05',
     field04: '2021-03-08',
     field05: '22(2021-01-08~2021-02-01)',
@@ -291,12 +291,12 @@ const DummyDataT1: DummyDataTypeT1[] = [
   {
     id: 1,
     field01: '보험료납입면제대상보장(8대사유Ⅱ)',
-    field02: '10000',
+    field02: '1000000',
   },
   {
     id: 2,
     field01: '보장 보험료50% 납입지원Ⅱ(4대유사암)',
-    field02: '10000',
+    field02: '100000',
   },
   {
     id: 3,
@@ -369,7 +369,7 @@ const DummyDataT2: DummyDataTypeT2[] = [
   {
     id: 1,
     field01: '보험료납입면제대상보장(8대사유Ⅱ)',
-    field02: '10000',
+    field02: '1000000',
   },
   {
     id: 2,

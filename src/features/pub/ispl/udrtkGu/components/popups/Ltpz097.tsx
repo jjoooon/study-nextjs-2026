@@ -121,6 +121,7 @@ const Ltpz097 = () => {
       spanRows: true,
       autoHeight: true,
       cellClass: `whitespace-pre-line`,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'accName' }),
     },
     {
       headerName: '누적위험명',
@@ -163,6 +164,7 @@ const Ltpz097 = () => {
       spanRows: true,
       autoHeight: true,
       cellClass: `whitespace-pre-line`,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'upperAccName' }),
     },
     {
       headerName: '누적위험명',

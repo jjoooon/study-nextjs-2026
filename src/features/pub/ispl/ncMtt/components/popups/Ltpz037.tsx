@@ -70,7 +70,7 @@ const Ltpz037 = () => {
             </Typo>
             <Table variant="default">
               <colgroup>
-                <col style={{ width: '10rem' }} />
+                <col style={{ width: '8rem' }} />
                 <col style={{ width: 'auto' }} />
               </colgroup>
               <TableBody>
@@ -79,8 +79,8 @@ const Ltpz037 = () => {
                   <TableCell>
                     <Grow placement="bwc">
                       <Grow>
-                        <Input width={62} value={'김한화'} readOnly />
-                        <Input width={116} value={'900110-1******'} readOnly />
+                        <Input width={70} value={'김한화화'} readOnly />
+                        <Input width={115} value={'900110-1******'} readOnly />
                         <Button
                           aria-label="검색"
                           variant={'outlined'}
@@ -104,7 +104,7 @@ const Ltpz037 = () => {
                   <TableHead className="text-left">휴대폰번호</TableHead>
                   <TableCell>
                     <Grow placement="ss">
-                      <Input width={130} value={'010-1111-1111'} readOnly />
+                      <Input width={110} value={'010-0000-0000'} readOnly />
                       <Button variant={'outlined'} size={'lg'} color={'gray-light'}>
                         인증번호 발송
                       </Button>
@@ -115,7 +115,7 @@ const Ltpz037 = () => {
                   <TableHead className="text-left">인증번호</TableHead>
                   <TableCell>
                     <Grow placement="ss">
-                      <Input width={130} value={''} />
+                      <Input width={110} value={''} />
                       <Button variant={'outlined'} size={'lg'} color={'gray-light'}>
                         인증확인
                       </Button>

@@ -52,7 +52,7 @@ const DummyData1: DummyDataType1[] = [
   {
     id: 1,
     field01: 'S92',
-    field02: '발등골절',
+    field02: '발등골절 발등골절 발등골절 발등골절 발등골절',
     field03: '2020-09-05',
     field04: '2021-03-08',
     field05: '22(2021-01-08~2021-02-01)',
@@ -126,8 +126,8 @@ const DummyData1: DummyDataType1[] = [
 const DummyData2: DummyDataType2[] = [
   {
     id: 1,
-    field01: '보험료납입면제대상보장(8대사유Ⅱ)',
-    field02: '10000',
+    field01: '보험료납입면제대상보장(8대사유Ⅱ) 보험료납입면제대상보장(8대사유Ⅱ) 보험료납입면제대상보장(8대사유Ⅱ)',
+    field02: '100000000',
   },
   {
     id: 2,
@@ -175,6 +175,7 @@ const Ltpz096 = () => {
       headerName: '질병명',
       field: 'field02',
       flex: 10,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field02' }),
     },
     {
       headerName: '원사고발생일',
@@ -332,6 +333,8 @@ const Ltpz096 = () => {
                   resizable: true,
                 }}
                 domLayout={'normal'}
+                tooltipShowMode="whenTruncated"
+                tooltipShowDelay={0}
               />
             </div>
           </Grid>
