@@ -325,6 +325,7 @@ export default function Ltpa570Section() {
     return [...organizationColumnsByGroupBy[groupBy], ...metricColumns];
   }, [groupBy, attributeColumnWidth]);
 
+  const gridRef = React.useRef<any>(null);
   const pageSize = 2;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa570DummyData,
@@ -487,6 +488,7 @@ export default function Ltpa570Section() {
               </Grow>
               <div className="ag-theme-alpine ltpa010-grid">
                 <AgGridReact<Ltpa570DummyDataRow>
+                  ref={gridRef}
                   key={groupBy}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
@@ -504,6 +506,7 @@ export default function Ltpa570Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 loadedCount={loadedCount}
                 totalCount={totalCount}
                 pageSize={pageSize}

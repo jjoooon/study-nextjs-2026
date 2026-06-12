@@ -3,6 +3,12 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { Grid, Grow, Gcol } from '@atoms';
+import { ResetIcon, SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
@@ -10,7 +16,9 @@ import {
   useAgGridInfiniteAppend,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Grid, Grow, Gcol } from '@atoms';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -19,16 +27,8 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -192,6 +192,7 @@ const DummyData: DummyDataType[] = [
 
 export default function Ltpa500Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const gridRef = React.useRef<any>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
@@ -421,6 +422,7 @@ export default function Ltpa500Section() {
                 <Gcol>
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
+                      ref={gridRef}
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={visibleRows}
@@ -440,6 +442,7 @@ export default function Ltpa500Section() {
                     />
                   </div>
                   <TableMore
+                    gridRef={gridRef}
                     isAll={true}
                     loadedCount={loadedCount}
                     totalCount={totalCount}

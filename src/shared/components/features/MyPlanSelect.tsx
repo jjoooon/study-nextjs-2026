@@ -40,7 +40,7 @@ export const MyPlanSelect = <TItem extends ItemBase>({
 
   return (
     // SelectDrop + Accordion 조합으로 "드롭다운 내부 다중 펼침 목록" UI 구성
-    <SelectDrop typeMode="custom" size="md" width={160} placeholder={placeholder} readOnly={readOnly}>
+    <SelectDrop typeMode="custom" size="md" width={120} placeholder={placeholder} readOnly={readOnly}>
       <Gcol className="w-full p-[0.2rem]">
         {/* 상단 고정 액션 버튼 */}
         <Button variant="outlined" size="md" className="w-full">

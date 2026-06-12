@@ -15,7 +15,7 @@ import { KeyValueList } from '@common/KeyValueList';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { createExpiryCellRenderer, productNameCellRenderer, searchButtonRenderer } from '@grid/CellRenderers';
-import { ProductNameHeader, HeaderWithUnit } from '@grid/HeadRenderers';
+import { ProductNameHeader, HeaderWithUnit, AgGridProductNameHeader } from '@grid/HeadRenderers';
 import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
@@ -24,7 +24,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@uiux/Resizable';
 import type { CellClassParams, ColDef, EditableCallbackParams, CellEditorSelectorResult } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData, dummyData2 } from '../data/ltpa35002cData';
 import type { DummyData2Type, DummyDataType } from '../data/ltpa35002cData';
@@ -57,7 +57,13 @@ export function Ltpa35002c() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [rowData] = useState<AgGridRow[]>(dummyData);
   const [rowData2] = useState<AgGridRow2[]>(dummyData2);
-  const [coverageName, setCoverageName] = useState('');
+  const [coverageName, _setCoverageName] = useState('');
+  const coverageNameRef = useRef(coverageName);
+
+  const setCoverageName = useCallback((value: string) => {
+    _setCoverageName(value);
+    coverageNameRef.current = value;
+  }, []);
 
   // =====================
   // 핸들러/콜백
@@ -69,19 +75,7 @@ export function Ltpa35002c() {
     []
   );
 
-  const productNameHeader = useCallback(
-    () => (
-      <ProductNameHeader
-        coverageName={coverageName}
-        onCoverageNameChange={setCoverageName}
-        showProductNameTooltip={showProductNameTooltip}
-        onShowProductNameTooltipChange={(checked) => setShowProductNameTooltip(!!checked)}
-        checkedMap={checkedMap}
-        onCheckedChange={handleCheckedChange}
-      />
-    ),
-    [checkedMap, coverageName, showProductNameTooltip, handleCheckedChange]
-  );
+
 
   // =====================
   // 공용 유틸리티/셀 렌더러
@@ -269,7 +263,7 @@ export function Ltpa35002c() {
         field: 'title',
         flex: 10,
         cellClass: 'text-left',
-        headerComponent: productNameHeader,
+        headerComponent: AgGridProductNameHeader,
         cellRenderer: productNameCellRenderer,
         tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시
       },
@@ -376,7 +370,7 @@ export function Ltpa35002c() {
         cellRenderer: getExpiryRenderer('center'),
       },
     ],
-    [attributeColumnWidth, getExpiryRenderer, productNameHeader]
+    [attributeColumnWidth, getExpiryRenderer]
   );
 
   return (
@@ -460,6 +454,15 @@ export function Ltpa35002c() {
                   columnDefs={columnDefs2}
                   getRowId={(params) => String(params.data.id)}
                   singleClickEdit={true}
+                  context={{
+                    coverageName,
+                    setCoverageName,
+                    showProductNameTooltip,
+                    onShowProductNameTooltipChange: (checked: boolean | 'indeterminate') =>
+                      setShowProductNameTooltip(checked === true),
+                    checkedMap,
+                    onCheckedChange: handleCheckedChange,
+                  }}
                   // onRowDataUpdated={handleRowDataUpdated}
                   tooltipShowDelay={0}
                   tooltipHideDelay={9999}

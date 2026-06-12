@@ -228,6 +228,7 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa490Section() {
+  const gridRef = React.useRef<any>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
@@ -533,6 +534,7 @@ export default function Ltpa490Section() {
                   <Gcol className="w-full" gap={1}>
                     <div className="ag-theme-alpine h-full">
                       <AgGridReact<DummyDataType>
+                        ref={gridRef}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={visibleRows}
                         columnDefs={columnDefs}
@@ -541,6 +543,7 @@ export default function Ltpa490Section() {
                       />
                     </div>
                     <TableMore
+                      gridRef={gridRef}
                       isAll={false}
                       loadedCount={loadedCount}
                       totalCount={totalCount}

@@ -358,6 +358,7 @@ export default function Ltpa200Section() {
 
   // agGrid 행추가
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+  const gridRef = React.useRef<any>(null);
   const handleAddRow = React.useCallback(() => {
     const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
     const newRow: DummyDataType = {
@@ -504,6 +505,7 @@ export default function Ltpa200Section() {
                 <Gcol className="w-full" gap={1}>
                   <div className="ag-theme-alpine min-h-[18.4rem]">
                     <AgGridReact<DummyDataType>
+                      ref={gridRef}
                       // getRowId 적용: id 필드를 고유 식별자로 사용
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -533,6 +535,7 @@ export default function Ltpa200Section() {
                     />
                   </div>
                   <TableMore
+                    gridRef={gridRef}
                     isAll={false}
                     loadedCount={loadedCount}
                     totalCount={totalCount}

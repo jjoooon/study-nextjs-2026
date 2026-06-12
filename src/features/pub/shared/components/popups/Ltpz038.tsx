@@ -1,4 +1,4 @@
-﻿/*
+/*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
@@ -416,6 +416,7 @@ const Ltpz038 = () => {
               />
             </div>
             <TableMore
+              gridRef={gridRef}
               loadedCount={loadedCount}
               totalCount={totalCount}
               pageSize={pageSize}

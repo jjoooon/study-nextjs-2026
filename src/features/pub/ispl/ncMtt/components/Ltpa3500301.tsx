@@ -1,4 +1,4 @@
-﻿/*
+/*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
@@ -299,6 +299,7 @@ export const Ltpa3500301 = ({
     },
   ];
 
+  const gridRef = React.useRef<any>(null);
   const pageSize = 4;
   const [isAllLoaded, setIsAllLoaded] = React.useState(false);
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext, setLoadedCount } = useAgGridInfiniteAppend({
@@ -907,6 +908,7 @@ export const Ltpa3500301 = ({
               <Grid className="w-full">
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
+                    ref={gridRef}
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     // rowData={rowData}
@@ -922,6 +924,7 @@ export const Ltpa3500301 = ({
                   />
                 </div>
                 <TableMore
+                  gridRef={gridRef}
                   loadedCount={loadedCount}
                   totalCount={totalCount}
                   pageSize={pageSize}

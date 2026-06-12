@@ -131,6 +131,7 @@ const Ltpz080 = () => {
   );
 
   const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
+  const gridRef = React.useRef<any>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
     allRows: rowData1,
@@ -211,6 +212,7 @@ const Ltpz080 = () => {
           <Gcol>
             <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
               <AgGridReact<DummyData1Type>
+                ref={gridRef}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData1.slice(0, loadedCount)}
@@ -228,6 +230,7 @@ const Ltpz080 = () => {
               />
             </div>
             <TableMore
+              gridRef={gridRef}
               isAll={false}
               loadedCount={loadedCount}
               totalCount={totalCount}

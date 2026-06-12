@@ -195,6 +195,7 @@ export default function Ltpa400Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   // 2026-05-22 페이징 추가
+  const gridRef = React.useRef<any>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa400DummyData2,
@@ -699,6 +700,7 @@ export default function Ltpa400Section() {
                     <div className="ag-theme-alpine">
                       {/* 2026-05-22 체크박스 삭제 */}
                       <AgGridReact<Ltpa400DummyDataRow2>
+                        ref={gridRef}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
                         // rowData={Ltpa400DummyData2}
@@ -716,6 +718,7 @@ export default function Ltpa400Section() {
                     </div>
                     {/* 2026-05-22 페이징 추가 */}
                     <TableMore
+                      gridRef={gridRef}
                       isAll={true}
                       loadedCount={loadedCount}
                       totalCount={totalCount}

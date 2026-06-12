@@ -541,7 +541,7 @@
     white-space: nowrap;
     width: 0.1rem;
   }
-/* 
+  /* 
   ::-webkit-scrollbar {
     width: 1.6rem;
     height: 0;
@@ -565,23 +565,24 @@
     background-color: #9ca3af;
   } 
  */
- /* ::-webkit-scrollbar {
-  width: 1.5rem !important; 
-  height: 1.5rem !important; 
-}
-::-webkit-scrollbar-track {
-  background: transparent; 
-  border-radius: 0rem;
-}
-::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius:2rem; 
-  border: 0.4rem solid #ffffff;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8; 
-} */
 
+  ::-webkit-scrollbar {
+    width: 1.5rem !important; 
+    height: 1.5rem !important; 
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+    border-radius: 0rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius:2rem; 
+    border: 0.6rem solid #ffffff;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8; 
+    border: 0.4rem solid #ffffff;
+  }
 
   input::placeholder {
     font-family: 'Pretendard', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;

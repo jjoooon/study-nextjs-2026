@@ -231,10 +231,11 @@
 .ag-theme-alpine ::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius:2rem; 
-  border: 0.4rem solid #f1f1f1;
+  border: 0.6rem solid #f1f1f1;
 }
 .ag-theme-alpine ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8; 
+  border: 0.4rem solid #f1f1f1;
 }
 
 .ag-header-viewport {

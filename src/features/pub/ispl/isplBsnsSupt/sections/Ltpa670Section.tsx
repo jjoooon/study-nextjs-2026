@@ -109,6 +109,7 @@ export default function Ltpa670Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
   const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
+  const gridRef = React.useRef<any>(null);
 
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
@@ -258,6 +259,7 @@ export default function Ltpa670Section() {
               <div className="ag-theme-alpine">
                 {/* 2026-06-04 suppressClickEdit 삭제 */}
                 <AgGridReact<DummyData1Type>
+                  ref={gridRef}
                   onGridReady={(event) => {
                     gridApiRef.current = event.api;
                   }}
@@ -303,6 +305,7 @@ export default function Ltpa670Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 isAll={false}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

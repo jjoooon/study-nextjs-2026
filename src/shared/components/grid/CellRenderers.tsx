@@ -3,14 +3,14 @@
  */
 'use client';
 
-import { editableSelectCellRenderer } from '@aggrid';
-import { CoveragePopover } from '@aggrid';
-import { Gcol, Grow } from '@atoms';
-import { SearchIcon } from '@icons';
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
 import type { ICellRendererParams, IGroupCellRendererParams, IRowNode } from 'ag-grid-enterprise';
 import type { ReactNode } from 'react';
+import { Gcol, Grow } from '@atoms';
+import { SearchIcon } from '@icons';
+import { editableSelectCellRenderer } from '@aggrid';
+import { CoveragePopover } from '@aggrid';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
 
 type ProductNameCellBase = {
   id: string | number;
@@ -61,8 +61,25 @@ export function productNameCellRenderer<
   T extends ProductNameCellBase,
   D extends ProductTitleDetail = ProductTitleDetail,
 >(params: IGroupCellRendererParams<T & { titleDetail?: D }> & ICellRendererParams<T & { titleDetail?: D }>) {
-  const { data } = params;
+  const { data, context } = params;
   if (!data) return null;
+
+  const coverageName = context?.coverageName;
+  const title = String(data.title ?? '');
+
+  // 검색어가 있을 경우 하이라이트 처리
+  const highlightedTitle: React.ReactNode =
+    coverageName && coverageName.trim()
+      ? title.split(new RegExp(`(${coverageName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')).map((part, i) =>
+          part.toLowerCase() === coverageName.toLowerCase() ? (
+            <b className="text-[var(--color-primary-50)]" key={i}>
+              {part}
+            </b>
+          ) : (
+            part
+          )
+        )
+      : title;
 
   const displayOrder: string | number = data.isDuplicate ? '' : (data.num ?? '');
 
@@ -100,9 +117,12 @@ export function productNameCellRenderer<
       )}
 
       {!data.isDuplicate ? (
-        <CoveragePopover text={String(data.title ?? '')} items={data.titleDetail as ProductTitleDetail | undefined} />
+        <CoveragePopover
+          text={highlightedTitle as unknown as string}
+          items={data.titleDetail as ProductTitleDetail | undefined}
+        />
       ) : (
-        <p className="truncate-no w-full pl-1.5 flex-1">{data.title ?? ''}</p>
+        <p className="truncate-no w-full pl-1.5 flex-1">{highlightedTitle}</p>
       )}
       {renderBadges(data.badge)}
     </Grow>

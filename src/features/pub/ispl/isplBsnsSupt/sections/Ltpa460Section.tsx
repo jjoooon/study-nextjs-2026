@@ -199,6 +199,7 @@ export default function Ltpa460Section() {
     return <p className="truncate w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
   }, []);
 
+  const gridRef = React.useRef<any>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: rowData,
@@ -443,6 +444,7 @@ export default function Ltpa460Section() {
               </Grow>
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
+                  ref={gridRef}
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={visibleRows}
@@ -452,6 +454,7 @@ export default function Ltpa460Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 isAll={false}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

@@ -320,6 +320,7 @@ export default function Ltpa600Section() {
 
   // 시뮬레이션 -------------
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
+  const gridRef = React.useRef<any>(null);
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
     useAgGridInfiniteAppend({
@@ -519,6 +520,7 @@ export default function Ltpa600Section() {
 
                 <div className="ag-theme-alpine radio-selection">
                   <AgGridReact<DummyData2Type>
+                    ref={gridRef}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData2.slice(0, loadedCount)}
@@ -552,6 +554,7 @@ export default function Ltpa600Section() {
                 </div>
               </Grid>
               <TableMore
+                gridRef={gridRef}
                 isAll={true}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

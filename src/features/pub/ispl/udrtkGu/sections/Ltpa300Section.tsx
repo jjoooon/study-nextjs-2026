@@ -253,6 +253,7 @@ export default function Ltpa300Section() {
     ],
     [attributeColumnWidth]
   );
+  const gridRef = React.useRef<any>(null);
   const pageSize = 4;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa300DummyData,
@@ -419,6 +420,7 @@ export default function Ltpa300Section() {
               <TableFoldBody className="grid-rows-[1fr_auto] gap-1">
                 <div className="ag-theme-alpine min-h-[18.4rem]">
                   <AgGridReact<Ltpa300DummyDataRow>
+                    ref={gridRef}
                     // noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
                     columnDefs={columnDefs}
@@ -437,6 +439,7 @@ export default function Ltpa300Section() {
                   />
                 </div>
                 <TableMore
+                  gridRef={gridRef}
                   loadedCount={loadedCount}
                   totalCount={totalCount}
                   pageSize={pageSize}

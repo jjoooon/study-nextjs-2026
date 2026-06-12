@@ -20,6 +20,7 @@ import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { useRef } from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -98,6 +99,7 @@ export default function Ltpa690Section() {
   ];
 
   // pagination
+  const gridRef = useRef<any>(null);
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
@@ -167,6 +169,7 @@ export default function Ltpa690Section() {
                   <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                     {/* 2026-06-01 resizable true로 수정, selectionColumnDef 추가 */}
                     <AgGridReact<DummyDataType>
+                      ref={gridRef}
                       key={loadedCount}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
@@ -193,6 +196,7 @@ export default function Ltpa690Section() {
                     />
                   </div>
                   <TableMore
+                    gridRef={gridRef}
                     loadedCount={loadedCount}
                     totalCount={totalCount}
                     pageSize={pageSize}
