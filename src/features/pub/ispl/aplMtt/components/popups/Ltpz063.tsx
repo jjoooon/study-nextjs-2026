@@ -8,6 +8,7 @@ import type {
   ColDef,
   EditableCallbackParams,
   IHeaderParams,
+  PostSortRowsParams,
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
@@ -747,17 +748,17 @@ export const Ltpz063 = () => {
     // '승환' 행은 체크박스, 일반 행은 문자열/숫자 값 표시
     const CheckboxCellRenderer = (params: CheckboxRendererParams<TData>) =>
       isSwitchoverRow(params.data) ? (
-        <Checkbox
-          checked={isCheckedValue(params.value)}
-          color="primary"
-          errorMsg="선택은 필수입니다."
-          errorPs="bl"
-          onCheckedChange={(checked) => onChange(params, checked)}
-          size="lg"
-          variant="noneText"
-        >
-          단일
-        </Checkbox>
+        <div className="flex w-full justify-center">
+          <Checkbox
+            checked={isCheckedValue(params.value)}
+            color="primary"
+            onCheckedChange={(checked) => onChange(params, checked)}
+            size="lg"
+            variant="noneText"
+          >
+            단일
+          </Checkbox>
+        </div>
       ) : (
         getValueWithUnit(params.data, params.value)
       );
@@ -770,6 +771,19 @@ export const Ltpz063 = () => {
   const checkboxRenderer = createCheckboxCellRenderer(handleCheckboxChange);
   const checkboxRenderer2 = createCheckboxCellRenderer(handleCheckboxChange2);
   const checkboxRenderer3 = createCheckboxCellRenderer(handleCheckboxChange3);
+
+  const keepSwitchoverRowAtBottom = (params: PostSortRowsParams<DummyDataType3>) => {
+    for (let index = params.nodes.length - 1; index >= 0; index -= 1) {
+      const rowNode = params.nodes[index];
+
+      if (!isSwitchoverRow(rowNode.data)) {
+        continue;
+      }
+
+      params.nodes.splice(index, 1);
+      params.nodes.push(rowNode);
+    }
+  };
 
   // value1 탭의 타사기존 컬럼 팩토리
   const createMainExternalColumn = (field: 'externalInsurance1' | 'externalInsurance2'): ColDef<DummyDataType> => ({
@@ -920,8 +934,8 @@ export const Ltpz063 = () => {
       autoHeight: true,
       wrapText: true,
     },
-    createThirdExternalColumn('externalInsurance3'),
-    createThirdExternalColumn('externalInsurance3'),
+    createThirdExternalColumn('externalInsurance1'),
+    createThirdExternalColumn('externalInsurance2'),
     createThirdExternalColumn('externalInsurance3'),
   ];
 
@@ -1057,6 +1071,7 @@ export const Ltpz063 = () => {
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData3}
                   columnDefs={columnDefs3}
+                  postSortRows={keepSwitchoverRowAtBottom}
                   singleClickEdit={true}
                   defaultColDef={{
                     sortable: true,
