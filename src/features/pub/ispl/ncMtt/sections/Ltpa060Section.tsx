@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo } from '@atoms';
-import { AgGridEmptyComponent, createCellValueChangedHandler, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, createCellValueChangedHandler, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { BottomBar } from '@common/BottomBar';
@@ -86,11 +86,11 @@ const dummyData: DummyDataType[] = [
     id: 1,
     isChecked: true,
     field1: 'S92',
-    field2: '발등 골절',
+    field2: '발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절',
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '3',
+    field6: '120',
     field7: 'Y',
     field8: '미고지',
     field9: '고지필요',
@@ -102,9 +102,9 @@ const dummyData: DummyDataType[] = [
     field2: '추간판장애',
     field3: '2025-12-01',
     field4: '2021-03-02',
-    field5: '',
-    field6: '',
-    field7: 'Y',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '1000',
+    field7: 'N',
     field8: '미고지',
     field9: '고지필요',
   },
@@ -117,7 +117,7 @@ const dummyData: DummyDataType[] = [
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
     field6: '',
-    field7: 'Y',
+    field7: 'N',
     field8: '미고지',
     field9: '',
   },
@@ -165,13 +165,13 @@ const dummyData: DummyDataType[] = [
 const dummyData2: DummyDataType2[] = [
   {
     id: 1,
-    isChecked: false,
+    isChecked: true,
     field1: 'S92',
-    field2: '발등 골절',
+    field2: '발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절',
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '',
+    field6: '200',
     field7: 'Y',
     field8: '미고지',
     field9: '고지필요',
@@ -180,7 +180,7 @@ const dummyData2: DummyDataType2[] = [
     id: 2,
     isChecked: false,
     field1: 'M51',
-    field2: '추간판장애',
+    field2: '추간판장애 추간판장애 추간판장애 추간판장애 추간판장애 추간판장애 추간판장애 추간판장애',
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '',
@@ -247,24 +247,24 @@ export default function Ltpa060Section() {
     {
       headerName: '대표질병코드',
       field: 'field1',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '질병명',
       field: 'field2',
-      flex: 8,
-      minWidth: attributeColumnWidth(250),
+      flex: 40,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
     },
     {
       headerName: '원사고발생일',
       field: 'field3',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '최종사고발생일',
       field: 'field4',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '입원',
@@ -275,17 +275,17 @@ export default function Ltpa060Section() {
     {
       headerName: '통원',
       field: 'field6',
-      width: attributeColumnWidth(60),
+      width: attributeColumnWidth(50),
     },
     {
       headerName: '수술',
       field: 'field7',
-      width: attributeColumnWidth(60),
+      width: attributeColumnWidth(50),
     },
     {
       headerName: '고지여부',
       field: 'field8',
-      width: attributeColumnWidth(80),
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '체크',
@@ -307,24 +307,24 @@ export default function Ltpa060Section() {
     {
       headerName: '대표질병코드',
       field: 'field1',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '질병명',
       field: 'field2',
-      flex: 8,
-      minWidth: attributeColumnWidth(250),
+      flex: 40,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
     },
     {
       headerName: '원사고발생일',
       field: 'field3',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '최종사고발생일',
       field: 'field4',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '입원',
@@ -335,18 +335,18 @@ export default function Ltpa060Section() {
     {
       headerName: '통원',
       field: 'field6',
-      width: attributeColumnWidth(60),
+      width: attributeColumnWidth(50),
     },
     {
       // 수술 여부
       headerName: '수술',
       field: 'field7',
-      width: attributeColumnWidth(60),
+      width: attributeColumnWidth(50),
     },
     {
       headerName: '고지여부',
       field: 'field8',
-      width: attributeColumnWidth(80),
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '체크',
@@ -492,6 +492,8 @@ export default function Ltpa060Section() {
                               }
                             });
                           }}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
                           domLayout="normal"
                         />
                       </div>
@@ -555,6 +557,8 @@ export default function Ltpa060Section() {
                         }}
                         domLayout="normal"
                         alwaysShowVerticalScroll={true}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
                       />
                     </div>
                   </TableFoldBody>
