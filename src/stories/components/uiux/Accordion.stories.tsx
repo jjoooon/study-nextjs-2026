@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import * as React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+ */ import type { Meta, StoryObj } from '@storybook/react';
 import { Accordion } from '@uiux/Accordion';
+import * as React from 'react';
 
 const meta: Meta<typeof Accordion> = {
   title: 'Components/UIUX/Accordion',

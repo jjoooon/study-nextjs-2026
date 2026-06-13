@@ -19,11 +19,10 @@ import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
-
 import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
 import * as React from 'react';
+import { useMemo } from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -167,7 +166,7 @@ const treeNameCellRenderer = createTreeNameCellRenderer<DummyData2Type>();
 
 export default function Ltpa630Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  
+
   // 2026-06-04 flex, minWidth 수정
   // 담보분류 -------------
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
@@ -176,7 +175,7 @@ export default function Ltpa630Section() {
         headerName: '패키지명',
         field: 'field1',
         flex: 1,
-        minWidth: attributeColumnWidth[13],
+        minWidth: attributeColumnWidth(140),
         autoHeight: true,
         spanRows: true,
       },
@@ -184,7 +183,7 @@ export default function Ltpa630Section() {
         headerName: '세부',
         field: 'field2',
         flex: 6,
-        minWidth: attributeColumnWidth[30],
+        minWidth: attributeColumnWidth(300),
         autoHeight: true,
       },
     ],
@@ -221,7 +220,7 @@ export default function Ltpa630Section() {
         headerName: '담보명',
         field: 'field2',
         flex: 6,
-        minWdith: attributeColumnWidth[30],
+        minWidth: attributeColumnWidth(300),
         cellClass: (params) =>
           params.data && params.data.filePath.length === 1
             ? 'editable-cell'
@@ -231,14 +230,10 @@ export default function Ltpa630Section() {
       {
         headerName: '구분',
         field: 'field3',
-        cellClass: 'text-center',
+        cellClass: '[&>*]:justify-center',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(90),
         cellRenderer: treeNameCellRenderer,
-        cellRendererParams: {
-          className: 'block w-full text-center',
-          buttonClassName: 'justify-center text-center',
-        },
       },
     ],
     [attributeColumnWidth]

@@ -3,39 +3,6 @@
  */
 'use client';
 
-import {
-  createCellClickSelectionToggleHandler,
-  createInsertCopiedRowButtonCellRenderer,
-  getNextNumericRowId,
-  numberValueFormatter,
-  patchCopiedDuplicateRow,
-  rowDataWithTrackingFactory,
-  useDynamicColumnWidths,
-  AgGridEmptyComponent,
-  AmountWithPopoverCellEditor,
-} from '@aggrid';
-import { Divider, Gcol, Grow, Grid } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { KeyValueList } from '@common/KeyValueList';
-import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
-import { TextSelectChange } from '@common/TextSelectChange';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { MyPlanSelect } from '@features/MyPlanSelect';
-import {
-  createExpiryCellRenderer,
-  groupEditableButtonRenderer,
-  productNameCellRenderer,
-  searchButtonRenderer,
-} from '@grid/CellRenderers';
-import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
-import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type {
   CellClassParams,
   ICellRendererParams,
@@ -48,6 +15,39 @@ import type {
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { Divider, Gcol, Grow, Grid } from '@atoms';
+import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
+import {
+  createCellClickSelectionToggleHandler,
+  createInsertCopiedRowButtonCellRenderer,
+  getNextNumericRowId,
+  numberValueFormatter,
+  patchCopiedDuplicateRow,
+  rowDataWithTrackingFactory,
+  useDynamicColumnWidths,
+  AgGridEmptyComponent,
+  AmountWithPopoverCellEditor,
+} from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { KeyValueList } from '@common/KeyValueList';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
+import { TextSelectChange } from '@common/TextSelectChange';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { MyPlanSelect } from '@features/MyPlanSelect';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import {
+  createExpiryCellRenderer,
+  groupEditableButtonRenderer,
+  productNameCellRenderer,
+  searchButtonRenderer,
+} from '@grid/CellRenderers';
+import { HeaderWithUnit, ProductNameHeader, AgGridProductNameHeader } from '@grid/HeadRenderers';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002dData';
 import type { DummyDataType } from '../data/ltpa35002dData';
@@ -84,7 +84,13 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   const pendingSelectIdRef = useRef<string | number | null>(null);
   const gridApiRef = useRef<GridApi<AgGridRow> | null>(null);
   const prevSelectedIdsRef = useRef<Set<string | number>>(new Set());
-  const [coverageName, setCoverageName] = useState('');
+  const [coverageName, _setCoverageName] = useState('');
+  const coverageNameRef = useRef(coverageName);
+
+  const setCoverageName = useCallback((value: string) => {
+    _setCoverageName(value);
+    coverageNameRef.current = value;
+  }, []);
 
   // =====================
   // 핸들러/콜백
@@ -96,19 +102,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     []
   );
 
-  const productNameHeader = useCallback(
-    () => (
-      <ProductNameHeader
-        coverageName={coverageName}
-        onCoverageNameChange={setCoverageName}
-        showProductNameTooltip={showProductNameTooltip}
-        onShowProductNameTooltipChange={(checked) => setShowProductNameTooltip(!!checked)}
-        checkedMap={checkedMap}
-        onCheckedChange={handleCheckedChange}
-      />
-    ),
-    [checkedMap, coverageName, showProductNameTooltip, handleCheckedChange]
-  );
+
 
   // =====================
   // 공용 유틸리티/셀 렌더러
@@ -205,6 +199,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         resizable: false,
       },
       {
+        headerName: '가입금액(만원)',
         headerComponent: () => (
           <Grow className="w-full" placement={'cc'} gap={0}>
             가입금액<span className="text-[1.1rem]">(만원)</span>
@@ -248,6 +243,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
       },
       {
+        headerName: '보험료(원)',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: '보험료',
@@ -304,6 +300,8 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         width: attributeColumnWidth(30),
         cellRenderer: duplicateRenderer,
         resizable: false,
+        sortable: false,
+        suppressMovable: true,
       },
     ],
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]
@@ -502,11 +500,11 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent variant="default" side="top" align="start" sideOffset={-4}>
-                          담보 전체 해지
+                          담보 전체 해제
                         </TooltipContent>
                       </Tooltip>
                     ),
-                    width: attributeColumnWidth[3],
+                    width: attributeColumnWidth(30),
                     cellClass: 'text-center p-0! editable-cell',
                     cellClassRules: {
                       'pointer-events-none': (params) => !!params.data?.locked,
@@ -514,6 +512,15 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   }}
                   onSelectionChanged={onSelectionChanged}
                   onGridReady={handleGridReady}
+                  context={{
+                    coverageName,
+                    setCoverageName,
+                    showProductNameTooltip,
+                    onShowProductNameTooltipChange: (checked: boolean | 'indeterminate') =>
+                      setShowProductNameTooltip(checked === true),
+                    checkedMap,
+                    onCheckedChange: handleCheckedChange,
+                  }}
                   // onRowDataUpdated={handleRowDataUpdated} // 제거: 시그니처 불일치로 미사용
                   suppressRowHoverHighlight={false}
                   tooltipShowDelay={0}
@@ -524,7 +531,8 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   groupDefaultExpanded={0}
                   getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
                   autoGroupColumnDef={{
-                    headerComponent: productNameHeader,
+                    headerName: '담보명',
+                    headerComponent: AgGridProductNameHeader,
                     field: 'id',
                     flex: 107,
                     cellClass: (_) => 'text-left !p-0',

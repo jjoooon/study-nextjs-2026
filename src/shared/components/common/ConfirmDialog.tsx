@@ -172,5 +172,4 @@ export function ConfirmDialog({
   );
 }
 
-// default export for dynamic import
 export default ConfirmDialog;

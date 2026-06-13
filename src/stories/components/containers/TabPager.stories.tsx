@@ -1,21 +1,21 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-// useState는 아래에서 React.useState로 사용하므로 별도 import 필요 없음
+ */ // useState는 아래에서 React.useState로 사용하므로 별도 import 필요 없음
 import { Gcol, Grow } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import { TabPager } from '@common/TabPager';
 import { ErrorMsg } from '@common/ErrorMsg';
+import { TabPager } from '@common/TabPager';
 // import { Tabs, TabsList, TabsTrigger, TabsContent, TabsPanel, TabsLine } from '@uiux/Tabs';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
-import { Button } from '@uiux/Button';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@uiux/Button';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
+import React from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
 
 const DATA_TABS_3 = [
- {
+  {
     name: '홍길동',
     age: '1',
     gender: '여',
@@ -287,7 +287,7 @@ const DATA_TABS_3 = [
   },
 ];
 const DATA_TABS_4 = [
- {
+  {
     name: '홍길동',
     age: '1',
     gender: '여',
@@ -350,7 +350,9 @@ const meta: Meta<typeof TabPager> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>History</h2>
             <ul>
               <li>2026.03.29</li>
@@ -358,8 +360,12 @@ const meta: Meta<typeof TabPager> = {
             <h2>Overview</h2>
             <div>
               <p>
-                <b>Tab</b>는 많은 탭을 한 화면에 효율적으로 보여주기 위해 페이징, 드롭다운, 네비게이션, 에러 메시지 등 다양한 기능을 제공하는 고급 탭 컴포넌트입니다.<br />
-                <code>variant</code>, <code>hasTableBelow</code>, <code>removable</code>, <code>visibleCount</code>, <code>error</code>, <code>errorMsg</code>, <code>getValue</code>, <code>renderTab</code>, <code>renderDropdownItem</code> 등 다양한 props를 지원합니다.
+                <b>Tab</b>는 많은 탭을 한 화면에 효율적으로 보여주기 위해 페이징, 드롭다운, 네비게이션, 에러 메시지 등
+                다양한 기능을 제공하는 고급 탭 컴포넌트입니다.
+                <br />
+                <code>variant</code>, <code>hasTableBelow</code>, <code>removable</code>, <code>visibleCount</code>,{' '}
+                <code>error</code>, <code>errorMsg</code>, <code>getValue</code>, <code>renderTab</code>,{' '}
+                <code>renderDropdownItem</code> 등 다양한 props를 지원합니다.
               </p>
             </div>
 
@@ -408,19 +414,71 @@ const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
                 </tr>
               </thead>
               <tbody>
-                <tr><td>variant</td><td>'default' | 'sub' | 'outlined' | 'box'</td><td>탭 스타일</td></tr>
-                <tr><td>hasTableBelow</td><td>boolean</td><td>default variant에서 하단에 테이블이 있는 경우 라인 두께를 0.2rem로 사용</td></tr>
-                <tr><td>removable</td><td>boolean</td><td>탭 제거 가능 여부</td></tr>
-                <tr><td>active</td><td>string</td><td>현재 활성 탭 값</td></tr>
-                <tr><td>setActive</td><td>(value: string) =&gt; void</td><td>활성 탭 변경 핸들러</td></tr>
-                <tr><td>onRemove</td><td>(value: string) =&gt; void</td><td>탭 삭제 핸들러</td></tr>
-                <tr><td>visibleCount</td><td>number</td><td>한 번에 보여줄 탭 개수</td></tr>
-                <tr><td>error</td><td>boolean</td><td>에러 상태 표시</td></tr>
-                <tr><td>errorMsg</td><td>string</td><td>에러 메시지</td></tr>
-                <tr><td>getValue</td><td>(tab: T) =&gt; string</td><td>탭의 고유값 추출 함수</td></tr>
-                <tr><td>renderTab</td><td>(tab: T) =&gt; ReactNode</td><td>탭 렌더 함수</td></tr>
-                <tr><td>renderDropdownItem</td><td>false | (args) =&gt; ReactNode</td><td>드롭다운 아이템 렌더 함수 또는 비활성화</td></tr>
-                <tr><td>renderButtons</td><td>ReactNode</td><td>오른쪽 버튼 영역</td></tr>
+                <tr>
+                  <td>variant</td>
+                  <td>'default' | 'sub' | 'outlined' | 'box'</td>
+                  <td>탭 스타일</td>
+                </tr>
+                <tr>
+                  <td>hasTableBelow</td>
+                  <td>boolean</td>
+                  <td>default variant에서 하단에 테이블이 있는 경우 라인 두께를 0.2rem로 사용</td>
+                </tr>
+                <tr>
+                  <td>removable</td>
+                  <td>boolean</td>
+                  <td>탭 제거 가능 여부</td>
+                </tr>
+                <tr>
+                  <td>active</td>
+                  <td>string</td>
+                  <td>현재 활성 탭 값</td>
+                </tr>
+                <tr>
+                  <td>setActive</td>
+                  <td>(value: string) =&gt; void</td>
+                  <td>활성 탭 변경 핸들러</td>
+                </tr>
+                <tr>
+                  <td>onRemove</td>
+                  <td>(value: string) =&gt; void</td>
+                  <td>탭 삭제 핸들러</td>
+                </tr>
+                <tr>
+                  <td>visibleCount</td>
+                  <td>number</td>
+                  <td>한 번에 보여줄 탭 개수</td>
+                </tr>
+                <tr>
+                  <td>error</td>
+                  <td>boolean</td>
+                  <td>에러 상태 표시</td>
+                </tr>
+                <tr>
+                  <td>errorMsg</td>
+                  <td>string</td>
+                  <td>에러 메시지</td>
+                </tr>
+                <tr>
+                  <td>getValue</td>
+                  <td>(tab: T) =&gt; string</td>
+                  <td>탭의 고유값 추출 함수</td>
+                </tr>
+                <tr>
+                  <td>renderTab</td>
+                  <td>(tab: T) =&gt; ReactNode</td>
+                  <td>탭 렌더 함수</td>
+                </tr>
+                <tr>
+                  <td>renderDropdownItem</td>
+                  <td>false | (args) =&gt; ReactNode</td>
+                  <td>드롭다운 아이템 렌더 함수 또는 비활성화</td>
+                </tr>
+                <tr>
+                  <td>renderButtons</td>
+                  <td>ReactNode</td>
+                  <td>오른쪽 버튼 영역</td>
+                </tr>
               </tbody>
             </table>
           </>
@@ -503,8 +561,13 @@ type Story = StoryObj<typeof TabPager>;
 export const Default: Story = {
   render: (args) => {
     const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS_3);
-    const { tabs: tabs2, active: active2, setActive: setActive2, handleRemove: handleRemove2 } = useTabs<typeof DATA_TABS_4[0]>(DATA_TABS_4);
-    
+    const {
+      tabs: tabs2,
+      active: active2,
+      setActive: setActive2,
+      handleRemove: handleRemove2,
+    } = useTabs<(typeof DATA_TABS_4)[0]>(DATA_TABS_4);
+
     return (
       <Gcol gap={4} className="w-full p-8">
         <TabPager
@@ -517,9 +580,9 @@ export const Default: Story = {
           variant={args.variant}
           hasTableBelow={args.hasTableBelow}
           error={args.error}
-          getValue={tab => String(tab.value)}
+          getValue={(tab) => String(tab.value)}
           renderButtons={false}
-          renderTab={tab => (
+          renderTab={(tab) => (
             <span className="flex items-center">
               <span className="max-w-20 truncate block">{tab.name}</span>
               <span className="block">{`${tab.age}세(${tab.gender})`}</span>
@@ -527,9 +590,7 @@ export const Default: Story = {
           )}
           renderDropdownItem={false}
         >
-          <div className="w-full p-10 bg-[var(--color-gray-5)] flex items-center justify-center">
-            내용{active2}
-          </div>
+          <div className="w-full p-10 bg-[var(--color-gray-5)] flex items-center justify-center">내용{active2}</div>
         </TabPager>
 
         <TabPager
@@ -543,20 +604,28 @@ export const Default: Story = {
           hasTableBelow={args.hasTableBelow}
           error={args.error}
           errorMsg="입력하세요."
-          getValue={tab => String(tab.value)}
+          getValue={(tab) => String(tab.value)}
           renderButtons={
             <Grow gap={2.5}>
               <Grow>
-                <Button variant="outlined" color="gray" size="md">버튼1</Button>
-                <Button variant="outlined" color="gray" size="md">버튼2</Button>
+                <Button variant="outlined" color="gray" size="md">
+                  버튼1
+                </Button>
+                <Button variant="outlined" color="gray" size="md">
+                  버튼2
+                </Button>
               </Grow>
               <Grow>
-                <Button variant="outlined" color="gray" size="md">버튼1</Button>
-                <Button variant="outlined" color="gray" size="md">버튼2</Button>
+                <Button variant="outlined" color="gray" size="md">
+                  버튼1
+                </Button>
+                <Button variant="outlined" color="gray" size="md">
+                  버튼2
+                </Button>
               </Grow>
             </Grow>
           }
-          renderTab={tab => (
+          renderTab={(tab) => (
             <HoverCard>
               <HoverCardTrigger asChild>
                 <span className="flex items-center">
@@ -567,13 +636,15 @@ export const Default: Story = {
               <HoverCardContent>
                 <BulletList>
                   {tab.info.map((info, index) => (
-                    <BulletListItem key={index} type="dot">{info}</BulletListItem>
+                    <BulletListItem key={index} type="dot">
+                      {info}
+                    </BulletListItem>
                   ))}
                 </BulletList>
               </HoverCardContent>
             </HoverCard>
           )}
-          renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (  
+          renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
             <Button
               variant="text"
               key={String(tab.value)}
@@ -591,11 +662,9 @@ export const Default: Story = {
                 <span className="block">{`${tab.age}세(${tab.gender})`}</span>
               </span>
             </Button>
-            )}
-          >
-          <div className="w-full p-10 bg-[var(--color-gray-5)] flex items-center justify-center">
-            테이블{active2}
-          </div>
+          )}
+        >
+          <div className="w-full p-10 bg-[var(--color-gray-5)] flex items-center justify-center">테이블{active2}</div>
         </TabPager>
       </Gcol>
     );

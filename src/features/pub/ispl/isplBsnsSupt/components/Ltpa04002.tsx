@@ -2,7 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
 import { createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -1130,6 +1130,7 @@ const Ltpa040DummyDataT7: Ltpa040DummyDataRowT7[] = [
 ];
 
 const Ltpa04002 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const renderConsentCell = (params: ICellRendererParams<Ltpa040DummyDataRowT1>) => {
     const value = String(params.value ?? '');
 
@@ -1161,29 +1162,22 @@ const Ltpa04002 = () => {
     {
       headerName: '일자',
       field: 'field01',
-      flex: 1,
-      minWidth: 80,
-      cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
-      autoHeight: true,
+      width: attributeColumnWidth(80),
       cellRenderer: renderConsentCell,
       unSortIcon: true,
     },
     {
       headerName: '추천설계 이용건수',
       field: 'field02',
-      flex: 3,
-      minWidth: 220,
-      cellClass: 'text-center',
-      autoHeight: true,
+      flex: 1,
+      minWidth: attributeColumnWidth(120),
       unSortIcon: true,
     },
     {
       headerName: '상품 선택 건수',
       field: 'field03',
-      flex: 3,
-      minWidth: 400,
-      cellClass: 'text-center',
-      autoHeight: true,
+      flex: 2,
+      minWidth: attributeColumnWidth(240),
       spanRows: true,
       cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT1>('field03', 'field04', 'row'),
       unSortIcon: true,
@@ -1191,18 +1185,14 @@ const Ltpa04002 = () => {
     {
       headerName: '종 선택 건수',
       field: 'field05',
-      flex: 3,
-      minWidth: 220,
-      cellClass: 'text-center',
-      autoHeight: true,
+      flex: 1,
+      minWidth: attributeColumnWidth(120),
     },
     {
       headerName: '플랜 선택 건수',
       field: 'field06',
-      flex: 3,
-      minWidth: 220,
-      cellClass: 'text-center',
-      autoHeight: true,
+      flex: 1,
+      minWidth: attributeColumnWidth(120),
     },
   ];
 
@@ -1211,35 +1201,29 @@ const Ltpa04002 = () => {
       headerName: '상품',
       field: 'field01',
       flex: 5,
-      minWidth: 100,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left',
-      autoHeight: true,
       unSortIcon: true,
     },
     {
       headerName: '종',
       field: 'field02',
       flex: 5,
-      minWidth: 100,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left',
-      autoHeight: true,
     },
     {
       headerName: '플랜',
       field: 'field03',
-      flex: 5,
-      minWidth: 100,
+      flex: 3,
+      minWidth: attributeColumnWidth(150),
       cellClass: 'text-left',
-      autoHeight: true,
     },
     {
       headerName: '건수',
       field: 'field04',
-      flex: 1,
-      minWidth: 80,
+      width: attributeColumnWidth(80),
       headerClass: 'ag-header-color',
-      cellClass: 'text-center',
-      autoHeight: true,
       unSortIcon: true,
     },
   ];
@@ -1248,11 +1232,11 @@ const Ltpa04002 = () => {
     {
       headerName: '일자',
       field: 'field01',
-      flex: 1,
+      width: attributeColumnWidth(75),
       filter: false,
+      autoHeight: true,
       suppressMovable: true,
       spanRows: true,
-      autoHeight: true,
       unSortIcon: true,
       cellRenderer: renderConsentCellT3, // 버튼 렌더러 적용
     },
@@ -1266,10 +1250,10 @@ const Ltpa04002 = () => {
         unitClassName: 'text-[1.3rem]',
       },
       field: 'field02',
-      flex: 1,
+      width: attributeColumnWidth(70),
+      autoHeight: true,
       filter: false,
       suppressMovable: true,
-      autoHeight: true,
       spanRows: true,
       unSortIcon: true,
     },
@@ -1277,7 +1261,7 @@ const Ltpa04002 = () => {
       headerName: '고객구분',
       field: 'field03',
       flex: 1,
-      minWidth: 170,
+      minWidth: attributeColumnWidth(140),
       spanRows: true,
       cellRenderer: createFieldRenderer<Ltpa040DummyDataRowT3>('field03', 'field04', 'row'),
     },
@@ -1289,50 +1273,47 @@ const Ltpa04002 = () => {
         {
           headerName: '남',
           field: 'field05',
-          flex: 1,
-          minWidth: 85,
+          width: attributeColumnWidth(60),
         },
         {
           headerName: '여',
           field: 'field06',
-          flex: 1,
-          minWidth: 85,
+          width: attributeColumnWidth(60),
         },
       ],
     },
     {
       headerName: '연령대',
-      cellClass: 'text-center',
       children: [
         {
           headerName: '0~14세',
           field: 'field07',
           flex: 1,
-          minWidth: 85,
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '15~24세',
           field: 'field08',
           flex: 1,
-          minWidth: 85,
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '25~59세',
           field: 'field09',
           flex: 1,
-          minWidth: 85,
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '60~65세',
           field: 'field10',
           flex: 1,
-          minWidth: 85,
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '66세이상',
           field: 'field11',
           flex: 1,
-          minWidth: 85,
+          minWidth: attributeColumnWidth(60),
         },
       ],
     },
@@ -1343,19 +1324,19 @@ const Ltpa04002 = () => {
           headerName: '1급',
           field: 'field12',
           flex: 1,
-          minWidth: 85,
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '2급',
           field: 'field13',
           flex: 1,
-          minWidth: 85,
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '3급',
           field: 'field14',
           flex: 1,
-          minWidth: 85,
+          minWidth: attributeColumnWidth(60),
         },
       ],
     },
@@ -1366,6 +1347,7 @@ const Ltpa04002 = () => {
       headerName: '고객구분',
       field: 'field01',
       flex: 1,
+      minWidth: attributeColumnWidth(100),
       autoHeight: true,
       suppressMovable: true,
       spanRows: true,
@@ -1374,28 +1356,28 @@ const Ltpa04002 = () => {
       headerName: '성별',
       field: 'field02',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(100),
       autoHeight: true,
     },
     {
       headerName: '연령대',
       field: 'field03',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(100),
       autoHeight: true,
     },
     {
       headerName: '직업급수',
       field: 'field04',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(100),
       autoHeight: true,
     },
     {
       headerName: '건수',
       field: 'field05',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(100),
       headerClass: 'ag-header-color',
       autoHeight: true,
     },
@@ -1403,7 +1385,7 @@ const Ltpa04002 = () => {
       headerName: '영업일평균',
       field: 'field06',
       flex: 1,
-      minWidth: 200,
+      minWidth: attributeColumnWidth(100),
       headerClass: 'ag-header-color',
       autoHeight: true,
     },
@@ -1413,7 +1395,7 @@ const Ltpa04002 = () => {
     {
       headerName: '일자',
       field: 'field01',
-      flex: 1,
+      width: attributeColumnWidth(80),
       filter: false,
       suppressMovable: true,
       spanRows: true,
@@ -1431,6 +1413,7 @@ const Ltpa04002 = () => {
       },
       field: 'field02',
       flex: 1,
+      minWidth: attributeColumnWidth(75),
       filter: false,
       suppressMovable: true,
       autoHeight: true,
@@ -1445,13 +1428,13 @@ const Ltpa04002 = () => {
           headerName: '적용',
           field: 'field03',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
         {
           headerName: '미적용',
           field: 'field04',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
       ],
     },
@@ -1463,13 +1446,13 @@ const Ltpa04002 = () => {
           headerName: '적용',
           field: 'field05',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
         {
           headerName: '미적용',
           field: 'field06',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
       ],
     },
@@ -1480,13 +1463,13 @@ const Ltpa04002 = () => {
           headerName: '연만기',
           field: 'field07',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
         {
           headerName: '세만기',
           field: 'field08',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
       ],
     },
@@ -1497,55 +1480,54 @@ const Ltpa04002 = () => {
           headerName: '표준',
           field: 'field09',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
         {
           headerName: '간편',
           field: 'field10',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
       ],
     },
     {
       headerName: '담보군',
-      cellClass: 'text-center',
       children: [
         {
           headerName: '사망/후유',
           field: 'field11',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
         {
           headerName: '진단비',
           field: 'field12',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
         {
           headerName: '입원/통원',
           field: 'field13',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
         {
           headerName: '수술/치료',
           field: 'field14',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
         {
           headerName: '골절/화상',
           field: 'field15',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
         {
           headerName: '검사/지원',
           field: 'field16',
           flex: 1,
-          minWidth: 70,
+          minWidth: attributeColumnWidth(65),
         },
       ],
     },
@@ -1555,56 +1537,45 @@ const Ltpa04002 = () => {
     {
       headerName: '무해지',
       field: 'field01',
-      minWidth: 100,
-      flex: 1,
-      autoHeight: true,
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '납면',
       field: 'field02',
-      minWidth: 100,
-      flex: 1,
-      autoHeight: true,
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '만기구분',
       field: 'field03',
-      minWidth: 120,
-      flex: 1,
-      autoHeight: true,
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '고지유형',
       field: 'field04',
-      minWidth: 120,
-      flex: 1,
-      autoHeight: true,
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '담보군',
       field: 'field05',
       flex: 7,
-      minWidth: 220,
+      minWidth: attributeColumnWidth(250),
       cellClass: 'text-left',
-      autoHeight: true,
       tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT6>({ field: 'field05' }),
     },
     {
       headerName: '건수',
       field: 'field06',
       flex: 1,
-      minWidth: 100,
+      minWidth: attributeColumnWidth(90),
       headerClass: 'ag-header-color',
-      autoHeight: true,
       unSortIcon: true,
     },
     {
       headerName: '영업일평균',
       field: 'field07',
       flex: 1,
-      minWidth: 100,
+      minWidth: attributeColumnWidth(90),
       headerClass: 'ag-header-color',
-      autoHeight: true,
     },
   ];
 
@@ -1612,132 +1583,114 @@ const Ltpa04002 = () => {
     {
       headerName: '상품',
       field: 'field01',
-      flex: 5,
-      minWidth: 330,
+      flex: 6,
+      minWidth: attributeColumnWidth(250),
       cellClass: 'text-left',
-      autoHeight: true,
       unSortIcon: true,
       tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT7>({ field: 'field01' }),
     },
     {
       headerName: '종',
       field: 'field02',
-      flex: 5,
-      minWidth: 280,
+      flex: 4,
+      minWidth: attributeColumnWidth(250),
       cellClass: 'text-left',
-      autoHeight: true,
       tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT7>({ field: 'field02' }),
     },
     {
       headerName: '04',
-      autoHeight: true,
       children: [
         {
           headerName: '1',
           field: 'field03',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '2',
           field: 'field04',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '3',
           field: 'field05',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '4',
           field: 'field06',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '5',
           field: 'field07',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '6',
           field: 'field08',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '7',
           field: 'field09',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '8',
           field: 'field10',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '9',
           field: 'field11',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '10',
           field: 'field12',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '11',
           field: 'field13',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '12',
           field: 'field14',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
         {
           headerName: '13',
           field: 'field15',
           flex: 1,
-          minWidth: 35,
-          autoHeight: true,
+          minWidth: attributeColumnWidth(40),
         },
       ],
     },
     {
       headerName: '계',
       field: 'field16',
-      flex: 1,
-      autoHeight: true,
+      width: attributeColumnWidth(60),
       unSortIcon: true,
     },
     {
       headerName: '영업일 평균',
       field: 'field17',
-      width: 70,
+      width: attributeColumnWidth(70),
       headerClass: 'ag-header-color',
-      autoHeight: true,
     },
   ];
 
@@ -1845,8 +1798,8 @@ const Ltpa04002 = () => {
                   errorMsg="선택은 필수입니다."
                   errorPs="bl"
                   onCheckedChange={() => {}}
-                  size="lg"
                   variant="default"
+                  checked={true}
                 >
                   종 포함
                 </Checkbox>
@@ -1855,12 +1808,7 @@ const Ltpa04002 = () => {
           </FormRow>
           <FormRow>
             <FormCell title={'조회기간'}>
-              <DatePickerInput
-                mode="range"
-                onChange={() => {}}
-                rangeValue={{ from: '2026-02', to: '2026-03' }}
-                size="lg"
-              />
+              <DatePickerInput mode="range" onChange={() => {}} rangeValue={{ from: '2026-02', to: '2026-03' }} />
               <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}} aria-label="전일">
                 전일
               </Button>
@@ -1921,6 +1869,7 @@ const Ltpa04002 = () => {
           </div>
         </TableFoldBody>
       </TableFold>
+      {/* 고객군별 */}
       <TableFold>
         <TableFoldHead title="일자별 고객군별 선택 현황" />
         <TableFoldBody>
@@ -1933,7 +1882,7 @@ const Ltpa04002 = () => {
               defaultColDef={{
                 sortable: true,
                 resizable: true,
-                cellClass: 'text-center flex justify-center tems-center',
+                cellClass: 'text-center',
               }}
               domLayout="normal"
             />
@@ -1951,7 +1900,7 @@ const Ltpa04002 = () => {
               enableCellSpan={true}
               defaultColDef={{
                 sortable: true,
-                resizable: false,
+                resizable: true,
                 cellClass: 'text-center',
               }}
               domLayout="normal"
@@ -1972,6 +1921,7 @@ const Ltpa04002 = () => {
                 sortable: true,
                 resizable: true,
                 cellClass: 'text-center',
+                autoHeight: true,
               }}
               domLayout="normal"
             />
@@ -1986,7 +1936,6 @@ const Ltpa04002 = () => {
               getRowId={(params) => String(params.data.id)}
               rowData={Ltpa040DummyDataT6}
               columnDefs={columnDefsT6}
-              enableCellSpan={true}
               defaultColDef={{
                 sortable: true,
                 resizable: true,

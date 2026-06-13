@@ -3,8 +3,16 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, GridApi } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { ArrowDoubleIcon, ResetIcon, SearchIcon, ZoomOutIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
@@ -12,15 +20,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ArrowDoubleIcon, ResetIcon, SearchIcon, ZoomOutIcon } from '@icons';
 import { LayoutTemplate } from '@layout/LayoutTemplate'; // 2026-05-29 경로 변경
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, GridApi } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 
 import '@/shared/lib/agGridPub';
 
@@ -65,13 +65,14 @@ const DummyData: DummyDataType[] = [
   {
     id: 2,
     isCheck: false,
-    field01: '',
+    field01: 'LA26020945959594',
     field02: '',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '9,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
   },
 ];
 
@@ -91,13 +92,14 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 2,
     isCheck: true,
-    field01: '',
+    field01: 'LA26020945959594',
     field02: '',
-    field03: '',
-    field04: '',
-    field05: '',
-    field06: '',
-    field07: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '9,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
   },
 ];
 
@@ -108,32 +110,36 @@ export default function Ltpa110Section() {
       {
         headerName: '설계번호',
         field: 'field01',
-        flex: 1,
+        flex: 2,
         minwidth: attributeColumnWidth(120),
         cellClass: 'text-center',
       },
       {
         headerName: '증권번호',
         field: 'field02',
-        width: attributeColumnWidth(160),
+        flex: 1,
+        minwidth: attributeColumnWidth(160),
         cellClass: 'text-center',
       },
       {
         headerName: '계약자',
         field: 'field03',
-        width: attributeColumnWidth(70),
+        flex: 1,
+        minwidth: attributeColumnWidth(70),
         cellClass: 'text-center',
       },
       {
         headerName: '보험시기',
         field: 'field04',
-        width: attributeColumnWidth(100),
+        flex: 1,
+        minwidth: attributeColumnWidth(100),
         cellClass: 'text-center',
       },
       {
         headerName: '보험료',
         field: 'field05',
-        width: attributeColumnWidth(100),
+        flex: 1,
+        minwidth: attributeColumnWidth(100),
         cellClass: 'text-right',
       },
       {
@@ -147,7 +153,7 @@ export default function Ltpa110Section() {
         headerName: '상태',
         field: 'field07',
         flex: 1,
-        minWidth: 100,
+        minWidth: attributeColumnWidth(100),
         cellClass: 'text-center',
       },
     ],
@@ -159,31 +165,36 @@ export default function Ltpa110Section() {
       {
         headerName: '설계번호',
         field: 'field01',
-        width: attributeColumnWidth(120),
+        flex: 2,
+        minwidth: attributeColumnWidth(120),
         cellClass: 'text-center',
       },
       {
         headerName: '증권번호',
         field: 'field02',
-        width: attributeColumnWidth(160),
+        flex: 1,
+        minwidth: attributeColumnWidth(160),
         cellClass: 'text-center',
       },
       {
         headerName: '계약자',
         field: 'field03',
-        width: attributeColumnWidth(80),
+        flex: 1,
+        minwidth: attributeColumnWidth(70),
         cellClass: 'text-center',
       },
       {
         headerName: '보험시기',
         field: 'field04',
-        width: attributeColumnWidth(100),
+        flex: 1,
+        minwidth: attributeColumnWidth(100),
         cellClass: 'text-center',
       },
       {
         headerName: '보험료',
         field: 'field05',
-        width: attributeColumnWidth(100),
+        flex: 1,
+        minwidth: attributeColumnWidth(100),
         cellClass: 'text-right',
       },
       {
@@ -197,7 +208,7 @@ export default function Ltpa110Section() {
         headerName: '상태',
         field: 'field07',
         flex: 1,
-        minWidth: 100,
+        minWidth: attributeColumnWidth(100),
         cellClass: 'text-center',
       },
     ],
@@ -273,7 +284,7 @@ export default function Ltpa110Section() {
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={120} value={'910220-1234567'} readOnly />
+                    <Input aria-label="" width={120} value={'000000-0******'} readOnly />
                   </FormCell>
                   <FormCell title={'출산예정년월'}>
                     <DatePickerInput required mode={'single'} value="2026-08-25" />

@@ -3,9 +3,10 @@
  */
 'use client';
 
+import { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { Grow, Typo, Grid } from '@atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
-import { Grow, Typo, Gcol, Grid } from '@atoms';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -17,8 +18,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
@@ -43,13 +44,45 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     field01: '040',
+    field02: '위, 십이지장 위, 십이지장 위, 십이지장 위, 십이지장 위, 십이지장 위, 십이지장',
+    field03: '00년 00개월',
+    field04: '사유 텍스트 노출 사유 텍스트 노출 사유 텍스트 노출',
+    field05: '',
+  },
+  {
+    id: 2,
+    field01: '040',
+    field02: '위, 십이지장',
+    field03: '00년 00개월',
+    field04: '사유 텍스트 노출',
+    field05: '',
+  },
+  {
+    id: 3,
+    field01: '040',
     field02: '위, 십이지장',
     field03: '0년 0개월',
     field04: '사유 텍스트 노출',
     field05: '',
   },
   {
-    id: 2,
+    id: 4,
+    field01: '040',
+    field02: '위, 십이지장',
+    field03: '0년 0개월',
+    field04: '사유 텍스트 노출',
+    field05: '',
+  },
+  {
+    id: 5,
+    field01: '040',
+    field02: '위, 십이지장',
+    field03: '0년 0개월',
+    field04: '사유 텍스트 노출',
+    field05: '',
+  },
+  {
+    id: 6,
     field01: '040',
     field02: '위, 십이지장',
     field03: '0년 0개월',
@@ -60,7 +93,7 @@ const DummyData: DummyDataType[] = [
 const DummyData2: DummyDataType2[] = [
   {
     id: 1,
-    field01: '상해후유장해(3-100%)(갱신형)',
+    field01: '상해후유장해(3-100%)(갱신형) 상해후유장해(3-100%)(갱신형)',
     field02: '2020-01-01~2050-01-01',
     field03: '10,000',
     field04: '10,000,000',
@@ -68,6 +101,38 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 2,
+    field01: '상해후유장해(3-100%)(갱신형) 상해후유장해(3-100%)(갱신형)',
+    field02: '2020-01-01~2050-01-01',
+    field03: '10,000',
+    field04: '10,000,000',
+    field05: '10,000',
+  },
+  {
+    id: 3,
+    field01: '상해후유장해(3-100%)(갱신형)',
+    field02: '2020-01-01~2050-01-01',
+    field03: '10,000',
+    field04: '10,000,000',
+    field05: '10,000',
+  },
+  {
+    id: 4,
+    field01: '상해후유장해(3-100%)(갱신형)',
+    field02: '2020-01-01~2050-01-01',
+    field03: '10,000',
+    field04: '10,000,000',
+    field05: '10,000',
+  },
+  {
+    id: 5,
+    field01: '상해후유장해(3-100%)(갱신형)',
+    field02: '2020-01-01~2050-01-01',
+    field03: '10,000',
+    field04: '10,000,000',
+    field05: '10,000',
+  },
+  {
+    id: 6,
     field01: '상해후유장해(3-100%)(갱신형)',
     field02: '2020-01-01~2050-01-01',
     field03: '10,000',
@@ -77,19 +142,18 @@ const DummyData2: DummyDataType2[] = [
 ];
 const Ltpa095 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  
+
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '분류',
       field: 'field01',
-      width: attributeColumnWidth(70),
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '대상이되는 부위 또는 질병',
       field: 'field02',
-      flex: 2,
-      minWidth: attributeColumnWidth(160),
+      flex: 20,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
@@ -97,13 +161,12 @@ const Ltpa095 = () => {
       headerName: '부담보기간',
       field: 'field03',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '사유내용',
       field: 'field04',
-      flex: 1,
-      minWidth: attributeColumnWidth(180),
+      flex: 15,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
@@ -119,14 +182,14 @@ const Ltpa095 = () => {
     {
       headerName: '할증담보',
       field: 'field01',
-      flex: 10,
-      minWidth: attributeColumnWidth(150),
+      flex: 30,
+      cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field01' }),
     },
     {
       headerName: '보험기간',
       field: 'field02',
-      flex: 1,
-      minWidth: attributeColumnWidth(145),
+      width: attributeColumnWidth(145),
     },
     {
       headerName: '표준체보험료(원)',
@@ -162,6 +225,9 @@ const Ltpa095 = () => {
             <Typo tag={'strong'} variant={'heading-lg'}>
               조건부 특약 가입 상세
             </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPA095)
+            </Typo>
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="gap-3">
@@ -169,47 +235,43 @@ const Ltpa095 = () => {
             <TableFold variant="default" className="grid-rows-[auto_1fr]">
               <TableFoldHead title="부담보" />
               <TableFoldBody>
-                <Gcol className="w-full h-full min-h-[18.4rem]">
-                  <div className="ag-theme-alpine ">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={DummyData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                        cellClass: 'text-center',
-                      }}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                    />
-                  </div>
-                </Gcol>
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
+                  <AgGridReact<DummyDataType>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={DummyData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                      cellClass: 'text-center',
+                    }}
+                    domLayout="normal"
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                  />
+                </div>
               </TableFoldBody>
             </TableFold>
             <TableFold variant="default">
               <TableFoldHead title="할증" />
               <TableFoldBody>
-                <Gcol className="w-full h-full min-h-[18.4rem]">
-                  <div className="ag-theme-alpine ">
-                    <AgGridReact<DummyDataType2>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={DummyData2}
-                      columnDefs={columnDefs2}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                        cellClass: 'text-center',
-                      }}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                    />
-                  </div>
-                </Gcol>
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
+                  <AgGridReact<DummyDataType2>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={DummyData2}
+                    columnDefs={columnDefs2}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                      cellClass: 'text-center',
+                    }}
+                    domLayout="normal"
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                  />
+                </div>
               </TableFoldBody>
             </TableFold>
           </Grid>
@@ -224,6 +286,7 @@ const Ltpa095 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

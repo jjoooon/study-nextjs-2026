@@ -3,7 +3,12 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useAgGridInfiniteAppend, createTooltipValueGetter } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  useAgGridInfiniteAppend,
+  createTooltipValueGetter,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -20,8 +25,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { useCallback, useState } from 'react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -158,7 +163,9 @@ const DummyData: DummyDataType[] = [
 export default function Ltpa460Section() {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [coverageName, setCoverageName] = useState('');
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
+  // KEY 컬럼 공통 헤더: 제목 + 상품명 검색 입력 UI
   const productNameHeader = useCallback(
     ({ displayName }: { displayName: string }) => {
       return (
@@ -187,10 +194,12 @@ export default function Ltpa460Section() {
     [coverageName]
   );
 
+  // KEY 컬럼 공통 셀 렌더러: 긴 텍스트는 한 줄 말줄임으로 표시
   const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
     return <p className="truncate w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
   }, []);
 
+  const gridRef = React.useRef<any>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: rowData,
@@ -205,31 +214,26 @@ export default function Ltpa460Section() {
     {
       headerName: '번호',
       field: 'field01',
-      width: 30,
+      width: attributeColumnWidth(30),
       cellClass: 'text-center',
-      autoHeight: true,
       pinned: 'left',
     },
     {
       headerName: '로그구분',
       field: 'field02',
-      width: 90,
-      cellClass: 'text-left',
-      autoHeight: true,
+      width: attributeColumnWidth(90),
       pinned: 'left',
     },
     {
       headerName: '거래코드',
       field: 'field03',
-      width: 90,
-      cellClass: 'text-left',
-      autoHeight: true,
+      width: attributeColumnWidth(90),
       pinned: 'left',
     },
     {
       headerName: '시작일시',
       field: 'field04',
-      width: 90,
+      width: attributeColumnWidth(90),
       cellClass: 'text-center',
       pinned: 'left',
     },
@@ -237,17 +241,16 @@ export default function Ltpa460Section() {
       headerName: 'KEY1',
       field: 'field05',
       flex: 1,
-      minWidth: 200,
-      cellClass: 'text-left',
+      minWidth: attributeColumnWidth(180),
       sortable: false,
       filter: false,
-      autoHeight: true,
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
         label: 'KEY1',
         field: 'field05',
       }),
+      // KEY1~KEY7 컬럼은 동일한 헤더/셀 렌더러 패턴을 재사용
       headerComponent: productNameHeader,
       cellRenderer: titleRenderer,
     },
@@ -255,9 +258,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY2',
       field: 'field06',
       flex: 1,
-      minWidth: 200,
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -271,9 +272,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY3',
       field: 'field07',
       flex: 1,
-      minWidth: 200,
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -287,9 +286,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY4',
       field: 'field08',
       flex: 1,
-      minWidth: 200,
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -303,9 +300,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY5',
       field: 'field09',
       flex: 1,
-      minWidth: 200,
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -319,9 +314,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY6',
       field: 'field10',
       flex: 1,
-      minWidth: 200,
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -335,9 +328,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY7',
       field: 'field11',
       flex: 1,
-      minWidth: 200,
-      cellClass: 'text-left',
-      autoHeight: true,
+      minWidth: attributeColumnWidth(180),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -379,8 +370,6 @@ export default function Ltpa460Section() {
                         from: '2026-03-01',
                         to: '2026-03-07',
                       }}
-                      size="lg"
-                      width="sm"
                     />
                   </FormCell>
                   <FormCell title={'검증업무구분'}>
@@ -446,7 +435,7 @@ export default function Ltpa460Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Gcol className="w-full grid-rows-[auto_1fr_auto]" gap={1}>
+            <Gcol className="w-full grid-rows-[auto_1fr_auto]">
               <Grow className="w-full flex justify-end">
                 <Button color="success" variant="outlined">
                   엑셀가져오기
@@ -455,6 +444,8 @@ export default function Ltpa460Section() {
               </Grow>
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
+                  ref={gridRef}
+                  getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={visibleRows}
                   columnDefs={columnDefs}
@@ -463,6 +454,7 @@ export default function Ltpa460Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 isAll={false}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

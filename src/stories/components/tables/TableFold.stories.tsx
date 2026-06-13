@@ -1,12 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
+ */ import { Gcol, Grow } from '@atoms';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { Gcol, Grow } from '@atoms';
-import { Button } from '@uiux/Button';
 import { FileExportIcon, FileImportIcon } from '@icons';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@uiux/Button';
+import * as React from 'react';
 
 type TableFoldProps = React.ComponentProps<typeof TableFold>;
 
@@ -28,7 +28,8 @@ const meta: Meta<TableFoldProps> = {
           <h2>Overview</h2>
           <div>
             <p>
-              TableFold 컴포넌트는 아코디언 형태의 테이블 헤더 UI를 제공합니다.<br />
+              TableFold 컴포넌트는 아코디언 형태의 테이블 헤더 UI를 제공합니다.
+              <br />
               TableWrap은 일반 테이블 헤더 UI를 제공합니다.
             </p>
             <ul>
@@ -96,7 +97,7 @@ type Story = StoryObj<TableFoldProps>;
 export const Default: Story = {
   args: {},
   render: (args) => (
-    <Gcol placement='ss' gap={2} >
+    <Gcol placement="ss" gap={2}>
       <TableFold variant={args.variant} {...args}>
         <TableFoldHead title={'모바일 판매 불가 상품'}>
           <Grow>
@@ -111,9 +112,7 @@ export const Default: Story = {
           </Grow>
         </TableFoldHead>
         <TableFoldBody>
-          <div className="w-full p-10 border border-dashed flex items-center justify-center">
-            table 영역
-          </div>
+          <div className="w-full p-10 border border-dashed flex items-center justify-center">table 영역</div>
         </TableFoldBody>
       </TableFold>
     </Gcol>

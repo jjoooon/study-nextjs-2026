@@ -2,17 +2,17 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { AgGridEmptyComponent } from '@aggrid';
-import { createTooltipValueGetter } from '@aggrid';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { Grid, Grow } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { ResetIcon, SearchIcon } from '@icons';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -40,8 +40,8 @@ type Ltpa040DummyDataRow = {
 const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 1,
-    isCheck: false,
-    field01: 'YYYY-MM-DD HH:MM',
+    isCheck: true,
+    field01: '2026-06-01 12:00',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
     field04: '홍길동',
@@ -52,7 +52,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field09: '한화 시그니처 여성 건강보험4.0',
     field10: '12',
     field11: '83000',
-    field12: 'LA260326516615',
+    field12: 'LA26020945959594',
     field13: '설계중',
     field14: '14',
     field15: '120000',
@@ -60,18 +60,18 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 2,
     isCheck: false,
-    field01: 'YYYY-MM-DD HH:MM',
+    field01: '2026-06-01 12:00',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
-    field04: '홍길동(8090001)',
+    field04: '홍길동동(8090001)',
     field05: '기등록',
-    field06: '홍길순',
-    field07: '사망후유, 진단비, 입원/통원',
+    field06: '홍길순순',
+    field07: '간편, 입원수술, 추가질병, 한화',
     field08: 'LT22222_4',
     field09: '한화 시그니처 여성 건강보험4.0',
     field10: '12',
     field11: '83,000원',
-    field12: 'LA260326516614',
+    field12: 'LA26020945959594',
     field13: '청약중',
     field14: '14',
     field15: '120000',
@@ -79,18 +79,18 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 3,
     isCheck: false,
-    field01: 'YYYY-MM-DD HH:MM',
+    field01: '2026-06-01 12:00',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
     field04: '홍길동(8090001)',
-    field05: '기등록',
+    field05: '미등록',
     field06: '홍길순',
     field07: '사망후유, 진단비, 입원/통원',
     field08: 'LT22222_4',
     field09: '한화 시그니처 여성 간편건강보험4.0',
     field10: '12',
     field11: '83,000원',
-    field12: 'LA260326516623',
+    field12: 'LA26020945959594',
     field13: '청약중',
     field14: '10',
     field15: '100000',
@@ -98,7 +98,26 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
   {
     id: 4,
     isCheck: false,
-    field01: 'YYYY-MM-DD HH:MM',
+    field01: '2026-06-01 12:00',
+    field02: 'GA',
+    field03: '대리점(3xxxxxx)',
+    field04: '홍길동(8090001)',
+    field05: '미등록',
+    field06: '홍길순',
+    field07: '사망후유, 진단비, 입원/통원 ',
+    field08: 'LT22222_4',
+    field09: '한화 시그니처 여성 간편건강보험4.0',
+    field10: '12',
+    field11: '83,000원',
+    field12: 'LA26020945959594',
+    field13: '청약완료',
+    field14: '9',
+    field15: '140000',
+  },
+  {
+    id: 5,
+    isCheck: false,
+    field01: '2026-06-01 12:00',
     field02: 'GA',
     field03: '대리점(3xxxxxx)',
     field04: '홍길동(8090001)',
@@ -109,7 +128,26 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field09: '한화 시그니처 여성 간편건강보험4.0',
     field10: '12',
     field11: '83,000원',
-    field12: 'LA260326516615',
+    field12: 'LA26020945959594',
+    field13: '청약완료',
+    field14: '9',
+    field15: '140000',
+  },
+  {
+    id: 6,
+    isCheck: false,
+    field01: '2026-06-01 12:00',
+    field02: 'GA',
+    field03: '대리점(3xxxxxx)',
+    field04: '홍길동(8090001)',
+    field05: '기등록',
+    field06: '홍길순',
+    field07: '사망후유, 진단비, 입원/통원 ',
+    field08: 'LT22222_4',
+    field09: '한화 시그니처 여성 간편건강보험4.0',
+    field10: '12',
+    field11: '83,000원',
+    field12: 'LA26020945959594',
     field13: '청약완료',
     field14: '9',
     field15: '140000',
@@ -117,41 +155,36 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
 ];
 
 const Ltpa04001 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<Ltpa040DummyDataRow> | ColGroupDef<Ltpa040DummyDataRow>)[] = [
     {
       headerName: '추천설계정보',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
       children: [
         {
           headerName: '추천일시',
           field: 'field01',
-          flex: 1,
-          minWidth: 150,
+          width: attributeColumnWidth(110),
           cellClass: 'text-center',
           unSortIcon: true,
         },
         {
           headerName: '채널',
           field: 'field02',
-          flex: 1,
-          minWidth: 60,
+          width: attributeColumnWidth(55),
           cellClass: 'text-center',
           unSortIcon: true,
         },
         {
           headerName: '취급자',
           field: 'field03',
-          flex: 1,
-          minWidth: 120,
+          width: attributeColumnWidth(110),
           cellClass: 'text-center',
           unSortIcon: true,
         },
         {
           headerName: '사용인',
           field: 'field04',
-          flex: 1,
-          minWidth: 120,
+          width: attributeColumnWidth(115),
           cellClass: 'text-center',
           unSortIcon: true,
         },
@@ -159,52 +192,47 @@ const Ltpa04001 = () => {
           headerName: '고객구분',
           field: 'field05',
           flex: 1,
-          minWidth: 90,
+          minWidth: attributeColumnWidth(65),
           cellClass: 'text-center',
         },
         {
           headerName: '고객명',
           field: 'field06',
-          flex: 1,
-          minWidth: 80,
+          width: attributeColumnWidth(70),
           cellClass: 'text-center',
         },
         {
           headerName: '입력조건',
           field: 'field07',
-          flex: 1,
-          minWidth: 230,
+          flex: 20,
           cellClass: 'text-left',
           tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRow>({ field: 'field07' }),
         },
         {
           headerName: '추천 설계번호',
           field: 'field08',
-          flex: 1,
-          minWidth: 100,
+          width: attributeColumnWidth(95),
           cellClass: 'text-center',
           unSortIcon: true,
         },
         {
           headerName: '추천상품',
           field: 'field09',
-          flex: 1,
-          minWidth: 230,
+          flex: 40,
           cellClass: 'text-left',
           tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRow>({ field: 'field09' }),
         },
         {
           headerName: '담보수',
           field: 'field10',
-          flex: 1,
-          minWidth: 70,
+          width: attributeColumnWidth(50),
           cellClass: 'text-center',
         },
         {
           headerName: '보장보험료',
           field: 'field11',
           flex: 1,
-          minWidth: 100,
+          minWidth: attributeColumnWidth(90),
           cellClass: 'text-right',
           valueFormatter: (params) => {
             if (params.value === null || params.value === undefined || params.value === '') return '';
@@ -224,7 +252,7 @@ const Ltpa04001 = () => {
           headerName: '설계번호',
           field: 'field12',
           flex: 1,
-          minWidth: 130,
+          minWidth: attributeColumnWidth(120),
           headerClass: 'ag-header-color',
           cellClass: 'text-center',
         },
@@ -232,15 +260,14 @@ const Ltpa04001 = () => {
           headerName: '설계상태',
           field: 'field13',
           flex: 1,
-          minWidth: 100,
+          minWidth: attributeColumnWidth(75),
           headerClass: 'ag-header-color',
           cellClass: 'text-center',
         },
         {
           headerName: '설계담보수',
           field: 'field14',
-          flex: 1,
-          minWidth: 100,
+          width: attributeColumnWidth(75),
           headerClass: 'ag-header-color',
           cellClass: 'text-center',
         },
@@ -248,7 +275,7 @@ const Ltpa04001 = () => {
           headerName: '보장보험료',
           field: 'field15',
           flex: 1,
-          minWidth: 100,
+          minWidth: attributeColumnWidth(90),
           headerClass: 'ag-header-color',
           cellClass: 'text-right',
           valueFormatter: (params) => {
@@ -364,7 +391,7 @@ const Ltpa04001 = () => {
           </Button>
         </Grow>
       </Grow>
-      <div className="ag-theme-alpine radio-selection min-h-[18.4rem]">
+      <div className="ag-theme-alpine radio-selection inner-scroll" data-row={Ltpa040DummyData.length}>
         <AgGridReact<Ltpa040DummyDataRow>
           noRowsOverlayComponent={AgGridEmptyComponent}
           getRowId={(params) => String(params.data.id)}
@@ -391,6 +418,13 @@ const Ltpa04001 = () => {
           rowClassRules={{}}
           onCellValueChanged={() => {}}
           domLayout="normal"
+          onGridReady={(params) => {
+            params.api.forEachNode((node) => {
+              if (node.data?.isCheck) {
+                node.setSelected(true);
+              }
+            });
+          }}
         />
       </div>
     </Grid>

@@ -4,14 +4,14 @@
 'use client';
 
 import { Gcol, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 const Ltpz069 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="sm">
+      <DialogContent showCloseButton resizable={false} size="xs">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

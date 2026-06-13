@@ -195,6 +195,7 @@ export default function Ltpa400Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   // 2026-05-22 페이징 추가
+  const gridRef = React.useRef<any>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa400DummyData2,
@@ -242,7 +243,7 @@ export default function Ltpa400Section() {
             </Button>
           </TooltipTrigger>
           <TooltipContent variant="default" side="top" align="center" sideOffset={5}>
-            {'사용인에 대한 안내 메시지입니다.'}
+            {'H.P 010-1234-1234'}
           </TooltipContent>
         </Tooltip>
       ),
@@ -465,13 +466,16 @@ export default function Ltpa400Section() {
                       <FormCell title={'조회구분'}>
                         <NativeSelect
                           aria-label="조회구분 선택"
-                          width={120}
+                          width={110}
                           value={form.type01}
                           onChange={(e) => setFormField('type01', e.target.value)}
                         >
                           {[
-                            { value: 'selection', id: 'type01-1', label: '지점1' },
-                            { value: 'selection2', id: 'type01-2', label: '지점2' },
+                            { value: '지점', id: 'type01-1', label: '지점' },
+                            { value: '지원SM', id: 'type01-2', label: '지원SM' },
+                            { value: '대리점', id: 'type01-3', label: '대리점' },
+                            { value: '사용인', id: 'type01-4', label: '사용인' },
+                            { value: '설계접수번호', id: 'type01-5', label: '설계접수번호' },
                           ].map((option) => (
                             <NativeSelectOption key={option.id} value={option.value}>
                               {option.label}
@@ -480,7 +484,7 @@ export default function Ltpa400Section() {
                         </NativeSelect>
                         <Input
                           aria-label=""
-                          width={150}
+                          width={90}
                           value={form.type02 || '12345678'}
                           onChange={(e) => setFormField('type02', e.target.value)}
                         />
@@ -489,7 +493,7 @@ export default function Ltpa400Section() {
                         </Button>
                         <Input aria-label="" width={200} value={'신부산지점GA지점'} readOnly />
                       </FormCell>
-                      <FormCell title={'설계일자'}>
+                      <FormCell title={'설계일자'}> 
                         <DatePickerInput
                           mode="range"
                           onChange={() => {}}
@@ -505,8 +509,11 @@ export default function Ltpa400Section() {
                           onChange={(e) => setFormField('type03', e.target.value)}
                         >
                           {[
-                            { value: 'selection', id: 'type03-1', label: '전체' },
-                            { value: 'selection2', id: 'type03-2', label: '진행중' },
+                            { value: '선택', id: 'type03-1', label: '선택' },
+                            { value: '신청중', id: 'type03-2', label: '신청중' },
+                            { value: '처리중', id: 'type03-3', label: '처리중' },
+                            { value: '처리완료', id: 'type03-4', label: '처리완료' },
+                            { value: '요청취소', id: 'type03-5', label: '요청취소' },
                           ].map((option) => (
                             <NativeSelectOption key={option.id} value={option.value}>
                               {option.label}
@@ -532,7 +539,7 @@ export default function Ltpa400Section() {
                     </Button>
                   </Grow>
                 </Grow>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+                <div className="ag-theme-alpine">
                   <AgGridReact<Ltpa400DummyDataRow>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
@@ -581,14 +588,14 @@ export default function Ltpa400Section() {
                         </NativeSelect>
                         <NativeSelect
                           aria-label="사업단 선택"
-                          width={152}
+                          width={145}
                           value={form.type05}
                           onChange={(e) => setFormField('type05', e.target.value)}
                           readOnly
                         >
                           {[
-                            { value: 'selection', id: 'type05-1', label: '부산GA사업단' },
-                            { value: 'selection2', id: 'type05-2', label: '부산GA사업단2' },
+                            { value: '부산GA사업단', id: 'type05-1', label: '부산GA사업단' },
+                            { value: '부산GA사업단2', id: 'type05-2', label: '부산GA사업단2' },
                           ].map((option) => (
                             <NativeSelectOption key={option.id} value={option.value}>
                               {option.label}
@@ -597,14 +604,14 @@ export default function Ltpa400Section() {
                         </NativeSelect>
                         <NativeSelect
                           aria-label="지점 선택"
-                          width={152}
+                          width={145}
                           value={form.type06}
                           onChange={(e) => setFormField('type06', e.target.value)}
                           readOnly
                         >
                           {[
-                            { value: 'selection', id: 'type06-1', label: '신부산GA지점' },
-                            { value: 'selection2', id: 'type06-2', label: '신부산GA지점2' },
+                            { value: '신부산GA지점', id: 'type06-1', label: '신부산GA지점' },
+                            { value: '신부산GA지점2', id: 'type06-2', label: '신부산GA지점2' },
                           ].map((option) => (
                             <NativeSelectOption key={option.id} value={option.value}>
                               {option.label}
@@ -617,7 +624,7 @@ export default function Ltpa400Section() {
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="" width={100} value={'김한화'} readOnly />
+                        <Input aria-label="" width={80} value={'김한화화'} readOnly />
                       </FormCell>
                       <FormCell title={'설계일자'}>
                         <DatePickerInput
@@ -637,8 +644,9 @@ export default function Ltpa400Section() {
                           onChange={(e) => setFormField('type07', e.target.value)}
                         >
                           {[
-                            { value: 'selection', id: 'type07-1', label: '구분' },
-                            { value: 'selection2', id: 'type07-2', label: '대리점' },
+                            { value: '구분', id: 'type07-1', label: '구분' },
+                            { value: '대표대리점', id: 'type07-2', label: '대표대리점' },
+                            { value: '지사대리점', id: 'type07-3', label: '지사대리점' },
                           ].map((option) => (
                             <NativeSelectOption key={option.id} value={option.value}>
                               {option.label}
@@ -647,21 +655,21 @@ export default function Ltpa400Section() {
                         </NativeSelect>
                         <Input
                           aria-label=""
-                          width={120}
+                          width={113}
                           value={form.type07 || '12345678'}
                           onChange={(e) => setFormField('type07', e.target.value)}
                         />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="" width={152} value={'신부산지점GA지점'} readOnly />
+                        <Input aria-label="" width={145} value={'신부산지점GA지점'} readOnly />
                       </FormCell>
                       <FormCell title={'사용인'}>
                         <Input aria-label="사용인" width={80} value={'12345678'} readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="" width={100} value={'김한화'} readOnly />
+                        <Input aria-label="" width={80} value={'김한화'} readOnly />
                       </FormCell>
                     </FormRow>
                   </FormTable>
@@ -688,10 +696,11 @@ export default function Ltpa400Section() {
                       <FileExportIcon />
                     </Button>
                   </Grow>
-                  <Gcol className="w-full" gap={1}>
-                    <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <Gcol className="w-full">
+                    <div className="ag-theme-alpine">
                       {/* 2026-05-22 체크박스 삭제 */}
                       <AgGridReact<Ltpa400DummyDataRow2>
+                        ref={gridRef}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
                         // rowData={Ltpa400DummyData2}
@@ -709,6 +718,7 @@ export default function Ltpa400Section() {
                     </div>
                     {/* 2026-05-22 페이징 추가 */}
                     <TableMore
+                      gridRef={gridRef}
                       isAll={true}
                       loadedCount={loadedCount}
                       totalCount={totalCount}

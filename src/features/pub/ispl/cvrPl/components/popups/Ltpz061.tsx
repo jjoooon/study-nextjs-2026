@@ -4,13 +4,21 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
+import type {
+  ColDef,
+  ColGroupDef,
+  ICellEditorParams,
+  ICellRendererParams,
+  CellClassParams,
+  EditableCallbackParams,
+  SelectionChangedEvent,
+} from 'ag-grid-enterprise'; // 2026-05-27 EditableCallbackParams, SelectionChangedEvent 추가
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useState } from 'react';
+import * as React from 'react';
 import { Grow, Typo, Gcol } from '@atoms'; // 2026-05-27 Grid 삭제
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { createExpiryCellRenderer } from '@grid/CellRenderers';
 import { SearchIcon } from '@icons';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -22,20 +30,11 @@ import {
   DialogClose,
   DialogFooterArea,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
-import type {
-  ColDef,
-  ColGroupDef,
-  ICellEditorParams,
-  ICellRendererParams,
-  CellClassParams,
-  EditableCallbackParams,
-  SelectionChangedEvent,
-} from 'ag-grid-enterprise'; // 2026-05-27 EditableCallbackParams, SelectionChangedEvent 추가
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useCallback, useState } from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
 
 type DummyDataType1 = {
   id: number;
@@ -69,7 +68,7 @@ const dummyData1: DummyDataType1[] = [
     isCheck: false,
     field01: '040',
     field02: '위, 십이지장',
-    field03: '11',
+    field03: '1년',
     field04: '1개월',
     field05: '',
     field06: '',
@@ -79,7 +78,8 @@ const dummyData1: DummyDataType1[] = [
     id: 2,
     isCheck: true,
     field01: '041',
-    field02: '공장(빈창자), 회장(돌창자), 맹장(충수동기 포함)',
+    field02:
+      '공장(빈창자), 회장(돌창자), 맹장(충수동기 포함)공장(빈창자), 회장(돌창자), 맹장(충수동기 포함)공장(빈창자), 회장(돌창자), 맹장(충수동기 포함)',
     field03: '',
     field04: '2개월',
     field05: '',
@@ -127,7 +127,7 @@ const dummyData2: DummyDataType2[] = [
     isCheck: true,
     field01: '041',
     field02: '요로결석증(N20, N21, N23)',
-    field03: '1',
+    field03: '1년',
     field04: '12개월',
     field05: '',
     field06: '',
@@ -137,7 +137,8 @@ const dummyData2: DummyDataType2[] = [
     id: 3,
     isCheck: true,
     field01: '042',
-    field02: '골관절증 및 튜마토이드 관절염(M05, M06, M08, M15~M19)',
+    field02:
+      '골관절증 및 튜마토이드 관절염(M05, M06, M08, M15~M19)골관절증 및 튜마토이드 관절염(M05, M06, M08, M15~M19)',
     field03: '',
     field04: '4개월',
     field05: '',
@@ -179,8 +180,6 @@ const ReasonCellEditor = React.forwardRef<ReasonCellEditorRef, ICellEditorParams
       <div className="flex h-full w-full items-center gap-1 px-1">
         <div className="flex min-w-0 basis-0 flex-1 items-center">
           <Input
-            aria-label=""
-            width={'100%'}
             value={value}
             size="sm"
             autoFocus
@@ -212,6 +211,26 @@ const ReasonCellEditor = React.forwardRef<ReasonCellEditorRef, ICellEditorParams
 
 ReasonCellEditor.displayName = 'ReasonCellEditor';
 
+const reasonCellRenderer = <TData,>(params: ICellRendererParams<TData>) => {
+  const value = params.value == null ? '' : String(params.value);
+
+  return (
+    <div className="flex h-full w-full items-center gap-1 px-1">
+      <div className="flex min-w-0 basis-0 flex-1 items-center justify-start px-2 text-left text-[1.3rem] leading-[2.5rem]">
+        <span className="block min-w-0 truncate">{value}</span>
+      </div>
+      <div className="flex h-full w-[2.5rem] shrink-0 items-center justify-center">
+        <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+          <SearchIcon color={'var(--color-primary-50)'} />
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+const getExpiryRenderer = createExpiryCellRenderer<DummyDataType1>;
+const getExpiryRenderer2 = createExpiryCellRenderer<DummyDataType2>;
+
 const Ltpz061 = () => {
   // 2026-05-27 isRowSelected 필드 추가: 선택된 행의 상태를 관리하기 위한 필드로, 체크박스 선택 시 해당 행이 선택되었는지 여부를 나타냄
   const [rowData1, setRowData1] = useState<DummyDataType1[]>(dummyData1);
@@ -227,221 +246,222 @@ const Ltpz061 = () => {
     setRowData2((prev) => prev.map((row) => ({ ...row, isRowSelected: selectedIds.has(row.id) })));
   }, []);
 
-  const reasonCellRenderer = useCallback(<TData,>(params: ICellRendererParams<TData>) => {
-    const value = params.value == null ? '' : String(params.value);
-
-    return (
-      <div className="flex h-full w-full items-center gap-1 px-1">
-        <div className="flex min-w-0 basis-0 flex-1 items-center justify-start px-2 text-left text-[1.3rem] leading-[2.5rem]">
-          <span className="block min-w-0 truncate">{value}</span>
-        </div>
-        <div className="flex h-full w-[2.5rem] shrink-0 items-center justify-center">
-          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </div>
-      </div>
-    );
-  }, []);
-
-  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType1>;
-  const columnDefs: Array<ColDef<DummyDataType1> | ColGroupDef<DummyDataType1>> = [
-    {
-      headerName: '분류',
-      field: 'field01',
-      width: 50,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '대상이 되는 부위',
-      field: 'field02',
-      wrapText: true,
-      autoHeight: true,
-      flex: 6,
-      cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
-      cellRenderer: (params: ICellRendererParams<DummyDataType1>) => {
-        return (
-          <div
-            className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
-            dangerouslySetInnerHTML={{ __html: String(params.data?.field02 ?? '') }}
-          />
-        );
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs: Array<ColDef<DummyDataType1> | ColGroupDef<DummyDataType1>> = React.useMemo(
+    () => [
+      {
+        headerName: '분류',
+        field: 'field01',
+        flex: 1,
+        autoHeight: true,
+        minWidth: attributeColumnWidth(50),
+        cellClass: 'text-center',
       },
-    },
-    // 2026-05-27 select 전체 수정
-    {
-      headerName: '부담보기간',
-      marryChildren: true,
-      children: [
-        {
-          field: 'field03',
-          width: 60,
-          singleClickEdit: false,
-          headerName: '',
-          cellClass: (params: CellClassParams<DummyDataType1>) => {
-            const base = 'text-center flex [&>div>span]:h-auto!';
-            return params.data?.isRowSelected === true ? base : `${base} no-edited`;
-          },
-          editable: (params: EditableCallbackParams<DummyDataType1>) => {
-            return params.data?.isRowSelected === true;
-          },
-          cellEditor: 'agSelectCellEditor',
-          cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
-          cellRenderer: getExpiryRenderer('center'),
-          autoHeight: true,
+      {
+        headerName: '대상이 되는 부위',
+        field: 'field02',
+        wrapText: true,
+        autoHeight: true,
+        flex: 10,
+        cellRenderer: (params: ICellRendererParams<DummyDataType1>) => {
+          return (
+            <div
+              className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
+              dangerouslySetInnerHTML={{ __html: String(params.data?.field02 ?? '') }}
+            />
+          );
         },
-        {
-          field: 'field04',
-          width: 60,
-          editable: (params: EditableCallbackParams<DummyDataType1>) => params.data?.isRowSelected === true,
-          singleClickEdit: false,
-          headerName: '',
-          cellRenderer: getExpiryRenderer('center'),
-          cellEditor: 'agSelectCellEditor',
-          cellEditorParams: {
-            values: [
-              '0개월',
-              '1개월',
-              '2개월',
-              '3개월',
-              '4개월',
-              '5개월',
-              '6개월',
-              '7개월',
-              '8개월',
-              '9개월',
-              '10개월',
-              '11개월',
-              '12개월',
-            ],
-          },
-          cellClass: (params: CellClassParams<DummyDataType1>) => {
-            const base = 'text-center flex [&>div>span]:h-auto!';
-            return params.data?.isRowSelected === true ? base : `${base} no-edited`;
-          },
-          autoHeight: true,
-        },
-      ],
-    },
-    {
-      headerName: '부담보사유',
-      field: 'field05',
-      flex: 5,
-      cellClass: 'text-center h-full',
-      editable: true,
-      cellEditor: ReasonCellEditor,
-      cellRenderer: reasonCellRenderer,
-    },
-    {
-      headerName: '수정',
-      field: 'isCheck',
-      flex: 1,
-      cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
-      cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
-      editable: true,
-    },
-  ];
-
-  const getExpiryRenderer2 = createExpiryCellRenderer<DummyDataType2>;
-  const columnDefs2: Array<ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>> = [
-    {
-      headerName: '분류',
-      field: 'field01',
-      width: 50,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '대상이 되는 질병',
-      field: 'field02',
-      wrapText: true,
-      autoHeight: true,
-      flex: 6,
-      cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
-      cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
-        return (
-          <div
-            className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
-            dangerouslySetInnerHTML={{ __html: String(params.data?.field02 ?? '') }}
-          />
-        );
       },
-    },
-    // 2026-05-27 select 전체 수정
-    {
-      headerName: '부담보기간',
-      marryChildren: true,
-      children: [
-        {
-          field: 'field03',
-          width: 60,
-          editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
-          singleClickEdit: false,
-          headerName: '',
-          // cellRenderer: selectCellRenderer,
-          cellEditor: 'agSelectCellEditor',
-          cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
-          cellClass: (params: CellClassParams<DummyDataType2>) => {
-            const base = 'text-center flex [&>div>span]:h-auto!';
-            return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+      // 2026-05-27 select 전체 수정
+      {
+        headerName: '부담보기간',
+        marryChildren: true,
+        children: [
+          {
+            field: 'field03',
+            flex: 1,
+            minWidth: attributeColumnWidth(55),
+            singleClickEdit: false,
+            headerName: '',
+            cellClass: (params: CellClassParams<DummyDataType1>) => {
+              const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
+              return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+            },
+            editable: (params: EditableCallbackParams<DummyDataType1>) => {
+              return params.data?.isRowSelected === true;
+            },
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
+            cellRenderer: getExpiryRenderer('center'),
+            autoHeight: true,
           },
-          autoHeight: true,
-          cellRenderer: getExpiryRenderer2('center'),
+          {
+            field: 'field04',
+            flex: 1,
+            minWidth: attributeColumnWidth(65),
+            editable: (params: EditableCallbackParams<DummyDataType1>) => params.data?.isRowSelected === true,
+            singleClickEdit: false,
+            headerName: '',
+            cellRenderer: getExpiryRenderer('center'),
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: {
+              values: [
+                '0개월',
+                '1개월',
+                '2개월',
+                '3개월',
+                '4개월',
+                '5개월',
+                '6개월',
+                '7개월',
+                '8개월',
+                '9개월',
+                '10개월',
+                '11개월',
+                '12개월',
+              ],
+            },
+            cellClass: (params: CellClassParams<DummyDataType1>) => {
+              const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
+              return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+            },
+            autoHeight: true,
+          },
+        ],
+      },
+      {
+        headerName: '부담보사유',
+        field: 'field05',
+        flex: 5,
+        cellClass: 'text-center',
+        editable: true,
+        cellEditor: ReasonCellEditor,
+        autoHeight: true,
+        cellRenderer: reasonCellRenderer,
+      },
+      {
+        headerName: '수정',
+        field: 'isCheck',
+        flex: 1,
+        minWidth: attributeColumnWidth(30),
+        cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
+        cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
+        editable: true,
+        autoHeight: true,
+      },
+    ],
+    [attributeColumnWidth]
+  );
+
+  const columnDefs2: Array<ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>> = React.useMemo(
+    () => [
+      {
+        headerName: '분류',
+        field: 'field01',
+        flex: 1,
+        autoHeight: true,
+        minWidth: attributeColumnWidth(50),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '대상이 되는 질병',
+        field: 'field02',
+        wrapText: true,
+        autoHeight: true,
+        flex: 10,
+        cellClass: 'flex! items-center! justify-start! word-break whitespace-normal',
+        cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+          return (
+            <div
+              className="h-full w-full py-1.5 leading-[1.3] whitespace-normal"
+              dangerouslySetInnerHTML={{ __html: String(params.data?.field02 ?? '') }}
+            />
+          );
         },
-        {
-          field: 'field04',
-          width: 60,
-          editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
-          singleClickEdit: false,
-          headerName: '',
-          cellRenderer: getExpiryRenderer2('center'),
-          cellEditor: 'agSelectCellEditor',
-          cellEditorParams: {
-            values: [
-              '0개월',
-              '1개월',
-              '2개월',
-              '3개월',
-              '4개월',
-              '5개월',
-              '6개월',
-              '7개월',
-              '8개월',
-              '9개월',
-              '10개월',
-              '11개월',
-              '12개월',
-            ],
+      },
+      // 2026-05-27 select 전체 수정
+      {
+        headerName: '부담보기간',
+        marryChildren: true,
+        children: [
+          {
+            field: 'field03',
+            flex: 1,
+            minWidth: attributeColumnWidth(55),
+            editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
+            singleClickEdit: false,
+            headerName: '',
+            // cellRenderer: selectCellRenderer,
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: { values: ['0년', '1년', '2년', '3년', '4년', '5년', '전기간'] },
+            cellClass: (params: CellClassParams<DummyDataType2>) => {
+              const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
+              return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+            },
+            autoHeight: true,
+            cellRenderer: getExpiryRenderer2('center'),
           },
-          cellClass: (params: CellClassParams<DummyDataType2>) => {
-            const base = 'text-center flex [&>div>span]:h-auto! h-[100%]';
-            return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+          {
+            field: 'field04',
+            flex: 1,
+            minWidth: attributeColumnWidth(65),
+            editable: (params: EditableCallbackParams<DummyDataType2>) => params.data?.isRowSelected === true,
+            singleClickEdit: false,
+            headerName: '',
+            cellRenderer: getExpiryRenderer2('center'),
+            cellEditor: 'agSelectCellEditor',
+            cellEditorParams: {
+              values: [
+                '0개월',
+                '1개월',
+                '2개월',
+                '3개월',
+                '4개월',
+                '5개월',
+                '6개월',
+                '7개월',
+                '8개월',
+                '9개월',
+                '10개월',
+                '11개월',
+                '12개월',
+              ],
+            },
+            cellClass: (params: CellClassParams<DummyDataType2>) => {
+              const base = 'text-center flex [&>div>span]:h-auto! !px-0 editable-cell';
+              return params.data?.isRowSelected === true ? base : `${base} no-edited`;
+            },
+            autoHeight: true,
           },
-          autoHeight: true,
-        },
-      ],
-    },
-    {
-      headerName: '부담보사유',
-      field: 'field05',
-      flex: 5,
-      cellClass: 'text-center h-full aligns-center',
-      editable: true,
-      cellEditor: ReasonCellEditor,
-      cellRenderer: reasonCellRenderer,
-    },
-    {
-      headerName: '수정',
-      field: 'isCheck',
-      flex: 1,
-      cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
-      cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
-      editable: true,
-    },
-  ];
+        ],
+      },
+      {
+        headerName: '부담보사유',
+        field: 'field05',
+        flex: 5,
+        cellClass: 'text-center',
+        editable: true,
+        autoHeight: true,
+        cellEditor: ReasonCellEditor,
+        cellRenderer: reasonCellRenderer,
+      },
+      {
+        headerName: '수정',
+        field: 'isCheck',
+        flex: 1,
+        minWidth: attributeColumnWidth(30),
+        cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
+        cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
+        editable: true,
+        autoHeight: true,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -473,7 +493,7 @@ const Ltpz061 = () => {
             <TableFold variant={'accordion'}>
               <TableFoldHead title="특정부위" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
                   <AgGridReact<DummyDataType1>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -494,7 +514,8 @@ const Ltpz061 = () => {
                     }}
                     selectionColumnDef={{
                       headerName: '선택',
-                      width: 50,
+                      width: 30,
+                      cellClass: 'text-center editable-cell',
                     }}
                     onSelectionChanged={handleSelectionChanged1} // 2026-05-27 선택된 행의 상태를 업데이트하는 이벤트 핸들러 추가
                     domLayout="normal"
@@ -507,7 +528,7 @@ const Ltpz061 = () => {
             <TableFold variant={'accordion'}>
               <TableFoldHead title="특정질병" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -528,12 +549,11 @@ const Ltpz061 = () => {
                     }}
                     selectionColumnDef={{
                       headerName: '선택',
-                      width: 50,
+                      width: 30,
+                      cellClass: 'text-center editable-cell',
                     }}
                     onSelectionChanged={handleSelectionChanged2}
                     domLayout="normal"
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
                   />
                 </div>
               </TableFoldBody>

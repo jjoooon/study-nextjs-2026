@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import type { Meta, StoryObj } from '@storybook/react';
 import { Gcol } from '@atoms';
 import { Controls, Markdown, Primary, Title } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import { StarStage } from '@/shared/components/features/StarStage';
 
 const meta: Meta<typeof StarStage> = {
@@ -32,8 +32,8 @@ import { StarStage } from '@/shared/components/features/StarStage';
             `}
           </Markdown>
           <p>
-            profitabilityText에 <b>수익성 저조</b>, <b>수익성 우량</b>을 입력하면 텍스트에 맞춰 별 활성화가 함께 변경됩니다.
-            그 외 텍스트를 입력하면 별 개수는 star 값을 따릅니다.
+            profitabilityText에 <b>수익성 저조</b>, <b>수익성 우량</b>을 입력하면 텍스트에 맞춰 별 활성화가 함께
+            변경됩니다. 그 외 텍스트를 입력하면 별 개수는 star 값을 따릅니다.
           </p>
           <h2>API Reference</h2>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -45,8 +45,16 @@ import { StarStage } from '@/shared/components/features/StarStage';
               </tr>
             </thead>
             <tbody>
-              <tr><td>star</td><td>number</td><td>활성화할 별 개수입니다.</td></tr>
-              <tr><td>profitabilityText</td><td>string</td><td>텍스트를 직접 입력할 수 있고, 기본 문구를 쓰면 별 상태도 함께 바뀝니다.</td></tr>
+              <tr>
+                <td>star</td>
+                <td>number</td>
+                <td>활성화할 별 개수입니다.</td>
+              </tr>
+              <tr>
+                <td>profitabilityText</td>
+                <td>string</td>
+                <td>텍스트를 직접 입력할 수 있고, 기본 문구를 쓰면 별 상태도 함께 바뀝니다.</td>
+              </tr>
             </tbody>
           </table>
         </>

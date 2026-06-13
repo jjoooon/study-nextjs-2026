@@ -1,4 +1,4 @@
-﻿/*
+/*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
@@ -26,8 +26,8 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { useState } from 'react';
+import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
@@ -299,6 +299,7 @@ export const Ltpa3500301 = ({
     },
   ];
 
+  const gridRef = React.useRef<any>(null);
   const pageSize = 4;
   const [isAllLoaded, setIsAllLoaded] = React.useState(false);
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext, setLoadedCount } = useAgGridInfiniteAppend({
@@ -907,6 +908,7 @@ export const Ltpa3500301 = ({
               <Grid className="w-full">
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
+                    ref={gridRef}
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     // rowData={rowData}
@@ -922,6 +924,7 @@ export const Ltpa3500301 = ({
                   />
                 </div>
                 <TableMore
+                  gridRef={gridRef}
                   loadedCount={loadedCount}
                   totalCount={totalCount}
                   pageSize={pageSize}
@@ -1661,7 +1664,7 @@ export const Ltpa3500301 = ({
       </LayoutScrollItem>
       {!sampleMode && (
         <LayoutScrollItem
-          className={`w-full h-[100% - 3rem] gap-1 flex flex-col sticky ${mtValue === '-3rem' ? 'mt-[-3rem]' : ''}`}
+          className={`h-[100% - 3rem] w-full gap-1 flex flex-col sticky ${mtValue === '-3rem' ? 'mt-[-3rem]' : ''}`}
         >
           <Gcol
             className="top-0 z-20 w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem]"

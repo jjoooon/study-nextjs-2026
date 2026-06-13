@@ -5,11 +5,6 @@
 'use client';
 
 import { Gcol, Typo, Grow } from '@atoms';
-import { BulletList } from '@common/BulletList';
-import { BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -22,11 +17,16 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { BulletList } from '@common/BulletList';
+import { BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 const Ltpz109 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="md">
+      <DialogContent showCloseButton resizable={false} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -77,7 +77,8 @@ const Ltpz109 = () => {
                 발송된 URL을 접속하여 인터뷰 완료시 본 설계번호로 답변이 전송됩니다.
               </BulletListItem>
               <BulletListItem size="sm">
-                알림톡(LMS) 수신번호는 피보험자 휴대폰번호이며, <br />알림톡(LMS) 발신번호는 모집자 휴대폰번호(TM계약 제외)입니다.
+                알림톡(LMS) 수신번호는 피보험자 휴대폰번호이며, <br />
+                알림톡(LMS) 발신번호는 모집자 휴대폰번호(TM계약 제외)입니다.
               </BulletListItem>
             </BulletList>
           </Gcol>
@@ -87,8 +88,12 @@ const Ltpz109 = () => {
             </Typo>
             <BulletList>
               <BulletListItem size="sm">본인인증방법 : 카카오인증 또는 휴대폰인증</BulletListItem>
-              <BulletListItem color="info" size="sm"><b>고객SELF고지 답변가능일 : 의뢰일로부터 3영업일(기한경과시 자동취소)</b></BulletListItem>
-              <BulletListItem color="info" size="sm"><b>고객답변완료(또는 발송취소)후 설계수정가능</b></BulletListItem>
+              <BulletListItem color="info" size="sm">
+                <b>고객SELF고지 답변가능일 : 의뢰일로부터 3영업일(기한경과시 자동취소)</b>
+              </BulletListItem>
+              <BulletListItem color="info" size="sm">
+                <b>고객답변완료(또는 발송취소)후 설계수정가능</b>
+              </BulletListItem>
               <BulletListItem size="sm">접속환경에 따라 데이터 사용료가 부가될 수 있음</BulletListItem>
               <BulletListItem size="sm">카카오 알림톡 수신불가시(수신거절, 미설치 등) 문자로 발송</BulletListItem>
             </BulletList>
@@ -99,7 +104,7 @@ const Ltpz109 = () => {
             </Typo>
             <BulletList>
               <BulletListItem size="sm">UMS(문자/메일/팩스) 전송결과에서 발송결과 확인가능합니다.</BulletListItem>
-              </BulletList>
+            </BulletList>
           </Gcol>
         </DialogSection>
         <DialogFooter>

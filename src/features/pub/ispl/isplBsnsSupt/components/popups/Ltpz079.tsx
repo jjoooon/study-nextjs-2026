@@ -3,11 +3,12 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { ResetIcon, SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -22,12 +23,12 @@ import {
 } from '@uiux/Dialog';
 
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
+// 그리드에 표시될 데이터의 타입 정의
 type DummyDataType = {
   id: number;
   isCheck: boolean;
@@ -41,6 +42,7 @@ type DummyDataType = {
   field08: string | number;
 };
 const DummyData: DummyDataType[] = [
+  // 샘플 데이터 1
   {
     id: 1,
     isCheck: true,
@@ -55,6 +57,7 @@ const DummyData: DummyDataType[] = [
     field08:
       '비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.',
   },
+  // 샘플 데이터 2
   {
     id: 2,
     isCheck: false,
@@ -69,8 +72,12 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+// Ltpz079: 설계 이미지 조회 팝업 컴포넌트
 const Ltpz079 = () => {
+  // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // Ag-Grid 컬럼 정의
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '증권번호',
@@ -92,6 +99,7 @@ const Ltpz079 = () => {
       minWidth: attributeColumnWidth(30),
       flex: 1,
       cellClass: 'text-center',
+      // 툴팁은 문서명에만 적용되므로 여기서는 제거
     },
     {
       headerName: '피보험자',
@@ -134,9 +142,11 @@ const Ltpz079 = () => {
     },
   ];
 
-  // rowSelection 사용시
+  // 그리드에 표시할 데이터 상태 관리
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
+
   return (
+    // Dialog 컴포넌트: 팝업 창을 렌더링합니다.
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
@@ -151,6 +161,7 @@ const Ltpz079 = () => {
         </DialogHeader>
         <DialogSection className="grid grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
+            {/* 검색 조건 입력 폼 */}
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'가입설계번호'}>
@@ -180,7 +191,8 @@ const Ltpz079 = () => {
               </Button>
             </Grow>
           </Grow>
-          <div className="ag-theme-alpine  inner-scroll" data-row={rowData.length}>
+          {/* Ag-Grid 테이블 영역 */}
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}
@@ -190,6 +202,7 @@ const Ltpz079 = () => {
                 sortable: true,
                 resizable: true,
               }}
+              // 행 선택 설정: 다중 선택, 헤더 체크박스, 개별 체크박스 활성화
               rowSelection={{
                 mode: 'multiRow',
                 headerCheckbox: true,
@@ -197,6 +210,7 @@ const Ltpz079 = () => {
                 enableClickSelection: false,
               }}
               selectionColumnDef={{
+                // 선택 체크박스 컬럼 너비
                 width: 30,
               }}
               onGridReady={(params) => {

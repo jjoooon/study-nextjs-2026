@@ -4,7 +4,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createCellValueChangedHandler, createTooltipValueGetter } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createCellValueChangedHandler,
+  createTooltipValueGetter,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -54,7 +59,7 @@ const dummyData: DummyDataType[] = [
     changeDate: '2026-03-22',
     paymentStatus: 'TEXT',
     productName: '한화실손의료보험(갱신형)2601한화실손의료보험(갱신형)2601한화실손의료보험(갱신형)2601',
-    contractor: '김한화',
+    contractor: '김한화김한화김한화',
     insured: '변경조건적용',
     detailCondition: true,
     mandatoryYn: 'Y',
@@ -69,7 +74,7 @@ const dummyData: DummyDataType[] = [
     changeDate: '2026-03-22',
     paymentStatus: 'TEXT',
     productName: '한화실손의료보험(갱신형)2601',
-    contractor: '김한화',
+    contractor: '김한화한화',
     insured: '변경조건적용',
     detailCondition: true,
     mandatoryYn: 'N',
@@ -107,6 +112,7 @@ const dummyData: DummyDataType[] = [
 ];
 
 export const Ltrz085 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [relationValue, setRelationValue] = useState('');
   const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
   const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
@@ -142,7 +148,7 @@ export const Ltrz085 = () => {
     {
       headerName: '구분',
       field: 'type',
-      minWidth: 100,
+      minWidth: attributeColumnWidth(80),
       flex: 1,
       cellClass: 'text-center editable-cell',
       editable: true,
@@ -154,44 +160,43 @@ export const Ltrz085 = () => {
     {
       headerName: '설계번호/증권번호',
       field: 'designNo',
-      minWidth: 140,
-      flex: 2,
+      minWidth: attributeColumnWidth(130),
+      flex: 1,
       cellClass: 'text-center p-0!',
       cellRenderer: designNoCellRenderer,
     },
     {
       headerName: '상태',
       field: 'status',
-      minWidth: 60,
+      minWidth: attributeColumnWidth(60),
       flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '변경일자',
       field: 'changeDate',
-      minWidth: 100,
+      minWidth: attributeColumnWidth(80),
       flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '지급여부',
       field: 'paymentStatus',
-      minWidth: 50,
+      minWidth: attributeColumnWidth(50),
       flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '상품명',
       field: 'productName',
-      flex: 4,
-      minWidth: 180,
+      flex: 20,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'productName' }),
     },
     {
       headerName: '계약자',
       field: 'contractor',
-      minWidth: 60,
+      minWidth: attributeColumnWidth(70),
       flex: 1,
       cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'contractor' }),
@@ -199,14 +204,14 @@ export const Ltrz085 = () => {
     {
       headerName: '피보험자(명)',
       field: 'insured',
-      minWidth: 110,
+      minWidth: attributeColumnWidth(90),
       flex: 1,
       cellClass: 'text-center',
     },
     {
       headerName: '상세조건',
       field: 'detailCondition',
-      minWidth: 60,
+      minWidth: attributeColumnWidth(60),
       flex: 1,
       cellClass: 'text-center px-0!',
       cellRenderer: detailConditionRenderer,
@@ -214,7 +219,7 @@ export const Ltrz085 = () => {
     {
       headerName: '필수이행여부',
       field: 'mandatoryYn',
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       flex: 1,
       cellClass: 'text-center editable-cell',
       editable: true,

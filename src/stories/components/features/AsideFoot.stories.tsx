@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { AsideFoot } from '@features/AsideFoot';
+ */ import { AsideFoot } from '@features/AsideFoot';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 
 const meta: Meta<typeof AsideFoot> = {
   title: 'Components/Features/Aside/납입보험료(AsideFoot)',
@@ -56,9 +56,7 @@ type Story = StoryObj<typeof AsideFoot>;
 
 export const Default: Story = {
   render: () => (
-     <div className="relative flex items-center justify-center"
-      style={{ width: '20rem', height: '20rem' }}
-     >
+    <div className="relative flex items-center justify-center" style={{ width: '20rem', height: '20rem' }}>
       <AsideFoot />
     </div>
   ),

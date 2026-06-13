@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
-import { Gcol, Grow } from '@atoms';
+ */ import { Gcol, Grow } from '@atoms';
 import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 
 type BulletListStoryProps = React.ComponentProps<typeof BulletList> & {
   type?: React.ComponentProps<typeof BulletListItem>['type'];
@@ -23,18 +23,21 @@ const meta: Meta<BulletListStoryProps> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>History</h2>
             <ul>
               <li>2026.03.30</li>
             </ul>
 
-
             <h2>Overview</h2>
             <div>
               <p>
-                BulletList는 안내 문구, 약관 요약, 참조형 문구 등을 목록 형태로 표현할 때 사용하는 컴포넌트입니다.<br />
-                목록 배치 방향(column/row)과 아이템 bullet 스타일(dot/dash/square/hash/ref)을 조합해 다양한 문서형 UI를 구성할 수 있습니다.
+                BulletList는 안내 문구, 약관 요약, 참조형 문구 등을 목록 형태로 표현할 때 사용하는 컴포넌트입니다.
+                <br />
+                목록 배치 방향(column/row)과 아이템 bullet 스타일(dot/dash/square/hash/ref)을 조합해 다양한 문서형 UI를
+                구성할 수 있습니다.
               </p>
             </div>
 
@@ -138,17 +141,29 @@ export const Default: Story = {
           <BulletListItem type={type} before="①" size={size} color={color} className="whitespace-nowrap">
             두 번째 문구입니다.두 번째 문구입니다. <br />두 번째 문구입니다.두 번째 문구입니다.
           </BulletListItem>
-          <BulletListItem type={type} before="㉠" size={size} color={color} className="whitespace-nowrap" onClick={() => alert('Clicked!')}>
+          <BulletListItem
+            type={type}
+            before="㉠"
+            size={size}
+            color={color}
+            className="whitespace-nowrap"
+            onClick={() => alert('Clicked!')}
+          >
             두 번째 문구입니다.두 번째 문구입니다. <br />두 번째 문구입니다.두 번째 문구입니다.
           </BulletListItem>
         </BulletList>
 
-        <BulletItem type={type} size={size} color={color} before="ⓐ" className="whitespace-nowrap" onClick={() => alert('Clicked2!')}>
+        <BulletItem
+          type={type}
+          size={size}
+          color={color}
+          before="ⓐ"
+          className="whitespace-nowrap"
+          onClick={() => alert('Clicked2!')}
+        >
           {itemText}
         </BulletItem>
       </Grow>
     );
   },
 };
-
-

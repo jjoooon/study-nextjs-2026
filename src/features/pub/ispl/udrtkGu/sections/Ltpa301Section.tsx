@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -80,6 +80,7 @@ const Ltpa301DummyData: Ltpa301DummyDataRow[] = [
 ];
 
 export default function Ltpa301Section() {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   // 2026-06-04 flex, minWidth 수정
   // AgGrid Column
   const columnDefs: (ColDef<Ltpa301DummyDataRow> | ColGroupDef<Ltpa301DummyDataRow>)[] = [
@@ -87,48 +88,48 @@ export default function Ltpa301Section() {
       headerName: '점검결과',
       field: 'field01',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '순번',
       field: 'field02',
-      width: 40,
+      width: attributeColumnWidth(40),
     },
     {
       headerName: '점검일자',
       field: 'field03',
       flex: 1,
-      minWidth: 90,
+      minWidth: attributeColumnWidth(85),
     },
 
     {
       headerName: '점검방법',
       field: 'field04',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '점검구분',
       field: 'field05',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '피보험자',
       field: 'field06',
-      width: 80,
+      width: attributeColumnWidth(70),
     },
     {
       headerName: '정액담보한도분류',
       field: 'field07',
       flex: 1,
-      minWidth: 110,
+      minWidth: attributeColumnWidth(110),
     },
     {
       headerName: '가입한도',
       field: 'field08',
       flex: 1,
-      minWidth: 85,
+      minWidth: attributeColumnWidth(85),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -136,7 +137,7 @@ export default function Ltpa301Section() {
       headerName: '초과금액',
       field: 'field09',
       flex: 1,
-      minWidth: 85,
+      minWidth: attributeColumnWidth(85),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -144,7 +145,7 @@ export default function Ltpa301Section() {
       headerName: '당사금액',
       field: 'field10',
       flex: 1,
-      minWidth: 85,
+      minWidth: attributeColumnWidth(85),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -152,26 +153,26 @@ export default function Ltpa301Section() {
       headerName: '타사금액',
       field: 'field11',
       flex: 1,
-      minWidth: 85,
+      minWidth: attributeColumnWidth(85),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '처리직원',
       field: 'field12',
-      width: 80,
+      width: attributeColumnWidth(70),
     },
     {
       headerName: '처리일시',
       field: 'field13',
       flex: 1,
-      minWidth: 90,
+      minWidth: attributeColumnWidth(85),
     },
     {
       headerName: '처리내용',
       field: 'field14',
       flex: 3,
-      minWidth: 250,
+      minWidth: attributeColumnWidth(250),
       cellClass: 'text-left ',
     },
   ];
@@ -217,7 +218,7 @@ export default function Ltpa301Section() {
                 </Button>
               </Grow>
             </Grow>
-
+            { /* 정액담보점검내역 FormTable */ }
             <Grid className="w-full grid-rows-[auto_auto_auto]" gap={3}>
               <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검내역" />
@@ -253,10 +254,10 @@ export default function Ltpa301Section() {
                   </FormTable>
                 </TableFoldBody>
               </TableFold>
-
+              {/* 정액담보점검결과 agGrid */}
               <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검결과">
-                  <Typo variant="body-md">(단위: 원)</Typo>
+                  <Typo variant="body-md">(단위: 만원)</Typo>
                 </TableFoldHead>
                 <TableFoldBody>
                   <div className="ag-theme-alpine min-h-[18.4rem]">
@@ -289,7 +290,7 @@ export default function Ltpa301Section() {
                   </div>
                 </TableFoldBody>
               </TableFold>
-
+              { /* 정액담보점검 관리 Table */ }
               <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검 관리">
                   <Grow className="w-full justify-end" placement="ee">
@@ -308,10 +309,13 @@ export default function Ltpa301Section() {
                   <FormTable caption="정액담보점검관리 테이블" cols={['w-[10rem]', 'flex-1']}>
                     <FormRow>
                       <FormCell title={'처리구분'}>
-                        <NativeSelect aria-label="처리구분 선택" width={130}>
+                        <NativeSelect aria-label="처리구분 선택" width={140}>
                           {[
-                            { value: 'selection', label: '선택1' },
-                            { value: 'selection2', label: '선택2' },
+                            { value: 'selection', label: '선택' },
+                            { value: 'selection2', label: '활성(한도초과)' },
+                            { value: 'selection2', label: '비활성(직원처리)' },
+                            { value: 'selection2', label: '활성(사후-한도초과)' },
+                            { value: 'selection2', label: '활성(사전-한도초과)' },
                           ].map((option) => (
                             <NativeSelectOption key={option.value} value={option.value}>
                               {option.label}
@@ -347,7 +351,7 @@ export default function Ltpa301Section() {
                   </Typo>
                   <BulletList color={'warning'} size="sm">
                     <BulletListItem before="1." className="whitespace-nowrap" color="default" size="md" type="symbols">
-                      점검 수행 전 신정원 조회 후 정액담보점검 클릭 권장
+                      <b>점검 수행 전 신정원 조회 후 정액담보점검 클릭 권장</b>
                     </BulletListItem>
                     <BulletListItem before="2." className="whitespace-nowrap" color="default" size="md" type="symbols">
                       당사금액 문제가 있는 경우 다른 심사요청 건이 있는지 확인 권장

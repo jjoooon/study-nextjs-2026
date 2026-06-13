@@ -10,6 +10,7 @@ import {
   createSequentialRowReorderHandler,
   createTooltipValueGetter,
   getNextNumericRowId,
+  useDynamicColumnWidths,
 } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { ZoomInIcon, ZoomOutIcon } from '@icons';
@@ -99,26 +100,31 @@ const Ltpz071 = () => {
     gridApiRef,
   });
 
-  const columnDefs1: ColDef<DummyData1Type>[] = [
-    {
-      headerName: '순서',
-      field: 'field1',
-      width: 40,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      cellEditor: 'agNumberCellEditor',
-      sortable: false,
-    },
-    {
-      headerName: '담보그룹명',
-      field: 'field2',
-      flex: 1,
-      editable: true,
-      cellClass: 'editable-cell',
-      cellEditor: 'agTextCellEditor',
-      tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs1 = React.useMemo<ColDef<DummyData1Type>[]>(
+    () => [
+      {
+        headerName: '순서',
+        field: 'field1',
+        flex: 1,
+        width: attributeColumnWidth(40),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        cellEditor: 'agNumberCellEditor',
+        sortable: false,
+      },
+      {
+        headerName: '담보그룹명',
+        field: 'field2',
+        flex: 8,
+        editable: true,
+        cellClass: 'editable-cell',
+        cellEditor: 'agTextCellEditor',
+        tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
+      },
+    ],
+    [attributeColumnWidth]
+  );
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="sm">
@@ -140,7 +146,7 @@ const Ltpz071 = () => {
               <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
             </Button>
           </Grow>
-          <div className="ag-theme-alpine min-h-[24.4rem]">
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyData1Type>
               onGridReady={(event) => {
                 gridApiRef.current = event.api;

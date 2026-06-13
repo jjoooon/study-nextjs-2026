@@ -3,41 +3,6 @@
  */
 'use client';
 
-import {
-  createCellClickSelectionToggleHandler,
-  createInsertCopiedRowButtonCellRenderer,
-  getNextNumericRowId,
-  numberValueFormatter,
-  patchCopiedDuplicateRow,
-  rowDataWithTrackingFactory,
-  useDynamicColumnWidths,
-  AgGridEmptyComponent,
-  AmountWithPopoverCellEditor,
-} from '@aggrid';
-import { Divider, Gcol, Grow, Grid } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { KeyValueList } from '@common/KeyValueList';
-import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
-import { TextSelectChange } from '@common/TextSelectChange';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { MyPlanSelect } from '@features/MyPlanSelect';
-import {
-  createExpiryCellRenderer,
-  groupEditableButtonRenderer,
-  productNameCellRenderer,
-  searchButtonRenderer,
-  uwIconRenderer,
-} from '@grid/CellRenderers';
-
-import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
-import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
-import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import type {
   CellClassParams,
   ICellRendererParams,
@@ -50,6 +15,41 @@ import type {
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { Divider, Gcol, Grow, Grid } from '@atoms';
+import { ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
+import {
+  createCellClickSelectionToggleHandler,
+  createInsertCopiedRowButtonCellRenderer,
+  getNextNumericRowId,
+  numberValueFormatter,
+  patchCopiedDuplicateRow,
+  rowDataWithTrackingFactory,
+  useDynamicColumnWidths,
+  AgGridEmptyComponent,
+  AmountWithPopoverCellEditor,
+} from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { KeyValueList } from '@common/KeyValueList';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
+import { TextSelectChange } from '@common/TextSelectChange';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { MyPlanSelect } from '@features/MyPlanSelect';
+import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import {
+  createExpiryCellRenderer,
+  groupEditableButtonRenderer,
+  productNameCellRenderer,
+  searchButtonRenderer,
+  uwIconRenderer,
+} from '@grid/CellRenderers';
+
+import { HeaderWithUnit, ProductNameHeader, AgGridProductNameHeader } from '@grid/HeadRenderers';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002aData';
 import type { DummyDataType } from '../data/ltpa35002aData';
@@ -58,7 +58,6 @@ import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChanged
 import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
 import { editableCellClassRules, ensureLockedRowsSelected } from '../utils/agGridUtils';
 import '@/shared/lib/agGridPub';
-import Ltpz020 from '@/features/pub/ispl/cvrPl/components/popups/Ltpz020';
 
 type AgGridRow = DummyDataType & {
   isDuplicate?: boolean;
@@ -85,19 +84,16 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   const prevSelectedIdsRef = useRef<Set<string | number>>(new Set());
 
   // 담보명 헤더 렌더러
-  const [coverageName, setCoverageName] = useState('');
+  const [coverageName, _setCoverageName] = useState('');
+  const coverageNameRef = useRef(coverageName);
+
+  const setCoverageName = useCallback((value: string) => {
+    _setCoverageName(value);
+    coverageNameRef.current = value;
+  }, []);
+
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
-  const productNameHeader = useCallback(
-    () => (
-      <ProductNameHeader
-        coverageName={coverageName}
-        onCoverageNameChange={setCoverageName}
-        showProductNameTooltip={showProductNameTooltip}
-        onShowProductNameTooltipChange={(checked) => setShowProductNameTooltip(checked === true)}
-      />
-    ),
-    [coverageName, showProductNameTooltip]
-  );
+
 
   // =====================
   // 공용 유틸리티/셀 렌더러
@@ -205,6 +201,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         valueFormatter: numberValueFormatter<AgGridRow>,
       },
       {
+        headerName: '가입금액(만원)',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: '가입금액',
@@ -250,6 +247,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       },
 
       {
+        headerName: '보험료(원)',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: '보험료',
@@ -266,7 +264,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         headerName: '만기',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(64),
+        minWidth: attributeColumnWidth(80),
         // width: attributeColumnWidth[7],
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
@@ -278,9 +276,9 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
-          values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
+          values: ['05년만기', '20세만기', '100세만기', '무제한'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('center'),
       },
       {
         headerName: '납기',
@@ -297,12 +295,13 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
-          values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
+          values: ['5년납', '10년납', '15년납', '20년납', '25년납', '30년납', '35년납', '전기납'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('center'),
       },
 
       {
+        headerName: 'UW예상',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: 'UW',
@@ -324,11 +323,11 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         cellRenderer: duplicateRenderer,
         resizable: false,
         sortable: false,
+        suppressMovable: true,
       },
     ],
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]
   );
-  const [Ltpz020Open, setLtpz020Open] = useState(false);
   return (
     <Gcol>
       <LayoutMainBody>
@@ -336,14 +335,12 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           className={`${!isHeightExpanded ? 'grid-rows-[auto_auto_1fr]' : 'grid-rows-[auto_1fr]'} gap-0`}
         >
           <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
-            <Grow gap={1.5} placement={'bwc'}>
-              <Grow gap={2}>
-                <Button variant={'contained'} color={'coolgray-light'} size={'md'} onClick={() => setLtpz020Open(true)}>
-                  <PaperIcon />
+            <Grow gap={1.5} placement={'bws'}>
+              <Grow gap={2} placement={'ss'}>
+                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
                   보장패키지
                 </Button>
-                <Ltpz020 open={Ltpz020Open} />
-                <Divider dir="col" />
+                <Divider dir="col" className="mt-2" />
 
                 <CheckboxGroup
                   className="gap-[0.4rem] flex-wrap type-small"
@@ -362,6 +359,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     { label: '검사/지원', value: '5' },
                     { label: '운전/비용', value: '6' },
                     { label: '재물/배상', value: '7' },
+                    { label: '어린이', value: '9' },
                     { label: '기타', value: '8' },
                   ].map((category) => (
                     <CheckboxGroupItem key={category.value} value={category.value}>
@@ -369,7 +367,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     </CheckboxGroupItem>
                   ))}
                 </CheckboxGroup>
-                <Divider dir="col" />
+                <Divider dir="col" className="mt-2" />
 
                 <CheckboxGroup
                   className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
@@ -400,31 +398,31 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
             <TextSelectChange
               items={[
                 [
-                  { checked: false, label: '100세만기', value: '100세만기' },
-                  { checked: true, label: '30세만기', value: '30세만기' },
+                  { checked: true, label: '100세만기', value: '100세만기' },
+                  { checked: false, label: '30세만기', value: '30세만기' },
                 ],
                 [
-                  { checked: false, label: '20년납입', value: '20년납입' },
-                  { checked: true, label: '30년납입', value: '30년납입' },
+                  { checked: true, label: '20년납입', value: '20년납입' },
+                  { checked: false, label: '30년납입', value: '30년납입' },
                 ],
                 [
-                  { checked: false, label: '월납', value: '월납' },
-                  { checked: true, label: '연납', value: '연납' },
+                  { checked: true, label: '월납', value: '월납' },
+                  { checked: false, label: '연납', value: '연납' },
                 ],
                 [
-                  { checked: false, label: '20년 갱신', value: '20년 갱신' },
-                  { checked: true, label: '30년 갱신', value: '30년 갱신' },
+                  { checked: true, label: '20년 갱신', value: '20년 갱신' },
+                  { checked: false, label: '30년 갱신', value: '30년 갱신' },
                 ],
                 [
-                  { checked: false, label: '1형', value: '1형' },
-                  { checked: true, label: '2형', value: '2형' },
+                  { checked: true, label: '1형', value: '1형' },
+                  { checked: false, label: '2형', value: '2형' },
                 ],
               ]}
             />
             <Grow className="gap-2.5">
               <Checkbox>플랜기본값</Checkbox>
               <Grow className="gap-1">
-                <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={false} required={false}>
+                <NativeSelect aria-label="플랜 선택" width={120} size={'sm'} readOnly={false} required={false}>
                   {[
                     { label: '플랜 선택', value: 'planA' },
                     { label: '올인원플랜(15~89세)', value: 'planB' },
@@ -516,15 +514,22 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent variant="default" side="top" align="start" sideOffset={-4}>
-                        담보 전체 해지
+                        담보 전체 해제
                       </TooltipContent>
                     </Tooltip>
                   ),
-                  width: attributeColumnWidth[3],
+                  width: attributeColumnWidth(30),
                   cellClass: 'text-center p-0! editable-cell',
                   cellClassRules: {
                     'pointer-events-none': (params) => !!params.data?.locked,
                   },
+                }}
+                context={{
+                  coverageName,
+                  setCoverageName,
+                  showProductNameTooltip,
+                  onShowProductNameTooltipChange: (checked: boolean | 'indeterminate') =>
+                    setShowProductNameTooltip(checked === true),
                 }}
                 onSelectionChanged={onSelectionChanged}
                 onGridReady={handleGridReady}
@@ -537,7 +542,8 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 groupDefaultExpanded={0}
                 getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
                 autoGroupColumnDef={{
-                  headerComponent: productNameHeader,
+                  headerName: '담보명',
+                  headerComponent: AgGridProductNameHeader,
                   field: 'id',
                   flex: 20,
                   cellClass: (_) => 'text-left !p-0',
@@ -589,7 +595,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     <Input
                       type="tel"
                       commaAmount={true}
-                      value={100000}
+                      value={0}
                       size={'md'}
                       readOnly={true}
                       className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
@@ -600,7 +606,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                           <Input
                             type="text"
                             commaAmount={true}
-                            value={39.4}
+                            value={0}
                             size={'md'}
                             width={44}
                             className="[&_input]:text-right shrink-0 cursor-pointer"
@@ -629,7 +635,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       <Input
                         type="tel"
                         commaAmount={true}
-                        value={Number(100000).toLocaleString()}
+                        value={Number(72531).toLocaleString()}
                         size={'md'}
                         readOnly={true}
                         className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
@@ -649,7 +655,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   <Input
                     type="tel"
                     commaAmount={true}
-                    value={100000}
+                    value={0}
                     width={'full'}
                     size={'md'}
                     readOnly={true}
@@ -663,7 +669,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       <Input
                         type="tel"
                         commaAmount={true}
-                        value={0}
+                        value={72531}
                         clear={true}
                         width={'full'}
                         size={'md'}

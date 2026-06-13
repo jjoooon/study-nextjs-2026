@@ -22,8 +22,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect } from '@uiux/NativeSelect';
 import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
 import * as React from 'react';
+import { useMemo } from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -104,6 +104,7 @@ export default function Ltpa660Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
   const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
+  const gridRef = React.useRef<any>(null);
 
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
@@ -119,7 +120,7 @@ export default function Ltpa660Section() {
         field: 'field1',
         cellClass: 'text-center',
         flex: 1,
-        minWidth: attributeColumnWidth[10],
+        minWidth: attributeColumnWidth(80),
         autoHeight: true,
         cellRenderer: (params: ICellRendererParams<DummyData1Type>) =>
           params.data?.field1 ? (
@@ -134,13 +135,13 @@ export default function Ltpa660Section() {
         headerName: '담보명',
         field: 'field2',
         flex: 8,
-        minWidth: attributeColumnWidth[30],
+        minWidth: attributeColumnWidth(300),
       },
       {
         headerName: '판매건수',
         field: 'field3',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<DummyData1Type>,
       },
@@ -148,14 +149,14 @@ export default function Ltpa660Section() {
         headerName: '판매순위',
         field: 'field4',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
       },
       {
         headerName: '순위조정',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center editable-cell',
         editable: true,
         cellEditor: 'agSelectCellEditor',
@@ -169,9 +170,7 @@ export default function Ltpa660Section() {
       {
         headerName: '추천제외',
         field: 'field6',
-        flex: 1,
-        minWidth: attributeColumnWidth[9],
-        cellClass: 'text-center',
+        width: attributeColumnWidth(70),
         editable: true,
         cellDataType: 'boolean',
         cellRenderer: 'agCheckboxCellRenderer',
@@ -259,6 +258,7 @@ export default function Ltpa660Section() {
               <div className="ag-theme-alpine">
                 {/* 2026-06-04 suppressClickEdit={true} 삭제 */}
                 <AgGridReact<DummyData1Type>
+                  ref={gridRef}
                   onGridReady={(event) => {
                     gridApiRef.current = event.api;
                   }}
@@ -304,6 +304,7 @@ export default function Ltpa660Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 isAll={false}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

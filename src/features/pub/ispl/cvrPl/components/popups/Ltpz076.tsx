@@ -3,11 +3,12 @@
  */
 'use client';
 
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { TableFold } from '@common/TableFold';
+import { useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,11 +22,10 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
-import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TableFold } from '@common/TableFold';
 
 // M2. 신규페이지
 import '@/shared/lib/agGridPub';
@@ -156,42 +156,50 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 const Ltpz076 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '코드',
-      field: 'field01',
-      width: 70,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '성명/상호명',
-      field: 'field02',
-      flex: 8,
-      cellClass: 'text-left',
-    },
-    {
-      headerName: '구분',
-      field: 'field03',
-      flex: 1,
-      minWidth: 80,
-      cellClass: 'text-center',
-    },
-  ];
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '코드',
-      field: 'field01',
-      flex: 1,
-      minWidth: 70,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '성명/상호명',
-      field: 'field02',
-      flex: 8,
-      cellClass: 'text-left',
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '코드',
+        field: 'field01',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '성명/상호명',
+        field: 'field02',
+        flex: 10,
+        cellClass: 'text-left',
+      },
+      {
+        headerName: '구분',
+        field: 'field03',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        cellClass: 'text-center',
+      },
+    ],
+    [attributeColumnWidth]
+  );
+  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
+    () => [
+      {
+        headerName: '코드',
+        field: 'field01',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '성명/상호명',
+        field: 'field02',
+        flex: 10,
+        cellClass: 'text-left',
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
@@ -228,7 +236,7 @@ const Ltpz076 = () => {
             <TableFold className="w-full">
               <TableFoldHead title="대상" />
               <TableFoldBody className="grid grid-rows-[auto_1fr] gap-[1.2rem]">
-                <Grid className="w-full grid-flow-col grid-cols-[1fr] gap-3">
+                <Grid className="w-full grid-flow-col grid-cols-[auto_1fr] gap-3">
                   <Gcol gap={3}>
                     <Grow placement="bwe" className="w-full" variant={'box-round'}>
                       <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[1rem]', 'w-auto']}>

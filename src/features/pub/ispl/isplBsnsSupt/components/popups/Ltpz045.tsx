@@ -3,10 +3,9 @@
  */
 'use client';
 
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -22,20 +21,23 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 const Ltpz045 = () => {
+  // 폼 필드 상태를 관리하는 훅 (type01, type02, type03)
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
     type03: '',
   });
+  // CDD 기타 값 상태
   const [cddEtcValue] = React.useState('');
   return (
     // 2026-05-27
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="ml">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -48,16 +50,18 @@ const Ltpz045 = () => {
         </DialogHeader>
         <DialogSection>
           <Gcol className="w-full" gap={3}>
+            {/* 상단 설계번호 및 계약자 정보 표시 영역 */}
             <Grow className="w-full" variant="box-round">
               <FormTable variant="head" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input aria-label="" value={'LA26020945959594'} readOnly />
+                    <Input value={'LA26020945959594'} width={'quoteNo'} readOnly />
                     -
-                    <Input aria-label="" width={30} value={'1'} readOnly />
+                    <Input width={26} value={'1'} readOnly />
                   </FormCell>
                   <FormCell title={'계약자'}>
-                    <Input aria-label="" variant="info" value={'김한화(901212-1234567)'} readOnly />
+                    <Input width={84} value={'김한화'} readOnly />
+                    <Input width={114} value={'000000-0******'} readOnly />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -66,13 +70,13 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="고객정보(CDD 확인사항)"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
+                <FormTable caption="고객정보" cols={['w-[12.4rem]', 'w-[16rem]', 'w-[7rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'성명'}>김한화</FormCell>
                     <FormCell title={'영문명'}>Kim Hanhwa</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'주민번호(여권번호)'}>901212-1234567</FormCell>
+                    <FormCell title={'주민번호(여권번호)'}>000000-0******</FormCell>
                     <FormCell title={'국적'}>대한민국</FormCell>
                   </FormRow>
                   <FormRow>
@@ -81,7 +85,7 @@ const Ltpz045 = () => {
                     </FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'휴대폰'}>010-1234-5678</FormCell>
+                    <FormCell title={'휴대폰'}>010-0000-0000</FormCell>
                     <FormCell title={'전화번호'}>02-123-4567</FormCell>
                   </FormRow>
                   <FormRow>
@@ -105,22 +109,22 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="고객정보(CDD 확인사항)"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
+                <FormTable caption="고객정보" cols={['w-[9.4rem]', 'w-[18rem]', 'w-[9.4rem]', 'w-auto']}>
                   <FormRow>
-                    <FormCell title={'법인명'}>
-                      <Input aria-label="법인명 검색" width={120} value={''} readOnly />
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+                    <FormCell title={'법인명'} tdClassName="grid grid-cols-[1fr_auto]">
+                      <Input aria-label="법인명 검색" value={''} readOnly />
+                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
                     </FormCell>
                     <FormCell title={'영문명'}>Kim Hanhwa</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'사업자번호'}>901212-1234567</FormCell>
+                    <FormCell title={'사업자번호'}>000000-0000000</FormCell>
                     <FormCell title={'설립일'}>2025-01-01</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'대표전화번호'}>010-1234-5678</FormCell>
+                    <FormCell title={'대표전화번호'}>010-0000-0000</FormCell>
                     <FormCell title={'설립목적'}>02-123-4567</FormCell>
                   </FormRow>
                   <FormRow>
@@ -168,7 +172,7 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="실소유자 확인사항"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
+                <FormTable caption="고객정보" cols={['w-[10rem]', 'w-[16rem]', 'w-[6rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'실소유자구분'} colSpan={3}>
                       <RadioGroup className="gap-1 flex-col items-start">
@@ -202,11 +206,11 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="대리인 확인사항(대리인 고객등록 필수)"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption="고객정보" cols={['w-[13rem]', 'w-[19rem]', 'w-[13rem]', 'w-auto']}>
+                <FormTable caption="고객정보" cols={['w-[10rem]', 'w-[16rem]', 'w-[6rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'성명'}>
-                      <Input aria-label="성명 검색" width={108} value={''} readOnly />
-                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+                      <Input aria-label="성명 검색" width={84} value={''} readOnly />
+                      <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
                     </FormCell>
@@ -239,7 +243,7 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="CDD 검증정보"></TableFoldHead>
               <TableFoldBody className="gap-3">
-                <FormTable caption="" cols={['w-[13rem]', 'w-auto']}>
+                <FormTable caption="" cols={['w-[10rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'실명확인증표'} tdClassName="grid grid-cols-[auto_1fr] gap-2">
                       <RadioGroup
@@ -254,7 +258,7 @@ const Ltpz045 = () => {
                           기타
                         </RadioGroupItem>
                       </RadioGroup>
-                      <Input size="md" value={cddEtcValue} readOnly={form.type03 !== 'option2'} />
+                      <Input value={cddEtcValue} readOnly={form.type03 !== 'option2'} />
                     </FormCell>
                   </FormRow>
                 </FormTable>
@@ -262,10 +266,15 @@ const Ltpz045 = () => {
                 <TableFold>
                   <TableFoldHead title="법정대리인 정보"></TableFoldHead>
                   <TableFoldBody>
-                    <FormTable caption="법정대리인 정보" cols={['w-[13rem]', 'w-auto']}>
+                    <FormTable caption="법정대리인 정보" cols={['w-[10rem]', 'w-auto']}>
                       <FormRow>
                         <FormCell title={'이름/주민번호'}>
-                          박환화(900101-1234567)와의 관계
+                          <Input aria-label="성명 검색" width={84} value={''} readOnly />
+                          <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                          <Input aria-label="주민번호" width={114} value={'000000-0******'} readOnly />
+                          김한화 와의 관계
                           <NativeSelect
                             aria-label="선택"
                             width={100}

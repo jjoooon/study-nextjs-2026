@@ -4,13 +4,13 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+import { useState } from 'react';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -23,10 +23,10 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-import React from 'react';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -40,58 +40,66 @@ type DummyDataType = {
 const dummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '',
-    field02: '',
-    field03: '',
-    field04: '',
+    field01:
+      '유형들어갑니다.유형들어갑니다.유형들어갑니다.유형들어갑니다.유형들어갑니다.유형들어갑니다.유형들어갑니다.',
+    field02: 100000,
+    field03: 100000,
+    field04: 100000,
   },
   {
     id: 2,
-    field01: '',
-    field02: '',
-    field03: '',
-    field04: '',
+    field01: '유형들어갑니다.',
+    field02: 100000,
+    field03: 100000,
+    field04: 100000,
   },
   {
     id: 3,
     field01: '',
-    field02: '',
-    field03: '',
-    field04: '1000000',
+    field02: 100000,
+    field03: 100000,
+    field04: 100000,
   },
 ];
 
 const Ltpz087 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '유형',
-      field: 'field01',
-      flex: 1,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '가입금액(원)',
-      field: 'field02',
-      width: 180,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '타질권금액(원)',
-      field: 'field03',
-      width: 180,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '유형',
+        field: 'field01',
+        flex: 10,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
+      },
+      {
+        headerName: '가입금액(원)',
+        field: 'field02',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '타질권금액(원)',
+        field: 'field03',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
 
-    {
-      headerName: '보험료(만원)',
-      field: 'field04',
-      width: 180,
-      cellClass: 'text-right',
-      valueFormatter: numberValueFormatter,
-    },
-  ];
+      {
+        headerName: '보험료(만원)',
+        field: 'field04',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-right',
+        valueFormatter: numberValueFormatter,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = useState<DummyDataType[]>(dummyData);
   const sumRow = React.useMemo(() => {
@@ -118,7 +126,7 @@ const Ltpz087 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -134,18 +142,15 @@ const Ltpz087 = () => {
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
-                <FormCell
-                  title={'설계번호'}
-                  tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
-                >
-                  <Input aria-label="" width={130} value={'LA260112297637'} readOnly />
-                  <Input aria-label="" width={320} value={'한화 BigPlus 재산종합보험 2601'} readOnly />
+                <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
+                  <Input aria-label="" width={'quoteNo'} value={'LA260112297637'} readOnly />
+                  <Input aria-label="" value={'한화 BigPlus 재산종합보험 2601'} readOnly />
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell title={'목적물'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full">
+                <FormCell title={'목적물'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
                   <Input aria-label="" width={250} value={''} readOnly />
-                  <Input aria-label="" width={200} value={''} readOnly />
+                  <Input aria-label="" value={''} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -198,7 +203,7 @@ const Ltpz087 = () => {
             <TableFold variant={'accordion'}>
               <TableFoldHead title="질권설정금액" />
               <TableFoldBody className="gap-2">
-                <div className="ag-theme-alpine min-h-[15.4rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                   <AgGridReact<DummyDataType>
                     // ref={gridRef}
                     getRowId={(params) => String(params.data.id)}
@@ -216,11 +221,13 @@ const Ltpz087 = () => {
                       params.node.rowPinned && !params.data?.isSumRow ? { backgroundColor: '#ffffff' } : undefined
                     }
                     pinnedBottomRowData={sumRow}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
                   />
                 </div>
                 <FormTable
                   caption={'질권자의 설정 상태'}
-                  cols={['w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}
+                  cols={['w-[5.8rem]', 'w-auto', 'w-[5.8rem]', 'w-auto', 'w-[9.4rem]', 'w-auto']}
                 >
                   <FormRow>
                     <FormCell title={'입력자'}>

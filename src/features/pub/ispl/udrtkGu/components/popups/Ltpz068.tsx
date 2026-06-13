@@ -4,10 +4,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { createTooltipValueGetter } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo, Grid } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Ai2Icon } from '@icons';
+import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,245 +22,256 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 type DummyDataType = {
   id: number;
   field01: string;
   field02: string | number;
-  field09: string | number;
-  field10: string | number;
-  field03: string | number;
-  field04: string | number;
-  field05: string | number;
-  field06: string | number;
-  field07: string | number;
-  field08: string | number;
+  insuredAmount: string | number;
+  premium: string | number;
+  insuredAmountA: string | number;
+  premiumA: string | number;
+  insuredAmountB: string | number;
+  premiumB: string | number;
+  insuredAmountC: string | number;
+  premiumC: string | number;
 };
 
 const DummyData: DummyDataType[] = [
   {
     id: 1,
     field01: '1',
-    field02: '보통약관(상해사망)',
-    field09: 100,
-    field10: 28,
-    field03: 100,
-    field04: 28,
-    field05: 100,
-    field06: 28,
-    field07: 100,
-    field08: 28,
+    field02: '보통약관(상해사망(간편))',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
     id: 2,
     field01: '2',
-    field02: '보험료납입면제대상보장(8대사융Ⅱ 보험료납입면제대상보장(8대사융Ⅱ) 보험료납입면제대상보장(8대사융Ⅱ)',
-    field09: 100,
-    field10: 28,
-    field03: 10,
-    field04: 320,
-    field05: 10,
-    field06: 320,
-    field07: 10,
-    field08: 320,
+    field02: '보험료납입면제대상보장(5대사유)(간편)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
     id: 3,
     field01: '3',
-    field02: '보장보험료50%납입지원Ⅱ(4대유사암)',
-    field09: 100,
-    field10: 28,
-    field03: 30,
-    field04: 28,
-    field05: 50,
-    field06: 28,
-    field07: 30,
-    field08: 28,
+    field02: '보장보험료50%납입지원II(4대유사암)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 200,
+    premiumA: 50,
+    insuredAmountB: 200,
+    premiumB: 50,
+    insuredAmountC: 200,
+    premiumC: 50,
   },
   {
     id: 4,
     field01: '4',
-    field02: '상해사망(체증형)',
-    field09: 100,
-    field10: 28,
-    field03: 300,
-    field04: 960,
-    field05: 200,
-    field06: 640,
-    field07: 300,
-    field08: 960,
+    field02: '유방암(수용체타입)진단비',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 200,
+    premiumA: 50,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
     id: 5,
     field01: '5',
-    field02: '상해사망추가',
-    field09: 100,
-    field10: 28,
-    field03: 100,
-    field04: 28,
-    field05: 100,
-    field06: 28,
-    field07: 100,
-    field08: 28,
+    field02: '유방암A타입진단비(호르몬수용체양성,HER2양성)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
     id: 6,
     field01: '6',
-    field02: '상해80%이상후유장애',
-    field09: 100,
-    field10: 28,
-    field03: 100,
-    field04: 320,
-    field05: 100,
-    field06: 320,
-    field07: 100,
-    field08: 320,
+    field02: '유방암B타입진단비(호르몬수용체양성,HER2양성)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 90,
+    premiumA: 5,
+    insuredAmountB: 90,
+    premiumB: 5,
+    insuredAmountC: 90,
+    premiumC: 5,
   },
   {
     id: 7,
     field01: '7',
-    field02: '상해후유장해(3-100%)(갱신형)',
-    field09: 100,
-    field10: 28,
-    field03: 100,
-    field04: 320,
-    field05: 100,
-    field06: 320,
-    field07: 100,
-    field08: 320,
+    field02: '유방암C타입진단비(HER2양성)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 90,
+    premiumC: 10,
   },
   {
     id: 8,
     field01: '8',
-    field02: '질병사망',
-    field09: 100,
-    field10: 28,
-    field03: 100,
-    field04: 28,
-    field05: 100,
-    field06: 28,
-    field07: 100,
-    field08: 28,
+    field02: '유방암D타입진단비(삼중음성)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
-    id: 181,
+    id: 9,
     field01: '181',
-    field02: '주요순환계질환Ⅰ특정치료비(상급종합병원,권역심뇌혈관질환센터)(각연간',
-    field09: 100,
-    field10: 28,
-    field03: 600,
-    field04: 320,
-    field05: 500,
-    field06: 320,
-    field07: 600,
-    field08: 320,
+    field02: '주요순환계질환I특정치료비(요양병원제외,각연간1회한)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
-    id: 182,
+    id: 10,
     field01: '182',
-    field02: '암(4대유사암제외)진단후특정치료비(암전문의료기관(상급종합 병원))(진',
-    field09: 100,
-    field10: 28,
-    field03: 100,
-    field04: 28,
-    field05: 100,
-    field06: 28,
-    field07: 100,
-    field08: 28,
+    field02: '주요순환계질환I특정치료비(수술(혈전제거술제외))(요양병원제외,각연간1회한)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
-    id: 292,
+    id: 11,
     field01: '292',
-    field02: '주요뇌혈관질환(90일면책)진단비(간편)',
-    field09: 100,
-    field10: 28,
-    field03: 100,
-    field04: 28,
-    field05: 100,
-    field06: 28,
-    field07: 100,
-    field08: 28,
+    field02: '주요순환계질환I특정치료비(혈전제거술)(요양병원제외,연간1회한)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
-    id: 598,
+    id: 12,
     field01: '598',
-    field02: '암(갑상선암및전립선암제외)다빈치로봇수술비(1회한)(갱신형)(CLA07606)',
-    field09: 100,
-    field10: 28,
-    field03: 500,
-    field04: 948,
-    field05: 300,
-    field06: 558,
-    field07: 200,
-    field08: 294,
+    field02: '주요순환계질환I특정치료비(혈전용해치료)(요양병원제외,연간1회한)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
-    id: 601,
+    id: 13,
     field01: '601',
-    field02: '뇌혈관질환수술비(수술1회당)',
-    field09: 100,
-    field10: 28,
-    field03: 10,
-    field04: 68,
-    field05: 20,
-    field06: 136,
-    field07: 30,
-    field08: 204,
+    field02: '주요순환계질환I특정치료비(중환자실치료)(요양병원제외,연간1회한)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
-    id: 602,
+    id: 14,
     field01: '602',
-    field02: '뇌혈관질환수술비(수술1회당)(갱신형)',
-    field09: 100,
-    field10: 28,
-    field03: 10,
-    field04: 13,
-    field05: 20,
-    field06: 26,
-    field07: 30,
-    field08: 39,
+    field02: '난임진단비(기혼자용)(갱신형)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
     id: 605,
     field01: '605',
-    field02: '허혈성심장질환수술비(수술1회당)',
-    field09: 100,
-    field10: 28,
-    field03: 10,
-    field04: 66,
-    field05: 20,
-    field06: 132,
-    field07: 30,
-    field08: 198,
+    field02: '난임치료비II(급여인공수정,3회한,기혼자용)(갱신형)',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
-    id: 612,
+    id: 15,
     field01: '612',
-    field02: '상해종합병원1인실입원비(1일이상30일한도)',
-    field09: 100,
-    field10: 28,
-    field03: 1,
-    field04: 37,
-    field05: 2,
-    field06: 74,
-    field07: 3,
-    field08: 111,
+    field02: '난임치료비II(급여인공수정치료비(첫번째)(갱신형))',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
   {
-    id: 619,
+    id: 16,
     field01: '619',
-    field02: '상해중환자실입원비(1일이상10일한도)',
-    field09: 100,
-    field10: 28,
-    field03: 1,
-    field04: 87,
-    field05: 2,
-    field06: 174,
-    field07: 3,
-    field08: 261,
+    field02: '난임치료비II(급여인공수정치료비(두번째)(갱신형))',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
+  },
+  {
+    id: 17,
+    field01: '620',
+    field02: '난임치료비II(급여인공수정치료비(세번째)(갱신형))',
+    insuredAmount: 100,
+    premium: 28,
+    insuredAmountA: 100,
+    premiumA: 28,
+    insuredAmountB: 100,
+    premiumB: 28,
+    insuredAmountC: 100,
+    premiumC: 28,
   },
 ];
 
@@ -269,51 +282,51 @@ const PLAN_COLS: Array<{
   leftField: keyof DummyDataType;
   rightField: keyof DummyDataType;
 }> = [
-  { key: 'A', leftField: 'field03', rightField: 'field04' },
-  { key: 'B', leftField: 'field05', rightField: 'field06' },
-  { key: 'C', leftField: 'field07', rightField: 'field08' },
+  { key: 'A', leftField: 'insuredAmountA', rightField: 'premiumA' },
+  { key: 'B', leftField: 'insuredAmountB', rightField: 'premiumB' },
+  { key: 'C', leftField: 'insuredAmountC', rightField: 'premiumC' },
 ];
 
 const Ltpz068 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [selectedPlan, setSelectedPlan] = React.useState<PlanKey>('A');
 
+  const toNumber = React.useCallback((value: string | number): number => {
+    if (typeof value === 'number') {
+      return Number.isFinite(value) ? value : 0;
+    }
+
+    const normalized = value.replaceAll(',', '').trim();
+    if (normalized.length === 0) {
+      return 0;
+    }
+
+    const parsed = Number(normalized);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }, []);
+
   const sumRow = React.useMemo<DummyDataType[]>(() => {
-    const toNumber = (value: string | number): number => {
-      if (typeof value === 'number') {
-        return Number.isFinite(value) ? value : 0;
-      }
-
-      const normalized = value.replaceAll(',', '').trim();
-      if (normalized.length === 0) {
-        return 0;
-      }
-
-      const parsed = Number(normalized);
-      return Number.isFinite(parsed) ? parsed : 0;
-    };
-
-    const currentTotal = rowData.reduce((acc, row) => acc + toNumber(row.field10), 0);
-    const planATotal = rowData.reduce((acc, row) => acc + toNumber(row.field04), 0);
-    const planBTotal = rowData.reduce((acc, row) => acc + toNumber(row.field06), 0);
-    const planCTotal = rowData.reduce((acc, row) => acc + toNumber(row.field08), 0);
+    const currentTotal = rowData.reduce((acc, row) => acc + toNumber(row.premium), 0);
+    const planATotal = rowData.reduce((acc, row) => acc + toNumber(row.premiumA), 0);
+    const planBTotal = rowData.reduce((acc, row) => acc + toNumber(row.premiumB), 0);
+    const planCTotal = rowData.reduce((acc, row) => acc + toNumber(row.premiumC), 0);
 
     return [
       {
         id: -1,
         field01: '',
         field02: '',
-        field09: '보장보험료(합)',
-        field10: currentTotal,
-        field03: '보장보험료(합)',
-        field04: planATotal,
-        field05: '보장보험료(합)',
-        field06: planBTotal,
-        field07: '보장보험료(합)',
-        field08: planCTotal,
+        insuredAmount: '보장보험료(합)',
+        premium: currentTotal,
+        insuredAmountA: '보장보험료(합)',
+        premiumA: planATotal,
+        insuredAmountB: '보장보험료(합)',
+        premiumB: planBTotal,
+        insuredAmountC: '보장보험료(합)',
+        premiumC: planCTotal,
       },
     ];
-  }, [rowData]);
+  }, [rowData, toNumber]);
 
   const numericFormatter = React.useCallback((value: string | number | null | undefined): string => {
     if (value === null || value === undefined || value === '') return '';
@@ -322,32 +335,34 @@ const Ltpz068 = () => {
     return Number.isFinite(num) ? num.toLocaleString() : String(value);
   }, []);
 
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(() => {
     return [
       {
         headerName: '순번',
         field: 'field01',
-        width: 60,
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
         cellClass: 'text-center px-0!',
       },
       {
         headerName: '담보명',
         field: 'field02',
-        flex: 1,
+        flex: 7,
         cellClass: 'text-left ',
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
       },
       {
         headerName: '가입금액(만원)',
-        field: 'field09',
-        width: 90,
+        field: 'insuredAmount',
+        width: attributeColumnWidth(90),
         cellClass: 'text-right',
         valueFormatter: (p) => numericFormatter(p.value),
       },
       {
         headerName: '보험료(원)',
-        field: 'field10',
-        width: 70,
+        field: 'premium',
+        width: attributeColumnWidth(70),
         cellClass: 'text-right',
         valueFormatter: (p) => numericFormatter(p.value),
       },
@@ -355,20 +370,48 @@ const Ltpz068 = () => {
         {
           headerName: '가입금액(만원)',
           field: leftField,
-          width: 90,
-          cellClass: 'text-right',
+          width: attributeColumnWidth(90),
+          cellClass: 'text-right pr-2!',
           valueFormatter: (p) => numericFormatter(p.value),
+          cellClassRules: {
+            'cell-greater': (params) => {
+              if (params.node.isRowPinned()) return false;
+              const base = toNumber(params.data?.insuredAmount ?? 0);
+              const current = toNumber(params.value ?? 0);
+              return current > base;
+            },
+            'cell-less': (params) => {
+              if (params.node.isRowPinned()) return false;
+              const base = toNumber(params.data?.insuredAmount ?? 0);
+              const current = toNumber(params.value ?? 0);
+              return current < base;
+            },
+          },
         },
         {
           headerName: '보험료(원)',
           field: rightField,
-          width: 70,
-          cellClass: 'text-right',
+          width: attributeColumnWidth(70),
+          cellClass: 'text-right pr-2!',
           valueFormatter: (p) => numericFormatter(p.value),
+          cellClassRules: {
+            'cell-greater': (params) => {
+              if (params.node.isRowPinned()) return false;
+              const base = toNumber(params.data?.premium ?? 0);
+              const current = toNumber(params.value ?? 0);
+              return current > base;
+            },
+            'cell-less': (params) => {
+              if (params.node.isRowPinned()) return false;
+              const base = toNumber(params.data?.premium ?? 0);
+              const current = toNumber(params.value ?? 0);
+              return current < base;
+            },
+          },
         },
       ]),
     ];
-  }, [numericFormatter]);
+  }, [numericFormatter, attributeColumnWidth, toNumber]);
 
   return (
     <Dialog open>
@@ -395,7 +438,7 @@ const Ltpz068 = () => {
 
           {/* A안 / B안 / C안 상단 탭 */}
           <div className="relative">
-            <Grid className="grid-cols-[16rem_16rem_16rem_16.6rem]  h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
+            <Grid className="grid-cols-[15.8rem_16rem_16.2rem_17.6rem]  h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
               <div className="flex flex-col w-full cursor-pointer h-[100%]">
                 {/* 탭 헤더 */}
                 <Grow className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 ">
@@ -451,7 +494,7 @@ const Ltpz068 = () => {
               })}
             </Grid>
             {/* 그리드 */}
-            <div className="ag-theme-alpine relative min-h-[calc(100vh-30rem)] !max-h-[30rem]">
+            <div className="ag-theme-alpine relative !h-[calc(100vh)] !max-h-[50rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData}

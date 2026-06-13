@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
-import { Grow, Gcol, Typo } from '@atoms';
+ */ import { Grow, Gcol, Typo } from '@atoms';
 import { SortableButton } from '@common/SortableButton';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 
 type SortOrder = 'asc' | 'desc' | 'none';
 
@@ -22,11 +22,14 @@ const meta: Meta<SortableButtonStoryProps> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>Overview</h2>
             <div>
               <p>
-                SortableButton은 컬럼 정렬 상태를 표시하고 정렬 변경 이벤트를 발생시키는 버튼 컴포넌트입니다.<br />
+                SortableButton은 컬럼 정렬 상태를 표시하고 정렬 변경 이벤트를 발생시키는 버튼 컴포넌트입니다.
+                <br />
                 현재 정렬 컬럼과 정렬 방향(asc/desc/none)에 따라 아이콘이 자동으로 바뀝니다.
               </p>
             </div>
@@ -63,11 +66,31 @@ import { SortableButton } from '@common/SortableButton';
                 </tr>
               </thead>
               <tbody>
-                <tr><td>label</td><td>string</td><td>버튼 라벨 텍스트</td></tr>
-                <tr><td>columnKey</td><td>string</td><td>정렬 대상 컬럼 키</td></tr>
-                <tr><td>currentSortColumn</td><td>string | null</td><td>현재 정렬된 컬럼 키</td></tr>
-                <tr><td>currentSortOrder</td><td>'asc' | 'desc' | 'none'</td><td>현재 정렬 방향</td></tr>
-                <tr><td>onSort</td><td>(columnKey: string) ={'>'} void</td><td>정렬 클릭 이벤트 핸들러</td></tr>
+                <tr>
+                  <td>label</td>
+                  <td>string</td>
+                  <td>버튼 라벨 텍스트</td>
+                </tr>
+                <tr>
+                  <td>columnKey</td>
+                  <td>string</td>
+                  <td>정렬 대상 컬럼 키</td>
+                </tr>
+                <tr>
+                  <td>currentSortColumn</td>
+                  <td>string | null</td>
+                  <td>현재 정렬된 컬럼 키</td>
+                </tr>
+                <tr>
+                  <td>currentSortOrder</td>
+                  <td>'asc' | 'desc' | 'none'</td>
+                  <td>현재 정렬 방향</td>
+                </tr>
+                <tr>
+                  <td>onSort</td>
+                  <td>(columnKey: string) ={'>'} void</td>
+                  <td>정렬 클릭 이벤트 핸들러</td>
+                </tr>
               </tbody>
             </table>
           </>
@@ -137,7 +160,13 @@ export const Default: Story = {
 
     const handleSort = (columnKey: string) => {
       const nextOrder: SortOrder =
-        currentSortColumn !== columnKey ? 'asc' : currentSortOrder === 'asc' ? 'desc' : currentSortOrder === 'desc' ? 'none' : 'asc';
+        currentSortColumn !== columnKey
+          ? 'asc'
+          : currentSortOrder === 'asc'
+            ? 'desc'
+            : currentSortOrder === 'desc'
+              ? 'none'
+              : 'asc';
 
       setCurrentSortColumn(columnKey);
       setCurrentSortOrder(nextOrder);

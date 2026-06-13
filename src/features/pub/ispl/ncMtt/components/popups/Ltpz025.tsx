@@ -4,10 +4,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,9 +20,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -74,60 +74,69 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 const Ltpz025 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '성명',
-      flex: 1,
-      field: 'field01',
-      cellClass: 'text-center px-0!',
-    },
-    {
-      headerName: '생년월일',
-      flex: 1,
-      field: 'field02',
-      cellClass: 'text-center px-0!',
-    },
-    {
-      headerName: '휴대폰번호',
-      flex: 1,
-      field: 'field03',
-      cellClass: 'text-center px-0!',
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '성명',
+        flex: 1,
+        field: 'field01',
+        cellClass: 'text-center px-0!',
+      },
+      {
+        headerName: '생년월일',
+        flex: 1,
+        field: 'field02',
+        cellClass: 'text-center px-0!',
+      },
+      {
+        headerName: '휴대폰번호',
+        flex: 1,
+        field: 'field03',
+        cellClass: 'text-center px-0!',
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '대상',
-      width: 50,
-      field: 'field01',
-      cellClass: 'text-center px-0! flex! items-center! justify-center!',
-      spanRows: true,
-    },
-    {
-      headerName: '발송일시',
-      flex: 1,
-      field: 'field02',
-      cellClass: 'text-center px-0!',
-    },
-    {
-      headerName: '동의일시',
-      flex: 1,
-      field: 'field03',
-      cellClass: 'text-center px-0!',
-    },
-    {
-      headerName: '동의종료일',
-      flex: 1,
-      field: 'field04',
-      cellClass: 'text-center px-0!',
-    },
-    {
-      headerName: '진행상태',
-      width: 80,
-      field: 'field05',
-      cellClass: 'text-center px-0!',
-    },
-  ];
+  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
+    () => [
+      {
+        headerName: '대상',
+        flex: 1,
+        width: attributeColumnWidth(50),
+        field: 'field01',
+        cellClass: 'text-center px-0! flex! items-center! justify-center!',
+        spanRows: true,
+      },
+      {
+        headerName: '발송일시',
+        flex: 2,
+        field: 'field02',
+        cellClass: 'text-center px-0!',
+      },
+      {
+        headerName: '동의일시',
+        flex: 2,
+        field: 'field03',
+        cellClass: 'text-center px-0!',
+      },
+      {
+        headerName: '동의종료일',
+        flex: 2,
+        field: 'field04',
+        cellClass: 'text-center px-0!',
+      },
+      {
+        headerName: '진행상태',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        field: 'field05',
+        cellClass: 'text-center px-0!',
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
@@ -159,7 +168,7 @@ const Ltpz025 = () => {
                   알림톡 전송
                 </Button>
               </Grow>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -177,7 +186,7 @@ const Ltpz025 = () => {
             <TableFold>
               <TableFoldHead title="발송이력"></TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[15.3rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

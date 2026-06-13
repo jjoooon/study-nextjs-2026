@@ -4,25 +4,25 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { createCellClickSelectionToggleHandler, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useState } from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { useFormFields } from '@hooks/useFormFields';
 import { EssentialIcon, ResetIcon, PlusIcon } from '@icons';
-import { LayoutMain, LayoutMainFoot, LayoutScrollItem, LayoutScrollWrap, LayoutMainBody } from '@layout/BaseLayout';
-import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
+import { createCellClickSelectionToggleHandler, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { ColDef, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState } from 'react';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { LayoutMain, LayoutMainFoot, LayoutScrollItem, LayoutScrollWrap, LayoutMainBody } from '@layout/BaseLayout';
+import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
+import { useFormFields } from '@hooks/useFormFields';
 
 type Ltpa35006GridRow = {
   id: number;
@@ -261,7 +261,7 @@ export const Ltpa35006 = () => {
                       <FormRow>
                         <FormCell title={'계약자'}>
                           <Input aria-label="계약자명" width={170} value={'김한화(00)'} readOnly />
-                          <Input aria-label="계약자 주민등록번호" width={'full'} value={'940000-1******'} readOnly />
+                          <Input aria-label="계약자 주민등록번호" width={'full'} value={'000000-0******'} readOnly />
                         </FormCell>
                         <FormCell title={'수금자'}>
                           <Input aria-label="수금자" width={'full'} value={'김한화(8098884)'} readOnly />
@@ -284,7 +284,7 @@ export const Ltpa35006 = () => {
                       <FormRow>
                         <FormCell title={'피보험자'}>
                           <Input aria-label="계약자명" width={170} value={'김한화(00)'} readOnly />
-                          <Input aria-label="계약자 주민등록번호" width={'full'} value={'940000-1******'} readOnly />
+                          <Input aria-label="계약자 주민등록번호" width={'full'} value={'000000-0******'} readOnly />
                         </FormCell>
                         <FormCell title={'입금선택'} colSpan={4}>
                           <RadioGroup defaultValue="계약자">

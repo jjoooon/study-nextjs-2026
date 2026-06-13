@@ -6,19 +6,26 @@
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 
+// Table 디자인 변형 타입: 기본형, 보조형, 메시지용
 type TableVariant = 'default' | 'sub' | 'message';
 
 interface TableProps extends React.ComponentProps<'table'> {
   variant?: TableVariant;
 }
 
+// 하위 컴포넌트(thead, tr, td 등)에서 상위 Table의 variant를 공유하기 위한 Context
 const TableVariantContext = React.createContext<TableVariant>('default');
 
+/**
+ * Table 루트 컴포넌트
+ * @param variant - 'default'(검정 상단선), 'message'(갈색 상단선), 'sub'(테두리 박스형)
+ */
 function Table({ className, variant = 'default', ...props }: TableProps) {
-  // 스타일 variant별로 분리
+  // variant별 컨테이너 스타일 정의
   const variantClass =
     variant === 'default'
-      ? 'w-full rounded-0 border-t-[.2rem] border-t-[#000]'
+      ? // 기본형: 상단 2px 검정 라인
+        'w-full rounded-0 border-t-[.2rem] border-t-[#000]'
       : variant === 'message'
         ? 'w-full rounded-0 border-t-[.2rem] border-t-[#61554F]'
         : 'w-full caption-bottom text-sm border border-[#E5E5E5] rounded-[.8rem] overflow-hidden';
@@ -31,6 +38,7 @@ function Table({ className, variant = 'default', ...props }: TableProps) {
   );
 }
 
+// 테이블 헤더 영역 (thead)
 function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
   const variant = React.useContext(TableVariantContext);
   return (
@@ -49,6 +57,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
   );
 }
 
+// 테이블 본문 영역 (tbody)
 function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
   const variant = React.useContext(TableVariantContext);
   return (
@@ -60,6 +69,7 @@ function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
   );
 }
 
+// 테이블 푸터 영역 (tfoot)
 function TableFooter({ className, ...props }: React.ComponentProps<'tfoot'>) {
   const variant = React.useContext(TableVariantContext);
   return (
@@ -71,6 +81,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<'tfoot'>) {
   );
 }
 
+// 테이블 행 (tr)
 function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
   const variant = React.useContext(TableVariantContext);
   return (
@@ -87,6 +98,7 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
   );
 }
 
+// 테이블 헤더 셀 (th)
 function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
   const variant = React.useContext(TableVariantContext);
   return (
@@ -105,6 +117,7 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
   );
 }
 
+// 테이블 일반 셀 (td)
 function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
   const variant = React.useContext(TableVariantContext);
   return (
@@ -123,6 +136,7 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
   );
 }
 
+// 테이블 캡션 (접근성을 위해 a11y-hidden 클래스 적용 가능)
 function TableCaption({ className, ...props }: React.ComponentProps<'caption'>) {
   return (
     <caption

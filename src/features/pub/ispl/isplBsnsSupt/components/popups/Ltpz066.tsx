@@ -3,11 +3,14 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback } from 'react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grow, Typo, Grid, Gcol } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,11 +23,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback } from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -115,62 +116,72 @@ const Ltpz066 = () => {
       </div>
     );
   }, []);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '담보코드',
+        field: 'field01',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        resizable: true,
+        cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
+      },
+      {
+        headerName: '담보명',
+        field: 'field02',
+        flex: 10,
+        resizable: true,
+        cellClass: `text-left`,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
+      },
+      {
+        headerName: '가입금액',
+        field: 'field03',
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
+        resizable: true,
+        cellClass: `text-center`,
+        editable: true,
+        cellRenderer: selectCellRenderer,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: { values: ['1백만원', '2백만원', '3백만원', '4백만원', '5백만원'] },
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '담보코드',
-      field: 'field01',
-      width: 100,
-      resizable: true,
-      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
-    },
-    {
-      headerName: '담보명',
-      field: 'field02',
-      flex: 3,
-      resizable: true,
-      cellClass: `text-left`,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
-    },
-    {
-      headerName: '가입금액',
-      field: 'field03',
-      flex: 1,
-      resizable: true,
-      cellClass: `text-center`,
-      editable: true,
-      cellRenderer: selectCellRenderer,
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['1백만원', '2백만원', '3백만원', '4백만원', '5백만원'] },
-    },
-  ];
-
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '담보코드',
-      field: 'field01',
-      width: 100,
-      resizable: true,
-      cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
-    },
-    {
-      headerName: '담보명',
-      field: 'field02',
-      flex: 3,
-      resizable: true,
-      cellClass: `text-left`,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field02' }),
-    },
-    {
-      headerName: '가입금액(만원)',
-      field: 'field03',
-      flex: 1,
-      resizable: true,
-      cellClass: `text-right`,
-      valueParser: (params) => Number(params.newValue) || 0,
-      valueFormatter: numberValueFormatter,
-    },
-  ];
+  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
+    () => [
+      {
+        headerName: '담보코드',
+        field: 'field01',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        resizable: true,
+        cellClass: `flex! items-center! justify-center! whitespace-pre-line text-center `,
+      },
+      {
+        headerName: '담보명',
+        field: 'field02',
+        flex: 10,
+        resizable: true,
+        cellClass: `text-left`,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field02' }),
+      },
+      {
+        headerName: '가입금액(만원)',
+        field: 'field03',
+        flex: 1,
+        minWidth: attributeColumnWidth(85),
+        resizable: true,
+        cellClass: `text-right`,
+        valueParser: (params) => Number(params.newValue) || 0,
+        valueFormatter: numberValueFormatter,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [form, setFormField] = useFormFields({
     type01: '',
@@ -225,7 +236,7 @@ const Ltpz066 = () => {
             <TableFold>
               <TableFoldHead title="사고등급별 담보 가입금액" />
               <TableFoldBody className="gap-2">
-                <div className="ag-theme-alpine">
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -239,7 +250,7 @@ const Ltpz066 = () => {
                     tooltipShowDelay={0}
                   />
                 </div>
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={DummyData2.length}>
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

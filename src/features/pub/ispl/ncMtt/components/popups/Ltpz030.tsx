@@ -3,13 +3,13 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
 import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon } from '@icons';
+import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
@@ -25,12 +25,19 @@ import {
 import { Input } from '@uiux/Input';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 
 import '@/shared/lib/agGridPub';
+
+/**
+ * LTPZ030 컴포넌트
+ * 고지유형 추천 팝업 다이얼로그
+ * - Tab1: 간편고지유형 사전체크 (ag-Grid 테이블)
+ * - Tab2: 일반/건강고지유형 사전체크 (일반 테이블 + ag-Grid)
+ */
 
 const underwritingDecisionMap = {
   refuse: {
@@ -47,7 +54,9 @@ const underwritingDecisionMap = {
   },
 } as const;
 
+// 인수 결정 상태 타입
 type UnderwritingDecisionStatus = keyof typeof underwritingDecisionMap;
+// 탭 정보 타입
 type LTPZ030TabType = {
   name: string;
   value: string;
@@ -67,7 +76,8 @@ const DATA_TABS: LTPZ030TabType[] = [
   },
 ];
 
-// tab1_1 dummy data
+// ===== Tab1 테이블 데이터 =====
+// Tab1-1: 간편고지 사전체크 테이블 (ag-Grid)
 type DummyDataType1T1 = {
   id: number;
   field01: string | number;
@@ -76,12 +86,14 @@ type DummyDataType1T1 = {
   field04: string | number;
   field05: string | number;
 };
+// 라벨을 인수 결정 상태로 변환하는 매핑 (거절, 조건부 인수 등)
 const underwritingDecisionStatusByLabel: Record<string, UnderwritingDecisionStatus> = {
   거절: 'refuse',
   조건부인수: 'conditional',
   '조건부 인수': 'conditional',
   인수: 'accept',
 };
+// Tab1-1 테이블의 샘플 데이터
 const DummyData1T1: DummyDataType1T1[] = [
   {
     id: 1,
@@ -164,6 +176,7 @@ const DummyData1T1: DummyDataType1T1[] = [
     field05: '경증외, 중대질환 1148,1737',
   },
 ];
+// 라벨 문자열을 인수 결정 정보(아이콘, 라벨)로 변환하는 함수
 const getUnderwritingDecision = (value: string | number) => {
   if (typeof value !== 'string') {
     return null;
@@ -174,14 +187,19 @@ const getUnderwritingDecision = (value: string | number) => {
   return status ? underwritingDecisionMap[status] : null;
 };
 
+// ===== 컴포넌트 시작 =====
 const Ltpz030 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths(); // 화면 크기에 따라 컬럼 너비를 동적으로 조정
+  
+  // ===== ag-Grid 컬럼 정의 =====
+  // Tab1 테이블의 컬럼 설정 (분류, 고지유형, 가능여부, 제한담보, 비고)
   /* 2026.05.28 className 추가 */
   const columnDefs1T1 = React.useMemo<ColDef<DummyDataType1T1>[]>(
     () => [
       {
         headerName: '분류',
         field: 'field01',
-        width: 70,
+        width: attributeColumnWidth(70),
         autoHeight: true,
         editable: false,
         spanRows: true,
@@ -189,17 +207,18 @@ const Ltpz030 = () => {
       {
         headerName: '고지유형',
         field: 'field02',
-        width: 70,
+        width: attributeColumnWidth(70),
         autoHeight: true,
         editable: false,
       },
       {
         headerName: '가능여부',
         field: 'field03',
-        width: 100,
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
         autoHeight: true,
         editable: false,
-        cellRenderer: ({ value }: { value: string | number | null | undefined }) => {
+        cellRenderer: ({ value }: { value: string | number | null | undefined }) => { // 인수 결정 상태를 아이콘과 라벨로 표시하는 렌더러
           const decision = getUnderwritingDecision(value ?? '');
 
           if (!decision) {
@@ -219,23 +238,31 @@ const Ltpz030 = () => {
       {
         headerName: '제한담보',
         field: 'field04',
-        width: 100,
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
         autoHeight: true,
       },
       {
         headerName: '비고',
         field: 'field05',
         flex: 1,
+        minWidth: attributeColumnWidth(220),
         autoHeight: true,
         cellClass: 'truncate text-left!',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType1T1>({ field: 'field05' }),
       },
     ],
-    []
+    [attributeColumnWidth]
   );
+
+  // ===== 탭 상태 관리 =====
+  // useTabs 훅으로 활성 탭, 탭 데이터 관리
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+  // ===== 상태 셀 렌더링 헬퍼 함수 =====
+  // Tab2 테이블의 Y/N/- 상태를 렌더링하는 함수
+  // highlight=true인 경우 위험한 값("-")을 빨강색으로 표시
   const renderStatusCell = (value: 'Y' | 'N' | '-', highlight = false) => {
     const isDangerY = highlight && value === 'Y';
-
     return (
       <TableCell className={isDangerY ? 'font-bold text-[var(--color-text-danger)]' : undefined}>{value}</TableCell>
     );
@@ -244,6 +271,8 @@ const Ltpz030 = () => {
   // ag-Grid + TablePagination 연동 (공통 훅 사용)
   // const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
 
+  // ===== 다이얼로그 렌더링 =====
+  // 고지유형 추천 팝업 다이얼로그 (Tab1: ag-Grid, Tab2: 일반 테이블)
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="2xl">
@@ -258,6 +287,7 @@ const Ltpz030 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection>
+          {/* 탭 페이저: Tab1(간편고지 사전체크), Tab2(일반/건강고지 사전체크) */}
           <TabPager
             data={tabs}
             active={active}
@@ -270,6 +300,7 @@ const Ltpz030 = () => {
             renderTab={(tab) => <span>{tab.label}</span>}
             renderDropdownItem={false}
           >
+            {/* ===== Tab1: 간편고지유형 사전체크 =====  */}
             {active === 'tab1' ? (
               <>
                 <Gcol placement="ss" className="w-full pt-3" gap={3}>
@@ -320,6 +351,7 @@ const Ltpz030 = () => {
                     </FormTable>
                   </Grow>
                   <Grow placement={'bws'} className="w-full" gap={3}>
+                    {/* ag-Grid 테이블: 간편고지 사전체크 결과 테이블 */}
                     <div className="ag-theme-alpine w-full">
                       <AgGridReact<DummyDataType1T1>
                         getRowId={(params) => String(params.data.id)}
@@ -334,8 +366,11 @@ const Ltpz030 = () => {
                         domLayout="autoHeight"
                         className="text-center"
                         enableCellSpan={true}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
                       />
                     </div>
+                    {/* Tab1-2: 일반/건강고지유형 사전체크 (일반 HTML 테이블) */}
                     <Gcol className="h-full">
                       <Table variant="default">
                         <colgroup>
@@ -485,6 +520,7 @@ const Ltpz030 = () => {
                 </Gcol>
               </>
             ) : (
+              /* ===== Tab2: 일반/건강고지유형 사전체크 ===== */
               <Gcol placement="ss" className="w-full h-full pt-2" gap={3}>
                 <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
                   <FormTable
@@ -514,6 +550,15 @@ const Ltpz030 = () => {
                 <Gcol className="h-full">
                   <Table variant="default">
                     <caption className="a11y-hidden">일반/건강고지유형 피보험자 정보 테이블</caption>
+                    <colgroup>
+                      <col style={{ width: '12rem' }} />
+                      <col style={{ width: '8rem' }} />
+                      <col style={{ width: '8rem' }} />
+                      <col style={{ width: '8rem' }} />
+                      <col style={{ width: '9rem' }} />
+                      <col style={{ width: '8rem' }} />
+                      <col style={{ width: 'auto' }} />
+                    </colgroup>
                     <TableHeader>
                       <TableRow>
                         <TableHead>고지유형</TableHead>
@@ -590,6 +635,7 @@ const Ltpz030 = () => {
                     </TableBody>
                   </Table>
                   <Grow placement={'ss'} className="w-full min-w-0">
+                    {/* Tab2 테이블 주석: 중대질환 정의 */}
                     <div className="flex w-full min-w-0 items-start gap-[0.4rem] text-[1.2rem] leading-[150%] tracking-[-0.13rem] text-[var(--color-gray-70)]">
                       <RefIcon className="mt-[0.3rem] shrink-0" color="var(--color-secondary-50)" size={10} />
                       <span className="min-w-0 break-words">

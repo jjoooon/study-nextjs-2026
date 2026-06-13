@@ -3,35 +3,35 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { SearchIcon, ResetIcon, FileExportIcon, PenIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
   createFieldRenderer,
   OverflowTooltipText,
-  useAgGridInfiniteAppend,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, FileExportIcon, PenIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { useFormFields } from '@hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
+// 통합가입설계조회 그리드에서 사용하는 단일 행 데이터 타입 정의
 type DummyDataRow = {
   id: number;
   isCheck: boolean;
@@ -63,12 +63,16 @@ type DummyDataRow = {
   field18: string;
   field19: string;
   nickname?: string;
+
+  field25: string; // 최초설계일
+  field26: string; // BM
+  field27: string; // 유자격자
 };
 const DummyData: DummyDataRow[] = [
   {
     id: 1,
     isCheck: true,
-    isState: false,
+    isState: true,
     field01: 'LA123456789012',
     field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
     field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
@@ -82,7 +86,7 @@ const DummyData: DummyDataRow[] = [
     field22: '2009-01-01',
     field23: '2009-01-01',
     field09: '설계중',
-    field10: '설계중',
+    field10: '심사결과',
     field11: '미출력',
     field24: '',
     field12: '신부산GA지점/00팀00팀00팀00팀00팀',
@@ -94,6 +98,10 @@ const DummyData: DummyDataRow[] = [
     field18: '배서설계',
     field19: 'LA20143129023123912',
     nickname: '최고설계메니져뚜루루',
+
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
   },
   {
     id: 2,
@@ -114,7 +122,7 @@ const DummyData: DummyDataRow[] = [
     field09: '설계중',
     field10: '설계중',
     field11: '미출력',
-    field24: '',
+    field24: '휴대폰 서명',
     field12: '신부산GA지점/00팀00팀00팀00팀00팀',
     field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
     field14: '박한화(123123)',
@@ -124,6 +132,10 @@ const DummyData: DummyDataRow[] = [
     field18: '배서설계',
     field19: 'LA20143129023123912',
     nickname: '최고설',
+
+    field25: '2026-03-11', // 전속FP(최초설계일)
+    field26: '김한화', // 방카(BM)
+    field27: '(야탑동)', // 방카(유자격자)
   },
   {
     id: 3,
@@ -154,6 +166,10 @@ const DummyData: DummyDataRow[] = [
     field18: '배서설계',
     field19: 'LA20143129023123912',
     nickname: '',
+
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '이정연(구로점)',
   },
   {
     id: 4,
@@ -184,10 +200,183 @@ const DummyData: DummyDataRow[] = [
     field18: '배서설계',
     field19: 'LA20143129023123912',
     nickname: '',
+
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
+  },
+  {
+    id: 5,
+    isCheck: true,
+    isState: false,
+    field01: 'LA123456789012',
+    field02: '55555 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    memo: true,
+    field05: '김한화김한',
+    field06: '2009-01-01',
+    field20: '김한화김한김한화김한',
+    field21: '2009-01-01',
+    field07: 9999999,
+    field08: 2.1,
+    field22: '2009-01-01',
+    field23: '2009-01-01',
+    field09: '설계중',
+    field10: '설계중',
+    field11: '미출력',
+    field24: '',
+    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
+    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
+    field14: '박한화(123123)',
+    field15: '박한화14',
+    field16: '박한화15',
+    field17: '박한화(123123)',
+    field18: '배서설계',
+    field19: 'LA20143129023123912',
+    nickname: '',
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
+  },
+  {
+    id: 6,
+    isCheck: true,
+    isState: false,
+    field01: 'LA123456789012',
+    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    memo: true,
+    field05: '김한화김한',
+    field06: '2009-01-01',
+    field20: '김한화김한김한화김한',
+    field21: '2009-01-01',
+    field07: 9999999,
+    field08: 2.1,
+    field22: '2009-01-01',
+    field23: '2009-01-01',
+    field09: '설계중',
+    field10: '설계중',
+    field11: '미출력',
+    field24: '',
+    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
+    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
+    field14: '박한화(123123)',
+    field15: '박한화14',
+    field16: '박한화15',
+    field17: '박한화(123123)',
+    field18: '배서설계',
+    field19: 'LA20143129023123912',
+    nickname: '',
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
+  },
+  {
+    id: 7,
+    isCheck: true,
+    isState: false,
+    field01: 'LA123456789012',
+    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    memo: true,
+    field05: '김한화김한',
+    field06: '2009-01-01',
+    field20: '김한화김한김한화김한',
+    field21: '2009-01-01',
+    field07: 9999999,
+    field08: 2.1,
+    field22: '2009-01-01',
+    field23: '2009-01-01',
+    field09: '설계중',
+    field10: '설계중',
+    field11: '미출력',
+    field24: '',
+    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
+    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
+    field14: '박한화(123123)',
+    field15: '박한화14',
+    field16: '박한화15',
+    field17: '박한화(123123)',
+    field18: '배서설계',
+    field19: 'LA20143129023123912',
+    nickname: '',
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
+  },
+  {
+    id: 8,
+    isCheck: true,
+    isState: false,
+    field01: 'LA123456789012',
+    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    memo: true,
+    field05: '김한화김한',
+    field06: '2009-01-01',
+    field20: '김한화김한김한화김한',
+    field21: '2009-01-01',
+    field07: 9999999,
+    field08: 2.1,
+    field22: '2009-01-01',
+    field23: '2009-01-01',
+    field09: '설계중',
+    field10: '설계중',
+    field11: '미출력',
+    field24: '',
+    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
+    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
+    field14: '박한화(123123)',
+    field15: '박한화14',
+    field16: '박한화15',
+    field17: '박한화(123123)',
+    field18: '배서설계',
+    field19: 'LA20143129023123912',
+    nickname: '',
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
+  },
+  {
+    id: 9,
+    isCheck: true,
+    isState: false,
+    field01: 'LA123456789012',
+    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    memo: true,
+    field05: '김한화김한',
+    field06: '2009-01-01',
+    field20: '김한화김한김한화김한',
+    field21: '2009-01-01',
+    field07: 9999999,
+    field08: 2.1,
+    field22: '2009-01-01',
+    field23: '2009-01-01',
+    field09: '설계중',
+    field10: '설계중',
+    field11: '미출력',
+    field24: '',
+    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
+    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
+    field14: '박한화(123123)',
+    field15: '박한화14',
+    field16: '박한화15',
+    field17: '박한화(123123)',
+    field18: '배서설계',
+    field19: 'LA20143129023123912',
+    nickname: '',
+    field25: '2026-03-11',
+    field26: '김한화',
+    field27: '(야탑동)',
   },
 ];
 
+/**
+ * Ltpa010Section: 통합가입설계조회 화면 섹션 컴포넌트
+ */
 export default function Ltpa010Section() {
+  // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [form, setFormField] = useFormFields({
     type01: '',
@@ -200,7 +389,9 @@ export default function Ltpa010Section() {
     type09: '',
   });
 
+  // Ag-Grid 컬럼 정의
   const columnDefs: (ColDef<DummyDataRow> | ColGroupDef<DummyDataRow>)[] = [
+    // 1. 설계번호: 클릭 시 상세 조회 기능을 위한 링크 버튼 형태로 렌더링
     {
       headerName: '설계번호',
       flex: 1,
@@ -214,6 +405,7 @@ export default function Ltpa010Section() {
         </Button>
       ),
     },
+    // 2. 상품명/구분 & 고지유형/플랜명: 2행 구조의 헤더와 커스텀 필드 렌더러를 사용하여 복합 정보 표시
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -229,6 +421,7 @@ export default function Ltpa010Section() {
       cellClass: '!px-0',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>('field02', (data?: DummyDataRow) => {
+        // 메모가 있는 경우 펜 아이콘 버튼 표시 및 닉네임 툴팁 연동
         const hasTooltip = data?.memo;
         const hasMemoButton = !data?.memo || hasTooltip;
 
@@ -280,7 +473,7 @@ export default function Ltpa010Section() {
         );
       }),
     },
-
+    // 3. 계약자 & 생년월일: 두 필드를 하나의 컬럼에 상하로 배치
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -298,7 +491,7 @@ export default function Ltpa010Section() {
       minWidth: attributeColumnWidth(70),
       cellRenderer: createFieldRenderer<DummyDataRow>('field05', 'field06'),
     },
-
+    // 4. 피보험자 & 생년월일
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -317,6 +510,7 @@ export default function Ltpa010Section() {
       minWidth: attributeColumnWidth(70),
       cellRenderer: createFieldRenderer<DummyDataRow>('field20', 'field21'),
     },
+    // 5. 보험료 & 환급률
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -334,7 +528,7 @@ export default function Ltpa010Section() {
       minWidth: attributeColumnWidth(70),
       cellRenderer: (params: { data?: DummyDataRow }) => (
         <Grid className="w-full grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
+          <Grow placement="cc" className="min-h-[3rem] justify-end pr-1">
             {params.data ? params.data.field07.toLocaleString() : ''}
           </Grow>
           <Grow placement="cc" className="min-h-[3rem]">
@@ -343,6 +537,7 @@ export default function Ltpa010Section() {
         </Grid>
       ),
     },
+    // 6. 설계일자 & 유효기한
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -350,7 +545,7 @@ export default function Ltpa010Section() {
             설계일자
           </Grow>
           <Grow placement="cc" className="min-h-[3rem]">
-            유효기간
+            유효기한
           </Grow>
         </Grid>
       ),
@@ -377,6 +572,7 @@ export default function Ltpa010Section() {
         </Grid>
       ),
     },
+    // 7. 설계상태 & 심사결과
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -392,8 +588,17 @@ export default function Ltpa010Section() {
       flex: 1,
       minWidth: attributeColumnWidth(70),
       autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataRow>('field09', 'field10'),
+      cellRenderer: createFieldRenderer<DummyDataRow>('field09', (data?: DummyDataRow) =>
+        data?.field10 === '심사결과' ? (
+          <Button color="link" only="default" size="lg" variant="text">
+            {data.field10}
+          </Button>
+        ) : (
+          data?.field10
+        )
+      ),
     },
+    // 8. 청약서출력 & 스캔여부
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -428,6 +633,7 @@ export default function Ltpa010Section() {
         </Grid>
       ),
     },
+    // 9. 취급기관/팀 & 취급자
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -441,10 +647,47 @@ export default function Ltpa010Section() {
       ),
       cellClass: '!px-0',
       flex: 1,
-      minWidth: attributeColumnWidth(140),
+      minWidth: attributeColumnWidth(120),
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>('field12', 'field13'),
     },
+    // 9-1. 취급기관/팀 & BM (방카일 경우 BM으로 변경)
+    {
+      headerComponent: () => (
+        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
+          <Grow placement="cc" className="min-h-[3rem]">
+            취급기관/팀
+          </Grow>
+          <Grow placement="cc" className="min-h-[3rem]">
+            BM
+          </Grow>
+        </Grid>
+      ),
+      cellClass: 'text-center !px-0',
+      flex: 1,
+      minWidth: attributeColumnWidth(120),
+      autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataRow>('field12', 'field26'),
+    },
+    // 9-2. 취급자 & 유자격자 (방카일 경우 유자격)
+    {
+      headerComponent: () => (
+        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
+          <Grow placement="cc" className="min-h-[3rem]">
+            취급자
+          </Grow>
+          <Grow placement="cc" className="min-h-[3rem]">
+            유자격자
+          </Grow>
+        </Grid>
+      ),
+      cellClass: 'text-center !px-0',
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
+      autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataRow>('field13', 'field27'),
+    },
+    // 10. 최초설계자 & SM
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -486,6 +729,25 @@ export default function Ltpa010Section() {
         </Grid>
       )),
     },
+    // 10-1. 최초설계일 & 최초설계자 (전속FP 일 경우)
+    {
+      headerComponent: () => (
+        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
+          <Grow placement="cc" className="min-h-[3rem]">
+            최초설계일
+          </Grow>
+          <Grow placement="cc" className="min-h-[3rem]">
+            최초설계자
+          </Grow>
+        </Grid>
+      ),
+      cellClass: 'text-center !px-0',
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
+      autoHeight: true,
+      cellRenderer: createFieldRenderer<DummyDataRow>('field25', 'field14'),
+    },
+    // 11. 사용인 & 부실유의
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
@@ -497,24 +759,25 @@ export default function Ltpa010Section() {
           </Grow>
         </Grid>
       ),
-      cellClass: 'text-center !px-0 !px-0',
+      cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(80),
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>('field16', 'field17'),
     },
+    // 12. 설계종류 & 증권번호
     {
       headerComponent: () => (
         <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
           <Grow placement="cc" className="min-h-[3rem]">
-            설계종료
+            설계종류
           </Grow>
           <Grow placement="cc" className="min-h-[3rem]">
             증권번호
           </Grow>
         </Grid>
       ),
-      cellClass: 'text-center !px-0 !px-0',
+      cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(130),
       autoHeight: true,
@@ -522,7 +785,7 @@ export default function Ltpa010Section() {
         'field18',
         (data?: DummyDataRow) =>
           data?.field19 && (
-            <Button color="link" only="default" size="lg" variant="text">
+            <Button color="link" only="default" size="lg" variant="text" className="w-full">
               <OverflowTooltipText text={data?.field19}>{data?.field19}</OverflowTooltipText>
             </Button>
           )
@@ -531,18 +794,75 @@ export default function Ltpa010Section() {
   ];
 
   // rowSelection 사용시
-  const [rowData, setRowData] = React.useState<DummyDataRow[]>(DummyData);
+  const [rowData, setRowData] = React.useState<DummyDataRow[]>(() => DummyData.slice(0, 5));
+  const [loadedCount, setLoadedCount] = React.useState(5);
+  const [totalCount, setTotalCount] = React.useState(DummyData.length);
+  const [isLoading, setIsLoading] = React.useState(false);
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
+
+  // 체크박스 선택 변경 핸들러
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataRow, number>('isCheck', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
   );
 
-  const pageSize = 10;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: DummyData,
-    pageSize,
-  });
+  // 무한 스크롤(더보기) 기능을 위한 설정
+  const pageSize = 5;
+  const gridRef = React.useRef<AgGridReact<DummyDataRow>>(null);
+
+  // 실데이터 호출 모사 (API 호출)
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      // API 호출 대기 시간 모사 (300ms)
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = DummyData.slice(start, end);
+      return {
+        items,
+        totalCount: DummyData.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // 초기 로딩 및 검색 실행
+  const handleSearch = React.useCallback(async () => {
+    const res = await fetchMockData(1, pageSize);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+    setTotalCount(res.totalCount);
+  }, [fetchMockData, pageSize]);
+
+  // 다음 버튼 누를 때 데이터 추가 호출 (onLoadNext 콜백)
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+
+    setRowData((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  // 전체조회 버튼 누를 때 데이터 호출 (onLoadAll 콜백)
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const res = await fetchMockData(1, totalCount);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  // 접기 버튼 (onLoadReset 콜백)
+  const handleLoadReset = React.useCallback(() => {
+    setRowData((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
+
   return (
     <>
       <LayoutHead>
@@ -556,6 +876,7 @@ export default function Ltpa010Section() {
       <LayoutTemplate
         mainBody={
           <Grid className="grid-rows-[auto_1fr] h-full" gap={3}>
+            {/* 상단: 조회 조건 필터 영역 */}
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}
@@ -577,13 +898,15 @@ export default function Ltpa010Section() {
                         { value: 'selection2', label: '피보험자 번호' },
                         { value: 'selection3', label: '계약자 번호' },
                         { value: 'selection4', label: '설계번호' },
+                        { value: 'selection5', label: '증권번호' },
+                        { value: 'selection6', label: '상품명' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    {form.type01 === 'selection' || form.type01 === 'selection2' ? (
+                    {form.type01 === 'selection' || form.type01 === 'selection2' || form.type01 === 'selection3' ? (
                       <Grow placement="ss">
                         <Input aria-label="이름" value={'김현화현화'} width={84} required />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
@@ -591,7 +914,7 @@ export default function Ltpa010Section() {
                         </Button>
                       </Grow>
                     ) : (
-                      <Input aria-label="번호" width={90} value={'1234556556'} readOnly />
+                      <Input aria-label="번호" width={130} value={'LA2608902384509'} readOnly />
                     )}
                   </FormCell>
                   <FormCell title={'설계상태'}>
@@ -603,6 +926,7 @@ export default function Ltpa010Section() {
                     >
                       {[
                         { value: 'selection', label: '전체' },
+                        { value: 'selection1', label: '설계중' },
                         { value: 'selection2', label: '간편설계' },
                         { value: 'selection3', label: '설계심사중' },
                         { value: 'selection4', label: '설계완료' },
@@ -733,7 +1057,7 @@ export default function Ltpa010Section() {
                 </FormRow>
               </FormTable>
               <Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -741,13 +1065,14 @@ export default function Ltpa010Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
                 </Button>
               </Grow>
             </Grow>
+
             <Grid className="grid-rows-[1fr_auto] h-full" gap={2}>
               <Grid className="grid-rows-[auto_1fr]" gap={1}>
                 <Grow className="w-full" placement="ec">
@@ -756,15 +1081,18 @@ export default function Ltpa010Section() {
                     <FileExportIcon />
                   </Button>
                 </Grow>
+
+                {/* 그리드 영역: 데이터 개수에 따라 높이가 조절되며 내부 스크롤을 지원합니다. */}
                 <Gcol gap={1}>
                   <div className="ag-theme-alpine ltpa010-grid">
                     <AgGridReact<DummyDataRow>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
                       rowClassRules={{
+                        // 판매중지 상품인 경우 배경색을 다르게 표시
                         'ag-row-state-true': (params) => params.data?.isState === true,
                       }}
-                      rowData={rowData.slice(0, loadedCount)}
+                      rowData={rowData}
                       columnDefs={columnDefs}
                       defaultColDef={{
                         sortable: true,
@@ -795,21 +1123,25 @@ export default function Ltpa010Section() {
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
-                      cacheBlockSize={pageSize}
-                      maxBlocksInCache={2}
-                      datasource={dataSource}
+                      ref={gridRef}
                       animateRows={false}
+                      headerHeight={60}
                     />
                   </div>
+                  {/* 그리드 하단: 데이터 더보기(페이징) 컨트롤 */}
                   <TableMore
+                    gridRef={gridRef}
                     loadedCount={loadedCount}
                     totalCount={totalCount}
                     pageSize={pageSize}
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
+                    onLoadReset={handleLoadReset}
+                    isReset={true}
                   />
                 </Gcol>
               </Grid>
+              {/* 조회 가능 기간에 대한 하단 안내 문구 */}
               <Gcol variant="box-info" placement="ss">
                 <Typo variant="body-sm" color="primary" icon="info">
                   <b>설계조회 가능기간</b> 취급기간(7일), 법인대리점(30일), FC/사용인/개인대리점 등(60일)
@@ -818,6 +1150,7 @@ export default function Ltpa010Section() {
             </Grid>
           </Grid>
         }
+        /* 하단 푸터 영역: 각종 설계 관리 및 저장/삭제 버튼 */
         mainFoot={
           <MainBottom>
             <MainBottomItem>
@@ -829,7 +1162,7 @@ export default function Ltpa010Section() {
                   출력물
                 </Button>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
-                  완수수납
+                  원수수납
                 </Button>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   설계비교

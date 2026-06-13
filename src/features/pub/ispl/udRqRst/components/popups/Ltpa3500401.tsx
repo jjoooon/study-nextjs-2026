@@ -20,7 +20,6 @@ import {
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-
 import { Grow, Typo } from '@/shared/components/atoms';
 
 import '@/shared/lib/agGridPub';

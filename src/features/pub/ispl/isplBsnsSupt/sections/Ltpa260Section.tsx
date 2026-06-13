@@ -4,23 +4,22 @@
 'use client';
 // 2026-06-04 flex, minWidth, autoHeight, DummyData 값 수정
 
-import { AgGridEmptyComponent, createFieldRenderer } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import { Grid, Grow } from '@atoms';
+import { ResetIcon, SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { PageID } from '@features/PageID';
-import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
-import * as React from 'react';
-
 import '@/shared/lib/agGridPub';
 
 // dummy data
@@ -89,13 +88,14 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa260Section() {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   // AgGrid Column
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
     () => [
       {
         headerName: '',
         field: 'field01',
-        width: 40,
+        width: attributeColumnWidth(40),
         autoHeight: true,
         cellClass: 'text-center',
       },
@@ -106,8 +106,8 @@ export default function Ltpa260Section() {
           {
             headerName: '보험종목',
             field: 'field03',
-            flex: 1,
-            minWidth: 170,
+            flex: 2,
+            minWidth: attributeColumnWidth(200),
             cellClass: 'text-center px-0!',
             autoHeight: true,
             cellRenderer: createFieldRenderer<DummyDataType>('field02', 'field03'),
@@ -117,13 +117,14 @@ export default function Ltpa260Section() {
       {
         headerName: '',
         field: 'field05',
-        flex: 1,
-        minWidth: 400,
+        flex: 4,
+        minWidth: attributeColumnWidth(500),
         cellClass: 'text-center px-0!',
         autoHeight: true,
+        // 2행 2열 헤더 레이아웃: 상단(증권번호/담보건수), 하단(상품명)
         headerComponent: () => {
           return (
-            <Grid className="h-[5.6rem] w-full grid-cols-[20rem_20rem] grid-rows-[2.9rem_2.9rem] gap-0">
+            <Grid className="h-[6rem] w-full grid-cols-2 grid-rows-[3rem_3rem] gap-0">
               <Grow placement="cc" className="w-full border-b px-2 border-(--color-gray-10)">
                 증권번호
               </Grow>
@@ -136,16 +137,20 @@ export default function Ltpa260Section() {
             </Grid>
           );
         },
+        // 각 행 데이터도 헤더와 동일한 2행 2열 구조로 표시
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
           return (
-            <Grid className="h-[5.6rem] grid-cols-[20rem_20rem] grid-rows-[2.8rem_2.8rem] gap-0">
+            <Grid className="h-[6rem] w-full grid-cols-2 grid-rows-[3rem_3rem] gap-0">
               <Grow placement="cc" className="w-full border-b px-2 border-(--color-gray-10)">
+                {/* 증권번호 */}
                 {String(params.data?.field04 ?? '')}
               </Grow>
               <Grow placement="cc" className="w-full px-2 border-l border-b border-(--color-gray-10)">
+                {/* 담보건수 */}
                 {String(params.data?.field06 ?? '')}
               </Grow>
               <Grow placement="cc" className="col-span-2 w-full px-2 justify-start">
+                {/* 상품명 */}
                 {String(params.data?.field05 ?? '')}
               </Grow>
             </Grid>
@@ -160,8 +165,7 @@ export default function Ltpa260Section() {
           {
             headerName: '상해급수',
             field: 'field08',
-            flex: 1,
-            minWidth: 120,
+            width: attributeColumnWidth(120),
             cellClass: 'text-center px-0!',
             autoHeight: true,
             cellRenderer: createFieldRenderer<DummyDataType>('field07', 'field08'),
@@ -171,48 +175,33 @@ export default function Ltpa260Section() {
       {
         headerName: '보장기간',
         field: 'field09',
-        flex: 1,
-        minWidth: 300,
-        cellClass: 'text-center px-0!',
-        autoHeight: true,
-        headerComponent: () => {
-          return (
-            <Grid className="h-[5.6rem] grid-cols-[15rem_15rem] grid-rows-[2.8rem_2.8rem] gap-0">
-              <Grow placement="cc" className="col-span-2 w-full px-2 justify-center">
-                보장기간
-              </Grow>
-              <Grow placement="cc" className="w-full h-full border-t px-2 border-(--color-gray-10)">
-                시기
-              </Grow>
-              <Grow placement="cc" className="w-full h-full px-2 border-l border-t border-(--color-gray-10)">
-                종기
-              </Grow>
-            </Grid>
-          );
-        },
-        cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-          return (
-            <Grid className="h-[5.9rem] grid-cols-[15rem_15rem] grid-rows-[5.9rem] gap-0">
-              <Grow placement="cc" className="w-full h-full px-2 border-(--color-gray-10)">
-                {String(params.data?.field10 ?? '')}
-              </Grow>
-              <Grow placement="cc" className="w-full h-full px-2 border-l border-(--color-gray-10)">
-                {String(params.data?.field11 ?? '')}
-              </Grow>
-            </Grid>
-          );
-        },
+        children: [
+          {
+            headerName: '시기',
+            field: 'field10',
+            cellClass: 'text-center px-0!',
+            autoHeight: true,
+            flex: 1,
+            minWidth: attributeColumnWidth(100),
+          },
+          {
+            headerName: '종기',
+            field: 'field11',
+            cellClass: 'text-center px-0!',
+            autoHeight: true,
+            flex: 1,
+            minWidth: attributeColumnWidth(100),
+          },
+        ],
       },
       {
         headerName: '계약상태',
         field: 'field12',
-        flex: 1,
-        minWidth: 100,
+        width: attributeColumnWidth(80),
         cellClass: 'text-center flex! items-center justify-center',
-        cellRenderer: (params: ICellRendererParams<DummyDataType>) => String(params.data?.field12 ?? ''),
       },
     ],
-    []
+    [attributeColumnWidth]
   );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
@@ -222,7 +211,7 @@ export default function Ltpa260Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '보험신용정보 통합조회',
+            pageName: '실손특약세부계약조회',
             pageId: 'LTPA260',
           }}
         />
@@ -234,14 +223,14 @@ export default function Ltpa260Section() {
               <FormTable variant={'head'} caption="실손특약세부계약조회 테이블" cols={['w-1', 'w-1', 'w-1', 'w-1']}>
                 <FormRow>
                   <FormCell title={'주민번호'}>
-                    <Input width={110} value={'1234567'} required />
+                    <Input width={120} value={'000000-0******'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input width={170} value={''} readOnly />
+                    <Input width={170} value={'김한화'} readOnly />
                   </FormCell>
                   <FormCell title={'기준일자'}>
-                    <DatePickerInput mode={'single'} value={''} />
+                    <DatePickerInput mode={'single'} value={'2026-01-01'} />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -262,7 +251,7 @@ export default function Ltpa260Section() {
               </Grow>
             </Grow>
             <TableFold variant={'accordion'}>
-              <TableFoldHead title="실손보상담보 총등록건수" />
+              <TableFoldHead title="계약정보 총등록건수" />
               <TableFoldBody className="h-full">
                 <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>

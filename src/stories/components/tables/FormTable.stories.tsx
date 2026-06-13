@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import * as React from 'react';
-import { Gcol } from '@atoms';
+ */ import { Gcol } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 
 type FormCellVariant = 'default' | 'primary' | 'secondary' | 'light' | 'none';
 
@@ -53,12 +53,12 @@ const meta: Meta<FormTableStoryProps> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>Overview</h2>
             <div>
-              <p>
-                FormTable은 폼 테이블 영역의 상단 구분선과 레이아웃 컨테이너 역할을 하는 컴포넌트입니다.
-              </p>
+              <p>FormTable은 폼 테이블 영역의 상단 구분선과 레이아웃 컨테이너 역할을 하는 컴포넌트입니다.</p>
             </div>
 
             <Primary />
@@ -107,9 +107,21 @@ import { FormTable, FormCell, FormRow } from '@common';
                 </tr>
               </thead>
               <tbody>
-                <tr><td>FormTable</td><td>caption, cols, variant, lineTop</td><td>테이블 캡션/컬럼 폭/스타일/상단라인</td></tr>
-                <tr><td>FormRow</td><td>children</td><td>행 컨테이너</td></tr>
-                <tr><td>FormCell</td><td>title, variant, colSpan, rowSpan, titleColSpan, titleRowSpan</td><td>셀 제목/스타일/병합</td></tr>
+                <tr>
+                  <td>FormTable</td>
+                  <td>caption, cols, variant, lineTop</td>
+                  <td>테이블 캡션/컬럼 폭/스타일/상단라인</td>
+                </tr>
+                <tr>
+                  <td>FormRow</td>
+                  <td>children</td>
+                  <td>행 컨테이너</td>
+                </tr>
+                <tr>
+                  <td>FormCell</td>
+                  <td>title, variant, colSpan, rowSpan, titleColSpan, titleRowSpan</td>
+                  <td>셀 제목/스타일/병합</td>
+                </tr>
               </tbody>
             </table>
           </>
@@ -241,9 +253,7 @@ export const Default: Story = {
             >
               {args.cellContent}
             </FormCell>
-            <FormCell title="개인정보취득경로">
-              TEXT
-            </FormCell>
+            <FormCell title="개인정보취득경로">TEXT</FormCell>
           </FormRow>
           <FormRow>
             <FormCell title="colSpan 케이스" colSpan={3}>
@@ -261,25 +271,27 @@ export const Default: Story = {
           </FormRow>
         </FormTable>
 
-        <FormTable
-          caption={args.caption}
-          variant={args.variant}
-          lineTop={args.lineTop}
-          className={args.tableClassName}
-        >
+        <FormTable caption={args.caption} variant={args.variant} lineTop={args.lineTop} className={args.tableClassName}>
           <FormRow vertical={true}>
-            <FormCell title={<span>개인정보<br/>취득경로</span>}>
-              FormTable은 폼 테이블 영역의 상단 구분선과 레이아웃 컨테이너 역할을 하는 컴포넌트입니다. FormTable은 폼 테이블 영역의 상단 구분선과 레이아웃 컨테이너 역할을 하는 컴포넌트입니다.
+            <FormCell
+              title={
+                <span>
+                  개인정보
+                  <br />
+                  취득경로
+                </span>
+              }
+            >
+              FormTable은 폼 테이블 영역의 상단 구분선과 레이아웃 컨테이너 역할을 하는 컴포넌트입니다. FormTable은 폼
+              테이블 영역의 상단 구분선과 레이아웃 컨테이너 역할을 하는 컴포넌트입니다.
             </FormCell>
-            <FormCell title="colSpan 케이스">
-              FormTable은 폼 테이블 영역의 상단 
-            </FormCell>
+            <FormCell title="colSpan 케이스">FormTable은 폼 테이블 영역의 상단</FormCell>
             <FormCell title="rowSpan 케이스">
               <p className="text-right w-full">2행 병합</p>
             </FormCell>
           </FormRow>
         </FormTable>
-      </Gcol>           
+      </Gcol>
     );
   },
 };

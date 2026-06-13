@@ -3,9 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent } from '@aggrid';
-import { Grow, Typo, Gcol, Grid } from '@atoms';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Grid, Grow, Typo } from '@atoms';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -19,9 +21,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Textarea } from '@uiux/Textarea';
-import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -49,7 +50,7 @@ const DummyData: DummyDataType[] = [
     id: 1,
     field01: '1',
     field02: '2026-03-24 09:54',
-    field03: '김정택',
+    field03: '김정택택',
     field04: '재심사의뢰',
     field05: '',
     field06: '',
@@ -137,43 +138,47 @@ const DummyData: DummyDataType[] = [
 
 const Ltpz090 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '순번',
       field: 'field01',
-      width: 50,
+      width: attributeColumnWidth(40),
       cellClass: 'text-center',
     },
     {
       headerName: '일시',
       field: 'field02',
-      width: 120,
+      flex: 1,
+      minWidth: attributeColumnWidth(110),
       cellClass: 'text-center',
     },
     {
       headerName: '담당자',
       field: 'field03',
-      width: 80,
+      width: attributeColumnWidth(70),
       cellClass: 'text-center',
     },
     {
       headerName: '작업구분',
       field: 'field04',
-      flex: 3,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '심사결과',
       field: 'field05',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center',
     },
     {
       headerName: '심사결과 상세',
       field: 'field06',
-      width: 450,
+      flex: 10,
       cellClass: 'text-left',
       autoHeight: true,
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -199,9 +204,10 @@ const Ltpz090 = () => {
     {
       headerName: '보기',
       field: 'field07',
-      flex: 1,
+      width: attributeColumnWidth(48),
       autoHeight: true,
       cellClass: 'text-center',
+      sortable: false,
       cellRenderer: () => (
         <Button variant={'outlined'} size={'md'} color={'gray'}>
           보기
@@ -212,7 +218,7 @@ const Ltpz090 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -228,21 +234,19 @@ const Ltpz090 = () => {
             <TableFold variant="default" className="grid-rows-[auto_1fr]">
               <TableFoldHead title="심사이력" />
               <TableFoldBody>
-                <Gcol className="w-full h-full min-h-[18.4rem]">
-                  <div className="ag-theme-alpine ">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                      }}
-                      domLayout="normal"
-                    />
-                  </div>
-                </Gcol>
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+                  <AgGridReact<DummyDataType>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                    }}
+                    domLayout="normal"
+                  />
+                </div>
               </TableFoldBody>
             </TableFold>
             {/* 2026-05-29 placement="ss" */}
@@ -272,6 +276,7 @@ const Ltpz090 = () => {
               </DialogClose>
             </Grow>
           </DialogFooterArea>
+          <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
     </Dialog>

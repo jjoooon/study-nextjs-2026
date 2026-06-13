@@ -1,10 +1,10 @@
 ﻿/*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
-import { Grow, Gcol } from '@atoms';
+ */ import { Grow, Gcol } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 
 type DatePickerInputStoryProps = React.ComponentProps<typeof DatePickerInput>;
 type Story = StoryObj<DatePickerInputStoryProps>;
@@ -197,14 +197,56 @@ const [value, setValue] = useState('');
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
-                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="tl" errorMsg="top left" onChange={() => undefined} />
-                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="tc" errorMsg="top center" onChange={() => undefined} />
-                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="tr" errorMsg="top right" onChange={() => undefined} />
+                  <DatePickerInput
+                    width="lg"
+                    value="2026-03-07"
+                    error
+                    errorPs="tl"
+                    errorMsg="top left"
+                    onChange={() => undefined}
+                  />
+                  <DatePickerInput
+                    width="lg"
+                    value="2026-03-07"
+                    error
+                    errorPs="tc"
+                    errorMsg="top center"
+                    onChange={() => undefined}
+                  />
+                  <DatePickerInput
+                    width="lg"
+                    value="2026-03-07"
+                    error
+                    errorPs="tr"
+                    errorMsg="top right"
+                    onChange={() => undefined}
+                  />
                 </Grow>
                 <Grow gap={8}>
-                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="bl" errorMsg="bottom left" onChange={() => undefined} />
-                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="bc" errorMsg="bottom center" onChange={() => undefined} />
-                  <DatePickerInput width="lg" value="2026-03-07" error errorPs="br" errorMsg="bottom right" onChange={() => undefined} />
+                  <DatePickerInput
+                    width="lg"
+                    value="2026-03-07"
+                    error
+                    errorPs="bl"
+                    errorMsg="bottom left"
+                    onChange={() => undefined}
+                  />
+                  <DatePickerInput
+                    width="lg"
+                    value="2026-03-07"
+                    error
+                    errorPs="bc"
+                    errorMsg="bottom center"
+                    onChange={() => undefined}
+                  />
+                  <DatePickerInput
+                    width="lg"
+                    value="2026-03-07"
+                    error
+                    errorPs="br"
+                    errorMsg="bottom right"
+                    onChange={() => undefined}
+                  />
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -293,7 +335,7 @@ const [value, setValue] = useState('');
 };
 
 export default meta;
-   
+
 export const Default: Story = {
   render: (args) => {
     // 오늘 날짜를 YYYY-MM-DD 형식으로 반환
@@ -304,12 +346,15 @@ export const Default: Story = {
       const dd = String(today.getDate()).padStart(2, '0');
       return `${yyyy}-${mm}-${dd}`;
     };
-    
+
     const [value, setValue] = React.useState(args.value ?? getToday());
     // multiple 모드: 기본값(오늘) 또는 args.value를 배열로 초기화
     const initialMultiple = React.useMemo(() => {
       if (args.value) {
-        const arr = args.value.split(',').map((v) => v.trim()).filter(Boolean);
+        const arr = args.value
+          .split(',')
+          .map((v) => v.trim())
+          .filter(Boolean);
         return arr.length > 0 ? arr : [getToday()];
       }
       return [getToday()];
@@ -328,7 +373,10 @@ export const Default: Story = {
     React.useEffect(() => {
       if (args.mode === 'multiple') {
         if (args.value) {
-          const arr = args.value.split(',').map((v) => v.trim()).filter(Boolean);
+          const arr = args.value
+            .split(',')
+            .map((v) => v.trim())
+            .filter(Boolean);
           setMultipleValue(arr.length > 0 ? arr : [getToday()]);
         } else {
           setMultipleValue([getToday()]);
@@ -368,7 +416,12 @@ export const Default: Story = {
           value={multipleValue.join(', ')}
           onChange={(_date, formattedValue) => {
             // formattedValue: 'YYYY-MM-DD, YYYY-MM-DD, ...'
-            const arr = formattedValue ? formattedValue.split(',').map((v) => v.trim()).filter(Boolean) : [];
+            const arr = formattedValue
+              ? formattedValue
+                  .split(',')
+                  .map((v) => v.trim())
+                  .filter(Boolean)
+              : [];
             setMultipleValue(arr);
             args.onChange?.(_date, formattedValue ?? '');
           }}
@@ -400,4 +453,3 @@ export const Default: Story = {
     );
   },
 };
-

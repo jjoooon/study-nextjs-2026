@@ -29,8 +29,8 @@ import {
 import { Input } from '@uiux/Input';
 import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { useCallback } from 'react';
+import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 

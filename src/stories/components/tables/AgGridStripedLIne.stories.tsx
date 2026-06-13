@@ -1,13 +1,23 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import * as React from 'react';
-import { Title, Subtitle, Description, Primary, Controls, Canvas, Source, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+ */ import { createCellValueChangedHandler } from '@aggrid';
+import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Canvas,
+  Source,
+  Markdown,
+  Unstyled,
+} from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/react';
-import { AgGridReact } from 'ag-grid-react';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
-import { createCellValueChangedHandler } from '@aggrid';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
 
@@ -65,31 +75,41 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
       page: () => (
         <>
           <Title />
-          <br /><br />
+          <br />
+          <br />
           <h2>Overview</h2>
           <div>
             <p>
-              <b>Zebra Striping(줄무늬 행)</b> 스타일을 ag-Grid에서 적용하는 대표적인 두 가지 방법을 소개합니다.<br/>
+              <b>Zebra Striping(줄무늬 행)</b> 스타일을 ag-Grid에서 적용하는 대표적인 두 가지 방법을 소개합니다.
+              <br />
               <ul>
-                <li><b>1. 행 전체에 적용</b>:<br/>
-                  <code>striped-row-gray</code>를 사용해 홀수/짝수 행에 클래스를 부여하고, CSS에서 배경색을 지정합니다.<br/>
+                <li>
+                  <b>1. 행 전체에 적용</b>:<br />
+                  <code>striped-row-gray</code>를 사용해 홀수/짝수 행에 클래스를 부여하고, CSS에서 배경색을 지정합니다.
+                  <br />
                   (예: <code>&lt;div className="ag-theme-alpine aggrid-pagination-ko striped-row-gray"&gt;</code>)
                 </li>
-                <li><b>2. 셀 단위로 적용</b>:<br/>
-                  <code>cellClassRules</code>를 사용해 특정 컬럼의 셀에만 홀수/짝수 행 배경색을 지정할 수 있습니다.<br/>
+                <li>
+                  <b>2. 셀 단위로 적용</b>:<br />
+                  <code>cellClassRules</code>를 사용해 특정 컬럼의 셀에만 홀수/짝수 행 배경색을 지정할 수 있습니다.
+                  <br />
                   (예: <code>cellClassRules: &#123;'bg-gray': params =&gt; params.node.rowIndex % 2 === 1&#125;</code>)
                 </li>
               </ul>
-              <br/>
+              <br />
               <b>실제 예시</b>:
               <ul>
-                <li>첫 번째 표: <b>전체 행</b>에 줄무늬 배경 적용(<code>striped-row-gray</code> 클래스 활용)</li>
-                <li>두 번째 표: <b>나이 컬럼 셀</b>에만 cellClassRules로 줄무늬 배경 적용</li>
+                <li>
+                  첫 번째 표: <b>전체 행</b>에 줄무늬 배경 적용(<code>striped-row-gray</code> 클래스 활용)
+                </li>
+                <li>
+                  두 번째 표: <b>나이 컬럼 셀</b>에만 cellClassRules로 줄무늬 배경 적용
+                </li>
               </ul>
-              <br/>
-              <b>추가 팁</b>:<br/>
-              - CSS 변수, Tailwind, ag-Grid 테마 클래스 등 다양한 방식으로 배경색을 지정할 수 있습니다.<br/>
-              - rowClassRules는 행 전체, cellClassRules는 컬럼별/셀별로 세밀하게 스타일링할 때 유용합니다.
+              <br />
+              <b>추가 팁</b>:<br />
+              - CSS 변수, Tailwind, ag-Grid 테마 클래스 등 다양한 방식으로 배경색을 지정할 수 있습니다.
+              <br />- rowClassRules는 행 전체, cellClassRules는 컬럼별/셀별로 세밀하게 스타일링할 때 유용합니다.
             </p>
           </div>
           <Primary />
@@ -167,7 +187,7 @@ export const Default: StoryObj = {
   render: () => {
     const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
     const [errorRows, setErrorRows] = React.useState<number[]>(
-      DummyData.filter(row => !row.age).map(row => row.id)
+      DummyData.filter((row) => !row.age).map((row) => row.id)
     );
 
     // 공용 핸들러 활용
@@ -177,15 +197,13 @@ export const Default: StoryObj = {
     );
 
     return (
-
       <>
         <div className="ag-theme-alpine striped-row-gray">
           <AgGridReact<DummyDataType>
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={columnDefs}
-            domLayout='autoHeight'
-
+            domLayout="autoHeight"
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
           />
@@ -195,8 +213,7 @@ export const Default: StoryObj = {
             getRowId={(params) => String(params.data.id)}
             rowData={rowData}
             columnDefs={column2Defs}
-            domLayout='autoHeight'  
-
+            domLayout="autoHeight"
             singleClickEdit={true}
             onCellValueChanged={onCellValueChanged}
           />

@@ -2,10 +2,11 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -18,9 +19,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -50,21 +50,21 @@ const dummyData: DummyDataType[] = [
   {
     id: 1,
     isChecked: false,
-    field1: '',
-    field2: '질병명질병명질병명질병명질병명질병명질병명질병명',
-    field3: '',
-    field4: '',
-    field5: '',
-    field6: '',
-    field7: '',
-    field8: '',
-    field9: '',
+    field1: 'S98',
+    field2: '발등 골절',
+    field3: '2021-01-21',
+    field4: '2021-01-21',
+    field5: '22(2021-01-21~2021-02-01)',
+    field6: '3',
+    field7: 'Y',
+    field8: '미고지',
+    field9: '고지필요',
   },
   {
     id: 2,
     isChecked: false,
     field1: '',
-    field2: '',
+    field2: '발등 골절발등 골절발등 골절발등 골절발등 골절',
     field3: '',
     field4: '',
     field5: '',
@@ -86,99 +86,118 @@ const dummyData2: DummyDataType2[] = [
   {
     id: 2,
     isChecked: false,
-    field1: '최근3개월내약물복용',
+    field1: '최근5년이내치료여부최근5년이내치료여부최근5년이내치료여부최근5년이내치료여부',
     field2: '예',
-    field3: '',
+    field3:
+      '입원, 계속하여 7일이상 치료입원, 계속하여 7일이상 치료입원, 계속하여 7일이상 치료입원, 계속하여 7일이상 치료입원, 계속하여 7일이상 치료입원, 계속하여 7일이상 치료',
   },
 ];
 
 const Ltpz062 = () => {
   const [rowData] = React.useState<DummyDataType[]>(dummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '대표질병코드',
-      field: 'field1',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '질병명',
-      field: 'field2',
-      width: 100,
-      cellClass: 'text-center',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
-    },
-    {
-      headerName: '원사고발생일',
-      field: 'field3',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '최종사고발생일',
-      field: 'field4',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '입원',
-      field: 'field5',
-      flex: 1,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '통원',
-      field: 'field6',
-      width: 40,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '수술',
-      field: 'field7',
-      width: 40,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '고지여부',
-      field: 'field7',
-      width: 60,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '체크',
-      field: 'field7',
-      flex: 1,
-      cellClass: 'text-center',
-      cellRenderer: (params: { data: DummyDataType }) => (
-        <Gcol placement="cc" className="h-full">
-          <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
-            {params.data.field9}
-          </Typo>
-        </Gcol>
-      ),
-    },
-  ];
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '대표질병코드',
-      field: 'field1',
-      flex: 1,
-      cellClass: 'text-left',
-    },
-    {
-      headerName: '질문답변',
-      field: 'field2',
-      width: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '답변세부사항',
-      field: 'field3',
-      flex: 1,
-      cellClass: 'text-left',
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '대표질병코드',
+        field: 'field1',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '질병명',
+        field: 'field2',
+        flex: 10,
+        cellClass: 'text-center',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
+      },
+      {
+        headerName: '원사고발생일',
+        field: 'field3',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '최종사고발생일',
+        field: 'field4',
+        flex: 1,
+        minWidth: attributeColumnWidth(84),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '입원',
+        field: 'field5',
+        flex: 1,
+        minWidth: attributeColumnWidth(160),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '통원',
+        field: 'field6',
+        flex: 1,
+        minWidth: attributeColumnWidth(30),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '수술',
+        field: 'field7',
+        flex: 1,
+        minWidth: attributeColumnWidth(30),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '고지여부',
+        field: 'field8',
+        flex: 1,
+        minWidth: attributeColumnWidth(50),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '체크',
+        field: 'field9',
+        flex: 1,
+        minWidth: attributeColumnWidth(50),
+        cellClass: 'text-center',
+        cellRenderer: (params: { data: DummyDataType }) => (
+          <Gcol placement="cc" className="h-full">
+            <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
+              {params.data.field9}
+            </Typo>
+          </Gcol>
+        ),
+      },
+    ],
+    [attributeColumnWidth]
+  );
+  const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
+    () => [
+      {
+        headerName: '질문항목',
+        field: 'field1',
+        flex: 10,
+        cellClass: 'text-left',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field1' }),
+      },
+      {
+        headerName: '질문답변',
+        field: 'field2',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '답변세부사항',
+        field: 'field3',
+        flex: 20,
+        cellClass: 'text-left',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field3' }),
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   return (
     <Dialog open>
@@ -202,7 +221,7 @@ const Ltpz062 = () => {
           <TableFold className="grid-rows-[auto_1fr]">
             <TableFoldHead title="필수고지" />
             <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[13.4rem]">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData}
@@ -231,7 +250,7 @@ const Ltpz062 = () => {
           <TableFold className="grid-rows-[auto_1fr]">
             <TableFoldHead title="질문항목(질병)" />
             <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[13.4rem]">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                 <AgGridReact<DummyDataType2>
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData2}
@@ -250,6 +269,8 @@ const Ltpz062 = () => {
                     checkboxes: true,
                     enableClickSelection: false,
                   }}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
               <Gcol variant={'box-warning'} placement={'ss'} className="mt-[0.8rem]">

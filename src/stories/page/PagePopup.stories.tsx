@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import { Grow, Typo } from '@atoms';
+ */ import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';

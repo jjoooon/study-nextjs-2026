@@ -12,7 +12,7 @@ export const mockCustomers: Customer[] = [
     name: '김철수',
     customerNo: 'CUST001',
     customerType: '개인',
-    phone: '010-1234-5678',
+    phone: '010-0000-0000',
     address: '서울시 강남구 테헤란로 123',
     birthDate: '19800115',
     status: 'active',

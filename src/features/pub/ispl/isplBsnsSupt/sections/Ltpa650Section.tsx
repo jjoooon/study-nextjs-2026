@@ -14,11 +14,10 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-
 import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
 import * as React from 'react';
+import { useMemo } from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -177,7 +176,7 @@ export default function Ltpa650Section() {
         headerName: '패키지명',
         field: 'field1',
         flex: 1,
-        minWidth: attributeColumnWidth[13],
+        minWidth: attributeColumnWidth(130),
         autoHeight: true,
         spanRows: true,
       },
@@ -185,7 +184,7 @@ export default function Ltpa650Section() {
         headerName: '세부',
         field: 'field2',
         flex: 3.5,
-        minWidth: attributeColumnWidth[30],
+        minWidth: attributeColumnWidth(300),
         autoHeight: true,
       },
     ],
@@ -202,7 +201,7 @@ export default function Ltpa650Section() {
         headerName: '패키지명',
         field: 'packageName',
         flex: 1,
-        minWidth: attributeColumnWidth[15],
+        minWidth: attributeColumnWidth(130),
         autoHeight: true,
         spanRows: true,
       },
@@ -211,7 +210,7 @@ export default function Ltpa650Section() {
         field: 'field1',
         cellClass: 'text-center',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(80),
         autoHeight: true,
         spanRows: true,
       },
@@ -219,7 +218,7 @@ export default function Ltpa650Section() {
         headerName: '담보명',
         field: 'field2',
         flex: 5,
-        minWidth: attributeColumnWidth[20],
+        minWidth: attributeColumnWidth(200),
         cellClass: (params) =>
           params.data && params.data.filePath.length === 1
             ? ''
@@ -229,14 +228,10 @@ export default function Ltpa650Section() {
       {
         headerName: '구분',
         field: 'field3',
-        cellClass: 'text-center',
+        cellClass: '[&>button]:justify-center',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(70),
         cellRenderer: treeNameCellRenderer,
-        cellRendererParams: {
-          className: 'block w-full text-center',
-          buttonClassName: 'justify-center text-center',
-        },
       },
     ],
     [attributeColumnWidth]

@@ -3,13 +3,15 @@
  */
 'use client';
 
-import { Gcol, Grow, Grid, Typo } from '@atoms';
-import { CheckIcon, ExMarkIcon, BadgeCheckIcon } from '@icons';
-import { Button } from '@uiux/Button';
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Gcol, Grow, Grid, Typo } from '@atoms';
+import { CheckIcon, ExMarkIcon, BadgeCheckIcon } from '@icons';
+import { Button } from '@uiux/Button';
 
+// TaskStatusBoard 입력 타입
+// - T를 제네릭으로 받아, 기본 필드(id/status/label)를 만족하면 추가 필드도 함께 전달 가능
 type TaskStatusBoardProps<
   T extends {
     id: number;
@@ -21,6 +23,8 @@ type TaskStatusBoardProps<
   onItemClick?: (item: T) => void;
 };
 
+// "꼭 해야할 일" 상태 보드
+// - 각 항목을 버튼으로 렌더링하고, 클릭 시 원본 item을 그대로 콜백으로 전달
 export function TaskStatusBoard<
   T extends {
     id: number;
@@ -43,6 +47,7 @@ export function TaskStatusBoard<
 
       <Grid className="grid-cols-4 gap-0 w-full h-[4.5rem] bg-[var(--color-gray-0)] px-1.5 rounded-[0.6rem]">
         {state.map((item) => {
+          // 상태값별 원형 아이콘 배경색 매핑
           const statusColors = {
             정상: 'bg-[var(--color-success-50)]',
             경고: 'bg-[var(--color-warning-40)]',
@@ -70,6 +75,7 @@ export function TaskStatusBoard<
                   statusColors[item.status as keyof typeof statusColors]
                 )}
               >
+                {/* 정상은 체크, 경고/중지는 느낌표 아이콘 사용 */}
                 {item.status === '정상' ? (
                   <CheckIcon color={'#fff'} size={14} />
                 ) : (

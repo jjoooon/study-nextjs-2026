@@ -3,11 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid'; // 2026-06-02 numberValueFormatter 추가
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid'; // 2026-06-02 numberValueFormatter 추가
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,11 +19,10 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -51,7 +50,7 @@ const DummyData: DummyDataType[] = [
     field01: '정상',
     field02: 'LA231231231',
     field03: '한화 세이프단체보',
-    field04: '일상해의료비(가입자)일상해의료비(가입자)',
+    field04: '일상해의료비(가입자)',
     field05: '999,999,999',
     field06: '999,999,999',
     field07: 'CLA00172',
@@ -98,78 +97,79 @@ const DummyData: DummyDataType[] = [
 const Ltpz040 = () => {
   // 2026-06-02 width, cellClass 수정, valueFormatter 추가
   // AgGrid Column
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '상태',
       field: 'field01',
-      width: 45,
+      width: attributeColumnWidth(45),
       cellClass: 'text-center',
     },
     {
       headerName: '증권번호',
       field: 'field02',
       spanRows: true,
-      width: 110,
+      width: attributeColumnWidth(110),
       cellClass: 'flex! items-center! justify-center! text-center',
     },
     {
       headerName: '상품명',
       field: 'field03',
       spanRows: true,
-      flex: 1.6,
+      flex: 2,
       cellClass: 'flex! items-center! justify-start!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
     {
       headerName: '담보명',
       field: 'field04',
-      flex: 3,
+      flex: 4,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
     {
       headerName: '가입금액(원)',
       field: 'field05',
-      width: 85,
+      width: attributeColumnWidth(85),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '보험료',
       field: 'field06',
-      width: 85,
+      width: attributeColumnWidth(85),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보코드',
       field: 'field07',
-      width: 80,
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '보험시기',
       field: 'field08',
-      width: 80,
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '보험종기',
       field: 'field09',
-      width: 80,
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '상태',
       field: 'field10',
-      width: 45,
+      width: attributeColumnWidth(45),
       cellClass: 'text-center',
     },
     {
       headerName: '계약자',
       field: 'field11',
       spanRows: true,
-      width: 70,
+      width: attributeColumnWidth(70),
       cellClass: 'flex! items-center! justify-center! text-center',
     },
     {
@@ -224,11 +224,11 @@ const Ltpz040 = () => {
             <TableFoldBody className="grid-rows-[auto_1fr] gap-2">
               <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'피보험자'}>김한화(901231-1******)</FormCell>
+                  <FormCell title={'피보험자'}>김한화(000000-0******)</FormCell>
                 </FormRow>
               </FormTable>
               <Gcol className="w-full" gap={4}>
-                <div className="ag-theme-alpine min-h-[12.5rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

@@ -29,8 +29,8 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 import { useCallback } from 'react';
+import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import '@/shared/lib/agGridPub';
 
@@ -257,6 +257,7 @@ export default function Ltpa210Section() {
 
   // agGrid 행삭제
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+  const gridRef = React.useRef<any>(null);
 
   const handleDeleteRow = React.useCallback(() => {
     const gridApi = gridApiRef.current;
@@ -426,6 +427,7 @@ export default function Ltpa210Section() {
                 <Gcol className="w-full" gap={1}>
                   <div className="ag-theme-alpine min-h-[18.4rem]">
                     <AgGridReact<DummyDataType>
+                      ref={gridRef}
                       // getRowId 적용: id 필드를 고유 식별자로 사용
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -455,6 +457,7 @@ export default function Ltpa210Section() {
                     />
                   </div>
                   <TableMore
+                    gridRef={gridRef}
                     isAll={false}
                     loadedCount={loadedCount}
                     totalCount={totalCount}

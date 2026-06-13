@@ -1,11 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import { Gcol, Grow, Typo } from '@atoms';
-import { Button } from '@uiux/Button';
+ */ import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@uiux/Button';
 import {
   Dialog,
   DialogContent,
@@ -18,6 +17,7 @@ import {
   DialogSection,
   DialogFooterArea,
 } from '@uiux/Dialog';
+import * as React from 'react';
 
 type DialogContentProps = React.ComponentProps<typeof DialogContent>;
 
@@ -42,7 +42,8 @@ const meta: Meta<DialogContentProps> = {
             <h2>Overview</h2>
             <div>
               <p>
-                Dialog는 Radix UI의 <code>@radix-ui/react-dialog</code>를 기반으로 만들어진 모달 다이얼로그 컴포넌트입니다.
+                Dialog는 Radix UI의 <code>@radix-ui/react-dialog</code>를 기반으로 만들어진 모달 다이얼로그
+                컴포넌트입니다.
                 <br />
                 드래그 이동, 리사이즈, 기본 위치 지정 등 고급 기능을 지원합니다.
               </p>
@@ -160,7 +161,7 @@ import { Button } from '@uiux/Button';
     //   description: '다이얼로그 z-index (기본값: overlay보다 1 높음)',
     //   table: { category: 'prop' },
     // },
-    
+
     showOverlay: {
       control: 'boolean',
       description: '오버레이 표시 여부',
@@ -196,39 +197,59 @@ export const Default: Story = {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant={'contained'} >다이얼로그 열기</Button>
+          <Button variant={'contained'}>다이얼로그 열기</Button>
         </DialogTrigger>
-        
+
         <DialogContent {...args}>
           <DialogHeader>
             <DialogTitle>
-              <Typo tag={'strong'} variant={'heading-lg'}>다이얼로그 제목</Typo>
-              <Typo tag={'p'} variant={'body-xl'}>(LRTAA010)</Typo>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                다이얼로그 제목
+              </Typo>
+              <Typo tag={'p'} variant={'body-xl'}>
+                (LRTAA010)
+              </Typo>
             </DialogTitle>
           </DialogHeader>
 
           <DialogSection>
-            <div>대화 상자는 사용자에게 작업에 대해 알리고 중요한 정보를 포함하거나 결정이 필요하거나 여러 작업을 포함할 수 있습니다. 대화 상자는 사용자에게 작업에 대해 알리고 중요한 정보를 포함하거나 결정이 필요하거나 여러 작업을 포함할 수 있습니다.</div>
-            <div>대화 상자는 사용자에게 작업에 대해 알리고 중요한 정보를 포함하거나 결정이 필요하거나 여러 작업을 포함할 수 있습니다. 대화 상자는 사용자에게 작업에 대해 알리고 중요한 정보를 포함하거나 결정이 필요하거나 여러 작업을 포함할 수 있습니다.</div>
+            <div>
+              대화 상자는 사용자에게 작업에 대해 알리고 중요한 정보를 포함하거나 결정이 필요하거나 여러 작업을 포함할 수
+              있습니다. 대화 상자는 사용자에게 작업에 대해 알리고 중요한 정보를 포함하거나 결정이 필요하거나 여러 작업을
+              포함할 수 있습니다.
+            </div>
+            <div>
+              대화 상자는 사용자에게 작업에 대해 알리고 중요한 정보를 포함하거나 결정이 필요하거나 여러 작업을 포함할 수
+              있습니다. 대화 상자는 사용자에게 작업에 대해 알리고 중요한 정보를 포함하거나 결정이 필요하거나 여러 작업을
+              포함할 수 있습니다.
+            </div>
           </DialogSection>
-          
+
           <DialogFooter>
             <DialogFooterArea>
               <Grow>
-                  <Button variant={'outlined'} size={'xl'} color={'gray'}>버튼</Button>
-                  <Button variant={'outlined'} size={'xl'} color={'gray'}>버튼</Button>
-                </Grow>
-                <Grow>
-                  <Button variant={'outlined'} size={'xl'} color={'gray'}>버튼</Button>
-                  <Button variant={'contained'} size={'xl'} onClick={() => setOpen(false)}>확인</Button>
-                  <DialogClose asChild>
-                    <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                      닫기
-                    </Button>
-                  </DialogClose>
-                </Grow>
-              </DialogFooterArea>
-              <DialogBottomInfo />
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  버튼
+                </Button>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  버튼
+                </Button>
+              </Grow>
+              <Grow>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  버튼
+                </Button>
+                <Button variant={'contained'} size={'xl'} onClick={() => setOpen(false)}>
+                  확인
+                </Button>
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+            </DialogFooterArea>
+            <DialogBottomInfo />
           </DialogFooter>
         </DialogContent>
       </Dialog>

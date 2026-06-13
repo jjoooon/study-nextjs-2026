@@ -3,9 +3,8 @@
  */
 'use client';
 
+import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { BulletItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -21,12 +20,13 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
-import { SearchIcon } from '@/shared/components/icons/CommonIcons';
+import { BulletItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 const Ltpz037 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={true} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -49,7 +49,7 @@ const Ltpz037 = () => {
               질병정보는 민감정보로서 <b>알릴사항의 목적으로만 활용</b>바랍니다.<br></br>이외의 용도로 활용 또는{' '}
               <b>외부 유출시 법적처벌</b>을 받습니다.
             </Typo>
-            <Grid className="w-full grid-cols-[12rem_auto_1fr_12rem] items-center gap-1 px-5 py-4 bg-[var(--color-gray-5)] rounded-[0.6rem]">
+            <Grid className="w-full grid-cols-[8rem_2.8rem_8rem_11rem] items-center gap-1 px-5 py-4 bg-[var(--color-gray-5)] rounded-[0.6rem]">
               <Input value={'1234567'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                 <SearchIcon color={'var(--color-primary-50)'} />
@@ -70,7 +70,7 @@ const Ltpz037 = () => {
             </Typo>
             <Table variant="default">
               <colgroup>
-                <col style={{ width: '10rem' }} />
+                <col style={{ width: '8rem' }} />
                 <col style={{ width: 'auto' }} />
               </colgroup>
               <TableBody>
@@ -79,8 +79,8 @@ const Ltpz037 = () => {
                   <TableCell>
                     <Grow placement="bwc">
                       <Grow>
-                        <Input width={62} value={'김한화'} readOnly />
-                        <Input width={116} value={'900110-1******'} readOnly />
+                        <Input width={70} value={'김한화화'} readOnly />
+                        <Input width={115} value={'900110-1******'} readOnly />
                         <Button
                           aria-label="검색"
                           variant={'outlined'}
@@ -104,7 +104,7 @@ const Ltpz037 = () => {
                   <TableHead className="text-left">휴대폰번호</TableHead>
                   <TableCell>
                     <Grow placement="ss">
-                      <Input width={130} value={'010-1111-1111'} readOnly />
+                      <Input width={110} value={'010-0000-0000'} readOnly />
                       <Button variant={'outlined'} size={'lg'} color={'gray-light'}>
                         인증번호 발송
                       </Button>
@@ -115,7 +115,7 @@ const Ltpz037 = () => {
                   <TableHead className="text-left">인증번호</TableHead>
                   <TableCell>
                     <Grow placement="ss">
-                      <Input width={130} value={''} />
+                      <Input width={110} value={''} />
                       <Button variant={'outlined'} size={'lg'} color={'gray-light'}>
                         인증확인
                       </Button>

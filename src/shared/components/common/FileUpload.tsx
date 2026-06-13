@@ -3,56 +3,56 @@
  */
 'use client';
 
-import { Grow, Gcol, Typo } from '@atoms';
-import { FileUploadIcon, InputClearIcon } from '@icons';
-import { FileItemIcon } from '@icons';
+import { useId } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
+import { Ltpz995Result } from '@/shared/types/fileTypes';
+import { UploadFileItem } from '@/shared/types/fileTypes';
+import log from '@/shared/utils/logger';
+import { open } from '@/shared/utils/popup/popupApi';
+import { Gcol, Grow, Typo } from '@atoms';
+import { FileItemIcon, FileUploadIcon, InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { useId, useState, useEffect } from 'react';
-import { cn } from '@/shared/lib/shadcn/utils';
+
+const logger = log.getLogger('FileUpload');
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-type FileItem = {
-  name: string;
-  ext?: string;
-  key?: string;
-};
-
 type FileUploadProps = {
   id?: string;
-  files?: FileItem[];
+  files?: UploadFileItem[];
   className?: string;
   errorMessage?: string;
   onClickButton?: () => void;
-  onClickFileName?: (file: FileItem, index: number) => void;
-  onRemove?: (file: FileItem, index: number) => void;
+  onClickFileName?: (file: UploadFileItem, index: number) => void;
+  onChange?: (files: UploadFileItem[]) => void;
 };
 
 // ─── FileUpload ───────────────────────────────────────────────────────────────
 
 export function FileUpload({
   id,
-  files: filesProp = [],
+  files = [],
   errorMessage,
   onClickButton,
   onClickFileName,
-  onRemove,
+  onChange,
   className,
 }: FileUploadProps) {
   const generatedId = useId();
   const baseId = id ?? generatedId;
 
-  const [files, setFiles] = useState<FileItem[]>(filesProp);
+  const handleRemove = (file: UploadFileItem, index: number) => {
+    onChange?.(files.filter((_, i) => i !== index));
+  };
 
-  // 외부 props가 바뀔 때 내부 state 동기화
-  useEffect(() => {
-    setFiles(filesProp);
-  }, [filesProp]);
-
-  const handleRemove = (file: FileItem, index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index)); // 화면 즉시 반영
-    onRemove?.(file, index); // 콜백 호출
+  const handleClickButton = async () => {
+    onClickButton?.();
+    const result = await open<Ltpz995Result>('LTPZ995', { files });
+    logger.debug(result);
+    if (result.action === 'select' && result.files) {
+      onChange?.(result.files);
+    }
   };
 
   return (
@@ -66,7 +66,7 @@ export function FileUpload({
           aria-label="파일선택"
           aria-describedby={errorMessage ? `${baseId}-error` : undefined}
           aria-invalid={!!errorMessage}
-          onClick={onClickButton}
+          onClick={handleClickButton}
         >
           <FileUploadIcon size={12} />
           파일선택
@@ -77,12 +77,11 @@ export function FileUpload({
       <Gcol className="pt-[0.2rem]" gap={1.5} placement={'ss'}>
         {files.map((file, index) => (
           <FileTag
-            key={file.key ?? `${file.name}-${index}`}
-            name={file.name}
-            ext={file.ext}
+            key={file.edmsId}
+            name={file.originalFilename}
             hasError={!!errorMessage}
             onNameClick={() => {
-              onClickButton?.();
+              handleClickButton();
               onClickFileName?.(file, index);
             }}
             onRemove={() => handleRemove(file, index)}
@@ -93,7 +92,7 @@ export function FileUpload({
       {/* ── 에러 메시지 ── */}
       {errorMessage && (
         <p id={`${baseId}-error`} role="alert" className="w-full mt-0.5">
-          <Typo variant="body-sm" tag="span" className="text-[var(--color-text-danger)]">
+          <Typo variant="body-sm" tag="span" className="text-(--color-text-danger)">
             {errorMessage}
           </Typo>
         </p>
@@ -146,7 +145,7 @@ function FileTag({ name, ext, onRemove, hasError = false, onNameClick }: FileTag
               tag="div"
               className={cn(
                 'grid grid-cols-[1fr_auto] transition-colors duration-100 tracking-0 pr-[0.3rem] w-full',
-                hasError ? 'text-[var(--color-text-danger)] underline' : 'hover:text-[#006FF2] hover:underline'
+                hasError ? 'text-(--color-text-danger) underline' : 'hover:text-[#006FF2] hover:underline'
               )}
             >
               {baseWithoutLast.length > 0 ? (
@@ -177,7 +176,7 @@ function FileTag({ name, ext, onRemove, hasError = false, onNameClick }: FileTag
         className={cn(
           'shrink-0 inline-flex items-center justify-center',
           'w-[1.6rem] h-[1.6rem] rounded-full',
-          'text-[var(--color-text-subtle)] translate-y-[0.1rem]'
+          'text-(--color-text-subtle) translate-y-px'
         )}
       >
         <InputClearIcon color={'#6B7280'} size={16} />

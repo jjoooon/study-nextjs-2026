@@ -4,12 +4,8 @@
 
 'use client';
 
+import { SearchIcon } from '@/shared/components/icons';
 import { Gcol, Typo, Grow } from '@atoms';
-import { BulletList } from '@common/BulletList';
-import { BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -22,12 +18,16 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { SearchIcon } from '@/shared/components/icons';
+import { BulletList } from '@common/BulletList';
+import { BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 const Ltpz056 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="md">
+      <DialogContent showCloseButton resizable={false} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -43,14 +43,14 @@ const Ltpz056 = () => {
           <TableFold variant="default">
             <TableFoldHead title="카카오알림톡 발송대상"></TableFoldHead>
             <TableFoldBody>
-              <FormTable caption="FormTable 예시" className="" cols={['w-[20%]', 'w-auto']} lineTop variant="default">
+              <FormTable caption="FormTable 예시" className="" cols={['w-[8rem]', 'w-auto']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'취급자'} variant="default">
-                    <Input aria-label="" width={'16rem'} value={'이한화'} readOnly />
+                    <Input aria-label="" width={'9rem'} value={'이한화화'} readOnly />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
-                    <Input aria-label="" width={'8rem'} value={'123123'} readOnly />
+                    <Input aria-label="" width={'9rem'} value={'123123'} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -113,6 +113,9 @@ const Ltpz056 = () => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
+              <Button variant={'contained'} size={'xl'}>
+                발송
+              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기

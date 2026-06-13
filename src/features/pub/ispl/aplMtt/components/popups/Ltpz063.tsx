@@ -2,28 +2,6 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { DatePickerCellEditor, AgGridEmptyComponent } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
-import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
-
-import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogFooterArea,
-  DialogClose,
-} from '@uiux/Dialog';
-
-import '@/shared/lib/agGridPub';
-import { Input } from '@uiux/Input';
 import type {
   CellClassParams,
   CellEditorSelectorResult,
@@ -33,8 +11,28 @@ import type {
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-
 import { useTabs } from '@/shared/hooks/useTabs';
+import { Gcol, Grow, Typo } from '@atoms';
+import { AgGridEmptyComponent, DatePickerCellEditor, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+
+import '@/shared/lib/agGridPub';
 
 type LTPZ051Tab = { name: string; value: string; label: string };
 const DATA_TABS: LTPZ051Tab[] = [
@@ -52,22 +50,28 @@ type DummyDataType = {
   externalInsurance2: string | number | boolean;
 };
 
+// ag-Grid 셀에 표시될 수 있는 데이터 타입
 type GridCellValue = string | number | boolean | null | undefined;
+// value1/value2 탭: 체크박스로 선택 가능한 필드명
 type MainSelectableField = 'ourInsurance2' | 'externalInsurance1' | 'externalInsurance2';
+// value3 탭: 체크박스로 선택 가능한 필드명 (externalInsurance3 추가)
 type ExtraSelectableField = 'externalInsurance1' | 'externalInsurance2' | 'externalInsurance3';
 
+// 체크박스 렌더러에 전달되는 파라미터
 type CheckboxRendererParams<TData> = {
-  data: TData | undefined;
-  value: GridCellValue;
-  colDef: ColDef<TData>;
+  data: TData | undefined; // 현재 행 데이터
+  value: GridCellValue; // 셀의 현재 값
+  colDef: ColDef<TData>; // 컬럼 정의
 };
 
+// 원(₩) 단위 입력 에디터 props
 type WonUnitCellEditorProps = {
-  value: GridCellValue;
-  onValueChange: (value: string) => void;
-  stopEditing: () => void;
+  value: GridCellValue; // 에디터의 현재 값
+  onValueChange: (value: string) => void; // 값 변경 콜백
+  stopEditing: () => void; // 에디팅 종료
 };
 
+// value3(추가계약정보) 탭에서 행 타입별 편집/표시 규칙에 사용
 const TYPE3_NUMBER_FORMAT_TYPES = new Set(['보험료', '보험가입금액', '해약환급금']);
 const TYPE3_EDITABLE_TEXT_TYPES = new Set([
   '상품명',
@@ -299,7 +303,8 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 13,
     type: '면책사유 및 면책사항',
-    ourInsurance1: '계약자,피보험자,수익자의 고의사고 등',
+    ourInsurance1:
+      '계약자,피보험자,수익자의 고의사고 등계약자,피보험자,수익자의 고의사고 등계약자,피보험자,수익자의 고의사고 등',
     ourInsurance2: '계약자,피보험자,수익자의 고의사고 등',
     externalInsurance1: '',
     externalInsurance2: '',
@@ -324,6 +329,7 @@ type DummyDataType3 = {
 
 type AgGridRow = DummyDataType3;
 
+// value3 탭의 기본 더미 데이터
 const DummyData3: DummyDataType3[] = [
   {
     id: 1,
@@ -439,25 +445,29 @@ const DummyData3: DummyDataType3[] = [
   },
 ];
 export const Ltpz063 = () => {
+  // 탭 상태 + 탭별 그리드 데이터 상태
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
   const [rowData3, setRowData3] = React.useState<DummyDataType3[]>(DummyData3);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
+  // 공통: 행의 구분(type) 값 기반 판별 함수
   const getTypeLabel = (row: { type: string | number } | undefined) => (row ? String(row.type) : '');
   const isSwitchoverRow = (row: { type: string | number } | undefined) => getTypeLabel(row) === '승환';
   const isLeftAlignTargetRow = (row: { type: string | number } | undefined) =>
     LEFT_ALIGN_TARGET_TYPES.has(getTypeLabel(row));
 
+  // 숫자/비율 입력 행은 우측 정렬, 그 외는 중앙 정렬
   const getValueCellClass = <TData extends { type: string | number }>(params: CellClassParams<TData>) =>
     isLeftAlignTargetRow(params.data)
-      ? 'text-right [&_.ag-input-field-input]:text-right'
-      : 'text-center [&_.ag-input-field-input]:text-center';
+      ? 'text-right [&_.ag-input-field-input]:text-right !leading-[1.3] !py-2'
+      : 'text-center [&_.ag-input-field-input]:text-center !leading-[1.3] !py-2';
 
   const getSelectableValueCellClass = <TData extends { type: string | number }>(params: CellClassParams<TData>) =>
     isLeftAlignTargetRow(params.data)
-      ? 'text-right [&_.ag-input-field-input]:text-right'
-      : 'text-center flex! items-center! justify-center! [&_.ag-input-field-input]:text-center';
+      ? 'text-right [&_.ag-input-field-input]:text-right !leading-[1.3] !py-2'
+      : 'text-center flex! items-center! justify-center! !leading-[1.3] !py-2 [&_.ag-input-field-input]:text-center';
 
   const isType3CompanyRow = (row: DummyDataType3 | undefined) => row?.type === '보험회사명';
   const isType3DateRow = (row: DummyDataType3 | undefined) => row?.type === '보험기간';
@@ -471,6 +481,7 @@ export const Ltpz063 = () => {
     !!row &&
     (isType3CompanyRow(row) || isType3DateRow(row) || isType3NumberFormatRow(row) || isType3EditableTextRow(row));
 
+  // 단위(원) 고정 입력 에디터: 입력 시 단위는 제거하고 값만 편집
   const WonUnitCellEditor = (props: WonUnitCellEditorProps) => {
     const editorValue = props.value == null ? '' : String(props.value).replace(/원/g, '').trim();
 
@@ -488,6 +499,7 @@ export const Ltpz063 = () => {
     );
   };
 
+  // 단위(%) 고정 입력 에디터
   const PercentUnitCellEditor = (props: WonUnitCellEditorProps) => {
     const editorValue = props.value == null ? '' : String(props.value).replace(/%/g, '').trim();
 
@@ -505,6 +517,7 @@ export const Ltpz063 = () => {
     );
   };
 
+  // 단위(만원) 고정 입력 에디터
   const ManwonUnitCellEditor = (props: WonUnitCellEditorProps) => {
     const editorValue = props.value == null ? '' : String(props.value).replace(/만원/g, '').trim();
 
@@ -522,6 +535,7 @@ export const Ltpz063 = () => {
     );
   };
 
+  // value1/value2 탭: 행 타입에 따라 셀 에디터 선택
   const getMainCellEditorSelector = <TData extends { type: string | number }>(
     params: EditableCallbackParams<TData>
   ): CellEditorSelectorResult | undefined => {
@@ -540,6 +554,7 @@ export const Ltpz063 = () => {
     return undefined;
   };
 
+  // 저장 직전 단위 문자열 자동 보정 (원, %, 만원)
   const getValueWithUnit = (row: { type: string | number } | undefined, value: GridCellValue): GridCellValue => {
     if (typeof value !== 'string') {
       return value;
@@ -570,6 +585,7 @@ export const Ltpz063 = () => {
     return value;
   };
 
+  // value3 탭: 회사명/날짜/금액/비율에 맞는 에디터를 자동 선택
   const getType3CellEditorSelector = (
     params: EditableCallbackParams<AgGridRow>
   ): CellEditorSelectorResult | undefined => {
@@ -613,6 +629,7 @@ export const Ltpz063 = () => {
     return undefined;
   };
 
+  // value3 탭 헤더: 타사기존 컬럼을 사용자 액션으로 숨길 수 있는 헤더
   const ThirdGridHeaderWithDelete = React.useMemo(() => {
     const Component = (props: IHeaderParams<AgGridRow>) => {
       const handleDeleteColumn = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -640,18 +657,23 @@ export const Ltpz063 = () => {
     return Component;
   }, []);
 
+  // value1/value2 탭: 필드명이 체크박스 선택 가능 필드인지 판별하는 타입 가드
   const isSelectableField = (field: string): field is MainSelectableField =>
     field === 'ourInsurance2' || field === 'externalInsurance1' || field === 'externalInsurance2';
 
+  // value3 탭: 필드명이 체크박스 선택 가능 필드인지 판별하는 타입 가드 (externalInsurance3 포함)
   const isSelectableField3 = (field: string): field is ExtraSelectableField =>
     field === 'externalInsurance1' || field === 'externalInsurance2' || field === 'externalInsurance3';
 
+  // 행 타입이 편집 가능 대상 타입인지 확인 (해약환급금, 예정이율, 보험목적, 면책사유)
   const isEditableTargetRow = (fieldName: DummyDataType['type']) => EDITABLE_TARGET_TYPES.has(String(fieldName));
 
+  // ag-Grid 셀 스타일 규칙: 편집 가능 행에 'editable-cell' 클래스 적용
   const externalInsuranceCellClassRules = {
     'editable-cell': ({ data }: { data: DummyDataType | undefined }) => (data ? isEditableTargetRow(data.type) : false),
   };
 
+  // 값을 체크박스의 체크 여부로 변환: null/undefined/빈 문자열 → false, 'true' 문자열 → true, 1 → true
   const isCheckedValue = (value: GridCellValue) => {
     if (value === null || value === undefined || value === '') {
       return false;
@@ -668,6 +690,7 @@ export const Ltpz063 = () => {
     return value.toLowerCase() === 'true';
   };
 
+  // value1 체크박스 변경 핸들러
   const handleCheckboxChange = (params: CheckboxRendererParams<DummyDataType>, checked: boolean | 'indeterminate') => {
     const targetField = params.colDef.field;
 
@@ -682,6 +705,7 @@ export const Ltpz063 = () => {
     );
   };
 
+  // value2 체크박스 변경 핸들러
   const handleCheckboxChange2 = (
     params: CheckboxRendererParams<DummyDataType2>,
     checked: boolean | 'indeterminate'
@@ -699,6 +723,7 @@ export const Ltpz063 = () => {
     );
   };
 
+  // value3 체크박스 변경 핸들러
   const handleCheckboxChange3 = (
     params: CheckboxRendererParams<DummyDataType3>,
     checked: boolean | 'indeterminate'
@@ -719,6 +744,7 @@ export const Ltpz063 = () => {
   const createCheckboxCellRenderer = <TData extends { type: string | number }>(
     onChange: (params: CheckboxRendererParams<TData>, checked: boolean | 'indeterminate') => void
   ) => {
+    // '승환' 행은 체크박스, 일반 행은 문자열/숫자 값 표시
     const CheckboxCellRenderer = (params: CheckboxRendererParams<TData>) =>
       isSwitchoverRow(params.data) ? (
         <Checkbox
@@ -745,25 +771,28 @@ export const Ltpz063 = () => {
   const checkboxRenderer2 = createCheckboxCellRenderer(handleCheckboxChange2);
   const checkboxRenderer3 = createCheckboxCellRenderer(handleCheckboxChange3);
 
+  // value1 탭의 타사기존 컬럼 팩토리
   const createMainExternalColumn = (field: 'externalInsurance1' | 'externalInsurance2'): ColDef<DummyDataType> => ({
     headerName: '타사기존',
     headerClass: '[&_.ag-header-cell-text]:font-bold',
     cellClass: getSelectableValueCellClass,
     cellClassRules: externalInsuranceCellClassRules,
     flex: 1,
-    minWidth: 200,
     field,
     editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
     cellEditorSelector: getMainCellEditorSelector,
     cellRenderer: checkboxRenderer,
+    autoHeight: true,
+    wrapText: true,
   });
 
+  // value3 탭의 타사기존 컬럼 팩토리 (헤더 삭제 버튼 포함)
   const createThirdExternalColumn = (field: ExtraSelectableField): ColDef<DummyDataType3> => ({
     headerName: '타사기존',
     headerComponent: ThirdGridHeaderWithDelete,
     headerClass: '[&_.ag-header-cell-text]:font-bold',
-    cellClass: getSelectableValueCellClass + ' editable-cell',
-    width: 200,
+    cellClass: (params) => `${getSelectableValueCellClass(params)} editable-cell`,
+    flex: 1,
     field,
     editable: ({ data }) => isType3EditableRow(data),
     cellEditorSelector: getType3CellEditorSelector,
@@ -771,62 +800,76 @@ export const Ltpz063 = () => {
       mode: 'range',
     },
     cellRenderer: checkboxRenderer3,
+    autoHeight: true,
+    wrapText: true,
   });
 
+  // value1: 승환계약정보 컬럼
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '구분',
-      width: 150,
+      width: attributeColumnWidth(130),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center font-bold',
       field: 'type',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '당사신규',
-      width: 200,
+      flex: 1,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getValueCellClass,
       field: 'ourInsurance1',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '당사기존',
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getSelectableValueCellClass,
       flex: 1,
-      minWidth: 200,
       field: 'ourInsurance2',
       cellRenderer: checkboxRenderer,
+      autoHeight: true,
+      wrapText: true,
     },
     createMainExternalColumn('externalInsurance1'),
     createMainExternalColumn('externalInsurance2'),
   ];
+  // value2: 정상계약정보 컬럼
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '구분',
-      width: 150,
+      width: attributeColumnWidth(130),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center font-bold',
       field: 'type',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '당사신규',
-      width: 200,
+      flex: 1,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getValueCellClass,
       field: 'ourInsurance1',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '당사기존',
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getSelectableValueCellClass,
       flex: 1,
-      minWidth: 200,
       field: 'ourInsurance2',
       cellRenderer: checkboxRenderer2,
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '타사기존',
@@ -834,11 +877,12 @@ export const Ltpz063 = () => {
       cellClass: getSelectableValueCellClass,
       cellClassRules: externalInsuranceCellClassRules,
       flex: 1,
-      minWidth: 200,
       field: 'externalInsurance1',
       editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
       cellEditorSelector: getMainCellEditorSelector,
       cellRenderer: checkboxRenderer2,
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '타사기존',
@@ -846,37 +890,45 @@ export const Ltpz063 = () => {
       cellClass: getSelectableValueCellClass,
       cellClassRules: externalInsuranceCellClassRules,
       flex: 1,
-      minWidth: 200,
       field: 'externalInsurance2',
       editable: ({ data }) => (data ? isEditableTargetRow(data.type) : false),
       cellEditorSelector: getMainCellEditorSelector,
       cellRenderer: checkboxRenderer2,
+      autoHeight: true,
+      wrapText: true,
     },
   ];
+  // value3: 추가계약정보 컬럼
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
       headerName: '구분',
-      width: 150,
+      width: attributeColumnWidth(130),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: 'text-center font-bold',
       field: 'type',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     {
       headerName: '당사신규',
-      width: 200,
+      flex: 1,
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getValueCellClass,
       field: 'ourInsurance1',
       pinned: 'left',
+      autoHeight: true,
+      wrapText: true,
     },
     createThirdExternalColumn('externalInsurance3'),
     createThirdExternalColumn('externalInsurance3'),
     createThirdExternalColumn('externalInsurance3'),
   ];
+
+  // 탭 선택값에 따라 그리드를 분기 렌더링
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="full">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -978,6 +1030,7 @@ export const Ltpz063 = () => {
                   }}
                   rowClassRules={{}}
                   domLayout="autoHeight"
+                  animateRows={false}
                 />
               </div>
             ) : active === 'value2' ? (
@@ -994,6 +1047,7 @@ export const Ltpz063 = () => {
                   }}
                   rowClassRules={{}}
                   domLayout="autoHeight"
+                  animateRows={false}
                 />
               </div>
             ) : active === 'value3' ? (
@@ -1010,6 +1064,7 @@ export const Ltpz063 = () => {
                   }}
                   rowClassRules={{}}
                   domLayout="autoHeight"
+                  animateRows={false}
                 />
               </div>
             ) : null}

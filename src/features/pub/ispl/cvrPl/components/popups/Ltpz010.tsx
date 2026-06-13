@@ -4,18 +4,20 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, EditableCallbackParams, ICellRendererParams, RowSelectedEvent } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useMemo, useState, useRef } from 'react';
+import * as React from 'react';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
   editableSelectCellRenderer,
   numberValueFormatter,
   createInsertCopiedRowButtonCellRenderer,
+  useDynamicColumnWidths,
 } from '@aggrid';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -33,9 +35,9 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, EditableCallbackParams, ICellRendererParams, RowSelectedEvent } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useMemo, useState, useRef } from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -191,77 +193,82 @@ const Ltpz010 = () => {
   const coverageAmountCellRenderer = (params: ICellRendererParams<DummyDataType>) =>
     editableSelectCellRenderer<DummyDataType>(params);
 
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '중복',
-      field: 'isDuplicate',
-      width: 30,
-      cellClass: 'text-center',
-      sortable: false,
-      cellRenderer: duplicateRenderer,
-    },
-    {
-      headerName: '담보명',
-      field: 'productName',
-      flex: 10,
-      cellRenderer: titleRenderer,
-    },
-    {
-      headerName: '속성',
-      field: 'attribute',
-      width: 30,
-      cellClass: 'text-center',
-      cellRenderer: attributeRenderer,
-      sortable: false,
-    },
-    {
-      headerName: '가입금액(만원)',
-      field: 'coverageAmount',
-      minWidth: 160,
-      flex: 1,
-      cellClass: () => 'w-auto text-centerleft editable-cell [&_input]:text-left!',
-      sortable: false,
-      filter: false,
-      editable: (params: EditableCallbackParams<DummyDataType>) => {
-        // canEditExpiry가 true인 행만 수정 가능
-        return params.data?.canEditExpiry === true;
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '중복',
+        field: 'isDuplicate',
+        width: attributeColumnWidth(30),
+        cellClass: 'text-center',
+        sortable: false,
+        cellRenderer: duplicateRenderer,
       },
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: {
-        values: ['5천만원(통원20만원)', '2천만원(통원20만원)', '3천만원(통원20만원)', '4천만원(통원20만원)'],
+      {
+        headerName: '담보명',
+        field: 'productName',
+        flex: 10,
+        cellClass: '!px-0',
+        cellRenderer: titleRenderer,
       },
-      cellRenderer: coverageAmountCellRenderer,
-    },
-    {
-      headerName: '보험료(만원)',
-      field: 'premium',
-      minWidth: 100,
-      flex: 1,
-      cellClass: 'text-right',
-      headerClass: 'px-0!',
-      sortable: false,
-      filter: false,
-      valueFormatter: numberValueFormatter,
-    },
-    {
-      headerName: '만기',
-      field: 'expiryPeriod',
-      minWidth: 70,
-      flex: 1,
-      cellClass: 'text-center px-[0.2rem]!',
-      sortable: false,
-      filter: false,
-    },
-    {
-      headerName: '납기',
-      field: 'paymentPeriod',
-      minWidth: 70,
-      flex: 1,
-      cellClass: 'text-center px-[0.2rem]!',
-      sortable: false,
-      filter: false,
-    },
-  ];
+      {
+        headerName: '속성',
+        field: 'attribute',
+        width: attributeColumnWidth(30),
+        cellClass: 'text-center',
+        cellRenderer: attributeRenderer,
+        sortable: false,
+      },
+      {
+        headerName: '가입금액(만원)',
+        field: 'coverageAmount',
+        minWidth: attributeColumnWidth(140),
+        flex: 1,
+        cellClass: () => 'w-auto text-centerleft editable-cell [&_input]:text-left!',
+        sortable: false,
+        filter: false,
+        editable: (params: EditableCallbackParams<DummyDataType>) => {
+          // canEditExpiry가 true인 행만 수정 가능
+          return params.data?.canEditExpiry === true;
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['5천만원(통원20만원)', '2천만원(통원20만원)', '3천만원(통원20만원)', '4천만원(통원20만원)'],
+        },
+        cellRenderer: coverageAmountCellRenderer,
+      },
+      {
+        headerName: '보험료(만원)',
+        field: 'premium',
+        minWidth: attributeColumnWidth(80),
+        flex: 1,
+        cellClass: 'text-right',
+        headerClass: 'px-0!',
+        sortable: false,
+        filter: false,
+        valueFormatter: numberValueFormatter,
+      },
+      {
+        headerName: '만기',
+        field: 'expiryPeriod',
+        minWidth: attributeColumnWidth(70),
+        flex: 1,
+        cellClass: 'text-center px-[0.2rem]!',
+        sortable: false,
+        filter: false,
+      },
+      {
+        headerName: '납기',
+        field: 'paymentPeriod',
+        minWidth: attributeColumnWidth(70),
+        flex: 1,
+        cellClass: 'text-center px-[0.2rem]!',
+        sortable: false,
+        filter: false,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const onCellValueChanged = useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
@@ -307,7 +314,7 @@ const Ltpz010 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -327,10 +334,10 @@ const Ltpz010 = () => {
                   title={'설계번호'}
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                 >
-                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={'quoteNo'} value={'LA26020945959594'} readOnly />
                   -
-                  <Input aria-label="" width={30} value={'1'} readOnly />
-                  <Input aria-label="" variant="info" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                  <Input aria-label="" width={26} value={'1'} readOnly />
+                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -342,7 +349,7 @@ const Ltpz010 = () => {
               <TableFold variant={'accordion'}>
                 <TableFoldHead title="계약기본사항"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable caption={'계약기본사항'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+                  <FormTable caption={'계약기본사항'} cols={['w-[12rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'상품선택'} colSpan={3}>
                         <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="4세대신손">
@@ -429,16 +436,16 @@ const Ltpz010 = () => {
                 <TableFoldBody className="gap-2">
                   {' '}
                   {/* 2026-05-27 gap 추가 */}
-                  <FormTable caption={'피보험자'} cols={['w-[14rem]', 'w-auto', 'w-[14rem]', 'w-auto']}>
+                  <FormTable caption={'피보험자'} cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'피보험자'}>
-                        <Input aria-label="" width={70} value={'김한화'} readOnly />
-                        <Input aria-label="" width={140} value={'910101-1******'} readOnly />
+                        <Input aria-label="" width={84} value={'김한화'} readOnly />
+                        <Input aria-label="" width={114} value={'000000-0******'} readOnly />
                       </FormCell>
                       <FormCell title={'알림사항'}>
                         <Grow placement={'bwc'}>
                           <Grow>
-                            <Input aria-label="" width={40} value={'무'} readOnly />
+                            <Input aria-label="" width={32} align="center" value={'무'} readOnly />
                             <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                               입력
                             </Button>
@@ -449,8 +456,8 @@ const Ltpz010 = () => {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'계약자'}>
-                        <Input aria-label="" width={70} value={'김한화'} readOnly />
-                        <Input aria-label="" width={140} value={'910101-1******'} readOnly />
+                        <Input aria-label="" width={84} value={'김한화'} readOnly />
+                        <Input aria-label="" width={114} value={'910101-1******'} readOnly />
                       </FormCell>
                       <FormCell title={'주피와관계'}>
                         주피보험자(김한화)는 계약자의
@@ -477,7 +484,7 @@ const Ltpz010 = () => {
                   <FormTable caption={'합계보험료'} cols={['w-[14rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'합계보험료'}>
-                        <Input aria-label="" width={200} value={'123456'} commaAmount readOnly />원
+                        <Input aria-label="" width={100} value={'123456'} commaAmount readOnly />원
                         <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                           출생후 보혐료
                         </Button>
@@ -494,7 +501,7 @@ const Ltpz010 = () => {
             <TableFold variant={'accordion'}>
               <TableFoldHead title="담보가입사항" />
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[15.4rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                   <AgGridReact<DummyDataType>
                     ref={gridRef}
                     getRowId={(params) => String(params.data.id)}
@@ -515,7 +522,7 @@ const Ltpz010 = () => {
                     selectionColumnDef={{
                       headerName: '선택',
                       cellClass: 'text-center editable-cell',
-                      width: 30,
+                      width: attributeColumnWidth(30),
                     }}
                     animateRows={false}
                     domLayout="normal"

@@ -6,11 +6,12 @@
 // M1. 파일명수정 LTPA070 -> LTPZ083
 // M1. 컴포넌트명수정 LTPA070 -> LTPZ083
 
-import { AgGridEmptyComponent } from '@aggrid';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo } from '@atoms';
+import { AgGridEmptyComponent } from '@aggrid';
 
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -23,9 +24,8 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -80,7 +80,7 @@ const Ltpz083 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[5rem]', 'w-auto']}>
               <FormRow>
@@ -99,7 +99,7 @@ const Ltpz083 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="ag-theme-alpine min-h-[18.5rem]">
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}

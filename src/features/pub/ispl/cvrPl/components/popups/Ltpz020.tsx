@@ -4,10 +4,13 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, useDynamicColumnWidths, createTreeNameCellRenderer } from '@aggrid';
+import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useMemo } from 'react';
+import * as React from 'react';
 import { Grow, Typo, Grid } from '@atoms';
+import { AgGridEmptyComponent, useDynamicColumnWidths, createTreeNameCellRenderer } from '@aggrid';
 import { Button } from '@uiux/Button';
-
 import {
   Dialog,
   DialogClose,
@@ -18,10 +21,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
-import * as React from 'react';
 
 type DummyData1Type = {
   id: number;
@@ -199,14 +198,16 @@ const Ltpz020 = ({ open }: { open: boolean }) => {
       {
         headerName: '패키지명',
         field: 'field1',
-        width: attributeColumnWidth[11],
+        width: attributeColumnWidth(90),
+        wrapText: true,
         autoHeight: true,
+        cellClass: 'whitespace-normal break-words !leading-[1.3] !py-2',
         spanRows: true,
       },
       {
         headerName: '선택',
         field: 'cheked',
-        width: 30,
+        width: attributeColumnWidth(30),
         editable: true,
         cellDataType: 'boolean',
         cellClass: 'editable-cell text-center',

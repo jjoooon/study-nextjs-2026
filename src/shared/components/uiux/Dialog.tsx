@@ -3,8 +3,6 @@
  */
 'use client';
 
-import { Grid } from '@atoms';
-import { CloseIcon } from '@icons';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
@@ -16,10 +14,12 @@ import {
   getDialogLayerIndex,
   subscribeOverlay,
 } from '@/shared/utils/popup/dialogOverlayRegistry';
+import { Grid } from '@atoms';
+import { CloseIcon } from '@icons';
 
 type DialogSizeValue = number | string;
 
-type DialogSizePreset = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+type DialogSizePreset = 'xs' | 'sm' | 'md' | 'ml' | 'lg' | 'xl' | '2xl' | 'full';
 
 type DialogSizeConfig = {
   width?: DialogSizeValue;
@@ -39,8 +39,10 @@ const DIALOG_DEFAULT_MAX_HEIGHT = `calc(100vh - ${DIALOG_VIEWPORT_GAP})`;
 const DIALOG_FULL_WIDTH = `calc(100vw - 2rem)`;
 const DIALOG_FULL_HEIGHT = `calc(100vh - 2rem)`;
 const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
+  xs: '32rem',
   sm: '48rem',
   md: '56rem',
+  ml: '62rem',
   lg: '76rem',
   xl: '96rem',
   '2xl': '118rem',
@@ -64,7 +66,15 @@ const resolveDialogSize = (size?: DialogSize) => {
     };
   }
 
-  if (size === 'sm' || size === 'md' || size === 'lg' || size === 'xl' || size === '2xl') {
+  if (
+    size === 'xs' ||
+    size === 'sm' ||
+    size === 'md' ||
+    size === 'ml' ||
+    size === 'lg' ||
+    size === 'xl' ||
+    size === '2xl'
+  ) {
     return {
       width: DIALOG_PRESET_WIDTH[size],
       maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,

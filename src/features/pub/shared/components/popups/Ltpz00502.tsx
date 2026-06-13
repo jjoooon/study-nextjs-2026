@@ -4,15 +4,21 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid'; // 2026-05-29 numberValueFormatter 추가
+import {
+  AgGridEmptyComponent,
+  createSpanRowsByField,
+  createTooltipValueGetter,
+  numberValueFormatter,
+  useDynamicColumnWidths,
+} from '@aggrid'; // 2026-05-29 numberValueFormatter 추가
 import { Gcol, Grow, Typo } from '@atoms';
 
 import { TabPager } from '@common/TabPager';
-import { AiIcon, NotificationIcon } from '@icons';
+import { AiIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-enterprise';
 import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
@@ -65,7 +71,8 @@ const DummyData2: DummyDataType2[] = [
     pseudoAccumAmount: '-',
     totalAmount: '30,000',
     limitAmount: '10,000',
-    guaranteeName: '암(유사암제외)진단비(암진단비)(갱신형)',
+    guaranteeName:
+      '암(유사암제외)진단비(암진단비)(갱신형) 암(유사암제외)진단비(암진단비)(갱신형) 암(유사암제외)진단비(암진단비)(갱신형)암(유사암제외)진단비(암진단비)(갱신형)',
     designAmount: '10,000',
     multiplier: '1.0',
     appliedAmount: '10,000',
@@ -99,6 +106,110 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 5,
+    accumName: '유사암진단비',
+    accumType: '전체',
+    pseudoAccumAmount: '2,300',
+    totalAmount: '4,300',
+    limitAmount: '3,000',
+    guaranteeName: '-4대유사암(기타피부암)',
+    designAmount: '800',
+    multiplier: '2.5',
+    appliedAmount: '2,000',
+    excessAmount: '0',
+  },
+  {
+    id: 6,
+    accumName: '유사암진단비',
+    accumType: '전체',
+    pseudoAccumAmount: '2,300',
+    totalAmount: '4,300',
+    limitAmount: '3,000',
+    guaranteeName: '-4대유사암(기타피부암)',
+    designAmount: '800',
+    multiplier: '2.5',
+    appliedAmount: '2,000',
+    excessAmount: '0',
+  },
+  {
+    id: 7,
+    accumName: '유사암진단비',
+    accumType: '전체',
+    pseudoAccumAmount: '2,300',
+    totalAmount: '4,300',
+    limitAmount: '3,000',
+    guaranteeName: '-4대유사암(기타피부암)',
+    designAmount: '800',
+    multiplier: '2.5',
+    appliedAmount: '2,000',
+    excessAmount: '0',
+  },
+  {
+    id: 8,
+    accumName: '유사암진단비',
+    accumType: '전체',
+    pseudoAccumAmount: '2,300',
+    totalAmount: '4,300',
+    limitAmount: '3,000',
+    guaranteeName: '-4대유사암(기타피부암)',
+    designAmount: '800',
+    multiplier: '2.5',
+    appliedAmount: '2,000',
+    excessAmount: '0',
+  },
+  {
+    id: 9,
+    accumName: '유사암진단비',
+    accumType: '전체',
+    pseudoAccumAmount: '2,300',
+    totalAmount: '4,300',
+    limitAmount: '3,000',
+    guaranteeName: '-4대유사암(기타피부암)',
+    designAmount: '800',
+    multiplier: '2.5',
+    appliedAmount: '2,000',
+    excessAmount: '0',
+  },
+  {
+    id: 10,
+    accumName: '유사암진단비',
+    accumType: '전체',
+    pseudoAccumAmount: '2,300',
+    totalAmount: '4,300',
+    limitAmount: '3,000',
+    guaranteeName: '-4대유사암(기타피부암)',
+    designAmount: '800',
+    multiplier: '2.5',
+    appliedAmount: '2,000',
+    excessAmount: '0',
+  },
+  {
+    id: 11,
+    accumName: '유사암진단비',
+    accumType: '전체',
+    pseudoAccumAmount: '2,300',
+    totalAmount: '4,300',
+    limitAmount: '3,000',
+    guaranteeName: '-4대유사암(기타피부암)',
+    designAmount: '800',
+    multiplier: '2.5',
+    appliedAmount: '2,000',
+    excessAmount: '0',
+  },
+  {
+    id: 12,
+    accumName: '유사암진단비',
+    accumType: '전체',
+    pseudoAccumAmount: '2,300',
+    totalAmount: '4,300',
+    limitAmount: '3,000',
+    guaranteeName: '-4대유사암(기타피부암)',
+    designAmount: '800',
+    multiplier: '2.5',
+    appliedAmount: '2,000',
+    excessAmount: '0',
+  },
+  {
+    id: 13,
     accumName: '유사암진단비',
     accumType: '전체',
     pseudoAccumAmount: '2,300',
@@ -172,35 +283,38 @@ const DummyData4: DummyDataType4[] = [
   },
 ];
 
-function formatAmountWithComma(value: unknown): string {
-  const normalized = String(value ?? '')
-    .replace(/,/g, '')
-    .trim();
-
-  if (normalized === '') {
-    return '';
-  }
-
-  const digitsOnly = normalized.replace(/[^0-9]/g, '');
-
-  if (digitsOnly === '') {
-    return '';
-  }
-
-  return Number(digitsOnly).toLocaleString('ko-KR');
-}
-
-function designAmountValueFormatter(params: ValueFormatterParams): string {
-  return formatAmountWithComma(params.value);
-}
-
-function designAmountValueParser(params: ValueParserParams): string {
-  return formatAmountWithComma(params.newValue);
-}
-
 const Ltpz00502 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [groupTabValue, setGroupTabValue] = React.useState<string>('tab1');
   const [accumOptionValue, setAccumOptionValue] = React.useState<string>('option1');
+
+  function formatAmountWithComma(value: unknown): string {
+    const normalized = String(value ?? '')
+      .replace(/,/g, '')
+      .trim();
+
+    if (normalized === '') {
+      return '';
+    }
+
+    const digitsOnly = normalized.replace(/[^0-9]/g, '');
+
+    if (digitsOnly === '') {
+      return '';
+    }
+
+    return Number(digitsOnly).toLocaleString('ko-KR');
+  }
+
+  function designAmountValueFormatter(params: ValueFormatterParams): string {
+    return formatAmountWithComma(params.value);
+  }
+
+  function designAmountValueParser(params: ValueParserParams): string {
+    return formatAmountWithComma(params.newValue);
+  }
+
+  const spanRowsByAccumName = React.useMemo(() => createSpanRowsByField<DummyDataType2, 'accumName'>('accumName'), []);
 
   // 누적 인수기준
   const columnDefs2: (ColDef<DummyDataType2> | ColGroupDef<DummyDataType2>)[] = [
@@ -208,7 +322,7 @@ const Ltpz00502 = () => {
     {
       headerName: '누적명',
       field: 'accumName',
-      flex: 1,
+      flex: 10,
       spanRows: true,
       autoHeight: true,
       cellClass: 'flex! !items-center !justify-start !whitespace-normal !leading-[1.4] !py-1',
@@ -217,15 +331,17 @@ const Ltpz00502 = () => {
     {
       headerName: '누적유형',
       field: 'accumType',
-      width: 60,
-      spanRows: true,
+      flex: 1,
+      minWidth: attributeColumnWidth(60),
+      spanRows: spanRowsByAccumName,
       cellClass: 'flex! items-center! justify-center!',
     },
     {
       headerName: '기누적금액',
       field: 'pseudoAccumAmount',
-      width: 70,
-      spanRows: true,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
+      spanRows: spanRowsByAccumName,
       cellClass: 'flex! items-center! justify-end!',
       valueFormatter: numberValueFormatter,
       cellRenderer: (params: { value: string | number }) => {
@@ -245,30 +361,33 @@ const Ltpz00502 = () => {
     {
       headerName: '합계',
       field: 'totalAmount',
-      width: 70,
-      spanRows: true,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
+      spanRows: spanRowsByAccumName,
       cellClass: 'flex! items-center! justify-end!',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '한도',
       field: 'limitAmount',
-      width: 70,
-      spanRows: true,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
+      spanRows: spanRowsByAccumName,
       cellClass: 'flex! items-center! justify-end!',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보명',
       field: 'guaranteeName',
-      flex: 2,
+      flex: 20,
       cellClass: 'flex! items-center! justify-start!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'guaranteeName' }),
     },
     {
       headerName: '설계금액',
       field: 'designAmount',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-right bg-[#EFF8FF] [&_input]:text-right',
       editable: true,
       valueFormatter: designAmountValueFormatter,
@@ -277,20 +396,23 @@ const Ltpz00502 = () => {
     {
       headerName: '배수',
       field: 'multiplier',
-      width: 40,
+      flex: 1,
+      minWidth: attributeColumnWidth(40),
       cellClass: 'text-center',
     },
     {
       headerName: '반영금액',
       field: 'appliedAmount',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '초과금액',
       field: 'excessAmount',
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       spanRows: true,
       cellClass: 'flex! items-center! justify-end! border-r-0',
       cellStyle: { borderRight: 'none' },
@@ -341,12 +463,11 @@ const Ltpz00502 = () => {
   return (
     // M2. 디자인 변경으로 수정
     <Gcol className="w-full" gap={2} placement="ss">
-      <Grow className="w-full bg-[#374151]" variant={'box-round'} placement="sc">
-        <NotificationIcon />
-        <Typo tag={'p'} variant={'body-md'} weight={'normal'} className="text-white">
+      <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+        <Typo variant={'body-sm'} icon={'info'}>
           청약완료불가(당사누적) 및 청약완료불가(업계누적)은 청약완료 전 까지만 해소하면 됩니다.
         </Typo>
-      </Grow>
+      </Gcol>
       <TabPager
         active={groupTabValue}
         data={groupTabs}
@@ -407,7 +528,7 @@ const Ltpz00502 = () => {
           <Typo tag={'strong'} variant={'body-lg'}>
             확인사항
           </Typo>
-          <Typo variant={'body-md'}>단위:원</Typo>
+          <Typo variant={'body-md'}>단위: 원</Typo>
         </Grow>
 
         <div className="ag-theme-alpine min-h-[12.3rem]">

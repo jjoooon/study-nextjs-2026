@@ -4,11 +4,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 import { Grow, Typo, Grid } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,11 +20,10 @@ import {
   DialogClose,
   DialogFooterArea,
 } from '@uiux/Dialog';
-
 import { Input } from '@uiux/Input';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -43,8 +42,8 @@ const dummyData: DummyDataType[] = [
     field01: '1',
     field02: '건물(실손)',
     field03: '1급',
-    field04: '9999999999999',
-    field05: '9999999999999',
+    field04: '10000000000',
+    field05: '10000000000',
   },
   {
     id: 2,
@@ -52,8 +51,8 @@ const dummyData: DummyDataType[] = [
     field01: '4',
     field02: '시설(실손)',
     field03: '1급',
-    field04: '9999999999999',
-    field05: '9999999999999',
+    field04: '10000000000',
+    field05: '10000000000',
   },
   {
     id: 3,
@@ -61,8 +60,8 @@ const dummyData: DummyDataType[] = [
     field01: '5',
     field02: '재고자산(실손)',
     field03: '1급',
-    field04: '9999999999999',
-    field05: '9999999999999',
+    field04: '10000000000',
+    field05: '10000000000',
   },
   {
     id: 4,
@@ -70,8 +69,8 @@ const dummyData: DummyDataType[] = [
     field01: '6',
     field02: '집기비품(실손)',
     field03: '1급',
-    field04: '9999999999999',
-    field05: '9999999999999',
+    field04: '10000000000',
+    field05: '10000000000',
   },
   {
     id: 5,
@@ -79,8 +78,8 @@ const dummyData: DummyDataType[] = [
     field01: '7',
     field02: 'TEXT',
     field03: '1급',
-    field04: '9999999999999',
-    field05: '9999999999999',
+    field04: '10000000000',
+    field05: '10000000000',
   },
   {
     id: 6,
@@ -88,38 +87,40 @@ const dummyData: DummyDataType[] = [
     field01: '8',
     field02: 'TEXT',
     field03: '1급',
-    field04: '9999999999999',
-    field05: '9999999999999',
+    field04: '10000000000',
+    field05: '10000000000',
   },
 ];
 
 const Ltpz060 = () => {
   const [rowData] = useState<DummyDataType[]>(dummyData);
-
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '부호',
       field: 'field01',
-      width: 50,
+      flex: 1,
+      minWidth: attributeColumnWidth(40),
       cellClass: 'text-center',
     },
     {
       headerName: '구분',
       field: 'field02',
       wrapText: true,
-      flex: 2.4,
+      flex: 20,
       cellClass: 'text-center h-full',
     },
     {
       field: 'field03',
       headerName: '급수',
-      width: 60,
+      width: attributeColumnWidth(50),
       cellClass: 'text-center h-full',
     },
     {
       headerName: '목적물가입금액',
       field: 'field04',
       flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right h-full',
       valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     },
@@ -127,6 +128,7 @@ const Ltpz060 = () => {
       headerName: '가입금액',
       field: 'field05',
       flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right h-full',
       valueFormatter: numberValueFormatter, // 천단위 콤마 표시
     },
@@ -147,21 +149,21 @@ const Ltpz060 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
-            <FormTable variant="none" cols={['w-1', 'w-auto', 'w-[16rem]', 'w-auto']}>
+            <FormTable variant="head" cols={['w-1', 'w-auto', 'w-[16rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'증권번호'}>
                   <Input aria-label="" value={'LA2602093135558'} readOnly variant="info" />
                   <Input aria-label="" value={'한화 더 건강한 한아름종합보험 2601'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'준공연도(사용승인연도)'}>
-                  <Input aria-label="" value={''} required />
+                  <Input aria-label="" width={84} value={'1999-12-12'} required />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
 
           <Grid placement={'ss'} className="w-full grid-rows-[1fr_auto] gap-3">
-            <div className="ag-theme-alpine min-h-[18.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
@@ -179,7 +181,7 @@ const Ltpz060 = () => {
                 }}
                 selectionColumnDef={{
                   headerName: '선택',
-                  width: 50,
+                  width: 30,
                 }}
                 domLayout="normal"
                 tooltipShowMode="whenTruncated"
@@ -189,14 +191,14 @@ const Ltpz060 = () => {
             <TableFold variant={'default'}>
               <TableFoldHead title="계약기본사항"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption={'계약기본사항'} cols={['w-[rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
+                <FormTable caption={'계약기본사항'} cols={['w-[6rem]', 'w-auto', 'w-[7rem]', 'w-[13rem]']}>
                   <FormRow>
                     <FormCell title={'담보명'}>
-                      <Input width={'full'} value={'풍수재손해(실손전부보상비)'} readOnly />
+                      <Input value={'풍수재손해(실손전부보상비)'} readOnly />
                     </FormCell>
                     <FormCell title={'가입금액'}>
                       <Grow placement="sc" gap={2}>
-                        <Input width={'full'} value={'0'} readOnly className="[&>input]:text-right" />
+                        <Input value={'0'} readOnly className="[&>input]:text-right" />
                         <Typo variant={'body-sm'} className="w-[3rem]">
                           만원
                         </Typo>

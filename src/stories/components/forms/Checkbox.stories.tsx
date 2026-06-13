@@ -1,10 +1,10 @@
 ﻿/*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
-import * as React from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+ */ import { Gcol, Grow, Typo } from '@atoms';
 import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import * as React from 'react';
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Components/Forms/Checkbox',
@@ -160,40 +160,54 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[9rem] tracking-normal">default</Typo>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">
+                    default
+                  </Typo>
                   <Grow className="w-[12rem]">
                     <Checkbox variant="default">default</Checkbox>
                   </Grow>
                 </Grow>
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[9rem] tracking-normal">favorite</Typo>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">
+                    favorite
+                  </Typo>
                   <Grow className="w-[12rem]">
                     <Checkbox variant="favorite" />
                   </Grow>
                 </Grow>
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[9rem] tracking-normal">noneText</Typo>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">
+                    noneText
+                  </Typo>
                   <Grow className="w-[12rem]">
                     <Checkbox variant="noneText">noneText</Checkbox>
                   </Grow>
                 </Grow>
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[9rem] tracking-normal">button</Typo>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">
+                    button
+                  </Typo>
                   <Grow className="w-[12rem]">
                     <Checkbox variant="button">button</Checkbox>
                   </Grow>
                 </Grow>
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[9rem] tracking-normal">text</Typo>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">
+                    text
+                  </Typo>
                   <Grow className="w-[12rem]">
                     <Checkbox variant="text">text</Checkbox>
                   </Grow>
                 </Grow>
 
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[9rem] tracking-normal">chipBox</Typo>
+                  <Typo tag="div" className="w-[9rem] tracking-normal">
+                    chipBox
+                  </Typo>
                   <Grow className="w-[12rem]">
-                    <Checkbox variant="chipBox">text<span>text</span></Checkbox>
+                    <Checkbox variant="chipBox">
+                      text<span>text</span>
+                    </Checkbox>
                   </Grow>
                 </Grow>
               </Gcol>
@@ -230,58 +244,122 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
             <Unstyled>
               <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[15rem] tracking-normal">unchecked</Typo>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">
+                    unchecked
+                  </Typo>
                   <Checkbox variant="default">default</Checkbox>
                   <Checkbox variant="favorite" />
                   <Checkbox variant="noneText">noneText</Checkbox>
                   <Checkbox variant="button">button</Checkbox>
                   <Checkbox variant="text">text</Checkbox>
-                  <Checkbox variant="chipBox">text<span>text</span></Checkbox>
+                  <Checkbox variant="chipBox">
+                    text<span>text</span>
+                  </Checkbox>
                 </Grow>
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[15rem] tracking-normal">hover</Typo>
-                  <Checkbox variant="default" className="border-[var(--color-border-primary)]">default</Checkbox>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">
+                    hover
+                  </Typo>
+                  <Checkbox variant="default" className="border-[var(--color-border-primary)]">
+                    default
+                  </Checkbox>
                   <Checkbox variant="favorite" className="border-[var(--color-border-primary)]" />
-                  <Checkbox variant="noneText" className="border-[var(--color-border-primary)]">noneText</Checkbox>
-                  <Checkbox variant="button" className="border-[var(--color-border-primary)]">button</Checkbox>
-                  <Checkbox variant="text" className="underline underline-offset-4 font-bold!">text</Checkbox>
-                  <Checkbox variant="chipBox" className="border-[var(--color-border-primary)]">text<span>text</span></Checkbox>
+                  <Checkbox variant="noneText" className="border-[var(--color-border-primary)]">
+                    noneText
+                  </Checkbox>
+                  <Checkbox variant="button" className="border-[var(--color-border-primary)]">
+                    button
+                  </Checkbox>
+                  <Checkbox variant="text" className="underline underline-offset-4 font-bold!">
+                    text
+                  </Checkbox>
+                  <Checkbox variant="chipBox" className="border-[var(--color-border-primary)]">
+                    text<span>text</span>
+                  </Checkbox>
                 </Grow>
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[15rem] tracking-normal">checked</Typo>
-                  <Checkbox checked variant="default">default</Checkbox>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">
+                    checked
+                  </Typo>
+                  <Checkbox checked variant="default">
+                    default
+                  </Checkbox>
                   <Checkbox checked variant="favorite" />
-                  <Checkbox checked variant="noneText">noneText</Checkbox>
-                  <Checkbox checked variant="button">button</Checkbox>
-                  <Checkbox checked variant="text">text</Checkbox>
-                  <Checkbox checked variant="chipBox">text<span>text</span></Checkbox>
+                  <Checkbox checked variant="noneText">
+                    noneText
+                  </Checkbox>
+                  <Checkbox checked variant="button">
+                    button
+                  </Checkbox>
+                  <Checkbox checked variant="text">
+                    text
+                  </Checkbox>
+                  <Checkbox checked variant="chipBox">
+                    text<span>text</span>
+                  </Checkbox>
                 </Grow>
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[15rem] tracking-normal">disabled</Typo>
-                  <Checkbox disabled variant="default">default</Checkbox>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">
+                    disabled
+                  </Typo>
+                  <Checkbox disabled variant="default">
+                    default
+                  </Checkbox>
                   <Checkbox disabled variant="favorite" />
-                  <Checkbox disabled variant="noneText">noneText</Checkbox>
-                  <Checkbox disabled variant="button">button</Checkbox>
-                  <Checkbox disabled variant="text">text</Checkbox>
-                  <Checkbox disabled variant="chipBox">text<span>text</span></Checkbox>
+                  <Checkbox disabled variant="noneText">
+                    noneText
+                  </Checkbox>
+                  <Checkbox disabled variant="button">
+                    button
+                  </Checkbox>
+                  <Checkbox disabled variant="text">
+                    text
+                  </Checkbox>
+                  <Checkbox disabled variant="chipBox">
+                    text<span>text</span>
+                  </Checkbox>
                 </Grow>
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[15rem] tracking-normal">checked+disabled</Typo>
-                  <Checkbox checked disabled variant="default">default</Checkbox>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">
+                    checked+disabled
+                  </Typo>
+                  <Checkbox checked disabled variant="default">
+                    default
+                  </Checkbox>
                   <Checkbox checked disabled variant="favorite" />
-                  <Checkbox checked disabled variant="noneText">noneText</Checkbox>
-                  <Checkbox checked disabled variant="button">button</Checkbox>
-                  <Checkbox checked disabled variant="text">text</Checkbox>
-                  <Checkbox checked disabled variant="chipBox">text<span>text</span></Checkbox>
+                  <Checkbox checked disabled variant="noneText">
+                    noneText
+                  </Checkbox>
+                  <Checkbox checked disabled variant="button">
+                    button
+                  </Checkbox>
+                  <Checkbox checked disabled variant="text">
+                    text
+                  </Checkbox>
+                  <Checkbox checked disabled variant="chipBox">
+                    text<span>text</span>
+                  </Checkbox>
                 </Grow>
                 <Grow gap={8}>
-                  <Typo tag="div" className="w-[15rem] tracking-normal">required</Typo>
-                  <Checkbox required variant="default">default</Checkbox>
+                  <Typo tag="div" className="w-[15rem] tracking-normal">
+                    required
+                  </Typo>
+                  <Checkbox required variant="default">
+                    default
+                  </Checkbox>
                   <Checkbox required variant="favorite" />
-                  <Checkbox required variant="noneText">noneText</Checkbox>
-                  <Checkbox required variant="button">button</Checkbox>
-                  <Checkbox required variant="text">text</Checkbox>
-                  <Checkbox required variant="chipBox">text<span>text</span></Checkbox>
+                  <Checkbox required variant="noneText">
+                    noneText
+                  </Checkbox>
+                  <Checkbox required variant="button">
+                    button
+                  </Checkbox>
+                  <Checkbox required variant="text">
+                    text
+                  </Checkbox>
+                  <Checkbox required variant="chipBox">
+                    text<span>text</span>
+                  </Checkbox>
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -289,16 +367,28 @@ const [checked, setChecked] = useState<boolean | 'indeterminate'>(false);
             <h2>Error</h2>
             <p>Checkbox 컴포넌트에서 사용할 수 있는 에러 메시지 위치 옵션은 다음과 같습니다.</p>
             <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16" >
+              <Gcol gap={4} variant="box-line" className="p-16">
                 <Grow className="gap-[8rem]">
-                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="tl">default</Checkbox>
-                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="tc">default</Checkbox>
-                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="tr">default</Checkbox>
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="tl">
+                    default
+                  </Checkbox>
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="tc">
+                    default
+                  </Checkbox>
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="tr">
+                    default
+                  </Checkbox>
                 </Grow>
                 <Grow className="gap-[8rem]">
-                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="bl">default</Checkbox>
-                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="bc">default</Checkbox>
-                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="br">default</Checkbox>
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="bl">
+                    default
+                  </Checkbox>
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="bc">
+                    default
+                  </Checkbox>
+                  <Checkbox error errorMsg="입력은 필수입니다." errorPs="br">
+                    default
+                  </Checkbox>
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -411,35 +501,73 @@ export const Default: Story = {
       <>
         <Gcol gap={8}>
           <Checkbox {...restArgs} checked={checked} onCheckedChange={handleCheckedChange}>
-            {args.variant === 'chipBox' ? <>단일<span>체크</span></> : '단일'}
+            {args.variant === 'chipBox' ? (
+              <>
+                단일<span>체크</span>
+              </>
+            ) : (
+              '단일'
+            )}
           </Checkbox>
 
           <Grow gap={2}>
-            <Typo tag={'div'} className="w-[8rem]">그룹체크</Typo>
+            <Typo tag={'div'} className="w-[8rem]">
+              그룹체크
+            </Typo>
             <CheckboxGroup
               value={values}
               onValueChange={handleGroupChange}
-
               variant={args.variant}
               size={groupSize}
               color={args.color}
               disabled={args.disabled}
-
               minSelected={minSelected}
               required={args.required}
-
               error={args.error}
               errorPs={args.errorPs}
               errorMsg={`${minSelected}개 이상 선택해 주세요.`}
-
               className="gap-3"
             >
               <CheckboxGroupItem value="all" selectAll>
-                {args.variant === 'chipBox' ? <><strong>전체</strong><span>선택</span></> : '전체'}
+                {args.variant === 'chipBox' ? (
+                  <>
+                    <strong>전체</strong>
+                    <span>선택</span>
+                  </>
+                ) : (
+                  '전체'
+                )}
               </CheckboxGroupItem>
-              <CheckboxGroupItem value="a">{args.variant === 'chipBox' ? <><strong>옵션</strong><span>A</span></> : '옵션 A'}</CheckboxGroupItem>
-              <CheckboxGroupItem value="b">{args.variant === 'chipBox' ? <><strong>옵션</strong><span>B</span></> : '옵션 B'}</CheckboxGroupItem>
-              <CheckboxGroupItem value="c">{args.variant === 'chipBox' ? <><strong>옵션</strong><span>C</span></> : '옵션 C'}</CheckboxGroupItem>
+              <CheckboxGroupItem value="a">
+                {args.variant === 'chipBox' ? (
+                  <>
+                    <strong>옵션</strong>
+                    <span>A</span>
+                  </>
+                ) : (
+                  '옵션 A'
+                )}
+              </CheckboxGroupItem>
+              <CheckboxGroupItem value="b">
+                {args.variant === 'chipBox' ? (
+                  <>
+                    <strong>옵션</strong>
+                    <span>B</span>
+                  </>
+                ) : (
+                  '옵션 B'
+                )}
+              </CheckboxGroupItem>
+              <CheckboxGroupItem value="c">
+                {args.variant === 'chipBox' ? (
+                  <>
+                    <strong>옵션</strong>
+                    <span>C</span>
+                  </>
+                ) : (
+                  '옵션 C'
+                )}
+              </CheckboxGroupItem>
             </CheckboxGroup>
           </Grow>
         </Gcol>

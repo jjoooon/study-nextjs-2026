@@ -4,13 +4,13 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grow, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,10 +24,10 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -67,6 +67,7 @@ const Ltpz053 = () => {
       field: 'field01',
       cellClass: 'text-center !px-0',
       autoHeight: true,
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
       headerName: '실명증표진위여부 확인서',
@@ -125,7 +126,7 @@ const Ltpz053 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="ag-theme-alpine min-h-[12.4rem]">
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
@@ -154,6 +155,8 @@ const Ltpz053 = () => {
                   }
                 });
               }}
+              tooltipShowMode="whenTruncated"
+              tooltipShowDelay={0}
             />
           </div>
           <TableFold variant="accordion">
@@ -190,7 +193,7 @@ const Ltpz053 = () => {
                       <Input aria-label="" value={'김환화환하'} required />
                     </FormCell>
                     <FormCell title={'주민등록번호'}>
-                      <Input aria-label="" value={'123456-1234567'} required />
+                      <Input aria-label="" value={'000000-0******'} required />
                     </FormCell>
                     <FormCell title={'발급일자'}>
                       <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />

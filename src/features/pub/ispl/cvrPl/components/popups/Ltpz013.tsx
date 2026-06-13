@@ -4,10 +4,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CalendarIcon2, CheckboxIcon, CircleCheckIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -22,9 +24,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 type OptionType = { 옵션1: string } | { 옵션2: string } | { 옵션3: string[] } | { 옵션4: string };
 
@@ -85,7 +85,7 @@ const DummyData: DummyDataType[] = [
     id: 1,
     field1: '보통약관(상해80%이상후유장해)',
     field2: 13000,
-    field3: 3000,
+    field3: 3000000,
   },
   { id: 2, field1: '보험료납입면제대상보장(5대유사)', field2: 10, field3: 10 },
   { id: 3, field1: '상해사망(간편)', field2: 15000, field3: 15000 },
@@ -178,45 +178,51 @@ const Ltpz013 = () => {
       minWidth: 0,
     };
   }
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '담보명',
-      field: 'field1',
-      flex: 1,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
-      colSpan: (params) => {
-        // 합계 행이면 이름+서브레이블 합치기
-        if (params.data?.id === 0) return 2;
-        return 1;
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '담보명',
+        field: 'field1',
+        flex: 3,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
+        colSpan: (params) => {
+          // 합계 행이면 이름+서브레이블 합치기
+          if (params.data?.id === 0) return 2;
+          return 1;
+        },
       },
-    },
-    {
-      headerName: '가입금액(만원)',
-      field: 'field2',
-      width: 80,
-      valueFormatter: numberValueFormatter,
-      colSpan: (params) => {
-        // 합계 행이면 숨김
-        if (params.data?.id === 0) return 0;
-        return 1;
+      {
+        headerName: '가입금액(만원)',
+        field: 'field2',
+        flex: 3,
+        minwidth: attributeColumnWidth(100),
+        valueFormatter: numberValueFormatter,
+        colSpan: (params) => {
+          // 합계 행이면 숨김
+          if (params.data?.id === 0) return 0;
+          return 1;
+        },
+        cellClass: (params) => {
+          if (params.data?.id === 0) return 'hidden';
+          return 'text-right';
+        },
       },
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'hidden';
-        return 'text-right';
+      {
+        headerName: '보험료(원)',
+        field: 'field3',
+        flex: 2,
+        minwidth: attributeColumnWidth(65),
+        valueFormatter: numberValueFormatter,
+        cellClass: (params) => {
+          if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
+          return 'text-right';
+        },
+        editable: false,
       },
-    },
-    {
-      headerName: '보험료(원)',
-      field: 'field3',
-      width: 65,
-      valueFormatter: numberValueFormatter,
-      cellClass: (params) => {
-        if (params.data?.id === 0) return 'text-right font-bold bg-gray-100';
-        return 'text-right';
-      },
-      editable: false,
-    },
-  ];
+    ],
+    [attributeColumnWidth]
+  );
 
   return (
     <Dialog open>

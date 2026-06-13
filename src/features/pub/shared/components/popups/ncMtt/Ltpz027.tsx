@@ -4,9 +4,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,11 +20,9 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { TableCell } from '@uiux/Table';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { TableCell } from '@uiux/Table';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 // Grid2 dummy data
 type DummyDataType = {
@@ -58,69 +58,97 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+type DummyData2Type = {
+  id: number;
+  field01: string | number;
+  field02: string | number;
+  field03: string | number;
+  field04: string | number;
+};
+const DummyData2: DummyData2Type[] = [
+  {
+    id: 1,
+    field01: '김한화',
+    field02: '1990-01-01',
+    field03: '010-0000-0000',
+    field04: '진행중',
+  },
+];
+
 const Ltpz027 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '대상',
-      width: 70,
-      field: 'field01',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-      spanRows: true,
-    },
-    {
-      headerName: '차수',
-      width: 70,
-      field: 'field02',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-    },
-    {
-      headerName: '의뢰일시',
-      width: 130,
-      field: 'field03',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-    },
-    {
-      headerName: '완료(취소)일시',
-      width: 130,
-      field: 'field04',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-    },
-    {
-      headerName: '진행상태',
-      width: 90,
-      field: 'field05',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-    },
-    {
-      headerName: '답변내용',
-      flex: 1,
-      field: 'field06',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-      cellRenderer: () => ( // 2026-06-02 버튼 추가
-        <Button variant={'outlined'} size={'md'} color={'gray'}>
-          보기
-        </Button>
-      ),
-    },
-    {
-      headerName: '확인필요',
-      flex: 1,
-      field: 'field07',
-      cellClass: 'text-center px-0!',
-      autoHeight: true,
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '대상',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        field: 'field01',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+        spanRows: true,
+      },
+      {
+        headerName: '차수',
+        flex: 1,
+        minWidth: attributeColumnWidth(40),
+        field: 'field02',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '의뢰일시',
+        flex: 2,
+        minWidth: attributeColumnWidth(120),
+        field: 'field03',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '완료(취소)일시',
+        flex: 2,
+        minWidth: attributeColumnWidth(120),
+        field: 'field04',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '진행상태',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        field: 'field05',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '답변내용',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        field: 'field06',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+        cellRenderer: () => (
+          // 2026-06-02 버튼 추가
+          <Button variant={'outlined'} size={'md'} color={'gray'}>
+            보기
+          </Button>
+        ),
+      },
+      {
+        headerName: '확인필요',
+        flex: 10,
+        field: 'field07',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+    ],
+    [attributeColumnWidth]
+  );
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg" className="">
+      <DialogContent showCloseButton resizable={true} size="ml" className="">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -150,7 +178,7 @@ const Ltpz027 = () => {
                 <TableRow className="text-center">
                   <TableCell>김한화</TableCell>
                   <TableCell>1990-01-01</TableCell>
-                  <TableCell>010-1234-5678</TableCell>
+                  <TableCell>010-0000-0000</TableCell>
                   <TableCell>
                     <Button aria-label="발송" variant={'contained'} size={'md'} color={'primary'}>
                       발송
@@ -170,7 +198,7 @@ const Ltpz027 = () => {
             <Typo variant="heading-sm" color="default">
               진행이력
             </Typo>
-            <div className="ag-theme-alpine min-h-[15.3rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
@@ -197,7 +225,9 @@ const Ltpz027 = () => {
               <Typo variant={'body-md'} icon={'info'}>
                 <b>필수 확인 사항</b>
               </Typo>
-              <Typo variant="body-sm" color={'gray'} className='break-all tracking-normal'>https://mscfadev.hwgeneralins.com:3443/pages/mcsfaLaucher?token=%2B9KJdLIxDfn046Jv9BUJN2fPeYtkm8Zg5bBmUSFvB1uGethPAvVXaSLISXHk55VwmijfXVLT20DTWz0%2Ba9F98dLCdZvseSH80HsvmiNt0Z38659LhINnYtXU8dzykyi</Typo>
+              <Typo variant="body-sm" color={'gray'} className="break-all tracking-normal">
+                https://mscfadev.hwgeneralins.com:3443/pages/mcsfaLaucher?token=%2B9KJdLIxDfn046Jv9BUJN2fPeYtkm8Zg5bBmUSFvB1uGethPAvVXaSLISXHk55VwmijfXVLT20DTWz0%2Ba9F98dLCdZvseSH80HsvmiNt0Z38659LhINnYtXU8dzykyi
+              </Typo>
             </Gcol>
           </Grid>
         </DialogSection>

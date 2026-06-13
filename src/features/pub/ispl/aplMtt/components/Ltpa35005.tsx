@@ -3,23 +3,22 @@
  */
 'use client';
 
+import React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
-import { TooltipQ } from '@common/TooltipQ';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { SearchIcon } from '@icons';
-import { LayoutMain, LayoutScrollWrap, LayoutMainFoot, LayoutMainBody, LayoutScrollItem } from '@layout/BaseLayout';
-import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
-
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroupItem, CheckboxGroup } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+import { TooltipQ } from '@common/TooltipQ';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { LayoutMain, LayoutScrollWrap, LayoutMainFoot, LayoutMainBody, LayoutScrollItem } from '@layout/BaseLayout';
+import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 
 interface TabDataType {
   id: string | number;
@@ -230,9 +229,9 @@ export const Ltpa35005 = () => {
   }));
   const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
 
-  // M5. useState 추가
   const [firstPay, setFirstPay] = React.useState<string>('선택');
   const [morePay, setMorePay] = React.useState<string>('선택');
+  const isSimilarContractCheckRequired = true; //4-1 특정조건인 경우 문구 노출
 
   return (
     <LayoutTemplateLTPA350MainBody
@@ -256,7 +255,7 @@ export const Ltpa35005 = () => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
-                        <Input aria-label="만기수익자 주민등록번호" width={114} value={'900101-1234567'} readOnly />
+                        <Input aria-label="만기수익자 주민등록번호" width={114} value={'000000-0******'} readOnly />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
@@ -363,7 +362,6 @@ export const Ltpa35005 = () => {
                         <Grow className="w-full" placement="ss">
                           <RadioGroup defaultValue="아니요" className="w-full" width={'full'}>
                             <Gcol placement="se" className="w-full">
-                              {/* M1. 정렬관련 수정 */}
                               <Grow className="w-full flex-wrap" placement="sc">
                                 <RadioGroupItem value="예">예</RadioGroupItem>
                                 <Grow className="whitespace-nowrap">
@@ -379,7 +377,11 @@ export const Ltpa35005 = () => {
                               </Grow>
                               {/* //M1. 정렬관련 수정 */}
                               <Grow placement="bwc" className="w-full">
-                                <RadioGroupItem value="아니요">아니요</RadioGroupItem>
+                                <RadioGroupItem value="아니요">
+                                  아니요
+                                  {isSimilarContractCheckRequired && '(타사 정상 유사계약현황 확인 필수)'}
+                                </RadioGroupItem>
+
                                 <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                                   유사계약현황
                                 </Button>
@@ -804,7 +806,7 @@ export const Ltpa35005 = () => {
                           {firstPay === '즉시이체' && (
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -813,13 +815,13 @@ export const Ltpa35005 = () => {
                           {firstPay === '현금' && (
                             <FormCell title="계약자">
                               <Input aria-label="계약자명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                             </FormCell>
                           )}
                           {firstPay === '카드납입' && (
                             <FormCell title="카드주">
                               <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -828,7 +830,7 @@ export const Ltpa35005 = () => {
                           {firstPay === '예약이체' && (
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -838,7 +840,7 @@ export const Ltpa35005 = () => {
                           {morePay === '자동이체' && (
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -847,7 +849,7 @@ export const Ltpa35005 = () => {
                           {morePay === '급여이체' && (
                             <FormCell title="직원명">
                               <Input aria-label="직원명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -856,7 +858,7 @@ export const Ltpa35005 = () => {
                           {morePay === '카드이체' && (
                             <FormCell title="카드주">
                               <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={900101} readOnly />
+                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -1063,7 +1065,7 @@ export const Ltpa35005 = () => {
                         </FormCell>
                         <FormCell title="사망외수익자">
                           <Input aria-label="사망외수익자명" width={84} value={'김한화'} readOnly />
-                          <Input aria-label="사망외수익자 주민등록번호" width={114} value={'900101-1234567'} readOnly />
+                          <Input aria-label="사망외수익자 주민등록번호" width={114} value={'000000-0000000'} readOnly />
                           <Button
                             aria-label="사망외수익자 검색"
                             variant={'outlined'}

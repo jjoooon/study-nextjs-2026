@@ -25,11 +25,10 @@ import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
 import * as React from 'react';
+import { useMemo } from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -262,8 +261,7 @@ export default function Ltpa600Section() {
       {
         headerName: '순서',
         field: 'field1',
-        flex: 0.5,
-        minWidth: attributeColumnWidth[5],
+        width: attributeColumnWidth(40),
         cellClass: 'text-center',
         autoHeight: true,
       },
@@ -271,7 +269,7 @@ export default function Ltpa600Section() {
         headerName: '담보그룹',
         field: 'field2',
         flex: 1,
-        minWidth: attributeColumnWidth[8],
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
         autoHeight: true,
       },
@@ -279,7 +277,7 @@ export default function Ltpa600Section() {
         headerName: '구분',
         field: 'field3',
         flex: 5,
-        minWidth: attributeColumnWidth[20],
+        minWidth: attributeColumnWidth(100),
         cellClass: 'text-center !p-0',
         autoHeight: true,
         sortable: false,
@@ -312,8 +310,7 @@ export default function Ltpa600Section() {
       {
         headerName: '담보',
         field: 'field4',
-        flex: 0.5,
-        minWidth: attributeColumnWidth[5],
+        width: attributeColumnWidth(40),
         cellClass: 'text-center',
         autoHeight: true,
       },
@@ -323,6 +320,7 @@ export default function Ltpa600Section() {
 
   // 시뮬레이션 -------------
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
+  const gridRef = React.useRef<any>(null);
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
     useAgGridInfiniteAppend({
@@ -343,7 +341,6 @@ export default function Ltpa600Section() {
 
   const getExpiryRenderer = createExpiryCellRenderer<DummyData2Type>;
   // 2026-06-01 flex 수정
-  // 2026-06-04 flex, minWidth 수정
   const columnDefs2: (ColDef<DummyData2Type> | ColGroupDef<DummyData2Type>)[] = useMemo(
     () => [
       {
@@ -353,7 +350,7 @@ export default function Ltpa600Section() {
             headerName: '현재',
             field: 'field1',
             flex: 1,
-            minWidth: attributeColumnWidth[8],
+            minWidth: attributeColumnWidth(80),
             cellClass: 'text-center',
             autoHeight: true,
           },
@@ -361,7 +358,7 @@ export default function Ltpa600Section() {
             headerName: '변경 후',
             field: 'field2',
             flex: 1,
-            minWidth: attributeColumnWidth[8],
+            minWidth: attributeColumnWidth(80),
             cellClass: 'text-center',
             autoHeight: true,
           },
@@ -371,7 +368,7 @@ export default function Ltpa600Section() {
         headerName: '담보코드',
         field: 'field3',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
         autoHeight: true,
       },
@@ -379,7 +376,7 @@ export default function Ltpa600Section() {
         headerName: '담보명',
         field: 'field4',
         flex: 5,
-        minWidth: attributeColumnWidth[20],
+        minWidth: attributeColumnWidth(200),
         autoHeight: true,
         tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field4' }),
       },
@@ -387,7 +384,7 @@ export default function Ltpa600Section() {
         headerName: '예외',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth[10],
+        minWidth: attributeColumnWidth(80),
         editable: true,
         cellClass: 'text-center editable-cell',
         cellEditor: 'agSelectCellEditor',
@@ -405,12 +402,12 @@ export default function Ltpa600Section() {
             '미분류',
           ],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('center'),
       },
       {
         headerName: '중복',
         field: 'rowCopy',
-        width: 50,
+        width: attributeColumnWidth(40),
         sortable: false,
         cellRenderer: duplicateButtonRenderer,
       },
@@ -523,6 +520,7 @@ export default function Ltpa600Section() {
 
                 <div className="ag-theme-alpine radio-selection">
                   <AgGridReact<DummyData2Type>
+                    ref={gridRef}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData2.slice(0, loadedCount)}
@@ -556,6 +554,7 @@ export default function Ltpa600Section() {
                 </div>
               </Grid>
               <TableMore
+                gridRef={gridRef}
                 isAll={true}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

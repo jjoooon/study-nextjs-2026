@@ -3,10 +3,12 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InputCombo } from '@common/InputCombo';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Grow, Typo } from '@/shared/components/atoms';
+import { ResetIcon } from '@/shared/components/icons/CommonIcons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,12 +20,9 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React, { useCallback, useState } from 'react';
-
-import { Grow, Typo } from '@/shared/components/atoms';
-import { ResetIcon } from '@/shared/components/icons/CommonIcons';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { InputCombo } from '@common/InputCombo';
 
 import '@/shared/lib/agGridPub';
 
@@ -101,28 +100,33 @@ const Ltpz034 = () => {
     return rowData.filter((row) => String(row.field02).includes(keyword));
   }, [keyword, rowData]);
 
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: 'KCD코드',
-      field: 'field01',
-      width: 120,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '질병명',
-      field: 'field02',
-      flex: 1,
-      cellClass: 'text-left',
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
-      cellRenderer: (params: { value: string | number }) => (
-        <span className="[&>span]:text-[#FF5C2E]">{renderHighlightedText(String(params.value ?? ''), keyword)}</span>
-      ),
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
+    () => [
+      {
+        headerName: 'KCD코드',
+        field: 'field01',
+        width: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '질병명',
+        field: 'field02',
+        flex: 1,
+        cellClass: 'text-left',
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
+        cellRenderer: (params: { value: string | number }) => (
+          <span className="[&>span]:text-[#FF5C2E]">{renderHighlightedText(String(params.value ?? ''), keyword)}</span>
+        ),
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable size="md">
+      <DialogContent showCloseButton resizable size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">

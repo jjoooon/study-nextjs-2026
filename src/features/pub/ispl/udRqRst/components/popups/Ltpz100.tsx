@@ -3,11 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter } from '@aggrid';
-import { createTooltipValueGetter } from '@aggrid';
-import { Grow, Typo, Grid } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Grid, Grow, Typo } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
@@ -21,9 +21,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -47,8 +46,8 @@ type DummyDataType3 = {
 const DummyData1: DummyDataType1[] = [
   {
     id: 1,
-    field01: '보험료납입면제대상보장(8대사유Ⅱ)',
-    field02: '10000',
+    field01: '보험료납입면제대상보장(8대사유Ⅱ) 보험료납입면제대상보장(8대사유Ⅱ)',
+    field02: '100000000',
   },
   {
     id: 2,
@@ -129,27 +128,19 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 2,
-    field01: '보장 보험료50% 납입지원Ⅱ(4대유사암)',
+    field01: '보장 보험료50% 납입지원Ⅱ(4대유사암) 보장 보험료50% 납입지원Ⅱ(4대유사암)',
   },
   {
     id: 3,
     field01: '상해사망(체증형)',
-  },
-  {
-    id: 4,
-    field01: '상해사망추가',
-  },
-  {
-    id: 5,
-    field01: '보장보험료50%납입지원Ⅱ(4대유사암)',
   },
 ];
 
 const DummyData3: DummyDataType3[] = [
   {
     id: 1,
-    field01: '보험료납입면제대상보장(8대사유Ⅱ)',
-    field02: '5년 0개월',
+    field01: '보험료납입면제대상보장(8대사유Ⅱ) 보험료납입면제대상보장(8대사유Ⅱ)',
+    field02: '05년 00개월',
   },
   {
     id: 2,
@@ -187,20 +178,22 @@ const Ltpz100 = () => {
   const [rowData1] = React.useState<DummyDataType1[]>(DummyData1);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
   const [rowData3] = React.useState<DummyDataType3[]>(DummyData3);
+  const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // AgGrid Column
   const columnDefs1: ColDef<DummyDataType1>[] = [
     {
       headerName: '제한 담보명',
       field: 'field01',
-      flex: 1,
+      flex: 10,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType1>({ field: 'field01' }),
     },
     {
       headerName: '가입금액(원)',
       field: 'field02',
-      width: 90,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter,
     },
@@ -220,14 +213,16 @@ const Ltpz100 = () => {
     {
       headerName: '부담보부위명',
       field: 'field01',
-      flex: 1,
+      flex: 10,
+      minWidth: attributeColumnWidth(220),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field01' }),
     },
     {
       headerName: '기간',
       field: 'field02',
-      width: 90,
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       valueFormatter: numberValueFormatter,
     },
@@ -256,7 +251,7 @@ const Ltpz100 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid gap={3} className="w-full grid-cols-[1fr_1fr_1fr] min-h-[20.9rem]">
+          <Grid gap={3} className="w-full grid-cols-[1fr_1fr_1fr]">
             <Grid className="grid-rows-[auto_1fr]">
               <Grow placement="sc">
                 <Typo tag={'strong'} variant={'heading-md'}>
@@ -266,7 +261,7 @@ const Ltpz100 = () => {
                   {rowData1.length}개
                 </Badge>
               </Grow>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
                 <AgGridReact<DummyDataType1>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -291,7 +286,7 @@ const Ltpz100 = () => {
                   {rowData2.length}개
                 </Badge>
               </Grow>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                 <AgGridReact<DummyDataType2>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -302,6 +297,8 @@ const Ltpz100 = () => {
                     resizable: true,
                   }}
                   domLayout={'normal'}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
             </Grid>
@@ -314,7 +311,7 @@ const Ltpz100 = () => {
                   {rowData3.length}개
                 </Badge>
               </Grow>
-              <div className="w-full ag-theme-alpine">
+              <div className="w-full ag-theme-alpine inner-scroll" data-row={rowData3.length}>
                 <AgGridReact<DummyDataType3>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -325,6 +322,8 @@ const Ltpz100 = () => {
                     resizable: true,
                   }}
                   domLayout={'normal'}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
             </Grid>

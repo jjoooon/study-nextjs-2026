@@ -2,11 +2,12 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { AgGridEmptyComponent } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { SearchIcon } from '@icons';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,9 +19,8 @@ import {
   DialogTitle,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import '@/shared/lib/agGridPub';
 
@@ -32,51 +32,56 @@ type DummyDataType = {
   field3: string | number;
 };
 const DummyData: DummyDataType[] = [
-  { id: 1, isChecked: true, field1: '취급자', field2: '안손보', field3: '010-1234-5678' },
+  { id: 1, isChecked: true, field1: '취급자', field2: '안손보', field3: '010-0000-0000' },
   { id: 2, isChecked: false, field1: '계약자', field2: '', field3: '' },
 ];
 
 const Ltpz351 = () => {
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '구분',
-      field: 'field1',
-      width: 70,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '성명',
-      field: 'field2',
-      flex: 1,
-      cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
-      editable: (params) => params.data?.field1 === '계약자',
-      cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
-        <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-          <Typo>{_params.value}</Typo>
-          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grid>
-      ),
-    },
-    {
-      headerName: '휴대폰',
-      field: 'field3',
-      flex: 1,
-      cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
-      editable: (params) => params.data?.field1 === '계약자',
-      cellEditor: 'agTextCellEditor',
-      cellEditorParams: {
-        maxLength: 13,
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '구분',
+        field: 'field1',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        cellClass: 'text-center',
       },
-    },
-  ];
+      {
+        headerName: '성명',
+        field: 'field2',
+        flex: 1,
+        cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
+        editable: (params) => params.data?.field1 === '계약자',
+        cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
+          <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
+            <Typo>{_params.value}</Typo>
+            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </Grid>
+        ),
+      },
+      {
+        headerName: '휴대폰',
+        field: 'field3',
+        flex: 1,
+        cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
+        editable: (params) => params.data?.field1 === '계약자',
+        cellEditor: 'agTextCellEditor',
+        cellEditorParams: {
+          maxLength: 13,
+        },
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={true} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -90,7 +95,7 @@ const Ltpz351 = () => {
 
         <DialogSection>
           <Gcol className="w-full" placement="ss" gap={2}>
-            <div className="ag-theme-alpine radio-selection min-h-[9.4rem]">
+            <div className="ag-theme-alpine radio-selection inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}

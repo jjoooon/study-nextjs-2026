@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useAgGridInfiniteAppend, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Grow, Grid, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -20,8 +20,8 @@ import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useMemo } from 'react';
 import * as React from 'react';
+import { useMemo } from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -42,7 +42,7 @@ const DummyData1: DummyData1Type[] = [
     packageName: '간병인 사용',
     field1: 'CLA23114',
     field2: '나눔의 행복(상해사망)',
-    field7: '',
+    field7: '종명',
     field3: 50000,
     field4: 1,
     field5: 1,
@@ -105,10 +105,11 @@ const DummyData1: DummyData1Type[] = [
   },
 ];
 
-export default function Ltpa660Section() {
+export default function Ltpa670Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
   const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
+  const gridRef = React.useRef<any>(null);
 
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
@@ -124,7 +125,7 @@ export default function Ltpa660Section() {
         headerName: '상품코드',
         field: 'field1',
         flex: 1,
-        minWidth: attributeColumnWidth[10],
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
         autoHeight: true,
         cellRenderer: (params: ICellRendererParams<DummyData1Type>) =>
@@ -140,20 +141,21 @@ export default function Ltpa660Section() {
         headerName: '상품명',
         field: 'field2',
         flex: 6,
-        minWidth: attributeColumnWidth[30],
+        minWidth: attributeColumnWidth(300),
       },
       {
         headerName: '종명',
         field: 'field7',
         cellClass: 'text-center',
         flex: 2,
-        minWidth: attributeColumnWidth[20],
+        minWidth: attributeColumnWidth(200),
+        tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field7' }),
       },
       {
         headerName: '판매건수',
         field: 'field3',
         flex: 1,
-        minWidth: attributeColumnWidth[10],
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-right',
         valueFormatter: numberValueFormatter<DummyData1Type>,
       },
@@ -161,15 +163,15 @@ export default function Ltpa660Section() {
         headerName: '판매순위',
         field: 'field4',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
+        minWidth: attributeColumnWidth(80),
         cellClass: 'text-center',
       },
       {
         headerName: '순위조정',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth[9],
-        cellClass: 'px-[0.2rem]! editable-cell text-center',
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'px-[0.2rem]! editable-cell',
         editable: true,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
@@ -182,9 +184,7 @@ export default function Ltpa660Section() {
       {
         headerName: '추천제외',
         field: 'field6',
-        flex: 1,
-        minWidth: attributeColumnWidth[9],
-        cellClass: 'text-center',
+        width: attributeColumnWidth(70),
         editable: true,
         cellDataType: 'boolean',
         cellRenderer: 'agCheckboxCellRenderer',
@@ -200,7 +200,7 @@ export default function Ltpa660Section() {
         <PageID
           data={{
             pageName: '상품별추천속성관리',
-            pageId: 'LTPA660',
+            pageId: 'LTPA670',
           }}
         />
       </LayoutHead>
@@ -259,6 +259,7 @@ export default function Ltpa660Section() {
               <div className="ag-theme-alpine">
                 {/* 2026-06-04 suppressClickEdit 삭제 */}
                 <AgGridReact<DummyData1Type>
+                  ref={gridRef}
                   onGridReady={(event) => {
                     gridApiRef.current = event.api;
                   }}
@@ -294,7 +295,6 @@ export default function Ltpa660Section() {
                     cellClass: 'editable-cell text-center',
                   }}
                   domLayout="normal"
-                  animateRows={false}
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                   tooltipHideDelay={3000}
@@ -305,6 +305,7 @@ export default function Ltpa660Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 isAll={false}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

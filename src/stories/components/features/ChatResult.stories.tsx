@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import type { Meta, StoryObj } from '@storybook/react';
 import { Gcol } from '@atoms';
 import { Controls, Markdown, Primary, Title } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/react';
 import { ChatResult, type ChatResultItem } from '@/shared/components/features/ChatResult';
 
 const sampleChatData: ChatResultItem[] = [
@@ -70,7 +70,11 @@ import { ChatResult } from '@/shared/components/features/ChatResult';
               </tr>
             </thead>
             <tbody>
-              <tr><td>chatData</td><td>ChatResultItem[]</td><td>대화 목록 데이터입니다.</td></tr>
+              <tr>
+                <td>chatData</td>
+                <td>ChatResultItem[]</td>
+                <td>대화 목록 데이터입니다.</td>
+              </tr>
             </tbody>
           </table>
         </>

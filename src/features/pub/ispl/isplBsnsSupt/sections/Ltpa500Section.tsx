@@ -2,10 +2,23 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-//2026-06-04 tooltip, flex, minWidth, cellClass, cellEditor, cellEditorParams 수정 및 추가
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useAgGridInfiniteAppend } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grid, Grow, Gcol } from '@atoms';
+import { ResetIcon, SearchIcon } from '@icons';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  numberValueFormatter,
+  useAgGridInfiniteAppend,
+  useDynamicColumnWidths,
+} from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -14,17 +27,8 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -187,6 +191,8 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa500Section() {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const gridRef = React.useRef<any>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
@@ -211,69 +217,68 @@ export default function Ltpa500Section() {
     {
       headerName: '업무구분',
       field: 'field01',
-      flex: 1.5,
-      minWidth: 160,
+      flex: 1,
+      minWidth: attributeColumnWidth(160),
       cellClass: 'text-center',
     },
     {
       headerName: '증권번호',
       field: 'field02',
-      flex: 1,
-      minWidth: 120,
+      width: attributeColumnWidth(120),
       cellClass: 'text-center',
     },
     {
       headerName: '설계번호',
       field: 'field03',
-      flex: 1,
-      minWidth: 120,
+      width: attributeColumnWidth(120),
       cellClass: 'text-center',
     },
     {
       headerName: '상품명',
       field: 'field04',
-      flex: 3,
-      minWidth: 230,
+      flex: 5,
+      minWidth: attributeColumnWidth(230),
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
     {
       headerName: '계약자',
       field: 'field05',
-      width: 60,
+      width: attributeColumnWidth(60),
       cellClass: 'text-center',
     },
     {
       headerName: '모집자명',
       field: 'field06',
-      width: 60,
+      width: attributeColumnWidth(60),
       cellClass: 'text-center',
     },
     {
       headerName: '모집자코드',
       field: 'field07',
-      width: 70,
+      width: attributeColumnWidth(70),
       cellClass: 'text-center',
     },
     {
       headerName: '지점',
       field: 'field08',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(100),
       cellClass: 'text-center',
     },
     {
       headerName: '보험료(원)',
       field: 'field09',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-right',
       valueFormatter: numberValueFormatter<DummyDataType>,
     },
     {
       headerName: '사유',
       field: 'field10',
-      flex: 1.2,
-      minWidth: 120,
+      flex: 2,
+      minWidth: attributeColumnWidth(120),
       cellClass: 'editable-cell text-left',
       editable: true,
       cellEditor: 'agInputCellEditor',
@@ -281,7 +286,7 @@ export default function Ltpa500Section() {
     {
       headerName: '승인',
       field: 'field11',
-      width: 85,
+      width: attributeColumnWidth(85),
       cellClass: 'editable-cell text-center',
       editable: true,
       cellEditor: 'agSelectCellEditor',
@@ -336,14 +341,14 @@ export default function Ltpa500Section() {
                       ))}
                     </NativeSelect>
                     {form.type01 === 'selection2' ? (
-                      <Input aria-label="" width={110} value={''} />
+                      <Input aria-label="" width={110} value={'12345678'} />
                     ) : (
                       <>
-                        <Input aria-label="" width={90} value={''} />
+                        <Input aria-label="" width={90} value={'12345678'} />
                         <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                           <SearchIcon color={'var(--color-primary-50)'} />
                         </Button>
-                        <Input aria-label="" width={120} value={'김한화'} readOnly />
+                        <Input aria-label="" width={120} value={'신부산GA지점'} readOnly />
                       </>
                     )}
                   </FormCell>
@@ -355,8 +360,10 @@ export default function Ltpa500Section() {
                       onChange={(e) => setFormField('type02', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type02-1', label: '전체' },
-                        { value: 'selection1', id: 'type02-2', label: '(전속)/영업관리자승인계약' },
+                        { value: '전체', id: 'type02-1', label: '전체' },
+                        { value: '유지율부실예상', id: 'type02-2', label: '유지율부실예상' },
+                        { value: '유의승환', id: 'type02-3', label: '유의승환' },
+                        { value: '(전속)/영업관리자승인계약', id: 'type02-4', label: '(전속)/영업관리자승인계약' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
@@ -367,15 +374,15 @@ export default function Ltpa500Section() {
                   <FormCell title={'승인여부'}>
                     <NativeSelect
                       aria-label="승인여부 선택"
-                      width={110}
+                      width={80}
                       value={form.type03}
                       onChange={(e) => setFormField('type03', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type03-1', label: '전체' },
-                        { value: 'selection1', id: 'type03-2', label: '승인' },
-                        { value: 'selection2', id: 'type03-2', label: '거절' },
-                        { value: 'selection3', id: 'type03-2', label: '미결재' },
+                        { value: '전체', id: 'type03-1', label: '전체' },
+                        { value: '승인', id: 'type03-2', label: '승인' },
+                        { value: '거절', id: 'type03-3', label: '거절' },
+                        { value: '미결재', id: 'type03-4', label: '미결재' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
@@ -384,7 +391,12 @@ export default function Ltpa500Section() {
                     </NativeSelect>
                   </FormCell>
                   <FormCell title={'설계일자'}>
-                    <DatePickerInput mode="range" onChange={() => {}} size="lg" value="" />
+                    <DatePickerInput
+                      mode="range"
+                      onChange={() => {}}
+                      size="lg"
+                      rangeValue={{ from: '2026-05-03', to: '2026-05-11' }}
+                    />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -407,9 +419,11 @@ export default function Ltpa500Section() {
             <TableFold>
               <TableFoldHead title="대상리스트"></TableFoldHead>
               <TableFoldBody>
-                <Gcol className="w-full" gap={1}>
+                <Gcol>
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
+                      ref={gridRef}
+                      getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={visibleRows}
                       columnDefs={columnDefs}
@@ -421,14 +435,14 @@ export default function Ltpa500Section() {
                         enableClickSelection: true,
                       }}
                       selectionColumnDef={{
-                        width: 40,
-                        cellClass: 'text-center editable-cell',
+                        width: 30,
                       }}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
                     />
                   </div>
                   <TableMore
+                    gridRef={gridRef}
                     isAll={true}
                     loadedCount={loadedCount}
                     totalCount={totalCount}

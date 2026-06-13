@@ -1,10 +1,41 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */import type { Meta, StoryObj } from '@storybook/react';
+ */ import { HashList } from '@common/HashList';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import { HashList } from '@common/HashList';
+import type { Meta, StoryObj } from '@storybook/react';
 
-const LONG_HASH_DATA = ['암', '뇌', '심', '수술', '특정','암', '뇌', '심', '수술', '특정', '암', '뇌', '심', '수술', '특정','암', '뇌', '심', '수술', '특정', '암', '뇌', '심', '수술', '특정','암', '뇌', '심', '수술', '특정'];
+const LONG_HASH_DATA = [
+  '암',
+  '뇌',
+  '심',
+  '수술',
+  '특정',
+  '암',
+  '뇌',
+  '심',
+  '수술',
+  '특정',
+  '암',
+  '뇌',
+  '심',
+  '수술',
+  '특정',
+  '암',
+  '뇌',
+  '심',
+  '수술',
+  '특정',
+  '암',
+  '뇌',
+  '심',
+  '수술',
+  '특정',
+  '암',
+  '뇌',
+  '심',
+  '수술',
+  '특정',
+];
 
 const meta: Meta<typeof HashList> = {
   title: 'Components/Common/HashList',
@@ -16,7 +47,9 @@ const meta: Meta<typeof HashList> = {
       page: () => {
         return (
           <>
-            <Title /><br /><br />
+            <Title />
+            <br />
+            <br />
             <h2>Overview</h2>
             <div>
               <p>
@@ -59,7 +92,11 @@ const hashList = ['암', '뇌', '심', '수술', '특정', '표적', '치료'];
                 </tr>
               </thead>
               <tbody>
-                <tr><td>data</td><td>string[]</td><td>해시 목록 데이터</td></tr>
+                <tr>
+                  <td>data</td>
+                  <td>string[]</td>
+                  <td>해시 목록 데이터</td>
+                </tr>
               </tbody>
             </table>
           </>

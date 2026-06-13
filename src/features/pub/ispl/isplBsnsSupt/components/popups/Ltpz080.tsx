@@ -3,13 +3,17 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableMore } from '@common/TablePagination';
 import { SearchIcon, ResetIcon } from '@icons';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  useAgGridInfiniteAppend,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
@@ -23,9 +27,10 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableMore } from '@common/TablePagination';
 
 import '@/shared/lib/agGridPub';
 
@@ -73,42 +78,61 @@ const DummyData1: DummyData1Type[] = [
     field3: '사망/후유',
     field4: '',
   },
+  {
+    id: 6,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 7,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
 ];
 
 const Ltpz080 = () => {
   // 2026-06-01 width, flex 수정
-  const columnDefs1: ColDef<DummyData1Type>[] = [
-    {
-      headerName: '담보코드',
-      field: 'field1',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '담보명',
-      field: 'field2',
-      flex: 7,
-      minWidth: 200,
-      tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
-    },
-    {
-      headerName: '담보그룹',
-      field: 'field3',
-      flex: 1,
-      minWidth: 100,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '예외',
-      field: 'field4',
-      flex: 1,
-      minWidth: 90,
-      cellClass: 'text-center',
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs1 = React.useMemo<ColDef<DummyData1Type>[]>(
+    () => [
+      {
+        headerName: '담보코드',
+        field: 'field1',
+        width: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '담보명',
+        field: 'field2',
+        flex: 7,
+        minWidth: attributeColumnWidth(200),
+        tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
+      },
+      {
+        headerName: '담보그룹',
+        field: 'field3',
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '예외',
+        field: 'field4',
+        flex: 1,
+        minWidth: attributeColumnWidth(90),
+        cellClass: 'text-center',
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
-  const pageSize = 3;
+  const gridRef = React.useRef<any>(null);
+  const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
     allRows: rowData1,
     pageSize,
@@ -116,11 +140,14 @@ const Ltpz080 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
               담보그룹관리
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ080)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -183,8 +210,9 @@ const Ltpz080 = () => {
           </FormTable>
 
           <Gcol>
-            <div className="ag-theme-alpine min-h-[24.4rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
               <AgGridReact<DummyData1Type>
+                ref={gridRef}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData1.slice(0, loadedCount)}
@@ -202,6 +230,7 @@ const Ltpz080 = () => {
               />
             </div>
             <TableMore
+              gridRef={gridRef}
               isAll={false}
               loadedCount={loadedCount}
               totalCount={totalCount}

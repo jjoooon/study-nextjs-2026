@@ -6,6 +6,10 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 
+// Badge 스타일 조합 규칙(cva)
+// - base: 공통 레이아웃/타이포/아이콘 처리
+// - variants: variant / size / color의 개별 축
+// - compoundVariants: 축 조합별 실제 색상/보더 지정
 const badgeVariants = cva(
   'inline-flex items-center justify-center rounded-[0.3rem] px-1 w-fit whitespace-nowrap shrink-0 gap-1 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden leading-none',
   {
@@ -25,6 +29,7 @@ const badgeVariants = cva(
         sm: `h-[1.5rem] text-[1.1rem] font-bold pl-[0.2rem] pr-[0.4rem] pt-[0.1rem] [&>svg]:size-[1.1rem] tracking-[-0.13rem]`,
       },
       color: {
+        // 색상 키만 선언하고, 실제 색상 클래스는 compoundVariants에서 매핑한다.
         blue: '',
         red: '',
         green: '',
@@ -37,7 +42,7 @@ const badgeVariants = cva(
       },
     },
     compoundVariants: [
-      // Contained + Colors
+      // contained + color 조합
       {
         variant: 'contained',
         color: 'blue',
@@ -52,6 +57,7 @@ const badgeVariants = cva(
       { variant: 'contained', color: 'purple', class: 'bg-[#F0E6FF] text-[#853EE2]' },
       { variant: 'contained', color: 'yellow', class: 'bg-[var(--color-warning-10)] text-[#FFB800]' },
 
+      // dark + color 조합
       {
         variant: 'dark',
         color: 'blue',
@@ -65,9 +71,10 @@ const badgeVariants = cva(
       { variant: 'dark', color: 'secondary', class: 'bg-[var(--color-secondary-50)] text-[#FFF]' },
       { variant: 'dark', color: 'purple', class: 'bg-[var(--color-purple-40)] text-[#FFF]' },
 
+      // rounded 변형의 size별 예외 보정
       { variant: 'rounded', size: 'sm', class: 'pl-[0.4rem] pr-[0.6rem]' },
 
-      // Soft + Colors
+      // soft + color 조합
       {
         variant: 'soft',
         color: 'blue',
@@ -109,7 +116,8 @@ const badgeVariants = cva(
         color: 'purple',
         class: 'bg-[#F0E6FF] border-[#853EE2] text-[#853EE2]',
       },
-      // Outlined + Colors
+
+      // outlined + color 조합
       {
         variant: 'outlined',
         color: 'blue',
@@ -138,7 +146,8 @@ const badgeVariants = cva(
         color: 'secondary',
         class: 'border-[var(--color-secondary-50)] text-[var(--color-secondary-50)]',
       },
-      // Ghost + Colors
+
+      // ghost + color 조합
       { variant: 'ghost', color: 'blue', class: 'text-[var(--color-information-50)]' },
       { variant: 'ghost', color: 'yellow', class: 'text-[var(--color-warning-50)]' },
       { variant: 'ghost', color: 'red', class: 'text-[var(--color-danger-50)]' },
@@ -156,6 +165,9 @@ const badgeVariants = cva(
   }
 );
 
+// Badge 컴포넌트
+// - asChild=true면 Radix Slot을 사용해 부모 엘리먼트를 Badge처럼 스타일링
+// - asChild=false면 기본 span 엘리먼트로 렌더링
 function Badge({
   className,
   variant = 'contained',
@@ -169,6 +181,7 @@ function Badge({
   }) {
   const Comp = asChild ? Slot : 'span';
 
+  // cva 결과 + 사용자 className을 병합
   return <Comp data-slot="badge" className={cn(badgeVariants({ variant, size, color }), className)} {...props} />;
 }
 

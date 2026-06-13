@@ -2,17 +2,18 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Grid, Grow, Typo } from '@atoms';
+import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createAddRowHandler,
   createDeleteSelectedRowsHandler,
   getNextNumericRowId,
+  useDynamicColumnWidths,
 } from '@aggrid';
-import { Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,13 +25,13 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-
-import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+
+import '@/shared/lib/agGridPub';
 
 type DummyDataTypeA = {
   id: number;
@@ -50,7 +51,7 @@ type DummyDataTypeA = {
 const DummyDataA: DummyDataTypeA[] = [
   {
     id: 1,
-    isChecked: false,
+    isChecked: true,
     field1: 'Text',
     field2: '10명',
     field3: '남자',
@@ -94,13 +95,13 @@ type DummyDataTypeB = {
 const DummyDataB: DummyDataTypeB[] = [
   {
     id: 1,
-    isChecked: false,
+    isChecked: true,
     field1: 'Text',
     field2: '김한화',
-    field3: '900101-1234567',
+    field3: '000000-0******',
     field4: '010',
-    field5: '1234',
-    field6: '5678',
+    field5: '0000',
+    field6: '0000',
     field7: 'text',
     field8: 'text',
     field9: 'text',
@@ -120,6 +121,7 @@ const DummyDataB: DummyDataTypeB[] = [
   },
 ];
 export const Ltpz296 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const gridApiRefA = React.useRef<GridApi<DummyDataTypeA> | null>(null);
   const [rowDataA, setRowDataA] = React.useState<DummyDataTypeA[]>(DummyDataA);
 
@@ -170,109 +172,112 @@ export const Ltpz296 = () => {
   }, []);
 
   // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
-  const columnDefsA: ColDef<DummyDataTypeA>[] = [
-    {
-      headerName: '그룹명',
-      field: 'field1',
-      flex: 4,
-      editable: true,
-      cellClass: 'editable-cell text-left',
-      sortable: false,
-    },
-    {
-      headerName: '인원',
-      field: 'field2',
-      flex: 1,
-      minWidth: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '성별',
-      field: 'field3',
-      flex: 1,
-      minWidth: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['남자', '여자'] },
-      cellRenderer: selectCellRenderer,
-      sortable: false,
-    },
-    {
-      headerName: '평균연령',
-      field: 'field4',
-      flex: 1,
-      minWidth: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '직업코드',
-      field: 'field5',
-      flex: 1,
-      minWidth: 120,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      cellRenderer: (_params: ICellRendererParams<DummyDataTypeA>) => (
-        <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-          <Typo>{_params.value}</Typo>
-          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grid>
-      ),
-    },
-    {
-      headerName: '직업명',
-      field: 'field6',
-      flex: 4,
-      editable: true,
-      cellClass: 'editable-cell text-left',
-      sortable: false,
-    },
-    {
-      headerName: '급수',
-      field: 'field7',
-      flex: 1,
-      minWidth: 60,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '운전용도',
-      field: 'field8',
-      flex: 1,
-      minWidth: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['text1', 'text2'] },
-      cellRenderer: selectCellRenderer,
-      sortable: false,
-    },
-    {
-      headerName: '보혐료',
-      field: 'field9',
-      flex: 1,
-      minWidth: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '등록인원',
-      field: 'field10',
-      flex: 1,
-      minWidth: 80,
-      editable: true,
-      cellClass: 'editable-cell text-right',
-      sortable: false,
-    },
-  ];
+  const columnDefsA = React.useMemo<ColDef<DummyDataTypeA>[]>(
+    () => [
+      {
+        headerName: '그룹명',
+        field: 'field1',
+        flex: 7,
+        editable: true,
+        cellClass: 'editable-cell text-left',
+        sortable: false,
+      },
+      {
+        headerName: '인원',
+        field: 'field2',
+        flex: 1,
+        minwidth: attributeColumnWidth(100),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '성별',
+        field: 'field3',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: { values: ['남자', '여자'] },
+        cellRenderer: selectCellRenderer,
+        sortable: false,
+      },
+      {
+        headerName: '평균연령',
+        field: 'field4',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '직업코드',
+        field: 'field5',
+        flex: 1,
+        minWidth: attributeColumnWidth(120),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        cellRenderer: (_params: ICellRendererParams<DummyDataTypeA>) => (
+          <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
+            <Typo>{_params.value}</Typo>
+            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </Grid>
+        ),
+      },
+      {
+        headerName: '직업명',
+        field: 'field6',
+        flex: 7,
+        editable: true,
+        cellClass: 'editable-cell text-left',
+        sortable: false,
+      },
+      {
+        headerName: '급수',
+        field: 'field7',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '운전용도',
+        field: 'field8',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: { values: ['text1', 'text2'] },
+        cellRenderer: selectCellRenderer,
+        sortable: false,
+      },
+      {
+        headerName: '보혐료',
+        field: 'field9',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '등록인원',
+        field: 'field10',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-right',
+        sortable: false,
+      },
+    ],
+    [attributeColumnWidth]
+  );
   const gridApiRefB = React.useRef<GridApi<DummyDataTypeB> | null>(null);
   const [rowDataB, setRowDataB] = React.useState<DummyDataTypeB[]>(DummyDataB);
 
@@ -314,215 +319,240 @@ export const Ltpz296 = () => {
   });
 
   // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
-  const columnDefsB: ColDef<DummyDataTypeB>[] = [
-    {
-      headerName: '그룹명',
-      field: 'field1',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-      pinned: 'left',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택1', '선택2'] },
-      cellRenderer: selectCellRenderer,
-    },
-    {
-      headerName: '이름',
-      field: 'field2',
-      width: 100,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-      pinned: 'left',
-      cellRenderer: (_params: ICellRendererParams<DummyDataTypeB>) => (
-        <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-          <Typo>{_params.value}</Typo>
-          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grid>
-      ),
-    },
-    {
-      headerName: '주민등록번호',
-      field: 'field3',
-      width: 110,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-      pinned: 'left',
-    },
-    {
-      headerName: '전화번호(휴대폰)',
-      children: [
-        {
-          field: 'field4',
-          width: 50,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-        },
-        {
-          field: 'field5',
-          width: 50,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-        },
-        {
-          field: 'field6',
-          width: 50,
-          editable: true,
-          cellClass: 'editable-cell text-center',
-        },
-      ],
-    } as ColDef<DummyDataTypeB>,
-    {
-      headerName: '동의',
-      field: 'field7',
-      width: 60,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '관계',
-      field: 'field8',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택1', '선택2'] },
-      cellRenderer: selectCellRenderer,
-    },
-    {
-      headerName: '연령',
-      field: 'field9',
-      width: 60,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '급수',
-      field: 'field10',
-      width: 60,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '직업',
-      field: 'field11',
-      width: 100,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-      cellRenderer: (_params: ICellRendererParams<DummyDataTypeB>) => (
-        <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-          <Typo>{_params.value}</Typo>
-          <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-            <SearchIcon color={'var(--color-primary-50)'} />
-          </Button>
-        </Grid>
-      ),
-    },
-    {
-      headerName: '직업명',
-      field: 'field12',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '업종',
-      field: 'field13',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '직무',
-      field: 'field14',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '운전형태',
-      field: 'field15',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택1', '선택2'] },
-      cellRenderer: selectCellRenderer,
-    },
-    {
-      headerName: '이륜차',
-      field: 'field16',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택1', '선택2'] },
-      cellRenderer: selectCellRenderer,
-    },
-    {
-      headerName: '병력여부',
-      field: 'field17',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택1', '선택2'] },
-      cellRenderer: selectCellRenderer,
-    },
-    {
-      headerName: '치아병력',
-      field: 'field18',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: { values: ['선택1', '선택2'] },
-      cellRenderer: selectCellRenderer,
-    },
-    {
-      headerName: '알릴사항',
-      field: 'field19',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '사망수익자',
-      field: 'field20',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '사망외수익자',
-      field: 'field21',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-center',
-      sortable: false,
-    },
-    {
-      headerName: '보험료',
-      field: 'field22',
-      width: 80,
-      editable: true,
-      cellClass: 'editable-cell text-right',
-      sortable: false,
-    },
-  ];
+  const columnDefsB = React.useMemo<ColDef<DummyDataTypeB>[]>(
+    () => [
+      {
+        headerName: '그룹명',
+        field: 'field1',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+        pinned: 'left',
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: { values: ['선택1', '선택2'] },
+        cellRenderer: selectCellRenderer,
+      },
+      {
+        headerName: '이름',
+        field: 'field2',
+        flex: 1,
+        width: attributeColumnWidth(120),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+        pinned: 'left',
+        cellRenderer: (_params: ICellRendererParams<DummyDataTypeB>) => (
+          <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
+            <Typo>{_params.value}</Typo>
+            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </Grid>
+        ),
+      },
+      {
+        headerName: '주민등록번호',
+        field: 'field3',
+        flex: 1,
+        width: attributeColumnWidth(100),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+        pinned: 'left',
+      },
+      {
+        headerName: '전화번호(휴대폰)',
+        children: [
+          {
+            field: 'field4',
+            flex: 1,
+            minWidth: attributeColumnWidth(50),
+            editable: true,
+            cellClass: 'editable-cell text-center',
+          },
+          {
+            field: 'field5',
+            flex: 1,
+            minWidth: attributeColumnWidth(50),
+            editable: true,
+            cellClass: 'editable-cell text-center',
+          },
+          {
+            field: 'field6',
+            flex: 1,
+            minWidth: attributeColumnWidth(50),
+            editable: true,
+            cellClass: 'editable-cell text-center',
+          },
+        ],
+      } as ColDef<DummyDataTypeB>,
+      {
+        headerName: '동의',
+        field: 'field7',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '관계',
+        field: 'field8',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: { values: ['선택1', '선택2'] },
+        cellRenderer: selectCellRenderer,
+      },
+      {
+        headerName: '연령',
+        field: 'field9',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '급수',
+        field: 'field10',
+        flex: 1,
+        minWidth: attributeColumnWidth(60),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '직업',
+        field: 'field11',
+        flex: 5,
+        minWidth: attributeColumnWidth(100),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+        cellRenderer: (_params: ICellRendererParams<DummyDataTypeB>) => (
+          <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
+            <Typo>{_params.value}</Typo>
+            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+              <SearchIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </Grid>
+        ),
+      },
+      {
+        headerName: '직업명',
+        field: 'field12',
+        flex: 2,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '업종',
+        field: 'field13',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '직무',
+        field: 'field14',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '운전형태',
+        field: 'field15',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: { values: ['선택1', '선택2'] },
+        cellRenderer: selectCellRenderer,
+      },
+      {
+        headerName: '이륜차',
+        field: 'field16',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: { values: ['선택1', '선택2'] },
+        cellRenderer: selectCellRenderer,
+      },
+      {
+        headerName: '병력여부',
+        field: 'field17',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: { values: ['선택1', '선택2'] },
+        cellRenderer: selectCellRenderer,
+      },
+      {
+        headerName: '치아병력',
+        field: 'field18',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: { values: ['선택1', '선택2'] },
+        cellRenderer: selectCellRenderer,
+      },
+      {
+        headerName: '알릴사항',
+        field: 'field19',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '사망수익자',
+        field: 'field20',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '사망외수익자',
+        field: 'field21',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-center',
+        sortable: false,
+      },
+      {
+        headerName: '보험료',
+        field: 'field22',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        editable: true,
+        cellClass: 'editable-cell text-right',
+        sortable: false,
+      },
+    ],
+    [attributeColumnWidth]
+  );
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="full">
@@ -606,10 +636,15 @@ export const Ltpz296 = () => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[12.3rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowDataA.length}>
                   <AgGridReact<DummyDataTypeA>
                     onGridReady={(event) => {
                       gridApiRefA.current = event.api;
+                      event.api.forEachNode((node) => {
+                        if (node.data?.isChecked) {
+                          node.setSelected(true);
+                        }
+                      });
                     }}
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -657,10 +692,15 @@ export const Ltpz296 = () => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[12.3rem]">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowDataB.length}>
                   <AgGridReact<DummyDataTypeB>
                     onGridReady={(event) => {
                       gridApiRefB.current = event.api;
+                      event.api.forEachNode((node) => {
+                        if (node.data?.isChecked) {
+                          node.setSelected(true);
+                        }
+                      });
                     }}
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

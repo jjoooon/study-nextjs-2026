@@ -4,9 +4,8 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { useState } from 'react';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,18 +19,22 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { useState } from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 const Ltpz081 = () => {
   const [receiptType, setReceiptType] = useState('영수증발행안함');
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="sm" className="">
+      <DialogContent showCloseButton resizable={true} size="xs" className="">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
               영수증 발행
+            </Typo>
+            <Typo tag={'p'} variant={'body-xl'}>
+              (LTPZ081)
             </Typo>
           </DialogTitle>
         </DialogHeader>

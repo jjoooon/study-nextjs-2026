@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -22,8 +22,8 @@ import {
 import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from '@uiux/Table';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useRef } from 'react';
 import React from 'react';
+import { useRef } from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -181,6 +181,7 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 export const Ltpz099 = () => {
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   // 021 페이지 방식: 외부 스크롤 div 동기화
   const scrollRefs = useRef<(HTMLDivElement | null)[]>([]);
   const isSyncing = useRef(false);
@@ -210,21 +211,24 @@ export const Ltpz099 = () => {
     {
       headerName: '담보명',
       field: 'field01',
-      flex: 1,
+      flex: 4,
+      minWidth: attributeColumnWidth(150),
       cellClass: 'text-left flex [&>div>span]:h-auto!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
     },
     {
       headerName: '가입금액',
       field: 'field02',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '보험료',
       field: 'field03',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
@@ -234,26 +238,35 @@ export const Ltpz099 = () => {
     {
       headerName: '담보명',
       field: 'field01',
-      flex: 1,
+      flex: 4,
+      minWidth: attributeColumnWidth(150),
       cellClass: 'text-left flex [&>div>span]:h-auto!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field01' }),
     },
     {
       headerName: '가입금액',
       field: 'field02',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '보험료',
       field: 'field03',
-      width: 100,
+      flex: 1,
+      minWidth: attributeColumnWidth(90),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
   ];
+
+  // 비교 테이블 커스텀 헤더 셀의 너비/유연 비율 스타일을 ag-Grid 컬럼 정의로 계산
   function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
+    // 최소 너비가 없으면 0으로 두어 flex 계산 시 레이아웃 깨짐 방지
+    const minWidth = typeof column.minWidth === 'number' ? `${column.minWidth}px` : '0px';
+
+    // width가 고정된 컬럼은 flex 확장을 막고 고정 폭으로 렌더링
     if (typeof column.width === 'number') {
       const width = `${column.width}px`;
 
@@ -264,16 +277,18 @@ export const Ltpz099 = () => {
       };
     }
 
+    // flex 컬럼은 비율 기반으로 너비를 나누되 minWidth는 유지
     if (typeof column.flex === 'number') {
       return {
-        flex: `${column.flex} ${column.flex} 0%`,
-        minWidth: 0,
+        flex: `${column.flex} 1 0%`,
+        minWidth,
       };
     }
 
+    // width/flex 정보가 모두 없으면 기본 균등 분할 규칙 사용
     return {
       flex: '1 1 0%',
-      minWidth: 0,
+      minWidth,
     };
   }
   return (

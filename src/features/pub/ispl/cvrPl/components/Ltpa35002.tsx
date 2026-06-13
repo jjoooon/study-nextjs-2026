@@ -3,17 +3,17 @@
  */
 'use client';
 
+import { useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { Button } from '@uiux/Button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { TabPager } from '@common/TabPager';
 import { LayoutMain } from '@layout/BaseLayout';
-import { Button } from '@uiux/Button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { useState } from 'react';
 import { Ltpa35002a } from './Ltpa35002a';
 import { Ltpa35002b } from './Ltpa35002b';
 import { Ltpa35002c } from './Ltpa35002c';
 import { Ltpa35002d } from './Ltpa35002d';
-import { useTabs } from '@/shared/hooks/useTabs';
 import '@/shared/lib/agGridPub';
 
 interface TabDataType {
@@ -33,17 +33,17 @@ interface Ltpa35002Props {
 const TabData: TabDataType[] = [
   {
     id: 1,
-    name: '인보험/단체',
-    age: '1',
+    name: '김한화',
+    age: '32',
     gender: '여',
     value: 'tab1',
-    error: true,
+    error: false,
     info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
   },
   {
     id: 2,
-    name: '태아',
-    age: '1',
+    name: '홍길동',
+    age: '40',
     gender: '남',
     value: 'tab2',
     error: true,
@@ -116,7 +116,7 @@ export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {
               data={Tabs}
               active={TabActive}
               setActive={TabSetActive}
-              visibleCount={5}
+              visibleCount={2}
               error={false}
               errorMsg="입력하세요."
               getValue={(tab) => String(tab.id)}

@@ -17,11 +17,11 @@
 // 수정일: 2025-11-18
 // Last synced: 2025-12-17
 
-import { Typo } from '@atoms';
-import { ChevronDownIcon, SelectArrowIcon } from '@icons';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Typo } from '@atoms';
+import { ChevronDownIcon, SelectArrowIcon } from '@icons';
 
 type VariantType = 'default' | 'box' | 'line' | 'minimal' | 'tableHead';
 

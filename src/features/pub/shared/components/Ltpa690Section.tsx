@@ -3,24 +3,24 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { Grow, Grid } from '@atoms';
+import { FileExportIcon, FileImportIcon, ResetIcon, EssentialIcon } from '@icons';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Textarea } from '@uiux/Textarea';
 import { BottomBar } from '@common/BottomBar';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { FileExportIcon, FileImportIcon, ResetIcon, EssentialIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Textarea } from '@uiux/Textarea';
-
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
+import { useRef } from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -39,7 +39,7 @@ const DummyData: DummyDataType[] = [
     field1: '시스템오류',
     field2: '',
     field3: '자료가 존재하지 않습니다.',
-    field4: 'YYYY.MM.DD',
+    field4: '2026.08.31',
   },
   {
     id: 2,
@@ -47,7 +47,7 @@ const DummyData: DummyDataType[] = [
     field1: '알림',
     field2: '',
     field3: '자료가 존재하지 않습니다.',
-    field4: 'YYYY.MM.DD',
+    field4: '2026.08.31',
   },
   {
     id: 3,
@@ -63,42 +63,43 @@ const DummyData: DummyDataType[] = [
     field1: '질의',
     field2: '',
     field3: '자료가 존재하지 않습니다.',
-    field4: 'YYYY.MM.DD',
+    field4: '2026.08.31',
   },
 ];
 
 export default function Ltpa690Section() {
   // 2026-06-02 flex, minWidth 수정
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '메시지 구분',
       field: 'field1',
-      width: 80,
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '메시지코드',
       field: 'field2',
-      width: 80,
+      width: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '메시지',
       field: 'field3',
-      flex: 5,
-      minWidth: 300,
+      flex: 10,
       cellClass: 'text-left',
     },
     {
       headerName: '등록일',
       field: 'field4',
-      flex: 1, // 2026-06-01 수정
-      minWidth: 80,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellClass: 'text-center',
     },
   ];
 
   // pagination
+  const gridRef = useRef<any>(null);
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
@@ -165,11 +166,10 @@ export default function Ltpa690Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody className="grid grid-rows-[1fr_auto] gap-1">
-                  <div className="ag-theme-alpine">
-
-
+                  <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                     {/* 2026-06-01 resizable true로 수정, selectionColumnDef 추가 */}
                     <AgGridReact<DummyDataType>
+                      ref={gridRef}
                       key={loadedCount}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
@@ -191,10 +191,12 @@ export default function Ltpa690Section() {
                       datasource={dataSource}
                       selectionColumnDef={{
                         width: 30,
+                        cellClass: 'editable-cell',
                       }}
                     />
                   </div>
                   <TableMore
+                    gridRef={gridRef}
                     loadedCount={loadedCount}
                     totalCount={totalCount}
                     pageSize={pageSize}

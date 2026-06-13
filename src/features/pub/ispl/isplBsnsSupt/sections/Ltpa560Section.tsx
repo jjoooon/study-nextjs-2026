@@ -3,23 +3,24 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import { Grow, Grid } from '@atoms';
+import { SearchIcon, ResetIcon } from '@icons';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
-import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { useFormFields } from '@hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -223,139 +224,142 @@ export default function Ltpa560Section() {
   // AgGrid Column
   // 2026-05-29 수정 cellClass 추가, width 수정
   // 2026-06-04 flex, minWidth 수정
-  const columnDefs: (ColDef<Ltpa560DummyDataRow> | ColGroupDef<Ltpa560DummyDataRow>)[] = [
-    {
-      headerName: '상품',
-      flex: 3,
-      minWidth: 220,
-      field: 'field01',
-      cellClass: 'text-left [&>div]:whitespace-normal [&_span]:leading-normal',
-      spanRows: true,
-      autoHeight: true,
-      colSpan: (params) => (params.node?.rowPinned === 'bottom' ? 3 : 1),
-    },
-    {
-      headerName: '채널',
-      flex: 1.2,
-      minWidth: 100,
-      field: 'field02',
-      cellClass: 'text-center',
-      spanRows: true,
-      autoHeight: true,
-      colSpan: (params) => (params.node?.rowPinned === 'bottom' ? 0 : params.data?.subtotal ? 2 : 1),
-    },
-    {
-      headerName: '본부명',
-      flex: 2.5,
-      minWidth: 140,
-      field: 'field03',
-      cellClass: 'text-center',
-      autoHeight: true,
-      colSpan: (params) => (params.node?.rowPinned === 'bottom' || params.data?.subtotal ? 0 : 1),
-    },
-    {
-      headerName: '단순설계',
-      flex: 1,
-      minWidth: 75,
-      field: 'field04',
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '설계중',
-      flex: 1,
-      minWidth: 75,
-      field: 'field05',
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '설계완료',
-      flex: 1,
-      minWidth: 75,
-      field: 'field06',
-      cellClass: 'text-center',
-      cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
-        params.data?.field06Type ? (
-          <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-            {params.value}
-          </Button>
-        ) : (
-          params.value
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs: (ColDef<Ltpa560DummyDataRow> | ColGroupDef<Ltpa560DummyDataRow>)[] = useMemo(
+    () => [
+      {
+        headerName: '상품',
+        flex: 20,
+        field: 'field01',
+        cellClass: 'text-left [&>div]:whitespace-normal [&_span]:leading-normal',
+        spanRows: true,
+        autoHeight: true,
+        colSpan: (params) => (params.node?.rowPinned === 'bottom' ? 3 : 1),
+      },
+      {
+        headerName: '채널',
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
+        field: 'field02',
+        cellClass: 'text-center',
+        spanRows: true,
+        autoHeight: true,
+        colSpan: (params) => (params.node?.rowPinned === 'bottom' ? 0 : params.data?.subtotal ? 2 : 1),
+      },
+      {
+        headerName: '본부명',
+        flex: 10,
+        field: 'field03',
+        cellClass: 'text-center',
+        autoHeight: true,
+        colSpan: (params) => (params.node?.rowPinned === 'bottom' || params.data?.subtotal ? 0 : 1),
+      },
+      {
+        headerName: '단순설계',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        field: 'field04',
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '설계중',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        field: 'field05',
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '설계완료',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        field: 'field06',
+        cellClass: 'text-center',
+        cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
+          params.data?.field06Type ? (
+            <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+              {params.value}
+            </Button>
+          ) : (
+            params.value
+          ),
+        autoHeight: true,
+      },
+      {
+        headerName: '청약중',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        field: 'field07',
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '청약심사완료',
+        flex: 1,
+        minWidth: attributeColumnWidth(90),
+        field: 'field08',
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '청약완료',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        field: 'field09',
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '수납완료',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        field: 'field10',
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+      {
+        headerName: '총합계',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
+        field: 'field11',
+        cellClass: 'text-center truncate',
+        autoHeight: true,
+        cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
+          params.data?.field10Type ? (
+            <Button
+              color="link"
+              className="text-[var(--color-text-danger)]"
+              onClick={() => {}}
+              only="default"
+              size="lg"
+              variant="text"
+            >
+              {params.value}
+            </Button>
+          ) : (
+            params.value
+          ),
+      },
+      {
+        headerComponent: () => (
+          <Grow className="w-full justify-center leading-tight">
+            증감율%
+            <br />
+            (전일대비)
+          </Grow>
         ),
-      autoHeight: true,
-    },
-    {
-      headerName: '청약중',
-      flex: 1,
-      minWidth: 75,
-      field: 'field07',
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '청약심사완료',
-      flex: 1,
-      minWidth: 90,
-      field: 'field08',
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '청약완료',
-      flex: 1,
-      minWidth: 75,
-      field: 'field09',
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '수납완료',
-      flex: 1,
-      minWidth: 75,
-      field: 'field10',
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-    {
-      headerName: '총합계',
-      flex: 1,
-      minWidth: 75,
-      field: 'field11',
-      cellClass: 'text-center truncate',
-      autoHeight: true,
-      cellRenderer: (params: ICellRendererParams<Ltpa560DummyDataRow>) =>
-        params.data?.field10Type ? (
-          <Button
-            color="link"
-            className="text-[var(--color-text-danger)]"
-            onClick={() => {}}
-            only="default"
-            size="lg"
-            variant="text"
-          >
-            {params.value}
-          </Button>
-        ) : (
-          params.value
-        ),
-    },
-    {
-      headerComponent: () => (
-        <Grow className="w-full justify-center leading-tight">
-          증감율%
-          <br />
-          (전일대비)
-        </Grow>
-      ),
-      flex: 1,
-      minWidth: 90,
-      field: 'field12',
-      cellClass: 'text-center',
-      autoHeight: true,
-    },
-  ];
+        flex: 1,
+        minWidth: attributeColumnWidth(90),
+        field: 'field12',
+        cellClass: 'text-center',
+        autoHeight: true,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
+  const gridRef = React.useRef<any>(null);
   const pageSize = 2;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa560DummyData,
@@ -546,8 +550,9 @@ export default function Ltpa560Section() {
               </Grow>
             </Grow>
             <Grid className="grid-rows-[1fr_auto]">
-              <div className="ag-theme-alpine ltpa010-grid">
+              <div className="ag-theme-alpine ltpa010-grid inner-scroll" data-row={rowData.length}>
                 <AgGridReact<Ltpa560DummyDataRow>
+                  ref={gridRef}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
                   getRowClass={(params) => (params.data?.subtotal ? 'ag-row-subtotal' : undefined)}
@@ -566,6 +571,7 @@ export default function Ltpa560Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 loadedCount={loadedCount}
                 totalCount={totalCount}
                 pageSize={pageSize}

@@ -3,27 +3,35 @@
  */
 'use client';
 
-import { SelectArrowIcon } from '@icons';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
+import { SelectArrowIcon } from '@icons';
 
+// Select 루트 컴포넌트: 전체 선택 컨트롤의 상태를 관리합니다.
 function Select({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />;
 }
 
+// 항목들을 그룹화할 때 사용합니다. (예: 지역별, 카테고리별)
 function SelectGroup({ ...props }: React.ComponentProps<typeof SelectPrimitive.Group>) {
   return <SelectPrimitive.Group data-slot="select-group" {...props} />;
 }
 
+// 선택된 현재 값을 화면에 표시하는 영역입니다.
 function SelectValue({ ...props }: React.ComponentProps<typeof SelectPrimitive.Value>) {
   return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
 
 type SelectSize = 'default' | 'small';
 
+// SelectTrigger 전용 Props
+// - variant: 디자인 변형 (현재 기본값만 존재)
+// - selectSize: 크기 제어 (default: 28px, small: 25px)
+// - required: 필수 입력 여부에 따른 스타일 적용
+// - readOnly: 읽기 전용 상태 (클릭 방지 및 스타일 변경)
 interface UISelectTriggerProps extends React.ComponentProps<typeof SelectPrimitive.Trigger> {
   variant?: 'default';
   selectSize?: SelectSize;
@@ -31,6 +39,7 @@ interface UISelectTriggerProps extends React.ComponentProps<typeof SelectPrimiti
   readOnly?: boolean;
 }
 
+// 선택창을 여는 버튼(Trigger) 컴포넌트입니다.
 function SelectTrigger({
   className,
   variant = 'default',
@@ -40,8 +49,10 @@ function SelectTrigger({
   children,
   ...props
 }: UISelectTriggerProps) {
+  // 외부에서 전달된 aria-invalid 속성을 통해 유효성 검사 실패 상태를 파악합니다.
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
 
+  // 기본 스타일 정의: 에러(Invalid) > 필수(Required) > 일반 순으로 우선순위를 가집니다.
   const baseStyle = cn(
     "data-[size=default]:h-[2.8rem] data-[size=small]:h-[2.5rem] w-full rounded-[0.4rem] px-2 py-0 text-[1.3rem] border box-border tracking-[--typo-letter-spacing-n3] border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex items-center justify-between gap-2 rounded-md border whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     isInvalid
@@ -51,12 +62,14 @@ function SelectTrigger({
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
   );
 
+  // 마우스 호버 시 보더 색상 제어
   const hoverStyle = isInvalid
     ? 'hover:border-[var(--color-input-border-error)]'
     : required
       ? 'hover:border-[var(--color-input-border-highlight-bold)]'
       : 'hover:border-[var(--color-input-border-hover)]';
 
+  // 포커스 시 스타일 제어 (보더 두께 및 링 효과)
   const focusStyle = `${
     isInvalid
       ? 'focus:border-[var(--color-input-border-error)]'
@@ -66,10 +79,13 @@ function SelectTrigger({
   } 
     focus:ring-1 focus:ring-[var(--color-gray-5)] focus:border-[0.2rem] focus:px-[0.8rem]`;
 
+  // 읽기 전용 상태일 때의 배경색 및 커서 정의
   const readonlyStyle = readOnly ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100' : '';
 
+  // 비활성화 상태 정의
   const disabledStyle = 'disabled:opacity-50 disabled:cursor-not-allowed';
 
+  // 우측 화살표 아이콘의 색상을 상태에 따라 결정
   const arrowStateStyle = isInvalid
     ? 'var(--color-danger-50)'
     : required
@@ -96,6 +112,8 @@ function SelectTrigger({
   );
 }
 
+// 드롭다운 메뉴가 나타나는 컨테이너(Content) 컴포넌트입니다.
+// - 포털(Portal)을 사용하여 DOM의 최상단에 렌더링됩니다.
 function SelectContent({
   className,
   children,
@@ -136,6 +154,7 @@ function SelectContent({
   );
 }
 
+// 그룹의 제목을 표시할 때 사용합니다.
 function SelectLabel({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
   return (
     <SelectPrimitive.Label
@@ -146,6 +165,7 @@ function SelectLabel({ className, ...props }: React.ComponentProps<typeof Select
   );
 }
 
+// 개별 선택 항목(Option) 컴포넌트입니다.
 function SelectItem({ className, children, ...props }: React.ComponentProps<typeof SelectPrimitive.Item>) {
   return (
     <SelectPrimitive.Item
@@ -158,6 +178,7 @@ function SelectItem({ className, children, ...props }: React.ComponentProps<type
       )}
       {...props}
     >
+      {/* 항목이 선택되었을 때 나타나는 체크 표시 인디케이터 */}
       <span data-slot="select-item-indicator" className="absolute right-2 flex size-3.5 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
           <CheckIcon className="size-4" />
@@ -168,6 +189,7 @@ function SelectItem({ className, children, ...props }: React.ComponentProps<type
   );
 }
 
+// 항목들 사이의 구분선입니다.
 function SelectSeparator({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
   return (
     <SelectPrimitive.Separator
@@ -178,6 +200,7 @@ function SelectSeparator({ className, ...props }: React.ComponentProps<typeof Se
   );
 }
 
+// 리스트가 길어질 때 상단으로 스크롤하는 버튼입니다.
 function SelectScrollUpButton({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
   return (
     <SelectPrimitive.ScrollUpButton
@@ -190,6 +213,7 @@ function SelectScrollUpButton({ className, ...props }: React.ComponentProps<type
   );
 }
 
+// 리스트가 길어질 때 하단으로 스크롤하는 버튼입니다.
 function SelectScrollDownButton({
   className,
   ...props

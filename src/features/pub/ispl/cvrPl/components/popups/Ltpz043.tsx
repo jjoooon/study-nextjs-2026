@@ -3,9 +3,9 @@
  */
 'use client';
 
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -20,8 +20,8 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 const Ltpz043 = () => {
   // 2026-05-27 추가
@@ -45,7 +45,7 @@ const Ltpz043 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -71,7 +71,7 @@ const Ltpz043 = () => {
               </FormTable>
             </Grow>
             <Gcol gap={2}>
-              <FormTable caption="주차장 정보" cols={['w-[8rem]', 'w-[8rem]', 'w-auto']}>
+              <FormTable caption="주차장 정보" cols={['w-[7rem]', 'w-[7rem]', 'w-auto']}>
                 {/* 2026-05-27 전체 수정(옥내주차장, 2단주차기, 기계식주차기, 카리프트) */}
                 <FormRow>
                   <FormCell title={'옥내주차장'} titleColSpan={2}>
@@ -91,7 +91,7 @@ const Ltpz043 = () => {
                       errorPs="bl"
                       onChange={(e) => setFormField('type01', e.target.value)}
                       value={form.type01}
-                      width={100}
+                      width={60}
                       commaAmount
                       readOnly={!parkingInputEnabled.indoor}
                     />
@@ -102,14 +102,14 @@ const Ltpz043 = () => {
                       errorPs="bl"
                       onChange={(e) => setFormField('type02', e.target.value)}
                       value={form.type02}
-                      width={100}
+                      width={60}
                       commaAmount
                       readOnly={!parkingInputEnabled.indoor}
                     />
                     평
                   </FormCell>
                   <FormCell title={null}>
-                    <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
+                    <Input onChange={() => {}} value={'10,000,000'} width={100} commaAmount readOnly />원
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -130,14 +130,14 @@ const Ltpz043 = () => {
                       errorPs="bl"
                       onChange={(e) => setFormField('type03', e.target.value)}
                       value={form.type03}
-                      width={100}
+                      width={60}
                       commaAmount
                       readOnly={!parkingInputEnabled.twoStage}
                     />
                     대
                   </FormCell>
                   <FormCell title={null}>
-                    <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
+                    <Input onChange={() => {}} value={'10,000,000'} width={100} commaAmount readOnly />원
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -158,14 +158,14 @@ const Ltpz043 = () => {
                       errorPs="bl"
                       onChange={(e) => setFormField('type04', e.target.value)}
                       value={form.type04}
-                      width={100}
+                      width={60}
                       commaAmount
                       readOnly={!parkingInputEnabled.mechanical}
                     />
                     대
                   </FormCell>
                   <FormCell title={null}>
-                    <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
+                    <Input onChange={() => {}} value={'10,000,000'} width={100} commaAmount readOnly />원
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -186,23 +186,23 @@ const Ltpz043 = () => {
                       errorPs="bl"
                       onChange={(e) => setFormField('type05', e.target.value)}
                       value={form.type05}
-                      width={100}
+                      width={60}
                       commaAmount
                       readOnly={!parkingInputEnabled.carLift}
                     />
                     대
                   </FormCell>
                   <FormCell title={null}>
-                    <Input onChange={() => {}} value={'10,000,000'} width={120} commaAmount readOnly />원
+                    <Input onChange={() => {}} value={'10,000,000'} width={100} commaAmount readOnly />원
                   </FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title={'보상한도'} titleRowSpan={2} tdNone={true}></FormCell>
-                  <FormCell title={'대인보상'}>
+                  <FormCell title={'대인보상'} colSpan={2}>
                     (1사고당)
                     <NativeSelect
                       aria-label="선택"
-                      width={100}
+                      width={80}
                       value={form.type06}
                       required
                       onChange={(e) => setFormField('type06', e.target.value)}
@@ -217,7 +217,7 @@ const Ltpz043 = () => {
                       ))}
                     </NativeSelect>
                     (1인장)
-                    <Input onChange={() => {}} size="lg" value={''} variant="default" width={100} readOnly />
+                    <Input onChange={() => {}} size="lg" value={''} variant="default" width={60} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -225,7 +225,7 @@ const Ltpz043 = () => {
                     (1사고당)
                     <NativeSelect
                       aria-label="선택"
-                      width={100}
+                      width={80}
                       value={form.type07}
                       required
                       onChange={(e) => setFormField('type07', e.target.value)}
@@ -245,7 +245,7 @@ const Ltpz043 = () => {
                   <FormCell title={'공제금액'} titleColSpan={2} colSpan={2}>
                     <NativeSelect
                       aria-label="선택"
-                      width={100}
+                      width={80}
                       value={form.type08}
                       required
                       onChange={(e) => setFormField('type08', e.target.value)}

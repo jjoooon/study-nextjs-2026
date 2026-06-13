@@ -3,10 +3,10 @@
  */
 'use client';
 
+import * as React from 'react';
 import { Grow } from '@atoms';
 import { Button } from '@uiux/Button';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import * as React from 'react';
 
 type TextSelectChangeItem = {
   checked: boolean;
@@ -34,16 +34,20 @@ export function TextSelectChange({ items }: { items: TextSelectChangeItem[][] })
   };
 
   return (
-    <Grow className="gap-1.5 [&_[data-slot='native-select-wrapper']:has(select:disabled)]:opacity-100!">
+    <Grow
+      className={`${disabled ? 'gap-1.5' : 'gap-1'} [&_[data-slot=native-select-wrapper]:has(select:disabled)]:opacity-100!' : ''}`}
+    >
       {items.map((group, groupIndex) => (
         <React.Fragment key={groupIndex}>
-          {groupIndex !== 0 && '·'}
+          {groupIndex !== 0 && disabled && '·'}
           <NativeSelect
             variant={disabled ? 'text' : 'default'}
             aria-label=""
+            size="sm"
             disabled={disabled}
             value={disabled ? values[groupIndex] : pendingValues[groupIndex]}
             onChange={(e) => handleChange(groupIndex, e.target.value)}
+            className={disabled ? '' : '[&_select]:inline-flex [&_select]:w-auto'} // disabled 상태에서도 스타일은 유지
           >
             {group.map((option) => (
               <NativeSelectOption key={option.value} value={option.value}>

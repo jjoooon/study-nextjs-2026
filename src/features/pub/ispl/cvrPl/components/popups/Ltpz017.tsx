@@ -4,12 +4,17 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createCellValueChangedHandler, createTooltipValueGetter } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { SearchIcon } from '@icons';
+import {
+  AgGridEmptyComponent,
+  createCellValueChangedHandler,
+  createTooltipValueGetter,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -22,9 +27,9 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -78,38 +83,44 @@ const Ltpz017 = () => {
     );
   };
 
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '순번',
-      field: 'id',
-      width: 50,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '회사플랜명',
-      field: 'planName',
-      flex: 6,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'planName' }),
-    },
-    {
-      headerName: '나만의플랜명',
-      field: 'myPlanName',
-      flex: 2,
-    },
-    {
-      headerName: '등록일자',
-      field: 'registrationDate',
-      width: 80,
-      cellClass: 'text-center',
-    },
-    {
-      headerName: '적용대상',
-      field: 'target',
-      flex: 1,
-      cellClass: 'text-center',
-      cellRenderer: attributeRenderer,
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+    () => [
+      {
+        headerName: '순번',
+        field: 'id',
+        width: attributeColumnWidth(40),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '회사플랜명',
+        field: 'planName',
+        flex: 5,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'planName' }),
+      },
+      {
+        headerName: '나만의플랜명',
+        field: 'myPlanName',
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
+      },
+      {
+        headerName: '등록일자',
+        field: 'registrationDate',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-center',
+      },
+      {
+        headerName: '적용대상',
+        field: 'target',
+        width: attributeColumnWidth(50),
+        cellClass: 'text-center',
+        cellRenderer: attributeRenderer,
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
@@ -121,7 +132,7 @@ const Ltpz017 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="ml">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>

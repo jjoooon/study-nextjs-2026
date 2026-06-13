@@ -4,9 +4,13 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent } from '@aggrid';
+
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+
+import { useMemo, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,9 +23,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 type DummyDataType = {
   id: number;
@@ -72,72 +74,83 @@ const Ltpz044 = () => {
     return Number.isNaN(parsed) ? '' : parsed.toLocaleString();
   };
 
-  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
-    {
-      headerName: '구문',
-      field: 'field01',
-      width: 70,
-      cellClass: 'text-center bg-[var(--color-gray-5)]',
-      autoHeight: true,
-      cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
-        <Typo tag="b" variant="body-md">
-          {_params.value}
-        </Typo>
-      ),
-    },
-    {
-      headerName: '납입회차',
-      field: 'field02',
-      width: 70,
-      cellClass: 'text-center flex',
-      editable: false,
-    },
-    {
-      headerName: '보장P (일시납외)',
-      field: 'field03',
-      width: 120,
-      cellClass: 'text-right',
-      editable: false,
-      valueParser: (params) => parseNumericValue(params.newValue),
-      valueFormatter: (params) => formatNumericValue(params.value),
-    },
-    {
-      headerName: '보장P (일시납)',
-      field: 'field04',
-      width: 90,
-      cellClass: 'text-right',
-      editable: false,
-      valueParser: (params) => parseNumericValue(params.newValue),
-      valueFormatter: (params) => formatNumericValue(params.value),
-    },
-    {
-      headerName: '적립P',
-      field: 'field05',
-      width: 80,
-      cellClass: 'text-right',
-      editable: false,
-      valueParser: (params) => parseNumericValue(params.newValue),
-      valueFormatter: (params) => formatNumericValue(params.value),
-    },
-    {
-      headerName: '합계보험료',
-      field: 'field06',
-      width: 90,
-      cellClass: 'text-right',
-      editable: false,
-      valueParser: (params) => parseNumericValue(params.newValue),
-      valueFormatter: (params) => formatNumericValue(params.value),
-    },
-    {
-      headerName: '합계보험료(=적용보험료)',
-      field: 'field07',
-      flex: 1,
-      cellClass: 'text-right',
-      editable: false,
-      valueParser: (params) => parseNumericValue(params.newValue),
-      valueFormatter: (params) => formatNumericValue(params.value),
-    },
-  ];
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+  const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
+    () => [
+      {
+        headerName: '구문',
+        field: 'field01',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        cellClass: 'text-center bg-[var(--color-gray-5)]',
+        autoHeight: true,
+        cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
+          <Typo tag="b" variant="body-md">
+            {_params.value}
+          </Typo>
+        ),
+      },
+      {
+        headerName: '납입회차',
+        field: 'field02',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
+        cellClass: 'text-center flex',
+        editable: false,
+      },
+      {
+        headerName: '보장P (일시납외)',
+        field: 'field03',
+        flex: 1,
+        minWidth: attributeColumnWidth(120),
+        cellClass: 'text-right',
+        editable: false,
+        valueParser: (params) => parseNumericValue(params.newValue),
+        valueFormatter: (params) => formatNumericValue(params.value),
+      },
+      {
+        headerName: '보장P (일시납)',
+        field: 'field04',
+        flex: 1,
+        minWidth: attributeColumnWidth(90),
+        cellClass: 'text-right',
+        editable: false,
+        valueParser: (params) => parseNumericValue(params.newValue),
+        valueFormatter: (params) => formatNumericValue(params.value),
+      },
+      {
+        headerName: '적립P',
+        field: 'field05',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'text-right',
+        editable: false,
+        valueParser: (params) => parseNumericValue(params.newValue),
+        valueFormatter: (params) => formatNumericValue(params.value),
+      },
+      {
+        headerName: '합계보험료',
+        field: 'field06',
+        flex: 1,
+        minWidth: attributeColumnWidth(90),
+        cellClass: 'text-right',
+        editable: false,
+        valueParser: (params) => parseNumericValue(params.newValue),
+        valueFormatter: (params) => formatNumericValue(params.value),
+      },
+      {
+        headerName: '합계보험료(=적용보험료)',
+        field: 'field07',
+        flex: 2,
+        minWidth: attributeColumnWidth(90),
+        cellClass: 'text-right',
+        editable: false,
+        valueParser: (params) => parseNumericValue(params.newValue),
+        valueFormatter: (params) => formatNumericValue(params.value),
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   const [rowData] = useState<DummyDataType[]>(DummyData);
 
