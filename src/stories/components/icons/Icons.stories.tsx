@@ -43,6 +43,7 @@ export const AllIcons: Story = {
   },
   render: (args) => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, background: '#f5f5f5', padding: 32, borderRadius: 12 }}>
+      {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
       {iconList.map(([name, Icon]) => (
         <div
           key={name}

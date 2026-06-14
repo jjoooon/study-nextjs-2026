@@ -131,7 +131,7 @@ const Ltpz080 = () => {
   );
 
   const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
-  const gridRef = React.useRef<any>(null);
+  const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
     allRows: rowData1,

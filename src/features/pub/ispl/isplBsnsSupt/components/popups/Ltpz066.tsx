@@ -148,7 +148,7 @@ const Ltpz066 = () => {
         cellEditorParams: { values: ['1백만원', '2백만원', '3백만원', '4백만원', '5백만원'] },
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, selectCellRenderer]
   );
 
   const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(

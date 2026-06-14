@@ -118,10 +118,12 @@ const TargetCellEditor = React.forwardRef<TargetCellEditorRef, ICellEditorParams
 
   React.useEffect(() => {
     const initialValue = String(props.data?.searchInputValue ?? '');
-
-    setValue(initialValue);
+    // Sync refs
     valueRef.current = initialValue;
     isSearchConfirmedRef.current = false;
+    // Defer state update to avoid synchronous setState in effect
+    const timeout = setTimeout(() => setValue(initialValue), 0);
+    return () => clearTimeout(timeout);
   }, [props.data?.searchInputValue]);
 
   React.useImperativeHandle(
