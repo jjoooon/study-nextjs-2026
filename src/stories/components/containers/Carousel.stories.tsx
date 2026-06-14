@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol, Grow } from '@atoms';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@uiux/Carousel';
+ */ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
+import { Gcol, Grow } from '@atoms';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@uiux/Carousel';
 
 const slides = [
   'Slide 1',
@@ -130,7 +130,7 @@ import {
               <tbody>
                 <tr>
                   <td>orientation</td>
-                  <td>'horizontal' | 'vertical'</td>
+                  <td>&apos;horizontal&apos; | &apos;vertical&apos;</td>
                   <td>슬라이드 방향</td>
                 </tr>
                 <tr>

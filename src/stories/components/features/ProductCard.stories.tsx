@@ -1,13 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol } from '@atoms';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+ */
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
-
 import { ProductCard } from '@/shared/components/features/ProductCard';
-
 import type { ProductCardProps } from '@/shared/components/features/ProductCard';
+import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
+import { Gcol } from '@atoms';
 
 const meta: Meta<ProductCardProps> = {
   title: 'Components/Features/ProductCard',
@@ -17,23 +16,15 @@ const meta: Meta<ProductCardProps> = {
     layout: 'centered',
     docs: {
       page: () => (
-        <>
-          <Title />
-          <br />
-          <h2>Overview</h2>
-          <p>
-            보험 상품 목록에서 사용되는 카드 아이템 컴포넌트입니다.
-            <br />
-            오른쪽 상단 <code>FlagCheckDoutoneIcon</code>에 순위 번호를 표시하고, 인수가능/불가 배지, 체크박스, 상품
-            특징 불릿 리스트, 추천화법 버튼을 제공합니다.
-          </p>
-          <Primary />
-          <Controls />
-          <h2>Usage</h2>
-          <Markdown>
-            {`
-\`\`\`tsx
-import { InsuranceProductCard } from '@features/InsuranceProductCard';
+        <StoryDocTemplate
+          title="ProductCard"
+          history={[
+            '2026.03.30 - 컴포넌트 최초 생성',
+            '2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화 (StoryDocTemplate 적용)',
+          ]}
+          overview={`보험 상품 목록에서 사용되는 카드 아이템 컴포넌트입니다.
+오른쪽 상단 FlagCheckDoutoneIcon에 순위 번호를 표시하고, 인수가능/불가 배지, 체크박스, 상품 특징 불릿 리스트, 추천화법 버튼을 제공합니다.`}
+          usageCode={`import { ProductCard } from '@/shared/components/features/ProductCard';
 
 <ProductCard
   rank={1}
@@ -47,79 +38,79 @@ import { InsuranceProductCard } from '@features/InsuranceProductCard';
   ]}
   status="accept"
   onChatClick={() => console.log('추천화법 클릭')}
-/>
-\`\`\`
-            `}
-          </Markdown>
-          <h2>API Reference</h2>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                <th>prop</th>
-                <th>타입/옵션</th>
-                <th>설명</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>rank</td>
-                <td>number</td>
-                <td>오른쪽 상단 플래그에 표시할 순위 (01, 02…)</td>
-              </tr>
-              <tr>
-                <td>title</td>
-                <td>string</td>
-                <td>상품명</td>
-              </tr>
-              <tr>
-                <td>subtitle</td>
-                <td>string</td>
-                <td>납입 유형 등 부제목 설명</td>
-              </tr>
-              <tr>
-                <td>features</td>
-                <td>string[]</td>
-                <td>상품 특징 불릿 리스트 항목</td>
-              </tr>
-              <tr>
-                <td>status</td>
-                <td>{"'accept' | 'reject'"}</td>
-                <td>인수 가능 여부</td>
-              </tr>
-              <tr>
-                <td>checked</td>
-                <td>boolean</td>
-                <td>체크박스 선택 상태</td>
-              </tr>
-              <tr>
-                <td>onCheckedChange</td>
-                <td>{'(checked: boolean) => void'}</td>
-                <td>체크박스 변경 핸들러</td>
-              </tr>
-              <tr>
-                <td>onChatClick</td>
-                <td>{'() => void'}</td>
-                <td>추천화법 버튼 클릭 핸들러</td>
-              </tr>
-            </tbody>
-          </table>
-        </>
+/>`}
+          apiReference={[
+            {
+              prop: 'rank',
+              type: 'number',
+              description: '오른쪽 상단 플래그에 표시할 순위 (01, 02…)',
+            },
+            {
+              prop: 'title',
+              type: 'string',
+              description: '상품명',
+            },
+            {
+              prop: 'subtitle',
+              type: 'string',
+              description: '납입 유형 등 부제목 설명',
+            },
+            {
+              prop: 'features',
+              type: 'string[]',
+              description: '상품 특징 불릿 리스트 항목',
+            },
+            {
+              prop: 'status',
+              type: "'accept' | 'reject'",
+              description: '인수 가능 여부',
+            },
+            {
+              prop: 'checked',
+              type: 'boolean',
+              description: '체크박스 선택 상태',
+            },
+            {
+              prop: 'onCheckedChange',
+              type: '(checked: boolean) => void',
+              description: '체크박스 변경 핸들러',
+            },
+            {
+              prop: 'onChatClick',
+              type: '() => void',
+              description: '추천화법 버튼 클릭 핸들러',
+            },
+            {
+              prop: 'className',
+              type: 'string',
+              description: '추가 적용할 CSS 클래스명',
+            },
+            {
+              prop: 'bgColor',
+              type: 'string',
+              description: '카드 배경색 클래스 (Tailwind bg 클래스 형식)',
+            },
+          ]}
+        />
       ),
     },
   },
   argTypes: {
-    rank: { control: { type: 'number', min: 1, max: 99 }, description: '순위 번호' },
-    title: { control: 'text', description: '상품명' },
-    subtitle: { control: 'text', description: '부제목' },
+    rank: { control: { type: 'number', min: 1, max: 99 }, description: '순위 번호', table: { category: 'Appearance' } },
+    title: { control: 'text', description: '상품명', table: { category: 'Content' } },
+    subtitle: { control: 'text', description: '부제목', table: { category: 'Content' } },
     status: {
       control: 'select',
       options: ['accept', 'reject'],
       description: '인수 가능 여부',
+      table: { category: 'State' },
     },
-    checked: { control: 'boolean', description: '체크박스 상태' },
-    features: { table: { disable: true } },
-    onCheckedChange: { action: 'checkedChange' },
-    onChatClick: { action: 'chatClicked' },
+    checked: { control: 'boolean', description: '체크박스 상태', table: { category: 'State' } },
+    features: { control: 'object', description: '상품 특징 불릿 리스트 항목', table: { category: 'Content' } },
+    onCheckedChange: { action: 'checkedChange', description: '체크 변경 이벤트', table: { category: 'Events' } },
+    onChatClick: { action: 'chatClicked', description: '추천화법 클릭 이벤트', table: { category: 'Events' } },
+    className: { control: 'text', description: 'CSS 클래스명', table: { category: 'Appearance' } },
+    bgColor: { control: 'text', description: '카드 배경색', table: { category: 'Appearance' } },
   },
   args: {
     rank: 1,
@@ -234,7 +225,11 @@ export const List: Story = {
     const toggle = (idx: number) => {
       setCheckedSet((prev) => {
         const next = new Set(prev);
-        next.has(idx) ? next.delete(idx) : next.add(idx);
+        if (next.has(idx)) {
+          next.delete(idx);
+        } else {
+          next.add(idx);
+        }
         return next;
       });
     };

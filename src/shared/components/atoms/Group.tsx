@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Typo } from '@atoms';
 import type { CSSProperties, KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXposition } from '@/shared/types/uiTypes';
+import { Typo } from '@atoms';
 
 /**
  * Group 계열 컴포넌트에서 허용하는 정렬 포지션 집합.
@@ -71,12 +71,39 @@ type Variant =
  * - `onClick`이 있으면 접근성 가능한 클릭 블록으로 동작
  */
 interface GroupProps {
+  /**
+   * 그룹 내부에 들어갈 자식 노드
+   */
   children?: ReactNode;
+  /**
+   * 정렬 배치 옵션 (주축 정렬 + 교차축 정렬)
+   * - 첫 글자: 주축 정렬 (s: start, c: center, e: end, bw: between, ar: around, ev: evenly)
+   * - 둘째 글자: 교차축 정렬 (s: start, c: center, e: end)
+   * @default 'cc'
+   */
   placement?: LayoutPlacement;
+  /**
+   * 시각적 스타일 프리셋 (여백, 배경색, 테두리 등)
+   * @default 'default'
+   */
   variant?: Variant;
+  /**
+   * 아이템 사이의 간격 (gap)
+   * @default 1
+   */
   gap?: number | string;
+  /**
+   * 추가적인 CSS 클래스명
+   */
   className?: string;
+  /**
+   * 클릭 시 동작할 이벤트 핸들러.
+   * 이 핸들러가 전달되면 컴포넌트는 HTML `role="button"`과 `tabIndex={0}`, 키보드 이벤트 대응(Enter/Space)을 자동으로 갖추어 웹 접근성을 지원합니다.
+   */
   onClick?: MouseEventHandler<HTMLDivElement>;
+  /**
+   * 커스텀 인라인 스타일 객체
+   */
   style?: CSSProperties;
 }
 
@@ -320,12 +347,31 @@ export const Separator = ({ children, style, onClick }: GroupProps) => {
 
 /** Divider 전용 props */
 interface DividerProps {
-  /** 선형(default) 또는 점형(dot) 구분 */
+  /**
+   * 구분선 형태 변형
+   * - default: 실선 구분선
+   * - dot: 원형 점 구분선
+   * @default 'default'
+   */
   variant?: 'default' | 'dot';
+  /**
+   * 추가적인 CSS 클래스명
+   */
   className?: string;
-  /** 선 방향: 세로(col) / 가로(row) */
+  /**
+   * 구분선 방향
+   * - col: 세로 방향 구분선
+   * - row: 가로 방향 구분선
+   * @default 'col'
+   */
   dir?: 'col' | 'row';
-  /** 색상 토큰 */
+  /**
+   * 색상 테마 옵션
+   * - gray: 기본 회색 (var(--color-gray-15))
+   * - gray-light: 밝은 회색 (var(--color-gray-10))
+   * - gray-dark: 어두운 회색 (var(--color-gray-60))
+   * @default 'gray'
+   */
   color?: 'gray' | 'gray-light' | 'gray-dark';
 }
 /**

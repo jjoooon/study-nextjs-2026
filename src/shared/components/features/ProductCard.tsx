@@ -16,13 +16,13 @@
  * - 추천 화법 버튼
  */
 
+import { cn } from '@/shared/lib/shadcn/utils';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
 import { CircleCheckIcon, FlagCheckDoutoneIcon, SpeechBubbleIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import { cn } from '@/shared/lib/shadcn/utils';
+import { BulletList, BulletListItem } from '@common/BulletList';
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -43,8 +43,9 @@ export interface ProductCardProps {
   onCheckedChange?: (checked: boolean) => void;
   /** 추천화법 버튼 클릭 핸들러 */
   onChatClick?: () => void;
+  /** 추가 적용할 CSS 클래스명 */
   className?: string;
-  /** 카드 배경색 클래스 */
+  /** 카드 배경색 클래스 (Tailwind bg 클래스 형식) */
   bgColor?: string;
 }
 

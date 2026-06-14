@@ -43,10 +43,14 @@ export function DialogRenderer({ id, popupType, props }: DialogRendererProps) {
   // Registry에서 로더 조회 (메모이제이션으로 최적화)
   const loader = useMemo(() => getDialogLoader(popupType), [popupType]);
 
+  // 로더가 존재하지 않는 경우 에러 상태를 즉시 설정 (렌더 단계에서 동기화)
+  if (!loader && !error) {
+    setError(new Error(`Dialog not found: ${popupType}. Please register it in popup-registry.ts`));
+  }
+
   // 컴포넌트 동적 로드
   useEffect(() => {
     if (!loader) {
-      setError(new Error(`Dialog not found: ${popupType}. Please register it in popup-registry.ts`));
       return;
     }
 

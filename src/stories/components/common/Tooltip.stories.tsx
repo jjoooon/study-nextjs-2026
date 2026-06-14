@@ -1,12 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol, Grow } from '@atoms';
-import { TooltipQ } from '@common/TooltipQ';
+ */ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { Gcol, Grow } from '@atoms';
 import { QuestionMark } from '@icons';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { TooltipQ } from '@common/TooltipQ';
 
 const meta: Meta<typeof TooltipContent> = {
   title: 'Components/Common/Tooltip',
@@ -76,17 +76,17 @@ import { TooltipQ } from '@common/TooltipQ';
               <tbody>
                 <tr>
                   <td>variant</td>
-                  <td>'default' | 'dark' | 'light'</td>
+                  <td>&apos;default&apos; | &apos;dark&apos; | &apos;light&apos;</td>
                   <td>툴팁 색상 스타일</td>
                 </tr>
                 <tr>
                   <td>side</td>
-                  <td>'top' | 'right' | 'bottom' | 'left'</td>
+                  <td>&apos;top&apos; | &apos;right&apos; | &apos;bottom&apos; | &apos;left&apos;</td>
                   <td>트리거 기준 표시 위치</td>
                 </tr>
                 <tr>
                   <td>align</td>
-                  <td>'start' | 'center' | 'end'</td>
+                  <td>&apos;start&apos; | &apos;center&apos; | &apos;end&apos;</td>
                   <td>트리거 기준 정렬 방향</td>
                 </tr>
                 <tr>

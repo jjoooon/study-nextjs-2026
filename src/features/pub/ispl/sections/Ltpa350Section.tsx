@@ -4,6 +4,10 @@
 'use client';
 
 // ag-grid 연동 유틸 훅: 우측 aside 접힘 상태를 전역 그리드 레이아웃 상태와 동기화할 때 사용
+import { useState } from 'react';
+import type { ReactNode } from 'react';
+import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
+import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 import { useAsideToggleState } from '@aggrid';
 
 // 하단 고정 액션 바(저장/다음 등 공통 액션 영역)
@@ -30,9 +34,6 @@ import { TaskStatusBoard } from '@features/TaskStatusBoard';
 // LTPA350 전용 페이지 레이아웃 템플릿(상단/본체/aside/하단 구조를 props로 조립)
 import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 
-import { useState } from 'react';
-import type { ReactNode } from 'react';
-
 // 단계별 aside 상세 컴포넌트(심사요청/알릴사항/공통 요약)
 import { Ltpa35003Side } from '../../shared/components/Ltpa35003Side'; //사이드 3.알림사항
 import { Ltpa35004Side } from '../../shared/components/Ltpa35004Side'; //사이드 4.심사요청
@@ -52,8 +53,6 @@ import { Ltpa35003 } from '../ncMtt/components/Ltpa35003'; // 03. 알림사항
 import { Ltpa35004 } from '../udRqRst/components/Ltpa35004'; // 04. 심사요청
 
 // 공통 페이지 shell 상/하단 슬롯 + URL query 기반 step 동기화 훅
-import { LayoutFoot, LayoutHead } from '@/shared/components/layout/BaseLayout';
-import { useStepFromQuery } from '@/shared/hooks/useStepFromQuery';
 
 // 퍼블 확인용 뷰키 타입 (Step1/Step2와 동일하게 맞춤)
 type ViewKey = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';

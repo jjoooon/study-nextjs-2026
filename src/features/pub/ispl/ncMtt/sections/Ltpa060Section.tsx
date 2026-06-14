@@ -8,7 +8,12 @@ import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo } from '@atoms';
-import { AgGridEmptyComponent, createCellValueChangedHandler, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createCellValueChangedHandler,
+  useDynamicColumnWidths,
+  createTooltipValueGetter,
+} from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { BottomBar } from '@common/BottomBar';
@@ -301,7 +306,7 @@ export default function Ltpa060Section() {
       ),
     },
   ];
-  
+
   // Tab2: 자동고지(심평원) 테이블 컬럼
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
@@ -435,16 +440,16 @@ export default function Ltpa060Section() {
                           onCellValueChanged={onCellValueChanged}
                           // ag-Grid 기본 설정
                           defaultColDef={{
-                            sortable: true,  // 컬럼 정렬 가능
-                            resizable: true,  // 컬럼 너비 조절 가능
-                            cellClass: 'text-center',  // 중앙 정렬
+                            sortable: true, // 컬럼 정렬 가능
+                            resizable: true, // 컬럼 너비 조절 가능
+                            cellClass: 'text-center', // 중앙 정렬
                           }}
                           // 다중행 선택 모드 (고지 상태 행 제외)
                           rowSelection={{
                             mode: 'multiRow',
-                            isRowSelectable: (node) => node.data?.field8 !== '고지',  // '고지' 상태 행은 선택 불가
-                            checkboxes: true,  // 체크박스 표시
-                            enableClickSelection: false,  // 행 클릭으로 선택 안됨
+                            isRowSelectable: (node) => node.data?.field8 !== '고지', // '고지' 상태 행은 선택 불가
+                            checkboxes: true, // 체크박스 표시
+                            enableClickSelection: false, // 행 클릭으로 선택 안됨
                           }}
                           // 그리드 초기화 후 체크 상태 복원
                           onGridReady={(params) => {

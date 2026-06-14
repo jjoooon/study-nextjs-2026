@@ -34,7 +34,6 @@
  * });
  */
 
-import { getStore } from '../globalRegistry';
 import {
   addPopup,
   registerPopupCallbacks,
@@ -43,6 +42,7 @@ import {
   getPopupCallbacks,
   type PopupCallbacksExtended,
 } from '@/shared/store/popupSlice';
+import { getStore } from '../globalRegistry';
 
 // ============================================================================
 // TYPES & CONSTANTS

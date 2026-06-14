@@ -4,23 +4,23 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grid, Grow } from '@atoms';
+import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
+import { useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
-import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { useFormFields } from '@hooks/useFormFields';
 
 type Ltpa300DummyDataRow = {
   id: number;
@@ -174,30 +174,19 @@ export default function Ltpa300Section() {
   // 2026-06-04 flex, minWidth 수정
   const columnDefs = React.useMemo<ColDef<Ltpa300DummyDataRow>[]>(
     () => [
-      { 
-        headerName: '취급기관', 
-        field: 'field01', 
-        flex: 2, 
-        minWidth: attributeColumnWidth(120), 
+      {
+        headerName: '취급기관',
+        field: 'field01',
+        flex: 2,
+        minWidth: attributeColumnWidth(120),
       },
-      { headerName: '모집직원번호', 
-        field: 'field02', 
-        flex: 1, 
-        minWidth: attributeColumnWidth(90), 
-      },
-      { headerName: '모집직원', 
-        field: 'field03', 
-        width: attributeColumnWidth(75), 
-      },
-      { headerName: '사용인번호', 
-        field: 'field04', 
-        flex: 1, 
-        minWidth: attributeColumnWidth(90), 
-      },
-      { 
-        headerName: '사용인', 
-        field: 'field05', 
-        width: attributeColumnWidth(75), 
+      { headerName: '모집직원번호', field: 'field02', flex: 1, minWidth: attributeColumnWidth(90) },
+      { headerName: '모집직원', field: 'field03', width: attributeColumnWidth(75) },
+      { headerName: '사용인번호', field: 'field04', flex: 1, minWidth: attributeColumnWidth(90) },
+      {
+        headerName: '사용인',
+        field: 'field05',
+        width: attributeColumnWidth(75),
       },
       {
         headerName: '증권번호',
@@ -205,50 +194,47 @@ export default function Ltpa300Section() {
         flex: 1,
         minWidth: attributeColumnWidth(130),
       },
-      { 
-        headerName: '점검설계번호', 
-        field: 'field07', 
-        flex: 1, 
-        minWidth: attributeColumnWidth(90), 
+      {
+        headerName: '점검설계번호',
+        field: 'field07',
+        flex: 1,
+        minWidth: attributeColumnWidth(90),
       },
-      { 
-        headerName: '점검', 
-        field: 'field08', 
-        flex: 1, 
-        minWidth: attributeColumnWidth(110), 
+      {
+        headerName: '점검',
+        field: 'field08',
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
       },
       {
         headerName: '피보험자명',
         field: 'field09',
         width: attributeColumnWidth(75),
       },
-      { headerName: '점검일자', 
-        field: 'field10', 
-        width: attributeColumnWidth(90), 
+      { headerName: '점검일자', field: 'field10', width: attributeColumnWidth(90) },
+      {
+        headerName: '점검순번',
+        field: 'field11',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
       },
-      { 
-        headerName: '점검순번', 
-        field: 'field11', 
-        flex: 1, 
-        minWidth: attributeColumnWidth(80), 
+      {
+        headerName: '사전예외사용여부',
+        field: 'field12',
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
       },
-      { 
-        headerName: '사전예외사용여부', 
-        field: 'field12', 
-        flex: 1, 
-        minWidth: attributeColumnWidth(110), 
+      {
+        headerName: '점검방법',
+        field: 'field13',
+        flex: 1,
+        minWidth: attributeColumnWidth(70),
       },
-      { 
-        headerName: '점검방법', 
-        field: 'field13', 
-        flex: 1, 
-        minWidth: attributeColumnWidth(70), 
-      },
-      { 
-        headerName: '한도초과건수', 
-        field: 'field14', 
-        flex: 1, 
-        minWidth: attributeColumnWidth(80), 
+      {
+        headerName: '한도초과건수',
+        field: 'field14',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
       },
     ],
     [attributeColumnWidth]

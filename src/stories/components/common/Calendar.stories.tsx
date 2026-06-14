@@ -1,11 +1,11 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol, Grow } from '@atoms';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Calendar } from '@uiux/Calendar';
+ */ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
 import { DateRange } from 'react-day-picker';
+import { Gcol, Grow } from '@atoms';
+import { Calendar } from '@uiux/Calendar';
 
 function ModesPreview() {
   const [singleDate, setSingleDate] = React.useState<Date | undefined>(new Date());
@@ -126,7 +126,7 @@ const [date, setDate] = useState<Date | undefined>(new Date());
               <tbody>
                 <tr>
                   <td>mode</td>
-                  <td>'single' | 'multiple' | 'range' | 'default'</td>
+                  <td>&apos;single&apos; | &apos;multiple&apos; | &apos;range&apos; | &apos;default&apos;</td>
                   <td>날짜 선택 모드</td>
                 </tr>
                 <tr>

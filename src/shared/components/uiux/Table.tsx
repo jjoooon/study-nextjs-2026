@@ -10,6 +10,11 @@ import { cn } from '@/shared/lib/shadcn/utils';
 type TableVariant = 'default' | 'sub' | 'message';
 
 interface TableProps extends React.ComponentProps<'table'> {
+  /** 테이블 디자인 스타일 테마 변형 ('default' | 'sub' | 'message')
+   * - 'default': 기본형, 상단 2px 검정 구분선
+   * - 'message': 메시지용, 상단 2px 갈색 구분선
+   * - 'sub': 서브 보조형, 전체 테두리 박스 형태
+   */
   variant?: TableVariant;
 }
 

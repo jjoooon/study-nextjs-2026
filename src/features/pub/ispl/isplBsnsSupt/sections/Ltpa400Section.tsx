@@ -3,8 +3,17 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Grid, Gcol } from '@atoms';
+import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -12,18 +21,9 @@ import { TabPager } from '@common/TabPager';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { useFormFields } from '@hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -493,7 +493,7 @@ export default function Ltpa400Section() {
                         </Button>
                         <Input aria-label="" width={200} value={'신부산지점GA지점'} readOnly />
                       </FormCell>
-                      <FormCell title={'설계일자'}> 
+                      <FormCell title={'설계일자'}>
                         <DatePickerInput
                           mode="range"
                           onChange={() => {}}

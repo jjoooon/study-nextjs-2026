@@ -4,23 +4,23 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { SearchIcon, ResetIcon, ArrowNext } from '@icons';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Textarea } from '@uiux/Textarea';
 import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { SearchIcon, ResetIcon, ArrowNext } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Textarea } from '@uiux/Textarea';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
 
 type Ltpa301DummyDataRow = {
   id: number;
@@ -218,7 +218,7 @@ export default function Ltpa301Section() {
                 </Button>
               </Grow>
             </Grow>
-            { /* 정액담보점검내역 FormTable */ }
+            {/* 정액담보점검내역 FormTable */}
             <Grid className="w-full grid-rows-[auto_auto_auto]" gap={3}>
               <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검내역" />
@@ -290,7 +290,7 @@ export default function Ltpa301Section() {
                   </div>
                 </TableFoldBody>
               </TableFold>
-              { /* 정액담보점검 관리 Table */ }
+              {/* 정액담보점검 관리 Table */}
               <TableFold variant={'accordion'} className="grid grid-rows-[auto_auto]">
                 <TableFoldHead title="정액담보점검 관리">
                   <Grow className="w-full justify-end" placement="ee">

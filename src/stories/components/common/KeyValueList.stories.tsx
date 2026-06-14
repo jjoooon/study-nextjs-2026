@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { KeyValueList } from '@common/KeyValueList';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+ */ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
+import { KeyValueList } from '@common/KeyValueList';
 
 type KeyValueListStoryProps = React.ComponentProps<typeof KeyValueList>;
 

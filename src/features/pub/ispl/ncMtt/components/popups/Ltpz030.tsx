@@ -190,7 +190,7 @@ const getUnderwritingDecision = (value: string | number) => {
 // ===== 컴포넌트 시작 =====
 const Ltpz030 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths(); // 화면 크기에 따라 컬럼 너비를 동적으로 조정
-  
+
   // ===== ag-Grid 컬럼 정의 =====
   // Tab1 테이블의 컬럼 설정 (분류, 고지유형, 가능여부, 제한담보, 비고)
   /* 2026.05.28 className 추가 */
@@ -218,7 +218,8 @@ const Ltpz030 = () => {
         minWidth: attributeColumnWidth(100),
         autoHeight: true,
         editable: false,
-        cellRenderer: ({ value }: { value: string | number | null | undefined }) => { // 인수 결정 상태를 아이콘과 라벨로 표시하는 렌더러
+        cellRenderer: ({ value }: { value: string | number | null | undefined }) => {
+          // 인수 결정 상태를 아이콘과 라벨로 표시하는 렌더러
           const decision = getUnderwritingDecision(value ?? '');
 
           if (!decision) {

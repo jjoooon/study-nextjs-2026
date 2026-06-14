@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { createCellValueChangedHandler } from '@aggrid';
-import {
+ */ import {
   Title,
   Subtitle,
   Description,
@@ -12,12 +12,13 @@ import {
   Markdown,
   Unstyled,
 } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { createCellValueChangedHandler } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
 
@@ -87,13 +88,18 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
                   <b>1. 행 전체에 적용</b>:<br />
                   <code>striped-row-gray</code>를 사용해 홀수/짝수 행에 클래스를 부여하고, CSS에서 배경색을 지정합니다.
                   <br />
-                  (예: <code>&lt;div className="ag-theme-alpine aggrid-pagination-ko striped-row-gray"&gt;</code>)
+                  (예:{' '}
+                  <code>&lt;div className=&quot;ag-theme-alpine aggrid-pagination-ko striped-row-gray&quot;&gt;</code>)
                 </li>
                 <li>
                   <b>2. 셀 단위로 적용</b>:<br />
                   <code>cellClassRules</code>를 사용해 특정 컬럼의 셀에만 홀수/짝수 행 배경색을 지정할 수 있습니다.
                   <br />
-                  (예: <code>cellClassRules: &#123;'bg-gray': params =&gt; params.node.rowIndex % 2 === 1&#125;</code>)
+                  (예:{' '}
+                  <code>
+                    cellClassRules: &#123;&apos;bg-gray&apos;: params =&gt; params.node.rowIndex % 2 === 1&#125;
+                  </code>
+                  )
                 </li>
               </ul>
               <br />

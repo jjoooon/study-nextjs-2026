@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { LayoutDoc } from '@layout/BaseLayout';
-import { Button } from '@uiux/Button';
 import * as React from 'react';
 import { Ltpa120 } from '@/features/pub/shared/components/popups/Ltpa120';
+import { Button } from '@uiux/Button';
+import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
   title: 'app/shared/components/popups/Ltpa120',

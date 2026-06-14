@@ -1,18 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */ // useState는 아래에서 React.useState로 사용하므로 별도 import 필요 없음
+import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow } from '@atoms';
+import { Button } from '@uiux/Button';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { TabPager } from '@common/TabPager';
 // import { Tabs, TabsList, TabsTrigger, TabsContent, TabsPanel, TabsLine } from '@uiux/Tabs';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@uiux/Button';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@uiux/HoverCard';
-import React from 'react';
-
-import { useTabs } from '@/shared/hooks/useTabs';
 
 const DATA_TABS_3 = [
   {
@@ -416,7 +416,7 @@ const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
               <tbody>
                 <tr>
                   <td>variant</td>
-                  <td>'default' | 'sub' | 'outlined' | 'box'</td>
+                  <td>&apos;default&apos; | &apos;sub&apos; | &apos;outlined&apos; | &apos;box&apos;</td>
                   <td>탭 스타일</td>
                 </tr>
                 <tr>

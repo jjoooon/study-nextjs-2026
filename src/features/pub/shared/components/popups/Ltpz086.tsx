@@ -4,10 +4,11 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, useDynamicColumnWidths, numberValueFormatter } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { AgGridEmptyComponent, useDynamicColumnWidths, numberValueFormatter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,9 +20,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 // dummy data
 type DummyDataType = {

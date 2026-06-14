@@ -1316,7 +1316,7 @@ export const FileImportIcon: React.FC<IconProps> = ({
   </svg>
 );
 
-export const StarIcon: React.FC<IconProps> = ({ className = '', size = 10, color = 'var(--color-secondary-50)' }) => (
+export const StarIcon: React.FC<IconProps> = ({ className = '', size = 10, color = 'currentColor' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={toRem(size)}

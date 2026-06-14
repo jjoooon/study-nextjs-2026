@@ -3,17 +3,13 @@
  */
 'use client';
 
-// datalist + popover 기능의 InputCombo 컴포넌트
-// 기존 Input 컴포넌트 활용
-
+import React, { useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import React, { useRef, useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import { cn } from '@/shared/lib/shadcn/utils';
 
-// 고유 ID 생성을 위한 유틸
 function getRandomId(prefix = 'inputcombo-') {
   return prefix + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 }
@@ -29,19 +25,50 @@ function isComboOptionItem<TValue>(opt: ComboOptionValue<TValue>): opt is ComboO
   return typeof opt === 'object' && opt !== null && 'value' in opt && 'label' in opt;
 }
 
+/**
+ * InputCombo 컴포넌트의 Props 인터페이스입니다.
+ */
 interface InputComboProps<TValue> extends Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange' | 'variant'> {
+  /** 자동완성에 노출할 옵션 목록 배열 (단순 값 배열 또는 { value, label } 형태 가능) */
   options: ComboOptionValue<TValue>[];
+  /** 현재 입력 필드의 값 */
   value: TValue | string;
+  /**
+   * 입력값이 변경되거나 팝오버에서 옵션이 선택되었을 때 호출되는 콜백 함수
+   * @param value 변경된 값
+   * @param option 선택된 옵션의 상세 객체 (텍스트 입력 시에는 생략됨)
+   */
   onChange: (value: TValue | string, option?: ComboOptionItem<TValue>) => void;
+  /**
+   * 컴포넌트의 스타일 형태
+   * - `default`: 일반 테이블 구조 팝오버 목록
+   * - `recommend`: 둥근 칩 버튼 그룹 형태 팝오버 목록
+   * @default 'default'
+   */
   variant?: 'default' | 'recommend';
+  /** 입력창이 포커스되고 글자가 있을 때 'X' 클리어 버튼을 노출시킬지 여부 */
   clear?: boolean;
+  /**
+   * 입력 필드의 크기
+   * - `lg`: 2.8rem (기본)
+   * - `md`: 2.5rem
+   * @default 'lg'
+   */
   size?: 'md' | 'lg';
-  inputId?: string; // 고유 id를 외부에서 지정 가능
+  /** 입력창 및 웹 접근성용 label 연결에 사용할 고유 ID (생략 시 자동 생성) */
+  inputId?: string;
+  /** 옵션 리스트 테이블에 적용할 추가 스타일 클래스 */
   className?: string;
-  col?: number; // 옵션 리스트의 컬럼 수 (기본 1)
-  width?: number | string; // popover의 고정 너비 (기본은 Input과 동일)
+  /** 옵션 목록을 그리드로 구성할 때의 열(column) 개수 */
+  col?: number;
+  /** 팝오버의 고정 너비 (기본은 입력 필드의 가로폭과 동일) */
+  width?: number | string;
 }
 
+/**
+ * InputCombo 컴포넌트는 Input과 Popover 자동완성 리스트 기능을 결합한 컴포넌트입니다.
+ * 입력값에 맞춰 옵션을 필터링하고, 리스트 항목 선택 시 입력값을 편리하게 변경할 수 있도록 돕습니다.
+ */
 export function InputCombo<TValue = string>({
   options,
   value,
@@ -55,43 +82,33 @@ export function InputCombo<TValue = string>({
   className,
   ...restProps
 }: InputComboProps<TValue>) {
-  // 고유 data-comboid 생성 (컴포넌트 인스턴스마다, 외부에서 id 지정 가능)
   const [testId] = useState(() => inputId || getRandomId('inputcombo-input-'));
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState(String(value));
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  // inputRef는 Input 내부 input을 직접 참조하기 위해 사용
   const inputRef = useRef<HTMLInputElement | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [popoverPos, setPopoverPos] = useState<{ top: number; left: number; width: number }>();
-  // Input의 실제 focus 상태를 동기화
   const [isFocused, setIsFocused] = useState(false);
-  // popoverRef 불필요 (Radix Popover 사용)
+  const [prevValue, setPrevValue] = useState<TValue | string | undefined>(value);
 
-  // 옵션을 value/label로 통일
   const normalized = options.map((opt) => (isComboOptionItem(opt) ? opt : { value: opt, label: String(opt) }));
 
-  // 입력값에 따라 옵션 필터링 (value, label 모두에서 검색)
   const filtered = normalized.filter(
     (opt) =>
       String(opt.value).toLowerCase().includes(inputValue.toLowerCase()) ||
       (typeof opt.label === 'string' ? opt.label.toLowerCase().includes(inputValue.toLowerCase()) : false)
   );
 
-  // input 값 외부 변경 반영
-  useEffect(() => {
-    setInputValue((prev) => {
-      const next = String(value);
-      if (prev !== next) return next;
-      return prev;
-    });
-  }, [value]);
+  // value prop 변경 시 최신 상태로 동기화 (렌더 단계에서 동기화)
+  if (value !== prevValue) {
+    setPrevValue(value);
+    setInputValue(String(value));
+  }
 
-  // input 포커스/블러 관리
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     setIsFocused(true);
     setOpen(true);
-    // Input 내부의 실제 input 엘리먼트를 찾아서 ref에 할당
     setTimeout(() => {
       const el = document.querySelector(`input[data-comboid="${testId}"]`) as HTMLInputElement | null;
       if (el) {
@@ -104,16 +121,15 @@ export function InputCombo<TValue = string>({
         });
       }
     }, 0);
-    // restProps.onFocus가 있으면 호출
     if (typeof restProps.onFocus === 'function') {
       restProps.onFocus(e);
     }
   };
+
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     setIsFocused(false);
     setTimeout(() => {
       const active = document.activeElement;
-      // inputRef, popoverRef 모두에 포커스가 없을 때만 닫기
       if (
         (!popoverRef.current || !popoverRef.current.contains(active)) &&
         (!inputRef.current || active !== inputRef.current)
@@ -122,13 +138,11 @@ export function InputCombo<TValue = string>({
         setHoveredIdx(null);
       }
     }, 100);
-    // restProps.onBlur가 있으면 호출
     if (typeof restProps.onBlur === 'function') {
       restProps.onBlur(e);
     }
   };
 
-  // input 입력 처리
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     onChange(e.target.value);
@@ -136,7 +150,6 @@ export function InputCombo<TValue = string>({
     setHoveredIdx(null);
   };
 
-  // 리스트 클릭 처리
   const handleOptionClick = (opt: ComboOptionItem<TValue>) => {
     setInputValue(String(opt.value));
     onChange(opt.value, opt);
@@ -145,7 +158,6 @@ export function InputCombo<TValue = string>({
     inputRef.current?.focus();
   };
 
-  // 키보드 네비게이션
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!open || filtered.length === 0) return;
     if (e.key === 'ArrowDown') {
@@ -163,13 +175,11 @@ export function InputCombo<TValue = string>({
     }
   };
 
-  // popover 위치 스타일 (absolute + body portal)
   const popoverStyle: React.CSSProperties | undefined = popoverPos
     ? {
         position: 'absolute',
         top: popoverPos.top,
         left: popoverPos.left,
-        // width: popoverPos.width,
         zIndex: 9999,
       }
     : undefined;
@@ -193,8 +203,7 @@ export function InputCombo<TValue = string>({
         />
         {open && normalized.length > 0 && popoverPos && typeof window !== 'undefined'
           ? typeof document !== 'undefined' && document.body
-            ? // body portal로 렌더링
-              ReactDOM.createPortal(
+            ? ReactDOM.createPortal(
                 <div
                   ref={popoverRef}
                   tabIndex={-1}
@@ -242,8 +251,7 @@ export function InputCombo<TValue = string>({
       />
       {open && filtered.length > 0 && popoverPos && typeof window !== 'undefined'
         ? typeof document !== 'undefined' && document.body
-          ? // body portal로 렌더링
-            ReactDOM.createPortal(
+          ? ReactDOM.createPortal(
               <div
                 ref={popoverRef}
                 tabIndex={-1}

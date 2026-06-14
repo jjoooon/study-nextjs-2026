@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Title, Primary, Markdown } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@uiux/Button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
 
@@ -95,7 +96,7 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
                 <br />
                 <code>tooltipValueGetter={'createTooltipValueGetter({ field: "label" })'}</code>처럼 사용합니다.
                 <br />
-                <code>tooltipShowMode="whenTruncated"</code>를 함께 쓰면 말줄임일 때만 툴팁이 표시됩니다.
+                <code>tooltipShowMode=&quot;whenTruncated&quot;</code>를 함께 쓰면 말줄임일 때만 툴팁이 표시됩니다.
               </li>
             </ul>
           </div>

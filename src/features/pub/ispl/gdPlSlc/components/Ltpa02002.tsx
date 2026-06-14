@@ -3,21 +3,21 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import Image from 'next/image';
+import { useState } from 'react';
+import * as React from 'react';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, AiIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import * as React from 'react';
-import Ltpa120 from '@/features/pub/shared/components/popups/Ltpa120';
-import { withPublicUrl } from '@/shared/utils/url/publicUrl';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import Ltpa120 from '@features/Ltpa120';
 
 import '@/shared/lib/agGridPub';
 
@@ -342,12 +342,6 @@ export function Ltpa02002({
   const [selectedPlanKey, setSelectedPlanKey] = useState<string | null>('1-0');
   const [comparedPlanKeys, setComparedPlanKeys] = useState<string[]>([]);
   const [isAiReasonExpanded, setIsAiReasonExpanded] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (dataNone) {
-      setIsFilterOptionOpen(true);
-    }
-  }, [dataNone]);
 
   // 선택된 플랜 정보 가져오기
   const getSelectedPlanInfo = () => {

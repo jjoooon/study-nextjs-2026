@@ -1,9 +1,11 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Typo, Gcol, Grow } from '@atoms';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+ */
+import { Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
+import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
+import { Typo, Gcol, Grow } from '@atoms';
 
 const placementOptions = [
   'ss',
@@ -26,7 +28,18 @@ const placementOptions = [
   'eve',
 ] as const;
 
-const variantOptions = ['default', 'box', 'box-line', 'box-info', 'box-warning', 'box-detail', 'box-round'] as const;
+const variantOptions = [
+  'default',
+  'box',
+  'box-line',
+  'box-info',
+  'box-info-line',
+  'box-warning',
+  'box-warning-line',
+  'box-detail',
+  'box-round-b',
+  'box-round',
+] as const;
 
 const meta: Meta<typeof Gcol> = {
   title: 'Components/Atoms/Group',
@@ -35,34 +48,15 @@ const meta: Meta<typeof Gcol> = {
   parameters: {
     layout: 'centered',
     docs: {
-      page: () => {
-        return (
-          <>
-            <Title />
-            <br />
-            <br />
-            <h2>History</h2>
-            <ul>
-              <li>2026.03.30</li>
-            </ul>
-
-            <h2>Overview</h2>
-            <div>
-              <p>
-                Group 컴포넌트는 Flexbox 기반의 레이아웃 유틸리티 컴포넌트 모음입니다. Gcol(세로)과 Grow(가로)를 조합해
-                빠르게 정렬/간격을 구성할 수 있습니다.
-              </p>
-            </div>
-
-            <Primary />
-            <Controls />
-
-            <h2>Usage</h2>
-            <p>대표적인 사용 예시는 아래와 같습니다.</p>
-            <Markdown>
-              {`
-\`\`\`tsx
-import { Gcol, Grow } from '@atoms';
+      page: () => (
+        <StoryDocTemplate
+          title="Group"
+          history={[
+            '2026.03.30 - 컴포넌트 최초 생성',
+            '2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화',
+          ]}
+          overview="Group 컴포넌트는 Flexbox 및 Grid 기반의 레이아웃 유틸리티 컴포넌트 모음입니다. Gcol(세로)과 Grow(가로)를 조합해 빠르게 정렬/간격을 구성할 수 있습니다."
+          usageCode={`import { Gcol, Grow } from '@atoms';
 
 // 세로 배치 (중앙 정렬)
 <Gcol placement="cc">
@@ -84,303 +78,293 @@ import { Gcol, Grow } from '@atoms';
 // 박스+둥근 모서리
 <Gcol variant="box-round" placement="cc">
   <p>Styled Box Round</p>
-</Gcol>
-\`\`\`
-              `}
-            </Markdown>
-
-            <h2>API Reference</h2>
-            <p>Group 컴포넌트에서 사용할 수 있는 주요 prop 옵션입니다.</p>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th>prop</th>
-                  <th>타입/옵션</th>
-                  <th>설명</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>placement</td>
-                  <td>LayoutPlacement</td>
-                  <td>정렬 옵션 (justify-content + align-items)</td>
-                </tr>
-                <tr>
-                  <td>variant</td>
-                  <td>'default' | 'box' | 'box-line' | 'box-round'</td>
-                  <td>
-                    시각적 스타일 변형
-                    <br />
-                    box-round: box + 둥근 모서리
-                  </td>
-                </tr>
-                <tr>
-                  <td>gap</td>
-                  <td>number</td>
-                  <td>아이템 간격 (gap)</td>
-                </tr>
-                <tr>
-                  <td>className</td>
-                  <td>string</td>
-                  <td>추가 클래스</td>
-                </tr>
-                <tr>
-                  <td>style</td>
-                  <td>CSSProperties</td>
-                  <td>인라인 스타일</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h2>Placement & Variant</h2>
-            <p>대표 정렬/스타일 예시는 다음과 같습니다.</p>
-            <Unstyled>
-              <Grow className="gap-6 w-full" placement="cs">
-                <Gcol className="gap-2" placement="ss">
-                  <Typo tag="h2" className="text-[1.6rem] font-bold w-full">
-                    Grow
+</Gcol>`}
+          apiReference={[
+            {
+              prop: 'children',
+              type: 'ReactNode',
+              description: '그룹 내부에 들어갈 콘텐츠',
+            },
+            {
+              prop: 'placement',
+              type: 'LayoutPlacement',
+              description: '정렬 옵션 (주축 정렬 + 교차축 정렬)',
+            },
+            {
+              prop: 'variant',
+              type: 'Variant',
+              description: '시각적 스타일 변형 프리셋',
+            },
+            {
+              prop: 'gap',
+              type: 'number | string',
+              description: '아이템 간격 (gap)',
+            },
+            {
+              prop: 'className',
+              type: 'string',
+              description: '추가 클래스',
+            },
+            {
+              prop: 'onClick',
+              type: 'MouseEventHandler<HTMLDivElement>',
+              description: '클릭 이벤트 핸들러 (전달 시 웹 접근성 속성 자동 활성화)',
+            },
+            {
+              prop: 'style',
+              type: 'CSSProperties',
+              description: '인라인 스타일',
+            },
+          ]}
+        >
+          <h2>Placement & Variant</h2>
+          <p>대표 정렬/스타일 예시는 다음과 같습니다.</p>
+          <Unstyled>
+            <Grow className="gap-6 w-full" placement="cs">
+              <Gcol className="gap-2" placement="ss">
+                <Typo tag="h2" className="text-[1.6rem] font-bold w-full">
+                  Grow
+                </Typo>
+                <Gcol className="gap-2 w-full" placement="ss">
+                  <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
+                    Start Alignments (ss, sc, se)
                   </Typo>
-                  <Gcol className="gap-2 w-full" placement="ss">
-                    <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
-                      Start Alignments (ss, sc, se)
-                    </Typo>
-                    <Grow className="gap-4 w-full">
-                      <Grow
-                        placement="ss"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
-                      <Grow
-                        placement="sc"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
-                      <Grow
-                        placement="se"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
+                  <Grow className="gap-4 w-full">
+                    <Grow
+                      placement="ss"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
                     </Grow>
-                  </Gcol>
-
-                  <Gcol className="gap-2 w-full" placement="ss">
-                    <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
-                      Center Alignments (cs, cc, ce)
-                    </Typo>
-                    <Grow className="gap-4 w-full">
-                      <Grow
-                        placement="cs"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
-                      <Grow
-                        placement="cc"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
-                      <Grow
-                        placement="ce"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
+                    <Grow
+                      placement="sc"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
                     </Grow>
-                  </Gcol>
-
-                  <Gcol className="gap-2 w-full" placement="ss">
-                    <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
-                      End Alignments (es, ec, ee)
-                    </Typo>
-                    <Grow className="gap-4 w-full">
-                      <Grow
-                        placement="es"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
-                      <Grow
-                        placement="ec"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
-                      <Grow
-                        placement="ee"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
+                    <Grow
+                      placement="se"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
                     </Grow>
-                  </Gcol>
-
-                  <Gcol className="gap-2 w-full" placement="ss">
-                    <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
-                      Space Distributions (bwc, arc, evc)
-                    </Typo>
-                    <Grow className="gap-4 w-full">
-                      <Grow
-                        placement="bwc"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
-                      <Grow
-                        placement="arc"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
-                      <Grow
-                        placement="evc"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Grow>
-                    </Grow>
-                  </Gcol>
+                  </Grow>
                 </Gcol>
-                <Gcol className="gap-2" placement="ss">
-                  <Typo tag="h2" className="text-[1.6rem] font-bold w-full">
-                    Gcol
+
+                <Gcol className="gap-2 w-full" placement="ss">
+                  <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
+                    Center Alignments (cs, cc, ce)
                   </Typo>
-                  <Gcol className="gap-2 w-full" placement="ss">
-                    <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
-                      Start Alignments (ss, sc, se)
-                    </Typo>
-                    <Grow className="gap-4 w-full">
-                      <Gcol
-                        placement="ss"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
-                      <Gcol
-                        placement="sc"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
-                      <Gcol
-                        placement="se"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
+                  <Grow className="gap-4 w-full">
+                    <Grow
+                      placement="cs"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
                     </Grow>
-                  </Gcol>
-
-                  <Gcol className="gap-2 w-full" placement="ss">
-                    <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
-                      Center Alignments (cs, cc, ce)
-                    </Typo>
-                    <Grow className="gap-4 w-full">
-                      <Gcol
-                        placement="cs"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
-                      <Gcol
-                        placement="cc"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
-                      <Gcol
-                        placement="ce"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
+                    <Grow
+                      placement="cc"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
                     </Grow>
-                  </Gcol>
-
-                  <Gcol className="gap-2 w-full" placement="ss">
-                    <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
-                      End Alignments (es, ec, ee)
-                    </Typo>
-                    <Grow className="gap-4 w-full">
-                      <Gcol
-                        placement="es"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
-                      <Gcol
-                        placement="ec"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
-                      <Gcol
-                        placement="ee"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
+                    <Grow
+                      placement="ce"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
                     </Grow>
-                  </Gcol>
-
-                  <Gcol className="gap-2 w-full" placement="ss">
-                    <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
-                      Space Distributions (bwc, arc, evc)
-                    </Typo>
-                    <Grow className="gap-4 w-full">
-                      <Gcol
-                        placement="bwc"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
-                      <Gcol
-                        placement="arc"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
-                      <Gcol
-                        placement="evc"
-                        className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
-                      >
-                        <DemoBox>A</DemoBox>
-                        <DemoBox>B</DemoBox>
-                      </Gcol>
-                    </Grow>
-                  </Gcol>
+                  </Grow>
                 </Gcol>
-              </Grow>
-            </Unstyled>
-          </>
-        );
-      },
+
+                <Gcol className="gap-2 w-full" placement="ss">
+                  <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
+                    End Alignments (es, ec, ee)
+                  </Typo>
+                  <Grow className="gap-4 w-full">
+                    <Grow
+                      placement="es"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Grow>
+                    <Grow
+                      placement="ec"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Grow>
+                    <Grow
+                      placement="ee"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Grow>
+                  </Grow>
+                </Gcol>
+
+                <Gcol className="gap-2 w-full" placement="ss">
+                  <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
+                    Space Distributions (bwc, arc, evc)
+                  </Typo>
+                  <Grow className="gap-4 w-full">
+                    <Grow
+                      placement="bwc"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Grow>
+                    <Grow
+                      placement="arc"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Grow>
+                    <Grow
+                      placement="evc"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Grow>
+                  </Grow>
+                </Gcol>
+              </Gcol>
+              <Gcol className="gap-2" placement="ss">
+                <Typo tag="h2" className="text-[1.6rem] font-bold w-full">
+                  Gcol
+                </Typo>
+                <Gcol className="gap-2 w-full" placement="ss">
+                  <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
+                    Start Alignments (ss, sc, se)
+                  </Typo>
+                  <Grow className="gap-4 w-full">
+                    <Gcol
+                      placement="ss"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                    <Gcol
+                      placement="sc"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                    <Gcol
+                      placement="se"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                  </Grow>
+                </Gcol>
+
+                <Gcol className="gap-2 w-full" placement="ss">
+                  <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
+                    Center Alignments (cs, cc, ce)
+                  </Typo>
+                  <Grow className="gap-4 w-full">
+                    <Gcol
+                      placement="cs"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                    <Gcol
+                      placement="cc"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                    <Gcol
+                      placement="ce"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                  </Grow>
+                </Gcol>
+
+                <Gcol className="gap-2 w-full" placement="ss">
+                  <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
+                    End Alignments (es, ec, ee)
+                  </Typo>
+                  <Grow className="gap-4 w-full">
+                    <Gcol
+                      placement="es"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                    <Gcol
+                      placement="ec"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                    <Gcol
+                      placement="ee"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                  </Grow>
+                </Gcol>
+
+                <Gcol className="gap-2 w-full" placement="ss">
+                  <Typo tag="h3" className="text-[1.3rem] font-semibold text-[var(--color-gray-50)]">
+                    Space Distributions (bwc, arc, evc)
+                  </Typo>
+                  <Grow className="gap-4 w-full">
+                    <Gcol
+                      placement="bwc"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                    <Gcol
+                      placement="arc"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                    <Gcol
+                      placement="evc"
+                      className="flex-1 w-full aspect-square h-[10rem] gap-1 bg-[var(--color-gray-5)] rounded-[.8rem] p-2"
+                    >
+                      <DemoBox>A</DemoBox>
+                      <DemoBox>B</DemoBox>
+                    </Gcol>
+                  </Grow>
+                </Gcol>
+              </Gcol>
+            </Grow>
+          </Unstyled>
+        </StoryDocTemplate>
+      ),
     },
   },
   argTypes: {

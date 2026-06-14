@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 /**
  * 탭 아이템의 최소 형태.
@@ -118,14 +118,21 @@ export function useTabsPagination<T>(
   };
 
   const [visibleStart, setVisibleStart] = useState(() => getStartByActive(active));
+  const [prevActive, setPrevActive] = useState<string>(active);
+  const [prevData, setPrevData] = useState<T[]>(data);
+  const [prevVisibleCount, setPrevVisibleCount] = useState<number>(visibleCount);
 
-  // active가 바뀔 때만 visibleStart를 조정
-  useEffect(() => {
+  // active, data, visibleCount 변경 시 보이는 탭 시작 위치 동기화 (렌더 단계에서 동기화)
+  if (active !== prevActive || data !== prevData || visibleCount !== prevVisibleCount) {
+    setPrevActive(active);
+    setPrevData(data);
+    setPrevVisibleCount(visibleCount);
+
     const newStart = getStartByActive(active);
-    if (visibleStart !== newStart) setVisibleStart(newStart);
-    // eslint-disable-next-line react-compiler/react-compiler
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, data, visibleCount]);
+    if (visibleStart !== newStart) {
+      setVisibleStart(newStart);
+    }
+  }
 
   const handlePrev = () => setVisibleStart((prev) => Math.max(0, prev - visibleCount));
   const handleNext = () => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */

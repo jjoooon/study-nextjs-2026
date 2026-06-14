@@ -4,8 +4,8 @@
 'use client';
 
 import { Gcol, Grow, Typo, Divider } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
 import { SpinnerBIcon } from '@icons';
+import { BulletList, BulletListItem } from '@common/BulletList';
 
 export type InfoContractBaseData = {
   date?: string;

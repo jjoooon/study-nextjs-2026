@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { createCellValueChangedHandler, AgGridEmptyComponent } from '@aggrid';
-import {
+ */ import {
   Title,
   Subtitle,
   Description,
@@ -12,11 +12,12 @@ import {
   Markdown,
   Unstyled,
 } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { createCellValueChangedHandler, AgGridEmptyComponent } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -117,8 +118,8 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
                 지원)
               </li>
               <li>
-                <b>"선택여부" 컬럼 체크박스</b>: cellEditor/cellRenderer로 구현된 독립 체크박스(행 데이터의 isCheck
-                필드와 연결, selection과는 별개로 동작)
+                <b>&quot;선택여부&quot; 컬럼 체크박스</b>: cellEditor/cellRenderer로 구현된 독립 체크박스(행 데이터의
+                isCheck 필드와 연결, selection과는 별개로 동작)
               </li>
               <li>
                 <b>allDisabled</b>가 true인 행: 모든 입력 및 체크박스가 비활성화(선택, 편집, 클릭 모두 불가, 스타일로도
@@ -129,7 +130,7 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
             <br />
             <b>구성 요약</b>:
             <ul>
-              <li>좌측 selection 체크박스와 "선택여부" 컬럼 체크박스는 서로 연결되지 않고 독립적으로 동작</li>
+              <li>좌측 selection 체크박스와 &quot;선택여부&quot; 컬럼 체크박스는 서로 연결되지 않고 독립적으로 동작</li>
               <li>
                 각 체크박스의 disabled/편집 가능 여부는 <code>disabled</code>, <code>allDisabled</code> 필드로 제어
               </li>

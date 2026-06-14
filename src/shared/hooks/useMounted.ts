@@ -14,7 +14,6 @@ function useMounted(mounted: () => void, unmounted?: () => void) {
         unmounted();
       }
     };
-    // eslint-disable-next-line react-compiler/react-compiler
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

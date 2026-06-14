@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
-import {
+ */ import {
   Title,
   Subtitle,
   Description,
@@ -12,11 +12,12 @@ import {
   Markdown,
   Unstyled,
 } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ModuleRegistry, AllCommunityModule, ICellRendererParams } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -170,7 +171,7 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
             </p>
             <ul>
               <li>Text Cell Editor (기본값): 일반 텍스트 입력</li>
-              <li>Number Cell Editor: 숫자 입력 (type="number")</li>
+              <li>Number Cell Editor: 숫자 입력 (type=&quot;number&quot;)</li>
               <li>Select Cell Editor: 드롭다운 선택</li>
               <li>Large Text Cell Editor: textarea(여러 줄 입력)</li>
               <li>Rich Select Cell Editor: 커스텀 옵션/검색 지원 드롭다운</li>

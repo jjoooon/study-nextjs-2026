@@ -1,8 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol, Grow, Typo } from '@atoms';
-import { PlusIcon } from '@icons';
-import {
+ */ import {
   Title,
   Subtitle,
   Description,
@@ -13,10 +12,12 @@ import {
   Markdown,
   Unstyled,
 } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import * as React from 'react';
+import { Gcol, Grow, Typo } from '@atoms';
+import { PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
-import * as React from 'react';
 
 type PopoverContentProps = React.ComponentProps<typeof PopoverContent>;
 
@@ -74,12 +75,12 @@ const meta: Meta<PopoverContentProps> = {
               <tbody>
                 <tr>
                   <td>motion</td>
-                  <td>'fade' | 'scale' | 'none'</td>
+                  <td>&apos;fade&apos; | &apos;scale&apos; | &apos;none&apos;</td>
                   <td>애니메이션 효과</td>
                 </tr>
                 <tr>
                   <td>variant</td>
-                  <td>'default' 등</td>
+                  <td>&apos;default&apos; 등</td>
                   <td>스타일 variant</td>
                 </tr>
                 <tr>
@@ -89,12 +90,12 @@ const meta: Meta<PopoverContentProps> = {
                 </tr>
                 <tr>
                   <td>align</td>
-                  <td>'start' | 'center' | 'end'</td>
+                  <td>&apos;start&apos; | &apos;center&apos; | &apos;end&apos;</td>
                   <td>정렬</td>
                 </tr>
                 <tr>
                   <td>side</td>
-                  <td>'top' | 'right' | 'bottom' | 'left'</td>
+                  <td>&apos;top&apos; | &apos;right&apos; | &apos;bottom&apos; | &apos;left&apos;</td>
                   <td>위치</td>
                 </tr>
                 <tr>

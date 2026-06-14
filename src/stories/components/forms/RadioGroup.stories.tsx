@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol, Grow } from '@atoms';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+ */
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
+import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
+import { Gcol, Grow } from '@atoms';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 type RadioGroupStoryProps = React.ComponentProps<typeof RadioGroup> &
-  // RadioGroupItem props를 Storybook controls에서 함께 제어
   Pick<React.ComponentProps<typeof RadioGroupItem>, 'variant' | 'size' | 'color'>;
 
 const meta: Meta<RadioGroupStoryProps> = {
@@ -19,37 +20,11 @@ const meta: Meta<RadioGroupStoryProps> = {
     docs: {
       page: () => {
         return (
-          <>
-            <Title />
-            <br />
-            <br />
-            <h2>History</h2>
-            <ul>
-              <li>2026.03.29</li>
-            </ul>
-            <h2>Overview</h2>
-            <div>
-              <p>
-                RadioGroup 컴포넌트는 여러 옵션 중 단 하나를 선택할 때 사용하는 선택 UI입니다.
-                <br />
-                기본 원형 스타일과 버튼형 스타일을 제공하며, 필수/에러/비활성화 상태를 지원합니다.
-              </p>
-            </div>
-
-            <Primary />
-            <Controls />
-
-            <h2>Usage</h2>
-            <p>RadioGroup 컴포넌트는 다양한 형태로 사용할 수 있습니다.</p>
-            <ul>
-              <li>기본 라디오 그룹(default)</li>
-              <li>버튼형 라디오 그룹(button)</li>
-              <li>size, color 스타일 제어</li>
-              <li>disabled, required, error 상태 제어</li>
-            </ul>
-            <Markdown>
-              {`
-\`\`\`tsx
+          <StoryDocTemplate
+            overview={`RadioGroup 컴포넌트는 여러 옵션 중 단 하나를 선택할 때 사용하는 선택 UI입니다.
+기본 원형 스타일, 버튼형 스타일, 칩 스타일을 제공하며, 필수/에러/비활성화 상태를 지원합니다.`}
+            history={['2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화']}
+            usageCode={`
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { useState } from 'react';
 
@@ -58,102 +33,54 @@ const [value, setValue] = useState('option1');
 <RadioGroup
   value={value}
   onValueChange={setValue}
-  width={'full' | 'auto'}
-  required={false | true}
-  disabled={false | true}
-  error={false | true}
-  errorMsg={'하나를 선택해주세요.'}
-  errorPs={'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'}
+  width="auto"
+  required={false}
+  disabled={false}
+  error={false}
+  errorMsg="하나를 선택해주세요."
+  errorPs="bl"
 >
-  <RadioGroupItem
-    variant={'default' | 'button'}
-    size={'defalut' | 'sm'}
-    color={'primary' | 'info'}
-    value="option1"
-    id="r1"
-  >
+  <RadioGroupItem variant="default" value="option1" id="r1">
     Option 1
   </RadioGroupItem>
+  <RadioGroupItem variant="default" value="option2" id="r2">
+    Option 2
+  </RadioGroupItem>
 </RadioGroup>
-\`\`\`
-              `}
-            </Markdown>
-
-            <h2>API Reference</h2>
-            <p>RadioGroup/RadioGroupItem에서 사용할 수 있는 주요 prop 옵션은 다음과 같습니다.</p>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th>prop</th>
-                  <th>타입/옵션</th>
-                  <th>설명</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>variant</td>
-                  <td>'default', 'button'</td>
-                  <td>라디오 아이템 스타일</td>
-                </tr>
-                <tr>
-                  <td>size</td>
-                  <td>'defalut', 'sm'</td>
-                  <td>라디오 아이템 크기</td>
-                </tr>
-                <tr>
-                  <td>color</td>
-                  <td>'primary', 'info'</td>
-                  <td>라디오 아이템 색상</td>
-                </tr>
-                <tr>
-                  <td>width</td>
-                  <td>'full', 'auto'</td>
-                  <td>그룹 너비</td>
-                </tr>
-                <tr>
-                  <td>required</td>
-                  <td>boolean</td>
-                  <td>필수 선택 여부</td>
-                </tr>
-                <tr>
-                  <td>disabled</td>
-                  <td>boolean</td>
-                  <td>비활성화 여부</td>
-                </tr>
-                <tr>
-                  <td>error</td>
-                  <td>boolean</td>
-                  <td>에러 상태</td>
-                </tr>
-                <tr>
-                  <td>errorMsg</td>
-                  <td>ReactNode</td>
-                  <td>에러 메시지</td>
-                </tr>
-                <tr>
-                  <td>errorPs</td>
-                  <td>'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br'</td>
-                  <td>에러 메시지 위치</td>
-                </tr>
-              </tbody>
-            </table>
-
+            `}
+          >
             <h2>Variant</h2>
             <p>RadioGroupItem의 variant 옵션은 다음과 같습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={8}>
-                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <Grow gap={8} className="flex-wrap">
+                <Gcol gap={1}>
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">Default (기본 라디오)</p>
+                  <RadioGroup defaultValue="1" width="auto" className="gap-2">
                     <RadioGroupItem variant="default" value="1" id="doc-v-1">
                       Default 1
                     </RadioGroupItem>
+                    <RadioGroupItem variant="default" value="2" id="doc-v-2">
+                      Default 2
+                    </RadioGroupItem>
                   </RadioGroup>
-                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+                </Gcol>
+                <Gcol gap={1}>
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">Button (버튼 타입)</p>
+                  <RadioGroup defaultValue="1" width="auto" className="gap-2">
                     <RadioGroupItem variant="button" value="1" id="doc-b-1">
                       Button 1
                     </RadioGroupItem>
+                    <RadioGroupItem variant="button" value="2" id="doc-b-2">
+                      Button 2
+                    </RadioGroupItem>
                   </RadioGroup>
-                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+                </Gcol>
+                <Gcol gap={1}>
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">ChipBox (칩 타입)</p>
+                  <RadioGroup defaultValue="1" width="auto" className="gap-2">
                     <RadioGroupItem variant="chipBox" value="1" id="doc-chip-1">
                       ChipBox 1
                     </RadioGroupItem>
@@ -161,54 +88,80 @@ const [value, setValue] = useState('option1');
                       ChipBox 2
                     </RadioGroupItem>
                   </RadioGroup>
-                </Grow>
-              </Gcol>
-            </Unstyled>
+                </Gcol>
+              </Grow>
+            </Gcol>
 
-            <h2>Size</h2>
+            <h2 className="mt-8">Size</h2>
             <p>RadioGroupItem의 size 옵션은 다음과 같습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={8}>
-                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
-                    <RadioGroupItem size="lg" value="1" id="doc-s-default-1">
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <Grow gap={8} className="flex-wrap">
+                <Gcol gap={1}>
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">Large (기본)</p>
+                  <RadioGroup defaultValue="1" width="auto" className="gap-2">
+                    <RadioGroupItem size="lg" value="1" id="doc-s-lg-1">
                       Large
                     </RadioGroupItem>
                   </RadioGroup>
-                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
-                    <RadioGroupItem size="md" value="1" id="doc-s-sm-1">
-                      Small
+                </Gcol>
+                <Gcol gap={1}>
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">Medium</p>
+                  <RadioGroup defaultValue="1" width="auto" className="gap-2">
+                    <RadioGroupItem size="md" value="1" id="doc-s-md-1">
+                      Medium
                     </RadioGroupItem>
                   </RadioGroup>
-                </Grow>
-              </Gcol>
-            </Unstyled>
+                </Gcol>
+                <Gcol gap={1}>
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">Small (Button 전용)</p>
+                  <RadioGroup defaultValue="1" width="auto" className="gap-2">
+                    <RadioGroupItem variant="button" size="sm" value="1" id="doc-s-sm-1">
+                      Small Button
+                    </RadioGroupItem>
+                  </RadioGroup>
+                </Gcol>
+              </Grow>
+            </Gcol>
 
-            <h2>Color</h2>
+            <h2 className="mt-8">Color</h2>
             <p>RadioGroupItem의 color 옵션은 다음과 같습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={8}>
-                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <Grow gap={8} className="flex-wrap">
+                <Gcol gap={1}>
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">Primary (주황색 테마)</p>
+                  <RadioGroup defaultValue="1" width="auto" className="gap-2">
                     <RadioGroupItem color="primary" value="1" id="doc-c-p-1">
                       primary
                     </RadioGroupItem>
                   </RadioGroup>
-                  <RadioGroup defaultValue="1" className="gap-2" width="auto">
+                </Gcol>
+                <Gcol gap={1}>
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">Info (파란색 테마)</p>
+                  <RadioGroup defaultValue="1" width="auto" className="gap-2">
                     <RadioGroupItem color="info" value="1" id="doc-c-i-1">
                       info
                     </RadioGroupItem>
                   </RadioGroup>
-                </Grow>
-              </Gcol>
-            </Unstyled>
+                </Gcol>
+              </Grow>
+            </Gcol>
 
-            <h2>State</h2>
-            <p>disabled, required 상태를 지원합니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={8}>
-                  <RadioGroup defaultValue="1" required className="gap-2" width="auto">
+            <h2 className="mt-8">State</h2>
+            <p>required(필수), disabled(비활성) 상태를 지원합니다.</p>
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <Grow gap={8} className="flex-wrap">
+                <Gcol gap={1}>
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">Required (필수 배경 강조)</p>
+                  <RadioGroup defaultValue="1" required width="auto" className="gap-2">
                     <RadioGroupItem value="1" id="doc-r-1">
                       Required 1
                     </RadioGroupItem>
@@ -216,7 +169,10 @@ const [value, setValue] = useState('option1');
                       Required 2
                     </RadioGroupItem>
                   </RadioGroup>
-                  <RadioGroup defaultValue="1" disabled className="gap-2" width="auto">
+                </Gcol>
+                <Gcol gap={1}>
+                  <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">Disabled (비활성화)</p>
+                  <RadioGroup defaultValue="1" disabled width="auto" className="gap-2">
                     <RadioGroupItem value="1" id="doc-d-1">
                       Disabled 1
                     </RadioGroupItem>
@@ -224,83 +180,70 @@ const [value, setValue] = useState('option1');
                       Disabled 2
                     </RadioGroupItem>
                   </RadioGroup>
-                </Grow>
-              </Gcol>
-            </Unstyled>
+                </Gcol>
+              </Grow>
+            </Gcol>
 
-            <h2>Error</h2>
+            <h2 className="mt-8">Error</h2>
             <p>RadioGroup의 에러 메시지 위치 옵션은 다음과 같습니다.</p>
-            <Unstyled>
-              <Gcol gap={4} variant="box-line" className="p-16">
-                <Grow gap={8}>
-                  <RadioGroup defaultValue="1" error errorMsg="top left" errorPs="tl" className="gap-2" width="auto">
-                    <RadioGroupItem value="1" id="doc-e-tl-1">
-                      Error 1
-                    </RadioGroupItem>
-                    <RadioGroupItem value="2" id="doc-e-tl-2">
-                      Error 2
-                    </RadioGroupItem>
-                  </RadioGroup>
-                  <RadioGroup defaultValue="1" error errorMsg="top center" errorPs="tc" className="gap-2" width="auto">
-                    <RadioGroupItem value="1" id="doc-e-tc-1">
-                      Error 1
-                    </RadioGroupItem>
-                    <RadioGroupItem value="2" id="doc-e-tc-2">
-                      Error 2
-                    </RadioGroupItem>
-                  </RadioGroup>
-                  <RadioGroup defaultValue="1" error errorMsg="top right" errorPs="tr" className="gap-2" width="auto">
-                    <RadioGroupItem value="1" id="doc-e-tr-1">
-                      Error 1
-                    </RadioGroupItem>
-                    <RadioGroupItem value="2" id="doc-e-tr-2">
-                      Error 2
-                    </RadioGroupItem>
-                  </RadioGroup>
-                </Grow>
-                <Grow gap={8}>
-                  <RadioGroup defaultValue="1" error errorMsg="bottom left" errorPs="bl" className="gap-2" width="auto">
-                    <RadioGroupItem value="1" id="doc-e-bl-1">
-                      Error 1
-                    </RadioGroupItem>
-                    <RadioGroupItem value="2" id="doc-e-bl-2">
-                      Error 2
-                    </RadioGroupItem>
-                  </RadioGroup>
-                  <RadioGroup
-                    defaultValue="1"
-                    error
-                    errorMsg="bottom center"
-                    errorPs="bc"
-                    className="gap-2"
-                    width="auto"
-                  >
-                    <RadioGroupItem value="1" id="doc-e-bc-1">
-                      Error 1
-                    </RadioGroupItem>
-                    <RadioGroupItem value="2" id="doc-e-bc-2">
-                      Error 2
-                    </RadioGroupItem>
-                  </RadioGroup>
-                  <RadioGroup
-                    defaultValue="1"
-                    error
-                    errorMsg="bottom right"
-                    errorPs="br"
-                    className="gap-2"
-                    width="auto"
-                  >
-                    <RadioGroupItem value="1" id="doc-e-br-1">
-                      Error 1
-                    </RadioGroupItem>
-                    <RadioGroupItem value="2" id="doc-e-br-2">
-                      Error 2
-                    </RadioGroupItem>
-                  </RadioGroup>
-                </Grow>
-              </Gcol>
-            </Unstyled>
-          </>
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <Grow gap={8} className="flex-wrap">
+                <RadioGroup defaultValue="" error errorMsg="top left" errorPs="tl" width="auto" className="gap-2">
+                  <RadioGroupItem value="1" id="doc-e-tl-1">
+                    Error 1
+                  </RadioGroupItem>
+                  <RadioGroupItem value="2" id="doc-e-tl-2">
+                    Error 2
+                  </RadioGroupItem>
+                </RadioGroup>
+                <RadioGroup defaultValue="" error errorMsg="top center" errorPs="tc" width="auto" className="gap-2">
+                  <RadioGroupItem value="1" id="doc-e-tc-1">
+                    Error 1
+                  </RadioGroupItem>
+                  <RadioGroupItem value="2" id="doc-e-tc-2">
+                    Error 2
+                  </RadioGroupItem>
+                </RadioGroup>
+                <RadioGroup defaultValue="" error errorMsg="top right" errorPs="tr" width="auto" className="gap-2">
+                  <RadioGroupItem value="1" id="doc-e-tr-1">
+                    Error 1
+                  </RadioGroupItem>
+                  <RadioGroupItem value="2" id="doc-e-tr-2">
+                    Error 2
+                  </RadioGroupItem>
+                </RadioGroup>
+              </Grow>
+              <Grow gap={8} className="flex-wrap mt-4">
+                <RadioGroup defaultValue="" error errorMsg="bottom left" errorPs="bl" width="auto" className="gap-2">
+                  <RadioGroupItem value="1" id="doc-e-bl-1">
+                    Error 1
+                  </RadioGroupItem>
+                  <RadioGroupItem value="2" id="doc-e-bl-2">
+                    Error 2
+                  </RadioGroupItem>
+                </RadioGroup>
+                <RadioGroup defaultValue="" error errorMsg="bottom center" errorPs="bc" width="auto" className="gap-2">
+                  <RadioGroupItem value="1" id="doc-e-bc-1">
+                    Error 1
+                  </RadioGroupItem>
+                  <RadioGroupItem value="2" id="doc-e-bc-2">
+                    Error 2
+                  </RadioGroupItem>
+                </RadioGroup>
+                <RadioGroup defaultValue="" error errorMsg="bottom right" errorPs="br" width="auto" className="gap-2">
+                  <RadioGroupItem value="1" id="doc-e-br-1">
+                    Error 1
+                  </RadioGroupItem>
+                  <RadioGroupItem value="2" id="doc-e-br-2">
+                    Error 2
+                  </RadioGroupItem>
+                </RadioGroup>
+              </Grow>
+            </Gcol>
+          </StoryDocTemplate>
         );
       },
     },
@@ -314,7 +257,7 @@ const [value, setValue] = useState('option1');
     },
     size: {
       control: { type: 'inline-radio' },
-      options: ['lg', 'md'],
+      options: ['lg', 'md', 'sm'],
       table: { category: '스타일 props' },
     },
     color: {
@@ -327,7 +270,6 @@ const [value, setValue] = useState('option1');
       options: ['full', 'auto'],
       table: { category: '스타일 props' },
     },
-
     disabled: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
@@ -336,7 +278,6 @@ const [value, setValue] = useState('option1');
       control: { type: 'boolean' },
       table: { category: '설정 props' },
     },
-
     error: {
       control: { type: 'boolean' },
       table: { category: '에러 props' },
@@ -346,15 +287,13 @@ const [value, setValue] = useState('option1');
       table: { category: '에러 props' },
     },
     errorPs: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },
-
     onValueChange: {
       table: { disable: true },
     },
-
     className: {
       table: { disable: true },
     },
@@ -370,7 +309,7 @@ const [value, setValue] = useState('option1');
   },
   args: {
     value: undefined,
-    width: 'full',
+    width: 'auto',
     disabled: false,
     required: false,
     error: false,
@@ -398,13 +337,13 @@ export const Default: Story = {
     return (
       <RadioGroup {...groupArgs} value={value} onValueChange={setValue} className="gap-2">
         <RadioGroupItem variant={variant} size={size} color={color} value="option1" id="d1">
-          Option1
+          Option 1
         </RadioGroupItem>
         <RadioGroupItem variant={variant} size={size} color={color} value="option2" id="d2">
-          Option2
+          Option 2
         </RadioGroupItem>
         <RadioGroupItem variant={variant} size={size} color={color} value="option3" id="d3" disabled>
-          Option3
+          Option 3 (Disabled)
         </RadioGroupItem>
       </RadioGroup>
     );

@@ -1,8 +1,30 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { InfoContract } from '@common/InfoContract';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+ */
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import React from 'react';
+
+import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
+import { InfoContract } from '@common/InfoContract';
+
+// Mock data matching InfoContractBaseData shape
+const mockInfoContractData = {
+  aside: {
+    simpleContractInfo: {
+      date: '2024-05-08',
+      polName: '김한화',
+      insName: '김한화',
+      insAge: '32',
+      insGender: '여',
+      insGrade: '1급',
+      info: [],
+      quoteExpiryDate: '2026-06-30',
+      insuranceAgeDate: '2026-08-16',
+      consentEndDate: '2026-06-30',
+      note: '알릴사항 대상',
+    },
+  },
+};
 
 // types
 type LTPA350ProcessStep = number;
@@ -62,6 +84,7 @@ interface LTPA350DataType {
     };
   };
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const data: LTPA350DataType = {
   head: {
     pageID: {
@@ -128,47 +151,48 @@ const meta: Meta<typeof InfoContract> = {
     layout: 'centered',
     docs: {
       page: () => (
-        <>
-          <Title />
-          <br />
-          <br />
-          <h2>Overview</h2>
-          <div>
-            <p>
-              InfoContract 컴포넌트는 보험 계약의 주요 정보를 Aside 영역에 표시하는 UI 요소입니다.
-              <br />
-              설계중, 보험시기, 계약자/피보험자, 유효기간 등 다양한 정보를 시각적으로 제공합니다.
-            </p>
-          </div>
-          <Primary />
-          <Controls />
-          <Markdown>
-            {`
-#### InfoContract 주요 Props
-- data: LTPA350DataType['aside'] (계약정보 데이터)
+        <StoryDocTemplate
+          title="InfoContract"
+          history={[
+            '2026.03.30 - 컴포넌트 최초 생성',
+            '2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화 (extraContent 렌더 시연 추가)',
+          ]}
+          overview={`InfoContract 컴포넌트는 보험 계약의 주요 정보를 Aside 영역에 표시하는 UI 요소입니다.
+설계중, 보험시기, 계약자/피보험자, 유효기간 등 다양한 정보를 시각적으로 제공합니다.`}
+          usageCode={`import { InfoContract } from '@/shared/components/common/InfoContract';
 
-#### 예시
-\`\`\`tsx
-import { InfoContract } from '@/shared/components/features/InfoContract';
-import { LTPA350Data } from '@/features/pub/proto/data/LTPA350Data';
-
-<InfoContract data={LTPA350Data.aside.simpleContractInfo} />
-\`\`\`
-            `}
-          </Markdown>
-        </>
+<InfoContract data={contractData} />`}
+          apiReference={[
+            {
+              prop: 'data',
+              type: 'InfoContractBaseData | null',
+              description: '표시할 계약 정보 데이터 (null일 경우 빈 보드 표시)',
+            },
+            {
+              prop: 'extraContent',
+              type: 'ReactNode',
+              description: '우측에 심사진행현황 및 인수/심사공지를 렌더링하는 추가 영역',
+            },
+          ]}
+        />
       ),
     },
   },
   argTypes: {
     data: {
-      description: "계약정보 데이터 (LTPA350DataType['aside'])",
+      description: '계약정보 데이터',
       control: { type: 'object' },
       table: { category: 'Data' },
     },
+    extraContent: {
+      description: '추가 컨텐츠 영역',
+      control: 'text',
+      table: { category: 'Content' },
+    },
   },
   args: {
-    data: data.aside.simpleContractInfo,
+    data: mockInfoContractData.aside.simpleContractInfo,
+    extraContent: undefined,
   },
 };
 
@@ -177,7 +201,16 @@ export default meta;
 type Story = StoryObj<typeof InfoContract>;
 
 export const Default: Story = {
+  render: (args) => <InfoContract {...args} />,
   args: {
-    data: data.aside.simpleContractInfo,
+    data: mockInfoContractData.aside.simpleContractInfo,
+  },
+};
+
+export const WithExtraContent: Story = {
+  render: (args) => <InfoContract {...args} />,
+  args: {
+    data: mockInfoContractData.aside.simpleContractInfo,
+    extraContent: <div>추가 컨텐츠 시연</div>,
   },
 };

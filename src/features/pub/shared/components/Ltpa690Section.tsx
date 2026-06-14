@@ -5,6 +5,7 @@
 
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import { useRef } from 'react';
 import { Grow, Grid } from '@atoms';
 import { FileExportIcon, FileImportIcon, ResetIcon, EssentialIcon } from '@icons';
 import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
@@ -20,7 +21,6 @@ import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { useRef } from 'react';
 
 import '@/shared/lib/agGridPub';
 

@@ -47,7 +47,7 @@ import {
   searchButtonRenderer,
   uwIconRenderer,
 } from '@grid/CellRenderers';
-import { HeaderWithUnit, ProductNameHeader, AgGridProductNameHeader } from '@grid/HeadRenderers';
+import { HeaderWithUnit, AgGridProductNameHeader } from '@grid/HeadRenderers';
 
 import { dummyData } from '../data/ltpa35002bData';
 import type { DummyDataType } from '../data/ltpa35002bData';
@@ -101,8 +101,6 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     },
     []
   );
-
-
 
   // =====================
   // 공용 유틸리티/셀 렌더러

@@ -4,15 +4,12 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
-import { AgGridReact } from 'ag-grid-react';
 import type { ColDef } from 'ag-grid-enterprise';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
 import { ResetIcon, SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,10 +21,13 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -226,7 +226,7 @@ const Ltpz002 = () => {
                 <FormTable variant={'none'} cols={['w-1', 'w-[28.8rem]', 'w-[10rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'조회구분'}>
-                      <NativeSelect width={120}  required>
+                      <NativeSelect width={120} required>
                         <NativeSelectOption value="">피보험자번호</NativeSelectOption>
                       </NativeSelect>
                       <Input value={'000000-0******'} width={120} readOnly />

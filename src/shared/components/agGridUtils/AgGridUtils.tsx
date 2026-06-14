@@ -288,29 +288,29 @@ export function useCloneTopRows<T extends Record<string, unknown>, IdKey extends
     [idKey]
   );
 
+  const [prevRows, setPrevRows] = useState<T[]>(rows);
+
   /**
-   * rows 변경 시(조회 재실행/필터링/삭제 등) 더 이상 존재하지 않는 id를 복제 집합에서 제거.
-   *
-   * 예)
-   * - 이전에 101, 102를 복제해둠
-   * - 새 조회 결과에서 102가 사라짐
-   * -> clonedBaseIds에서도 102 제거
+   * rows 변경 시(조회 재실행/필터링/삭제 등) 더 이상 존재하지 않는 id를 복제 집합에서 즉시 제거 (렌더 단계에서 동기화).
    */
-  useEffect(() => {
+  if (rows !== prevRows) {
+    setPrevRows(rows);
     const validIds = new Set(rows.map((row) => String(row[idKey] as PrimitiveId)));
+    const next = new Set<string>();
+    let hasChanged = false;
 
-    setClonedBaseIds((prev) => {
-      const next = new Set<string>();
-
-      prev.forEach((id) => {
-        if (validIds.has(id)) {
-          next.add(id);
-        }
-      });
-
-      return next;
+    clonedBaseIds.forEach((id) => {
+      if (validIds.has(id)) {
+        next.add(id);
+      } else {
+        hasChanged = true;
+      }
     });
-  }, [idKey, rows]);
+
+    if (hasChanged) {
+      setClonedBaseIds(next);
+    }
+  }
 
   const toggleCloneByRow = useCallback(
     (row: T | ClonedTopRow<T> | undefined, checked: boolean) => {
@@ -611,8 +611,10 @@ export function createTreeNameCellRenderer<RowType>() {
 }
 
 /**
- * AgGrid onCellValueChanged 핸들러 생성기 (공용)
- * @param field 변경할 필드명 (keyof RowType)
+ * [Ag-Grid Helper] 셀 값 변경 이벤트 공용 핸들러 생성기
+ *
+ * - 셀 값 수정 시 상태(state) 동기화 및 유효성(Validation) 체크 결과(에러 행 ID 관리) 자동 갱신
+ * @param fields 변경할 필드명 (단일 또는 배열)
  * @param setRowData 행 데이터 setState
  * @param setErrorRows 에러 행 id setState
  * @param idKey id 필드명 (기본값: 'id')
@@ -1044,7 +1046,9 @@ export function isCopyButtonVisible<T extends { isDuplicate?: boolean }>(params:
 }
 
 /**
- * 라벨형 툴팁 valueGetter 생성기 (공용)
+ * [Ag-Grid Helper] 셀 텍스트 말줄임(Truncated) 처리 시 툴팁 반환 게터 생성기
+ *
+ * - 셀의 텍스트가 생략되었을 때(말줄임 상태) 툴팁에 표시할 원본 값을 가져옴
  * @param label 라벨 (예: 담보명)
  * @param field 데이터 필드명
  * @param valueGetter 데이터에서 값을 꺼내는 커스텀 함수
@@ -1076,7 +1080,9 @@ export const productNameTooltipValueGetter = <T extends { productName?: string }
 };
 
 /**
- * 숫자 콤마 포매터 (공용)
+ * [Ag-Grid Formatter] 천단위 콤마 포맷터
+ *
+ * - 숫자 데이터를 천단위 구분을 위해 3자리마다 쉼표(,)가 포함된 문자열로 포맷팅
  */
 export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
   if (params.value === null || params.value === undefined || params.value === '') return '';
@@ -1252,16 +1258,10 @@ function parseRangeFromValue(rawValue: unknown): DatePickerRangeValue {
 }
 
 /**
- * ag-Grid 셀 편집기용 DatePicker 래퍼.
+ * [Ag-Grid Cell Editor] DatePicker 달력 입력 에디터
  *
- * 지원 모드:
- * - single: 단일 날짜 문자열 편집
- * - range : "from ~ to" 범위 문자열 편집
- *
- * 구현 포인트:
- * 1) 그리드 재렌더/재진입 시 props.value와 내부 상태를 항상 동기화
- * 2) 날짜 선택 즉시 node.setDataValue로 셀 값 반영
- * 3) ag-Grid가 요구하는 imperative API(getValue, isCancelAfterEnd) 제공
+ * - 직접 날짜 입력(YYYY-MM-DD) 및 달력 팝업을 통한 날짜 선택 기능 제공
+ * - ag-Grid 컬럼 설정의 cellEditorParams로 DatePickerCellEditorParams 옵션 전달 가능
  */
 export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams<RowType>) {
   const editorParams = (props.colDef?.cellEditorParams ?? {}) as DatePickerCellEditorParams;
@@ -1290,8 +1290,14 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
   };
   const propsWithForwardedRef = props as unknown as CellEditorPropsWithForwardedRef<RowType>;
 
-  // 셀 진입 시마다 최신 value로 동기화
-  React.useEffect(() => {
+  const [prevValueProp, setPrevValueProp] = React.useState<unknown>(props.value);
+  const [prevModeProp, setPrevModeProp] = React.useState<DatePickerEditorMode>(mode);
+
+  // 셀 진입 시마다 최신 value로 동기화 (렌더 단계에서 동기화)
+  if (props.value !== prevValueProp || mode !== prevModeProp) {
+    setPrevValueProp(props.value);
+    setPrevModeProp(mode);
+
     if (mode === 'range') {
       const nextRange = parseRangeFromValue(props.value);
       setRangeValue(nextRange);
@@ -1300,12 +1306,11 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
       } else {
         setValue(nextRange.from ?? '');
       }
-      return;
+    } else {
+      setRangeValue({ from: '', to: '' });
+      setValue(typeof props.value === 'string' ? props.value : '');
     }
-
-    setRangeValue({ from: '', to: '' });
-    setValue(typeof props.value === 'string' ? props.value : '');
-  }, [mode, props.value]);
+  }
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -1589,7 +1594,10 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
 };
 
 /**
- * ag-Grid + TablePagination 연동 공통 훅
+ * [Ag-Grid Hook] ag-Grid 페이지네이션 연동용 커스텀 훅
+ *
+ * - 외부 TablePagination 컴포넌트와 ag-Grid API의 페이지 상태를 연동
+ * - 페이지 크기(pageSize) 단위로 페이지 변경 및 총 페이지 계산 처리
  * @param gridRef ag-Grid API ref (React.useRef)
  * @param pageSize 페이지당 행 수
  */
@@ -1640,10 +1648,10 @@ type SortState = Array<{
 }>;
 
 /**
- * infinite rowModel + 더보기(append) 공통 훅
- * - 다음: pageSize 만큼 로드 범위 증가
- * - 전체조회: 전체 건수로 로드 범위 확장
- * - 정렬: onSortChanged 콜백으로 sortModel 전달 필수
+ * [Ag-Grid Hook] 무한 스크롤 및 추가 로드(TableMore) 연동용 커스텀 훅
+ *
+ * - ag-Grid의 Infinite Row Model 데이터 소스를 생성 및 관리
+ * - '더보기' 및 '전체보기' 액션에 대응하여 데이터를 추가로 바인딩
  */
 export function useAgGridInfiniteAppend<TData>({
   allRows,
@@ -1846,7 +1854,7 @@ export function createHeaderCheckboxOnCellValueChanged<T>(fields: (keyof T & str
 }
 
 /**
- * ag-Grid 기본 empty overlay 컴포넌트.
+ * [Ag-Grid Component] 데이터가 없을 때 노출하는 Empty 오버레이 UI
  */
 export function AgGridEmptyComponent({ className: _className }: React.ComponentProps<'div'>) {
   return (

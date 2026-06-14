@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { createCellValueChangedHandler } from '@aggrid';
-import {
+ */ import {
   Title,
   Subtitle,
   Description,
@@ -12,11 +12,12 @@ import {
   Markdown,
   Unstyled,
 } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { createCellValueChangedHandler } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -85,7 +86,7 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
               <br />
               <b>pinnedBottomRowData</b>를 활용해 하단에 합계 행을 추가하고,
               <br />
-              <b>colSpan</b>을 이용해 "이름+서브레이블" 컬럼을 합쳐서 표시합니다.
+              <b>colSpan</b>을 이용해 &quot;이름+서브레이블&quot; 컬럼을 합쳐서 표시합니다.
               <br />
               실제 데이터와 합계 행을 id로 구분하여, 합계 행에만 병합/스타일을 적용할 수 있습니다.
             </p>

@@ -1,6 +1,6 @@
 @import 'tailwindcss';
-@import "./agGridRe.css";
-@import "./shardcnRe.css";
+@import './agGridRe.css';
+@import './shardcnRe.css';
 @plugin "tailwindcss-animate";
 @custom-variant dark (&:is(.dark *));
 
@@ -143,135 +143,133 @@
   --ag-group-header-height: 3rem;
   --ag-list-item-height: 3rem;
 
-
-
   /* ===== 1. Base Unit ===== */
   --base-unit: 0.4rem;
 
   /* ===== 2. Primitive Colors (Figma Tokens) ===== */
   --color-gray-100: #000000;
   --color-blue-gray-100: #000000;
-  --color-blue-gray-95: #0B101C;
+  --color-blue-gray-95: #0b101c;
   --color-blue-gray-90: #162233;
   --color-blue-gray-80: #263143;
   --color-blue-gray-70: #374151;
-  --color-blue-gray-60: #4B5563;
-  --color-blue-gray-50: #6B7280;
-  --color-blue-gray-40: #9CA3AF;
-  --color-blue-gray-30: #C8CCD3;
-  --color-blue-gray-20: #D8DBE0;
-  --color-blue-gray-15: #E4E7EC;
-  --color-blue-gray-10: #F3F4F6;
-  --color-blue-gray-5: #F9FAFB;
-  --color-blue-gray-0: #FFFFFF;
+  --color-blue-gray-60: #4b5563;
+  --color-blue-gray-50: #6b7280;
+  --color-blue-gray-40: #9ca3af;
+  --color-blue-gray-30: #c8ccd3;
+  --color-blue-gray-20: #d8dbe0;
+  --color-blue-gray-15: #e4e7ec;
+  --color-blue-gray-10: #f3f4f6;
+  --color-blue-gray-5: #f9fafb;
+  --color-blue-gray-0: #ffffff;
 
-  --color-primary-95: #2E0D03;
-  --color-primary-90: #531A0A;
-  --color-primary-80: #832E15;
-  --color-primary-70: #B54121;
-  --color-primary-60: #E8542A;
-  --color-primary-50: #FF5C2E;
-  --color-primary-40: #FF7D58;
-  --color-primary-30: #FF9273;
-  --color-primary-20: #FFB49F;
-  --color-primary-15: #FFCCBE;
-  --color-primary-10: #FFEFEA;
-  --color-primary-5: #FFF7F4;
+  --color-primary-95: #2e0d03;
+  --color-primary-90: #531a0a;
+  --color-primary-80: #832e15;
+  --color-primary-70: #b54121;
+  --color-primary-60: #e8542a;
+  --color-primary-50: #ff5c2e;
+  --color-primary-40: #ff7d58;
+  --color-primary-30: #ff9273;
+  --color-primary-20: #ffb49f;
+  --color-primary-15: #ffccbe;
+  --color-primary-10: #ffefea;
+  --color-primary-5: #fff7f4;
 
-  --color-purple-50: #8C38FC;
-  --color-purple-40: #A261F7;
-  --color-purple-10: #EDE7FF;
+  --color-purple-50: #8c38fc;
+  --color-purple-40: #a261f7;
+  --color-purple-10: #ede7ff;
 
   --color-gray-95: #131416;
-  --color-gray-90: #1E2124;
+  --color-gray-90: #1e2124;
   --color-gray-80: #323232;
   --color-gray-70: #414141;
   --color-gray-60: #545454;
   --color-gray-50: #777777;
   --color-gray-40: #999999;
-  --color-gray-30: #B3B3B3;
-  --color-gray-20: #CCCCCC;
-  --color-gray-15: #D8D8D8;
-  --color-gray-10: #E5E5E5;
-  --color-gray-5: #F4F4F4;
-  --color-gray-0: #FFFFFF;
-  --color-secondary-95: #1A1613;
+  --color-gray-30: #b3b3b3;
+  --color-gray-20: #cccccc;
+  --color-gray-15: #d8d8d8;
+  --color-gray-10: #e5e5e5;
+  --color-gray-5: #f4f4f4;
+  --color-gray-0: #ffffff;
+  --color-secondary-95: #1a1613;
   --color-secondary-90: #292421;
-  --color-secondary-80: #352F2B;
-  --color-secondary-70: #453C38;
-  --color-secondary-60: #584D48;
-  --color-secondary-50: #61554F;
+  --color-secondary-80: #352f2b;
+  --color-secondary-70: #453c38;
+  --color-secondary-60: #584d48;
+  --color-secondary-50: #61554f;
   --color-secondary-40: #817772;
-  --color-secondary-30: #958D89;
-  --color-secondary-20: #B6B1AE;
-  --color-secondary-15: #CDC6C4;
-  --color-secondary-10: #E1DEDD;
-  --color-secondary-5: #EFEEED;
+  --color-secondary-30: #958d89;
+  --color-secondary-20: #b6b1ae;
+  --color-secondary-15: #cdc6c4;
+  --color-secondary-10: #e1dedd;
+  --color-secondary-5: #efeeed;
   --color-alpha-black-100: #000000;
-  --color-alpha-black-75: #000000BF;
+  --color-alpha-black-75: #000000bf;
   --color-alpha-black-60: #00000099;
-  --color-alpha-black-50: #0000007F;
-  --color-alpha-black-25: #0000003F;
+  --color-alpha-black-50: #0000007f;
+  --color-alpha-black-25: #0000003f;
   --color-alpha-black-10: #00000019;
-  --color-alpha-black-5: #0000000A;
+  --color-alpha-black-5: #0000000a;
   --color-alpha-black-0: #00000000;
-  --color-alpha-white-100: #FFFFFF;
-  --color-alpha-white-75: #FFFFFFBF;
-  --color-alpha-white-60: #FFFFFF99;
-  --color-alpha-white-50: #FFFFFF7F;
-  --color-alpha-white-25: #FFFFFF3F;
-  --color-alpha-white-10: #FFFFFF19;
-  --color-alpha-white-0: #FFFFFF00;
+  --color-alpha-white-100: #ffffff;
+  --color-alpha-white-75: #ffffffbf;
+  --color-alpha-white-60: #ffffff99;
+  --color-alpha-white-50: #ffffff7f;
+  --color-alpha-white-25: #ffffff3f;
+  --color-alpha-white-10: #ffffff19;
+  --color-alpha-white-0: #ffffff00;
   --color-danger-95: #340606;
-  --color-danger-90: #4C0C0C;
+  --color-danger-90: #4c0c0c;
   --color-danger-80: #691414;
-  --color-danger-70: #901A1A;
-  --color-danger-60: #C63131;
-  --color-danger-50: #E43939;
-  --color-danger-40: #FC6565;
-  --color-danger-30: #FC7E7E;
-  --color-danger-20: #FDA7A7;
-  --color-danger-15: #FEC3C3;
-  --color-danger-10: #FFE0E0;
-  --color-danger-5: #FFF4F4;
-  --color-warning-95: #281F02;
-  --color-warning-90: #4D3D0B;
-  --color-warning-80: #694D03;
-  --color-warning-70: #8C6603;
-  --color-warning-60: #BC8700;
-  --color-warning-50: #DC9F00;
-  --color-warning-40: #FFB800;
-  --color-warning-30: #FFC83A;
-  --color-warning-20: #FFD362;
-  --color-warning-15: #FFE38A;
-  --color-warning-10: #FEF4D4;
-  --color-warning-5: #FFFBEF;
+  --color-danger-70: #901a1a;
+  --color-danger-60: #c63131;
+  --color-danger-50: #e43939;
+  --color-danger-40: #fc6565;
+  --color-danger-30: #fc7e7e;
+  --color-danger-20: #fda7a7;
+  --color-danger-15: #fec3c3;
+  --color-danger-10: #ffe0e0;
+  --color-danger-5: #fff4f4;
+  --color-warning-95: #281f02;
+  --color-warning-90: #4d3d0b;
+  --color-warning-80: #694d03;
+  --color-warning-70: #8c6603;
+  --color-warning-60: #bc8700;
+  --color-warning-50: #dc9f00;
+  --color-warning-40: #ffb800;
+  --color-warning-30: #ffc83a;
+  --color-warning-20: #ffd362;
+  --color-warning-15: #ffe38a;
+  --color-warning-10: #fef4d4;
+  --color-warning-5: #fffbef;
   --color-success-95: #002210;
   --color-information-95: #002148;
-  --color-information-90: #002F66;
-  --color-information-80: #003D85;
-  --color-information-70: #004FAC;
-  --color-information-60: #0060D1;
-  --color-information-50: #006FF2;
-  --color-information-40: #338CF5;
-  --color-information-30: #6FB1FF;
-  --color-information-20: #A3CBFB;
-  --color-information-15: #CBE2FF;
-  --color-information-10: #E0EFFF;
-  --color-information-5: #EEF7FF;
+  --color-information-90: #002f66;
+  --color-information-80: #003d85;
+  --color-information-70: #004fac;
+  --color-information-60: #0060d1;
+  --color-information-50: #006ff2;
+  --color-information-40: #338cf5;
+  --color-information-30: #6fb1ff;
+  --color-information-20: #a3cbfb;
+  --color-information-15: #cbe2ff;
+  --color-information-10: #e0efff;
+  --color-information-5: #eef7ff;
   --color-success-90: #004720;
-  --color-success-80: #005E2A;
-  --color-success-70: #007D39;
+  --color-success-80: #005e2a;
+  --color-success-70: #007d39;
   --color-success-60: #009443;
-  --color-success-50: #00AA4D;
-  --color-success-40: #29C06D;
-  --color-success-30: #69D59A;
-  --color-success-20: #ACE8C7;
-  --color-success-15: #C8F2DB;
-  --color-success-10: #E9FEF2;
-  --color-success-5: #F7FFFA;
+  --color-success-50: #00aa4d;
+  --color-success-40: #29c06d;
+  --color-success-30: #69d59a;
+  --color-success-20: #ace8c7;
+  --color-success-15: #c8f2db;
+  --color-success-10: #e9fef2;
+  --color-success-5: #f7fffa;
   --typo-letter-spacing-n3: -1.2999999523162842;
-  --typo-font-type: "Malgun Gothic";
+  --typo-font-type: 'Malgun Gothic';
   --typo-letter-spacing-n2: -1;
   --typo-letter-spacing-n1: -0.800000011920929;
   --typo-letter-spacing-0: 0;
@@ -298,18 +296,18 @@
   --number-20: 80;
   --number-21: 96;
   --number-max: 1000;
-  --typo-font-weight-regular: "Regular";
-  --typo-font-weight-bold: "Bold";
-  --color-alpha-primary-100: #FF5C2D;
-  --color-alpha-primary-75: #FF5C2EBF;
-  --color-alpha-primary-60: #FF5C2E99;
-  --color-alpha-primary-50: #FF5C2E7F;
-  --color-alpha-primary-25: #FF5C2E3F;
-  --color-alpha-primary-10: #FF5C2D33;
-  --color-alpha-primary-0: #FF5C2E00;
-  --color-yellow-50: #EAB308;
-  --color-yellow-40: #FACC15;
-  --color-yellow-10: #FEF9C3;
+  --typo-font-weight-regular: 'Regular';
+  --typo-font-weight-bold: 'Bold';
+  --color-alpha-primary-100: #ff5c2d;
+  --color-alpha-primary-75: #ff5c2ebf;
+  --color-alpha-primary-60: #ff5c2e99;
+  --color-alpha-primary-50: #ff5c2e7f;
+  --color-alpha-primary-25: #ff5c2e3f;
+  --color-alpha-primary-10: #ff5c2d33;
+  --color-alpha-primary-0: #ff5c2e00;
+  --color-yellow-50: #eab308;
+  --color-yellow-40: #facc15;
+  --color-yellow-10: #fef9c3;
 
   /* color */
   --color-background-base: var(--color-gray-0);
@@ -516,8 +514,6 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* ===== Tailwind Scale Definitions (from tailwind.config.ts) ===== */
-
-
 }
 
 /* 4. 기본 스타일 (HTML 태그 초기화) */
@@ -567,20 +563,20 @@
  */
 
   ::-webkit-scrollbar {
-    width: 1.5rem !important; 
-    height: 1.5rem !important; 
+    width: 1.5rem !important;
+    height: 1.5rem !important;
   }
   ::-webkit-scrollbar-track {
-    background: transparent; 
+    background: transparent;
     border-radius: 0rem;
   }
   ::-webkit-scrollbar-thumb {
     background: #c1c1c1;
-    border-radius:2rem; 
+    border-radius: 2rem;
     border: 0.6rem solid #ffffff;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8; 
+    background: #a8a8a8;
     border: 0.4rem solid #ffffff;
   }
 
@@ -593,6 +589,10 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+  }
+
+  .docblock-argstable-head {
+    display: none;
   }
 
   button {
@@ -623,13 +623,18 @@
     padding: 0 !important;
   }
 
+  .sbdocs-content {
+    /* max-width: 1304px !important; */
+    width: 100% !important;
+  }
+
   .ag-picker-field-display,
   input,
   select {
     letter-spacing: -0.02rem !important;
   }
 
-  [data-layout="doc"] {
+  [data-layout='doc'] {
     min-width: 1204px;
   }
 
@@ -736,7 +741,7 @@
   }
 
   .filepond--file-info-main::before {
-    content: "";
+    content: '';
     display: inline-block;
     margin-right: 0.4rem;
     transform: translateY(0.2rem);
@@ -762,23 +767,23 @@
     cursor: pointer !important;
     background-color: var(--color-blue-gray-50) !important;
   }
-  .filepond--browser[name="files"] + .filepond--drop-label {
+  .filepond--browser[name='files'] + .filepond--drop-label {
     position: absolute !important;
     width: 100% !important;
     display: flex !important;
     height: 100% !important;
   }
-  .filepond--browser[name="files"] ~ .filepond--list-scroller {
+  .filepond--browser[name='files'] ~ .filepond--list-scroller {
     padding: 0 !important;
   }
-  .filepond--drop-label{
+  .filepond--drop-label {
     position: absolute !important;
     width: 100% !important;
     height: 100% !important;
     display: none !important;
   }
   .filepond--drop-label::before {
-    content: "";
+    content: '';
     display: block;
     width: 3.2rem;
     height: 3.2rem;
@@ -815,7 +820,7 @@
     margin: 0 !important;
   }
 
-  [data-slot="dialog-content"] [data-layout="head"] {
+  [data-slot='dialog-content'] [data-layout='head'] {
     display: none !important;
   }
 
@@ -823,30 +828,29 @@
     grid-template-rows: 1fr !important;
   } */
 
-  [data-slot="dialog-content"] footer {
+  [data-slot='dialog-content'] footer {
     display: none !important;
   }
 
-  [data-slot="dialog-content"] [data-layout="main"] {
+  [data-slot='dialog-content'] [data-layout='main'] {
     padding: 0 !important;
     min-height: 60rem !important;
   }
 
-  .type-small [role="checkbox"] {
+  .type-small [role='checkbox'] {
     padding-left: 0.2rem !important;
     padding-right: 0.6rem !important;
     font-size: 1.2rem !important;
     min-height: 2.5rem !important;
   }
 
-  .type-small [role="checkbox"]>div {
+  .type-small [role='checkbox'] > div {
     gap: 0 !important;
   }
 
   /* [data-sonner-toast][data-styled=true] [data-close-button] {
     top:2.5rem !important;
   } */
-
 }
 
 .blink-border {
@@ -856,32 +860,32 @@
 
 @keyframes blink-border {
   0% {
-    border-color: #FFFFFF;
+    border-color: #ffffff;
     border-width: 0.2rem;
   }
 
   20% {
-    border-color: #D8D8D830;
+    border-color: #d8d8d830;
     border-width: 0.2rem;
   }
 
   40% {
-    border-color: #FF5C2E30;
+    border-color: #ff5c2e30;
     border-width: 0.2rem;
   }
 
   60% {
-    border-color: #FFF;
+    border-color: #fff;
     border-width: 0.2rem;
   }
 
   80% {
-    border-color: #D8D8D830;
+    border-color: #d8d8d830;
     border-width: 0.2rem;
   }
 
   100% {
-    border-color: #FF5C2E;
+    border-color: #ff5c2e;
     border-width: 0.2rem;
   }
 }

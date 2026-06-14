@@ -49,7 +49,7 @@ import {
   uwIconRenderer,
 } from '@grid/CellRenderers';
 
-import { HeaderWithUnit, ProductNameHeader, AgGridProductNameHeader } from '@grid/HeadRenderers';
+import { HeaderWithUnit, AgGridProductNameHeader } from '@grid/HeadRenderers';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002aData';
 import type { DummyDataType } from '../data/ltpa35002aData';
@@ -93,7 +93,6 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   }, []);
 
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
-
 
   // =====================
   // 공용 유틸리티/셀 렌더러

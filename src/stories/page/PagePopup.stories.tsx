@@ -1,8 +1,7 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { LayoutDoc } from '@layout/BaseLayout';
+ */ import LTPA010 from '@/app/pub/ispl/pages/LTPA010';
+import { Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -14,7 +13,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import LTPA010 from '@/app/pub/ispl/pages/LTPA010';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
   title: '페이지인팝업Test/LTPA010',

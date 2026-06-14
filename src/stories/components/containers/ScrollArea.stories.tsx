@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ScrollArea } from '@uiux/ScrollArea';
 
 const meta: Meta<typeof ScrollArea> = {

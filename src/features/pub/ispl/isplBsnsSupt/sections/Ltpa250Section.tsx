@@ -5,7 +5,7 @@
 
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { Grid, Grow, Gcol } from '@atoms';
+import { Grid, Grow } from '@atoms';
 import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Input } from '@uiux/Input';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
@@ -213,7 +213,8 @@ export default function Ltpa250Section() {
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
             const v1 = String(params.data?.field12 ?? '');
             const v2 = String(params.data?.field13 ?? '');
-            return ( // Tooltip 적용한 셀 렌더링
+            return (
+              // Tooltip 적용한 셀 렌더링
               <Grid className="w-full grid-rows-[1fr_1fr] divide-y divide-gray-200" gap={0}>
                 <Tooltip>
                   <TooltipTrigger asChild>

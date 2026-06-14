@@ -4,17 +4,18 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
   createTooltipValueGetter,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -26,10 +27,9 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type Ltpz032TabType = {
   name: string;
@@ -624,7 +624,6 @@ const DummyData21: DummyDataType21[] = [
     field2_04: '입원(200일)',
     field2_05: '통원(200일)',
 
-    
     field2_06: '아니오',
     field2_07: '완치',
     field2_08: '없음',
@@ -853,7 +852,7 @@ const Ltpz032 = () => {
 
   // 에러 행 상태 관리 (현재는 사용하지 않음)
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
-  
+
   // 셀 값 변경 시 실행 - isCheck 필드 변경을 감지하고 rowData 업데이트
   const onCellValueChanged11 = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType11, number>('isCheck', setRowData11, setErrorRows, 'id'),
@@ -893,7 +892,7 @@ const Ltpz032 = () => {
 
   // 화면 크기에 따라 컬럼 너비를 동적으로 조정하는 함수
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  
+
   // Tab1-1: 일반/건강고지 테이블 컬럼 정의
   // useMemo로 감싼 이유: 불필요한 re-render 방지
   const columnDefs11 = React.useMemo<ColDef<DummyDataType11>[]>(() => {
@@ -1147,7 +1146,7 @@ const Ltpz032 = () => {
         tooltipValueGetter: createTooltipValueGetter<DummyDataType11>({ field: 'field36' }),
       },
     ];
-  }, [[attributeColumnWidth]]);
+  }, [attributeColumnWidth]);
   const columnDefs12 = React.useMemo<ColDef<DummyDataType12>[]>(
     () => [
       {
@@ -1388,7 +1387,7 @@ const Ltpz032 = () => {
         field: 'field35',
         flex: 1,
         minWidth: attributeColumnWidth(100),
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType11>({ field: 'field35' }), 
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType11>({ field: 'field35' }),
       },
       {
         headerName: '질병명30',
@@ -1476,7 +1475,7 @@ const Ltpz032 = () => {
     ],
     [attributeColumnWidth]
   );
-  
+
   // Tab2-2: 건강고지(질병코드별) 테이블 컬럼 정의
   const columnDefs22 = React.useMemo<ColDef<DummyDataType22>[]>(
     () => [
@@ -1553,7 +1552,7 @@ const Ltpz032 = () => {
     ],
     [attributeColumnWidth]
   );
-  
+
   // Tab2-3: 간편고지(질병코드별) 테이블 컬럼 정의
   const columnDefs23 = React.useMemo<ColDef<DummyDataType23>[]>(
     () => [
@@ -1673,8 +1672,8 @@ const Ltpz032 = () => {
                           columnDefs={columnDefs11} // 컬럼 설정
                           // 모든 컬럼의 기본 설정
                           defaultColDef={{
-                            sortable: true,      // 정렬 가능 여부
-                            resizable: true,     // 열 크기 조정 가능 여부
+                            sortable: true, // 정렬 가능 여부
+                            resizable: true, // 열 크기 조정 가능 여부
                             cellClass: 'text-center', // 셀의 기본 스타일
                           }}
                           // 체크박스 선택 모드 설정
@@ -1691,7 +1690,7 @@ const Ltpz032 = () => {
                           // Grid 레이아웃 설정
                           domLayout="normal"
                           tooltipShowMode="whenTruncated" // 텍스트가 길면 툴팁 표시
-                          tooltipShowDelay={0}             // 툴팁 표시 지연 시간
+                          tooltipShowDelay={0} // 툴팁 표시 지연 시간
                           onCellValueChanged={onCellValueChanged11} // 셀 값 변경 시 실행
                           // Grid 초기화 완료 시 실행 - isCheck가 true인 행들을 체크
                           onGridReady={(params) => {
@@ -1715,8 +1714,8 @@ const Ltpz032 = () => {
                           rowData={rowData12}
                           columnDefs={columnDefs12}
                           defaultColDef={{
-                            sortable: true,      // 정렬 가능 여부
-                            resizable: true,     // 열 크기 조정 가능 여부
+                            sortable: true, // 정렬 가능 여부
+                            resizable: true, // 열 크기 조정 가능 여부
                             cellClass: 'text-center', // 셀의 기본 스타일
                           }}
                           // 체크박스 선택 모드 설정
@@ -1772,15 +1771,15 @@ const Ltpz032 = () => {
                           rowData={rowData21}
                           columnDefs={columnDefs21}
                           defaultColDef={{
-                            sortable: true,      // 정렬 가능
-                            resizable: true,     // 열 크기 조정 가능
+                            sortable: true, // 정렬 가능
+                            resizable: true, // 열 크기 조정 가능
                             cellClass: 'text-center',
                           }}
                           //멀티 선택 모드 - 여러 개 행을 동시에 선택 가능
                           rowSelection={{
-                            mode: 'multiRow',               // 여러 행 선택 가능
-                            checkboxes: true,               // 체크박스 표시
-                            enableClickSelection: false,    // 체크박스로만 선택
+                            mode: 'multiRow', // 여러 행 선택 가능
+                            checkboxes: true, // 체크박스 표시
+                            enableClickSelection: false, // 체크박스로만 선택
                           }}
                           selectionColumnDef={{
                             headerName: '선택',
@@ -1791,13 +1790,16 @@ const Ltpz032 = () => {
                           tooltipShowMode="whenTruncated"
                           tooltipShowDelay={0}
                           onCellValueChanged={onCellValueChanged21}
-                          onGridReady={(params) => { // Grid 초기화 후 isCheck 필드로 체크박스 동기화
+                          onGridReady={(params) => {
+                            // Grid 초기화 후 isCheck 필드로 체크박스 동기화
                             syncSelectionByIsCheck(params.api, rowData21);
                           }}
-                          onFirstDataRendered={(params) => { // 첫 데이터 렌더링 후 동기화
+                          onFirstDataRendered={(params) => {
+                            // 첫 데이터 렌더링 후 동기화
                             syncSelectionByIsCheck(params.api, rowData21);
                           }}
-                          onRowDataUpdated={(params) => { // rowData 업데이트 후 동기화
+                          onRowDataUpdated={(params) => {
+                            // rowData 업데이트 후 동기화
                             syncSelectionByIsCheck(params.api, rowData21);
                           }}
                         />
@@ -1822,9 +1824,9 @@ const Ltpz032 = () => {
                           }}
                           // 멀티 선택 모드
                           rowSelection={{
-                            mode: 'multiRow',               // 여러 행 선택 가능
-                            checkboxes: true,               // 체크박스 표시
-                            enableClickSelection: false,    // 체크박스로만 선택
+                            mode: 'multiRow', // 여러 행 선택 가능
+                            checkboxes: true, // 체크박스 표시
+                            enableClickSelection: false, // 체크박스로만 선택
                           }}
                           selectionColumnDef={{
                             headerName: '선택',
@@ -1835,8 +1837,9 @@ const Ltpz032 = () => {
                           tooltipShowMode="whenTruncated"
                           tooltipShowDelay={0}
                           onCellValueChanged={onCellValueChanged22}
-                          onGridReady={(params) => { // Grid 초기화, 데이터 렌더링, 업데이트 시 체크박스 동기화
-                            syncSelectionByIsCheck(params.api, rowData22) ;
+                          onGridReady={(params) => {
+                            // Grid 초기화, 데이터 렌더링, 업데이트 시 체크박스 동기화
+                            syncSelectionByIsCheck(params.api, rowData22);
                           }}
                           onFirstDataRendered={(params) => {
                             syncSelectionByIsCheck(params.api, rowData22);
@@ -1866,9 +1869,9 @@ const Ltpz032 = () => {
                           }}
                           // 멀티 선택 모드
                           rowSelection={{
-                            mode: 'multiRow',               // 여러 행 선택 가능
-                            checkboxes: true,               // 체크박스 표시
-                            enableClickSelection: false,    // 체크박스로만 선택
+                            mode: 'multiRow', // 여러 행 선택 가능
+                            checkboxes: true, // 체크박스 표시
+                            enableClickSelection: false, // 체크박스로만 선택
                           }}
                           selectionColumnDef={{
                             headerName: '선택',

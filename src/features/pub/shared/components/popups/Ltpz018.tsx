@@ -4,9 +4,9 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { Fragment, useMemo, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grid, Grow, Typo, Gcol } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TabPager } from '@common/TabPager';
 import { ArrowIcon, InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -21,8 +21,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { toast } from '@uiux/Sonner';
-import { Fragment, useMemo, useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TabPager } from '@common/TabPager';
 
 type MenuItem = {
   code: string;

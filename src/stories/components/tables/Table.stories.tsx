@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
 type ContentTableStoryProps = React.ComponentProps<typeof Table> & {
   tableVariant?: 'default' | 'sub';

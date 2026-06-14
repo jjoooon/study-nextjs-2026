@@ -1,10 +1,11 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Gcol } from '@atoms';
-import { Controls, Markdown, Primary, Title } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import * as React from 'react';
 import { ChatResult, type ChatResultItem } from '@/shared/components/features/ChatResult';
+import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
+import { Gcol } from '@atoms';
 
 const sampleChatData: ChatResultItem[] = [
   {
@@ -43,43 +44,37 @@ const meta: Meta<typeof ChatResult> = {
     layout: 'centered',
     docs: {
       page: () => (
-        <>
-          <Title />
-          <br />
-          <h2>Overview</h2>
-          <p>심사 요청과 심사 결과 대화를 카드 형태로 보여주는 컴포넌트입니다.</p>
-          <Primary />
-          <Controls />
-          <h2>Usage</h2>
-          <Markdown>
-            {`
-\`\`\`tsx
-import { ChatResult } from '@/shared/components/features/ChatResult';
+        <StoryDocTemplate
+          title="ChatResult"
+          history={[
+            '2026.03.30 - 컴포넌트 최초 생성',
+            '2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화',
+          ]}
+          overview={`심사 요청과 심사 결과 대화를 카드 형태로 보여주는 컴포넌트입니다.
+내부적으로 페이지 네비게이션과 스무스 스크롤을 탑재하여 긴 심사 이력도 페이지 단위로 쉽게 탐색할 수 있습니다.`}
+          usageCode={`import { ChatResult } from '@/shared/components/features/ChatResult';
 
-<ChatResult chatData={chatData} />
-\`\`\`
-            `}
-          </Markdown>
-          <h2>API Reference</h2>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                <th>prop</th>
-                <th>타입</th>
-                <th>설명</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>chatData</td>
-                <td>ChatResultItem[]</td>
-                <td>대화 목록 데이터입니다.</td>
-              </tr>
-            </tbody>
-          </table>
-        </>
+<ChatResult chatData={chatData} />`}
+          apiReference={[
+            {
+              prop: 'chatData',
+              type: 'ChatResultItem[]',
+              description: '대화 목록 데이터 (심사 요청 및 결과 연계)',
+            },
+          ]}
+        />
       ),
     },
+  },
+  argTypes: {
+    chatData: {
+      control: 'object',
+      description: '대화 목록 데이터 (ChatResultItem[])',
+      table: { category: 'Data' },
+    },
+  },
+  args: {
+    chatData: sampleChatData,
   },
 };
 

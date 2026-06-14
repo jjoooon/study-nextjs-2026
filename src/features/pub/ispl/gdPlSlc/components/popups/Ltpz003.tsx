@@ -4,7 +4,6 @@
 'use client';
 //* 2026-05-27 *
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   DialogClose,
@@ -16,6 +15,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import { Ltpa3500301 } from '../../../ncMtt/components/Ltpa3500301';
 

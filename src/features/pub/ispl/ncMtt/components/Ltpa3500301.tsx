@@ -3,8 +3,21 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { CheckIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
@@ -16,19 +29,6 @@ import {
 } from '@common/QuestionRadioCard';
 import { TableMore } from '@common/TablePagination';
 import { TooltipQ } from '@common/TooltipQ';
-import { CheckIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -180,12 +180,15 @@ export const Ltpa3500301 = ({
 
   const badgeLabelIds: BadgeId[] = [1, 2, 3, 4, 5, 6, '6-1', 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
+  const [prevSampleMode, setPrevSampleMode] = useState<boolean>(sampleMode);
+
   // sampleMode가 true로 변경될 때 한 번만 모든 답변을 빈값으로 초기화
-  React.useEffect(() => {
+  if (sampleMode !== prevSampleMode) {
+    setPrevSampleMode(sampleMode);
     if (sampleMode) {
       setQAnswerList(Array(qAnswerList.length).fill(''));
     }
-  }, [sampleMode, qAnswerList.length]);
+  }
   // sampleMode가 true면 simpleMode도 강제로 true
   if (sampleMode) {
     simpleMode = true;
