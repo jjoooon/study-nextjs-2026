@@ -155,9 +155,9 @@ type Story = StoryObj<typeof InputCombo>;
 
 export const Default: Story = {
   render: (args) => {
-    const [value, setValue] = React.useState<any>(args.value ?? '');
+    const [value, setValue] = React.useState<string>((args.value as string) ?? '');
     React.useEffect(() => {
-      setValue(args.value ?? '');
+      setValue((args.value as string) ?? '');
     }, [args.value]);
 
     return (
@@ -165,7 +165,7 @@ export const Default: Story = {
         {...args}
         value={value}
         onChange={(val) => {
-          setValue(val);
+          setValue(val as string);
           args.onChange?.(val);
         }}
       />

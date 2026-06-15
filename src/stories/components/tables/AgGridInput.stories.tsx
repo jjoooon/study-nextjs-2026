@@ -14,7 +14,7 @@
 } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ModuleRegistry, AllCommunityModule, ICellRendererParams } from 'ag-grid-enterprise';
-import type { ColDef } from 'ag-grid-enterprise';
+import type { ColDef, CellEditingStoppedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
@@ -113,7 +113,7 @@ export const Default: StoryObj = {
     );
 
     // 코드 컬럼 실시간 에러 체크 및 반영
-    const onCellEditingStopped = React.useCallback((params: any) => {
+    const onCellEditingStopped = React.useCallback((params: CellEditingStoppedEvent<Dummy2DataType>) => {
       if (params.colDef.field !== 'code') return;
       const val = params.value;
       // 에러 조건: null/undefined 제외, 0 또는 2글자 이하

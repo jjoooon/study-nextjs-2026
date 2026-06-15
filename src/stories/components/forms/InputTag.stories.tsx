@@ -65,7 +65,7 @@ const [tags, setTags] = useState<string[]>([]);
       table: { category: '이벤트 props' },
     },
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['default', 'box-line'],
       description: 'Input 스타일 variant',
       table: { category: '스타일 props' },
@@ -93,7 +93,7 @@ const [tags, setTags] = useState<string[]>([]);
       table: { category: '에러 props' },
     },
     errorPs: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },

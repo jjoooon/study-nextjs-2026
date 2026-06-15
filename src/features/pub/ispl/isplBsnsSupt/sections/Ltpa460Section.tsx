@@ -199,7 +199,7 @@ export default function Ltpa460Section() {
     return <p className="truncate w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
   }, []);
 
-  const gridRef = React.useRef<any>(null);
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: rowData,

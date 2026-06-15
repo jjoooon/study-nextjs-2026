@@ -320,7 +320,7 @@ export default function Ltpa600Section() {
 
   // 시뮬레이션 -------------
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
-  const gridRef = React.useRef<any>(null);
+  const gridRef = React.useRef<AgGridReact<DummyData2Type>>(null);
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
     useAgGridInfiniteAppend({

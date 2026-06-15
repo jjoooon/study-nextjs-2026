@@ -9,7 +9,7 @@ import { Gcol } from '@atoms';
 
 const sampleChatData: ChatResultItem[] = [
   {
-    name: '심부산',
+    name: '1심부산',
     title: '심사 요청 내용',
     content: '보험료 산출 결과와 고지 내용 기준으로 심사 검토를 요청드립니다.',
     date: '2026.05.08 10:30',
@@ -22,7 +22,7 @@ const sampleChatData: ChatResultItem[] = [
     uw_detail: '상세보기 예시',
   },
   {
-    name: '심부산',
+    name: '2심부산',
     title: '추가 심사 요청',
     content: '추가 담보 증액 여부를 포함하여 재심사를 요청드립니다.',
     date: '2026.05.08 13:20',
@@ -85,7 +85,7 @@ type Story = StoryObj<typeof ChatResult>;
 export const Default: Story = {
   name: '기본',
   render: (args) => (
-    <Gcol className="w-[40rem] h-[72rem] border border-[var(--color-gray-20)] rounded-lg overflow-hidden">
+    <Gcol className="h-[70vh]">
       <ChatResult {...args} />
     </Gcol>
   ),

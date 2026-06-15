@@ -169,12 +169,12 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
       table: { category: '이벤트 props' },
     },
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['default', 'text'],
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['lg', 'md'],
       table: { category: '스타일 props' },
     },

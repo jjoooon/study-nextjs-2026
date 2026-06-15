@@ -158,17 +158,17 @@ const [value, setValue] = useState('');
   },
   argTypes: {
     mode: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['single', 'multiple', 'range'],
       table: { category: '설정 props' },
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['lg', 'md'],
       table: { category: '스타일 props' },
     },
     width: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['full', 'auto', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
       table: { category: '스타일 props' },
     },
@@ -189,7 +189,7 @@ const [value, setValue] = useState('');
       table: { category: '에러 props' },
     },
     errorPs: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },

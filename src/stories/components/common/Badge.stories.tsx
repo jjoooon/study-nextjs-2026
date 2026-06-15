@@ -170,17 +170,17 @@ import { Badge } from '@uiux/Badge';
   },
   argTypes: {
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['contained', 'soft', 'outlined', 'ghost', 'rounded'],
       table: { category: '스타일 props' },
     },
     color: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['blue', 'red', 'green', 'primary', 'gray', 'bluegray', 'secondary'],
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
       table: { category: '스타일 props' },
     },

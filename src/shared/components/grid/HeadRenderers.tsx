@@ -193,7 +193,7 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
  * Ag-Grid용 상품명 헤더 어댑터 컴포넌트
  * 컬럼 정의에 직접 바인딩하여 렌더링하도록 디자인됨 (React.memo 및 useCallback 최적화)
  */
-export function AgGridProductNameHeader(props: any) {
+export function AgGridProductNameHeader(props: IHeaderParams) {
   const { context } = props;
   const coverageName = context?.coverageName ?? '';
   const onCoverageNameChange = context?.setCoverageName;

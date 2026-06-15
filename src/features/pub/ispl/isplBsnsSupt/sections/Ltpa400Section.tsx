@@ -195,7 +195,7 @@ export default function Ltpa400Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   // 2026-05-22 페이징 추가
-  const gridRef = React.useRef<any>(null);
+  const gridRef = React.useRef<AgGridReact<Ltpa400DummyDataRow2>>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa400DummyData2,

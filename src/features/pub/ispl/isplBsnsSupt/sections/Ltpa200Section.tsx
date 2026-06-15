@@ -360,7 +360,7 @@ export default function Ltpa200Section() {
 
   // agGrid 행추가
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
-  const gridRef = React.useRef<any>(null);
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const handleAddRow = React.useCallback(() => {
     const nextId = rowData.reduce((maxId, row) => Math.max(maxId, row.id), 0) + 1;
     const newRow: DummyDataType = {

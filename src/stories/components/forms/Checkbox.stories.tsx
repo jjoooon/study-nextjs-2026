@@ -219,22 +219,22 @@ const [values, setValues] = useState<string[]>([]);
   },
   argTypes: {
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['default', 'favorite', 'noneText', 'button', 'text', 'chipBox'],
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['lg', 'md', 'xl', 'sm'],
       table: { category: '스타일 props' },
     },
     color: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['primary', 'info', 'secondary'],
       table: { category: '스타일 props' },
     },
     checked: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: [false, true, 'indeterminate'],
       table: { category: '설정 props' },
     },
@@ -247,7 +247,7 @@ const [values, setValues] = useState<string[]>([]);
       table: { category: '에러 props' },
     },
     errorPs: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },

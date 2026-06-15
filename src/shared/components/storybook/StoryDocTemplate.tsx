@@ -73,7 +73,7 @@ export const StoryDocTemplate = ({
         </section>
 
         {/* 우측 열: 실시간 시연 및 컨트롤러 영역 (Sticky 배치) */}
-        <section className="[&>div:first]:border-[red]">
+        <section>
           <h2>Preview & Controls</h2>
           <Primary />
           <Controls />

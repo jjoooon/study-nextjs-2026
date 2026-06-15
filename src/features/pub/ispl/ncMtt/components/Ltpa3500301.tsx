@@ -302,7 +302,7 @@ export const Ltpa3500301 = ({
     },
   ];
 
-  const gridRef = React.useRef<any>(null);
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 4;
   const [isAllLoaded, setIsAllLoaded] = React.useState(false);
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext, setLoadedCount } = useAgGridInfiniteAppend({

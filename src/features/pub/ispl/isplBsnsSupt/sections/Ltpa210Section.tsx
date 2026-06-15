@@ -257,7 +257,7 @@ export default function Ltpa210Section() {
 
   // agGrid 행삭제
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
-  const gridRef = React.useRef<any>(null);
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
 
   const handleDeleteRow = React.useCallback(() => {
     const gridApi = gridApiRef.current;

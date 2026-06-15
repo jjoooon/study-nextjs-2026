@@ -112,7 +112,7 @@ const meta: Meta<PopoverContentProps> = {
   },
   argTypes: {
     motion: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['fade', 'scale', 'none'],
       description: '애니메이션 모션',
       table: { category: 'PopoverContent' },
@@ -129,13 +129,13 @@ const meta: Meta<PopoverContentProps> = {
       table: { category: 'PopoverContent' },
     },
     align: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['start', 'center', 'end'],
       description: '정렬',
       table: { category: 'PopoverContent' },
     },
     side: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['top', 'right', 'bottom', 'left'],
       description: '위치',
       table: { category: 'PopoverContent' },

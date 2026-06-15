@@ -27,7 +27,7 @@ interface TableMoreProps {
   loadedCount?: number;
   totalCount?: number;
   pageSize?: number;
-  gridRef?: React.RefObject<AgGridReact<any> | null>;
+  gridRef?: React.RefObject<AgGridReact<unknown> | null>;
   onLoadedCountChange?: (loadedCount: number) => void;
   only?: 'all' | 'next';
   onLoadAll?: () => void;

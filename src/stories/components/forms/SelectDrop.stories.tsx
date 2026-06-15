@@ -178,17 +178,17 @@ import { SelectDrop } from '@common/SelectDrop';
   },
   argTypes: {
     typeMode: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['checkbox', 'radio', 'custom'],
       table: { category: '스타일 props' },
     },
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['default'],
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['lg', 'md'],
       table: { category: '스타일 props' },
     },

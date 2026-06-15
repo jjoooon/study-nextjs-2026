@@ -114,7 +114,7 @@ import { Textarea } from '@uiux/Textarea';
   },
   argTypes: {
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['default', 'outline'],
       table: { category: '스타일 props' },
     },

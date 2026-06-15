@@ -325,7 +325,7 @@ export default function Ltpa570Section() {
     return [...organizationColumnsByGroupBy[groupBy], ...metricColumns];
   }, [groupBy, attributeColumnWidth]);
 
-  const gridRef = React.useRef<any>(null);
+  const gridRef = React.useRef<AgGridReact<Ltpa570DummyDataRow>>(null);
   const pageSize = 2;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa570DummyData,

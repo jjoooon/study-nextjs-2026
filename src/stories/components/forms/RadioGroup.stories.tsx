@@ -251,22 +251,22 @@ const [value, setValue] = useState('option1');
   },
   argTypes: {
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['default', 'button', 'chipBox'],
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['lg', 'md', 'sm'],
       table: { category: '스타일 props' },
     },
     color: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['primary', 'info'],
       table: { category: '스타일 props' },
     },
     width: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['full', 'auto'],
       table: { category: '스타일 props' },
     },

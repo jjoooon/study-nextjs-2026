@@ -239,7 +239,7 @@ export default function Ltpa300Section() {
     ],
     [attributeColumnWidth]
   );
-  const gridRef = React.useRef<any>(null);
+  const gridRef = React.useRef<AgGridReact<Ltpa300DummyDataRow>>(null);
   const pageSize = 4;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa300DummyData,

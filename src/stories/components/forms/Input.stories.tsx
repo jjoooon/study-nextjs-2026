@@ -104,17 +104,17 @@ import { Input } from '@uiux/Input';
   },
   argTypes: {
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['default', 'ghost', 'info'],
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['lg', 'md', 'sm', 'xs'],
       table: { category: '스타일 props' },
     },
     width: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['full', 'auto', 'quoteNo', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
       table: { category: '스타일 props' },
     },
@@ -135,7 +135,7 @@ import { Input } from '@uiux/Input';
       table: { category: '에러 props' },
     },
     errorPs: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
       table: { category: '에러 props' },
     },
@@ -156,7 +156,7 @@ import { Input } from '@uiux/Input';
       table: { category: '설정 props' },
     },
     align: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['left', 'center', 'right'],
       table: { category: '스타일 props' },
     },

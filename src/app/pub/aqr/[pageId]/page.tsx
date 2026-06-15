@@ -13,10 +13,13 @@ export default async function Page({ params }: { params: { pageId: string } }) {
   const { pageId } = await params;
   logger.debug(`pageId: ${pageId}`);
 
+  let PageComponent;
   try {
-    const { default: PageComponent } = await import(`../pages/${pageId}`);
-    return <PageComponent />;
+    const module = await import(`../pages/${pageId}`);
+    PageComponent = module.default;
   } catch {
     notFound();
   }
+
+  return <PageComponent />;
 }

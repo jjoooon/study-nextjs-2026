@@ -7,7 +7,7 @@ import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate
 import { Accordion } from '@uiux/Accordion';
 
 const meta: Meta<typeof Accordion> = {
-  title: 'Components/UIUX/Accordion',
+  title: 'Components/Containers/Accordion',
   component: Accordion,
   tags: ['autodocs'],
   parameters: {

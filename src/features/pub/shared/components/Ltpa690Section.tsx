@@ -99,7 +99,7 @@ export default function Ltpa690Section() {
   ];
 
   // pagination
-  const gridRef = useRef<any>(null);
+  const gridRef = useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,

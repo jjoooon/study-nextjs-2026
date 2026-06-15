@@ -450,7 +450,7 @@ export default function Ltpa030Section() {
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const gridApiRef2 = React.useRef<GridApi<DummyDataType2> | null>(null);
-  const gridRef2 = React.useRef<any>(null);
+  const gridRef2 = React.useRef<AgGridReact<DummyDataType2>>(null);
 
   const pageSize = 4;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({

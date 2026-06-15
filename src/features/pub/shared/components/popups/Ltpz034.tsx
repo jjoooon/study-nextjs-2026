@@ -49,32 +49,32 @@ const DUMMY_DATA: DummyDataType[] = [
   { id: 13, isChecked: false, field01: 'M00.0', field02: '급성인지 만성인지 명시되지 않은 기관지염' },
 ];
 
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const getKeyword = (value: string) => value.trim().replace(/^#/, '');
+
+const renderHighlightedText = (text: string, keyword: string) => {
+  if (!keyword) {
+    return text;
+  }
+
+  const escapedKeyword = escapeRegExp(keyword);
+  const regExp = new RegExp(`(${escapedKeyword})`, 'g');
+  const chunks = text.split(regExp);
+
+  return chunks.map((chunk, index) =>
+    chunk === keyword ? (
+      <span key={`${chunk}-${index}`} className="text-primary font-bold">
+        {chunk}
+      </span>
+    ) : (
+      <React.Fragment key={`${chunk}-${index}`}>{chunk}</React.Fragment>
+    )
+  );
+};
+
 const Ltpz034 = () => {
   type ComboFieldKey = 'hash';
-
-  const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-  const getKeyword = (value: string) => value.trim().replace(/^#/, '');
-
-  const renderHighlightedText = (text: string, keyword: string) => {
-    if (!keyword) {
-      return text;
-    }
-
-    const escapedKeyword = escapeRegExp(keyword);
-    const regExp = new RegExp(`(${escapedKeyword})`, 'g');
-    const chunks = text.split(regExp);
-
-    return chunks.map((chunk, index) =>
-      chunk === keyword ? (
-        <span key={`${chunk}-${index}`} className="text-primary font-bold">
-          {chunk}
-        </span>
-      ) : (
-        <React.Fragment key={`${chunk}-${index}`}>{chunk}</React.Fragment>
-      )
-    );
-  };
 
   const handleComboValueChange = useCallback(
     <TField extends ComboFieldKey>(field: TField) =>
@@ -121,7 +121,7 @@ const Ltpz034 = () => {
         ),
       },
     ],
-    [attributeColumnWidth]
+    [keyword, attributeColumnWidth]
   );
 
   return (

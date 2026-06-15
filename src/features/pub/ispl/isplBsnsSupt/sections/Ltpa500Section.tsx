@@ -192,7 +192,7 @@ const DummyData: DummyDataType[] = [
 
 export default function Ltpa500Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const gridRef = React.useRef<any>(null);
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,

@@ -178,7 +178,7 @@ export const Default: Story = {
           },
         },
       ],
-      [rowData]
+      []
     );
 
     return (

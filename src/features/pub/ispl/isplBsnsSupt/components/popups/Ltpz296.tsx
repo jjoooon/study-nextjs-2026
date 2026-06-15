@@ -276,7 +276,7 @@ export const Ltpz296 = () => {
         sortable: false,
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, selectCellRenderer]
   );
   const gridApiRefB = React.useRef<GridApi<DummyDataTypeB> | null>(null);
   const [rowDataB, setRowDataB] = React.useState<DummyDataTypeB[]>(DummyDataB);
@@ -551,7 +551,7 @@ export const Ltpz296 = () => {
         sortable: false,
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, selectCellRenderer]
   );
   return (
     <Dialog open>
