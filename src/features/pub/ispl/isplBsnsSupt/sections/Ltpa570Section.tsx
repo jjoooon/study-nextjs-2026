@@ -441,13 +441,14 @@ export default function Ltpa570Section() {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'상품'} tdClassName="grid grid-cols-[auto_auto_1fr]">
-                    <Input aria-label="" value={'LA1301097'} required />
+                    <Input aria-label="" value={'LA1301097'} width={100} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input
                       aria-label=""
-                      value={'한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601'}
+                      value={'한화 시그니처 여성 건강보험 4.0/(1종) 납입면제 강화형, 기본형'}
+                      width={410}
                       readOnly
                     />
                   </FormCell>

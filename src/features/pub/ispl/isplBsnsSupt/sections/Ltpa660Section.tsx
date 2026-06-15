@@ -8,8 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
 import { Grow, Grid, Gcol } from '@atoms';
-import { SearchIcon, ResetIcon } from '@icons';
-import { FileExportIcon } from '@icons';
+import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { AgGridEmptyComponent, numberValueFormatter, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -134,8 +133,7 @@ export default function Ltpa660Section() {
       {
         headerName: '담보명',
         field: 'field2',
-        flex: 8,
-        minWidth: attributeColumnWidth(300),
+        flex: 10,
       },
       {
         headerName: '판매건수',

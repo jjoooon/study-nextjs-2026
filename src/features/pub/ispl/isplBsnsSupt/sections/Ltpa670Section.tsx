@@ -8,8 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
 import { Grow, Grid, Gcol } from '@atoms';
-import { SearchIcon, ResetIcon } from '@icons';
-import { FileExportIcon } from '@icons';
+import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   numberValueFormatter,
@@ -47,8 +46,8 @@ const DummyData1: DummyData1Type[] = [
     id: 1,
     packageName: '간병인 사용',
     field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
-    field7: '종명',
+    field2: '나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망)',
+    field7: '종명 종명 종명 종명 종명 종명 종명 종명 종명 종명 종명',
     field3: 50000,
     field4: 1,
     field5: 1,
@@ -123,7 +122,6 @@ export default function Ltpa670Section() {
       allRows: DummyData1,
       pageSize,
     });
-  // 2026-06-01 width, flex 수정
   // 2026-06-01 minWidth, flex 수정, valueParser, valueFormatter 추가
   const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
     () => [
@@ -148,6 +146,7 @@ export default function Ltpa670Section() {
         field: 'field2',
         flex: 6,
         minWidth: attributeColumnWidth(300),
+        tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
       },
       {
         headerName: '종명',

@@ -239,7 +239,7 @@ export default function Ltpa560Section() {
       {
         headerName: '채널',
         flex: 1,
-        minWidth: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(90),
         field: 'field02',
         cellClass: 'text-center',
         spanRows: true,

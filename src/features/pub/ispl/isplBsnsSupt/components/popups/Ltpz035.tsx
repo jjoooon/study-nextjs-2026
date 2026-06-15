@@ -36,9 +36,9 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     field01: 'LA2414313',
-    field02: '나눔의행복(상해사망)',
+    field02: '나눔의행복(상해사망) 나눔의행복(상해사망)',
     field03: 'CLA23114',
-    field04: '나눔의행복(상해사망)',
+    field04: '나눔의행복(상해사망) 나눔의행복(상해사망)',
   },
   {
     id: 2,

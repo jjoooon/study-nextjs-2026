@@ -751,7 +751,7 @@ export default function Ltpa050Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody className="gap-2">
-                  <FormTable caption="계약정보" cols={['w-[9rem]', 'w-[40%]', 'w-[9rem]', 'w-auto']}>
+                  <FormTable caption="계약정보" cols={['w-[8rem]', 'w-[40%]', 'w-[8rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell className="" title={'계약자'} colSpan={3}>
                         김한화
@@ -919,7 +919,7 @@ export default function Ltpa050Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody className="gap-2">
-                  <FormTable caption="계약정보" cols={['w-[9rem]', 'w-[40%]', 'w-[9rem]', 'w-auto']}>
+                  <FormTable caption="계약정보" cols={['w-[8rem]', 'w-[40%]', 'w-[8rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell className="" title={'계약자'} colSpan={3}>
                         김한화
