@@ -334,15 +334,15 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           className={`${!isHeightExpanded ? 'grid-rows-[auto_auto_1fr]' : 'grid-rows-[auto_1fr]'} gap-0`}
         >
           <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
-            <Grow gap={1.5} placement={'bws'}>
-              <Grow gap={2} placement={'ss'}>
+            <Grow className="gap-[0.2rem]" placement={'bwc'}>
+              <Grow className="gap-[0.8rem]" placement={'sc'}>
                 <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
                   보장패키지
                 </Button>
-                <Divider dir="col" className="mt-2" />
+                <Divider dir="col" color="primary-light" />
 
                 <CheckboxGroup
-                  className="gap-[0.4rem] flex-wrap type-small"
+                  className="gap-[0.2rem] flex-wrap type-small"
                   color="primary"
                   minSelected={0}
                   size="lg"
@@ -366,10 +366,10 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     </CheckboxGroupItem>
                   ))}
                 </CheckboxGroup>
-                <Divider dir="col" className="mt-2" />
+                <Divider dir="col" color="primary-light" />
 
                 <CheckboxGroup
-                  className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
+                  className="gap-[0.2rem] flex-nowrap shrink-0 type-small"
                   color="primary"
                   minSelected={0}
                   size="lg"
@@ -513,7 +513,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent variant="default" side="top" align="start" sideOffset={-4}>
-                        담보 전체 해제
+                        담보 모두 해제
                       </TooltipContent>
                     </Tooltip>
                   ),

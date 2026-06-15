@@ -64,6 +64,11 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
   // smooth scroll 종료 시점을 추정해 플래그를 해제하기 위한 타이머
   const scrollEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // 스크롤 시 인디케이터 표시 여부
+  const [showIndicator, setShowIndicator] = useState(false);
+  // 인디케이터를 3초 후에 숨기기 위한 타이머 참조
+  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // 아이템의 offsetTop을 "문서 기준"이 아닌 "스크롤 컨테이너 기준"으로 계산한다.
   // scrollTo 대상 위치를 정확히 맞추기 위해 상대 좌표를 사용한다.
   const getItemOffsetTop = (item: HTMLDivElement) => {
@@ -96,6 +101,13 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
   // 사용자가 직접 스크롤할 때 페이지 인디케이터를 동기화한다.
   // 단, 버튼 기반 smooth scroll 중에는 이 핸들러를 무시해 페이지 깜빡임을 방지한다.
   const handleScroll = () => {
+    setShowIndicator(true);
+
+    if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+    fadeTimerRef.current = setTimeout(() => {
+      setShowIndicator(false);
+    }, 3000);
+
     if (isScrollingRef.current) return;
     setPage(getCurrentPageFromScroll());
   };
@@ -123,8 +135,15 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
     }, 600);
   };
 
+  React.useEffect(() => {
+    return () => {
+      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+      if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
+    };
+  }, []);
+
   return (
-    <Grid className="h-full grid-rows-[auto_1fr_auto] gap-0 overflow-hidden">
+    <Grid className="h-full grid-rows-[auto_1fr_auto] gap-0">
       <Grow
         className="w-full h-[4.1rem] px-2.5 py-5 bg-[var(--color-secondary-50)] rounded-t-lg"
         placement="bwc"
@@ -141,7 +160,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
         </Button>
       </Grow>
 
-      <Gcol className="relative w-full tracking-[-0.13rem] border-l border-r border-[var(--color-gray-20)] gap-0 overflow-hidden h-full min-h-0">
+      <Gcol className="relative w-full tracking-[-0.13rem] border-l border-r border-[var(--color-gray-20)] gap-0 overflow-hidden h-full min-h-[0rem]">
         <div
           ref={scrollRef}
           style={{
@@ -268,13 +287,14 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
         </div>
 
         {/* 페이지 인디케이터 + 이전/다음 탐색 버튼 */}
-        <Gcol className="w-auto items-end gap-2 absolute bottom-2 right-3 z-50">
+        <Gcol className={`w-auto items-end gap-2 absolute bottom-2 right-3 z-50 transition-opacity duration-300`}>
           <Button
             variant="outlined"
             color="link"
             only="icon"
-            className="w-[4rem] h-[3.7rem] bg-[#EFF8FF] shadow-[0_2rem_4rem_0_rgba(0,0,0,0.1)]"
-            aria-current
+            className={`w-[4rem] h-[3.7rem] bg-[#EFF8FF] shadow-[0_2rem_4rem_0_rgba(0,0,0,0.1)] pointer-events-none  ${
+              showIndicator ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
           >
             <Typo variant="body-lg">
               <b>{page}</b>/{pageCount}

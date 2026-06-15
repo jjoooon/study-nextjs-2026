@@ -6,7 +6,7 @@
 import React from 'react';
 import { useTabsPagination } from '@/shared/hooks/useTabs';
 import { cn } from '@/shared/lib/shadcn/utils';
-import { Grow, Typo } from '@atoms';
+import { Grow, Gcol, Typo } from '@atoms';
 import { ArrowIcon, ListIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
@@ -214,8 +214,13 @@ export function TabPager<T>({
                         <ListIcon />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-3 flex flex-col gap-1 overflow-auto" align={'end'}>
-                      {data.map((tab) => renderDropdownItem(tab, setActive, setVisibleStart, data, visibleCount))}
+                    <PopoverContent className="w-auto p-[0.2rem] flex flex-col" align={'end'} closeButton={true}>
+                      <Gcol
+                        className="overflow-auto z-0 max-h-[20rem] [&>button]:h-[2.8rem] [&>button]:w-full gap-0"
+                        placement="ss"
+                      >
+                        {data.map((tab) => renderDropdownItem(tab, setActive, setVisibleStart, data, visibleCount))}
+                      </Gcol>
                     </PopoverContent>
                   </Popover>
                 )}

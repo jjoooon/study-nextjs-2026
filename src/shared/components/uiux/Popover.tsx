@@ -171,7 +171,7 @@ const PopoverContent = React.forwardRef<React.ElementRef<typeof PopoverPrimitive
           {closeButton && (
             <PopoverPrimitive.Close
               aria-label="Close"
-              className="absolute -top-2 -right-2 p-1 hover:bg-[var(--color-gray-90)] focus:outline-none w-[1.8rem] h-[1.8rem] flex items-center justify-center bg-[var(--color-gray-70)] rounded-full"
+              className="absolute z-1 -top-2 -right-2 p-1 hover:bg-[var(--color-gray-90)] focus:outline-none w-[1.8rem] h-[1.8rem] flex items-center justify-center bg-[var(--color-gray-70)] rounded-full"
             >
               <CloseIcon color={'var(--color-gray-0)'} size={10} />
             </PopoverPrimitive.Close>

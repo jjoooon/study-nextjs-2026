@@ -16,7 +16,7 @@ interface TablePaginationProps {
   itemsPerPage?: number | null;
 }
 
-interface TableMoreProps {
+interface TableMoreProps<TData = unknown> {
   currentPage?: number;
   totalPages?: number;
   onPageChange?: (pageNumber: number) => void;
@@ -27,7 +27,7 @@ interface TableMoreProps {
   loadedCount?: number;
   totalCount?: number;
   pageSize?: number;
-  gridRef?: React.RefObject<AgGridReact<unknown> | null>;
+  gridRef?: React.RefObject<AgGridReact<TData> | null>;
   onLoadedCountChange?: (loadedCount: number) => void;
   only?: 'all' | 'next';
   onLoadAll?: () => void;
@@ -121,7 +121,7 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
   );
 }
 
-export function TableMore({
+export function TableMore<TData = unknown>({
   currentPage,
   totalPages,
   onPageChange,
@@ -137,7 +137,7 @@ export function TableMore({
   onLoadAll,
   onLoadNext,
   onLoadReset,
-}: TableMoreProps) {
+}: TableMoreProps<TData>) {
   const hasCountMode =
     typeof loadedCount === 'number' && typeof totalCount === 'number' && typeof pageSize === 'number' && pageSize > 0;
 

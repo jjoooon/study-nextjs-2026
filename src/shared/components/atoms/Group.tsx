@@ -202,8 +202,8 @@ const VARIANT_MAP: Record<Variant, string> = {
   'box-info': 'px-2.5 py-2 bg-[var(--color-information-5)] gap-1.5 rounded-[0.6rem]', // 푸른색 안내박스
   'box-warning': 'px-2.5 py-2 bg-[var(--color-danger-5)] gap-1.5 rounded-[0.6rem]', // 붉은색 경고박스
   'box-detail': 'px-2.5 py-2 bg-[var(--color-warning-5)] gap-1.5 rounded-[0.6rem]', // 노란색 박스
-  'box-round': 'px-2.5 py-2.5 bg-[#F3F4F6] gap-1.5 rounded-[0.6rem]', // 상단 회색라운드 박스
-  'box-round-b': 'px-2.5 pt-2 pb-2.5 bg-[#F3F4F6] gap-1.5 rounded-b-[0.6rem]', // 택과 붙어있는 회색박스일 하단만 라운드 처리 사용
+  'box-round': 'px-2.5 py-2.5 bg-[var(--color-blue-gray-10)] gap-1.5 rounded-[0.6rem]', // 상단 회색라운드 박스
+  'box-round-b': 'px-2.5 pt-2 pb-2.5 bg-[var(--color-blue-gray-10)] gap-1.5 rounded-b-[0.6rem]', // 택과 붙어있는 회색박스일 하단만 라운드 처리 사용
   'box-warning-line':
     'px-2.5 py-2.5 bg-[var(--color-danger-5)] gap-1.5 rounded-[0.6rem] border! border-[var(--color-gray-15)]', // 붉은색 경고박스 체크박스
   'box-info-line':
@@ -229,6 +229,7 @@ export const Gcol = ({
 }: GroupProps) => {
   return (
     <div
+      data-variant={variant}
       data-group="col"
       className={cn(
         'flex flex-col relative w-full tracking-[-0.13rem]',
@@ -263,6 +264,7 @@ export const Grow = ({
 }: GroupProps) => {
   return (
     <div
+      data-variant={variant}
       data-group="row"
       className={cn(
         'flex flex-row relative tracking-[-0.13rem]',
@@ -289,6 +291,7 @@ export const Grow = ({
 export const Grid = ({ children, variant = 'default', gap = 1, className, style, onClick }: GroupProps) => {
   return (
     <div
+      data-variant={variant}
       data-group="row"
       className={cn('grid relative tracking-[-0.13rem]', `gap-${gap}`, VARIANT_MAP[variant], className)}
       style={style}
@@ -372,7 +375,7 @@ interface DividerProps {
    * - gray-dark: 어두운 회색 (var(--color-gray-60))
    * @default 'gray'
    */
-  color?: 'gray' | 'gray-light' | 'gray-dark';
+  color?: 'gray' | 'gray-light' | 'gray-dark' | 'primary-light';
 }
 /**
  * 구분선 컴포넌트.
@@ -387,21 +390,19 @@ export const Divider = ({ className, variant = 'default', dir = 'col', color = '
     gray: 'var(--color-gray-15)',
     'gray-light': 'var(--color-gray-10)',
     'gray-dark': 'var(--color-gray-60)',
+    'primary-light': 'var(--color-primary-15)',
   };
 
   return (
     <span
       className={cn(
         'shrink-0 border-0 inline-block',
-        variant === 'default' &&
-          (dir === 'col'
-            ? `border-[${colorMap[color]}] h-[1rem] w-[0.1rem] border-l`
-            : `border-[${colorMap[color]}] h-[0.1rem] w-[1rem] border-t`),
+        variant === 'default' && (dir === 'col' ? 'h-[1rem] w-[0.1rem] border-l' : 'h-[0.1rem] w-[1rem] border-t'),
         variant === 'dot' &&
-          `block relative w-[0.3rem] h-[100%] flex before:block  before:absolute  before:top-1/2 before:content-[''] before:w-[0.3rem] before:h-[0.3rem] before:shrink-0 
-        before:rounded-full  before:bg-[#777]`,
+          `block relative w-[0.3rem] h-[100%] flex before:block before:absolute before:top-1/2 before:content-[''] before:w-[0.3rem] before:h-[0.3rem] before:shrink-0 before:rounded-full before:bg-[#777]`,
         className
       )}
+      style={variant === 'default' ? { borderColor: colorMap[color] } : undefined}
     />
   );
 };

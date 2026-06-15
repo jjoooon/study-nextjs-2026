@@ -151,6 +151,7 @@ export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {
                       setVisibleStart(page * visibleCount);
                     }
                   }}
+                  className="hover:bg-[var(--color-warning-10)]"
                 >
                   <span className="flex items-start gap-2 w-full">
                     <span className="block">{tab.name}</span>

@@ -497,23 +497,17 @@ export const Ltpa35005 = () => {
                           </div>
                         }
                       >
-                        <CheckboxGroup
-                          className="gap-3"
-                          color="primary"
-                          minSelected={0}
-                          size="lg"
-                          width="auto"
-                          variant="default"
-                        >
+                        <NativeSelect aria-label="통신사" width={130} readOnly>
                           {[
-                            { label: '계약자', value: '1' },
-                            { label: '피보험자', value: '2' },
-                          ].map((category) => (
-                            <CheckboxGroupItem key={category.value} value={category.value}>
-                              {category.label}
-                            </CheckboxGroupItem>
+                            { value: '해당사항 없음', label: '해당사항 없음' },
+                            { value: '계약자', label: '계약자' },
+                            { value: '피보험자', label: '피보험자' },
+                          ].map((option) => (
+                            <NativeSelectOption key={option.value} value={option.value}>
+                              {option.label}
+                            </NativeSelectOption>
                           ))}
-                        </CheckboxGroup>
+                        </NativeSelect>
                       </FormCell>
                       <FormCell title={'장애인보험 전환'}>
                         <Grow placement="bwc">
