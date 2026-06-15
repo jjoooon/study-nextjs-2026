@@ -747,17 +747,19 @@ export const Ltpz063 = () => {
     // '승환' 행은 체크박스, 일반 행은 문자열/숫자 값 표시
     const CheckboxCellRenderer = (params: CheckboxRendererParams<TData>) =>
       isSwitchoverRow(params.data) ? (
-        <Checkbox
-          checked={isCheckedValue(params.value)}
-          color="primary"
-          errorMsg="선택은 필수입니다."
-          errorPs="bl"
-          onCheckedChange={(checked) => onChange(params, checked)}
-          size="lg"
-          variant="noneText"
-        >
-          단일
-        </Checkbox>
+        <div className="flex w-full justify-center">
+          <Checkbox
+            checked={isCheckedValue(params.value)}
+            color="primary"
+            errorMsg="선택은 필수입니다."
+            errorPs="bl"
+            onCheckedChange={(checked) => onChange(params, checked)}
+            size="lg"
+            variant="noneText"
+          >
+            단일
+          </Checkbox>
+        </div>
       ) : (
         getValueWithUnit(params.data, params.value)
       );

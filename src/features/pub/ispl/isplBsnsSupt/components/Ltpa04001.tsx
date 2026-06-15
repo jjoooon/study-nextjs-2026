@@ -6,8 +6,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { Grid, Grow } from '@atoms';
 import { ResetIcon, SearchIcon } from '@icons';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
-import { createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -47,15 +46,15 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field04: '홍길동',
     field05: '기등록',
     field06: '홍길순',
-    field07: '사망후유, 진단비, 입원/통원',
+    field07: '사망후유, 진단비, 입원/통원 사망후유, 진단비, 입원/통원',
     field08: 'LT22222_4',
-    field09: '한화 시그니처 여성 건강보험4.0',
+    field09: '한화 시그니처 여성 건강보험4.0 한화 시그니처 여성 건강보험4.0 한화 시그니처 여성 건강보험4.0',
     field10: '12',
-    field11: '83000',
+    field11: '83000000',
     field12: 'LA26020945959594',
     field13: '설계중',
     field14: '14',
-    field15: '120000',
+    field15: '120000000',
   },
   {
     id: 2,
@@ -170,7 +169,7 @@ const Ltpa04001 = () => {
         {
           headerName: '채널',
           field: 'field02',
-          width: attributeColumnWidth(55),
+          width: attributeColumnWidth(50),
           cellClass: 'text-center',
           unSortIcon: true,
         },
@@ -192,7 +191,7 @@ const Ltpa04001 = () => {
           headerName: '고객구분',
           field: 'field05',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
           cellClass: 'text-center',
         },
         {
@@ -232,7 +231,7 @@ const Ltpa04001 = () => {
           headerName: '보장보험료',
           field: 'field11',
           flex: 1,
-          minWidth: attributeColumnWidth(90),
+          minWidth: attributeColumnWidth(85),
           cellClass: 'text-right',
           valueFormatter: (params) => {
             if (params.value === null || params.value === undefined || params.value === '') return '';
@@ -260,14 +259,14 @@ const Ltpa04001 = () => {
           headerName: '설계상태',
           field: 'field13',
           flex: 1,
-          minWidth: attributeColumnWidth(75),
+          minWidth: attributeColumnWidth(70),
           headerClass: 'ag-header-color',
           cellClass: 'text-center',
         },
         {
           headerName: '설계담보수',
           field: 'field14',
-          width: attributeColumnWidth(75),
+          width: attributeColumnWidth(70),
           headerClass: 'ag-header-color',
           cellClass: 'text-center',
         },
@@ -275,7 +274,7 @@ const Ltpa04001 = () => {
           headerName: '보장보험료',
           field: 'field15',
           flex: 1,
-          minWidth: attributeColumnWidth(90),
+          minWidth: attributeColumnWidth(85),
           headerClass: 'ag-header-color',
           cellClass: 'text-right',
           valueFormatter: (params) => {
@@ -314,7 +313,7 @@ const Ltpa04001 = () => {
                   </NativeSelectOption>
                 ))}
               </NativeSelect>
-              <NativeSelect aria-label="성별 선택" width={120} value={''}>
+              <NativeSelect aria-label="성별 선택" width={100} value={''}>
                 {[
                   { value: '전체', label: '전체' },
                   { value: '남', label: '남' },
@@ -339,7 +338,7 @@ const Ltpa04001 = () => {
               </NativeSelect>
             </FormCell>
             <FormCell title={'모집자'}>
-              <NativeSelect aria-label="모집자 선택" width={120} value={''}>
+              <NativeSelect aria-label="모집자 선택" width={100} value={''}>
                 {[
                   { value: '전체', label: '전체' },
                   { value: '취급직원', label: '취급직원' },
@@ -359,7 +358,7 @@ const Ltpa04001 = () => {
           </FormRow>
           <FormRow>
             <FormCell title={'상품코드'}>
-              <Input aria-label="상품코드 입력" width={120} value={''} />
+              <Input aria-label="상품코드 입력" width={101} value={''} />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                 <SearchIcon color={'var(--color-primary-50)'} />
               </Button>

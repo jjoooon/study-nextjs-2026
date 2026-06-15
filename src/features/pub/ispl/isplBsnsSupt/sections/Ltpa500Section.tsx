@@ -53,13 +53,13 @@ const DummyData: DummyDataType[] = [
     field01: '(전속)영업관리자승인계약',
     field02: 'LA20148716422000',
     field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
+    field04: 'LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건',
+    field05: '김한화화',
+    field06: '박한화화',
     field07: '8094210',
     field08: '신부산GA지점',
     field09: '999999999',
-    field10: 'TEXT',
+    field10: 'TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT',
     field11: '선택',
   },
   {
@@ -265,6 +265,7 @@ export default function Ltpa500Section() {
       flex: 1,
       minWidth: attributeColumnWidth(100),
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field08' }),
     },
     {
       headerName: '보험료(원)',
@@ -282,6 +283,7 @@ export default function Ltpa500Section() {
       cellClass: 'editable-cell text-left',
       editable: true,
       cellEditor: 'agInputCellEditor',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field10' }),
     },
     {
       headerName: '승인',

@@ -1121,7 +1121,7 @@ export default function Ltpa680Section() {
                   </div>
                 </Gcol>
               </Grid>
-              <Grid className="w-full p-2.5" variant={'box-line'} placement="ss" gap={3}>
+              <Grid className="w-full p-2.5 grid-rows-[auto_1fr]" variant={'box-line'} placement="ss" gap={3}>
                 {/*
                   [selectedDisease 연동] 좌측 '많이 찾는 질병' 라디오 버튼 선택 시 렌더링
                   - selectedDisease가 빈 문자열('')이면 이 블록 전체가 숨겨짐
@@ -1405,7 +1405,7 @@ export default function Ltpa680Section() {
                     <TableFold className="mt-1">
                       <TableFoldHead title="Mobile용 질병정보"></TableFoldHead>
                       <TableFoldBody className="gap-3">
-                        <FormTable cols={['w-[18rem]', 'w-auto']}>
+                        <FormTable cols={['w-[10rem]', 'w-auto']}>
                           <FormRow vertical={false}>
                             <FormCell title={'발생부위'}>
                               <Input
