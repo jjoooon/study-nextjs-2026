@@ -8,7 +8,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { SearchIcon, ResetIcon, ArrowNext } from '@icons';
-import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -49,15 +49,15 @@ const Ltpa301DummyData: Ltpa301DummyDataRow[] = [
     field03: '2026-01-01',
     field04: 'TEXT',
     field05: 'TEXT',
-    field06: '김한화',
+    field06: '김한화화',
     field07: 'TEXT',
     field08: '999999999',
     field09: '999999999',
     field10: '999999999',
     field11: '999999999',
-    field12: '김직원',
+    field12: '김직원원',
     field13: '2026-01-01',
-    field14: 'TEXT',
+    field14: 'TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT',
   },
   {
     id: 2,
@@ -165,15 +165,15 @@ export default function Ltpa301Section() {
     {
       headerName: '처리일시',
       field: 'field13',
-      flex: 1,
-      minWidth: attributeColumnWidth(85),
+      width: attributeColumnWidth(85),
     },
     {
       headerName: '처리내용',
       field: 'field14',
-      flex: 3,
-      minWidth: attributeColumnWidth(250),
+      flex: 10,
+      minWidth: attributeColumnWidth(200),
       cellClass: 'text-left ',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa301DummyDataRow>({ field: 'field14' }),
     },
   ];
 
@@ -286,6 +286,8 @@ export default function Ltpa301Section() {
                         },
                       }}
                       domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                     />
                   </div>
                 </TableFoldBody>

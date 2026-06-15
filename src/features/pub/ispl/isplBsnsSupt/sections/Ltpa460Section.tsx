@@ -52,7 +52,7 @@ const DummyData: DummyDataType[] = [
     field02: '로그구분1',
     field03: '-',
     field04: '2026-03-01',
-    field05: '항목명1',
+    field05: '항목명1 항목명1 항목명1 항목명1 항목명1 항목명1 항목명1 항목명1',
     field06: '항목명2',
     field07: '항목명3',
     field08: '항목명4',
@@ -196,7 +196,7 @@ export default function Ltpa460Section() {
 
   // KEY 컬럼 공통 셀 렌더러: 긴 텍스트는 한 줄 말줄임으로 표시
   const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
-    return <p className="truncate w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
+    return <p className="w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
   }, []);
 
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
@@ -208,7 +208,6 @@ export default function Ltpa460Section() {
   const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
   // 2026-06-01 width, flex 수정
-  // 2026-06-04 minWidth, flex 수정
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -241,7 +240,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY1',
       field: 'field05',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       sortable: false,
       filter: false,
       suppressMovable: true, // 이동 방지
@@ -258,7 +257,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY2',
       field: 'field06',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -272,7 +271,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY3',
       field: 'field07',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -286,7 +285,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY4',
       field: 'field08',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -300,7 +299,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY5',
       field: 'field09',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -314,7 +313,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY6',
       field: 'field10',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -328,7 +327,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY7',
       field: 'field11',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -405,8 +404,8 @@ export default function Ltpa460Section() {
                       ))}
                     </NativeSelect>
                   </FormCell>
-                  <FormCell title={'거개코드'}>
-                    <NativeSelect aria-label="거개코드 선택" width={108} value={''} onChange={() => {}}>
+                  <FormCell title={'거래코드'}>
+                    <NativeSelect aria-label="거래코드 선택" width={108} value={''} onChange={() => {}}>
                       {[
                         { value: 'selection', label: '선택' },
                         { value: 'selection1', label: '선택1' },

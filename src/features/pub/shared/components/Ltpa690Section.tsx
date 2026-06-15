@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { useRef } from 'react';
 import { Grow, Grid } from '@atoms';
 import { FileExportIcon, FileImportIcon, ResetIcon, EssentialIcon } from '@icons';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -38,7 +38,7 @@ const DummyData: DummyDataType[] = [
     isChecked: false,
     field1: '시스템오류',
     field2: '',
-    field3: '자료가 존재하지 않습니다.',
+    field3: '자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다.',
     field4: '2026.08.31',
   },
   {
@@ -88,6 +88,7 @@ export default function Ltpa690Section() {
       field: 'field3',
       flex: 10,
       cellClass: 'text-left',
+      // tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field3' }),
     },
     {
       headerName: '등록일',
@@ -193,6 +194,8 @@ export default function Ltpa690Section() {
                         width: 30,
                         cellClass: 'editable-cell',
                       }}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
                     />
                   </div>
                   <TableMore

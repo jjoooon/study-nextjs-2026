@@ -10,7 +10,7 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { Grid, Grow } from '@atoms';
 import { ResetIcon, SearchIcon } from '@icons';
-import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { BottomBar } from '@common/BottomBar';
@@ -46,7 +46,7 @@ const DummyData: DummyDataType[] = [
     field02: '한화손해보험',
     field03: '일반단체(손보)',
     field04: 'LA20148716422000',
-    field05: '한화 더건강한 한아름종합보험2601',
+    field05: '한화 더건강한 한아름종합보험2601 한화 더건강한 한아름종합보험2601 한화 더건강한 한아름종합보험2601 한화 더건강한 한아름종합보험2601',
     field06: '33',
     field07: '김한화',
     field08: '1',
@@ -121,6 +121,7 @@ export default function Ltpa260Section() {
         minWidth: attributeColumnWidth(500),
         cellClass: 'text-center px-0!',
         autoHeight: true,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field05' }),
         // 2행 2열 헤더 레이아웃: 상단(증권번호/담보건수), 하단(상품명)
         headerComponent: () => {
           return (
@@ -269,6 +270,8 @@ export default function Ltpa260Section() {
                       cellClass: 'text-center',
                     }}
                     animateRows={false}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
                   />
                 </div>
               </TableFoldBody>
