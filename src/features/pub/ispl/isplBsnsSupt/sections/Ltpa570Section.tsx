@@ -452,13 +452,13 @@ export default function Ltpa570Section() {
                       ))}
                     </NativeSelect>
                     <NativeSelect
-                      aria-label="자점구분"
+                      aria-label="지점구분"
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
                     >
                       {[
-                        { value: 'selection0401', label: '자점1' },
-                        { value: 'selection0402', label: '자점2' },
+                        { value: 'selection0401', label: '지점1' },
+                        { value: 'selection0402', label: '지점2' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
