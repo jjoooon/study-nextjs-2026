@@ -18,11 +18,7 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import {
-  createCellValueChangedHandler,
-  useAgGridPagination,
-  AgGridEmptyComponent,
-} from '@aggrid';
+import { createCellValueChangedHandler, useAgGridPagination, AgGridEmptyComponent } from '@aggrid';
 import { TablePagination, TableMore } from '@common/TablePagination';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
@@ -260,7 +256,7 @@ export const TableMoreAppendLoad: StoryObj = {
     const pageSize = 5;
     const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 5));
     const [loadedCount, setLoadedCount] = React.useState(5);
-    const [totalCount, setTotalCount] = React.useState(DummyData.length);
+    const [totalCount] = React.useState(DummyData.length);
     const [isLoading, setIsLoading] = React.useState(false);
 
     const fetchMockData = React.useCallback(async (page: number, limit: number) => {

@@ -316,7 +316,7 @@ export const Ltpa3500301 = ({
   const pageSize = 4;
   const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 4));
   const [loadedCount, setLoadedCount] = React.useState(4);
-  const [totalCount, setTotalCount] = React.useState(DummyData.length);
+  const [totalCount] = React.useState(DummyData.length);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const fetchMockData = React.useCallback(async (page: number, limit: number) => {
