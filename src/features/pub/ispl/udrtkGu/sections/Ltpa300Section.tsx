@@ -9,7 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Grid, Grow } from '@atoms';
 import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
-import { useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -159,6 +159,23 @@ const Ltpa300DummyData: Ltpa300DummyDataRow[] = [
     field13: 'data',
     field14: 'data',
   },
+  ...Array.from({ length: 18 }, (_, i) => ({
+    id: 8 + i,
+    field01: '신부산GA지점',
+    field02: '123456',
+    field03: `김한화 ${8 + i}`,
+    field04: '123456',
+    field05: '심한화',
+    field06: 'LA20148716422000',
+    field07: 'data',
+    field08: '비활성(직원처리)',
+    field09: '박한화',
+    field10: '2026-03-01',
+    field11: 'data',
+    field12: 'data',
+    field13: 'data',
+    field14: 'data',
+  })),
 ];
 
 export default function Ltpa300Section() {
@@ -241,10 +258,53 @@ export default function Ltpa300Section() {
   );
   const gridRef = React.useRef<AgGridReact<Ltpa300DummyDataRow>>(null);
   const pageSize = 4;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: Ltpa300DummyData,
-    pageSize,
-  });
+  const [rowData, setRowData] = React.useState<Ltpa300DummyDataRow[]>(() => Ltpa300DummyData.slice(0, 4));
+  const [loadedCount, setLoadedCount] = React.useState(4);
+  const [totalCount, setTotalCount] = React.useState(Ltpa300DummyData.length);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = Ltpa300DummyData.slice(start, end);
+      return {
+        items,
+        totalCount: Ltpa300DummyData.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const handleSearch = React.useCallback(async () => {
+    const res = await fetchMockData(1, pageSize);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+    setTotalCount(res.totalCount);
+  }, [fetchMockData, pageSize]);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+    const res = await fetchMockData(1, totalCount);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  const handleLoadReset = React.useCallback(() => {
+    setRowData(Ltpa300DummyData.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
 
   return (
     <>
@@ -380,7 +440,7 @@ export default function Ltpa300Section() {
               </FormTable>
 
               <Grow>
-                <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button id="btnRA" color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -388,7 +448,7 @@ export default function Ltpa300Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
@@ -417,11 +477,7 @@ export default function Ltpa300Section() {
                       cellClass: 'text-center',
                     }}
                     domLayout="normal"
-                    key={loadedCount}
-                    rowModelType="infinite"
-                    cacheBlockSize={pageSize}
-                    maxBlocksInCache={2}
-                    datasource={dataSource}
+                    rowData={rowData}
                   />
                 </div>
                 <TableMore
@@ -431,6 +487,8 @@ export default function Ltpa300Section() {
                   pageSize={pageSize}
                   onLoadAll={handleLoadAll}
                   onLoadNext={handleLoadNext}
+                  onLoadReset={handleLoadReset}
+                  isReset={true}
                 />
               </TableFoldBody>
             </TableFold>

@@ -9,11 +9,7 @@ import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Grid, Gcol } from '@atoms';
 import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
-import {
-  AgGridEmptyComponent,
-  createTooltipValueGetter,
-  useDynamicColumnWidths,
-} from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -216,7 +212,7 @@ export default function Ltpa400Section() {
 
   const [rowData, setRowData] = React.useState<Ltpa400DummyDataRow2[]>(() => Ltpa400DummyData2.slice(0, 5));
   const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount, setTotalCount] = React.useState(Ltpa400DummyData2.length);
+  const [totalCount] = React.useState(Ltpa400DummyData2.length);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const gridRef = React.useRef<AgGridReact<Ltpa400DummyDataRow2>>(null);

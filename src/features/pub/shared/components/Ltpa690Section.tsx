@@ -173,6 +173,14 @@ const DummyData: DummyDataType[] = [
     field3: '자료가 존재하지 않습니다.',
     field4: '2026.08.31',
   },
+  ...Array.from({ length: 8 }, (_, i) => ({
+    id: 18 + i,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: `추가 자료 ${18 + i}`,
+    field4: '2026.08.31',
+  }))
 ];
 
 export default function Ltpa690Section() {

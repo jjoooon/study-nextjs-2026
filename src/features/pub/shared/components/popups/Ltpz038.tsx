@@ -7,6 +7,7 @@ import '@/shared/lib/agGridPub';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import Link from 'next/link';
+import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { ResetIcon, SearchIcon } from '@icons';
@@ -14,7 +15,6 @@ import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
   numberValueFormatter,
-  useAgGridInfiniteAppend,
   useDynamicColumnWidths,
 } from '@aggrid';
 import { Button } from '@uiux/Button';
@@ -105,10 +105,10 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 6,
-    field02: '장기보험',
-    field03: '무배당 장기보장플랜',
-    field04: 'LA777700000001',
-    field05: '이한화',
+    field02: '',
+    field03: '',
+    field04: '',
+    field05: '',
     field06: '',
     field07: 25000,
     field08: '2026-03-02',
@@ -258,37 +258,51 @@ const Ltpz038 = () => {
   ];
 
   // pagination
+  const [rowData, setRowData] = useState<DummyDataType[]>(() => DummyData.slice(0, 10));
+  const [loadedCount, setLoadedCount] = useState(10);
+  const [totalCount, setTotalCount] = useState(DummyData.length);
+  const [isLoading, setIsLoading] = useState(false);
+
   const pageSize = 10;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: DummyData,
-    pageSize,
-  });
 
-  const visibleRows = useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
-
-  useEffect(() => {
-    if (pendingScrollIndex === null) {
-      return;
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = DummyData.slice(start, end);
+      return {
+        items,
+        totalCount: DummyData.length,
+      };
+    } finally {
+      setIsLoading(false);
     }
+  }, []);
 
-    if (loadedCount <= pendingScrollIndex) {
-      return;
-    }
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
 
-    requestAnimationFrame(() => {
-      gridRef.current?.api.ensureIndexVisible(pendingScrollIndex, 'top');
-      setPendingScrollIndex(null);
-    });
-  }, [loadedCount, pendingScrollIndex]);
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
 
-  const handleLoadNextWithScroll = () => {
-    if (loadedCount >= totalCount) {
-      return;
-    }
+    setRowData((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
 
-    setPendingScrollIndex(loadedCount);
-    handleLoadNext();
-  };
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const res = await fetchMockData(1, totalCount);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  const handleLoadReset = React.useCallback(() => {
+    setRowData((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
 
   return (
     <Dialog open>
@@ -407,7 +421,7 @@ const Ltpz038 = () => {
                 ref={gridRef}
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={visibleRows}
+                rowData={rowData}
                 columnDefs={columnDefs}
                 domLayout="normal"
                 tooltipShowMode="whenTruncated"
@@ -421,7 +435,10 @@ const Ltpz038 = () => {
               totalCount={totalCount}
               pageSize={pageSize}
               onLoadAll={handleLoadAll}
-              onLoadNext={handleLoadNextWithScroll}
+              onLoadNext={handleLoadNext}
+              onLoadReset={handleLoadReset}
+              isReset={true}
+              isAll={true}
             />
           </Gcol>
         </DialogSection>

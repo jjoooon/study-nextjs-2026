@@ -489,7 +489,7 @@ export default function Ltpa030Section() {
 
     setRowData2((prev) => [...prev, ...res.items]);
     setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading, setRowData2, setLoadedCount]);
 
   const handleLoadAll = React.useCallback(async () => {
     if (loadedCount >= totalCount || isLoading) return;
@@ -497,12 +497,12 @@ export default function Ltpa030Section() {
     const res = await fetchMockData(1, totalCount);
     setRowData2(res.items);
     setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+  }, [loadedCount, totalCount, fetchMockData, isLoading, setRowData2, setLoadedCount]);
 
   const handleLoadReset = React.useCallback(() => {
     setRowData2((prev) => prev.slice(0, pageSize));
     setLoadedCount(pageSize);
-  }, [pageSize]);
+  }, [pageSize, setRowData2, setLoadedCount]);
 
   // 첫번째 agGrid 행삭제
   const handleDeleteRow = React.useCallback(() => {
