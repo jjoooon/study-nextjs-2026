@@ -9,7 +9,7 @@ import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Grid, Gcol } from '@atoms';
 import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -189,19 +189,73 @@ const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
     field11_01: 'LA251028678825',
     field12_01: 'LA251028678825',
   },
+  ...Array.from({ length: 20 }, (_, i) => ({
+    id: 7 + i,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: `보험명 ${7 + i}`,
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  })),
 ];
 
 export default function Ltpa400Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   // 2026-05-22 페이징 추가
+  const [rowData, setRowData] = React.useState<Ltpa400DummyDataRow2[]>(() => Ltpa400DummyData2.slice(0, 5));
+  const [loadedCount, setLoadedCount] = React.useState(5);
+  const [totalCount, setTotalCount] = React.useState(Ltpa400DummyData2.length);
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const gridRef = React.useRef<AgGridReact<Ltpa400DummyDataRow2>>(null);
   const pageSize = 5;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: Ltpa400DummyData2,
-    pageSize,
-  });
-  const visibleRows = React.useMemo(() => Ltpa400DummyData2.slice(0, loadedCount), [loadedCount]);
+
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = Ltpa400DummyData2.slice(start, end);
+      return {
+        items,
+        totalCount: Ltpa400DummyData2.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+
+    setRowData((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const res = await fetchMockData(1, totalCount);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  const handleLoadReset = React.useCallback(() => {
+    setRowData((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
 
   // 2026-05-22 지원SM 버튼으로 변경
   // 2026-05-27 담당SM 버튼으로 변경
@@ -703,7 +757,7 @@ export default function Ltpa400Section() {
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
                         // rowData={Ltpa400DummyData2}
-                        rowData={visibleRows}
+                        rowData={rowData}
                         columnDefs={columnDefs2}
                         defaultColDef={{
                           sortable: true,
@@ -724,6 +778,8 @@ export default function Ltpa400Section() {
                       pageSize={pageSize}
                       onLoadAll={handleLoadAll}
                       onLoadNext={handleLoadNext}
+                      onLoadReset={handleLoadReset}
+                      isReset={true}
                     />
                   </Gcol>
                 </Grid>

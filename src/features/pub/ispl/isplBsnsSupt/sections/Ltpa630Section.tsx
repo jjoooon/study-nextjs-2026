@@ -16,7 +16,7 @@ import {
   createAddRowHandler,
   createDeleteSelectedRowsHandler,
   createTreeNameCellRenderer,
-  createTooltipValueGetter
+  createTooltipValueGetter,
 } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { BottomBar } from '@common/BottomBar';
@@ -122,7 +122,8 @@ const DummyData2: DummyData2Type[] = [
   {
     id: 1,
     field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망)',
+    field2:
+      '나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망)',
     field3: '',
     filePath: ['1'],
   },
@@ -175,6 +176,7 @@ export default function Ltpa630Section() {
       {
         headerName: '패키지명',
         field: 'field1',
+        cellClass: 'text-center',
         flex: 1,
         minWidth: attributeColumnWidth(140),
         autoHeight: true,
@@ -252,7 +254,7 @@ export default function Ltpa630Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-cols-[1fr_1fr] h-full w-full" gap={3}>
+          <Grid className="grid-cols-[2fr_3fr] h-full w-full" gap={3}>
             {/* 패키지 관리 */}
             <Grid className="grid-rows-[auto_1fr] h-full w-full">
               <Grow className="w-full h-[2.5rem]" placement="sc">

@@ -5,10 +5,11 @@
 
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { useRef } from 'react';
 import { Grow, Grid } from '@atoms';
 import { FileExportIcon, FileImportIcon, ResetIcon, EssentialIcon } from '@icons';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -38,7 +39,8 @@ const DummyData: DummyDataType[] = [
     isChecked: false,
     field1: '시스템오류',
     field2: '',
-    field3: '자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다.',
+    field3:
+      '자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다.',
     field4: '2026.08.31',
   },
   {
@@ -59,6 +61,112 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 5,
+    isChecked: false,
+    field1: '시스템오류',
+    field2: '',
+    field3:
+      '자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 6,
+    isChecked: false,
+    field1: '알림',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 7,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 8,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 9,
+    isChecked: false,
+    field1: '시스템오류',
+    field2: '',
+    field3:
+      '자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 10,
+    isChecked: false,
+    field1: '알림',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 11,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 12,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 13,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 14,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 15,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 16,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 17,
     isChecked: false,
     field1: '질의',
     field2: '',
@@ -88,7 +196,7 @@ export default function Ltpa690Section() {
       field: 'field3',
       flex: 10,
       cellClass: 'text-left',
-      // tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field3' }),
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field3' }),
     },
     {
       headerName: '등록일',
@@ -100,12 +208,65 @@ export default function Ltpa690Section() {
   ];
 
   // pagination
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 15));
+  const [loadedCount, setLoadedCount] = React.useState(15);
+  const [totalCount, setTotalCount] = React.useState(DummyData.length);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const pageSize = 15;
   const gridRef = useRef<AgGridReact<DummyDataType>>(null);
-  const pageSize = 3;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: DummyData,
-    pageSize,
-  });
+
+  // 실데이터 호출 모사 (API 호출)
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      // API 호출 대기 시간 모사 (300ms)
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = DummyData.slice(start, end);
+      return {
+        items,
+        totalCount: DummyData.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // 초기 로딩 및 검색 실행
+  const handleSearch = React.useCallback(async () => {
+    const res = await fetchMockData(1, pageSize);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+    setTotalCount(res.totalCount);
+  }, [fetchMockData, pageSize]);
+
+  // 다음 버튼 누를 때 데이터 추가 호출 (onLoadNext 콜백)
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+
+    setRowData((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  // 전체조회 버튼 누를 때 데이터 호출 (onLoadAll 콜백)
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const res = await fetchMockData(1, totalCount);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  // 접기 버튼 (onLoadReset 콜백)
+  const handleLoadReset = React.useCallback(() => {
+    setRowData((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
 
   return (
     <>
@@ -137,7 +298,7 @@ export default function Ltpa690Section() {
               </FormTable>
 
               <Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -145,7 +306,7 @@ export default function Ltpa690Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
@@ -171,10 +332,9 @@ export default function Ltpa690Section() {
                     {/* 2026-06-01 resizable true로 수정, selectionColumnDef 추가 */}
                     <AgGridReact<DummyDataType>
                       ref={gridRef}
-                      key={loadedCount}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
-                      rowData={DummyData}
+                      rowData={rowData}
                       columnDefs={columnDefs}
                       defaultColDef={{
                         sortable: true,
@@ -186,10 +346,6 @@ export default function Ltpa690Section() {
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
-                      rowModelType="infinite"
-                      cacheBlockSize={pageSize}
-                      maxBlocksInCache={2}
-                      datasource={dataSource}
                       selectionColumnDef={{
                         width: 30,
                         cellClass: 'editable-cell',
@@ -205,6 +361,8 @@ export default function Ltpa690Section() {
                     pageSize={pageSize}
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
+                    onLoadReset={handleLoadReset}
+                    isReset={true}
                   />
                 </TableFoldBody>
               </TableFold>

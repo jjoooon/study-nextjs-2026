@@ -9,7 +9,12 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { Grow, Grid } from '@atoms';
 import { SearchIcon, ResetIcon } from '@icons';
-import { AgGridEmptyComponent, useDynamicColumnWidths, createTreeNameCellRenderer, createTooltipValueGetter } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  useDynamicColumnWidths,
+  createTreeNameCellRenderer,
+  createTooltipValueGetter,
+} from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { BottomBar } from '@common/BottomBar';
@@ -117,7 +122,8 @@ const DummyData2: DummyData2Type[] = [
     id: 1,
     packageName: '간병인 사용',
     field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망)',
+    field2:
+      '나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망)',
     field3: '',
     filePath: ['1'],
   },
@@ -177,6 +183,7 @@ export default function Ltpa650Section() {
         field: 'field1',
         flex: 1,
         minWidth: attributeColumnWidth(130),
+        cellClass: 'text-center',
         autoHeight: true,
         spanRows: true,
       },
@@ -202,6 +209,7 @@ export default function Ltpa650Section() {
         field: 'packageName',
         flex: 1,
         minWidth: attributeColumnWidth(130),
+        cellClass: 'text-center',
         autoHeight: true,
         spanRows: true,
       },
@@ -288,7 +296,7 @@ export default function Ltpa650Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Grid className="grid-cols-[1fr_1fr] h-full w-full" gap={3}>
+            <Grid className="grid-cols-[2fr_3fr] h-full w-full" gap={3}>
               {/* 패키지 관리 */}
               <div className="ag-theme-alpine radio-selection">
                 <AgGridReact<DummyData1Type>

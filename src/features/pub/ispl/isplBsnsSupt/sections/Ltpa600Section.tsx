@@ -13,7 +13,6 @@ import {
   AgGridEmptyComponent,
   createInsertCopiedRowButtonCellRenderer,
   getNextNumericRowId,
-  useAgGridInfiniteAppend,
   useDynamicColumnWidths,
   createTooltipValueGetter,
 } from '@aggrid';
@@ -319,14 +318,65 @@ export default function Ltpa600Section() {
   );
 
   // 시뮬레이션 -------------
-  const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
-  const gridRef = React.useRef<AgGridReact<DummyData2Type>>(null);
+  const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(() => DummyData2.slice(0, 3));
+  const [loadedCount, setLoadedCount] = React.useState(3);
+  const [totalCount, setTotalCount] = React.useState(DummyData2.length);
+  const [isLoading, setIsLoading] = React.useState(false);
   const pageSize = 3;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
-    useAgGridInfiniteAppend({
-      allRows: rowData2,
-      pageSize,
-    });
+  const gridRef = React.useRef<AgGridReact<DummyData2Type>>(null);
+
+  // 실데이터 호출 모사 (API 호출)
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      // API 호출 대기 시간 모사 (300ms)
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = DummyData2.slice(start, end);
+      return {
+        items,
+        totalCount: DummyData2.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // 초기 로딩 및 검색 실행
+  const handleSearch = React.useCallback(async () => {
+    const res = await fetchMockData(1, pageSize);
+    setRowData2(res.items);
+    setLoadedCount(res.items.length);
+    setTotalCount(res.totalCount);
+  }, [fetchMockData, pageSize]);
+
+  // 다음 버튼 누를 때 데이터 추가 호출 (onLoadNext 콜백)
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+
+    setRowData2((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  // 전체조회 버튼 누를 때 데이터 호출 (onLoadAll 콜백)
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const res = await fetchMockData(1, totalCount);
+    setRowData2(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  // 접기 버튼 (onLoadReset 콜백)
+  const handleLoadReset = React.useCallback(() => {
+    setRowData2((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
   // 복사
   const duplicateButtonRenderer = useMemo(
     () =>
@@ -500,7 +550,7 @@ export default function Ltpa600Section() {
                     </CheckboxGroup>
                   </Grid>
                   <Grow>
-                    <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                    <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                       조회
                     </Button>
                     <Button
@@ -508,7 +558,7 @@ export default function Ltpa600Section() {
                       only={'icon'}
                       size={'lg'}
                       variant={'outlined'}
-                      onClick={() => {}}
+                      onClick={handleSearch}
                       aria-label="새로고침"
                     >
                       <ResetIcon />
@@ -521,7 +571,7 @@ export default function Ltpa600Section() {
                     ref={gridRef}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
-                    rowData={rowData2.slice(0, loadedCount)}
+                    rowData={rowData2}
                     columnDefs={columnDefs2}
                     defaultColDef={{
                       sortable: true,
@@ -533,21 +583,6 @@ export default function Ltpa600Section() {
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
                     tooltipHideDelay={3000}
-                    rowModelType="infinite"
-                    onSortChanged={(event) => {
-                      handleSortChanged(
-                        event.api
-                          .getColumnState()
-                          .filter((col) => col.sort)
-                          .map((col) => ({
-                            colId: col.colId || '',
-                            sort: (col.sort || 'asc') as 'asc' | 'desc',
-                          }))
-                      );
-                    }}
-                    cacheBlockSize={pageSize}
-                    maxBlocksInCache={2}
-                    datasource={dataSource}
                   />
                 </div>
               </Grid>

@@ -12,12 +12,7 @@ import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
-import {
-  AgGridEmptyComponent,
-  DatePickerCellEditor,
-  useAgGridInfiniteAppend,
-  editableSelectCellRenderer,
-} from '@aggrid';
+import { AgGridEmptyComponent, DatePickerCellEditor, editableSelectCellRenderer } from '@aggrid';
 import { createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
@@ -93,14 +88,71 @@ const DummyData: DummyDataType[] = [
     field07: '대내-2507-8950-[서울GA[청약서 스캔권한 부여요청(주)]]',
     field08: '김한화',
   },
+  ...Array.from({ length: 22 }, (_, i) => ({
+    id: 4 + i,
+    isCheck: false,
+    isNew: false,
+    isField01InputVisible: true,
+    field01: '취급직원',
+    field02: '3448460',
+    field03: '주식회사 마이디어',
+    field04: '2026-03-01',
+    field05: '9999-12-31',
+    field06: '정상',
+    field07: `요청문서 ${4 + i}`,
+    field08: '김한화',
+  })),
 ];
 
 export default function Ltpa210Section() {
-  const pageSize = 2;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: DummyData,
-    pageSize,
-  });
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 5));
+  const [loadedCount, setLoadedCount] = React.useState(5);
+  const [totalCount, setTotalCount] = React.useState(DummyData.length);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
+
+  const pageSize = 5;
+
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = DummyData.slice(start, end);
+      return {
+        items,
+        totalCount: DummyData.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+
+    setRowData((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const res = await fetchMockData(1, totalCount);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  const handleLoadReset = React.useCallback(() => {
+    setRowData((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
 
   // 새로 추가한 행만 편집 가능
   const isEditableNewRow = React.useCallback(
@@ -248,7 +300,6 @@ export default function Ltpa210Section() {
     },
   ];
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -256,8 +307,6 @@ export default function Ltpa210Section() {
   });
 
   // agGrid 행삭제
-  const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
-  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
 
   const handleDeleteRow = React.useCallback(() => {
     const gridApi = gridApiRef.current;
@@ -458,12 +507,14 @@ export default function Ltpa210Section() {
                   </div>
                   <TableMore
                     gridRef={gridRef}
-                    isAll={false}
+                    isAll={true}
                     loadedCount={loadedCount}
                     totalCount={totalCount}
                     pageSize={pageSize}
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
+                    onLoadReset={handleLoadReset}
+                    isReset={true}
                   />
                 </Gcol>
               </TableFoldBody>
