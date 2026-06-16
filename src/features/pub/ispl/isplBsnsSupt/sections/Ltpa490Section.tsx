@@ -268,15 +268,13 @@ export default function Ltpa490Section() {
       },
       {
         headerName: '계명자명',
-        flex: 1,
-        minWidth: attributeColumnWidth(75),
         cellClass: 'text-center px-0!',
         autoHeight: true,
         children: [
           {
             headerName: '피보험자명',
             flex: 1,
-            minWidth: attributeColumnWidth(75),
+            minWidth: attributeColumnWidth(90),
             cellClass: 'text-center px-0!',
             autoHeight: true,
             cellRenderer: createFieldRenderer<DummyDataType>('field02', 'field03'),
@@ -293,15 +291,13 @@ export default function Ltpa490Section() {
       },
       {
         headerName: '취급지점',
-        flex: 1,
-        minWidth: attributeColumnWidth(110),
         cellClass: 'text-center',
         children: [
           {
             headerName: '취급자',
             field: 'field06',
             flex: 1,
-            minWidth: attributeColumnWidth(110),
+            minWidth: attributeColumnWidth(120),
             autoHeight: true,
             cellClass: 'text-center px-0!',
             cellRenderer: createFieldRenderer<DummyDataType>('field05', 'field06'),
@@ -356,7 +352,7 @@ export default function Ltpa490Section() {
         headerName: '미파기 사유',
         field: 'field12',
         flex: 20,
-        cellClass: 'text-left',
+        cellClass: 'editable-cell text-left',
         editable: true,
         autoHeight: true,
       },
