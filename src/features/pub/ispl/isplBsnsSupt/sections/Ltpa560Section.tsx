@@ -9,13 +9,14 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { Grow, Grid } from '@atoms';
 import { SearchIcon, ResetIcon } from '@icons';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
@@ -359,6 +360,30 @@ export default function Ltpa560Section() {
   );
 
   const gridRef = React.useRef<AgGridReact<Ltpa560DummyDataRow>>(null);
+  const pageSize = 2;
+  const {
+    loadedCount,
+    totalCount,
+    dataSource,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
+    allRows: Ltpa560DummyData,
+    pageSize,
+  });
+
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
+
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
+
+  const handleLoadReset = React.useCallback(() => {
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
 
   const sumRow = React.useMemo<Ltpa560DummyDataRow[]>(() => {
     const toNumber = (value: string | number): number => {
@@ -557,10 +582,22 @@ export default function Ltpa560Section() {
                     resizable: true,
                     autoHeaderHeight: true,
                   }}
+                  cacheBlockSize={pageSize}
+                  maxBlocksInCache={2}
+                  datasource={dataSource}
                   enableCellSpan={true}
                   pinnedBottomRowData={sumRow}
                 />
               </div>
+              <TableMore
+                gridRef={gridRef}
+                loadedCount={loadedCount}
+                totalCount={totalCount}
+                pageSize={pageSize}
+                onLoadAll={handleLoadAll}
+                onLoadNext={handleLoadNext}
+                onLoadReset={handleLoadReset}
+              />
             </Grid>
           </Grid>
         }

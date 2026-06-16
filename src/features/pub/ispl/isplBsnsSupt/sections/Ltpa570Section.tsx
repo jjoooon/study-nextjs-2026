@@ -9,7 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Grow, Grid } from '@atoms';
 import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -154,22 +154,6 @@ const Ltpa570DummyData: Ltpa570DummyDataRow[] = [
     field12: 24,
     field13: 7,
   },
-  ...Array.from({ length: 18 }, (_, i) => ({
-    id: 8 + i,
-    field01: '전속',
-    field02: '서울지역본부',
-    field03: '강서지역단',
-    field04: `지점 ${8 + i}`,
-    field05: 2,
-    field06: 21,
-    field07: 0,
-    field08: 0,
-    field09: 0,
-    field10: 1,
-    field11: 24,
-    field12: 24,
-    field13: 8 + i,
-  }))
 ];
 
 export default function Ltpa570Section() {
@@ -185,7 +169,7 @@ export default function Ltpa570Section() {
     return value === 'option1' || value === 'option2' || value === 'option3' || value === 'option4';
   };
 
-
+  const [rowData] = React.useState<Ltpa570DummyDataRow[]>(Ltpa570DummyData);
 
   // AgGrid Column
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -341,52 +325,31 @@ export default function Ltpa570Section() {
     return [...organizationColumnsByGroupBy[groupBy], ...metricColumns];
   }, [groupBy, attributeColumnWidth]);
 
-  const [rowData, setRowData] = React.useState<Ltpa570DummyDataRow[]>(() => Ltpa570DummyData.slice(0, 5));
-  const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount, setTotalCount] = React.useState(Ltpa570DummyData.length);
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const gridRef = React.useRef<AgGridReact<Ltpa570DummyDataRow>>(null);
-  const pageSize = 5;
+  const pageSize = 2;
+  const {
+    loadedCount,
+    totalCount,
+    dataSource,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
+    allRows: Ltpa570DummyData,
+    pageSize,
+  });
 
-  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const items = Ltpa570DummyData.slice(start, end);
-      return {
-        items,
-        totalCount: Ltpa570DummyData.length,
-      };
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
 
-  const handleLoadNext = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
-    const res = await fetchMockData(nextPage, pageSize);
-
-    setRowData((prev) => [...prev, ...res.items]);
-    setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
-
-  const handleLoadAll = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const res = await fetchMockData(1, totalCount);
-    setRowData(res.items);
-    setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
 
   const handleLoadReset = React.useCallback(() => {
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
 
   return (
     <>
@@ -452,13 +415,13 @@ export default function Ltpa570Section() {
                       ))}
                     </NativeSelect>
                     <NativeSelect
-                      aria-label="지점구분"
+                      aria-label="자점구분"
                       value={form.type04}
                       onChange={(e) => setFormField('type04', e.target.value)}
                     >
                       {[
-                        { value: 'selection0401', label: '지점1' },
-                        { value: 'selection0402', label: '지점2' },
+                        { value: 'selection0401', label: '자점1' },
+                        { value: 'selection0402', label: '자점2' },
                       ].map((option) => (
                         <NativeSelectOption key={option.value} value={option.value}>
                           {option.label}
@@ -556,6 +519,9 @@ export default function Ltpa570Section() {
                     resizable: true,
                   }}
                   domLayout="normal"
+                  cacheBlockSize={pageSize}
+                  maxBlocksInCache={2}
+                  datasource={dataSource}
                   enableCellSpan={true}
                 />
               </div>
@@ -567,8 +533,6 @@ export default function Ltpa570Section() {
                 onLoadAll={handleLoadAll}
                 onLoadNext={handleLoadNext}
                 onLoadReset={handleLoadReset}
-                isReset={true}
-                isAll={true}
               />
             </Grid>
           </Grid>
