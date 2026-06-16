@@ -22,7 +22,6 @@ import {
   createCellValueChangedHandler,
   useAgGridPagination,
   AgGridEmptyComponent,
-  useAgGridInfiniteAppend,
 } from '@aggrid';
 import { TablePagination, TableMore } from '@common/TablePagination';
 
@@ -142,34 +141,65 @@ const { currentPage, totalPages, handleGridReady, handlePageChange } = useAgGrid
 
 
 
-// infinite scroll + TableMore 연동 (공통 훅 사용)
-import { useAgGridInfiniteAppend } from '@aggrid';
-
+// infinite scroll + TableMore 연동 (추가 로드 방식)
+const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
 const pageSize = 5;
-const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-  allRows: DummyData,
-  pageSize,
-});
+const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 5));
+const [loadedCount, setLoadedCount] = React.useState(5);
+const [totalCount, setTotalCount] = React.useState(DummyData.length);
+const [isLoading, setIsLoading] = React.useState(false);
+
+const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+  setIsLoading(true);
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const items = DummyData.slice(start, end);
+    return { items, totalCount: DummyData.length };
+  } finally {
+    setIsLoading(false);
+  }
+}, []);
+
+const handleLoadNext = React.useCallback(async () => {
+  if (loadedCount >= totalCount || isLoading) return;
+  const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+  const res = await fetchMockData(nextPage, pageSize);
+  setRowData((prev) => [...prev, ...res.items]);
+  setLoadedCount((prev) => prev + res.items.length);
+}, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+const handleLoadAll = React.useCallback(async () => {
+  if (loadedCount >= totalCount || isLoading) return;
+  const res = await fetchMockData(1, totalCount);
+  setRowData(res.items);
+  setLoadedCount(res.items.length);
+}, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+const handleLoadReset = React.useCallback(() => {
+  setRowData(DummyData.slice(0, pageSize));
+  setLoadedCount(pageSize);
+}, [pageSize]);
+
 <div className="ag-theme-alpine">
   <AgGridReact<DummyDataType>
-    key={loadedCount}
+    ref={gridRef}
     getRowId={(params) => String(params.data.id)}
     columnDefs={columnDefs}
     domLayout="autoHeight"
-
-    rowModelType="infinite"
-    cacheBlockSize={pageSize}
-    maxBlocksInCache={2}
-    datasource={dataSource}
-    
+    rowData={rowData}
   />
 </div>
 <TableMore
+  gridRef={gridRef}
   loadedCount={loadedCount}
   totalCount={totalCount}
   pageSize={pageSize}
   onLoadAll={handleLoadAll}
   onLoadNext={handleLoadNext}
+  onLoadReset={handleLoadReset}
+  isReset={true}
 />
 \`\`\`
           `}
@@ -226,32 +256,66 @@ export const Default: StoryObj = {
 
 export const TableMoreAppendLoad: StoryObj = {
   render: () => {
+    const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
     const pageSize = 5;
-    const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-      allRows: DummyData,
-      pageSize,
-    });
+    const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 5));
+    const [loadedCount, setLoadedCount] = React.useState(5);
+    const [totalCount, setTotalCount] = React.useState(DummyData.length);
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+      setIsLoading(true);
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        const items = DummyData.slice(start, end);
+        return { items, totalCount: DummyData.length };
+      } finally {
+        setIsLoading(false);
+      }
+    }, []);
+
+    const handleLoadNext = React.useCallback(async () => {
+      if (loadedCount >= totalCount || isLoading) return;
+      const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+      const res = await fetchMockData(nextPage, pageSize);
+      setRowData((prev) => [...prev, ...res.items]);
+      setLoadedCount((prev) => prev + res.items.length);
+    }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+    const handleLoadAll = React.useCallback(async () => {
+      if (loadedCount >= totalCount || isLoading) return;
+      const res = await fetchMockData(1, totalCount);
+      setRowData(res.items);
+      setLoadedCount(res.items.length);
+    }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+    const handleLoadReset = React.useCallback(() => {
+      setRowData(DummyData.slice(0, pageSize));
+      setLoadedCount(pageSize);
+    }, [pageSize]);
 
     return (
       <div style={{ width: '100%', marginBottom: '6rem' }}>
         <div className="ag-theme-alpine">
           <AgGridReact<DummyDataType>
-            key={loadedCount}
+            ref={gridRef}
             getRowId={(params) => String(params.data.id)}
             columnDefs={columnDefs}
             domLayout="autoHeight"
-            rowModelType="infinite"
-            cacheBlockSize={pageSize}
-            maxBlocksInCache={2}
-            datasource={dataSource}
+            rowData={rowData}
           />
         </div>
         <TableMore
+          gridRef={gridRef}
           loadedCount={loadedCount}
           totalCount={totalCount}
           pageSize={pageSize}
           onLoadAll={handleLoadAll}
           onLoadNext={handleLoadNext}
+          onLoadReset={handleLoadReset}
+          isReset={true}
         />
       </div>
     );

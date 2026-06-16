@@ -11,13 +11,7 @@ import { useCallback } from 'react';
 import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { Gcol, Grid, Grow } from '@atoms';
 import { ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
-import {
-  AgGridEmptyComponent,
-  createFieldRenderer,
-  DatePickerCellEditor,
-  editableSelectCellRenderer,
-  useAgGridInfiniteAppend,
-} from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, DatePickerCellEditor, editableSelectCellRenderer } from '@aggrid';
 import { createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -289,6 +283,20 @@ const DummyData2: DummyDataType2[] = [
     field07: '',
     field08: '김한화',
   },
+  ...Array.from({ length: 20 }, (_, i) => ({
+    id: 6 + i,
+    isNew: false,
+    isCheck: false,
+    isField02InputVisible: true,
+    field01: '',
+    field02: '',
+    field03: `대리점 ${6 + i}`,
+    field04: '2025-01-01',
+    field05: '2025-01-30',
+    field06: '',
+    field07: '',
+    field08: '김한화',
+  })),
 ];
 
 export default function Ltpa030Section() {
@@ -544,17 +552,55 @@ export default function Ltpa030Section() {
   ];
 
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
+  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(() => DummyData2.slice(0, 4));
+  const [loadedCount, setLoadedCount] = React.useState(4);
+  const [totalCount, setTotalCount] = React.useState(DummyData2.length);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const gridApiRef2 = React.useRef<GridApi<DummyDataType2> | null>(null);
   const gridRef2 = React.useRef<AgGridReact<DummyDataType2>>(null);
 
   const pageSize = 4;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
-    allRows: DummyData2,
-    pageSize,
-  });
+
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = DummyData2.slice(start, end);
+      return {
+        items,
+        totalCount: DummyData2.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+
+    setRowData2((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading, setRowData2, setLoadedCount]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const res = await fetchMockData(1, totalCount);
+    setRowData2(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading, setRowData2, setLoadedCount]);
+
+  const handleLoadReset = React.useCallback(() => {
+    setRowData2((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize, setRowData2, setLoadedCount]);
 
   // 첫번째 agGrid 행삭제
   const handleDeleteRow = React.useCallback(() => {
@@ -819,12 +865,14 @@ export default function Ltpa030Section() {
                       </div>
                       <TableMore
                         gridRef={gridRef2}
-                        isAll={false}
+                        isAll={true}
                         loadedCount={loadedCount}
                         totalCount={totalCount}
                         pageSize={pageSize}
                         onLoadAll={handleLoadAll}
                         onLoadNext={handleLoadNext}
+                        onLoadReset={handleLoadReset}
+                        isReset={true}
                       />
                     </Gcol>
                   </TableFoldBody>

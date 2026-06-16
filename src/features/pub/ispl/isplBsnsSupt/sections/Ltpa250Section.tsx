@@ -41,7 +41,8 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),',
+    field01:
+      '상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),상해(일반상해),',
     field02: '2026-03-01',
     field03: '2027-07-01',
     field04: 109999999,
@@ -206,7 +207,7 @@ export default function Ltpa250Section() {
         {
           headerName: '보상기간',
           flex: 1,
-          minWidth: attributeColumnWidth(100), 
+          minWidth: attributeColumnWidth(100),
           cellClass: 'text-left px-0!',
           autoHeight: true,
           cellRenderer: (params: ICellRendererParams<DummyDataType>) => {

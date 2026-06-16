@@ -240,7 +240,6 @@ export default function Ltpa490Section() {
     allRows: DummyData,
     pageSize,
   });
-
   const handleLoadNext = React.useCallback(() => {
     handleLoadNextDefault();
   }, [handleLoadNextDefault]);

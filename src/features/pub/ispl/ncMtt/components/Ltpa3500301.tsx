@@ -10,7 +10,7 @@ import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { CheckIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -134,6 +134,16 @@ const DummyData: DummyDataType[] = [
     field05: '완치',
     field06: '없음',
   },
+  ...Array.from({ length: 16 }, (_, i) => ({
+    id: 10 + i,
+    isAuto: false,
+    field01: '대장·직장용종',
+    field02: '2026-01-01 ~ 2026-01-15',
+    field03: `수술/시술(봉합술) ${10 + i}`,
+    field04: '한화병원',
+    field05: '완치',
+    field06: '없음',
+  })),
 ];
 
 const QuestionDataList: Array<'Y' | 'N' | ''> = [
@@ -304,11 +314,46 @@ export const Ltpa3500301 = ({
 
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 4;
-  const [isAllLoaded, setIsAllLoaded] = React.useState(false);
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext, setLoadedCount } = useAgGridInfiniteAppend({
-    allRows: DummyData,
-    pageSize,
-  });
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 4));
+  const [loadedCount, setLoadedCount] = React.useState(4);
+  const [totalCount, setTotalCount] = React.useState(DummyData.length);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = DummyData.slice(start, end);
+      return {
+        items,
+        totalCount: DummyData.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+    const res = await fetchMockData(1, totalCount);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  const handleLoadReset = React.useCallback(() => {
+    setRowData(DummyData.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
 
   return (
     <LayoutScrollWrap className={`${sampleMode ? 'grid-cols-[1fr]' : 'grid-cols-[1fr_auto]'} gap-3`}>
@@ -878,19 +923,17 @@ export const Ltpa3500301 = ({
                   <Button
                     color="gray"
                     onClick={() => {
-                      if (isAllLoaded) {
-                        setLoadedCount(pageSize);
-                        setIsAllLoaded(false);
+                      if (loadedCount >= totalCount) {
+                        handleLoadReset();
                       } else {
                         handleLoadAll();
-                        setIsAllLoaded(true);
                       }
                     }}
                     size="lg"
                     variant="outlined"
                     disabled={simpleMode}
                   >
-                    {isAllLoaded ? '접기' : '전체조회'}
+                    {loadedCount >= totalCount ? '접기' : '전체조회'}
                   </Button>
                   <Button color="primary" onClick={() => {}} size="lg" variant="outlined" disabled={simpleMode}>
                     질병 입력/수정
@@ -922,7 +965,7 @@ export const Ltpa3500301 = ({
                     }}
                     className="text-center"
                     domLayout="autoHeight"
-                    rowData={DummyData.slice(0, loadedCount)}
+                    rowData={rowData}
                     animateRows={false}
                   />
                 </div>
@@ -935,7 +978,7 @@ export const Ltpa3500301 = ({
                   onLoadNext={handleLoadNext}
                   isNext={false}
                   isAll={false}
-                  onLoadReset={() => setLoadedCount(pageSize)}
+                  onLoadReset={handleLoadReset}
                   only={'all'}
                 />
               </Grid>

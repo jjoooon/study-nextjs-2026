@@ -7,7 +7,7 @@ import '@/shared/lib/agGridPub';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { ResetIcon, SearchIcon } from '@icons';
 import {
@@ -259,24 +259,10 @@ const Ltpz038 = () => {
 
   // pagination
   const pageSize = 10;
-  const {
-    loadedCount,
-    totalCount,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-  } = useAgGridInfiniteAppend({
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
     pageSize,
   });
-
-  const handleLoadAll = useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
-
-  const handleLoadReset = useCallback(() => {
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
 
   const visibleRows = useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
@@ -295,14 +281,14 @@ const Ltpz038 = () => {
     });
   }, [loadedCount, pendingScrollIndex]);
 
-  const handleLoadNextWithScroll = useCallback(() => {
+  const handleLoadNextWithScroll = () => {
     if (loadedCount >= totalCount) {
       return;
     }
 
     setPendingScrollIndex(loadedCount);
-    handleLoadNextDefault();
-  }, [loadedCount, totalCount, handleLoadNextDefault]);
+    handleLoadNext();
+  };
 
   return (
     <Dialog open>
@@ -436,7 +422,6 @@ const Ltpz038 = () => {
               pageSize={pageSize}
               onLoadAll={handleLoadAll}
               onLoadNext={handleLoadNextWithScroll}
-              onLoadReset={handleLoadReset}
             />
           </Gcol>
         </DialogSection>

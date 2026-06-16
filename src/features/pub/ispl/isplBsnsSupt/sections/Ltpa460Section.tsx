@@ -211,7 +211,6 @@ export default function Ltpa460Section() {
     allRows: rowData,
     pageSize,
   });
-
   const handleLoadNext = React.useCallback(() => {
     handleLoadNextDefault();
   }, [handleLoadNextDefault]);

@@ -14,6 +14,7 @@ import {
   createAddRowHandler,
   createDeleteSelectedRowsHandler,
   useDynamicColumnWidths,
+  createTooltipValueGetter
 } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
@@ -46,7 +47,7 @@ const DummyData: DummyDataType[] = [
     id: 1,
     field01: 'LA250826291588',
     field02: 'LA00102001',
-    field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
+    field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601 한화 더 경증 간편건강보험(세만기형) 무배당2601',
     field04: '문서서명',
     field05: 'TM',
     field06: '2026-06-01',
@@ -175,9 +176,9 @@ export default function Ltpa340Section() {
     {
       headerName: '상품명',
       field: 'field03',
-      flex: 6,
-      minWidth: attributeColumnWidth(250),
+      flex: 20,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
     {
       headerName: '출력물구분',
@@ -347,6 +348,8 @@ export default function Ltpa340Section() {
                   onGridReady={(params) => {
                     gridApiRef.current = params.api;
                   }}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
                 />
               </div>
             </Gcol>

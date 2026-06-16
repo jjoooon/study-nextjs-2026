@@ -205,7 +205,6 @@ export default function Ltpa500Section() {
     allRows: DummyData,
     pageSize,
   });
-
   const handleLoadNext = React.useCallback(() => {
     handleLoadNextDefault();
   }, [handleLoadNextDefault]);
