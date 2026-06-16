@@ -241,10 +241,29 @@ export default function Ltpa300Section() {
   );
   const gridRef = React.useRef<AgGridReact<Ltpa300DummyDataRow>>(null);
   const pageSize = 4;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+  const {
+    loadedCount,
+    totalCount,
+    dataSource,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
     allRows: Ltpa300DummyData,
     pageSize,
   });
+
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
+
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
+
+  const handleLoadReset = React.useCallback(() => {
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
 
   return (
     <>
@@ -431,6 +450,7 @@ export default function Ltpa300Section() {
                   pageSize={pageSize}
                   onLoadAll={handleLoadAll}
                   onLoadNext={handleLoadNext}
+                  onLoadReset={handleLoadReset}
                 />
               </TableFoldBody>
             </TableFold>

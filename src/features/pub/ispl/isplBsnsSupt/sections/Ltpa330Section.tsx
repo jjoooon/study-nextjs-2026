@@ -536,10 +536,28 @@ export default function Ltpa330Section() {
   );
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 10;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+  const {
+    loadedCount,
+    totalCount,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
     allRows: Ltpa330DummyData,
     pageSize,
   });
+
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
+
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
+
+  const handleLoadReset = React.useCallback(() => {
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
 
   return (
     <>
@@ -660,6 +678,7 @@ export default function Ltpa330Section() {
                 pageSize={pageSize}
                 onLoadAll={handleLoadAll}
                 onLoadNext={handleLoadNext}
+                onLoadReset={handleLoadReset}
                 isAll={false}
               />
               <Grow placement={'ec'} className="p-2.5 bg-[#EFF8FF] rounded-lg gap-2.5">

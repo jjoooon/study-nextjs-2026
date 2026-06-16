@@ -5,10 +5,10 @@
 
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { Grow, Grid } from '@atoms';
 import { FileExportIcon, FileImportIcon, ResetIcon, EssentialIcon } from '@icons';
-import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -38,7 +38,8 @@ const DummyData: DummyDataType[] = [
     isChecked: false,
     field1: '시스템오류',
     field2: '',
-    field3: '자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다.',
+    field3:
+      '자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다. 자료가 존재하지 않습니다.',
     field4: '2026.08.31',
   },
   {
@@ -59,6 +60,70 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 5,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 6,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 7,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 8,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 9,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 10,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 11,
+    isChecked: false,
+    field1: '질의',
+    field2: '',
+    field3: '자료가 존재하지 않습니다.',
+    field4: '2026.08.31',
+  },
+  {
+    id: 12,
     isChecked: false,
     field1: '질의',
     field2: '',
@@ -102,10 +167,29 @@ export default function Ltpa690Section() {
   // pagination
   const gridRef = useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 3;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+  const {
+    loadedCount,
+    totalCount,
+    dataSource,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
     allRows: DummyData,
     pageSize,
   });
+
+  const handleLoadNext = useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
+
+  const handleLoadAll = useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
+
+  const handleLoadReset = useCallback(() => {
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
 
   return (
     <>
@@ -205,6 +289,7 @@ export default function Ltpa690Section() {
                     pageSize={pageSize}
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
+                    onLoadReset={handleLoadReset}
                   />
                 </TableFoldBody>
               </TableFold>

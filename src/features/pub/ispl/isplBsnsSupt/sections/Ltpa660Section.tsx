@@ -106,11 +106,30 @@ export default function Ltpa660Section() {
   const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
 
   const pageSize = 3;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
-    useAgGridInfiniteAppend({
-      allRows: DummyData1,
-      pageSize,
-    });
+  const {
+    loadedCount,
+    totalCount,
+    dataSource,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+    handleSortChanged,
+  } = useAgGridInfiniteAppend({
+    allRows: DummyData1,
+    pageSize,
+  });
+
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
+
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
+
+  const handleLoadReset = React.useCallback(() => {
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
   // 2026-06-01 minWidth, flex 수정, valueParser, valueFormatter 추가
   const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
     () => [

@@ -126,7 +126,7 @@ const Ltpz053 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+          <div className="ag-theme-alpine inner-scroll radio-selection" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
@@ -138,8 +138,7 @@ const Ltpz053 = () => {
               }}
               domLayout="normal"
               rowSelection={{
-                mode: 'multiRow',
-                headerCheckbox: false,
+                mode: 'singleRow',
                 checkboxes: true,
                 enableClickSelection: true,
               }}
@@ -211,8 +210,8 @@ const Ltpz053 = () => {
                     <FormCell title={'생년월일'}>
                       <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
                     </FormCell>
-                    <FormCell title={'발급일자'}>
-                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
+                    <FormCell title={'면허번호'}>
+                      <Input aria-label="" value={''} required />
                       <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                         신원확인
                       </Button>

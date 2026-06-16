@@ -322,11 +322,30 @@ export default function Ltpa600Section() {
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
   const gridRef = React.useRef<AgGridReact<DummyData2Type>>(null);
   const pageSize = 3;
-  const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
-    useAgGridInfiniteAppend({
-      allRows: rowData2,
-      pageSize,
-    });
+  const {
+    loadedCount,
+    totalCount,
+    dataSource,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+    handleSortChanged,
+  } = useAgGridInfiniteAppend({
+    allRows: rowData2,
+    pageSize,
+  });
+
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
+
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
+
+  const handleLoadReset = React.useCallback(() => {
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
   // 복사
   const duplicateButtonRenderer = useMemo(
     () =>

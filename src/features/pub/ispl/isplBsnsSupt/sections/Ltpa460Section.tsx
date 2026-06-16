@@ -201,10 +201,28 @@ export default function Ltpa460Section() {
 
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+  const {
+    loadedCount,
+    totalCount,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
     allRows: rowData,
     pageSize,
   });
+
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
+
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
+
+  const handleLoadReset = React.useCallback(() => {
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
   const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
   // 2026-06-01 width, flex 수정
@@ -460,6 +478,7 @@ export default function Ltpa460Section() {
                 pageSize={pageSize}
                 onLoadAll={handleLoadAll}
                 onLoadNext={handleLoadNext}
+                onLoadReset={handleLoadReset}
               />
             </Gcol>
           </Grid>

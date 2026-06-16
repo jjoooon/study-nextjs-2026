@@ -92,6 +92,76 @@ const DummyData1: DummyData1Type[] = [
     field3: '사망/후유',
     field4: '',
   },
+  {
+    id: 8,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 9,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 10,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 11,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 12,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 13,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 14,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 15,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 16,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 17,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
 ];
 
 const Ltpz080 = () => {
@@ -133,10 +203,28 @@ const Ltpz080 = () => {
   const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
   const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
   const pageSize = 5;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
+  const {
+    loadedCount,
+    totalCount,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
     allRows: rowData1,
     pageSize,
   });
+
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
+
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
+
+  const handleLoadReset = React.useCallback(() => {
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
 
   return (
     <Dialog open>

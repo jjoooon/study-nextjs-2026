@@ -53,7 +53,8 @@ const DummyData: DummyDataType[] = [
     field01: '(전속)영업관리자승인계약',
     field02: 'LA20148716422000',
     field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건',
+    field04:
+      'LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건',
     field05: '김한화화',
     field06: '박한화화',
     field07: '8094210',
@@ -194,10 +195,28 @@ export default function Ltpa500Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
+  const {
+    loadedCount,
+    totalCount,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
     allRows: DummyData,
     pageSize,
   });
+
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
+
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
+
+  const handleLoadReset = React.useCallback(() => {
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
   const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
   const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
@@ -451,6 +470,7 @@ export default function Ltpa500Section() {
                     pageSize={pageSize}
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
+                    onLoadReset={handleLoadReset}
                   />
                 </Gcol>
               </TableFoldBody>
