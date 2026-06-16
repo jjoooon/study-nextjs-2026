@@ -554,7 +554,7 @@ export default function Ltpa030Section() {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(() => DummyData2.slice(0, 4));
   const [loadedCount, setLoadedCount] = React.useState(4);
-  const [totalCount, setTotalCount] = React.useState(DummyData2.length);
+  const [totalCount] = React.useState(DummyData2.length);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
