@@ -3,12 +3,12 @@
  */
 'use client';
 
-import { CloseIcon, SelectArrowIcon } from '@icons';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
+import { CloseIcon, SelectArrowIcon } from '@icons';
 
 // Context 생성
 interface TabsContextProps {

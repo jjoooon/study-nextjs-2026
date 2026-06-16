@@ -3,6 +3,12 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
+import { Grid, Grow, Gcol } from '@atoms';
+import { ResetIcon, SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
@@ -10,7 +16,9 @@ import {
   useAgGridInfiniteAppend,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Grid, Grow, Gcol } from '@atoms';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -19,16 +27,8 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -53,13 +53,13 @@ const DummyData: DummyDataType[] = [
     field01: '(전속)영업관리자승인계약',
     field02: 'LA20148716422000',
     field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
+    field04: 'LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건',
+    field05: '김한화화',
+    field06: '박한화화',
     field07: '8094210',
     field08: '신부산GA지점',
     field09: '999999999',
-    field10: 'TEXT',
+    field10: 'TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT',
     field11: '선택',
   },
   {
@@ -192,6 +192,7 @@ const DummyData: DummyDataType[] = [
 
 export default function Ltpa500Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: DummyData,
@@ -264,6 +265,7 @@ export default function Ltpa500Section() {
       flex: 1,
       minWidth: attributeColumnWidth(100),
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field08' }),
     },
     {
       headerName: '보험료(원)',
@@ -281,6 +283,7 @@ export default function Ltpa500Section() {
       cellClass: 'editable-cell text-left',
       editable: true,
       cellEditor: 'agInputCellEditor',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field10' }),
     },
     {
       headerName: '승인',
@@ -421,6 +424,7 @@ export default function Ltpa500Section() {
                 <Gcol>
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
+                      ref={gridRef}
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       rowData={visibleRows}
@@ -440,6 +444,7 @@ export default function Ltpa500Section() {
                     />
                   </div>
                   <TableMore
+                    gridRef={gridRef}
                     isAll={true}
                     loadedCount={loadedCount}
                     totalCount={totalCount}

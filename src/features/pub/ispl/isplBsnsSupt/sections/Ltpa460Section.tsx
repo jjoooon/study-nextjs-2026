@@ -3,13 +3,21 @@
  */
 'use client';
 
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useCallback, useState } from 'react';
+import * as React from 'react';
+import { Grid, Grow, Gcol, Typo } from '@atoms';
+import { ResetIcon, FileImportIcon, SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   useAgGridInfiniteAppend,
   createTooltipValueGetter,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Grid, Grow, Gcol, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -17,16 +25,8 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ResetIcon, FileImportIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useCallback, useState } from 'react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -52,7 +52,7 @@ const DummyData: DummyDataType[] = [
     field02: '로그구분1',
     field03: '-',
     field04: '2026-03-01',
-    field05: '항목명1',
+    field05: '항목명1 항목명1 항목명1 항목명1 항목명1 항목명1 항목명1 항목명1',
     field06: '항목명2',
     field07: '항목명3',
     field08: '항목명4',
@@ -196,9 +196,10 @@ export default function Ltpa460Section() {
 
   // KEY 컬럼 공통 셀 렌더러: 긴 텍스트는 한 줄 말줄임으로 표시
   const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
-    return <p className="truncate w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
+    return <p className="w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
   }, []);
 
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: rowData,
@@ -207,7 +208,6 @@ export default function Ltpa460Section() {
   const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
   // 2026-06-01 width, flex 수정
-  // 2026-06-04 minWidth, flex 수정
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -240,7 +240,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY1',
       field: 'field05',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       sortable: false,
       filter: false,
       suppressMovable: true, // 이동 방지
@@ -257,7 +257,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY2',
       field: 'field06',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -271,7 +271,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY3',
       field: 'field07',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -285,7 +285,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY4',
       field: 'field08',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -299,7 +299,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY5',
       field: 'field09',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -313,7 +313,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY6',
       field: 'field10',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -327,7 +327,7 @@ export default function Ltpa460Section() {
       headerName: 'KEY7',
       field: 'field11',
       flex: 1,
-      minWidth: attributeColumnWidth(180),
+      minWidth: attributeColumnWidth(165),
       suppressMovable: true, // 이동 방지
       lockPinned: true, // 고정 열에서 제외 방지
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
@@ -404,8 +404,8 @@ export default function Ltpa460Section() {
                       ))}
                     </NativeSelect>
                   </FormCell>
-                  <FormCell title={'거개코드'}>
-                    <NativeSelect aria-label="거개코드 선택" width={108} value={''} onChange={() => {}}>
+                  <FormCell title={'거래코드'}>
+                    <NativeSelect aria-label="거래코드 선택" width={108} value={''} onChange={() => {}}>
                       {[
                         { value: 'selection', label: '선택' },
                         { value: 'selection1', label: '선택1' },
@@ -443,6 +443,7 @@ export default function Ltpa460Section() {
               </Grow>
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
+                  ref={gridRef}
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={visibleRows}
@@ -452,6 +453,7 @@ export default function Ltpa460Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 isAll={false}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

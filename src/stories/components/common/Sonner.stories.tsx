@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import * as React from 'react';
 import { Button } from '@uiux/Button';
 import { Toaster, toast } from '@uiux/Sonner';
-import * as React from 'react';
 
 type ToasterProps = React.ComponentProps<typeof Toaster>;
 
@@ -59,7 +59,7 @@ import { toast } from 'sonner';
             <tbody>
               <tr>
                 <td>theme</td>
-                <td>'light' | 'dark' | 'system'</td>
+                <td>&apos;light&apos; | &apos;dark&apos; | &apos;system&apos;</td>
                 <td>테마 모드</td>
               </tr>
               <tr>

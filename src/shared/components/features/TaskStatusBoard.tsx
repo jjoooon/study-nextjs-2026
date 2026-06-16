@@ -19,7 +19,9 @@ type TaskStatusBoardProps<
     label: string;
   },
 > = {
+  /** 각 작업의 상태 정보 배열 (id, status, label 포함 필수) */
   state: T[];
+  /** 항목 클릭 시 호출되는 콜백 함수 */
   onItemClick?: (item: T) => void;
 };
 

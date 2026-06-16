@@ -1,12 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Grow, Typo } from '@atoms';
-import { RecommendCard } from '@common/RecommendCard';
-import { CircleCheckIcon, ChevronDownIcon } from '@icons';
 import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { Grow, Typo } from '@atoms';
+import { CircleCheckIcon, ChevronDownIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { RecommendCard } from '@common/RecommendCard';
 
 const comparisonRows: Array<{ id: number; coverage: string; amount: string; premium: string }> = [
   { id: 1, coverage: '보통약관(상해80%이상후유장해)', amount: '3,000', premium: '3,000' },
@@ -87,9 +87,10 @@ const meta: Meta<typeof RecommendCard> = {
     },
   },
   decorators: [
-    (Story) => (
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    (StoryComponent) => (
       <div style={{ width: '40rem' }}>
-        <Story />
+        <StoryComponent />
       </div>
     ),
   ],

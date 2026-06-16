@@ -1,8 +1,8 @@
 import { Grow, Gcol } from '@atoms';
-import { KeyValueList } from '@common/KeyValueList';
 import { ArrowNext } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+import { KeyValueList } from '@common/KeyValueList';
 
 const KeyValueData = [
   { key: '만기금(환급률)', value: '47,908원' },

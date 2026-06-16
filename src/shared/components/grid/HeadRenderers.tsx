@@ -5,10 +5,10 @@ import type { IHeaderParams, SortDirection } from 'ag-grid-enterprise';
 import React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Divider, Grow, Gcol } from '@atoms';
-import { ResetIcon, SearchIcon, SortArrowIcon, SortArrowDefaultIcon } from '@icons';
+import { HashIcon, SearchIcon, SortArrowIcon, SortArrowDefaultIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import { InputHash } from '@common/InputHash';
+import { Input } from '@uiux/Input';
 
 // 단위 포함 헤더 공통 props
 // - ag-grid의 column/enableSorting/progressSort를 받으면 정렬 가능한 헤더로 동작
@@ -160,32 +160,24 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
       </Grow>
       <Grow>
         {/* 담보명 입력/선택용 해시형 입력 */}
-        <InputHash
-          options={[
-            { value: '암암암암2', label: '암암암암2' },
-            { value: '뇌뇌뇌뇌뇌', label: '뇌뇌뇌뇌뇌' },
-            { value: '심심심심심', label: '심심심심심' },
-            { value: '표적', label: '표적' },
-            { value: '뇌', label: '뇌' },
-            { value: '심장', label: '심장' },
-            { value: '수술', label: '수술' },
-            { value: '골절', label: '골절' },
-            { value: '화상', label: '화상' },
-            { value: '치매', label: '치매' },
-            { value: '종신종신종신', label: '종신종신종신' },
-          ]}
+        <Input
           size={'md'}
           placeholder="담보명 입력"
           clear={true}
+          key="coverage-name-input"
+          readOnly={false} // 명시적으로 readOnly를 false로 설정
+          disabled={false} // 명시적으로 disabled를 false로 설정
           value={coverageName}
-          onChange={(value) => onCoverageNameChange(value)}
+          onChange={(e) => {
+            onCoverageNameChange(e.target.value);
+          }}
         />
         {/* 검색/초기화 액션 버튼(UI) */}
         <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
           <SearchIcon color={'var(--color-primary-50)'} />
         </Button>
-        <Button aria-label="담보명 검색 초기화" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-          <ResetIcon color={'var(--color-primary-50)'} />
+        <Button aria-label="해쉬 필터" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
+          <HashIcon color={'var(--color-primary-50)'} />
         </Button>
       </Grow>
       <Grow placement={'sc'}>
@@ -196,3 +188,28 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
     </Grow>
   );
 });
+
+/**
+ * Ag-Grid용 상품명 헤더 어댑터 컴포넌트
+ * 컬럼 정의에 직접 바인딩하여 렌더링하도록 디자인됨 (React.memo 및 useCallback 최적화)
+ */
+export function AgGridProductNameHeader(props: IHeaderParams) {
+  const { context } = props;
+  const coverageName = context?.coverageName ?? '';
+  const onCoverageNameChange = context?.setCoverageName;
+  const showProductNameTooltip = context?.showProductNameTooltip ?? false;
+  const onShowProductNameTooltipChange = context?.onShowProductNameTooltipChange;
+  const checkedMap = context?.checkedMap;
+  const onCheckedChange = context?.onCheckedChange;
+
+  return (
+    <ProductNameHeader
+      coverageName={coverageName}
+      onCoverageNameChange={onCoverageNameChange}
+      showProductNameTooltip={showProductNameTooltip}
+      onShowProductNameTooltipChange={onShowProductNameTooltipChange}
+      checkedMap={checkedMap}
+      onCheckedChange={onCheckedChange}
+    />
+  );
+}

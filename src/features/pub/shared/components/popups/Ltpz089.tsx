@@ -6,11 +6,10 @@
 
 import { ColDef } from 'ag-grid-enterprise';
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -25,8 +24,9 @@ import {
 
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -133,14 +133,14 @@ const Ltpz089 = () => {
               <Typo variant={'body-sm'}>수용장소 건물 형태</Typo>
             </TableFoldHead>
             <TableFoldBody className="gap-2">
-              <FormTable caption="목적물세부사항" className="" cols={['w-[12rem]', 'w-auto']} lineTop variant="default">
+              <FormTable caption="목적물세부사항" className="" cols={['w-[11rem]', 'w-auto']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'목적물세부사항'} variant="default">
                     <Input onChange={() => {}} size="lg" value={''} variant="default" width="full" required />
                   </FormCell>
                 </FormRow>
               </FormTable>
-              <FormTable caption="세부수용장소" className="" cols={['w-[12rem]', 'w-auto']} lineTop variant="default">
+              <FormTable caption="세부수용장소" className="" cols={['w-[11rem]', 'w-auto']} lineTop variant="default">
                 <FormRow>
                   <FormCell className="" title={'세부수용장소'} variant="default">
                     <Input onChange={() => {}} size="lg" value={''} variant="default" width="full" required />
@@ -150,7 +150,7 @@ const Ltpz089 = () => {
               <FormTable
                 caption="수용장소구분"
                 className=""
-                cols={['w-[12rem]', 'w-auto', 'w-[12rem]', 'w-auto']}
+                cols={['w-[11rem]', 'w-auto', 'w-[11rem]', 'w-auto']}
                 lineTop
                 variant="default"
               >

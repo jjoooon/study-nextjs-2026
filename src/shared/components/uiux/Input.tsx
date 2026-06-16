@@ -256,11 +256,10 @@ function Input({
     setFocused(false);
     onBlurProp?.(e);
   };
-  React.useEffect(() => {
-    if (!error) {
-      setIsErrorDismissed(false);
-    }
-  }, [error]);
+  // 에러 상태 해제 시 에러 묵인 플래그(isErrorDismissed)를 즉시 초기화 (렌더 단계에서 동기화)
+  if (!error && isErrorDismissed) {
+    setIsErrorDismissed(false);
+  }
 
   const errorId = React.useId();
   const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;

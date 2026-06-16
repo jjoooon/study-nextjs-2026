@@ -4,9 +4,9 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
+import { Fragment, useMemo, useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grid, Grow, Typo, Gcol } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TabPager } from '@common/TabPager';
 import { ArrowIcon, InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -21,8 +21,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { toast } from '@uiux/Sonner';
-import { Fragment, useMemo, useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TabPager } from '@common/TabPager';
 
 type MenuItem = {
   code: string;
@@ -186,9 +186,22 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
     return groups;
   }, []);
 
+  const customChunkedMenuList = useMemo(() => {
+    const chunks = [];
+    if (groupedMenuList.length > 0) {
+      chunks.push(groupedMenuList.slice(0, 3));
+    }
+    let i = 3;
+    while (i < groupedMenuList.length) {
+      chunks.push(groupedMenuList.slice(i, i + 2));
+      i += 2;
+    }
+    return chunks;
+  }, [groupedMenuList]);
+
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="lg">
+      <DialogContent showCloseButton resizable={true} size="lg">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -200,7 +213,7 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr] grid-cols-[1fr]">
+        <DialogSection>
           <Grid gap={5} className="grid-cols-[1fr_auto] place-items-stretch" placement="ss">
             <TabPager
               data={tabs}
@@ -209,60 +222,76 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
               getValue={(tab) => String(tab.value)}
               renderTab={(tab) => <span>{tab.label}</span>}
             >
-              <div className="w-full max-h-[46rem] overflow-y-auto">
-                <Gcol variant="box-round-b" className="w-full flex-wrap h-[46rem] px-5 py-4" placement="ss" gap={2.5}>
+              <Gcol
+                variant="box-round-b"
+                className="w-full flex-wrap content-start overflow-y-auto h-full min-h-[27rem] relative "
+                placement="ss"
+              >
+                <Grow
+                  className="absolute top-0 left-0 w-full px-5 py-4 flex-wrap content-start items-start"
+                  placement="ss"
+                  gap={2.5}
+                >
                   {active === 'tab1' &&
-                    groupedMenuList.map((g, gIdx) => (
-                      <Gcol className="w-[14.8rem]" key={`group-${gIdx}`} placement="ss">
-                        <Typo tag="h3" variant={'body-sm'} weight={'bold'}>
-                          {g.group}
-                        </Typo>
-                        <Gcol className="w-auto" placement="ss">
-                          {g.items.map((menu) => (
-                            <Button
-                              key={menu.code}
-                              variant={'outlined'}
-                              size={'md'}
-                              color={'gray-light'}
-                              className="w-[14.8rem]"
-                            >
-                              {menu.name}
-                            </Button>
-                          ))}
-                        </Gcol>
+                    customChunkedMenuList.map((chunk, chunkIdx) => (
+                      <Gcol className="flex-1 gap-[1.3rem]" key={`col-${chunkIdx}`} placement="ss">
+                        {chunk.map((g, gIdx) => (
+                          <Gcol className="w-full" key={`group-${chunkIdx}-${gIdx}`} placement="ss">
+                            <Typo tag="h3" variant={'body-sm'} weight={'bold'}>
+                              {g.group}
+                            </Typo>
+                            <Gcol className="w-full" placement="ss">
+                              {g.items.map((menu) => (
+                                <Button
+                                  key={menu.code}
+                                  variant={'outlined'}
+                                  size={'md'}
+                                  color={'gray-light'}
+                                  className="w-full min-w-[14.8rem]"
+                                >
+                                  {menu.name}
+                                </Button>
+                              ))}
+                            </Gcol>
+                          </Gcol>
+                        ))}
                       </Gcol>
                     ))}
 
                   {active === 'tab2' &&
-                    groupedMenuList.map((g, gIdx) => (
-                      <Gcol className="w-[14.8rem]" key={`group-${gIdx}`} placement="ss">
-                        <Typo tag="h3" variant={'body-sm'} weight={'bold'}>
-                          {g.group}
-                        </Typo>
-                        <Gcol className="w-auto" placement="ss">
-                          <CheckboxGroup
-                            className="gap-1 [&>div]:min-w-[calc(25%_-_0.3rem)]"
-                            value={selectedMenuNames}
-                            onValueChange={handleMenuSelectionChange}
-                          >
-                            {g.items.map((menu) => (
-                              <CheckboxGroupItem
-                                variant="button"
-                                key={menu.code}
-                                value={menu.code}
-                                size="lg"
-                                className="w-[14.8rem]"
-                                disabled={menu.fix}
+                    customChunkedMenuList.map((chunk, chunkIdx) => (
+                      <Gcol className="flex-1 gap-[1.3rem]" key={`col-${chunkIdx}`} placement="ss">
+                        {chunk.map((g, gIdx) => (
+                          <Gcol className="w-full" key={`group-${chunkIdx}-${gIdx}`} placement="ss">
+                            <Typo tag="h3" variant={'body-sm'} weight={'bold'}>
+                              {g.group}
+                            </Typo>
+                            <Gcol className="w-auto" placement="ss">
+                              <CheckboxGroup
+                                className="gap-1 [&>div]:min-w-[calc(25%_-_0.3rem)]"
+                                value={selectedMenuNames}
+                                onValueChange={handleMenuSelectionChange}
                               >
-                                {menu.name}
-                              </CheckboxGroupItem>
-                            ))}
-                          </CheckboxGroup>
-                        </Gcol>
+                                {g.items.map((menu) => (
+                                  <CheckboxGroupItem
+                                    variant="button"
+                                    key={menu.code}
+                                    value={menu.code}
+                                    size="md"
+                                    className="w-full min-w-[14.8rem]"
+                                    disabled={menu.fix}
+                                  >
+                                    {menu.name}
+                                  </CheckboxGroupItem>
+                                ))}
+                              </CheckboxGroup>
+                            </Gcol>
+                          </Gcol>
+                        ))}
                       </Gcol>
                     ))}
-                </Gcol>
-              </div>
+                </Grow>
+              </Gcol>
             </TabPager>
 
             <Grid placement="ss" className="w-[15.2rem] h-full grid-rows-[auto_1fr]">

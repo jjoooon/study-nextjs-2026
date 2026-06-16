@@ -23,14 +23,28 @@ import { cn } from '@/shared/lib/shadcn/utils';
 import { Typo } from '@atoms';
 import { ChevronDownIcon, SelectArrowIcon } from '@icons';
 
+/** 아코디언 시각적 스타일 프리셋 유형 */
 type VariantType = 'default' | 'box' | 'line' | 'minimal' | 'tableHead';
 
 const AccordionContext = React.createContext<VariantType>('default');
 
 interface AccordionProps {
+  /**
+   * 아코디언의 시각적 스타일 변형
+   * - default: 기본 스타일 (구분선 위주의 깔끔한 디자인)
+   * - box: 개별 아이템이 둥근 흰색 배경 박스로 감싸지며 회색 배경 영역에 정렬되는 스타일
+   * - line: 아코디언 왼쪽에 파란색 세로 강조선이 생기며 좌측 패딩이 추가되는 스타일
+   * - minimal: 패딩과 보더를 최소화하여 콤팩트하게 배치하는 스타일
+   * - tableHead: 테이블 헤더 내부나 밀접한 곳에 특화된 정렬 및 스타일
+   * @default 'default'
+   */
   variant?: VariantType;
 }
 
+/**
+ * 아코디언 컴포넌트 (Root)
+ * - Radix UI Accordion Primitive를 기반으로 확장한 아코디언 컨테이너입니다.
+ */
 function Accordion({
   variant = 'default',
   className,
@@ -51,6 +65,10 @@ function Accordion({
   );
 }
 
+/**
+ * 아코디언 아이템 컴포넌트 (Item)
+ * - 아코디언의 개별 콘텐츠 섹션을 정의합니다.
+ */
 function AccordionItem({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
   const variant = React.useContext(AccordionContext);
 
@@ -67,12 +85,19 @@ function AccordionItem({ className, ...props }: React.ComponentProps<typeof Acco
   );
 }
 
+/**
+ * 아코디언 트리거 컴포넌트 (Trigger)
+ * - 아코디언 접기/펼치기를 수행하는 헤더 버튼 영역입니다.
+ */
 function AccordionTrigger({
   className,
   title,
   children,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Trigger> & { title?: string }) {
+}: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
+  /** tableHead 변형 사용 시 노출되는 헤더의 텍스트 제목 */
+  title?: string;
+}) {
   const variant = React.useContext(AccordionContext);
 
   const triggerStyles = {
@@ -122,6 +147,10 @@ function AccordionTrigger({
   );
 }
 
+/**
+ * 아코디언 콘텐츠 컴포넌트 (Content)
+ * - 아코디언이 펼쳐졌을 때 슬라이딩 효과와 함께 드러나는 본문 콘텐츠 영역입니다.
+ */
 function AccordionContent({ children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
   return (
     <AccordionPrimitive.Content
@@ -133,8 +162,6 @@ function AccordionContent({ children, ...props }: React.ComponentProps<typeof Ac
     </AccordionPrimitive.Content>
   );
 }
-
-// Static property 할당으로 Accordion.Item 등으로 사용 가능하게 만듦
 
 // 타입 시스템 한계로 인한 static property 확장 허용 (storybook/JSX에서 Accordion.Item 등 사용 목적)
 type AccordionComponentType = typeof Accordion & {

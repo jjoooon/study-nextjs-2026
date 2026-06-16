@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol, Grow } from '@atoms';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+ */ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { Gcol, Grow } from '@atoms';
 import { Badge } from '@uiux/Badge';
 
 const meta: Meta<typeof Badge> = {
@@ -76,17 +76,20 @@ import { Badge } from '@uiux/Badge';
               <tbody>
                 <tr>
                   <td>variant</td>
-                  <td>'contained' | 'soft' | 'outlined' | 'ghost'</td>
+                  <td>&apos;contained&apos; | &apos;soft&apos; | &apos;outlined&apos; | &apos;ghost&apos;</td>
                   <td>배지 스타일</td>
                 </tr>
                 <tr>
                   <td>color</td>
-                  <td>'blue' | 'red' | 'green' | 'primary' | 'gray' | 'bluegray' | 'secondary'</td>
+                  <td>
+                    &apos;blue&apos; | &apos;red&apos; | &apos;green&apos; | &apos;primary&apos; | &apos;gray&apos; |
+                    &apos;bluegray&apos; | &apos;secondary&apos;
+                  </td>
                   <td>배지 색상</td>
                 </tr>
                 <tr>
                   <td>size</td>
-                  <td>'sm' | 'md' | 'lg'</td>
+                  <td>&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos;</td>
                   <td>배지 크기</td>
                 </tr>
                 <tr>
@@ -167,17 +170,17 @@ import { Badge } from '@uiux/Badge';
   },
   argTypes: {
     variant: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['contained', 'soft', 'outlined', 'ghost', 'rounded'],
       table: { category: '스타일 props' },
     },
     color: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['blue', 'red', 'green', 'primary', 'gray', 'bluegray', 'secondary'],
       table: { category: '스타일 props' },
     },
     size: {
-      control: { type: 'inline-radio' },
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
       table: { category: '스타일 props' },
     },

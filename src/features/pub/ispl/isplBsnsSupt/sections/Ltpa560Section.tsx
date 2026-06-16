@@ -239,7 +239,7 @@ export default function Ltpa560Section() {
       {
         headerName: '채널',
         flex: 1,
-        minWidth: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(90),
         field: 'field02',
         cellClass: 'text-center',
         spanRows: true,
@@ -359,6 +359,7 @@ export default function Ltpa560Section() {
     [attributeColumnWidth]
   );
 
+  const gridRef = React.useRef<AgGridReact<Ltpa560DummyDataRow>>(null);
   const pageSize = 2;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa560DummyData,
@@ -551,6 +552,7 @@ export default function Ltpa560Section() {
             <Grid className="grid-rows-[1fr_auto]">
               <div className="ag-theme-alpine ltpa010-grid inner-scroll" data-row={rowData.length}>
                 <AgGridReact<Ltpa560DummyDataRow>
+                  ref={gridRef}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
                   getRowClass={(params) => (params.data?.subtotal ? 'ag-row-subtotal' : undefined)}
@@ -569,6 +571,7 @@ export default function Ltpa560Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 loadedCount={loadedCount}
                 totalCount={totalCount}
                 pageSize={pageSize}

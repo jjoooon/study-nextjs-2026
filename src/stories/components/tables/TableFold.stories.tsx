@@ -1,12 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol, Grow } from '@atoms';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { FileExportIcon, FileImportIcon } from '@icons';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@uiux/Button';
+ */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
+import { Gcol, Grow } from '@atoms';
+import { FileExportIcon, FileImportIcon } from '@icons';
+import { Button } from '@uiux/Button';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 type TableFoldProps = React.ComponentProps<typeof TableFold>;
 

@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */ import { Controls, Markdown, Primary, Title } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { AllCommunityModule, CellSpanModule, ClientSideRowModelModule, ModuleRegistry } from 'ag-grid-enterprise';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
@@ -10,7 +10,7 @@ import * as React from 'react';
 
 ModuleRegistry.registerModules([AllCommunityModule, CellSpanModule, ClientSideRowModelModule]);
 
-interface AsGridCellMergingProps {}
+type AsGridCellMergingProps = unknown;
 
 const AgGridCellMergingComponent = (_props: AsGridCellMergingProps) => null;
 
@@ -178,7 +178,7 @@ export const Default: Story = {
           },
         },
       ],
-      [rowData]
+      []
     );
 
     return (

@@ -3,25 +3,30 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter, useAgGridInfiniteAppend, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import { Grow, Grid, Gcol } from '@atoms';
+import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
+import {
+  AgGridEmptyComponent,
+  numberValueFormatter,
+  useAgGridInfiniteAppend,
+  useDynamicColumnWidths,
+  createTooltipValueGetter,
+} from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { createExpiryCellRenderer } from '@grid/CellRenderers';
-import { SearchIcon, ResetIcon } from '@icons';
-import { FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useMemo } from 'react';
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
 
 import '@/shared/lib/agGridPub';
 
@@ -41,8 +46,8 @@ const DummyData1: DummyData1Type[] = [
     id: 1,
     packageName: '간병인 사용',
     field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
-    field7: '종명',
+    field2: '나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망)',
+    field7: '종명 종명 종명 종명 종명 종명 종명 종명 종명 종명 종명',
     field3: 50000,
     field4: 1,
     field5: 1,
@@ -109,6 +114,7 @@ export default function Ltpa670Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
   const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
+  const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
 
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
@@ -116,7 +122,6 @@ export default function Ltpa670Section() {
       allRows: DummyData1,
       pageSize,
     });
-  // 2026-06-01 width, flex 수정
   // 2026-06-01 minWidth, flex 수정, valueParser, valueFormatter 추가
   const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
     () => [
@@ -141,6 +146,7 @@ export default function Ltpa670Section() {
         field: 'field2',
         flex: 6,
         minWidth: attributeColumnWidth(300),
+        tooltipValueGetter: createTooltipValueGetter<DummyData1Type>({ field: 'field2' }),
       },
       {
         headerName: '종명',
@@ -258,6 +264,7 @@ export default function Ltpa670Section() {
               <div className="ag-theme-alpine">
                 {/* 2026-06-04 suppressClickEdit 삭제 */}
                 <AgGridReact<DummyData1Type>
+                  ref={gridRef}
                   onGridReady={(event) => {
                     gridApiRef.current = event.api;
                   }}
@@ -303,6 +310,7 @@ export default function Ltpa670Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 isAll={false}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

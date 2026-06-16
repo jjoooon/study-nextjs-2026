@@ -5,17 +5,38 @@
 
 import { ScrollArea as ScrollAreaPrimitive } from 'radix-ui';
 import * as React from 'react';
-
 import { cn } from '@/shared/lib/shadcn/utils';
 
-// Radix ScrollArea를 감싸는 래퍼 컴포넌트
-// type='always' 기본값으로 스크롤바를 항상 표시한다.
-function ScrollArea({
-  className,
-  children,
-  type = 'always',
-  ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
+interface ScrollAreaProps extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
+  /**
+   * 스크롤바 표시 정책
+   * - 'auto': 스크롤 영역이 넘칠 때 자동으로 표시
+   * - 'always': 항상 스크롤바 노출
+   * - 'scroll': 사용자가 스크롤 동작을 할 때만 일시적으로 노출
+   * - 'hover': 마우스를 영역 위에 호버했을 때만 일시적으로 노출
+   * @default 'always'
+   */
+  type?: 'auto' | 'always' | 'scroll' | 'hover';
+  /**
+   * type이 'scroll' 또는 'hover'일 때, 스크롤바가 숨겨지기 전까지의 대기 지연 시간 (밀리초)
+   * @default 600
+   */
+  scrollHideDelay?: number;
+  /**
+   * 스크롤 영역 내부 콘텐츠
+   */
+  children?: React.ReactNode;
+  /**
+   * 추가적인 CSS 클래스명
+   */
+  className?: string;
+}
+
+/**
+ * 스크롤 영역 컴포넌트 (ScrollArea)
+ * - 브라우저 네이티브 스크롤바를 대체하여 크로스 브라우징 및 일관된 시각적 디자인을 제공하는 스크롤 컨테이너입니다.
+ */
+function ScrollArea({ className, children, type = 'always', ...props }: ScrollAreaProps) {
   return (
     // Root: 스크롤 영역의 최상위 컨테이너
     <ScrollAreaPrimitive.Root data-slot="scroll-area" className={cn('relative', className)} type={type} {...props}>
@@ -34,13 +55,25 @@ function ScrollArea({
   );
 }
 
-// 스크롤바 컴포넌트: 가로(horizontal) / 세로(vertical) 방향을 모두 지원하며 기본은 세로이다.
-// data-horizontal / data-vertical 속성으로 방향별 스타일을 분기 적용한다.
-function ScrollBar({
-  className,
-  orientation = 'vertical',
-  ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>) {
+interface ScrollBarProps extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> {
+  /**
+   * 스크롤바의 방향 설정
+   * - 'vertical': 세로형 스크롤바
+   * - 'horizontal': 가로형 스크롤바
+   * @default 'vertical'
+   */
+  orientation?: 'vertical' | 'horizontal';
+  /**
+   * 추가적인 CSS 클래스명
+   */
+  className?: string;
+}
+
+/**
+ * 스크롤바 서브 컴포넌트 (ScrollBar)
+ * - 가로 또는 세로 방향 스크롤을 시각적으로 안내하고 조절하는 스크롤바 트랙 및 썸(Thumb)입니다.
+ */
+function ScrollBar({ className, orientation = 'vertical', ...props }: ScrollBarProps) {
   return (
     <ScrollAreaPrimitive.ScrollAreaScrollbar
       data-slot="scroll-area-scrollbar"

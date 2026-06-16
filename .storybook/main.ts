@@ -11,7 +11,13 @@ const config: StorybookConfig = {
     "@storybook/addon-docs",
     "@storybook/addon-onboarding",
   ],
-  "framework": "@storybook/nextjs-vite",
+  // ❌ 기존: "framework": "@storybook/nextjs-vite",
+  //  올바른 수정본:
+  "framework": {
+    "name": "@storybook/nextjs-vite",
+    "options": {}
+  },
   "staticDirs": ["../public"]
 };
+
 export default config;

@@ -3,8 +3,17 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Grid, Gcol } from '@atoms';
+import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -12,18 +21,9 @@ import { TabPager } from '@common/TabPager';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { useFormFields } from '@hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -52,32 +52,32 @@ type Ltpa400DummyDataRow = {
 const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
   {
     id: 1,
-    field01: '26020923141',
+    field01: 'LA260209313558',
     field02: '신부산GA지점',
     field03: '에이플러스-서면(34577)',
-    field04: '김한화(4649111)',
+    field04: '김한화화(4649380)',
     field05: '기타',
     field06: '김한화김',
-    field07: '2026-03-11 14:33',
-    field08: '2026-03-11 15:33',
+    field07: '2026-03-30 14:33',
+    field08: '2026-03-30 15:33',
     field09: '신청중',
     field10: '김한화김',
-    field11: '심한화',
+    field11: '심한화화',
     field12: 'LA251028678825',
   },
   {
     id: 2,
-    field01: '26020923141',
+    field01: 'LA260209313558',
     field02: '신부산GA지점',
     field03: '에이플러스-서면(34577)',
     field04: '김한화화(4649111)',
     field05: '종합보험',
-    field06: '박한화',
-    field07: '2026-03-11 14:33',
-    field08: '2026-03-11 15:33',
+    field06: '박한화화',
+    field07: '2026-03-30 14:33',
+    field08: '2026-03-30 15:33',
     field09: '요청취소',
-    field10: '김한화',
-    field11: '심한화',
+    field10: '김한화화',
+    field11: '심한화화',
     field12: 'LA251028678825',
   },
 ];
@@ -105,9 +105,9 @@ const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
     field02_01: '1301097',
     field03_01: '에이플러스-서면',
     field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
+    field05_01: '김한화화',
+    field06_01: '한화 건강쑥쑥 어린이보험 한화 건강쑥쑥 어린이보험 한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플 우리집안심간편플 우리집안심간편플 우리집안심간편플',
     field08_01: '박한화화',
     field09_01: '2026-04-11',
     field10_01: '임한화화(8994772)',
@@ -165,7 +165,7 @@ const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
     field02_01: '1301097',
     field03_01: '에이플러스-서면',
     field04_01: '4649111',
-    field05_01: '김한화',
+    field05_01: '김한화화',
     field06_01: '한화 건강쑥쑥 어린이보험',
     field07_01: '우리집안심간편플',
     field08_01: '박한화화',
@@ -195,6 +195,7 @@ export default function Ltpa400Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   // 2026-05-22 페이징 추가
+  const gridRef = React.useRef<AgGridReact<Ltpa400DummyDataRow2>>(null);
   const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa400DummyData2,
@@ -205,19 +206,18 @@ export default function Ltpa400Section() {
   // 2026-05-22 지원SM 버튼으로 변경
   // 2026-05-27 담당SM 버튼으로 변경
   // 2026-06-01 width, flex, cellClass 수정, tooltipValueGetter 추가
-  // 2026-06-04 flex, minWidth 수정
   const columnDefs: ColDef<Ltpa400DummyDataRow>[] = [
     {
       headerName: '설계접수번호',
       field: 'field01',
-      width: 100,
+      width: 110,
       cellClass: 'text-center',
     },
     {
       headerName: '지점',
       field: 'field02',
       flex: 1,
-      minWidth: 110,
+      minWidth: 120,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field02' }),
     },
@@ -225,7 +225,7 @@ export default function Ltpa400Section() {
       headerName: '대리점',
       field: 'field03',
       flex: 1,
-      minWidth: 150,
+      minWidth: 160,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field03' }),
     },
@@ -233,7 +233,7 @@ export default function Ltpa400Section() {
       headerName: '사용인',
       field: 'field04',
       flex: 1,
-      minWidth: 110,
+      minWidth: 115,
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -250,16 +250,16 @@ export default function Ltpa400Section() {
     {
       headerName: '상품',
       field: 'field05',
-      flex: 5,
-      minWidth: 260,
-      cellClass: 'text-left',
+      flex: 1,
+      minWidth: 130,
+      cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field05' }),
     },
     {
       headerName: '고객명',
       field: 'field06',
       width: 70,
-      cellClass: 'truncate text-center',
+      cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field06' }),
     },
     {
@@ -327,7 +327,7 @@ export default function Ltpa400Section() {
       field: 'field01_01',
       cellClass: 'text-center',
       flex: 1,
-      minWidth: 100,
+      minWidth: 110,
     },
     {
       headerName: '대리점코드',
@@ -362,14 +362,14 @@ export default function Ltpa400Section() {
       field: 'field06_01',
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow2>({ field: 'field06_01' }),
-      flex: 3,
+      flex: 5,
       minWidth: 250,
     },
     {
       headerName: '플랜명',
       field: 'field07_01',
       cellClass: 'text-left',
-      flex: 3,
+      flex: 2,
       minWidth: 250,
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow2>({ field: 'field07_01' }),
     },
@@ -492,7 +492,7 @@ export default function Ltpa400Section() {
                         </Button>
                         <Input aria-label="" width={200} value={'신부산지점GA지점'} readOnly />
                       </FormCell>
-                      <FormCell title={'설계일자'}> 
+                      <FormCell title={'설계일자'}>
                         <DatePickerInput
                           mode="range"
                           onChange={() => {}}
@@ -699,6 +699,7 @@ export default function Ltpa400Section() {
                     <div className="ag-theme-alpine">
                       {/* 2026-05-22 체크박스 삭제 */}
                       <AgGridReact<Ltpa400DummyDataRow2>
+                        ref={gridRef}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
                         // rowData={Ltpa400DummyData2}
@@ -716,6 +717,7 @@ export default function Ltpa400Section() {
                     </div>
                     {/* 2026-05-22 페이징 추가 */}
                     <TableMore
+                      gridRef={gridRef}
                       isAll={true}
                       loadedCount={loadedCount}
                       totalCount={totalCount}

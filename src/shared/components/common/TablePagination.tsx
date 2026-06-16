@@ -3,6 +3,8 @@
  */
 'use client';
 
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow } from '@atoms';
 import { PageArrowIcon, PageArrowDoubleIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -14,7 +16,7 @@ interface TablePaginationProps {
   itemsPerPage?: number | null;
 }
 
-interface TableMoreProps {
+interface TableMoreProps<TData = unknown> {
   currentPage?: number;
   totalPages?: number;
   onPageChange?: (pageNumber: number) => void;
@@ -25,6 +27,7 @@ interface TableMoreProps {
   loadedCount?: number;
   totalCount?: number;
   pageSize?: number;
+  gridRef?: React.RefObject<AgGridReact<TData> | null>;
   onLoadedCountChange?: (loadedCount: number) => void;
   only?: 'all' | 'next';
   onLoadAll?: () => void;
@@ -118,7 +121,7 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
   );
 }
 
-export function TableMore({
+export function TableMore<TData = unknown>({
   currentPage,
   totalPages,
   onPageChange,
@@ -126,6 +129,7 @@ export function TableMore({
   loadedCount,
   totalCount,
   pageSize,
+  gridRef,
   isReset = false,
   isAll = true,
   isNext = true,
@@ -133,7 +137,7 @@ export function TableMore({
   onLoadAll,
   onLoadNext,
   onLoadReset,
-}: TableMoreProps) {
+}: TableMoreProps<TData>) {
   const hasCountMode =
     typeof loadedCount === 'number' && typeof totalCount === 'number' && typeof pageSize === 'number' && pageSize > 0;
 
@@ -142,6 +146,25 @@ export function TableMore({
   const resolvedTotalPages = hasCountMode ? Math.max(1, Math.ceil(totalCount / pageSize)) : (totalPages ?? 1);
 
   const resolvedItemsPerPage = itemsPerPage ?? (hasCountMode ? pageSize : null);
+
+  // 신규 컨텐츠 로드 시 스크롤 자동 이동 로직
+  const prevCountRef = React.useRef(loadedCount);
+
+  React.useEffect(() => {
+    if (
+      gridRef?.current?.api &&
+      loadedCount !== undefined &&
+      prevCountRef.current !== undefined &&
+      loadedCount > prevCountRef.current
+    ) {
+      // 이전 카운트 위치(신규 데이터 시작점)로 스크롤 이동
+      const scrollIndex = prevCountRef.current;
+      requestAnimationFrame(() => {
+        gridRef.current?.api.ensureIndexVisible(scrollIndex, 'top');
+      });
+    }
+    prevCountRef.current = loadedCount;
+  }, [loadedCount, gridRef]);
 
   // itemsPerPage가 null이면 pagination 미표시
   if (!resolvedItemsPerPage || resolvedTotalPages <= 1) {

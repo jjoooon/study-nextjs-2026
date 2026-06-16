@@ -186,7 +186,7 @@ export const Ltpz296 = () => {
         headerName: '인원',
         field: 'field2',
         flex: 1,
-        minwidth: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(80),
         editable: true,
         cellClass: 'editable-cell text-center',
         sortable: false,
@@ -195,7 +195,7 @@ export const Ltpz296 = () => {
         headerName: '성별',
         field: 'field3',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(70),
         editable: true,
         cellClass: 'editable-cell text-center',
         cellEditor: 'agSelectCellEditor',
@@ -261,7 +261,7 @@ export const Ltpz296 = () => {
         headerName: '보혐료',
         field: 'field9',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(90),
         editable: true,
         cellClass: 'editable-cell text-center',
         sortable: false,
@@ -276,7 +276,7 @@ export const Ltpz296 = () => {
         sortable: false,
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, selectCellRenderer]
   );
   const gridApiRefB = React.useRef<GridApi<DummyDataTypeB> | null>(null);
   const [rowDataB, setRowDataB] = React.useState<DummyDataTypeB[]>(DummyDataB);
@@ -551,7 +551,7 @@ export const Ltpz296 = () => {
         sortable: false,
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, selectCellRenderer]
   );
   return (
     <Dialog open>

@@ -5,29 +5,29 @@
 
 // 2026-05-26 페이징 추가
 
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Grid, Grow } from '@atoms';
+import { FileExportIcon, FileImportIcon, ResetIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createModifiedCellClassRules,
   createTooltipValueGetter,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Grid, Grow } from '@atoms';
-import { BottomBar } from '@common/BottomBar';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { PageID } from '@features/PageID';
-import { FileExportIcon, FileImportIcon, ResetIcon } from '@icons';
-import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
-import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { BottomBar } from '@common/BottomBar';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { PageID } from '@features/PageID';
+import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
 
 import '@/shared/lib/agGridPub';
 
@@ -50,13 +50,13 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     field01: 'CLA23114',
-    field02: '나눔의행복(상해사망)',
+    field02: '나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망)',
     field03: 'CLA23114',
-    field04: '나눔의행복(상해사망)',
+    field04: '나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망)',
     field05: 1,
     field06: 'Y',
     field07: 'CLA23114',
-    field08: '나눔의행복(상해사망)',
+    field08: '나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망) 나눔의행복(상해사망)',
     field09: 1,
     field10: 'Y',
   },
@@ -230,8 +230,7 @@ export default function Ltpa540Section() {
           {
             headerName: '담보명',
             field: 'field02',
-            flex: 7,
-            minWidth: attributeColumnWidth(240),
+            flex: 10,
             cellClass: 'text-left',
             autoHeight: true,
             spanRows: true,
@@ -255,8 +254,7 @@ export default function Ltpa540Section() {
           {
             headerName: '유사 담보명',
             field: 'field04',
-            flex: 7,
-            minWidth: attributeColumnWidth(240),
+            flex: 10,
             hide: !showExisting,
             cellClass: 'text-left',
             tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
@@ -296,8 +294,7 @@ export default function Ltpa540Section() {
           {
             headerName: '유사 담보명',
             field: 'field08',
-            flex: 7,
-            minWidth: attributeColumnWidth(240),
+            flex: 10,
             cellClass: 'text-left',
             tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field08' }),
           },

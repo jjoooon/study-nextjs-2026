@@ -378,7 +378,10 @@ const Ltpz029 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(50),
       editable: true,
-      cellClass: 'editable-cell !px-0 text-center ag-row-selected',
+      cellClass: (params) => {
+        const baseClass = 'editable-cell !px-0 text-center ag-row-selected';
+        return params.value === 'Y' ? `${baseClass} text-[var(--color-primary-50)]` : baseClass;
+      },
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['Y', 'N'] },
       cellRenderer: getExpiryRenderer('center'),
@@ -389,7 +392,10 @@ const Ltpz029 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(50),
       editable: true,
-      cellClass: 'editable-cell !px-0 text-center ag-row-selected',
+      cellClass: (params) => {
+        const baseClass = 'editable-cell !px-0 text-center ag-row-selected';
+        return params.value === 'Y' ? `${baseClass} text-[var(--color-primary-50)]` : baseClass;
+      },
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['Y', 'N'] },
       cellRenderer: getExpiryRenderer('center'),

@@ -125,6 +125,9 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
         // 그 외 파일: camelCase
         'src/shared/!(components|sections)/*.{ts,tsx}': 'CAMEL_CASE',
         'src/features/*/!(components|sections)/*.{ts,tsx}': 'CAMEL_CASE',
+      },
+      {
+        ignoreMiddleExtensions: true,
       }
     ],
     'check-file/folder-naming-convention': [

@@ -363,7 +363,7 @@ export const Ltpz064 = () => {
         ],
       } as ColDef<DummyDataType>,
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, selectCellRenderer]
   );
   return (
     <Dialog open>

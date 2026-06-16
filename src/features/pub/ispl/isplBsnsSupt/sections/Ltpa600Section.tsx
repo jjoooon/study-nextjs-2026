@@ -3,6 +3,12 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useMemo } from 'react';
+import { Grow, Grid, Typo } from '@atoms';
+import { ResetIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createInsertCopiedRowButtonCellRenderer,
@@ -11,24 +17,18 @@ import {
   useDynamicColumnWidths,
   createTooltipValueGetter,
 } from '@aggrid';
-import { Grow, Grid, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { BottomBar } from '@common/BottomBar';
 import { InputTag } from '@common/InputTag';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { createExpiryCellRenderer } from '@grid/CellRenderers';
-import { ResetIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useMemo } from 'react';
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
 
 import '@/shared/lib/agGridPub';
 
@@ -320,6 +320,7 @@ export default function Ltpa600Section() {
 
   // 시뮬레이션 -------------
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
+  const gridRef = React.useRef<AgGridReact<DummyData2Type>>(null);
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
     useAgGridInfiniteAppend({
@@ -367,23 +368,21 @@ export default function Ltpa600Section() {
         headerName: '담보코드',
         field: 'field3',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
+        minWidth: attributeColumnWidth(75),
         cellClass: 'text-center',
         autoHeight: true,
       },
       {
         headerName: '담보명',
         field: 'field4',
-        flex: 5,
-        minWidth: attributeColumnWidth(200),
+        flex: 35,
         autoHeight: true,
         tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field4' }),
       },
       {
         headerName: '예외',
         field: 'field5',
-        flex: 1,
-        minWidth: attributeColumnWidth(80),
+        flex: 10,
         editable: true,
         cellClass: 'text-center editable-cell',
         cellEditor: 'agSelectCellEditor',
@@ -519,6 +518,7 @@ export default function Ltpa600Section() {
 
                 <div className="ag-theme-alpine radio-selection">
                   <AgGridReact<DummyData2Type>
+                    ref={gridRef}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData2.slice(0, loadedCount)}
@@ -552,6 +552,7 @@ export default function Ltpa600Section() {
                 </div>
               </Grid>
               <TableMore
+                gridRef={gridRef}
                 isAll={true}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

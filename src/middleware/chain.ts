@@ -14,8 +14,8 @@
 import type { NextRequest } from 'next/server';
 import type { NextResponse } from 'next/server';
 import { NextResponse as createNextResponse } from 'next/server';
-import type { ConfiguredHandler, MiddlewareHandler, MiddlewareHandlerConfig } from './types';
 import log from '@/shared/utils/logger';
+import type { ConfiguredHandler, MiddlewareHandler, MiddlewareHandlerConfig } from './types';
 
 const logger = log.getLogger('MiddlewareChain');
 

@@ -3,6 +3,11 @@
  */
 'use client';
 
+import type { ColDef, GridApi } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Grow, Typo } from '@atoms';
+import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createAddRowHandler,
@@ -12,8 +17,6 @@ import {
   getNextNumericRowId,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Grow, Typo } from '@atoms';
-import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -25,9 +28,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef, GridApi } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
 
 import '@/shared/lib/agGridPub';
 

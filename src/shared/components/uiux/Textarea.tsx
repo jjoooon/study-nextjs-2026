@@ -8,15 +8,41 @@ import { Grow } from '@atoms';
 import { ReSizeIcon } from '@icons';
 import { ErrorMsg } from '@common/ErrorMsg';
 
+/**
+ * Textarea 컴포넌트의 Props 인터페이스입니다.
+ */
 interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  /**
+   * 텍스트 영역의 스타일 변형
+   * - `default`: 기본 테두리 및 그림자 스타일
+   * - `outline`: 굵은 아웃라인 테두리 스타일
+   * @default 'default'
+   */
   variant?: 'default' | 'outline';
+  /** 에러 상태(필수 미입력 또는 최소 글자 수 미달 등) 표시 여부 */
   error?: boolean;
+  /** 에러 상태일 때 노출할 안내 메시지 내용 */
   errorMsg?: React.ReactNode;
+  /**
+   * 에러 메시지가 표시될 위치
+   * - `tl`: Top Left, `tc`: Top Center, `tr`: Top Right
+   * - `bl`: Bottom Left, `bc`: Bottom Center, `br`: Bottom Right
+   * @default 'bl'
+   */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
-  /** 최소 글자 수 표시 및 에러 조건 연동 */
+  /** 최소 글자 수 표시 여부 및 최소 입력 글자 수 만족 시 에러 해제 조건 연동 여부 */
   showMinLengthCount?: boolean;
-  resize?: boolean | 'y' | ''; // 리사이즈 가능 여부 (기본값: true, 'y'는 세로만)
-  maxLength?: number; // 최대 글자 수 (optional, but commonly used with textarea)
+  /**
+   * 텍스트 상자 크기 조절(Resize) 활성화 방향 설정
+   * - `true`: 가로/세로 모두 크기 조절 가능
+   * - `y`: 세로 방향으로만 크기 조절 가능
+   * - `false`, `""`: 크기 조절 불가
+   * @default true
+   */
+  resize?: boolean | 'y' | '';
+  /** 입력 가능한 최대 글자 수 (0 지정 시 표시하지 않음) */
+  maxLength?: number;
+  /** 입력 차단 특수문자 정제 필터링 기능 적용 여부 */
   restrictChars?: boolean;
 }
 
@@ -25,6 +51,10 @@ function applyRestrictedCharsFilter(value: string): string {
   return sorted.reduce((acc, char) => acc.split(char).join(''), value);
 }
 
+/**
+ * Textarea 컴포넌트는 사용자가 여러 줄의 텍스트를 입력할 수 있도록 지원하는 멀티라인 텍스트 입력 UI입니다.
+ * 에러 상태 대응, 메시지 위치 제어, 리사이즈 제한, 최대/최소 글자 수 바이트 카운터 렌더링 기능을 제공합니다.
+ */
 function Textarea({
   className,
   variant = 'default',

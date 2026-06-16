@@ -48,6 +48,7 @@
  * @lastModified 2026-03-05
  */
 
+import React from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -59,7 +60,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@uiux/AlertDialog';
-import React from 'react';
 
 /**
  * Dialog 톤 타입 (실제 시각적 상태)
@@ -71,20 +71,66 @@ import React from 'react';
 export type DialogTone = 'danger' | 'info';
 
 type ConfirmDialogProps = {
+  /**
+   * 다이얼로그의 열림 상태 (Controlled)
+   */
   open?: boolean;
+  /**
+   * 다이얼로그의 초기 열림 상태 (Uncontrolled)
+   * @default true
+   */
   defaultOpen?: boolean;
+  /**
+   * 다이얼로그 열림 상태가 바뀔 때 호출되는 콜백 함수
+   */
   onOpenChange?: (open: boolean) => void;
+  /**
+   * 다이얼로그 상단 제목
+   * @default '알림'
+   */
   title?: string;
+  /**
+   * 다이얼로그 본문 메시지 (문자열 또는 리액트 노드)
+   */
   description?: string | React.ReactNode;
+  /**
+   * 확인 버튼 라벨 텍스트
+   * @default '확인'
+   */
   confirmLabel?: string;
+  /**
+   * 취소 버튼 라벨 텍스트 (빈 값일 경우 취소 버튼을 숨김)
+   * @default ''
+   */
   cancelLabel?: string;
+  /**
+   * 다이얼로그의 시각적 톤/테마
+   * - danger: 삭제 등 경고성 작업 (적색 테마 적용)
+   * - info: 일반적인 확인/안내 (청색 테마 적용)
+   * @default 'info'
+   */
   tone?: DialogTone;
+  /**
+   * 확인 버튼을 눌렀을 때 실행되는 함수.
+   * Promise를 반환할 수 있어 로딩 상태(비동기 처리)를 지원합니다.
+   */
   onConfirm?: () => void | Promise<void>;
+  /**
+   * 취소 버튼을 눌렀을 때 실행되는 콜백 함수
+   */
   onCancel?: () => void;
+  /**
+   * 다이얼로그를 트리거(열기)하는 리액트 노드 요소
+   */
   trigger?: React.ReactNode;
-  /** Alert mode: 취소 버튼 숨김 */
+  /**
+   * 얼럿 모드 여부. true일 경우 취소 버튼을 원천적으로 비활성화/숨김 처리
+   * @default false
+   */
   alertMode?: boolean;
-  /** Promise resolve 함수 (DialogRenderer에서 전달) */
+  /**
+   * Promise 기반 호출을 지원하기 위한 resolve 함수 (DialogRenderer 연동용)
+   */
   resolve?: (result?: unknown) => void;
 };
 

@@ -3,10 +3,10 @@
  */
 'use client';
 
-import { Typo } from '@atoms';
 import { useEffect, useRef } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import log from '@/shared/utils/logger';
+import { Typo } from '@atoms';
 
 /**
  * 에러 메시지 말풍선(anchor) 위치 토큰.

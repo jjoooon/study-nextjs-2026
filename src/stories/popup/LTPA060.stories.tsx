@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { LayoutDoc } from '@layout/BaseLayout';
 import { Ltpa060 } from '@/features/pub/shared/components/popups/ncMtt/Ltpa060';
+import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
   title: 'app/shared/components/popups/ncMtt/Ltpa060',

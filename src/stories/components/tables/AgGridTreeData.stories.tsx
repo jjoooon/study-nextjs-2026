@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
@@ -26,8 +27,6 @@
 // 예시 데이터와 컬럼 정의는 아래 코드 참고
 //
 
-import { AgGridEmptyComponent } from '@aggrid';
-import { Grow, Gcol } from '@atoms';
 import {
   Title,
   Subtitle,
@@ -39,12 +38,14 @@ import {
   Markdown,
   Unstyled,
 } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import { TreeDataModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { Grow, Gcol } from '@atoms';
+import { AgGridEmptyComponent } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule, TreeDataModule]);
 

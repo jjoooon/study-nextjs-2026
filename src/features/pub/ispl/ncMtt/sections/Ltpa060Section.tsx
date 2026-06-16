@@ -8,7 +8,12 @@ import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo } from '@atoms';
-import { AgGridEmptyComponent, createCellValueChangedHandler, useDynamicColumnWidths } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createCellValueChangedHandler,
+  useDynamicColumnWidths,
+  createTooltipValueGetter,
+} from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { BottomBar } from '@common/BottomBar';
@@ -86,11 +91,11 @@ const dummyData: DummyDataType[] = [
     id: 1,
     isChecked: true,
     field1: 'S92',
-    field2: '발등 골절',
+    field2: '발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절',
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '3',
+    field6: '120',
     field7: 'Y',
     field8: '미고지',
     field9: '고지필요',
@@ -102,9 +107,9 @@ const dummyData: DummyDataType[] = [
     field2: '추간판장애',
     field3: '2025-12-01',
     field4: '2021-03-02',
-    field5: '',
-    field6: '',
-    field7: 'Y',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '1000',
+    field7: 'N',
     field8: '미고지',
     field9: '고지필요',
   },
@@ -117,7 +122,7 @@ const dummyData: DummyDataType[] = [
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
     field6: '',
-    field7: 'Y',
+    field7: 'N',
     field8: '미고지',
     field9: '',
   },
@@ -165,13 +170,13 @@ const dummyData: DummyDataType[] = [
 const dummyData2: DummyDataType2[] = [
   {
     id: 1,
-    isChecked: false,
+    isChecked: true,
     field1: 'S92',
-    field2: '발등 골절',
+    field2: '발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절',
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '',
+    field6: '200',
     field7: 'Y',
     field8: '미고지',
     field9: '고지필요',
@@ -180,7 +185,7 @@ const dummyData2: DummyDataType2[] = [
     id: 2,
     isChecked: false,
     field1: 'M51',
-    field2: '추간판장애',
+    field2: '추간판장애 추간판장애 추간판장애 추간판장애 추간판장애 추간판장애 추간판장애 추간판장애',
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '',
@@ -247,24 +252,24 @@ export default function Ltpa060Section() {
     {
       headerName: '대표질병코드',
       field: 'field1',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '질병명',
       field: 'field2',
-      flex: 8,
-      minWidth: attributeColumnWidth(250),
+      flex: 40,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
     },
     {
       headerName: '원사고발생일',
       field: 'field3',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '최종사고발생일',
       field: 'field4',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '입원',
@@ -275,17 +280,17 @@ export default function Ltpa060Section() {
     {
       headerName: '통원',
       field: 'field6',
-      width: attributeColumnWidth(60),
+      width: attributeColumnWidth(50),
     },
     {
       headerName: '수술',
       field: 'field7',
-      width: attributeColumnWidth(60),
+      width: attributeColumnWidth(50),
     },
     {
       headerName: '고지여부',
       field: 'field8',
-      width: attributeColumnWidth(80),
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '체크',
@@ -301,30 +306,30 @@ export default function Ltpa060Section() {
       ),
     },
   ];
-  
+
   // Tab2: 자동고지(심평원) 테이블 컬럼
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '대표질병코드',
       field: 'field1',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '질병명',
       field: 'field2',
-      flex: 8,
-      minWidth: attributeColumnWidth(250),
+      flex: 40,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
     },
     {
       headerName: '원사고발생일',
       field: 'field3',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '최종사고발생일',
       field: 'field4',
-      width: attributeColumnWidth(100),
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '입원',
@@ -335,18 +340,18 @@ export default function Ltpa060Section() {
     {
       headerName: '통원',
       field: 'field6',
-      width: attributeColumnWidth(60),
+      width: attributeColumnWidth(50),
     },
     {
       // 수술 여부
       headerName: '수술',
       field: 'field7',
-      width: attributeColumnWidth(60),
+      width: attributeColumnWidth(50),
     },
     {
       headerName: '고지여부',
       field: 'field8',
-      width: attributeColumnWidth(80),
+      width: attributeColumnWidth(60),
     },
     {
       headerName: '체크',
@@ -405,14 +410,14 @@ export default function Ltpa060Section() {
                   <FormTable variant={'head'} lineTop={false} caption="">
                     <FormRow>
                       <FormCell title={'FP정보제공동의(유효일자)'}>
-                        <Input aria-label="FP정보제공동의 유효일자" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                       <FormCell title={'전문호출기간'}>
-                        <Input aria-label="전문호출기간 시작일" width={100} value={'2026-03-01'} readOnly />-
-                        <Input aria-label="전문호출기간 종료일" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="전문호출기간 시작일" width={90} value={'2026-03-01'} readOnly />-
+                        <Input aria-label="전문호출기간 종료일" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                       <FormCell title={'최종적재일'}>
-                        <Input aria-label="최종적재일" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                     </FormRow>
                   </FormTable>
@@ -435,16 +440,16 @@ export default function Ltpa060Section() {
                           onCellValueChanged={onCellValueChanged}
                           // ag-Grid 기본 설정
                           defaultColDef={{
-                            sortable: true,  // 컬럼 정렬 가능
-                            resizable: true,  // 컬럼 너비 조절 가능
-                            cellClass: 'text-center',  // 중앙 정렬
+                            sortable: true, // 컬럼 정렬 가능
+                            resizable: true, // 컬럼 너비 조절 가능
+                            cellClass: 'text-center', // 중앙 정렬
                           }}
                           // 다중행 선택 모드 (고지 상태 행 제외)
                           rowSelection={{
                             mode: 'multiRow',
-                            isRowSelectable: (node) => node.data?.field8 !== '고지',  // '고지' 상태 행은 선택 불가
-                            checkboxes: true,  // 체크박스 표시
-                            enableClickSelection: false,  // 행 클릭으로 선택 안됨
+                            isRowSelectable: (node) => node.data?.field8 !== '고지', // '고지' 상태 행은 선택 불가
+                            checkboxes: true, // 체크박스 표시
+                            enableClickSelection: false, // 행 클릭으로 선택 안됨
                           }}
                           // 그리드 초기화 후 체크 상태 복원
                           onGridReady={(params) => {
@@ -492,6 +497,8 @@ export default function Ltpa060Section() {
                               }
                             });
                           }}
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
                           domLayout="normal"
                         />
                       </div>
@@ -508,14 +515,14 @@ export default function Ltpa060Section() {
                   <FormTable variant={'head'} lineTop={false} caption="">
                     <FormRow>
                       <FormCell title={'정보제공동의(유효일자)'}>
-                        <Input aria-label="FP정보제공동의 유효일자" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                       <FormCell title={'전문호출기간'}>
-                        <Input aria-label="전문호출기간 시작일" width={100} value={'2026-03-01'} readOnly />-
-                        <Input aria-label="전문호출기간 종료일" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="전문호출기간 시작일" width={90} value={'2026-03-01'} readOnly />-
+                        <Input aria-label="전문호출기간 종료일" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                       <FormCell title={'최종적재일'}>
-                        <Input aria-label="최종적재일" width={100} value={'2026-03-01'} readOnly />
+                        <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />
                       </FormCell>
                     </FormRow>
                   </FormTable>
@@ -555,6 +562,8 @@ export default function Ltpa060Section() {
                         }}
                         domLayout="normal"
                         alwaysShowVerticalScroll={true}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
                       />
                     </div>
                   </TableFoldBody>

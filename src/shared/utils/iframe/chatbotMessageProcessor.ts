@@ -1,5 +1,5 @@
-import { EventMessage } from '../../types/externalTypes';
 import log from '@/shared/utils/logger';
+import { EventMessage } from '../../types/externalTypes';
 
 const logger = log.getLogger('IFrameMessage');
 

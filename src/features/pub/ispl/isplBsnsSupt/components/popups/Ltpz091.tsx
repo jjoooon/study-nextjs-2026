@@ -3,12 +3,15 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import '@/shared/lib/agGridPub';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useMemo } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grid, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
 import { ResetIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,14 +23,10 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-
-import '@/shared/lib/agGridPub';
 import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useMemo } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 
 type LTPZ091Tab = { value: string; label: string };
 const DATA_TABS: LTPZ091Tab[] = [
@@ -49,8 +48,8 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     field01: '2026년 4월 심사가이드라인',
-    field02: '요약내용이 노출되는 영역입니다.',
-    field03: '2026-04-01',
+    field02: '요약내용이 노출되는 영역입니다. 요약내용이 노출되는 영역입니다. 요약내용이 노출되는 영역입니다.',
+    field03: '2026-04-08',
     field04: 'Y',
     field05: 1,
     field06: 'Y',

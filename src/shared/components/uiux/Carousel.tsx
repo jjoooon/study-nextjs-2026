@@ -10,17 +10,33 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Button } from '@uiux/Button';
 
+/** Embla 캐러셀의 API 인스턴스 타입 */
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
+/** Embla 캐러셀 설정 옵션 타입 */
 type CarouselOptions = UseCarouselParameters[0];
+/** Embla 캐러셀 플러그인 타입 */
 type CarouselPlugin = UseCarouselParameters[1];
 
-type CarouselProps = {
+interface CarouselProps {
+  /**
+   * Embla 캐러셀 설정 옵션 객체
+   */
   opts?: CarouselOptions;
+  /**
+   * Embla 캐러셀 플러그인 배열 (예: Autoplay 등)
+   */
   plugins?: CarouselPlugin;
+  /**
+   * 캐러셀이 스크롤되는 방향
+   * @default 'horizontal'
+   */
   orientation?: 'horizontal' | 'vertical';
+  /**
+   * 생성된 Embla API 인스턴스를 외부 상태와 동기화하기 위한 콜백 함수
+   */
   setApi?: (api: CarouselApi) => void;
-};
+}
 
 type CarouselContextProps = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0];
@@ -33,6 +49,10 @@ type CarouselContextProps = {
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 
+/**
+ * 캐러셀 컨텍스트 훅
+ * - Carousel 하위 컴포넌트에서 캐러셀 상태 및 제어 함수를 가져올 때 사용합니다.
+ */
 function useCarousel() {
   const context = React.useContext(CarouselContext);
 
@@ -43,6 +63,10 @@ function useCarousel() {
   return context;
 }
 
+/**
+ * 캐러셀 루트 컴포넌트 (Carousel)
+ * - Embla Carousel을 기반으로 한 반응형 슬라이더 컨테이너입니다.
+ */
 function Carousel({
   orientation = 'horizontal',
   opts,
@@ -61,6 +85,14 @@ function Carousel({
   );
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
+  const [prevApi, setPrevApi] = React.useState<CarouselApi>(undefined);
+
+  // api 인스턴스 획득 시 초기 스크롤 상태 동기화 (렌더 단계에서 동기화)
+  if (api && api !== prevApi) {
+    setPrevApi(api);
+    setCanScrollPrev(api.canScrollPrev());
+    setCanScrollNext(api.canScrollNext());
+  }
 
   const onSelect = React.useCallback((api: CarouselApi) => {
     if (!api) return;
@@ -96,7 +128,6 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return;
-    onSelect(api);
     api.on('reInit', onSelect);
     api.on('select', onSelect);
 
@@ -132,6 +163,10 @@ function Carousel({
   );
 }
 
+/**
+ * 캐러셀 뷰포트/콘텐츠 영역 컴포넌트 (CarouselContent)
+ * - 슬라이드 아이템들을 감싸는 스크롤 영역입니다.
+ */
 function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
   const { carouselRef, orientation } = useCarousel();
 
@@ -149,6 +184,10 @@ function CarouselContent({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
+/**
+ * 캐러셀 개별 슬라이드 아이템 컴포넌트 (CarouselItem)
+ * - 캐러셀 안의 하나의 페이지/슬라이드를 나타냅니다.
+ */
 function CarouselItem({ className, ...props }: React.ComponentProps<'div'>) {
   const { orientation } = useCarousel();
 
@@ -167,6 +206,10 @@ function CarouselItem({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
+/**
+ * 캐러셀 이전 이동 버튼 컴포넌트 (CarouselPrevious)
+ * - 클릭 시 이전 슬라이드로 스크롤 이동합니다.
+ */
 function CarouselPrevious({
   className,
   variant = 'outlined',
@@ -197,6 +240,10 @@ function CarouselPrevious({
   );
 }
 
+/**
+ * 캐러셀 다음 이동 버튼 컴포넌트 (CarouselNext)
+ * - 클릭 시 다음 슬라이드로 스크롤 이동합니다.
+ */
 function CarouselNext({ className, variant = 'outlined', size = 'sm', ...props }: React.ComponentProps<typeof Button>) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
@@ -222,15 +269,25 @@ function CarouselNext({ className, variant = 'outlined', size = 'sm', ...props }
   );
 }
 
+/**
+ * 캐러셀 페이지 인디케이터/페이지네이션 컴포넌트 (CarouselPagination)
+ * - 현재 슬라이드 인덱스를 표시하고 특정 슬라이드로 바로 이동하는 점 버튼들을 제공합니다.
+ */
 function CarouselPagination() {
   const { api } = useCarousel();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [slideCount, setSlideCount] = React.useState(0);
+  const [prevApi, setPrevApi] = React.useState<typeof api>(undefined);
+
+  // api 인스턴스 획득 시 초기 슬라이드 개수 및 선택 인덱스 동기화 (렌더 단계에서 동기화)
+  if (api && api !== prevApi) {
+    setPrevApi(api);
+    setSlideCount(api.scrollSnapList().length);
+    setSelectedIndex(api.selectedScrollSnap());
+  }
 
   React.useEffect(() => {
     if (!api) return;
-    setSlideCount(api.scrollSnapList().length);
-    setSelectedIndex(api.selectedScrollSnap());
     const onSelect = () => setSelectedIndex(api.selectedScrollSnap());
     api.on('select', onSelect);
     return () => {

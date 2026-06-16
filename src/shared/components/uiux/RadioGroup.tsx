@@ -3,16 +3,21 @@
  */
 'use client';
 
-import { ErrorMsg } from '@common/ErrorMsg';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { ErrorMsg } from '@common/ErrorMsg';
 
-// RadioGroup Context to pass error state to RadioGroupItems
+/**
+ * RadioGroup 내부 아이템들에 에러 및 필수 상태를 전파하기 위한 컨텍스트입니다.
+ */
 const RadioGroupContext = React.createContext<{
+  /** 에러 상태 여부 */
   error?: boolean;
+  /** 필수 선택 여부 */
   required?: boolean;
+  /** 비활성화 여부 */
   disabled?: boolean;
 }>({
   error: false,
@@ -56,7 +61,6 @@ const radioGroupItemVariants = cva(
       },
     },
     compoundVariants: [
-      // default variant + size
       {
         variant: 'default',
         size: 'lg',
@@ -67,7 +71,6 @@ const radioGroupItemVariants = cva(
         size: 'md',
         className: 'h-[1.4rem] w-[1.4rem]',
       },
-      // button variant + size
       {
         variant: 'button',
         size: 'lg',
@@ -95,7 +98,6 @@ const radioGroupItemVariants = cva(
         className:
           'data-[state=checked]:bg-[#f0f7ff] data-[state=checked]:text-[#006ff2] data-[state=checked]:border-[#006ff2] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(0,111,242,0.19)]',
       },
-      // chipBox variant + size
       {
         variant: 'chipBox',
         size: 'lg',
@@ -106,7 +108,6 @@ const radioGroupItemVariants = cva(
         size: 'md',
         className: 'h-[2.6rem] px-[0.8rem]',
       },
-      // chipBox variant + color (info)
       {
         variant: 'chipBox',
         color: 'info',
@@ -145,14 +146,41 @@ const radioIndicatorVariants = cva('absolute rounded-full', {
   },
 });
 
+/**
+ * RadioGroup 컴포넌트의 추가 Props 정의
+ */
+interface RadioGroupExtraProps {
+  /** 에러 상태(아무것도 선택되지 않았거나 유효하지 않은 입력 등) 표시 여부 */
+  error?: boolean;
+  /** 에러 발생 시 노출될 안내 메시지 내용 */
+  errorMsg?: React.ReactNode;
+  /**
+   * 에러 메시지가 노출될 위치
+   * - `tl`: Top Left (상단 좌측)
+   * - `tc`: Top Center (상단 중앙)
+   * - `tr`: Top Right (상단 우측)
+   * - `bl`: Bottom Left (하단 좌측)
+   * - `bc`: Bottom Center (하단 중앙)
+   * - `br`: Bottom Right (하단 우측)
+   * @default 'bl'
+   */
+  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+  /**
+   * 라디오 그룹 컨테이너의 너비
+   * - `full`: 100% 너비 적용
+   * - `auto`: 콘텐츠 크기에 맞춤
+   * @default 'auto'
+   */
+  width?: 'full' | 'auto';
+}
+
+/**
+ * RadioGroup 컴포넌트는 여러 옵션 중 하나만 선택할 수 있는 폼 컨트롤들의 그룹 역할을 합니다.
+ * Radix UI RadioGroup Primitive를 래핑하여 에러 상태 관리 및 에러 메시지 렌더링 기능을 제공합니다.
+ */
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> & {
-    error?: boolean;
-    errorMsg?: React.ReactNode;
-    errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
-    width?: 'full' | 'auto';
-  }
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> & RadioGroupExtraProps
 >(
   (
     {
@@ -215,16 +243,37 @@ const RadioGroup = React.forwardRef<
 );
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 
+/**
+ * RadioGroupItem 컴포넌트의 Props 정의
+ */
+interface RadioGroupItemExtraProps extends VariantProps<typeof radioGroupItemVariants> {
+  /**
+   * 라디오 아이템 색상 테마
+   * - `primary`: 기본 테마색상 적용
+   * - `info`: 파란색 계열 테마색상 적용
+   * @default 'primary'
+   */
+  color?: 'primary' | 'info';
+  /** 아이템 텍스트 또는 콘텐츠 */
+  children?: React.ReactNode;
+  /** 에러 상태(유효하지 않음) 표시 여부 */
+  error?: boolean;
+  /** 에러 메시지 내용 */
+  errorMsg?: React.ReactNode;
+  /**
+   * 에러 메시지 표시 위치
+   * @default 'bl'
+   */
+  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+}
+
+/**
+ * RadioGroupItem 컴포넌트는 RadioGroup 내부의 단일 선택 옵션 요소입니다.
+ * 원형 스타일(default), 버튼 스타일(button), 칩 스타일(chipBox) 등의 다양한 변형을 지원합니다.
+ */
 const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> &
-    VariantProps<typeof radioGroupItemVariants> & {
-      color?: 'primary' | 'info';
-      children?: React.ReactNode;
-      error?: boolean;
-      errorMsg?: React.ReactNode;
-      errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
-    }
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> & RadioGroupItemExtraProps
 >(
   (
     {
@@ -268,6 +317,7 @@ const RadioGroupItem = React.forwardRef<
           data-invalid={isError ? '' : undefined}
           aria-invalid={isError ? true : undefined}
           {...props}
+          {...(isChipBox || variant === 'none' ? {} : { size: undefined })} // Avoid passing invalid html attributes if necessary
         >
           {isButton ? (
             <div
@@ -314,12 +364,6 @@ const RadioGroupItem = React.forwardRef<
             {children}
           </label>
         )}
-
-        {/* {isError && !(isButton || isChipBox) && (
-          <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
-            {errorMsg}
-          </ErrorMsg>
-        )} */}
       </div>
     );
   }

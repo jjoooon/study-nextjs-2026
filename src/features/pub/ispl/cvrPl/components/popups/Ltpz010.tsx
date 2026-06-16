@@ -267,7 +267,7 @@ const Ltpz010 = () => {
         filter: false,
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, duplicateRenderer, titleRenderer]
   );
 
   const onCellValueChanged = useMemo(

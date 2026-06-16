@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ReactNode, createElement } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { InfoBoxWarningIcon, InfoBoxInfoIcon, DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 
 /**
  * Typo 디자인 토큰(variant/weight/color/icon)을 class-variance-authority로 선언.
@@ -88,12 +88,36 @@ const typoVariants = cva('', {
  * `typoVariants`에서 파생된 타입 + Typo 확장 props.
  */
 interface TypoProps extends VariantProps<typeof typoVariants> {
-  /** 동적 태그명(`span`, `p`, `strong` 등) */
+  /**
+   * 동적 태그명 (HTML element tag)
+   * - 렌더링될 실제 HTML 태그를 지정합니다. (예: 'span', 'p', 'strong', 'h1', 'div' 등)
+   * @default 'span'
+   */
   tag?: string;
+  /**
+   * 텍스트 영역 내부에 들어갈 콘텐츠
+   */
   children?: ReactNode;
+  /**
+   * 추가적인 CSS 클래스명
+   */
   className?: string;
-  /** 앞머리 아이콘 타입 */
+  /**
+   * 텍스트 앞머리에 렌더링할 아이콘 타입
+   * - info: 파란색 안내 느낌표 아이콘
+   * - warning: 빨간색 경고 삼각형 아이콘
+   * - detail: 세부 정보 화살표 아이콘
+   * - dot: 기본 글머리 점 아이콘
+   * - hash: 샵(#) 모양 아이콘
+   * - ref: 참조용 별표/화살표 아이콘
+   * - dash: 하이픈(-) 글머리 아이콘
+   * - star: 빨간색 필수입력 별표(*) 아이콘
+   * - dotBig: 큰 글머리 점 아이콘
+   */
   icon?: 'info' | 'warning' | 'detail' | 'dot' | 'hash' | 'ref' | 'dash' | 'star' | 'dotBig';
+  /**
+   * 커스텀 인라인 스타일 객체
+   */
   style?: React.CSSProperties;
 }
 

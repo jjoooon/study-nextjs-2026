@@ -2,21 +2,20 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
-import { createTooltipValueGetter } from '@aggrid';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 import { Grid, Grow, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { HeaderWithUnit } from '@grid/HeadRenderers';
 import { ResetIcon, SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { HeaderWithUnit } from '@grid/HeadRenderers';
 
 import '@/shared/lib/agGridPub';
 
@@ -225,8 +224,8 @@ const Ltpa040DummyDataT1: Ltpa040DummyDataRowT1[] = [
 const Ltpa040DummyDataT2: Ltpa040DummyDataRowT2[] = [
   {
     id: 1,
-    field01: '한화 시그니처 여성 건강보험4.0',
-    field02: '1종 납입면제 강화형, 기본형[할증운영상품]',
+    field01: '한화 시그니처 여성 건강보험4.0 한화 시그니처 여성 건강보험4.0 한화 시그니처 여성 건강보험4.0 한화 시그니처 여성 건강보험4.0',
+    field02: '1종 납입면제 강화형, 기본형[할증운영상품] 1종 납입면제 강화형, 기본형[할증운영상품] 1종 납입면제 강화형, 기본형[할증운영상품]',
     field03: '',
     field04: '00',
   },
@@ -870,7 +869,7 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
     field02: '적용',
     field03: '연만기',
     field04: '표준',
-    field05: '사망/후유, 진단비, 입원/통원, 수술/치료, 골절/화상, 검사/지원',
+    field05: '사망/후유, 진단비, 입원/통원, 수술/치료, 골절/화상, 검사/지원 사망/후유, 진단비, 입원/통원, 수술/치료, 골절/화상, 검사/지원 사망/후유, 진단비, 입원/통원, 수술/치료, 골절/화상, 검사/지원',
     field06: '00',
     field07: '00',
   },
@@ -989,8 +988,8 @@ const Ltpa040DummyDataT6: Ltpa040DummyDataRowT6[] = [
 const Ltpa040DummyDataT7: Ltpa040DummyDataRowT7[] = [
   {
     id: 1,
-    field01: '한화 시그니처 여성 건강보험4.0',
-    field02: '1종 납입면제 강화형, 기본형(할증운영상품)',
+    field01: '한화 시그니처 여성 건강보험4.0 한화 시그니처 여성 건강보험4.0 한화 시그니처 여성 건강보험4.0 한화 시그니처 여성 건강보험4.0',
+    field02: '1종 납입면제 강화형, 기본형(할증운영상품) 1종 납입면제 강화형, 기본형(할증운영상품)',
     field03: '10',
     field04: '10',
     field05: '10',
@@ -1158,6 +1157,14 @@ const Ltpa04002 = () => {
     );
   };
 
+  const AverageHeader = () => (
+    <span className="w-full flex flex-col items-center text-center">
+      영업일
+      <br />
+      평균
+    </span>
+  );
+
   const columnDefsT1: ColDef<Ltpa040DummyDataRowT1>[] = [
     {
       headerName: '일자',
@@ -1200,29 +1207,29 @@ const Ltpa04002 = () => {
     {
       headerName: '상품',
       field: 'field01',
-      flex: 5,
-      minWidth: attributeColumnWidth(200),
+      flex: 50,
       cellClass: 'text-left',
       unSortIcon: true,
+      tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT2>({ field: 'field01' }),
     },
     {
       headerName: '종',
       field: 'field02',
-      flex: 5,
-      minWidth: attributeColumnWidth(200),
+      flex: 40,
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT2>({ field: 'field02' }),
     },
     {
       headerName: '플랜',
       field: 'field03',
-      flex: 3,
-      minWidth: attributeColumnWidth(150),
+      flex: 30,
+      // minWidth: attributeColumnWidth(150),
       cellClass: 'text-left',
     },
     {
       headerName: '건수',
       field: 'field04',
-      width: attributeColumnWidth(80),
+      width: attributeColumnWidth(70),
       headerClass: 'ag-header-color',
       unSortIcon: true,
     },
@@ -1428,13 +1435,13 @@ const Ltpa04002 = () => {
           headerName: '적용',
           field: 'field03',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '미적용',
           field: 'field04',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
       ],
     },
@@ -1446,13 +1453,13 @@ const Ltpa04002 = () => {
           headerName: '적용',
           field: 'field05',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '미적용',
           field: 'field06',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
       ],
     },
@@ -1463,13 +1470,13 @@ const Ltpa04002 = () => {
           headerName: '연만기',
           field: 'field07',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '세만기',
           field: 'field08',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
       ],
     },
@@ -1480,13 +1487,13 @@ const Ltpa04002 = () => {
           headerName: '표준',
           field: 'field09',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '간편',
           field: 'field10',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
       ],
     },
@@ -1497,37 +1504,37 @@ const Ltpa04002 = () => {
           headerName: '사망/후유',
           field: 'field11',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '진단비',
           field: 'field12',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '입원/통원',
           field: 'field13',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '수술/치료',
           field: 'field14',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '골절/화상',
           field: 'field15',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
         {
           headerName: '검사/지원',
           field: 'field16',
           flex: 1,
-          minWidth: attributeColumnWidth(65),
+          minWidth: attributeColumnWidth(60),
         },
       ],
     },
@@ -1557,8 +1564,7 @@ const Ltpa04002 = () => {
     {
       headerName: '담보군',
       field: 'field05',
-      flex: 7,
-      minWidth: attributeColumnWidth(250),
+      flex: 10,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT6>({ field: 'field05' }),
     },
@@ -1566,7 +1572,7 @@ const Ltpa04002 = () => {
       headerName: '건수',
       field: 'field06',
       flex: 1,
-      minWidth: attributeColumnWidth(90),
+      minWidth: attributeColumnWidth(80),
       headerClass: 'ag-header-color',
       unSortIcon: true,
     },
@@ -1574,7 +1580,7 @@ const Ltpa04002 = () => {
       headerName: '영업일평균',
       field: 'field07',
       flex: 1,
-      minWidth: attributeColumnWidth(90),
+      minWidth: attributeColumnWidth(80),
       headerClass: 'ag-header-color',
     },
   ];
@@ -1583,8 +1589,7 @@ const Ltpa04002 = () => {
     {
       headerName: '상품',
       field: 'field01',
-      flex: 6,
-      minWidth: attributeColumnWidth(250),
+      flex: 60,
       cellClass: 'text-left',
       unSortIcon: true,
       tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT7>({ field: 'field01' }),
@@ -1592,8 +1597,7 @@ const Ltpa04002 = () => {
     {
       headerName: '종',
       field: 'field02',
-      flex: 4,
-      minWidth: attributeColumnWidth(250),
+      flex: 40,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT7>({ field: 'field02' }),
     },
@@ -1689,8 +1693,9 @@ const Ltpa04002 = () => {
     {
       headerName: '영업일 평균',
       field: 'field17',
-      width: attributeColumnWidth(70),
+      width: attributeColumnWidth(60),
       headerClass: 'ag-header-color',
+      headerComponent: AverageHeader,
     },
   ];
 
@@ -1714,7 +1719,7 @@ const Ltpa04002 = () => {
                 onChange={(e) => setSearchInput(e.target.value)}
               >
                 {[
-                  { value: '선택', label: '선택' },
+                  { value: '기본', label: '기본' },
                   { value: '고객군별', label: '고객군별' },
                   { value: '추가옵션', label: '추가옵션' },
                   { value: '상품별', label: '상품별' },
@@ -1865,6 +1870,8 @@ const Ltpa04002 = () => {
                 cellClass: 'text-center',
               }}
               domLayout="normal"
+              tooltipShowDelay={0}
+              tooltipHideDelay={3000}
             />
           </div>
         </TableFoldBody>

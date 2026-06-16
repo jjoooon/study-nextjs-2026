@@ -3,11 +3,12 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React from 'react';
+import { useRef } from 'react';
 import { Grid, Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,10 +21,9 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from '@uiux/Table';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React from 'react';
-import { useRef } from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -45,14 +45,14 @@ type DummyDataType2 = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '보통약관(상해80%이상후유)',
+    field01: '보통약관(상해80%이상후유) 보통약관(상해80%이상후유)',
     field02: '100만원',
     field03: '10만원',
   },
   {
     id: 2,
     field01: '상해사망(체증형)',
-    field02: '15,000만원',
+    field02: '150,000만원',
     field03: '9,600원',
   },
   {
@@ -114,14 +114,14 @@ const DummyData: DummyDataType[] = [
 const DummyData2: DummyDataType2[] = [
   {
     id: 1,
-    field01: '보통약관(상해80%이상후유)',
+    field01: '보통약관(상해80%이상후유) 보통약관(상해80%이상후유)',
     field02: '100만원',
     field03: '10만원',
   },
   {
     id: 2,
     field01: '상해사망(체증형)',
-    field02: '15,000만원',
+    field02: '150,000만원',
     field03: '9,600원',
   },
   {
@@ -220,7 +220,7 @@ export const Ltpz099 = () => {
       headerName: '가입금액',
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(90),
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
@@ -228,7 +228,7 @@ export const Ltpz099 = () => {
       headerName: '보험료',
       field: 'field03',
       flex: 1,
-      minWidth: attributeColumnWidth(90),
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
@@ -247,7 +247,7 @@ export const Ltpz099 = () => {
       headerName: '가입금액',
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(90),
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
@@ -255,7 +255,7 @@ export const Ltpz099 = () => {
       headerName: '보험료',
       field: 'field03',
       flex: 1,
-      minWidth: attributeColumnWidth(90),
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-right flex [&>div>span]:h-auto!',
       valueFormatter: numberValueFormatter,
     },
@@ -310,7 +310,7 @@ export const Ltpz099 = () => {
             <TableFoldBody>
               <FormTable
                 caption="기본정보 테이블"
-                cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}
+                cols={['w-[7rem]', 'flex-1', 'w-[7rem]', 'flex-1', 'w-[7rem]', 'flex-1']}
               >
                 <FormRow>
                   <FormCell title={'추천일자'} colSpan={5}>
@@ -336,7 +336,7 @@ export const Ltpz099 = () => {
             <TableFoldBody>
               <FormTable
                 caption="기본정보 테이블"
-                cols={['w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1', 'w-[14rem]', 'flex-1']}
+                cols={['w-[7rem]', 'flex-1', 'w-[7rem]', 'flex-1', 'w-[7rem]', 'flex-1']}
               >
                 <FormRow>
                   <FormCell title={'담보군'} colSpan={5}>
@@ -384,9 +384,9 @@ export const Ltpz099 = () => {
                   <Grid className="w-full h-full grid-rows-[auto_1fr] gap-0">
                     <Table variant="default">
                       <colgroup>
-                        <col style={{ width: '10rem' }} />
+                        <col style={{ width: '9rem' }} />
                         <col style={{ width: '12rem' }} />
-                        <col style={{ width: '10rem' }} />
+                        <col style={{ width: '9rem' }} />
                         <col style={{ width: 'auto' }} />
                       </colgroup>
                       <TableHeader>
@@ -451,9 +451,9 @@ export const Ltpz099 = () => {
                   <Grid className="w-full grid-rows-[auto_1fr] gap-0">
                     <Table variant="default">
                       <colgroup>
-                        <col style={{ width: '10rem' }} />
+                        <col style={{ width: '9rem' }} />
                         <col style={{ width: '12rem' }} />
-                        <col style={{ width: '10rem' }} />
+                        <col style={{ width: '9rem' }} />
                         <col style={{ width: 'auto' }} />
                       </colgroup>
                       <TableHeader>

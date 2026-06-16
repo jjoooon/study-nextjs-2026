@@ -33,6 +33,7 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { KeyValueList } from '@common/KeyValueList';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
@@ -46,8 +47,7 @@ import {
   productNameCellRenderer,
   searchButtonRenderer,
 } from '@grid/CellRenderers';
-import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { HeaderWithUnit, AgGridProductNameHeader } from '@grid/HeadRenderers';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002dData';
 import type { DummyDataType } from '../data/ltpa35002dData';
@@ -84,7 +84,13 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   const pendingSelectIdRef = useRef<string | number | null>(null);
   const gridApiRef = useRef<GridApi<AgGridRow> | null>(null);
   const prevSelectedIdsRef = useRef<Set<string | number>>(new Set());
-  const [coverageName, setCoverageName] = useState('');
+  const [coverageName, _setCoverageName] = useState('');
+  const coverageNameRef = useRef(coverageName);
+
+  const setCoverageName = useCallback((value: string) => {
+    _setCoverageName(value);
+    coverageNameRef.current = value;
+  }, []);
 
   // =====================
   // 핸들러/콜백
@@ -94,20 +100,6 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       setCheckedMap((map) => ({ ...map, [key]: !!checked }));
     },
     []
-  );
-
-  const productNameHeader = useCallback(
-    () => (
-      <ProductNameHeader
-        coverageName={coverageName}
-        onCoverageNameChange={setCoverageName}
-        showProductNameTooltip={showProductNameTooltip}
-        onShowProductNameTooltipChange={(checked) => setShowProductNameTooltip(!!checked)}
-        checkedMap={checkedMap}
-        onCheckedChange={handleCheckedChange}
-      />
-    ),
-    [checkedMap, coverageName, showProductNameTooltip, handleCheckedChange]
   );
 
   // =====================
@@ -506,7 +498,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent variant="default" side="top" align="start" sideOffset={-4}>
-                          담보 전체 해지
+                          담보 모두 해제
                         </TooltipContent>
                       </Tooltip>
                     ),
@@ -518,6 +510,15 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   }}
                   onSelectionChanged={onSelectionChanged}
                   onGridReady={handleGridReady}
+                  context={{
+                    coverageName,
+                    setCoverageName,
+                    showProductNameTooltip,
+                    onShowProductNameTooltipChange: (checked: boolean | 'indeterminate') =>
+                      setShowProductNameTooltip(checked === true),
+                    checkedMap,
+                    onCheckedChange: handleCheckedChange,
+                  }}
                   // onRowDataUpdated={handleRowDataUpdated} // 제거: 시그니처 불일치로 미사용
                   suppressRowHoverHighlight={false}
                   tooltipShowDelay={0}
@@ -529,7 +530,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
                   autoGroupColumnDef={{
                     headerName: '담보명',
-                    headerComponent: productNameHeader,
+                    headerComponent: AgGridProductNameHeader,
                     field: 'id',
                     flex: 107,
                     cellClass: (_) => 'text-left !p-0',

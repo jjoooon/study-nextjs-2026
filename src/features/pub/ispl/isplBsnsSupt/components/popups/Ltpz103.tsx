@@ -3,9 +3,8 @@
  */
 'use client';
 
+import * as React from 'react';
 import { Grow, Typo, Gcol } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -20,7 +19,8 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import * as React from 'react';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 

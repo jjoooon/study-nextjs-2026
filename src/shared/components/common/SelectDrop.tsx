@@ -3,16 +3,16 @@
  */
 'use client';
 
-import { Gcol, Grow } from '@atoms';
-import { ErrorMsg } from '@common/ErrorMsg';
-import { SelectDropIcon } from '@icons';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
-import { Checkbox } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import type { UIUXsize } from '@/shared/types/uiTypes';
+import { Gcol, Grow } from '@atoms';
+import { SelectDropIcon } from '@icons';
+import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { ErrorMsg } from '@common/ErrorMsg';
 
 const CUSTOM_INPUT_VALUE = '__custom_input__' as const;
 
@@ -43,55 +43,100 @@ function formatAmount(value: string): string {
   return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
+/**
+ * SelectDrop 컴포넌트에서 사용하는 개별 옵션 데이터 타입입니다.
+ */
 export type SelectDropOption<TValue extends string = string> = {
+  /** 화면에 노출할 텍스트 라벨 */
   label: string;
+  /** 옵션의 고유 식별값 */
   value: TValue;
+  /** 해당 옵션의 비활성화 여부 */
   disabled?: boolean;
 };
 
 /**
- * SelectDrop Props Definition
+ * SelectDrop 컴포넌트의 Props 인터페이스입니다.
  */
 export type SelectDropProps<TValue extends string = string> = Omit<
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
   'children'
 > & {
   /**
-   * typeMode: 'checkbox' | 'radio' | 'custom'
-   * 'custom'은 직접 구현한 옵션 UI를 사용할 때 지정
+   * 드롭다운의 선택 동작 방식
+   * - `checkbox`: 다중 선택(체크박스) 형식
+   * - `radio`: 단일 선택(라디오 버튼) 형식
+   * - `custom`: 옵션 영역 레이어 내부의 UI를 `children`을 통해 직접 개발자가 구현하는 형식
+   * @default 'checkbox'
    */
   typeMode?: 'checkbox' | 'radio' | 'custom';
+  /**
+   * 트리거 버튼 스타일 타입
+   * @default 'default'
+   */
   variant?: keyof typeof TRIGGER_VARIANT_MAP;
+  /** 드롭다운 내부에 표시할 표준 옵션 리스트 */
   options?: ReadonlyArray<SelectDropOption<TValue>>;
+  /** 현재 선택된 값들의 배열 (제어 컴포넌트용) */
   value?: ReadonlyArray<TValue>;
+  /** 초기 선택된 값들의 배열 (비제어 컴포넌트용) */
   defaultValue?: ReadonlyArray<TValue>;
+  /** 선택 값이 변경될 때 발생하는 이벤트 핸들러 */
   onValueChange?: (values: TValue[]) => void;
+  /** 라디오 선택 모드(`typeMode="radio"`)에서 직접 금액 입력을 지원할지 여부 */
   allowCustomInput?: boolean;
+  /** 직접 입력용 라디오 항목의 텍스트 라벨 */
   customInputLabel?: string;
+  /** 직접 입력 텍스트 상자의 입력값 (제어 컴포넌트용) */
   customInputValue?: string;
+  /** 직접 입력 텍스트 상자의 초기 입력값 (비제어 컴포넌트용) */
   defaultCustomInputValue?: string;
+  /** 직접 입력값이 변경될 때 발생하는 이벤트 핸들러 */
   onCustomInputValueChange?: (value: string) => void;
+  /** 선택된 옵션이 없을 경우 노출할 안내 메시지(Placeholder) */
   placeholder?: string;
+  /**
+   * 트리거 버튼 및 옵션 레이어의 너비 지정
+   * - `full`, `auto`, `max`, `min`, 또는 크기 상수('xs', 'sm', 'md' 등)
+   * - rem 환산용 숫자형(ex: 120 -> 12rem) 또는 CSS 너비 스타일 문자열
+   * @default 'md'
+   */
   width?: UIUXsize | number | string;
+  /**
+   * 트리거 버튼의 크기 (높이)
+   * - `lg`: 2.8rem (기본)
+   * - `md`: 2.5rem
+   * @default 'lg'
+   */
   size?: UIUXsize;
+  /** 필수 입력 여부 (선택되지 않을 시 노란색 하이라이트 스타일 제공) */
   required?: boolean;
+  /** 읽기 전용 여부 (트리거 클릭 비활성화 및 배경 회색 처리) */
   readOnly?: boolean;
+  /** 트리거 버튼 자체에 주입할 임의의 Tailwind/CSS 클래스명 */
   triggerClassName?: string;
+  /** 에러 상태(선택 미흡 등) 여부 */
   error?: boolean;
+  /** 에러 안내용 에러 메시지 내용 */
   errorMsg?: React.ReactNode;
+  /**
+   * 에러 메시지가 표시될 위치
+   * - `tl`: Top Left, `tc`: Top Center, `tr`: Top Right
+   * - `bl`: Bottom Left, `bc`: Bottom Center, `br`: Bottom Right
+   * @default 'bl'
+   */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+  /** Popover의 sideOffset 간격 설정 */
   _sideOffset?: 0;
-  /** 체크박스 최소 선택 갯수 (기본값 1) */
+  /** 체크박스 다중 선택 모드(`typeMode="checkbox"`)일 때, 에러 해제 조건이 되는 최소 선택 개수 */
   minCount?: number;
+  /** `typeMode="custom"` 상태일 때 드롭다운 팝오버 본문 내부에 표시할 임의의 리액트 컴포넌트 노드 */
   children?: React.ReactNode;
 };
 
 /**
- * SelectDrop Component
- *
- * Popover 기반의 커스텀 셀렉트 컴포넌트입니다.
- * 체크박스(다중 선택)와 라디오(단일 선택) 모드를 지원하며,
- * 라디오 모드에서는 직접 입력 기능을 옵션으로 제공합니다.
+ * SelectDrop 컴포넌트는 Radix UI의 Popover Primitive를 활용하여 풍부한 기능과 스타일을 탑재한 커스텀 셀렉트 드롭다운 컴포넌트입니다.
+ * 체크박스를 통한 다중 선택, 라디오 기반 단일 선택, 직접 입력 입력창 내장 기능 등을 탑재하고 있습니다.
  */
 function SelectDrop<TValue extends string = string>({
   typeMode,
@@ -243,12 +288,11 @@ function SelectDrop<TValue extends string = string>({
     },
     [customInputValue, onCustomInputValueChange]
   );
-  // 에러 해제 조건: 라디오(값 있으면), 체크박스(최소 선택 갯수 이상), 커스텀은 외부에서 제어
+
   const safeMinCount = Math.max(1, minCount ?? 1);
   const radioHasValue =
     selectionMode === 'radio' && (isCustomInputSelected ? !!resolvedCustomInputValue : selectedValues.length > 0);
   const checkboxValid = selectionMode === 'checkbox' && selectedValues.length >= safeMinCount;
-  // custom 모드는 showError를 외부에서 제어(내부에서는 항상 false)
   const showError = selectionMode === 'custom' ? false : error && !(radioHasValue || checkboxValid);
 
   const triggerStyle = cn(
@@ -279,11 +323,6 @@ function SelectDrop<TValue extends string = string>({
       : readOnly
         ? 'var(--color-icon-gray-lighter)'
         : 'currentColor';
-
-  // // 에러 해제 조건: 라디오(값 있으면), 체크박스(최소 선택 갯수 이상)
-  // const radioHasValue = variant === 'radio' && (isCustomInputSelected ? !!resolvedCustomInputValue : selectedValues.length > 0);
-  // const checkboxValid = variant === 'checkbox' && selectedValues.length >= minCount;
-  // const showError = error && !(radioHasValue || checkboxValid);
 
   return (
     <div className={cn('relative', widthClass)} style={inlineWidthStyle}>

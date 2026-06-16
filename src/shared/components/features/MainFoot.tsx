@@ -55,7 +55,11 @@ export function DesignGeneration() {
 // - 보험료 요약값 표시
 // - 합계보험료 입력 검증
 // - 하단 액션 버튼(보험료계산 포함)
-export function LTPA350Step2({ onCalcGuidelineClick }: { onCalcGuidelineClick?: () => void }) {
+export interface LTPA350Step2Props {
+  onCalcGuidelineClick?: () => void;
+}
+
+export function LTPA350Step2({ onCalcGuidelineClick }: LTPA350Step2Props) {
   // 합계보험료 입력값
   const [amount, setAmount] = useState('0');
   // 환급률 입력값

@@ -4,8 +4,8 @@
 'use client';
 
 import { Gcol, Grow, Typo, Divider } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
 import { SpinnerBIcon } from '@icons';
+import { BulletList, BulletListItem } from '@common/BulletList';
 
 export type InfoContractBaseData = {
   date?: string;
@@ -88,14 +88,7 @@ export function Ltpa35004Side({ info }: InfoContractProps) {
         <Gcol variant={'box-line'} className="w-full bg-[var(--color-blue-gray-10)] gap-2" placement={'ss'}>
           <BulletList className="w-full" type={'dot'} size={'xs'}>
             <BulletListItem>
-              <div
-                role="button"
-                tabIndex={0}
-                onClick={() => {
-                  console.log('click');
-                }}
-                className="line-clamp-2 break-all cursor-pointer hover:underline"
-              >
+              <div role="button" tabIndex={0} className="line-clamp-2 break-all cursor-pointer hover:underline">
                 {info?.notice}
               </div>
             </BulletListItem>

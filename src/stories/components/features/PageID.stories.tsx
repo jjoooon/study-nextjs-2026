@@ -1,14 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+ */
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import React from 'react';
 import { PageID } from '@/shared/components/features/PageID';
+import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
 
-const MOCK_DATA = {
-  pageName: '장기 신규설계',
-  pageId: 'LniPl020',
-};
+const MOCK_DATA = { pageName: '장기 신규설계', pageId: 'LniPl020' };
 
 const meta: Meta<typeof PageID> = {
   title: 'Components/Features/header/화면아이디(PageID)',
@@ -18,58 +16,30 @@ const meta: Meta<typeof PageID> = {
     layout: 'fullscreen',
     docs: {
       page: () => (
-        <>
-          <Title />
-          <br />
-          <br />
-          <h2>Overview</h2>
-          <div>
-            <p>
-              PageID 컴포넌트는 화면 상단에 페이지의 이름과 ID를 표시하는 헤더 역할을 합니다.
-              <br />
-              화면 확대/축소 컨트롤(ZoomControl)과 닫기 버튼을 포함하고 있습니다.
-            </p>
-          </div>
-
-          <Primary />
-          <Controls />
-
-          <h2>Usage</h2>
-          <p>PageID 컴포넌트는 데이터 객체를 props로 받아 렌더링합니다.</p>
-          <Markdown>
-            {`
-\`\`\`tsx
-import PageID from '@/shared/components/features/PageID';
+        <StoryDocTemplate
+          title="PageID"
+          history={[
+            '2026.03.30 - 컴포넌트 최초 생성',
+            '2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화',
+          ]}
+          overview={`PageID 컴포넌트는 화면 상단에 페이지의 이름과 ID를 표시하는 헤더 역할을 합니다.
+화면 확대/축소 컨트롤(ZoomControl)과 닫기 버튼을 포함하고 있습니다.`}
+          usageCode={`import { PageID } from '@/shared/components/features/PageID';
 
 const data = {
   pageName: '장기 신규설계',
   pageId: 'LniPl020',
 };
 
-<PageID data={data} />
-\`\`\`
-            `}
-          </Markdown>
-
-          <h2>API Reference</h2>
-          <p>주요 prop 옵션은 다음과 같습니다.</p>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                <th>prop</th>
-                <th>타입</th>
-                <th>설명</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>data</td>
-                <td>DefaultPageID</td>
-                <td>페이지 정보 데이터 객체 (pageName, pageId 포함)</td>
-              </tr>
-            </tbody>
-          </table>
-        </>
+<PageID data={data} />`}
+          apiReference={[
+            {
+              prop: 'data',
+              type: 'DefaultPageID',
+              description: '페이지 정보 데이터 객체 (pageName, pageId 포함)',
+            },
+          ]}
+        />
       ),
     },
   },
@@ -77,6 +47,7 @@ const data = {
     data: {
       control: 'object',
       description: '페이지 정보 데이터',
+      table: { category: 'Data' },
     },
   },
   args: {

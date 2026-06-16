@@ -2,8 +2,8 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */ 'use client';
 
-import { Grow } from '@atoms';
 import * as React from 'react';
+import { Grid } from '@atoms';
 import LinkGo, { getStoryIframeUrl } from './Link';
 
 import iaJhm from './ia-jhm.json';
@@ -65,60 +65,60 @@ const getRowKey = (row: Pick<IARow, 'id' | 'subId'>) => `${row.id}-${row.subId ?
 
 const formatCompleteDate = (value: string) => value.replace(/^26\./, '');
 
-const parseDateValue = (value: string, baseYear: number): Date | null => {
-  const digits = value.replace(/\D/g, '');
-  let year = baseYear;
-  let month = 0;
-  let day = 0;
+// const parseDateValue = (value: string, baseYear: number): Date | null => {
+//   const digits = value.replace(/\D/g, '');
+//   let year = baseYear;
+//   let month = 0;
+//   let day = 0;
 
-  if (digits.length === 4) {
-    month = Number(digits.slice(0, 2));
-    day = Number(digits.slice(2, 4));
-  } else if (digits.length === 6) {
-    year = 2000 + Number(digits.slice(0, 2));
-    month = Number(digits.slice(2, 4));
-    day = Number(digits.slice(4, 6));
-  } else if (digits.length === 8) {
-    year = Number(digits.slice(0, 4));
-    month = Number(digits.slice(4, 6));
-    day = Number(digits.slice(6, 8));
-  } else {
-    return null;
-  }
+//   if (digits.length === 4) {
+//     month = Number(digits.slice(0, 2));
+//     day = Number(digits.slice(2, 4));
+//   } else if (digits.length === 6) {
+//     year = 2000 + Number(digits.slice(0, 2));
+//     month = Number(digits.slice(2, 4));
+//     day = Number(digits.slice(4, 6));
+//   } else if (digits.length === 8) {
+//     year = Number(digits.slice(0, 4));
+//     month = Number(digits.slice(4, 6));
+//     day = Number(digits.slice(6, 8));
+//   } else {
+//     return null;
+//   }
 
-  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
-    return null;
-  }
+//   if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
+//     return null;
+//   }
 
-  const parsed = new Date(year, month - 1, day);
-  if (
-    Number.isNaN(parsed.getTime()) ||
-    parsed.getFullYear() !== year ||
-    parsed.getMonth() !== month - 1 ||
-    parsed.getDate() !== day
-  ) {
-    return null;
-  }
+//   const parsed = new Date(year, month - 1, day);
+//   if (
+//     Number.isNaN(parsed.getTime()) ||
+//     parsed.getFullYear() !== year ||
+//     parsed.getMonth() !== month - 1 ||
+//     parsed.getDate() !== day
+//   ) {
+//     return null;
+//   }
 
-  parsed.setHours(0, 0, 0, 0);
-  return parsed;
-};
+//   parsed.setHours(0, 0, 0, 0);
+//   return parsed;
+// };
 
-const isPastDate = (value: string, today: Date) => {
-  const parsed = parseDateValue(value, today.getFullYear());
-  if (!parsed) {
-    return false;
-  }
-  return parsed.getTime() < today.getTime();
-};
+// const isPastDate = (value: string, today: Date) => {
+//   const parsed = parseDateValue(value, today.getFullYear());
+//   if (!parsed) {
+//     return false;
+//   }
+//   return parsed.getTime() < today.getTime();
+// };
 
-const isTodayDate = (value: string, today: Date) => {
-  const parsed = parseDateValue(value, today.getFullYear());
-  if (!parsed) {
-    return false;
-  }
-  return parsed.getTime() === today.getTime();
-};
+// const isTodayDate = (value: string, today: Date) => {
+//   const parsed = parseDateValue(value, today.getFullYear());
+//   if (!parsed) {
+//     return false;
+//   }
+//   return parsed.getTime() === today.getTime();
+// };
 
 const isCompletedRow = (row: Pick<IARow, 'id' | 'subId' | 'phase' | 'date'>) => {
   const completeDate = getPubInfo(row)?.완료일?.trim() || row.date?.trim() || '';
@@ -127,11 +127,11 @@ const isCompletedRow = (row: Pick<IARow, 'id' | 'subId' | 'phase' | 'date'>) => 
 };
 
 export function IAListWithPreview() {
-  const today = React.useMemo(() => {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    return now;
-  }, []);
+  // const today = React.useMemo(() => {
+  //   const now = new Date();
+  //   now.setHours(0, 0, 0, 0);
+  //   return now;
+  // }, []);
 
   const [showPhaseOnly] = React.useState(false);
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
@@ -307,8 +307,8 @@ export function IAListWithPreview() {
   );
 
   return (
-    <Grow className="w-full gap-[1.2rem] items-start ia-preview-root justify-center">
-      <div className="h-[calc(100vh-4rem)] overflow-auto flex  flex-col justify-start">
+    <Grid className="w-full gap-[1.2rem] items-start ia-preview-root justify-center grid-cols-[30%_1fr]">
+      <div className="h-[calc(100vh-4rem)] overflow-auto flex flex-col justify-start">
         <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
           반입일: 2026.05.28
         </div>
@@ -330,23 +330,10 @@ export function IAListWithPreview() {
           </a>
         </div>
         <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
-          <colgroup>
-            <col style={{ width: '1rem' }} />
-            <col style={{ width: '8rem' }} />
-            <col style={{ width: '8rem' }} />
-            <col style={{ width: '10rem' }} />
-            <col style={{ width: '6rem' }} />
-            <col />
-            <col />
-            <col />
-            <col style={{ width: '6rem' }} />
-            <col style={{ width: '6rem' }} />
-            <col style={{ width: '6rem' }} />
-          </colgroup>
           <thead>
             <tr>
               <th scope="col">No</th>
-              <th
+              {/* <th
                 scope="col"
                 className="cursor-pointer select-none"
                 onClick={() => handleSort('path')}
@@ -358,7 +345,7 @@ export function IAListWithPreview() {
                 aria-label="경로 정렬"
               >
                 경로{getSortIndicator('path')}
-              </th>
+              </th> */}
               <th
                 scope="col"
                 className="cursor-pointer select-none"
@@ -398,7 +385,7 @@ export function IAListWithPreview() {
               >
                 설계서명{getSortIndicator('file')}
               </th>
-              <th
+              {/* <th
                 scope="col"
                 className="cursor-pointer select-none"
                 onClick={() => handleSort('planDate')}
@@ -410,7 +397,7 @@ export function IAListWithPreview() {
                 aria-label="계획일 정렬"
               >
                 계획일{getSortIndicator('planDate')}
-              </th>
+              </th> */}
               <th
                 scope="col"
                 className="cursor-pointer select-none"
@@ -503,19 +490,19 @@ export function IAListWithPreview() {
               const info = getPubInfo(row);
               const completeDate = formatCompleteDate(info?.완료일 || row.date);
               const modifyDate = formatCompleteDate(info?.수정일 || row.modify);
-              const planDate = row.planDate ?? '';
+              // const planDate = row.planDate ?? '';
               const pubName = row.pubName ?? '';
               const isCompleted = isCompletedRow(row);
 
-              const isPlanOverdue = isPastDate(planDate, today);
-              const isPlanToday = isTodayDate(planDate, today);
-              const planDateTextClass = !isCompleted
-                ? isPlanOverdue
-                  ? '!text-[red]'
-                  : isPlanToday
-                    ? '!text-[blue]'
-                    : ''
-                : '';
+              // const isPlanOverdue = isPastDate(planDate, today);
+              // const isPlanToday = isTodayDate(planDate, today);
+              // const planDateTextClass = !isCompleted
+              //   ? isPlanOverdue
+              //     ? '!text-[red]'
+              //     : isPlanToday
+              //       ? '!text-[blue]'
+              //       : ''
+              //   : '';
 
               return (
                 <tr
@@ -529,9 +516,9 @@ export function IAListWithPreview() {
                   <td className={rowBgClass + ' text-center'}>
                     <b>{index + 1}</b>
                   </td>
-                  <td className={rowBgClass + ' '}>
+                  {/* <td className={rowBgClass + ' '}>
                     <span className="break-all !text-[1.1rem]">{row.path ?? ''}</span>
-                  </td>
+                  </td> */}
                   <td scope="row" className={rowIdBgClass}>
                     <b>{row.id}</b>
                     {row.subId ? (
@@ -546,9 +533,9 @@ export function IAListWithPreview() {
                   <td className={rowBgClass}>{row.dep4}</td>
                   <td className={rowBgClass}>{row.file}</td>
 
-                  <td className={`text-center ${rowBgClass} ${planDateTextClass}`}>
+                  {/* <td className={`text-center ${rowBgClass} ${planDateTextClass}`}>
                     <b>{planDate}</b>
-                  </td>
+                  </td> */}
                   <td className={`!text-center ${rowBgClass}`}>
                     <b>{completeDate}</b>
                   </td>
@@ -598,6 +585,6 @@ export function IAListWithPreview() {
           </div>
         )}
       </div>
-    </Grow>
+    </Grid>
   );
 }

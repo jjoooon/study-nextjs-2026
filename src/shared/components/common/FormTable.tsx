@@ -1,12 +1,12 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Typo, Grow } from '@atoms';
-import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { Typo, Grow } from '@atoms';
+import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 
 /**
  * FormCell 제목(th) 스타일 variant 토큰.
@@ -35,55 +35,73 @@ const FormCellVariants = cva('', {
 
 /**
  * FormCell(제목+값 셀) props.
- *
- * 주요 시나리오:
- * - 일반 입력형 테이블: `title + children`
- * - 헤드/무테 레이아웃: `variant='head' | 'none' | 'bottom'`
- * - 복합 셀: `colSpan`/`rowSpan`, 제목/값 분리 span 제어
  */
 interface FormCellProps extends VariantProps<typeof FormCellVariants> {
+  /** 셀의 제목(Label) 영역에 표시할 컨텐츠 */
   title?: ReactNode;
+  /** 제목 영역의 스타일 테마 변형 ('default' | 'primary' | 'section' | 'blueGray') */
   titleVariant?: 'default' | 'primary' | 'section' | 'blueGray';
+  /** 셀의 값(Value) 영역에 표시할 컨텐츠 */
   children?: ReactNode;
+  /** 제목 셀(th)에 적용할 추가 CSS 클래스명 */
   className?: string;
+  /** 내용 셀(td)의 열 병합(colSpan) 수 */
   colSpan?: number;
+  /** 내용 셀(td)의 행 병합(rowSpan) 수 */
   rowSpan?: number;
+  /** 제목 셀(th)의 열 병합(colSpan) 수 */
   titleColSpan?: number;
+  /** 제목 셀(th)의 행 병합(rowSpan) 수 */
   titleRowSpan?: number;
+  /** 상단 구분선 표시 여부 */
   lineTop?: boolean;
+  /** 세로형(헤더/값 2행) 레이아웃 적용 여부 */
   vertical?: boolean;
+  /** 내용 셀(td)에 적용할 추가 CSS 클래스명 */
   tdClassName?: string;
+  /** true일 경우 내용 셀(td)을 렌더링하지 않음 (제목 셀만 렌더링할 때 사용) */
   tdNone?: boolean;
+  /** 제목 셀(th)에 적용할 인라인 스타일 */
   style?: React.CSSProperties;
+  /** 내용 셀(td)에 적용할 인라인 스타일 */
   tdStyle?: React.CSSProperties;
 }
 
 /**
  * FormTable 루트 props.
- * - `cols`: colgroup 클래스 배열
- * - `variant`: 테이블 스킨 프리셋
- * - `after`: 테이블 하단 추가 영역(요약/버튼 등)
  */
 interface FormTableProps {
+  /** 테이블의 캡션 텍스트 (웹 접근성용, 화면에는 보이지 않음) */
   caption?: string;
+  /** 테이블 스타일 테마 프리셋 ('default' | 'primary' | 'favorite' | 'setting' | 'boxIn' | 'none' | 'head' | 'bottom') */
   variant?: string;
-  cols?: string[]; // ["col-s", "", "col-l", ""]
+  /** 열 너비를 설정하기 위한 colgroup 내 <col> 태그의 CSS 클래스 배열 (예: ['w-[20%]', 'w-[30%]']) */
+  cols?: string[];
+  /** 테이블 내부 행(FormRow 등) 컨텐츠 */
   children?: ReactNode;
+  /** 테이블 태그에 적용할 추가 CSS 클래스명 */
   className?: string;
+  /** 테이블 상단 구분선 표시 여부 (기본값: true) */
   lineTop?: boolean;
+  /** 세로형(헤더/값 2행) 레이아웃 모드 활성화 여부 */
   vertical?: boolean;
+  /** 테이블 하단에 렌더링할 추가 영역(요약, 버튼 등) */
   after?: React.ReactNode;
 }
 
 /**
  * FormHead/FormRow 공통 props.
- * - `vertical=true`: 입력형 테이블을 세로형(헤더/값 2행) 레이아웃으로 렌더
  */
 interface FormTrProps {
+  /** 행 내부 셀(FormCell 등) 컨텐츠 */
   children?: ReactNode;
+  /** 세로형(헤더/값 2행) 레이아웃 모드 활성화 여부 */
   vertical?: boolean;
-  cols?: string[]; // ["col-s", "", "col-l", ""]
+  /** 열 너비 설정 클래스 배열 (colgroup 설정이 필요할 경우 사용) */
+  cols?: string[];
+  /** 행 태그에 적용할 추가 CSS 클래스명 */
   className?: string;
+  /** 행 태그에 적용할 인라인 스타일 */
   style?: React.CSSProperties;
 }
 

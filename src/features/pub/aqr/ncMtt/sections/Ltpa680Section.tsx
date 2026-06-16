@@ -5,32 +5,31 @@
 
 import '@/shared/lib/agGridPub';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import React, { useState } from 'react';
+import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Grid, Gcol, Typo } from '@atoms';
+import { ChevronDownIcon, FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+import { Textarea } from '@uiux/Textarea';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BottomBar } from '@common/BottomBar';
 
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TooltipQ } from '@common/TooltipQ';
 import { PageID } from '@features/PageID';
 
-import { ChevronDownIcon, FileExportIcon, FileImportIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot, LayoutScrollItem } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { TooltipQ } from '@common/TooltipQ';
-
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { Textarea } from '@uiux/Textarea';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import React, { useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 
 type DummyDataType = {
   id: number;
@@ -1027,11 +1026,7 @@ export default function Ltpa680Section() {
 
                       // 8자 이하: 툴팁 불필요, 그대로 렌더링
                       if (!isLongLabel) {
-                        return (
-                          <React.Fragment key={option.value}>
-                            {item}
-                          </React.Fragment>
-                        );
+                        return <React.Fragment key={option.value}>{item}</React.Fragment>;
                       }
 
                       // 8자 초과: 호버 시 전체 라벨을 툴팁으로 노출
@@ -1126,8 +1121,7 @@ export default function Ltpa680Section() {
                   </div>
                 </Gcol>
               </Grid>
-              <Grid className="w-full p-2.5" variant={'box-line'} placement="ss" gap={3}>
-                
+              <Grid className="w-full p-2.5 grid-rows-[auto_1fr]" variant={'box-line'} placement="ss" gap={3}>
                 {/*
                   [selectedDisease 연동] 좌측 '많이 찾는 질병' 라디오 버튼 선택 시 렌더링
                   - selectedDisease가 빈 문자열('')이면 이 블록 전체가 숨겨짐
@@ -1157,8 +1151,8 @@ export default function Ltpa680Section() {
                         </Grow>
                         {/* 관련 질병명 목록 */}
                         <Typo tag={'p'} className="text-wrap">
-                          경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및 간장, 흉추의 염좌 및 긴장,
-                          요추의 염좌 및 긴장
+                          경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및 간장, 흉추의 염좌 및
+                          긴장, 요추의 염좌 및 긴장
                         </Typo>
                       </Gcol>
                     </TooltipQ>
@@ -1411,7 +1405,7 @@ export default function Ltpa680Section() {
                     <TableFold className="mt-1">
                       <TableFoldHead title="Mobile용 질병정보"></TableFoldHead>
                       <TableFoldBody className="gap-3">
-                        <FormTable cols={['w-[18rem]', 'w-auto']}>
+                        <FormTable cols={['w-[10rem]', 'w-auto']}>
                           <FormRow vertical={false}>
                             <FormCell title={'발생부위'}>
                               <Input

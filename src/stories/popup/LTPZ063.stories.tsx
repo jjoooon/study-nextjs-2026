@@ -1,5 +1,5 @@
-import { LayoutDoc } from '@layout/BaseLayout';
 import Ltpz063 from '@/features/pub/ispl/aplMtt/components/popups/Ltpz063';
+import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
   title: 'app/ispl/aplMtt/components/popups/Ltpz063',

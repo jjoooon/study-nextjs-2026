@@ -96,7 +96,7 @@ const Ltpz025 = () => {
         cellClass: 'text-center px-0!',
       },
     ],
-    [attributeColumnWidth]
+    []
   );
 
   const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(

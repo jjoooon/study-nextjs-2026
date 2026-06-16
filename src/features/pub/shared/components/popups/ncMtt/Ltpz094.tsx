@@ -4,9 +4,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,8 +19,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 type DummyDataType = {
   id: number;
@@ -37,7 +37,7 @@ const DummyData: DummyDataType[] = [
     field02: '2026-03-01~2026-03-16, 입원(2일)',
     field03:
       '수술/시술(봉합술), 추가질문답변: ①치료내용:하이푸, 색전술, 근종절제, 호르몬치료 등 ②출혈 및 크기변화여부:출혈 및 크기, 갯수 증가 없음 ③잔여병변유무 ④수술 예정:없음',
-    field04: '한화병원',
+    field04: '한화병원한화병원한화병원한화병원',
     field05: '완치',
     field06: '없음',
   },
@@ -48,8 +48,8 @@ const DummyData: DummyDataType[] = [
     field03:
       '약물치료(주사,연고,안약 등), 추가질문답변: ①발생부위:경추 ②척추질환(디스크,관절염,척추만곡 등)동반:없음 ③발생원인:교통사고 外원인',
     field04: '한화병원',
-    field05: '완치',
-    field06: '없음',
+    field05: '미완치',
+    field06: '있음(2회)',
   },
   {
     id: 3,

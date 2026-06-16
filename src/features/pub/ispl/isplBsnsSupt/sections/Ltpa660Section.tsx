@@ -3,27 +3,26 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, numberValueFormatter, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import { Grow, Grid, Gcol } from '@atoms';
+import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
+import { AgGridEmptyComponent, numberValueFormatter, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect } from '@uiux/NativeSelect';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { createExpiryCellRenderer } from '@grid/CellRenderers';
-import { SearchIcon, ResetIcon } from '@icons';
-import { FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect } from '@uiux/NativeSelect';
-import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useMemo } from 'react';
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
 
 import '@/shared/lib/agGridPub';
 
@@ -104,6 +103,7 @@ export default function Ltpa660Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
   const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
+  const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
 
   const pageSize = 3;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext, handleLoadReset, handleSortChanged } =
@@ -133,8 +133,7 @@ export default function Ltpa660Section() {
       {
         headerName: '담보명',
         field: 'field2',
-        flex: 8,
-        minWidth: attributeColumnWidth(300),
+        flex: 10,
       },
       {
         headerName: '판매건수',
@@ -257,6 +256,7 @@ export default function Ltpa660Section() {
               <div className="ag-theme-alpine">
                 {/* 2026-06-04 suppressClickEdit={true} 삭제 */}
                 <AgGridReact<DummyData1Type>
+                  ref={gridRef}
                   onGridReady={(event) => {
                     gridApiRef.current = event.api;
                   }}
@@ -302,6 +302,7 @@ export default function Ltpa660Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 isAll={false}
                 loadedCount={loadedCount}
                 totalCount={totalCount}

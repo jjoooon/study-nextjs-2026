@@ -3,12 +3,12 @@
  */
 'use client';
 
-import Ltpa120 from '@/features/pub/shared/components/popups/Ltpa120';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import Ltpa120 from '@features/Ltpa120';
 
 /**
  * 사이드 하단 요약 영역에서 사용하는 집계 데이터 타입.
@@ -19,7 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
  * - `paymentAmount`: 납입보험료(원)
  * - `point`: 청약포인트(P)
  */
-type AsideFootDataTotal = {
+export type AsideFootDataTotal = {
   insGen: number | boolean;
   paymentAmount: number;
   point: number;
@@ -31,7 +31,7 @@ type AsideFootDataTotal = {
  * - `dataTotal`: 하단 요약 카드에 표시할 집계 데이터
  * - `viewKey`: 화면 모드 키(일부 모드에서 상단 4세대 영역을 숨김)
  */
-type AsideFootProps = {
+export type AsideFootProps = {
   dataTotal?: AsideFootDataTotal;
   viewKey?: string;
 };

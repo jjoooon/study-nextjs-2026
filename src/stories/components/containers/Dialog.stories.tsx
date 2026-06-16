@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol, Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+ */ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import * as React from 'react';
+import { Gcol, Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -17,7 +18,7 @@ import {
   DialogSection,
   DialogFooterArea,
 } from '@uiux/Dialog';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 type DialogContentProps = React.ComponentProps<typeof DialogContent>;
 

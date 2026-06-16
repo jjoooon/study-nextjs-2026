@@ -4,24 +4,24 @@
 
 'use client';
 
-import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Grid } from '@atoms';
+import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
+import { AgGridEmptyComponent, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
-import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { useFormFields } from '@hooks/useFormFields';
 
 import '@/shared/lib/agGridPub';
 
@@ -325,6 +325,7 @@ export default function Ltpa570Section() {
     return [...organizationColumnsByGroupBy[groupBy], ...metricColumns];
   }, [groupBy, attributeColumnWidth]);
 
+  const gridRef = React.useRef<AgGridReact<Ltpa570DummyDataRow>>(null);
   const pageSize = 2;
   const { loadedCount, totalCount, dataSource, handleLoadAll, handleLoadNext } = useAgGridInfiniteAppend({
     allRows: Ltpa570DummyData,
@@ -440,13 +441,14 @@ export default function Ltpa570Section() {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'상품'} tdClassName="grid grid-cols-[auto_auto_1fr]">
-                    <Input aria-label="" value={'LA1301097'} required />
+                    <Input aria-label="" value={'LA1301097'} width={100} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>
                     <Input
                       aria-label=""
-                      value={'한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601'}
+                      value={'한화 시그니처 여성 건강보험 4.0/(1종) 납입면제 강화형, 기본형'}
+                      width={410}
                       readOnly
                     />
                   </FormCell>
@@ -487,6 +489,7 @@ export default function Ltpa570Section() {
               </Grow>
               <div className="ag-theme-alpine ltpa010-grid">
                 <AgGridReact<Ltpa570DummyDataRow>
+                  ref={gridRef}
                   key={groupBy}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
@@ -504,6 +507,7 @@ export default function Ltpa570Section() {
                 />
               </div>
               <TableMore
+                gridRef={gridRef}
                 loadedCount={loadedCount}
                 totalCount={totalCount}
                 pageSize={pageSize}

@@ -30,6 +30,7 @@ type DialogSizeConfig = {
   maxHeight?: DialogSizeValue;
 };
 
+/** 다이얼로그 가로/세로 크기 타입 */
 type DialogSize = DialogSizePreset | DialogSizeConfig;
 
 const DEFAULT_DIALOG_CONTENT_Z_INDEX = 51;
@@ -108,12 +109,31 @@ const DialogDepthContext = React.createContext<DialogContextValue>({
   dialogId: null,
 });
 
-function Dialog({
-  open: openProp,
-  defaultOpen,
-  onOpenChange,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Root>) {
+interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> {
+  /**
+   * 다이얼로그의 열림 상태 (Controlled)
+   */
+  open?: boolean;
+  /**
+   * 다이얼로그의 기본 초기 열림 상태 (Uncontrolled)
+   */
+  defaultOpen?: boolean;
+  /**
+   * 다이얼로그 열림 상태가 바뀔 때 호출되는 콜백 함수
+   */
+  onOpenChange?: (open: boolean) => void;
+  /**
+   * 모달 형태로 작동할지 여부 (배경 클릭 차단 등)
+   * @default true
+   */
+  modal?: boolean;
+}
+
+/**
+ * 다이얼로그 루트 컴포넌트 (Dialog)
+ * - 팝업/모달의 라이프사이클과 중첩(Depth) 깊이에 따른 레이어 포커스를 관리합니다.
+ */
+function Dialog({ open: openProp, defaultOpen, onOpenChange, ...props }: DialogProps) {
   const parentDialogContext = React.useContext(DialogDepthContext);
   const newDepth = parentDialogContext.depth + 1;
   const dialogId = React.useId();
@@ -151,6 +171,10 @@ function Dialog({
   );
 }
 
+/**
+ * 다이얼로그 트리거 컴포넌트 (DialogTrigger)
+ * - 클릭 시 다이얼로그를 오픈하는 버튼 역할을 담당합니다.
+ */
 function DialogTrigger({ ...props }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
 }
@@ -159,18 +183,27 @@ function DialogPortal({ ...props }: React.ComponentProps<typeof DialogPrimitive.
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
 }
 
+/**
+ * 다이얼로그 닫기 컴포넌트 (DialogClose)
+ * - 클릭 시 다이얼로그를 닫습니다.
+ */
 function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.Close>) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
-function DialogOverlay({
-  className,
-  style,
-  disableMotion = false,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay> & {
+interface DialogOverlayProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay> {
+  /**
+   * 오픈/클로즈 트랜지션 애니메이션 비활성화 여부
+   * @default false
+   */
   disableMotion?: boolean;
-}) {
+}
+
+/**
+ * 다이얼로그 백드롭 오버레이 (DialogOverlay)
+ * - 다이얼로그 배경을 차단하는 어두운 막 레이어입니다.
+ */
+function DialogOverlay({ className, style, disableMotion = false, ...props }: DialogOverlayProps) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
@@ -187,6 +220,54 @@ function DialogOverlay({
   );
 }
 
+interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+  /**
+   * 우측 상단에 기본 닫기(X) 버튼을 노출할지 여부
+   * @default true
+   */
+  showCloseButton?: boolean;
+  /**
+   * 닫기(X) 버튼에 적용할 추가적인 CSS 클래스명
+   */
+  closeButtonClassName?: string;
+  /**
+   * 백드롭 오버레이를 렌더링할지 여부.
+   * 값을 전달하지 않으면 여러 팝업이 겹쳐 열렸을 때 최상위 팝업에만 오버레이를 자동으로 띄워 가독성을 높입니다.
+   */
+  showOverlay?: boolean;
+  /**
+   * 백드롭 오버레이에 적용할 추가적인 CSS 클래스명
+   */
+  overlayClassName?: string;
+  /**
+   * 마우스 드래그를 통해 다이얼로그 너비/높이를 조절(Resize)할 수 있는지 여부
+   * @default false
+   */
+  resizable?: boolean;
+  /**
+   * 다이얼로그의 z-index 우선순위 수동 지정.
+   * 값을 지정하지 않을 경우, 열린 다이얼로그의 레이어 순서에 맞춰 51, 53, 55 순으로 자동 부여됩니다.
+   */
+  zIndex?: number;
+  /**
+   * 다이얼로그 크기 규격 설정 (너비/높이 사이즈)
+   * - 프리셋: 'xs' | 'sm' | 'md' | 'ml' | 'lg' | 'xl' | '2xl' | 'full'
+   * - 커스텀: `{ width, height, minWidth, minHeight, maxWidth, maxHeight }`
+   */
+  size?: DialogSize;
+  /**
+   * 다이얼로그의 초기 출력 기준 오프셋 좌표 (x, y)
+   */
+  defaultPosition?: {
+    x: number;
+    y: number;
+  };
+}
+
+/**
+ * 다이얼로그 콘텐츠 본체 (DialogContent)
+ * - 실제 다이얼로그 팝업 창 영역입니다. 드래그 이동 및 크기 조절(Resizable) 기능을 내장하고 있습니다.
+ */
 function DialogContent({
   className,
   children,
@@ -201,20 +282,7 @@ function DialogContent({
   onPointerDownOutside,
   onInteractOutside,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & {
-  showCloseButton?: boolean;
-  closeButtonClassName?: string;
-  showOverlay?: boolean;
-  overlayClassName?: string;
-  resizable?: boolean;
-  // 다이얼로그 레이어 우선순위 제어용 (기본값: overlay보다 1 높음)
-  zIndex?: number;
-  size?: DialogSize;
-  defaultPosition?: {
-    x: number;
-    y: number;
-  };
-}) {
+}: DialogContentProps) {
   const { dialogId } = React.useContext(DialogDepthContext);
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
@@ -250,11 +318,15 @@ function DialogContent({
   const [isResizing, setIsResizing] = React.useState<string | null>(null);
   const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
   const contentRef = React.useRef<HTMLDivElement>(null);
+  const [prevDefaultPosition, setPrevDefaultPosition] = React.useState<typeof defaultPosition>(defaultPosition);
 
-  React.useEffect(() => {
-    if (!defaultPosition) return;
-    setPosition(defaultPosition);
-  }, [defaultPosition]);
+  // defaultPosition 변경 시 최신 상태로 동기화 (렌더 단계에서 동기화, x/y 좌표값 비교로 무한루프 방지)
+  if (defaultPosition?.x !== prevDefaultPosition?.x || defaultPosition?.y !== prevDefaultPosition?.y) {
+    setPrevDefaultPosition(defaultPosition);
+    if (defaultPosition) {
+      setPosition(defaultPosition);
+    }
+  }
 
   const resolvedSize = React.useMemo(() => resolveDialogSize(size), [size]);
 
@@ -347,7 +419,7 @@ function DialogContent({
           const actualAddedWidth = newWidth - initialCapture.width;
           newX = initialCapture.x + actualAddedWidth / 2;
         } else if (isResizing.includes('w')) {
-          // 왼쪽 확장: 너비는 늘어나고, 중심점은 늘어난 양의 절반만큼 왼쪽(-X)으로
+          // 왼쪽 확장: 너비는 늘어나고, 중심점은 중심점 이동 규칙에 따라 왼쪽(-X)으로
           const addedWidth = -deltaX;
           newWidth = Math.max(300, initialCapture.width + addedWidth);
           const actualAddedWidth = newWidth - initialCapture.width;
@@ -356,13 +428,13 @@ function DialogContent({
 
         // --- Y축 계산 ---
         if (isResizing.includes('s')) {
-          // 아래쪽 확장: 높이는 늘어나고, 중심점은 늘어난 양의 절반만큼 아래(+Y)로
+          // 아래쪽 확장: 높이는 늘어나고, 중심점은 아래(+Y)로
           const addedHeight = deltaY;
           newHeight = Math.max(200, initialCapture.height + addedHeight);
           const actualAddedHeight = newHeight - initialCapture.height;
           newY = initialCapture.y + actualAddedHeight / 2;
         } else if (isResizing.includes('n')) {
-          // 위쪽 확장: 높이는 늘어나고, 중심점은 늘어난 양의 절반만큼 위(-Y)로
+          // 위쪽 확장: 높이는 늘어나고, 중심점은 위(-Y)로
           const addedHeight = -deltaY;
           newHeight = Math.max(200, initialCapture.height + addedHeight);
           const actualAddedHeight = newHeight - initialCapture.height;
@@ -492,6 +564,10 @@ function DialogContent({
   );
 }
 
+/**
+ * 다이얼로그 헤더 영역 (DialogHeader)
+ * - 팝업 최상단 타이틀 영역이며, 잡아서 드래그하여 다이얼로그를 이동할 수 있는 트리거 영역입니다.
+ */
 function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
@@ -505,6 +581,10 @@ function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
+/**
+ * 다이얼로그 하단 푸터 (DialogFooter)
+ * - 다이얼로그의 하단 버튼 배치 영역입니다.
+ */
 function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
@@ -528,6 +608,10 @@ function DialogFooterArea({ className, ...props }: React.ComponentProps<'div'>) 
   );
 }
 
+/**
+ * 다이얼로그 타이틀 (DialogTitle)
+ * - 팝업 상단 굵은 텍스트 제목 영역입니다.
+ */
 function DialogTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
@@ -541,6 +625,9 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
   );
 }
 
+/**
+ * 다이얼로그 세부 설명 (DialogDescription)
+ */
 function DialogDescription({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description
@@ -551,6 +638,9 @@ function DialogDescription({ className, ...props }: React.ComponentProps<typeof 
   );
 }
 
+/**
+ * 다이얼로그 스크롤 가능 세션 콘텐츠 영역 (DialogSection)
+ */
 function DialogSection({ children, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <Grid

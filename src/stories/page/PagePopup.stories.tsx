@@ -1,8 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { LayoutDoc } from '@layout/BaseLayout';
+ */
+import LTPA010 from '@/app/pub/ispl/pages/LTPA010';
+import { Ltpa35004 } from '@/features/pub/ispl/udRqRst/components/Ltpa35004'; // 04. 심사요청
+import { Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -14,7 +15,8 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import LTPA010 from '@/app/pub/ispl/pages/LTPA010';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
   title: '페이지인팝업Test/LTPA010',
@@ -41,7 +43,7 @@ export const Default = () => (
         </DialogHeader>
 
         <DialogSection className="grid-rows-[auto_1fr]">
-          <LTPA010 />
+          <Ltpa35004 />
         </DialogSection>
 
         <DialogFooter>

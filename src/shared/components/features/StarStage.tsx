@@ -12,9 +12,9 @@ const LOW_PROFITABILITY_TEXT = '수익성 저조';
 const HIGH_PROFITABILITY_TEXT = '수익성 우량';
 
 export interface StarStageProps {
-  // 별 개수(0~5 권장). profitabilityText에서 해석된 값이 있으면 해당 값이 우선된다.
+  /** 별 개수(0~5 권장). profitabilityText에서 해석된 값이 있으면 해당 값이 우선됩니다. */
   star?: number;
-  // 수익성 문구. 전달 시 문구를 그대로 보여주고, 별 개수도 문구 기반으로 자동 추정한다.
+  /** 수익성 문구. 전달 시 문구를 그대로 보여주고, 별 개수도 문구 기반으로 자동 추정합니다. */
   profitabilityText?: string;
 }
 

@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 import { ReactNode, HTMLAttributes, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';
 
 /**
  * 불릿 마커 종류.
@@ -36,27 +36,80 @@ const useBulletListContext = () => useContext(BulletListContext);
  *
  * 주의:
  * - HTML 기본 props는 `li` 기준으로 확장되어 있으나 실제 루트는 `ul` 렌더링이다.
- * - 현재 구현에서는 `children/type/size/color/position/className` 중심으로 사용된다.
+/**
+ * BulletList 및 BulletListItem 컴포넌트의 Props 인터페이스입니다.
  */
 interface BulletListProps extends HTMLAttributes<HTMLLIElement> {
+  /** 목록 내에 배치할 자식 노드 (주로 BulletListItem 컴포넌트) */
   children?: ReactNode;
+  /**
+   * 아이템 텍스트 크기 토큰
+   * - `xs`, `sm`, `md`, `lg`
+   * @default 'md'
+   */
   size?: BulletSize;
+  /**
+   * 목록 배치 방향
+   * - `col`: 세로 배치
+   * - `row`: 가로 배치
+   * @default 'col'
+   */
   position?: 'col' | 'row';
+  /**
+   * 텍스트 및 불릿 마커 색상 토큰
+   * - `default`, `info`, `detail`, `warning`
+   * @default 'default'
+   */
   color?: BulletColor;
+  /**
+   * 아이템 마커(불릿) 디자인 타입
+   * - `dot`: 기본 원형
+   * - `dotBig`: 큰 원형
+   * - `hash`: 해시 기호 (#)
+   * - `ref`: 참조 기호 (*)
+   * - `dash`: 대시 기호 (-)
+   * - `star`: 별표 기호 (★)
+   * - `symbols`: before 속성에 정의한 문자열을 마커로 직접 사용
+   * @default 'dot'
+   */
   type?: BulletType;
+  /** 루트 요소에 적용할 스타일 클래스 */
   className?: string;
+  /**
+   * type이 'symbols'일 때 마커로 사용할 문자열 (예: '1.', '①', '㉠', 'ⓐ' 등)
+   */
   before?: string;
 
+  /** 클릭 핸들러 */
   onClick?: React.MouseEventHandler<HTMLLIElement>;
 }
 
-/** `BulletItem`(단일 아이템 전용) props */
+/**
+ * BulletItem(단일 아이템 전용) props 인터페이스입니다.
+ */
 interface BulletItemProps extends HTMLAttributes<HTMLDivElement> {
+  /** 아이템 텍스트 */
   children?: ReactNode;
+  /**
+   * 아이템 크기
+   * @default 'md'
+   */
   size?: BulletSize;
+  /**
+   * 텍스트 색상
+   * @default 'default'
+   */
   color?: BulletColor;
+  /**
+   * 불릿 스타일 타입
+   * @default 'dot'
+   */
   type?: BulletType;
+  /** 추가 스타일 클래스 */
   className?: string;
+  /**
+   * type이 'symbols'일 때 마커로 사용할 문자열
+   */
   before?: string;
 }
 
@@ -99,12 +152,10 @@ const itemColor = {
 };
 
 /**
- * 불릿 리스트 컨테이너.
+ * BulletList는 안내 문구, 약관 요약, 참조형 문구 등을 목록 형태로 표현할 때 사용하는 리스트 컨테이너 컴포넌트입니다.
  *
- * 역할:
- * - 리스트 방향(row/col) 레이아웃 제공
- * - 기본 `type/size/color`를 하위 아이템에 컨텍스트로 전달
- * - 컬러별 `em` 강조 규칙(색/굵기) 공통 적용
+ * - 배치 방향(column/row)과 아이템 bullet 스타일을 조합해 다양한 문서형 UI를 구성할 수 있습니다.
+ * - 기본 `type`, `size`, `color` 값을 하위 `BulletListItem` 컴포넌트들에 Context를 통해 전달합니다.
  */
 export const BulletList = ({
   children,
@@ -118,7 +169,7 @@ export const BulletList = ({
     <BulletListContext.Provider value={{ type, size, color }}>
       <ul
         className={cn(
-          position === 'row' ? 'flex flex-row flex-wrap items-center' : 'flex flex-col',
+          position === 'row' ? 'flex flex-row flex-wrap items-center [&>li]:w-auto gap-x-3 gap-y-1' : 'flex flex-col',
           color === 'warning'
             ? '[&>li_em]:text-[var(--color-danger-50)] [&>li_em]:font-bold [&>li_em]:not-italic!'
             : '',
@@ -138,12 +189,10 @@ export const BulletList = ({
 };
 
 /**
- * 리스트 아이템(`li`) 컴포넌트.
+ * BulletListItem은 BulletList 내에서 개별 항목을 렌더링하는 컴포넌트입니다.
  *
- * 특징:
- * - `BulletList` 컨텍스트 기본값 사용 가능
- * - 클릭 시 키보드 접근성(Enter/Space) 지원
- * - 불릿 타입별 아이콘/문자열 마커 렌더링
+ * - `BulletList` 컨테이너가 제공하는 `type/size/color` 설정을 컨텍스트를 통해 기본값으로 이어받습니다.
+ * - 클릭 이벤트(`onClick`)가 주어지면 키보드 포커스 및 접근성(Enter/Space 지원)이 자동으로 켜집니다.
  */
 export const BulletListItem = ({
   children,
@@ -191,7 +240,7 @@ export const BulletListItem = ({
           itemColor[resolvedColor],
           itemHeight[resolvedSize],
           // bulletStyles[resolvedType],
-          resolvedType === 'symbols' && '-translate-y-[0.2rem] leading-[1.5]'
+          resolvedType === 'symbols' && '-translate-y-[0.2rem] leading-[1]'
         )}
       >
         {resolvedType === 'ref' && <RefIcon size={10} />}
@@ -210,8 +259,7 @@ export const BulletListItem = ({
 };
 
 /**
- * 단일 아이템 렌더러.
- * - 컨텍스트 없이 독립적으로 불릿+텍스트 한 줄을 구성할 때 사용.
+ * BulletItem은 Context Provider 없이 단독으로 하나의 불릿 마커와 텍스트를 구성하고 싶을 때 사용하는 컴포넌트입니다.
  */
 export const BulletItem = ({
   children,

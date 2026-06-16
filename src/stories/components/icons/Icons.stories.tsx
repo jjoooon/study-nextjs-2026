@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import * as Icons from '@icons';
-import type { Meta, StoryObj } from '@storybook/react';
+ */ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import type { JSX } from 'react';
+import * as Icons from '@icons';
 
 type IconStoryArgs = {
   size: number;
@@ -43,6 +43,7 @@ export const AllIcons: Story = {
   },
   render: (args) => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, background: '#f5f5f5', padding: 32, borderRadius: 12 }}>
+      {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
       {iconList.map(([name, Icon]) => (
         <div
           key={name}

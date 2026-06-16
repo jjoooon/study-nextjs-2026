@@ -1,18 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import {
-  Title,
-  Subtitle,
-  Description,
-  Primary,
-  Controls,
-  Canvas,
-  Source,
-  Markdown,
-  Unstyled,
-} from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+ */
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import React from 'react';
 import { PageTitle, PageTitleProduct } from '@/shared/components/features/PageTitle';
+import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
 
 const meta: Meta<typeof PageTitleProduct> = {
   title: 'Components/Features/header/페이지제목(PageTitle)',
@@ -22,83 +14,54 @@ const meta: Meta<typeof PageTitleProduct> = {
     layout: 'centered',
     docs: {
       page: () => (
-        <>
-          <Title />
-          <br />
-          <br />
-          <h2>Overview</h2>
-          <div>
-            <p>
-              PageTitle, PageTitleProduct 컴포넌트는 보험/상품 설계 화면의 타이틀 및 주요 정보 영역을 담당합니다.
-              <br />
-              <b>PageTitleProduct</b>는 상품 설계에 특화된 확장형, <b>PageTitle</b>은 기본형입니다.
-            </p>
-          </div>
-          <Primary />
-          <Controls />
+        <StoryDocTemplate
+          title="PageTitle"
+          history={[
+            '2026.03.30 - 컴포넌트 최초 생성',
+            '2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화',
+          ]}
+          overview={`PageTitle, PageTitleProduct 컴포넌트는 보험/상품 설계 화면의 타이틀 및 주요 정보 영역을 담당합니다.
+PageTitleProduct는 상품 설계에 특화된 확장형, PageTitle은 기본형입니다.`}
+          usageCode={`import { PageTitle, PageTitleProduct } from '@/shared/components/features/PageTitle';
 
-          <h2>Usage</h2>
-          <p>아래와 같이 다양한 형태로 사용할 수 있습니다.</p>
-          <ul>
-            <li>상품 설계(확장형): PageTitleProduct</li>
-            <li>일반 타이틀(기본형): PageTitle</li>
-            <li>props 조합에 따라 다양한 정보 표현</li>
-          </ul>
-          <Markdown>
-            {`
-\`\`\`tsx
-import { PageTitle, PageTitleProduct } from '@/shared/components/features/PageTitle';
-
-<PageTitleProduct data={...} />
-<PageTitle data={...} />
-\`\`\`
-            `}
-          </Markdown>
-
-          <h2>Props</h2>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                <th>prop</th>
-                <th>타입/옵션</th>
-                <th>설명</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>title</td>
-                <td>string</td>
-                <td>타이틀 텍스트</td>
-              </tr>
-              <tr>
-                <td>simpleMode</td>
-                <td>boolean</td>
-                <td>간소화 모드</td>
-              </tr>
-              <tr>
-                <td>options</td>
-                <td>string[]</td>
-                <td>옵션 목록</td>
-              </tr>
-              <tr>
-                <td>planNumber</td>
-                <td>string[]</td>
-                <td>설계번호</td>
-              </tr>
-              <tr>
-                <td>contractHolder</td>
-                <td>string</td>
-                <td>계약자명</td>
-              </tr>
-              <tr>
-                <td>planNumberList</td>
-                <td>object[]</td>
-                <td>설계번호 상세 리스트</td>
-              </tr>
-            </tbody>
-          </table>
-        </>
+<PageTitleProduct data={contractData} />
+<PageTitle data={contractData} />`}
+          apiReference={[
+            {
+              prop: 'data',
+              type: 'DefaultPageTitle',
+              description: '타이틀 및 설계 메타 데이터 객체',
+            },
+            {
+              prop: 'simpleMode',
+              type: 'boolean',
+              description: '간편/상세 모드 토글 상태 (Controlled)',
+            },
+            {
+              prop: 'onSimpleModeChange',
+              type: '(value: boolean) => void',
+              description: '간편/상세 모드 토글 시 호출되는 콜백 함수',
+            },
+          ]}
+        />
       ),
+    },
+  },
+  argTypes: {
+    data: {
+      control: 'object',
+      description: '페이지 타이틀 데이터 객체',
+      table: { category: 'Data' },
+    },
+    simpleMode: {
+      control: 'boolean',
+      description: '간편/상세 모드 상태',
+      table: { category: 'State' },
+    },
+    onSimpleModeChange: {
+      action: 'simpleModeChanged',
+      description: '모드 변경 콜백 함수',
+      table: { category: 'Events' },
     },
   },
 };
@@ -107,16 +70,14 @@ export default meta;
 
 type Story = StoryObj<typeof PageTitleProduct>;
 
-const Template = (args: any) => (
-  <div style={args.style}>
-    <PageTitleProduct {...args} />
-    <div style={{ margin: '32px 0' }} />
-    <PageTitle data={args.data} />
-  </div>
-);
-
 export const Default: Story = {
-  render: Template,
+  render: (args) => (
+    <div>
+      <PageTitleProduct {...args} />
+      <div style={{ margin: '32px 0' }} />
+      <PageTitle data={args.data} />
+    </div>
+  ),
   args: {
     data: {
       simpleMode: true,

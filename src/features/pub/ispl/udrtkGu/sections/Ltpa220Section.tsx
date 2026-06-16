@@ -4,20 +4,19 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grow, Grid } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { PageID } from '@features/PageID';
 import { LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-
-import { Input } from '@uiux/Input';
-import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useFormFields } from '@/shared/hooks/useFormFields';
 
 type DummyDataType = {
   id: number;
@@ -33,7 +32,7 @@ const DummyData: DummyDataType[] = [
     id: 1,
     field01: '홍길동동',
     field02:
-      '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은',
+      '질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은 질병사망(암진단후) 가입금액은  질병사망(암진단후)',
     field03: '2016-01-01',
     field04: '1000000',
     field05: '1',

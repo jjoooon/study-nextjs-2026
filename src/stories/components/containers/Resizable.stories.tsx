@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 const meta: Meta<typeof ResizablePanelGroup> = {
@@ -82,12 +82,12 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resi
                 <tr>
                   <td rowSpan={2}>ResizablePanelGroup</td>
                   <td>orientation</td>
-                  <td>'horizontal' | 'vertical'</td>
+                  <td>&apos;horizontal&apos; | &apos;vertical&apos;</td>
                   <td>패널 배치 방향</td>
                 </tr>
                 <tr>
                   <td>direction</td>
-                  <td>'ltr' | 'rtl'</td>
+                  <td>&apos;ltr&apos; | &apos;rtl&apos;</td>
                   <td>레이아웃 방향</td>
                 </tr>
                 <tr>

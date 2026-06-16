@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { Typo } from '@atoms';
 import type { CSSProperties, KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXposition } from '@/shared/types/uiTypes';
+import { Typo } from '@atoms';
 
 /**
  * Group 계열 컴포넌트에서 허용하는 정렬 포지션 집합.
@@ -71,12 +71,39 @@ type Variant =
  * - `onClick`이 있으면 접근성 가능한 클릭 블록으로 동작
  */
 interface GroupProps {
+  /**
+   * 그룹 내부에 들어갈 자식 노드
+   */
   children?: ReactNode;
+  /**
+   * 정렬 배치 옵션 (주축 정렬 + 교차축 정렬)
+   * - 첫 글자: 주축 정렬 (s: start, c: center, e: end, bw: between, ar: around, ev: evenly)
+   * - 둘째 글자: 교차축 정렬 (s: start, c: center, e: end)
+   * @default 'cc'
+   */
   placement?: LayoutPlacement;
+  /**
+   * 시각적 스타일 프리셋 (여백, 배경색, 테두리 등)
+   * @default 'default'
+   */
   variant?: Variant;
+  /**
+   * 아이템 사이의 간격 (gap)
+   * @default 1
+   */
   gap?: number | string;
+  /**
+   * 추가적인 CSS 클래스명
+   */
   className?: string;
+  /**
+   * 클릭 시 동작할 이벤트 핸들러.
+   * 이 핸들러가 전달되면 컴포넌트는 HTML `role="button"`과 `tabIndex={0}`, 키보드 이벤트 대응(Enter/Space)을 자동으로 갖추어 웹 접근성을 지원합니다.
+   */
   onClick?: MouseEventHandler<HTMLDivElement>;
+  /**
+   * 커스텀 인라인 스타일 객체
+   */
   style?: CSSProperties;
 }
 
@@ -175,8 +202,8 @@ const VARIANT_MAP: Record<Variant, string> = {
   'box-info': 'px-2.5 py-2 bg-[var(--color-information-5)] gap-1.5 rounded-[0.6rem]', // 푸른색 안내박스
   'box-warning': 'px-2.5 py-2 bg-[var(--color-danger-5)] gap-1.5 rounded-[0.6rem]', // 붉은색 경고박스
   'box-detail': 'px-2.5 py-2 bg-[var(--color-warning-5)] gap-1.5 rounded-[0.6rem]', // 노란색 박스
-  'box-round': 'px-2.5 py-2.5 bg-[#F3F4F6] gap-1.5 rounded-[0.6rem]', // 상단 회색라운드 박스
-  'box-round-b': 'px-2.5 pt-2 pb-2.5 bg-[#F3F4F6] gap-1.5 rounded-b-[0.6rem]', // 택과 붙어있는 회색박스일 하단만 라운드 처리 사용
+  'box-round': 'px-2.5 py-2.5 bg-[var(--color-blue-gray-10)] gap-1.5 rounded-[0.6rem]', // 상단 회색라운드 박스
+  'box-round-b': 'px-2.5 pt-2 pb-2.5 bg-[var(--color-blue-gray-10)] gap-1.5 rounded-b-[0.6rem]', // 택과 붙어있는 회색박스일 하단만 라운드 처리 사용
   'box-warning-line':
     'px-2.5 py-2.5 bg-[var(--color-danger-5)] gap-1.5 rounded-[0.6rem] border! border-[var(--color-gray-15)]', // 붉은색 경고박스 체크박스
   'box-info-line':
@@ -202,6 +229,7 @@ export const Gcol = ({
 }: GroupProps) => {
   return (
     <div
+      data-variant={variant}
       data-group="col"
       className={cn(
         'flex flex-col relative w-full tracking-[-0.13rem]',
@@ -236,6 +264,7 @@ export const Grow = ({
 }: GroupProps) => {
   return (
     <div
+      data-variant={variant}
       data-group="row"
       className={cn(
         'flex flex-row relative tracking-[-0.13rem]',
@@ -262,6 +291,7 @@ export const Grow = ({
 export const Grid = ({ children, variant = 'default', gap = 1, className, style, onClick }: GroupProps) => {
   return (
     <div
+      data-variant={variant}
       data-group="row"
       className={cn('grid relative tracking-[-0.13rem]', `gap-${gap}`, VARIANT_MAP[variant], className)}
       style={style}
@@ -320,13 +350,32 @@ export const Separator = ({ children, style, onClick }: GroupProps) => {
 
 /** Divider 전용 props */
 interface DividerProps {
-  /** 선형(default) 또는 점형(dot) 구분 */
+  /**
+   * 구분선 형태 변형
+   * - default: 실선 구분선
+   * - dot: 원형 점 구분선
+   * @default 'default'
+   */
   variant?: 'default' | 'dot';
+  /**
+   * 추가적인 CSS 클래스명
+   */
   className?: string;
-  /** 선 방향: 세로(col) / 가로(row) */
+  /**
+   * 구분선 방향
+   * - col: 세로 방향 구분선
+   * - row: 가로 방향 구분선
+   * @default 'col'
+   */
   dir?: 'col' | 'row';
-  /** 색상 토큰 */
-  color?: 'gray' | 'gray-light' | 'gray-dark';
+  /**
+   * 색상 테마 옵션
+   * - gray: 기본 회색 (var(--color-gray-15))
+   * - gray-light: 밝은 회색 (var(--color-gray-10))
+   * - gray-dark: 어두운 회색 (var(--color-gray-60))
+   * @default 'gray'
+   */
+  color?: 'gray' | 'gray-light' | 'gray-dark' | 'primary-light';
 }
 /**
  * 구분선 컴포넌트.
@@ -341,21 +390,19 @@ export const Divider = ({ className, variant = 'default', dir = 'col', color = '
     gray: 'var(--color-gray-15)',
     'gray-light': 'var(--color-gray-10)',
     'gray-dark': 'var(--color-gray-60)',
+    'primary-light': 'var(--color-primary-15)',
   };
 
   return (
     <span
       className={cn(
         'shrink-0 border-0 inline-block',
-        variant === 'default' &&
-          (dir === 'col'
-            ? `border-[${colorMap[color]}] h-[1rem] w-[0.1rem] border-l`
-            : `border-[${colorMap[color]}] h-[0.1rem] w-[1rem] border-t`),
+        variant === 'default' && (dir === 'col' ? 'h-[1rem] w-[0.1rem] border-l' : 'h-[0.1rem] w-[1rem] border-t'),
         variant === 'dot' &&
-          `block relative w-[0.3rem] h-[100%] flex before:block  before:absolute  before:top-1/2 before:content-[''] before:w-[0.3rem] before:h-[0.3rem] before:shrink-0 
-        before:rounded-full  before:bg-[#777]`,
+          `block relative w-[0.3rem] h-[100%] flex before:block before:absolute before:top-1/2 before:content-[''] before:w-[0.3rem] before:h-[0.3rem] before:shrink-0 before:rounded-full before:bg-[#777]`,
         className
       )}
+      style={variant === 'default' ? { borderColor: colorMap[color] } : undefined}
     />
   );
 };

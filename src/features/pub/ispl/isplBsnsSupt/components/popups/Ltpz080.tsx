@@ -3,18 +3,17 @@
  */
 'use client';
 
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { Grow, Gcol, Typo } from '@atoms';
+import { SearchIcon, ResetIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
   useAgGridInfiniteAppend,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Grow, Gcol, Typo } from '@atoms';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableMore } from '@common/TablePagination';
-import { SearchIcon, ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
@@ -28,9 +27,10 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableMore } from '@common/TablePagination';
 
 import '@/shared/lib/agGridPub';
 
@@ -78,6 +78,20 @@ const DummyData1: DummyData1Type[] = [
     field3: '사망/후유',
     field4: '',
   },
+  {
+    id: 6,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 7,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
 ];
 
 const Ltpz080 = () => {
@@ -117,7 +131,8 @@ const Ltpz080 = () => {
   );
 
   const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
-  const pageSize = 3;
+  const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
+  const pageSize = 5;
   const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
     allRows: rowData1,
     pageSize,
@@ -125,7 +140,7 @@ const Ltpz080 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -197,6 +212,7 @@ const Ltpz080 = () => {
           <Gcol>
             <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
               <AgGridReact<DummyData1Type>
+                ref={gridRef}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData1.slice(0, loadedCount)}
@@ -214,6 +230,7 @@ const Ltpz080 = () => {
               />
             </div>
             <TableMore
+              gridRef={gridRef}
               isAll={false}
               loadedCount={loadedCount}
               totalCount={totalCount}

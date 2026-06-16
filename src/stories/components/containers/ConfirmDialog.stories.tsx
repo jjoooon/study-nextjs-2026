@@ -1,11 +1,11 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol, Grow } from '@atoms';
-import { ConfirmDialog } from '@common/ConfirmDialog';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@uiux/Button';
+ */ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
+import { Gcol, Grow } from '@atoms';
+import { Button } from '@uiux/Button';
+import { ConfirmDialog } from '@common/ConfirmDialog';
 
 type ConfirmDialogStoryProps = React.ComponentProps<typeof ConfirmDialog>;
 
@@ -107,7 +107,7 @@ import { Button } from '@uiux/Button';
                 </tr>
                 <tr>
                   <td>tone</td>
-                  <td>'info' | 'danger'</td>
+                  <td>&apos;info&apos; | &apos;danger&apos;</td>
                   <td>확인 버튼 톤</td>
                 </tr>
                 <tr>
@@ -133,8 +133,8 @@ import { Button } from '@uiux/Button';
               <Gcol gap={4} className="w-full">
                 <h3 className="font-bold">Tone</h3>
                 <p className="text-sm">
-                  tone 속성을 사용하여 확인 버튼의 스타일을 'info'(기본) 또는 'danger'(파괴적 동작)로 설정할 수
-                  있습니다.
+                  tone 속성을 사용하여 확인 버튼의 스타일을 &apos;info&apos;(기본) 또는 &apos;danger&apos;(파괴적
+                  동작)로 설정할 수 있습니다.
                 </p>
                 <Grow gap={4} variant="box-line" className="p-16">
                   <ConfirmDialog

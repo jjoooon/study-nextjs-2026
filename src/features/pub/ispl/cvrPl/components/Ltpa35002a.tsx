@@ -15,9 +15,8 @@ import type {
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import Ltpz020 from '@/features/pub/ispl/cvrPl/components/popups/Ltpz020';
 import { Divider, Gcol, Grow, Grid } from '@atoms';
-import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
+import { ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
 import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
@@ -50,7 +49,7 @@ import {
   uwIconRenderer,
 } from '@grid/CellRenderers';
 
-import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
+import { HeaderWithUnit, AgGridProductNameHeader } from '@grid/HeadRenderers';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002aData';
 import type { DummyDataType } from '../data/ltpa35002aData';
@@ -85,19 +84,15 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   const prevSelectedIdsRef = useRef<Set<string | number>>(new Set());
 
   // 담보명 헤더 렌더러
-  const [coverageName, setCoverageName] = useState('');
+  const [coverageName, _setCoverageName] = useState('');
+  const coverageNameRef = useRef(coverageName);
+
+  const setCoverageName = useCallback((value: string) => {
+    _setCoverageName(value);
+    coverageNameRef.current = value;
+  }, []);
+
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
-  const productNameHeader = useCallback(
-    () => (
-      <ProductNameHeader
-        coverageName={coverageName}
-        onCoverageNameChange={setCoverageName}
-        showProductNameTooltip={showProductNameTooltip}
-        onShowProductNameTooltipChange={(checked) => setShowProductNameTooltip(checked === true)}
-      />
-    ),
-    [coverageName, showProductNameTooltip]
-  );
 
   // =====================
   // 공용 유틸리티/셀 렌더러
@@ -332,7 +327,6 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     ],
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]
   );
-  const [Ltpz020Open, setLtpz020Open] = useState(false);
   return (
     <Gcol>
       <LayoutMainBody>
@@ -340,17 +334,15 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           className={`${!isHeightExpanded ? 'grid-rows-[auto_auto_1fr]' : 'grid-rows-[auto_1fr]'} gap-0`}
         >
           <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
-            <Grow gap={1.5} placement={'bwc'}>
-              <Grow gap={2}>
-                <Button variant={'contained'} color={'coolgray-light'} size={'md'} onClick={() => setLtpz020Open(true)}>
-                  <PaperIcon />
+            <Grow className="gap-[0.2rem]" placement={'bwc'}>
+              <Grow className="gap-[0.8rem]" placement={'sc'}>
+                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
                   보장패키지
                 </Button>
-                <Ltpz020 open={Ltpz020Open} />
-                <Divider dir="col" />
+                <Divider dir="col" color="primary-light" />
 
                 <CheckboxGroup
-                  className="gap-[0.4rem] flex-wrap type-small"
+                  className="gap-[0.2rem] flex-wrap type-small"
                   color="primary"
                   minSelected={0}
                   size="lg"
@@ -366,6 +358,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     { label: '검사/지원', value: '5' },
                     { label: '운전/비용', value: '6' },
                     { label: '재물/배상', value: '7' },
+                    { label: '어린이', value: '9' },
                     { label: '기타', value: '8' },
                   ].map((category) => (
                     <CheckboxGroupItem key={category.value} value={category.value}>
@@ -373,10 +366,10 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     </CheckboxGroupItem>
                   ))}
                 </CheckboxGroup>
-                <Divider dir="col" />
+                <Divider dir="col" color="primary-light" />
 
                 <CheckboxGroup
-                  className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
+                  className="gap-[0.2rem] flex-nowrap shrink-0 type-small"
                   color="primary"
                   minSelected={0}
                   size="lg"
@@ -428,7 +421,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
             <Grow className="gap-2.5">
               <Checkbox>플랜기본값</Checkbox>
               <Grow className="gap-1">
-                <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={false} required={false}>
+                <NativeSelect aria-label="플랜 선택" width={120} size={'sm'} readOnly={false} required={false}>
                   {[
                     { label: '플랜 선택', value: 'planA' },
                     { label: '올인원플랜(15~89세)', value: 'planB' },
@@ -520,7 +513,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent variant="default" side="top" align="start" sideOffset={-4}>
-                        담보 전체 해지
+                        담보 모두 해제
                       </TooltipContent>
                     </Tooltip>
                   ),
@@ -529,6 +522,13 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   cellClassRules: {
                     'pointer-events-none': (params) => !!params.data?.locked,
                   },
+                }}
+                context={{
+                  coverageName,
+                  setCoverageName,
+                  showProductNameTooltip,
+                  onShowProductNameTooltipChange: (checked: boolean | 'indeterminate') =>
+                    setShowProductNameTooltip(checked === true),
                 }}
                 onSelectionChanged={onSelectionChanged}
                 onGridReady={handleGridReady}
@@ -542,7 +542,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
                 autoGroupColumnDef={{
                   headerName: '담보명',
-                  headerComponent: productNameHeader,
+                  headerComponent: AgGridProductNameHeader,
                   field: 'id',
                   flex: 20,
                   cellClass: (_) => 'text-left !p-0',

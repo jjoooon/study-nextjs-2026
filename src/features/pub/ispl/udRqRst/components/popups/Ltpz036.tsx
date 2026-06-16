@@ -3,9 +3,11 @@
  */
 'use client';
 
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import type { ColDef } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { Grow, Typo } from '@atoms';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -17,9 +19,7 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import type { ColDef } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import '@/shared/lib/agGridPub';
 
@@ -97,8 +97,7 @@ const Ltpz036 = () => {
     {
       headerName: '변경사유',
       field: 'field02',
-      flex: 1,
-      minWidth: attributeColumnWidth(200),
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
       autoHeight: true,
       spanRows: true,
@@ -106,22 +105,19 @@ const Ltpz036 = () => {
     {
       headerName: '변경항목',
       field: 'field03',
-      flex: 1,
-      minWidth: attributeColumnWidth(200),
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
     },
     {
       headerName: '변경전',
       field: 'field04',
-      flex: 1,
-      minWidth: attributeColumnWidth(200),
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
     {
       headerName: '변경후',
       field: 'field05',
-      flex: 1,
-      minWidth: attributeColumnWidth(200),
+      flex: 10,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field05' }),
     },
   ];

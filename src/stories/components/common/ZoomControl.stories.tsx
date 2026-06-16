@@ -1,9 +1,9 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Gcol } from '@atoms';
+ */ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { Gcol } from '@atoms';
 import { ZoomControl } from '@common/ZoomControl';
-import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ZoomControl> = {
   title: 'Components/Common/ZoomControl',

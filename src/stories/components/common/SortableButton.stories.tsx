@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import { Grow, Gcol, Typo } from '@atoms';
-import { SortableButton } from '@common/SortableButton';
-import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
-import type { Meta, StoryObj } from '@storybook/react';
+ */ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-docs/blocks';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
+import { Grow, Gcol, Typo } from '@atoms';
+import { SortableButton } from '@common/SortableButton';
 
 type SortOrder = 'asc' | 'desc' | 'none';
 
@@ -83,7 +84,7 @@ import { SortableButton } from '@common/SortableButton';
                 </tr>
                 <tr>
                   <td>currentSortOrder</td>
-                  <td>'asc' | 'desc' | 'none'</td>
+                  <td>&apos;asc&apos; | &apos;desc&apos; | &apos;none&apos;</td>
                   <td>현재 정렬 방향</td>
                 </tr>
                 <tr>

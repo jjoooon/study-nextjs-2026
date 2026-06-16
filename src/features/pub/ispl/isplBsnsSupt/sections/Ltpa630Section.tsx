@@ -3,6 +3,12 @@
  */
 'use client';
 
+import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
+import { useMemo } from 'react';
+import { Grow, Grid, Typo } from '@atoms';
+import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   getNextNumericRowId,
@@ -10,19 +16,14 @@ import {
   createAddRowHandler,
   createDeleteSelectedRowsHandler,
   createTreeNameCellRenderer,
+  createTooltipValueGetter
 } from '@aggrid';
-import { Grow, Grid, Typo } from '@atoms';
+import { Button } from '@uiux/Button';
 import { BottomBar } from '@common/BottomBar';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { Button } from '@uiux/Button';
-import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
-import { AgGridReact } from 'ag-grid-react';
-import * as React from 'react';
-import { useMemo } from 'react';
 
 import '@/shared/lib/agGridPub';
 
@@ -121,7 +122,7 @@ const DummyData2: DummyData2Type[] = [
   {
     id: 1,
     field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
+    field2: '나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망)',
     field3: '',
     filePath: ['1'],
   },
@@ -190,7 +191,6 @@ export default function Ltpa630Section() {
     [attributeColumnWidth]
   );
 
-  // 2026-06-04 flex, minWidth 수정
   // 담보관리 -------------
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
   const gridApiRef = React.useRef<GridApi<DummyData2Type> | null>(null);
@@ -226,6 +226,7 @@ export default function Ltpa630Section() {
             ? 'editable-cell'
             : 'before:content-["-"] before:inline-block before:mr-1',
         editable: (params) => Boolean(params.data && params.data.filePath.length === 1),
+        tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field2' }),
       },
       {
         headerName: '구분',

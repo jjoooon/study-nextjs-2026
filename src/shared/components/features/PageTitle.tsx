@@ -3,16 +3,15 @@
  */
 'use client';
 
+import { useState } from 'react';
 import { FormItem, Grow, Typo } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InputCombo } from '@common/InputCombo';
-import { ViewMode } from '@common/ViewMode';
 import { ArrowIcon, PenIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { useState } from 'react';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { ViewMode } from '@common/ViewMode';
 
 // 페이지 타이틀 영역에서 사용하는 기본 데이터 모델이다.
 // 화면마다 일부 값만 내려올 수 있으므로 대부분 optional로 선언되어 있다.
@@ -98,27 +97,13 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
 
   // 설계번호는 `앞자리-뒷자리` 구조이므로 문자열 배열 2칸으로 나누어 관리한다.
   // 첫 번째 값은 콤보 입력, 두 번째 값은 짧은 텍스트 입력과 연결된다.
-  const [planNumber, setPlanNumber] = useState<string[]>([
-    safeData.planNumber?.[0] ?? '',
-    safeData.planNumber?.[1] ?? '',
-  ]);
+  const [planNumber] = useState<string[]>([safeData.planNumber?.[0] ?? '', safeData.planNumber?.[1] ?? '']);
 
   // 계약자명 역시 화면 내 편집이 가능하므로 로컬 상태로 관리한다.
   const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
 
   // 설계번호 콤보에서 사용하는 옵션 목록을 UI 형태에 맞게 변환한다.
   // 각 옵션은 단순 문자열이 아니라 여러 컬럼을 가진 행 형태로 렌더링된다.
-  const sampleOptions = (safeData.planNumberList ?? []).map((item) => ({
-    value: item.value,
-    label: (
-      <>
-        <td>{item.label}</td>
-        <td>{item.name}</td>
-        <td>{item.amount}</td>
-        <td>{item.state}</td>
-      </>
-    ),
-  }));
 
   return (
     <Grow placement="bwc" className="w-full py-1 gap-1.5 overflow-x-auto">
@@ -162,27 +147,19 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
           <FormRow>
             <FormCell title="설계번호" className="pr-[0.4rem]!">
               {/* 설계번호 앞자리는 드롭다운 + 직접 입력이 가능한 콤보 형태로 제공한다. */}
-              <InputCombo
+              <Input
                 aria-label="설계번호 입력"
                 type="text"
                 width={131}
-                options={sampleOptions}
+                readOnly
                 value={planNumber[0]}
-                clear={false}
-                onChange={(value) => setPlanNumber([value, planNumber[1]])}
                 placeholder="설계번호 입력하세요"
               />
 
               {/* 설계번호 구분자 표현 */}
               <span aria-hidden="true">-</span>
               {/* 설계번호 뒷자리는 짧은 고정 길이 입력으로 관리한다. */}
-              <Input
-                aria-label="설계번호 입력"
-                type="text"
-                value={planNumber[1]}
-                width={26}
-                onChange={(e) => setPlanNumber([planNumber[0], e.target.value])}
-              />
+              <Input aria-label="설계번호 입력" type="text" readOnly value={planNumber[1]} width={26} />
               {/* 설계번호 입력 오른쪽에는 계약자명 입력과 조회 버튼을 함께 배치한다. */}
               <Grow className="ml-1.5">
                 <Tooltip>

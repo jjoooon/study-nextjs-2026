@@ -3,24 +3,22 @@
  */
 'use client';
 
-import { ErrorMsg } from '@common/ErrorMsg';
+import * as React from 'react';
+import { type DateRange } from 'react-day-picker';
+import { FormItemSize, FormItemWidth } from '@/shared/types/uiTypes';
 import { CalendarIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Calendar } from '@uiux/Calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import * as React from 'react';
-import { type DateRange } from 'react-day-picker';
-import { FormItemSize, FormItemWidth } from '@/shared/types/uiTypes';
+import { ErrorMsg } from '@common/ErrorMsg';
 
-/**
- * 캘린더 선택값 유니온 타입.
- * - single: Date | undefined
- * - multiple: Date[]
- * - range: DateRange
- */
 type CalendarSelection = Date | Date[] | DateRange | undefined;
 
-/** Date -> YYYY-MM-DD 문자열 변환 */
+type DatePickerRangeValue = {
+  from?: string;
+  to?: string;
+};
+
 function formatDate(date: Date | undefined) {
   if (!date) {
     return '';
@@ -33,7 +31,6 @@ function formatDate(date: Date | undefined) {
   return `${year}-${month}-${day}`;
 }
 
-/** Date 객체 유효성 검증 (`Invalid Date` 방지) */
 function isValidDate(date: Date | undefined) {
   if (!date) {
     return false;
@@ -41,7 +38,6 @@ function isValidDate(date: Date | undefined) {
   return !isNaN(date.getTime());
 }
 
-/** 숫자만 입력된 YYYYMMDD를 입력 표시용 하이픈 포맷으로 변환 */
 function formatInputDigits(digits: string) {
   if (digits.length === 0) return '';
   if (digits.length <= 4) return digits;
@@ -49,11 +45,6 @@ function formatInputDigits(digits: string) {
   return `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6, 8)}`;
 }
 
-/**
- * YYYYMMDD 숫자 문자열을 Date로 파싱.
- * - 길이/범위 1차 검증 후
- * - Date 보정값까지 확인해 실제 유효 날짜만 허용
- */
 function parseDateFromDigits(digits: string) {
   if (digits.length !== 8) return undefined;
   const year = parseInt(digits.slice(0, 4), 10);
@@ -70,39 +61,80 @@ function parseDateFromDigits(digits: string) {
 }
 
 /**
- * DatePickerInput Props
- * @property {string} [id] - input id
- * @property {string} [value] - 단일 날짜 값(YYYY-MM-DD)
- * @property {{from?: string, to?: string}} [rangeValue] - 기간 값(YYYY-MM-DD)
- * @property {'single'|'multiple'|'range'} [mode] - 날짜 선택 모드
- * @property {(date: Date | undefined, formattedValue: string) => void} [onChange] - 값 변경 콜백
- * @property {FormItemSize} [size] - 입력 높이
- * @property {FormItemWidth} [width] - 입력 너비
- * @property {boolean} [required] - 필수 여부
- * @property {boolean} [error] - 에러 상태
- * @property {React.ReactNode} [errorMsg] - 에러 메시지
- * @property {'tl'|'tc'|'tr'|'bl'|'bc'|'br'} [errorPs] - 에러 메시지 위치
- * @property {boolean} [monthOnly] - 월만 선택하는 모드(월 그리드)
- * @property {(month: number) => void} [onMonthSelect] - 월 선택 시 콜백(1~12)
+ * DatePickerInput 컴포넌트의 Props 인터페이스입니다.
  */
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
+  /** 입력 필드 및 관련 요소의 고유 ID */
   id?: string;
+  /** 단일 날짜 값 (포맷: YYYY-MM-DD) */
   value?: string;
-  rangeValue?: { from?: string; to?: string };
+  /** 기간 선택 모드(`range`)일 때의 시작일 및 종료일 값 */
+  rangeValue?: {
+    /** 시작일 (포맷: YYYY-MM-DD) */
+    from?: string;
+    /** 종료일 (포맷: YYYY-MM-DD) */
+    to?: string;
+  };
+  /**
+   * 날짜 선택 모드
+   * - `single`: 단일 날짜 선택
+   * - `multiple`: 다중 날짜 선택
+   * - `range`: 기간(시작일~종료일) 선택
+   * @default 'single'
+   */
   mode?: 'single' | 'multiple' | 'range';
+  /**
+   * 날짜가 변경되었을 때 호출되는 콜백 함수
+   * @param date 마지막으로 선택/입력된 Date 객체 (유효하지 않으면 undefined)
+   * @param formattedValue 포맷팅된 문자열 (single: YYYY-MM-DD, range: YYYY-MM-DD ~ YYYY-MM-DD 등)
+   */
   onChange?: (date: Date | undefined, formattedValue: string) => void;
+  /**
+   * 입력 필드의 크기 (높이)
+   * - `lg`: 2.8rem (기본)
+   * - `md`: 2.5rem
+   * @default 'lg'
+   */
   size?: FormItemSize;
+  /**
+   * 입력 필드의 너비 (예: 'full', 'auto', '20rem' 등)
+   * @default 'full'
+   */
   width?: FormItemWidth;
+  /** 필수 입력(체크) 스타일 적용 여부 */
   required?: boolean;
+  /** 읽기 전용 상태 여부 */
+  readOnly?: boolean;
+  /** 비활성화 상태 여부 */
+  disabled?: boolean;
+  /** 에러 상태 표시 여부 */
   error?: boolean;
+  /** 에러 상태일 때 표시할 메시지 내용 */
   errorMsg?: React.ReactNode;
+  /**
+   * 에러 메시지가 표시될 위치
+   * - `tl`: Top Left (상단 좌측)
+   * - `tc`: Top Center (상단 중앙)
+   * - `tr`: Top Right (상단 우측)
+   * - `bl`: Bottom Left (하단 좌측) (기본)
+   * - `bc`: Bottom Center (하단 중앙)
+   * - `br`: Bottom Right (하단 우측)
+   * @default 'bl'
+   */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
-  /** 월만 선택하는 모드(월 그리드) */
+  /** 월만 선택하는 모드(월 단위 그리드 캘린더) 여부 */
   monthOnly?: boolean;
-  /** 월 선택 시 콜백(1~12) */
+  /**
+   * monthOnly 모드에서 월이 선택되었을 때 호출되는 콜백 함수
+   * @param month 선택된 월 (1~12)
+   */
   onMonthSelect?: (month: number) => void;
 }
 
+/**
+ * DatePickerInput 컴포넌트는 입력 필드와 캘린더 팝오버를 결합한 날짜 입력 UI입니다.
+ * single, multiple, range 모드를 지원하며, 에러 메시지와 크기/너비 설정을 일관된 방식으로 제공합니다.
+ */
 export function DatePickerInput({
   id,
   value: initialValue,
@@ -120,15 +152,6 @@ export function DatePickerInput({
   monthOnly = false,
   onMonthSelect,
 }: UIInputProps) {
-  /**
-   * DatePicker 공통 입력 컴포넌트.
-   *
-   * 지원 모드:
-   * - single   : 단일 날짜
-   * - multiple : 다중 날짜
-   * - range    : 기간(시작/종료)
-   * - monthOnly: 월 선택 전용(달력 UI)
-   */
   const generatedId = React.useId();
   const finalId = id || generatedId;
   const errorId = React.useId();
@@ -143,17 +166,21 @@ export function DatePickerInput({
   const [invalidRange, setInvalidRange] = React.useState({ from: false, to: false });
   const [invalidDate, setInvalidDate] = React.useState(false);
 
-  /** 비활성/읽기전용 전환 시 팝오버 강제 닫기 */
-  React.useEffect(() => {
-    if (disabled || readOnly) setOpen(false);
-  }, [disabled, readOnly]);
+  const [prevInitialValue, setPrevInitialValue] = React.useState<string | undefined>(initialValue);
+  const [prevMode, setPrevMode] = React.useState<string>(mode);
+  const [prevRangeValue, setPrevRangeValue] = React.useState<DatePickerRangeValue | undefined>(rangeValue);
 
-  /**
-   * 외부 value/rangeValue 변경 동기화.
-   * - 서버 데이터 재조회, 폼 초기화, 부모 상태 변경에 대응
-   */
-  React.useEffect(() => {
-    // range 모드일 때 rangeValue 우선 처리
+  // disabled 또는 readOnly가 활성화되면 팝업을 닫음 (렌더 단계에서 동기화)
+  if ((disabled || readOnly) && open) {
+    setOpen(false);
+  }
+
+  // initialValue, mode, rangeValue 변경 시 최신 상태로 동기화 (렌더 단계에서 동기화)
+  if (initialValue !== prevInitialValue || mode !== prevMode || rangeValue !== prevRangeValue) {
+    setPrevInitialValue(initialValue);
+    setPrevMode(mode);
+    setPrevRangeValue(rangeValue);
+
     if (mode === 'range' && rangeValue) {
       const from = rangeValue.from ? new Date(rangeValue.from) : undefined;
       const to = rangeValue.to ? new Date(rangeValue.to) : undefined;
@@ -172,34 +199,25 @@ export function DatePickerInput({
         setRangeInput({ from: '', to: '' });
         setNumericValue('');
       }
-      return;
-    }
-
-    // 단일/다중 모드 처리
-    if (initialValue) {
-      const newDate = new Date(initialValue);
-      if (isValidDate(newDate)) {
-        setSelected(newDate);
-        setMonth(newDate);
-        setNumericValue(initialValue.replace(/\D/g, ''));
-      }
     } else {
-      // initialValue가 빈 문자열이면 리셋
-      setSelected(undefined);
-      setMonth(undefined);
-      setNumericValue('');
-      setRangeInput({ from: '', to: '' });
-      setInvalidRange({ from: false, to: false });
-      setInvalidDate(false);
+      if (initialValue) {
+        const newDate = new Date(initialValue);
+        if (isValidDate(newDate)) {
+          setSelected(newDate);
+          setMonth(newDate);
+          setNumericValue(initialValue.replace(/\D/g, ''));
+        }
+      } else {
+        setSelected(undefined);
+        setMonth(undefined);
+        setNumericValue('');
+        setRangeInput({ from: '', to: '' });
+        setInvalidRange({ from: false, to: false });
+        setInvalidDate(false);
+      }
     }
-  }, [initialValue, mode, rangeValue]);
+  }
 
-  /**
-   * 캘린더에서 값 선택 시 공통 처리.
-   * - 모드별 문자열 포맷 정규화
-   * - `numericValue`/`rangeInput`/`invalidDate` 상태 동기화
-   * - 외부 `onChange` 호출
-   */
   const handleSelect = (selectedValue: CalendarSelection) => {
     setSelected(selectedValue);
 
@@ -223,7 +241,6 @@ export function DatePickerInput({
         .filter(Boolean)
         .join(', ');
 
-      // multiple 모드는 캘린더 선택값만 표시하므로 숫자 버퍼는 비워둔다.
       setNumericValue('');
       setInvalidDate(false);
       onChange?.(last, formattedValue);
@@ -232,7 +249,6 @@ export function DatePickerInput({
 
     const last = selectedValue.to ?? selectedValue.from;
 
-    // range 포맷: from~to
     if (selectedValue.from && selectedValue.to) {
       const rangeFormatted = `${formatDate(selectedValue.from)} ~ ${formatDate(selectedValue.to)}`;
       const numericOnly = `${formatDate(selectedValue.from).replace(/\D/g, '')}${formatDate(selectedValue.to).replace(/\D/g, '')}`;
@@ -255,11 +271,6 @@ export function DatePickerInput({
     setInvalidDate(false);
   };
 
-  /**
-   * range 모드 텍스트 입력 처리기 생성기.
-   * - `from`/`to` 각각 숫자 입력 -> 날짜 파싱
-   * - 유효성 오류 플래그 및 range 선택 상태 동기화
-   */
   const handleRangeInputChange = (part: 'from' | 'to') => (e: React.ChangeEvent<HTMLInputElement>) => {
     const digits = e.target.value.replace(/\D/g, '').slice(0, 8);
     const formatted = formatInputDigits(digits);
@@ -283,7 +294,6 @@ export function DatePickerInput({
 
     if (parsedDate) {
       if (part === 'from' && digits.length === 8 && !rangeInput.to) {
-        // 시작일 입력 완료 시 종료일 입력으로 포커스 이동
         toInputRef.current?.focus();
       }
     }
@@ -312,36 +322,22 @@ export function DatePickerInput({
     }
   };
 
-  /**
-   * single 모드 텍스트 입력 처리.
-   * - 숫자 입력 버퍼를 유지하면서 8자리 완성 시에만 날짜 검증/반영
-   */
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value.replace(/\D/g, ''); // 숫자만 남기기
-
-    // 최대 8자리까지만 허용
+    const inputValue = e.target.value.replace(/\D/g, '');
     const limitedInput = inputValue.slice(0, 8);
-
-    // 순수 숫자로만 저장
     setNumericValue(limitedInput);
 
-    // 완전한 날짜 형식(YYYY-MM-DD)일 때만 Date 객체 생성 및 onChange 호출
     if (limitedInput.length === 8) {
       const formatted = `${limitedInput.slice(0, 4)}-${limitedInput.slice(4, 6)}-${limitedInput.slice(6, 8)}`;
-
-      // 날짜 수동 파싱
       const parts = formatted.split('-');
       const year = parseInt(parts[0], 10);
       const month = parseInt(parts[1], 10);
       const day = parseInt(parts[2], 10);
 
-      // 유효한 월(1-12), 일(1-31) 범위 확인
       const isValidRange = month >= 1 && month <= 12 && day >= 1 && day <= 31;
 
       if (isValidRange) {
         const dateObj = new Date(year, month - 1, day);
-
-        // 실제 생성된 날짜가 입력한 날짜와 일치하는지 확인 (보정 여부 체크)
         const isActualValid =
           dateObj.getFullYear() === year && dateObj.getMonth() === month - 1 && dateObj.getDate() === day;
 
@@ -350,23 +346,19 @@ export function DatePickerInput({
           setInvalidDate(false);
           onChange?.(dateObj, formatted);
         } else {
-          // 유효하지 않은 날짜 (예: 2009-02-31)
           setInvalidDate(true);
           onChange?.(undefined, '');
         }
       } else {
-        // 범위를 벗어난 날짜
         setInvalidDate(true);
         onChange?.(undefined, '');
       }
     } else {
-      // 불완전한 입력일 때는 date를 undefined로, onChange에 빈 문자열 전달
       setInvalidDate(false);
       onChange?.(undefined, '');
     }
   };
 
-  // 화면에 표시할 포맷된 값 (마스킹 없음)
   const displayValue = (() => {
     if (mode === 'multiple') {
       if (!Array.isArray(selected) || selected.length === 0) return '';
@@ -382,7 +374,6 @@ export function DatePickerInput({
     if (numericValue.length === 0) return '';
 
     if (mode === 'range') {
-      // range 모드: 16자리 (YYYYMMDDYYYYMMDD)
       if (numericValue.length <= 4) return numericValue;
       if (numericValue.length <= 6) return `${numericValue.slice(0, 4)}-${numericValue.slice(4)}`;
       if (numericValue.length <= 8)
@@ -399,11 +390,6 @@ export function DatePickerInput({
     return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}-${numericValue.slice(6, 8)}`;
   })();
 
-  /**
-   * width 토큰을 실제 inline width 스타일로 변환.
-   * - 숫자 문자열: rem으로 해석
-   * - rem/px 명시값: 그대로 사용
-   */
   const inlineWidthStyle = (() => {
     if (typeof width === 'string') {
       if (/^\d+(\.\d+)?$/.test(width)) return { width: `${width}rem` };
@@ -413,7 +399,6 @@ export function DatePickerInput({
     return undefined;
   })();
 
-  /** readOnly일 때 회색 배경/테두리 정책 적용 */
   const inputStyle: React.CSSProperties | undefined = readOnly
     ? { ...(inlineWidthStyle ?? {}), backgroundColor: '#F4F4F4', border: '0.1rem solid #F4F4F4' }
     : inlineWidthStyle;
@@ -421,9 +406,6 @@ export function DatePickerInput({
   const sizeClass = size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]';
   const buttonSizeClass = size === 'lg' ? 'h-[2.8rem] w-[2.8rem]' : 'h-[2.5rem] w-[2.5rem]';
   const isCalendarButtonDisabled = disabled || readOnly;
-
-  // range 모드일 때 더 큰 너비
-  // const rangeModeWidth = mode === 'range' ? 'w-[28rem]' : '';
 
   const baseStyle = `px-[0.8rem] py-[0.4rem] rounded-[0.4rem] border text-[1.3rem] font-normal box-border tracking-[-0.03rem] ${
     error || invalidDate
@@ -454,12 +436,6 @@ export function DatePickerInput({
   const multiSelected = Array.isArray(selected) ? selected : undefined;
 
   return (
-    /**
-     * 렌더 구조:
-     * 1) 입력 영역(단일/기간 모드 분기)
-     * 2) 캘린더 트리거 버튼 + 팝오버
-     * 3) 에러 메시지
-     */
     <div className="relative flex gap-1 items-center justify-center">
       {mode === 'range' ? (
         <>
@@ -474,7 +450,6 @@ export function DatePickerInput({
             aria-describedby={error || invalidDate ? errorId : undefined}
             onChange={handleRangeInputChange('from')}
             onKeyDown={(e) => {
-              // 키보드로 캘린더 열기/닫기 지원
               if (!readOnly && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault();
                 setOpen(true);
@@ -501,7 +476,6 @@ export function DatePickerInput({
             aria-describedby={error || invalidDate ? errorId : undefined}
             onChange={handleRangeInputChange('to')}
             onKeyDown={(e) => {
-              // 키보드로 캘린더 열기/닫기 지원
               if (!readOnly && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault();
                 setOpen(true);
@@ -531,7 +505,6 @@ export function DatePickerInput({
           aria-describedby={error || invalidDate ? errorId : undefined}
           onChange={mode === 'multiple' ? undefined : handleDateChange}
           onKeyDown={(e) => {
-            // 키보드로 캘린더 열기/닫기 지원
             if (!readOnly && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
               e.preventDefault();
               setOpen(true);
@@ -569,7 +542,6 @@ export function DatePickerInput({
           alignOffset={-8}
           sideOffset={10}
         >
-          {/* 모드별 Calendar 렌더링 분기 */}
           {monthOnly ? (
             <Calendar
               mode={'single'}
@@ -582,7 +554,6 @@ export function DatePickerInput({
               onMonthSelect={onMonthSelect}
               onChange={(val) => {
                 if (val && val.year && val.month) {
-                  // YYYY-MM 형식으로 input 값 변경
                   const formatted = `${val.year}-${String(val.month).padStart(2, '0')}`;
                   if (onChange) onChange(new Date(val.year, val.month - 1, 1), formatted);
                 }
@@ -628,11 +599,6 @@ export function DatePickerInput({
         </PopoverContent>
       </Popover>
       {(error || invalidDate) && (
-        /**
-         * 에러 출력 우선순위:
-         * 1) 내부 검증 실패(invalidDate) + 외부 error 없음 -> 기본 날짜 오류 메시지
-         * 2) 외부 error=true -> errorMsg 출력
-         */
         <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
           {invalidDate && !error ? '유효하지 않은 날짜입니다.' : errorMsg}
         </ErrorMsg>

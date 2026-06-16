@@ -113,6 +113,12 @@ const violationRowData: UnderwritingViolationRow[] = [
   },
 ];
 
+/** 인수제한 구분값에 따른 기본 텍스트 색상 매핑 */
+const criteriaColorMap: Record<string, string> = {
+  인수기준: 'var(--color-danger-50)',
+  '청약완료불가\n(업계누적)': 'var(--color-information-50)',
+};
+
 /**
  * Ltpz022: 보험 설계의 지침 확인 결과(인수 지침 위배 사항)를 보여주는 팝업 컴포넌트입니다.
  */
@@ -128,12 +134,6 @@ const Ltpz022 = () => {
       .replace(/(가입금액 2\.5배 적용)/g, `<span style="color:var(--color-success-50)">$1</span>`)
       .replace(/(\d+억원)/g, `<b style="color:var(--color-danger-50)">$1</b>`)
       .replace(/(\[당사:[^\]]*\])/g, `<b style="color:var(--color-danger-50)">$1</b>`);
-  };
-
-  /** 인수제한 구분값에 따른 기본 텍스트 색상 매핑 */
-  const criteriaColorMap: Record<string, string> = {
-    인수기준: 'var(--color-danger-50)',
-    '청약완료불가\n(업계누적)': 'var(--color-information-50)',
   };
 
   /** 현재 선택된 셀(위배 내역) 정보를 저장하는 ref */

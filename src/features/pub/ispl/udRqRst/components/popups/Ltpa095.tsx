@@ -44,8 +44,8 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     field01: '040',
-    field02: '위, 십이지장',
-    field03: '0년 0개월',
+    field02: '위, 십이지장 위, 십이지장 위, 십이지장 위, 십이지장 위, 십이지장 위, 십이지장',
+    field03: '00년 00개월',
     field04: '사유 텍스트 노출 사유 텍스트 노출 사유 텍스트 노출',
     field05: '',
   },
@@ -53,7 +53,7 @@ const DummyData: DummyDataType[] = [
     id: 2,
     field01: '040',
     field02: '위, 십이지장',
-    field03: '0년 0개월',
+    field03: '00년 00개월',
     field04: '사유 텍스트 노출',
     field05: '',
   },
@@ -93,7 +93,7 @@ const DummyData: DummyDataType[] = [
 const DummyData2: DummyDataType2[] = [
   {
     id: 1,
-    field01: '상해후유장해(3-100%)(갱신형)',
+    field01: '상해후유장해(3-100%)(갱신형) 상해후유장해(3-100%)(갱신형)',
     field02: '2020-01-01~2050-01-01',
     field03: '10,000',
     field04: '10,000,000',
@@ -101,7 +101,7 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 2,
-    field01: '상해후유장해(3-100%)(갱신형)',
+    field01: '상해후유장해(3-100%)(갱신형) 상해후유장해(3-100%)(갱신형)',
     field02: '2020-01-01~2050-01-01',
     field03: '10,000',
     field04: '10,000,000',
@@ -153,8 +153,7 @@ const Ltpa095 = () => {
     {
       headerName: '대상이되는 부위 또는 질병',
       field: 'field02',
-      flex: 3,
-      minWidth: attributeColumnWidth(160),
+      flex: 20,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
@@ -162,13 +161,12 @@ const Ltpa095 = () => {
       headerName: '부담보기간',
       field: 'field03',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
+      minWidth: attributeColumnWidth(80),
     },
     {
       headerName: '사유내용',
       field: 'field04',
-      flex: 2,
-      minWidth: attributeColumnWidth(180),
+      flex: 15,
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
@@ -184,15 +182,14 @@ const Ltpa095 = () => {
     {
       headerName: '할증담보',
       field: 'field01',
-      flex: 8,
+      flex: 30,
       cellClass: 'text-left',
-      minWidth: attributeColumnWidth(150),
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field01' }),
     },
     {
       headerName: '보험기간',
       field: 'field02',
-      flex: 1,
-      minWidth: attributeColumnWidth(145),
+      width: attributeColumnWidth(145),
     },
     {
       headerName: '표준체보험료(원)',

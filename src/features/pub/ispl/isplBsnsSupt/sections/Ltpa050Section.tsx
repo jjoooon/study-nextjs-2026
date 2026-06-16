@@ -4,24 +4,24 @@
 
 'use client';
 import '@/shared/lib/agGridPub';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { BottomBar } from '@common/BottomBar';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { PageID } from '@features/PageID';
-import { HeaderWithUnit } from '@grid/HeadRenderers';
-import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
-import { LayoutTemplate } from '@layout/LayoutTemplate';
-
-import '@/shared/lib/agGridPub';
-import { Button } from '@uiux/Button';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { MainBottom, MainBottomItem } from '@/shared/components/features/MainFoot';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { useTabs } from '@/shared/hooks/useTabs';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Button } from '@uiux/Button';
+import { BottomBar } from '@common/BottomBar';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { PageID } from '@features/PageID';
+import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
+import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { HeaderWithUnit } from '@grid/HeadRenderers';
+
+import '@/shared/lib/agGridPub';
 
 type Ltp050TabType = { name: string; value: string; label: string };
 
@@ -751,7 +751,7 @@ export default function Ltpa050Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody className="gap-2">
-                  <FormTable caption="계약정보" cols={['w-[9rem]', 'w-[40%]', 'w-[9rem]', 'w-auto']}>
+                  <FormTable caption="계약정보" cols={['w-[8rem]', 'w-[40%]', 'w-[8rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell className="" title={'계약자'} colSpan={3}>
                         김한화
@@ -919,7 +919,7 @@ export default function Ltpa050Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody className="gap-2">
-                  <FormTable caption="계약정보" cols={['w-[9rem]', 'w-[40%]', 'w-[9rem]', 'w-auto']}>
+                  <FormTable caption="계약정보" cols={['w-[8rem]', 'w-[40%]', 'w-[8rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell className="" title={'계약자'} colSpan={3}>
                         김한화

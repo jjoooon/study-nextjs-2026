@@ -3,41 +3,6 @@
  */
 'use client';
 
-import {
-  createCellClickSelectionToggleHandler,
-  createInsertCopiedRowButtonCellRenderer,
-  getNextNumericRowId,
-  numberValueFormatter,
-  patchCopiedDuplicateRow,
-  rowDataWithTrackingFactory,
-  useDynamicColumnWidths,
-  AgGridEmptyComponent,
-  AmountWithPopoverCellEditor,
-} from '@aggrid';
-import { Divider, Gcol, Grow, Typo, Grid } from '@atoms';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { KeyValueList } from '@common/KeyValueList';
-import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
-import { TextSelectChange } from '@common/TextSelectChange';
-
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { MyPlanSelect } from '@features/MyPlanSelect';
-import {
-  createExpiryCellRenderer,
-  groupEditableButtonRenderer,
-  productNameCellRenderer,
-  searchButtonRenderer,
-  uwIconRenderer,
-} from '@grid/CellRenderers';
-import { HeaderWithUnit, ProductNameHeader } from '@grid/HeadRenderers';
-import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
-import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import type {
   CellClassParams,
   ICellRendererParams,
@@ -49,6 +14,41 @@ import type {
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { Divider, Gcol, Grow, Typo, Grid } from '@atoms';
+import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
+import {
+  createCellClickSelectionToggleHandler,
+  createInsertCopiedRowButtonCellRenderer,
+  getNextNumericRowId,
+  numberValueFormatter,
+  patchCopiedDuplicateRow,
+  rowDataWithTrackingFactory,
+  useDynamicColumnWidths,
+  AgGridEmptyComponent,
+  AmountWithPopoverCellEditor,
+} from '@aggrid';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { KeyValueList } from '@common/KeyValueList';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
+import { TextSelectChange } from '@common/TextSelectChange';
+
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { MyPlanSelect } from '@features/MyPlanSelect';
+import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import {
+  createExpiryCellRenderer,
+  groupEditableButtonRenderer,
+  productNameCellRenderer,
+  searchButtonRenderer,
+  uwIconRenderer,
+} from '@grid/CellRenderers';
+import { HeaderWithUnit, AgGridProductNameHeader } from '@grid/HeadRenderers';
+
 import { dummyData } from '../data/ltpa35002bData';
 import type { DummyDataType } from '../data/ltpa35002bData';
 import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
@@ -84,7 +84,13 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   const pendingSelectIdRef = useRef<string | number | null>(null);
   const gridApiRef = useRef<GridApi<AgGridRow> | null>(null);
   const prevSelectedIdsRef = useRef<Set<string | number>>(new Set());
-  const [coverageName, setCoverageName] = useState('');
+  const [coverageName, _setCoverageName] = useState('');
+  const coverageNameRef = useRef(coverageName);
+
+  const setCoverageName = useCallback((value: string) => {
+    _setCoverageName(value);
+    coverageNameRef.current = value;
+  }, []);
 
   // =====================
   // 핸들러/콜백
@@ -94,20 +100,6 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       setCheckedMap((map) => ({ ...map, [key]: !!checked }));
     },
     []
-  );
-
-  const productNameHeader = useCallback(
-    () => (
-      <ProductNameHeader
-        coverageName={coverageName}
-        onCoverageNameChange={setCoverageName}
-        showProductNameTooltip={showProductNameTooltip}
-        onShowProductNameTooltipChange={(checked) => setShowProductNameTooltip(!!checked)}
-        checkedMap={checkedMap}
-        onCheckedChange={handleCheckedChange}
-      />
-    ),
-    [coverageName, showProductNameTooltip, checkedMap, handleCheckedChange]
   );
 
   // =====================
@@ -541,6 +533,15 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 }}
                 onSelectionChanged={handleGridSelectionChanged}
                 onGridReady={handleGridReady}
+                context={{
+                  coverageName,
+                  setCoverageName,
+                  showProductNameTooltip,
+                  onShowProductNameTooltipChange: (checked: boolean | 'indeterminate') =>
+                    setShowProductNameTooltip(checked === true),
+                  checkedMap,
+                  onCheckedChange: handleCheckedChange,
+                }}
                 // onRowDataUpdated={handleRowDataUpdated}
                 suppressRowHoverHighlight={false}
                 tooltipShowDelay={0}
@@ -551,7 +552,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 groupDefaultExpanded={0}
                 getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
                 autoGroupColumnDef={{
-                  headerComponent: productNameHeader,
+                  headerComponent: AgGridProductNameHeader,
                   field: 'id',
                   flex: 10,
                   cellClass: (_) => 'text-left !p-0',

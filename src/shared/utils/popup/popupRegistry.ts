@@ -80,7 +80,7 @@ const dialogRegistry: DialogRegistry = {
       default: ComponentType<Record<string, unknown>>;
     }>,
   LTPZ995: () =>
-    import('@/features/pub/shared/components/popups/Ltpz995') as unknown as Promise<{
+    import('@features/Ltpz995') as unknown as Promise<{
       default: ComponentType<Record<string, unknown>>;
     }>,
   // Feature 팝업은 각 feature에서 registerDialog()로 동적 등록
