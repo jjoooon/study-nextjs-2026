@@ -137,6 +137,24 @@ export function IAListWithPreview() {
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
   const [selectedPlan, setSelectedPlan] = React.useState<string>('all');
   const [selectedPub, setSelectedPub] = React.useState<string>('all');
+
+  const iframeWrapRef = React.useRef<HTMLDivElement>(null);
+  const [iframeDimensions, setIframeDimensions] = React.useState({ width: 0, height: 0 });
+
+  React.useEffect(() => {
+    if (!iframeWrapRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        setIframeDimensions({
+          width: Math.round(width),
+          height: Math.round(height),
+        });
+      }
+    });
+    observer.observe(iframeWrapRef.current);
+    return () => observer.disconnect();
+  }, []);
   const [selectedDev, setSelectedDev] = React.useState<string>('all');
   const handleSort = React.useCallback((key: SortKey) => {
     setSortState((prev) => {
@@ -310,7 +328,7 @@ export function IAListWithPreview() {
     <div className="w-full h-full ia-preview-root">
       <ResizablePanelGroup orientation="horizontal" className="w-full">
         <ResizablePanel defaultSize={30}>
-          <div className="h-[calc(100vh-4rem)] overflow-auto flex flex-col justify-start">
+          <div className="h-[calc(100vh-4rem)] overflow-auto flex flex-col justify-start min-w-[40rem]">
             <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
               반입일: 2026.06.17
             </div>
@@ -597,7 +615,10 @@ export function IAListWithPreview() {
               <div className="ia-preview-label">조건에 맞는 화면이 없습니다.</div>
             )}
             {previewUrl ? (
-              <div className="ia-preview-iframe-wrap">
+              <div className="ia-preview-iframe-wrap" ref={iframeWrapRef}>
+                <div className="absolute -top-[3.2rem] right-[0rem] bg-black/70 text-[#fff] px-[0.8rem] py-[0.3rem] text-[1.1rem] rounded-[0.4rem] pointer-events-none z-10 font-mono select-none">
+                  {iframeDimensions.width}px × {iframeDimensions.height}px
+                </div>
                 <iframe key={previewUrl} src={previewUrl} title="화면 미리보기" className="ia-preview-iframe" />
               </div>
             ) : (
