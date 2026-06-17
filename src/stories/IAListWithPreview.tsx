@@ -3,7 +3,7 @@
  */ 'use client';
 
 import * as React from 'react';
-import { Grid } from '@atoms';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 import LinkGo, { getStoryIframeUrl } from './Link';
 
 import iaJhm from './ia-jhm.json';
@@ -137,6 +137,24 @@ export function IAListWithPreview() {
   const [sortState, setSortState] = React.useState<SortState>({ key: null, order: 'default' });
   const [selectedPlan, setSelectedPlan] = React.useState<string>('all');
   const [selectedPub, setSelectedPub] = React.useState<string>('all');
+
+  const iframeWrapRef = React.useRef<HTMLDivElement>(null);
+  const [iframeDimensions, setIframeDimensions] = React.useState({ width: 0, height: 0 });
+
+  React.useEffect(() => {
+    if (!iframeWrapRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        setIframeDimensions({
+          width: Math.round(width),
+          height: Math.round(height),
+        });
+      }
+    });
+    observer.observe(iframeWrapRef.current);
+    return () => observer.disconnect();
+  }, []);
   const [selectedDev, setSelectedDev] = React.useState<string>('all');
   const handleSort = React.useCallback((key: SortKey) => {
     setSortState((prev) => {
@@ -307,284 +325,310 @@ export function IAListWithPreview() {
   );
 
   return (
-    <Grid className="w-full gap-[1.2rem] items-start ia-preview-root justify-center grid-cols-[30%_1fr]">
-      <div className="h-[calc(100vh-4rem)] overflow-auto flex flex-col justify-start">
-        <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
-          반입일: 2026.05.28
-        </div>
-        <div className="w-full grid grid-cols-[1fr_auto] gap-2">
-          <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem] flex-1">
-            <div
-              className="rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]"
-              style={{ width: `${progressPercent}%` }}
-            >
-              {doneCount} / {totalCount} ({progressPercent}%)
+    <div className="w-full h-full ia-preview-root">
+      <ResizablePanelGroup orientation="horizontal" className="w-full">
+        <ResizablePanel defaultSize={30}>
+          <div className="h-[calc(100vh-4rem)] overflow-auto flex flex-col justify-start min-w-[40rem]">
+            <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
+              반입일: 2026.06.17
             </div>
-          </div>
-          <a
-            href="https://github.com/jjoooon/study-nextjs-2026/archive/refs/heads/pub.zip"
-            download
-            className="!text-[1.2rem] text-[#0876ff] hover:underline shrik-0 block w-[8rem]"
-          >
-            📦다운로드 파일
-          </a>
-        </div>
-        <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
-          <thead>
-            <tr>
-              <th scope="col">No</th>
-              {/* <th
-                scope="col"
-                className="cursor-pointer select-none"
-                onClick={() => handleSort('path')}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') handleSort('path');
-                }}
-                role="button"
-                aria-label="경로 정렬"
-              >
-                경로{getSortIndicator('path')}
-              </th> */}
-              <th
-                scope="col"
-                className="cursor-pointer select-none"
-                onClick={() => handleSort('id')}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') handleSort('id');
-                }}
-                role="button"
-                aria-label="ID 정렬"
-              >
-                ID{getSortIndicator('id')}
-              </th>
-              <th
-                scope="col"
-                className="cursor-pointer select-none"
-                onClick={() => handleSort('dep4')}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') handleSort('dep4');
-                }}
-                role="button"
-                aria-label="화면명 정렬"
-              >
-                화면명{getSortIndicator('dep4')}
-              </th>
-              <th
-                scope="col"
-                className="cursor-pointer select-none"
-                onClick={() => handleSort('file')}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') handleSort('file');
-                }}
-                role="button"
-                aria-label="설계서명 정렬"
-              >
-                설계서명{getSortIndicator('file')}
-              </th>
-              {/* <th
-                scope="col"
-                className="cursor-pointer select-none"
-                onClick={() => handleSort('planDate')}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') handleSort('planDate');
-                }}
-                role="button"
-                aria-label="계획일 정렬"
-              >
-                계획일{getSortIndicator('planDate')}
-              </th> */}
-              <th
-                scope="col"
-                className="cursor-pointer select-none"
-                onClick={() => handleSort('completeDate')}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') handleSort('completeDate');
-                }}
-                role="button"
-                aria-label="완료일 정렬"
-              >
-                완료일{getSortIndicator('completeDate')}
-              </th>
-              <th
-                scope="col"
-                className="cursor-pointer select-none"
-                onClick={() => handleSort('modifyDate')}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') handleSort('modifyDate');
-                }}
-                role="button"
-                aria-label="수정일 정렬"
-              >
-                수정일{getSortIndicator('modifyDate')}
-              </th>
-              <th scope="col" className="text-center">
-                <label className="sr-only" htmlFor="planFilterSelect">
-                  기획 필터
-                </label>
-                <select
-                  id="planFilterSelect"
-                  className="h-[2.4rem] w-full rounded border border-[#c8ccd3] bg-white px-1 text-[1.2rem]"
-                  value={selectedPlan}
-                  onChange={(event) => setSelectedPlan(event.target.value)}
+            <div className="w-full grid grid-cols-[1fr_auto] gap-2">
+              <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem] flex-1">
+                <div
+                  className="rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]"
+                  style={{ width: `${progressPercent}%` }}
                 >
-                  <option value="all">기획</option>
-                  {planOptions.map((name) => (
-                    <option key={name} value={name}>
-                      {name}
-                    </option>
-                  ))}
-                </select>
-              </th>
-              <th scope="col" className="text-center">
-                <label className="sr-only" htmlFor="pubFilterSelect">
-                  퍼블 필터
-                </label>
-                <select
-                  id="pubFilterSelect"
-                  className="h-[2.4rem] w-full rounded border border-[#c8ccd3] bg-white px-1 text-[1.2rem]"
-                  value={selectedPub}
-                  onChange={(event) => setSelectedPub(event.target.value)}
+                  {doneCount} / {totalCount} ({progressPercent}%)
+                </div>
+              </div>
+              <a
+                href="https://github.com/jjoooon/study-nextjs-2026/archive/refs/heads/pub.zip"
+                download
+                className="!text-[1.2rem] text-[#0876ff] hover:underline shrik-0 block w-[auto]"
+              >
+                📦파일
+              </a>
+            </div>
+            <table className="text-[1.2rem] IA-list m-0! shrink-0! ![&_b]:tracking-0">
+              <colgroup>
+                <col style={{ width: '3rem' }} />
+                <col style={{ width: '6rem' }} />
+                <col style={{ width: 'auto' }} />
+                <col style={{ width: '5rem' }} />
+                <col style={{ width: '4rem' }} />
+                <col style={{ width: '4rem' }} />
+                <col style={{ width: '4rem' }} />
+                <col style={{ width: '4rem' }} />
+                <col style={{ width: '4rem' }} />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col" className="text-center!">
+                    No
+                  </th>
+                  {/* <th
+                  scope="col"
+                  className="cursor-pointer select-none"
+                  onClick={() => handleSort('path')}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') handleSort('path');
+                  }}
+                  role="button"
+                  aria-label="경로 정렬"
                 >
-                  <option value="all">퍼블</option>
-                  {pubOptions.map((name) => (
-                    <option key={name} value={name}>
-                      {name}
-                    </option>
-                  ))}
-                </select>
-              </th>
-              <th scope="col" className="text-center">
-                <label className="sr-only" htmlFor="devFilterSelect">
-                  개발 필터
-                </label>
-                <select
-                  id="devFilterSelect"
-                  className="h-[2.4rem] w-full rounded border border-[#c8ccd3] bg-white px-1 text-[1.2rem]"
-                  value={selectedDev}
-                  onChange={(event) => setSelectedDev(event.target.value)}
+                  경로{getSortIndicator('path')}
+                </th> */}
+                  <th
+                    scope="col"
+                    className="cursor-pointer select-none text-center!"
+                    onClick={() => handleSort('id')}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') handleSort('id');
+                    }}
+                    role="button"
+                    aria-label="ID 정렬"
+                  >
+                    ID{getSortIndicator('id')}
+                  </th>
+                  <th
+                    scope="col"
+                    className="cursor-pointer select-none text-center!"
+                    onClick={() => handleSort('dep4')}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') handleSort('dep4');
+                    }}
+                    role="button"
+                    aria-label="화면명 정렬"
+                  >
+                    화면명{getSortIndicator('dep4')}
+                  </th>
+                  <th
+                    scope="col"
+                    className="cursor-pointer select-none text-center!"
+                    onClick={() => handleSort('file')}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') handleSort('file');
+                    }}
+                    role="button"
+                    aria-label="설계서명 정렬"
+                  >
+                    설계서명{getSortIndicator('file')}
+                  </th>
+                  {/* <th
+                  scope="col"
+                  className="cursor-pointer select-none"
+                  onClick={() => handleSort('planDate')}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') handleSort('planDate');
+                  }}
+                  role="button"
+                  aria-label="계획일 정렬"
                 >
-                  <option value="all">개발</option>
-                  {devOptions.map((name) => (
-                    <option key={name} value={name}>
-                      {name}
-                    </option>
-                  ))}
-                </select>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedRows.map((row, index) => {
-              const isActive = activeRow ? getRowKey(activeRow) === getRowKey(row) : false;
-              const rowBgClass = 'tracking-0';
-              const rowIdBgClass = 'tracking-0';
-
-              // pubInfoList 기준으로 완료일/수정일 표시
-              const info = getPubInfo(row);
-              const completeDate = formatCompleteDate(info?.완료일 || row.date);
-              const modifyDate = formatCompleteDate(info?.수정일 || row.modify);
-              // const planDate = row.planDate ?? '';
-              const pubName = row.pubName ?? '';
-              const isCompleted = isCompletedRow(row);
-
-              // const isPlanOverdue = isPastDate(planDate, today);
-              // const isPlanToday = isTodayDate(planDate, today);
-              // const planDateTextClass = !isCompleted
-              //   ? isPlanOverdue
-              //     ? '!text-[red]'
-              //     : isPlanToday
-              //       ? '!text-[blue]'
-              //       : ''
-              //   : '';
-
-              return (
-                <tr
-                  key={`${getRowKey(row)}-${index}`}
-                  data-active={isActive ? 'true' : undefined}
-                  className={[isActive ? 'selected' : '', isCompleted ? 'complete' : '', rowBgClass]
-                    .filter(Boolean)
-                    .join(' ')}
-                  onClick={() => setActiveRowKey(getRowKey(row))}
-                >
-                  <td className={rowBgClass + ' text-center'}>
-                    <b>{index + 1}</b>
-                  </td>
-                  {/* <td className={rowBgClass + ' '}>
-                    <span className="break-all !text-[1.1rem]">{row.path ?? ''}</span>
-                  </td> */}
-                  <td scope="row" className={rowIdBgClass}>
-                    <b>{row.id}</b>
-                    {row.subId ? (
-                      <>
-                        <br />
-                        <span className="break-all !text-[1rem]">({row.subId})</span>
-                      </>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td className={rowBgClass}>{row.dep4}</td>
-                  <td className={rowBgClass}>{row.file}</td>
-
-                  {/* <td className={`text-center ${rowBgClass} ${planDateTextClass}`}>
-                    <b>{planDate}</b>
-                  </td> */}
-                  <td className={`!text-center ${rowBgClass}`}>
-                    <b>{completeDate}</b>
-                  </td>
-                  <td className={`!text-center ${rowBgClass}`}>
-                    <b>{modifyDate}</b>
-                  </td>
-                  <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
-                  <td className={`text-center ${rowBgClass}`}>{pubName}</td>
-                  <td className={`text-center ${rowBgClass}`}>{row.dev}</td>
+                  계획일{getSortIndicator('planDate')}
+                </th> */}
+                  <th
+                    scope="col"
+                    className="cursor-pointer select-none text-center!"
+                    onClick={() => handleSort('completeDate')}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') handleSort('completeDate');
+                    }}
+                    role="button"
+                    aria-label="완료일 정렬"
+                  >
+                    완료일{getSortIndicator('completeDate')}
+                  </th>
+                  <th
+                    scope="col"
+                    className="cursor-pointer select-none text-center!"
+                    onClick={() => handleSort('modifyDate')}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') handleSort('modifyDate');
+                    }}
+                    role="button"
+                    aria-label="수정일 정렬"
+                  >
+                    수정일{getSortIndicator('modifyDate')}
+                  </th>
+                  <th scope="col" className="text-center !p-0">
+                    <label className="sr-only" htmlFor="planFilterSelect">
+                      기획 필터
+                    </label>
+                    <select
+                      id="planFilterSelect"
+                      className="h-[2.4rem] w-full rounded border border-0 bg-transparent px-0 text-[1.2rem]"
+                      value={selectedPlan}
+                      onChange={(event) => setSelectedPlan(event.target.value)}
+                    >
+                      <option value="all">기획</option>
+                      {planOptions.map((name) => (
+                        <option key={name} value={name}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
+                  </th>
+                  <th scope="col" className="text-center !p-0">
+                    <label className="sr-only" htmlFor="pubFilterSelect">
+                      퍼블 필터
+                    </label>
+                    <select
+                      id="pubFilterSelect"
+                      className="h-[2.4rem] w-full rounded border border-0 bg-transparent px-0 text-[1.2rem]"
+                      value={selectedPub}
+                      onChange={(event) => setSelectedPub(event.target.value)}
+                    >
+                      <option value="all">퍼블</option>
+                      {pubOptions.map((name) => (
+                        <option key={name} value={name}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
+                  </th>
+                  <th scope="col" className="text-center !p-0">
+                    <label className="sr-only" htmlFor="devFilterSelect">
+                      개발 필터
+                    </label>
+                    <select
+                      id="devFilterSelect"
+                      className="h-[2.4rem] w-full rounded border border-0 bg-transparent px-0 text-[1.2rem]"
+                      value={selectedDev}
+                      onChange={(event) => setSelectedDev(event.target.value)}
+                    >
+                      <option value="all">개발</option>
+                      {devOptions.map((name) => (
+                        <option key={name} value={name}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
+                  </th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody>
+                {sortedRows.map((row, index) => {
+                  const isActive = activeRow ? getRowKey(activeRow) === getRowKey(row) : false;
+                  const rowBgClass = 'tracking-0';
+                  const rowIdBgClass = 'tracking-0';
 
-      <div className="ia-preview-pane">
-        {activeRow ? (
-          <div>
-            <div
-              className="ia-preview-label cursor-pointer"
-              role="button"
-              tabIndex={0}
-              onClick={handleMovePage}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  handleMovePage();
-                }
-              }}
-            >
-              {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt;{' '}
-              <b>
-                {activeRow.dep4}({activeRow.id})
-              </b>
-            </div>
-            <div className="ia-preview-path mt-2 text-[#000] tracking-[0] !text-[1.2rem]">{activeRow.path ?? '-'}</div>
+                  // pubInfoList 기준으로 완료일/수정일 표시
+                  const info = getPubInfo(row);
+                  const completeDate = formatCompleteDate(info?.완료일 || row.date);
+                  const modifyDate = formatCompleteDate(info?.수정일 || row.modify);
+                  // const planDate = row.planDate ?? '';
+                  const pubName = row.pubName ?? '';
+                  const isCompleted = isCompletedRow(row);
+
+                  // const isPlanOverdue = isPastDate(planDate, today);
+                  // const isPlanToday = isTodayDate(planDate, today);
+                  // const planDateTextClass = !isCompleted
+                  //   ? isPlanOverdue
+                  //     ? '!text-[red]'
+                  //     : isPlanToday
+                  //       ? '!text-[blue]'
+                  //       : ''
+                  //   : '';
+
+                  return (
+                    <tr
+                      key={`${getRowKey(row)}-${index}`}
+                      data-active={isActive ? 'true' : undefined}
+                      className={[isActive ? 'selected' : '', isCompleted ? 'complete' : '', rowBgClass]
+                        .filter(Boolean)
+                        .join(' ')}
+                      onClick={() => setActiveRowKey(getRowKey(row))}
+                    >
+                      <td className={rowBgClass + ' text-center'}>
+                        <b>{index + 1}</b>
+                      </td>
+                      {/* <td className={rowBgClass + ' '}>
+                      <span className="break-all !text-[1.1rem]">{row.path ?? ''}</span>
+                    </td> */}
+                      <td scope="row" className={rowIdBgClass}>
+                        <b>{row.id}</b>
+                        {row.subId ? (
+                          <>
+                            <br />
+                            <span className="break-all !text-[1rem]">({row.subId})</span>
+                          </>
+                        ) : (
+                          ''
+                        )}
+                      </td>
+                      <td className={rowBgClass}>{row.dep4}</td>
+                      <td className={rowBgClass}>{row.file}</td>
+
+                      {/* <td className={`text-center ${rowBgClass} ${planDateTextClass}`}>
+                      <b>{planDate}</b>
+                    </td> */}
+                      <td className={`!text-center ${rowBgClass}`}>
+                        <b>{completeDate}</b>
+                      </td>
+                      <td className={`!text-center ${rowBgClass}`}>
+                        <b>{modifyDate}</b>
+                      </td>
+                      <td className={`text-center ${rowBgClass}`}>{row.plan}</td>
+                      <td className={`text-center ${rowBgClass}`}>{pubName}</td>
+                      <td className={`text-center ${rowBgClass}`}>{row.dev}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-        ) : (
-          <div className="ia-preview-label">조건에 맞는 화면이 없습니다.</div>
-        )}
-        {previewUrl ? (
-          <iframe key={previewUrl} src={previewUrl} title="화면 미리보기" className="ia-preview-iframe" />
-        ) : (
-          <div className="ia-preview-iframe flex items-center justify-center text-[1.3rem] text-[#666]">
-            미리보기 가능한 STEP 정보가 없습니다.
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel defaultSize={70}>
+          <div className="ia-preview-pane">
+            {activeRow ? (
+              <div>
+                <div
+                  className="ia-preview-label cursor-pointer"
+                  role="button"
+                  tabIndex={0}
+                  onClick={handleMovePage}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      handleMovePage();
+                    }
+                  }}
+                >
+                  {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt;{' '}
+                  <b>
+                    {activeRow.dep4}({activeRow.id})
+                  </b>
+                </div>
+                <div className="ia-preview-path mt-2 text-[#000] tracking-[0] !text-[1.2rem]">
+                  {activeRow.path ?? '-'}
+                </div>
+              </div>
+            ) : (
+              <div className="ia-preview-label">조건에 맞는 화면이 없습니다.</div>
+            )}
+            {previewUrl ? (
+              <div className="ia-preview-iframe-wrap" ref={iframeWrapRef}>
+                <div className="absolute -top-[3.2rem] right-[0rem] bg-black/70 text-[#fff] px-[0.8rem] py-[0.3rem] text-[1.1rem] rounded-[0.4rem] pointer-events-none z-10 font-mono select-none">
+                  {iframeDimensions.width}px × {iframeDimensions.height}px
+                </div>
+                <iframe key={previewUrl} src={previewUrl} title="화면 미리보기" className="ia-preview-iframe" />
+              </div>
+            ) : (
+              <div className="ia-preview-iframe flex items-center justify-center text-[1.3rem] text-[#666]">
+                미리보기 가능한 STEP 정보가 없습니다.
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </Grid>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
   );
 }

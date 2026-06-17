@@ -230,6 +230,16 @@ const DummyData2: DummyData2Type[] = [
     field6: '기타',
     rowCopy: true,
   },
+  ...Array.from({ length: 13 }, (_, i) => ({
+    id: 13 + i,
+    field1: '사망/후유',
+    field2: '사망/후유',
+    field3: 'CLA23114',
+    field4: `나눔의행복(상해사망) ${13 + i}`,
+    field5: '보험료',
+    field6: '기타',
+    rowCopy: true,
+  })),
 ];
 
 export default function Ltpa600Section() {

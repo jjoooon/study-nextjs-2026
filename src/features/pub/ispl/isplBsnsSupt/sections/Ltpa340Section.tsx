@@ -14,7 +14,7 @@ import {
   createAddRowHandler,
   createDeleteSelectedRowsHandler,
   useDynamicColumnWidths,
-  createTooltipValueGetter
+  createTooltipValueGetter,
 } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';

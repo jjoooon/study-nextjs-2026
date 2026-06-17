@@ -97,6 +97,16 @@ const DummyData1: DummyData1Type[] = [
     field5: 1,
     field6: false,
   },
+  ...Array.from({ length: 19 }, (_, i) => ({
+    id: 7 + i,
+    packageName: '종합치료',
+    field1: 'CLA23114',
+    field2: `치료담보 ${7 + i}`,
+    field3: 50000,
+    field4: 7 + i,
+    field5: 1,
+    field6: false,
+  })),
 ];
 
 export default function Ltpa660Section() {

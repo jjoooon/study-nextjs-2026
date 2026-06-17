@@ -146,25 +146,7 @@ const DummyData: DummyDataType[] = [
   })),
 ];
 
-const QuestionDataList: Array<'Y' | 'N' | ''> = [
-  '',
-  'N',
-  '',
-  'N',
-  'Y',
-  'N',
-  '',
-  'Y',
-  'Y',
-  'Y',
-  'Y',
-  'Y',
-  'Y',
-  'Y',
-  'Y',
-  'N',
-  'N',
-];
+const QuestionDataList: Array<'Y' | 'N' | ''> = [];
 
 interface Ltpa3500301Props {
   simpleMode?: boolean;

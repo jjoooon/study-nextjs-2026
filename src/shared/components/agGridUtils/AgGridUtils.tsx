@@ -27,7 +27,7 @@ import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon } from '@
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
@@ -1093,39 +1093,105 @@ export const numberValueFormatter = <T,>(params: ValueFormatterParams<T>) => {
 };
 
 /**
- * Popover를 통한 +/- 조정 기능이 포함된 숫자 편집기
+ * Popover를 통한 +/- 조정 기능이 포함된 숫자 편집기 (가입금액 전용 커스텀 Cell Editor)
+ *
+ * [동작 상세 설명 & 다른 개발자를 위한 가이드]
+ * 1. 상태 분리 (로컬 상태 vs 글로벌 상태):
+ *    - 값 수정 중(onChange, 버튼 클릭) 실시간으로 부모 React 상태(rowData)를 변경하면 그리드가 전체 리렌더링되면서
+ *      현재 열려있는 편집 세션(Cell Editor)이 강제로 파괴(Destroy)되는 현상이 발생합니다.
+ *    - 이를 막기 위해 편집 진행 중에는 로컬 상태(`value`, `valueRef`)만 업데이트하고,
+ *      최종적으로 에디터가 닫힐 때(unmount 시점) 그리드 데이터와 부모 상태에 한꺼번에 커밋하도록 설계되었습니다.
+ *
+ * 2. Event Propagation 차단 (인풋 클릭 시 편집 꺼짐 방지):
+ *    - ag-Grid는 document 레벨에서 발생하는 click 및 mousedown 이벤트를 감시하여, 셀 바깥 영역이 클릭되면 편집 모드를 종료합니다.
+ *    - React의 `e.stopPropagation()` 만으로는 이 네이티브 이벤트 전파를 막을 수 없어 에디터 내 인풋을 클릭했을 때 편집 모드가 종료되는 문제가 있었습니다.
+ *    - 따라서 인풋의 `onMouseDown` 및 `onClick` 이벤트 핸들러에서 `e.nativeEvent.stopImmediatePropagation()`을 명시적으로 호출해
+ *      ag-Grid 내부의 전파 감지 핸들러로 이벤트가 도달하지 못하도록 확실하게 격리하였습니다.
+ *
+ * 3. ag-Grid 팝업 선언 (isPopup):
+ *    - `isPopup: () => true`를 통해 ag-Grid에게 이 컴포넌트가 셀 내부가 아닌 별도의 팝업(레이어) 형태로 띄워짐을 알려주어,
+ *      팝오버 영역 내부 클릭 시 셀 포커스가 튀거나 팝업이 닫히는 현상을 구조적으로 방지합니다.
  */
 export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams, ref) => {
-  const [value, setValue] = useState<number>(Number(props.value) || 0);
+  const initialValue = Number(props.value) || 0;
+  // UI 렌더링 동기화를 위한 State와 unmount 시 참조할 최신 값을 보관하는 Ref를 분리하여 관리
+  const [value, setValueState] = useState<number>(initialValue);
+  const valueRef = useRef<number>(initialValue);
+  const [open, setOpen] = useState(true);
   const step = props.colDef?.cellEditorParams?.step || 100;
   const min = props.colDef?.cellEditorParams?.min ?? 100;
   const max = props.colDef?.cellEditorParams?.max ?? 20000;
 
+  // 값 업데이트 시 State와 Ref를 동시에 동기화
+  const updateValue = useCallback((newValue: number) => {
+    valueRef.current = newValue;
+    setValueState(newValue);
+  }, []);
+
+  // [중요] 에디터 컴포넌트가 언마운트(소멸)되는 최종 시점에 최종 누적값을 그리드 셀에 반영
+  // 이 처리를 통해 여러 번 버튼을 클릭하여 수정한 최종 값이 중간 유실 없이 상위 rowData 상태까지 일괄 동기화됩니다.
+  useEffect(() => {
+    return () => {
+      if (props.node && props.column) {
+        props.node.setDataValue(props.column.getColId(), valueRef.current);
+      }
+    };
+  }, [props.node, props.column]);
+
   useImperativeHandle(
     ref,
     () => ({
-      getValue: () => value,
+      getValue: () => valueRef.current,
       isCancelAfterEnd: () => false,
+      isPopup: () => true, // ag-Grid에 이 컴포넌트가 팝업 형태임을 알려 위치 및 포커스 관리를 위임
     }),
-    [value]
+    []
+  );
+
+  // 팝오버의 열림/닫힘 상태가 바뀔 때 에디팅 모드를 함께 종료시켜줍니다.
+  const handleOpenChange = useCallback(
+    (nextOpen: boolean) => {
+      setOpen(nextOpen);
+      if (!nextOpen) {
+        props.stopEditing?.(false);
+      }
+    },
+    [props]
   );
 
   return (
     <div className="flex items-center w-full h-full">
-      <Popover defaultOpen={true}>
-        <PopoverTrigger asChild>
+      <Popover open={open} onOpenChange={handleOpenChange}>
+        <PopoverAnchor asChild>
           <input
             className="ag-input-field-input flex-1 w-full h-full border-none outline-none text-right bg-transparent p-0"
             type="number"
             value={value}
-            onChange={(e) => setValue(Number(e.target.value))}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              if (!isNaN(val)) {
+                updateValue(val);
+              }
+            }}
+            // [중요] input 영역 마우스 클릭 시 ag-Grid가 외부 클릭으로 인지해 편집 모드를 Cancel(Destroy)하는 현상 완전 방지
+            onMouseDown={(e) => {
+              e.nativeEvent.stopImmediatePropagation(); // ag-Grid document mousedown 핸들러 차단
+              e.stopPropagation();
+            }}
+            onClick={(e) => {
+              e.nativeEvent.stopImmediatePropagation(); // ag-Grid document click 핸들러 차단
+              e.stopPropagation();
+            }}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') return;
+              if (e.key === 'Enter') {
+                props.stopEditing?.(false);
+                return;
+              }
               e.stopPropagation(); // 팝오버 내부 입력 시 그리드 이벤트 전파 방지
             }}
             autoFocus
           />
-        </PopoverTrigger>
+        </PopoverAnchor>
         <PopoverContent
           side="bottom"
           align="end"
@@ -1142,7 +1208,7 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
                 size={'md'}
                 color={'gray'}
                 onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                onClick={() => setValue((v) => Math.max(min, v - step))}
+                onClick={() => updateValue(Math.max(min, valueRef.current - step))}
               >
                 <MinusIcon color={'var(--color-primary-50)'} />
               </Button>
@@ -1154,7 +1220,7 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
                 size={'md'}
                 color={'gray'}
                 onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                onClick={() => setValue((v) => Math.min(max, v + step))}
+                onClick={() => updateValue(Math.min(max, valueRef.current + step))}
               >
                 <PlusIcon color={'var(--color-primary-50)'} />
               </Button>
@@ -1164,7 +1230,7 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
                 size={'md'}
                 color={'secondary'}
                 onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                onClick={() => setValue(min)}
+                onClick={() => updateValue(min)}
                 className="min-w-[8.3rem]"
               >
                 최소 {min.toLocaleString()}만원
@@ -1172,7 +1238,7 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
               <Button
                 size={'md'}
                 onMouseDown={(e) => e.stopPropagation()} // 클릭 시 그리드 편집 모드 유지
-                onClick={() => setValue(max)}
+                onClick={() => updateValue(max)}
                 className="min-w-[8.3rem]"
               >
                 최대 {max >= 10000 ? `${max / 10000}억` : `${max.toLocaleString()}만원`}

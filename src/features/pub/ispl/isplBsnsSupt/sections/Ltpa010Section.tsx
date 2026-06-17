@@ -18,6 +18,7 @@ import {
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -131,7 +132,7 @@ const DummyData: DummyDataRow[] = [
     field17: '박한화(123123)',
     field18: '배서설계',
     field19: 'LA20143129023123912',
-    nickname: '최고설',
+    nickname: '최고설최고설최고설최고설최고설최고설최고설',
 
     field25: '2026-03-11', // 전속FP(최초설계일)
     field26: '김한화', // 방카(BM)
@@ -411,6 +412,16 @@ const DummyData: DummyDataRow[] = [
 export default function Ltpa010Section() {
   // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const contractActionMenu = [
+    '계약상세조회',
+    '계약변경설계',
+    '수금방법변경',
+    '계좌카드변경',
+    '계속보험료입력',
+    '제지급신청',
+    '신계약출력물',
+  ] as const;
+
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -450,7 +461,7 @@ export default function Ltpa010Section() {
           </Grow>
         </Grid>
       ),
-      flex: 10,
+      width: attributeColumnWidth(400),
       cellClass: '!px-0',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>('field02', (data?: DummyDataRow) => {
@@ -491,12 +502,14 @@ export default function Ltpa010Section() {
             {data?.nickname ? (
               <Tooltip>
                 <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
-                <TooltipContent align="center" side="bottom" sideOffset={0} variant="default">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: data?.nickname,
-                    }}
-                  />
+                <TooltipContent side="top" sideOffset={8}>
+                  <Typo tag="span" variant="body-sm" className="break-all whitespace-pre-wrap">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: data?.nickname,
+                      }}
+                    />
+                  </Typo>
                 </TooltipContent>
               </Tooltip>
             ) : (
@@ -818,9 +831,27 @@ export default function Ltpa010Section() {
         'field18',
         (data?: DummyDataRow) =>
           data?.field19 && (
-            <Button color="link" only="default" size="lg" variant="text" className="w-full">
-              <OverflowTooltipText text={data?.field19}>{data?.field19}</OverflowTooltipText>
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button color="link" only="default" size="lg" variant="text" className="w-full">
+                  <OverflowTooltipText text={data?.field19}>{data?.field19}</OverflowTooltipText>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                side="left"
+                align="end"
+                closeButton={true}
+                className="w-auto p-[0.2rem] flex flex-col"
+              >
+                <Gcol className="overflow-auto z-0 max-h-[20rem] [&>button]:h-[2.8rem] [&>button]:w-full gap-0" placement="ss">
+                  {contractActionMenu.map((menuName) => (
+                    <Button key={menuName} variant={'none'} className="hover:bg-[var(--color-warning-10)] justify-start px-3">
+                      <span className="block">{menuName}</span>
+                    </Button>
+                  ))}
+                </Gcol>
+              </PopoverContent>
+            </Popover>
           )
       ),
     },
