@@ -616,7 +616,7 @@ export function IAListWithPreview() {
             )}
             {previewUrl ? (
               <div className="ia-preview-iframe-wrap" ref={iframeWrapRef}>
-                <div className="absolute -top-[3.2rem] right-[0rem] bg-black/70 text-[#fff] px-[0.8rem] py-[0.3rem] text-[1.1rem] rounded-[0.4rem] pointer-events-none z-10 font-mono select-none">
+                <div className="absolute -top-[3.2rem] right-[0.4rem] bg-black/70 text-[#fff] px-[0.8rem] py-[0.3rem] text-[1.1rem] rounded-[0.4rem] pointer-events-none z-10 font-mono select-none">
                   {iframeDimensions.width}px × {iframeDimensions.height}px
                 </div>
                 <iframe key={previewUrl} src={previewUrl} title="화면 미리보기" className="ia-preview-iframe" />
