@@ -3,7 +3,15 @@
  */
 'use client';
 
-import type { CellClassParams, ColDef, EditableCallbackParams, CellEditorSelectorResult } from 'ag-grid-enterprise';
+import type {
+  CellClassParams,
+  ColDef,
+  EditableCallbackParams,
+  CellEditorSelectorResult,
+  CellValueChangedEvent,
+  SuppressKeyboardEventParams,
+  ValueParserParams,
+} from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Grid, Grow, Typo, Gcol } from '@atoms';
@@ -55,8 +63,8 @@ export function Ltpa35002c() {
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false, reset: false });
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const [rowData] = useState<AgGridRow[]>(dummyData);
-  const [rowData2] = useState<AgGridRow2[]>(dummyData2);
+  const [rowData, setRowData] = useState<AgGridRow[]>(dummyData);
+  const [rowData2, setRowData2] = useState<AgGridRow2[]>(dummyData2);
   const [coverageName, _setCoverageName] = useState('');
   const coverageNameRef = useRef(coverageName);
 
@@ -74,6 +82,22 @@ export function Ltpa35002c() {
     },
     []
   );
+
+  const handleCellValueChanged = useCallback((params: CellValueChangedEvent<AgGridRow>) => {
+    const { data, colDef, newValue } = params;
+    if (!colDef.field) return;
+    setRowData((prev) =>
+      prev.map((row) => (row.id === data.id ? { ...row, [colDef.field as string]: newValue } : row))
+    );
+  }, []);
+
+  const handleCellValueChanged2 = useCallback((params: CellValueChangedEvent<AgGridRow2>) => {
+    const { data, colDef, newValue } = params;
+    if (!colDef.field) return;
+    setRowData2((prev) =>
+      prev.map((row) => (row.id === data.id ? { ...row, [colDef.field as string]: newValue } : row))
+    );
+  }, []);
 
   // =====================
   // 공용 유틸리티/셀 렌더러
@@ -137,6 +161,19 @@ export function Ltpa35002c() {
             return false;
           }
           return true;
+        },
+        // [중요] 편집 모드 중 ag-Grid의 기본 키보드 이벤트 인터셉트 비활성화
+        // 셀에 텍스트 인풋을 입력하는 중 Enter, Backspace, 화살표 키 등을 누를 때
+        // ag-Grid가 기본 그리드 네비게이션 동작(포커스 이동 및 편집 세션 파괴)을 방지합니다.
+        suppressKeyboardEvent: (params: SuppressKeyboardEventParams) => {
+          return params.editing;
+        },
+        // [중요] 사용자가 입력한 문자열을 순수 숫자값으로 파싱하여 ag-Grid 데이터에 바인딩
+        valueParser: (params: ValueParserParams) => {
+          const val = params.newValue;
+          if (val === null || val === undefined || val === '') return 0;
+          const parsed = Number(String(val).replace(/[^\d.-]/g, ''));
+          return isNaN(parsed) ? 0 : parsed;
         },
       },
       {
@@ -407,6 +444,7 @@ export function Ltpa35002c() {
                   columnDefs={columnDefs}
                   getRowId={(params) => String(params.data.id)}
                   singleClickEdit={true}
+                  onCellValueChanged={handleCellValueChanged}
                   rowSelection={{
                     mode: 'multiRow' as const,
                     checkboxes: true,
@@ -452,6 +490,7 @@ export function Ltpa35002c() {
                   columnDefs={columnDefs2}
                   getRowId={(params) => String(params.data.id)}
                   singleClickEdit={true}
+                  onCellValueChanged={handleCellValueChanged2}
                   context={{
                     coverageName,
                     setCoverageName,

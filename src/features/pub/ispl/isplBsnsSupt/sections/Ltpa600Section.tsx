@@ -238,7 +238,7 @@ const DummyData2: DummyData2Type[] = [
     field5: '보험료',
     field6: '기타',
     rowCopy: true,
-  }))
+  })),
 ];
 
 export default function Ltpa600Section() {

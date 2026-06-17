@@ -11,6 +11,9 @@ import type {
   EditableCallbackParams,
   CellEditorSelectorResult,
   ValueFormatterParams,
+  CellValueChangedEvent,
+  SuppressKeyboardEventParams,
+  ValueParserParams,
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
@@ -170,6 +173,14 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     [gridReadyHandler]
   );
 
+  const handleCellValueChanged = useCallback((params: CellValueChangedEvent<AgGridRow>) => {
+    const { data, colDef, newValue } = params;
+    if (!colDef.field) return;
+    setRowData((prev) =>
+      prev.map((row) => (row.id === data.id ? { ...row, [colDef.field as string]: newValue } : row))
+    );
+  }, []);
+
   // ---------------------------------------------------
   // ColDef 태아
   const columnDefs: ColDef<AgGridRow>[] = useMemo(
@@ -203,7 +214,9 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           if (!isSelectedInsuredAmount) {
             return {
               component: AmountWithPopoverCellEditor,
-              params: { step: 10 }, // Popover에서 조정할 단위 설정
+              params: {
+                step: 100, //입력단위 100만원
+              },
             };
           } else {
             const baseOptions = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
@@ -220,6 +233,19 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
             return false;
           }
           return true;
+        },
+        // [중요] 편집 모드 중 ag-Grid의 기본 키보드 이벤트 인터셉트 비활성화
+        // 셀에 텍스트 인풋을 입력하는 중 Enter, Backspace, 화살표 키 등을 누를 때
+        // ag-Grid가 기본 그리드 네비게이션 동작(포커스 이동 및 편집 세션 파괴)을 방지합니다.
+        suppressKeyboardEvent: (params: SuppressKeyboardEventParams) => {
+          return params.editing;
+        },
+        // [중요] 사용자가 입력한 문자열을 순수 숫자값으로 파싱하여 ag-Grid 데이터에 바인딩
+        valueParser: (params: ValueParserParams) => {
+          const val = params.newValue;
+          if (val === null || val === undefined || val === '') return 0;
+          const parsed = Number(String(val).replace(/[^\d.-]/g, ''));
+          return isNaN(parsed) ? 0 : parsed;
         },
       },
       {
@@ -511,29 +537,37 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
               className={`tooltip-hidden-toggle ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
             >
               <AgGridReact<AgGridRow>
-                rowData={rowData}
-                columnDefs={columnDefs}
-                getRowId={(params) => String(params.data.id)}
-                singleClickEdit={true} // 한 번의 클릭으로 편집 활성화
+                // 1. 데이터 및 기본 구성
+                rowData={rowData} // 그리드에 렌더링할 데이터 목록
+                columnDefs={columnDefs} // 컬럼 정의 구조 객체
+                getRowId={(params) => String(params.data.id)} // 그리드 행 식별자로 고유한 ID 지정
+                singleClickEdit={true} // 한 번의 클릭만으로 즉시 편집 모드로 전환
+                onCellValueChanged={handleCellValueChanged} // 편집 종료 후 최종 변경 값이 확정되었을 때 React 상태(rowData) 동기화
+                // 2. 다중 행 선택 설정
                 rowSelection={{
-                  mode: 'multiRow' as const,
-                  checkboxes: true,
-                  headerCheckbox: false,
-                  enableClickSelection: false,
-                  enableSelectionWithoutKeys: true,
+                  mode: 'multiRow' as const, // 다중 선택 모드 활성화
+                  checkboxes: true, // 선택 열에 체크박스 노출
+                  headerCheckbox: false, // 헤더 영역의 전체 선택 체크박스는 비활성화
+                  enableClickSelection: false, // 일반 셀 영역을 클릭했을 때 행이 바로 선택되는 현상 방지
+                  enableSelectionWithoutKeys: true, // Ctrl/Shift 키 조합 없이 클릭만으로 행 누적 다중 선택 지원
                 }}
-                onCellClicked={handleGridCellClickToggle}
+                // 3. 커스텀 클릭 핸들링 & 선택 열(Selection Column) 제어
+                onCellClicked={handleGridCellClickToggle} // 셀 클릭 시, 잠금 행이 아니면 체크박스를 활성화/비활성화 시켜주는 토글 핸들러
                 selectionColumnDef={{
-                  width: 30,
+                  // 체크박스가 위치한 컬럼의 커스텀 설정
+                  width: 30, // 컬럼 가로 크기 지정
                   // pinned: 'left',
                   cellClass: 'text-center p-0!',
                   cellClassRules: {
+                    // locked 속성이 있는 기본 필수 담보의 경우 체크박스 클릭(선택 해제)이 불가능하도록 CSS로 차단
                     'pointer-events-none': (params) => !!params.data?.locked,
                   },
                 }}
-                onSelectionChanged={handleGridSelectionChanged}
-                onGridReady={handleGridReady}
+                // 4. 컨텍스트 및 라이프사이클 이벤트
+                onSelectionChanged={handleGridSelectionChanged} // 선택 상태가 달라졌을 때 (필수 잠금행 강제 유지 및 타 컬럼 갱신 등) 후처리 콜백
+                onGridReady={handleGridReady} // 그리드가 최초 로딩을 끝마쳐 API 참조를 저장할 수 있을 때 호출
                 context={{
+                  // 커스텀 셀 렌더러(cellRenderer)에서 React 상태값 및 제어 함수를 공유하여 쓸 수 있도록 Context 객체 전달
                   coverageName,
                   setCoverageName,
                   showProductNameTooltip,
@@ -542,28 +576,31 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   checkedMap,
                   onCheckedChange: handleCheckedChange,
                 }}
-                // onRowDataUpdated={handleRowDataUpdated}
-                suppressRowHoverHighlight={false}
-                tooltipShowDelay={0}
-                tooltipHideDelay={9999}
-                tooltipMouseTrack={true}
-                treeData={true}
-                getDataPath={(row) => row.filePath?.map(String) ?? []}
-                groupDefaultExpanded={0}
-                getRowClass={(params) => (params.data?.isError ? 'isError' : '')}
+                // 5. 호버 및 툴팁 관리
+                suppressRowHoverHighlight={false} // 마우스 오버 시 행 강조 활성화
+                tooltipShowDelay={0} // 마우스가 닿으면 즉시 툴팁 생성
+                tooltipHideDelay={9999} // 툴팁의 가시 시간을 최대로 유지
+                tooltipMouseTrack={true} // 마우스 커서를 따라 툴팁이 움직이도록 설정
+                // 6. 부모-자식 관계 표현 (Tree Data 모드)
+                treeData={true} // 그리드 내에서 계층형 트리 데이터를 표현하도록 설정
+                getDataPath={(row) => row.filePath?.map(String) ?? []} // 데이터 내 파일 경로 배열 정보를 기준으로 트리 구조 매핑
+                groupDefaultExpanded={0} // 기본적으로 모든 트리 노드를 닫아둠 (0레벨만 노출)
+                getRowClass={(params) => (params.data?.isError ? 'isError' : '')} // 비즈니스 유효성 에러가 발생한 행에 CSS 클래스 부여
+                // 7. 자동 트리 그룹 컬럼 정의 (Auto Group Column Definition)
                 autoGroupColumnDef={{
-                  headerComponent: AgGridProductNameHeader,
+                  headerComponent: AgGridProductNameHeader, // 담보명 헤더를 위한 커스텀 헤더 렌더러
                   field: 'id',
                   flex: 10,
                   cellClass: (_) => 'text-left !p-0',
-                  cellRenderer: productNameCellRenderer,
-                  tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시
+                  cellRenderer: productNameCellRenderer, // 트리 화살표와 텍스트를 커스터마이징한 렌더러
+                  tooltipValueGetter: (params) => params.data?.title ?? '', // 마우스 호버 시 툴팁으로 풀네임 담보명 출력
                 }}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                suppressAnimationFrame={true}
-                suppressColumnMoveAnimation={true}
-                suppressRowTransform={true}
-                animateRows={false}
+                noRowsOverlayComponent={AgGridEmptyComponent} // 데이터가 없을 때 표시할 대체 UI 컴포넌트
+                // 8. 렌더링 성능 최적화 옵션 (대규모 데이터 및 빠른 스크롤 성능 유지)
+                suppressAnimationFrame={true} // 애니메이션 프레임 제어를 생략하여 렌더링 속도 증가
+                suppressColumnMoveAnimation={true} // 컬럼 이동 애니메이션 비활성화
+                suppressRowTransform={true} // 절대좌표(Transform) 대신 Top 스타일을 사용하여 스크롤 성능 최적화
+                animateRows={false} // 행 이동/추가 시 애니메이션 비활성화
               />
             </div>
           </LayoutScrollItem>

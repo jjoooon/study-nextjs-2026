@@ -233,6 +233,9 @@ export const Ltpa35005 = () => {
   const [morePay, setMorePay] = React.useState<string>('선택');
   const isSimilarContractCheckRequired = true; //4-1 특정조건인 경우 문구 노출
 
+  const is노후실손자동재가입동의 = true;
+  const is해지방지휴대폰결제 = true;
+
   return (
     <LayoutTemplateLTPA350MainBody
       mainBody={
@@ -241,8 +244,7 @@ export const Ltpa35005 = () => {
             <LayoutScrollWrap>
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
-                  {/* M5. cols 수정 */}
-                  <FormTable cols={['w-[14.8rem]', 'w-[25rem]', 'w-[13.8rem]', 'w-[auto]']}>
+                  <FormTable cols={['w-[15.6rem]', 'w-[25rem]', 'w-[13.8rem]', 'w-[auto]']}>
                     <FormRow>
                       <FormCell title={'만기수익자'} colSpan={3}>
                         <NativeSelect aria-label="주피와 관계 선택" width={100} className="ml-[0.4rem]">
@@ -350,11 +352,11 @@ export const Ltpa35005 = () => {
                       </FormCell>
                       <FormCell
                         title={
-                          <>
+                          <div className="leading-[1.2]">
                             승환계약여부
                             <br />
                             <Typo variant={'body-xs'}>(당·타사 승환예정 포함)</Typo>
-                          </>
+                          </div>
                         }
                         rowSpan={2}
                         titleRowSpan={2}
@@ -430,11 +432,11 @@ export const Ltpa35005 = () => {
                       </FormCell>
                       <FormCell
                         title={
-                          <>
+                          <div className="leading-[1.2]">
                             조세규정확인대상
                             <br />
                             <Typo variant={'body-xs'}>(FATCA/CRS)</Typo>
-                          </>
+                          </div>
                         }
                       >
                         <Grow placement="bwc">
@@ -528,9 +530,30 @@ export const Ltpa35005 = () => {
                       </FormCell>
                     </FormRow>
 
+                    {is노후실손자동재가입동의 && (
+                      <FormRow>
+                        <FormCell title={'노후실손 자동재가입동의'} colSpan={3}>
+                          {/* <FormCell title={'당월해지 자동이체 신청'}> */}
+                          <Grow placement="sc" gap={3}>
+                            <RadioGroup defaultValue="동의함" required>
+                              {[
+                                { value: '동의함', label: '동의함' },
+                                { value: '동의안함', label: '동의안함' },
+                              ].map((option) => (
+                                <RadioGroupItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </RadioGroupItem>
+                              ))}
+                            </RadioGroup>
+                          </Grow>
+                        </FormCell>
+                      </FormRow>
+                    )}
+
                     <FormRow>
-                      <FormCell title={'당월해지 자동이체 신청'}>
-                        <Grow placement="bwc">
+                      <FormCell title={'당월해지 자동이체 신청'} colSpan={is해지방지휴대폰결제 ? 1 : 3}>
+                        {/* <FormCell title={'당월해지 자동이체 신청'}> */}
+                        <Grow placement="sc" gap={2}>
                           <RadioGroup defaultValue="동의함" required>
                             {[
                               { value: '동의함', label: '동의함' },
@@ -546,38 +569,39 @@ export const Ltpa35005 = () => {
                           </Button>
                         </Grow>
                       </FormCell>
-                      <FormCell title={'해지 방지 휴대폰 결제'}>
-                        {/* M1. 정렬관련 수정 placement="bwc */}
-                        <Grow placement="bwc">
-                          <Grow placement="sc" gap={2}>
-                            <RadioGroup defaultValue="동의함" required>
-                              {[
-                                { value: '동의함', label: '동의함' },
-                                { value: '동의안함', label: '동의안함' },
-                              ].map((option) => (
-                                <RadioGroupItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </RadioGroupItem>
-                              ))}
-                            </RadioGroup>
-                            <NativeSelect aria-label="통신사" width={100}>
-                              {[
-                                { value: '통신사', label: '통신사' },
-                                { value: '통신사2', label: '통신사2' },
-                              ].map((option) => (
-                                <NativeSelectOption key={option.value} value={option.value}>
-                                  {option.label}
-                                </NativeSelectOption>
-                              ))}
-                            </NativeSelect>
+                      {is해지방지휴대폰결제 && (
+                        <FormCell title={'해지 방지 휴대폰 결제'}>
+                          <Grow placement="bwc">
+                            <Grow placement="sc" gap={2}>
+                              <RadioGroup defaultValue="동의함" required>
+                                {[
+                                  { value: '동의함', label: '동의함' },
+                                  { value: '동의안함', label: '동의안함' },
+                                ].map((option) => (
+                                  <RadioGroupItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </RadioGroupItem>
+                                ))}
+                              </RadioGroup>
+                              <NativeSelect aria-label="통신사" width={100}>
+                                {[
+                                  { value: '통신사', label: '통신사' },
+                                  { value: '통신사2', label: '통신사2' },
+                                ].map((option) => (
+                                  <NativeSelectOption key={option.value} value={option.value}>
+                                    {option.label}
+                                  </NativeSelectOption>
+                                ))}
+                              </NativeSelect>
+                            </Grow>
+                            <Grow>
+                              <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                                알림톡발송
+                              </Button>
+                            </Grow>
                           </Grow>
-                          <Grow>
-                            <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                              알림톡발송
-                            </Button>
-                          </Grow>
-                        </Grow>
-                      </FormCell>
+                        </FormCell>
+                      )}
                     </FormRow>
                   </FormTable>
 

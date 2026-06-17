@@ -180,7 +180,7 @@ const DummyData: DummyDataType[] = [
     field2: '',
     field3: `추가 자료 ${18 + i}`,
     field4: '2026.08.31',
-  }))
+  })),
 ];
 
 export default function Ltpa690Section() {

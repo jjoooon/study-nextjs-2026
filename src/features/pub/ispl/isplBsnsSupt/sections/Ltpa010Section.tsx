@@ -450,7 +450,7 @@ export default function Ltpa010Section() {
           </Grow>
         </Grid>
       ),
-      flex: 10,
+      width: attributeColumnWidth(400),
       cellClass: '!px-0',
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>('field02', (data?: DummyDataRow) => {

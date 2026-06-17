@@ -38,9 +38,9 @@ type DummyDataType = {
   field04: string | number;
 };
 const DummyData: DummyDataType[] = [
-  { id: 1, isCheck: true, field01: '김한화한화', field02: '계약자', field03: '등록대상', field04: '-' },
-  { id: 2, isCheck: true, field01: '김한화한화김한화한화', field02: '법인대리인', field03: '등록대상', field04: '-' },
-  { id: 3, isCheck: true, field01: '김한화', field02: '등록대상', field03: '등록대상', field04: '-' },
+  { id: 1, isCheck: false, field01: '김한화한화', field02: '계약자', field03: '등록대상', field04: '-' },
+  { id: 2, isCheck: false, field01: '김한화한화김한화한화', field02: '법인대리인', field03: '등록대상', field04: '-' },
+  { id: 3, isCheck: false, field01: '김한화', field02: '등록대상', field03: '등록대상', field04: '-' },
 ];
 
 const Ltpz053 = () => {
@@ -126,7 +126,7 @@ const Ltpz053 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+          <div className="ag-theme-alpine inner-scroll radio-selection" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
@@ -138,8 +138,7 @@ const Ltpz053 = () => {
               }}
               domLayout="normal"
               rowSelection={{
-                mode: 'multiRow',
-                headerCheckbox: false,
+                mode: 'singleRow',
                 checkboxes: true,
                 enableClickSelection: true,
               }}
@@ -206,13 +205,13 @@ const Ltpz053 = () => {
                 {form.type02 === '운전면허증' && (
                   <FormRow>
                     <FormCell title={'성명'}>
-                      <Input aria-label="" value={''} required />
+                      <Input required />
                     </FormCell>
                     <FormCell title={'생년월일'}>
                       <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
                     </FormCell>
-                    <FormCell title={'발급일자'}>
-                      <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
+                    <FormCell title={'면허번호'}>
+                      <Input required />
                       <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                         신원확인
                       </Button>
@@ -223,10 +222,10 @@ const Ltpz053 = () => {
                   <>
                     <FormRow>
                       <FormCell title={'성명'}>
-                        <Input aria-label="" value={''} required />
+                        <Input required />
                       </FormCell>
                       <FormCell title={'외국인번호'}>
-                        <Input aria-label="" value={''} required />
+                        <Input required />
                       </FormCell>
                       <FormCell title={'발급일자'}>
                         <DatePickerInput mode="single" onChange={() => {}} size="lg" value="" required />
@@ -245,10 +244,10 @@ const Ltpz053 = () => {
                 {form.type02 === '사업자등록번호' && (
                   <FormRow>
                     <FormCell title={'사업자명'}>
-                      <Input aria-label="" value={''} required />
+                      <Input required />
                     </FormCell>
                     <FormCell title={'사업자등록번호'} colSpan={5} tdClassName="grid grid-cols-[1fr_auto] gap-1">
-                      <Input aria-label="" value={''} required />
+                      <Input required />
                       <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                         사업자등록번호조회
                       </Button>

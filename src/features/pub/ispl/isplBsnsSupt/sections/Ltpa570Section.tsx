@@ -169,7 +169,7 @@ const Ltpa570DummyData: Ltpa570DummyDataRow[] = [
     field11: 24,
     field12: 24,
     field13: 8 + i,
-  }))
+  })),
 ];
 
 export default function Ltpa570Section() {
@@ -184,8 +184,6 @@ export default function Ltpa570Section() {
   const isGroupByOption = (value: string): value is 'option1' | 'option2' | 'option3' | 'option4' => {
     return value === 'option1' || value === 'option2' || value === 'option3' || value === 'option4';
   };
-
-
 
   // AgGrid Column
   const { attributeColumnWidth } = useDynamicColumnWidths();

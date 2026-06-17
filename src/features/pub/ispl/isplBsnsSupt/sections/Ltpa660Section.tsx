@@ -106,7 +106,7 @@ const DummyData1: DummyData1Type[] = [
     field4: 7 + i,
     field5: 1,
     field6: false,
-  }))
+  })),
 ];
 
 export default function Ltpa660Section() {

@@ -251,7 +251,7 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
         <LayoutMain className="grid grid-rows-[1fr] h-full">
           <LayoutMainBody className="grid grid-rows-[auto_1fr] h-full">
             <TabPager
-              className="grid-rows-[auto_auto] h-auto sticky top-0 z-20 bg-[#fff] w-[calc(100%-7.6rem)]"
+              className="grid-rows-[auto_auto] h-auto sticky top-0 z-20 bg-[#fff] w-[calc(100%-8.3rem)]"
               data={Tabs}
               active={TabActive}
               setActive={TabSetActive}

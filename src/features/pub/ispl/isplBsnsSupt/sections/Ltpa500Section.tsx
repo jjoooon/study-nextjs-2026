@@ -9,12 +9,7 @@ import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grid, Grow, Gcol } from '@atoms';
 import { ResetIcon, SearchIcon } from '@icons';
-import {
-  AgGridEmptyComponent,
-  createTooltipValueGetter,
-  numberValueFormatter,
-  useDynamicColumnWidths,
-} from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -117,7 +112,7 @@ const DummyData: DummyDataType[] = [
     field09: '999999999',
     field10: 'TEXT',
     field11: '선택',
-  }))
+  })),
 ];
 
 export default function Ltpa500Section() {

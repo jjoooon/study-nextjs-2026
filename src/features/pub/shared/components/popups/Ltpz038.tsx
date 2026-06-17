@@ -11,12 +11,7 @@ import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 import { ResetIcon, SearchIcon } from '@icons';
-import {
-  AgGridEmptyComponent,
-  createTooltipValueGetter,
-  numberValueFormatter,
-  useDynamicColumnWidths,
-} from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
