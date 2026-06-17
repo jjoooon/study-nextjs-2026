@@ -677,10 +677,10 @@
 
   .filepond--list-scroller {
     width: 100% !important;
-    position: relative !important;
-    top: auto !important;
+    position: absolute !important;
+    top: 0 !important;
     transform: none !important;
-    height: auto !important;
+    height: 100% !important;
     bottom: 0 !important;
     padding: 2rem 0 !important;
     overflow-y: auto !important;
@@ -781,6 +781,19 @@
     display: flex !important;
     cursor: pointer !important;
     background-color: var(--color-blue-gray-50) !important;
+  }
+
+  .filepond--root[data-style-panel-layout~="compact"] .filepond--list, .filepond--root[data-style-panel-layout~="integrated"] .filepond--list {
+    height:auto !important;
+  }
+  [data-filepond-item-state="processing-complete"] .filepond--file-action-button.filepond--action-remove-item {
+    display: flex !important;
+    cursor: pointer !important;
+    background-color: var(--color-blue-gray-50) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    color:#FFF !important;
+    pointer-events:visible !important;
   }
   .filepond--browser[name='files'] + .filepond--drop-label {
     position: absolute !important;
