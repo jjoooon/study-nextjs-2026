@@ -242,7 +242,7 @@ const Ltpa040DummyDataT2: Ltpa040DummyDataRowT2[] = [
     id: 3,
     field01: '한화 더 경증 간편건강보험(연만기 갱신형) 2601',
     field02: '1종 해약환급금미지급형, 3.10.5간편고지형',
-    field03: '올인원플랜',
+    field03: '플1형(355간편고지형)(프리미엄올인원플랜)(1.7189형)(15~80세)',
     field04: '00',
   },
   {
@@ -1227,8 +1227,8 @@ const Ltpa04002 = () => {
       headerName: '플랜',
       field: 'field03',
       flex: 30,
-      // minWidth: attributeColumnWidth(150),
       cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa040DummyDataRowT2>({ field: 'field03' }),
     },
     {
       headerName: '건수',
