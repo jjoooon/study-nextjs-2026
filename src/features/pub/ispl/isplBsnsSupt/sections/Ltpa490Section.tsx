@@ -9,7 +9,7 @@ import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grid, Grow, Gcol } from '@atoms';
 import { ResetIcon, SearchIcon } from '@icons';
-import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -228,52 +228,30 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa490Section() {
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 5));
-  const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount, setTotalCount] = React.useState(DummyData.length);
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
+  const {
+    loadedCount,
+    totalCount,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
+    allRows: DummyData,
+    pageSize,
+  });
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
 
-  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const items = DummyData.slice(start, end);
-      return {
-        items,
-        totalCount: DummyData.length,
-      };
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const handleLoadNext = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
-    const res = await fetchMockData(nextPage, pageSize);
-
-    setRowData((prev) => [...prev, ...res.items]);
-    setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
-
-  const handleLoadAll = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const res = await fetchMockData(1, totalCount);
-    setRowData(res.items);
-    setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
 
   const handleLoadReset = React.useCallback(() => {
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
+  const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
   const ExceedPeriodHeader = () => (
     <span className="w-full flex flex-col items-center">
@@ -307,13 +285,15 @@ export default function Ltpa490Section() {
       },
       {
         headerName: '계명자명',
+        flex: 1,
+        minWidth: attributeColumnWidth(75),
         cellClass: 'text-center px-0!',
         autoHeight: true,
         children: [
           {
             headerName: '피보험자명',
             flex: 1,
-            minWidth: attributeColumnWidth(90),
+            minWidth: attributeColumnWidth(75),
             cellClass: 'text-center px-0!',
             autoHeight: true,
             cellRenderer: createFieldRenderer<DummyDataType>('field02', 'field03'),
@@ -330,13 +310,15 @@ export default function Ltpa490Section() {
       },
       {
         headerName: '취급지점',
+        flex: 1,
+        minWidth: attributeColumnWidth(110),
         cellClass: 'text-center',
         children: [
           {
             headerName: '취급자',
             field: 'field06',
             flex: 1,
-            minWidth: attributeColumnWidth(120),
+            minWidth: attributeColumnWidth(110),
             autoHeight: true,
             cellClass: 'text-center px-0!',
             cellRenderer: createFieldRenderer<DummyDataType>('field05', 'field06'),
@@ -391,7 +373,7 @@ export default function Ltpa490Section() {
         headerName: '미파기 사유',
         field: 'field12',
         flex: 20,
-        cellClass: 'editable-cell text-left',
+        cellClass: 'text-left',
         editable: true,
         autoHeight: true,
       },
@@ -571,7 +553,7 @@ export default function Ltpa490Section() {
                       <AgGridReact<DummyDataType>
                         ref={gridRef}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={rowData}
+                        rowData={visibleRows}
                         columnDefs={columnDefs}
                         singleClickEdit={true}
                         rowHeight={60}
@@ -579,14 +561,13 @@ export default function Ltpa490Section() {
                     </div>
                     <TableMore
                       gridRef={gridRef}
-                      isAll={true}
+                      isAll={false}
                       loadedCount={loadedCount}
                       totalCount={totalCount}
                       pageSize={pageSize}
                       onLoadAll={handleLoadAll}
                       onLoadNext={handleLoadNext}
                       onLoadReset={handleLoadReset}
-                      isReset={true}
                     />
                   </Gcol>
                   <BulletList position="col">

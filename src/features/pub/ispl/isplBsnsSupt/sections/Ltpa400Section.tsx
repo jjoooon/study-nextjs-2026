@@ -9,7 +9,7 @@ import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Grid, Gcol } from '@atoms';
 import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -189,73 +189,276 @@ const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
     field11_01: 'LA251028678825',
     field12_01: 'LA251028678825',
   },
-  ...Array.from({ length: 20 }, (_, i) => ({
-    id: 7 + i,
+  {
+    id: 7,
     field01_01: '신부산GA지점',
     field02_01: '1301097',
     field03_01: '에이플러스-서면',
     field04_01: '4649111',
     field05_01: '김한화',
-    field06_01: `보험명 ${7 + i}`,
+    field06_01: '한화 건강쑥쑥 어린이보험',
     field07_01: '우리집안심간편플',
     field08_01: '박한화화',
     field09_01: '2026-04-11',
     field10_01: '임한화화(8994772)',
     field11_01: 'LA251028678825',
     field12_01: 'LA251028678825',
-  })),
+  },
+  {
+    id: 8,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 9,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 10,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 11,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 12,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 13,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 14,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 15,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 16,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 17,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 18,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 19,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 20,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 21,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
+  {
+    id: 22,
+    field01_01: '신부산GA지점',
+    field02_01: '1301097',
+    field03_01: '에이플러스-서면',
+    field04_01: '4649111',
+    field05_01: '김한화',
+    field06_01: '한화 건강쑥쑥 어린이보험',
+    field07_01: '우리집안심간편플',
+    field08_01: '박한화화',
+    field09_01: '2026-04-11',
+    field10_01: '임한화화(8994772)',
+    field11_01: 'LA251028678825',
+    field12_01: 'LA251028678825',
+  },
 ];
 
 export default function Ltpa400Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-  const { attributeColumnWidth } = useDynamicColumnWidths();
 
-  const [rowData, setRowData] = React.useState<Ltpa400DummyDataRow2[]>(() => Ltpa400DummyData2.slice(0, 5));
-  const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount] = React.useState(Ltpa400DummyData2.length);
-  const [isLoading, setIsLoading] = React.useState(false);
-
+  // 2026-05-22 페이징 추가
   const gridRef = React.useRef<AgGridReact<Ltpa400DummyDataRow2>>(null);
   const pageSize = 5;
+  const {
+    loadedCount,
+    totalCount,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
+    allRows: Ltpa400DummyData2,
+    pageSize,
+  });
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
 
-  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const items = Ltpa400DummyData2.slice(start, end);
-      return {
-        items,
-        totalCount: Ltpa400DummyData2.length,
-      };
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const handleLoadNext = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
-    const res = await fetchMockData(nextPage, pageSize);
-
-    setRowData((prev) => [...prev, ...res.items]);
-    setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
-
-  const handleLoadAll = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const res = await fetchMockData(1, totalCount);
-    setRowData(res.items);
-    setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
 
   const handleLoadReset = React.useCallback(() => {
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
+  const visibleRows = React.useMemo(() => Ltpa400DummyData2.slice(0, loadedCount), [loadedCount]);
 
   // 2026-05-22 지원SM 버튼으로 변경
   // 2026-05-27 담당SM 버튼으로 변경
@@ -264,14 +467,14 @@ export default function Ltpa400Section() {
     {
       headerName: '설계접수번호',
       field: 'field01',
-      width: attributeColumnWidth(110),
+      width: 110,
       cellClass: 'text-center',
     },
     {
       headerName: '지점',
       field: 'field02',
       flex: 1,
-      minWidth: attributeColumnWidth(120),
+      minWidth: 120,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field02' }),
     },
@@ -279,7 +482,7 @@ export default function Ltpa400Section() {
       headerName: '대리점',
       field: 'field03',
       flex: 1,
-      minWidth: attributeColumnWidth(150),
+      minWidth: 160,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field03' }),
     },
@@ -287,7 +490,7 @@ export default function Ltpa400Section() {
       headerName: '사용인',
       field: 'field04',
       flex: 1,
-      minWidth: attributeColumnWidth(115),
+      minWidth: 115,
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -305,46 +508,47 @@ export default function Ltpa400Section() {
       headerName: '상품',
       field: 'field05',
       flex: 1,
-      minWidth: attributeColumnWidth(110),
+      minWidth: 130,
       cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field05' }),
     },
     {
       headerName: '고객명',
       field: 'field06',
-      width: attributeColumnWidth(70),
+      width: 70,
       cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field06' }),
     },
     {
       headerName: '요청일시',
       field: 'field07',
-      width: attributeColumnWidth(110),
+      width: 110,
       cellClass: 'text-center',
     },
     {
       headerName: '처리일시',
       field: 'field08',
-      width: attributeColumnWidth(110),
+      width: 110,
       cellClass: 'text-center',
     },
     {
       headerName: '진행상태',
       field: 'field09',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
+      minWidth: 70,
       cellClass: 'text-center',
     },
     {
       headerName: '담당SM',
       field: 'field10',
-      width: attributeColumnWidth(70),
+      width: 70,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field10' }),
     },
     {
       headerName: '지원SM',
       field: 'field11',
-      width: attributeColumnWidth(70),
+      width: 70,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field11' }),
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
@@ -356,7 +560,7 @@ export default function Ltpa400Section() {
     {
       headerName: '설계번호',
       field: 'field12',
-      width: attributeColumnWidth(105),
+      width: 105,
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
@@ -372,7 +576,7 @@ export default function Ltpa400Section() {
     {
       headerName: 'No',
       field: 'id',
-      width: attributeColumnWidth(30),
+      width: 30,
       cellClass: 'text-center',
     },
     {
@@ -380,35 +584,35 @@ export default function Ltpa400Section() {
       field: 'field01_01',
       cellClass: 'text-center',
       flex: 1,
-      minWidth: attributeColumnWidth(110),
+      minWidth: 110,
     },
     {
       headerName: '대리점코드',
       field: 'field02_01',
       cellClass: 'text-center',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: 80,
     },
     {
       headerName: '대리점명',
       field: 'field03_01',
       cellClass: 'text-center',
       flex: 1,
-      minWidth: attributeColumnWidth(110),
+      minWidth: 110,
     },
     {
       headerName: '사용인코드',
       field: 'field04_01',
       cellClass: 'text-center',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: 80,
     },
     {
       headerName: '사용인명',
       field: 'field05_01',
       cellClass: 'text-center',
       flex: 1,
-      minWidth: attributeColumnWidth(70),
+      minWidth: 70,
     },
     {
       headerName: '상품명',
@@ -416,42 +620,42 @@ export default function Ltpa400Section() {
       cellClass: 'text-left',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow2>({ field: 'field06_01' }),
       flex: 5,
-      minWidth: attributeColumnWidth(250),
+      minWidth: 250,
     },
     {
       headerName: '플랜명',
       field: 'field07_01',
       cellClass: 'text-left',
       flex: 2,
-      minWidth: attributeColumnWidth(250),
+      minWidth: 250,
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow2>({ field: 'field07_01' }),
     },
     {
       headerName: '고객명',
       field: 'field08_01',
       cellClass: 'text-center',
-      width: attributeColumnWidth(70),
+      width: 70,
     },
     {
       headerName: '설계일자',
       field: 'field09_01',
       cellClass: 'text-center',
       flex: 1,
-      minWidth: attributeColumnWidth(80),
+      minWidth: 80,
     },
     {
       headerName: '담당SM',
       field: 'field10_01',
       cellClass: 'text-center',
       flex: 1,
-      minWidth: attributeColumnWidth(115),
+      minWidth: 115,
     },
     {
       headerName: '설계번호',
       field: 'field11_01',
       cellClass: 'text-center',
       flex: 1,
-      minWidth: attributeColumnWidth(110),
+      minWidth: 110,
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow2>) => (
         <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
           {params.data?.field11_01 ?? ''}
@@ -463,7 +667,7 @@ export default function Ltpa400Section() {
       field: 'field12_01',
       cellClass: 'text-center',
       flex: 1,
-      minWidth: attributeColumnWidth(110),
+      minWidth: 110,
     },
   ];
 
@@ -756,7 +960,7 @@ export default function Ltpa400Section() {
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
                         // rowData={Ltpa400DummyData2}
-                        rowData={rowData}
+                        rowData={visibleRows}
                         columnDefs={columnDefs2}
                         defaultColDef={{
                           sortable: true,
@@ -778,7 +982,6 @@ export default function Ltpa400Section() {
                       onLoadAll={handleLoadAll}
                       onLoadNext={handleLoadNext}
                       onLoadReset={handleLoadReset}
-                      isReset={true}
                     />
                   </Gcol>
                 </Grid>

@@ -9,7 +9,12 @@ import { useCallback, useState } from 'react';
 import * as React from 'react';
 import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { ResetIcon, FileImportIcon, SearchIcon } from '@icons';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  useAgGridInfiniteAppend,
+  createTooltipValueGetter,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -43,7 +48,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: 25,
+    field01: 8,
     field02: '로그구분1',
     field03: '-',
     field04: '2026-03-01',
@@ -57,7 +62,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
-    field01: 24,
+    field01: 7,
     field02: '로그구분1',
     field03: 'Data',
     field04: '2026-03-01',
@@ -71,7 +76,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
-    field01: 23,
+    field01: 6,
     field02: '로그구분1',
     field03: 'Data',
     field04: '2026-03-01',
@@ -85,7 +90,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
-    field01: 22,
+    field01: 5,
     field02: '로그구분1',
     field03: 'Data',
     field04: '2026-03-01',
@@ -97,23 +102,66 @@ const DummyData: DummyDataType[] = [
     field10: '항목명6',
     field11: '항목명7',
   },
-  ...Array.from({ length: 21 }, (_, i) => ({
-    id: 5 + i,
-    field01: 21 - i,
+  {
+    id: 5,
+    field01: 4,
     field02: '로그구분1',
     field03: 'Data',
     field04: '2026-03-01',
-    field05: `상세 Data ${5 + i}`,
+    field05: 'Data',
     field06: 'Data',
     field07: 'Data',
     field08: 'Data',
     field09: 'Data',
     field10: '항목명6',
     field11: '항목명7',
-  })),
+  },
+  {
+    id: 6,
+    field01: 3,
+    field02: '로그구분1',
+    field03: 'Data',
+    field04: '2026-03-01',
+    field05: 'Data',
+    field06: 'Data',
+    field07: 'Data',
+    field08: 'Data',
+    field09: 'Data',
+    field10: '항목명6',
+    field11: '항목명7',
+  },
+  {
+    id: 7,
+    field01: 2,
+    field02: '로그구분1',
+    field03: 'Data',
+    field04: '2026-03-01',
+    field05: 'Data',
+    field06: 'Data',
+    field07: 'Data',
+    field08: 'Data',
+    field09: 'Data',
+    field10: '항목명6',
+    field11: '항목명7',
+  },
+  {
+    id: 8,
+    field01: 1,
+    field02: '로그구분1',
+    field03: 'Data',
+    field04: '2026-03-01',
+    field05: 'Data',
+    field06: 'Data',
+    field07: 'Data',
+    field08: 'Data',
+    field09: 'Data',
+    field10: 'Data',
+    field11: 'Data',
+  },
 ];
 
 export default function Ltpa460Section() {
+  const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [coverageName, setCoverageName] = useState('');
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -151,52 +199,30 @@ export default function Ltpa460Section() {
     return <p className="w-full pl-1.5">{params.data?.field05 ?? ''}</p>;
   }, []);
 
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 5));
-  const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount, setTotalCount] = React.useState(DummyData.length);
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
+  const {
+    loadedCount,
+    totalCount,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
+    allRows: rowData,
+    pageSize,
+  });
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
 
-  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const items = DummyData.slice(start, end);
-      return {
-        items,
-        totalCount: DummyData.length,
-      };
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const handleLoadNext = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
-    const res = await fetchMockData(nextPage, pageSize);
-
-    setRowData((prev) => [...prev, ...res.items]);
-    setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
-
-  const handleLoadAll = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const res = await fetchMockData(1, totalCount);
-    setRowData(res.items);
-    setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
 
   const handleLoadReset = React.useCallback(() => {
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
+  const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
   // 2026-06-01 width, flex 수정
   // AgGrid Column
@@ -437,7 +463,7 @@ export default function Ltpa460Section() {
                   ref={gridRef}
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData}
+                  rowData={visibleRows}
                   columnDefs={columnDefs}
                   singleClickEdit={true}
                   domLayout="normal"
@@ -445,14 +471,13 @@ export default function Ltpa460Section() {
               </div>
               <TableMore
                 gridRef={gridRef}
-                isAll={true}
+                isAll={false}
                 loadedCount={loadedCount}
                 totalCount={totalCount}
                 pageSize={pageSize}
                 onLoadAll={handleLoadAll}
                 onLoadNext={handleLoadNext}
                 onLoadReset={handleLoadReset}
-                isReset={true}
               />
             </Gcol>
           </Grid>

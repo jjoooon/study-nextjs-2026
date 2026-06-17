@@ -521,6 +521,7 @@ const Ltpz061 = () => {
                     domLayout="normal"
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
+                    animateRows={false}
                   />
                 </div>
               </TableFoldBody>

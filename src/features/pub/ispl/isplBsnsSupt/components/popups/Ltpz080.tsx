@@ -8,7 +8,12 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
 import { SearchIcon, ResetIcon } from '@icons';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  useAgGridInfiniteAppend,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
@@ -73,13 +78,90 @@ const DummyData1: DummyData1Type[] = [
     field3: '사망/후유',
     field4: '',
   },
-  ...Array.from({ length: 20 }, (_, i) => ({
-    id: 6 + i,
+  {
+    id: 6,
     field1: 'CLA34224',
-    field2: `담보그룹명 ${6 + i}`,
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
-  })),
+  },
+  {
+    id: 7,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 8,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 9,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 10,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 11,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 12,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 13,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 14,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 15,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 16,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
+  {
+    id: 17,
+    field1: 'CLA34224',
+    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
+    field3: '사망/후유',
+    field4: '',
+  },
 ];
 
 const Ltpz080 = () => {
@@ -118,52 +200,31 @@ const Ltpz080 = () => {
     [attributeColumnWidth]
   );
 
-  const [rowData1, setRowData1] = React.useState<DummyData1Type[]>(() => DummyData1.slice(0, 5));
-  const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount, setTotalCount] = React.useState(DummyData1.length);
-  const [isLoading, setIsLoading] = React.useState(false);
-
+  const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
   const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
   const pageSize = 5;
+  const {
+    loadedCount,
+    totalCount,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
+    allRows: rowData1,
+    pageSize,
+  });
 
-  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const items = DummyData1.slice(start, end);
-      return {
-        items,
-        totalCount: DummyData1.length,
-      };
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
 
-  const handleLoadNext = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
-    const res = await fetchMockData(nextPage, pageSize);
-
-    setRowData1((prev) => [...prev, ...res.items]);
-    setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
-
-  const handleLoadAll = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const res = await fetchMockData(1, totalCount);
-    setRowData1(res.items);
-    setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
 
   const handleLoadReset = React.useCallback(() => {
-    setRowData1((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
 
   return (
     <Dialog open>
@@ -242,7 +303,7 @@ const Ltpz080 = () => {
                 ref={gridRef}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 getRowId={(params) => String(params.data.id)}
-                rowData={rowData1}
+                rowData={rowData1.slice(0, loadedCount)}
                 columnDefs={columnDefs1}
                 defaultColDef={{
                   sortable: true,
@@ -258,14 +319,13 @@ const Ltpz080 = () => {
             </div>
             <TableMore
               gridRef={gridRef}
-              isAll={true}
+              isAll={false}
               loadedCount={loadedCount}
               totalCount={totalCount}
               pageSize={pageSize}
               onLoadAll={handleLoadAll}
               onLoadNext={handleLoadNext}
               onLoadReset={handleLoadReset}
-              isReset={true}
             />
           </Gcol>
         </DialogSection>

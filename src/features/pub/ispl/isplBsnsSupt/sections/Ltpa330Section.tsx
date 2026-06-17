@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Grid, Grow, Typo } from '@atoms';
 import { SearchIcon, ResetIcon } from '@icons';
-import { useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import { useAgGridInfiniteAppend, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -534,52 +534,30 @@ export default function Ltpa330Section() {
     ],
     [attributeColumnWidth]
   );
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => Ltpa330DummyData.slice(0, 10));
-  const [loadedCount, setLoadedCount] = React.useState(10);
-  const [totalCount, setTotalCount] = React.useState(Ltpa330DummyData.length);
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 10;
+  const {
+    loadedCount,
+    totalCount,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
+    allRows: Ltpa330DummyData,
+    pageSize,
+  });
 
-  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const items = Ltpa330DummyData.slice(start, end);
-      return {
-        items,
-        totalCount: Ltpa330DummyData.length,
-      };
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
 
-  const handleLoadNext = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
-    const res = await fetchMockData(nextPage, pageSize);
-
-    setRowData((prev) => [...prev, ...res.items]);
-    setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
-
-  const handleLoadAll = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const res = await fetchMockData(1, totalCount);
-    setRowData(res.items);
-    setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
 
   const handleLoadReset = React.useCallback(() => {
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
 
   return (
     <>
@@ -664,7 +642,7 @@ export default function Ltpa330Section() {
                   ref={gridRef}
                   getRowId={(params) => String(params.data.id)}
                   columnDefs={columnDefs}
-                  rowData={rowData}
+                  rowData={Ltpa330DummyData.slice(0, loadedCount)}
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
@@ -701,8 +679,7 @@ export default function Ltpa330Section() {
                 onLoadAll={handleLoadAll}
                 onLoadNext={handleLoadNext}
                 onLoadReset={handleLoadReset}
-                isAll={true}
-                isReset={true}
+                isAll={false}
               />
               <Grow placement={'ec'} className="p-2.5 bg-[#EFF8FF] rounded-lg gap-2.5">
                 <Grow gap={2}>

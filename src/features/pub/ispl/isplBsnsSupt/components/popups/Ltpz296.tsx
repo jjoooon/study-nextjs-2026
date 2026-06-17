@@ -179,7 +179,7 @@ export const Ltpz296 = () => {
         field: 'field1',
         flex: 7,
         editable: true,
-        cellClass: 'editable-cell text-left',
+        cellClass: 'editable-cell text-center',
         sortable: false,
       },
       {
@@ -258,12 +258,12 @@ export const Ltpz296 = () => {
         sortable: false,
       },
       {
-        headerName: '보혐료',
+        headerName: '보험료',
         field: 'field9',
         flex: 1,
         minWidth: attributeColumnWidth(90),
         editable: true,
-        cellClass: 'editable-cell text-center',
+        cellClass: 'editable-cell text-right',
         sortable: false,
       },
       {

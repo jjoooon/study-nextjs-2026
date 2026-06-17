@@ -9,7 +9,13 @@ import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grid, Grow, Gcol } from '@atoms';
 import { ResetIcon, SearchIcon } from '@icons';
-import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  numberValueFormatter,
+  useAgGridInfiniteAppend,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
@@ -99,12 +105,12 @@ const DummyData: DummyDataType[] = [
     field10: 'TEXT',
     field11: '선택',
   },
-  ...Array.from({ length: 21 }, (_, i) => ({
-    id: 5 + i,
+  {
+    id: 5,
     field01: '(전속)영업관리자승인계약',
     field02: 'LA20148716422000',
     field03: 'LA20148716422001',
-    field04: `LA01581001_무배당 참 편한 건 ${5 + i}`,
+    field04: 'LA01581001_무배당 참 편한 건',
     field05: '김한화',
     field06: '박한화',
     field07: '8094210',
@@ -112,57 +118,105 @@ const DummyData: DummyDataType[] = [
     field09: '999999999',
     field10: 'TEXT',
     field11: '선택',
-  })),
+  },
+  {
+    id: 6,
+    field01: '(전속)영업관리자승인계약',
+    field02: 'LA20148716422000',
+    field03: 'LA20148716422001',
+    field04: 'LA01581001_무배당 참 편한 건',
+    field05: '김한화',
+    field06: '박한화',
+    field07: '8094210',
+    field08: '신부산GA지점',
+    field09: '999999999',
+    field10: 'TEXT',
+    field11: '선택',
+  },
+  {
+    id: 7,
+    field01: '(전속)영업관리자승인계약',
+    field02: 'LA20148716422000',
+    field03: 'LA20148716422001',
+    field04: 'LA01581001_무배당 참 편한 건',
+    field05: '김한화',
+    field06: '박한화',
+    field07: '8094210',
+    field08: '신부산GA지점',
+    field09: '999999999',
+    field10: 'TEXT',
+    field11: '선택',
+  },
+  {
+    id: 8,
+    field01: '(전속)영업관리자승인계약',
+    field02: 'LA20148716422000',
+    field03: 'LA20148716422001',
+    field04: 'LA01581001_무배당 참 편한 건',
+    field05: '김한화',
+    field06: '박한화',
+    field07: '8094210',
+    field08: '신부산GA지점',
+    field09: '999999999',
+    field10: 'TEXT',
+    field11: '선택',
+  },
+  {
+    id: 9,
+    field01: '(전속)영업관리자승인계약',
+    field02: 'LA20148716422000',
+    field03: 'LA20148716422001',
+    field04: 'LA01581001_무배당 참 편한 건',
+    field05: '김한화',
+    field06: '박한화',
+    field07: '8094210',
+    field08: '신부산GA지점',
+    field09: '999999999',
+    field10: 'TEXT',
+    field11: '선택',
+  },
+  {
+    id: 10,
+    field01: '(전속)영업관리자승인계약',
+    field02: 'LA20148716422000',
+    field03: 'LA20148716422001',
+    field04: 'LA01581001_무배당 참 편한 건',
+    field05: '김한화',
+    field06: '박한화',
+    field07: '8094210',
+    field08: '신부산GA지점',
+    field09: '999999999',
+    field10: 'TEXT',
+    field11: '선택',
+  },
 ];
 
 export default function Ltpa500Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 5));
-  const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount, setTotalCount] = React.useState(DummyData.length);
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
+  const {
+    loadedCount,
+    totalCount,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
+    allRows: DummyData,
+    pageSize,
+  });
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
 
-  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const items = DummyData.slice(start, end);
-      return {
-        items,
-        totalCount: DummyData.length,
-      };
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const handleLoadNext = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
-    const res = await fetchMockData(nextPage, pageSize);
-
-    setRowData((prev) => [...prev, ...res.items]);
-    setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
-
-  const handleLoadAll = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const res = await fetchMockData(1, totalCount);
-    setRowData(res.items);
-    setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
 
   const handleLoadReset = React.useCallback(() => {
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
+  const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
   const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
     const value = params.value == null ? '' : String(params.value);
@@ -391,7 +445,7 @@ export default function Ltpa500Section() {
                       ref={gridRef}
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={rowData}
+                      rowData={visibleRows}
                       columnDefs={columnDefs}
                       singleClickEdit={true}
                       domLayout="normal"
@@ -416,7 +470,6 @@ export default function Ltpa500Section() {
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
                     onLoadReset={handleLoadReset}
-                    isReset={true}
                   />
                 </Gcol>
               </TableFoldBody>
