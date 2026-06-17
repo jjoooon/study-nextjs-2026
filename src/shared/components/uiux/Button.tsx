@@ -459,6 +459,7 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
     return (
       <Comp
         ref={ref}
+        id={id}
         data-slot="button"
         data-variant={variant}
         data-size={size}
