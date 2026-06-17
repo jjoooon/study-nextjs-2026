@@ -72,12 +72,10 @@ import { IAListWithPreview } from "./IAListWithPreview";
     }
     .ia-preview-pane {
       flex:1;
-      max-width:118.4rem;
-      min-width:40rem;
       width:100%;
-      height: 130vh;
-      display: flex;
-      flex-direction: column;
+      height:100%;
+      display: grid;
+      grid-template-rows:auto 1fr;
       gap: 0.8rem;
     }
     .ia-preview-label {
@@ -89,15 +87,17 @@ import { IAListWithPreview } from "./IAListWithPreview";
       color: #222;
     }
     .ia-preview-iframe {
-      min-width: 129rem;
-      width:100%;
+      width: 100%;
       height: 100%;
       flex: 1;
       border: 1px solid #d9d9d9;
       border-radius: 0.8rem;
       background: #fff;
-      transform:scale(0.6);
+      // transform:scale(0.6);
       transform-origin: 0 0;
+    }
+    .ia-preview-iframe-wrap{
+      position:relative;
     }
     .selected{
       outline:1px solid red;
@@ -106,9 +106,6 @@ import { IAListWithPreview } from "./IAListWithPreview";
     .complete td{
       background:var(--color-information-10) !important;
     }
-    @media screen and (min-width: 1600px) {
-      .ia-preview-iframe { transform:scale(1);min-width: 118.4rem;}
-      .ia-preview-pane {height:90vh;max-width:128.4rem;}
-    }
+   
   `}
 </style>
