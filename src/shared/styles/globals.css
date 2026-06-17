@@ -687,7 +687,7 @@
     overflow-x: hidden !important;
     /* min-height: 12rem !important; */
   }
-
+  .filepond--file-status {display: none !important;}
   .filepond--list {
     position: relative !important;
     left: 0 !important;
