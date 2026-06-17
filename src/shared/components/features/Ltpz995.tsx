@@ -78,7 +78,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
 
   const handleInit = () => {
     files?.forEach((f) => {
-      pondRef.current!.addFile(f.edmsId, { file: { name: f.originalFilename, size: f.fileSize }, type: 'limbo' });
+      pondRef.current!.addFile(f.edmsId, { file: { name: f.originalFilename, size: f.fileSize }, type: 'local' });
     });
   };
 
@@ -153,7 +153,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
       resolve({
         action: 'select',
         files: currentFiles.map((f) => {
-          if (f.origin === FileOrigin.LIMBO) {
+          if (f.origin === FileOrigin.LOCAL) {
             return files!.find((orig) => orig.edmsId === f.serverId)!;
           }
           const response = JSON.parse(f.serverId);
