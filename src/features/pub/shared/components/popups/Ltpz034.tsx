@@ -73,12 +73,7 @@ const renderHighlightedText = (text: string, keyword: string) => {
   );
 };
 
-interface Ltpz034Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-const Ltpz034 = ({ open = true, onOpenChange }: Ltpz034Props) => {
+const Ltpz034 = () => {
   type ComboFieldKey = 'hash';
 
   const handleComboValueChange = useCallback(
@@ -130,12 +125,12 @@ const Ltpz034 = ({ open = true, onOpenChange }: Ltpz034Props) => {
   );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable size="sm" minimized={true}>
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
-              예외질환
+              고지유형찾기
             </Typo>
             <Typo tag="p" variant="body-xl">
               (LTPZ034)

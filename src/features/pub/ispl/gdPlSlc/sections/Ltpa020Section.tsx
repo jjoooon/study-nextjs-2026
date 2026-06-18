@@ -204,7 +204,7 @@ export default function Ltpa020Section() {
                                   <Grow gap={2}>
                                     2026-01-01
                                     <Button variant={'contained'} size={'sm'} color={'coolgray-light'}>
-                                      조회
+                                      10년상품설계
                                     </Button>
                                   </Grow>
                                 </KeyValueItem>
@@ -359,7 +359,7 @@ export default function Ltpa020Section() {
       <LayoutFoot>
         <BottomBar />
       </LayoutFoot>
-      {isLtpz034Open && <Ltpz034 open={isLtpz034Open} onOpenChange={setIsLtpz034Open} />}
+      {isLtpz034Open && <Ltpz034 />}
     </>
   );
 }
