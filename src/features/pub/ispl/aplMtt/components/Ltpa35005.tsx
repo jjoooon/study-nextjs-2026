@@ -607,7 +607,7 @@ export const Ltpa35005 = () => {
 
                   <FormTable cols={['w-[9.6rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
                     <FormRow>
-                      <FormCell title={'초회보험료'}>
+                      <FormCell title={'초회보험료'} tdClassName="justify-between">
                         <NativeSelect
                           aria-label="납부방법 선택"
                           width={100}
@@ -627,6 +627,12 @@ export const Ltpa35005 = () => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
+                        {firstPay === '예약이체' && (
+                          <Grow gap={2} placement="ec">
+                            이체일(보험시기)
+                            <Input value={'2025-01-01'} width={90} readOnly />
+                          </Grow>
+                        )}
                       </FormCell>
                       <FormCell title="계속 보험료">
                         <Grow gap={1}>
@@ -825,6 +831,9 @@ export const Ltpa35005 = () => {
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -834,12 +843,18 @@ export const Ltpa35005 = () => {
                             <FormCell title="계약자">
                               <Input aria-label="계약자명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                             </FormCell>
                           )}
                           {firstPay === '카드납입' && (
                             <FormCell title="카드주">
                               <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -849,6 +864,9 @@ export const Ltpa35005 = () => {
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -859,6 +877,9 @@ export const Ltpa35005 = () => {
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -868,6 +889,9 @@ export const Ltpa35005 = () => {
                             <FormCell title="직원명">
                               <Input aria-label="직원명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -877,6 +901,9 @@ export const Ltpa35005 = () => {
                             <FormCell title="카드주">
                               <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>

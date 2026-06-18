@@ -899,13 +899,14 @@
     padding:0.4rem 0.8rem !important;
     width: auto !important;
     display: flex !important;
-    gap:0.8rem !important;
     user-select: none;
     height: auto !important;
     z-index: 999999 !important;
+    gap: 0.2rem !important;
+    filter: invert(100%);
   }
   [data-isminimize="true"] [data-slot="dialog-header"] {
-    padding: 0 !important;
+    padding: 0 0.8rem 0 0 !important;
     min-height: 0 !important;
     width: auto !important;
     border:0 !important;
@@ -924,7 +925,6 @@
     font-size: 1.2rem !important;
     display: flex !important;
     align-items: center !important;
-    gap:1.2rem !important;
   }
 }
 

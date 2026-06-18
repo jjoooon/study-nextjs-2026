@@ -247,12 +247,17 @@ function DialogMinimize({ className, ...props }: DialogMinimizeProps) {
   const { isMinimized, setMinimized } = React.useContext(DialogDepthContext);
   return (
     <Button
+      variant={'none'}
       color="transparent"
       onClick={() => setMinimized(!isMinimized)}
-      className={cn('flex items-center justify-center p-0 hover:bg-gray-100 rounded-xs transition-colors', className)}
+      className={cn('flex items-center justify-center p-0', className)}
       {...props}
     >
-      접기
+      {isMinimized ? (
+        <span className="w-[1rem] h-[1rem] border border-[var(--color-gray-70)] border-[0.15rem] rounded-[0.2rem]"></span>
+      ) : (
+        <span className="w-[1.3rem] h-[0.2rem] bg-[var(--color-gray-70)] rounded-[0.2rem]"></span>
+      )}
     </Button>
   );
 }
@@ -507,32 +512,26 @@ function DialogContent({
 
         // --- X축 계산 ---
         if (isResizing.includes('e')) {
-          // 오른쪽 확장: 너비는 늘어나고, 중심점은 늘어난 양의 절반만큼 오른쪽(+X)으로
-          const addedWidth = deltaX;
-          newWidth = Math.max(300, initialCapture.width + addedWidth);
-          const actualAddedWidth = newWidth - initialCapture.width;
-          newX = initialCapture.x + actualAddedWidth / 2;
+          // 오른쪽 확장: 좌측(left)이 고정되고 우측으로 너비 확대
+          newWidth = Math.max(300, initialCapture.width + deltaX);
+          newX = initialCapture.x;
         } else if (isResizing.includes('w')) {
-          // 왼쪽 확장: 너비는 늘어나고, 중심점은 중심점 이동 규칙에 따라 왼쪽(-X)으로
-          const addedWidth = -deltaX;
-          newWidth = Math.max(300, initialCapture.width + addedWidth);
-          const actualAddedWidth = newWidth - initialCapture.width;
-          newX = initialCapture.x - actualAddedWidth / 2;
+          // 왼쪽 확장: 우측(right)이 고정되고 좌측으로 너비 확대
+          newWidth = Math.max(300, initialCapture.width - deltaX);
+          const actualWidthChange = newWidth - initialCapture.width;
+          newX = initialCapture.x - actualWidthChange;
         }
 
         // --- Y축 계산 ---
         if (isResizing.includes('s')) {
-          // 아래쪽 확장: 높이는 늘어나고, 중심점은 아래(+Y)로
-          const addedHeight = deltaY;
-          newHeight = Math.max(200, initialCapture.height + addedHeight);
-          const actualAddedHeight = newHeight - initialCapture.height;
-          newY = initialCapture.y + actualAddedHeight / 2;
+          // 아래쪽 확장: 위쪽(top)이 고정되고 아래쪽으로 높이 확대
+          newHeight = Math.max(200, initialCapture.height + deltaY);
+          newY = initialCapture.y;
         } else if (isResizing.includes('n')) {
-          // 위쪽 확장: 높이는 늘어나고, 중심점은 위(-Y)로
-          const addedHeight = -deltaY;
-          newHeight = Math.max(200, initialCapture.height + addedHeight);
-          const actualAddedHeight = newHeight - initialCapture.height;
-          newY = initialCapture.y - actualAddedHeight / 2;
+          // 위쪽 확장: 아래쪽(bottom)이 고정되고 위쪽으로 높이 확대
+          newHeight = Math.max(200, initialCapture.height - deltaY);
+          const actualHeightChange = newHeight - initialCapture.height;
+          newY = initialCapture.y - actualHeightChange;
         }
 
         setResizedSize({ width: newWidth, height: newHeight });
@@ -600,7 +599,7 @@ function DialogContent({
         {minimized && (
           <DialogMinimize
             className={cn(
-              'flex items-center justify-center w-[2.4rem] h-[2.4rem] absolute top-[2.2rem] rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none p-0',
+              'flex items-center justify-center w-[2.4rem] h-[2.4rem] absolute top-[2.2rem] rounded-xs transition-opacity disabled:pointer-events-none p-0',
               showCloseButton ? 'right-[5.6rem]' : 'right-[2.4rem]'
             )}
           />
