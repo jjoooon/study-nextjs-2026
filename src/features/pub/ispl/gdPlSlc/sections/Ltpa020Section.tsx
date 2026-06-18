@@ -5,6 +5,7 @@
 
 import * as React from 'react';
 import { useCallback, useState } from 'react';
+import Ltpz034 from '@/features/pub/shared/components/popups/Ltpz034';
 import { Gcol, Grow, Divider, Grid } from '@atoms';
 
 import { SearchIcon, AiIcon } from '@icons';
@@ -26,6 +27,7 @@ import { Ltpa02002 } from '../components/Ltpa02002';
 
 export default function Ltpa020Section() {
   const [tabSelectValue, setTabSelectValue] = useState('Ltpa02002');
+  const [isLtpz034Open, setIsLtpz034Open] = useState(false);
   const [customerType, setCustomerType] = React.useState('recent');
   type ComboFieldKey = 'user' | 'age';
 
@@ -334,8 +336,8 @@ export default function Ltpa020Section() {
                           )}
 
                           <Grow>
-                            <Button size={'sm'} onClick={() => {}}>
-                              경증예외질환?
+                            <Button size={'sm'} onClick={() => setIsLtpz034Open(true)}>
+                              고지유형찾기
                             </Button>
                           </Grow>
                         </Grow>
@@ -357,6 +359,7 @@ export default function Ltpa020Section() {
       <LayoutFoot>
         <BottomBar />
       </LayoutFoot>
+      {isLtpz034Open && <Ltpz034 open={isLtpz034Open} onOpenChange={setIsLtpz034Open} />}
     </>
   );
 }

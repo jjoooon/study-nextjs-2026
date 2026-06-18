@@ -373,6 +373,24 @@ function DialogContent({
     [dialogId]
   );
 
+  // 최소화로 인해 활성화된 팝업 개수가 0이 될 때 body style 조정
+  React.useEffect(() => {
+    if (openCount === 0) {
+      document.body.style.removeProperty('pointer-events');
+      document.body.style.removeProperty('filter');
+    } else {
+      document.body.style.pointerEvents = 'none';
+      document.body.style.filter = 'none';
+    }
+
+    return () => {
+      if (getOpenCount() === 0) {
+        document.body.style.removeProperty('pointer-events');
+        document.body.style.removeProperty('filter');
+      }
+    };
+  }, [openCount]);
+
   // 레이어 기반 z-index: 열린 순서대로 51, 53, 55 ...
   const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (Math.max(dialogLayerIndex, 1) - 1) * DIALOG_Z_INDEX_STEP;
 
@@ -579,9 +597,11 @@ function DialogContent({
         )}
         onMouseDown={handleMouseDown}
         onPointerDownOutside={(event) => {
+          event.preventDefault();
           onPointerDownOutside?.(event);
         }}
         onInteractOutside={(event) => {
+          event.preventDefault();
           onInteractOutside?.(event);
         }}
         {...props}
