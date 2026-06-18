@@ -208,8 +208,7 @@ const Ltpz043 = () => {
                       onChange={(e) => setFormField('type06', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type06-1', label: '선택1' },
-                        { value: 'selection2', id: 'type06-2', label: '선택2' },
+                        { value: 'selection', id: 'type06-1', label: '0천만원' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
@@ -217,7 +216,7 @@ const Ltpz043 = () => {
                       ))}
                     </NativeSelect>
                     (1인장)
-                    <Input onChange={() => {}} size="lg" value={''} variant="default" width={60} readOnly />
+                    <Input onChange={() => {}} size="lg" value={''} variant="default" width={90} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -231,8 +230,7 @@ const Ltpz043 = () => {
                       onChange={(e) => setFormField('type07', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type07-1', label: '선택1' },
-                        { value: 'selection2', id: 'type07-2', label: '선택2' },
+                        { value: 'selection', id: 'type07-1', label: '0천만원' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
@@ -245,14 +243,14 @@ const Ltpz043 = () => {
                   <FormCell title={'공제금액'} titleColSpan={2} colSpan={2}>
                     <NativeSelect
                       aria-label="선택"
-                      width={80}
+                      width={150}
                       value={form.type08}
                       required
                       onChange={(e) => setFormField('type08', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type08-1', label: '선택1' },
-                        { value: 'selection2', id: 'type08-2', label: '선택2' },
+                        { value: 'selection', id: 'type08-1', label: '1사고당 대인' },
+                        { value: 'selection2', id: 'type08-2', label: '대물 각각 00만원' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
