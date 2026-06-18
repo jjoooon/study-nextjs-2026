@@ -7,9 +7,17 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import { Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+  DialogFooter,
+  DialogMinimize,
+} from '@uiux/Dialog';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 // 화면 권한 정보를 나타내는 데이터 타입 정의
@@ -75,15 +83,17 @@ const Ltpz993 = () => {
   return (
     <Dialog open>
       {/* showCloseButton: 우측 상단 X 버튼 표시, resizable: 크기 조절 가능, size: 중간 크기 설정 */}
-      <DialogContent showCloseButton resizable={true} size="md">
+      <DialogContent showCloseButton resizable={true} size="md" minimized={true}>
         <DialogHeader>
           <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>
-              화면권한보기
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ993)
-            </Typo>
+            <Grow>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                화면권한보기
+              </Typo>
+              <Typo tag={'p'} variant={'body-xl'}>
+                (LTPZ993)
+              </Typo>
+            </Grow>
           </DialogTitle>
         </DialogHeader>
 
