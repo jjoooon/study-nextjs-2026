@@ -100,6 +100,8 @@ const resolveDialogSize = (size?: DialogSize) => {
   };
 };
 
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+
 type DialogContextValue = {
   depth: number;
   dialogId: string | null;
@@ -411,19 +413,33 @@ function DialogContent({
   const [isResizing, setIsResizing] = React.useState<string | null>(null);
   const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
   const contentRef = React.useRef<HTMLDivElement | null>(null);
-  const [prevDefaultPosition, setPrevDefaultPosition] = React.useState<typeof defaultPosition>(defaultPosition);
 
-  const setContentRef = React.useCallback(
-    (node: HTMLDivElement | null) => {
-      contentRef.current = node;
-      if (node !== null && !isInitialized) {
-        const rect = node.getBoundingClientRect();
-        setPosition({ x: rect.left, y: rect.top });
+  // 최소화/확대 상태 변화에 따른 위치 제어 (useIsomorphicLayoutEffect 사용하여 껌벅임 방지)
+  useIsomorphicLayoutEffect(() => {
+    if (isMinimized) {
+      if (contentRef.current) {
+        const rect = contentRef.current.getBoundingClientRect();
+        const minimizedWidth = rect.width;
+        const minimizedHeight = rect.height;
+
+        const x = (window.innerWidth - minimizedWidth) / 2;
+        const y = window.innerHeight - minimizedHeight - 8; // 하단에서 0.8rem (8px) 띄움
+
+        setPosition({ x, y });
         setIsInitialized(true);
       }
-    },
-    [isInitialized]
-  );
+    } else {
+      // 확대 시: 다시 초기 정렬 상태(% 또는 defaultPosition)로 리셋하여 화면 중앙으로 복원
+      setIsInitialized(defaultPosition !== undefined);
+      setPosition(defaultPosition ?? { x: 0, y: 0 });
+    }
+  }, [isMinimized, defaultPosition]);
+
+  const [prevDefaultPosition, setPrevDefaultPosition] = React.useState<typeof defaultPosition>(defaultPosition);
+
+  const setContentRef = React.useCallback((node: HTMLDivElement | null) => {
+    contentRef.current = node;
+  }, []);
 
   // defaultPosition 변경 시 최신 상태로 동기화 (렌더 단계에서 동기화, x/y 좌표값 비교로 무한루프 방지)
   if (defaultPosition?.x !== prevDefaultPosition?.x || defaultPosition?.y !== prevDefaultPosition?.y) {
@@ -487,6 +503,15 @@ function DialogContent({
         return;
       }
 
+      // 위치가 아직 px 단위로 고정되지 않았고 contentRef가 준비된 경우, 드래그/리사이즈 직전에 현재 실제 좌표로 고정시킵니다.
+      let currentPos = position;
+      if (!isInitialized && contentRef.current) {
+        const rect = contentRef.current.getBoundingClientRect();
+        currentPos = { x: rect.left, y: rect.top };
+        setPosition(currentPos);
+        setIsInitialized(true);
+      }
+
       if (resizeHandle) {
         e.preventDefault();
         const rect = contentRef.current!.getBoundingClientRect();
@@ -495,8 +520,8 @@ function DialogContent({
         setInitialCapture({
           width: rect.width,
           height: rect.height,
-          x: position.x,
-          y: position.y,
+          x: currentPos.x,
+          y: currentPos.y,
           mouseX: e.clientX,
           mouseY: e.clientY,
         });
@@ -504,12 +529,11 @@ function DialogContent({
       }
 
       if (dialogHeader || !contentRef.current?.querySelector('[data-slot="dialog-header"]')) {
-        // 드래그 로직은 기존과 동일하게 유지해도 무방함
         setIsDragging(true);
-        setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+        setDragStart({ x: e.clientX - currentPos.x, y: e.clientY - currentPos.y });
       }
     },
-    [position, isFullSize]
+    [position, isInitialized, isFullSize]
   );
 
   React.useEffect(() => {
@@ -590,7 +614,8 @@ function DialogContent({
         style={contentStyle}
         data-isminimize={isMinimized ? 'true' : 'false'}
         className={cn(
-          'fixed grid grid-rows-[auto_1fr_auto] gap-5 transition-none',
+          'fixed grid grid-rows-[auto_1fr_auto] gap-5',
+          isDragging || !!isResizing ? 'transition-none' : 'dialog-bounce-transition',
           'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
           'w-full grid grid-rows-[auto_1fr_auto]',
           className

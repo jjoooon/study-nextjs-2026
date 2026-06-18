@@ -166,8 +166,6 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-
-
 type DummyDataType2 = {
   id: number;
   field1: string | number;
@@ -351,12 +349,7 @@ const Ltpz112 = () => {
               <QuestionMark color2="#61554F" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent
-            side="bottom"
-            sideOffset={1}
-            variant="default"
-            className="z-[999] [&>span]:whitespace-auto!"
-          >
+          <TooltipContent side="bottom" sideOffset={1} variant="default" className="z-[999] [&>span]:whitespace-auto!">
             <>
               입원/수술 종료일(or월)을 알고 있는 경우 경과기간을 자동 계산합니다.
               <br />
@@ -370,29 +363,32 @@ const Ltpz112 = () => {
   );
 
   // 질병명 셀 렌더러
-  const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType2>) => {
-  const badges = params.data?.badge ?? [];
+  const titleRenderer = useCallback(
+    (params: ICellRendererParams<DummyDataType2>) => {
+      const badges = params.data?.badge ?? [];
 
-    return (
-      <Grow className="h-full pr-1.5" placement={'bwc'}>
-        <p className="w-full flex-1 truncate pl-2">{params.data?.field2}</p>
-        {badges.length > 0 && (
-          <Grow className="shrink-0 flex-wrap gap-1" placement={'ec'}>
-            {badges.map((badge) => (
-              <span
-                key={`${params.data?.id ?? 'row'}-${badge}`}
-                className={`inline-flex h-[1.8rem] items-center rounded px-1.5 text-[1rem] font-semibold leading-none ${getBadge(
-                  badge
-                )}`}
-              >
-                {badge}
-              </span>
-            ))}
-          </Grow>
-        )}
-      </Grow>
-    );
-  }, [getBadge]);
+      return (
+        <Grow className="h-full pr-1.5" placement={'bwc'}>
+          <p className="w-full flex-1 truncate pl-2">{params.data?.field2}</p>
+          {badges.length > 0 && (
+            <Grow className="shrink-0 flex-wrap gap-1" placement={'ec'}>
+              {badges.map((badge) => (
+                <span
+                  key={`${params.data?.id ?? 'row'}-${badge}`}
+                  className={`inline-flex h-[1.8rem] items-center rounded px-1.5 text-[1rem] font-semibold leading-none ${getBadge(
+                    badge
+                  )}`}
+                >
+                  {badge}
+                </span>
+              ))}
+            </Grow>
+          )}
+        </Grow>
+      );
+    },
+    [getBadge]
+  );
 
   // 입원/수술 정보 입력 agGrid
   const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
@@ -474,7 +470,6 @@ const Ltpz112 = () => {
     [attributeColumnWidth, titleRenderer, Field5Header]
   );
 
-  
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
@@ -568,9 +563,9 @@ const Ltpz112 = () => {
             </Grid>
             <TableFold>
               <TableFoldHead title="입원/수술 정보 입력(최대 4건)">
-              <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleDelete}>
-                삭제
-              </Button>
+                <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleDelete}>
+                  삭제
+                </Button>
               </TableFoldHead>
               <TableFoldBody>
                 <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData2.length}>
@@ -604,7 +599,6 @@ const Ltpz112 = () => {
                 </div>
               </TableFoldBody>
             </TableFold>
-
           </Grow>
         </DialogSection>
 

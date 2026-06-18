@@ -933,6 +933,15 @@
   }
 }
 
+.dialog-bounce-transition {
+  transition:
+    transform 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+    width 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+    height 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+    left 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+    top 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
 .blink-border {
   animation: blink-border 1s cubic-bezier(0.4, 0, 0.2, 1) 0s 1;
   animation-iteration-count: 2;
