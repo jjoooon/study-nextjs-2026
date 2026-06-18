@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Grow, Gcol, Typo } from '@atoms';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroupItem, CheckboxGroup } from '@uiux/Checkbox';
@@ -231,6 +231,7 @@ export const Ltpa35005 = () => {
 
   const [firstPay, setFirstPay] = React.useState<string>('선택');
   const [morePay, setMorePay] = React.useState<string>('선택');
+  const [morePayCustomerType, setMorePayCustomerType] = React.useState<string>('개인');
   const isSimilarContractCheckRequired = true; //4-1 특정조건인 경우 문구 노출
 
   const is노후실손자동재가입동의 = true;
@@ -607,7 +608,7 @@ export const Ltpa35005 = () => {
 
                   <FormTable cols={['w-[9.6rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
                     <FormRow>
-                      <FormCell title={'초회보험료'} tdClassName="justify-between">
+                      <FormCell title="초회보험료" tdClassName="justify-between">
                         <NativeSelect
                           aria-label="납부방법 선택"
                           width={100}
@@ -760,7 +761,7 @@ export const Ltpa35005 = () => {
                                     </NativeSelectOption>
                                   ))}
                                 </NativeSelect>
-                                <RadioGroup defaultValue="개인" disabled>
+                                <RadioGroup value={morePayCustomerType} onValueChange={setMorePayCustomerType}>
                                   {[
                                     { value: '개인', label: '개인' },
                                     { value: '사업자', label: '사업자' },
@@ -806,7 +807,7 @@ export const Ltpa35005 = () => {
                                     </NativeSelectOption>
                                   ))}
                                 </NativeSelect>
-                                <RadioGroup defaultValue="개인" disabled>
+                                <RadioGroup value={morePayCustomerType} onValueChange={setMorePayCustomerType}>
                                   {[
                                     { value: '개인', label: '개인' },
                                     { value: '사업자', label: '사업자' },
@@ -875,14 +876,26 @@ export const Ltpa35005 = () => {
 
                           {morePay === '자동이체' && (
                             <FormCell title="예금주">
-                              <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
-                              <Typo variant={'body-lg'} className="tracking-wide">
-                                -xxxxxxx
-                              </Typo>
-                              <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
-                                <SearchIcon color={'var(--color-primary-50)'} />
-                              </Button>
+                              {morePayCustomerType === '개인' ? (
+                                <>
+                                  <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
+                                  <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                                  <Typo variant={'body-lg'} className="tracking-wide">
+                                    -xxxxxxx
+                                  </Typo>
+                                  <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                                    <SearchIcon color={'var(--color-primary-50)'} />
+                                  </Button>
+                                </>
+                              ) : (
+                                <Grid className="grid-cols-[1fr_auto_auto] w-full">
+                                  <Input aria-label="회사명" value={'회사명'} readOnly />
+                                  <Input aria-label="사업자번호" width={100} value={'000-00-00000'} readOnly />
+                                  <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                                    <SearchIcon color={'var(--color-primary-50)'} />
+                                  </Button>
+                                </Grid>
+                              )}
                             </FormCell>
                           )}
                           {morePay === '급여이체' && (
@@ -899,14 +912,26 @@ export const Ltpa35005 = () => {
                           )}
                           {morePay === '카드이체' && (
                             <FormCell title="카드주">
-                              <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
-                              <Typo variant={'body-lg'} className="tracking-wide">
-                                -xxxxxxx
-                              </Typo>
-                              <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
-                                <SearchIcon color={'var(--color-primary-50)'} />
-                              </Button>
+                              {morePayCustomerType === '개인' ? (
+                                <>
+                                  <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
+                                  <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                                  <Typo variant={'body-lg'} className="tracking-wide">
+                                    -xxxxxxx
+                                  </Typo>
+                                  <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                                    <SearchIcon color={'var(--color-primary-50)'} />
+                                  </Button>
+                                </>
+                              ) : (
+                                <Grid className="grid-cols-[1fr_auto_auto] w-full">
+                                  <Input aria-label="회사명" value={'회사명'} readOnly />
+                                  <Input aria-label="사업자번호" width={100} value={'000-00-00000'} readOnly />
+                                  <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                                    <SearchIcon color={'var(--color-primary-50)'} />
+                                  </Button>
+                                </Grid>
+                              )}
                             </FormCell>
                           )}
 
@@ -1217,9 +1242,7 @@ export const Ltpa35005 = () => {
             </LayoutScrollWrap>
           </LayoutMainBody>
           <LayoutMainFoot>
-            {/* M1. variant="box" 추가 */}
             <MainBottom variant="box">
-              {/* M1. className 추가 */}
               <MainBottomItem className="bg-[var(--color-gray-5)]">
                 <Grow>
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>

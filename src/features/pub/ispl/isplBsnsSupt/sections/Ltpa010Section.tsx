@@ -837,15 +837,17 @@ export default function Ltpa010Section() {
                   <OverflowTooltipText text={data?.field19}>{data?.field19}</OverflowTooltipText>
                 </Button>
               </PopoverTrigger>
-              <PopoverContent
-                side="left"
-                align="end"
-                closeButton={true}
-                className="w-auto p-[0.2rem] flex flex-col"
-              >
-                <Gcol className="overflow-auto z-0 max-h-[20rem] [&>button]:h-[2.8rem] [&>button]:w-full gap-0" placement="ss">
+              <PopoverContent side="left" align="end" closeButton={true} className="w-auto p-[0.2rem] flex flex-col">
+                <Gcol
+                  className="overflow-auto z-0 max-h-[20rem] [&>button]:h-[2.8rem] [&>button]:w-full gap-0"
+                  placement="ss"
+                >
                   {contractActionMenu.map((menuName) => (
-                    <Button key={menuName} variant={'none'} className="hover:bg-[var(--color-warning-10)] justify-start px-3">
+                    <Button
+                      key={menuName}
+                      variant={'none'}
+                      className="hover:bg-[var(--color-warning-10)] justify-start px-3"
+                    >
                       <span className="block">{menuName}</span>
                     </Button>
                   ))}

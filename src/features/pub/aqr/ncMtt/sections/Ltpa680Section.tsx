@@ -1174,11 +1174,11 @@ export default function Ltpa680Section() {
                           { value: '일반고지형', label: '일반고지형' },
                           { value: '간편고지형', label: '간편고지형' },
                         ].map((option) => (
-                          <RadioGroupItem 
-                            key={option.value} 
-                            size="md" 
-                            value={option.value} 
-                            variant="chipBox" 
+                          <RadioGroupItem
+                            key={option.value}
+                            size="md"
+                            value={option.value}
+                            variant="chipBox"
                             className="bg-[#E5E5E5] text-[#777] data-[state=checked]:bg-[#414141] data-[state=checked]:text-white data-[state=checked]:border-solid data-[state=checked]:border data-[state=checked]:border-[#414141] hover:border-[#414141]"
                           >
                             {option.label}
