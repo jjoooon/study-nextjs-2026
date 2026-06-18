@@ -126,7 +126,7 @@ const Ltpz034 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable size="sm">
+      <DialogContent showCloseButton resizable size="sm" minimized={true}>
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">

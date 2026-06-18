@@ -903,7 +903,7 @@
     height: auto !important;
     z-index: 999999 !important;
     gap: 0.2rem !important;
-    filter: invert(100%);
+    border:1px solid var(--color-gray-70) !important;
   }
   [data-isminimize="true"] [data-slot="dialog-header"] {
     padding: 0 0.8rem 0 0 !important;
