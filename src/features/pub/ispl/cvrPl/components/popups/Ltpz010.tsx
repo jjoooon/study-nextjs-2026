@@ -238,7 +238,7 @@ const Ltpz010 = () => {
         cellRenderer: coverageAmountCellRenderer,
       },
       {
-        headerName: '보험료(만원)',
+        headerName: '보험료(원)',
         field: 'premium',
         minWidth: attributeColumnWidth(80),
         flex: 1,
@@ -352,9 +352,9 @@ const Ltpz010 = () => {
                   <FormTable caption={'계약기본사항'} cols={['w-[12rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'상품선택'} colSpan={3}>
-                        <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="4세대신손">
+                        <RadioGroup className="gap-2" onValueChange={() => {}} width="full" defaultValue="4세대실손">
                           {[
-                            { value: '4세대신손', label: '4세대신손' },
+                            { value: '4세대실손', label: '4세대실손' },
                             { value: '간편실손', label: '간편실손' },
                           ].map((option, index) => (
                             <RadioGroupItem key={index} value={option.value}>
@@ -422,7 +422,7 @@ const Ltpz010 = () => {
                         </Grow>
                       </FormCell>
 
-                      <FormCell title={'일신부'}>
+                      <FormCell title={'임산부'}>
                         <Input aria-label="" width={70} value={''} readOnly />
                         <Input aria-label="" width={140} value={''} readOnly />
                       </FormCell>
@@ -439,7 +439,7 @@ const Ltpz010 = () => {
                   <FormTable caption={'피보험자'} cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'피보험자'}>
-                        <Input aria-label="" width={84} value={'김한화'} readOnly />
+                        <Input aria-label="" width={70} value={'김한화화'} readOnly />
                         <Input aria-label="" width={114} value={'000000-0******'} readOnly />
                       </FormCell>
                       <FormCell title={'알림사항'}>
@@ -456,21 +456,25 @@ const Ltpz010 = () => {
                     </FormRow>
                     <FormRow>
                       <FormCell title={'계약자'}>
-                        <Input aria-label="" width={84} value={'김한화'} readOnly />
+                        <Input aria-label="" width={70} value={'김한화'} readOnly />
                         <Input aria-label="" width={114} value={'910101-1******'} readOnly />
                       </FormCell>
                       <FormCell title={'주피와관계'}>
                         주피보험자(김한화)는 계약자의
                         <NativeSelect
-                          aria-label="개인정보취득경로 선택"
-                          width={100}
+                          aria-label="주피와관계 선택"
+                          width={120}
                           readOnly
                           value={relationValue}
                           onChange={(event) => setRelationValue(event.target.value)}
                         >
                           {[
-                            { value: 'selection', label: '선택1' },
-                            { value: 'selection2', label: '선택2' },
+                            { value: 'selection', label: '고용주(사업주)' },
+                            { value: 'selection1', label: '본인' },
+                            { value: 'selection2', label: '배우자' },
+                            { value: 'selection3', label: '부모' },
+                            { value: 'selection4', label: '배우자부모' },
+                            { value: 'selection5', label: '조부모' },
                           ].map((option, idx) => (
                             <NativeSelectOption key={idx} value={option.value}>
                               {option.label}
@@ -516,6 +520,7 @@ const Ltpz010 = () => {
                     onCellValueChanged={onCellValueChanged}
                     rowSelection={{
                       mode: 'multiRow',
+                      headerCheckbox: false,
                       checkboxes: true,
                       enableClickSelection: false,
                     }}
