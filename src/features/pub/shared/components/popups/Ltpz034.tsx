@@ -126,11 +126,11 @@ const Ltpz034 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable size="sm">
+      <DialogContent showCloseButton resizable size="sm" minimized={true}>
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
-              예외질환
+              고지유형찾기
             </Typo>
             <Typo tag="p" variant="body-xl">
               (LTPZ034)

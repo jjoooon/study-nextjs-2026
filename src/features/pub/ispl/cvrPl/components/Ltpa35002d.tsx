@@ -503,7 +503,6 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   getRowId={(params) => String(params.data.id)} // 그리드 행 식별자로 고유한 ID 지정
                   singleClickEdit={true} // 한 번의 클릭만으로 즉시 편집 모드로 전환
                   onCellValueChanged={handleCellValueChanged} // 편집 종료 후 최종 변경 값이 확정되었을 때 React 상태(rowData) 동기화
-                  
                   // 2. 다중 행 선택 설정
                   rowSelection={{
                     mode: 'multiRow' as const, // 다중 선택 모드 활성화
@@ -512,7 +511,6 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     enableClickSelection: false, // 일반 셀 영역을 클릭했을 때 행이 바로 선택되는 현상 방지
                     enableSelectionWithoutKeys: true, // Ctrl/Shift 키 조합 없이 클릭만으로 행 누적 다중 선택 지원
                   }}
-                  
                   // 3. 커스텀 클릭 핸들링 & 선택 열(Selection Column) 제어
                   onCellClicked={handleGridCellClickToggle} // 셀 클릭 시, 잠금 행이 아니면 체크박스를 활성화/비활성화 시켜주는 토글 핸들러
                   selectionColumnDef={{
@@ -541,7 +539,6 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       'pointer-events-none': (params) => !!params.data?.locked,
                     },
                   }}
-                  
                   // 4. 컨텍스트 및 라이프사이클 이벤트
                   onSelectionChanged={onSelectionChanged} // 선택 상태가 달라졌을 때 (필수 잠금행 강제 유지 및 타 컬럼 갱신 등) 후처리 콜백
                   onGridReady={handleGridReady} // 그리드가 최초 로딩을 끝마쳐 API 참조를 저장할 수 있을 때 호출
@@ -555,19 +552,16 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     checkedMap,
                     onCheckedChange: handleCheckedChange,
                   }}
-                  
                   // 5. 호버 및 툴팁 관리
                   suppressRowHoverHighlight={false} // 마우스 오버 시 행 강조 활성화
                   tooltipShowDelay={0} // 마우스가 닿으면 즉시 툴팁 생성
                   tooltipHideDelay={9999} // 툴팁의 가시 시간을 최대로 유지
                   tooltipMouseTrack={true} // 마우스 커서를 따라 툴팁이 움직이도록 설정
-                  
                   // 6. 부모-자식 관계 표현 (Tree Data 모드)
                   treeData={true} // 그리드 내에서 계층형 트리 데이터를 표현하도록 설정
                   getDataPath={(row) => row.filePath?.map(String) ?? []} // 데이터 내 파일 경로 배열 정보를 기준으로 트리 구조 매핑
                   groupDefaultExpanded={0} // 기본적으로 모든 트리 노드를 닫아둠 (0레벨만 노출)
                   getRowClass={(params) => (params.data?.isError ? 'isError' : '')} // 비즈니스 유효성 에러가 발생한 행에 CSS 클래스 부여
-                  
                   // 7. 자동 트리 그룹 컬럼 정의 (Auto Group Column Definition)
                   autoGroupColumnDef={{
                     headerName: '담보명', // 트리 루트 노드의 헤더명
@@ -579,7 +573,6 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     tooltipValueGetter: (params) => params.data?.title ?? '', // 마우스 호버 시 툴팁으로 풀네임 담보명 출력
                   }}
                   noRowsOverlayComponent={AgGridEmptyComponent} // 데이터가 없을 때 표시할 대체 UI 컴포넌트
-                  
                   // 8. 렌더링 성능 최적화 옵션 (대규모 데이터 및 빠른 스크롤 성능 유지)
                   suppressAnimationFrame={true} // 애니메이션 프레임 제어를 생략하여 렌더링 속도 증가
                   suppressColumnMoveAnimation={true} // 컬럼 이동 애니메이션 비활성화
