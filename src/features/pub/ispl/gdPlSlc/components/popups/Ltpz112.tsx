@@ -16,7 +16,6 @@ import {
   createTooltipValueGetter,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
@@ -321,6 +320,27 @@ const Ltpz112 = () => {
       ),
     []
   );
+
+  // ✅ 체크박스 선택 최대 4건 제한
+  const handleSelectionChanged = useCallback(() => {
+    const api = gridRef2.current?.api;
+    if (!api) return;
+
+    const selectedRows = api.getSelectedRows();
+
+    // 4건 초과 시 마지막 선택 취소
+    if (selectedRows.length > 4) {
+      const lastSelectedRow = selectedRows[selectedRows.length - 1];
+      const rowNode = api.getRowNode(String(lastSelectedRow.id));
+
+      if (rowNode) {
+        rowNode.setSelected(false); // ✅ deselectRows 대신 setSelected 사용
+      }
+
+      // ✅ Alert 대신 선택 최대값 안내
+      alert('최대 4건까지만 선택할 수 있습니다.');
+    }
+  }, []);
 
   // ✅ getBadge 콜백 - 의존성 배열이 비어있어도 OK
   const getBadge = useCallback((badge: string) => {
@@ -684,6 +704,7 @@ const Ltpz112 = () => {
                     ref={gridRef2}
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
+                    noRowsOverlayComponentParams={{ message: '질병을 검색하여 선택해 주세요.' }}
                     rowData={rowData2}
                     columnDefs={columnDefs2}
                     singleClickEdit={true}
@@ -692,7 +713,8 @@ const Ltpz112 = () => {
                       resizable: true,
                     }}
                     onCellValueChanged={onCellValueChanged2}
-                    domLayout="normal"
+                    onSelectionChanged={handleSelectionChanged} // 최대 4건 제한
+                    domLayout="autoHeight"
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
                     rowSelection={{
