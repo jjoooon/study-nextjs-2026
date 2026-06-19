@@ -107,6 +107,7 @@ type DialogContextValue = {
   dialogId: string | null;
   isMinimized: boolean;
   setMinimized: React.Dispatch<React.SetStateAction<boolean>>;
+  modal: boolean;
 };
 
 const DialogDepthContext = React.createContext<DialogContextValue>({
@@ -114,6 +115,7 @@ const DialogDepthContext = React.createContext<DialogContextValue>({
   dialogId: null,
   isMinimized: false,
   setMinimized: () => {},
+  modal: true,
 });
 
 interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> {
@@ -159,6 +161,7 @@ function Dialog({
   minimized: minimizedProp,
   defaultMinimized,
   onMinimizeChange,
+  modal = true,
   ...props
 }: DialogProps) {
   const parentDialogContext = React.useContext(DialogDepthContext);
@@ -206,6 +209,7 @@ function Dialog({
         dialogId,
         isMinimized,
         setMinimized: handleMinimizeChange,
+        modal,
       }}
     >
       <DialogPrimitive.Root
@@ -213,6 +217,7 @@ function Dialog({
         open={isOpen}
         defaultOpen={defaultOpen}
         onOpenChange={handleOpenChange}
+        modal={isMinimized ? false : modal}
         {...props}
       />
     </DialogDepthContext.Provider>
@@ -358,7 +363,7 @@ function DialogContent({
   minimized,
   ...props
 }: DialogContentProps) {
-  const { dialogId, isMinimized } = React.useContext(DialogDepthContext);
+  const { dialogId, isMinimized, modal } = React.useContext(DialogDepthContext);
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
   const [topOpenDialogId, setTopOpenDialogId] = React.useState(getTopOpenDialogId);
@@ -374,24 +379,6 @@ function DialogContent({
       }),
     [dialogId]
   );
-
-  // 최소화로 인해 활성화된 팝업 개수가 0이 될 때 body style 조정
-  React.useEffect(() => {
-    if (openCount === 0) {
-      document.body.style.removeProperty('pointer-events');
-      document.body.style.removeProperty('filter');
-    } else {
-      document.body.style.pointerEvents = 'none';
-      document.body.style.filter = 'none';
-    }
-
-    return () => {
-      if (getOpenCount() === 0) {
-        document.body.style.removeProperty('pointer-events');
-        document.body.style.removeProperty('filter');
-      }
-    };
-  }, [openCount]);
 
   // 레이어 기반 z-index: 열린 순서대로 51, 53, 55 ...
   const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (Math.max(dialogLayerIndex, 1) - 1) * DIALOG_Z_INDEX_STEP;
@@ -554,7 +541,14 @@ function DialogContent({
         return;
       }
 
-      // 위치가 아직 px 단위로 고정되지 않았고 contentRef가 준비된 경우, 드래그/리사이즈 직전에 현재 실제 좌표로 고정시킵니다.
+      const shouldAction =
+        resizeHandle || dialogHeader || !contentRef.current?.querySelector('[data-slot="dialog-header"]');
+
+      if (!shouldAction) {
+        return;
+      }
+
+      // 실제 드래그/리사이즈 동작이 개시될 때만 위치를 px 단위로 고정시킵니다.
       let currentPos = position;
       if (!isInitialized && contentRef.current) {
         const rect = contentRef.current.getBoundingClientRect();
@@ -579,10 +573,8 @@ function DialogContent({
         return;
       }
 
-      if (dialogHeader || !contentRef.current?.querySelector('[data-slot="dialog-header"]')) {
-        setIsDragging(true);
-        setDragStart({ x: e.clientX - currentPos.x, y: e.clientY - currentPos.y });
-      }
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - currentPos.x, y: e.clientY - currentPos.y });
     },
     [position, isInitialized, isFullSize]
   );
@@ -665,7 +657,7 @@ function DialogContent({
         style={contentStyle}
         data-isminimize={isMinimized ? 'true' : 'false'}
         className={cn(
-          'fixed grid grid-rows-[auto_1fr_auto] gap-5',
+          'fixed grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto',
           isDragging || !!isResizing || disableTransition ? 'transition-none' : 'dialog-bounce-transition',
           'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
           'w-full grid grid-rows-[auto_1fr_auto]',

@@ -94,7 +94,7 @@ export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp 
       <DialogContent
         defaultPosition={defaultPosition}
         showCloseButton={true}
-        showOverlay={false}
+        showOverlay={true}
         resizable={true}
         zIndex={1000}
         onPointerDownOutside={(event) => event.preventDefault()}

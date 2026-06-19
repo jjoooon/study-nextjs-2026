@@ -8,6 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import * as React from 'react';
+import { Ltpa120 } from '@/features/pub/shared/components/popups/Ltpa120';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, AiIcon } from '@icons';
@@ -17,7 +18,6 @@ import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import Ltpa120 from '@features/Ltpa120';
 
 import '@/shared/lib/agGridPub';
 
