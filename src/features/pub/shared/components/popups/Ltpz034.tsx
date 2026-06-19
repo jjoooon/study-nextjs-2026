@@ -80,7 +80,7 @@ interface Ltpz034Props {
   onMinimizeChange?: (minimized: boolean) => void;
 }
 
-const Ltpz034 = ({ open, onOpenChange, minimized, onMinimizeChange }: Ltpz034Props) => {
+const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
   type ComboFieldKey = 'hash';
 
   const handleComboValueChange = useCallback(
