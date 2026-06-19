@@ -132,7 +132,7 @@ const Ltpz034 = ({ open, onOpenChange, minimized, onMinimizeChange }: Ltpz034Pro
   );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} minimized={minimized} onMinimizeChange={onMinimizeChange}>
+    <Dialog open minimized={minimized} onMinimizeChange={onMinimizeChange}>
       <DialogContent showCloseButton resizable size="sm" minimized={true}>
         <DialogHeader>
           <DialogTitle>

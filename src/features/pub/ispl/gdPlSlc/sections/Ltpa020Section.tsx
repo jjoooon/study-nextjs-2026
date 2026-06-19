@@ -346,7 +346,7 @@ export default function Ltpa020Section() {
 
                           <Grow>
                             <Button size={'sm'} onClick={() => setIsLtpz034Open(true)}>
-                              고지유형찾기
+                              {isLtpz034Open ? '+고지유형찾기 다시보기' : '고지유형찾기'}
                             </Button>
                           </Grow>
                         </Grow>
@@ -368,14 +368,7 @@ export default function Ltpa020Section() {
       <LayoutFoot>
         <BottomBar />
       </LayoutFoot>
-      {isLtpz034Open && (
-        <Ltpz034
-          open={isLtpz034Open}
-          onOpenChange={setIsLtpz034Open}
-          minimized={isLtpz034Minimized}
-          onMinimizeChange={setIsLtpz034Minimized}
-        />
-      )}
+      {isLtpz034Open && <Ltpz034 minimized={isLtpz034Minimized} onMinimizeChange={setIsLtpz034Minimized} />}
     </>
   );
 }
