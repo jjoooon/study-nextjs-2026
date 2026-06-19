@@ -73,7 +73,14 @@ const renderHighlightedText = (text: string, keyword: string) => {
   );
 };
 
-const Ltpz034 = () => {
+interface Ltpz034Props {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  minimized?: boolean;
+  onMinimizeChange?: (minimized: boolean) => void;
+}
+
+const Ltpz034 = ({ open, onOpenChange, minimized, onMinimizeChange }: Ltpz034Props) => {
   type ComboFieldKey = 'hash';
 
   const handleComboValueChange = useCallback(
@@ -125,7 +132,7 @@ const Ltpz034 = () => {
   );
 
   return (
-    <Dialog open>
+    <Dialog open={open} onOpenChange={onOpenChange} minimized={minimized} onMinimizeChange={onMinimizeChange}>
       <DialogContent showCloseButton resizable size="sm" minimized={true}>
         <DialogHeader>
           <DialogTitle>
