@@ -40,9 +40,17 @@ export interface Ltpa120Props {
   isButton?: boolean;
   open?: boolean;
   setOpen?: (open: boolean) => void;
+  minimized?: boolean;
+  onMinimizeChange?: (minimized: boolean) => void;
 }
 
-export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp }: Ltpa120Props) => {
+export const Ltpa120 = ({
+  isButton = true,
+  open: openProp,
+  setOpen: setOpenProp,
+  minimized,
+  onMinimizeChange,
+}: Ltpa120Props) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [internalOpen, setInternalOpen] = React.useState(false);
   const [defaultPosition, setDefaultPosition] = React.useState({ x: 0, y: 0 });
@@ -72,6 +80,8 @@ export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp 
         setOpen(!open);
       }}
       modal={false}
+      minimized={minimized}
+      onMinimizeChange={onMinimizeChange}
     >
       {isButton && (
         <button
@@ -92,16 +102,18 @@ export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp 
       )}
 
       <DialogContent
-        defaultPosition={defaultPosition}
+        // defaultPosition={defaultPosition}
         showCloseButton={true}
         showOverlay={true}
         resizable={true}
+        minimized={true}
         zIndex={1000}
         onPointerDownOutside={(event) => event.preventDefault()}
         onInteractOutside={(event) => event.preventDefault()}
         onEscapeKeyDown={(event) => event.preventDefault()}
         closeButtonClassName="absolute right-[1.2rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:fill-white"
-        className="w-[19.8rem] h-[56rem] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0"
+        minimizeButtonClassName="absolute right-[3.8rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>span]:!bg-[var(--color-gray-0)] [&>span]:!border-[var(--color-gray-0)]"
+        className="ai-chatbot w-[19.8rem] h-[56rem] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0 "
       >
         <DialogHeader className="!max-h-[4.9rem] h-[4.9rem] min-h-0 !p-0 items-end">
           <Grow

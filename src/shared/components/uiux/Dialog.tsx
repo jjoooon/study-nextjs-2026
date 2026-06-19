@@ -304,6 +304,7 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * @default true
    */
   showCloseButton?: boolean;
+  minimizeButtonClassName?: string;
   /**
    * 닫기(X) 버튼에 적용할 추가적인 CSS 클래스명
    */
@@ -352,6 +353,7 @@ function DialogContent({
   children,
   showCloseButton = true,
   closeButtonClassName,
+  minimizeButtonClassName,
   showOverlay,
   overlayClassName,
   resizable = false,
@@ -598,11 +600,11 @@ function DialogContent({
         // --- X축 계산 ---
         if (isResizing.includes('e')) {
           // 오른쪽 확장: 좌측(left)이 고정되고 우측으로 너비 확대
-          newWidth = Math.max(300, initialCapture.width + deltaX);
+          newWidth = Math.max(100, initialCapture.width + deltaX);
           newX = initialCapture.x;
         } else if (isResizing.includes('w')) {
           // 왼쪽 확장: 우측(right)이 고정되고 좌측으로 너비 확대
-          newWidth = Math.max(300, initialCapture.width - deltaX);
+          newWidth = Math.max(100, initialCapture.width - deltaX);
           const actualWidthChange = newWidth - initialCapture.width;
           newX = initialCapture.x - actualWidthChange;
         }
@@ -610,11 +612,11 @@ function DialogContent({
         // --- Y축 계산 ---
         if (isResizing.includes('s')) {
           // 아래쪽 확장: 위쪽(top)이 고정되고 아래쪽으로 높이 확대
-          newHeight = Math.max(200, initialCapture.height + deltaY);
+          newHeight = Math.max(100, initialCapture.height + deltaY);
           newY = initialCapture.y;
         } else if (isResizing.includes('n')) {
           // 위쪽 확장: 아래쪽(bottom)이 고정되고 위쪽으로 높이 확대
-          newHeight = Math.max(200, initialCapture.height - deltaY);
+          newHeight = Math.max(100, initialCapture.height - deltaY);
           const actualHeightChange = newHeight - initialCapture.height;
           newY = initialCapture.y - actualHeightChange;
         }
@@ -688,7 +690,8 @@ function DialogContent({
           <DialogMinimize
             className={cn(
               'flex items-center justify-center w-[2.4rem] h-[2.4rem] absolute top-[2.2rem] rounded-xs transition-opacity disabled:pointer-events-none p-0',
-              showCloseButton ? 'right-[5.6rem]' : 'right-[2.4rem]'
+              showCloseButton ? 'right-[5.6rem]' : 'right-[2.4rem]',
+              minimizeButtonClassName
             )}
           />
         )}

@@ -931,6 +931,44 @@
     display: flex !important;
     align-items: center !important;
   }
+
+  .ai-chatbot[data-isminimize='true'] {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    border: 0 !important;
+    padding:0 !important;
+
+  }
+  .ai-chatbot[data-isminimize='true'] [data-slot="dialog-header"] {
+    padding:0 !important
+  }
+  .ai-chatbot[data-isminimize='true'] [data-slot="dialog-header"] > div {
+
+  }
+  .ai-chatbot [data-slot="dialog-header"] img {
+    user-select: none !important;
+    -webkit-user-drag: none;
+  }
+  .ai-chatbot[data-isminimize='true'] button {
+    position: absolute !important;
+    margin-left: auto;
+    width: 1.6rem !important;
+    height: 1.6rem !important;
+  }
+  .ai-chatbot[data-isminimize='true'] [data-slot="dialog-close"] {
+    right: 0.8rem !important;
+  }
+  .ai-chatbot[data-isminimize='true'] [data-slot="button"] {
+    right: 2.8rem !important;
+  }
+   .ai-chatbot[data-isminimize='true'] [data-slot="button"] span {
+    width: 0.8rem !important;
+    height: 0.8rem !important;
+   }
+   .ai-chatbot[data-isminimize='true'] [data-slot="dialog-close"] svg{
+    width: 1rem !important;
+    height: 1rem !important;
+  }
 }
 
 .dialog-bounce-transition {
