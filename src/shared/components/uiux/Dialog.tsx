@@ -100,6 +100,8 @@ const resolveDialogSize = (size?: DialogSize) => {
   };
 };
 
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+
 type DialogContextValue = {
   depth: number;
   dialogId: string | null;
@@ -411,19 +413,83 @@ function DialogContent({
   const [isResizing, setIsResizing] = React.useState<string | null>(null);
   const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
   const contentRef = React.useRef<HTMLDivElement | null>(null);
+  const prevMinimizedRef = React.useRef(isMinimized);
+  const [disableTransition, setDisableTransition] = React.useState(false);
+  const cleanupTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // 최소화/확대 상태 변화에 따른 위치 제어 (useIsomorphicLayoutEffect 사용하여 껌벅임 방지)
+  useIsomorphicLayoutEffect(() => {
+    if (cleanupTimerRef.current) {
+      clearTimeout(cleanupTimerRef.current);
+      cleanupTimerRef.current = null;
+    }
+
+    if (prevMinimizedRef.current !== isMinimized) {
+      prevMinimizedRef.current = isMinimized;
+
+      if (isMinimized) {
+        if (contentRef.current) {
+          const rect = contentRef.current.getBoundingClientRect();
+          const minimizedWidth = rect.width;
+          const minimizedHeight = rect.height;
+
+          if (isInitialized) {
+            const x = (window.innerWidth - minimizedWidth) / 2;
+            const y = window.innerHeight - minimizedHeight - 8;
+            setPosition({ x, y });
+          } else {
+            const x = -minimizedWidth / 2;
+            const y = window.innerHeight / 2 - minimizedHeight - 8;
+            setPosition({ x, y });
+          }
+        }
+      } else {
+        // 확대 시:
+        if (isInitialized) {
+          // 1) 드래그 이력이 있었던 경우: left: 0px -> 50% 전환을 위해 스위칭 타이머 적용
+          if (contentRef.current) {
+            const rect = contentRef.current.getBoundingClientRect();
+            const currentWidth = rect.width;
+            const currentHeight = rect.height;
+
+            const centerX = (window.innerWidth - currentWidth) / 2;
+            const centerY = (window.innerHeight - currentHeight) / 2;
+
+            setPosition({ x: centerX, y: centerY });
+
+            cleanupTimerRef.current = setTimeout(() => {
+              setDisableTransition(true);
+              setIsInitialized(defaultPosition !== undefined);
+              setPosition(defaultPosition ?? { x: 0, y: 0 });
+
+              setTimeout(() => {
+                setDisableTransition(false);
+              }, 50);
+            }, 450);
+          } else {
+            setIsInitialized(defaultPosition !== undefined);
+            setPosition(defaultPosition ?? { x: 0, y: 0 });
+          }
+        } else {
+          // 2) 드래그 이력이 없었던 경우: left: 50%, top: 50% 레이아웃 기준을 일관되게 유지하며 transform만 리셋
+          setIsInitialized(defaultPosition !== undefined);
+          setPosition(defaultPosition ?? { x: 0, y: 0 });
+        }
+      }
+    }
+
+    return () => {
+      if (cleanupTimerRef.current) {
+        clearTimeout(cleanupTimerRef.current);
+      }
+    };
+  }, [isMinimized, defaultPosition, isInitialized]);
+
   const [prevDefaultPosition, setPrevDefaultPosition] = React.useState<typeof defaultPosition>(defaultPosition);
 
-  const setContentRef = React.useCallback(
-    (node: HTMLDivElement | null) => {
-      contentRef.current = node;
-      if (node !== null && !isInitialized) {
-        const rect = node.getBoundingClientRect();
-        setPosition({ x: rect.left, y: rect.top });
-        setIsInitialized(true);
-      }
-    },
-    [isInitialized]
-  );
+  const setContentRef = React.useCallback((node: HTMLDivElement | null) => {
+    contentRef.current = node;
+  }, []);
 
   // defaultPosition 변경 시 최신 상태로 동기화 (렌더 단계에서 동기화, x/y 좌표값 비교로 무한루프 방지)
   if (defaultPosition?.x !== prevDefaultPosition?.x || defaultPosition?.y !== prevDefaultPosition?.y) {
@@ -440,7 +506,7 @@ function DialogContent({
       ...(props.style ?? {}),
       left: isInitialized ? '0px' : '50%',
       top: isInitialized ? '0px' : '50%',
-      transform: isInitialized ? `translate(${position.x}px, ${position.y}px)` : `translate(-50%, -50%)`,
+      transform: isInitialized || isMinimized ? `translate(${position.x}px, ${position.y}px)` : `translate(-50%, -50%)`,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
       width: resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
       height: resizedSize.height > 0 ? `${resizedSize.height}px` : resolvedSize.height,
@@ -460,6 +526,7 @@ function DialogContent({
       resolvedSize,
       parallelZIndex,
       isInitialized,
+      isMinimized,
     ]
   );
 
@@ -487,6 +554,15 @@ function DialogContent({
         return;
       }
 
+      // 위치가 아직 px 단위로 고정되지 않았고 contentRef가 준비된 경우, 드래그/리사이즈 직전에 현재 실제 좌표로 고정시킵니다.
+      let currentPos = position;
+      if (!isInitialized && contentRef.current) {
+        const rect = contentRef.current.getBoundingClientRect();
+        currentPos = { x: rect.left, y: rect.top };
+        setPosition(currentPos);
+        setIsInitialized(true);
+      }
+
       if (resizeHandle) {
         e.preventDefault();
         const rect = contentRef.current!.getBoundingClientRect();
@@ -495,8 +571,8 @@ function DialogContent({
         setInitialCapture({
           width: rect.width,
           height: rect.height,
-          x: position.x,
-          y: position.y,
+          x: currentPos.x,
+          y: currentPos.y,
           mouseX: e.clientX,
           mouseY: e.clientY,
         });
@@ -504,12 +580,11 @@ function DialogContent({
       }
 
       if (dialogHeader || !contentRef.current?.querySelector('[data-slot="dialog-header"]')) {
-        // 드래그 로직은 기존과 동일하게 유지해도 무방함
         setIsDragging(true);
-        setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+        setDragStart({ x: e.clientX - currentPos.x, y: e.clientY - currentPos.y });
       }
     },
-    [position, isFullSize]
+    [position, isInitialized, isFullSize]
   );
 
   React.useEffect(() => {
@@ -590,7 +665,8 @@ function DialogContent({
         style={contentStyle}
         data-isminimize={isMinimized ? 'true' : 'false'}
         className={cn(
-          'fixed grid grid-rows-[auto_1fr_auto] gap-5 transition-none',
+          'fixed grid grid-rows-[auto_1fr_auto] gap-5',
+          isDragging || !!isResizing || disableTransition ? 'transition-none' : 'dialog-bounce-transition',
           'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
           'w-full grid grid-rows-[auto_1fr_auto]',
           className

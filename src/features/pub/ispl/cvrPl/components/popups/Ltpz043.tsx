@@ -207,9 +207,7 @@ const Ltpz043 = () => {
                       required
                       onChange={(e) => setFormField('type06', e.target.value)}
                     >
-                      {[
-                        { value: 'selection', id: 'type06-1', label: '0천만원' },
-                      ].map((option) => (
+                      {[{ value: 'selection', id: 'type06-1', label: '0천만원' }].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
@@ -229,9 +227,7 @@ const Ltpz043 = () => {
                       required
                       onChange={(e) => setFormField('type07', e.target.value)}
                     >
-                      {[
-                        { value: 'selection', id: 'type07-1', label: '0천만원' },
-                      ].map((option) => (
+                      {[{ value: 'selection', id: 'type07-1', label: '0천만원' }].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
                         </NativeSelectOption>

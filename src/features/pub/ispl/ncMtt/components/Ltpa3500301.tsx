@@ -10,7 +10,7 @@ import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { CheckIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -164,7 +164,7 @@ export const Ltpa3500301 = ({
   allNoDisabled = false,
 }: Ltpa3500301Props) => {
   type BadgeId = number | '6-1';
-
+  const { attributeColumnWidth } = useDynamicColumnWidths();
   const [periodType, setPeriodType] = useState<string>('');
   const [highlightBadgeNum, setHighlightBadgeNum] = useState<BadgeId | null>(null);
   const [qAnswerList, setQAnswerList] = React.useState<Array<'Y' | 'N' | ''>>(QuestionDataList);
@@ -235,13 +235,14 @@ export const Ltpa3500301 = ({
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: 'NO',
-      width: 38,
+      width: attributeColumnWidth(40),
       field: 'id',
       cellClass: 'text-center',
     },
     {
       headerName: '병명',
-      width: 160,
+      flex: 10,
+      minWidth: attributeColumnWidth(90),
       field: 'field01',
       cellClass: 'text-left',
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -262,13 +263,14 @@ export const Ltpa3500301 = ({
     },
     {
       headerName: '치료기간',
-      width: 160,
+      flex: 10,
+      minWidth: attributeColumnWidth(150),
       field: 'field02',
       cellClass: 'text-center',
     },
     {
       headerName: '치료내용',
-      flex: 1,
+      flex: 15,
       field: 'field03',
       cellClass: 'text-left leading-normal!',
       wrapText: true,
@@ -276,19 +278,19 @@ export const Ltpa3500301 = ({
     },
     {
       headerName: '치료병원',
-      width: 89,
+      width: attributeColumnWidth(80),
       field: 'field04',
       cellClass: 'text-center',
     },
     {
       headerName: '완치여부',
-      width: 86,
+      width: attributeColumnWidth(60),
       field: 'field05',
       cellClass: 'text-center',
     },
     {
       headerName: '재발여부',
-      width: 86,
+      width: attributeColumnWidth(60),
       field: 'field06',
       cellClass: 'text-center',
     },
@@ -1067,17 +1069,29 @@ export const Ltpa3500301 = ({
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
               <Table variant="default">
+                <colgroup>
+                  <col style={{ width: '6rem' }} />
+                  <col style={{ width: 'auto' }} />
+                  <col style={{ width: 'auto' }} />
+                  <col style={{ width: 'auto' }} />
+                </colgroup>
                 <TableHeader>
                   <TableRow className="">
-                    <TableHead className="w-[6rem]">차종</TableHead>
-                    <TableHead className="w-[auto] min-w-[26rem] [&>div]:justify-center">
-                      <Checkbox disabled={simpleMode}>승합차</Checkbox>
+                    <TableHead>차종</TableHead>
+                    <TableHead>
+                      <Grow gap={'3'}>
+                        <Checkbox disabled={simpleMode}>승합차</Checkbox>
+                      </Grow>
                     </TableHead>
-                    <TableHead className="w-[auto] min-w-[26rem] [&>div]:justify-center">
-                      <Checkbox disabled={simpleMode}>화물차</Checkbox>
+                    <TableHead>
+                      <Grow gap={'3'}>
+                        <Checkbox disabled={simpleMode}>화물차</Checkbox>
+                      </Grow>
                     </TableHead>
-                    <TableHead className="w-[auto] min-w-[26rem] [&>div]:justify-center">
-                      <Checkbox disabled={simpleMode}>이륜자동차</Checkbox>
+                    <TableHead>
+                      <Grow gap={'3'}>
+                        <Checkbox disabled={simpleMode}>이륜자동차</Checkbox>
+                      </Grow>
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -1106,7 +1120,7 @@ export const Ltpa3500301 = ({
                   <TableRow>
                     <TableHead>그외</TableHead>
                     <TableCell colSpan={3}>
-                      <Grid className="grid-flow-col grid-cols-3">
+                      <Grow gap={'3'}>
                         <Checkbox disabled={simpleMode}>건설기계</Checkbox>
                         <Checkbox disabled={simpleMode}>농기계</Checkbox>
                         <Grow className="flex justify-start">
@@ -1121,7 +1135,7 @@ export const Ltpa3500301 = ({
                             readOnly={simpleMode}
                           />
                         </Grow>
-                      </Grid>
+                      </Grow>
                     </TableCell>
                   </TableRow>
                 </TableBody>
