@@ -30,6 +30,7 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { DatePickerInput } from '@common/DatePicker';
@@ -177,6 +178,7 @@ type DummyDataType2 = {
   badge?: string[];
   checked?: boolean;
   checkedDisabled?: boolean;
+  dateType?: 'month' | 'day';
 };
 
 const dummyData2: DummyDataType2[] = [
@@ -230,6 +232,77 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
+type BadgeType = '할증' | '부담보' | 'SI경증(감액)' | 'SI경증';
+
+const BADGE_STYLES: Record<BadgeType, string> = {
+  할증: 'bg-[var(--color-danger-50)] text-white',
+  부담보: 'bg-[var(--color-success-60)] text-white',
+  'SI경증(감액)': 'bg-[var(--color-warning-40)] text-white',
+  // SI경증: 'bg-[var(--color-information-50)] text-white',
+  SI경증: 'bg-[var(--color-information-50)] text-white',
+};
+
+const CheckedCellRenderer = ({ params }: { params: ICellRendererParams<DummyDataType2> }) => {
+  const [localDateType, setLocalDateType] = React.useState<'month' | 'day'>(params.data?.dateType ?? 'month');
+  const [localField5, setLocalField5] = React.useState<string>(String(params.data?.field5 ?? ''));
+  const prevIdRef = React.useRef<number | undefined>(undefined);
+
+  React.useEffect(() => {
+    const id = params.data?.id ?? -1;
+    const dateType = params.data?.dateType ?? 'month';
+    const field5 = String(params.data?.field5 ?? '');
+
+    if (prevIdRef.current !== id) {
+      setLocalDateType(dateType);
+      setLocalField5(field5);
+      prevIdRef.current = id;
+    }
+  }, [params.data?.id, params.data?.dateType, params.data?.field5]); // ✅ 직접 params.data?.id를 의존성에
+
+  const handleDateTypeChange = useCallback(
+    (val: string) => {
+      const nextVal = val as 'month' | 'day';
+      setLocalDateType(nextVal);
+      setLocalField5('');
+      if (params.node) {
+        params.node.setDataValue('dateType', nextVal);
+        params.node.setDataValue('field5', '');
+      }
+    },
+    [params.node]
+  );
+
+  const handleDateChange = useCallback(
+    (date: Date | undefined, dateVal: string) => {
+      setLocalField5(dateVal);
+      if (params.node) {
+        params.node.setDataValue('field5', dateVal);
+      }
+    },
+    [params.node]
+  );
+
+  return (
+    <div
+      className="flex items-center gap-2 w-full h-full px-1 justify-start"
+      onMouseDown={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <RadioGroup value={localDateType} onValueChange={handleDateTypeChange} className="flex gap-2 shrink-0">
+        <RadioGroupItem value="month">월</RadioGroupItem>
+        <RadioGroupItem value="day">일</RadioGroupItem>
+      </RadioGroup>
+      <DatePickerInput
+        mode="single"
+        size="lg"
+        value={localField5}
+        onChange={handleDateChange}
+        monthOnly={localDateType === 'month'}
+      />
+    </div>
+  );
+};
+
 const Ltpz112 = () => {
   const [rowData] = useState<DummyDataType[]>(DummyData);
   const [rowData2, setRowData2] = useState<DummyDataType2[]>(dummyData2);
@@ -239,16 +312,19 @@ const Ltpz112 = () => {
 
   // 셀 값 변경 시 상태 업데이트를 위한 핸들러 (입력한 값이 사라지지 않게 함)
   const onCellValueChanged2 = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType2, number>('checked', setRowData2, () => {}, 'id'),
+    () =>
+      createCellValueChangedHandler<DummyDataType2, number>(
+        ['checked', 'field5', 'field6', 'dateType'],
+        setRowData2,
+        () => {},
+        'id'
+      ),
     []
   );
 
+  // ✅ getBadge 콜백 - 의존성 배열이 비어있어도 OK
   const getBadge = useCallback((badge: string) => {
-    if (badge === '할증') return 'bg-[var(--color-danger-50)] text-white';
-    if (badge === '부담보') return 'bg-[var(--color-success-60)] text-white';
-    if (badge === 'SI경증(감액)') return 'bg-[var(--color-warning-40)] text-white';
-    if (badge === 'SI검증' || badge === 'SI경증') return 'bg-[var(--color-information-50)] text-white';
-    return 'bg-[var(--color-blue-gray-40)] text-white';
+    return BADGE_STYLES[badge as BadgeType] ?? 'bg-[var(--color-blue-gray-40)] text-white';
   }, []);
 
   const handleDelete = useCallback(() => {
@@ -269,6 +345,9 @@ const Ltpz112 = () => {
 
       const nextId = prev.length > 0 ? Math.max(...prev.map((row) => row.id)) + 1 : 1;
 
+      // ✅ SI경증 포함 여부 확인 (정확한 문자열 매칭)
+      const hasSIGyeongjeung = selectedRow.field3.includes('SI경증');
+
       return [
         ...prev,
         {
@@ -280,8 +359,9 @@ const Ltpz112 = () => {
           field5: '',
           field6: '',
           badge: selectedRow.field3,
-          checked: selectedRow.field3.includes('SI경증(감액)'),
-          checkedDisabled: false,
+          checked: hasSIGyeongjeung, // ✅ SI경증만 true
+          checkedDisabled: hasSIGyeongjeung, // ✅ SI경증만 disabled
+          dateType: 'month', // ✅ 기본값 추가
         },
       ];
     });
@@ -339,13 +419,13 @@ const Ltpz112 = () => {
   ];
 
   // 종료시기 입력 헤더 컴포넌트
-  const Field5Header = useCallback(
+  const endTimeHeader = useCallback(
     () => (
       <Grow className="w-full pl-0.5" placement="sc" gap={0}>
-        <span className="leading-[2.2rem]">종료시기 입력</span>
+        <span>종료시기 입력</span>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button only="icon" size="sm" variant="none">
+            <Button only="icon" size="sm" variant="none" className="mt-[0.1rem]">
               <QuestionMark color2="#61554F" />
             </Button>
           </TooltipTrigger>
@@ -423,7 +503,7 @@ const Ltpz112 = () => {
         cellClass: 'text-center',
       },
       {
-        headerComponent: Field5Header,
+        headerComponent: endTimeHeader,
         field: 'checked',
         flex: 1,
         minWidth: attributeColumnWidth(90),
@@ -439,6 +519,9 @@ const Ltpz112 = () => {
         },
         valueSetter: (params) => {
           params.data.checked = params.newValue;
+          if (params.node) {
+            params.api.refreshCells({ rowNodes: [params.node], columns: ['field6'], force: true });
+          }
           return true;
         },
         editable: (params) => !params.data?.badge?.includes('SI경증'),
@@ -453,26 +536,57 @@ const Ltpz112 = () => {
         headerName: '경과기간(N년 이상)',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(230),
         cellClass: 'text-center editable-cell ',
         autoHeight: true,
-        editable: (params) => !params.data?.badge?.includes('SI경증'), // SI경증 일 때는 편집 불가능
-        cellEditor: 'agInputCellEditor',
+        editable: false,
         cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
           const isReadOnly = params.data?.badge?.includes('SI경증');
           if (isReadOnly) {
             return <span className="w-full h-full text-center cursor-default text-[var(--color-gray-50)]">무관</span>;
           }
-          return <span>{String(params.data?.field6 ?? '')}</span>;
+
+          const isChecked = params.data?.checked;
+
+          if (isChecked) {
+            return <CheckedCellRenderer params={params} />;
+          }
+
+          const options = ['1년내', '2년내', '3년내', '4년내', '5년내', '6년내', '7년내', '8년내', '9년내', '10년내'];
+          return (
+            <div
+              className="flex items-center justify-center w-full h-full px-1"
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              <NativeSelect
+                aria-label="경과기간 선택"
+                width={100}
+                value={String(params.data?.field6 ?? '')}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  if (params.node) {
+                    params.node.setDataValue('field6', newValue);
+                  }
+                }}
+              >
+                <NativeSelectOption value="">선택</NativeSelectOption>
+                {options.map((opt) => (
+                  <NativeSelectOption key={opt} value={opt}>
+                    {opt}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </div>
+          );
         },
       },
     ],
-    [attributeColumnWidth, titleRenderer, Field5Header]
+    [attributeColumnWidth, titleRenderer, endTimeHeader]
   );
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="xl">
+      <DialogContent showCloseButton resizable={false} className="w-[105rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -513,9 +627,6 @@ const Ltpz112 = () => {
               <Grid className="w-full grid-rows-[auto_1fr]" placement={'ss'} gap={2}>
                 <Grow placement={'bwe'}>
                   <Typo variant="heading-md">질병검색</Typo>
-                  <Badge color="blue" size="md" variant="contained" className="">
-                    입력된 질병 6건
-                  </Badge>
                 </Grow>
                 <Gcol variant="box-round" className="bg-[var(--color-blue-gray-15)]">
                   <Grow className="w-full">
@@ -537,7 +648,7 @@ const Ltpz112 = () => {
                       <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>부담보
                     </Grow>
                     <Grow placement="sc">
-                      <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>SI검증
+                      <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>SI경증
                     </Grow>
                     <Grow placement="sc">
                       <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>
@@ -575,7 +686,7 @@ const Ltpz112 = () => {
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={rowData2}
                     columnDefs={columnDefs2}
-                    singleClickEdit={true} // 한 번만 클릭해도 입력창(Editor)이 바로 나오게 설정
+                    singleClickEdit={true}
                     defaultColDef={{
                       sortable: true,
                       resizable: true,
