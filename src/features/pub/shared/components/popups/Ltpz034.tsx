@@ -3,12 +3,14 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, FirstDataRenderedEvent, SelectionChangedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React, { useCallback, useMemo, useState } from 'react';
-import { Grow, Typo } from '@/shared/components/atoms';
-import { ResetIcon } from '@/shared/components/icons/CommonIcons';
+import { Grid, Grow, Typo } from '@/shared/components/atoms';
+import { useTabs } from '@/shared/hooks/useTabs';
+import { ResetIcon, RightArrowIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -23,6 +25,7 @@ import {
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
+import { TabPager } from '@common/TabPager';
 
 import '@/shared/lib/agGridPub';
 
@@ -31,22 +34,36 @@ type DummyDataType = {
   isChecked?: boolean;
   field01: string | number;
   field02: string | number;
+  field03: string | number;
+  field04?: string | number;
 };
 
 const DUMMY_DATA: DummyDataType[] = [
-  { id: 1, isChecked: true, field01: 'M00.0', field02: '대장직장용종' },
-  { id: 2, isChecked: false, field01: 'M00.0', field02: '척추 염좌' },
-  { id: 3, isChecked: false, field01: 'M00.0', field02: '후천성 백내장' },
-  { id: 4, isChecked: false, field01: 'M00.0', field02: '치핵/치질' },
-  { id: 5, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염' },
-  { id: 6, isChecked: false, field01: 'M00.0', field02: '급성인지 만성인지 명시되지 않은 기관지염' },
-  { id: 7, isChecked: false, field01: 'M00.0', field02: '후천성 백내장' },
-  { id: 8, isChecked: false, field01: 'M00.0', field02: '치핵/치질' },
-  { id: 9, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염' },
-  { id: 10, isChecked: false, field01: 'M00.0', field02: '급성인지 만성인지 명시되지 않은 기관지염' },
-  { id: 11, isChecked: false, field01: 'M00.0', field02: '치핵/치질' },
-  { id: 12, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염' },
-  { id: 13, isChecked: false, field01: 'M00.0', field02: '급성인지 만성인지 명시되지 않은 기관지염' },
+  // { id: 1, isChecked: true, field01: 'M00.0', field02: '대장직장용종', field03: '무관', field04: 'SI경증' },
+  // { id: 2, isChecked: false, field01: 'M00.0', field02: '척추 염좌', field03: '10개월', field04: 'SI경증(감액)' },
+  // { id: 3, isChecked: false, field01: 'M00.0', field02: '후천성 백내장', field03: '10개월' },
+  // { id: 4, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10년내' },
+  // { id: 5, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
+  // { id: 6, isChecked: false, field01: 'M00.0', field02: '급성인지 만성인지 명시되지 않은 기관지염', field03: '10개월' },
+  // { id: 7, isChecked: false, field01: 'M00.0', field02: '후천성 백내장', field03: '10개월' },
+  // { id: 8, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10개월' },
+  // { id: 9, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
+  // {
+  //   id: 10,
+  //   isChecked: false,
+  //   field01: 'M00.0',
+  //   field02: '급성인지 만성인지 명시되지 않은 기관지염',
+  //   field03: '10개월',
+  // },
+  // { id: 11, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10개월' },
+  // { id: 12, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
+  // {
+  //   id: 13,
+  //   isChecked: false,
+  //   field01: 'M00.0',
+  //   field02: '급성인지 만성인지 명시되지 않은 기관지염',
+  //   field03: '10개월',
+  // },
 ];
 
 const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -99,6 +116,29 @@ const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
   const [rowData] = React.useState<DummyDataType[]>(DUMMY_DATA);
   const keyword = getKeyword(comboValues.hash);
 
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
+
+  const onSelectionChanged = useCallback((event: SelectionChangedEvent<DummyDataType>) => {
+    const selectedNodes = event.api.getSelectedNodes();
+    if (selectedNodes.length > 0) {
+      setSelectedRowId(selectedNodes[0].id ?? null);
+    } else {
+      setSelectedRowId(null);
+    }
+  }, []);
+
+  const onFirstDataRendered = useCallback(
+    (params: FirstDataRenderedEvent<DummyDataType>) => {
+      if (selectedRowId) {
+        const node = params.api.getRowNode(selectedRowId);
+        if (node) {
+          node.setSelected(true);
+        }
+      }
+    },
+    [selectedRowId]
+  );
+
   const filteredRowData = React.useMemo(() => {
     if (!keyword) {
       return rowData;
@@ -123,17 +163,32 @@ const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
         flex: 1,
         cellClass: 'text-left',
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
-        cellRenderer: (params: { value: string | number }) => (
-          <span className="[&>span]:text-[#FF5C2E]">{renderHighlightedText(String(params.value ?? ''), keyword)}</span>
+        cellRenderer: (params: { value: string | number; data?: DummyDataType }) => (
+          <Grow className="justify-between">
+            <span className="[&>span]:text-[#FF5C2E]">
+              {renderHighlightedText(String(params.value ?? ''), keyword)}
+            </span>
+            {params.data?.field04 && <Badge color={'blue'}>{params.data.field04}</Badge>}
+          </Grow>
         ),
+      },
+      {
+        headerName: 'N년 이상',
+        field: 'field03',
+        width: attributeColumnWidth(80),
+        cellClass: 'text-center',
       },
     ],
     [keyword, attributeColumnWidth]
   );
-
+  const DATA_TABS = [
+    { label: '등록고객', value: 'tab1' },
+    { label: '미등록고객', value: 'tab2' },
+  ];
+  const { tabs, active, setActive } = useTabs(DATA_TABS);
   return (
     <Dialog open minimized={minimized} onMinimizeChange={onMinimizeChange}>
-      <DialogContent showCloseButton resizable size="sm" minimized={true}>
+      <DialogContent showCloseButton resizable size="lg" minimized={true}>
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
@@ -146,6 +201,79 @@ const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
         </DialogHeader>
 
         <DialogSection className="grid grid-rows-[auto_1fr]">
+          <TabPager
+            data={tabs}
+            active={active}
+            setActive={setActive}
+            getValue={(tab) => String(tab.value)}
+            renderTab={(tab) => <span>{tab.label}</span>}
+            renderAfter={
+              <Grow>
+                <Button variant={'outlined'} size={'md'} color={'secondary'}>
+                  N년내 입원수슬
+                </Button>
+                <Button variant={'outlined'} size={'md'} color={'secondary'}>
+                  정보 변경
+                </Button>
+                <Grow>
+                  <Typo>거절</Typo>
+                  <Typo>심사</Typo>
+                  <Typo>조건부</Typo>
+                  <Typo>인수</Typo>
+                </Grow>
+              </Grow>
+            }
+          >
+            {active === 'tab1' && (
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                테스트
+              </Button>
+            )}
+            {active === 'tab2' && (
+              <Grid className="h-full ">
+                <Grid className="grid-rows-[1fr_auto] grid-flow-col">
+                  <div className="ag-theme-alpine min-h-[33rem]">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      noRowsOverlayComponentParams={{
+                        message: '검색 결과가 없습니다111ㅁㄴㅇㄻㄴㅇㄹ.',
+                      }}
+                      rowData={filteredRowData}
+                      columnDefs={columnDefs}
+                      defaultColDef={{
+                        sortable: false,
+                        resizable: true,
+                      }}
+                      rowSelection={{
+                        mode: 'singleRow',
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        headerName: '선택',
+                        width: 30,
+                        cellClass: 'text-center editable-cell',
+                      }}
+                      domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      onSelectionChanged={onSelectionChanged}
+                      onFirstDataRendered={onFirstDataRendered}
+                    />
+                  </div>
+                  <Grow className="w-full h-full flex justify-center items-center ">
+                    <Button variant={'none'} size={'lg'} color={'primary'} className="p-0">
+                      <RightArrowIcon color="#FF5C2E" />
+                    </Button>
+                  </Grow>
+                </Grid>
+                <Grow>
+                  <Typo>s</Typo>
+                </Grow>
+              </Grid>
+            )}
+          </TabPager>
           <Grow placement="bwe" className="w-full" variant="box-round">
             <FormTable variant="head" cols={['w-1', 'w-auto']}>
               <FormRow>
@@ -183,39 +311,11 @@ const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
               </Button>
             </Grow>
           </Grow>
-          <div className="ag-theme-alpine radio-selection min-h-[33rem]">
-            <AgGridReact<DummyDataType>
-              getRowId={(params) => String(params.data.id)}
-              rowData={filteredRowData}
-              columnDefs={columnDefs}
-              noRowsOverlayComponent={AgGridEmptyComponent}
-              defaultColDef={{
-                sortable: false,
-                resizable: true,
-              }}
-              rowSelection={{
-                mode: 'singleRow',
-                checkboxes: true,
-                enableClickSelection: false,
-              }}
-              selectionColumnDef={{
-                headerName: '선택',
-                width: 34,
-                cellClass: 'text-center editable-cell',
-              }}
-              domLayout="normal"
-              tooltipShowMode="whenTruncated"
-              tooltipShowDelay={0}
-            />
-          </div>
         </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'} color={'primary'}>
-                선택
-              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
