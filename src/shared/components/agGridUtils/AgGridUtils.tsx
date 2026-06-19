@@ -1922,11 +1922,15 @@ export function createHeaderCheckboxOnCellValueChanged<T>(fields: (keyof T & str
 /**
  * [Ag-Grid Component] 데이터가 없을 때 노출하는 Empty 오버레이 UI
  */
-export function AgGridEmptyComponent({ className: _className }: React.ComponentProps<'div'>) {
+interface AgGridEmptyComponentProps extends React.ComponentProps<'div'> {
+  message?: string;
+}
+
+export function AgGridEmptyComponent({ className: _className, message }: AgGridEmptyComponentProps) {
   return (
     <div className="bg-(--color-gray-0) w-full h-full flex items-center justify-center gap-1 text-(--color-gray-70)">
       <InfoBoxWarningIcon color="var(--color-gray-50)" />
-      조회 결과가 없습니다.
+      {message ?? '조회 결과가 없습니다.'}
     </div>
   );
 }
