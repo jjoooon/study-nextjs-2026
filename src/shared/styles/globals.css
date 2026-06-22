@@ -579,6 +579,7 @@
     background: #a8a8a8;
     border: 0.4rem solid #ffffff;
   }
+  .gray-scroll::-webkit-scrollbar-thumb,
   [data-variant='box-round']::-webkit-scrollbar-thumb,
   [data-variant='box-round-b']::-webkit-scrollbar-thumb {
     border-color: var(--color-blue-gray-10) !important;
@@ -936,16 +937,20 @@
     min-width: 0 !important;
     min-height: 0 !important;
     border: 0 !important;
-    padding:0 !important;
+    padding: 0 !important;
+    background-color: transparent !important;
+  }
+  .ai-chatbot[data-isminimize='true'] [data-slot='dialog-header'] {
+    padding: 0 !important;
+  }
 
+  .ai-chatbot[data-isminimize='true'] [data-slot='dialog-header'] img:first-child {
+    display: none !important;
   }
-  .ai-chatbot[data-isminimize='true'] [data-slot="dialog-header"] {
-    padding:0 !important
+  .ai-chatbot[data-isminimize='true'] img {
+    transform: translateX(-0.6rem);
   }
-  .ai-chatbot[data-isminimize='true'] [data-slot="dialog-header"] > div {
-
-  }
-  .ai-chatbot [data-slot="dialog-header"] img {
+  .ai-chatbot [data-slot='dialog-header'] img {
     user-select: none !important;
     -webkit-user-drag: none;
   }
@@ -955,17 +960,17 @@
     width: 1.6rem !important;
     height: 1.6rem !important;
   }
-  .ai-chatbot[data-isminimize='true'] [data-slot="dialog-close"] {
+  .ai-chatbot[data-isminimize='true'] [data-slot='dialog-close'] {
     right: 0.8rem !important;
   }
-  .ai-chatbot[data-isminimize='true'] [data-slot="button"] {
+  .ai-chatbot[data-isminimize='true'] [data-slot='button'] {
     right: 2.8rem !important;
   }
-   .ai-chatbot[data-isminimize='true'] [data-slot="button"] span {
+  .ai-chatbot[data-isminimize='true'] [data-slot='button'] span {
     width: 0.8rem !important;
     height: 0.8rem !important;
-   }
-   .ai-chatbot[data-isminimize='true'] [data-slot="dialog-close"] svg{
+  }
+  .ai-chatbot[data-isminimize='true'] [data-slot='dialog-close'] svg {
     width: 1rem !important;
     height: 1rem !important;
   }

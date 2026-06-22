@@ -12,7 +12,7 @@ import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths 
 import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
-type DummyDataType = {
+export type DummyDataType = {
   id: number;
   field1: string;
   field2: string;
@@ -21,36 +21,16 @@ type DummyDataType = {
   field5: string;
 };
 
-const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    field1: 'sMenuInfo',
-    field2: 'transComG100',
-    field3: 'RB',
-    field4: 'COM10107',
-    field5:
-      '자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.자료가 조회되었습니다.',
-  },
-  {
-    id: 2,
-    field1: 'sComG002RA',
-    field2: 'transComG100',
-    field3: 'RB',
-    field4: 'COM10107',
-    field5: '자료가 조회되었습니다.',
-  },
-];
+interface Ltpz996Props {
+  data?: DummyDataType[];
+}
 
 /**
  * Ltpz996: 시스템 간의 통신 거래 이력을 리스트 형태로 보여주는 팝업 컴포넌트입니다.
  */
-const Ltpz996 = () => {
-  const rowData = DummyData; // 표시할 데이터
+const Ltpz996 = ({ data }: Ltpz996Props) => {
+  const rowData = data ?? []; // 표시할 데이터
   const { attributeColumnWidth } = useDynamicColumnWidths(); // 화면 배율에 따른 동적 너비 계산 훅
-
-  // 2026-05-28 cellClass 수정
-  // 2026-05-29 width 수정
-
   // Ag-Grid 컬럼 정의
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
