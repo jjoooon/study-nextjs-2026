@@ -8,6 +8,7 @@ import type { ColDef, GridApi, ICellRendererParams, RowClickedEvent } from 'ag-g
 import { AgGridReact } from 'ag-grid-react';
 import { useState, useCallback, useRef } from 'react';
 import * as React from 'react';
+import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { SearchIcon, QuestionMark } from '@icons';
 import {
@@ -29,7 +30,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { DatePickerInput } from '@common/DatePicker';
@@ -244,19 +244,22 @@ const BADGE_STYLES: Record<BadgeType, string> = {
 const CheckedCellRenderer = ({ params }: { params: ICellRendererParams<DummyDataType2> }) => {
   const [localDateType, setLocalDateType] = React.useState<'month' | 'day'>(params.data?.dateType ?? 'month');
   const [localField5, setLocalField5] = React.useState<string>(String(params.data?.field5 ?? ''));
+  const [localField6, setLocalField6] = React.useState<string>(String(params.data?.field6 ?? ''));
   const prevIdRef = React.useRef<number | undefined>(undefined);
 
   React.useEffect(() => {
     const id = params.data?.id ?? -1;
     const dateType = params.data?.dateType ?? 'month';
     const field5 = String(params.data?.field5 ?? '');
+    const field6 = String(params.data?.field6 ?? '');
 
     if (prevIdRef.current !== id) {
       setLocalDateType(dateType);
       setLocalField5(field5);
+      setLocalField6(field6);
       prevIdRef.current = id;
     }
-  }, [params.data?.id, params.data?.dateType, params.data?.field5]); // ✅ 직접 params.data?.id를 의존성에
+  }, [params.data?.id, params.data?.dateType, params.data?.field5, params.data?.field6]); // ✅ 직접 params.data?.id를 의존성에
 
   const handleDateTypeChange = useCallback(
     (val: string) => {
@@ -281,23 +284,37 @@ const CheckedCellRenderer = ({ params }: { params: ICellRendererParams<DummyData
     [params.node]
   );
 
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const nextVal = e.target.value;
+      setLocalField6(nextVal);
+      if (params.node) {
+        params.node.setDataValue('field6', nextVal);
+      }
+    },
+    [params.node]
+  );
+
   return (
     <div
-      className="flex items-center gap-2 w-full h-full px-1 justify-start"
+      className="flex flex-col items-start gap-1 w-full h-full p-1 justify-start"
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
-      <RadioGroup value={localDateType} onValueChange={handleDateTypeChange} className="flex gap-2 shrink-0">
-        <RadioGroupItem value="month">월</RadioGroupItem>
-        <RadioGroupItem value="day">일</RadioGroupItem>
-      </RadioGroup>
-      <DatePickerInput
-        mode="single"
-        size="lg"
-        value={localField5}
-        onChange={handleDateChange}
-        monthOnly={localDateType === 'month'}
-      />
+      <Grow>
+        <RadioGroup value={localDateType} onValueChange={handleDateTypeChange} className="flex gap-2 shrink-0">
+          <RadioGroupItem value="month">월</RadioGroupItem>
+          <RadioGroupItem value="day">일</RadioGroupItem>
+        </RadioGroup>
+        <DatePickerInput
+          mode="single"
+          size="lg"
+          value={localField5}
+          onChange={handleDateChange}
+          monthOnly={localDateType === 'month'}
+        />
+      </Grow>
+      <Input value={localField6} onChange={handleInputChange} placeholder="입력해주세요" width={100} />
     </div>
   );
 };
@@ -308,6 +325,7 @@ const Ltpz112 = () => {
   const gridRef2 = useRef<AgGridReact<DummyDataType2>>(null);
   const [searchWord] = useState('척추');
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType2>;
 
   // 셀 값 변경 시 상태 업데이트를 위한 핸들러 (입력한 값이 사라지지 않게 함)
   const onCellValueChanged2 = React.useMemo(
@@ -392,7 +410,7 @@ const Ltpz112 = () => {
     {
       headerName: 'KCD코드',
       field: 'field1',
-      width: 80,
+      width: 70,
       cellClass: 'text-center ag-header-multiline',
     },
     {
@@ -499,6 +517,7 @@ const Ltpz112 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(60),
         cellClass: 'text-center !px-0',
+        autoHeight: true,
       },
       {
         headerName: '질병명',
@@ -515,12 +534,14 @@ const Ltpz112 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(70),
         cellClass: 'text-center',
+        autoHeight: true,
       },
       {
         headerName: '수술',
         field: 'field4',
         width: attributeColumnWidth(40),
         cellClass: 'text-center',
+        autoHeight: true,
       },
       {
         headerComponent: endTimeHeader,
@@ -556,14 +577,20 @@ const Ltpz112 = () => {
         headerName: '경과기간(N년 이상)',
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(230),
-        cellClass: 'text-center editable-cell ',
+        minWidth: attributeColumnWidth(220),
+        cellClass: 'text-center editable-cell ag-row-selected h-full',
         autoHeight: true,
-        editable: false,
+        editable: (params) => {
+          return !params.data?.badge?.includes('SI경증') && !params.data?.checked;
+        },
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['선택', '1년내', '2년내', '3년내', '4년내', '5년내', '6년내', '7년내', '8년내', '9년내', '10년내'],
+        },
         cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
           const isReadOnly = params.data?.badge?.includes('SI경증');
           if (isReadOnly) {
-            return <span className="w-full h-full text-center cursor-default text-[var(--color-gray-50)]">무관</span>;
+            return <span className="w-full h-full text-left cursor-default text-[var(--color-gray-50)]">무관</span>;
           }
 
           const isChecked = params.data?.checked;
@@ -572,36 +599,12 @@ const Ltpz112 = () => {
             return <CheckedCellRenderer params={params} />;
           }
 
-          const options = ['1년내', '2년내', '3년내', '4년내', '5년내', '6년내', '7년내', '8년내', '9년내', '10년내'];
-          return (
-            <div
-              className="flex items-center justify-center w-full h-full px-1"
-              onMouseDown={(e) => e.stopPropagation()}
-            >
-              <NativeSelect
-                aria-label="경과기간 선택"
-                width={100}
-                value={String(params.data?.field6 ?? '')}
-                onChange={(e) => {
-                  const newValue = e.target.value;
-                  if (params.node) {
-                    params.node.setDataValue('field6', newValue);
-                  }
-                }}
-              >
-                <NativeSelectOption value="">선택</NativeSelectOption>
-                {options.map((opt) => (
-                  <NativeSelectOption key={opt} value={opt}>
-                    {opt}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
-            </div>
-          );
+          const ExpiryRenderer = getExpiryRenderer('center');
+          return <ExpiryRenderer {...params} value={params.value || '선택'} />;
         },
       },
     ],
-    [attributeColumnWidth, titleRenderer, endTimeHeader]
+    [attributeColumnWidth, titleRenderer, endTimeHeader, getExpiryRenderer]
   );
 
   return (
@@ -711,6 +714,7 @@ const Ltpz112 = () => {
                     defaultColDef={{
                       sortable: true,
                       resizable: true,
+                      cellClass: ['transition-none'],
                     }}
                     onCellValueChanged={onCellValueChanged2}
                     onSelectionChanged={handleSelectionChanged} // 최대 4건 제한
@@ -728,6 +732,7 @@ const Ltpz112 = () => {
                       cellClass: 'text-center editable-cell',
                       width: attributeColumnWidth(30),
                     }}
+                    animateRows={false}
                   />
                 </div>
               </TableFoldBody>
