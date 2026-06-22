@@ -23,12 +23,13 @@ export type DummyDataType = {
 
 interface Ltpz996Props {
   data?: DummyDataType[];
+  loading?: boolean;
 }
 
 /**
  * Ltpz996: 시스템 간의 통신 거래 이력을 리스트 형태로 보여주는 팝업 컴포넌트입니다.
  */
-const Ltpz996 = ({ data }: Ltpz996Props) => {
+const Ltpz996 = ({ data, loading }: Ltpz996Props) => {
   const rowData = data ?? []; // 표시할 데이터
   const { attributeColumnWidth } = useDynamicColumnWidths(); // 화면 배율에 따른 동적 너비 계산 훅
   // Ag-Grid 컬럼 정의
@@ -102,6 +103,7 @@ const Ltpz996 = ({ data }: Ltpz996Props) => {
           {/* 그리드 영역: 데이터 개수에 맞춰 행 개수를 속성으로 가짐 */}
           <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
+              loading={loading}
               noRowsOverlayComponent={AgGridEmptyComponent}
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}

@@ -9,6 +9,7 @@ import type { DummyDataType } from '../../features/pub/shared/components/popups/
 
 interface StoryProps extends React.ComponentProps<typeof Ltpz996> {
   dataType: 'none' | 'under5' | 'over5';
+  delayTime: number;
 }
 
 const meta: Meta<StoryProps> = {
@@ -20,10 +21,17 @@ const meta: Meta<StoryProps> = {
       options: ['none', 'under5', 'over5'],
       description: '데이터 노출 개수 설정 (none: 0개, under5: 5개 이하, over5: 5개 이상)',
     },
+    delayTime: {
+      control: 'select',
+      options: [0, 500, 1000, 2000, 3000],
+      description: '데이터 로딩 지연 시간 (단위: ms, 0 지정 시 지연 없음)',
+    },
     data: { table: { disable: true } },
+    loading: { table: { disable: true } },
   },
   args: {
     dataType: 'over5',
+    delayTime: 1000,
   },
 };
 
@@ -85,17 +93,42 @@ const dummyItems: DummyDataType[] = [
 
 export const Default: Story = {
   render: (args) => {
-    // 선택한 dataType에 따라 데이터 양 결정
-    let resolvedData: DummyDataType[] = [];
-    if (args.dataType === 'under5') {
-      resolvedData = dummyItems.slice(0, 2);
-    } else if (args.dataType === 'over5') {
-      resolvedData = dummyItems;
-    }
+    const [isLoading, setIsLoading] = React.useState(args.delayTime > 0);
+    const [resolvedData, setResolvedData] = React.useState<DummyDataType[]>([]);
+
+    React.useEffect(() => {
+      const hasDelay = args.delayTime > 0;
+      setIsLoading(hasDelay);
+
+      if (!hasDelay) {
+        let data: DummyDataType[] = [];
+        if (args.dataType === 'under5') {
+          data = dummyItems.slice(0, 2);
+        } else if (args.dataType === 'over5') {
+          data = dummyItems;
+        }
+        setResolvedData(data);
+        return;
+      }
+
+      setResolvedData([]);
+      const timer = setTimeout(() => {
+        let data: DummyDataType[] = [];
+        if (args.dataType === 'under5') {
+          data = dummyItems.slice(0, 2);
+        } else if (args.dataType === 'over5') {
+          data = dummyItems;
+        }
+        setResolvedData(data);
+        setIsLoading(false);
+      }, args.delayTime);
+
+      return () => clearTimeout(timer);
+    }, [args.dataType, args.delayTime]);
 
     return (
       <LayoutDoc>
-        <Ltpz996 data={resolvedData} />
+        <Ltpz996 data={resolvedData} loading={isLoading} />
       </LayoutDoc>
     );
   },
