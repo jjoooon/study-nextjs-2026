@@ -39,31 +39,31 @@ type DummyDataType = {
 };
 
 const DUMMY_DATA: DummyDataType[] = [
-  // { id: 1, isChecked: true, field01: 'M00.0', field02: '대장직장용종', field03: '무관', field04: 'SI경증' },
-  // { id: 2, isChecked: false, field01: 'M00.0', field02: '척추 염좌', field03: '10개월', field04: 'SI경증(감액)' },
-  // { id: 3, isChecked: false, field01: 'M00.0', field02: '후천성 백내장', field03: '10개월' },
-  // { id: 4, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10년내' },
-  // { id: 5, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
-  // { id: 6, isChecked: false, field01: 'M00.0', field02: '급성인지 만성인지 명시되지 않은 기관지염', field03: '10개월' },
-  // { id: 7, isChecked: false, field01: 'M00.0', field02: '후천성 백내장', field03: '10개월' },
-  // { id: 8, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10개월' },
-  // { id: 9, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
-  // {
-  //   id: 10,
-  //   isChecked: false,
-  //   field01: 'M00.0',
-  //   field02: '급성인지 만성인지 명시되지 않은 기관지염',
-  //   field03: '10개월',
-  // },
-  // { id: 11, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10개월' },
-  // { id: 12, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
-  // {
-  //   id: 13,
-  //   isChecked: false,
-  //   field01: 'M00.0',
-  //   field02: '급성인지 만성인지 명시되지 않은 기관지염',
-  //   field03: '10개월',
-  // },
+  { id: 1, isChecked: true, field01: 'M00.0', field02: '대장직장용종', field03: '무관', field04: 'SI경증' },
+  { id: 2, isChecked: false, field01: 'M00.0', field02: '척추 염좌', field03: '10개월', field04: 'SI경증(감액)' },
+  { id: 3, isChecked: false, field01: 'M00.0', field02: '후천성 백내장', field03: '10개월' },
+  { id: 4, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10년내' },
+  { id: 5, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
+  { id: 6, isChecked: false, field01: 'M00.0', field02: '급성인지 만성인지 명시되지 않은 기관지염', field03: '10개월' },
+  { id: 7, isChecked: false, field01: 'M00.0', field02: '후천성 백내장', field03: '10개월' },
+  { id: 8, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10개월' },
+  { id: 9, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
+  {
+    id: 10,
+    isChecked: false,
+    field01: 'M00.0',
+    field02: '급성인지 만성인지 명시되지 않은 기관지염',
+    field03: '10개월',
+  },
+  { id: 11, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10개월' },
+  { id: 12, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
+  {
+    id: 13,
+    isChecked: false,
+    field01: 'M00.0',
+    field02: '급성인지 만성인지 명시되지 않은 기관지염',
+    field03: '10개월',
+  },
 ];
 
 const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -230,14 +230,14 @@ const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
               </Button>
             )}
             {active === 'tab2' && (
-              <Grid className="h-full ">
-                <Grid className="grid-rows-[1fr_auto] grid-flow-col">
+              <Grid className="h-full grid-flow-col">
+                <Grid className="grid-cols-[1fr_auto]">
                   <div className="ag-theme-alpine min-h-[33rem]">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       noRowsOverlayComponentParams={{
-                        message: '검색 결과가 없습니다111ㅁㄴㅇㄻㄴㅇㄹ.',
+                        message: '검색 결과가 없습니다.',
                       }}
                       rowData={filteredRowData}
                       columnDefs={columnDefs}
@@ -268,9 +268,9 @@ const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
                     </Button>
                   </Grow>
                 </Grid>
-                <Grow>
+                <Grid>
                   <Typo>s</Typo>
-                </Grow>
+                </Grid>
               </Grid>
             )}
           </TabPager>

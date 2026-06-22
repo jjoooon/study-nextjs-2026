@@ -38,6 +38,10 @@ export default function Ltpa020Section() {
   }, []);
 
   const [customerType, setCustomerType] = React.useState('recent');
+
+  // 고지유형찾기(Ltpz034) 팝업 상태
+  const [isOpenLtpz034, setIsOpenLtpz034] = useState(false);
+  const [isFolded, setIsFolded] = useState(false);
   type ComboFieldKey = 'user' | 'age';
 
   const [comboValues, setComboValues] = useState<Record<ComboFieldKey, string>>({
