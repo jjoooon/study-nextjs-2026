@@ -108,6 +108,7 @@ type DialogContextValue = {
   isMinimized: boolean;
   setMinimized: React.Dispatch<React.SetStateAction<boolean>>;
   modal: boolean;
+  open: boolean;
 };
 
 const DialogDepthContext = React.createContext<DialogContextValue>({
@@ -116,6 +117,7 @@ const DialogDepthContext = React.createContext<DialogContextValue>({
   isMinimized: false,
   setMinimized: () => {},
   modal: true,
+  open: false,
 });
 
 interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> {
@@ -187,6 +189,15 @@ function Dialog({
   const isControlled = openProp !== undefined;
   const isOpen = isControlled ? openProp : openState;
 
+  const [prevOpen, setPrevOpen] = React.useState(isOpen);
+
+  if (isOpen !== prevOpen) {
+    setPrevOpen(isOpen);
+    if (!isOpen && !isMinimizedControlled) {
+      setMinimizedState(defaultMinimized ?? false);
+    }
+  }
+
   const handleOpenChange = React.useCallback(
     (val: boolean) => {
       if (!isControlled) setOpenState(val);
@@ -210,6 +221,7 @@ function Dialog({
         isMinimized,
         setMinimized: handleMinimizeChange,
         modal,
+        open: isOpen,
       }}
     >
       <DialogPrimitive.Root
@@ -304,6 +316,7 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * @default true
    */
   showCloseButton?: boolean;
+  minimizeButtonClassName?: string;
   /**
    * 닫기(X) 버튼에 적용할 추가적인 CSS 클래스명
    */
@@ -352,6 +365,7 @@ function DialogContent({
   children,
   showCloseButton = true,
   closeButtonClassName,
+  minimizeButtonClassName,
   showOverlay,
   overlayClassName,
   resizable = false,
@@ -363,7 +377,7 @@ function DialogContent({
   minimized,
   ...props
 }: DialogContentProps) {
-  const { dialogId, isMinimized, modal } = React.useContext(DialogDepthContext);
+  const { dialogId, isMinimized, open } = React.useContext(DialogDepthContext);
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
   const [topOpenDialogId, setTopOpenDialogId] = React.useState(getTopOpenDialogId);
@@ -394,27 +408,26 @@ function DialogContent({
   const disableOverlayMotion = openCount > 1;
   const isFullSize = size === 'full';
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
-  const [isInitialized, setIsInitialized] = React.useState(() => defaultPosition !== undefined);
+  const [isInitialized, setIsInitialized] = React.useState(false);
   const [resizedSize, setResizedSize] = React.useState({ width: 0, height: 0 });
   const [isDragging, setIsDragging] = React.useState(false);
   const [isResizing, setIsResizing] = React.useState<string | null>(null);
   const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
   const contentRef = React.useRef<HTMLDivElement | null>(null);
   const prevMinimizedRef = React.useRef(isMinimized);
-  const [disableTransition, setDisableTransition] = React.useState(false);
-  const cleanupTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+  const prevPositionBeforeMinimizeRef = React.useRef<{ x: number; y: number } | null>(null);
+  const prevIsInitializedBeforeMinimizeRef = React.useRef<boolean>(false);
 
   // 최소화/확대 상태 변화에 따른 위치 제어 (useIsomorphicLayoutEffect 사용하여 껌벅임 방지)
   useIsomorphicLayoutEffect(() => {
-    if (cleanupTimerRef.current) {
-      clearTimeout(cleanupTimerRef.current);
-      cleanupTimerRef.current = null;
-    }
-
     if (prevMinimizedRef.current !== isMinimized) {
       prevMinimizedRef.current = isMinimized;
 
       if (isMinimized) {
+        // 1) 최소화 시: 현재의 위치와 좌표 모드(isInitialized)를 기억
+        prevPositionBeforeMinimizeRef.current = position;
+        prevIsInitializedBeforeMinimizeRef.current = isInitialized;
+
         if (contentRef.current) {
           const rect = contentRef.current.getBoundingClientRect();
           const minimizedWidth = rect.width;
@@ -431,46 +444,28 @@ function DialogContent({
           }
         }
       } else {
-        // 확대 시:
-        if (isInitialized) {
-          // 1) 드래그 이력이 있었던 경우: left: 0px -> 50% 전환을 위해 스위칭 타이머 적용
-          if (contentRef.current) {
-            const rect = contentRef.current.getBoundingClientRect();
-            const currentWidth = rect.width;
-            const currentHeight = rect.height;
+        // 2) 확대(복원) 시: 최소화 직전에 백업해 두었던 위치와 모드로 복원
+        const restoredPos = prevPositionBeforeMinimizeRef.current ?? defaultPosition ?? { x: 0, y: 0 };
+        const restoredIsInitialized = prevIsInitializedBeforeMinimizeRef.current;
 
-            const centerX = (window.innerWidth - currentWidth) / 2;
-            const centerY = (window.innerHeight - currentHeight) / 2;
-
-            setPosition({ x: centerX, y: centerY });
-
-            cleanupTimerRef.current = setTimeout(() => {
-              setDisableTransition(true);
-              setIsInitialized(defaultPosition !== undefined);
-              setPosition(defaultPosition ?? { x: 0, y: 0 });
-
-              setTimeout(() => {
-                setDisableTransition(false);
-              }, 50);
-            }, 450);
-          } else {
-            setIsInitialized(defaultPosition !== undefined);
-            setPosition(defaultPosition ?? { x: 0, y: 0 });
-          }
-        } else {
-          // 2) 드래그 이력이 없었던 경우: left: 50%, top: 50% 레이아웃 기준을 일관되게 유지하며 transform만 리셋
-          setIsInitialized(defaultPosition !== undefined);
-          setPosition(defaultPosition ?? { x: 0, y: 0 });
-        }
+        setIsInitialized(restoredIsInitialized);
+        setPosition(restoredPos);
       }
     }
+  }, [isMinimized, defaultPosition, isInitialized, position]);
 
-    return () => {
-      if (cleanupTimerRef.current) {
-        clearTimeout(cleanupTimerRef.current);
-      }
-    };
-  }, [isMinimized, defaultPosition, isInitialized]);
+  const [prevOpen, setPrevOpen] = React.useState(open);
+
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (!open) {
+      setPosition(defaultPosition ?? { x: 0, y: 0 });
+      setIsInitialized(false);
+      setResizedSize({ width: 0, height: 0 });
+      prevPositionBeforeMinimizeRef.current = null;
+      prevIsInitializedBeforeMinimizeRef.current = false;
+    }
+  }
 
   const [prevDefaultPosition, setPrevDefaultPosition] = React.useState<typeof defaultPosition>(defaultPosition);
 
@@ -483,17 +478,25 @@ function DialogContent({
     setPrevDefaultPosition(defaultPosition);
     if (defaultPosition) {
       setPosition(defaultPosition);
+      setIsInitialized(false);
     }
   }
 
   const resolvedSize = React.useMemo(() => resolveDialogSize(size), [size]);
 
-  const contentStyle = React.useMemo<React.CSSProperties>(
-    () => ({
+  const contentStyle = React.useMemo<React.CSSProperties>(() => {
+    let transformValue = `translate(-50%, -50%)`;
+    if (isInitialized || isMinimized) {
+      transformValue = `translate(${position.x}px, ${position.y}px)`;
+    } else if (defaultPosition) {
+      transformValue = `translate(-50%, -50%) translate(${position.x}px, ${position.y}px)`;
+    }
+
+    return {
       ...(props.style ?? {}),
       left: isInitialized ? '0px' : '50%',
       top: isInitialized ? '0px' : '50%',
-      transform: isInitialized || isMinimized ? `translate(${position.x}px, ${position.y}px)` : `translate(-50%, -50%)`,
+      transform: transformValue,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
       width: resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
       height: resizedSize.height > 0 ? `${resizedSize.height}px` : resolvedSize.height,
@@ -502,20 +505,20 @@ function DialogContent({
       maxWidth: resolvedSize.maxWidth,
       maxHeight: resolvedSize.maxHeight,
       zIndex: parallelZIndex,
-    }),
-    [
-      props.style,
-      position.x,
-      position.y,
-      isDragging,
-      isResizing,
-      resizedSize,
-      resolvedSize,
-      parallelZIndex,
-      isInitialized,
-      isMinimized,
-    ]
-  );
+    };
+  }, [
+    props.style,
+    position.x,
+    position.y,
+    isDragging,
+    isResizing,
+    resizedSize,
+    resolvedSize,
+    parallelZIndex,
+    isInitialized,
+    isMinimized,
+    defaultPosition,
+  ]);
 
   // 1. 상태 변수에 초기값을 저장할 변수 추가 (isResizing과 함께 관리)
   const [initialCapture, setInitialCapture] = React.useState<{
@@ -598,11 +601,11 @@ function DialogContent({
         // --- X축 계산 ---
         if (isResizing.includes('e')) {
           // 오른쪽 확장: 좌측(left)이 고정되고 우측으로 너비 확대
-          newWidth = Math.max(300, initialCapture.width + deltaX);
+          newWidth = Math.max(100, initialCapture.width + deltaX);
           newX = initialCapture.x;
         } else if (isResizing.includes('w')) {
           // 왼쪽 확장: 우측(right)이 고정되고 좌측으로 너비 확대
-          newWidth = Math.max(300, initialCapture.width - deltaX);
+          newWidth = Math.max(100, initialCapture.width - deltaX);
           const actualWidthChange = newWidth - initialCapture.width;
           newX = initialCapture.x - actualWidthChange;
         }
@@ -610,11 +613,11 @@ function DialogContent({
         // --- Y축 계산 ---
         if (isResizing.includes('s')) {
           // 아래쪽 확장: 위쪽(top)이 고정되고 아래쪽으로 높이 확대
-          newHeight = Math.max(200, initialCapture.height + deltaY);
+          newHeight = Math.max(100, initialCapture.height + deltaY);
           newY = initialCapture.y;
         } else if (isResizing.includes('n')) {
           // 위쪽 확장: 아래쪽(bottom)이 고정되고 위쪽으로 높이 확대
-          newHeight = Math.max(200, initialCapture.height - deltaY);
+          newHeight = Math.max(100, initialCapture.height - deltaY);
           const actualHeightChange = newHeight - initialCapture.height;
           newY = initialCapture.y - actualHeightChange;
         }
@@ -658,7 +661,7 @@ function DialogContent({
         data-isminimize={isMinimized ? 'true' : 'false'}
         className={cn(
           'fixed grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto',
-          isDragging || !!isResizing || disableTransition ? 'transition-none' : 'dialog-bounce-transition',
+          isDragging || !!isResizing ? 'transition-none' : 'dialog-bounce-transition',
           'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
           'w-full grid grid-rows-[auto_1fr_auto]',
           className
@@ -688,7 +691,8 @@ function DialogContent({
           <DialogMinimize
             className={cn(
               'flex items-center justify-center w-[2.4rem] h-[2.4rem] absolute top-[2.2rem] rounded-xs transition-opacity disabled:pointer-events-none p-0',
-              showCloseButton ? 'right-[5.6rem]' : 'right-[2.4rem]'
+              showCloseButton ? 'right-[5.6rem]' : 'right-[2.4rem]',
+              minimizeButtonClassName
             )}
           />
         )}

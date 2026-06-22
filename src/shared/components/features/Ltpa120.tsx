@@ -16,15 +16,16 @@ const CHATBOT_DIALOG_WIDTH = 198;
 const CHATBOT_DIALOG_HEIGHT = 560;
 const VIEWPORT_MARGIN = 12;
 
-function getInitialDialogPosition(): { x: number; y: number } {
-  const targetRight = 6;
-  const targetTop = 154;
-
+function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number } {
   const maxLeft = window.innerWidth - CHATBOT_DIALOG_WIDTH - VIEWPORT_MARGIN;
   const maxTop = window.innerHeight - CHATBOT_DIALOG_HEIGHT - VIEWPORT_MARGIN;
 
-  const preferredLeft = window.innerWidth - CHATBOT_DIALOG_WIDTH - targetRight;
-  const left = Math.min(Math.max(preferredLeft, VIEWPORT_MARGIN), maxLeft);
+  // 버튼의 right에 맞추어 모달의 left 결정 (오른쪽 정렬)
+  const targetLeft = buttonRect.right - CHATBOT_DIALOG_WIDTH;
+  // 버튼의 top 기준으로 모달 높이와 12px 간격을 빼서 모달의 top 결정
+  const targetTop = buttonRect.top - CHATBOT_DIALOG_HEIGHT - 12;
+
+  const left = Math.min(Math.max(targetLeft, VIEWPORT_MARGIN), maxLeft);
   const top = Math.min(Math.max(targetTop, VIEWPORT_MARGIN), maxTop);
 
   const centerX = window.innerWidth / 2;
@@ -51,7 +52,8 @@ export const Ltpa120 = ({ isButton = true, open: openProp, setOpen: setOpenProp 
 
   const handleOpen = () => {
     if (buttonRef.current) {
-      setDefaultPosition(getInitialDialogPosition());
+      const rect = buttonRef.current.getBoundingClientRect();
+      setDefaultPosition(getInitialDialogPosition(rect));
     }
     setOpen(true);
   };

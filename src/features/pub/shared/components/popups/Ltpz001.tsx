@@ -352,7 +352,7 @@ const Ltpz001 = () => {
               setActive={setTabActive}
               visibleCount={4}
               getValue={(tab) => String(tab.value)}
-              contentClass="overflow-y-auto relative bg-[var(--color-blue-gray-10)] rounded-b-[0.6rem]"
+              contentClass="overflow-y-auto relative bg-[var(--color-blue-gray-10)] rounded-b-[0.6rem] gray-scroll"
               renderTab={(tab) => <span>{tab.label}</span>}
             >
               <Gcol
