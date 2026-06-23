@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Grow, Typo } from '@atoms';
 import { ResetIcon, SearchIcon } from '@icons';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths, CustomGridLoadingOverlay } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -29,7 +29,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import '@/shared/lib/agGridPub';
 
 // 그리드에 표시될 데이터의 타입 정의
-type DummyDataType = {
+export type DummyDataType = {
   id: number;
   isCheck: boolean;
   field01: string | number;
@@ -41,39 +41,16 @@ type DummyDataType = {
   field07: string | number;
   field08: string | number;
 };
-const DummyData: DummyDataType[] = [
-  // 샘플 데이터 1
-  {
-    id: 1,
-    isCheck: true,
-    field01: 'LA12345678',
-    field02:
-      '문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.문서명 내용이 들어갑니다.',
-    field03: 1,
-    field04: '김한화한화김한화한화',
-    field05: '소재소재지소재지소재지소재지소재지지(12)',
-    field06: '2026-06-01 12:20:56',
-    field07: '김한화한화김한화한화',
-    field08:
-      '비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.',
-  },
-  // 샘플 데이터 2
-  {
-    id: 2,
-    isCheck: false,
-    field01: 'LA12345679',
-    field02: '문서명 내용이 들어갑니다.',
-    field03: 2,
-    field04: '김한화',
-    field05: '소재지(12)',
-    field06: '2026-06-01 12:20:56',
-    field07: '김한화',
-    field08: '비고 내용이 들어갑니다.비고 내용이 들어갑니다.',
-  },
-];
+
+export interface Ltpz079Props {
+  data?: {
+    grid1?: DummyDataType[];
+  };
+  loading?: boolean;
+}
 
 // Ltpz079: 설계 이미지 조회 팝업 컴포넌트
-const Ltpz079 = () => {
+const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
   // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -143,7 +120,7 @@ const Ltpz079 = () => {
   ];
 
   // 그리드에 표시할 데이터 상태 관리
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const rowData = data?.grid1 ?? [];
 
   return (
     // Dialog 컴포넌트: 팝업 창을 렌더링합니다.
@@ -194,8 +171,9 @@ const Ltpz079 = () => {
           {/* Ag-Grid 테이블 영역 */}
           <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
-              getRowId={(params) => String(params.data.id)}
+              loading={loading}
               noRowsOverlayComponent={AgGridEmptyComponent}
+              getRowId={(params) => String(params.data.id)}
               rowData={rowData}
               columnDefs={columnDefs}
               defaultColDef={{
@@ -223,6 +201,8 @@ const Ltpz079 = () => {
               domLayout="normal"
               tooltipShowMode="whenTruncated"
               tooltipShowDelay={0}
+              loadingOverlayComponent={CustomGridLoadingOverlay}
+              loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
             />
           </div>
         </DialogSection>
