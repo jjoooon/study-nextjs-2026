@@ -17,7 +17,7 @@ import type {
   GridReadyEvent,
   CellValueChangedEvent,
 } from 'ag-grid-enterprise';
-import type { AgGridReact } from 'ag-grid-react';
+import type { AgGridReact, CustomLoadingOverlayProps } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import type { RefObject } from 'react';
@@ -2184,5 +2184,17 @@ export const CoveragePopover = ({
         </Gcol>
       </PopoverContent>
     </Popover>
+  );
+};
+
+export const CustomGridLoadingOverlay = (props: CustomLoadingOverlayProps & { loadingMessage?: string }) => {
+  return (
+    <div className="ag-overlay-loading-wrapper flex items-center justify-center">
+      <div className="flex flex-col items-center gap-3 p-6 bg-white rounded-lg ">
+        {/* 커스텀 로딩 애니메이션 */}
+        <div className="animate-spin rounded-full h-4 w-4 border-b-1 border-[var(--color-primary-50)]"></div>
+        <span className="text-sm text-gray-700">{props.loadingMessage || '데이터를 가져오는 중입니다...'}</span>
+      </div>
+    </div>
   );
 };

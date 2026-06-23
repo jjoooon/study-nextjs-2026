@@ -8,7 +8,12 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Typo } from '@atoms';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  useDynamicColumnWidths,
+  CustomGridLoadingOverlay,
+} from '@aggrid';
 import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
@@ -117,6 +122,8 @@ const Ltpz996 = ({ data, loading }: Ltpz996Props) => {
               // 텍스트가 잘렸을 때만 툴팁을 즉시(delay 0) 노출
               tooltipShowMode="whenTruncated"
               tooltipShowDelay={0}
+              loadingOverlayComponent={CustomGridLoadingOverlay}
+              loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
             />
           </div>
         </DialogSection>
