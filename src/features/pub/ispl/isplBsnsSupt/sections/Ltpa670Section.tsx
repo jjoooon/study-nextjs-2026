@@ -124,7 +124,7 @@ export default function Ltpa670Section() {
 
   const [rowData, setRowData] = React.useState<DummyData1Type[]>(() => DummyData1.slice(0, 5));
   const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount, setTotalCount] = React.useState(DummyData1.length);
+  const [totalCount] = React.useState(DummyData1.length);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const pageSize = 5;

@@ -103,10 +103,10 @@ const Ltpz999: React.FC<Ltpz999Props> = ({ errorType = '오류' }) => {
           <div ref={scrollContainerRef} className="overflow-y-auto [&_div]:!text-[1.4rem]">
             <Gcol placement="cc">
               <BulletItem type="dot">시스템 오류가 발생했습니다.</BulletItem>
-              <BulletItem type="dot">시스템 문구가 더 길어질수 있습니다.</BulletItem>
+              {/* <BulletItem type="dot">시스템 문구가 더 길어질수 있습니다.</BulletItem>
               <BulletItem type="dot">시스템 메시지는 기본 90자까지 이내를 권장합니다.</BulletItem>
               <BulletItem type="dot">최대한 90자 이내로 정의 부탁드립니다.</BulletItem>
-              <BulletItem type="dot">시스템 오류가 발행했습니다.</BulletItem>
+              <BulletItem type="dot">시스템 오류가 발행했습니다.</BulletItem> */}
 
               {/* 상세 처리방안 (클릭 시 확장) */}
               <Gcol

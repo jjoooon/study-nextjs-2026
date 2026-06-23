@@ -8,7 +8,12 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Typo } from '@atoms';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  useDynamicColumnWidths,
+  CustomGridLoadingOverlay,
+} from '@aggrid';
 import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
@@ -22,7 +27,9 @@ export type DummyDataType = {
 };
 
 interface Ltpz996Props {
-  data?: DummyDataType[];
+  data?: {
+    grid1?: DummyDataType[];
+  };
   loading?: boolean;
 }
 
@@ -30,7 +37,7 @@ interface Ltpz996Props {
  * Ltpz996: 시스템 간의 통신 거래 이력을 리스트 형태로 보여주는 팝업 컴포넌트입니다.
  */
 const Ltpz996 = ({ data, loading }: Ltpz996Props) => {
-  const rowData = data ?? []; // 표시할 데이터
+  const rowData = data?.grid1 ?? []; // 표시할 데이터
   const { attributeColumnWidth } = useDynamicColumnWidths(); // 화면 배율에 따른 동적 너비 계산 훅
   // Ag-Grid 컬럼 정의
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
@@ -117,6 +124,8 @@ const Ltpz996 = ({ data, loading }: Ltpz996Props) => {
               // 텍스트가 잘렸을 때만 툴팁을 즉시(delay 0) 노출
               tooltipShowMode="whenTruncated"
               tooltipShowDelay={0}
+              loadingOverlayComponent={CustomGridLoadingOverlay}
+              loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
             />
           </div>
         </DialogSection>

@@ -7,7 +7,7 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Grid, Grow, Typo } from '@atoms';
 import { useDynamicColumnWidths } from '@aggrid';
 import { Button } from '@uiux/Button';
 import {
