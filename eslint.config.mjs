@@ -11,8 +11,9 @@ import prettierPlugin from 'eslint-plugin-prettier'
 import prettierConfig from 'eslint-config-prettier'
 import boundaries from 'eslint-plugin-boundaries';
 import checkFile from 'eslint-plugin-check-file';
+import reactCompiler from "eslint-plugin-react-compiler"
 
-export default [js.configs.recommended, ...tseslint.configs.recommended, prettierConfig, {
+export default [js.configs.recommended, ...tseslint.configs.recommended, reactCompiler.configs.recommended, prettierConfig, {
   plugins: {
     react,
     'react-hooks': reactHooks,
@@ -31,16 +32,23 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     ...react.configs.recommended.rules,
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
-    'react/no-unknown-property': ['error', { ignore: ['e2e_type'] }],
 
     // React Hooks rules
     ...reactHooks.configs.recommended.rules,
-    // Allow ref as a prop for React 19
-    'react-hooks/refs': 'off',
-    // Relax exhaustive-deps for complex useCallback patterns
     'react-hooks/exhaustive-deps': 'warn',
-    // Allow callbacks to reference later-declared functions when safe
+    // v7에서 추가된 React Compiler 규칙들 - 현재 코드베이스에서 비활성화
+    'react-hooks/refs': 'off',
     'react-hooks/immutability': 'off',
+    'react-hooks/static-components': 'error',
+    'react-hooks/set-state-in-effect': 'off',
+    // 'react-hooks/use-memo': 'off',
+    // 'react-hooks/preserve-manual-memoization': 'off',
+    // 'react-hooks/error-boundaries': 'off',
+    // 'react-hooks/purity': 'off',
+    // 'react-hooks/set-state-in-render': 'off',
+    // 'react-hooks/globals': 'off',
+    // 'react-hooks/config': 'off',
+    // 'react-hooks/gating': 'off',
 
     // Accessibility rules
     // 'jsx-a11y/anchor-is-valid': 'warn',
@@ -126,9 +134,7 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
         // 그 외 파일: camelCase
         'src/shared/!(components|sections)/*.{ts,tsx}': 'CAMEL_CASE',
         'src/features/*/!(components|sections)/*.{ts,tsx}': 'CAMEL_CASE',
-      },
-      {
-        ignoreMiddleExtensions: true,
+        'src/features/*/*./!(components|sections)/*.{ts,tsx}': 'CAMEL_CASE',
       }
     ],
     'check-file/folder-naming-convention': [
@@ -143,48 +149,39 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index']],
-        pathGroups: [
-          // @/ 경로 별칭 → internal 그룹 맨 앞
-          {
-            pattern: '@/**',
-            group: 'internal',
-            position: 'before',
-          },
-          // 로컬 컴포넌트 별칭 → internal 그룹 맨 뒤 (filepond/react 이후에 위치)
-          { pattern: '@atoms',       group: 'internal', position: 'after' },
-          { pattern: '@icons',       group: 'internal', position: 'after' },
-          { pattern: '@aggrid',      group: 'internal', position: 'after' },
-          { pattern: '@uiux/**',     group: 'internal', position: 'after' },
-          { pattern: '@common/**',   group: 'internal', position: 'after' },
-          { pattern: '@features/**', group: 'internal', position: 'after' },
-          { pattern: '@layout/**',   group: 'internal', position: 'after' },
-          { pattern: '@hooks/**',    group: 'internal', position: 'after' },
-          { pattern: '@grid/**',     group: 'internal', position: 'after' },
-        ],
-        // 'external' 을 제외 목록에서 빼야 scoped 별칭(@atoms 등)에도 pathGroups 가 적용됨
-        pathGroupsExcludedImportTypes: ['builtin'],
-        alphabetize: { order: 'asc' },
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+        alphabetize: { order: 'asc' }
       }
     ],
-    'boundaries/element-types': [
+    'boundaries/dependencies': [
       'error',
       {
         default: 'disallow',
         rules: [
           {
-            from: 'shared',
-            allow: ['shared'],
-            message: 'Shared는 Shared와 Features를 import할 수 있습니다.',
+            from: { type: 'shared' },
+            allow: { to: { type: 'shared' } },
           },
           {
-            from: 'features',
-            allow: ['shared'],
-            message: 'Feature는 다른 Feature를 import할 수 없습니다. Shared Layer를 사용하세요.',
+            from: { type: 'features' },
+            allow: {
+              to: [
+                { type: 'shared' },
+                // features/shared 폴더는 feature 간 공유 허용
+                { type: 'features', captured: { featureName: 'shared' } },
+              ],
+            },
           },
         ],
       },
     ],
+    'no-restricted-syntax': [
+      "error",
+      {
+        "selector": "CallExpression[callee.name='useEffect'][arguments.1.type='ArrayExpression'][arguments.1.elements.length=0]",
+        "message": "useEffect의 의존성 배열을 비우지 마세요. 초기 마운트 시에만 실행되는 로직은 커스텀 훅(useMounted)을 사용하세요."
+      }
+    ]
   },
   settings: {
     react: {
@@ -195,13 +192,15 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     },
     'boundaries/elements': [
       {
+        // src/features/* 의 각 폴더가 하나의 element, featureName으로 캡처
         type: 'features',
-        pattern: 'src/features/**/*',
+        pattern: 'src/features/*',
+        capture: ['featureName'],
         mode: 'folder',
       },
       {
         type: 'shared',
-        pattern: 'src/shared/**/*',
+        pattern: 'src/shared/*',
         mode: 'folder',
       },
     ],
@@ -223,6 +222,13 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     '.prettierrc.cjs',
     'public',
     'public/**',
+    // Storybook stories 파일 예외 처리
+    '**/*.stories.@(js|jsx|ts|tsx|mdx)',
+    '**/*.stories.ts',
+    '**/*.stories.tsx',
+    '**/*.stories.js',
+    '**/*.stories.jsx',
+    '**/*.stories.mdx',
   ]
 }, ...storybook.configs["flat/recommended"], {
   rules: {
