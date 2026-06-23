@@ -31,6 +31,7 @@ export default [js.configs.recommended, ...tseslint.configs.recommended, prettie
     ...react.configs.recommended.rules,
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
+    'react/no-unknown-property': ['error', { ignore: ['e2e_type'] }],
 
     // React Hooks rules
     ...reactHooks.configs.recommended.rules,

@@ -34,6 +34,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   restrictChars?: boolean;
   align?: 'left' | 'center' | 'right';
   onErrorChange?: (nextError: boolean) => void;
+  e2eType?: number;
   // debug?: boolean;
 }
 function formatAmount(value: string) {
@@ -103,6 +104,7 @@ function Input({
   isFocused,
   onErrorChange,
   className,
+  e2eType = 0,
   ...props
 }: UIInputProps) {
   const [focused, setFocused] = useState(false);
@@ -349,6 +351,7 @@ function Input({
               onBlur={handleBlur}
               style={mergedInputStyle}
               placeholder={resolvedPlaceholder}
+              e2e_type={e2eType}
               {...inputProps}
             />
             {clear && isInputFocused && displayValue !== '' && (
@@ -415,6 +418,7 @@ function Input({
               onBlur={handleBlur}
               style={mergedInputStyle}
               placeholder={resolvedPlaceholder}
+              e2e_type={e2eType}
               {...inputProps}
             />
           )}
