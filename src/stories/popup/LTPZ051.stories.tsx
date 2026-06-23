@@ -3,9 +3,9 @@
  */
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
-import { LayoutDoc } from '@layout/BaseLayout';
 import Ltpz051 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz051';
 import type { DummyData1Type, DummyData2Type } from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz051';
+import { LayoutDoc } from '@layout/BaseLayout';
 import { useStorybookGridData } from '../hooks/useStorybookGridData';
 
 interface StoryProps extends React.ComponentProps<typeof Ltpz051> {

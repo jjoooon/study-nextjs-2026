@@ -324,7 +324,7 @@ const Ltpz038 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
-            <FormTable variant={'none'} lineTop={false} cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}>
+            <FormTable variant={'head'} lineTop={false} cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}>
               <FormRow>
                 {/* 2026-05-27 설계번호, 차량번호 선택시 input만 노출로 수정 */}
                 <FormCell
@@ -387,19 +387,8 @@ const Ltpz038 = () => {
                   <Input aria-label="" value={'신부산GA지점'} readOnly />
                 </FormCell>
                 <FormCell title={'설계일자'}>
-                  <DatePickerInput
-                    errorMsg="입력은 필수입니다."
-                    errorPs="bl"
-                    mode="range"
-                    onChange={() => {}}
-                    rangeValue={{
-                      from: '2026-03-01',
-                      to: '2026-03-07',
-                    }}
-                    required
-                    size="lg"
-                    width="sm"
-                  />
+                  <DatePickerInput mode="single" onChange={() => {}} required size="lg" width="sm" />-
+                  <DatePickerInput mode="single" onChange={() => {}} required size="lg" width="sm" />
                 </FormCell>
               </FormRow>
             </FormTable>

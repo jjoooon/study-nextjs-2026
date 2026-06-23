@@ -203,10 +203,93 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
   // '이륜차부담보 변경대상' 탭의 그리드 데이터
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>([]); // 2026-05-27 agGrid 추가
 
+  // 탭 이동 시 ag-grid 데이터를 비동기 조회하는 연출을 위한 로컬 로딩 상태
+  const [isLocalLoading, setIsLocalLoading] = React.useState(false);
+  // 이미 데이터를 '실제로 바인딩 완료'한 탭 목록 추적
+  const loadedTabsRef = React.useRef<Set<string>>(new Set());
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // 특정 탭에 데이터를 로드하는 함수
+  const loadTabData = React.useCallback(
+    (tabValue: string) => {
+      // 이미 로드 완료되었거나, 해당 탭의 원본 데이터가 아직 부모로부터 준비되지 않은 경우 스킵
+      if (loadedTabsRef.current.has(tabValue)) {
+        return;
+      }
+
+      if (tabValue === 'basic') {
+        if (!data?.grid1) return; // 부모 데이터가 아직 안 온 경우 대기
+
+        // 동기 setState 경고를 우회하기 위해 비동기 틱으로 로딩 상태를 전환합니다.
+        setTimeout(() => {
+          setIsLocalLoading(true);
+        }, 0);
+
+        if (timerRef.current) clearTimeout(timerRef.current);
+
+        timerRef.current = setTimeout(() => {
+          setRowData1(data.grid1 ?? []);
+          loadedTabsRef.current.add('basic');
+          setIsLocalLoading(false);
+          timerRef.current = null;
+        }, 500);
+      } else if (tabValue === 'detail') {
+        if (!data?.grid2) return; // 부모 데이터가 아직 안 온 경우 대기
+
+        // 동기 setState 경고를 우회하기 위해 비동기 틱으로 로딩 상태를 전환합니다.
+        setTimeout(() => {
+          setIsLocalLoading(true);
+        }, 0);
+
+        if (timerRef.current) clearTimeout(timerRef.current);
+
+        timerRef.current = setTimeout(() => {
+          setRowData2(data.grid2 ?? []);
+          loadedTabsRef.current.add('detail');
+          setIsLocalLoading(false);
+          timerRef.current = null;
+        }, 500);
+      }
+    },
+    [data]
+  );
+
+  // props인 data?.grid1, data?.grid2가 부모로부터 업데이트되었을 때의 처리 (예: 비동기 데이터 리졸브)
+  const [prevGrid1, setPrevGrid1] = React.useState<DummyData1Type[] | undefined>(undefined);
+  const [prevGrid2, setPrevGrid2] = React.useState<DummyData2Type[] | undefined>(undefined);
+
+  // 부모로부터 진짜 새 데이터셋이 들어온 경우 캐시 및 기존 바인딩 리셋
+  if (data?.grid1 !== prevGrid1 || data?.grid2 !== prevGrid2) {
+    setPrevGrid1(data?.grid1);
+    setPrevGrid2(data?.grid2);
+    loadedTabsRef.current.clear();
+    setRowData1([]);
+    setRowData2([]);
+  }
+
+  // 탭 이동 시 탭 데이터를 로드하는 이벤트 핸들러
+  const handleTabChange = React.useCallback(
+    (tabValue: string) => {
+      setActive(tabValue);
+      loadTabData(tabValue);
+    },
+    [setActive, loadTabData]
+  );
+
+  // 부모 데이터가 준비되었고 현재 활성화된 탭이 아직 로드되지 않은 상태라면 로드 처리
   React.useEffect(() => {
-    setRowData1(data?.grid1 ?? []);
-    setRowData2(data?.grid2 ?? []);
-  }, [data?.grid1, data?.grid2]);
+    if (data) {
+      loadTabData(active);
+    }
+  }, [data, active, loadTabData]);
+
+  React.useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   return (
     // Dialog 컴포넌트: 팝업 창을 렌더링합니다.
@@ -264,7 +347,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
             <TabPager
               data={tabs}
               active={active}
-              setActive={setActive}
+              setActive={handleTabChange}
               hasTableBelow={true}
               getValue={(t) => t.value}
               renderTab={(t) => t.label ?? t.value}
@@ -298,7 +381,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
                       </Grow>
                       <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
                         <AgGridReact<DummyData1Type>
-                          loading={loading}
+                          loading={loading || isLocalLoading}
                           getRowId={(params) => String(params.data.id)}
                           rowData={rowData1}
                           columnDefs={columnDefs}
@@ -341,7 +424,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
                       {/* 2026-05-27 agGrid 수정 */}
                       <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                         <AgGridReact<DummyData2Type>
-                          loading={loading}
+                          loading={loading || isLocalLoading}
                           getRowId={(params) => String(params.data.id)}
                           rowData={rowData2}
                           columnDefs={columnDefs1}
