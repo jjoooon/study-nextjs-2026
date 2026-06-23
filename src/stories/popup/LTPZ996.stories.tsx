@@ -18,7 +18,7 @@ const meta: Meta<StoryProps> = {
   argTypes: {
     dataType: {
       control: 'select',
-      options: ['none', 'under5', 'over5'],
+      options: ['none', 'under', 'over'],
       description: '데이터 노출 개수 설정 (none: 0개, under5: 5개 이하, over5: 5개 이상)',
     },
     delayTime: {
