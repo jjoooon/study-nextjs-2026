@@ -171,7 +171,7 @@ function AlertDialogDescription({
   return (
     <AlertDialogPrimitive.Description
       data-slot="alert-dialog-description"
-      className={cn('text-muted-foreground text-center text-[1.4rem] w-full p-0', className)}
+      className={cn('text-muted-foreground text-center text-[1.4rem] w-full p-0 whitespace-pre-line', className)}
       {...props}
     />
   );
