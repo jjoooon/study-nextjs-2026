@@ -253,7 +253,6 @@ const Ltpz113 = () => {
   const [loadedCount, setLoadedCount] = React.useState(5);
   const [totalCount, setTotalCount] = React.useState(DummyData.length);
   const [isLoading, setIsLoading] = React.useState(false);
-  // const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
 
   // pagination
   const pageSize = 6;
