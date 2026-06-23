@@ -17,6 +17,7 @@ import {
   numberValueFormatter,
   createInsertCopiedRowButtonCellRenderer,
   useDynamicColumnWidths,
+  CustomGridLoadingOverlay,
 } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
@@ -39,7 +40,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
-type DummyDataType = {
+export type DummyDataType = {
   id: number;
   isCheck: boolean;
   isDuplicate: boolean;
@@ -53,66 +54,29 @@ type DummyDataType = {
   canEditExpiry: boolean;
 };
 
-const dummyData: DummyDataType[] = [
-  {
-    id: 1,
-    isCheck: true, // 첫 번째 행을 선택 상태로
-    isDuplicate: false, // 원본 행은 항상 false
-    productName:
-      '기본형 실손의료비(상해급여)(갱신형)기본형 실손의료비(상해급여)(갱신형)기본형 실손의료비(상해급여)(갱신형)',
-    badge: ['갱신'],
-    attribute: true,
-    coverageAmount: '5천만원(통원20만원)',
-    premium: 1377,
-    expiryPeriod: '01년만기',
-    paymentPeriod: '전기납',
-    canEditExpiry: true,
-  },
-  {
-    id: 2,
-    isCheck: false,
-    isDuplicate: false, // 원본 행은 항상 false
-    productName: '기본형 실손의료비(상해급여)(갱신형)',
-    badge: ['갱신'],
-    attribute: false,
-    coverageAmount: '2천만원(통원20만원)',
-    premium: 9999999,
-    expiryPeriod: '01년만기',
-    paymentPeriod: '전기납',
-    canEditExpiry: true,
-  },
-  {
-    id: 3,
-    isCheck: false,
-    isDuplicate: false, // 원본 행은 항상 false
-    productName: '기본형 실손의료비(상해급여)(갱신형)',
-    badge: ['갱신'],
-    attribute: true,
-    coverageAmount: '3천만원(통원20만원)',
-    premium: 159999,
-    expiryPeriod: '01년만기',
-    paymentPeriod: '전기납',
-    canEditExpiry: true,
-  },
-  {
-    id: 4,
-    isCheck: false,
-    isDuplicate: false, // 원본 행은 항상 false
-    productName: '기본형 실손의료비(상해급여)(갱신형)',
-    badge: ['갱신'],
-    attribute: false,
-    coverageAmount: '4천만원(통원20만원)',
-    premium: 2323230,
-    expiryPeriod: '01년만기',
-    paymentPeriod: '전기납',
-    canEditExpiry: true,
-  },
-];
+export interface Ltpz010Props {
+  data?: {
+    grid1?: DummyDataType[];
+  };
+  loading?: boolean;
+}
 
-const Ltpz010 = () => {
+const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
   const [relationValue, setRelationValue] = useState('');
-  const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
-  const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
+  // props인 data?.grid1이 변경되었을 때 렌더링 단계에서 상태를 동기적으로 조정하여 린트 경고를 방지합니다.
+  const [prevGridData, setPrevGridData] = useState<DummyDataType[] | undefined>(data?.grid1);
+  const [rowData, setRowData] = useState<DummyDataType[]>(data?.grid1 ?? []);
+  const [, setErrorRows] = useState<number[]>(() => {
+    const list = data?.grid1 ?? [];
+    return list.filter((row) => !row.isCheck).map((row) => row.id);
+  });
+
+  if (data?.grid1 !== prevGridData) {
+    setPrevGridData(data?.grid1);
+    const list = data?.grid1 ?? [];
+    setRowData(list);
+    setErrorRows(list.filter((row) => !row.isCheck).map((row) => row.id));
+  }
   const gridRef = useRef<AgGridReact<DummyDataType>>(null);
 
   // 중복 행 추가 추적용 ref
@@ -508,6 +472,7 @@ const Ltpz010 = () => {
                 <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                   <AgGridReact<DummyDataType>
                     ref={gridRef}
+                    loading={loading}
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={rowData}
@@ -540,6 +505,8 @@ const Ltpz010 = () => {
                         }
                       });
                     }}
+                    loadingOverlayComponent={CustomGridLoadingOverlay}
+                    loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
                   />
                 </div>
               </TableFoldBody>

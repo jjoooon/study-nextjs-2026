@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths, CustomGridLoadingOverlay } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -36,7 +36,7 @@ const DATA_TABS: LTPZ051Tab[] = [
 ];
 
 // '직업정보(상해급수)변경대상' 탭의 그리드 데이터 타입 정의
-type DummyData1Type = {
+export type DummyData1Type = {
   id: number;
   field01: string | number;
   field02: string | number;
@@ -46,7 +46,7 @@ type DummyData1Type = {
   field06: string | number;
   field07: string | number;
 };
-type DummyData2Type = {
+export type DummyData2Type = {
   // '이륜차부담보 변경대상' 탭의 그리드 데이터 타입 정의
   id: number;
   field01: string | number;
@@ -56,101 +56,16 @@ type DummyData2Type = {
   field05: string | number;
 };
 
-// '직업정보(상해급수)변경대상' 탭의 샘플 데이터
-const DummyData1: DummyData1Type[] = [
-  {
-    id: 1,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: '1급',
-    field05: '회사원',
-    field06: '1급',
-    field07: '회사원',
-  },
-  {
-    id: 2,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: '1급',
-    field05: '회사원',
-    field06: '1급',
-    field07: '회사원',
-  },
-  {
-    id: 3,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: '1급',
-    field05: '회사원',
-    field06: '1급',
-    field07: '회사원',
-  },
-];
-// '이륜차부담보 변경대상' 탭의 샘플 데이터
-const DummyData2: DummyData2Type[] = [
-  {
-    id: 1,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 2,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 3,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 4,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 5,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 6,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 7,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-];
+export interface Ltpz051Props {
+  data?: {
+    grid1?: DummyData1Type[];
+    grid2?: DummyData2Type[];
+  };
+  loading?: boolean;
+}
 
 // Ltpz051: 고객 직업정보(상해급수) 또는 이륜차부담보 변경 안내 팝업 컴포넌트
-const Ltpz051 = () => {
+const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
   // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
   // 탭 상태 관리 (직업정보 변경대상 / 이륜차부담보 변경대상)
@@ -284,9 +199,14 @@ const Ltpz051 = () => {
   ];
 
   // '직업정보(상해급수)변경대상' 탭의 그리드 데이터
-  const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
+  const [rowData1, setRowData1] = React.useState<DummyData1Type[]>([]);
   // '이륜차부담보 변경대상' 탭의 그리드 데이터
-  const [rowData2] = React.useState<DummyData2Type[]>(DummyData2); // 2026-05-27 agGrid 추가
+  const [rowData2, setRowData2] = React.useState<DummyData2Type[]>([]); // 2026-05-27 agGrid 추가
+
+  React.useEffect(() => {
+    setRowData1(data?.grid1 ?? []);
+    setRowData2(data?.grid2 ?? []);
+  }, [data?.grid1, data?.grid2]);
 
   return (
     // Dialog 컴포넌트: 팝업 창을 렌더링합니다.
@@ -378,6 +298,7 @@ const Ltpz051 = () => {
                       </Grow>
                       <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
                         <AgGridReact<DummyData1Type>
+                          loading={loading}
                           getRowId={(params) => String(params.data.id)}
                           rowData={rowData1}
                           columnDefs={columnDefs}
@@ -387,6 +308,8 @@ const Ltpz051 = () => {
                             resizable: true,
                           }}
                           domLayout="normal"
+                          loadingOverlayComponent={CustomGridLoadingOverlay}
+                          loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
                         />
                       </div>
                     </Gcol>
@@ -418,6 +341,7 @@ const Ltpz051 = () => {
                       {/* 2026-05-27 agGrid 수정 */}
                       <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                         <AgGridReact<DummyData2Type>
+                          loading={loading}
                           getRowId={(params) => String(params.data.id)}
                           rowData={rowData2}
                           columnDefs={columnDefs1}
@@ -427,6 +351,8 @@ const Ltpz051 = () => {
                             resizable: true,
                           }}
                           domLayout="normal"
+                          loadingOverlayComponent={CustomGridLoadingOverlay}
+                          loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
                         />
                       </div>
                     </Gcol>

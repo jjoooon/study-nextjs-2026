@@ -8,7 +8,12 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { Grow, Typo } from '@atoms';
 import { ResetIcon, SearchIcon } from '@icons';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths, CustomGridLoadingOverlay } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createTooltipValueGetter,
+  useDynamicColumnWidths,
+  CustomGridLoadingOverlay,
+} from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {

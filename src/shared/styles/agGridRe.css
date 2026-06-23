@@ -561,6 +561,7 @@
 
 .ag-overlay-wrapper {
   padding-bottom: 3rem;
+  padding-top: 3rem !important;
 }
 
 .is-duplicate .uiux-duplicate-btn {
