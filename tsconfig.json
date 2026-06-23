@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,20 +23,42 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/features/*": ["./src/features/*"],
-      "@/shared/*": ["./src/shared/*"],
-
-      "@uiux/*": ["./src/shared/components/uiux/*"],
-      "@common/*": ["./src/shared/components/common/*"],
-      "@features/*": ["./src/shared/components/features/*"],
-      "@layout/*": ["./src/shared/components/layout/*"],
-      "@hooks/*": ["./src/shared/hooks/*"],
-      "@grid/*": ["./src/shared/components/grid/*"],
-
-      "@aggrid": ["./src/shared/components/agGridUtils/index.ts"],
-      "@atoms": ["./src/shared/components/atoms/index.ts"],
-      "@icons": ["./src/shared/components/icons/index.ts"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@/features/*": [
+        "./src/features/*"
+      ],
+      "@/shared/*": [
+        "./src/shared/*"
+      ],
+      "@uiux/*": [
+        "./src/shared/components/uiux/*"
+      ],
+      "@common/*": [
+        "./src/shared/components/common/*"
+      ],
+      "@features/*": [
+        "./src/shared/components/features/*"
+      ],
+      "@layout/*": [
+        "./src/shared/components/layout/*"
+      ],
+      "@hooks/*": [
+        "./src/shared/hooks/*"
+      ],
+      "@grid/*": [
+        "./src/shared/components/grid/*"
+      ],
+      "@aggrid": [
+        "./src/shared/components/agGridUtils/index.ts"
+      ],
+      "@atoms": [
+        "./src/shared/components/atoms/index.ts"
+      ],
+      "@icons": [
+        "./src/shared/components/icons/index.ts"
+      ]
     }
   },
   "include": [
@@ -42,5 +68,8 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    ".next"
+  ]
 }
