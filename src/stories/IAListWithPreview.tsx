@@ -186,7 +186,6 @@ export function IAListWithPreview() {
         pub: info.이름,
         date: info.완료일 || row.date,
         modify: info.수정일 || row.modify,
-        planDate,
         pubName,
       };
     });

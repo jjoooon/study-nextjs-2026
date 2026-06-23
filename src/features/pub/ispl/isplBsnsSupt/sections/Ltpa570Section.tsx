@@ -341,7 +341,7 @@ export default function Ltpa570Section() {
 
   const [rowData, setRowData] = React.useState<Ltpa570DummyDataRow[]>(() => Ltpa570DummyData.slice(0, 5));
   const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount, setTotalCount] = React.useState(Ltpa570DummyData.length);
+  const [totalCount] = React.useState(Ltpa570DummyData.length);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const gridRef = React.useRef<AgGridReact<Ltpa570DummyDataRow>>(null);

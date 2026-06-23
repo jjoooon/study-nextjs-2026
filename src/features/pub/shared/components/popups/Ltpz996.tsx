@@ -27,7 +27,9 @@ export type DummyDataType = {
 };
 
 interface Ltpz996Props {
-  data?: DummyDataType[];
+  data?: {
+    grid1?: DummyDataType[];
+  };
   loading?: boolean;
 }
 
@@ -35,7 +37,7 @@ interface Ltpz996Props {
  * Ltpz996: 시스템 간의 통신 거래 이력을 리스트 형태로 보여주는 팝업 컴포넌트입니다.
  */
 const Ltpz996 = ({ data, loading }: Ltpz996Props) => {
-  const rowData = data ?? []; // 표시할 데이터
+  const rowData = data?.grid1 ?? []; // 표시할 데이터
   const { attributeColumnWidth } = useDynamicColumnWidths(); // 화면 배율에 따른 동적 너비 계산 훅
   // Ag-Grid 컬럼 정의
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
