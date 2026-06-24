@@ -199,7 +199,7 @@ const Ltpz054 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -329,12 +329,15 @@ const Ltpz054 = () => {
                 자필비교
               </Button>
               <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                팩스&middot;홈페이지 유입문서등록
+              </Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 알림톡발송(홈페이지 문서 등록)
               </Button>
             </Grow>
             <Grow>
-              <Input width={'quoteNo'} value={'LA123456789012'} />
-              <Input width={'quoteNo'} value="" />
+              <Input width={154} value={'1234567890123456789'} />
+              <Input width={154} value="" />
               <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 수정
               </Button>

@@ -332,10 +332,13 @@ const Ltpz113 = () => {
                     value={searchCategory}
                     width={100}
                     onChange={(event) => setSearchCategory(event.target.value)}
+                    errorMsg={'설계조직을 선택해주세요.'}
+                    errorPs={'bl'}
+                    error={false}
                     required
                   >
                     {[
-                      { value: 'selection', label: '선택' },
+                      { value: '', label: '선택' },
                       { value: 'selection2', label: '취급기관' },
                       { value: 'selection3', label: '취급직원' },
                       { value: 'selection4', label: '사용인' },

@@ -5,6 +5,8 @@
 
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { BulletItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -20,8 +22,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@uiux/Table';
-import { BulletItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 const Ltpz037 = () => {
   return (
@@ -125,7 +125,7 @@ const Ltpz037 = () => {
               </TableBody>
             </Table>
             <Grow placement="bwc" variant="box-info">
-              <BulletItem className="w-full" type="dotBig">
+              <BulletItem className="w-full" type="dot" size="sm">
                 최근 동의이력
               </BulletItem>
               <Typo className="w-full text-right text-[#006FF2]" weight={'bold'} variant="body-sm">

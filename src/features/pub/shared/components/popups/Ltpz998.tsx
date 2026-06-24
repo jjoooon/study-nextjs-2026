@@ -7,9 +7,10 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import { Grow, Gcol, Typo, Grid } from '@atoms';
-import { ErrorIcon, NotiIcon, QueryIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { ErrorIcon, NotiIcon, QueryIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,7 +22,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 // 업무 처리 안내 데이터 타입 정의 (오류, 질의, 알림 등)
 type DummyDataType = {
@@ -175,7 +175,7 @@ const Ltpz998 = () => {
             {selectedData && (
               <Grid
                 gap={3}
-                className="h-full pb-5 bg-[var(--color-gray-5)] rounded-[0.8rem] grid-rows-[auto_1fr]"
+                className="h-full pb-5 bg-[var(--color-gray-5)] rounded-[0.8rem] grid-rows-[auto_1fr] !pr-4"
                 variant="box-line"
               >
                 {/* 오류 코드 표시 */}
@@ -198,7 +198,7 @@ const Ltpz998 = () => {
 
                   {/* 상세 메시지 및 조치 방안 텍스트 */}
                   <Gcol
-                    className="h-full flex-1 overflow-y-auto border-l border-[var(--color-gray-15)] relative"
+                    className="h-full flex-1 overflow-y-auto border-l border-[var(--color-gray-15)] relative gray-scroll"
                     placement="ss"
                     gap={3}
                   >

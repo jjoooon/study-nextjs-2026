@@ -6,8 +6,6 @@
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Grow, Gcol, Typo, Grid } from '@atoms';
-import { SearchIcon, ResetIcon, FileExportIcon, PenIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -15,20 +13,22 @@ import {
   OverflowTooltipText,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { useFormFields } from '@hooks/useFormFields';
+import { SearchIcon, ResetIcon, FileExportIcon, PenIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { useFormFields } from '@hooks/useFormFields';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 import '@/shared/lib/agGridPub';
 
@@ -753,7 +753,7 @@ export default function Ltpa010Section() {
         <Grid className="grid-cols-[1fr_auto] px-1" gap={0.5}>
           <OverflowTooltipText text={data?.field15}>{data?.field15}</OverflowTooltipText>
 
-          <Grow placement="cc" className="min-h-[3rem]">
+          <Grow placement="cc" className="min-h-[3rem] gap-[0.2rem]">
             <Button
               color="gray-light"
               onClick={() => {}}
@@ -766,7 +766,14 @@ export default function Ltpa010Section() {
                 I
               </Typo>
             </Button>
-            <Button color="gray-light" onClick={() => {}} only="default" size="sm" variant="outlined">
+            <Button
+              color="gray-light"
+              onClick={() => {}}
+              only="default"
+              size="sm"
+              variant="outlined"
+              className="w-[2.2rem] h-[2.2rem] min-w-[2.2rem] p-0"
+            >
               <Typo color="primary" tag="span" variant="body-xs" weight="bold">
                 D
               </Typo>
@@ -1093,14 +1100,10 @@ export default function Ltpa010Section() {
                     <DatePickerInput
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
+                      autoRangeDays={7}
+                      autoRangeFix={true}
                       mode="range"
-                      onChange={() => {}}
-                      rangeValue={{
-                        from: '2026-03-01',
-                        to: '2026-03-07',
-                      }}
                       size="lg"
-                      width="sm"
                     />
                     <NativeSelect
                       aria-label="설계일자"

@@ -7,21 +7,21 @@
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Grow, Grid } from '@atoms';
-import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Grow, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
+import { useFormFields } from '@hooks/useFormFields';
+import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { useFormFields } from '@hooks/useFormFields';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 import '@/shared/lib/agGridPub';
 
@@ -392,6 +392,7 @@ export default function Ltpa570Section() {
         <PageID
           data={{
             pageName: '실시간 설계현황(지점별)',
+            pageId: 'LTPA570',
           }}
         />
       </LayoutHead>
@@ -464,7 +465,7 @@ export default function Ltpa570Section() {
                       ))}
                     </NativeSelect>
                     <RadioGroup
-                      className="gap-2 ml-6"
+                      className="gap-3 ml-6"
                       onValueChange={(value) => {
                         if (isGroupByOption(value)) {
                           setGroupBy(value);
@@ -495,7 +496,7 @@ export default function Ltpa570Section() {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'상품'} tdClassName="grid grid-cols-[auto_auto_1fr]">
-                    <Input aria-label="" value={'LA1301097'} width={100} required />
+                    <Input aria-label="" value={'LA123456789012'} width={'quoteNo'} required />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
                     </Button>

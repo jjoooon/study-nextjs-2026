@@ -4,6 +4,10 @@
 'use client';
 
 import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -17,10 +21,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 const Ltpz024 = () => {
   return (
@@ -70,10 +70,10 @@ const Ltpz024 = () => {
                 <Typo variant={'body-lg'}>알릴 의무 대체 서비스 이용을 위한 알림톡 발송 서비스입니다.</Typo>
               </Grow>
               <Gcol placement={'ss'} variant={'box-info'} className="w-full">
-                <Typo variant={'body-md'} icon={'info'}>
+                <Typo variant={'body-sm'} icon={'info'}>
                   <b>서비스안내</b>
                 </Typo>
-                <BulletList color={'info'} size="md">
+                <BulletList color={'info'} size="sm">
                   <BulletListItem>
                     본인인증을 통해 내 의료정보를 간편하게 제출(국민건강보험공단, 건강보험심사평가원)
                   </BulletListItem>
@@ -83,10 +83,10 @@ const Ltpz024 = () => {
                 </BulletList>
               </Gcol>
               <Gcol placement={'ss'} variant={'box-info'} className="w-full">
-                <Typo variant={'body-md'} icon={'info'}>
+                <Typo variant={'body-sm'} icon={'info'}>
                   <b>서비스 이용 시 대체가능 항목</b>
                 </Typo>
-                <BulletList color={'info'} size="md">
+                <BulletList color={'info'} size="sm">
                   <BulletListItem>최근 3개월 내 약물복용</BulletListItem>
                   <BulletListItem>최근 1년 이내 추가검사여부</BulletListItem>
                   <BulletListItem>최근5년 이내 치료여부</BulletListItem>
@@ -95,10 +95,10 @@ const Ltpz024 = () => {
                 </BulletList>
               </Gcol>
               <Gcol placement={'ss'} variant={'box-info'} className="w-full">
-                <Typo variant={'body-md'} icon={'info'}>
+                <Typo variant={'body-sm'} icon={'info'}>
                   <b>동의 유효기간 및 주의사항</b>
                 </Typo>
-                <BulletList color={'info'} size="md">
+                <BulletList color={'info'} size="sm">
                   <BulletListItem>
                     고객 동의일(의료정보 제출일)로부터 15일간 유효하며, 만료 시 재 동의 필요
                   </BulletListItem>

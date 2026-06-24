@@ -403,7 +403,7 @@ export default function Ltpa490Section() {
       {/* 2026-05-29 gap 삭제 */}
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr] h-full">
+          <Grid className="grid-rows-[auto_1fr] h-full gap-3">
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}
@@ -547,7 +547,7 @@ export default function Ltpa490Section() {
             <TableFold className="grid-rows-[auto_1fr]">
               <TableFoldHead title="대상리스트" />
               <TableFoldBody className="gap-3">
-                <Grid className="grid-rows-[1fr_auto] h-full">
+                <Grid className="grid-rows-[1fr_auto] h-full gap-2">
                   <Gcol className="w-full" gap={1}>
                     <div className="ag-theme-alpine h-full">
                       <AgGridReact<DummyDataType>
@@ -570,18 +570,21 @@ export default function Ltpa490Section() {
                       onLoadReset={handleLoadReset}
                     />
                   </Gcol>
-                  <BulletList position="col">
-                    <BulletListItem type="dot">
-                      해당 화면은 청약서가 발행된 이력이 있는 신계약 설계번호를 호출하고 있음 (단,
-                      TM/CM/전자서명/전자청약으로 진행된 설계는 제외)
-                    </BulletListItem>
-                    <BulletListItem type="dot">
-                      고액여부판단은 월납기준 100만원 초과시 고액여부 대상건으로 판단
-                    </BulletListItem>
-                    <BulletListItem type="dot">
-                      파기여부 항목에 &apos;미파기&apos;로 선택 시 미파기사유 항목에 해당 사유를 기재하고 저장할 수 있음
-                    </BulletListItem>
-                  </BulletList>
+                  <Gcol variant="box-info" placement="ss">
+                    <BulletList position="col" size="sm">
+                      <BulletListItem type="dot">
+                        해당 화면은 청약서가 발행된 이력이 있는 신계약 설계번호를 호출하고 있음 (단,
+                        TM/CM/전자서명/전자청약으로 진행된 설계는 제외)
+                      </BulletListItem>
+                      <BulletListItem type="dot">
+                        고액여부판단은 월납기준 100만원 초과시 고액여부 대상건으로 판단
+                      </BulletListItem>
+                      <BulletListItem type="dot">
+                        파기여부 항목에 &apos;미파기&apos;로 선택 시 미파기사유 항목에 해당 사유를 기재하고 저장할 수
+                        있음
+                      </BulletListItem>
+                    </BulletList>
+                  </Gcol>
                 </Grid>
               </TableFoldBody>
             </TableFold>
@@ -591,7 +594,10 @@ export default function Ltpa490Section() {
           <MainBottom>
             <MainBottomItem className="justify-end">
               <Grow gap={1}>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  엑셀내려받기
+                </Button>
+                <Button variant={'contained'} color={'primary'} size={'xl'}>
                   저장
                 </Button>
               </Grow>

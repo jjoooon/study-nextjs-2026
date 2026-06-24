@@ -37,7 +37,7 @@ interface TableMoreProps<TData = unknown> {
 
 export function TablePagination({ currentPage, totalPages, onPageChange, itemsPerPage }: TablePaginationProps) {
   // itemsPerPage가 null이면 pagination 미표시
-  if (!itemsPerPage || totalPages <= 1) {
+  if (!itemsPerPage || totalPages < 1) {
     return null;
   }
 
@@ -167,7 +167,7 @@ export function TableMore<TData = unknown>({
   }, [loadedCount, gridRef]);
 
   // itemsPerPage가 null이면 pagination 미표시
-  if (!resolvedItemsPerPage || resolvedTotalPages <= 1) {
+  if (!resolvedItemsPerPage || resolvedTotalPages < 1) {
     return null;
   }
 

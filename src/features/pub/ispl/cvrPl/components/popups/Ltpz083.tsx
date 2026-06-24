@@ -82,15 +82,23 @@ const Ltpz083 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
-            <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[5rem]', 'w-auto']}>
+            <FormTable
+              variant={'none'}
+              lineTop={false}
+              caption=""
+              cols={['w-[5rem]', 'w-[10rem]', 'w-[13rem]', 'w-auto']}
+            >
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input aria-label="설계번호" variant={'info'} value={'LA123456789012'} readOnly />
                 </FormCell>
+                <FormCell title={'견종검색(한글명)'}>
+                  <Input aria-label="견종검색" value={breedSearch} onChange={(e) => setBreedSearch(e.target.value)} />
+                </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
-          <Grow placement="bwc" className="w-full" variant={'box-round'}>
+          {/* <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[10rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'견종검색(한글명)'}>
@@ -98,7 +106,7 @@ const Ltpz083 = () => {
                 </FormCell>
               </FormRow>
             </FormTable>
-          </Grow>
+          </Grow> */}
           <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}

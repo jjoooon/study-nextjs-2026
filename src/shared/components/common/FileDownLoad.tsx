@@ -88,7 +88,7 @@ export function FileDownLoad({ filename, filesize, fileAddress, download = true 
           */}
           <Checkbox value={fileAddress}>
             <Typo variant={'body-md'} className="flex justify-start items-center gap-0.5">
-              <FileItemIcon />
+              <FileItemIcon color="var(--color-blue-gray-50)" />
               {filename}
             </Typo>
             <Typo variant={'body-sm'} className="text-[var(--color-primary-50)] mr-[1rem]">

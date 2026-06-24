@@ -205,6 +205,16 @@ const [value, setValue] = useState('');
     onMonthSelect: {
       table: { disable: true },
     },
+    options: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '퀵 기간 선택 옵션(당일, 1주일, 1개월, 3개월) 버튼 표시 여부',
+    },
+    autoRangeDays: {
+      control: { type: 'number' },
+      table: { category: '설정 props' },
+      description: '시작일 선택 시 자동으로 계산할 종료일과의 간격 일수',
+    },
     id: {
       table: { disable: true },
     },
@@ -229,6 +239,8 @@ const [value, setValue] = useState('');
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
     monthOnly: false,
+    options: false,
+    autoRangeDays: 7,
   },
 };
 
@@ -337,6 +349,36 @@ export const Default: Story = {
         onChange={(date, formattedValue) => {
           setValue(formattedValue ?? '');
           args.onChange?.(date, formattedValue ?? '');
+        }}
+      />
+    );
+  },
+};
+
+export const RangeWithQuickOptions: Story = {
+  args: {
+    mode: 'range',
+    options: true,
+    autoRangeDays: 7,
+  },
+  render: (args) => {
+    const [rangeValue, setRangeValue] = React.useState<{ from?: string; to?: string }>({
+      from: '2026-06-01',
+      to: '2026-06-08',
+    });
+
+    return (
+      <DatePickerInput
+        {...args}
+        mode="range"
+        rangeValue={rangeValue}
+        onChange={(date, formattedValue) => {
+          if (!formattedValue) {
+            setRangeValue({ from: '', to: '' });
+            return;
+          }
+          const parts = formattedValue.split('~').map((v) => v.trim());
+          setRangeValue({ from: parts[0] || '', to: parts[1] || '' });
         }}
       />
     );

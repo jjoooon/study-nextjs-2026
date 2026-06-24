@@ -8,15 +8,15 @@ import type { ColDef, ColGroupDef, ColSpanParams, ValueFormatterParams } from 'a
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Grow, Grid } from '@atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
+import { Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { PageID } from '@features/PageID';
 import { LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 
 type DummyDataType = {
   id: number;
@@ -289,7 +289,7 @@ export default function Ltpa220Section() {
 
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr] h-full" gap-5>
+          <Grid className="grid-rows-[auto_1fr] h-full gap-3">
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
                 <FormRow>
