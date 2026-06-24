@@ -13,7 +13,7 @@ import { CheckIcon, InfoBoxInfoIcon, SelectDropIcon } from '@icons';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
@@ -750,6 +750,7 @@ export const Ltpa3500301 = ({
                   직장 또는 항문 관련 질환(치질, 치루(누공), 치열(찢어짐), 항문 농양(고름집), 직장 또는 항문탈출,
                   항문출혈, 항문궤양)
                 </Checkbox>
+
                 <FormTable
                   caption="FormTable 예시"
                   className="border-t border-solid border-[#D8D8D8] pt-2.5 mt-[1rem]"
@@ -759,20 +760,63 @@ export const Ltpa3500301 = ({
                 >
                   <FormRow>
                     <FormCell className="" title={<b className="text-[#000] pl-2.5">의료행위</b>} variant="default">
-                      <CheckboxGroup
-                        color="primary"
-                        onValueChange={() => {}}
-                        size="lg"
-                        variant="default"
-                        className="grid grid-cols-5"
-                        disabled={simpleMode}
-                      >
-                        <CheckboxGroupItem value="a">질병확정진단</CheckboxGroupItem>
-                        <CheckboxGroupItem value="b">치료</CheckboxGroupItem>
-                        <CheckboxGroupItem value="c">입원</CheckboxGroupItem>
-                        <CheckboxGroupItem value="d">수술</CheckboxGroupItem>
-                        <CheckboxGroupItem value="e">투약</CheckboxGroupItem>
-                      </CheckboxGroup>
+                      <Grid className="grid-cols-5 w-full">
+                        <Grow placement="ss">
+                          <Checkbox
+                            onCheckedChange={() => {}}
+                            size="lg"
+                            variant="default"
+                            value="a"
+                            disabled={simpleMode}
+                          >
+                            질병확정진단
+                          </Checkbox>
+                        </Grow>
+                        <Grow placement="ss">
+                          <Checkbox
+                            onCheckedChange={() => {}}
+                            size="lg"
+                            variant="default"
+                            value="b"
+                            disabled={simpleMode}
+                          >
+                            치료
+                          </Checkbox>
+                        </Grow>
+                        <Grow placement="ss">
+                          <Checkbox
+                            onCheckedChange={() => {}}
+                            size="lg"
+                            variant="default"
+                            value="c"
+                            disabled={simpleMode}
+                          >
+                            입원
+                          </Checkbox>
+                        </Grow>
+                        <Grow placement="ss">
+                          <Checkbox
+                            onCheckedChange={() => {}}
+                            size="lg"
+                            variant="default"
+                            value="d"
+                            disabled={simpleMode}
+                          >
+                            수술
+                          </Checkbox>
+                        </Grow>
+                        <Grow placement="ss">
+                          <Checkbox
+                            onCheckedChange={() => {}}
+                            size="lg"
+                            variant="default"
+                            value="e"
+                            disabled={simpleMode}
+                          >
+                            투약
+                          </Checkbox>
+                        </Grow>
+                      </Grid>
                     </FormCell>
                   </FormRow>
                 </FormTable>
@@ -1254,6 +1298,7 @@ export const Ltpa3500301 = ({
                   </Checkbox>
                 ))}
               </Grid>
+
               <Grid className="w-full gap-[0.8rem] px-[1rem] flex items-center flex-row">
                 <RadioGroup
                   className="gap-2 flex w-[11rem]"
@@ -1272,11 +1317,12 @@ export const Ltpa3500301 = ({
                     </RadioGroupItem>
                   ))}
                 </RadioGroup>
-                <CheckboxGroup color="primary" onValueChange={() => {}} size="lg" variant="default" className="gap-3">
-                  <Grow className="flex justify-start ">
-                    <CheckboxGroupItem value="c" disabled={!periodType}>
+
+                <Grid className="grid-flow-col gap-3">
+                  <Grow className="justify-start items-center">
+                    <Checkbox onCheckedChange={() => {}} size="lg" variant="default" disabled={!periodType} value="c">
                       횟수
-                    </CheckboxGroupItem>
+                    </Checkbox>
                     <Input
                       onChange={(e) => setFormField('type02', e.target.value)}
                       size="lg"
@@ -1286,10 +1332,10 @@ export const Ltpa3500301 = ({
                       readOnly={!periodType}
                     />
                   </Grow>
-                  <Grow className="flex justify-start">
-                    <CheckboxGroupItem value="d" disabled={simpleMode}>
+                  <Grow className="justify-start items-center">
+                    <Checkbox onCheckedChange={() => {}} size="lg" variant="default" disabled={simpleMode} value="d">
                       자격증명칭
-                    </CheckboxGroupItem>
+                    </Checkbox>
                     <Input
                       onChange={(e) => setFormField('type03', e.target.value)}
                       size="lg"
@@ -1299,7 +1345,7 @@ export const Ltpa3500301 = ({
                       readOnly={simpleMode}
                     />
                   </Grow>
-                </CheckboxGroup>
+                </Grid>
               </Grid>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
@@ -1376,48 +1422,43 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full gap-3 px-2.5">
-                <CheckboxGroup className="grid grid-cols-[1fr_1fr] gap-x-[1.2rem] gap-y-[0.8rem] [&_label]:flex [&_label]:items-center [&_label]:gap-1 w-full [&_label]:w-full">
-                  <CheckboxGroupItem value="a" disabled={simpleMode}>
-                    <Typo variant="body-md" className="w-[9rem]">
-                      해외출국기간
-                    </Typo>
-                    <Input
-                      onChange={(e) => setFormField('type04', e.target.value)}
-                      size="lg"
-                      value={form.type04}
-                      variant="default"
-                      width="100%"
-                      readOnly={simpleMode}
-                    />
-                  </CheckboxGroupItem>
-                  <CheckboxGroupItem value="b" disabled={simpleMode}>
-                    <Typo variant="body-md" className="w-[5rem]">
-                      지역
-                    </Typo>
-                    <Input
-                      onChange={(e) => setFormField('type05', e.target.value)}
-                      size="lg"
-                      value={form.type05}
-                      variant="default"
-                      width="100%"
-                      readOnly={simpleMode}
-                    />
-                  </CheckboxGroupItem>
-                  <CheckboxGroupItem value="c" disabled={simpleMode}>
-                    <Typo variant="body-md" className="w-[9rem]">
-                      출국목적
-                    </Typo>
-                    <Input
-                      onChange={(e) => setFormField('type06', e.target.value)}
-                      size="lg"
-                      value={form.type06}
-                      variant="default"
-                      width="100%"
-                      readOnly={simpleMode}
-                    />
-                  </CheckboxGroupItem>
-                </CheckboxGroup>
+              <Grid className="w-full grid-cols-2 gap-[0.8rem] px-[1rem]">
+                <Grid className="grid-cols-[auto_1fr] items-center">
+                  <Checkbox onCheckedChange={() => {}} size="lg" variant="default" disabled={simpleMode}>
+                    해외출국기간
+                  </Checkbox>
+                  <Input
+                    onChange={(e) => setFormField('type04', e.target.value)}
+                    size="lg"
+                    value={form.type04}
+                    variant="default"
+                    readOnly={simpleMode}
+                  />
+                </Grid>
+                <Grid className="grid-cols-[auto_1fr] items-center">
+                  <Checkbox onCheckedChange={() => {}} size="lg" variant="default" disabled={simpleMode}>
+                    지역
+                  </Checkbox>
+                  <Input
+                    onChange={(e) => setFormField('type04', e.target.value)}
+                    size="lg"
+                    value={form.type04}
+                    variant="default"
+                    readOnly={simpleMode}
+                  />
+                </Grid>
+                <Grid className="grid-cols-[9.42rem_1fr] items-center">
+                  <Checkbox onCheckedChange={() => {}} size="lg" variant="default" disabled={simpleMode}>
+                    출국목적
+                  </Checkbox>
+                  <Input
+                    onChange={(e) => setFormField('type04', e.target.value)}
+                    size="lg"
+                    value={form.type04}
+                    variant="default"
+                    readOnly={simpleMode}
+                  />
+                </Grid>
               </Grid>
             </QuestionRadioCardContents>
           </QuestionRadioCard>
@@ -1591,48 +1632,67 @@ export const Ltpa3500301 = ({
               </RadioGroup>
             </QuestionRadioCardHeader>
             <QuestionRadioCardContents>
-              <Grid className="w-full gap-3 px-2.5">
-                <CheckboxGroup className="grid grid-cols-[1fr_1fr_1fr] gap-3 [&_label]:flex [&_label]:items-center [&_label]:gap-1 w-full [&_label]:w-full">
-                  <CheckboxGroupItem value="a" disabled={simpleMode}>
-                    <Typo variant="body-md" className="w-[4.2rem]">
-                      회사수
-                    </Typo>
-                    <Input
-                      onChange={(e) => setFormField('type11', e.target.value)}
-                      size="lg"
-                      value={form.type11}
-                      variant="default"
-                      width="100%"
-                      readOnly={simpleMode}
-                    />
-                  </CheckboxGroupItem>
-                  <CheckboxGroupItem value="b" disabled={simpleMode}>
-                    <Typo variant="body-md" className="w-[2.8rem]">
-                      건수
-                    </Typo>
-                    <Input
-                      onChange={(e) => setFormField('type12', e.target.value)}
-                      size="lg"
-                      value={form.type12}
-                      variant="default"
-                      width="100%"
-                      readOnly={simpleMode}
-                    />
-                  </CheckboxGroupItem>
-                  <CheckboxGroupItem value="c" disabled={simpleMode}>
-                    <Typo variant="body-md" className="w-[6rem]">
-                      월보험료
-                    </Typo>
-                    <Input
-                      onChange={(e) => setFormField('type13', e.target.value)}
-                      size="lg"
-                      value={form.type13}
-                      variant="default"
-                      width="100%"
-                      readOnly={simpleMode}
-                    />
-                  </CheckboxGroupItem>
-                </CheckboxGroup>
+              <Grid className="w-full gap-3 px-2.5 grid-cols-[1fr_1fr_1fr]">
+                <Grid className="grid-cols-[auto_1fr] items-center">
+                  <Checkbox
+                    color="primary"
+                    errorMsg="선택은 필수입니다."
+                    errorPs="bl"
+                    onCheckedChange={() => {}}
+                    size="lg"
+                    variant="default"
+                    disabled={simpleMode}
+                  >
+                    회사수
+                  </Checkbox>
+                  <Input
+                    onChange={(e) => setFormField('type11', e.target.value)}
+                    size="lg"
+                    value={form.type11}
+                    variant="default"
+                    readOnly={simpleMode}
+                  />
+                </Grid>
+                <Grid className="grid-cols-[auto_1fr] items-center">
+                  <Checkbox
+                    color="primary"
+                    errorMsg="선택은 필수입니다."
+                    errorPs="bl"
+                    onCheckedChange={() => {}}
+                    size="lg"
+                    variant="default"
+                    disabled={simpleMode}
+                  >
+                    건수
+                  </Checkbox>
+                  <Input
+                    onChange={(e) => setFormField('type12', e.target.value)}
+                    size="lg"
+                    value={form.type12}
+                    variant="default"
+                    readOnly={simpleMode}
+                  />
+                </Grid>
+                <Grid className="grid-cols-[auto_1fr] items-center">
+                  <Checkbox
+                    color="primary"
+                    errorMsg="선택은 필수입니다."
+                    errorPs="bl"
+                    onCheckedChange={() => {}}
+                    size="lg"
+                    variant="default"
+                    disabled={simpleMode}
+                  >
+                    월보험료
+                  </Checkbox>
+                  <Input
+                    onChange={(e) => setFormField('type13', e.target.value)}
+                    size="lg"
+                    value={form.type13}
+                    variant="default"
+                    readOnly={simpleMode}
+                  />
+                </Grid>
               </Grid>
             </QuestionRadioCardContents>
           </QuestionRadioCard>

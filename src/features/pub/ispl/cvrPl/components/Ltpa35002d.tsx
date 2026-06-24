@@ -3,6 +3,18 @@
  */
 'use client';
 
+/**
+ * @file Ltpa35002d.tsx
+ * @description 한화손해보험 장기보험 상품설계 화면에서 담보(Coverage)를 조회, 선택 및 가입금액/보험료 등을 설계하는 Ag-Grid 기반의 인보험 담보 설계 컴포넌트입니다.
+ *
+ * 주요 설계 요구사항:
+ * 1. Ag-Grid의 Tree Data 모드를 사용하여 담보를 계층형(부모-자식) 구조로 시각화
+ * 2. 필수 담보(locked: true)에 대한 선택 해제 방지 및 로킹 보정 로직 구현
+ * 3. 가입금액에 대한 인풋 팝업 에디터(AmountWithPopoverCellEditor) 및 셀렉트 에디터 분기 제공
+ * 4. 동일 담보 복제(행 추가) 시, 포커스 및 스크롤, 선택 상태 보정을 위한 비동기 트래킹
+ * 5. 만기/납기 컬럼에 대한 수정 가능 여부(isEditedField5, 6) 조건부 제어
+ */
+
 import type {
   CellClassParams,
   ICellRendererParams,
@@ -51,7 +63,6 @@ import {
   searchButtonRenderer,
 } from '@grid/CellRenderers';
 import { HeaderWithUnit, AgGridProductNameHeader } from '@grid/HeadRenderers';
-// Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002dData';
 import type { DummyDataType } from '../data/ltpa35002dData';
 import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
@@ -61,43 +72,71 @@ import { editableCellClassRules, ensureLockedRowsSelected } from '../utils/agGri
 
 import '@/shared/lib/agGridPub';
 
+/**
+ * Ag-Grid 행 데이터 타입 정의
+ * 더미 데이터 타입인 DummyDataType에 화면 렌더링 및 비즈니스 제어를 위한 확장 필드를 추가로 정의합니다.
+ */
 type AgGridRow = DummyDataType & {
-  isDuplicate?: boolean;
-  displayNo?: number;
-  badge?: string[];
-  locked?: boolean;
-  isHighlighted?: boolean;
+  isDuplicate?: boolean; // 동일 담보 추가 기능을 통해 복제된 행인지 여부
+  displayNo?: number; // 그리드 화면 상에 표시되는 번호
+  badge?: string[]; // 담보명 옆에 표시되는 라벨/배지 목록
+  locked?: boolean; // 필수 담보 여부 (선택 상태가 상시 유지되며 해제 불가)
+  isHighlighted?: boolean; // 로우 강조 하이라이트 여부
 };
 
+/**
+ * Ltpa35002d 컴포넌트의 Props 인터페이스
+ */
 interface Ltpa35002Props {
-  onSelectPlan?: (planId: number) => void;
-  isWidthExpanded?: boolean;
-  setIsWidthExpanded?: (value: boolean) => void;
+  onSelectPlan?: (planId: number) => void; // 플랜 선택 시 부모 컴포넌트(상위 설계 페이지)로 변경된 플랜 ID를 알리는 콜백 함수
+  isWidthExpanded?: boolean; // 설계 영역의 가로 너비 확장 상태값
+  setIsWidthExpanded?: (value: boolean) => void; // 가로 너비 확장 상태 변경 함수
 }
 
 export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa35002Props) {
   // =====================
-  // 상태 및 참조 관리
+  // 상태 및 참조 관리 (State & Refs)
   // =====================
+
+  // 그리드 상단의 필터 영역(보장패키지 등) 접기/펼치기 토글 상태 (true 시 필터가 숨겨지고 테이블 영역 확장)
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
+
+  // 체크박스 그룹 필터 상태 관리 (선택됨/미선택됨/초기화 등)
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false, reset: false });
+
+  // 담보명 컬럼 내부의 상품 설명 툴팁 표시 제어 상태
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
+
+  // 해상도나 레이아웃 너비에 따라 열 가로폭을 비율(rem 단위를 기준)로 조절하기 위한 커스텀 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 그리드에 바인딩되어 실시간 렌더링될 행 데이터 배열 상태
   const [rowData, setRowData] = useState<AgGridRow[]>(dummyData);
+
+  // 신규 행이 추가/복제되었을 때, 렌더링 사이클 이후 강제로 Selection 상태를 주입해주기 위해 보관하는 임시 ID Ref
   const pendingSelectIdRef = useRef<string | number | null>(null);
+
+  // AgGridReact 컴포넌트 인스턴스 API를 담아두기 위한 참조 객체 (동적 선택/스크롤/셀 포커싱에 사용)
   const gridApiRef = useRef<GridApi<AgGridRow> | null>(null);
+
+  // 이전 선택 상태(체크된 ID 목록)를 저장하여 상태 변동 비교 및 선택 복구 로직에 사용하기 위한 Set
   const prevSelectedIdsRef = useRef<Set<string | number>>(new Set());
+
+  // 선택된 담보명 상태
   const [coverageName, _setCoverageName] = useState('');
   const coverageNameRef = useRef(coverageName);
 
+  // context 전송용 담보명 변경 콜백 (React State와 Ref를 동시에 일관성 있게 업데이트)
   const setCoverageName = useCallback((value: string) => {
     _setCoverageName(value);
     coverageNameRef.current = value;
   }, []);
 
   // =====================
-  // 핸들러/콜백
+  // 핸들러/콜백 (Handlers & Callbacks)
   // =====================
+
+  // 상단 필터 항목들의 체크/언체크 상태 변화 핸들러
   const handleCheckedChange = useCallback(
     (key: string) => (checked: boolean | 'indeterminate') => {
       setCheckedMap((map) => ({ ...map, [key]: !!checked }));
@@ -106,15 +145,24 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   );
 
   // =====================
-  // 공용 유틸리티/셀 렌더러
+  // 공용 유틸리티/셀 렌더러 (Helper Functions & Custom Renderers)
   // =====================
-  // 만기/납기 컬럼에서 재사용하는 셀 렌더러 팩토리(정렬값만 주입)
+
+  // 만기/납기 셀 렌더링 시 UI 스타일(정렬값 등)을 지정하여 반환하는 팩토리 함수 호출
   const getExpiryRenderer = createExpiryCellRenderer<AgGridRow>;
 
-  // 행 추가/복제 시 setState + 선택 유지(pending id 재선택)를 한 번에 처리하는 래퍼
+  /**
+   * [중요] 행 데이터 변경 및 포커스 복구 헬퍼 함수
+   * 데이터가 추가되거나 복제(Duplicate)되었을 때, React의 비동기 setRowData 이후에
+   * 해당 신규 노드가 정상 렌더링되면 `pendingSelectIdRef`에 들어있던 ID를 Grid API를 통해 조회하여
+   * 강제로 선택(setSelected) 상태를 활성화함으로써 UI의 정합성을 보장합니다.
+   */
   const rowDataWithTracking = useCallback(
     (updater: AgGridRow[] | ((prev: AgGridRow[]) => AgGridRow[])) => {
+      // 1. 공통 팩토리 유틸리티를 호출해 데이터 업데이트 및 펜딩 ID 설정
       rowDataWithTrackingFactory<AgGridRow>(setRowData, pendingSelectIdRef)(updater);
+
+      // 2. 비동기 렌더링 이후 다음 마이크로태스크에서 선택 상태 보정 적용
       setTimeout(() => {
         if (pendingSelectIdRef.current && gridApiRef.current) {
           const node = gridApiRef.current.getRowNode(String(pendingSelectIdRef.current));
@@ -127,21 +175,32 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     [setRowData, pendingSelectIdRef]
   );
 
-  // 중복 버튼 렌더러: id 생성/복제 row 가공/표시 조건을 주입해 공통 팩토리 생성
+  /**
+   * [중요] 동일 담보 추가 복제 버튼 셀 렌더러
+   * - `rowDataWithTracking` 상태 업데이트 함수를 전달하여 복제 결과를 상태에 반영하고 Selection을 보정합니다.
+   * - `idKey`: 행 고유 식별자 키 ('id')
+   * - `getNextId`: 난수나 고유 증가값 등을 통해 고유한 새 ID를 구하는 유틸리티
+   * - `patchCopiedRow`: 복사된 원본 행 객체를 복제 규격에 맞게 변형 (예: isDuplicate: true로 설정하고, locked 속성은 해제)
+   * - `isVisible`: 복제 아이콘 노출 제어 (rowCopy 속성이 true이면서 이미 복제된 행(isDuplicate)이 아닐 때만 렌더링)
+   */
   const duplicateRenderer = useMemo(() => {
     return createInsertCopiedRowButtonCellRenderer<AgGridRow, 'id'>(rowDataWithTracking, {
       idKey: 'id',
       getNextId: getNextNumericRowId,
       patchCopiedRow: patchCopiedDuplicateRow,
-      isVisible: (params) => params.data?.rowCopy === true && params.data?.isDuplicate !== true, //복제된 행 중복버튼 안보이게
+      isVisible: (params) => params.data?.rowCopy === true && params.data?.isDuplicate !== true, // 이미 복제된 행에는 추가 복제 버튼이 안 보이도록 차단
       ariaLabel: '동일 담보 추가',
     });
   }, [rowDataWithTracking]);
 
-  // 단일 선택 id를 부모로 전달하는 기본 selection 핸들러
+  // 그리드 내 단일/다중 행 선택 시 변경된 플랜 또는 담보 ID를 상위 컴포넌트(onSelectPlan)로 발송하는 훅
   const handleSelectionChanged = useHandleSelectionChanged<AgGridRow, number>('id', onSelectPlan);
 
-  // 선택/해제 시 잠금행 보정 + 중복행 정리 + 관련 컬럼 강제 refresh를 수행하는 통합 핸들러
+  /**
+   * [중요] 다중 행 선택 통합 처리 핸들러
+   * - `ensureLockedRowsSelected`: 필수(잠금) 담보행이 임의로 선택 해제되었을 때, 이를 검출하여 다시 선택 상태로 보정합니다.
+   * - `refreshColumns`: 만기(field5), 납기(field6), 중복버튼(rowCopy) 등의 필드가 선택 상태에 따라 셀 스타일이나 에디터 활성 여부가 바뀌므로, 선택 변경 즉시 강제 리프레시를 유도합니다.
+   */
   const handleGridSelectionChanged = useGridSelectionChangedHandler<AgGridRow>({
     ensureLockedRowsSelected,
     setRowData,
@@ -153,7 +212,11 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     refreshColumns: ['field5', 'field6', 'rowCopy'],
   });
 
-  // 신규 생성 직후 pending id가 있으면 먼저 선택 상태를 복구하고 공통 selection 핸들러를 실행
+  /**
+   * Ag-Grid rowSelection 이벤트 발생 시 호출되는 최종 콜백
+   * - 펜딩 상태의 복제 ID(`pendingSelectIdRef`)가 등록된 직후라면 해당 행을 먼저 선택 상태로 만들고,
+   * - 이후 통합 선택 처리기(`handleGridSelectionChanged`)를 구동해 필수 잠금행 보정과 컬럼 리프레시를 수행합니다.
+   */
   const onSelectionChanged = useCallback(
     (event: SelectionChangedEvent<AgGridRow>) => {
       if (pendingSelectIdRef.current !== null) {
@@ -168,17 +231,21 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     [handleGridSelectionChanged]
   );
 
-  // 셀 클릭 시 선택 토글(입력/버튼 클릭은 유지) 공통 핸들러
+  // 셀 영역 클릭 시 체크박스 선택/해제 상태를 토글하는 핸들러 (인풋 필드나 버튼 클릭 등의 동작은 무시하도록 필터링)
   const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<AgGridRow>(), []);
 
-  // groupEditableButtonRenderer의 시그니처(ICellRendererParams)에 맞추기 위한 number formatter 어댑터
+  // groupEditableButtonRenderer 내에서 보험료 포맷팅 시 사용할 숫자 천단위 콤마 포맷터 어댑터
   const numberCellRenderer = useCallback(
     (params: ICellRendererParams<AgGridRow>) =>
       numberValueFormatter(params as unknown as ValueFormatterParams<AgGridRow>),
     []
   );
 
-  // onGridReady 시 잠금/기본선택 보정을 수행하고 api ref를 저장
+  /**
+   * 그리드 최초 마운트 및 API 바인딩 완료(onGridReady) 시점 콜백
+   * - `ensureLockedRowsSelected`를 즉시 구동하여 최초 렌더링 시점에 필수 잠금 담보가 체크되도록 유도합니다.
+   * - `gridApiRef`에 GridApi 인스턴스를 저장하여 필요 시 gridApiRef.current.xxxx() API를 호출 가능하게 함.
+   */
   const gridReadyHandler = useGridReadyHandler<AgGridRow>(ensureLockedRowsSelected);
   const handleGridReady = useCallback(
     (params: { api: GridApi<AgGridRow> }) => {
@@ -188,6 +255,9 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     [gridReadyHandler]
   );
 
+  /**
+   * 그리드 내 에디터를 통해 셀 값이 수정되었을 때(CellValueChanged) React 상태(rowData)에 변경 사항을 동기화하는 핸들러
+   */
   const handleCellValueChanged = useCallback((params: CellValueChangedEvent<AgGridRow>) => {
     const { data, colDef, newValue } = params;
     if (!colDef.field) return;
@@ -202,9 +272,9 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       {
         headerName: '속성',
         field: 'field2',
-        width: attributeColumnWidth(30),
+        width: attributeColumnWidth(30), // 화면 너비 및 rem 비율에 맞춰 동적으로 계산된 가로 폭
         cellClass: 'text-center',
-        cellRenderer: searchButtonRenderer<AgGridRow>,
+        cellRenderer: searchButtonRenderer<AgGridRow>, // 특정 담보의 속성/특징 정보를 볼 수 있는 돋보기 검색 버튼 렌더러
         resizable: false,
       },
       {
@@ -219,32 +289,37 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         minWidth: attributeColumnWidth(74),
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         cellClassRules: {
-          'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
-          isStandardGroup: (params) => !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit),
-          isStandard: (params) => !!params.data?.isStandard?.edit,
-          'tooltip-on': (params) => !!params.data?._tooltipOn,
+          // 셀 조건에 따라 다르게 지정할 CSS 스타일 규칙 매핑
+          'style-select': (params) => !!params.data?.isSelectedInsuredAmount, // 리스트 선택식 금액 입력일 때 테두리 스타일
+          isStandardGroup: (params) => !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit), // 수정 불가 기본형 담보 그룹 스타일
+          isStandard: (params) => !!params.data?.isStandard?.edit, // 수정 가능 담보 스타일
+          'tooltip-on': (params) => !!params.data?._tooltipOn, // 툴팁 활성화 상태 스타일
         },
         cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
+          // 1. 담보 그룹 기준값이면서 개별 수정을 막아야 하는 경우엔 에디터를 띄우지 않음 (undefined 반환)
           if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
             return undefined;
           }
           const isSelectedInsuredAmount = params.data?.isSelectedInsuredAmount ?? false;
+
+          // 2. 가입금액 입력 방식을 슬라이더/인풋 팝업(AmountWithPopoverCellEditor) 또는 단순 콤보박스(agSelectCellEditor)로 이원화
           if (!isSelectedInsuredAmount) {
             return {
-              component: AmountWithPopoverCellEditor,
-              params: { step: 10 }, // Popover에서 조정할 단위 설정
+              component: AmountWithPopoverCellEditor, // 금액 증감 버튼(+/-) 및 직접 수치 입력을 허용하는 팝업 에디터
+              params: { step: 10 }, // 금액 증감시 조절할 기본 단위값 (10만원 단위)
             };
           } else {
             const baseOptions = ['1천만원', '2천만원', '3천만원', '5천만원', '1억원'];
             return {
-              component: 'agSelectCellEditor',
+              component: 'agSelectCellEditor', // Ag-Grid 내장 콤보박스 에디터
               params: { values: baseOptions },
             };
           }
         },
+        // 가입금액 전용 셀 렌더러 (만기 표시 렌더러 및 포맷팅용 천단위 콤마 포맷터 지정)
         cellRenderer: groupEditableButtonRenderer<AgGridRow>(getExpiryRenderer, numberCellRenderer),
         editable: (params: EditableCallbackParams) => {
-          // 그룹이면서 편집 불가면 에디터 비활성화
+          // 그룹 담보이면서 편집 불가능한 행은 셀 편집 비활성화
           if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
             return false;
           }
@@ -260,6 +335,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         valueParser: (params: ValueParserParams) => {
           const val = params.newValue;
           if (val === null || val === undefined || val === '') return 0;
+          // 한글('만원' 등)이나 콤마(,) 등 숫자가 아닌 특수문자를 제거하고 파싱
           const parsed = Number(String(val).replace(/[^\d.-]/g, ''));
           return isNaN(parsed) ? 0 : parsed;
         },
@@ -276,7 +352,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         flex: 1,
         minWidth: attributeColumnWidth(70),
         cellClass: 'text-right',
-        valueFormatter: numberValueFormatter<AgGridRow>,
+        valueFormatter: numberValueFormatter<AgGridRow>, // 보험료에 천단위 콤마(,) 렌더링 포맷팅 적용
       },
       {
         headerName: '만기',
@@ -286,16 +362,18 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
+          // 만기 수정이 불가능한 로우(isEditedField5 !== true)인 경우 스타일 제어용 클래스명 부여
           return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
+          // 개별 데이터에 'isEditedField5' 속성이 true로 설정된 행만 편집 가능하도록 락 제어
           return params.data?.isEditedField5 === true;
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('left'), // 좌측 정렬 만기 렌더러
       },
       {
         headerName: '납기',
@@ -305,22 +383,24 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'px-[0.2rem]! tracking-tighter';
+          // 납기 수정이 불가능한 로우(isEditedField6 !== true)인 경우 스타일 제어용 클래스명 부여
           return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
+          // 개별 데이터에 'isEditedField6' 속성이 true로 설정된 행만 편집 가능하도록 락 제어
           return params.data?.isEditedField6 === true;
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: ['5년', '10년', '15년', '20년', '25년', '30년', '35년', '전기납'],
         },
-        cellRenderer: getExpiryRenderer('left'),
+        cellRenderer: getExpiryRenderer('left'), // 좌측 정렬 납기 렌더러
       },
       {
         headerName: '중복',
         field: 'rowCopy',
         width: attributeColumnWidth(30),
-        cellRenderer: duplicateRenderer,
+        cellRenderer: duplicateRenderer, // 동일 담보를 추가/복제해주는 중복 행 생성기 버튼 셀 렌더러
         resizable: false,
         sortable: false,
         suppressMovable: true,
@@ -331,6 +411,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
 
   return (
     <Gcol>
+      {/* 전체 화면 레이아웃: 상단 필터(가변), 본문 그리드, 하단 요약/액션 영역 */}
       <LayoutMain
         className={`grid w-full  ${!isHeightExpanded ? 'grid-rows-[auto_1fr_auto]' : 'grid-rows-[1fr_auto]'} gap-[1rem] h-full`}
       >
@@ -338,12 +419,14 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         <Gcol variant={'box-round'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
           <Grow gap={1.5} placement={'bwc'}>
             <Grow gap={2}>
+              {/* 보장패키지 버튼: 상단 담보 카테고리 필터의 시각적 시작점 */}
               <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
                 <PaperIcon />
                 보장패키지
               </Button>
               <Divider dir="col" />
 
+              {/* 담보 대분류 필터 그룹 */}
               <CheckboxGroup
                 className="gap-[0.4rem] flex-wrap type-small"
                 color="primary"
@@ -370,6 +453,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
               </CheckboxGroup>
               <Divider dir="col" />
 
+              {/* 갱신/비갱신 조건 필터 그룹 */}
               <CheckboxGroup
                 className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
                 color="primary"
@@ -389,6 +473,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
               </CheckboxGroup>
             </Grow>
             <Grow placement={'ec'}>
+              {/* 필터 상태 초기화 버튼(아이콘 전용) */}
               <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
                 <ResetIcon color="var(--color-gray-500)" />
               </Button>
@@ -416,6 +501,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 {/* M1. 담보초기화 삭제 */}
                 <Checkbox>플랜기본값</Checkbox>
                 <Grow className="gap-1">
+                  {/* 즉시 적용 가능한 기본 플랜 프리셋 선택 */}
                   <NativeSelect aria-label="플랜 선택" width={140} size={'sm'} readOnly={true} required={false}>
                     {[
                       { label: '플랜 선택', value: 'planA' },
@@ -462,6 +548,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   />
 
                   {/* M1. 토글 시 아이콘 변경 추가 */}
+                  {/* 상단 필터 영역 높이 토글: 접기/펼치기 */}
                   <Button
                     variant={'outlined'}
                     color={'gray'}
@@ -475,6 +562,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       <SizeIcon size={16} color="var(--color-secondary-50)" className="rotate-90" />
                     )}
                   </Button>
+                  {/* 본문 설계 영역 가로폭 토글: 좌우 확장/복원 */}
                   <Button
                     variant={'outlined'}
                     color={'gray'}
@@ -500,7 +588,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   // 1. 데이터 및 기본 구성
                   rowData={rowData} // 그리드에 렌더링할 데이터 목록
                   columnDefs={columnDefs} // 컬럼 정의 구조 객체
-                  getRowId={(params) => String(params.data.id)} // 그리드 행 식별자로 고유한 ID 지정
+                  getRowId={(params) => String(params.data.id)} // 그리드 행 식별자로 고유한 ID 지정 (복제/선택 복원 정확도 보장)
                   singleClickEdit={true} // 한 번의 클릭만으로 즉시 편집 모드로 전환
                   onCellValueChanged={handleCellValueChanged} // 편집 종료 후 최종 변경 값이 확정되었을 때 React 상태(rowData) 동기화
                   // 2. 다중 행 선택 설정
@@ -544,6 +632,8 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   onGridReady={handleGridReady} // 그리드가 최초 로딩을 끝마쳐 API 참조를 저장할 수 있을 때 호출
                   context={{
                     // 커스텀 셀 렌더러(cellRenderer)에서 React 상태값 및 제어 함수를 공유하여 쓸 수 있도록 Context 객체 전달
+                    // coverageName/setCoverageName: 담보명 관련 UI 동기화
+                    // checkedMap/onCheckedChange: 헤더/셀 내 선택 보조 UI 상태 공유
                     coverageName,
                     setCoverageName,
                     showProductNameTooltip,
@@ -559,7 +649,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   tooltipMouseTrack={true} // 마우스 커서를 따라 툴팁이 움직이도록 설정
                   // 6. 부모-자식 관계 표현 (Tree Data 모드)
                   treeData={true} // 그리드 내에서 계층형 트리 데이터를 표현하도록 설정
-                  getDataPath={(row) => row.filePath?.map(String) ?? []} // 데이터 내 파일 경로 배열 정보를 기준으로 트리 구조 매핑
+                  getDataPath={(row) => row.filePath?.map(String) ?? []} // 데이터 내 filePath 배열을 경로로 사용해 부모-자식 트리 노드 구성
                   groupDefaultExpanded={0} // 기본적으로 모든 트리 노드를 닫아둠 (0레벨만 노출)
                   getRowClass={(params) => (params.data?.isError ? 'isError' : '')} // 비즈니스 유효성 에러가 발생한 행에 CSS 클래스 부여
                   // 7. 자동 트리 그룹 컬럼 정의 (Auto Group Column Definition)
@@ -584,9 +674,16 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           </LayoutScrollWrap>
         </LayoutMainBody>
 
+        {/* 
+          화면 하단 푸터 영역 (LayoutMainFoot)
+          - 만기환급금, 보장보험료, 적립보험료, 합계보험료 등 설계된 보험료의 주요 요약 금액을 표 형식(FormTable)으로 노출합니다.
+          - 각 금액 셀에는 마우스 클릭 시 상세 내역(총납입보험료, 중도환급금, 최소/최대보험료 등)을 보여주는 Popover가 부착되어 있습니다.
+          - 하단 버튼 영역을 통해 다른 상품과의 비교설계, 동일 상품 복사, 최종 지침 보험료 계산 요청 등을 실행합니다.
+        */}
         <LayoutMainFoot>
           {/* M1. variant="box" 추가 */}
           <MainBottom variant="box">
+            {/* 금액 표 영역 */}
             <MainBottomItem className="!py-0">
               <FormTable
                 className="w-full! [&_tr]:justify-between"
@@ -604,6 +701,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 ]}
               >
                 <FormRow>
+                  {/* 만기금 및 환급률 표시 셀 */}
                   <FormCell
                     title={
                       <Grow placement="sc" className="whitespace-nowrap" gap={1}>
@@ -616,6 +714,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     style={{ borderBottom: '0.1rem solid #ccc' }}
                   >
                     <Grid className="grid-cols-[1fr_auto_auto] gap-1 w-full">
+                      {/* 예상 만기 환급금 수치 인풋 */}
                       <Input
                         type="tel"
                         commaAmount={true}
@@ -624,6 +723,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                         readOnly={true}
                         className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
                       />
+                      {/* 예상 환급률 비율 인풋 및 상세 팝오버(Popover) */}
                       <Popover>
                         <PopoverTrigger asChild>
                           <>
@@ -638,6 +738,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                             %
                           </>
                         </PopoverTrigger>
+                        {/* 환급률 관련 총 납입/환급금 상세 명세 팝업 내용 */}
                         <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
                           <KeyValueList
                             direction="col"
@@ -653,6 +754,8 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       </Popover>
                     </Grid>
                   </FormCell>
+
+                  {/* 보장보험료 표시 셀 */}
                   <FormCell title="보장보험료">
                     <Popover>
                       <PopoverTrigger className="w-full">
@@ -665,6 +768,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                           className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
                         />
                       </PopoverTrigger>
+                      {/* 보장보험료 상세 명세 (일시납보험료 등) 팝업 내용 */}
                       <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
                         <KeyValueList
                           direction="col"
@@ -675,6 +779,8 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       </PopoverContent>
                     </Popover>
                   </FormCell>
+
+                  {/* 적립보험료 표시 셀 */}
                   <FormCell title="적립보험료">
                     <Input
                       type="tel"
@@ -687,6 +793,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                     />
                   </FormCell>
 
+                  {/* 합계보험료 표시 셀 (최소/최대 가이드라인 표시 팝업 연동) */}
                   <FormCell title="합계보험료">
                     <Popover>
                       <PopoverTrigger asChild>
@@ -704,6 +811,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                           className="text-right font-bold"
                         />
                       </PopoverTrigger>
+                      {/* 합계보험료 가이드라인 (최소/최대 기준 보험료) 팝업 내용 */}
                       <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
                         <KeyValueList
                           direction="col"
@@ -720,6 +828,8 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 </FormRow>
               </FormTable>
             </MainBottomItem>
+
+            {/* 하단 설계 실행 및 복사 관련 버튼 묶음 */}
             <MainBottomItem>
               <Grow className="gap-1">
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
@@ -728,6 +838,10 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   동일상품복사
                 </Button>
+                {/* 
+                  보험료계산(지침) 버튼
+                  - 폼('page2-MainForm')과 연동되어 전체 설계를 기반으로 보험료 계산 로직을 백엔드로 제출합니다.
+                */}
                 <Button
                   type="submit"
                   form={'page2-MainForm'}

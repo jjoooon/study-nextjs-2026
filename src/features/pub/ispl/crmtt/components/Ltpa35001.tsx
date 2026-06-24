@@ -23,6 +23,10 @@ import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { LayoutMain, LayoutScrollWrap, LayoutMainFoot, LayoutMainBody, LayoutScrollItem } from '@layout/BaseLayout';
 import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 
+/**
+ * 탭 내부에 관리되는 각 피보험자/목적물/그룹의 기본 더미 데이터
+ * - viewKey에 따라 활성화된 데이터 목록이 useTabs를 통해 탭(TabPager) 형태로 상단에 표시됩니다.
+ */
 const DUMMY_DATA = {
   view1: [
     { value: 'user1', name: '김한화' },
@@ -45,6 +49,10 @@ const DUMMY_DATA = {
     { value: 'user2', name: '연금계약자2' },
   ],
 };
+
+/**
+ * 물음표(?) 아이콘 클릭 시 활성화되는 툴팁 컨텐츠 정의 (안내 동의 여부 관련)
+ */
 const tooltipContents = [
   <>
     문서서명/TM은 청양서상 고객이 청약서로 [전자적 방밥의 안내동의여부]에 기재한 내용을 화면에서 선택하시면 됩니다.
@@ -54,17 +62,29 @@ const tooltipContents = [
 ];
 
 type ViewKey = keyof typeof DUMMY_DATA;
+
+/**
+ * Ltpa35001 컴포넌트 Props 정의
+ * - simpleMode: 간편 설계 모드 여부 (true인 경우 간소화된 폼 표시)
+ * - viewKey: 노출할 설계 유형 뷰 키 ('view1': 인보험, 'view2': 태아, 'view3': 재물, 'view4': 단체, 'view5': 연금/저축)
+ */
 type Ltpa35001Props = {
   simpleMode: boolean;
   viewKey: ViewKey;
 };
 
-// State & Reducer Types
+/**
+ * @component Ltpa35001
+ * @description 보험 설계 시 기본 정보 및 피보험자/목적물/단체 정보를 입력하는 공통 템플릿 컴포넌트
+ * - 인보험, 태아, 재물, 단체, 연금/저축 등 5가지 유형(viewKey)에 맞추어 레이아웃이 분기 렌더링됩니다.
+ * - 간편 모드(simpleMode) 여부에 따라 피보험자 등록 및 세부 입력 폼의 노출 조건이 달라집니다.
+ */
 export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) => {
-  // viewKey만 사용, 상태 제거
+  // useTabs 훅을 활용해 탭 목록(tabs), 현재 활성 탭(active) 및 탭 추가/삭제 처리를 수행
   const { tabs, active, setActive, handleRemove, replaceTabs } = useTabs(DUMMY_DATA[viewKey]);
 
   // M1. 무한루프에러 수정
+  // viewKey(설계 유형) 변경에 따른 탭 목록의 동적 교체 처리 및 무한루프 방지
   useEffect(() => {
     // 현재 tabs와 DUMMY_DATA[viewKey]가 다를 때만 replaceTabs 호출
     const isSame =
@@ -85,9 +105,12 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
             <LayoutScrollWrap>
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
-                  {/* 인보험 */}
+                  {/* ========================================================================= */}
+                  {/* [VIEW 1] 인보험 설계 영역                                                   */}
+                  {/* ========================================================================= */}
                   {viewKey === 'view1' && (
                     <>
+                      {/* 1.1 기본 보험정보 설정 테이블 */}
                       <FormTable cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                         <FormRow>
                           <FormCell title={'보험시기'}>
@@ -206,6 +229,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </FormCell>
                         </FormRow>
                       </FormTable>
+
+                      {/* 1.2 피보험자 관리 탭 및 상세 입력 */}
                       <TabPager
                         variant={'default'}
                         data={tabs}
@@ -227,7 +252,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                         }
                       >
                         <FormTable lineTop={false} cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
-                          {/* 상세 화면 전용 */}
+                          {/* [분기 1] 상세 화면 전용 피보험자 폼 */}
                           {!_simpleMode ? (
                             <FormRow>
                               <FormCell
@@ -278,6 +303,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </FormCell>
                             </FormRow>
                           ) : (
+                            /* [분기 2] 간편 모드(simpleMode) 피보험자 폼 */
                             <FormRow>
                               <FormCell title="피보험자" titleVariant="section">
                                 <InputCombo
@@ -324,6 +350,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                             </FormRow>
                           )}
 
+                          {/* 피보험자 직업/운전/할인 공통 입력 행 */}
                           <FormRow>
                             <FormCell title="직업" colSpan={3}>
                               <Input aria-label="직업코드" width={56} value={'32254'} align="center" readOnly />
@@ -409,9 +436,13 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                       </TabPager>
                     </>
                   )}
-                  {/* 태아 */}
+
+                  {/* ========================================================================= */}
+                  {/* [VIEW 2] 태아 설계 영역                                                    */}
+                  {/* ========================================================================= */}
                   {viewKey === 'view2' && (
                     <>
+                      {/* 2.1 태아 기본 보험정보 설정 테이블 */}
                       <FormTable caption="보험정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                         <FormRow>
                           <FormCell title={'보험시기'}>
@@ -496,6 +527,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </FormCell>
                         </FormRow>
                       </FormTable>
+
+                      {/* 2.2 태아 피보험자 관리 탭 및 입력 폼 */}
                       <TabPager
                         variant={'default'}
                         data={tabs}
@@ -511,7 +544,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           <Grow gap={2.5}>
                             <Button color={'gray'} size={'md'} variant={'outlined'}>
                               피보험자
-                              <AddIcon color={'var(--color-gray-50)'} />
+                              <AddIcon color={'var(--color-gray-55)'} />
                             </Button>
                           </Grow>
                         }
@@ -521,6 +554,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           lineTop={false}
                           cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}
                         >
+                          {/* [분기 1] 상세화면 피보험자(태아) 정보 */}
                           {!_simpleMode ? (
                             <FormRow>
                               <FormCell colSpan={3} title={'피보험자'} titleVariant="section">
@@ -562,6 +596,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </FormCell>
                             </FormRow>
                           ) : (
+                            /* [분기 2] 간편모드 피보험자(태아) 정보 */
                             <FormRow>
                               <FormCell title="피보험자" titleVariant="section">
                                 <InputCombo
@@ -607,6 +642,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </FormCell>
                             </FormRow>
                           )}
+
+                          {/* 피보험자 직업/운전/할인/임신주수 정보 행 */}
                           <FormRow>
                             <FormCell title="직업" colSpan={3}>
                               <Input aria-label="직업코드" width={56} value={'32254'} align="center" readOnly />
@@ -699,9 +736,12 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                     </>
                   )}
 
-                  {/* 재물 */}
+                  {/* ========================================================================= */}
+                  {/* [VIEW 3] 재물 설계 영역                                                    */}
+                  {/* ========================================================================= */}
                   {viewKey === 'view3' && (
                     <>
+                      {/* 3.1 재물 보험 기본정보 테이블 */}
                       <FormTable caption="재물보험 정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                         <FormRow>
                           <FormCell title={'보험시기'}>
@@ -775,6 +815,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </FormCell>
                         </FormRow>
                       </FormTable>
+
+                      {/* 3.2 재물 피보험자 및 목적물 관리 탭 영역 */}
                       <TabPager
                         variant={'default'}
                         data={tabs}
@@ -800,6 +842,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                         }
                       >
                         <Gcol placement={'ss'}>
+                          {/* 피보험자 정보 입력 테이블 */}
                           <FormTable
                             caption="피보험자 정보"
                             lineTop={false}
@@ -954,7 +997,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                             </FormRow>
                             <FormRow>
                               <FormCell title="주피와 관계" colSpan={3}>
-                                <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는
+                                <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는 계약자의
                                 <NativeSelect
                                   aria-label="주피와 관계 선택"
                                   width={156}
@@ -974,7 +1017,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                             </FormRow>
                           </FormTable>
 
-                          {/* 목적물 */}
+                          {/* 목적물 정보 입력 테이블 (재물 보험 전용) */}
                           <FormTable
                             caption="목적물 정보"
                             lineTop={false}
@@ -1110,9 +1153,13 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                       </TabPager>
                     </>
                   )}
-                  {/* 단체 */}
+
+                  {/* ========================================================================= */}
+                  {/* [VIEW 4] 단체 설계 영역                                                    */}
+                  {/* ========================================================================= */}
                   {viewKey === 'view4' && (
                     <>
+                      {/* 4.1 단체 설계 기본 정보 설정 테이블 */}
                       <FormTable caption="보험정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                         <FormRow>
                           <FormCell title={'보험시기'}>
@@ -1216,6 +1263,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                           </FormCell>
                         </FormRow>
                       </FormTable>
+
+                      {/* 4.2 단체 그룹 관리 탭 및 그룹 정보 테이블 */}
                       <TabPager
                         variant={'default'}
                         data={tabs}
@@ -1314,10 +1363,14 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                       </TabPager>
                     </>
                   )}
-                  {/* 연금/저축 */}
+
+                  {/* ========================================================================= */}
+                  {/* [VIEW 5] 연금/저축 설계 영역                                                */}
+                  {/* ========================================================================= */}
                   {viewKey === 'view5' && (
                     <>
                       <Gcol placement={'ss'} className={'w-full'}>
+                        {/* 5.1 연금/저축 보험 기본 설정 테이블 */}
                         <FormTable caption="보험정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                           <FormRow>
                             <FormCell title={'보험시기'}>
@@ -1420,6 +1473,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                               </RadioGroup>
                             </FormCell>
                           </FormRow>
+                          {/* 간편모드일 때 납입금액 지정 행 노출 */}
                           {_simpleMode && (
                             <FormRow>
                               <FormCell title={'납입금액'} colSpan={3}>
@@ -1446,6 +1500,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                             </FormRow>
                           )}
                         </FormTable>
+
+                        {/* 5.2 연금/저축 뷰 - 간편모드일 경우의 계약자 정보 폼 */}
                         {_simpleMode && (
                           <FormTable caption="계약자 정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                             <FormRow>
@@ -1582,7 +1638,9 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
                     </>
                   )}
 
-                  {/* 계약자 - 상세 */}
+                  {/* ========================================================================= */}
+                  {/* [공통 영역] 상세 모드(simpleMode === false) 시 하단 노출 계약자 정보           */}
+                  {/* ========================================================================= */}
                   {!_simpleMode && (
                     // M1. className="-mt-2" 추가
                     <FormTable
@@ -1709,6 +1767,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, viewKey }: Ltpa35001Props) 
             </LayoutScrollWrap>
           </LayoutMainBody>
           <LayoutMainFoot>
+            {/* 하단 저장/동영상 매뉴얼 풋라인 영역 */}
             {/* M1. variant="box" 추가 */}
             <MainBottom variant="box">
               <MainBottomItem className="bg-[var(--color-gray-5)]">
