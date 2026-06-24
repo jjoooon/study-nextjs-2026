@@ -3,8 +3,9 @@
  */
 'use client';
 
-import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
@@ -19,8 +20,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import '@/shared/lib/agGridPub';
 
 const Ltpz09103 = () => {
@@ -30,10 +29,10 @@ const Ltpz09103 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              고객 직업정보(상해급수)변경안내
+              장기심사가이드 더보기 상세
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ051)
+              (LTPZ091)
             </Typo>
           </DialogTitle>
         </DialogHeader>
