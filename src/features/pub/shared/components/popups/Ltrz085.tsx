@@ -53,8 +53,8 @@ const dummyData: DummyDataType[] = [
     id: 1,
     isCheck: false,
     type: '계약변경',
-    designNo: 'LA260209313558',
-    policyNo: 'LA260209313558',
+    designNo: 'LA123456789012',
+    policyNo: 'LA123456789012',
     status: '청약중',
     changeDate: '2026-03-22',
     paymentStatus: 'TEXT',
@@ -68,8 +68,8 @@ const dummyData: DummyDataType[] = [
     id: 2,
     isCheck: false,
     type: '만기예정',
-    designNo: 'LA260209313558',
-    policyNo: 'LA260209313558',
+    designNo: 'LA123456789012',
+    policyNo: 'LA123456789012',
     status: '정상',
     changeDate: '2026-03-22',
     paymentStatus: 'TEXT',
@@ -83,8 +83,8 @@ const dummyData: DummyDataType[] = [
     id: 3,
     isCheck: false,
     type: '만기예정',
-    designNo: 'LA260209313558',
-    policyNo: 'LA260209313558',
+    designNo: 'LA123456789012',
+    policyNo: 'LA123456789012',
     status: '청약중',
     changeDate: '2026-03-22',
     paymentStatus: '',
@@ -98,7 +98,7 @@ const dummyData: DummyDataType[] = [
     id: 4,
     isCheck: false,
     type: '선택',
-    designNo: 'LA260209313558',
+    designNo: 'LA123456789012',
     policyNo: '',
     status: '',
     changeDate: '',
@@ -258,7 +258,7 @@ export const Ltrz085 = () => {
             >
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={'15rem'} value={'LA260209313558'} readOnly />
+                  <Input aria-label="" width={'15rem'} value={'LA123456789012'} readOnly />
                   -
                   <Input aria-label="" width={'3rem'} value={'1'} readOnly />
                 </FormCell>

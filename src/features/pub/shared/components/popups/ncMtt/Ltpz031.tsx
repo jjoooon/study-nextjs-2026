@@ -10,9 +10,15 @@ import { useState } from 'react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Gcol, Grow, Typo, Grid, Divider } from '@atoms';
-import { QuestionMark, ResetIcon, SearchIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grow, Typo, Grid, Divider } from '@atoms';
+import { BulletItem } from '@common/BulletList';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { QuestionMark, ResetIcon, SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -29,12 +35,6 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { BulletItem } from '@common/BulletList';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -956,7 +956,7 @@ const Ltpz031 = () => {
                     </Grow>
                   </Grow>
 
-                  <div className="ag-theme-alpine min-h-[36rem] ">
+                  <div className="ag-theme-alpine min-h-[30rem] ">
                     <AgGridReact<DummyDataType>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}

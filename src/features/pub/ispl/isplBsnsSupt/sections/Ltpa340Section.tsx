@@ -57,7 +57,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
-    field01: 'LA260204310632',
+    field01: 'LA123456789012',
     field02: 'LA00102001',
     field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
     field04: '문서서명',
@@ -69,7 +69,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
-    field01: 'LA260204310632',
+    field01: 'LA123456789012',
     field02: 'LA00102001',
     field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
     field04: '문서서명',
@@ -81,7 +81,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
-    field01: 'LA260204310632',
+    field01: 'LA123456789012',
     field02: 'LA00102001',
     field03: '한화 더 경증 간편건강보험(세만기형) 무배당2601',
     field04: '문서서명',
@@ -284,7 +284,7 @@ export default function Ltpa340Section() {
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
-                    <Input width={130} value={'LA260204310632'} maxLength={10} />
+                    <Input width={130} value={'LA123456789012'} maxLength={10} />
                   </FormCell>
                 </FormRow>
               </FormTable>

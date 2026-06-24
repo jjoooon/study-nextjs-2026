@@ -7,8 +7,11 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { useRef } from 'react';
-import { Grid, Gcol, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Grid, Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,9 +24,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from '@uiux/Table';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -466,7 +466,7 @@ export const Ltpz099 = () => {
                       <TableBody>
                         <TableRow>
                           <TableHead className="text-left">설계번호</TableHead>
-                          <TableCell>LA260326516615</TableCell>
+                          <TableCell>LA123456789012</TableCell>
                           <TableHead className="text-left">설계상태</TableHead>
                           <TableCell>설계중</TableCell>
                         </TableRow>

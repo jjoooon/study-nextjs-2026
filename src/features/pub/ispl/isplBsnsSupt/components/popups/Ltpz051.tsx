@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths, CustomGridLoadingOverlay } from '@aggrid';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -36,7 +36,7 @@ const DATA_TABS: LTPZ051Tab[] = [
 ];
 
 // '직업정보(상해급수)변경대상' 탭의 그리드 데이터 타입 정의
-type DummyData1Type = {
+export type DummyData1Type = {
   id: number;
   field01: string | number;
   field02: string | number;
@@ -46,7 +46,7 @@ type DummyData1Type = {
   field06: string | number;
   field07: string | number;
 };
-type DummyData2Type = {
+export type DummyData2Type = {
   // '이륜차부담보 변경대상' 탭의 그리드 데이터 타입 정의
   id: number;
   field01: string | number;
@@ -56,101 +56,16 @@ type DummyData2Type = {
   field05: string | number;
 };
 
-// '직업정보(상해급수)변경대상' 탭의 샘플 데이터
-const DummyData1: DummyData1Type[] = [
-  {
-    id: 1,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: '1급',
-    field05: '회사원',
-    field06: '1급',
-    field07: '회사원',
-  },
-  {
-    id: 2,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: '1급',
-    field05: '회사원',
-    field06: '1급',
-    field07: '회사원',
-  },
-  {
-    id: 3,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: '1급',
-    field05: '회사원',
-    field06: '1급',
-    field07: '회사원',
-  },
-];
-// '이륜차부담보 변경대상' 탭의 샘플 데이터
-const DummyData2: DummyData2Type[] = [
-  {
-    id: 1,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 2,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 3,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 4,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 5,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 6,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-  {
-    id: 7,
-    field01: '변경대상',
-    field02: 'LA12345678901234',
-    field03: '계약변경설계이동',
-    field04: 'TEXT',
-    field05: 'TEXT',
-  },
-];
+export interface Ltpz051Props {
+  data?: {
+    grid1?: DummyData1Type[];
+    grid2?: DummyData2Type[];
+  };
+  loading?: boolean;
+}
 
 // Ltpz051: 고객 직업정보(상해급수) 또는 이륜차부담보 변경 안내 팝업 컴포넌트
-const Ltpz051 = () => {
+const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
   // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
   // 탭 상태 관리 (직업정보 변경대상 / 이륜차부담보 변경대상)
@@ -284,9 +199,97 @@ const Ltpz051 = () => {
   ];
 
   // '직업정보(상해급수)변경대상' 탭의 그리드 데이터
-  const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
+  const [rowData1, setRowData1] = React.useState<DummyData1Type[]>([]);
   // '이륜차부담보 변경대상' 탭의 그리드 데이터
-  const [rowData2] = React.useState<DummyData2Type[]>(DummyData2); // 2026-05-27 agGrid 추가
+  const [rowData2, setRowData2] = React.useState<DummyData2Type[]>([]); // 2026-05-27 agGrid 추가
+
+  // 탭 이동 시 ag-grid 데이터를 비동기 조회하는 연출을 위한 로컬 로딩 상태
+  const [isLocalLoading, setIsLocalLoading] = React.useState(false);
+  // 이미 데이터를 '실제로 바인딩 완료'한 탭 목록 추적
+  const loadedTabsRef = React.useRef<Set<string>>(new Set());
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // 특정 탭에 데이터를 로드하는 함수
+  const loadTabData = React.useCallback(
+    (tabValue: string) => {
+      // 이미 로드 완료되었거나, 해당 탭의 원본 데이터가 아직 부모로부터 준비되지 않은 경우 스킵
+      if (loadedTabsRef.current.has(tabValue)) {
+        return;
+      }
+
+      if (tabValue === 'basic') {
+        if (!data?.grid1) return; // 부모 데이터가 아직 안 온 경우 대기
+
+        // 동기 setState 경고를 우회하기 위해 비동기 틱으로 로딩 상태를 전환합니다.
+        setTimeout(() => {
+          setIsLocalLoading(true);
+        }, 0);
+
+        if (timerRef.current) clearTimeout(timerRef.current);
+
+        timerRef.current = setTimeout(() => {
+          setRowData1(data.grid1 ?? []);
+          loadedTabsRef.current.add('basic');
+          setIsLocalLoading(false);
+          timerRef.current = null;
+        }, 500);
+      } else if (tabValue === 'detail') {
+        if (!data?.grid2) return; // 부모 데이터가 아직 안 온 경우 대기
+
+        // 동기 setState 경고를 우회하기 위해 비동기 틱으로 로딩 상태를 전환합니다.
+        setTimeout(() => {
+          setIsLocalLoading(true);
+        }, 0);
+
+        if (timerRef.current) clearTimeout(timerRef.current);
+
+        timerRef.current = setTimeout(() => {
+          setRowData2(data.grid2 ?? []);
+          loadedTabsRef.current.add('detail');
+          setIsLocalLoading(false);
+          timerRef.current = null;
+        }, 500);
+      }
+    },
+    [data]
+  );
+
+  // props인 data?.grid1, data?.grid2가 부모로부터 업데이트되었을 때의 처리 (예: 비동기 데이터 리졸브)
+  const [prevGrid1, setPrevGrid1] = React.useState<DummyData1Type[] | undefined>(undefined);
+  const [prevGrid2, setPrevGrid2] = React.useState<DummyData2Type[] | undefined>(undefined);
+
+  // 부모로부터 진짜 새 데이터셋이 들어온 경우 캐시 및 기존 바인딩 리셋
+  if (data?.grid1 !== prevGrid1 || data?.grid2 !== prevGrid2) {
+    setPrevGrid1(data?.grid1);
+    setPrevGrid2(data?.grid2);
+    loadedTabsRef.current.clear();
+    setRowData1([]);
+    setRowData2([]);
+  }
+
+  // 탭 이동 시 탭 데이터를 로드하는 이벤트 핸들러
+  const handleTabChange = React.useCallback(
+    (tabValue: string) => {
+      setActive(tabValue);
+      loadTabData(tabValue);
+    },
+    [setActive, loadTabData]
+  );
+
+  // 부모 데이터가 준비되었고 현재 활성화된 탭이 아직 로드되지 않은 상태라면 로드 처리
+  React.useEffect(() => {
+    if (data) {
+      loadTabData(active);
+    }
+  }, [data, active, loadTabData]);
+
+  React.useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   return (
     // Dialog 컴포넌트: 팝업 창을 렌더링합니다.
@@ -344,7 +347,7 @@ const Ltpz051 = () => {
             <TabPager
               data={tabs}
               active={active}
-              setActive={setActive}
+              setActive={handleTabChange}
               hasTableBelow={true}
               getValue={(t) => t.value}
               renderTab={(t) => t.label ?? t.value}
@@ -378,6 +381,7 @@ const Ltpz051 = () => {
                       </Grow>
                       <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
                         <AgGridReact<DummyData1Type>
+                          loading={loading || isLocalLoading}
                           getRowId={(params) => String(params.data.id)}
                           rowData={rowData1}
                           columnDefs={columnDefs}
@@ -387,6 +391,8 @@ const Ltpz051 = () => {
                             resizable: true,
                           }}
                           domLayout="normal"
+                          loadingOverlayComponent={CustomGridLoadingOverlay}
+                          loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
                         />
                       </div>
                     </Gcol>
@@ -418,6 +424,7 @@ const Ltpz051 = () => {
                       {/* 2026-05-27 agGrid 수정 */}
                       <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                         <AgGridReact<DummyData2Type>
+                          loading={loading || isLocalLoading}
                           getRowId={(params) => String(params.data.id)}
                           rowData={rowData2}
                           columnDefs={columnDefs1}
@@ -427,6 +434,8 @@ const Ltpz051 = () => {
                             resizable: true,
                           }}
                           domLayout="normal"
+                          loadingOverlayComponent={CustomGridLoadingOverlay}
+                          loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
                         />
                       </div>
                     </Gcol>

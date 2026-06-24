@@ -5,8 +5,8 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
 import { Typo } from '@atoms';
-import { SelectDropIcon } from '@icons';
 import { ErrorMsg } from '@common/ErrorMsg';
+import { SelectDropIcon } from '@icons';
 
 /**
  * NativeSelect 컴포넌트의 Props 인터페이스입니다.
@@ -64,112 +64,155 @@ type NativeSelectOptGroupProps = React.HTMLAttributes<HTMLOptGroupElement> & {
  * NativeSelect 컴포넌트는 브라우저의 기본 <select> 요소를 디자인 시스템에 맞게 스타일링한 폼 선택 UI입니다.
  * 일관된 크기/너비/상태 표현과 에러 메시지 위치 제어를 지원합니다.
  */
-function NativeSelect({
-  className,
-  variant = 'default',
-  size = 'lg',
-  width = 'full',
-  required = false,
-  readOnly = false,
-  error = false,
-  errorMsg = '입력은 필수입니다.',
-  errorPs = 'bl',
-  ...props
-}: UINativeSelectProps) {
-  const resolvedWidth =
-    typeof width === 'number' ? `${width / 10}rem` : width === 'full' ? '100%' : width === 'auto' ? 'auto' : width;
-  const widthStyle = resolvedWidth ? { width: resolvedWidth } : undefined;
+const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
+  (
+    {
+      className,
+      variant = 'default',
+      size = 'lg',
+      width = 'full',
+      required = false,
+      readOnly = false,
+      error = false,
+      errorMsg = '입력은 필수입니다.',
+      errorPs = 'bl',
+      ...props
+    },
+    ref
+  ) => {
+    const localRef = React.useRef<HTMLSelectElement>(null);
+    React.useImperativeHandle(ref, () => localRef.current!);
 
-  const errorId = React.useId();
-  const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
+    const [selectedValue, setSelectedValue] = React.useState<string | number | readonly string[] | undefined>(
+      props.value ?? props.defaultValue ?? ''
+    );
 
-  const baseStyle = cn(
-    'w-full rounded-[0.4rem] px-2 pr-6 text-[1.3rem] border box-border tracking-[-0.13rem] appearance-none truncate',
-    isInvalid || error
-      ? 'text-[var(--color-danger-50)] bg-[var(--color-danger-5)] border-[var(--color-danger-50)] border-[0.2rem] ring-1 ring-[var(--color-danger-5)]'
-      : required
-        ? 'text-[var(--color-text-basic)] bg-[var(--color-warning-10)] border-[var(--color-warning-30)]'
-        : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
-  );
-  const hoverStyle =
-    isInvalid || error
-      ? 'hover:border-[var(--color-danger-50)]'
-      : required
-        ? 'hover:border-[var(--color-warning-70)]'
-        : 'hover:border-[var(--color-input-border-hover)]';
-  const focusStyle = `${
-    isInvalid || error
-      ? 'focus:border-[var(--color-danger-50)] focus:ring-[var(--color-danger-5)]'
-      : required
-        ? 'focus:border-[var(--color-warning-70)] focus:border-[0.2rem]'
-        : 'focus:border-[var(--color-gray-100)] focus:border-[0.2rem]'
-  } 
-    focus:ring-1 ${!isInvalid && !error ? 'focus:ring-[var(--color-gray-5)]' : ''} focus:outline-none`;
-  const readonlyStyle = readOnly
-    ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
-    : '';
-  const disabledStyle = 'disabled:opacity-50 disabled:cursor-not-allowed';
-  const disabledStyle2 = 'disabled:opacity-100 !border-0 !p-0 !w-auto';
-  const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
+    React.useEffect(() => {
+      if (props.value !== undefined) {
+        setSelectedValue(props.value);
+      }
+    }, [props.value]);
 
-  const variantStyles = {
-    default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
-    text: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle2, sizeStyle),
-  };
+    React.useEffect(() => {
+      if (localRef.current) {
+        setSelectedValue(localRef.current.value);
+      }
+    }, []);
 
-  const arrowStateStyle =
-    isInvalid || error
-      ? 'var(--color-danger-50)'
-      : required
-        ? 'var(--color-gray-50)'
-        : readOnly
-          ? 'var(--color-gray-30)'
-          : 'var(--color-gray-50)';
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedValue(e.target.value);
+      if (props.onChange) {
+        props.onChange(e);
+      }
+    };
 
-  return (
-    <div className={cn('relative', className)} style={widthStyle}>
-      <div className="group/native-select relative tracking-[-0.13rem]" data-slot="native-select-wrapper">
-        {variant !== 'text' && !props.disabled ? (
-          <>
-            <select
-              data-slot="native-select"
-              className={cn(variantStyles[variant])}
-              tabIndex={readOnly ? -1 : props.tabIndex}
-              aria-invalid={error || undefined}
-              aria-describedby={error ? errorId : undefined}
-              {...props}
-            />
-            <SelectDropIcon
-              className={cn(
-                'pointer-events-none absolute top-1/2 right-[0.8rem]  select-none text-[var(--color-icon-basic)]',
-                size === 'lg' ? 'size-[1.4rem] -translate-y-[0.6rem]' : 'size-[1.2rem] -translate-y-[0.5rem]'
-              )}
-              aria-hidden="true"
-              color={arrowStateStyle}
-            />
-          </>
-        ) : (
-          <Typo variant="heading-sm" className="whitespace-nowrap">
-            {(() => {
-              const selectedValue = props.value ?? props.defaultValue;
-              const matched = (
-                React.Children.toArray(props.children) as React.ReactElement<
-                  React.OptionHTMLAttributes<HTMLOptionElement>
-                >[]
-              ).find((child) => child.props.value === selectedValue);
-              return matched ? matched.props.children : selectedValue;
-            })()}
-          </Typo>
+    const isValidValue = (val: string | number | readonly string[] | undefined) => {
+      if (val === undefined || val === null) return false;
+      const strVal = String(val).trim();
+      return strVal !== '' && strVal !== 'false';
+    };
+
+    const isErrorActive = error && !isValidValue(selectedValue);
+
+    const resolvedWidth =
+      typeof width === 'number' ? `${width / 10}rem` : width === 'full' ? '100%' : width === 'auto' ? 'auto' : width;
+    const widthStyle = resolvedWidth ? { width: resolvedWidth } : undefined;
+
+    const errorId = React.useId();
+    const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
+
+    const baseStyle = cn(
+      'w-full rounded-[0.4rem] px-2 pr-6 text-[1.3rem] border box-border tracking-[-0.13rem] appearance-none truncate',
+      isInvalid || isErrorActive
+        ? 'text-[var(--color-danger-50)] bg-[var(--color-danger-5)] border-[var(--color-danger-50)] border-[0.2rem] ring-1 ring-[var(--color-danger-5)]'
+        : required
+          ? 'text-[var(--color-text-basic)] bg-[var(--color-warning-10)] border-[var(--color-warning-30)]'
+          : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
+    );
+    const hoverStyle =
+      isInvalid || isErrorActive
+        ? 'hover:border-[var(--color-danger-50)]'
+        : required
+          ? 'hover:border-[var(--color-warning-70)]'
+          : 'hover:border-[var(--color-input-border-hover)]';
+    const focusStyle = `${
+      isInvalid || isErrorActive
+        ? 'focus:border-[var(--color-danger-50)] focus:ring-[var(--color-danger-5)]'
+        : required
+          ? 'focus:border-[var(--color-warning-70)] focus:border-[0.2rem]'
+          : 'focus:border-[var(--color-gray-100)] focus:border-[0.2rem]'
+    } 
+      focus:ring-1 ${!isInvalid && !isErrorActive ? 'focus:ring-[var(--color-gray-5)]' : ''} focus:outline-none`;
+    const readonlyStyle = readOnly
+      ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
+      : '';
+    const disabledStyle = 'disabled:opacity-50 disabled:cursor-not-allowed';
+    const disabledStyle2 = 'disabled:opacity-100 !border-0 !p-0 !w-auto';
+    const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
+
+    const variantStyles = {
+      default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
+      text: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle2, sizeStyle),
+    };
+
+    const arrowStateStyle =
+      isInvalid || isErrorActive
+        ? 'var(--color-danger-50)'
+        : required
+          ? 'var(--color-gray-50)'
+          : readOnly
+            ? 'var(--color-gray-30)'
+            : 'var(--color-gray-50)';
+
+    return (
+      <div className={cn('relative', className)} style={widthStyle}>
+        <div className="group/native-select relative tracking-[-0.13rem]" data-slot="native-select-wrapper">
+          {variant !== 'text' && !props.disabled ? (
+            <>
+              <select
+                ref={localRef}
+                data-slot="native-select"
+                className={cn(variantStyles[variant])}
+                tabIndex={readOnly ? -1 : props.tabIndex}
+                aria-invalid={isErrorActive || undefined}
+                aria-describedby={isErrorActive ? errorId : undefined}
+                {...props}
+                onChange={handleChange}
+              />
+              <SelectDropIcon
+                className={cn(
+                  'pointer-events-none absolute top-1/2 right-[0.8rem]  select-none text-[var(--color-icon-basic)]',
+                  size === 'lg' ? 'size-[1.4rem] -translate-y-[0.6rem]' : 'size-[1.2rem] -translate-y-[0.5rem]'
+                )}
+                aria-hidden="true"
+                color={arrowStateStyle}
+              />
+            </>
+          ) : (
+            <Typo variant="heading-sm" className="whitespace-nowrap">
+              {(() => {
+                const selectedVal = props.value ?? props.defaultValue;
+                const matched = (
+                  React.Children.toArray(props.children) as React.ReactElement<
+                    React.OptionHTMLAttributes<HTMLOptionElement>
+                  >[]
+                ).find((child) => child.props.value === selectedVal);
+                return matched ? matched.props.children : selectedVal;
+              })()}
+            </Typo>
+          )}
+        </div>
+        {isErrorActive && (
+          <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
+            {errorMsg}
+          </ErrorMsg>
         )}
       </div>
-      {error && (
-        <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
-          {errorMsg}
-        </ErrorMsg>
-      )}
-    </div>
-  );
-}
+    );
+  }
+);
+
+NativeSelect.displayName = 'NativeSelect';
 
 function NativeSelectOption({ ...props }: React.ComponentProps<'option'>) {
   return <option data-slot="native-select-option" {...props} />;

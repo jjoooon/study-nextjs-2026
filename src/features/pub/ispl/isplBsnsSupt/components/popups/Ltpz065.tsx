@@ -7,9 +7,12 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Grow, Typo, Grid } from '@atoms';
-import { ResetIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -23,9 +26,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -228,27 +228,25 @@ const Ltpz065 = () => {
             <FormTable variant={'none'} lineTop={false} cols={['w-1', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
-                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
                   -
-                  <Input width={30} value={'1'} readOnly />
-                  <b>한화 더건강한 한아름종합보험2601</b>
+                  <Input width={26} value={'1'} readOnly />
+                  <Input
+                    width={200}
+                    value={'한화 더건강한 한아름종합보험2601'}
+                    variant="info"
+                    readOnly
+                    className="ml-2"
+                  />
                 </FormCell>
               </FormRow>
             </FormTable>
-            <Grow className="w-[12rem]">
-              <Checkbox
-                color="primary"
-                errorMsg="선택은 필수입니다."
-                errorPs="bl"
-                onCheckedChange={() => {}}
-                size="lg"
-                variant="default"
-              >
+
+            <Grow className="w-[20rem]">
+              <Checkbox color="primary" onCheckedChange={() => {}} size="lg" variant="default">
                 재조회
               </Checkbox>
-            </Grow>
-            <Grow>
-              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained" className="ml-2">
                 조회
               </Button>
               <Button
@@ -265,61 +263,52 @@ const Ltpz065 = () => {
           </Grow>
 
           {/* 조회 정보 */}
-          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={2}>
-            <TableFold>
-              <TableFoldHead title="단체실손의료비 전환대상" />
-              <TableFoldBody className="gap-5">
-                <Grow className="w-full">
-                  <FormTable
-                    caption="단체실손의료비 전환대상 테이블"
-                    cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}
-                  >
-                    {/* 2026-05-27 variant 추가 */}
-                    <FormRow>
-                      <FormCell title={'피보험자'}>
-                        <Input width={80} variant="info" value={'김한화'} readOnly />
-                        <Input
-                          aria-label="주민등록번호 마스킹"
-                          width={120}
-                          variant="info"
-                          value={'000000-0******'}
-                          readOnly
-                        />
-                      </FormCell>
-                      <FormCell title={'조회건수'}>
-                        <Input width={30} variant="info" value={'n'} readOnly />건
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Grow>
-                <Grid className="w-full grid-rows-[1fr_auto] gap-5 h-full">
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={DummyData}
-                      columnDefs={columnDefs}
-                      defaultColDef={{ sortable: false }}
-                      enableCellSpan={true}
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      // 체크박스 시
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: false,
-                        checkboxes: true,
-                        enableClickSelection: true,
-                      }}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 30,
-                      }}
+          <TableFold>
+            <TableFoldHead title="단체실손의료비 전환대상" />
+            <TableFoldBody className="gap-2 grid grid-rows-[auto_1fr]">
+              <FormTable caption="단체실손의료비 전환대상 테이블" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+                {/* 2026-05-27 variant 추가 */}
+                <FormRow>
+                  <FormCell title={'피보험자'}>
+                    <Input width={80} variant="info" value={'김한화'} readOnly />
+                    <Input
+                      aria-label="주민등록번호 마스킹"
+                      width={120}
+                      variant="info"
+                      value={'000000-0******'}
+                      readOnly
                     />
-                  </div>
-                </Grid>
-              </TableFoldBody>
-            </TableFold>
-          </Grid>
+                  </FormCell>
+                  <FormCell title={'조회건수'}>
+                    <Input width={30} variant="info" value={'n'} readOnly />건
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+              <div className="ag-theme-alpine min-h-[18.4rem]">
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={DummyData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{ sortable: false }}
+                  enableCellSpan={true}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                  // 체크박스 시
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                    enableClickSelection: true,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 30,
+                  }}
+                />
+              </div>
+            </TableFoldBody>
+          </TableFold>
         </DialogSection>
 
         <DialogFooter>

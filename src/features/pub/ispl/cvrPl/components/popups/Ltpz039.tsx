@@ -341,7 +341,7 @@ const Ltpz039 = () => {
             <FormTable variant={'head'} lineTop={false} caption="">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly variant="info" />
+                  <Input aria-label="" width={130} value={'LA123456789012'} readOnly variant="info" />
                   <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'경과기간세부산출(n년)'}>

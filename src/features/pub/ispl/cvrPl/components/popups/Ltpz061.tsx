@@ -481,7 +481,7 @@ const Ltpz061 = () => {
                   title={'증권번호'}
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                 >
-                  <Input aria-label="" value={'LA2602093135558'} readOnly variant="info" />
+                  <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                   <Input aria-label="" value={'한화 더 건강한 한아름종합보험 2601'} readOnly variant="info" />
                 </FormCell>
               </FormRow>

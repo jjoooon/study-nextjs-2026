@@ -8,9 +8,13 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { useState } from 'react';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { SearchIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -23,10 +27,6 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -143,7 +143,7 @@ const Ltpz087 = () => {
             <FormTable variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
-                  <Input aria-label="" width={'quoteNo'} value={'LA260112297637'} readOnly />
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
                   <Input aria-label="" value={'한화 BigPlus 재산종합보험 2601'} readOnly />
                 </FormCell>
               </FormRow>

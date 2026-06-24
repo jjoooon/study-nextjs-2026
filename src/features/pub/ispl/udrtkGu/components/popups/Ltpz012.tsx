@@ -7,8 +7,11 @@ import '@/shared/lib/agGridPub';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Grid, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,9 +24,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 /** 그리드 행 데이터 타입 정의 (가점/감점/정책요소 공통 사용) */
 type DummyDataType2 = {
@@ -387,7 +387,7 @@ const Ltpz012 = () => {
                   tdClassName="grid grid-cols-[auto_minmax(20rem,1fr)] gap-1 w-full"
                   className="whitespace-nowrap"
                 >
-                  <Input aria-label="설계번호" width={120} value={'LA260305361023'} readOnly />
+                  <Input aria-label="설계번호" width={120} value={'LA123456789012'} readOnly />
                   <Input aria-label="상품명" width={'full'} value={'한화 시그니쳐 여성 건강보험4.0'} readOnly />
                 </FormCell>
                 <FormCell

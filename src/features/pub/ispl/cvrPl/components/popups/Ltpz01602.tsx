@@ -196,7 +196,7 @@ const Ltpz01602 = () => {
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={150} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={150} value={'LA123456789012'} readOnly />
                   -
                   <Input aria-label="" width={30} value={'1'} readOnly />
                   <b>한화 더 건강한 한여름좋합 보험 2601</b>

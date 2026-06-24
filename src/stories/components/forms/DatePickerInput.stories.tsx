@@ -21,8 +21,9 @@ const meta: Meta<DatePickerInputStoryProps> = {
         return (
           <StoryDocTemplate
             overview={`DatePickerInput 컴포넌트는 입력 필드와 캘린더 팝오버를 결합한 날짜 입력 UI입니다.
-single, multiple, range 모드를 지원하며, 에러 메시지와 크기/너비 설정을 일관된 방식으로 제공합니다.`}
-            history={['2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화']}
+single, multiple, range 모드를 지원하며, 에러 메시지와 크기/너비 설정을 일관된 방식으로 제공합니다.
+기간(range) 모드에서는 퀵 옵션(options), 범위 고정 지정(autoRangeFix), 자동 캘린더 닫기(autoClose) 등의 고급 설정을 활용할 수 있습니다.`}
+            history={['2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화', '2026.06.24 - 신규 Props(autoRangeFix, autoClose) 추가 및 명세 동기화']}
             usageCode={`
 import { DatePickerInput } from '@common/DatePicker';
 import { useState } from 'react';
@@ -45,10 +46,19 @@ const [value, setValue] = useState('');
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
               <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="multiple" width="sm" value="2026-03-07" onChange={() => undefined} />
+              
               <DatePickerInput
                 mode="range"
                 width="lg"
+                rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
+                onChange={() => undefined}
+              />
+
+              <DatePickerInput
+                mode="range"
+                width="lg"
+                autoRangeFix
+                autoRangeDays={7}
                 rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
                 onChange={() => undefined}
               />
@@ -63,24 +73,6 @@ const [value, setValue] = useState('');
               <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
               <DatePickerInput mode="single" size="md" width="sm" value="2026-03-07" onChange={() => undefined} />
             </Grow>
-
-            <h2 className="mt-8">Width</h2>
-            <p>DatePickerInput 컴포넌트에서 사용할 수 있는 width 옵션은 다음과 같습니다.</p>
-            <Gcol
-              gap={2}
-              className="w-[60rem] p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem]"
-            >
-              <DatePickerInput mode="single" width="full" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="max" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="2xs" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="xs" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="md" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="lg" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="xl" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="2xl" value="2026-03-07" onChange={() => undefined} />
-            </Gcol>
-
             <h2 className="mt-8">State</h2>
             <p>required, readOnly, disabled 상태를 지원합니다.</p>
             <Grow
@@ -159,7 +151,7 @@ const [value, setValue] = useState('');
   argTypes: {
     mode: {
       control: { type: 'select' },
-      options: ['single', 'multiple', 'range'],
+      options: ['single', 'range'],
       table: { category: '설정 props' },
     },
     size: {
@@ -205,6 +197,26 @@ const [value, setValue] = useState('');
     onMonthSelect: {
       table: { disable: true },
     },
+    options: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '퀵 기간 선택 옵션(당일, 1주일, 1개월, 3개월) 버튼 표시 여부',
+    },
+    autoRangeDays: {
+      control: { type: 'number' },
+      table: { category: '설정 props' },
+      description: '시작일 선택 시 자동으로 계산할 종료일과의 간격 일수',
+    },
+    autoRangeFix: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '시작일 선택 시 종료일이 autoRangeDays 만큼 더해진 범위로 고정되어 선택되는지 여부',
+    },
+    autoClose: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '날짜를 선택했을 때 캘린더 팝업이 자동으로 닫히는지 여부 (range 모드 포함)',
+    },
     id: {
       table: { disable: true },
     },
@@ -229,6 +241,10 @@ const [value, setValue] = useState('');
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
     monthOnly: false,
+    options: false,
+    autoRangeDays: 7,
+    autoRangeFix: false,
+    autoClose: false,
   },
 };
 
@@ -337,6 +353,67 @@ export const Default: Story = {
         onChange={(date, formattedValue) => {
           setValue(formattedValue ?? '');
           args.onChange?.(date, formattedValue ?? '');
+        }}
+      />
+    );
+  },
+};
+
+export const RangeWithQuickOptions: Story = {
+  args: {
+    mode: 'range',
+    options: true,
+    autoRangeDays: 7,
+  },
+  render: (args) => {
+    const [rangeValue, setRangeValue] = React.useState<{ from?: string; to?: string }>({
+      from: '2026-06-01',
+      to: '2026-06-08',
+    });
+
+    return (
+      <DatePickerInput
+        {...args}
+        mode="range"
+        rangeValue={rangeValue}
+        onChange={(date, formattedValue) => {
+          if (!formattedValue) {
+            setRangeValue({ from: '', to: '' });
+            return;
+          }
+          const parts = formattedValue.split('~').map((v) => v.trim());
+          setRangeValue({ from: parts[0] || '', to: parts[1] || '' });
+        }}
+      />
+    );
+  },
+};
+
+export const RangeWithAutoFixAndClose: Story = {
+  args: {
+    mode: 'range',
+    autoRangeFix: true,
+    autoRangeDays: 10,
+    autoClose: true,
+  },
+  render: (args) => {
+    const [rangeValue, setRangeValue] = React.useState<{ from?: string; to?: string }>({
+      from: '2026-06-01',
+      to: '2026-06-11',
+    });
+
+    return (
+      <DatePickerInput
+        {...args}
+        mode="range"
+        rangeValue={rangeValue}
+        onChange={(date, formattedValue) => {
+          if (!formattedValue) {
+            setRangeValue({ from: '', to: '' });
+            return;
+          }
+          const parts = formattedValue.split('~').map((v) => v.trim());
+          setRangeValue({ from: parts[0] || '', to: parts[1] || '' });
         }}
       />
     );

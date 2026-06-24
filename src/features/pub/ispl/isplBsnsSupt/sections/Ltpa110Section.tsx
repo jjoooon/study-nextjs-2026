@@ -53,7 +53,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 1,
     isCheck: true,
-    field01: 'LA26020945959594',
+    field01: 'LA123456789012',
     field02: '',
     field03: '김한화화',
     field04: '2026-08-25',
@@ -65,7 +65,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 2,
     isCheck: false,
-    field01: 'LA26020945959594',
+    field01: 'LA123456789012',
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
@@ -80,7 +80,7 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 1,
     isCheck: false,
-    field01: 'LA26020945959594',
+    field01: 'LA123456789012',
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
@@ -92,7 +92,7 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 2,
     isCheck: true,
-    field01: 'LA26020945959594',
+    field01: 'LA123456789012',
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',

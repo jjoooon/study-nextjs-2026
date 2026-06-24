@@ -18,10 +18,16 @@ export const useStorybookGridData = <T = unknown>(params: UseStorybookGridDataPa
   // grids의 구조가 변경되었는지 확인하기 위한 직렬화 키 생성
   const gridsKeyString = grids.map((g) => `${g.key}-${g.dummyItems.length}-${g.underSliceCount}`).join(',');
 
+  // grids의 참조가 리렌더링 시마다 새로 생성되는 것을 막기 위해 gridsKeyString 기반으로 메모이제이션합니다.
+  const memoizedGrids = React.useMemo(() => {
+    return grids;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gridsKeyString]);
+
   // 데이터 가공 함수들을 useCallback으로 캡슐화
   const getSlicedData = React.useCallback(() => {
     const dataMap: Record<string, T[]> = {};
-    grids.forEach((grid) => {
+    memoizedGrids.forEach((grid) => {
       let data: T[] = [];
       if (dataType === 'under') {
         const sliceCount = grid.underSliceCount ?? 2;
@@ -32,15 +38,15 @@ export const useStorybookGridData = <T = unknown>(params: UseStorybookGridDataPa
       dataMap[grid.key] = data;
     });
     return dataMap;
-  }, [dataType, grids]);
+  }, [dataType, memoizedGrids]);
 
   const getEmptyData = React.useCallback(() => {
     const emptyMap: Record<string, T[]> = {};
-    grids.forEach((grid) => {
+    memoizedGrids.forEach((grid) => {
       emptyMap[grid.key] = [];
     });
     return emptyMap;
-  }, [grids]);
+  }, [memoizedGrids]);
 
   // props가 변경되었을 때 렌더링 단계에서 상태를 동기적으로 리셋하여 react-hooks/set-state-in-effect 경고를 방지합니다.
   const [prevParams, setPrevParams] = React.useState({ dataType, delayTime, gridsKeyString });

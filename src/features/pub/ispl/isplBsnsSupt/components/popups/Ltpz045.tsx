@@ -55,7 +55,7 @@ const Ltpz045 = () => {
               <FormTable variant="head" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input value={'LA26020945959594'} width={'quoteNo'} readOnly />
+                    <Input value={'LA123456789012'} width={'quoteNo'} readOnly />
                     -
                     <Input width={26} value={'1'} readOnly />
                   </FormCell>

@@ -9,9 +9,12 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Grid, Grow, Typo } from '@atoms';
-import { ResetIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
+import { ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,9 +27,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
 
 type LTPZ091Tab = { value: string; label: string };
 const DATA_TABS: LTPZ091Tab[] = [
@@ -268,83 +268,78 @@ const Ltpz091 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
-          <Grid className="w-full grid-rows-[auto_auto_1fr]" gap={2.5}>
-            <TabPager
-              data={tabs}
-              active={active}
-              setActive={setActive}
-              hasTableBelow={true}
-              getValue={(t) => t.value}
-              renderTab={(t) => t.label ?? t.value}
-              visibleCount={4}
-              removable={false}
-            >
-              <Grid className="grid-rows-[1fr_auto] h-full pt-3">
-                {/* {active === 'TAB1' ? ( */}
-                <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
-                  <Grow className="w-full" variant="box-round">
-                    <FormTable variant={'head'} lineTop={false} caption="">
-                      <FormRow>
-                        <FormCell title={'검색'}>
-                          <Input width={'16rem'} value={''} />
-                          <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                            조회
-                          </Button>
-                          <Button
-                            color={'gray'}
-                            only={'icon'}
-                            size={'lg'}
-                            variant={'outlined'}
-                            onClick={() => {}}
-                            aria-label="새로고침"
-                          >
-                            <ResetIcon />
-                          </Button>
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>
-                    <Grow>
-                      <Button color="gray" variant="outlined">
-                        파일추가
+        <DialogSection>
+          <TabPager
+            data={tabs}
+            active={active}
+            setActive={setActive}
+            hasTableBelow={true}
+            getValue={(t) => t.value}
+            renderTab={(t) => t.label ?? t.value}
+            visibleCount={4}
+            removable={false}
+          >
+            {/* {active === 'TAB1' ? ( */}
+            <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
+              <Grow className="w-full" variant="box-round-b">
+                <FormTable variant={'head'} lineTop={false} caption="">
+                  <FormRow>
+                    <FormCell title={'검색'}>
+                      <Input width={'16rem'} value={''} />
+                      <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                        조회
                       </Button>
-                      <Button color="gray" variant="outlined">
-                        파일수정
+                      <Button
+                        color={'gray'}
+                        only={'icon'}
+                        size={'lg'}
+                        variant={'outlined'}
+                        onClick={() => {}}
+                        aria-label="새로고침"
+                      >
+                        <ResetIcon />
                       </Button>
-                      <Button color="gray" variant="outlined">
-                        파일삭제
-                      </Button>
-                    </Grow>
-                  </Grow>
-                  <Grid className="w-full">
-                    <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        defaultColDef={{ sortable: true, resizable: true }}
-                        domLayout="autoHeight"
-                        singleClickEdit={true}
-                        rowSelection={{
-                          mode: 'singleRow',
-                          checkboxes: true,
-                          enableClickSelection: false,
-                        }}
-                        selectionColumnDef={{
-                          headerName: '선택',
-                          width: 30,
-                          cellClass: 'text-center editable-cell',
-                        }}
-                        tooltipShowMode="whenTruncated"
-                        tooltipShowDelay={0}
-                      />
-                    </div>
-                  </Grid>
-                </Grid>
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+                <Grow>
+                  <Button color="gray" variant="outlined">
+                    파일추가
+                  </Button>
+                  <Button color="gray" variant="outlined">
+                    파일수정
+                  </Button>
+                  <Button color="gray" variant="outlined">
+                    파일삭제
+                  </Button>
+                </Grow>
+              </Grow>
+              <Grid className="w-full">
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+                  <AgGridReact<DummyDataType>
+                    getRowId={(params) => String(params.data.id)}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    defaultColDef={{ sortable: true, resizable: true }}
+                    singleClickEdit={true}
+                    rowSelection={{
+                      mode: 'singleRow',
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      headerName: '선택',
+                      width: 30,
+                      cellClass: 'text-center editable-cell',
+                    }}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                  />
+                </div>
               </Grid>
-            </TabPager>
-          </Grid>
+            </Grid>
+          </TabPager>
         </DialogSection>
 
         <DialogFooter>

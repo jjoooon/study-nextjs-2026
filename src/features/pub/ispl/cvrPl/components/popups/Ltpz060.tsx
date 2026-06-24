@@ -7,8 +7,11 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { Grow, Typo, Grid } from '@atoms';
 import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,9 +24,6 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -152,7 +152,7 @@ const Ltpz060 = () => {
             <FormTable variant="head" cols={['w-1', 'w-auto', 'w-[16rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'증권번호'}>
-                  <Input aria-label="" value={'LA2602093135558'} readOnly variant="info" />
+                  <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                   <Input aria-label="" value={'한화 더 건강한 한아름종합보험 2601'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'준공연도(사용승인연도)'}>

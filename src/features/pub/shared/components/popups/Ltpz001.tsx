@@ -8,8 +8,12 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -27,10 +31,6 @@ import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Textarea } from '@uiux/Textarea';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
 
 // 출력물 데이터 타입 정의: 트리 구조를 위한 filePath와 각종 상태 값을 포함합니다.
 type DummyDataType = {
@@ -254,7 +254,7 @@ const Ltpz001 = () => {
 
         <DialogSection className="grid-cols-[1fr_auto]">
           {/* 왼쪽 영역: 설계 정보 및 트리형 출력물 리스트 */}
-          <Grid className="grid-rows-[1fr_auto] h-full gap-3">
+          <Grid className="grid-rows-[1fr_auto] h-full gap-2">
             <div className=" w-full h-full relative min-h-[30rem] overflow-y-auto">
               <Gcol gap={5} placement={'ss'} className="absolute">
                 {/* 설계 정보 요약 영역 (예시로 2회 반복 렌더링) */}
@@ -264,7 +264,7 @@ const Ltpz001 = () => {
                       <FormTable variant={'head'} className="w-full">
                         <FormRow>
                           <FormCell title={'설계번호'}>
-                            <Input value={'LA26029313558'} variant="info" readOnly />
+                            <Input value={'LA123456789012'} variant="info" readOnly />
                           </FormCell>
                           <FormCell title={'계약자명'}>
                             <Input value={'김한화'} readOnly variant="info" />
@@ -330,7 +330,7 @@ const Ltpz001 = () => {
               <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
                 기타 필수 스캔 대상 서류안내
               </Typo>
-              <Typo variant={'body-sm'} icon={'dot'}>
+              <Typo variant={'body-sm'} icon={'dot'} color={'gray'}>
                 실명증표사본, 실명증표진위여부확인서(법인), 실명증표진위여부확인서(법인대리인), 실소유자확인서류
               </Typo>
             </Gcol>
@@ -500,7 +500,7 @@ const Ltpz001 = () => {
                       </Typo>
                       <BulletList size={'sm'}>
                         <BulletListItem>
-                          LA26022432174_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
+                          LA01234567890_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
                         </BulletListItem>
                       </BulletList>
                     </Gcol>
@@ -540,7 +540,7 @@ const Ltpz001 = () => {
                       </Typo>
                       <BulletList size={'sm'}>
                         <BulletListItem>
-                          LA26022432174_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
+                          LA01234567890_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
                         </BulletListItem>
                       </BulletList>
                     </Gcol>
@@ -626,7 +626,7 @@ const Ltpz001 = () => {
                       </Typo>
                       <BulletList size={'sm'}>
                         <BulletListItem>
-                          LA26022432174_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
+                          LA01234567890_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
                         </BulletListItem>
                       </BulletList>
                     </Gcol>

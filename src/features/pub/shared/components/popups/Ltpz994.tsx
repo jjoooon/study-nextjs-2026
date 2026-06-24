@@ -4,6 +4,9 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FileDownLoad, formatTotalFileSize } from '@common/FileDownLoad';
+import type { DownloadFileItem } from '@common/FileDownLoad';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -15,9 +18,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FileDownLoad, formatTotalFileSize } from '@common/FileDownLoad';
-import type { DownloadFileItem } from '@common/FileDownLoad';
 
 const fileList: DownloadFileItem[] = [
   { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1344024', fileAddress: 'file-address' },

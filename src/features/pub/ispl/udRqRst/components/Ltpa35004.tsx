@@ -7,9 +7,17 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Grow, Gcol, Grid, ConTit, ConTitName } from '@atoms';
-import { BtnPlusIcon } from '@icons';
 import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Grow, Gcol, Grid, ConTit, ConTitName } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
+import { TabPager } from '@common/TabPager';
+import { ChatResult } from '@features/ChatResult';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { BtnPlusIcon } from '@icons';
+import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -18,14 +26,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableRow, TableCell } from '@uiux/Table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
-import { TabPager } from '@common/TabPager';
-import { ChatResult } from '@features/ChatResult';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
-import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 
 import '@/shared/lib/agGridPub';
 
@@ -386,11 +386,11 @@ export function Ltpa35004() {
                     tdClassName="justify-between w-full"
                   >
                     <RadioGroup className="gap-2" errorMsg="하나를 선택해주세요." errorPs="bl" onValueChange={() => {}}>
-                      <RadioGroupItem color="primary" id="radio1" size="md" value="LA260112297637" variant="button">
-                        LA260112297637
+                      <RadioGroupItem color="primary" id="radio1" size="md" value="LA123456789012" variant="button">
+                        LA123456789012
                       </RadioGroupItem>
-                      <RadioGroupItem color="primary" id="radio2" size="md" value="LA260112297660" variant="button">
-                        LA260112297660
+                      <RadioGroupItem color="primary" id="radio2" size="md" value="LA123456789012" variant="button">
+                        LA123456789012
                       </RadioGroupItem>
                     </RadioGroup>
 

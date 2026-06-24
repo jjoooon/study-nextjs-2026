@@ -8,8 +8,6 @@ import type { ColDef, EditableCallbackParams, ICellRendererParams, RowSelectedEv
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useState, useRef } from 'react';
 import * as React from 'react';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -17,7 +15,13 @@ import {
   numberValueFormatter,
   createInsertCopiedRowButtonCellRenderer,
   useDynamicColumnWidths,
+  CustomGridLoadingOverlay,
 } from '@aggrid';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -35,116 +39,44 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
-/**
- * @type DummyDataType
- * @description 담보 가입 사항 리스트 데이터의 타입 정의
- */
-type DummyDataType = {
-  id: number; // 행 고유 식별자 (ID)
-  isCheck: boolean; // 담보의 체크박스 선택 여부 (체크 시 가입)
-  isDuplicate: boolean; // 복사 버튼을 클릭하여 사용자가 임의로 추가한 '중복 행'인지 여부
-  productName: string; // 담보명 (보험 상품 내 보장 항목 명칭)
-  badge?: string[]; // 담보 우측에 표시할 뱃지 목록 (예: '갱신')
-  attribute: boolean; // 속성 검색용 돋보기 버튼 활성화 여부
-  coverageAmount: string; // 가입금액 조건 (예: '5천만원(통원20만원)')
-  premium: number; // 해당 담보의 산출 보험료
-  expiryPeriod: string; // 보험 만기 기간 (예: '01년만기')
-  paymentPeriod: string; // 보험료 납입 기간 (예: '전기납')
-  canEditExpiry: boolean; // 가입금액 열의 편집(수정)을 허용할지 여부
+export type DummyDataType = {
+  id: number;
+  isCheck: boolean;
+  isDuplicate: boolean;
+  productName: string;
+  badge?: string[];
+  attribute: boolean;
+  coverageAmount: string;
+  premium: number;
+  expiryPeriod: string;
+  paymentPeriod: string;
+  canEditExpiry: boolean;
 };
 
-/**
- * @constant dummyData
- * @description 동시 가입 설계 상세 화면에서 표시할 초기 담보 목록 (테스트용 모크 데이터)
- */
-const dummyData: DummyDataType[] = [
-  {
-    id: 1,
-    isCheck: true, // 초기 선택 상태 활성화
-    isDuplicate: false, // 원본 행
-    productName:
-      '기본형 실손의료비(상해급여)(갱신형)기본형 실손의료비(상해급여)(갱신형)기본형 실손의료비(상해급여)(갱신형)',
-    badge: ['갱신'],
-    attribute: true,
-    coverageAmount: '5천만원(통원20만원)',
-    premium: 1377,
-    expiryPeriod: '01년만기',
-    paymentPeriod: '전기납',
-    canEditExpiry: true,
-  },
-  {
-    id: 2,
-    isCheck: false,
-    isDuplicate: false,
-    productName: '기본형 실손의료비(상해급여)(갱신형)',
-    badge: ['갱신'],
-    attribute: false,
-    coverageAmount: '2천만원(통원20만원)',
-    premium: 9999999,
-    expiryPeriod: '01년만기',
-    paymentPeriod: '전기납',
-    canEditExpiry: true,
-  },
-  {
-    id: 3,
-    isCheck: false,
-    isDuplicate: false,
-    productName: '기본형 실손의료비(상해급여)(갱신형)',
-    badge: ['갱신'],
-    attribute: true,
-    coverageAmount: '3천만원(통원20만원)',
-    premium: 159999,
-    expiryPeriod: '01년만기',
-    paymentPeriod: '전기납',
-    canEditExpiry: true,
-  },
-  {
-    id: 4,
-    isCheck: false,
-    isDuplicate: false,
-    productName: '기본형 실손의료비(상해급여)(갱신형)',
-    badge: ['갱신'],
-    attribute: false,
-    coverageAmount: '4천만원(통원20만원)',
-    premium: 2323230,
-    expiryPeriod: '01년만기',
-    paymentPeriod: '전기납',
-    canEditExpiry: true,
-  },
-];
+export interface Ltpz010Props {
+  data?: {
+    grid1?: DummyDataType[];
+  };
+  loading?: boolean;
+}
 
-/**
- * @component Ltpz010
- * @description 동시가입설계상세 팝업 다이얼로그 컴포넌트
- *
- * [주요 화면 구성 및 기능 개요]
- * 1. 설계번호 및 상품명: 최상단 영역에서 현재 조회/설계 중인 대표 상품의 기본 정보(설계번호, 상품명 등)를 표시합니다.
- * 2. 계약기본사항 (아코디언): 상품구분(4세대실손/간편실손), 납기/만기 주기, 납기 방법, 태아 가입 여부 및 임산부 매칭 정보를 설정합니다.
- * 3. 피보험자/계약자 (아코디언): 피보험자와 계약자의 인적사항 및 계약자와 주피보험자 간의 관계(주피와관계)를 드롭다운으로 설정하며, 합계 보험료를 확인하고 보험료를 계산합니다.
- * 4. 담보가입사항 (아코디언 & ag-Grid): 가입 대상 담보 리스트를 표 형태로 렌더링합니다.
- *    - 중복 담보 가입 지원: 원본 담보 행의 '중복' 열에 있는 추가 버튼을 클릭해 동일 담보를 다중 구성(복사 행)할 수 있습니다.
- *    - 체크 해제 시 자동 삭제: 임의 복사 추가된 담보 행의 체크박스를 해제하면 해당 행이 그리드와 데이터에서 즉시 파괴(제거)됩니다.
- *    - 신규 행 자동 선택: 중복 행 추가 시, 해당 행이 데이터에 마운트되는 즉시 ag-Grid API를 통해 체크 상태가 강제로 활성화됩니다.
- */
-const Ltpz010 = () => {
-  // ==========================================
-  // [1] 상태 관리 (State) & 레퍼런스 (Ref)
-  // ==========================================
-
-  // 주피보험자와 계약자의 관계 콤보박스 선택 값 (예: 본인, 배우자, 부모 등)
+const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
   const [relationValue, setRelationValue] = useState('');
+  // props인 data?.grid1이 변경되었을 때 렌더링 단계에서 상태를 동기적으로 조정하여 린트 경고를 방지합니다.
+  const [prevGridData, setPrevGridData] = useState<DummyDataType[] | undefined>(data?.grid1);
+  const [rowData, setRowData] = useState<DummyDataType[]>(data?.grid1 ?? []);
+  const [, setErrorRows] = useState<number[]>(() => {
+    const list = data?.grid1 ?? [];
+    return list.filter((row) => !row.isCheck).map((row) => row.id);
+  });
 
-  // 담보 가입 설계 그리드에 바인딩할 데이터 배열 상태값
-  const [rowData, setRowData] = useState<DummyDataType[]>(dummyData);
-
-  // 가입 대상에서 제외(체크박스 해제)되어 에러 또는 경고 처리가 필요한 행의 ID 목록 상태값
-  const [, setErrorRows] = useState<number[]>(dummyData.filter((row) => !row.isCheck).map((row) => row.id));
-
-  // ag-Grid React 컴포넌트의 API 제어 및 내부 Node 접근을 위한 ref
+  if (data?.grid1 !== prevGridData) {
+    setPrevGridData(data?.grid1);
+    const list = data?.grid1 ?? [];
+    setRowData(list);
+    setErrorRows(list.filter((row) => !row.isCheck).map((row) => row.id));
+  }
   const gridRef = useRef<AgGridReact<DummyDataType>>(null);
 
   // '중복 행 추가' 버튼 클릭 시 신규 렌더링된 복사본 행이 감지되면, 이를 자동 체크(Select) 처리하기 위해 임시 보관하는 행 ID ref
@@ -441,8 +373,7 @@ const Ltpz010 = () => {
                   title={'설계번호'}
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                 >
-                  {/* 설계 일련번호 및 대표 상품 이름 (읽기 전용 필드) */}
-                  <Input aria-label="" width={'quoteNo'} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
                   -
                   <Input aria-label="" width={26} value={'1'} readOnly />
                   <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
@@ -624,6 +555,7 @@ const Ltpz010 = () => {
                 <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                   <AgGridReact<DummyDataType>
                     ref={gridRef}
+                    loading={loading}
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={rowData}
@@ -658,6 +590,8 @@ const Ltpz010 = () => {
                         }
                       });
                     }}
+                    loadingOverlayComponent={CustomGridLoadingOverlay}
+                    loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
                   />
                 </div>
               </TableFoldBody>
