@@ -48,7 +48,7 @@ const DummyData: DummyDataType[] = [
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604 한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화화',
     field04: '123647000',
-    field05: '2026-06-18-20:24:20',
+    field05: '2026-06-28-20:24:20',
     field06: '출력가능',
     field07: '미리보기 출력완료',
     field08: '삭제',
@@ -348,7 +348,7 @@ const Ltpz113 = () => {
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input aria-label="" width={80} value={'1301152'} required />
+                  <Input aria-label="" width={75} value={'1301152'} required />
                   <Input aria-label="" width={150} value={'강북GTA지점'} readOnly />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />

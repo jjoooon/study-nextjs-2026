@@ -2621,7 +2621,7 @@
     "id": "LTPZ091",
     "path": "ispl/isplBsnsSupt/components/popups",
     "dep4": "장기심사가이드 더보기",
-    "file": "추가계비교",
+    "file": "추가계비교(알릴사항)",
     "plan": "이현숙",
     "pub": "권오택",
     "dev": "개발목록 누락",
