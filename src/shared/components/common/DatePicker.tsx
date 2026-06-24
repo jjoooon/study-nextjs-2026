@@ -165,7 +165,7 @@ export function DatePickerInput({
   monthOnly = false,
   onMonthSelect,
   options = false,
-  autoRangeDays = 7,
+  autoRangeDays = 0,
   autoRangeFix = false,
   autoClose = false,
 }: UIInputProps) {
