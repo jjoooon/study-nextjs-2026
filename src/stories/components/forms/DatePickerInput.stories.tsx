@@ -73,24 +73,6 @@ const [value, setValue] = useState('');
               <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
               <DatePickerInput mode="single" size="md" width="sm" value="2026-03-07" onChange={() => undefined} />
             </Grow>
-
-            <h2 className="mt-8">Width</h2>
-            <p>DatePickerInput 컴포넌트에서 사용할 수 있는 width 옵션은 다음과 같습니다.</p>
-            <Gcol
-              gap={2}
-              className="w-[60rem] p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem]"
-            >
-              <DatePickerInput mode="single" width="full" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="max" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="2xs" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="xs" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="md" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="lg" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="xl" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="2xl" value="2026-03-07" onChange={() => undefined} />
-            </Gcol>
-
             <h2 className="mt-8">State</h2>
             <p>required, readOnly, disabled 상태를 지원합니다.</p>
             <Grow
