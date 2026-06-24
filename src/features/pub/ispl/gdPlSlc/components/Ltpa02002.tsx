@@ -737,7 +737,9 @@ export function Ltpa02002({
                       >
                         {opt.label}
                       </Checkbox>
-                      {isAmountInputVisible && <Input after="만원" placeholder="가입금액" commaAmount size={'md'} />}
+                      {isAmountInputVisible && (
+                        <Input after="만원" placeholder="가입금액" className="" commaAmount size={'md'} align="right" />
+                      )}
                     </React.Fragment>
                   ))}
                 </Grid>
