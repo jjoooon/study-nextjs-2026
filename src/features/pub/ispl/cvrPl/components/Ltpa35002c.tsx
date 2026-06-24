@@ -41,6 +41,7 @@ import { editableCellClassRules } from '../utils/agGridUtils';
 import '@/shared/lib/agGridPub';
 
 type AgGridRow = DummyDataType & {
+  // 행 상태 플래그 (UI 렌더링/편집 가능 여부 제어용)
   isDuplicate?: boolean;
   displayNo?: number;
   badge?: string[];
@@ -49,6 +50,7 @@ type AgGridRow = DummyDataType & {
 };
 
 type AgGridRow2 = DummyData2Type & {
+  // 행 상태 플래그 (UI 렌더링/편집 가능 여부 제어용)
   isDuplicate?: boolean;
   displayNo?: number;
   badge?: string[];
@@ -60,14 +62,25 @@ export function Ltpa35002c() {
   // =====================
   // 상태 및 참조 관리
   // =====================
+  // 체크박스 토글 상태를 키-값 형태로 저장
+  // (하위 셀 렌더러/헤더 렌더러와 context로 공유)
   const [checkedMap, setCheckedMap] = useState({ selected: true, unselected: false, reset: false });
+  // 담보명 툴팁 전체 노출 토글 (2번째 그리드 wrapper className과 연동)
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
+  // 화면 폭 기반으로 컬럼 폭을 계산하는 공통 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  // 상단(화재기본담보) 그리드 데이터
   const [rowData, setRowData] = useState<AgGridRow[]>(dummyData);
+  // 하단(화재특약담보) 그리드 데이터
   const [rowData2, setRowData2] = useState<AgGridRow2[]>(dummyData2);
+  // 현재 선택/포커스된 담보명 (그리드 context 공유용)
   const [coverageName, _setCoverageName] = useState('');
+  // 그리드 내부 콜백에서 최신값을 즉시 참조하기 위한 ref
+  // (state 업데이트 비동기 타이밍과 무관하게 현재값 접근 가능)
   const coverageNameRef = useRef(coverageName);
 
+  // state + ref를 항상 동시에 갱신하는 setter
+  // context로 내려가는 함수라 useCallback으로 참조 안정성 확보
   const setCoverageName = useCallback((value: string) => {
     _setCoverageName(value);
     coverageNameRef.current = value;
@@ -76,6 +89,8 @@ export function Ltpa35002c() {
   // =====================
   // 핸들러/콜백
   // =====================
+  // 공통 체크 상태 변경 핸들러
+  // key별로 부분 업데이트하여 기존 map 상태를 유지
   const handleCheckedChange = useCallback(
     (key: string) => (checked: boolean | 'indeterminate') => {
       setCheckedMap((map) => ({ ...map, [key]: !!checked }));
@@ -83,6 +98,8 @@ export function Ltpa35002c() {
     []
   );
 
+  // 상단 그리드 셀 편집값 반영
+  // 변경된 행(id 기준)만 교체하여 불필요한 데이터 변형 최소화
   const handleCellValueChanged = useCallback((params: CellValueChangedEvent<AgGridRow>) => {
     const { data, colDef, newValue } = params;
     if (!colDef.field) return;
@@ -91,6 +108,8 @@ export function Ltpa35002c() {
     );
   }, []);
 
+  // 하단 그리드 셀 편집값 반영
+  // 구조는 상단과 동일하며 데이터 소스(rowData2)만 다름
   const handleCellValueChanged2 = useCallback((params: CellValueChangedEvent<AgGridRow2>) => {
     const { data, colDef, newValue } = params;
     if (!colDef.field) return;
@@ -105,7 +124,8 @@ export function Ltpa35002c() {
   // 만기/납기 컬럼에서 재사용하는 셀 렌더러 팩토리(정렬값만 주입)
   const getExpiryRenderer = createExpiryCellRenderer<AgGridRow>;
 
-  // 재물
+  // 상단 그리드(화재기본담보) 컬럼 정의
+  // useMemo로 컬럼 객체 재생성 최소화 -> 그리드 리렌더 비용 절감
   const columnDefs: ColDef<AgGridRow>[] = useMemo(
     () => [
       {
@@ -138,9 +158,12 @@ export function Ltpa35002c() {
           'tooltip-on': (params) => !!params.data?._tooltipOn,
         },
         cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
+          // 기준담보 그룹행이며 편집 불가 상태면 에디터 자체를 제공하지 않음
           if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
             return undefined;
           }
+          // 선택형 금액 여부에 따라 에디터를 분기
+          // false: Popover 수치 조정 에디터 / true: 고정 옵션 select 에디터
           const isSelectedInsuredAmount = params.data?.isSelectedInsuredAmount ?? false;
           if (!isSelectedInsuredAmount) {
             return {
@@ -170,6 +193,8 @@ export function Ltpa35002c() {
         },
         // [중요] 사용자가 입력한 문자열을 순수 숫자값으로 파싱하여 ag-Grid 데이터에 바인딩
         valueParser: (params: ValueParserParams) => {
+          // 문자열(쉼표/문자 포함 가능)을 안전하게 숫자로 정규화
+          // 빈값/잘못된 값은 0으로 통일하여 데이터 일관성 유지
           const val = params.newValue;
           if (val === null || val === undefined || val === '') return 0;
           const parsed = Number(String(val).replace(/[^\d.-]/g, ''));
@@ -217,6 +242,7 @@ export function Ltpa35002c() {
         minWidth: attributeColumnWidth(80),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
+          // 편집 가능 여부를 class로 시각화(no-edited)
           const base = 'px-[0.2rem]! tracking-tighter ';
           return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
         },
@@ -236,6 +262,7 @@ export function Ltpa35002c() {
         minWidth: attributeColumnWidth(80),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
+          // 편집 가능 여부를 class로 시각화(no-edited)
           const base = 'px-[0.2rem]! tracking-tighter';
           return params.data?.isEditedField7 === true ? base : `${base} no-edited`;
         },
@@ -255,6 +282,7 @@ export function Ltpa35002c() {
         minWidth: attributeColumnWidth(80),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
+          // 편집 가능 여부를 class로 시각화(no-edited)
           const base = 'px-[0.2rem]! tracking-tighter';
           return params.data?.isEditedField8 === true ? base : `${base} no-edited`;
         },
@@ -271,6 +299,8 @@ export function Ltpa35002c() {
     [attributeColumnWidth, getExpiryRenderer]
   );
 
+  // 하단 그리드(화재특약담보) 컬럼 정의
+  // 담보군/선택/담보명/속성/가입금액/보험료/만기/납기 순서
   const columnDefs2 = useMemo(
     (): ColDef<AgGridRow2>[] => [
       {
@@ -290,6 +320,7 @@ export function Ltpa35002c() {
         cellClass: 'text-center editable-cell',
         width: attributeColumnWidth(30),
         cellClassRules: {
+          // 잠금 행은 체크 편집 비활성화 (읽기전용 UX)
           'pointer-events-none': (params: CellClassParams<AgGridRow2>) => !!params.data?.locked,
         },
       },
@@ -300,7 +331,8 @@ export function Ltpa35002c() {
         cellClass: 'text-left',
         headerComponent: AgGridProductNameHeader,
         cellRenderer: productNameCellRenderer,
-        tooltipValueGetter: (params) => params.data?.title ?? '', // 담보명 등 표시
+        // 셀 툴팁에 표시할 문자열 지정 (빈값 방지)
+        tooltipValueGetter: (params) => params.data?.title ?? '',
       },
       {
         headerName: '속성',
@@ -320,16 +352,22 @@ export function Ltpa35002c() {
         cellClass: () => 'text-right editable-cell [&_input]:text-right',
         valueFormatter: numberValueFormatter<AgGridRow2>,
         cellClassRules: {
+          // 금액 선택형 여부에 따른 스타일 분기
           'style-select': (params: CellClassParams<AgGridRow2>) => !!params.data?.isSelectedInsuredAmount,
+          // 기준담보 그룹행(편집 불가) 스타일
           isStandardGroup: (params: CellClassParams<AgGridRow2>) =>
             !!(params.data?.isStandard?.group && !params.data?.isStandard?.edit),
+          // 기준담보 편집 가능 행 스타일
           isStandard: (params: CellClassParams<AgGridRow2>) => !!params.data?.isStandard?.edit,
+          // 커스텀 툴팁 활성화 상태
           'tooltip-on': (params: CellClassParams<AgGridRow2>) => !!params.data?._tooltipOn,
         },
         cellEditorSelector: (params: EditableCallbackParams): CellEditorSelectorResult | undefined => {
+          // 기준담보 그룹행 + 편집 불가 상태면 에디터 제공 안 함
           if (params.data?.isStandard?.group && !params.data?.isStandard?.edit) {
             return undefined;
           }
+          // 선택형 금액 여부에 따라 에디터 타입 전환
           const isSelectedInsuredAmount = params.data?.isSelectedInsuredAmount ?? false;
           if (!isSelectedInsuredAmount) {
             return {
@@ -373,6 +411,7 @@ export function Ltpa35002c() {
         minWidth: attributeColumnWidth(70),
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
+          // 편집 가능 여부를 class로 시각화(no-edited)
           const base = 'px-[0.2rem]! tracking-tighter';
           return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
         },
@@ -392,6 +431,7 @@ export function Ltpa35002c() {
         minWidth: attributeColumnWidth(70),
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
+          // 편집 가능 여부를 class로 시각화(no-edited)
           const base = 'px-[0.2rem]! tracking-tighter';
           return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
         },

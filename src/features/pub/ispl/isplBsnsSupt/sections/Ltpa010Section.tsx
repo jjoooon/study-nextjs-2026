@@ -412,6 +412,7 @@ const DummyData: DummyDataRow[] = [
 export default function Ltpa010Section() {
   // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  // 증권번호 Popover에서 노출할 계약 액션 메뉴(행 공통)
   const contractActionMenu = [
     '계약상세조회',
     '계약변경설계',
@@ -422,6 +423,7 @@ export default function Ltpa010Section() {
     '신계약출력물',
   ] as const;
 
+  // 조회조건 폼 상태 (상단 필터의 Select 값 일괄 관리)
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -859,11 +861,18 @@ export default function Ltpa010Section() {
     },
   ];
 
-  // rowSelection 사용시
+  // =====================
+  // 그리드 데이터/페이징 상태
+  // =====================
+  // 초기 렌더는 첫 페이지(5건)만 표시
   const [rowData, setRowData] = React.useState<DummyDataRow[]>(() => DummyData.slice(0, 5));
+  // 현재 화면에 로드된 누적 건수
   const [loadedCount, setLoadedCount] = React.useState(5);
+  // 전체 데이터 건수(서버 응답 total과 동일하게 유지)
   const [totalCount, setTotalCount] = React.useState(DummyData.length);
+  // 중복 요청 방지용 로딩 플래그
   const [isLoading, setIsLoading] = React.useState(false);
+  // createCellValueChangedHandler 시그니처 호환용(현 화면에서는 에러행 관리 미사용)
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
 
   // 체크박스 선택 변경 핸들러
@@ -874,6 +883,7 @@ export default function Ltpa010Section() {
 
   // 무한 스크롤(더보기) 기능을 위한 설정
   const pageSize = 5;
+  // TableMore와 연동하기 위한 그리드 ref
   const gridRef = React.useRef<AgGridReact<DummyDataRow>>(null);
 
   // 실데이터 호출 모사 (API 호출)
@@ -897,6 +907,7 @@ export default function Ltpa010Section() {
 
   // 초기 로딩 및 검색 실행
   const handleSearch = React.useCallback(async () => {
+    // 검색은 항상 1페이지부터 재조회
     const res = await fetchMockData(1, pageSize);
     setRowData(res.items);
     setLoadedCount(res.items.length);
@@ -905,19 +916,24 @@ export default function Ltpa010Section() {
 
   // 다음 버튼 누를 때 데이터 추가 호출 (onLoadNext 콜백)
   const handleLoadNext = React.useCallback(async () => {
+    // 마지막 페이지 도달 또는 로딩 중이면 중복 호출 차단
     if (loadedCount >= totalCount || isLoading) return;
 
+    // 현재 로드 건수 기준으로 다음 페이지 번호 계산
     const nextPage = Math.ceil(loadedCount / pageSize) + 1;
     const res = await fetchMockData(nextPage, pageSize);
 
+    // 기존 목록 하단에 다음 페이지 데이터 이어붙이기
     setRowData((prev) => [...prev, ...res.items]);
     setLoadedCount((prev) => prev + res.items.length);
   }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
 
   // 전체조회 버튼 누를 때 데이터 호출 (onLoadAll 콜백)
   const handleLoadAll = React.useCallback(async () => {
+    // 이미 전체 로드됐거나 로딩 중이면 무시
     if (loadedCount >= totalCount || isLoading) return;
 
+    // 1페이지부터 totalCount만큼 한 번에 조회
     const res = await fetchMockData(1, totalCount);
     setRowData(res.items);
     setLoadedCount(res.items.length);
@@ -925,6 +941,7 @@ export default function Ltpa010Section() {
 
   // 접기 버튼 (onLoadReset 콜백)
   const handleLoadReset = React.useCallback(() => {
+    // 현재 목록을 첫 페이지 크기만큼만 유지
     setRowData((prev) => prev.slice(0, pageSize));
     setLoadedCount(pageSize);
   }, [pageSize]);
@@ -1180,6 +1197,8 @@ export default function Ltpa010Section() {
                         width: 30,
                       }}
                       onGridReady={(params) => {
+                        // 초기 데이터의 isCheck 값을 실제 선택 상태로 동기화
+                        // (rowSelection 렌더링과 데이터 표시 상태 불일치 방지)
                         params.api.forEachNode((node) => {
                           if (node.data?.isCheck) {
                             node.setSelected(true);

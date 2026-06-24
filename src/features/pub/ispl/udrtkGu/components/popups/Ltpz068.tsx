@@ -24,20 +24,26 @@ import {
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
+/**
+ * AI인수지침 위배해소 그리드용 행 데이터 타입
+ */
 type DummyDataType = {
   id: number;
-  field01: string;
-  field02: string | number;
-  insuredAmount: string | number;
-  premium: string | number;
-  insuredAmountA: string | number;
-  premiumA: string | number;
-  insuredAmountB: string | number;
-  premiumB: string | number;
-  insuredAmountC: string | number;
-  premiumC: string | number;
+  field01: string; // 순번
+  field02: string | number; // 담보명
+  insuredAmount: string | number; // 현재 가입금액
+  premium: string | number; // 현재 보험료
+  insuredAmountA: string | number; // A안 가입금액
+  premiumA: string | number; // A안 보험료
+  insuredAmountB: string | number; // B안 가입금액
+  premiumB: string | number; // B안 보험료
+  insuredAmountC: string | number; // C안 가입금액
+  premiumC: string | number; // C안 보험료
 };
 
+/**
+ * 인수지침 위배 담보 목록 및 각 제안(A안, B안, C안)별 조정 금액 더미 데이터
+ */
 const DummyData: DummyDataType[] = [
   {
     id: 1,
@@ -275,8 +281,14 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+/**
+ * 비교할 제안 플랜 키 ('A' | 'B' | 'C')
+ */
 type PlanKey = 'A' | 'B' | 'C';
 
+/**
+ * 각 플랜의 가입금액 및 보험료가 매핑되는 속성 명칭 정의
+ */
 const PLAN_COLS: Array<{
   key: PlanKey;
   leftField: keyof DummyDataType;
@@ -287,10 +299,25 @@ const PLAN_COLS: Array<{
   { key: 'C', leftField: 'insuredAmountC', rightField: 'premiumC' },
 ];
 
+/**
+ * @component Ltpz068
+ * @description AI인수지침 위배해소 결과 확인 및 적용 다이얼로그 컴포넌트
+ * - 인수 지침 심사에서 위배 판정이 난 가입 담보 내역을 확인하고,
+ * - AI가 추천하는 3가지 조정안(A안, B안, C안)을 병렬로 비교 분석하여 적절한 대안을 선택하여 일괄 적용하는 화면입니다.
+ * - 주요 기능:
+ *   1. 각 안의 금액이 현재 설계액보다 높거나(cell-greater) 낮을(cell-less) 경우 셀 배경 스타일을 동적으로 변경
+ *   2. 상단 탭을 Ag-Grid 레이아웃 바로 위쪽에 절대 좌표로 포지셔닝하여 각 안의 열(Column)들과 물리적 열 너비를 시각적으로 일치시킴
+ *   3. 탭 클릭 시 선택한 플랜을 활성화(`selectedPlan`)하고 하단 합계행(`sumRow`)과 연계 계산
+ */
 const Ltpz068 = () => {
+  // 담보 목록 로우 데이터
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  // 현재 체크(선택)된 추천 해소안 플랜 상태
   const [selectedPlan, setSelectedPlan] = React.useState<PlanKey>('A');
 
+  /**
+   * 문자열 및 숫자 형태의 금액 데이터를 안전하게 실수형 숫자로 변환하는 헬퍼 함수
+   */
   const toNumber = React.useCallback((value: string | number): number => {
     if (typeof value === 'number') {
       return Number.isFinite(value) ? value : 0;
@@ -305,6 +332,10 @@ const Ltpz068 = () => {
     return Number.isFinite(parsed) ? parsed : 0;
   }, []);
 
+  /**
+   * 하단 고정(Pinned Bottom) 합계행 생성 로직
+   * - 현재설계액 및 A, B, C안의 보장 보험료의 누적 총합을 각각 합산하여 반환합니다.
+   */
   const sumRow = React.useMemo<DummyDataType[]>(() => {
     const currentTotal = rowData.reduce((acc, row) => acc + toNumber(row.premium), 0);
     const planATotal = rowData.reduce((acc, row) => acc + toNumber(row.premiumA), 0);
@@ -328,6 +359,9 @@ const Ltpz068 = () => {
     ];
   }, [rowData, toNumber]);
 
+  /**
+   * 금액 데이터를 천단위 콤마가 동봉된 포맷 문자열로 변환하는 함수
+   */
   const numericFormatter = React.useCallback((value: string | number | null | undefined): string => {
     if (value === null || value === undefined || value === '') return '';
     if (typeof value === 'string' && isNaN(Number(value.replaceAll(',', '')))) return value;
@@ -336,6 +370,8 @@ const Ltpz068 = () => {
   }, []);
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 그리드 컬럼 설정 (현재 설계 정보 및 A/B/C안의 가입조건 금액 비교)
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(() => {
     return [
       {
@@ -366,6 +402,7 @@ const Ltpz068 = () => {
         cellClass: 'text-right',
         valueFormatter: (p) => numericFormatter(p.value),
       },
+      // flatMap을 이용하여 A안, B안, C안의 가입금액 및 보험료 컬럼을 동적으로 이어붙임
       ...PLAN_COLS.flatMap(({ leftField, rightField }): ColDef<DummyDataType>[] => [
         {
           headerName: '가입금액(만원)',
@@ -374,12 +411,14 @@ const Ltpz068 = () => {
           cellClass: 'text-right pr-2!',
           valueFormatter: (p) => numericFormatter(p.value),
           cellClassRules: {
+            // 현재설계 가입금액 기준보다 제안액이 큰 경우 빨간색/주황색 하이라이트 클래스 부여
             'cell-greater': (params) => {
               if (params.node.isRowPinned()) return false;
               const base = toNumber(params.data?.insuredAmount ?? 0);
               const current = toNumber(params.value ?? 0);
               return current > base;
             },
+            // 현재설계 가입금액 기준보다 제안액이 작은 경우 파란색 하이라이트 클래스 부여
             'cell-less': (params) => {
               if (params.node.isRowPinned()) return false;
               const base = toNumber(params.data?.insuredAmount ?? 0);
@@ -395,12 +434,14 @@ const Ltpz068 = () => {
           cellClass: 'text-right pr-2!',
           valueFormatter: (p) => numericFormatter(p.value),
           cellClassRules: {
+            // 현재설계 보험료 기준보다 제안액이 큰 경우
             'cell-greater': (params) => {
               if (params.node.isRowPinned()) return false;
               const base = toNumber(params.data?.premium ?? 0);
               const current = toNumber(params.value ?? 0);
               return current > base;
             },
+            // 현재설계 보험료 기준보다 제안액이 작은 경우
             'cell-less': (params) => {
               if (params.node.isRowPinned()) return false;
               const base = toNumber(params.data?.premium ?? 0);
@@ -416,6 +457,7 @@ const Ltpz068 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="2xl">
+        {/* 다이얼로그 상단 타이틀 */}
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -427,7 +469,9 @@ const Ltpz068 = () => {
           </DialogTitle>
         </DialogHeader>
 
+        {/* 다이얼로그 본문 섹션 */}
         <DialogSection className="grid-rows-[auto_1fr] gap-2 pt-[2rem]">
+          {/* 상단 AI 해결안 가이드 멘트 */}
           <Grow className="w-full justify-start">
             <Ai2Icon color={'var(--color-information-50)'} />
             <Typo variant={'body-lg'} className="font-bold">
@@ -436,11 +480,17 @@ const Ltpz068 = () => {
             </Typo>
           </Grow>
 
-          {/* A안 / B안 / C안 상단 탭 */}
+          {/* 중단: 추천 플랜(A안, B안, C안) 상단 탭바 & 그리드 영역 */}
+          {/* 
+            [디자인 특징] 
+            아래 Grid(tabs)는 Ag-Grid 테이블 본체의 헤더 윗부분과 절묘하게 오버랩되도록 
+            absolute absolute top-[-4rem] right-0 좌표로 고정 배치되어 
+            각 열(Column)들과 일정한 세로 구분선 영역을 형성합니다.
+          */}
           <div className="relative">
             <Grid className="grid-cols-[15.8rem_16rem_16.2rem_17.6rem]  h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
+              {/* 현재 설계 고정 영역 */}
               <div className="flex flex-col w-full cursor-pointer h-[100%]">
-                {/* 탭 헤더 */}
                 <Grow className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 ">
                   <div className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem] w-full pointer-events-auto bg-[var(--color-primary-50)]">
                     <Typo className="text-[1.4rem] font-bold text-white">현재</Typo>
@@ -451,6 +501,7 @@ const Ltpz068 = () => {
                   ></div>
                 </Grow>
               </div>
+              {/* AI 제안 플랜 A안, B안, C안 선택 탭 */}
               {PLAN_COLS.map(({ key: plan }) => {
                 const isActive = selectedPlan === plan;
                 const bg = isActive ? 'var(--color-information-50)' : 'var(--color-secondary-50)';
@@ -469,7 +520,6 @@ const Ltpz068 = () => {
                     }}
                     aria-pressed={isActive}
                   >
-                    {/* 탭 헤더 */}
                     <Grow className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 ">
                       <div
                         className="flex flex-row items-center justify-between h-[4rem] py-2 px-4 rounded-t-[1rem] w-full pointer-events-auto"
@@ -493,7 +543,7 @@ const Ltpz068 = () => {
                 );
               })}
             </Grid>
-            {/* 그리드 */}
+            {/* 가입 설계 금액 대조용 Ag-Grid 본체 */}
             <div className="ag-theme-alpine relative !h-[calc(100vh)] !max-h-[50rem]">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
@@ -510,12 +560,13 @@ const Ltpz068 = () => {
                 tooltipShowMode="standard"
                 tooltipShowDelay={0}
                 getRowStyle={(params) => (params.node.rowPinned ? { fontWeight: 'bold' } : undefined)}
-                pinnedBottomRowData={sumRow}
+                pinnedBottomRowData={sumRow} // 하단 누적 합계 적용
               />
             </div>
           </div>
         </DialogSection>
 
+        {/* 다이얼로그 하단 푸터 버튼 */}
         <DialogFooter>
           <DialogFooterArea>
             <Grow>

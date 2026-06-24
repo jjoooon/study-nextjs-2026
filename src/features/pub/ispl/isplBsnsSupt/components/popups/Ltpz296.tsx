@@ -33,21 +33,27 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
+/**
+ * 그룹설정 그리드(그리드 A)용 데이터 타입
+ */
 type DummyDataTypeA = {
   id: number;
   isChecked: boolean;
-  field1: string;
-  field2: string;
-  field3: string;
-  field4: string;
-  field5: string | number;
-  field6: string;
-  field7: string;
-  field8: string;
-  field9: string;
-  field10: string;
+  field1: string; // 그룹명
+  field2: string; // 인원
+  field3: string; // 성별
+  field4: string; // 평균연령
+  field5: string | number; // 직업코드
+  field6: string; // 직업명
+  field7: string; // 급수
+  field8: string; // 운전용도
+  field9: string; // 보험료
+  field10: string; // 등록인원
 };
 
+/**
+ * 그룹설정 그리드(그리드 A)용 더미 데이터
+ */
 const DummyDataA: DummyDataTypeA[] = [
   {
     id: 1,
@@ -65,33 +71,39 @@ const DummyDataA: DummyDataTypeA[] = [
   },
 ];
 
+/**
+ * 피보험자 명세 그리드(그리드 B)용 데이터 타입
+ */
 type DummyDataTypeB = {
   id: number;
   isChecked: boolean;
-  field1: string | number;
-  field2: string | number;
-  field3: string | number;
-  field4: string | number;
-  field5: string | number;
-  field6: string | number;
-  field7: string | number;
-  field8: string | number;
-  field9: string | number;
-  field10: string | number;
-  field11: string | number;
-  field12: string | number;
-  field13: string | number;
-  field14: string | number;
-  field15: string | number;
-  field16: string | number;
-  field17: string | number;
-  field18: string | number;
-  field19: string | number;
-  field20: string | number;
-  field21: string | number;
-  field22: string | number;
+  field1: string | number; // 그룹명
+  field2: string | number; // 이름
+  field3: string | number; // 주민등록번호
+  field4: string | number; // 전화번호(국번)
+  field5: string | number; // 전화번호(앞자리)
+  field6: string | number; // 전화번호(뒷자리)
+  field7: string | number; // 동의 여부
+  field8: string | number; // 관계
+  field9: string | number; // 연령
+  field10: string | number; // 급수
+  field11: string | number; // 직업코드
+  field12: string | number; // 직업명
+  field13: string | number; // 업종
+  field14: string | number; // 직무
+  field15: string | number; // 운전형태
+  field16: string | number; // 이륜차 여부
+  field17: string | number; // 병력 여부
+  field18: string | number; // 치아병력 여부
+  field19: string | number; // 알릴사항
+  field20: string | number; // 사망수익자
+  field21: string | number; // 사망외수익자
+  field22: string | number; // 보험료
 };
 
+/**
+ * 피보험자 명세 그리드(그리드 B)용 더미 데이터
+ */
 const DummyDataB: DummyDataTypeB[] = [
   {
     id: 1,
@@ -120,11 +132,25 @@ const DummyDataB: DummyDataTypeB[] = [
     field22: 'text',
   },
 ];
+
+/**
+ * @component Ltpz296
+ * @description 담보별 피보험자명세관리 팝업 다이얼로그 컴포넌트
+ * - 단체보험 가입 설계 시, 피보험자 그룹 설정 및 다수의 피보험자 명세를 일괄 등록/수정하는 화면입니다.
+ * - 주요 기능:
+ *   1. 피보험자 그룹 설정 (추가, 삭제 및 직업/운전 용도 설정)
+ *   2. 피보험자 명세 관리 (개별/일괄 등록, 엑셀 가져오기 및 내보내기)
+ *   3. 수익자/주소/연락처 정보의 일괄 일괄 등록 기능 제공
+ */
 export const Ltpz296 = () => {
+  // 반응형 그리드 열 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 그리드 A (그룹설정) 제어를 위한 API Ref 및 로우 데이터 상태
   const gridApiRefA = React.useRef<GridApi<DummyDataTypeA> | null>(null);
   const [rowDataA, setRowDataA] = React.useState<DummyDataTypeA[]>(DummyDataA);
 
+  // 그리드 A 신규 행(그룹) 추가 핸들러
   const handleAddRowA = createAddRowHandler<DummyDataTypeA, number>(setRowDataA, {
     idKey: 'id',
     getNextId: getNextNumericRowId,
@@ -146,15 +172,20 @@ export const Ltpz296 = () => {
     gridApiRef: gridApiRefA,
   });
 
+  // 그리드 A 선택된 행(그룹) 삭제 핸들러
   const handleDeleteRowA = createDeleteSelectedRowsHandler<DummyDataTypeA>(setRowDataA, gridApiRefA, {
     idKey: 'id',
   });
 
-  // 2026-05-27 그룹추가시 select 화살표만 노출
+  /**
+   * 2026-05-27 그룹추가시 select 화살표만 노출
+   * 셀렉트(Select) 타입의 편집셀에서 값이 비어있을 때 드롭다운 화살표(ag-icon-small-down)를 표시하여 사용자 편집을 유도하는 공통 렌더러
+   */
   const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
     const value = params.value == null ? '' : String(params.value);
     const hasValue = value.trim().length > 0;
 
+    // 값이 존재하면 가운데 정렬 텍스트 출력
     if (hasValue) {
       return (
         <div className="flex h-full w-full items-center justify-center px-1">
@@ -163,6 +194,7 @@ export const Ltpz296 = () => {
       );
     }
 
+    // 값이 없을 때는 오른쪽에 드롭다운 모양의 다운 아로우 아이콘 출력
     return (
       <div className="flex h-full w-full items-center justify-between gap-1 px-1">
         <span className="block min-w-0 flex-1" />
@@ -172,6 +204,7 @@ export const Ltpz296 = () => {
   }, []);
 
   // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
+  // 그리드 A (그룹설정) 컬럼 정의
   const columnDefsA = React.useMemo<ColDef<DummyDataTypeA>[]>(
     () => [
       {
@@ -219,6 +252,7 @@ export const Ltpz296 = () => {
         minWidth: attributeColumnWidth(120),
         editable: true,
         cellClass: 'editable-cell text-center',
+        // 직업코드 셀 내부에 값과 돋보기 검색 버튼을 함께 노출
         cellRenderer: (_params: ICellRendererParams<DummyDataTypeA>) => (
           <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
             <Typo>{_params.value}</Typo>
@@ -278,9 +312,12 @@ export const Ltpz296 = () => {
     ],
     [attributeColumnWidth, selectCellRenderer]
   );
+
+  // 그리드 B (피보험자명세) 제어를 위한 API Ref 및 로우 데이터 상태
   const gridApiRefB = React.useRef<GridApi<DummyDataTypeB> | null>(null);
   const [rowDataB, setRowDataB] = React.useState<DummyDataTypeB[]>(DummyDataB);
 
+  // 그리드 B 신규 행(피보험자명세) 추가 핸들러
   const handleAddRowB = createAddRowHandler<DummyDataTypeB, number>(setRowDataB, {
     idKey: 'id',
     getNextId: getNextNumericRowId,
@@ -314,11 +351,13 @@ export const Ltpz296 = () => {
     gridApiRef: gridApiRefB,
   });
 
+  // 그리드 B 선택된 행(피보험자명세) 삭제 핸들러
   const handleDeleteRowB = createDeleteSelectedRowsHandler<DummyDataTypeB>(setRowDataB, gridApiRefB, {
     idKey: 'id',
   });
 
   // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
+  // 그리드 B (피보험자명세) 컬럼 정의
   const columnDefsB = React.useMemo<ColDef<DummyDataTypeB>[]>(
     () => [
       {
@@ -329,7 +368,7 @@ export const Ltpz296 = () => {
         editable: true,
         cellClass: 'editable-cell text-center',
         sortable: false,
-        pinned: 'left',
+        pinned: 'left', // 좌측 스크롤 고정
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['선택1', '선택2'] },
         cellRenderer: selectCellRenderer,
@@ -342,7 +381,7 @@ export const Ltpz296 = () => {
         editable: true,
         cellClass: 'editable-cell text-center',
         sortable: false,
-        pinned: 'left',
+        pinned: 'left', // 좌측 스크롤 고정
         cellRenderer: (_params: ICellRendererParams<DummyDataTypeB>) => (
           <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
             <Typo>{_params.value}</Typo>
@@ -360,10 +399,11 @@ export const Ltpz296 = () => {
         editable: true,
         cellClass: 'editable-cell text-center',
         sortable: false,
-        pinned: 'left',
+        pinned: 'left', // 좌측 스크롤 고정
       },
       {
         headerName: '전화번호(휴대폰)',
+        // 하위 컬럼을 국/앞/뒤 구조로 3단 분할 구성
         children: [
           {
             field: 'field4',
@@ -553,9 +593,11 @@ export const Ltpz296 = () => {
     ],
     [attributeColumnWidth, selectCellRenderer]
   );
+
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="full">
+        {/* 다이얼로그 타이틀 영역 */}
         <DialogHeader>
           <DialogTitle>
             {/* 2026-05-27 텍스트 수정 */}
@@ -567,7 +609,10 @@ export const Ltpz296 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
+
+        {/* 다이얼로그 본문 영역 */}
         <DialogSection className="w-full h-full grid-rows-[auto_1fr]">
+          {/* 상단: 조회 조건 설정 폼 */}
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable
               variant={'head'}
@@ -620,8 +665,10 @@ export const Ltpz296 = () => {
               </Button>
             </Grow>
           </Grow>
-          {/* 2026-05-27 div 추가 */}
+
+          {/* 2026-05-27 div 추가 - 실데이터 그리드 및 일괄 처리 영역 */}
           <div className="flex flex-col gap-3">
+            {/* 1. 그룹 설정 영역 */}
             <TableFold>
               <TableFoldHead title="그룹설정">
                 <Grow>
@@ -669,6 +716,8 @@ export const Ltpz296 = () => {
                 </div>
               </TableFoldBody>
             </TableFold>
+
+            {/* 2. 피보험자 명세 관리 영역 */}
             <TableFold>
               <TableFoldHead title="피보험자 명세">
                 <Grow>
@@ -728,6 +777,8 @@ export const Ltpz296 = () => {
                 </div>
               </TableFoldBody>
             </TableFold>
+
+            {/* 3. 일반정보 일괄 등록 영역 */}
             <TableFold>
               <TableFoldHead title="일반정보 일괄 등록(선택된 피보험자에게 아래의 정보로 일괄 등록 됩니다.)">
                 <Grow>
@@ -854,6 +905,8 @@ export const Ltpz296 = () => {
                 </FormTable>
               </TableFoldBody>
             </TableFold>
+
+            {/* 4. 피보험자 직장 주소 및 연락처 일괄 입력 영역 */}
             <TableFold>
               <TableFoldHead title="피보험자 직장 주소 및 연락처 일괄 입력(저장시 고객정보에 반영)"></TableFoldHead>
               <TableFoldBody>
@@ -923,6 +976,8 @@ export const Ltpz296 = () => {
             </TableFold>
           </div>
         </DialogSection>
+
+        {/* 다이얼로그 하단 푸터 영역 */}
         <DialogFooter>
           <DialogFooterArea>
             <Grow>

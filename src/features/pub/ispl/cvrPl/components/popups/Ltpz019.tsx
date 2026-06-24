@@ -35,27 +35,44 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
+/**
+ * 상품정보 그리드(그리드 1)용 데이터 타입
+ */
 type DummyDataType = {
   id: number;
-  field1: string | number;
-  field2: string | number;
+  field1: string | number; // 상품분류
+  field2: string | number; // 상품명
 };
+
+/**
+ * 종정보 그리드(그리드 2)용 데이터 타입
+ */
 type DummyDataType2 = {
   id: number;
-  field1: string | number;
-  field2: string | number;
+  field1: string | number; // 종구분 (예: 1종, 2종)
+  field2: string | number; // 종 상세 설명
 };
+
+/**
+ * 하단 플랜명 그리드(그리드 3) 탭의 데이터 타입
+ */
 type Ltpz032TabType = {
   name: string;
   value: string;
   label: string;
 };
 
+/**
+ * 하단 플랜명 그리드(그리드 3)용 데이터 타입
+ */
 type DummyDataType3 = {
   id: number;
-  field1: string | number;
+  field1: string | number; // 플랜명
 };
 
+/**
+ * 플랜명 목록 더미 데이터
+ */
 const dummyData3: DummyDataType3[] = [
   {
     id: 1,
@@ -91,6 +108,9 @@ const dummyData3: DummyDataType3[] = [
   },
 ];
 
+/**
+ * 종정보 목록 더미 데이터
+ */
 const dummyData2: DummyDataType2[] = [
   {
     id: 1,
@@ -140,6 +160,9 @@ const dummyData2: DummyDataType2[] = [
   },
 ];
 
+/**
+ * 상품정보 목록 더미 데이터
+ */
 const dummyData: DummyDataType[] = [
   {
     id: 1,
@@ -218,6 +241,9 @@ const dummyData: DummyDataType[] = [
   },
 ];
 
+/**
+ * 플랜 선택 탭을 구성하기 위한 정보 리스트
+ */
 const DATA_TABS: Ltpz032TabType[] = [
   {
     name: '회사플랜',
@@ -236,10 +262,26 @@ const DATA_TABS: Ltpz032TabType[] = [
   },
 ];
 
+/**
+ * @component Ltpz019
+ * @description 다른상품설계 팝업 다이얼로그 컴포넌트
+ * - 고객이 기 선택한 설계 내용 대신 다른 상품, 종, 플랜을 적용하여 새 설계를 진행하고자 할 때 사용합니다.
+ * - 주요 기능:
+ *   1. 현재 진행 중인 설계 및 고객 정보 요약 표시
+ *   2. 현재 설계 고객 기준 연동 설계 진행 여부 선택 (Radio)
+ *   3. 상품정보 목록 필터링(상품명 검색 및 콤보 박스 툴팁 제어)
+ *   4. 상품 선택 시 하위 종정보(Ag-Grid) 및 플랜명(TabPager + Ag-Grid) 상세 확인
+ */
 const Ltpz019 = () => {
+  // 상품명 툴팁 말풍선 일괄 노출 상태값
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
+  // 상품명 검색 필터 텍스트 상태값
   const [coverageName, setCoverageName] = useState('');
 
+  /**
+   * 상품정보 그리드의 '상품명' 컬럼 헤더에 커스텀 렌더링될 필터 컴포넌트
+   * - 검색 입력창, 조회/초기화 버튼 및 툴팁 일괄 노출용 체크박스를 포함합니다.
+   */
   const productNameHeader = useCallback(() => {
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
       setShowProductNameTooltip(!!checked);
@@ -280,10 +322,16 @@ const Ltpz019 = () => {
     );
   }, [coverageName, showProductNameTooltip]);
 
+  /**
+   * 상품정보 그리드 내 상품명 말줄임 처리 렌더러
+   */
   const titleRenderer = useCallback((params: ICellRendererParams<DummyDataType>) => {
     return <p className="truncate w-full pl-1.5">{params.data?.field2 ?? ''}</p>;
   }, []);
+
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 1. 상품정보 그리드 컬럼 설정
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
       {
@@ -300,19 +348,22 @@ const Ltpz019 = () => {
         sortable: false,
         filter: false,
         autoHeight: true,
-        suppressMovable: true, // 이동 방지
-        lockPinned: true, // 고정 열에서 제외 방지
+        suppressMovable: true, // 컬럼 드래그 이동 방지
+        lockPinned: true, // 고정 컬럼 해제 방지
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({
           label: '상품명',
           field: 'field2',
         }),
-        headerComponent: productNameHeader,
+        headerComponent: productNameHeader, // 헤더 필터 컴포넌트 지정
         cellRenderer: titleRenderer,
       },
     ],
     [attributeColumnWidth, titleRenderer, productNameHeader]
   );
 
+  /**
+   * 종구분 그리드 내에서 종 정보(번호)와 상세 설명 텍스트를 좌우 분할하여 표시하는 렌더러
+   */
   const designCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
     return (
       <Grow className="h-full w-full">
@@ -324,6 +375,7 @@ const Ltpz019 = () => {
     );
   };
 
+  // 2. 종정보 그리드 컬럼 설정
   const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
     () => [
       {
@@ -338,6 +390,7 @@ const Ltpz019 = () => {
     []
   );
 
+  // 3. 하단 플랜명 그리드 컬럼 설정
   const columnDefs3 = React.useMemo<ColDef<DummyDataType3>[]>(
     () => [
       {
@@ -350,11 +403,13 @@ const Ltpz019 = () => {
     []
   );
 
+  // useTabs 훅을 활용한 회사/기관/나만의 플랜 탭바 상태 관리
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
+        {/* 팝업 헤더 영역 */}
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -366,7 +421,9 @@ const Ltpz019 = () => {
           </DialogTitle>
         </DialogHeader>
 
+        {/* 팝업 본문 콘텐츠 영역 */}
         <DialogSection className="grid-rows-[auto_1fr]">
+          {/* 상단: 현재 가입 진행 중인 기본 정보 테이블 */}
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="head">
               <FormRow>
@@ -380,15 +437,16 @@ const Ltpz019 = () => {
             </FormTable>
           </Grow>
 
+          {/* 중단 및 하단: 상품 선택 본문 레이아웃 */}
           <Gcol placement={'ss'} className="w-full" gap={2}>
-            {/* 간편설계인 경우 */}
+            {/* 간편설계 안내 문구 */}
             <Gcol placement={'ss'} className="w-full">
               <Typo variant={'body-lg'} weight={'bold'} className="flex items-center">
                 간편설계를 생성할 상품을 선택해주세요.
               </Typo>
             </Gcol>
 
-            {/* 상세설계인 경우 */}
+            {/* 설계 모드 조건 질문 (Radio) */}
             <Gcol gap={3} placement={'ss'}>
               <Gcol placement={'ss'} className="w-full">
                 <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
@@ -410,14 +468,16 @@ const Ltpz019 = () => {
               </Gcol>
               <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
                 <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
-                  2
+                  2{/* 상품을 선택해주세요. */}
                 </Badge>
                 상품을 선택해주세요.
               </Typo>
             </Gcol>
 
+            {/* 본문 그리드: 2분할 레이아웃 (상품정보 vs 종/플랜정보) */}
             <Grow placement={'ss'} className="w-full gap-3">
               <Grid className="w-full grid-cols-[5fr_2fr] gap-3">
+                {/* 좌측: 상품정보 리스트 (Ag-Grid) */}
                 <TableFold variant={'default'}>
                   <TableFoldHead title="상품정보">
                     <Grow>
@@ -426,6 +486,7 @@ const Ltpz019 = () => {
                     </Grow>
                   </TableFoldHead>
                   <TableFoldBody className="w-full">
+                    {/* showProductNameTooltip 값에 따라 말풍선 노출을 제어하기 위해 CSS 클래스 동적 부여 */}
                     <div
                       className={`h-full tooltip-hidden-toggle ag-theme-alpine inner-scroll ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                       data-row={dummyData.length}
@@ -446,10 +507,13 @@ const Ltpz019 = () => {
                     </div>
                   </TableFoldBody>
                 </TableFold>
+
+                {/* 우측: 종정보 및 플랜명 리스트 */}
                 <TableFold variant={'default'}>
                   <TableFoldHead title="종정보"></TableFoldHead>
                   <TableFoldBody>
                     <Gcol className="w-full" gap={3}>
+                      {/* 우측 상단: 종 정보 리스트 (Ag-Grid) */}
                       <Gcol className="w-full">
                         <div className="ag-theme-alpine w-full inner-scroll" data-row={dummyData2.length}>
                           <AgGridReact<DummyDataType2>
@@ -467,6 +531,8 @@ const Ltpz019 = () => {
                           />
                         </div>
                       </Gcol>
+
+                      {/* 우측 하단: 플랜구분 탭 및 플랜명 목록 (TabPager + Ag-Grid) */}
                       <Gcol className="w-full">
                         <TabPager
                           data={tabs}
@@ -509,6 +575,7 @@ const Ltpz019 = () => {
           </Gcol>
         </DialogSection>
 
+        {/* 다이얼로그 하단 푸터 버튼 */}
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
