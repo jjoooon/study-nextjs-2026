@@ -8,14 +8,17 @@ import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
   createTooltipValueGetter,
   useDynamicColumnWidths,
 } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TabPager } from '@common/TabPager';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -27,9 +30,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TabPager } from '@common/TabPager';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type Ltpz032TabType = {
   name: string;
@@ -838,7 +838,7 @@ const DummyData23: DummyDataType23[] = [
     field2_09: '한화병원한화병원',
     field2_10: '한화 더건강한 한아름종합보험2601 한화 더건강한 한아름종합보험2601',
     field2_11: '납입면제형, 기본형',
-    field2_12: 'LA260204310842',
+    field2_12: 'LA123456789012',
     field2_13: '2026-01-01',
   },
 ];

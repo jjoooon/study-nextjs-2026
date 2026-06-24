@@ -727,7 +727,7 @@ export default function Ltpa050Section() {
                   <FormRow>
                     <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
                       <Button color="link" onClick={() => {}} only="default" size="md" variant="text">
-                        <b>LA260204310632-1</b>
+                        <b>LA123456789012-1</b>
                       </Button>
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />
@@ -895,7 +895,7 @@ export default function Ltpa050Section() {
                   <FormRow>
                     <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
                       <Button color="link" onClick={() => {}} only="default" size="md" variant="text">
-                        <b>LA260204310632-1</b>
+                        <b>LA123456789012-1</b>
                       </Button>
                       <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                         <SearchIcon color={'var(--color-primary-50)'} />

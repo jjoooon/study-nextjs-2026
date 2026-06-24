@@ -239,7 +239,7 @@ const Ltpz097 = () => {
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input width={120} value={'LA260204310632'} />
+                  <Input width={120} value={'LA123456789012'} />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>

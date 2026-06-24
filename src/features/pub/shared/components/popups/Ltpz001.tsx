@@ -264,7 +264,7 @@ const Ltpz001 = () => {
                       <FormTable variant={'head'} className="w-full">
                         <FormRow>
                           <FormCell title={'설계번호'}>
-                            <Input value={'LA26029313558'} variant="info" readOnly />
+                            <Input value={'LA123456789012'} variant="info" readOnly />
                           </FormCell>
                           <FormCell title={'계약자명'}>
                             <Input value={'김한화'} readOnly variant="info" />
@@ -500,7 +500,7 @@ const Ltpz001 = () => {
                       </Typo>
                       <BulletList size={'sm'}>
                         <BulletListItem>
-                          LA26022432174_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
+                          LA01234567890_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
                         </BulletListItem>
                       </BulletList>
                     </Gcol>
@@ -540,7 +540,7 @@ const Ltpz001 = () => {
                       </Typo>
                       <BulletList size={'sm'}>
                         <BulletListItem>
-                          LA26022432174_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
+                          LA01234567890_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
                         </BulletListItem>
                       </BulletList>
                     </Gcol>
@@ -626,7 +626,7 @@ const Ltpz001 = () => {
                       </Typo>
                       <BulletList size={'sm'}>
                         <BulletListItem>
-                          LA26022432174_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
+                          LA01234567890_한화 운전자 상해 보험 무배당2601_가입제안서(상품설명요약)
                         </BulletListItem>
                       </BulletList>
                     </Gcol>

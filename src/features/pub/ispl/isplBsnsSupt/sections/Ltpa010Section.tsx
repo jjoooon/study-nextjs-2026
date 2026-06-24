@@ -980,7 +980,7 @@ export default function Ltpa010Section() {
                         </Button>
                       </Grow>
                     ) : (
-                      <Input aria-label="번호" width={130} value={'LA2608902384509'} readOnly />
+                      <Input aria-label="번호" width={130} value={'LA123456789012'} readOnly />
                     )}
                   </FormCell>
                   <FormCell title={'설계상태'}>

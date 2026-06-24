@@ -9,9 +9,11 @@
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent } from '@aggrid';
+import { Grow, Typo } from '@atoms';
 
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,8 +26,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -85,7 +85,7 @@ const Ltpz083 = () => {
             <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[5rem]', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="설계번호" variant={'info'} value={'LA260209312558'} readOnly />
+                  <Input aria-label="설계번호" variant={'info'} value={'LA123456789012'} readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>

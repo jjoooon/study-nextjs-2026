@@ -47,7 +47,7 @@ const Ltpz024 = () => {
                     className="whitespace-nowrap"
                     tdClassName="grid grid-cols-[auto_auto_1fr_auto] gap-1"
                   >
-                    <Input width={'quoteNo'} value={'LA260209313558'} readOnly />
+                    <Input width={'quoteNo'} value={'LA123456789012'} readOnly />
                     {/* 2026-05-26 버튼 비활성화 */}
                     <Button
                       aria-label="검색"

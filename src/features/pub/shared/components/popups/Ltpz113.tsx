@@ -8,9 +8,12 @@ import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { ResetIcon, SearchIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableMore } from '@common/TablePagination';
+import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -25,10 +28,6 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableMore } from '@common/TablePagination';
 
 // dummy data
 type DummyDataType = {
@@ -45,7 +44,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: 'LA260408138365',
+    field01: 'LA123456789012',
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604 한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화화',
     field04: '123647000',
@@ -56,7 +55,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
-    field01: 'LA260408138365',
+    field01: 'LA123456789012',
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화',
     field04: '64700',
@@ -67,7 +66,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
-    field01: 'LA260408138365',
+    field01: 'LA123456789012',
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화',
     field04: '64700',
@@ -78,7 +77,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
-    field01: 'LA260408138365',
+    field01: 'LA123456789012',
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화',
     field04: '64700',
@@ -89,7 +88,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 5,
-    field01: 'LA260408138365',
+    field01: 'LA123456789012',
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화',
     field04: '64700',
@@ -100,7 +99,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 6,
-    field01: 'LA260408138365',
+    field01: 'LA123456789012',
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화화',
     field04: '64700',
@@ -111,7 +110,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 7,
-    field01: 'LA260408138365',
+    field01: 'LA123456789012',
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화화',
     field04: '64700',
@@ -122,7 +121,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 8,
-    field01: 'LA260408138365',
+    field01: 'LA123456789012',
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화화',
     field04: '64700',
@@ -133,7 +132,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 9,
-    field01: 'LA260408138365',
+    field01: 'LA123456789012',
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화화',
     field04: '64700',
@@ -144,7 +143,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 10,
-    field01: 'LA260408138365',
+    field01: 'LA123456789012',
     field02: '한화 더 경증 간편건강 보험(만기형) 무배당 2604',
     field03: '김한화화',
     field04: '64700',

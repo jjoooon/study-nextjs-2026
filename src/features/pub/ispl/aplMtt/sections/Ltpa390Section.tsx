@@ -72,7 +72,7 @@ export default function Ltpa390Section() {
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable variant={'head'} lineTop={false} caption="설계번호">
                 <FormRow>
-                  <FormCell title={'설계번호'}>LA2608902384509</FormCell>
+                  <FormCell title={'설계번호'}>LA123456789012</FormCell>
                 </FormRow>
               </FormTable>
             </Grow>

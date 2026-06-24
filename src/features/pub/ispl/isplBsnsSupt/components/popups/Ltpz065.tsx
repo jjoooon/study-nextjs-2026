@@ -228,7 +228,7 @@ const Ltpz065 = () => {
             <FormTable variant={'none'} lineTop={false} cols={['w-1', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_auto_auto_1fr] gap-1">
-                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={130} value={'LA123456789012'} readOnly />
                   -
                   <Input width={30} value={'1'} readOnly />
                   <b>한화 더건강한 한아름종합보험2601</b>

@@ -52,7 +52,7 @@ type Ltpa400DummyDataRow = {
 const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
   {
     id: 1,
-    field01: 'LA260209313558',
+    field01: 'LA123456789012',
     field02: '신부산GA지점',
     field03: '에이플러스-서면(34577)',
     field04: '김한화화(4649380)',
@@ -67,7 +67,7 @@ const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
   },
   {
     id: 2,
-    field01: 'LA260209313558',
+    field01: 'LA123456789012',
     field02: '신부산GA지점',
     field03: '에이플러스-서면(34577)',
     field04: '김한화화(4649111)',

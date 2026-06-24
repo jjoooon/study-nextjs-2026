@@ -8,8 +8,6 @@ import type { ColDef, EditableCallbackParams, ICellRendererParams, RowSelectedEv
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useState, useRef } from 'react';
 import * as React from 'react';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -19,6 +17,11 @@ import {
   useDynamicColumnWidths,
   CustomGridLoadingOverlay,
 } from '@aggrid';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { SearchIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -36,9 +39,6 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 export type DummyDataType = {
   id: number;
@@ -298,7 +298,7 @@ const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
                   title={'설계번호'}
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                 >
-                  <Input aria-label="" width={'quoteNo'} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
                   -
                   <Input aria-label="" width={26} value={'1'} readOnly />
                   <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />

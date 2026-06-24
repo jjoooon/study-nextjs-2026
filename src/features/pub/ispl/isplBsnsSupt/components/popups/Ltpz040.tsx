@@ -210,7 +210,7 @@ const Ltpz040 = () => {
                   title={'설계번호'}
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                 >
-                  <Input aria-label="" width={130} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={130} value={'LA123456789012'} readOnly />
                   -
                   <Input aria-label="" width={30} value={'1'} readOnly />
                   <Input aria-label="" variant="info" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />

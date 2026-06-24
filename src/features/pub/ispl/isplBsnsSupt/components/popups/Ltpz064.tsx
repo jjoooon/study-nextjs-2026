@@ -392,7 +392,7 @@ export const Ltpz064 = () => {
                 <FormCell title={'설계번호'}>
                   <Input
                     aria-label="설계번호 입력"
-                    value={'LA26022432174'}
+                    value={'LA01234567890'}
                     onChange={() => {}}
                     variant="info"
                     readOnly

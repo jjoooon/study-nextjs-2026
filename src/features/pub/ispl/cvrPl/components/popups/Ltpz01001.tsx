@@ -6,8 +6,9 @@
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,7 +20,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -199,7 +199,7 @@ export const Ltpz01001 = () => {
               variant="head"
             >
               <FormRow>
-                <FormCell title={'설계번호'}>LA26029313558</FormCell>
+                <FormCell title={'설계번호'}>LA123456789012</FormCell>
                 <FormCell title={'보험시기'}>20260112</FormCell>
                 <FormCell title={'적용성별'}>여자</FormCell>
                 <FormCell title={'출산예정일'}>20260301</FormCell>

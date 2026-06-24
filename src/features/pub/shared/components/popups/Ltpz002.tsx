@@ -44,7 +44,7 @@ const dummyData: DummyDataType[] = [
     id: 1,
     field1: '구분정보',
     field2: '보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명 ',
-    field3: 'LA26020945959594',
+    field3: 'LA123456789012',
     field4: '한화한화',
     field5: '290000',
     field6: '2023-01-01',
@@ -54,7 +54,7 @@ const dummyData: DummyDataType[] = [
     id: 2,
     field1: '구분정보',
     field2: '보험종목명 ',
-    field3: 'LA26020945959594',
+    field3: 'LA123456789012',
     field4: '계약자',
     field5: '290000',
     field6: '2023-01-01',
@@ -64,7 +64,7 @@ const dummyData: DummyDataType[] = [
     id: 3,
     field1: '구분정보',
     field2: '보험종목명 ',
-    field3: 'LA26020945959594',
+    field3: 'LA123456789012',
     field4: '계약자',
     field5: '290000',
     field6: '2023-01-01',
@@ -343,7 +343,7 @@ const Ltpz002 = () => {
                     <TableFoldBody className="grid-rows-[auto_1fr] gap-[0.8rem]">
                       <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[14.5rem]']}>
                         <FormRow>
-                          <FormCell title={'설계번호'}>LA260112297637</FormCell>
+                          <FormCell title={'설계번호'}>LA123456789012</FormCell>
                           <FormCell title={'설계상태'}>설계완료</FormCell>
                         </FormRow>
                         <FormRow>
@@ -381,7 +381,7 @@ const Ltpz002 = () => {
                     <TableFoldBody className="grid-rows-[auto_1fr] gap-[0.8rem]">
                       <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[14.5rem]']}>
                         <FormRow>
-                          <FormCell title={'설계번호'}>LA260112297637</FormCell>
+                          <FormCell title={'설계번호'}>LA123456789012</FormCell>
                           <FormCell title={'설계상태'}>설계완료</FormCell>
                         </FormRow>
                         <FormRow>

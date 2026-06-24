@@ -7,12 +7,8 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterpris
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Grid, Grow, Gcol } from '@atoms';
-import { ResetIcon, SearchIcon } from '@icons';
 import { AgGridEmptyComponent, createFieldRenderer, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
@@ -22,8 +18,12 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import '@/shared/lib/agGridPub';
 
@@ -47,7 +47,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -62,7 +62,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -77,7 +77,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -92,7 +92,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -107,7 +107,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 5,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -122,7 +122,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 6,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -137,7 +137,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 7,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -152,7 +152,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 8,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -167,7 +167,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 9,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -182,7 +182,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 10,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -197,7 +197,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 11,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -212,7 +212,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 12,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',

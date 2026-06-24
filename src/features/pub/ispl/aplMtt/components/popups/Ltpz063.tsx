@@ -13,8 +13,12 @@ import type {
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Gcol, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, DatePickerCellEditor, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TabPager } from '@common/TabPager';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -28,10 +32,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
 
 import '@/shared/lib/agGridPub';
 
@@ -965,7 +965,7 @@ export const Ltpz063 = () => {
                 <FormCell title={'설계번호'}>
                   <Input
                     aria-label="설계번호 입력"
-                    value={'LA26022432174'}
+                    value={'LA01234567890'}
                     onChange={() => {}}
                     variant="info"
                     readOnly
