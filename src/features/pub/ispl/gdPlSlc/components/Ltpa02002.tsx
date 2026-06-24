@@ -10,14 +10,14 @@ import { useState } from 'react';
 import * as React from 'react';
 import { Ltpa120 } from '@/features/pub/shared/components/popups/Ltpa120';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
-import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
-import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, AiIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, AiIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -782,7 +782,7 @@ export function Ltpa02002({
           >
             {/* 리스트 */}
             <div className="relative w-full h-full after:content-[''] after:block after:absolute after:pointer-events-none after:bottom-0 after:left-0 after:w-[100%] after:h-[3.4rem] after:bg-gradient-to-b after:from-transparent after:to-[#F4F4F4] after:z-10">
-              <div className="relative overflow-y-auto w-full h-full">
+              <div className="relative overflow-y-auto w-full h-full gray-scroll">
                 <Gcol
                   className="absolute top-0 left-0 w-full h-full after:content-[''] after:block after:w-full after:min-h-[1.6rem]"
                   gap={3}
