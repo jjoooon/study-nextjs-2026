@@ -213,6 +213,7 @@ export function ConfirmDialog({
           {showCancel && <AlertDialogCancel onClick={handleCancel}>{cancelLabel}</AlertDialogCancel>}
           {showConfirm && (
             <AlertDialogAction
+              autoFocus
               disabled={isLoading}
               className={
                 tone === 'danger'
