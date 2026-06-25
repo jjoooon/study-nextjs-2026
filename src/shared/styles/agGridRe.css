@@ -796,7 +796,7 @@
   background-color: var(--color-primary-10) !important;
   color: var(--color-primary-50) !important;
   font-weight: 700;
-  border-top:1px solid var(--color-primary-50) !important;
+  border-top: 1px solid var(--color-primary-50) !important;
 }
 
 .ag-row.ag-row-subtotal:hover,
