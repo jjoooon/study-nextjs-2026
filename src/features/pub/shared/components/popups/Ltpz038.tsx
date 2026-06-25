@@ -387,8 +387,16 @@ const Ltpz038 = () => {
                   <Input aria-label="" value={'신부산GA지점'} readOnly />
                 </FormCell>
                 <FormCell title={'설계일자'}>
-                  <DatePickerInput mode="single" onChange={() => {}} required size="lg" width="sm" />-
-                  <DatePickerInput mode="single" onChange={() => {}} required size="lg" width="sm" />
+                  <DatePickerInput
+                    mode="range"
+                    autoRangeDays={7}
+                    autoRangeFix
+                    autoClose
+                    onChange={() => {}}
+                    required
+                    size="lg"
+                    width="sm"
+                  />
                 </FormCell>
               </FormRow>
             </FormTable>
