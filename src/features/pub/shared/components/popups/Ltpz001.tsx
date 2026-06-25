@@ -32,7 +32,7 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@uiux/Table';
+import { Table, TableBody, TableRow, TableHead, TableCell } from '@uiux/Table';
 import { Textarea } from '@uiux/Textarea';
 
 // 출력물 데이터 타입 정의: 트리 구조를 위한 filePath와 각종 상태 값을 포함합니다.
