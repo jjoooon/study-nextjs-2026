@@ -94,11 +94,8 @@ export function InputCombo<TValue = string>({
 
   const normalized = options.map((opt) => (isComboOptionItem(opt) ? opt : { value: opt, label: String(opt) }));
 
-  const filtered = normalized.filter(
-    (opt) =>
-      String(opt.value).toLowerCase().includes(inputValue.toLowerCase()) ||
-      (typeof opt.label === 'string' ? opt.label.toLowerCase().includes(inputValue.toLowerCase()) : false)
-  );
+  // 콤보의 기능을 한가지로 통일하기 위해 필터링을 생략하고 항상 전체 리스트를 보여줍니다.
+  const filtered = normalized;
 
   // value prop 변경 시 최신 상태로 동기화 (렌더 단계에서 동기화)
   if (value !== prevValue) {
@@ -143,6 +140,20 @@ export function InputCombo<TValue = string>({
     }
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    setOpen(true);
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    setPopoverPos({
+      top: rect.bottom + window.scrollY + 4,
+      left: rect.left + window.scrollX,
+      width: rect.width,
+    });
+    if (typeof restProps.onClick === 'function') {
+      restProps.onClick(e);
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     onChange(e.target.value);
@@ -175,6 +186,10 @@ export function InputCombo<TValue = string>({
     }
   };
 
+  const isSelected = (optValue: TValue) => {
+    return optValue === value;
+  };
+
   const popoverStyle: React.CSSProperties | undefined = popoverPos
     ? {
         position: 'absolute',
@@ -193,6 +208,7 @@ export function InputCombo<TValue = string>({
           onChange={handleInputChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          onClick={handleClick}
           onKeyDown={handleKeyDown}
           autoComplete="off"
           data-comboid={testId}
@@ -211,19 +227,22 @@ export function InputCombo<TValue = string>({
                   style={popoverStyle}
                 >
                   <Grid className="grid-cols-[1fr_1fr] gap-2">
-                    {normalized.map((opt, idx) => (
-                      <Button
-                        variant={'outlined'}
-                        color={'gray-light'}
-                        className="rounded-full"
-                        key={`${idx}-${String(opt.value)}`}
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => handleOptionClick(opt)}
-                        onMouseEnter={() => setHoveredIdx(idx)}
-                      >
-                        {opt.label}
-                      </Button>
-                    ))}
+                    {normalized.map((opt, idx) => {
+                      const selected = isSelected(opt.value);
+                      return (
+                        <Button
+                          variant={selected ? 'contained' : 'outlined'}
+                          color={selected ? 'primary' : 'gray-light'}
+                          className="rounded-full"
+                          key={`${idx}-${String(opt.value)}`}
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => handleOptionClick(opt)}
+                          onMouseEnter={() => setHoveredIdx(idx)}
+                        >
+                          {opt.label}
+                        </Button>
+                      );
+                    })}
                   </Grid>
                 </div>,
                 document.body
@@ -241,6 +260,7 @@ export function InputCombo<TValue = string>({
         onChange={handleInputChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onClick={handleClick}
         onKeyDown={handleKeyDown}
         autoComplete="off"
         data-comboid={testId}
@@ -269,21 +289,28 @@ export function InputCombo<TValue = string>({
                       col !== 1 ? `grid grid-cols-${col} [&_tr]:border-0 [&_tr]:-ml-[0.1rem] [&_tr]:-mt-[0.1rem]` : ''
                     )}
                   >
-                    {filtered.map((opt, idx) => (
-                      <tr
-                        key={`${idx}-${String(opt.value)}`}
-                        className={cn(
-                          'cursor-pointer [&_td]:text-[1.3rem]',
-                          'hover:[&_td]:bg-[var(--color-warning-10)]',
-                          hoveredIdx === idx ? '[&_td]:bg-[var(--color-warning-10)]' : undefined
-                        )}
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => handleOptionClick(opt)}
-                        onMouseEnter={() => setHoveredIdx(idx)}
-                      >
-                        {opt.label}
-                      </tr>
-                    ))}
+                    {filtered.map((opt, idx) => {
+                      const selected = isSelected(opt.value);
+                      return (
+                        <tr
+                          key={`${idx}-${String(opt.value)}`}
+                          className={cn(
+                            'cursor-pointer [&_td]:text-[1.3rem]',
+                            'hover:[&_td]:bg-[var(--color-warning-10)]',
+                            selected
+                              ? '[&_td]:bg-[var(--color-warning-30)] [&_td]:font-bold [&_td]:text-[var(--color-primary-60)]'
+                              : hoveredIdx === idx
+                                ? '[&_td]:bg-[var(--color-warning-10)]'
+                                : undefined
+                          )}
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => handleOptionClick(opt)}
+                          onMouseEnter={() => setHoveredIdx(idx)}
+                        >
+                          {opt.label}
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>,

@@ -14,14 +14,13 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
 import { KeyValueItem } from '@common/KeyValueList';
 import { ViewMode } from '@common/ViewMode';
+import { EmpInput } from '@features/EmpInput';
 import { PageID } from '@features/PageID';
 import { SearchIcon, AiIcon } from '@icons';
 import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplatePx0 } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-
 import { Ltpa02001 } from '../components/Ltpa02001';
 import { Ltpa02002 } from '../components/Ltpa02002';
 
@@ -165,12 +164,7 @@ export default function Ltpa020Section() {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grow className="gap-1 shrink-0" placement={'ec'}>
-            <Input aria-label="계약자명 입력" type="text" value={'6012345 박하늘별님달'} width={'full'} />
-            <Button variant={'outlined'} color={'gray-light'} aria-label="계약자 추가" only={'icon'} size={'lg'}>
-              <SearchIcon color="var(--color-primary-50)" />
-            </Button>
-          </Grow>
+          <EmpInput empNo={'12314'} empName={'홍길동'} />
         </Grow>
       </LayoutHead>
       <LayoutTemplatePx0

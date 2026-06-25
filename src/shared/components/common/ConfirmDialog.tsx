@@ -195,7 +195,19 @@ export function ConfirmDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           {title && <AlertDialogTitle>{title}</AlertDialogTitle>}
-          {description ? <AlertDialogDescription>{description}</AlertDialogDescription> : null}
+          {description ? (
+            <AlertDialogDescription>
+              {typeof description === 'string' &&
+              (description.includes('<br') || description.includes('<br/>') || description.includes('<br />'))
+                ? description.split(/<br\s*\/?>/gi).map((line, idx, arr) => (
+                    <React.Fragment key={idx}>
+                      {line}
+                      {idx < arr.length - 1 && <br />}
+                    </React.Fragment>
+                  ))
+                : description}
+            </AlertDialogDescription>
+          ) : null}
         </AlertDialogHeader>
         <AlertDialogFooter>
           {showCancel && <AlertDialogCancel onClick={handleCancel}>{cancelLabel}</AlertDialogCancel>}
