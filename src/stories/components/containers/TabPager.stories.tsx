@@ -763,7 +763,26 @@ export const DynamicTabs: Story = {
               <span className="block">{`${tab.age}세(${tab.gender})`}</span>
             </span>
           )}
-          renderDropdownItem={false}
+          renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
+            <Button
+              variant="text"
+              color="gray"
+              key={String(tab.value)}
+              onClick={() => {
+                setActive(String(tab.value));
+                const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+                if (idx !== -1) {
+                  const page = Math.floor(idx / visibleCount);
+                  setVisibleStart(page * visibleCount);
+                }
+              }}
+            >
+              <span className="flex items-center gap-2">
+                <span className="block">{tab.name}</span>
+                <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+              </span>
+            </Button>
+          )}
         >
           <div className="w-full p-10 bg-[var(--color-gray-5)] flex flex-col items-center justify-center gap-2">
             <h4 className="text-[1.6rem] font-bold">활성화된 탭 ID: {active}</h4>
