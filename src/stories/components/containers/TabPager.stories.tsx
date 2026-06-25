@@ -399,7 +399,44 @@ const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 >
   탭 컨텐츠
 </TabPager>
-\`\`\`
+
+
+### 동적 탭 추가 가이드 (Dynamic Tabs Integration Guide)
+
+TabPager를 사용하여 동적으로 탭을 추가하고 삭제하는 권장 방식은 **부모 컴포넌트의 React State(상태)를 기반**으로 제어하는 것입니다.
+
+#### 1. 상태 및 제어 핸들러 구현
+탭의 데이터 배열(\`tabs\`)과 현재 활성화된 탭 식별자(\`active\`)를 선언합니다.
+
+const [tabs, setTabs] = React.useState([
+  { name: '홍길동', value: 'tab1', ... },
+  { name: '김철수', value: 'tab2', ... }
+]);
+const [active, setActive] = React.useState('tab1');
+
+#### 2. 동적 추가 (Add Tab)
+새로운 고유 식별자(\`value\`)를 갖는 객체를 만들어 배열 상태에 결합하고, 해당 식별자를 활성화 상태(\`active\`)에 주입하여 새로 추가된 탭으로 즉시 화면이 전환되도록 제어합니다.
+
+const handleAddTab = () => {
+  const newId = \`tab-\${Date.now()}\`; // 고유 키 생성
+  const newTab = {
+    name: '새설계서',
+    value: newId,
+  };
+  setTabs([...tabs, newTab]); // 상태 업데이트
+  setActive(newId); // 신규 탭 활성화 포커스 이동
+};
+
+#### 3. 동적 제거 (Remove Tab)
+\`removable={true}\` 옵션을 주어 개별 탭 버튼에 삭제(X) 아이콘 버튼을 노출시킵니다. \`onRemove\` 콜백을 통해 탭을 목록 상태에서 제외하고, 삭제된 탭이 활성화 상태였을 경우 인접한 남아있는 다른 탭으로 활성화 포커스를 안전하게 이전시킵니다.
+
+const handleRemoveTab = (value: string) => {
+  const updated = tabs.filter((t) => t.value !== value);
+  setTabs(updated);
+  if (active === value && updated.length > 0) {
+    setActive(updated[updated.length - 1].value);
+  }
+};
               `}
             </Markdown>
 
@@ -673,56 +710,6 @@ export const Default: Story = {
 };
 
 export const DynamicTabs: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: `
-### 동적 탭 추가 가이드 (Dynamic Tabs Integration Guide)
-
-TabPager를 사용하여 동적으로 탭을 추가하고 삭제하는 권장 방식은 **부모 컴포넌트의 React State(상태)를 기반**으로 제어하는 것입니다.
-
-#### 1. 상태 및 제어 핸들러 구현
-탭의 데이터 배열(\`tabs\`)과 현재 활성화된 탭 식별자(\`active\`)를 선언합니다.
-
-\`\`\`tsx
-const [tabs, setTabs] = React.useState([
-  { name: '홍길동', value: 'tab1', ... },
-  { name: '김철수', value: 'tab2', ... }
-]);
-const [active, setActive] = React.useState('tab1');
-\`\`\`
-
-#### 2. 동적 추가 (Add Tab)
-새로운 고유 식별자(\`value\`)를 갖는 객체를 만들어 배열 상태에 결합하고, 해당 식별자를 활성화 상태(\`active\`)에 주입하여 새로 추가된 탭으로 즉시 화면이 전환되도록 제어합니다.
-
-\`\`\`tsx
-const handleAddTab = () => {
-  const newId = \`tab-\${Date.now()}\`; // 고유 키 생성
-  const newTab = {
-    name: '새설계서',
-    value: newId,
-  };
-  setTabs([...tabs, newTab]); // 상태 업데이트
-  setActive(newId); // 신규 탭 활성화 포커스 이동
-};
-\`\`\`
-
-#### 3. 동적 제거 (Remove Tab)
-\`removable={true}\` 옵션을 주어 개별 탭 버튼에 삭제(X) 아이콘 버튼을 노출시킵니다. \`onRemove\` 콜백을 통해 탭을 목록 상태에서 제외하고, 삭제된 탭이 활성화 상태였을 경우 인접한 남아있는 다른 탭으로 활성화 포커스를 안전하게 이전시킵니다.
-
-\`\`\`tsx
-const handleRemoveTab = (value: string) => {
-  const updated = tabs.filter((t) => t.value !== value);
-  setTabs(updated);
-  if (active === value && updated.length > 0) {
-    setActive(updated[updated.length - 1].value);
-  }
-};
-\`\`\`
-        `,
-      },
-    },
-  },
   render: (args) => {
     const [tabs, setTabs] = React.useState([
       { name: '홍길동', age: '30', gender: '남', value: 'tab1', info: ['초기 탭 1'] },
