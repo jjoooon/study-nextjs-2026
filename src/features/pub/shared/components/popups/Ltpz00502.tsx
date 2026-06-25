@@ -457,9 +457,6 @@ const Ltpz00502 = () => {
   ];
 
   // 누적
-  const accumRadioItemClassName =
-    'h-[3rem]! rounded-full! border-transparent! bg-[#E5E5E5]! px-[0.8rem]! py-[0.4rem]! text-[1.2rem]! font-bold! leading-normal! tracking-[-0.13rem]! text-[#777777]! data-[state=checked]:border-transparent! data-[state=checked]:bg-[#414141]! data-[state=checked]:text-white! data-[state=checked]:shadow-none!';
-
   return (
     // M2. 디자인 변경으로 수정
     <Gcol className="w-full" gap={2} placement="ss">
@@ -486,7 +483,7 @@ const Ltpz00502 = () => {
           </Button>
         }
       >
-        <div className="w-full mt-1">
+        <div className="w-full mt-2">
           <RadioGroup
             className="gap-1"
             errorMsg="하나를 선택해주세요."
@@ -509,14 +506,7 @@ const Ltpz00502 = () => {
                 label: '청약완료불가(업계누적)(1)',
               },
             ].map((option) => (
-              <RadioGroupItem
-                key={option.value}
-                className={accumRadioItemClassName}
-                size="lg"
-                value={option.value}
-                variant="chipBox"
-                width="auto"
-              >
+              <RadioGroupItem key={option.value} size="lg" value={option.value} variant="tab" width="auto">
                 {option.label}
               </RadioGroupItem>
             ))}

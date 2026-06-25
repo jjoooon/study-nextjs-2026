@@ -647,6 +647,7 @@ export const Default: Story = {
           renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
             <Button
               variant="text"
+              color="gray"
               key={String(tab.value)}
               onClick={() => {
                 setActive(String(tab.value));
