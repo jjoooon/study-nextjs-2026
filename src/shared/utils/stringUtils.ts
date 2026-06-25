@@ -161,6 +161,28 @@ export function isAlphanumeric(str: StringInput): boolean {
   return /^[a-zA-Z0-9]+$/.test(str!);
 }
 
+/**
+ * 한글 포함 여부 확인
+ *
+ * @param str - 확인할 문자열
+ * @param only - true면 한글만 있는지, false면 한글이 하나라도 있는지 확인 (기본: false)
+ * @returns 한글이 포함되어 있으면 true
+ *
+ * @example
+ * isKorean('안녕하세요'); // true
+ * isKorean('hello 세계'); // true
+ * isKorean('hello'); // false
+ * isKorean('안녕하세요', true); // true (한글만)
+ * isKorean('hello 세계', true); // false (한글 외 문자 포함)
+ */
+export function isKorean(str: StringInput, only: boolean = false): boolean {
+  if (isEmpty(str)) return false;
+  // U+1100-11FF: 한글 자모, U+3130-318F: 호환 자모, U+A960-A97F: 자모 확장A, U+AC00-D7A3: 완성형 음절, U+D7B0-D7FF: 자모 확장B
+  const p = '\\u1100-\\u11FF\\u3130-\\u318F\\uA960-\\uA97F\\uAC00-\\uD7A3\\uD7B0-\\uD7FF';
+  if (only) return new RegExp(`^[${p}\\s]+$`).test(str!);
+  return new RegExp(`[${p}]`).test(str!);
+}
+
 // ============================================================================
 // TRANSFORMATION
 // ============================================================================
