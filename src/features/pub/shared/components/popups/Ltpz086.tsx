@@ -7,8 +7,10 @@ import '@/shared/lib/agGridPub';
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, useDynamicColumnWidths, numberValueFormatter } from '@aggrid';
+import { Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -20,8 +22,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 /**
  * 기계약 사항 그리드용 행 데이터 타입

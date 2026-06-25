@@ -2,10 +2,10 @@
 
 import { useState, useMemo } from 'react';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
+import { MOCK_DATA } from '../constants/insPlanListData';
 import { InsPlanListDep1 } from './InsPlanListDep1';
 import { InsPlanListDep2 } from './InsPlanListDep2';
 import { InsPlanListDep3 } from './InsPlanListDep3';
-import { MOCK_DATA } from '../constants/insPlanListData';
 
 interface InsPlanListProps {
   filterCategory: string;

@@ -780,6 +780,7 @@ export function DatePickerInput({
               captionLayout={'dropdown'}
               month={month}
               onMonthChange={setMonth}
+              required={true}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
             />
           )}

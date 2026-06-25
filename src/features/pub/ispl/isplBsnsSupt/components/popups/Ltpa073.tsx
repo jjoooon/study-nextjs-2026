@@ -7,6 +7,8 @@ import '@/shared/lib/agGridPub';
 import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 
 import {
@@ -20,8 +22,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 const Ltpa073 = () => {
   return (

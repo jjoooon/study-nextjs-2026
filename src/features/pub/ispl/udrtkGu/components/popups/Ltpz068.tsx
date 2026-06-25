@@ -7,9 +7,10 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Grow, Typo, Grid } from '@atoms';
-import { Ai2Icon } from '@icons';
 import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Ai2Icon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -22,7 +23,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 /**
  * AI인수지침 위배해소 그리드용 행 데이터 타입

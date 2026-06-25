@@ -6,10 +6,10 @@
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
+import { ErrorMsg } from '@common/ErrorMsg';
 import { InputClearIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { ErrorMsg } from '@common/ErrorMsg';
 
 /**
  * InputTag 컴포넌트의 Props 인터페이스입니다.

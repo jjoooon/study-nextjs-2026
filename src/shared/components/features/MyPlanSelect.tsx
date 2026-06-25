@@ -3,10 +3,10 @@
  */
 
 import { Gcol } from '@atoms';
+import { SelectDrop } from '@common/SelectDrop';
 import { SaveIcon } from '@icons';
 import { Accordion } from '@uiux/Accordion';
 import { Button } from '@uiux/Button';
-import { SelectDrop } from '@common/SelectDrop';
 
 // 드롭다운 항목의 공통 기본 타입
 // - value: Accordion 제어용 고유값

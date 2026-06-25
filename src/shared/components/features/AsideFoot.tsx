@@ -4,11 +4,11 @@
 'use client';
 
 import { Gcol, Grid, Grow, Typo } from '@atoms';
+import Ltpa120 from '@features/Ltpa120';
 import { PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import Ltpa120 from '@features/Ltpa120';
 
 /**
  * 사이드 하단 요약 영역에서 사용하는 집계 데이터 타입.

@@ -7,8 +7,8 @@ import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
-import { CheckIcon, Favorite } from '@icons';
 import { ErrorMsg } from '@common/ErrorMsg';
+import { CheckIcon, Favorite } from '@icons';
 
 // 단일 Checkbox 컴포넌트 props
 // - variant/size/color로 UI 모양을 바꾼다.

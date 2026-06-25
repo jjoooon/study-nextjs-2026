@@ -6,6 +6,7 @@
 import '@/shared/lib/agGridPub';
 import * as React from 'react';
 import { Grow, Gcol, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -17,7 +18,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 const Ltpz108 = () => {
   return (

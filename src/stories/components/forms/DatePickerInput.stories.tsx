@@ -23,7 +23,10 @@ const meta: Meta<DatePickerInputStoryProps> = {
             overview={`DatePickerInput 컴포넌트는 입력 필드와 캘린더 팝오버를 결합한 날짜 입력 UI입니다.
 single, multiple, range 모드를 지원하며, 에러 메시지와 크기/너비 설정을 일관된 방식으로 제공합니다.
 기간(range) 모드에서는 퀵 옵션(options), 범위 고정 지정(autoRangeFix), 자동 캘린더 닫기(autoClose) 등의 고급 설정을 활용할 수 있습니다.`}
-            history={['2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화', '2026.06.24 - 신규 Props(autoRangeFix, autoClose) 추가 및 명세 동기화']}
+            history={[
+              '2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화',
+              '2026.06.24 - 신규 Props(autoRangeFix, autoClose) 추가 및 명세 동기화',
+            ]}
             usageCode={`
 import { DatePickerInput } from '@common/DatePicker';
 import { useState } from 'react';
@@ -46,7 +49,7 @@ const [value, setValue] = useState('');
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
               <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
-              
+
               <DatePickerInput
                 mode="range"
                 width="lg"

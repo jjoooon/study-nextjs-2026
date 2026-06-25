@@ -48,9 +48,9 @@ import { DialogRoot } from '@/shared/components/popups/DialogRoot';
 import '@/shared/styles/globals.css';
 import { AuthHeader } from '@/shared/types/authTypes';
 import log from '@/shared/utils/logger';
-import { Toaster } from '@uiux/Sonner';
 import { SpinnerRoot } from '@common/SpinnerRoot';
 import { LayoutDoc } from '@layout/BaseLayout';
+import { Toaster } from '@uiux/Sonner';
 import { Providers } from './providers';
 
 const logger = log.getLogger('Layout');

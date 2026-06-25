@@ -15,8 +15,8 @@
  */
 
 import log from 'loglevel';
-import { getCookieValue } from './cookieUtils';
 import { publicConfig } from '../config/env';
+import { getCookieValue } from './cookieUtils';
 
 const DEBUG_COOKIE_NAME = 'debug_log_level';
 

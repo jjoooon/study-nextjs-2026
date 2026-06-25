@@ -6,13 +6,6 @@
 import { useEffect } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
-import { SearchIcon, AddIcon } from '@icons';
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
@@ -20,8 +13,15 @@ import { KeyValueItem } from '@common/KeyValueList';
 import { TabPager } from '@common/TabPager';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { SearchIcon, AddIcon } from '@icons';
 import { LayoutMain, LayoutScrollWrap, LayoutMainFoot, LayoutMainBody, LayoutScrollItem } from '@layout/BaseLayout';
 import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 /**
  * 탭 내부에 관리되는 각 피보험자/목적물/그룹의 기본 더미 데이터

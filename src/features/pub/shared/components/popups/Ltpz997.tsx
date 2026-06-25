@@ -4,9 +4,9 @@
 'use client';
 
 import { Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 // 화면 담당자 정보 데이터 타입 정의
 type DummyDataType = {

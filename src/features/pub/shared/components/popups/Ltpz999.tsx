@@ -7,6 +7,8 @@ import '@/shared/lib/agGridPub';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
+import { BulletItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { ArrowIcon, ErrorIcon, QueryIcon, NotiIcon } from '@icons';
 
 import { Button } from '@uiux/Button';
@@ -19,8 +21,6 @@ import {
   DialogClose,
   DialogTitle,
 } from '@uiux/Dialog';
-import { BulletItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 // Ltpz999 컴포넌트 Props 타입 정의
 type Ltpz999Props = {
