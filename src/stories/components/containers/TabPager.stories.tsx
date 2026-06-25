@@ -671,3 +671,71 @@ export const Default: Story = {
     );
   },
 };
+
+export const DynamicTabs: Story = {
+  render: (args) => {
+    const [tabs, setTabs] = React.useState([
+      { name: '홍길동', age: '30', gender: '남', value: 'tab1', info: ['초기 탭 1'] },
+      { name: '김철수', age: '25', gender: '남', value: 'tab2', info: ['초기 탭 2'] },
+    ]);
+    const [active, setActive] = React.useState('tab1');
+
+    const handleAddTab = () => {
+      const newId = `tab-${Date.now()}`;
+      const newTab = {
+        name: `새설계서_${tabs.length + 1}`,
+        age: String(20 + tabs.length),
+        gender: tabs.length % 2 === 0 ? '여' : '남',
+        value: newId,
+        info: [`동적으로 생성된 탭 ${tabs.length + 1}의 정보`],
+      };
+      setTabs([...tabs, newTab]);
+      setActive(newId);
+    };
+
+    const handleRemoveTab = (value: string) => {
+      const updated = tabs.filter((t) => t.value !== value);
+      setTabs(updated);
+      if (active === value && updated.length > 0) {
+        setActive(updated[updated.length - 1].value);
+      }
+    };
+
+    return (
+      <Gcol gap={4} className="w-full p-8">
+        <Grow gap={2} className="mb-2">
+          <Button variant="contained" color="primary" onClick={handleAddTab}>
+            가상 탭 추가 버튼 (+ 탭 추가)
+          </Button>
+        </Grow>
+        <TabPager
+          data={tabs}
+          active={active}
+          setActive={setActive}
+          removable={true}
+          onRemove={handleRemoveTab}
+          visibleCount={args.visibleCount}
+          variant={args.variant}
+          hasTableBelow={args.hasTableBelow}
+          error={args.error}
+          getValue={(tab) => String(tab.value)}
+          renderButtons={false}
+          renderTab={(tab) => (
+            <span className="flex items-center">
+              <span className="max-w-20 truncate block">{tab.name}</span>
+              <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+            </span>
+          )}
+          renderDropdownItem={false}
+        >
+          <div className="w-full p-10 bg-[var(--color-gray-5)] flex flex-col items-center justify-center gap-2">
+            <h4 className="text-[1.6rem] font-bold">활성화된 탭 ID: {active}</h4>
+            <p className="text-[1.4rem]">
+              {tabs.find((t) => t.value === active)?.info[0]}
+            </p>
+          </div>
+        </TabPager>
+      </Gcol>
+    );
+  },
+};
