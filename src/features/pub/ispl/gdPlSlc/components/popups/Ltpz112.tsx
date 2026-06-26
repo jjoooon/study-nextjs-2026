@@ -707,8 +707,9 @@ const Ltpz112 = () => {
                     ref={gridRef2}
                     getRowId={(params) => String(params.data.id)}
                     getRowHeight={useCallback((params: RowHeightParams<DummyDataType2>) => {
-                      const isChecked = params.data?.badge?.includes('SI경증') || !!params.data?.checked;
-                      return isChecked ? 68 : 33;
+                      const isDisabled = params.data?.badge?.includes('SI경증');
+                      const isChecked = !!params.data?.checked;
+                      return !isDisabled && isChecked ? 68 : 33;
                     }, [])}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     noRowsOverlayComponentParams={{ message: '질병을 검색하여 선택해 주세요.' }}
