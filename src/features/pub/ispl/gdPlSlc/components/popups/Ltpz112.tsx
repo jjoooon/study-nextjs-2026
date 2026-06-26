@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, GridApi, ICellRendererParams, RowClickedEvent } from 'ag-grid-enterprise';
+import type { ColDef, GridApi, ICellRendererParams, RowClickedEvent, RowHeightParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState, useCallback, useRef } from 'react';
 import * as React from 'react';
@@ -516,8 +516,7 @@ const Ltpz112 = () => {
         field: 'field1',
         flex: 1,
         minWidth: attributeColumnWidth(60),
-        cellClass: 'text-center !px-0',
-        autoHeight: true,
+        cellClass: 'text-center !px-0 !flex !justify-center',
       },
       {
         headerName: '질병명',
@@ -533,15 +532,13 @@ const Ltpz112 = () => {
         field: 'field3',
         flex: 1,
         minWidth: attributeColumnWidth(70),
-        cellClass: 'text-center',
-        autoHeight: true,
+        cellClass: 'text-center !flex !justify-center',
       },
       {
         headerName: '수술',
         field: 'field4',
         width: attributeColumnWidth(40),
-        cellClass: 'text-center',
-        autoHeight: true,
+        cellClass: 'text-center !flex !justify-center',
       },
       {
         headerComponent: endTimeHeader,
@@ -549,7 +546,6 @@ const Ltpz112 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(90),
         cellClass: 'text-center editable-cell ',
-        autoHeight: true,
         sortable: false,
         resizable: false,
         valueGetter: (params) => {
@@ -560,6 +556,7 @@ const Ltpz112 = () => {
         },
         valueSetter: (params) => {
           params.data.checked = params.newValue;
+          params.api.resetRowHeights();
           if (params.node) {
             params.api.refreshCells({ rowNodes: [params.node], columns: ['field6'], force: true });
           }
@@ -579,7 +576,6 @@ const Ltpz112 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(220),
         cellClass: 'text-center editable-cell ag-row-selected h-full',
-        autoHeight: true,
         editable: (params) => {
           return !params.data?.badge?.includes('SI경증') && !params.data?.checked;
         },
@@ -706,6 +702,10 @@ const Ltpz112 = () => {
                   <AgGridReact<DummyDataType2>
                     ref={gridRef2}
                     getRowId={(params) => String(params.data.id)}
+                    getRowHeight={useCallback((params: RowHeightParams<DummyDataType2>) => {
+                      const isChecked = params.data?.badge?.includes('SI경증') || !!params.data?.checked;
+                      return isChecked ? 68 : 33;
+                    }, [])}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     noRowsOverlayComponentParams={{ message: '질병을 검색하여 선택해 주세요.' }}
                     rowData={rowData2}
