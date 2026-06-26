@@ -5,6 +5,7 @@
 
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import { Copy } from 'lucide-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
@@ -13,7 +14,11 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
+<<<<<<< Updated upstream
 import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon } from '@icons';
+=======
+import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon, QuestionMark } from '@icons';
+>>>>>>> Stashed changes
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
@@ -27,17 +32,13 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
+<<<<<<< Updated upstream
 
+=======
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+>>>>>>> Stashed changes
 import '@/shared/lib/agGridPub';
-
-/**
- * LTPZ030 컴포넌트
- * 고지유형 추천 팝업 다이얼로그
- * - Tab1: 간편고지유형 사전체크 (ag-Grid 테이블)
- * - Tab2: 일반/건강고지유형 사전체크 (일반 테이블 + ag-Grid)
- */
 
 const underwritingDecisionMap = {
   refuse: {
@@ -259,11 +260,31 @@ const Ltpz030 = () => {
   // ===== 탭 상태 관리 =====
   // useTabs 훅으로 활성 탭, 탭 데이터 관리
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
+
   // ===== 상태 셀 렌더링 헬퍼 함수 =====
   // Tab2 테이블의 Y/N/- 상태를 렌더링하는 함수
-  // highlight=true인 경우 위험한 값("-")을 빨강색으로 표시
-  const renderStatusCell = (value: 'Y' | 'N' | '-', highlight = false) => {
-    const isDangerY = highlight && value === 'Y';
+  // Y 케이스인 경우 빨강색으로 표시
+  const renderStatusCell = (value: string, highlight = true) => {
+    if (value.includes('/')) {
+      const parts = value.split('/');
+      return (
+        <TableCell>
+          {parts.map((part, index) => {
+            const isY = part === 'Y';
+            const isDangerY = highlight && isY;
+            return (
+              <React.Fragment key={index}>
+                {index > 0 && '/'}
+                <span className={isDangerY ? 'font-bold text-[var(--color-text-danger)]' : undefined}>{part}</span>
+              </React.Fragment>
+            );
+          })}
+        </TableCell>
+      );
+    }
+
+    const isY = value === 'Y';
+    const isDangerY = highlight && isY;
     return (
       <TableCell className={isDangerY ? 'font-bold text-[var(--color-text-danger)]' : undefined}>{value}</TableCell>
     );
@@ -288,6 +309,370 @@ const Ltpz030 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection>
+          <Grow className="w-full" variant="box-round">
+            <FormTable variant={'head'} lineTop={false}>
+              <FormRow>
+                <FormCell title={'피보험자'}>
+                  <Input value={'김*화'} variant="info" readOnly />
+                </FormCell>
+                <FormCell title={'기준일자'}>
+                  <Input value={'2026-06-01'} variant="info" readOnly />
+                </FormCell>
+                <FormCell title={'지급정보 조회기간'}>
+                  <Input value={'10년'} variant="info" readOnly />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+          <Grow className="grid w-full grid-cols-[1fr_1fr] gap-3" placement={'ss'}>
+            {/* N년내 입원수술 사전체크 (일반 HTML 테이블) */}
+            <Gcol className="h-full" placement={'ss'}>
+              <Typo variant="heading-sm" color="default">
+                N년내 입원수술
+              </Typo>
+              <Table variant="default">
+                <colgroup>
+                  <col style={{ width: '11%' }} />
+                  <col style={{ width: '10%' }} />
+                  <col style={{ width: '10%' }} />
+                  <col style={{ width: '12%' }} />
+                  <col style={{ width: '13%' }} />
+                  <col style={{ width: '12%' }} />
+                  <col style={{ width: '12%' }} />
+                  <col style={{ width: '10%' }} />
+                  <col style={{ width: '10%' }} />
+                </colgroup>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead rowSpan={2}>대상기간</TableHead>
+                    <TableHead rowSpan={2}>수술</TableHead>
+                    <TableHead rowSpan={2}>입원</TableHead>
+                    <TableHead colSpan={2}>건강/일반</TableHead>
+                    <TableHead colSpan={4}>간편</TableHead>
+                  </TableRow>
+                  <TableRow>
+                    <TableHead>경증외입원수술</TableHead>
+                    <TableHead>10대중대질환</TableHead>
+                    <TableHead>
+                      경증외
+                      <br />
+                      입원수술
+                      <br />
+                      (전체/2일)
+                    </TableHead>
+                    <TableHead>6대중대질환</TableHead>
+                    <TableHead>고혈압</TableHead>
+                    <TableHead>당뇨</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow className="text-center">
+                    <TableHead>10년대</TableHead>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell>
+                      <span className="text-[var(--color-text-danger)] font-bold">Y</span>/
+                      <span className="text-[var(--color-text-danger)] font-bold">Y</span>
+                    </TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                  </TableRow>
+                  <TableRow className="text-center">
+                    <TableHead>8년대</TableHead>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell>
+                      <span className="text-[var(--color-text-danger)] font-bold">Y</span>/
+                      <span className="text-[var(--color-text-danger)] font-bold">Y</span>
+                    </TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                  </TableRow>
+                  <TableRow className="text-center">
+                    <TableHead>6년대</TableHead>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell>
+                      <span className="text-[var(--color-text-danger)] font-bold">Y</span>/N
+                    </TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                    <TableCell className="text-[var(--color-text-danger)] font-bold">Y</TableCell>
+                  </TableRow>
+                  <TableRow className="text-center">
+                    <TableHead>5년대</TableHead>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>
+                      <span className="text-[var(--color-text-danger)] font-bold">Y</span>/N
+                    </TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                  </TableRow>
+                  <TableRow className="text-center">
+                    <TableHead>4년대</TableHead>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>
+                      <span className="text-[var(--color-text-danger)] font-bold">Y</span>/N
+                    </TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                  </TableRow>
+                  <TableRow className="text-center">
+                    <TableHead>3년대</TableHead>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N/N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                  </TableRow>
+                  <TableRow className="text-center">
+                    <TableHead>2년대</TableHead>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N/N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                  </TableRow>
+                  <TableRow className="text-center">
+                    <TableHead>1년대</TableHead>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N/N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                  </TableRow>
+                  <TableRow className="text-center">
+                    <TableHead>3개월내</TableHead>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N/N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                    <TableCell>N</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+              <Gcol placement={'ss'} className="w-full min-w-0 ">
+                <div className="flex w-full min-w-0 items-start gap-[0.4rem] text-[1.2rem] leading-[150%] tracking-[-0.13rem] text-[var(--color-gray-70)]">
+                  <RefIcon className="mt-[0.4rem] shrink-0" color="var(--color-secondary-50)" size={10} />
+                  <span className="min-w-0 break-words">
+                    {
+                      '중대질환(10대) : 암, 백혈병, 고혈압, 협심증, 심근경색, 심장판막증, 간경화증, 뇌졸중증(뇌출혈, 뇌경색), 당뇨병, 에이즈(AIDS) 및 HIV보균 '
+                    }
+                  </span>
+                </div>
+                <div className="flex w-full min-w-0 items-start gap-[0.4rem] text-[1.2rem] leading-[150%] tracking-[-0.13rem] text-[var(--color-gray-70)]">
+                  <RefIcon className="mt-[0.4rem] shrink-0" color="var(--color-secondary-50)" size={10} />
+                  <span className="min-w-0 break-words">
+                    {
+                      '중대질환(6대) : 암, 협심증, 심근경색, 뇌졸중증(뇌출혈, 뇌경색), 간경화증, 심장판막증 단, 투석중인 만성신장질환은 제외됩니다.'
+                    }
+                  </span>
+                </div>
+              </Gcol>
+            </Gcol>
+            {/* 일반/건강고지 */}
+            <Gcol gap={3}>
+              <Gcol className="h-full" placement={'ss'}>
+                <Typo variant="heading-sm" color="default">
+                  일반/건강고지
+                </Typo>
+                <Table variant="default">
+                  <colgroup>
+                    <col style={{ width: '30%' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: '10%' }} />
+                  </colgroup>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead colSpan={3}>고지유형</TableHead>
+                      <TableHead>제한</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow className="text-left">
+                      <TableCell>6형(건강10년)</TableCell>
+                      <TableCell>1</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow className="text-center">
+                      <TableCell>5형(건강9년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow className="text-center">
+                      <TableCell>4형(건강8년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow className="text-center">
+                      <TableCell>3형(건강7년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow className="text-center">
+                      <TableCell>2형(건강6년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow className="text-center">
+                      <TableCell>일반고지형(5년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button only="icon" size={'md'} variant="none">
+                              <QuestionMark color="var(--color-gray-500)" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent
+                            align="start"
+                            side="bottom"
+                            sideOffset={0}
+                            variant="default"
+                            className="z-[60] w-[22.1rem] block"
+                          >
+                            <Gcol placement={'ss'} gap={1.5}>
+                              <Gcol placement={'ss'}>
+                                <Grow placement={'bwc'}>
+                                  <Typo tag={'strong'} className="body-md font-bold">
+                                    $간편고지형명 판정결과$
+                                  </Typo>
+                                  <Button only="icon" size={'md'} variant="none">
+                                    <Copy size={16} color="var(--color-gray-500)" />
+                                  </Button>
+                                </Grow>
+                                <Typo tag={'p'} className="text-wrap">
+                                  제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ -
+                                  $질병수술비(ALL RISK)$
+                                </Typo>
+                              </Gcol>
+                              <Gcol placement={'ss'}>
+                                <Grow placement={'bwc'}>
+                                  <Typo tag={'strong'} className="body-md font-bold">
+                                    $345조건부(감액)$
+                                  </Typo>
+                                  <Button only="icon" size={'md'} variant="none">
+                                    <Copy size={16} color="var(--color-gray-500)" />
+                                  </Button>
+                                </Grow>
+                                <Typo tag={'p'} className="text-wrap">
+                                  제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰
+                                  사전안내 컬럼에 입력된 값 표시$
+                                </Typo>
+                              </Gcol>
+                              <Gcol placement={'ss'}>
+                                <Typo tag={'strong'} className="body-md font-bold">
+                                  $345(2일)조건부(감액)$
+                                </Typo>
+                                <Typo tag={'p'} className="text-wrap">
+                                  제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰
+                                  사전안내 컬럼에 입력된 값 표시$
+                                </Typo>
+                              </Gcol>
+                            </Gcol>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Gcol>
+              {/* 간편고지 */}
+              <Gcol className="h-full" placement={'ss'}>
+                <Typo variant="heading-sm" color="default">
+                  간편고지
+                </Typo>
+                <Grow></Grow>
+                <Table variant="default">
+                  <colgroup>
+                    <col style={{ width: '30%' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: '10%' }} />
+                  </colgroup>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead colSpan={3}>고지유형</TableHead>
+                      <TableHead>제한</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow className="text-center">
+                      <TableCell>6형(건강10년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow className="text-center">
+                      <TableCell>5형(건강9년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow className="text-center">
+                      <TableCell>4형(건강8년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow className="text-center">
+                      <TableCell>3형(건강7년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow className="text-center">
+                      <TableCell>2형(건강6년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow className="text-center">
+                      <TableCell>일반고지형(5년)</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Gcol>
+            </Gcol>
+          </Grow>
           {/* 탭 페이저: Tab1(간편고지 사전체크), Tab2(일반/건강고지 사전체크) */}
           <TabPager
             data={tabs}
@@ -305,52 +690,6 @@ const Ltpz030 = () => {
             {active === 'tab1' ? (
               <>
                 <Gcol placement="ss" className="w-full pt-3" gap={3}>
-                  <Grow placement="bwe" className="w-full" variant={'box-round'} gap={5}>
-                    <FormTable
-                      variant={'head'}
-                      cols={[
-                        'w-[6rem]',
-                        'w-auto',
-                        'w-[6rem]',
-                        'w-auto',
-                        'w-[13rem]',
-                        'w-auto',
-                        'w-[4rem]',
-                        'w-auto',
-                        'w-[4rem]',
-                        'w-auto',
-                        'w-[12rem]',
-                        'w-auto',
-                      ]}
-                    >
-                      <FormRow>
-                        <FormCell title={'피보험자'}>
-                          <Input value="김한화" readOnly variant="info" />
-                        </FormCell>
-                        <FormCell title={'기준일자'}>
-                          <Input value="YYYY-MM-DD" readOnly variant="info" />
-                        </FormCell>
-                        <FormCell title={'지급정보 조회기간'}>
-                          <Input value="YY년" readOnly variant="info" />
-                        </FormCell>
-                        <FormCell title={'고혈압'}>
-                          <Badge color="blue" size="md" variant="contained" className="translate-y-[0.1rem]">
-                            가능
-                          </Badge>
-                        </FormCell>
-                        <FormCell title={'당뇨'}>
-                          <Badge color="blue" size="md" variant="contained" className="translate-y-[0.1rem]">
-                            가능
-                          </Badge>
-                        </FormCell>
-                        <FormCell title={'고혈압&당뇨'}>
-                          <Badge color="blue" size="md" variant="contained" className="translate-y-[0.1rem]">
-                            가능
-                          </Badge>
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>
-                  </Grow>
                   <Grow placement={'bws'} className="w-full" gap={3}>
                     {/* ag-Grid 테이블: 간편고지 사전체크 결과 테이블 */}
                     <div className="ag-theme-alpine w-full">
@@ -371,138 +710,6 @@ const Ltpz030 = () => {
                         tooltipShowDelay={0}
                       />
                     </div>
-                    {/* Tab1-2: 일반/건강고지유형 사전체크 (일반 HTML 테이블) */}
-                    <Gcol className="h-full">
-                      <Table variant="default">
-                        <colgroup>
-                          <col style={{ width: '12.5%' }} />
-                          <col style={{ width: '12.5%' }} />
-                          <col style={{ width: '12.5%' }} />
-                          <col style={{ width: '12.5%' }} />
-                          <col style={{ width: '12.5%' }} />
-                          <col style={{ width: '12.5%' }} />
-                          <col style={{ width: '12.5%' }} />
-                          <col style={{ width: '12.5%' }} />
-                        </colgroup>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>대상기간</TableHead>
-                            <TableHead>
-                              경증 외<br /> 입원수술
-                            </TableHead>
-                            <TableHead>
-                              경증 외<br /> 입원(2일)수술
-                            </TableHead>
-                            <TableHead>수술</TableHead>
-                            <TableHead>입원</TableHead>
-                            <TableHead>6대 중대질환</TableHead>
-                            <TableHead>고혈압</TableHead>
-                            <TableHead>당뇨</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          <TableRow className="text-center">
-                            <TableHead>10년대</TableHead>
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y')}
-                            {renderStatusCell('Y')}
-                            {renderStatusCell('-')}
-                            {renderStatusCell('-', true)}
-                            {renderStatusCell('-', true)}
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>8년대</TableHead>
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y')}
-                            {renderStatusCell('Y')}
-                            {renderStatusCell('-')}
-                            {renderStatusCell('-', true)}
-                            {renderStatusCell('-', true)}
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>6년대</TableHead>
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y')}
-                            {renderStatusCell('Y')}
-                            {renderStatusCell('-')}
-                            {renderStatusCell('-', true)}
-                            {renderStatusCell('-', true)}
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>5년대</TableHead>
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('N', true)}
-                            {renderStatusCell('N', true)}
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>4년대</TableHead>
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('N', true)}
-                            {renderStatusCell('N', true)}
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>3년대</TableHead>
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('N', true)}
-                            {renderStatusCell('N', true)}
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>2년대</TableHead>
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('N', true)}
-                            {renderStatusCell('N', true)}
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>1년대</TableHead>
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('Y', true)}
-                            {renderStatusCell('N', true)}
-                            {renderStatusCell('N', true)}
-                          </TableRow>
-                          <TableRow className="text-center">
-                            <TableHead>3개월내</TableHead>
-                            {renderStatusCell('N', true)}
-                            {renderStatusCell('N', true)}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('N')}
-                            {renderStatusCell('N', true)}
-                            {renderStatusCell('N', true)}
-                            {renderStatusCell('N', true)}
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                      <Grow placement={'ss'} className="w-full min-w-0">
-                        <div className="flex w-full min-w-0 items-start gap-[0.4rem] text-[1.2rem] leading-[150%] tracking-[-0.13rem] text-[var(--color-gray-70)]">
-                          <RefIcon className="mt-[0.3rem] shrink-0" color="var(--color-secondary-50)" size={10} />
-                          <span className="min-w-0 break-words">
-                            {'중대질환(6대) : 암,협심증,심금경색,뇌졸중증(뇌출혈,뇌경색) 간경화증,심장판막증 단, ' +
-                              '투석중인 만성신장질환은 제외됩니다.'}
-                          </span>
-                        </div>
-                      </Grow>
-                    </Gcol>
                   </Grow>
                   <Gcol variant={'box-info'} placement={'ss'}>
                     <BulletList>

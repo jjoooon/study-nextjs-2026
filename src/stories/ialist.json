@@ -454,7 +454,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPZ112",
-    "path": "shared/components/popups",
+    "path": "ispl/gdPlSlc/components/popups",
     "dep4": "입원/수술 정보 입력",
     "file": "상품플랜_고지유형찾기",
     "plan": "안혜은",
