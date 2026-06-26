@@ -3,7 +3,6 @@
  */
 'use client';
 
-import { BulletItem } from '@/shared/components/common/BulletList';
 import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
 import '@/shared/lib/agGridPub';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -23,9 +22,14 @@ import {
 } from '@uiux/Dialog';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
-const Ltpz110 = () => {
+interface Ltpz110Props {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+const Ltpz110 = ({ open = true, onOpenChange }: Ltpz110Props) => {
   return (
-    <Dialog open>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="md">
         <DialogHeader>
           <DialogTitle>
@@ -43,7 +47,7 @@ const Ltpz110 = () => {
             <Typo>아래 정보를 변경 후 [재조회]를 눌러주세요.</Typo>
             <FormTable caption="추가고지 및 적용담보 설정" cols={['w-[7rem]', 'w-[7rem]', 'w-auto']}>
               <FormRow>
-                <FormCell title="추가고지" titleRowSpan={2} tdNone />
+                <FormCell title="간편 추가 고지형" titleRowSpan={2} tdNone />
                 <FormCell title="고혈압">
                   <RadioGroup defaultValue="Y">
                     <RadioGroupItem value="Y" id="hypertension-Y">
@@ -68,7 +72,7 @@ const Ltpz110 = () => {
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell title="적용담보" titleColSpan={2}>
+                <FormCell title="(공통)적용담보" titleColSpan={2}>
                   {/* <Grid className="grid-cols-4 gap-y-2">
                     <Checkbox id="cov-1">질병휴유</Checkbox>
                     <Checkbox id="cov-2">암</Checkbox>
@@ -87,6 +91,8 @@ const Ltpz110 = () => {
                       { label: '질병수술비', value: '4' },
                       { label: '상해입원비', value: '5' },
                       { label: '상해수술비', value: '6' },
+                      { label: '상해후유3%', value: '7' },
+                      { label: '요양진단비', value: '8' },
                     ].map((category) => (
                       <CheckboxGroupItem key={category.value} value={category.value}>
                         {category.label}
@@ -96,9 +102,6 @@ const Ltpz110 = () => {
                 </FormCell>
               </FormRow>
             </FormTable>
-            <BulletItem type="star">
-              간편고지 정보 변경 사항은 저장되지 않으므로, 알릴사항 입력 시 새로 입력하시기 바랍니다.
-            </BulletItem>
           </Gcol>
         </DialogSection>
 
