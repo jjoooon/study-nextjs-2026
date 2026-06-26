@@ -575,7 +575,7 @@ const Ltpz112 = () => {
         field: 'field6',
         flex: 1,
         minWidth: attributeColumnWidth(220),
-        cellClass: 'text-center editable-cell ag-row-selected h-full',
+        cellClass: 'text-center editable-cell ag-row-selected ',
         editable: (params) => {
           return !params.data?.badge?.includes('SI경증') && !params.data?.checked;
         },
@@ -586,7 +586,11 @@ const Ltpz112 = () => {
         cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
           const isReadOnly = params.data?.badge?.includes('SI경증');
           if (isReadOnly) {
-            return <span className="w-full h-full text-left cursor-default text-[var(--color-gray-50)]">무관</span>;
+            return (
+              <span className="w-full h-full !flex !justify-center items-center cursor-default text-[var(--color-gray-50)]">
+                무관
+              </span>
+            );
           }
 
           const isChecked = params.data?.checked;
@@ -605,7 +609,7 @@ const Ltpz112 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} className="w-[105rem]">
+      <DialogContent showCloseButton resizable={true} className="w-[105rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -675,7 +679,7 @@ const Ltpz112 = () => {
                     </Grow>
                   </Grow>
 
-                  <div className="ag-theme-alpine min-h-[36rem] ">
+                  <div className="ag-theme-alpine inner-scroll" data-row={9}>
                     <AgGridReact<DummyDataType>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
