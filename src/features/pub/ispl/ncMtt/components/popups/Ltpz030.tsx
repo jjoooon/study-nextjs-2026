@@ -14,11 +14,7 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
-<<<<<<< Updated upstream
-import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon } from '@icons';
-=======
 import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon, QuestionMark } from '@icons';
->>>>>>> Stashed changes
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
@@ -33,11 +29,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-<<<<<<< Updated upstream
-
-=======
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
->>>>>>> Stashed changes
 import '@/shared/lib/agGridPub';
 
 const underwritingDecisionMap = {
