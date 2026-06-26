@@ -21,22 +21,48 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   readOnly?: boolean;
   error?: boolean;
   errorMsg?: React.ReactNode;
+  /** 에러 메시지 표시 위치 (t=top, b=bottom / l=left, c=center, r=right) */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
   after?: React.ReactNode;
   before?: React.ReactNode;
   disabled?: boolean;
+  /** 숫자를 천 단위 콤마로 표시, onChange에서 formattedValue도 함께 전달 */
   commaAmount?: boolean;
   clear?: boolean;
+  /** 외부에서 포커스 상태를 강제 지정할 때 사용 (commaAmount 표시 전환 등) */
   forceFocused?: boolean;
+  /** 날짜·전화번호 등 포맷 패턴 문자열 (예: '####-##-##') */
   formatter?: string;
+  /** 외부에서 포커스 여부를 제어할 때 사용 */
   isFocused?: boolean;
   width?: 'auto' | 'full' | 'quoteNo' | string | number;
+  /** 특수문자 입력 제한 여부 (INPUT_RESTRICTED_CHARS 기준) */
   restrictChars?: boolean;
   align?: 'left' | 'center' | 'right';
+  /** 블러 시 에러 상태가 해제될 때 호출 */
   onErrorChange?: (nextError: boolean) => void;
   e2eType?: number;
+  /** 허용할 문자 종류 화이트리스트 필터 */
+  charFilter?: 'ko' | 'en' | 'num' | 'en-num' | 'ko-en' | 'ko-en-num';
   // debug?: boolean;
 }
+
+/** charFilter 값별 허용 문자 화이트리스트 패턴 (매치된 문자는 제거됨) */
+const CHAR_FILTER_PATTERNS: Record<string, RegExp> = {
+  ko: /[^가-힣ㄱ-ㅎㅏ-ㅣ]/g,
+  en: /[^a-zA-Z]/g,
+  num: /[^0-9]/g,
+  'en-num': /[^a-zA-Z0-9]/g,
+  'ko-en': /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z]/g,
+  'ko-en-num': /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/g,
+};
+
+/** 허용되지 않은 문자를 제거해 반환 */
+function applyCharFilter(value: string, filter: string): string {
+  return value.replace(CHAR_FILTER_PATTERNS[filter] ?? /$/g, '');
+}
+
+/** 숫자 문자열을 천 단위 콤마 형식으로 변환 (소수점 보존) */
 function formatAmount(value: string) {
   const sanitized = sanitizeAmountInput(value);
   if (!sanitized) return '';
@@ -53,11 +79,13 @@ function formatAmount(value: string) {
   return `${formattedInt}.${decimalPartRaw}`;
 }
 
+/** INPUT_RESTRICTED_CHARS에 정의된 금지 문자열을 제거 (긴 문자열 우선 처리) */
 function applyRestrictedCharsFilter(value: string): string {
   const sorted = [...INPUT_RESTRICTED_CHARS].sort((a, b) => b.length - a.length);
   return sorted.reduce((acc, char) => acc.split(char).join(''), value);
 }
 
+/** 금액 입력값에서 숫자와 소수점만 남기고, 소수점이 여러 개일 때 첫 번째만 유지 */
 function sanitizeAmountInput(value: string): string {
   const sanitized = value.replace(/[^0-9.]/g, '');
   const dotIndex = sanitized.indexOf('.');
@@ -72,10 +100,12 @@ function sanitizeAmountInput(value: string): string {
   return `${intPart}.${decimalPart}`;
 }
 
+/** formatter로 표시된 값에서 숫자만 추출 (구분자 제거용) */
 function normalizeFormattedInput(value: string): string {
   return value.replace(/\D/g, '');
 }
 
+/** position 앞까지 존재하는 숫자 개수를 반환 (formatter 커서 위치 계산용) */
 function getDigitsBeforePosition(value: string, position: number): number {
   return [...value.slice(0, position)].filter((char) => /\d/.test(char)).length;
 }
@@ -105,6 +135,7 @@ function Input({
   onErrorChange,
   className,
   e2eType = 0,
+  charFilter,
   ...props
 }: UIInputProps) {
   const [focused, setFocused] = useState(false);
@@ -156,6 +187,7 @@ function Input({
     onChange?.(createSyntheticChangeEvent(e, normalizedValue));
   };
 
+  // 포커스 진입 시점과 블러 시점의 값을 동일 기준으로 비교하기 위해 정규화
   const getComparableValue = React.useCallback(
     (nextValue: string): string => {
       if (commaAmount) {
@@ -172,7 +204,9 @@ function Input({
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = restrictChars ? applyRestrictedCharsFilter(e.target.value) : e.target.value;
+    // 필터 체인: restrictedChars(블랙리스트) → charFilter(화이트리스트) 순서로 적용
+    const restricted = restrictChars ? applyRestrictedCharsFilter(e.target.value) : e.target.value;
+    const val = charFilter ? applyCharFilter(restricted, charFilter) : restricted;
 
     if (commaAmount) {
       const normalizedValue = sanitizeAmountInput(val);
@@ -201,6 +235,11 @@ function Input({
     }
 
     if (val !== e.target.value) {
+      // 비제어 모드에서는 React가 DOM을 재렌더링하지 않으므로 ref로 직접 교정
+      if (!isControlled && inputRef.current) {
+        inputRef.current.value = val;
+      }
+
       onChange?.({ ...e, target: { ...e.target, value: val } } as React.ChangeEvent<HTMLInputElement>);
       return;
     }
