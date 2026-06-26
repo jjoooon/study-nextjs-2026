@@ -5,11 +5,11 @@
 
 import { useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Button } from '@uiux/Button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { TabPager } from '@common/TabPager';
 import { LayoutMain } from '@layout/BaseLayout';
+import { Button } from '@uiux/Button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { Ltpa35002a } from './Ltpa35002a';
 import { Ltpa35002b } from './Ltpa35002b';
 import { Ltpa35002c } from './Ltpa35002c';
