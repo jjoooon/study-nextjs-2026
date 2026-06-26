@@ -377,7 +377,7 @@ function DialogContent({
   minimized,
   ...props
 }: DialogContentProps) {
-  const { dialogId, isMinimized, open } = React.useContext(DialogDepthContext);
+  const { dialogId, isMinimized, setMinimized, open } = React.useContext(DialogDepthContext);
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
   const [topOpenDialogId, setTopOpenDialogId] = React.useState(getTopOpenDialogId);
@@ -667,6 +667,11 @@ function DialogContent({
           className
         )}
         onMouseDown={handleMouseDown}
+        onDoubleClick={() => {
+          if (isMinimized) {
+            setMinimized?.(false);
+          }
+        }}
         onPointerDownOutside={(event) => {
           event.preventDefault();
           onPointerDownOutside?.(event);

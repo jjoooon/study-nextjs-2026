@@ -259,7 +259,7 @@ export function DatePickerInput({
           setIsSelectingEnd(false);
           onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
 
-          if (autoClose) setOpen(false);
+          setOpen(false);
           setInvalidDate(false);
           return;
         }
@@ -303,6 +303,7 @@ export function DatePickerInput({
             setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
             setIsSelectingEnd(false); // 계속 완료 상태 유지
             onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
+            setOpen(false);
           } else {
             // 기존 시작일보다 이전 날짜 클릭 -> 새로운 시작일로 변경 및 종료일 자동 계산, 종료일 대기 상태로 전환
             const nextFrom = selectedDay;
@@ -341,6 +342,7 @@ export function DatePickerInput({
             setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
             setIsSelectingEnd(false); // 선택 완료
             onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
+            setOpen(false);
           }
         } else {
           // 시작일 선택 단계
@@ -780,6 +782,7 @@ export function DatePickerInput({
               captionLayout={'dropdown'}
               month={month}
               onMonthChange={setMonth}
+              required={true}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
             />
           )}

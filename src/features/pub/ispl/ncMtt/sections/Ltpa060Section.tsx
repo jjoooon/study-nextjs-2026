@@ -7,15 +7,13 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Gcol, Grow, Typo } from '@atoms';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
   useDynamicColumnWidths,
   createTooltipValueGetter,
 } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
+import { Gcol, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
@@ -24,6 +22,8 @@ import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 

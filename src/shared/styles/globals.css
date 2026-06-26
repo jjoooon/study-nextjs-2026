@@ -943,12 +943,11 @@
   .ai-chatbot[data-isminimize='true'] [data-slot='dialog-header'] {
     padding: 0 !important;
   }
-
+  .ai-chatbot[data-isminimize='true'] [data-slot='dialog-header'] > div {
+    padding-right: 4.6rem !important;
+  }
   .ai-chatbot[data-isminimize='true'] [data-slot='dialog-header'] img:first-child {
     display: none !important;
-  }
-  .ai-chatbot[data-isminimize='true'] img {
-    transform: translateX(-0.6rem);
   }
   .ai-chatbot [data-slot='dialog-header'] img {
     user-select: none !important;

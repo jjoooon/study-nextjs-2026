@@ -5,6 +5,8 @@
 
 import '@/shared/lib/agGridPub';
 import { Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -16,8 +18,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 const Ltpz006 = () => {
   return (

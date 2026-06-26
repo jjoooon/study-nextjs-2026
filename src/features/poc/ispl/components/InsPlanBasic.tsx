@@ -1,12 +1,12 @@
 'use client';
 
 import { Gcol, Typo, FormItem, Grow } from '@atoms';
+import { FormCell, FormTable } from '@common/FormTable';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { TableRow } from '@uiux/Table';
-import { FormCell, FormTable } from '@common/FormTable';
 
 export function InsPlanBasic() {
   return (

@@ -4,6 +4,7 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -16,7 +17,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import '@/shared/lib/agGridPub';
 
 export const Ltpz102 = () => {

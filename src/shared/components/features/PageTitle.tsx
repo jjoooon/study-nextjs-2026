@@ -5,13 +5,13 @@
 
 import { useState } from 'react';
 import { FormItem, Grow, Typo } from '@atoms';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { ViewMode } from '@common/ViewMode';
 import { ArrowIcon, PenIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { ViewMode } from '@common/ViewMode';
 
 // 페이지 타이틀 영역에서 사용하는 기본 데이터 모델이다.
 // 화면마다 일부 값만 내려올 수 있으므로 대부분 optional로 선언되어 있다.

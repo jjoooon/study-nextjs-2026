@@ -6,9 +6,9 @@
 import React, { useRef, useState } from 'react';
 import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 import { Grow, Gcol, Grid, Typo } from '@atoms';
+import { BulletItem } from '@common/BulletList';
 import { Button } from '@uiux/Button';
 import { Textarea } from '@uiux/Textarea';
-import { BulletItem } from '@common/BulletList';
 
 // 단일 대화(요청자/심사팀) 묶음 데이터 타입
 // - 하나의 배열 원소가 화면의 한 페이지(한 묶음 카드)를 구성한다.

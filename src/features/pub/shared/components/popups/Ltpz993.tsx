@@ -7,10 +7,10 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import { Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
-import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
 
 // 화면 권한 정보를 나타내는 데이터 타입 정의
 type DummyDataType = {

@@ -4,6 +4,7 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -16,7 +17,6 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 const Ltpz033 = () => {
   return (

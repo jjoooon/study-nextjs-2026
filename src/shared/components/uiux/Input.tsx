@@ -10,9 +10,9 @@ import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { UIUXsize } from '@/shared/types/uiTypes';
 import { format } from '@/shared/utils/formatUtils';
+import { ErrorMsg } from '@common/ErrorMsg';
 import { InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { ErrorMsg } from '@common/ErrorMsg';
 
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   variant?: 'ghost' | 'default' | 'info';

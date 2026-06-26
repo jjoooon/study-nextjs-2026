@@ -85,7 +85,7 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
       },
     },
     type: {
-      control: 'inline-radio',
+      control: 'select',
       options: ['dot', 'dotBig', 'hash', 'ref', 'star', 'dash', 'symbols'],
       description: '아이템 마커 스타일',
       table: {
@@ -103,7 +103,7 @@ import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
       },
     },
     color: {
-      control: 'inline-radio',
+      control: 'select',
       options: ['default', 'info', 'detail', 'warning'],
       description: '텍스트 색상',
       table: {

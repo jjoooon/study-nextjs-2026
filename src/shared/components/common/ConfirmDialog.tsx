@@ -150,6 +150,17 @@ export function ConfirmDialog({
   resolve,
 }: ConfirmDialogProps) {
   const [isLoading, setIsLoading] = React.useState(false);
+  const confirmButtonRef = React.useRef<HTMLButtonElement>(null);
+  const cancelButtonRef = React.useRef<HTMLButtonElement>(null);
+
+  const handleOpenAutoFocus = (e: Event) => {
+    e.preventDefault();
+    if (confirmButtonRef.current) {
+      confirmButtonRef.current.focus();
+    } else if (cancelButtonRef.current) {
+      cancelButtonRef.current.focus();
+    }
+  };
 
   const dialogProps = {
     ...(open !== undefined ? { open } : {}),
@@ -192,27 +203,26 @@ export function ConfirmDialog({
   return (
     <AlertDialog {...dialogProps}>
       {trigger ? <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger> : null}
-      <AlertDialogContent>
+      <AlertDialogContent onOpenAutoFocus={handleOpenAutoFocus}>
         <AlertDialogHeader>
           {title && <AlertDialogTitle>{title}</AlertDialogTitle>}
           {description ? (
-            <AlertDialogDescription>
-              {typeof description === 'string' &&
-              (description.includes('<br') || description.includes('<br/>') || description.includes('<br />'))
-                ? description.split(/<br\s*\/?>/gi).map((line, idx, arr) => (
-                    <React.Fragment key={idx}>
-                      {line}
-                      {idx < arr.length - 1 && <br />}
-                    </React.Fragment>
-                  ))
-                : description}
-            </AlertDialogDescription>
+            typeof description === 'string' ? (
+              <AlertDialogDescription dangerouslySetInnerHTML={{ __html: description }} />
+            ) : (
+              <AlertDialogDescription>{description}</AlertDialogDescription>
+            )
           ) : null}
         </AlertDialogHeader>
         <AlertDialogFooter>
-          {showCancel && <AlertDialogCancel onClick={handleCancel}>{cancelLabel}</AlertDialogCancel>}
+          {showCancel && (
+            <AlertDialogCancel ref={cancelButtonRef} onClick={handleCancel}>
+              {cancelLabel}
+            </AlertDialogCancel>
+          )}
           {showConfirm && (
             <AlertDialogAction
+              ref={confirmButtonRef}
               disabled={isLoading}
               className={
                 tone === 'danger'

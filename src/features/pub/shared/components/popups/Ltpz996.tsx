@@ -7,15 +7,15 @@ import '@/shared/lib/agGridPub';
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Typo } from '@atoms';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
   useDynamicColumnWidths,
   CustomGridLoadingOverlay,
 } from '@aggrid';
-import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
+import { Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { Dialog, DialogContent, DialogHeader, DialogSection, DialogTitle, DialogFooter } from '@uiux/Dialog';
 
 export type DummyDataType = {
   id: number;

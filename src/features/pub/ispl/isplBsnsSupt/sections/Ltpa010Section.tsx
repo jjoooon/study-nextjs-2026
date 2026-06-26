@@ -96,7 +96,7 @@ const DummyData: DummyDataRow[] = [
     field15: '박한화14',
     field16: '박한화15',
     field17: '박한화(123123)',
-    field18: '배서설계',
+    field18: '동시가입설계',
     field19: 'LA20143129023123912',
     nickname: '최고설계메니져뚜루루',
 
@@ -130,7 +130,7 @@ const DummyData: DummyDataRow[] = [
     field15: '박한화14',
     field16: '박한화15',
     field17: '박한화(123123)',
-    field18: '배서설계',
+    field18: '가입설계',
     field19: 'LA20143129023123912',
     nickname: '최고설최고설최고설최고설최고설최고설최고설',
 
@@ -164,7 +164,7 @@ const DummyData: DummyDataRow[] = [
     field15: '박한화14',
     field16: '박한화15',
     field17: '박한화(123123)',
-    field18: '배서설계',
+    field18: '가입설계',
     field19: 'LA20143129023123912',
     nickname: '',
 
@@ -198,7 +198,7 @@ const DummyData: DummyDataRow[] = [
     field15: '박한화14',
     field16: '박한화15',
     field17: '박한화(123123)',
-    field18: '배서설계',
+    field18: '동시가입설계',
     field19: 'LA20143129023123912',
     nickname: '',
 
@@ -232,7 +232,7 @@ const DummyData: DummyDataRow[] = [
     field15: '박한화14',
     field16: '박한화15',
     field17: '박한화(123123)',
-    field18: '배서설계',
+    field18: '동시가입설계',
     field19: 'LA20143129023123912',
     nickname: '',
     field25: '2026-03-11',
@@ -265,7 +265,7 @@ const DummyData: DummyDataRow[] = [
     field15: '박한화14',
     field16: '박한화15',
     field17: '박한화(123123)',
-    field18: '배서설계',
+    field18: '동시가입설계',
     field19: 'LA20143129023123912',
     nickname: '',
     field25: '2026-03-11',
@@ -298,7 +298,7 @@ const DummyData: DummyDataRow[] = [
     field15: '박한화14',
     field16: '박한화15',
     field17: '박한화(123123)',
-    field18: '배서설계',
+    field18: '동시가입설계',
     field19: 'LA20143129023123912',
     nickname: '',
     field25: '2026-03-11',
@@ -331,7 +331,7 @@ const DummyData: DummyDataRow[] = [
     field15: '박한화14',
     field16: '박한화15',
     field17: '박한화(123123)',
-    field18: '배서설계',
+    field18: '동시가입설계',
     field19: 'LA20143129023123912',
     nickname: '',
     field25: '2026-03-11',
@@ -364,7 +364,7 @@ const DummyData: DummyDataRow[] = [
     field15: '박한화14',
     field16: '박한화15',
     field17: '박한화(123123)',
-    field18: '배서설계',
+    field18: '동시가입설계',
     field19: 'LA20143129023123912',
     nickname: '',
     field25: '2026-03-11',
@@ -397,7 +397,7 @@ const DummyData: DummyDataRow[] = [
     field15: '박한화14',
     field16: '박한화15',
     field17: '박한화(123123)',
-    field18: '배서설계',
+    field18: '동시가입설계',
     field19: 'LA20143129023123912',
     nickname: '',
     field25: '2026-03-11',
@@ -837,13 +837,18 @@ export default function Ltpa010Section() {
       minWidth: attributeColumnWidth(130),
       autoHeight: true,
       cellRenderer: createFieldRenderer<DummyDataRow>(
-        'field18',
+        (data?: DummyDataRow) =>
+          data?.field18 && (
+            <span className={data.field18 === '동시가입설계' ? 'text-[var(--color-primary-50)]!' : undefined}>
+              {data.field18}
+            </span>
+          ),
         (data?: DummyDataRow) =>
           data?.field19 && (
             <Popover>
               <PopoverTrigger asChild>
                 <Button color="link" only="default" size="lg" variant="text" className="w-full">
-                  <OverflowTooltipText text={data?.field19}>{data?.field19}</OverflowTooltipText>
+                  {data?.field19}
                 </Button>
               </PopoverTrigger>
               <PopoverContent side="left" align="end" closeButton={true} className="w-auto p-[0.2rem] flex flex-col">

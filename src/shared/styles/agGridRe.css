@@ -162,12 +162,14 @@
 .ag-row-selected {
   background-color: var(--color-warning-10);
 } */
-.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell *,
-.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell {
-  color: #ff5c2e !important;
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell *:not(button){
+  color: var(--color-gray-50);
+}
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell button[data-variant="outlined"] span{
+  color: var(--color-primary-50);
 }
 .ag-theme-alpine .ag-row.ag-row-state-true {
-  --color-text-base: #ff5c2e;
+  --color-text-base: var(--color-gray-50);
 }
 
 /* 분할 정렬 */

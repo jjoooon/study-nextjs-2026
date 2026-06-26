@@ -5,8 +5,8 @@ import * as React from 'react';
 import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
-import { ReSizeIcon } from '@icons';
 import { ErrorMsg } from '@common/ErrorMsg';
+import { ReSizeIcon } from '@icons';
 
 /**
  * Textarea 컴포넌트의 Props 인터페이스입니다.

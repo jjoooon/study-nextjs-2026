@@ -44,6 +44,8 @@ const radioGroupItemVariants = cva(
           'rounded-[0.6rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)] disabled:data-[state=checked]:text-[var(--color-gray-30)] disabled:data-[state=checked]:shadow-none',
         chipBox:
           'rounded-full border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap px-2 text-[1.3rem] tracking-[-0.042rem] w-auto data-[state=checked]:bg-[var(--color-primary-50)] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#ff6135] ',
+        tab: `h-[3rem]! rounded-full! border-transparent! bg-[var(--color-gray-10)]! px-[0.8rem]! py-[0.4rem]! text-[1.2rem]! font-bold! leading-normal! tracking-[-0.13rem]! text-[var(--color-gray-70)]! 
+        data-[state=checked]:border-transparent! data-[state=checked]:bg-[var(--color-gray-70)]! data-[state=checked]:text-white! data-[state=checked]:shadow-none!`,
         none: '',
       },
       size: {
@@ -291,6 +293,7 @@ const RadioGroupItem = React.forwardRef<
   ) => {
     const isButton = variant === 'button';
     const isChipBox = variant === 'chipBox';
+    const isTab = variant === 'tab';
     const generatedId = React.useId();
     const radioId = props.id || generatedId;
     const { error: groupError, required: groupRequired, disabled: groupDisabled } = React.useContext(RadioGroupContext);
@@ -300,7 +303,7 @@ const RadioGroupItem = React.forwardRef<
     const indicatorSize = size === 'sm' ? 'md' : size;
 
     return (
-      <div className={`relative flex items-center gap-1 ${isButton && isChipBox ? '' : ''}`}>
+      <div className={`relative flex items-center gap-1 ${isButton && (isChipBox || isTab) ? '' : ''}`}>
         <RadioGroupPrimitive.Item
           ref={ref}
           id={radioId}
@@ -317,7 +320,7 @@ const RadioGroupItem = React.forwardRef<
           data-invalid={isError ? '' : undefined}
           aria-invalid={isError ? true : undefined}
           {...props}
-          {...(isChipBox || variant === 'none' ? {} : { size: undefined })} // Avoid passing invalid html attributes if necessary
+          {...(isChipBox || isTab || variant === 'none' ? {} : { size: undefined })} // Avoid passing invalid html attributes if necessary
         >
           {isButton ? (
             <div
@@ -339,7 +342,7 @@ const RadioGroupItem = React.forwardRef<
                 />
               </RadioGroupPrimitive.Indicator>
             </div>
-          ) : !isChipBox ? (
+          ) : !(isChipBox || isTab) ? (
             <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap">
               <div
                 className={cn(
@@ -350,10 +353,10 @@ const RadioGroupItem = React.forwardRef<
               />
             </RadioGroupPrimitive.Indicator>
           ) : null}
-          {children && (isButton || isChipBox) && children}
+          {children && (isButton || isChipBox || isTab) && children}
         </RadioGroupPrimitive.Item>
 
-        {children && !isButton && !isChipBox && (
+        {children && !isButton && !isChipBox && !isTab && (
           <label
             htmlFor={radioId}
             className={cn(

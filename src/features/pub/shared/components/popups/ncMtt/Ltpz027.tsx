@@ -8,8 +8,9 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -23,7 +24,6 @@ import {
 } from '@uiux/Dialog';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import { TableCell } from '@uiux/Table';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 // Grid2 dummy data
 type DummyDataType = {

@@ -8,6 +8,7 @@ import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CircleCheckIcon, InfoToastIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -21,7 +22,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import Ltpz00501 from './Ltpz00501';
 import Ltpz00502 from './Ltpz00502';

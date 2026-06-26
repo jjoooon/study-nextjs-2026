@@ -8,16 +8,16 @@ import '@/shared/lib/agGridPub';
 import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { Divider, Gcol, Grow, Typo } from '@atoms';
 
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TooltipQ } from '@common/TooltipQ';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 /** 인수 지침 위배 내역 및 청약 제한 사항 데이터 타입 */
 type DummyDataType = {

@@ -2,13 +2,13 @@
 
 import { SearchIcon } from '@/shared/components/icons';
 import { Gcol, Typo, FormItem, Grow } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { TableRow } from '@uiux/Table';
 import { Tabs, TabsLine, TabsContent, TabsList, TabsTrigger } from '@uiux/Tabs';
-import { DatePickerInput } from '@common/DatePicker';
-import { FormCell, FormTable } from '@common/FormTable';
 
 import { SELECT_OPTIONS } from '../constants/insPlanBasicData';
 import type { TabData, InsuredData } from '../types/insPlanBasic';

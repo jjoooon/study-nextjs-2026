@@ -399,7 +399,44 @@ const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 >
   탭 컨텐츠
 </TabPager>
-\`\`\`
+
+
+### 동적 탭 추가 가이드 (Dynamic Tabs Integration Guide)
+
+TabPager를 사용하여 동적으로 탭을 추가하고 삭제하는 권장 방식은 **부모 컴포넌트의 React State(상태)를 기반**으로 제어하는 것입니다.
+
+#### 1. 상태 및 제어 핸들러 구현
+탭의 데이터 배열(\`tabs\`)과 현재 활성화된 탭 식별자(\`active\`)를 선언합니다.
+
+const [tabs, setTabs] = React.useState([
+  { name: '홍길동', value: 'tab1', ... },
+  { name: '김철수', value: 'tab2', ... }
+]);
+const [active, setActive] = React.useState('tab1');
+
+#### 2. 동적 추가 (Add Tab)
+새로운 고유 식별자(\`value\`)를 갖는 객체를 만들어 배열 상태에 결합하고, 해당 식별자를 활성화 상태(\`active\`)에 주입하여 새로 추가된 탭으로 즉시 화면이 전환되도록 제어합니다.
+
+const handleAddTab = () => {
+  const newId = \`tab-\${Date.now()}\`; // 고유 키 생성
+  const newTab = {
+    name: '새설계서',
+    value: newId,
+  };
+  setTabs([...tabs, newTab]); // 상태 업데이트
+  setActive(newId); // 신규 탭 활성화 포커스 이동
+};
+
+#### 3. 동적 제거 (Remove Tab)
+\`removable={true}\` 옵션을 주어 개별 탭 버튼에 삭제(X) 아이콘 버튼을 노출시킵니다. \`onRemove\` 콜백을 통해 탭을 목록 상태에서 제외하고, 삭제된 탭이 활성화 상태였을 경우 인접한 남아있는 다른 탭으로 활성화 포커스를 안전하게 이전시킵니다.
+
+const handleRemoveTab = (value: string) => {
+  const updated = tabs.filter((t) => t.value !== value);
+  setTabs(updated);
+  if (active === value && updated.length > 0) {
+    setActive(updated[updated.length - 1].value);
+  }
+};
               `}
             </Markdown>
 
@@ -647,6 +684,7 @@ export const Default: Story = {
           renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
             <Button
               variant="text"
+              color="gray"
               key={String(tab.value)}
               onClick={() => {
                 setActive(String(tab.value));
@@ -665,6 +703,93 @@ export const Default: Story = {
           )}
         >
           <div className="w-full p-10 bg-[var(--color-gray-5)] flex items-center justify-center">테이블{active2}</div>
+        </TabPager>
+      </Gcol>
+    );
+  },
+};
+
+export const DynamicTabs: Story = {
+  render: (args) => {
+    const [tabs, setTabs] = React.useState([
+      { name: '홍길동', age: '30', gender: '남', value: 'tab1', info: ['초기 탭 1'] },
+      { name: '김철수', age: '25', gender: '남', value: 'tab2', info: ['초기 탭 2'] },
+    ]);
+    const [active, setActive] = React.useState('tab1');
+
+    const handleAddTab = () => {
+      const newId = `tab-${Date.now()}`;
+      const newTab = {
+        name: `새설계서_${tabs.length + 1}`,
+        age: String(20 + tabs.length),
+        gender: tabs.length % 2 === 0 ? '여' : '남',
+        value: newId,
+        info: [`동적으로 생성된 탭 ${tabs.length + 1}의 정보`],
+      };
+      setTabs([...tabs, newTab]);
+      setActive(newId);
+    };
+
+    const handleRemoveTab = (value: string) => {
+      const updated = tabs.filter((t) => t.value !== value);
+      setTabs(updated);
+      if (active === value && updated.length > 0) {
+        setActive(updated[updated.length - 1].value);
+      }
+    };
+
+    return (
+      <Gcol gap={4} className="w-full p-8">
+        <Grow gap={2} className="mb-2">
+          <Button variant="contained" color="primary" onClick={handleAddTab}>
+            가상 탭 추가 버튼 (+ 탭 추가)
+          </Button>
+        </Grow>
+        <TabPager
+          data={tabs}
+          active={active}
+          setActive={setActive}
+          removable={true}
+          onRemove={handleRemoveTab}
+          visibleCount={args.visibleCount}
+          variant={args.variant}
+          hasTableBelow={args.hasTableBelow}
+          error={args.error}
+          getValue={(tab) => String(tab.value)}
+          renderButtons={false}
+          renderTab={(tab) => (
+            <span className="flex items-center">
+              <span className="max-w-20 truncate block">{tab.name}</span>
+              <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+            </span>
+          )}
+          renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
+            <Button
+              variant="text"
+              color="gray"
+              key={String(tab.value)}
+              onClick={() => {
+                setActive(String(tab.value));
+                const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+                if (idx !== -1) {
+                  const page = Math.floor(idx / visibleCount);
+                  setVisibleStart(page * visibleCount);
+                }
+              }}
+            >
+              <span className="flex items-center gap-2">
+                <span className="block">{tab.name}</span>
+                <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+              </span>
+            </Button>
+          )}
+        >
+          <div className="w-full p-10 bg-[var(--color-gray-5)] flex flex-col items-center justify-center gap-2">
+            <h4 className="text-[1.6rem] font-bold">활성화된 탭 ID: {active}</h4>
+            <p className="text-[1.4rem]">
+              {tabs.find((t) => t.value === active)?.info[0]}
+            </p>
+          </div>
         </TabPager>
       </Gcol>
     );

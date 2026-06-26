@@ -8,8 +8,6 @@ import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { ResetIcon, SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
@@ -17,6 +15,12 @@ import {
   useAgGridInfiniteAppend,
   useDynamicColumnWidths,
 } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableMore } from '@common/TablePagination';
+import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -30,10 +34,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableMore } from '@common/TablePagination';
 
 // dummy data
 type DummyDataType = {
@@ -387,8 +387,16 @@ const Ltpz038 = () => {
                   <Input aria-label="" value={'신부산GA지점'} readOnly />
                 </FormCell>
                 <FormCell title={'설계일자'}>
-                  <DatePickerInput mode="single" onChange={() => {}} required size="lg" width="sm" />-
-                  <DatePickerInput mode="single" onChange={() => {}} required size="lg" width="sm" />
+                  <DatePickerInput
+                    mode="range"
+                    autoRangeDays={7}
+                    autoRangeFix
+                    autoClose
+                    onChange={() => {}}
+                    required
+                    size="lg"
+                    width="sm"
+                  />
                 </FormCell>
               </FormRow>
             </FormTable>

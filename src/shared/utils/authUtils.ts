@@ -1,7 +1,7 @@
 import { RootState } from '@/redux';
 import log from '@/shared/utils/logger';
-import { getStore } from './globalRegistry';
 import { BUTTON_AUTH } from '../constants/auth';
+import { getStore } from './globalRegistry';
 
 const logger = log.getLogger('AuthUtils');
 

@@ -64,3 +64,13 @@
   display: none;
   /* Chrome, Safari, Opera */
 }
+.rdp-week button[data-range-middle="true"] {
+  border-radius: 0 !important;
+}
+.rdp-week button[data-range-start='true'][data-range-end='true'] ,
+.rdp-week button[data-range-start='true'] {
+  border-radius: 1.3rem 0 0 1.3rem !important;
+}
+.rdp-week button[data-range-end='true'] {
+  border-radius: 0 1.3rem 1.3rem 0 !important;
+}
