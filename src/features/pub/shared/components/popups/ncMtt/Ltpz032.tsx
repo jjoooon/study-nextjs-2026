@@ -31,12 +31,17 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 
+/**
+ * @type Ltpz032TabType
+ * @description 팝업 내부 상단 대분류 탭 규격
+ */
 type Ltpz032TabType = {
   name: string;
   value: string;
   label: string;
 };
 
+/** @description 설계번호별 / 질병코드별 가져오기를 결정하는 대형 탭 목록 정의 */
 const DATA_TABS: Ltpz032TabType[] = [
   {
     name: '설계번호별',
@@ -50,7 +55,20 @@ const DATA_TABS: Ltpz032TabType[] = [
   },
 ];
 
-// tab1-1 dummy data
+// ==========================================
+// [1] 설계번호별 탭 (tab1) Mock 데이터 정의
+// ==========================================
+
+/**
+ * @type DummyDataType11
+ * @description 일반/건강고지 설계번호 목록 데이터 구조
+ * - field02: 입력 일자
+ * - field03: 설계 번호
+ * - field04: 상품명
+ * - field05: 고지유형
+ * - field06: 질병 미리보기 활성화
+ * - field07 ~ field36: 매핑된 질병명 리스트
+ */
 type DummyDataType11 = {
   id: number;
   isCheck: boolean;
@@ -91,6 +109,8 @@ type DummyDataType11 = {
   field35: string | number;
   field36: string | number;
 };
+
+/** @description 일반/건강고지 설계번호별 목록 테스트 데이터 */
 const DummyData11: DummyDataType11[] = [
   {
     id: 1,
@@ -293,7 +313,7 @@ const DummyData11: DummyDataType11[] = [
     field36: '',
   },
 ];
-// Tab1-2
+// Tab1-2 (간편고지 설계번호 목록 데이터 구조)
 type DummyDataType12 = {
   id: number;
   isCheck: boolean;
@@ -578,7 +598,26 @@ const DummyData12: DummyDataType12[] = [
   },
 ];
 
-// tab2-1 dummy data
+// ==========================================
+// [2] 질병코드별 탭 (tab2) Mock 데이터 정의
+// ==========================================
+
+/**
+ * @type DummyDataType21
+ * @description 질병코드별 일반고지 데이터 구조
+ * - field2_02: KCD 질병코드
+ * - field2_03: 질병명 (치료 발생 원인)
+ * - field2_04: 입원 치료 이력 정보
+ * - field2_05: 통원 치료 이력 정보
+ * - field2_06: 수술 여부
+ * - field2_07: 완치 여부
+ * - field2_08: 재발 유무
+ * - field2_09: 의료기관명
+ * - field2_10: 원인설계 상품명
+ * - field2_11: 고지유형
+ * - field2_12: 설계번호
+ * - field2_13: 입력일자
+ */
 type DummyDataType21 = {
   id: number;
   isCheck: boolean;
@@ -596,6 +635,7 @@ type DummyDataType21 = {
   field2_12: string | number;
   field2_13: string | number;
 };
+/** @description 질병코드별 일반고지 목록 테스트 데이터 */
 const DummyData21: DummyDataType21[] = [
   {
     id: 1,
@@ -843,14 +883,27 @@ const DummyData23: DummyDataType23[] = [
   },
 ];
 
+/**
+ * @component Ltpz032
+ * @description 질병입력 가져오기 다이얼로그 팝업 컴포넌트
+ * - 대분류 탭(설계번호별 / 질병코드별)을 전환하며 과거 설계 데이터 및 고지된 질병 이력 데이터를 조회하고 선택하여, 현재 피보험자의 질병 고지 입력 사항으로 복원(가져오기) 처리를 수행합니다.
+ */
 const Ltpz032 = () => {
+  // [상태값 정의]
+  /** @description 설계번호별 일반/건강고지 목록 그리드 바인딩 데이터 */
   const [rowData11, setRowData11] = React.useState<DummyDataType11[]>(DummyData11);
+  /** @description 설계번호별 간편고지 목록 그리드 바인딩 데이터 */
   const [rowData12, setRowData12] = React.useState<DummyDataType12[]>(DummyData12);
+  /** @description 질병코드별 일반고지 목록 그리드 바인딩 데이터 */
   const [rowData21, setRowData21] = React.useState<DummyDataType21[]>(DummyData21);
+  /** @description 질병코드별 건강고지 목록 그리드 바인딩 데이터 */
   const [rowData22, setRowData22] = React.useState<DummyDataType22[]>(DummyData22);
+  /** @description 질병코드별 간편고지 목록 그리드 바인딩 데이터 */
   const [rowData23, setRowData23] = React.useState<DummyDataType23[]>(DummyData23);
 
-  // 에러 행 상태 관리 (현재는 사용하지 않음)
+  /**
+   * @description 에러 행 상태 관리 핸들러 (현재 구조에서는 비어 있음)
+   */
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
 
   // 셀 값 변경 시 실행 - isCheck 필드 변경을 감지하고 rowData 업데이트
@@ -875,8 +928,11 @@ const Ltpz032 = () => {
     [setErrorRows]
   );
 
-  // 데이터의 isCheck 필드와 체크박스 선택을 동기화하는 함수
-  // rowData에서 isCheck=true인 행을 찾아 grid의 체크박스를 선택 상태로 변경
+  /**
+   * @function syncSelectionByIsCheck
+   * @description 데이터 리스트 내의 `isCheck` 상태값(true/false)과 ag-Grid 컴포넌트의 체크박스 선택(Selected) 뷰를 동기화합니다.
+   * - 최초 로딩, 데이터 렌더링 완료, 데이터 업데이트 등의 이벤트 발생 시 호출되어 뷰와 데이터 정합성을 유지합니다.
+   */
   const syncSelectionByIsCheck = React.useCallback(
     <T extends { id: number; isCheck: boolean }>(api: GridApi<T>, rows: T[]) => {
       // isCheck가 true인 행들의 id를 Set으로 저장
@@ -890,7 +946,7 @@ const Ltpz032 = () => {
     []
   );
 
-  // 화면 크기에 따라 컬럼 너비를 동적으로 조정하는 함수
+  /** @description 화면 크기별로 고정/반응형 그리드 열 너비를 계산하여 보정하는 유틸 훅 */
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // Tab1-1: 일반/건강고지 테이블 컬럼 정의
@@ -1631,12 +1687,14 @@ const Ltpz032 = () => {
     [attributeColumnWidth]
   );
 
+  /** @description 대분류 탭 제어(설계번호별 / 질병코드별)를 위한 커스텀 훅 */
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   return (
     <>
       <Dialog open>
         <DialogContent showCloseButton resizable={true} size="2xl">
+          {/* 1. 다이얼로그 헤더 영역: 팝업 타이틀 및 ID 정의 */}
           <DialogHeader>
             <DialogTitle>
               <Typo tag={'strong'} variant={'heading-lg'}>
@@ -1647,7 +1705,10 @@ const Ltpz032 = () => {
               </Typo>
             </DialogTitle>
           </DialogHeader>
+
+          {/* 2. 다이얼로그 본문 영역 */}
           <DialogSection className="grid-rows-[1fr]">
+            {/* 2-1. 대분류 탭페이저 (설계번호별 / 질병코드별) */}
             <TabPager
               data={tabs}
               active={active}
@@ -1661,6 +1722,7 @@ const Ltpz032 = () => {
               renderDropdownItem={false}
             >
               {active === 'tab1' ? (
+                /* [설계번호별 탭 활성화 시] 일반/건강고지 및 간편고지 그리드 레이아웃 */
                 <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[auto_auto_auto]" gap={3}>
                   <TableFold className="">
                     <TableFoldHead title="일반/건강고지" />
@@ -1896,6 +1958,7 @@ const Ltpz032 = () => {
                     </TableFoldBody>
                   </TableFold>
 
+                  {/* 2-2. 공통 경고 배너: 질병 가져오기 주의사항 및 법적 고지사항 안내 */}
                   <Gcol className="w-full" placement="ss" variant="box-warning">
                     <Typo icon="warning" variant="body-sm">
                       최근 1개월이내 설계번호(유형별 최대 5개) 표시
@@ -1912,6 +1975,8 @@ const Ltpz032 = () => {
               )}
             </TabPager>
           </DialogSection>
+
+          {/* 3. 다이얼로그 푸터 영역: 질병 가져오기 실행 및 팝업 닫기 버튼 */}
           <DialogFooter>
             <DialogFooterArea>
               <Grow>

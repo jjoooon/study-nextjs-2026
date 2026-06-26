@@ -36,12 +36,22 @@ import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
+/**
+ * @type DummyDataType
+ * @description 질병 검색 목록에서 사용되는 개별 질병 데이터 규격
+ * - id: 고유 식별자
+ * - field1: KCD(한국표준질병사인분류) 질병 코드
+ * - field2: 공식 질병명
+ * - field3: 적용 가능한 특이사항 플래그 목록 (할증, 부담보, SI경증 등)
+ */
 type DummyDataType = {
   id: number;
   field1: string;
   field2: string;
   field3: string[];
 };
+
+/** @description 질병 검색 리스트 테스트를 위한 Mock 데이터 */
 const DummyData: DummyDataType[] = [
   {
     id: 1,
@@ -165,6 +175,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+/** @description 질병 상세 내용 탭 전환 처리를 위한 상용 질병 목록 설정 */
 const DataTabs = [
   { label: '척추염좌', value: 'TAB1' },
   { label: '자궁근종', value: 'TAB2' },
@@ -173,6 +184,14 @@ const DataTabs = [
   { label: '어깨병변', value: 'TAB5' },
 ];
 
+/**
+ * @type DummyDataType3
+ * @description 사전심사 기준 테이블(일반고지형/간편고지형)의 데이터 규격
+ * - field1 ~ field4: 위험분류 조건 정보
+ * - field5 ~ field21: 각 담보별 인수 조건 (인수, 거절, 할증 등)
+ * - field22: 필요 서류 정보
+ * - field23: 심사 시 참고사항
+ */
 type DummyDataType3 = {
   id: number;
   field1: string | number;
@@ -362,43 +381,61 @@ const dummyData3: DummyDataType3[] = [
   },
 ];
 
+/**
+ * @component Ltpz031
+ * @description 질병검색 및 입력 다이얼로그 팝업 컴포넌트
+ * - 질병 검색을 수행하고, 선택된 질병들을 탭 형식으로 추가하여 각 질병별 상세 질문지(치료이력, 치료내용, 추가질문)와 사전심사 안내를 확인 및 입력할 수 있습니다.
+ */
 const Ltpz031 = () => {
+  // [상태값 정의]
+  /** @description 검색 결과 그리드에 바인딩할 질병 데이터 리스트 상태 */
   const [rowData] = useState<DummyDataType[]>(DummyData);
+
+  /** @description 각 상세 탭별 입력 폼 데이터 통합 관리 상태 */
   const [form, setFormField] = useFormFields({
-    // Tab1
+    // Tab1 (척추염좌) 관련 입력 필드
     type01_01: '',
     type01_02: '',
     type01_03: '',
     type01_04: '',
     type01_05: '',
 
-    // Tab2
+    // Tab2 (자궁근종) 관련 입력 필드
     type02_01: '',
     type02_02: '',
     type02_03: '',
     type02_04: '',
 
-    // Tab3
+    // Tab3 (대장·직장용종) 관련 입력 필드
     type03_01: '',
     type03_02: '',
     type03_03: '',
     type03_04: '',
 
-    // Tab4
+    // Tab4 (추간판장애) 관련 입력 필드
     type04_01: '',
     type04_02: '',
     type04_03: '',
     type04_04: '',
 
-    // Tab5
+    // Tab5 (어깨병변) 관련 입력 필드
     type05_01: '',
     type05_02: '',
     type05_03: '',
     type05_04: '',
   });
+
+  /** @description 질병 상세 페이지의 탭 제어(추가, 선택, 삭제)를 담당하는 커스텀 훅 */
   const { tabs, active, setActive, handleRemove } = useTabs(DataTabs);
+
+  /** @description 질병명 검색 시 하이라이팅 기준 단어 상태 */
   const [searchWord] = useState('척추');
 
+  /**
+   * @description 질병검색 결과 그리드(ag-Grid)의 컬럼 명세 정의
+   * - KCD코드: 질병 분류 코드 출력
+   * - 질병명: 검색어 매칭 시 볼드 처리하고, 질병 특성 뱃지(할증, 부담보, SI경증 등)를 나열
+   */
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: 'KCD코드',
@@ -450,6 +487,10 @@ const Ltpz031 = () => {
   ];
 
   // M1. 테이블 추가
+  /**
+   * @type DummyDataType2
+   * @description 일반고지형/간편고지형 사전심사 데이터 규격 별칭 정의
+   */
   type DummyDataType2 = {
     id: number;
     field1: string | number;
@@ -476,7 +517,17 @@ const Ltpz031 = () => {
     field22: string | number;
     field23: string | number;
   };
+
+  /** @description 반응형/고정형 열 너비 조절 유틸 훅 */
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  /**
+   * @description 사전심사 안내 [일반고지형] 데이터 테이블의 컬럼 정의
+   * - 위험분류: 입원/수술 등의 조건 조합 렌더링
+   * - 질병사망 고도후유 ~ 실손: 각 특약별 인수 등급 노출
+   * - 서류: 심사 필요 첨부서류
+   * - 참고사항: 부가 설명 정보
+   */
   const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(
     () => [
       {
@@ -668,6 +719,10 @@ const Ltpz031 = () => {
     [attributeColumnWidth]
   );
 
+  /**
+   * @description 사전심사 안내 [간편고지형] 데이터 테이블의 컬럼 정의
+   * - 입원일수, 수술유무, 경과일수, 재발 여부 등의 조건과 함께 각 특약의 인수 여부 바인딩
+   */
   const columnDefs3 = React.useMemo<ColDef<DummyDataType3>[]>(
     () => [
       {
@@ -868,6 +923,7 @@ const Ltpz031 = () => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
+        {/* 1. 다이얼로그 헤더 영역: 화면 타이틀 및 ID 표시 */}
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -878,7 +934,9 @@ const Ltpz031 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
+        {/* 2. 다이얼로그 본문 영역 */}
         <DialogSection className="w-full gap-3">
+          {/* 2-1. 최상단: 자동고지 조회 및 연계 정보 가져오기 단축 실행바 */}
           <Grow variant={'box-info-line'} placement={'bwc'} className="border-transparent">
             <Typo variant={'body-lg'}>
               자동고지(ICIS/심평원) 또는 질병 가져오기를 통해 질병 정보를 간편하게 입력하세요.
@@ -895,9 +953,12 @@ const Ltpz031 = () => {
               </Button>
             </Grow>
           </Grow>
+
+          {/* 2-2. 중앙 스플릿 레이아웃: 좌측(질병검색 패널) & 우측(선택 질병별 입력 폼 패널) */}
           <Grow className="grid w-full grid-cols-[24.7rem_1fr] gap-3" placement={'ss'}>
-            {/* 많이찾는질병 & 질병검색 */}
+            {/* 좌측 영역: 많이 찾는 질병 목록 및 질병 검색창 & 결과 목록 그리드 */}
             <Grid placement={'ss'} className="w-full h-full overflow-hidden grid-rows-[auto_1fr]" gap={5}>
+              {/* 많이 찾는 질병 (퀵 태그 버튼들) */}
               <Gcol className="w-full" placement={'ss'} gap={2}>
                 <Typo variant="heading-md">많이 찾는 질병</Typo>
                 <Grow variant="box-round" placement={'bwc'}>
@@ -921,6 +982,7 @@ const Ltpz031 = () => {
                   </CheckboxGroup>
                 </Grow>
               </Gcol>
+              {/* 질병 검색창 및 ag-Grid 결과 테이블 */}
               <Grid className="w-full grid-rows-[auto_1fr]" placement={'ss'} gap={2}>
                 <Grow placement={'bwe'}>
                   <Typo variant="heading-md">질병검색</Typo>
@@ -971,7 +1033,7 @@ const Ltpz031 = () => {
               </Grid>
             </Grid>
 
-            {/* 질병 */}
+            {/* 우측 영역: 선택한 질병 리스트 탭 및 탭별 세부 정보 입력 폼 */}
             <Grow placement={'ss'} className="w-full min-w-0" gap={2}>
               <Grow className="w-full min-w-0">
                 <Gcol className="w-full min-w-0" placement={'ss'}>
@@ -985,8 +1047,9 @@ const Ltpz031 = () => {
                     renderTab={(tab) => <span>{tab.label}</span>}
                     visibleCount={5}
                   >
-                    {/* Tab1 */}
+                    {/* Tab1 (활성화된 질병별 상세 질문 카드 리스트) */}
                     <Gcol placement={'ss'} className="w-full mt-2" gap={3}>
+                      {/* [세부 폼 1] 기본질문 아코디언 */}
                       <TableFold>
                         <TableFoldHead title="기본질문">
                           <Button variant={'outlined'} size={'md'} color={'gray'}>
@@ -1317,6 +1380,7 @@ const Ltpz031 = () => {
                         </TableFoldBody>
                       </TableFold>
 
+                      {/* [세부 폼 2] (선택) 치료내용 아코디언 */}
                       <TableFold defaultOpen={false}>
                         <TableFoldHead title="(선택)치료내용">
                           <Grow>
@@ -1386,6 +1450,7 @@ const Ltpz031 = () => {
                           </CheckboxGroup>
                         </TableFoldBody>
                       </TableFold>
+                      {/* [세부 폼 3] 추가질문 아코디언 */}
                       <TableFold>
                         <TableFoldHead title="추가질문" />
                         <TableFoldBody>
@@ -1427,6 +1492,7 @@ const Ltpz031 = () => {
                         </TableFoldBody>
                       </TableFold>
                       {/* M1. 테이블 추가  */}
+                      {/* [세부 폼 4] 질병별 사전심사 안내 아코디언 */}
                       <TableFold>
                         <TableFoldHead title="질병별 사전심사 안내" />
                         <TableFoldBody>
@@ -1498,6 +1564,7 @@ const Ltpz031 = () => {
           </Grow>
         </DialogSection>
 
+        {/* 3. 다이얼로그 하단 푸터 영역: FAQ 조회, 저장 및 닫기 */}
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
