@@ -16,3 +16,11 @@ export const Default = () => {
     </LayoutDoc>
   );
 };
+
+export const Simplified = () => {
+  return (
+    <LayoutDoc>
+      <Ltpz110 isID={true} />
+    </LayoutDoc>
+  );
+};

@@ -126,34 +126,66 @@ const Ltpz030 = () => {
                   <TableBody>
                     <TableRow className="text-center">
                       <TableHead>10년대</TableHead>
-                      <TableCell>Y</TableCell>
-                      <TableCell>Y</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
                       <TableCell>
                         <span className={dangerY}>Y</span>/<span className={dangerY}>Y</span>
                       </TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
                     </TableRow>
                     <TableRow className="text-center">
                       <TableHead>8년대</TableHead>
-                      <TableCell>Y</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
+                      <TableCell>
+                        <span>N</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
                       <TableCell>
                         <span className={dangerY}>Y</span>/<span className={dangerY}>Y</span>
                       </TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
                     </TableRow>
                     <TableRow className="text-center">
                       <TableHead>6년대</TableHead>
-                      <TableCell>Y</TableCell>
-                      <TableCell>N</TableCell>
+                      <TableCell>
+                        <span className={dangerY}>Y</span>
+                      </TableCell>
+                      <TableCell>
+                        <span>N</span>
+                      </TableCell>
                       <TableCell className={dangerY}>Y</TableCell>
                       <TableCell className={dangerY}>Y</TableCell>
                       <TableCell>
@@ -426,7 +458,7 @@ const Ltpz030 = () => {
                         </TableCell>
                         <TableCell></TableCell>
                         <TableCell></TableCell>
-                        <TableCell>
+                        <TableCell className="text-center">
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <Button only="icon" size={'md'} variant="none">
@@ -743,9 +775,7 @@ const Ltpz030 = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {isOpenLtpz110 && (
-        <Ltpz110 open={isOpenLtpz110} onOpenChange={setIsOpenLtpz110} />
-      )}
+      {isOpenLtpz110 && <Ltpz110 open={isOpenLtpz110} onOpenChange={setIsOpenLtpz110} isID={true} />}
     </>
   );
 };
