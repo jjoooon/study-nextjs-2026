@@ -282,6 +282,27 @@ const Ltpz001 = () => {
                           </FormRow>
                         </FormTable>
                       </Grow>
+
+                      {/* 로그인계정: 상품지원팀 or IT팀에만 노출되는 영역 */}
+                      <Grow placement="es" className="w-full">
+                        <Grow placement={'ss'} gap={2}>
+                          <Typo tag={'h4'} variant={'heading-sm'}>
+                            청약서발행이력
+                          </Typo>
+                          <RadioGroup defaultValue="실시간처리">
+                            {[
+                              { value: '실시간처리', label: '실시간처리' },
+                              { value: '대용량처리', label: '대용량처리' },
+                            ].map((option) => (
+                              <RadioGroupItem key={option.value} value={option.value}>
+                                {option.label}
+                              </RadioGroupItem>
+                            ))}
+                          </RadioGroup>
+                        </Grow>
+                      </Grow>
+                      {/* //로그인계정: 상품지원팀 or IT팀에만 노출되는 영역 */}
+
                       <div className="ag-theme-alpine">
                         <AgGridReact<DummyDataType>
                           // 필수 props

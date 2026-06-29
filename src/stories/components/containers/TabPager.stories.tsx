@@ -786,9 +786,7 @@ export const DynamicTabs: Story = {
         >
           <div className="w-full p-10 bg-[var(--color-gray-5)] flex flex-col items-center justify-center gap-2">
             <h4 className="text-[1.6rem] font-bold">활성화된 탭 ID: {active}</h4>
-            <p className="text-[1.4rem]">
-              {tabs.find((t) => t.value === active)?.info[0]}
-            </p>
+            <p className="text-[1.4rem]">{tabs.find((t) => t.value === active)?.info[0]}</p>
           </div>
         </TabPager>
       </Gcol>
