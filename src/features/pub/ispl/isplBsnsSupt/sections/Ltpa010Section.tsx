@@ -179,7 +179,7 @@ const DummyData: DummyDataRow[] = [
     field01: 'LA123456789012',
     field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
     field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
-    memo: true,
+    memo: false,
     field05: '김한화김한',
     field06: '2009-01-01',
     field20: '김한화김한김한화김한',
@@ -612,7 +612,8 @@ export default function Ltpa010Section() {
           </Grow>
           <Grow placement="cc" className="min-h-[3rem]">
             {params.data?.field23 && (
-              <Button color="link" only="default" size="lg" variant="text">
+              //유효기간 7이내 className="text-[var(--color-danger-50)]""
+              <Button color="link" className="text-[var(--color-danger-50)]" only="default" size="lg" variant="text">
                 {params.data?.field23}
               </Button>
             )}
@@ -636,14 +637,25 @@ export default function Ltpa010Section() {
       flex: 1,
       minWidth: attributeColumnWidth(70),
       autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataRow>('field09', (data?: DummyDataRow) =>
-        data?.field10 === '심사결과' ? (
-          <Button color="link" only="default" size="lg" variant="text">
-            {data.field10}
-          </Button>
-        ) : (
-          data?.field10
-        )
+      cellRenderer: createFieldRenderer<DummyDataRow>(
+        (data?: DummyDataRow) =>
+          data?.field09 === '설계중' ? (
+            //심사자 있는 경우
+            <Button color="link" only="default" size="lg" variant="text">
+              {data.field09}
+            </Button>
+          ) : (
+            // 심사자 아닌 경우
+            data?.field09
+          ),
+        (data?: DummyDataRow) =>
+          data?.field10 === '심사결과' ? (
+            <Button color="link" only="default" size="lg" variant="text">
+              {data.field10}
+            </Button>
+          ) : (
+            data?.field10
+          )
       ),
     },
     // 8. 청약서출력 & 스캔여부
