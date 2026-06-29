@@ -743,9 +743,7 @@ const Ltpz030 = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {isOpenLtpz110 && (
-        <Ltpz110 open={isOpenLtpz110} onOpenChange={setIsOpenLtpz110} />
-      )}
+      {isOpenLtpz110 && <Ltpz110 open={isOpenLtpz110} onOpenChange={setIsOpenLtpz110} />}
     </>
   );
 };
