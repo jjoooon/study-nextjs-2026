@@ -254,7 +254,7 @@ const Ltpz113 = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   // pagination
-  const pageSize = 6;
+  const pageSize = 5;
 
   // 실데이터 호출 모사 (API 호출)
   const fetchMockData = React.useCallback(async (page: number, limit: number) => {
