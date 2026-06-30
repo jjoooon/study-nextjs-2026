@@ -53,23 +53,27 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
 
   const healthRows: HealthUnderwritingRow[] = [
     {
-      col1: { id: 'health10', label: '6형(건강10년)', hasRefuseIcon: true, disabled: disabledIds.includes('health10') },
-      col2: {
-        id: 'health9',
-        label: '5형(건강9년)',
-        hasRefuseIcon: true,
-        disabled: disabledIds.includes('health9'),
-      },
-      col3: { id: 'health8', label: '4형(건강8년)', hasRefuseIcon: true, disabled: disabledIds.includes('health8') },
+      data: [
+        { id: 'health10', label: '6형(건강10년)', state: 'refuse', disabled: disabledIds.includes('health10') },
+        {
+          id: 'health9',
+          label: '5형(건강9년)',
+          state: 'refuse',
+          disabled: disabledIds.includes('health9'),
+        },
+        { id: 'health8', label: '4형(건강8년)', state: 'refuse', disabled: disabledIds.includes('health8') },
+      ],
     },
     {
-      col1: { id: 'health7', label: '3형(건강7년)', hasRefuseIcon: true, disabled: disabledIds.includes('health7') },
-      col2: { id: 'health6', label: '2형(건강6년)', hasRefuseIcon: true, disabled: disabledIds.includes('health6') },
-      col3: {
-        id: 'general5',
-        label: '일반고지형(5년)',
-        disabled: disabledIds.includes('general5'),
-      },
+      data: [
+        { id: 'health7', label: '3형(건강7년)', state: 'refuse', disabled: disabledIds.includes('health7') },
+        { id: 'health6', label: '2형(건강6년)', state: 'refuse', disabled: disabledIds.includes('health6') },
+        {
+          id: 'general5',
+          label: '일반고지형(5년)',
+          disabled: disabledIds.includes('general5'),
+        },
+      ],
       tooltipData: [
         {
           title: '$간편고지형명 판정결과$',
@@ -91,43 +95,54 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
 
   const simpleRows: SimpleUnderwritingRow[] = [
     {
-      col1: {
-        id: 'simple3105',
-        label: '3105',
-        hasRefuseIcon: true,
-      },
+      data: [
+        {
+          id: 'simple3105',
+          label: '3105',
+          state: 'refuse',
+        },
+        { id: '' },
+      ],
     },
     {
-      col1: { id: 'simple385', label: '385', hasRefuseIcon: true },
+      data: [{ id: 'simple385', label: '385', state: 'refuse' }, { id: '' }],
     },
     {
-      col1: { id: 'simple365', label: '365', hasRefuseIcon: true },
+      data: [{ id: 'simple365', label: '365', state: 'refuse' }, { id: '' }],
     },
     {
-      col1: { id: 'simple355', label: '355', hasRefuseIcon: true },
-      col2: {
-        id: 'simple355_2d',
-        label: '355(2일)',
-        hasRefuseIcon: true,
-      },
+      data: [
+        { id: 'simple355', label: '355', state: 'refuse' },
+        {
+          id: 'simple355_2d',
+          label: '355(2일)',
+          state: 'refuse',
+        },
+      ],
     },
     {
-      col1: { id: 'simple345', label: '345', hasRefuseIcon: true },
-      col2: { id: 'simple345_2d', label: '345(2일)' },
+      data: [
+        { id: 'simple345', label: '345', state: 'refuse' },
+        { id: 'simple345_2d', label: '345(2일)' },
+      ],
     },
     {
-      col2: { id: 'simple335_2d', label: '335(2일)' },
+      data: [{ id: '' }, { id: 'simple335_2d', label: '335(2일)' }],
     },
     {
-      col1: { id: 'simple325', label: '325', hasRefuseIcon: true },
-      col2: { id: 'simple325_2d', label: '325(2일)' },
+      data: [
+        { id: 'simple325', label: '325', state: 'refuse' },
+        { id: 'simple325_2d', label: '325(2일)' },
+      ],
     },
     {
-      col2: { id: 'simple315_2d', label: '315(2일)' },
+      data: [{ id: '' }, { id: 'simple315_2d', label: '315(2일)' }],
     },
     {
-      col1: { id: 'simple305', label: '305' },
-      col2: { id: 'simple305_2d', label: '305(2일)' },
+      data: [
+        { id: 'simple305', label: '305' },
+        { id: 'simple305_2d', label: '305(2일)' },
+      ],
     },
   ];
 
