@@ -455,6 +455,23 @@
   </main>
 
   <script>
+    const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
+    const PROD_STORYBOOK_BASE_URL = 'https://jjoooon.github.io/study-nextjs-2026';
+    const HYGITEST_STORYBOOK_BASE_URL = 'https://story-dev.hwgitest.com';
+
+    const LOCAL_HOST_NAMES = new Set(['localhost', '127.0.0.1']);
+    const HYGITEST_HOST_NAMES = new Set(['story-dev.hwgitest.com']);
+
+    function getInitialStorybookBase() {
+      const currentHost = window.location.hostname;
+      if (LOCAL_HOST_NAMES.has(currentHost)) {
+        return LOCAL_STORYBOOK_BASE_URL;
+      } else if (HYGITEST_HOST_NAMES.has(currentHost)) {
+        return HYGITEST_STORYBOOK_BASE_URL;
+      }
+      return PROD_STORYBOOK_BASE_URL;
+    }
+
     const widthSlider = document.getElementById('widthSlider');
     const heightSlider = document.getElementById('heightSlider');
     const widthVal = document.getElementById('widthVal');
@@ -465,6 +482,9 @@
     const searchInput = document.getElementById('searchInput');
     const listContainer = document.getElementById('listContainer');
     const storybookHostInput = document.getElementById('storybookHost');
+
+    // 도메인 호스트 기반으로 자동 추정된 스토리북 주소 입력 필드에 설정
+    storybookHostInput.value = getInitialStorybookBase();
 
     let allItems = [];
     let currentTab = 'popup'; // 'popup' | 'page' | 'all'
