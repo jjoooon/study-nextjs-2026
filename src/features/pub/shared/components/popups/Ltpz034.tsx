@@ -6,6 +6,10 @@
 import type { ColDef, ColGroupDef, FirstDataRenderedEvent, SelectionChangedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React, { useCallback, useMemo, useState } from 'react';
+import Ltpa030table, {
+  SimpleUnderwritingRow,
+  HealthUnderwritingRow,
+} from '@/features/pub/ispl/ncMtt/components/Ltpa030table';
 import { Grid, Grow, Typo } from '@/shared/components/atoms';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
@@ -97,8 +101,76 @@ interface Ltpz034Props {
   onMinimizeChange?: (minimized: boolean) => void;
 }
 
-const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
+const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltpz034Props) => {
   type ComboFieldKey = 'hash';
+
+  const [isClick, setIsClick] = React.useState(false);
+
+  const healthRows: HealthUnderwritingRow[] = [
+    {
+      col1: { id: 'health10', label: '6형(건강10년)', hasRefuseIcon: true },
+      col2: { id: 'health9', label: '5형(건강9년)', checked: isClick, hasRefuseIcon: true },
+      col3: { id: 'health8', label: '4형(건강8년)', hasRefuseIcon: true },
+    },
+    {
+      col1: { id: 'health7', label: '3형(건강7년)', hasRefuseIcon: true },
+      col2: { id: 'health6', label: '2형(건강6년)', hasRefuseIcon: true },
+      col3: {
+        id: 'general5',
+        label: '일반고지형(5년)',
+      },
+      tooltipData: [
+        {
+          title: '$간편고지형명 판정결과$',
+          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $질병수술비(ALL RISK)$',
+        },
+        {
+          title: '$345조건부(감액)$',
+          content:
+            '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
+        },
+        {
+          title: '$345(2일)조건부(감액)$',
+          content:
+            '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
+        },
+      ],
+    },
+  ];
+
+  const simpleRows: SimpleUnderwritingRow[] = [
+    { col1: { id: 'simple3105', label: '3105', disabled: true, hasRefuseIcon: true } },
+    { col1: { id: 'simple385', label: '385', disabled: true, hasRefuseIcon: true } },
+    { col1: { id: 'simple365', label: '365', disabled: true, hasRefuseIcon: true } },
+    {
+      col1: { id: 'simple355', label: '355', disabled: true, hasRefuseIcon: true },
+      col2: { id: 'simple355_2d', label: '355(2일)', disabled: true, hasRefuseIcon: true },
+    },
+    {
+      col1: { id: 'simple345', label: '345', disabled: true, hasRefuseIcon: true },
+      col2: { id: 'simple345_2d', label: '345(2일)', disabled: true },
+    },
+    {
+      col2: { id: 'simple335_2d', label: '335(2일)', disabled: true },
+    },
+    {
+      col1: { id: 'simple325', label: '325', disabled: true, hasRefuseIcon: true },
+      col2: { id: 'simple325_2d', label: '325(2일)', disabled: true },
+    },
+    {
+      col2: { id: 'simple315_2d', label: '315(2일)', disabled: true },
+    },
+    {
+      col1: { id: 'simple305', label: '305', disabled: true },
+      col2: { id: 'simple305_2d', label: '305(2일)', disabled: true },
+    },
+  ];
+
+  const handleCheckedChange = (id: string, checked: boolean | 'indeterminate') => {
+    if (id === 'health9') {
+      setIsClick(checked === true);
+    }
+  };
 
   const handleComboValueChange = useCallback(
     <TField extends ComboFieldKey>(field: TField) =>
@@ -187,7 +259,7 @@ const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
   ];
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   return (
-    <Dialog open minimized={minimized} onMinimizeChange={onMinimizeChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} minimized={minimized} onMinimizeChange={onMinimizeChange}>
       <DialogContent showCloseButton resizable size="lg" minimized={true}>
         <DialogHeader>
           <DialogTitle>
@@ -225,9 +297,7 @@ const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
             }
           >
             {active === 'tab1' && (
-              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                테스트
-              </Button>
+              <Ltpa030table healthRows={healthRows} simpleRows={simpleRows} onCheckedChange={handleCheckedChange} />
             )}
             {active === 'tab2' && (
               <Grid className="h-full grid-flow-col">
@@ -246,7 +316,7 @@ const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
                         resizable: true,
                       }}
                       rowSelection={{
-                        mode: 'singleRow',
+                        mode: 'multiRow',
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
