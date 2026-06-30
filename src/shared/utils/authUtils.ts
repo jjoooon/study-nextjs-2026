@@ -20,19 +20,19 @@ interface Header {
  * 인증 헤더 값 조회
  *
  * @param key - 헤더 키
- * @returns 요청한 헤더 값
+ * @returns 요청한 헤더 값 (Header[K] 타입으로 추론)
  */
-export function getHeader(key: keyof Header): string {
+export function getHeader<K extends keyof Header>(key: K): Header[K] {
   logger.debug('[AuthUtils] key: ', key);
   const store = getStore();
   const state = store.getState() as unknown as RootState;
 
   // TODO: @YunJunmo
   if (key === 'stfno') {
-    return state.auth.user?.employeeId ?? '';
+    return (state.auth.user?.employeeId ?? '') as Header[K];
   }
 
-  return '';
+  return '' as Header[K];
 }
 
 export function getAuthList(): string[] {
