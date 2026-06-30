@@ -50,7 +50,6 @@ interface Ltpz030Props {
 // ===== 컴포넌트 시작 =====
 const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) => {
   const [isOpenLtpz110, setIsOpenLtpz110] = React.useState(false);
-  const [isClick, setIsClick] = React.useState(false);
 
   const healthRows: HealthUnderwritingRow[] = [
     {
@@ -58,7 +57,6 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
       col2: {
         id: 'health9',
         label: '5형(건강9년)',
-        checked: isClick,
         hasRefuseIcon: true,
         disabled: disabledIds.includes('health9'),
       },
@@ -133,11 +131,6 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
     },
   ];
 
-  const handleCheckedChange = (id: string, checked: boolean | 'indeterminate') => {
-    if (id === 'health9') {
-      setIsClick(checked === true);
-    }
-  };
   // ===== 다이얼로그 렌더링 =====
   // 고지유형 추천 팝업 다이얼로그 (Tab1: ag-Grid, Tab2: 일반 테이블)
   return (
