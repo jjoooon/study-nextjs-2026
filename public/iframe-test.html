@@ -541,7 +541,7 @@
     // ialist.json 데이터 fetch
     async function loadIAList() {
       try {
-        const response = await fetch('/ialist.json');
+        const response = await fetch('./ialist.json');
         if (!response.ok) throw new Error('Failed to load ialist.json');
         allItems = await response.json();
         
