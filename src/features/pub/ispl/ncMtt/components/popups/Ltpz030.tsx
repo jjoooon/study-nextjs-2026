@@ -3,16 +3,14 @@
  */
 'use client';
 
-import { Copy } from 'lucide-react';
 import * as React from 'react';
 import Ltpz110 from '@/features/pub/shared/components/popups/Ltpz110';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon, QuestionMark } from '@icons';
+import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-
 import {
   Dialog,
   DialogClose,
@@ -25,8 +23,9 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import '@/shared/lib/agGridPub';
+
+import Ltpa030table, { SimpleUnderwritingRow, HealthUnderwritingRow } from '../Ltpa030table';
 
 // Y 케이스 전용 스타일 클래스 변수 (색상, 굵기 설정)
 const dangerY = 'text-[var(--color-text-danger)] font-bold';
@@ -42,14 +41,101 @@ const dangerY = 'text-[var(--color-text-danger)] font-bold';
 //   return status ? underwritingDecisionMap[status] : null;
 // };
 
+interface Ltpz030Props {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  disabledIds?: string[];
+}
+
 // ===== 컴포넌트 시작 =====
-const Ltpz030 = () => {
+const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) => {
   const [isOpenLtpz110, setIsOpenLtpz110] = React.useState(false);
+
+  const healthRows: HealthUnderwritingRow[] = [
+    {
+      col1: { id: 'health10', label: '6형(건강10년)', hasRefuseIcon: true, disabled: disabledIds.includes('health10') },
+      col2: {
+        id: 'health9',
+        label: '5형(건강9년)',
+        hasRefuseIcon: true,
+        disabled: disabledIds.includes('health9'),
+      },
+      col3: { id: 'health8', label: '4형(건강8년)', hasRefuseIcon: true, disabled: disabledIds.includes('health8') },
+    },
+    {
+      col1: { id: 'health7', label: '3형(건강7년)', hasRefuseIcon: true, disabled: disabledIds.includes('health7') },
+      col2: { id: 'health6', label: '2형(건강6년)', hasRefuseIcon: true, disabled: disabledIds.includes('health6') },
+      col3: {
+        id: 'general5',
+        label: '일반고지형(5년)',
+        disabled: disabledIds.includes('general5'),
+      },
+      tooltipData: [
+        {
+          title: '$간편고지형명 판정결과$',
+          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $질병수술비(ALL RISK)$',
+        },
+        {
+          title: '$345조건부(감액)$',
+          content:
+            '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
+        },
+        {
+          title: '$345(2일)조건부(감액)$',
+          content:
+            '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
+        },
+      ],
+    },
+  ];
+
+  const simpleRows: SimpleUnderwritingRow[] = [
+    {
+      col1: {
+        id: 'simple3105',
+        label: '3105',
+        hasRefuseIcon: true,
+      },
+    },
+    {
+      col1: { id: 'simple385', label: '385', hasRefuseIcon: true },
+    },
+    {
+      col1: { id: 'simple365', label: '365', hasRefuseIcon: true },
+    },
+    {
+      col1: { id: 'simple355', label: '355', hasRefuseIcon: true },
+      col2: {
+        id: 'simple355_2d',
+        label: '355(2일)',
+        hasRefuseIcon: true,
+      },
+    },
+    {
+      col1: { id: 'simple345', label: '345', hasRefuseIcon: true },
+      col2: { id: 'simple345_2d', label: '345(2일)' },
+    },
+    {
+      col2: { id: 'simple335_2d', label: '335(2일)' },
+    },
+    {
+      col1: { id: 'simple325', label: '325', hasRefuseIcon: true },
+      col2: { id: 'simple325_2d', label: '325(2일)' },
+    },
+    {
+      col2: { id: 'simple315_2d', label: '315(2일)' },
+    },
+    {
+      col1: { id: 'simple305', label: '305' },
+      col2: { id: 'simple305_2d', label: '305(2일)' },
+    },
+  ];
+
   // ===== 다이얼로그 렌더링 =====
   // 고지유형 추천 팝업 다이얼로그 (Tab1: ag-Grid, Tab2: 일반 테이블)
   return (
     <>
-      <Dialog open>
+      <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent showCloseButton resizable={false} size="2xl">
           <DialogHeader>
             <DialogTitle>
@@ -286,477 +372,63 @@ const Ltpz030 = () => {
                   </div>
                 </Gcol>
               </Gcol>
-              {/* 일반/건강고지 */}
               <Gcol gap={3}>
-                <Gcol className="h-full" placement={'ss'}>
-                  <Grow placement="bwc">
-                    <Grow placement="sc" gap={2}>
-                      <Typo tag={'strong'} variant={'heading-md'}>
-                        고지유형 찾기
-                      </Typo>
-                      <Button color="gray" variant="outlined" onClick={() => setIsOpenLtpz110(true)}>
-                        정보변경
-                      </Button>
-                    </Grow>
-                    <Grow gap={3} className="items-center">
-                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                        <span className="flex items-center gap-1">
-                          <RefuseIcon color="#E43939" />
-                          거절
-                        </span>
-                      </Checkbox>
-                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                        <span className="flex items-center gap-1">
-                          <span className="text-[var(--color-blue-gray-80)] font-bold">◆</span>
-                          연기
-                        </span>
-                      </Checkbox>
-                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                        <span className="flex items-center gap-1">
-                          <span className="text-[#B54121] font-bold">■</span>
-                          심사
-                        </span>
-                      </Checkbox>
-                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                        <span className="flex items-center gap-1">
-                          <ConditionalIcon color="#FFB800" />
-                          조건부
-                        </span>
-                      </Checkbox>
-                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                        <span className="flex items-center gap-1">
-                          <CircleCheckIcon color="#009443" />
-                          인수
-                        </span>
-                      </Checkbox>
-                    </Grow>
+                <Grow placement="bwc">
+                  <Grow placement="sc" gap={2}>
+                    <Typo tag={'strong'} variant={'heading-md'}>
+                      고지유형 찾기
+                    </Typo>
+                    <Button color="gray" variant="outlined" onClick={() => setIsOpenLtpz110(true)}>
+                      정보변경
+                    </Button>
                   </Grow>
+                  <Grow gap={3} className="items-center">
+                    <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                      <span className="flex items-center gap-1">
+                        <RefuseIcon color="#E43939" />
+                        거절
+                      </span>
+                    </Checkbox>
+                    <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                      <span className="flex items-center gap-1">
+                        <span className="text-[var(--color-blue-gray-80)] font-bold">◆</span>
+                        연기
+                      </span>
+                    </Checkbox>
+                    <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                      <span className="flex items-center gap-1">
+                        <span className="text-[#B54121] font-bold">■</span>
+                        심사
+                      </span>
+                    </Checkbox>
+                    <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                      <span className="flex items-center gap-1">
+                        <ConditionalIcon color="#FFB800" />
+                        조건부
+                      </span>
+                    </Checkbox>
+                    <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                      <span className="flex items-center gap-1">
+                        <CircleCheckIcon color="#009443" />
+                        인수
+                      </span>
+                    </Checkbox>
+                  </Grow>
+                </Grow>
+
+                <Gcol className="h-full" placement={'ss'}>
                   <Typo variant="heading-sm" color="default">
                     일반/건강고지
                   </Typo>
-                  <Table variant="default">
-                    <colgroup>
-                      <col style={{ width: '30%' }} />
-                      <col style={{ width: '30%' }} />
-                      <col style={{ width: 'auto' }} />
-                      <col style={{ width: '10%' }} />
-                    </colgroup>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead colSpan={3}>고지유형</TableHead>
-                        <TableHead>제한</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              disabled
-                            >
-                              6형(건강10년)
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              className="w-full flex items-center justify-between no-underline"
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                            >
-                              5형(건강9년)
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              disabled
-                            >
-                              4형(건강8년)
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              disabled
-                            >
-                              3형(건강7년)
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              disabled
-                            >
-                              2형(건강6년)
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              disabled
-                            >
-                              일반고지형(5년)
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell className="text-center">
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button only="icon" size={'md'} variant="none">
-                                <QuestionMark color="var(--color-gray-500)" />
-                              </Button>
-                            </TooltipTrigger>
-                            <TooltipContent
-                              align="start"
-                              side="bottom"
-                              sideOffset={0}
-                              variant="default"
-                              className="z-[60] w-[22.1rem] block"
-                            >
-                              <Gcol placement={'ss'} gap={1.5}>
-                                <Gcol placement={'ss'}>
-                                  <Grow placement={'bwc'}>
-                                    <Typo tag={'strong'} className="body-md font-bold">
-                                      $간편고지형명 판정결과$
-                                    </Typo>
-                                    <Button only="icon" size={'md'} variant="none">
-                                      <Copy size={16} color="var(--color-gray-500)" />
-                                    </Button>
-                                  </Grow>
-                                  <Typo tag={'p'} className="text-wrap">
-                                    제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ -
-                                    $질병수술비(ALL RISK)$
-                                  </Typo>
-                                </Gcol>
-                                <Gcol placement={'ss'}>
-                                  <Grow placement={'bwc'}>
-                                    <Typo tag={'strong'} className="body-md font-bold">
-                                      $345조건부(감액)$
-                                    </Typo>
-                                    <Button only="icon" size={'md'} variant="none">
-                                      <Copy size={16} color="var(--color-gray-500)" />
-                                    </Button>
-                                  </Grow>
-                                  <Typo tag={'p'} className="text-wrap">
-                                    제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰
-                                    사전안내 컬럼에 입력된 값 표시$
-                                  </Typo>
-                                </Gcol>
-                                <Gcol placement={'ss'}>
-                                  <Typo tag={'strong'} className="body-md font-bold">
-                                    $345(2일)조건부(감액)$
-                                  </Typo>
-                                  <Typo tag={'p'} className="text-wrap">
-                                    제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰
-                                    사전안내 컬럼에 입력된 값 표시$
-                                  </Typo>
-                                </Gcol>
-                              </Gcol>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+
+                  <Ltpa030table healthRows={healthRows} isClick={false} />
                 </Gcol>
-                {/* 간편고지 */}
                 <Gcol className="h-full" placement={'ss'}>
                   <Typo variant="heading-sm" color="default">
                     간편고지
                   </Typo>
-                  <Grow></Grow>
-                  <Table variant="default">
-                    <colgroup>
-                      <col style={{ width: '30%' }} />
-                      <col style={{ width: '30%' }} />
-                      <col style={{ width: 'auto' }} />
-                      <col style={{ width: '10%' }} />
-                    </colgroup>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead colSpan={3}>고지유형</TableHead>
-                        <TableHead>제한</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              3105
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              385
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              365
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              355
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              355(2일)
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow className="text-center">
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              345
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              345(2일)
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow className="text-center">
-                        <TableCell></TableCell>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              335(2일)
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow className="text-center">
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              325
-                              <RefuseIcon />
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              325(2일)
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              315(2일)
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              305
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell>
-                          <Grow className="w-full [&>div]:w-full">
-                            <Checkbox
-                              color="primary"
-                              size="lg"
-                              variant="text"
-                              className="w-full flex items-center justify-between no-underline cursor-default"
-                              disabled
-                            >
-                              305(2일)
-                            </Checkbox>
-                          </Grow>
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+
+                  <Ltpa030table simpleRows={simpleRows} isClick={false} />
                 </Gcol>
               </Gcol>
             </Grow>
