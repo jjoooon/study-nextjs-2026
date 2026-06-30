@@ -4,7 +4,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
+import { PageArrowDoubleIcon, CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 import { Grow, Gcol, Grid, Typo } from '@atoms';
 import { BulletItem } from '@common/BulletList';
 import { Button } from '@uiux/Button';
@@ -301,6 +301,17 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
             </Typo>
           </Button>
           <Grow>
+            <Button
+              variant="outlined"
+              color="gray"
+              only="icon"
+              size="md"
+              onClick={() => scrollToPage(0)}
+              disabled={page === 1}
+              aria-label="이전"
+            >
+              <PageArrowDoubleIcon className="rotate-90" color="var(--color-gray-60)" color2="var(--color-gray-60)" />
+            </Button>
             <Button
               variant="outlined"
               color="gray"
