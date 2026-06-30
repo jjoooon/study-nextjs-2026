@@ -588,6 +588,7 @@
   [data-variant='box-info']::-webkit-scrollbar-thumb {
     border-color: var(--color-information-5) !important;
   }
+  .warning-scroll::-webkit-scrollbar-thumb,
   [data-variant='box-warning-line']::-webkit-scrollbar-thumb,
   [data-variant='box-warning']::-webkit-scrollbar-thumb {
     border-color: var(--color-danger-5) !important;

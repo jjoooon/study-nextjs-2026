@@ -305,8 +305,34 @@
       padding: 0.25rem 0.5rem;
       border-radius: 6px;
       border: 1px solid var(--border-color);
-      min-width: 55px;
+      width: 65px;
       text-align: center;
+      color: var(--text-color);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .value-display:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 5px var(--accent-glow);
+    }
+
+    /* hide input number spin buttons */
+    .value-display::-webkit-outer-spin-button,
+    .value-display::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .value-display {
+      -moz-appearance: textfield;
+    }
+
+    .unit-label {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-left: 2px;
+      user-select: none;
     }
 
     .btn-preset {
@@ -421,24 +447,26 @@
 
     <div class="container">
       <div class="control-panel">
-        <div class="control-group">
-          <label>스토리북 주소</label>
+        <div class="control-group" >
+          <label>주소</label>
           <input type="text" id="storybookHost" class="search-box" style="width: 180px;" value="http://localhost:6006">
         </div>
 
         <div class="control-group">
-          <label>가로 크기 (Width)</label>
+          <label>Width</label>
           <div class="range-wrapper">
-            <input type="range" id="widthSlider" min="320" max="1200" value="1000">
-            <span class="value-display" id="widthVal">1000px</span>
+            <input type="range" id="widthSlider" min="320" max="1200" value="1000" step="10">
+            <input type="number" id="widthVal" class="value-display" min="320" max="1200" value="1000">
+            <span class="unit-label">px</span>
           </div>
         </div>
 
         <div class="control-group">
-          <label>세로 크기 (Height)</label>
+          <label>Height</label>
           <div class="range-wrapper">
-            <input type="range" id="heightSlider" min="400" max="900" value="700">
-            <span class="value-display" id="heightVal">700px</span>
+            <input type="range" id="heightSlider" min="100" max="1900" value="700" step="10">
+            <input type="number" id="heightVal" class="value-display" min="100" max="1900" value="700">
+            <span class="unit-label">px</span>
           </div>
         </div>
       </div>
@@ -489,24 +517,61 @@
     let allItems = [];
     let currentTab = 'popup'; // 'popup' | 'page' | 'all'
 
-    function updateIframeSize() {
+    function updateIframeSizeFromSliders() {
       const w = widthSlider.value;
       const h = heightSlider.value;
       
       iframeWrapper.style.width = w + 'px';
       iframeWrapper.style.height = h + 'px';
       
-      widthVal.textContent = w + 'px';
-      heightVal.textContent = h + 'px';
+      widthVal.value = w;
+      heightVal.value = h;
     }
 
-    widthSlider.addEventListener('input', updateIframeSize);
-    heightSlider.addEventListener('input', updateIframeSize);
+    function updateIframeSizeFromInputs() {
+      let w = parseInt(widthVal.value, 10) || 320;
+      let h = parseInt(heightVal.value, 10) || 100;
+
+      const minW = parseInt(widthSlider.min, 10);
+      const maxW = parseInt(widthSlider.max, 10);
+      const minH = parseInt(heightSlider.min, 10);
+      const maxH = parseInt(heightSlider.max, 10);
+
+      if (w < minW) w = minW;
+      if (w > maxW) w = maxW;
+      if (h < minH) h = minH;
+      if (h > maxH) h = maxH;
+
+      iframeWrapper.style.width = w + 'px';
+      iframeWrapper.style.height = h + 'px';
+
+      widthSlider.value = w;
+      heightSlider.value = h;
+    }
+
+    widthSlider.addEventListener('input', updateIframeSizeFromSliders);
+    heightSlider.addEventListener('input', updateIframeSizeFromSliders);
+
+    widthVal.addEventListener('input', updateIframeSizeFromInputs);
+    heightVal.addEventListener('input', updateIframeSizeFromInputs);
+
+    widthVal.addEventListener('blur', () => {
+      let w = parseInt(widthVal.value, 10) || 320;
+      w = Math.max(320, Math.min(1200, w));
+      widthVal.value = w;
+      updateIframeSizeFromInputs();
+    });
+    heightVal.addEventListener('blur', () => {
+      let h = parseInt(heightVal.value, 10) || 100;
+      h = Math.max(100, Math.min(1900, h));
+      heightVal.value = h;
+      updateIframeSizeFromInputs();
+    });
 
     function setPreset(w, h) {
       widthSlider.value = w;
       heightSlider.value = h;
-      updateIframeSize();
+      updateIframeSizeFromSliders();
     }
 
     // iframe 내부의 모달 크기 메시지 수신 처리
@@ -524,9 +589,9 @@
 
         // 슬라이더 컨트롤러 및 표시 값 동기화
         widthSlider.value = defaultWidth;
-        widthVal.textContent = defaultWidth + 'px';
+        widthVal.value = defaultWidth;
         heightSlider.value = defaultHeight;
-        heightVal.textContent = defaultHeight + 'px';
+        heightVal.value = defaultHeight;
       }
 
       // 동적 높이 리사이즈 적용
@@ -534,7 +599,7 @@
         const newHeight = event.data.height;
         iframeWrapper.style.height = newHeight + 'px';
         heightSlider.value = newHeight;
-        heightVal.textContent = newHeight + 'px';
+        heightVal.value = newHeight;
       }
     });
 
