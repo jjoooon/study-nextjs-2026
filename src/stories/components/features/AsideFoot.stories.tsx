@@ -3,9 +3,14 @@
  */
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import React from 'react';
-import type { AsideFootDataTotal } from '@/shared/components/features/AsideFoot';
 import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
 import { AsideFoot } from '@features/AsideFoot';
+
+type AsideFootDataTotal = {
+  insGen: number | boolean;
+  paymentAmount: number;
+  point: number;
+};
 
 const sampleDataTotal: AsideFootDataTotal = {
   insGen: 125000,
