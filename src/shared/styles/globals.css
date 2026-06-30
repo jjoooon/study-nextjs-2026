@@ -973,6 +973,19 @@
     width: 1rem !important;
     height: 1rem !important;
   }
+
+  .is-iframe[data-slot='dialog-content'] {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    grid-template-rows: 1fr !important;
+    padding-top: 2.4rem !important;
+    border-radius: 0 !important;
+  }
+  .is-iframe [data-slot='dialog-close'],
+  .is-iframe [data-slot='dialog-header'] {
+    display: none !important;
+  }
 }
 
 .dialog-bounce-transition {

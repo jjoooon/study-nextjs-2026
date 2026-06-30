@@ -23,3 +23,11 @@ export const openBrowser = (url: string, target?: string, windowFeatures?: strin
 
   return win;
 };
+
+export const isIframe = () => {
+  try {
+    return window !== window.top;
+  } catch {
+    return true;
+  }
+};

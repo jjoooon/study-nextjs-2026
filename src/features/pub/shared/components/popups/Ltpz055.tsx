@@ -43,7 +43,7 @@ const Ltpz055 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection>
+        <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
@@ -53,8 +53,7 @@ const Ltpz055 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          {/* 2026-05-27 구조변경(Gcol 추가) */}
-          <Gcol className="gap-2">
+          <Gcol className="gap-2" placement="ss">
             <Table>
               <caption className="a11y-hidden">화면담당자 정보입니다.</caption>
               <colgroup>

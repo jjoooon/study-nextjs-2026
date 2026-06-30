@@ -43,12 +43,21 @@ const [value, setValue] = useState('');
             `}
           >
             <h2>Mode</h2>
-            <p>single, multiple, range 모드를 지원합니다.</p>
+            <p>single, multiple, range 모드를 지원합니다. min, max 설정을 통한 날짜 선택 범위 제어도 가능합니다.</p>
             <Grow
               gap={8}
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
               <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
+
+              <DatePickerInput
+                mode="single"
+                width="sm"
+                min="2026-03-05"
+                max="2026-03-20"
+                value="2026-03-07"
+                onChange={() => undefined}
+              />
 
               <DatePickerInput
                 mode="range"
@@ -63,6 +72,15 @@ const [value, setValue] = useState('');
                 autoRangeFix
                 autoRangeDays={7}
                 autoClose
+                rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
+                onChange={() => undefined}
+              />
+
+              <DatePickerInput
+                mode="range"
+                width="lg"
+                min="2026-06-25"
+                max="2026-07-15"
                 rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
                 onChange={() => undefined}
               />
@@ -220,6 +238,16 @@ const [value, setValue] = useState('');
       control: { type: 'boolean' },
       table: { category: '설정 props' },
       description: '날짜를 선택했을 때 캘린더 팝업이 자동으로 닫히는지 여부 (range 모드 포함)',
+    },
+    min: {
+      control: { type: 'text' },
+      table: { category: '설정 props' },
+      description: '선택 가능한 최소 날짜 (포맷: YYYY-MM-DD 또는 Date 객체)',
+    },
+    max: {
+      control: { type: 'text' },
+      table: { category: '설정 props' },
+      description: '선택 가능한 최대 날짜 (포맷: YYYY-MM-DD 또는 Date 객체)',
     },
     id: {
       table: { disable: true },
@@ -418,6 +446,33 @@ export const RangeWithAutoFixAndClose: Story = {
           }
           const parts = formattedValue.split('~').map((v) => v.trim());
           setRangeValue({ from: parts[0] || '', to: parts[1] || '' });
+        }}
+      />
+    );
+  },
+};
+
+export const MinMaxLimited: Story = {
+  args: {
+    mode: 'single',
+    min: '2026-06-10',
+    max: '2026-06-25',
+    value: '2026-06-15',
+  },
+  render: (args) => {
+    const [value, setValue] = React.useState(args.value ?? '');
+
+    React.useEffect(() => {
+      setValue(args.value ?? '');
+    }, [args.value]);
+
+    return (
+      <DatePickerInput
+        {...args}
+        value={value}
+        onChange={(date, formattedValue) => {
+          setValue(formattedValue ?? '');
+          args.onChange?.(date, formattedValue ?? '');
         }}
       />
     );

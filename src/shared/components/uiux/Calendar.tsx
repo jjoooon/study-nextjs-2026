@@ -123,17 +123,38 @@ function Calendar({
         <div className="grid grid-cols-4 gap-3">
           {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => {
             const isSelected = selectedMonth === month;
+
+            // 월 비활성화 여부 검사
+            let isMonthDisabled = false;
+            if (props.fromDate) {
+              const fromYear = props.fromDate.getFullYear();
+              const fromMonth = props.fromDate.getMonth() + 1;
+              if (currentYear < fromYear || (currentYear === fromYear && month < fromMonth)) {
+                isMonthDisabled = true;
+              }
+            }
+            if (props.toDate) {
+              const toYear = props.toDate.getFullYear();
+              const toMonth = props.toDate.getMonth() + 1;
+              if (currentYear > toYear || (currentYear === toYear && month > toMonth)) {
+                isMonthDisabled = true;
+              }
+            }
+
             return (
               <button
                 key={month}
                 type="button"
+                disabled={isMonthDisabled}
                 data-month={`${currentYear}-${String(month).padStart(2, '0')}`}
                 data-today={today.getFullYear() === currentYear && today.getMonth() + 1 === month ? 'true' : undefined}
                 data-selected-month={isSelected ? 'true' : undefined}
                 aria-label={`${currentYear}년 ${month}월`}
                 className={cn(
                   'w-[2.6rem] h-[2.6rem] flex items-center rounded-full justify-center text-[1.4rem] hover:bg-[var(--color-gray-10)] transition-all relative',
-                  isSelected && 'bg-[var(--color-primary-50)] text-[#fff]'
+                  isSelected && 'bg-[var(--color-primary-50)] text-[#fff]',
+                  isMonthDisabled &&
+                    'text-[var(--color-text-gray-lighter)] opacity-50 cursor-not-allowed hover:bg-transparent pointer-events-none'
                 )}
                 onClick={() => {
                   monthMemoryRef.current[currentYear] = month;
@@ -307,11 +328,18 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
   }, [modifiers.focused]);
 
   const isToday = modifiers.today;
-  const isSelected = modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle;
+  const isOutside = modifiers.outside;
+
+  // outside 일자인 경우(이전 달, 다음 달의 날짜) 선택 상태가 이중으로 보이지 않도록 필터링
+  const isSelected =
+    !isOutside && modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle;
+  const isRangeStart = !isOutside && modifiers.range_start;
+  const isRangeEnd = !isOutside && modifiers.range_end;
+  const isRangeMiddle = !isOutside && modifiers.range_middle;
+
   const isSaturday = day.date.getDay() === 6;
   const isSunday = day.date.getDay() === 0;
   const isDisabled = modifiers.disabled;
-  const isOutside = modifiers.outside;
 
   return (
     <button
@@ -319,9 +347,9 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
       type="button"
       data-day={day.date.toLocaleDateString()}
       data-selected-single={isSelected}
-      data-range-start={modifiers.range_start}
-      data-range-end={modifiers.range_end}
-      data-range-middle={modifiers.range_middle}
+      data-range-start={isRangeStart}
+      data-range-end={isRangeEnd}
+      data-range-middle={isRangeMiddle}
       className={cn(
         'relative flex aspect-square h-[2.6rem] w-[2.6rem] flex-col gap-1 text-[1.4rem] leading-none',
         'hover:bg-[var(--color-element-gray-lighter)] rounded-full items-center justify-center',

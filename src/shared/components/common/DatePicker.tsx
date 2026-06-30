@@ -68,7 +68,7 @@ function parseDateFromDigits(digits: string) {
 /**
  * DatePickerInput 컴포넌트의 Props 인터페이스입니다.
  */
-interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
+interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange' | 'min' | 'max'> {
   /** 입력 필드 및 관련 요소의 고유 ID */
   id?: string;
   /** 단일 날짜 값 (포맷: YYYY-MM-DD) */
@@ -142,6 +142,10 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   autoRangeFix?: boolean;
   /** 시작일 선택 시 자동으로 종료일도 선택되고 팝업이 닫히는지 여부 (기본값: false) */
   autoClose?: boolean;
+  /** 선택 가능한 최소 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
+  min?: string | Date;
+  /** 선택 가능한 최대 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
+  max?: string | Date;
 }
 
 /**
@@ -168,6 +172,8 @@ export function DatePickerInput({
   autoRangeDays = 0,
   autoRangeFix = false,
   autoClose = false,
+  min,
+  max,
 }: UIInputProps) {
   const generatedId = React.useId();
   const finalId = id || generatedId;
@@ -179,6 +185,27 @@ export function DatePickerInput({
   const [isSelectingEnd, setIsSelectingEnd] = React.useState(false);
   const [selected, setSelected] = React.useState<CalendarSelection>(initialValue ? new Date(initialValue) : undefined);
   const [month, setMonth] = React.useState<Date | undefined>(initialValue ? new Date(initialValue) : undefined);
+
+  const minDate = React.useMemo(() => {
+    if (!min) return undefined;
+    return min instanceof Date ? min : new Date(min);
+  }, [min]);
+
+  const maxDate = React.useMemo(() => {
+    if (!max) return undefined;
+    return max instanceof Date ? max : new Date(max);
+  }, [max]);
+
+  const disabledDays = React.useMemo(() => {
+    const rules: any[] = [];
+    if (minDate) {
+      rules.push({ before: minDate });
+    }
+    if (maxDate) {
+      rules.push({ after: maxDate });
+    }
+    return rules.length > 0 ? rules : undefined;
+  }, [minDate, maxDate]);
   const [numericValue, setNumericValue] = React.useState(initialValue?.replace(/\D/g, '') || '');
   const [rangeInput, setRangeInput] = React.useState({ from: '', to: '' });
   const [invalidRange, setInvalidRange] = React.useState({ from: false, to: false });
@@ -292,30 +319,24 @@ export function DatePickerInput({
           return;
         }
 
-        // 1. 기존에 이미 기간 선택(from과 to 모두 존재)이 완료되었던 상태에서 세 번째 클릭이 들어온 경우
+        // 1. 기존에 이미 기간 선택(from과 to 모두 존재)이 완료되었던 상태에서 세 번째 클릭이 들어온 경우 -> 무조건 새로운 시작일로 지정
         if (currentRangeSelected?.from && currentRangeSelected?.to && !isSelectingEnd) {
-          const fromDate = currentRangeSelected.from;
-          if (selectedDay >= fromDate) {
-            // 기존 시작일보다 이후 날짜 클릭 -> 시작일 유지, 종료일만 변경
-            const nextTo = selectedDay;
-            setSelected({ from: fromDate, to: nextTo });
-            setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
-            setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-            setIsSelectingEnd(false); // 계속 완료 상태 유지
-            onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
-            setOpen(false);
-          } else {
-            // 기존 시작일보다 이전 날짜 클릭 -> 새로운 시작일로 변경 및 종료일 자동 계산, 종료일 대기 상태로 전환
-            const nextFrom = selectedDay;
-            const nextTo = new Date(nextFrom);
-            nextTo.setDate(nextTo.getDate() + offset);
+          const nextFrom = selectedDay;
+          const nextTo = new Date(nextFrom);
+          nextTo.setDate(nextTo.getDate() + offset);
 
-            setSelected({ from: nextFrom, to: nextTo });
-            setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
-            setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-            setIsSelectingEnd(true); // 종료일 선택 대기 상태로 전환
-            onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
+          // 만약 자동으로 계산된 nextTo가 maxDate를 넘는다면 클램프
+          if (maxDate && nextTo > maxDate) {
+            nextTo.setTime(maxDate.getTime());
           }
+
+          setSelected({ from: nextFrom, to: nextTo });
+          setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
+          setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
+          setIsSelectingEnd(true); // 종료일 선택 대기 상태로 전환
+          onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
+
+          if (autoClose) setOpen(false);
           setInvalidDate(false);
           return;
         }
@@ -421,7 +442,13 @@ export function DatePickerInput({
     setRangeInput((prev) => ({ ...prev, [part]: formatted }));
 
     const parsedDate = parseDateFromDigits(digits);
-    const isInvalid = digits.length === 8 && !parsedDate;
+
+    // min, max 범위 검사 추가
+    const isWithinRange = parsedDate
+      ? (!minDate || parsedDate >= minDate) && (!maxDate || parsedDate <= maxDate)
+      : true;
+
+    const isInvalid = digits.length === 8 && (!parsedDate || !isWithinRange);
     setInvalidRange((prev) => {
       const next = { ...prev, [part]: isInvalid };
       setInvalidDate(next.from || next.to);
@@ -434,10 +461,16 @@ export function DatePickerInput({
         : { from: undefined, to: undefined };
 
     // 만약 시작일이 완성되었고 종료일이 비어있다면 자동 입력 적용
-    if (part === 'from' && parsedDate && digits.length === 8) {
+    if (part === 'from' && parsedDate && digits.length === 8 && isWithinRange) {
       const offset = autoRangeDays ?? 7;
       const autoTo = new Date(parsedDate);
       autoTo.setDate(autoTo.getDate() + offset);
+
+      // autoTo가 maxDate를 넘지 않도록 클램프
+      if (maxDate && autoTo > maxDate) {
+        autoTo.setTime(maxDate.getTime());
+      }
+
       const autoToFormatted = formatDate(autoTo);
 
       setRangeInput({ from: formatted, to: autoToFormatted });
@@ -505,9 +538,18 @@ export function DatePickerInput({
           dateObj.getFullYear() === year && dateObj.getMonth() === month - 1 && dateObj.getDate() === day;
 
         if (isActualValid) {
-          setMonth(dateObj);
-          setInvalidDate(false);
-          onChange?.(dateObj, formatted);
+          // min, max 범위 검사 추가
+          const isWithinMin = !minDate || dateObj >= minDate;
+          const isWithinMax = !maxDate || dateObj <= maxDate;
+
+          if (isWithinMin && isWithinMax) {
+            setMonth(dateObj);
+            setInvalidDate(false);
+            onChange?.(dateObj, formatted);
+          } else {
+            setInvalidDate(true);
+            onChange?.(undefined, '');
+          }
         } else {
           setInvalidDate(true);
           onChange?.(undefined, '');
@@ -748,6 +790,9 @@ export function DatePickerInput({
                 }
               }}
               onClose={() => setOpen(false)}
+              fromDate={minDate}
+              toDate={maxDate}
+              disabled={disabledDays}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
             />
           ) : mode === 'range' ? (
@@ -760,6 +805,9 @@ export function DatePickerInput({
               month={month}
               onMonthChange={setMonth}
               numberOfMonths={2}
+              fromDate={minDate}
+              toDate={maxDate}
+              disabled={disabledDays}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
               required={true}
             />
@@ -771,6 +819,9 @@ export function DatePickerInput({
               captionLayout={'dropdown'}
               month={month}
               onMonthChange={setMonth}
+              fromDate={minDate}
+              toDate={maxDate}
+              disabled={disabledDays}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
               required={required}
             />
@@ -783,6 +834,9 @@ export function DatePickerInput({
               month={month}
               onMonthChange={setMonth}
               required={true}
+              fromDate={minDate}
+              toDate={maxDate}
+              disabled={disabledDays}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
             />
           )}
