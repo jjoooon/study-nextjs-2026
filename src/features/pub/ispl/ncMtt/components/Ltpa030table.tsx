@@ -5,7 +5,7 @@
 import { Copy } from 'lucide-react';
 import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { RefuseIcon, QuestionMark } from '@icons';
+import { RefuseIcon, QuestionMark, NewWin } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
@@ -165,12 +165,12 @@ export default function Ltpa030table({
                       <Gcol placement={'ss'} gap={1.5}>
                         {row.tooltipData.slice(0, 3).map((tip, idx) => (
                           <Gcol key={idx} placement={'ss'}>
-                            <Grow placement={'bwc'}>
+                            <Grow placement={'sc'}>
                               <Typo tag={'strong'} className="body-md font-bold">
                                 {tip.title}
                               </Typo>
                               <Button only="icon" size={'md'} variant="none" title="복사하기">
-                                <Copy size={16} color="var(--color-gray-500)" />
+                                <NewWin size={16} color="var(--color-gray-500)" />
                               </Button>
                             </Grow>
                             <Typo tag={'p'} className="text-wrap">
@@ -304,12 +304,12 @@ export default function Ltpa030table({
                         <Gcol placement={'ss'} gap={1.5}>
                           {row.tooltipData.slice(0, 3).map((tip, idx) => (
                             <Gcol key={idx} placement={'ss'}>
-                              <Grow placement={'bwc'}>
+                              <Grow placement={'sc'}>
                                 <Typo tag={'strong'} className="body-md font-bold">
                                   {tip.title}
                                 </Typo>
                                 <Button only="icon" size={'md'} variant="none" title="복사하기">
-                                  <Copy size={16} color="var(--color-gray-500)" />
+                                  <NewWin size={16} color="var(--color-gray-500)" />
                                 </Button>
                               </Grow>
                               <Typo tag={'p'} className="text-wrap">
