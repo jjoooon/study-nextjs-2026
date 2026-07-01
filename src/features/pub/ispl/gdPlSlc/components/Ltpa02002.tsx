@@ -13,7 +13,7 @@ import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, AiIcon } from '@icons';
+import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -756,7 +756,7 @@ export function Ltpa02002({
         </Grow>
       </div>
 
-      {false ? (
+      {dataNone ? (
         <Gcol className="h-full gap-2.5 " placement="cc">
           <div className="w-[24.8rem]">
             <Image
@@ -992,8 +992,7 @@ export function Ltpa02002({
           </Grid>
           <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
             <Button variant={'outlined'} color={'gray'} size={'xl'}>
-              <span className="absolute w-[5rem] h-[7rem] border border-[0.2rem] border-[var(--color-primary-50)] bg-[var(--color-primary-10)] rounded-[0.6rem] z-1"></span>
-              <AiIcon size={24} color={'#006FF2'} color2={'#A683FF'} />
+              <Image src={withPublicUrl('/images/Ltpa020/card.png')} alt="카드" width={24} height={24} />
               추천설계비교({comparedPlanKeys.length})
             </Button>
             <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>

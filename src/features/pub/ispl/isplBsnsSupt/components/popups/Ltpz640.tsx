@@ -182,6 +182,11 @@ const Ltpz640 = () => {
     gridApiRef,
   });
 
+  const handleOpenAddPackageDialog = React.useCallback(() => {
+    setMergePackageName('');
+    setOpenCellMerge(true);
+  }, []);
+
   const handleDeleteRow = React.useCallback(() => {
     setRowData((prev) => prev.filter((row) => !row.cheked));
   }, [setRowData]);
@@ -426,48 +431,24 @@ const Ltpz640 = () => {
     moveCheckedRowsWithinGroup('down');
   }, [moveCheckedRowsWithinGroup]);
 
-  const handleMergePackageName = React.useCallback(() => {
+  const handleCreateNewPackage = React.useCallback(() => {
     if (!mergePackageName.trim()) {
       return;
     }
 
     setRowData((prev) => {
-      // 1. field1 업데이트
-      const updated = prev.map((row) => {
-        if (!row.cheked) {
-          return row;
-        }
+      const nextId = getNextNumericRowId(prev);
+      const newRow: DummyData1Type = {
+        id: nextId,
+        field0: 1,
+        field1: mergePackageName,
+        field2: '',
+        cheked: false,
+      };
 
-        return {
-          ...row,
-          cheked: false,
-          field1: mergePackageName,
-        };
-      });
+      const nextRows = [newRow, ...prev];
 
-      // 2. 동일 field1끼리 연속 그룹으로 정렬
-      //    기존 순서를 최대한 유지하면서, 같은 field1은 첫 등장 위치로 모음
-      const groups: Map<string, DummyData1Type[]> = new Map();
-      const keyOrder: string[] = [];
-
-      for (const row of updated) {
-        if (!groups.has(row.field1)) {
-          groups.set(row.field1, []);
-          keyOrder.push(row.field1);
-        }
-
-        groups.get(row.field1)!.push(row);
-      }
-
-      const regrouped: DummyData1Type[] = [];
-
-      for (const key of keyOrder) {
-        for (const row of groups.get(key)!) {
-          regrouped.push(row);
-        }
-      }
-
-      return regrouped.map((row, index) => ({
+      return nextRows.map((row, index) => ({
         ...row,
         field0: index + 1,
       }));
@@ -475,22 +456,29 @@ const Ltpz640 = () => {
 
     setMergePackageName('');
     setOpenCellMerge(false);
-  }, [mergePackageName, setRowData]);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        gridApiRef.current?.ensureIndexVisible(0, 'middle');
+        gridApiRef.current?.setFocusedCell(0, 'field1');
+      });
+    });
+  }, [mergePackageName, setRowData, setMergePackageName, setOpenCellMerge]);
 
   // 2026-06-01 width, flex 수정, sortable 추가
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
     () => [
-      {
-        headerName: '순서',
-        field: 'field0',
-        width: attributeColumnWidth(40),
-        editable: true,
-        cellClass: 'text-center',
-        cellEditor: 'agNumberCellEditor',
-        sortable: false,
-        autoHeight: true,
-        spanRows: true,
-      },
+      // {
+      //   headerName: '순서',
+      //   field: 'field0',
+      //   width: attributeColumnWidth(40),
+      //   editable: true,
+      //   cellClass: 'text-center',
+      //   cellEditor: 'agNumberCellEditor',
+      //   sortable: false,
+      //   autoHeight: true,
+      //   spanRows: true,
+      // },
       {
         headerName: '패키지명',
         field: 'field1',
@@ -543,13 +531,8 @@ const Ltpz640 = () => {
           </DialogHeader>
           <DialogSection className="grid-rows-[auto_1fr] gap-1">
             <Grow placement="ec" className="w-full">
-              <Button
-                variant={'outlined'}
-                color={'gray'}
-                disabled={!hasCheckedRows}
-                onClick={() => setOpenCellMerge(true)}
-              >
-                패키지 병합/분리
+              <Button variant={'outlined'} color={'gray'} onClick={handleOpenAddPackageDialog}>
+                패키지 추가
               </Button>
               <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
                 행추가
@@ -623,13 +606,13 @@ const Ltpz640 = () => {
         </DialogContent>
       </Dialog>
       <ConfirmDialog
-        title="패키지 병합/분리"
+        title="패키지 추가"
         description={
           <div className="space-y-2">
-            <p>선택한 담보그룹명의 패키지명을 입력하세요.</p>
+            <p>추가할 패키지명을 입력하세요.</p>
             <Input
               type="text"
-              placeholder="패키지명 입력하세요."
+              placeholder="패키지명을 입력하세요."
               value={mergePackageName}
               onChange={(e) => setMergePackageName(e.target.value)}
             />
@@ -639,7 +622,7 @@ const Ltpz640 = () => {
         confirmLabel="적용"
         cancelLabel="취소"
         onOpenChange={setOpenCellMerge}
-        onConfirm={handleMergePackageName}
+        onConfirm={handleCreateNewPackage}
       />
     </>
   );
