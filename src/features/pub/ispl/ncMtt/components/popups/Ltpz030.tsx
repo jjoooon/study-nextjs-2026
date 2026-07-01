@@ -5,10 +5,11 @@
 
 import * as React from 'react';
 import Ltpz110 from '@/features/pub/shared/components/popups/Ltpz110';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Divider } from '@atoms';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon } from '@icons';
+import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon, AuditIcon, DiamondIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -28,18 +29,7 @@ import '@/shared/lib/agGridPub';
 import Ltpa030table, { SimpleUnderwritingRow, HealthUnderwritingRow } from '../Ltpa030table';
 
 // Y 케이스 전용 스타일 클래스 변수 (색상, 굵기 설정)
-const dangerY = 'text-[var(--color-text-danger)] font-bold';
-
-// 라벨 문자열을 인수 결정 정보(아이콘, 라벨)로 변환하는 함수
-// const getUnderwritingDecision = (value: string | number) => {
-//   if (typeof value !== 'string') {
-//     return null;
-//   }
-
-//   const status = underwritingDecisionStatusByLabel[value.trim()];
-
-//   return status ? underwritingDecisionMap[status] : null;
-// };
+const dangerY = 'text-[var(--color-text-danger)]';
 
 interface Ltpz030Props {
   open?: boolean;
@@ -147,15 +137,14 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
   ];
 
   // ===== 다이얼로그 렌더링 =====
-  // 고지유형 추천 팝업 다이얼로그 (Tab1: ag-Grid, Tab2: 일반 테이블)
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent showCloseButton resizable={false} size="2xl">
+        <DialogContent showCloseButton resizable={true} className="w-[110rem]">
           <DialogHeader>
             <DialogTitle>
               <Typo tag={'strong'} variant={'heading-lg'}>
-                고지유형 추천(LTPZ030)
+                고지유형 찾기
               </Typo>
               <Typo tag={'p'} variant={'body-xl'}>
                 (LTPZ030)
@@ -178,32 +167,38 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
                 </FormRow>
               </FormTable>
             </Grow>
-            <Grow className="grid w-full grid-cols-[1fr_1fr] gap-3" placement={'ss'}>
+            <Grow className="grid w-full grid-cols-[1fr_42.8rem] gap-3" placement={'ss'}>
               {/* N년내 입원수술 사전체크 (일반 HTML 테이블) */}
               <Gcol className="h-full" placement={'ss'}>
                 <Grow placement="sc">
-                  <Typo tag={'strong'} variant={'heading-md'}>
+                  <Typo tag={'strong'} variant={'heading-md'} className="leading-[2.5rem]">
                     보험금 지급정보
                   </Typo>
                 </Grow>
-                <Typo variant="heading-sm" color="default">
-                  N년내 입원수술
-                </Typo>
+                <Grow placement="sc">
+                  <Typo tag={'strong'} variant={'body-sm'} icon={'dot'} weight={'bold'} color={'default'}>
+                    N년내 입원수술
+                  </Typo>
+                </Grow>
                 <Table variant="default">
                   <colgroup>
-                    <col style={{ width: '11%' }} />
-                    <col style={{ width: '10%' }} />
-                    <col style={{ width: '10%' }} />
-                    <col style={{ width: '12%' }} />
-                    <col style={{ width: '13%' }} />
-                    <col style={{ width: '12%' }} />
-                    <col style={{ width: '12%' }} />
-                    <col style={{ width: '10%' }} />
-                    <col style={{ width: '10%' }} />
+                    <col style={{ width: '5.4rem' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
+                    <col style={{ width: 'auto' }} />
                   </colgroup>
                   <TableHeader>
                     <TableRow>
-                      <TableHead rowSpan={2}>대상기간</TableHead>
+                      <TableHead rowSpan={2}>
+                        대상
+                        <br />
+                        기간
+                      </TableHead>
                       <TableHead rowSpan={2}>수술</TableHead>
                       <TableHead rowSpan={2}>입원</TableHead>
                       <TableHead colSpan={2}>건강/일반</TableHead>
@@ -213,9 +208,7 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
                       <TableHead>경증외입원수술</TableHead>
                       <TableHead>10대중대질환</TableHead>
                       <TableHead>
-                        경증외
-                        <br />
-                        입원수술
+                        경증외 입원수술
                         <br />
                         (전체/2일)
                       </TableHead>
@@ -388,65 +381,136 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
                 </Gcol>
               </Gcol>
               <Gcol gap={3}>
-                <Grow placement="bwc">
-                  <Grow placement="sc" gap={2}>
+                <Gcol>
+                  <Grow placement="bwc" gap={2}>
                     <Typo tag={'strong'} variant={'heading-md'}>
                       고지유형 찾기
                     </Typo>
-                    <Button color="gray" variant="outlined" onClick={() => setIsOpenLtpz110(true)}>
-                      정보변경
-                    </Button>
+                    <Grow gap={2}>
+                      <Button color="gray" variant="outlined" size={'lg'} onClick={() => setIsOpenLtpz110(true)}>
+                        정보변경
+                      </Button>
+                      <Grow gap={2} className="items-center">
+                        <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                          <span className="flex items-center gap-1 text-[1.2rem]">
+                            <RefuseIcon size={16} />
+                            거절
+                          </span>
+                        </Checkbox>
+                        <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                          <span className="flex items-center gap-1 text-[1.2rem]">
+                            <DiamondIcon />
+                            연기
+                          </span>
+                        </Checkbox>
+                        <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                          <span className="flex items-center gap-1 text-[1.2rem]">
+                            <AuditIcon />
+                            심사
+                          </span>
+                        </Checkbox>
+                        <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                          <span className="flex items-center gap-1 text-[1.2rem]">
+                            <ConditionalIcon />
+                            조건부
+                          </span>
+                        </Checkbox>
+                        <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                          <span className="flex items-center gap-1 text-[1.2rem]">
+                            <CircleCheckIcon size={14} />
+                            인수
+                          </span>
+                        </Checkbox>
+                      </Grow>
+                    </Grow>
                   </Grow>
-                  <Grow gap={3} className="items-center">
-                    <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                      <span className="flex items-center gap-1">
-                        <RefuseIcon color="#E43939" />
-                        거절
-                      </span>
-                    </Checkbox>
-                    <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                      <span className="flex items-center gap-1">
-                        <span className="text-[var(--color-blue-gray-80)] font-bold">◆</span>
-                        연기
-                      </span>
-                    </Checkbox>
-                    <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                      <span className="flex items-center gap-1">
-                        <span className="text-[#B54121] font-bold">■</span>
-                        심사
-                      </span>
-                    </Checkbox>
-                    <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                      <span className="flex items-center gap-1">
-                        <ConditionalIcon color="#FFB800" />
-                        조건부
-                      </span>
-                    </Checkbox>
-                    <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                      <span className="flex items-center gap-1">
-                        <CircleCheckIcon color="#009443" />
-                        인수
-                      </span>
-                    </Checkbox>
-                  </Grow>
-                </Grow>
+                  {/* 일반/건강고지 테이블 */}
+                  <Gcol className="h-full" placement={'ss'}>
+                    <Typo tag={'strong'} variant={'body-sm'} icon={'dot'} weight={'bold'} color={'default'}>
+                      일반/건강고지
+                    </Typo>
 
-                <Gcol className="h-full" placement={'ss'}>
-                  <Typo variant="heading-sm" color="default">
-                    일반/건강고지
-                  </Typo>
-
-                  <Ltpa030table healthRows={healthRows} isClick={false} />
+                    <Ltpa030table healthRows={healthRows} isClick={false} />
+                  </Gcol>
                 </Gcol>
+                {/* 간편고지 테이블 */}
                 <Gcol className="h-full" placement={'ss'}>
-                  <Typo variant="heading-sm" color="default">
-                    간편고지
-                  </Typo>
-
+                  <Grow placement="bwe">
+                    <Typo tag={'strong'} variant={'body-sm'} icon={'dot'} weight={'bold'} color={'default'}>
+                      간편고지
+                    </Typo>
+                    <Grow gap={2} className="items-center">
+                      <Typo variant={'body-sm'} weight={'bold'}>
+                        추가고지
+                      </Typo>
+                      <Divider />
+                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                        <span className="flex items-center gap-1">
+                          고혈압
+                          <RefuseIcon size={16} />
+                        </span>
+                      </Checkbox>
+                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                        <span className="flex items-center gap-1">
+                          당뇨
+                          <CircleCheckIcon size={14} />
+                        </span>
+                      </Checkbox>
+                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                        <span className="flex items-center gap-1">
+                          고혈압&당뇨
+                          <RefuseIcon size={16} />
+                        </span>
+                      </Checkbox>
+                    </Grow>
+                  </Grow>
                   <Ltpa030table simpleRows={simpleRows} isClick={false} />
                 </Gcol>
               </Gcol>
             </Grow>
+            <Gcol className="w-full" placement="ss" variant="box-warning">
+              <Typo icon="warning" variant="body-sm">
+                <b>주의사항</b>
+              </Typo>
+              <BulletList color={'warning'} size="sm">
+                <BulletListItem>
+                  추천유형 안내 :{' '}
+                  <em>일반/건강고지형은 &quot;심사가능&quot; 유형, 간편고지형은 &quot;인수가능&quot; 유형 안내</em>
+                  <BulletItem size="sm" type="dash">
+                    <em>단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의</em>(유병력자일 경우라도 사고력
+                    &middot; 가입담보에 따라 표준체/건강체로 가입가능)
+                  </BulletItem>
+                </BulletListItem>
+                <BulletListItem>
+                  사전심사 적용범위 : 일부 주요상품 및 주요담보만 사전심사 적용
+                  <BulletList>
+                    <BulletListItem size="sm" type="dash">
+                      <Grow placement="ss">
+                        적용상품 :
+                        <BulletList>
+                          <BulletItem size="sm" before="①" type="symbols">
+                            건강/일반 - 시그니처 여성건강, 한아름, 굿밸런스, 0540, 신상품
+                          </BulletItem>
+                          <BulletItem size="sm" before="②" type="symbols">
+                            간편 - 더경증간편, 시그니처 여성간편, 3N5 더 간편, 311 간편, 신상품 간편
+                          </BulletItem>
+                        </BulletList>
+                      </Grow>
+                    </BulletListItem>
+                    <BulletItem size="sm" type="dash">
+                      적용담보 : [기본 적용] 질병후유 3%, 암, 2대, 질병입원비, 질병수술비, 상해입원비, 상해수술비 +
+                      [필요시 선택] 상해휴유3%, 요양진단비
+                    </BulletItem>
+                    <BulletItem size="sm" type="dash">
+                      활용정보 : 보험금지급정보
+                    </BulletItem>
+                  </BulletList>
+                </BulletListItem>
+                <BulletListItem>
+                  설계상품 &middot; 고지유형 선정의 보조수단으로 활용바라며, 실제 심사결과와 다를 수 있음
+                </BulletListItem>
+              </BulletList>
+            </Gcol>
           </DialogSection>
           <DialogFooter>
             <DialogFooterArea>
