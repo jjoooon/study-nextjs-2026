@@ -498,7 +498,7 @@ export default function Ltpa010Section() {
         );
 
         return (
-          <Grow placement="bwc" className="h-full ">
+          <Grow placement="bwc" className="h-full min-h-[3rem]">
             <div className="truncate-no">{data?.field03}</div>
 
             {data?.nickname ? (
@@ -1134,8 +1134,10 @@ export default function Ltpa010Section() {
                     <DatePickerInput
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
-                      autoRangeDays={7}
-                      autoRangeFix={true}
+                      // autoRangeDays={7}
+                      // autoRangeFix={false}
+                      min={'2026-06-28'}
+                      max={'2026-07-05'}
                       mode="range"
                       size="lg"
                     />
