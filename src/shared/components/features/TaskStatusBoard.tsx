@@ -15,7 +15,7 @@ import { Button } from '@uiux/Button';
 type TaskStatusBoardProps<
   T extends {
     id: number;
-    status: '정상' | '경고' | '중지';
+    status: '정상' | '경고' | '중지' | '없음';
     label: string;
   },
 > = {
@@ -30,7 +30,7 @@ type TaskStatusBoardProps<
 export function TaskStatusBoard<
   T extends {
     id: number;
-    status: '정상' | '경고' | '중지';
+    status: '정상' | '경고' | '중지' | '없음';
     label: string;
   },
 >({ state, onItemClick }: TaskStatusBoardProps<T>) {
@@ -54,6 +54,7 @@ export function TaskStatusBoard<
             정상: 'bg-[var(--color-success-50)]',
             경고: 'bg-[var(--color-warning-40)]',
             중지: 'bg-[var(--color-danger-50)]',
+            없음: 'bg-[var(--color-gray-20)]', // 상태가 '없음'인 경우 회색 배경 설정
           };
           return (
             <Button
@@ -67,22 +68,20 @@ export function TaskStatusBoard<
               }}
             >
               <span className="flex items-center gap-1">
-                <Typo variant={'body-xs'} className="underline underline-offset-4">
+                <Typo variant={'body-xs'} className={cn(item.status !== '없음' && 'underline underline-offset-4')}>
                   {item.label}
                 </Typo>
               </span>
               <span
                 className={cn(
                   'w-[1.6rem] h-[1.6rem] shrink-0 rounded-full flex items-center justify-center',
-                  statusColors[item.status as keyof typeof statusColors]
+                  statusColors[item.status]
                 )}
               >
-                {/* 정상은 체크, 경고/중지는 느낌표 아이콘 사용 */}
-                {item.status === '정상' ? (
-                  <CheckIcon color={'#fff'} size={14} />
-                ) : (
-                  <ExMarkIcon color={'#fff'} size={14} />
-                )}
+                {/* 정상은 체크, 경고/중지는 느낌표 아이콘 사용, 없으면 빈 원형 */}
+                {item.status === '정상' && <CheckIcon color={'#fff'} size={14} />}
+                {(item.status === '경고' || item.status === '중지') && <ExMarkIcon color={'#fff'} size={14} />}
+                {item.status === '없음' && <div className="w-[1rem] h-[0.2rem] rounded-[0.2rem] bg-[#fff]" />}
               </span>
             </Button>
           );
