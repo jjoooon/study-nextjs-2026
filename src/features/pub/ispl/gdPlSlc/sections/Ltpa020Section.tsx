@@ -236,19 +236,6 @@ export default function Ltpa020Section() {
                                   </Grow>
                                 </KeyValueItem>
                                 <Divider color="gray-dark" />
-
-                                <KeyValueItem
-                                  label={'보험금지급 이력정보'}
-                                  variant="info"
-                                  className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff] gap-2"
-                                >
-                                  <Grow gap={2}>
-                                    2026-01-01
-                                    <Button variant={'contained'} size={'sm'} color={'coolgray-light'}>
-                                      10년상품설계
-                                    </Button>
-                                  </Grow>
-                                </KeyValueItem>
                               </Grow>
                             </Grow>
                           )}
