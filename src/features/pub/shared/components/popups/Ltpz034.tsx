@@ -97,53 +97,6 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
   const [flyingItems, setFlyingItems] = React.useState<FlyingItem[]>([]);
 
-  const handleCheckedChange = React.useCallback((id: string, checked: boolean | 'indeterminate') => {
-    setSelectedIds((prev) => {
-      if (checked === true) {
-        if (prev.length >= 3) {
-          return prev;
-        }
-        return prev.includes(id) ? prev : [...prev, id];
-      } else {
-        return prev.filter((item) => item !== id);
-      }
-    });
-  }, []);
-
-  const handleCheckboxClick = React.useCallback(
-    (id: string, label: string, event: React.MouseEvent<HTMLButtonElement>) => {
-      const rect = event.currentTarget.getBoundingClientRect();
-      const destEl = document.getElementById('selected-underwriting-container');
-      if (!destEl) return;
-      const destRect = destEl.getBoundingClientRect();
-
-      const startX = rect.left + rect.width / 2;
-      const startY = rect.top + rect.height / 2;
-      // Align destination slightly to the right of the "고지유형 선택" text
-      const endX = destRect.left + 120;
-      const endY = destRect.top + destRect.height / 2;
-
-      setFlyingItems((prev) => [
-        ...prev,
-        {
-          id: `${Date.now()}_${Math.random()}`,
-          label,
-          startX,
-          startY,
-          endX,
-          endY,
-          width: rect.width,
-          height: rect.height,
-        },
-      ]);
-    },
-    []
-  );
-
-  const handleRemove = React.useCallback((id: string) => {
-    setSelectedIds((prev) => prev.filter((item) => item !== id));
-  }, []);
-
   const healthRows = useMemo<HealthUnderwritingRow[]>(
     () => [
       {
@@ -231,6 +184,53 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
     });
     return map;
   }, [healthRows]);
+
+  const handleCheckedChange = React.useCallback(
+    (id: string, checked: boolean | 'indeterminate') => {
+      if (checked === true) {
+        if (selectedIds.length >= 3) {
+          return;
+        }
+
+        // Toggling on -> Capture coordinate from the target element using its custom ID
+        const sourceEl = document.getElementById(`grow-underwriting-${id}`);
+        const destEl = document.getElementById('selected-underwriting-container');
+        if (sourceEl && destEl) {
+          const rect = sourceEl.getBoundingClientRect();
+          const destRect = destEl.getBoundingClientRect();
+
+          const startX = rect.left + rect.width / 2;
+          const startY = rect.top + rect.height / 2;
+          const endX = destRect.left + 120;
+          const endY = destRect.top + destRect.height / 2;
+          const label = underwritingItemsMap[id] || '';
+
+          setFlyingItems((prevFlying) => [
+            ...prevFlying,
+            {
+              id: `${Date.now()}_${Math.random()}`,
+              label,
+              startX,
+              startY,
+              endX,
+              endY,
+              width: rect.width,
+              height: rect.height,
+            },
+          ]);
+        }
+
+        setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+      } else {
+        setSelectedIds((prev) => prev.filter((item) => item !== id));
+      }
+    },
+    [selectedIds, underwritingItemsMap]
+  );
+
+  const handleRemove = React.useCallback((id: string) => {
+    setSelectedIds((prev) => prev.filter((item) => item !== id));
+  }, []);
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -361,17 +361,12 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
               <ArrowDoubleIcon className="rotate-[270deg]" color="#FF5C2E" size={24} />
             </Grow>
 
-            <Ltpa030table
-              healthRows={healthRows}
-              isClick={true}
-              onCheckedChange={handleCheckedChange}
-              onCheckboxClick={handleCheckboxClick}
-            />
+            <Ltpa030table healthRows={healthRows} isClick={true} onCheckedChange={handleCheckedChange} />
           </Grid>
           <Grow className="w-full border border-[#FF5C2E] rounded-[0.8rem] px-5 py-3 flex items-center justify-between gap-4 bg-[#FFF] mt-4">
             <Grow className="flex items-center gap-4 flex-1">
               <Typo className="text-[1.3rem] font-bold text-[#FF5C2E] shrink-0">고지유형 선택</Typo>
-              <Grow id="selected-underwriting-container" className="flex-wrap gap-2 justify-start py-1 flex-1">
+              <Grow className="flex-wrap gap-2 justify-start py-1 flex-1">
                 {selectedIds.map((id) => {
                   const label = underwritingItemsMap[id];
                   if (!label) return null;
@@ -430,7 +425,7 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
                 height: item.height,
                 '--dx': `${item.endX - item.startX}px`,
                 '--dy': `${item.endY - item.startY}px`,
-                animation: 'flyAndMorph 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards',
+                animation: 'flyAndMorph 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards',
               } as React.CSSProperties
             }
             onAnimationEnd={() => {
@@ -467,7 +462,7 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
           @keyframes flyAndMorph {
             0% {
               transform: translate(0, 0) scale(1);
-              box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+              box-shadow: 0 0 0 rgba(0, 0, 0, 0);
               border-radius: 0.4rem;
               background-color: #FFEFEA;
               border-color: #FF5C2E;
@@ -475,29 +470,29 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
               opacity: 1;
             }
             15% {
-              /* 붕 떠오르는 모션: scale을 키우고 그림자를 주며 Y축으로 띄움 */
-              transform: translate(0, -15px) scale(1.08);
-              box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
-              border-radius: 0.5rem;
+              /* 붕 떠오르는 극적인 모션: scale을 1.15로 키우고 Y축을 -30px 띄우고, 크고 짙은 그림자 반영 */
+              transform: translate(0, -30px) scale(1.15);
+              box-shadow: 0 30px 45px rgba(255, 92, 46, 0.25), 0 15px 15px rgba(0, 0, 0, 0.15);
+              border-radius: 0.6rem;
               background-color: #FFEFEA;
               border-color: #FF5C2E;
               color: #000;
               opacity: 1;
             }
-            70% {
-              /* 포물선을 그리는 중간 비행: Y축을 목적지보다 조금 더 띄움 */
-              transform: translate(calc(var(--dx) * 0.7), calc(var(--dy) * 0.7 - 40px)) scale(0.95);
-              box-shadow: 0 8px 16px rgba(0, 0, 0, 0.10);
+            65% {
+              /* 포물선의 가장 높은 최고 고도: 중간 비행 시 더 높은 호(-65px)를 그려 입체감 극대화 */
+              transform: translate(calc(var(--dx) * 0.65), calc(var(--dy) * 0.65 - 65px)) scale(1.0);
+              box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
               border-radius: 1.5rem;
               background-color: #8C99A8;
-              border-color: rgba(255, 92, 46, 0.3);
+              border-color: rgba(255, 92, 46, 0.2);
               color: #000;
-              opacity: 0.9;
+              opacity: 0.95;
             }
             100% {
-              /* 목적지 안착 및 다크네이비 칩으로 변환 */
+              /* 목적지로 부드럽게 낙하하며 안착 */
               transform: translate(var(--dx), var(--dy)) scale(0.85);
-              box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+              box-shadow: 0 0 0 rgba(0, 0, 0, 0);
               border-radius: 9999px;
               background-color: #2E3B4E;
               border-color: transparent;

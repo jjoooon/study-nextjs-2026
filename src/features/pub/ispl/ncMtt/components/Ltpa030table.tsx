@@ -38,7 +38,7 @@ interface Ltpa030tableProps {
   healthRows?: HealthUnderwritingRow[];
   simpleRows?: SimpleUnderwritingRow[];
   onCheckedChange?: (id: string, checked: boolean | 'indeterminate') => void;
-  onCheckboxClick?: (id: string, label: string, event: React.MouseEvent<HTMLButtonElement>) => void;
+  onCheckboxClick?: (id: string, label: string, isChecked: boolean, event: React.MouseEvent<HTMLButtonElement>) => void;
   isClick?: boolean;
   hideTitle?: boolean;
 }
@@ -46,7 +46,7 @@ interface Ltpa030tableProps {
 const unavailableData = "bg-[url('/images/checkbox/pattern_checkbox.png')] bg-repeat bg-center w-full h-[30px]";
 
 const selectedData =
-  'bg-[#FFEFEA] border-[0.2rem] border-[#FF5C2E] !text-[#000] [&_label]:!text-[#000] [&_span]:!text-[#000]';
+  'bg-[#FFEFEA] border-[0.2rem] border-[#FF5C2E] !text-[#000] [&_label]:!text-[#000] [&_span]:!text-[#000] transition-[background-color,border-color] duration-300 delay-300';
 
 const disabledData = 'bg-[#E4E7EC] !text-[#000] [&_label]:!text-[#000] [&_span]:!text-[#000]';
 
@@ -96,6 +96,7 @@ export default function Ltpa030table({
                       className={`w-full h-full [&>div]:w-full [&>div]:h-full relative px-[0.6rem] ${col.disabled ? disabledData : col.checked ? selectedData : ''}`}
                     >
                       <Checkbox
+                        id={`grow-underwriting-${col.id}`}
                         className={`w-full h-full flex items-center justify-between no-underline py-0!  ${col.disabled || !isClick ? 'cursor-default' : ''}`}
                         color="primary"
                         size="lg"
@@ -104,9 +105,8 @@ export default function Ltpa030table({
                         disabled={col.disabled || !isClick}
                         onCheckedChange={(checked) => onCheckedChange?.(col.id, checked)}
                         onClick={(e) => {
-                          if (!col.checked) {
-                            onCheckboxClick?.(col.id, col.label || '', e);
-                            if (!onCheckboxClick) {
+                          if (!onCheckboxClick) {
+                            if (!col.checked) {
                               setFlyingEffects((prev) => [
                                 ...prev,
                                 {
@@ -231,6 +231,7 @@ export default function Ltpa030table({
                         className={`w-full h-full [&>div]:w-full [&>div]:h-full relative ${col.disabled ? disabledData : col.checked ? selectedData : ''}`}
                       >
                         <Checkbox
+                          id={`grow-underwriting-${col.id}`}
                           className={`w-full h-full flex items-center justify-between no-underline py-0! leading-none! ${col.disabled || !isClick ? 'cursor-default' : ''}`}
                           color="primary"
                           size="lg"
@@ -239,9 +240,8 @@ export default function Ltpa030table({
                           disabled={col.disabled || !isClick}
                           onCheckedChange={(checked) => onCheckedChange?.(col.id, checked)}
                           onClick={(e) => {
-                            if (!col.checked) {
-                              onCheckboxClick?.(col.id, col.label || '', e);
-                              if (!onCheckboxClick) {
+                            if (!onCheckboxClick) {
+                              if (!col.checked) {
                                 setFlyingEffects((prev) => [
                                   ...prev,
                                   {
