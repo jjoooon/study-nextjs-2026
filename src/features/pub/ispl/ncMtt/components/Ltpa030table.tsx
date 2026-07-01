@@ -4,7 +4,7 @@
 'use client';
 import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { RefuseIcon, FixingPinIcon, ShieldIcon, NoteIcon, SaveIcon, QuestionMark, NewWin } from '@icons';
+import { RefuseIcon, DiamondIcon, AuditIcon, ConditionalIcon, CircleCheckIcon, QuestionMark, NewWin } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
@@ -106,10 +106,10 @@ export default function Ltpa030table({
                     >
                       {col.label}
                       {col.state === '거절' && <RefuseIcon />}
-                      {col.state === '연기' && <FixingPinIcon />}
-                      {col.state === '심사' && <ShieldIcon />}
-                      {col.state === '조건부' && <NoteIcon />}
-                      {col.state === '인수' && <SaveIcon />}
+                      {col.state === '연기' && <DiamondIcon />}
+                      {col.state === '심사' && <AuditIcon />}
+                      {col.state === '조건부' && <ConditionalIcon />}
+                      {col.state === '인수' && <CircleCheckIcon />}
                     </Checkbox>
 
                     {/* 테이블 셀 내부에서 떨어지는 복제 텍스트 */}
@@ -124,7 +124,7 @@ export default function Ltpa030table({
                           }}
                         >
                           <span>{eff.text}</span>
-                          {(col.state === 'refuse' || col.state === true) && <RefuseIcon />}
+                          {col.state === '거절' && <RefuseIcon />}
                         </div>
                       ))}
                   </Grow>
