@@ -4,6 +4,7 @@
 'use client';
 import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { RefuseIcon, DiamondIcon, AuditIcon, ConditionalIcon, CircleCheckIcon, QuestionMark, NewWin } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -13,6 +14,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 export interface TooltipItem {
   title: string;
   content: string;
+  content2: string;
 }
 
 export interface UnderwritingItem {
@@ -109,7 +111,7 @@ export default function Ltpa030table({
                       {col.state === '연기' && <DiamondIcon />}
                       {col.state === '심사' && <AuditIcon />}
                       {col.state === '조건부' && <ConditionalIcon />}
-                      {col.state === '인수' && <CircleCheckIcon />}
+                      {col.state === '인수' && <CircleCheckIcon size={14} />}
                     </Checkbox>
 
                     {/* 테이블 셀 내부에서 떨어지는 복제 텍스트 */}
@@ -153,18 +155,22 @@ export default function Ltpa030table({
                   >
                     <Gcol placement={'ss'} gap={1.5}>
                       {row.tooltipData.slice(0, 3).map((tip, idx) => (
-                        <Gcol key={idx} placement={'ss'}>
-                          <Grow placement={'sc'}>
-                            <Typo tag={'strong'} className="body-md font-bold">
+                        <Gcol key={idx} placement={'ss'} className="gap-[0.6rem]">
+                          <Grow placement={'cc'}>
+                            <Typo tag={'strong'} className="body-md font-bold text-[1.2rem]">
                               {tip.title}
                             </Typo>
-                            <Button only="icon" size={'md'} variant="none" title="복사하기">
+                            <Button only="icon" size={'sm'} variant="none" title="복사하기" className="h-[1.8rem]">
                               <NewWin size={16} color="var(--color-gray-500)" />
                             </Button>
                           </Grow>
-                          <Typo tag={'p'} className="text-wrap">
-                            {tip.content}
-                          </Typo>
+                          <BulletList color={'warning'} size="sm" className="gap-[0.2rem]">
+                            <BulletListItem>
+                              <strong className="font-bold">제한담보:</strong>{' '}
+                              {tip.content.replace(/^제한담보\s*:\s*/, '')}
+                            </BulletListItem>
+                            <BulletListItem>{tip.content2}</BulletListItem>
+                          </BulletList>
                         </Gcol>
                       ))}
                     </Gcol>
