@@ -38,28 +38,17 @@ interface Ltpa030tableProps {
   healthRows?: HealthUnderwritingRow[];
   simpleRows?: SimpleUnderwritingRow[];
   onCheckedChange?: (id: string, checked: boolean | 'indeterminate') => void;
+  onCheckboxClick?: (id: string, label: string, event: React.MouseEvent<HTMLButtonElement>) => void;
   isClick?: boolean;
   hideTitle?: boolean;
 }
 
-// $로 감싸진 텍스트를 <strong> 태그로 렌더링하는 헬퍼 함수
-const renderFormattedText = (text: string) => {
-  if (!text) return '';
-  if (!text.includes('$')) {
-    return text;
-  }
-  const parts = text.split('$');
-  return parts.map((part, index) => {
-    if (index % 2 === 1) {
-      return (
-        <strong key={index} className="font-bold text-primary">
-          {part}
-        </strong>
-      );
-    }
-    return part;
-  });
-};
+const unavailableData = "bg-[url('/images/checkbox/pattern_checkbox.png')] bg-repeat bg-center w-full h-[30px]";
+
+const selectedData =
+  'bg-[#FFEFEA] border-[0.2rem] border-[#FF5C2E] !text-[#000] [&_label]:!text-[#000] [&_span]:!text-[#000]';
+
+const disabledData = 'bg-[#E4E7EC] !text-[#000] [&_label]:!text-[#000] [&_span]:!text-[#000]';
 
 export default function Ltpa030table({
   healthRows = [],
@@ -67,13 +56,15 @@ export default function Ltpa030table({
   isClick = true,
   hideTitle = false,
   onCheckedChange,
+  onCheckboxClick,
 }: Ltpa030tableProps) {
-  const handleCopy = (text: string) => {
-    if (!text) return;
-    navigator.clipboard.writeText(text.replace(/\$/g, '')).catch((err) => {
-      console.error('Failed to copy text: ', err);
-    });
-  };
+  const [flyingEffects, setFlyingEffects] = React.useState<
+    {
+      id: number;
+      text: string;
+      colId: string;
+    }[]
+  >([]);
 
   const hasBoth = healthRows.length > 0 && simpleRows.length > 0;
   const showTitle = !hideTitle && hasBoth;
@@ -99,26 +90,64 @@ export default function Ltpa030table({
           {healthRows.map((row, index) => (
             <TableRow key={index} className="text-center">
               {row.data.map((col, colIdx) => (
-                <TableCell key={colIdx}>
+                <TableCell key={colIdx} style={{ height: '3rem' }} className="relative overflow-hidden px-0! py-0!">
                   {col.id && col.label ? (
-                    <Grow className="w-full [&>div]:w-full">
+                    <Grow
+                      className={`w-full h-full [&>div]:w-full [&>div]:h-full relative px-[0.6rem] ${col.disabled ? disabledData : col.checked ? selectedData : ''}`}
+                    >
                       <Checkbox
-                        className={`w-full flex items-center justify-between no-underline ${col.disabled || !isClick ? 'cursor-default' : ''}`}
+                        className={`w-full h-full flex items-center justify-between no-underline py-0!  ${col.disabled || !isClick ? 'cursor-default' : ''}`}
                         color="primary"
                         size="lg"
                         variant="text"
                         checked={col.checked}
                         disabled={col.disabled || !isClick}
                         onCheckedChange={(checked) => onCheckedChange?.(col.id, checked)}
+                        onClick={(e) => {
+                          if (!col.checked) {
+                            onCheckboxClick?.(col.id, col.label || '', e);
+                            if (!onCheckboxClick) {
+                              setFlyingEffects((prev) => [
+                                ...prev,
+                                {
+                                  id: Date.now() + Math.random(),
+                                  text: col.label || '',
+                                  colId: col.id,
+                                },
+                              ]);
+                            }
+                          }
+                        }}
                       >
                         {col.label}
                         {(col.state === 'refuse' || col.state === true) && <RefuseIcon />}
                       </Checkbox>
+
+                      {/* 테이블 셀 내부에서 떨어지는 복제 텍스트 */}
+                      {flyingEffects
+                        .filter((eff) => eff.colId === col.id)
+                        .map((eff) => (
+                          <div
+                            key={eff.id}
+                            className="animate-fly-down-cell absolute left-0 top-0 w-full h-full pointer-events-none z-[10] flex items-center justify-between text-[1.3rem] font-bold "
+                            onAnimationEnd={() => {
+                              setFlyingEffects((prev) => prev.filter((item) => item.id !== eff.id));
+                            }}
+                          >
+                            <span>{eff.text}</span>
+                            {(col.state === 'refuse' || col.state === true) && <RefuseIcon />}
+                          </div>
+                        ))}
                     </Grow>
-                  ) : null}
+                  ) : (
+                    <div className={unavailableData} />
+                  )}
                 </TableCell>
               ))}
-              <TableCell className={row.tooltipData && row.tooltipData.length > 0 ? 'text-center' : ''}>
+              <TableCell
+                style={{ height: '30px' }}
+                className={`py-0! px-0! ${row.tooltipData && row.tooltipData.length > 0 ? 'text-center' : ''}`}
+              >
                 {row.tooltipData && row.tooltipData.length > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -138,20 +167,14 @@ export default function Ltpa030table({
                           <Gcol key={idx} placement={'ss'}>
                             <Grow placement={'bwc'}>
                               <Typo tag={'strong'} className="body-md font-bold">
-                                {renderFormattedText(tip.title)}
+                                {tip.title}
                               </Typo>
-                              <Button
-                                only="icon"
-                                size={'md'}
-                                variant="none"
-                                onClick={() => handleCopy(tip.content)}
-                                title="복사하기"
-                              >
+                              <Button only="icon" size={'md'} variant="none" title="복사하기">
                                 <Copy size={16} color="var(--color-gray-500)" />
                               </Button>
                             </Grow>
                             <Typo tag={'p'} className="text-wrap">
-                              {renderFormattedText(tip.content)}
+                              {tip.content}
                             </Typo>
                           </Gcol>
                         ))}
@@ -202,28 +225,68 @@ export default function Ltpa030table({
             return (
               <TableRow key={index} className="text-center">
                 {row.data.map((col, colIdx) => (
-                  <TableCell key={colIdx}>
+                  <TableCell key={colIdx} style={{ height: '30px' }} className="relative overflow-hidden px-0! py-0!">
                     {col.id && col.label ? (
-                      <Grow className="w-full [&>div]:w-full">
+                      <Grow
+                        className={`w-full h-full [&>div]:w-full [&>div]:h-full relative ${col.disabled ? disabledData : col.checked ? selectedData : ''}`}
+                      >
                         <Checkbox
-                          className={`w-full flex items-center justify-between no-underline ${col.disabled || !isClick ? 'cursor-default' : ''}`}
+                          className={`w-full h-full flex items-center justify-between no-underline py-0! leading-none! ${col.disabled || !isClick ? 'cursor-default' : ''}`}
                           color="primary"
                           size="lg"
                           variant="text"
                           checked={col.checked}
                           disabled={col.disabled || !isClick}
                           onCheckedChange={(checked) => onCheckedChange?.(col.id, checked)}
+                          onClick={(e) => {
+                            if (!col.checked) {
+                              onCheckboxClick?.(col.id, col.label || '', e);
+                              if (!onCheckboxClick) {
+                                setFlyingEffects((prev) => [
+                                  ...prev,
+                                  {
+                                    id: Date.now() + Math.random(),
+                                    text: col.label || '',
+                                    colId: col.id,
+                                  },
+                                ]);
+                              }
+                            }
+                          }}
                         >
                           {col.label}
                           {(col.state === 'refuse' || col.state === true) && <RefuseIcon />}
                         </Checkbox>
+
+                        {/* 테이블 셀 내부에서 떨어지는 복제 텍스트 */}
+                        {flyingEffects
+                          .filter((eff) => eff.colId === col.id)
+                          .map((eff) => (
+                            <div
+                              key={eff.id}
+                              className="animate-fly-down-cell absolute left-0 top-0 w-full h-full pointer-events-none z-[10] flex items-center justify-between text-[1.3rem] font-bold"
+                              onAnimationEnd={() => {
+                                setFlyingEffects((prev) => prev.filter((item) => item.id !== eff.id));
+                              }}
+                            >
+                              <span>{eff.text}</span>
+                              {(col.state === 'refuse' || col.state === true) && <RefuseIcon />}
+                            </div>
+                          ))}
                       </Grow>
-                    ) : null}
+                    ) : (
+                      <div className={unavailableData} />
+                    )}
                   </TableCell>
                 ))}
                 {row.data.length < 3 &&
-                  Array.from({ length: 3 - row.data.length }).map((_, i) => <TableCell key={`empty-${i}`} />)}
-                <TableCell className={row.tooltipData && row.tooltipData.length > 0 ? 'text-center' : ''}>
+                  Array.from({ length: 3 - row.data.length }).map((_, i) => (
+                    <TableCell key={`empty-${i}`} style={{ height: '30px' }} className="py-0! px-0!" />
+                  ))}
+                <TableCell
+                  style={{ height: '30px' }}
+                  className={`py-0! px-0! ${row.tooltipData && row.tooltipData.length > 0 ? 'text-center' : ''}`}
+                >
                   {row.tooltipData && row.tooltipData.length > 0 && (
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -243,20 +306,14 @@ export default function Ltpa030table({
                             <Gcol key={idx} placement={'ss'}>
                               <Grow placement={'bwc'}>
                                 <Typo tag={'strong'} className="body-md font-bold">
-                                  {renderFormattedText(tip.title)}
+                                  {tip.title}
                                 </Typo>
-                                <Button
-                                  only="icon"
-                                  size={'md'}
-                                  variant="none"
-                                  onClick={() => handleCopy(tip.content)}
-                                  title="복사하기"
-                                >
+                                <Button only="icon" size={'md'} variant="none" title="복사하기">
                                   <Copy size={16} color="var(--color-gray-500)" />
                                 </Button>
                               </Grow>
                               <Typo tag={'p'} className="text-wrap">
-                                {renderFormattedText(tip.content)}
+                                {tip.content}
                               </Typo>
                             </Gcol>
                           ))}
@@ -290,6 +347,21 @@ export default function Ltpa030table({
     <>
       {renderHealthTable()}
       {renderSimpleTable()}
+      <style>{`
+        @keyframes flyDownCell {
+          0% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(28px);
+            opacity: 0;
+          }
+        }
+        .animate-fly-down-cell {
+          animation: flyDownCell 0.45s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+      `}</style>
     </>
   );
 }
