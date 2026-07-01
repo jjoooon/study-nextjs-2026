@@ -26,120 +26,53 @@ import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import '@/shared/lib/agGridPub';
 
-import Ltpa030table, { SimpleUnderwritingRow, HealthUnderwritingRow } from '../Ltpa030table';
+import Ltpa030table, { HealthUnderwritingRow } from '../Ltpa030table';
 
 // Y 케이스 전용 스타일 클래스 변수 (색상, 굵기 설정)
 const dangerY = 'text-[var(--color-text-danger)]';
 
-interface Ltpz030Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  disabledIds?: string[];
-}
+const nData = [
+  ['10년대', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+  ['10년대', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+  ['10년대', 'Y', 'Y', 'Y', 'Y', 'Y', 'N', 'Y', 'Y', 'Y'],
+  ['10년대', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+  ['10년대', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+  ['10년대', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+  ['10년대', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+];
 
 // ===== 컴포넌트 시작 =====
-const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) => {
+const Ltpz030 = () => {
   const [isOpenLtpz110, setIsOpenLtpz110] = React.useState(false);
 
   const healthRows: HealthUnderwritingRow[] = [
     {
       data: [
-        { id: 'health10', label: '6형(건강10년)', state: 'refuse', disabled: disabledIds.includes('health10') },
+        {
+          id: 'health10',
+          label: '6형(건강10년)',
+          state: '거절',
+          checked: false,
+        },
         {
           id: 'health9',
           label: '5형(건강9년)',
-          state: 'refuse',
-          disabled: disabledIds.includes('health9'),
-        },
-        { id: 'health8', label: '4형(건강8년)', state: 'refuse', disabled: disabledIds.includes('health8') },
-      ],
-    },
-    {
-      data: [
-        { id: 'health7', label: '3형(건강7년)', state: 'refuse', disabled: disabledIds.includes('health7') },
-        { id: 'health6', label: '2형(건강6년)', state: 'refuse', disabled: disabledIds.includes('health6') },
-        {
-          id: 'general5',
-          label: '일반고지형(5년)',
-          disabled: disabledIds.includes('general5'),
-        },
-      ],
-      tooltipData: [
-        {
-          title: '$간편고지형명 판정결과$',
-          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $질병수술비(ALL RISK)$',
+          state: '연기',
+          checked: false,
         },
         {
-          title: '$345조건부(감액)$',
-          content:
-            '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
-        },
-        {
-          title: '$345(2일)조건부(감액)$',
-          content:
-            '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
+          id: 'health8',
+          label: '4형(건강8년)',
+          state: '인수',
+          checked: false,
         },
       ],
     },
   ];
-
-  const simpleRows: SimpleUnderwritingRow[] = [
-    {
-      data: [
-        {
-          id: 'simple3105',
-          label: '3105',
-          state: 'refuse',
-        },
-        { id: '' },
-      ],
-    },
-    {
-      data: [{ id: 'simple385', label: '385', state: 'refuse' }, { id: '' }],
-    },
-    {
-      data: [{ id: 'simple365', label: '365', state: 'refuse' }, { id: '' }],
-    },
-    {
-      data: [
-        { id: 'simple355', label: '355', state: 'refuse' },
-        {
-          id: 'simple355_2d',
-          label: '355(2일)',
-          state: 'refuse',
-        },
-      ],
-    },
-    {
-      data: [
-        { id: 'simple345', label: '345', state: 'refuse' },
-        { id: 'simple345_2d', label: '345(2일)' },
-      ],
-    },
-    {
-      data: [{ id: '' }, { id: 'simple335_2d', label: '335(2일)' }],
-    },
-    {
-      data: [
-        { id: 'simple325', label: '325', state: 'refuse' },
-        { id: 'simple325_2d', label: '325(2일)' },
-      ],
-    },
-    {
-      data: [{ id: '' }, { id: 'simple315_2d', label: '315(2일)' }],
-    },
-    {
-      data: [
-        { id: 'simple305', label: '305' },
-        { id: 'simple305_2d', label: '305(2일)' },
-      ],
-    },
-  ];
-
   // ===== 다이얼로그 렌더링 =====
   return (
     <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open>
         <DialogContent showCloseButton resizable={true} className="w-[110rem]">
           <DialogHeader>
             <DialogTitle>
@@ -218,147 +151,36 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    <TableRow className="text-center">
-                      <TableHead>10년대</TableHead>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>/<span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="text-center">
-                      <TableHead>8년대</TableHead>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span>N</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>/<span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="text-center">
-                      <TableHead>6년대</TableHead>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>
-                      </TableCell>
-                      <TableCell>
-                        <span>N</span>
-                      </TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>/N
-                      </TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                      <TableCell className={dangerY}>Y</TableCell>
-                    </TableRow>
-                    <TableRow className="text-center">
-                      <TableHead>5년대</TableHead>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>/N
-                      </TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                    </TableRow>
-                    <TableRow className="text-center">
-                      <TableHead>4년대</TableHead>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>
-                        <span className={dangerY}>Y</span>/N
-                      </TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                    </TableRow>
-                    <TableRow className="text-center">
-                      <TableHead>3년대</TableHead>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N/N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                    </TableRow>
-                    <TableRow className="text-center">
-                      <TableHead>2년대</TableHead>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N/N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                    </TableRow>
-                    <TableRow className="text-center">
-                      <TableHead>1년대</TableHead>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N/N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                    </TableRow>
-                    <TableRow className="text-center">
-                      <TableHead>3개월내</TableHead>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N/N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                      <TableCell>N</TableCell>
-                    </TableRow>
+                    {nData.map((row, idx) => (
+                      <TableRow key={idx} className="text-center">
+                        <TableHead>{row[0]}</TableHead>
+                        <TableCell>
+                          <span className={row[1] === 'Y' ? dangerY : ''}>{row[1]}</span>
+                        </TableCell>
+                        <TableCell>
+                          <span className={row[2] === 'Y' ? dangerY : ''}>{row[2]}</span>
+                        </TableCell>
+                        <TableCell>
+                          <span className={row[3] === 'Y' ? dangerY : ''}>{row[3]}</span>
+                        </TableCell>
+                        <TableCell>
+                          <span className={row[4] === 'Y' ? dangerY : ''}>{row[4]}</span>
+                        </TableCell>
+                        <TableCell>
+                          <span className={row[5] === 'Y' ? dangerY : ''}>{row[5]}</span> /{' '}
+                          <span className={row[6] === 'Y' ? dangerY : ''}>{row[6]}</span>
+                        </TableCell>
+                        <TableCell>
+                          <span className={row[7] === 'Y' ? dangerY : ''}>{row[7]}</span>
+                        </TableCell>
+                        <TableCell>
+                          <span className={row[8] === 'Y' ? dangerY : ''}>{row[8]}</span>
+                        </TableCell>
+                        <TableCell>
+                          <span className={row[9] === 'Y' ? dangerY : ''}>{row[9]}</span>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
                 <Gcol placement={'ss'} className="w-full min-w-0 ">
@@ -391,31 +213,61 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
                         정보변경
                       </Button>
                       <Grow gap={2} className="items-center">
-                        <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                        <Checkbox
+                          color="primary"
+                          size="md"
+                          variant="text"
+                          className="no-underline cursor-default"
+                          disabled
+                        >
                           <span className="flex items-center gap-1 text-[1.2rem]">
                             <RefuseIcon size={16} />
                             거절
                           </span>
                         </Checkbox>
-                        <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                        <Checkbox
+                          color="primary"
+                          size="md"
+                          variant="text"
+                          className="no-underline cursor-default"
+                          disabled
+                        >
                           <span className="flex items-center gap-1 text-[1.2rem]">
                             <DiamondIcon />
                             연기
                           </span>
                         </Checkbox>
-                        <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                        <Checkbox
+                          color="primary"
+                          size="md"
+                          variant="text"
+                          className="no-underline cursor-default"
+                          disabled
+                        >
                           <span className="flex items-center gap-1 text-[1.2rem]">
                             <AuditIcon />
                             심사
                           </span>
                         </Checkbox>
-                        <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                        <Checkbox
+                          color="primary"
+                          size="md"
+                          variant="text"
+                          className="no-underline cursor-default"
+                          disabled
+                        >
                           <span className="flex items-center gap-1 text-[1.2rem]">
                             <ConditionalIcon />
                             조건부
                           </span>
                         </Checkbox>
-                        <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
+                        <Checkbox
+                          color="primary"
+                          size="md"
+                          variant="text"
+                          className="no-underline cursor-default"
+                          disabled
+                        >
                           <span className="flex items-center gap-1 text-[1.2rem]">
                             <CircleCheckIcon size={14} />
                             인수
@@ -444,27 +296,44 @@ const Ltpz030 = ({ open = true, onOpenChange, disabledIds = [] }: Ltpz030Props) 
                         추가고지
                       </Typo>
                       <Divider />
-                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                        <span className="flex items-center gap-1">
+                      <Checkbox
+                        color="primary"
+                        size="md"
+                        variant="text"
+                        className="no-underline cursor-default"
+                        disabled
+                      >
+                        <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
                           고혈압
                           <RefuseIcon size={16} />
                         </span>
                       </Checkbox>
-                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                        <span className="flex items-center gap-1">
+                      <Checkbox
+                        color="primary"
+                        size="md"
+                        variant="text"
+                        className="no-underline cursor-default"
+                        disabled
+                      >
+                        <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
                           당뇨
                           <CircleCheckIcon size={14} />
                         </span>
                       </Checkbox>
-                      <Checkbox color="primary" size="md" variant="text" className="no-underline cursor-default">
-                        <span className="flex items-center gap-1">
+                      <Checkbox
+                        color="primary"
+                        size="md"
+                        variant="text"
+                        className="no-underline cursor-default"
+                        disabled
+                      >
+                        <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
                           고혈압&당뇨
                           <RefuseIcon size={16} />
                         </span>
                       </Checkbox>
                     </Grow>
                   </Grow>
-                  <Ltpa030table simpleRows={simpleRows} isClick={false} />
                 </Gcol>
               </Gcol>
             </Grow>
