@@ -498,7 +498,7 @@ export default function Ltpa010Section() {
         );
 
         return (
-          <Grow placement="bwc" className="h-full ">
+          <Grow placement="bwc" className="h-full min-h-[3rem]">
             <div className="truncate-no">{data?.field03}</div>
 
             {data?.nickname ? (

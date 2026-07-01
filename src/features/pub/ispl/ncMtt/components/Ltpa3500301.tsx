@@ -1123,19 +1123,16 @@ export const Ltpa3500301 = ({
                   <TableRow className="">
                     <TableHead>차종</TableHead>
                     <TableHead>
-                      <Grow gap={'3'}>
-                        <Checkbox disabled={simpleMode}>승합차</Checkbox>
-                      </Grow>
+                      <Checkbox disabled={simpleMode}>승용차</Checkbox>
                     </TableHead>
                     <TableHead>
-                      <Grow gap={'3'}>
-                        <Checkbox disabled={simpleMode}>화물차</Checkbox>
-                      </Grow>
+                      <Checkbox disabled={simpleMode}>승합차</Checkbox>
                     </TableHead>
                     <TableHead>
-                      <Grow gap={'3'}>
-                        <Checkbox disabled={simpleMode}>이륜자동차</Checkbox>
-                      </Grow>
+                      <Checkbox disabled={simpleMode}>화물차</Checkbox>
+                    </TableHead>
+                    <TableHead>
+                      <Checkbox disabled={simpleMode}>이륜자동차</Checkbox>
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -1143,28 +1140,34 @@ export const Ltpa3500301 = ({
                   <TableRow>
                     <TableHead>용도</TableHead>
                     <TableCell>
-                      <Grow gap={'3'}>
+                      <Grid className="grid-cols-[1fr_1fr] w-full" gap={'3'}>
                         <Checkbox disabled={simpleMode}>자가용</Checkbox>
                         <Checkbox disabled={simpleMode}>영업용</Checkbox>
-                      </Grow>
+                      </Grid>
                     </TableCell>
                     <TableCell>
-                      <Grow gap={'3'}>
+                      <Grid className="grid-cols-[1fr_1fr] w-full" gap={'3'}>
                         <Checkbox disabled={simpleMode}>자가용</Checkbox>
                         <Checkbox disabled={simpleMode}>영업용</Checkbox>
-                      </Grow>
+                      </Grid>
                     </TableCell>
                     <TableCell>
-                      <Grow gap={'3'}>
+                      <Grid className="grid-cols-[1fr_1fr] w-full" gap={'3'}>
                         <Checkbox disabled={simpleMode}>자가용</Checkbox>
                         <Checkbox disabled={simpleMode}>영업용</Checkbox>
-                      </Grow>
+                      </Grid>
+                    </TableCell>
+                    <TableCell>
+                      <Grid className="grid-cols-[1fr_1fr] w-full" gap={'3'}>
+                        <Checkbox disabled={simpleMode}>자가용</Checkbox>
+                        <Checkbox disabled={simpleMode}>영업용</Checkbox>
+                      </Grid>
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableHead>그외</TableHead>
-                    <TableCell colSpan={3}>
-                      <Grow gap={'3'}>
+                    <TableCell colSpan={4}>
+                      <Grid className="grid-cols-[1fr_1fr_2fr] w-full gap-[0.6rem]">
                         <Checkbox disabled={simpleMode}>건설기계</Checkbox>
                         <Checkbox disabled={simpleMode}>농기계</Checkbox>
                         <Grow className="flex justify-start">
@@ -1179,7 +1182,7 @@ export const Ltpa3500301 = ({
                             readOnly={simpleMode}
                           />
                         </Grow>
-                      </Grow>
+                      </Grid>
                     </TableCell>
                   </TableRow>
                 </TableBody>

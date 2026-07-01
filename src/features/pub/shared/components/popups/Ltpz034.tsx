@@ -82,15 +82,20 @@ interface Ltpz034Props {
   onMinimizeChange?: (minimized: boolean) => void;
 }
 
-const UNDERWRITING_ITEMS_MAP: Record<string, string> = {
-  health1: '11형(건강7년)',
-  health2: '12형(건강6년)',
-  health7: '3형(건강7년)',
-  health8: '2형(건강6년)',
-};
+interface FlyingItem {
+  id: string;
+  label: string;
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  width: number;
+  height: number;
+}
 
 const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltpz034Props) => {
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+  const [flyingItems, setFlyingItems] = React.useState<FlyingItem[]>([]);
 
   const handleCheckedChange = React.useCallback((id: string, checked: boolean | 'indeterminate') => {
     setSelectedIds((prev) => {
@@ -104,6 +109,36 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
       }
     });
   }, []);
+
+  const handleCheckboxClick = React.useCallback(
+    (id: string, label: string, event: React.MouseEvent<HTMLButtonElement>) => {
+      const rect = event.currentTarget.getBoundingClientRect();
+      const destEl = document.getElementById('selected-underwriting-container');
+      if (!destEl) return;
+      const destRect = destEl.getBoundingClientRect();
+
+      const startX = rect.left + rect.width / 2;
+      const startY = rect.top + rect.height / 2;
+      // Align destination slightly to the right of the "고지유형 선택" text
+      const endX = destRect.left + 120;
+      const endY = destRect.top + destRect.height / 2;
+
+      setFlyingItems((prev) => [
+        ...prev,
+        {
+          id: `${Date.now()}_${Math.random()}`,
+          label,
+          startX,
+          startY,
+          endX,
+          endY,
+          width: rect.width,
+          height: rect.height,
+        },
+      ]);
+    },
+    []
+  );
 
   const handleRemove = React.useCallback((id: string) => {
     setSelectedIds((prev) => prev.filter((item) => item !== id));
@@ -184,6 +219,18 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
     ],
     [selectedIds]
   );
+
+  const underwritingItemsMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    healthRows.forEach((row) => {
+      row.data.forEach((item) => {
+        if (item.id && item.label) {
+          map[item.id] = item.label;
+        }
+      });
+    });
+    return map;
+  }, [healthRows]);
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -314,19 +361,24 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
               <ArrowDoubleIcon className="rotate-[270deg]" color="#FF5C2E" size={24} />
             </Grow>
 
-            <Ltpa030table healthRows={healthRows} isClick={true} onCheckedChange={handleCheckedChange} />
+            <Ltpa030table
+              healthRows={healthRows}
+              isClick={true}
+              onCheckedChange={handleCheckedChange}
+              onCheckboxClick={handleCheckboxClick}
+            />
           </Grid>
           <Grow className="w-full border border-[#FF5C2E] rounded-[0.8rem] px-5 py-3 flex items-center justify-between gap-4 bg-[#FFF] mt-4">
             <Grow className="flex items-center gap-4 flex-1">
               <Typo className="text-[1.3rem] font-bold text-[#FF5C2E] shrink-0">고지유형 선택</Typo>
-              <Grow className="flex-wrap gap-2 justify-start py-1 flex-1">
+              <Grow id="selected-underwriting-container" className="flex-wrap gap-2 justify-start py-1 flex-1">
                 {selectedIds.map((id) => {
-                  const label = UNDERWRITING_ITEMS_MAP[id];
+                  const label = underwritingItemsMap[id];
                   if (!label) return null;
                   return (
-                    <div
+                    <Grow
                       key={id}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#2E3B4E] text-[#FFF] rounded-full text-[1.2rem] font-medium"
+                      className="animate-drop-in inline-flex items-center gap-1.5 px-3 bg-[#2E3B4E] text-[#FFF] rounded-full text-[1.2rem] font-medium"
                     >
                       <span>{label}</span>
                       <button
@@ -336,7 +388,7 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
                       >
                         <X size={12} className="text-gray-400 hover:text-[#FFF]" />
                       </button>
-                    </div>
+                    </Grow>
                   );
                 })}
               </Grow>
@@ -364,6 +416,96 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
+
+        {/* 날아가는 애니메이션 요소 */}
+        {flyingItems.map((item) => (
+          <div
+            key={item.id}
+            className="fixed pointer-events-none z-[9999] flex items-center justify-between text-[1.3rem] font-bold select-none border-[0.2rem] border-[#FF5C2E] bg-[#FFEFEA] text-[#000] rounded-[0.4rem] px-[0.6rem]"
+            style={
+              {
+                left: item.startX - item.width / 2,
+                top: item.startY - item.height / 2,
+                width: item.width,
+                height: item.height,
+                '--dx': `${item.endX - item.startX}px`,
+                '--dy': `${item.endY - item.startY}px`,
+                animation: 'flyAndMorph 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards',
+              } as React.CSSProperties
+            }
+            onAnimationEnd={() => {
+              setFlyingItems((prev) => prev.filter((i) => i.id !== item.id));
+            }}
+          >
+            <span>{item.label}</span>
+          </div>
+        ))}
+
+        {/* 애니메이션 스타일 */}
+        <style>{`
+          @keyframes dropIn {
+            0% {
+              transform: translateY(-24px);
+              opacity: 0;
+            }
+            50% {
+              transform: translateY(6px);
+              opacity: 0.8;
+            }
+            75% {
+              transform: translateY(-3px);
+              opacity: 0.9;
+            }
+            100% {
+              transform: translateY(0);
+              opacity: 1;
+            }
+          }
+          .animate-drop-in {
+            animation: dropIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+          }
+          @keyframes flyAndMorph {
+            0% {
+              transform: translate(0, 0) scale(1);
+              box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+              border-radius: 0.4rem;
+              background-color: #FFEFEA;
+              border-color: #FF5C2E;
+              color: #000;
+              opacity: 1;
+            }
+            15% {
+              /* 붕 떠오르는 모션: scale을 키우고 그림자를 주며 Y축으로 띄움 */
+              transform: translate(0, -15px) scale(1.08);
+              box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+              border-radius: 0.5rem;
+              background-color: #FFEFEA;
+              border-color: #FF5C2E;
+              color: #000;
+              opacity: 1;
+            }
+            70% {
+              /* 포물선을 그리는 중간 비행: Y축을 목적지보다 조금 더 띄움 */
+              transform: translate(calc(var(--dx) * 0.7), calc(var(--dy) * 0.7 - 40px)) scale(0.95);
+              box-shadow: 0 8px 16px rgba(0, 0, 0, 0.10);
+              border-radius: 1.5rem;
+              background-color: #8C99A8;
+              border-color: rgba(255, 92, 46, 0.3);
+              color: #000;
+              opacity: 0.9;
+            }
+            100% {
+              /* 목적지 안착 및 다크네이비 칩으로 변환 */
+              transform: translate(var(--dx), var(--dy)) scale(0.85);
+              box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+              border-radius: 9999px;
+              background-color: #2E3B4E;
+              border-color: transparent;
+              color: #FFF;
+              opacity: 0;
+            }
+          }
+        `}</style>
       </DialogContent>
     </Dialog>
   );
