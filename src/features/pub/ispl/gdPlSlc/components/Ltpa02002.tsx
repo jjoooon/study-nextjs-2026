@@ -756,7 +756,7 @@ export function Ltpa02002({
         </Grow>
       </div>
 
-      {dataNone ? (
+      {false ? (
         <Gcol className="h-full gap-2.5 " placement="cc">
           <div className="w-[24.8rem]">
             <Image
@@ -992,6 +992,7 @@ export function Ltpa02002({
           </Grid>
           <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
             <Button variant={'outlined'} color={'gray'} size={'xl'}>
+              <span className="absolute w-[5rem] h-[7rem] border border-[0.2rem] border-[var(--color-primary-50)] bg-[var(--color-primary-10)] rounded-[0.6rem] z-1"></span>
               <AiIcon size={24} color={'#006FF2'} color2={'#A683FF'} />
               추천설계비교({comparedPlanKeys.length})
             </Button>

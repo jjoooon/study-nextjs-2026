@@ -6,17 +6,7 @@ import iaListData from './ialist.json';
 
 export type PageProcessStep = 1 | 2 | 3 | 4 | 5 | 6;
 export type SortOrder = 'default' | 'asc' | 'desc';
-export type SortKey =
-  | 'dep4'
-  | 'file'
-  | 'planDate'
-  | 'plan'
-  | 'pub'
-  | 'dev'
-  | 'path'
-  | 'id'
-  | 'completeDate'
-  | 'modifyDate';
+export type SortKey = 'dep4' | 'file' | 'plan' | 'pub' | 'dev' | 'path' | 'id' | 'completeDate' | 'modifyDate';
 
 export type SortState = {
   key: SortKey | null;
@@ -42,8 +32,6 @@ export type IARow = {
   date: string;
   modify: string;
   file?: string;
-  planDate?: string;
-  phase?: string;
   popup?: string;
   path?: string;
 };
@@ -153,8 +141,8 @@ export function useIaDashboard() {
         const compareResult = leftValue.localeCompare(rightValue);
         return sortState.order === 'asc' ? compareResult : -compareResult;
       }
-      type SortableKeys = keyof Pick<IARow, 'dep4' | 'file' | 'planDate' | 'plan' | 'pub' | 'dev' | 'path' | 'id'>;
-      if (!sortKey || !['dep4', 'file', 'planDate', 'plan', 'pub', 'dev', 'path', 'id'].includes(sortKey)) {
+      type SortableKeys = keyof Pick<IARow, 'dep4' | 'file' | 'plan' | 'pub' | 'dev' | 'path' | 'id'>;
+      if (!sortKey || !['dep4', 'file', 'plan', 'pub', 'dev', 'path', 'id'].includes(sortKey)) {
         return 0;
       }
       const key = sortKey as SortableKeys;

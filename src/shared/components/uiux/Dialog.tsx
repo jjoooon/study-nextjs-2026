@@ -534,7 +534,17 @@ function DialogContent({
 
       if (node) {
         const checkIframe = () => {
-          return typeof window !== 'undefined' && window.self !== window.parent;
+          if (typeof window === 'undefined' || window.self === window.parent) {
+            return false;
+          }
+          try {
+            if (window.frameElement && window.frameElement.id === 'storybook-preview-iframe') {
+              return false;
+            }
+          } catch {
+            // cross-origin의 경우 true
+          }
+          return true;
         };
 
         if (checkIframe()) {

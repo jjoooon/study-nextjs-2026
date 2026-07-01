@@ -15,9 +15,7 @@
     "date": "26.04.17",
     "modify": "26.05.26",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 2,
@@ -35,9 +33,7 @@
     "date": "26.05.06",
     "modify": "26.05.26",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.06"
+    "popup": "팝업"
   },
   {
     "num": 3,
@@ -55,9 +51,7 @@
     "date": "26.04.17",
     "modify": "",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 4,
@@ -75,9 +69,7 @@
     "date": "26.04.17",
     "modify": "",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 5,
@@ -95,9 +87,7 @@
     "date": "26.04.17",
     "modify": "26.05.29",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 6,
@@ -115,9 +105,7 @@
     "date": "26.04.17",
     "modify": "",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 7,
@@ -135,9 +123,7 @@
     "date": "26.04.17",
     "modify": "",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 8,
@@ -155,13 +141,11 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 9,
-    "pub": "",
+    "pub": "허승하",
     "dep1": "차세대가입설계",
     "dep2": "가입설계",
     "dep3": "가입설계",
@@ -172,12 +156,10 @@
     "plan": "이채우",
     "dev": "대응개발 공통",
     "sdate": "",
-    "date": "",
+    "date": "26.06.30",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": ""
+    "popup": "팝업"
   },
   {
     "num": 10,
@@ -195,9 +177,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 11,
@@ -215,9 +195,7 @@
     "date": "26.04.30",
     "modify": "26.05.29",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.30"
+    "popup": "팝업"
   },
   {
     "num": 12,
@@ -235,9 +213,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 13,
@@ -255,9 +231,7 @@
     "date": "26.05.12",
     "modify": "26.05.27",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.14"
+    "popup": "팝업"
   },
   {
     "num": 14,
@@ -275,9 +249,7 @@
     "date": "26.04.30",
     "modify": "26.05.29",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.14"
+    "popup": "팝업"
   },
   {
     "num": 15,
@@ -295,9 +267,7 @@
     "date": "26.04.21",
     "modify": "26.05.29",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.21"
+    "popup": "화면"
   },
   {
     "num": 16,
@@ -315,9 +285,7 @@
     "date": "26.04.21",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.21"
+    "popup": "화면"
   },
   {
     "num": 17,
@@ -335,9 +303,7 @@
     "date": "",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": ""
+    "popup": "팝업"
   },
   {
     "num": 18,
@@ -355,9 +321,7 @@
     "date": "26.04.17",
     "modify": "26.05.26",
     "subId": "LTPA020_01",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 19,
@@ -375,9 +339,7 @@
     "date": "26.04.17",
     "modify": "26.05.26",
     "subId": "LTPA020_02",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 20,
@@ -395,9 +357,7 @@
     "date": "26.04.30",
     "modify": "26.05.20",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.30"
+    "popup": "팝업"
   },
   {
     "num": 21,
@@ -415,9 +375,7 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 22,
@@ -435,9 +393,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 23,
@@ -455,9 +411,7 @@
     "date": "26.05.08",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.11"
+    "popup": "팝업"
   },
   {
     "num": 24,
@@ -475,9 +429,7 @@
     "date": "26.05.26",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.27"
+    "popup": "팝업"
   },
   {
     "num": 25,
@@ -495,9 +447,7 @@
     "date": "26.06.26",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.07"
+    "popup": "팝업"
   },
   {
     "num": 26,
@@ -515,9 +465,7 @@
     "date": "26.06.26",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 27,
@@ -535,9 +483,7 @@
     "date": "",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.26"
+    "popup": "팝업"
   },
   {
     "num": 28,
@@ -555,9 +501,7 @@
     "date": "26.05.07",
     "modify": "26.05.29",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.15"
+    "popup": "팝업"
   },
   {
     "num": 29,
@@ -575,9 +519,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.15"
+    "popup": "팝업"
   },
   {
     "num": 30,
@@ -595,9 +537,7 @@
     "date": "26.05.25",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 31,
@@ -615,9 +555,7 @@
     "date": "26.05.12",
     "modify": "26.05.21",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 32,
@@ -635,9 +573,7 @@
     "date": "26.05.12",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 33,
@@ -655,9 +591,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 34,
@@ -675,9 +609,7 @@
     "date": "26.05.06",
     "modify": "26.05.29",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 35,
@@ -695,9 +627,7 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.18"
+    "popup": "팝업"
   },
   {
     "num": 36,
@@ -715,9 +645,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "06.01"
+    "popup": "팝업"
   },
   {
     "num": 37,
@@ -735,9 +663,7 @@
     "date": "26.04.17",
     "modify": "26.06.16",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.04"
+    "popup": "팝업"
   },
   {
     "num": 38,
@@ -755,9 +681,7 @@
     "date": "26.05.14",
     "modify": "26.05.27",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 39,
@@ -775,9 +699,7 @@
     "date": "26.05.26",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 40,
@@ -795,9 +717,7 @@
     "date": "26.04.30",
     "modify": "26.05.27",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.07"
+    "popup": "화면"
   },
   {
     "num": 41,
@@ -815,9 +735,7 @@
     "date": "26.04.17",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 42,
@@ -835,9 +753,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "LTPA350_01",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 43,
@@ -855,9 +771,7 @@
     "date": "26.05.07",
     "modify": "",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.18"
+    "popup": "팝업"
   },
   {
     "num": 44,
@@ -875,9 +789,7 @@
     "date": "26.04.17",
     "modify": "",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.19"
+    "popup": "팝업"
   },
   {
     "num": 45,
@@ -895,9 +807,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.19"
+    "popup": "팝업"
   },
   {
     "num": 46,
@@ -915,9 +825,7 @@
     "date": "26.05.14",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.07"
+    "popup": "팝업"
   },
   {
     "num": 47,
@@ -935,9 +843,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.07"
+    "popup": "팝업"
   },
   {
     "num": 48,
@@ -955,9 +861,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "LTPZ005_01_01",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.07"
+    "popup": "팝업"
   },
   {
     "num": 49,
@@ -975,9 +879,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "LTPZ005_01_02",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.08"
+    "popup": "팝업"
   },
   {
     "num": 50,
@@ -995,9 +897,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "LTPZ005_01_03",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.08"
+    "popup": "팝업"
   },
   {
     "num": 51,
@@ -1015,9 +915,7 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 52,
@@ -1035,9 +933,7 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 53,
@@ -1055,9 +951,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "LTPZ005_02",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 54,
@@ -1075,9 +969,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "LTPZ005_03",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 55,
@@ -1095,9 +987,7 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 56,
@@ -1115,9 +1005,7 @@
     "date": "26.04.21",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 57,
@@ -1135,9 +1023,7 @@
     "date": "26.05.15",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 58,
@@ -1155,9 +1041,7 @@
     "date": "26.05.15",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 59,
@@ -1175,9 +1059,7 @@
     "date": "26.04.30",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 60,
@@ -1195,9 +1077,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.21"
+    "popup": "팝업"
   },
   {
     "num": 61,
@@ -1215,9 +1095,7 @@
     "date": "26.04.17",
     "modify": "",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.20"
+    "popup": "팝업"
   },
   {
     "num": 62,
@@ -1235,9 +1113,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "LTPA350_02",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 63,
@@ -1255,9 +1131,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.21"
+    "popup": "팝업"
   },
   {
     "num": 64,
@@ -1275,9 +1149,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.22"
+    "popup": "팝업"
   },
   {
     "num": 65,
@@ -1295,9 +1167,7 @@
     "date": "26.04.17",
     "modify": "26.05.20",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 66,
@@ -1315,9 +1185,7 @@
     "date": "26.04.30",
     "modify": "26.05.27",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 67,
@@ -1335,9 +1203,7 @@
     "date": "26.04.30",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 68,
@@ -1355,9 +1221,7 @@
     "date": "26.05.08",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 69,
@@ -1375,9 +1239,7 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 70,
@@ -1395,9 +1257,7 @@
     "date": "26.05.07",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 71,
@@ -1415,9 +1275,7 @@
     "date": "26.05.07",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.30"
+    "popup": "팝업"
   },
   {
     "num": 72,
@@ -1435,9 +1293,7 @@
     "date": "26.05.07",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.30"
+    "popup": "팝업"
   },
   {
     "num": 73,
@@ -1455,9 +1311,7 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.11"
+    "popup": "팝업"
   },
   {
     "num": 74,
@@ -1475,9 +1329,7 @@
     "date": "26.05.26",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 75,
@@ -1495,9 +1347,7 @@
     "date": "26.04.17",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.07"
+    "popup": "팝업"
   },
   {
     "num": 76,
@@ -1515,9 +1365,7 @@
     "date": "26.05.08",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.07"
+    "popup": "팝업"
   },
   {
     "num": 77,
@@ -1535,9 +1383,7 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.07"
+    "popup": "팝업"
   },
   {
     "num": 78,
@@ -1555,9 +1401,7 @@
     "date": "26.04.17",
     "modify": "26.06.05",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 79,
@@ -1575,9 +1419,7 @@
     "date": "26.05.11",
     "modify": "26.05.27",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.21"
+    "popup": "팝업"
   },
   {
     "num": 80,
@@ -1595,9 +1437,7 @@
     "date": "26.04.21",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 81,
@@ -1615,9 +1455,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.08"
+    "popup": "팝업"
   },
   {
     "num": 82,
@@ -1635,9 +1473,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 83,
@@ -1655,9 +1491,7 @@
     "date": "",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": ""
+    "popup": "팝업"
   },
   {
     "num": 84,
@@ -1675,9 +1509,7 @@
     "date": "26.04.30",
     "modify": "26.05.27",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 85,
@@ -1695,9 +1527,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "05.12"
+    "popup": "화면"
   },
   {
     "num": 86,
@@ -1715,9 +1545,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.21"
+    "popup": "팝업"
   },
   {
     "num": 87,
@@ -1735,9 +1563,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 88,
@@ -1755,9 +1581,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 89,
@@ -1775,9 +1599,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.22"
+    "popup": "팝업"
   },
   {
     "num": 90,
@@ -1795,9 +1617,7 @@
     "date": "26.05.06",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 91,
@@ -1815,9 +1635,7 @@
     "date": "26.05.06",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 92,
@@ -1835,9 +1653,7 @@
     "date": "26.05.04",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 93,
@@ -1855,9 +1671,7 @@
     "date": "26.05.04",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 94,
@@ -1875,9 +1689,7 @@
     "date": "26.05.06",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 95,
@@ -1895,9 +1707,7 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.06"
+    "popup": "팝업"
   },
   {
     "num": 96,
@@ -1915,9 +1725,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "LTPA350_03",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.06"
+    "popup": "화면"
   },
   {
     "num": 97,
@@ -1935,9 +1743,7 @@
     "date": "26.04.17",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.06"
+    "popup": "팝업"
   },
   {
     "num": 98,
@@ -1955,9 +1761,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 99,
@@ -1975,9 +1779,7 @@
     "date": "26.04.17",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 100,
@@ -1995,9 +1797,7 @@
     "date": "26.04.28",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 101,
@@ -2015,9 +1815,7 @@
     "date": "26.04.17",
     "modify": "26.05.26",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 102,
@@ -2035,9 +1833,7 @@
     "date": "26.04.17",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.28"
+    "popup": "팝업"
   },
   {
     "num": 103,
@@ -2055,9 +1851,7 @@
     "date": "26.06.02",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 104,
@@ -2075,9 +1869,7 @@
     "date": "26.04.17",
     "modify": "",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 105,
@@ -2095,9 +1887,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "LTPZ032_01",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 106,
@@ -2115,9 +1905,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "LTPZ032_02",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 107,
@@ -2135,9 +1923,7 @@
     "date": "26.04.30",
     "modify": "26.05.21",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 108,
@@ -2155,9 +1941,7 @@
     "date": "26.04.17",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.30"
+    "popup": "팝업"
   },
   {
     "num": 109,
@@ -2175,9 +1959,7 @@
     "date": "26.04.17",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 110,
@@ -2195,9 +1977,7 @@
     "date": "26.04.30",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 111,
@@ -2215,9 +1995,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "LTPA060_01",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.30"
+    "popup": "팝업"
   },
   {
     "num": 112,
@@ -2235,9 +2013,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "LTPA060_02",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 113,
@@ -2255,9 +2031,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "LTPA350_04",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 114,
@@ -2275,9 +2049,7 @@
     "date": "26.05.13",
     "modify": "26.09.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 115,
@@ -2295,9 +2067,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.14"
+    "popup": "팝업"
   },
   {
     "num": 116,
@@ -2315,9 +2085,7 @@
     "date": "26.05.13",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 117,
@@ -2335,9 +2103,7 @@
     "date": "26.05.14",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.14"
+    "popup": "팝업"
   },
   {
     "num": 118,
@@ -2355,9 +2121,7 @@
     "date": "26.05.14",
     "modify": "26.05.20",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.18"
+    "popup": "팝업"
   },
   {
     "num": 119,
@@ -2375,9 +2139,7 @@
     "date": "26.05.14",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.15"
+    "popup": "팝업"
   },
   {
     "num": 120,
@@ -2395,9 +2157,7 @@
     "date": "26.05.15",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.15"
+    "popup": "팝업"
   },
   {
     "num": 121,
@@ -2415,9 +2175,7 @@
     "date": "26.05.12",
     "modify": "26.05.28",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.18"
+    "popup": "팝업"
   },
   {
     "num": 122,
@@ -2435,9 +2193,7 @@
     "date": "26.04.30",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 123,
@@ -2455,9 +2211,7 @@
     "date": "26.04.30",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.26"
+    "popup": "팝업"
   },
   {
     "num": 124,
@@ -2475,9 +2229,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "LTPA350_05",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "05.19"
+    "popup": "화면"
   },
   {
     "num": 125,
@@ -2495,9 +2247,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.20"
+    "popup": "팝업"
   },
   {
     "num": 126,
@@ -2515,9 +2265,7 @@
     "date": "26.05.26",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 127,
@@ -2535,9 +2283,7 @@
     "date": "26.05.15",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 128,
@@ -2555,9 +2301,7 @@
     "date": "26.04.30",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.26"
+    "popup": "팝업"
   },
   {
     "num": 129,
@@ -2575,9 +2319,7 @@
     "date": "26.04.17",
     "modify": "26.05.27",
     "subId": "LTPA350_06",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "05.19"
+    "popup": "화면"
   },
   {
     "num": 130,
@@ -2595,9 +2337,7 @@
     "date": "26.05.14",
     "modify": "26.06.04",
     "subId": "LTPA040_01",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.19"
+    "popup": "화면"
   },
   {
     "num": 131,
@@ -2615,9 +2355,7 @@
     "date": "26.05.14",
     "modify": "26.06.04",
     "subId": "LTPA040_02",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 132,
@@ -2635,9 +2373,7 @@
     "date": "26.05.12",
     "modify": "",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.11"
+    "popup": "팝업"
   },
   {
     "num": 133,
@@ -2655,9 +2391,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "05.12"
+    "popup": "화면"
   },
   {
     "num": 134,
@@ -2675,9 +2409,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "05.28"
+    "popup": "화면"
   },
   {
     "num": 135,
@@ -2695,9 +2427,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "LTPA400_01",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 136,
@@ -2715,9 +2445,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "LTPA400_02",
-    "phase": "Y",
-    "popup": "화면",
-    "planDate": "05.20"
+    "popup": "화면"
   },
   {
     "num": 137,
@@ -2735,9 +2463,7 @@
     "date": "26.04.17",
     "modify": "",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.21"
+    "popup": "팝업"
   },
   {
     "num": 138,
@@ -2755,9 +2481,7 @@
     "date": "26.04.17",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 139,
@@ -2775,9 +2499,7 @@
     "date": "26.05.13",
     "modify": "26.05.26",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 140,
@@ -2795,9 +2517,7 @@
     "date": "26.04.17",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 141,
@@ -2815,9 +2535,7 @@
     "date": "26.05.26",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 142,
@@ -2835,9 +2553,7 @@
     "date": "26.05.19",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 143,
@@ -2855,9 +2571,7 @@
     "date": "26.05.26",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 144,
@@ -2875,9 +2589,7 @@
     "date": "26.04.29",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.17"
+    "popup": "화면"
   },
   {
     "num": 145,
@@ -2895,9 +2607,7 @@
     "date": "26.04.30",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 146,
@@ -2915,9 +2625,7 @@
     "date": "26.05.14",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.08"
+    "popup": "화면"
   },
   {
     "num": 147,
@@ -2935,9 +2643,7 @@
     "date": "26.05.14",
     "modify": "26.06.01",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "04.17"
+    "popup": "팝업"
   },
   {
     "num": 148,
@@ -2955,9 +2661,7 @@
     "date": "26.05.20",
     "modify": "26.06.16",
     "subId": "",
-    "phase": "",
-    "popup": "팝업",
-    "planDate": "05.21"
+    "popup": "팝업"
   },
   {
     "num": 149,
@@ -2975,9 +2679,7 @@
     "date": "26.05.20",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.25"
+    "popup": "화면"
   },
   {
     "num": 150,
@@ -2995,9 +2697,7 @@
     "date": "26.05.20",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.25"
+    "popup": "화면"
   },
   {
     "num": 151,
@@ -3015,9 +2715,7 @@
     "date": "26.05.26",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.22"
+    "popup": "화면"
   },
   {
     "num": 152,
@@ -3035,9 +2733,7 @@
     "date": "26.05.25",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.29"
+    "popup": "화면"
   },
   {
     "num": 153,
@@ -3055,9 +2751,7 @@
     "date": "26.05.25",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "04.30"
+    "popup": "화면"
   },
   {
     "num": 154,
@@ -3075,9 +2769,7 @@
     "date": "26.05.26",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.11"
+    "popup": "화면"
   },
   {
     "num": 155,
@@ -3095,9 +2787,7 @@
     "date": "26.05.19",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.12"
+    "popup": "화면"
   },
   {
     "num": 156,
@@ -3115,9 +2805,7 @@
     "date": "26.05.11",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.13"
+    "popup": "화면"
   },
   {
     "num": 157,
@@ -3135,9 +2823,7 @@
     "date": "26.05.12",
     "modify": "26.06.04",
     "subId": "",
-    "phase": "",
-    "popup": "화면",
-    "planDate": "05.14"
+    "popup": "화면"
   },
   {
     "num": 158,
@@ -3155,9 +2841,7 @@
     "date": "26.05.26",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.15"
+    "popup": "팝업"
   },
   {
     "num": 159,
@@ -3175,8 +2859,6 @@
     "date": "26.05.26",
     "modify": "26.06.02",
     "subId": "",
-    "phase": "Y",
-    "popup": "팝업",
-    "planDate": "05.18"
+    "popup": "팝업"
   }
 ]
