@@ -533,21 +533,18 @@ function DialogContent({
       contentRef.current = node;
 
       if (node) {
-        const checkIframe = () => {
+        const isTestIframe = () => {
           if (typeof window === 'undefined' || window.self === window.parent) {
             return false;
           }
           try {
-            if (window.frameElement && window.frameElement.id === 'storybook-preview-iframe') {
-              return false;
-            }
+            return !!(window.frameElement && window.frameElement.id === 'testIframe');
           } catch {
-            // cross-origin의 경우 true
+            return false;
           }
-          return true;
         };
 
-        if (checkIframe()) {
+        if (isTestIframe()) {
           // data-slot="dialog-footer-area" 안에 닫기버튼(dialog-close)만 있다면 footer-area 전체 숨김
           const footerArea = node.querySelector('[data-slot="dialog-footer-area"]') as HTMLElement;
           if (footerArea) {
