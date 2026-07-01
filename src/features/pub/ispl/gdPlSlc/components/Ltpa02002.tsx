@@ -343,6 +343,54 @@ export function Ltpa02002({
   const [comparedPlanKeys, setComparedPlanKeys] = useState<string[]>([]);
   const [isAiReasonExpanded, setIsAiReasonExpanded] = useState<boolean>(false);
 
+  // 비교하기 체크 애니메이션 페이즈 상태 및 효과
+  const [animateCardPhase, setAnimateCardPhase] = useState<'idle' | 'appear' | 'fall'>('idle');
+  const [isButtonShaking, setIsButtonShaking] = useState<boolean>(false);
+  const prevComparedKeysRef = React.useRef<string[]>([]);
+
+  React.useEffect(() => {
+    const prevKeys = prevComparedKeysRef.current;
+    const currentKeys = comparedPlanKeys;
+    const hasNewChecked = currentKeys.some((key) => !prevKeys.includes(key));
+
+    let fallTimer: NodeJS.Timeout | undefined;
+    let shakeStartTimer: NodeJS.Timeout | undefined;
+    let shakeEndTimer: NodeJS.Timeout | undefined;
+    let idleTimer: NodeJS.Timeout | undefined;
+
+    if (hasNewChecked) {
+      setAnimateCardPhase('appear');
+
+      fallTimer = setTimeout(() => {
+        setAnimateCardPhase('fall');
+      }, 50);
+
+      shakeStartTimer = setTimeout(() => {
+        setIsButtonShaking(true);
+      }, 300);
+
+      shakeEndTimer = setTimeout(() => {
+        setIsButtonShaking(false);
+      }, 500);
+
+      idleTimer = setTimeout(() => {
+        setAnimateCardPhase('idle');
+      }, 550);
+    } else {
+      setAnimateCardPhase('idle');
+      setIsButtonShaking(false);
+    }
+
+    prevComparedKeysRef.current = currentKeys;
+
+    return () => {
+      if (fallTimer) clearTimeout(fallTimer);
+      if (shakeStartTimer) clearTimeout(shakeStartTimer);
+      if (shakeEndTimer) clearTimeout(shakeEndTimer);
+      if (idleTimer) clearTimeout(idleTimer);
+    };
+  }, [comparedPlanKeys]);
+
   // 선택된 플랜 정보 가져오기
   const getSelectedPlanInfo = () => {
     if (!selectedPlanKey) return null;
@@ -991,8 +1039,30 @@ export function Ltpa02002({
             </Grid>
           </Grid>
           <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
-            <Button variant={'outlined'} color={'gray'} size={'xl'}>
-              <Image src={withPublicUrl('/images/Ltpa020/card.png')} alt="카드" width={24} height={24} />
+            <Button
+              variant={'outlined'}
+              color={'gray'}
+              size={'xl'}
+              style={
+                isButtonShaking
+                  ? {
+                      animation: 'button-shake 0.2s ease-in-out',
+                    }
+                  : undefined
+              }
+            >
+              <Image
+                src={withPublicUrl('/images/Ltpa020/card.png')}
+                alt="카드"
+                width={40}
+                height={40}
+                className="absolute pointer-events-none"
+                style={{
+                  transform: animateCardPhase === 'appear' ? 'translateY(-5rem)' : 'translateY(-2rem)',
+                  opacity: animateCardPhase === 'appear' ? 1 : 0,
+                  transition: animateCardPhase === 'fall' ? 'transform 0.3s ease-in, opacity 0.3s ease-in' : 'none',
+                }}
+              />
               추천설계비교({comparedPlanKeys.length})
             </Button>
             <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
@@ -1003,6 +1073,15 @@ export function Ltpa02002({
           </Grow>
         </Grid>
       )}
+      <style>{`
+        @keyframes button-shake {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          20% { transform: translate(-1px, 1px) scale(0.98); }
+          40% { transform: translate(1px, -1px) scale(1.01); }
+          60% { transform: translate(-1px, -1px) scale(0.99); }
+          80% { transform: translate(1px, 1px) scale(1.01); }
+        }
+      `}</style>
     </Grid>
   );
 }
