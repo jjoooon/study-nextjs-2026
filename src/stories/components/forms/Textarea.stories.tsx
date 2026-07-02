@@ -68,7 +68,7 @@ import { Textarea } from '@uiux/Textarea';
                 </Gcol>
                 <Gcol gap={1} className="w-[30rem]">
                   <p className="text-[1.2rem] font-bold text-[var(--color-text-sub)]">리사이즈 차단 & 기본 입력</p>
-                  <Textarea resize="" placeholder="resize=''" />
+                  <Textarea resize="" maxLength={50} placeholder="resize=''" />
                 </Gcol>
               </Grow>
             </Gcol>
@@ -157,7 +157,6 @@ import { Textarea } from '@uiux/Textarea';
       table: { category: '에러 props' },
     },
     minLength: { table: { disable: true } },
-    showMinLengthCount: { table: { disable: true } },
     className: { table: { disable: true } },
     value: {
       table: { disable: true },

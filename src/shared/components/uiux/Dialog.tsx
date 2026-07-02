@@ -6,7 +6,6 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
-import dialogSizes from '@/shared/popups/dialogSizes.json';
 import {
   registerDialog,
   unregisterDialog,
@@ -35,31 +34,6 @@ type DialogSizeConfig = {
 
 /** 다이얼로그 가로/세로 크기 타입 */
 type DialogSize = DialogSizePreset | DialogSizeConfig;
-
-const getScreenIdFromUrl = (): string | null => {
-  if (typeof window === 'undefined') return null;
-  try {
-    // 1) 스토리북 URL 파싱 (예: ?id=app-shared-components-popups-ltpz055--default)
-    const params = new URLSearchParams(window.location.search);
-    const storyId = params.get('id');
-    if (storyId) {
-      const match = storyId.match(/(ltp[za]\d{3,7})/i);
-      if (match) {
-        return match[1].toUpperCase();
-      }
-    }
-
-    // 2) 일반 Next.js URL 경로 파싱 (예: /pub/shared/components/popups/Ltpz055)
-    const pathName = window.location.pathname;
-    const pathMatch = pathName.match(/(ltp[za]\d{3,7})/i);
-    if (pathMatch) {
-      return pathMatch[1].toUpperCase();
-    }
-  } catch {
-    // ignore
-  }
-  return null;
-};
 
 const DEFAULT_DIALOG_CONTENT_Z_INDEX = 51;
 const DIALOG_Z_INDEX_STEP = 2;
@@ -427,7 +401,7 @@ function DialogContent({
     setIsIframeState(checkIframe());
   }, []);
 
-  const resolvedShowCloseButton = showCloseButton && !isIframeState;
+  const resolvedShowCloseButton = showCloseButton;
   const resolvedResizable = resizable && !isIframeState;
   const resolvedMinimized = minimized && !isIframeState;
 
@@ -527,72 +501,6 @@ function DialogContent({
   }
 
   const [prevDefaultPosition, setPrevDefaultPosition] = React.useState<typeof defaultPosition>(defaultPosition);
-
-  const setContentRef = React.useCallback(
-    (node: HTMLDivElement | null) => {
-      contentRef.current = node;
-
-      if (node) {
-        const isTestIframe = () => {
-          if (typeof window === 'undefined' || window.self === window.parent) {
-            return false;
-          }
-          try {
-            return !!(window.frameElement && window.frameElement.id === 'testIframe');
-          } catch {
-            return false;
-          }
-        };
-
-        if (isTestIframe()) {
-          // data-slot="dialog-footer-area" 안에 닫기버튼(dialog-close)만 있다면 footer-area 전체 숨김
-          const footerArea = node.querySelector('[data-slot="dialog-footer-area"]') as HTMLElement;
-          if (footerArea) {
-            const buttons = Array.from(footerArea.querySelectorAll('button, a, [role="button"]'));
-            const hasActiveButtons = buttons.some((btn) => {
-              const isClose =
-                btn.getAttribute('data-slot') === 'dialog-close' || btn.closest('[data-slot="dialog-close"]');
-              return !isClose;
-            });
-
-            if (!hasActiveButtons && buttons.length > 0) {
-              footerArea.style.setProperty('display', 'none', 'important');
-
-              const footerParent = footerArea.closest('[data-slot="dialog-footer"]') as HTMLElement;
-              if (footerParent) {
-                const otherVisibleSiblings = Array.from(footerParent.children).filter(
-                  (child) => child !== footerArea && (child as HTMLElement).offsetHeight > 0
-                );
-                if (otherVisibleSiblings.length === 0) {
-                  footerParent.style.setProperty('display', 'none', 'important');
-                }
-              }
-            }
-          }
-
-          // json에서 dialogId(LTPZ999 등)에 매칭되는 크기 정보를 찾음
-          const screenId = getScreenIdFromUrl() || (dialogId && !dialogId.startsWith(':') ? dialogId : null);
-          if (screenId) {
-            const sizeConfig = dialogSizes.find(
-              (item: { id: string; width: number; height: number }) => item.id.toUpperCase() === screenId.toUpperCase()
-            );
-            if (sizeConfig) {
-              window.parent.postMessage(
-                {
-                  type: 'DIALOG_DEFAULT_SIZE',
-                  width: sizeConfig.width,
-                  height: sizeConfig.height,
-                  id: screenId,
-                },
-                '*'
-              );
-            }
-          }
-        }
-      }
-    },
-    [dialogId]
-  );
 
   // defaultPosition 변경 시 최신 상태로 동기화 (렌더 단계에서 동기화, x/y 좌표값 비교로 무한루프 방지)
   if (defaultPosition?.x !== prevDefaultPosition?.x || defaultPosition?.y !== prevDefaultPosition?.y) {
@@ -776,7 +684,7 @@ function DialogContent({
         />
       )}
       <DialogPrimitive.Content
-        ref={setContentRef}
+        ref={contentRef}
         data-slot="dialog-content"
         style={contentStyle}
         data-isminimize={isMinimized ? 'true' : 'false'}
