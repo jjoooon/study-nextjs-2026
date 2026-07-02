@@ -11,7 +11,6 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon, AuditIcon, DiamondIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -69,8 +68,231 @@ const Ltpz030 = () => {
           checked: false,
         },
       ],
+      tooltipData: [
+        {
+          title: '$간편고지형명 판정결과$',
+          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$',
+          content2: '$질병수술비(ALL RISK)$',
+        },
+        {
+          title: '$345조건부(감액)$',
+          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$',
+          content2: '$인수판정룰 사전안내 컬럼에 입력된 값 표시$',
+        },
+        {
+          title: '$345(2일)조건부(감액)$',
+          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$',
+          content2: '$질병수술비(ALL RISK)$',
+        },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'health9',
+          label: '5형(건강9년)',
+          state: '거절',
+          checked: false,
+        },
+        { id: '' },
+        { id: '' },
+      ],
+      tooltipData: [
+        {
+          title: '$간편고지형명 판정결과$',
+          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$',
+          content2: '$질병수술비(ALL RISK)$',
+        },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'health8',
+          label: '4형(건강8년)',
+          state: '거절',
+          checked: false,
+        },
+        { id: '' },
+        { id: '' },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'health7',
+          label: '3형(건강7년)',
+          state: '거절',
+          checked: false,
+        },
+        { id: '' },
+        { id: '' },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'health6',
+          label: '2형(건강6년)',
+          state: '거절',
+          checked: false,
+        },
+        { id: '' },
+        { id: '' },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'health5',
+          label: '일반고지형(5년)',
+          state: '거절',
+          checked: false,
+        },
+        { id: '' },
+        { id: '' },
+      ],
     },
   ];
+
+  const convenienceRows: HealthUnderwritingRow[] = [
+    {
+      data: [
+        {
+          id: 'convenience3105',
+          label: '3105',
+          state: '거절',
+          checked: false,
+        },
+        { id: '' },
+        { id: '' },
+      ],
+      tooltipData: [
+        {
+          title: '$간편고지형명 판정결과$',
+          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$',
+          content2: '$질병수술비(ALL RISK)$',
+        },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'convenience385',
+          label: '385',
+          state: '거절',
+          checked: false,
+        },
+        { id: '' },
+        { id: '' },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'convenience365',
+          label: '365',
+          state: '거절',
+          checked: false,
+        },
+        { id: '' },
+        { id: '' },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'convenience355',
+          label: '355',
+          state: '거절',
+          checked: false,
+        },
+        {
+          id: 'convenience355_2',
+          label: '355(2일)',
+          state: '거절',
+          checked: false,
+        },
+        { id: '' },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'convenience345',
+          label: '345',
+          state: '거절',
+          checked: false,
+        },
+        {
+          id: 'convenience345_2',
+          label: '345(2일)',
+          state: '인수',
+          checked: false,
+        },
+        { id: '' },
+      ],
+    },
+    {
+      data: [
+        { id: '' },
+        {
+          id: 'convenience335',
+          label: '335(2일)',
+          state: '인수',
+          checked: false,
+        },
+        { id: '' },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'convenience325',
+          label: '325',
+          state: '거절',
+          checked: false,
+        },
+        {
+          id: 'convenience325_2',
+          label: '325(2일)',
+          state: '인수',
+          checked: false,
+        },
+        { id: '' },
+      ],
+    },
+    {
+      data: [
+        { id: '' },
+        {
+          id: 'convenience335',
+          label: '315(2일)',
+          state: '인수',
+          checked: false,
+        },
+        { id: '' },
+      ],
+    },
+    {
+      data: [
+        {
+          id: 'convenience305',
+          label: '305',
+          state: '인수',
+          checked: false,
+        },
+        {
+          id: 'convenience305_2',
+          label: '305(2일)',
+          state: '인수',
+          checked: false,
+        },
+        { id: '' },
+      ],
+    },
+  ];
+
   // ===== 다이얼로그 렌더링 =====
   return (
     <>
@@ -215,66 +437,26 @@ const Ltpz030 = () => {
                         정보변경
                       </Button>
                       <Grow gap={2} className="items-center">
-                        <Checkbox
-                          color="primary"
-                          size="md"
-                          variant="text"
-                          className="no-underline cursor-default"
-                          disabled
-                        >
-                          <span className="flex items-center gap-1 text-[1.2rem]">
-                            <RefuseIcon size={16} />
-                            거절
-                          </span>
-                        </Checkbox>
-                        <Checkbox
-                          color="primary"
-                          size="md"
-                          variant="text"
-                          className="no-underline cursor-default"
-                          disabled
-                        >
-                          <span className="flex items-center gap-1 text-[1.2rem]">
-                            <DiamondIcon />
-                            연기
-                          </span>
-                        </Checkbox>
-                        <Checkbox
-                          color="primary"
-                          size="md"
-                          variant="text"
-                          className="no-underline cursor-default"
-                          disabled
-                        >
-                          <span className="flex items-center gap-1 text-[1.2rem]">
-                            <AuditIcon />
-                            심사
-                          </span>
-                        </Checkbox>
-                        <Checkbox
-                          color="primary"
-                          size="md"
-                          variant="text"
-                          className="no-underline cursor-default"
-                          disabled
-                        >
-                          <span className="flex items-center gap-1 text-[1.2rem]">
-                            <ConditionalIcon />
-                            조건부
-                          </span>
-                        </Checkbox>
-                        <Checkbox
-                          color="primary"
-                          size="md"
-                          variant="text"
-                          className="no-underline cursor-default"
-                          disabled
-                        >
-                          <span className="flex items-center gap-1 text-[1.2rem]">
-                            <CircleCheckIcon size={14} />
-                            인수
-                          </span>
-                        </Checkbox>
+                        <span className="flex items-center gap-1 text-[1.2rem]">
+                          <RefuseIcon size={16} />
+                          거절
+                        </span>
+                        <span className="flex items-center gap-1 text-[1.2rem]">
+                          <DiamondIcon />
+                          연기
+                        </span>
+                        <span className="flex items-center gap-1 text-[1.2rem]">
+                          <AuditIcon />
+                          심사
+                        </span>
+                        <span className="flex items-center gap-1 text-[1.2rem]">
+                          <ConditionalIcon />
+                          조건부
+                        </span>
+                        <span className="flex items-center gap-1 text-[1.2rem]">
+                          <CircleCheckIcon size={14} />
+                          인수
+                        </span>
                       </Grow>
                     </Grow>
                   </Grow>
@@ -298,44 +480,24 @@ const Ltpz030 = () => {
                         추가고지
                       </Typo>
                       <Divider />
-                      <Checkbox
-                        color="primary"
-                        size="md"
-                        variant="text"
-                        className="no-underline cursor-default"
-                        disabled
-                      >
-                        <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
-                          고혈압
-                          <RefuseIcon size={16} />
-                        </span>
-                      </Checkbox>
-                      <Checkbox
-                        color="primary"
-                        size="md"
-                        variant="text"
-                        className="no-underline cursor-default"
-                        disabled
-                      >
-                        <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
-                          당뇨
-                          <CircleCheckIcon size={14} />
-                        </span>
-                      </Checkbox>
-                      <Checkbox
-                        color="primary"
-                        size="md"
-                        variant="text"
-                        className="no-underline cursor-default"
-                        disabled
-                      >
-                        <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
-                          고혈압&당뇨
-                          <RefuseIcon size={16} />
-                        </span>
-                      </Checkbox>
+                      <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
+                        고혈압
+                        <RefuseIcon size={16} />
+                      </span>
+
+                      <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
+                        당뇨
+                        <CircleCheckIcon size={14} />
+                      </span>
+
+                      <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
+                        고혈압&당뇨
+                        <RefuseIcon size={16} />
+                      </span>
                     </Grow>
                   </Grow>
+
+                  <Ltpa030table healthRows={convenienceRows} isClick={false} />
                 </Gcol>
               </Gcol>
             </Grow>
@@ -347,7 +509,7 @@ const Ltpz030 = () => {
                 <BulletListItem>
                   추천유형 안내 :{' '}
                   <em>일반/건강고지형은 &quot;심사가능&quot; 유형, 간편고지형은 &quot;인수가능&quot; 유형 안내</em>
-                  <BulletItem size="sm" type="dash">
+                  <BulletItem size="sm" type="dash" className="text-[var(--color-danger-50)]">
                     <em>단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의</em>(유병력자일 경우라도 사고력
                     &middot; 가입담보에 따라 표준체/건강체로 가입가능)
                   </BulletItem>
