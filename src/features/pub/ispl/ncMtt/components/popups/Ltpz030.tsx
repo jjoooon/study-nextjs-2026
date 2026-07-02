@@ -42,6 +42,17 @@ const nData = [
   ['3개월내', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
 ];
 
+interface AdditionalNotice {
+  label: string;
+  type: 'refuse' | 'approve';
+}
+
+const additionalNotices: AdditionalNotice[] = [
+  { label: '고혈압', type: 'refuse' },
+  { label: '당뇨', type: 'approve' },
+  { label: '고혈압&당뇨', type: 'refuse' },
+];
+
 // ===== 컴포넌트 시작 =====
 const Ltpz030 = () => {
   const [isOpenLtpz110, setIsOpenLtpz110] = React.useState(false);
@@ -103,7 +114,10 @@ const Ltpz030 = () => {
       tooltipData: [
         {
           title: '간편고지형명 판정결과',
-          content: ['제한담보: 질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비'],
+          content: [
+            '제한담보: 질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
+            '인수판정률 사전안내 컬럼에 입력된 값 표시',
+          ],
         },
       ],
     },
@@ -481,20 +495,12 @@ const Ltpz030 = () => {
                         추가고지
                       </Typo>
                       <Divider />
-                      <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
-                        고혈압
-                        <RefuseIcon size={16} />
-                      </span>
-
-                      <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
-                        당뇨
-                        <CircleCheckIcon size={14} />
-                      </span>
-
-                      <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
-                        고혈압&당뇨
-                        <RefuseIcon size={16} />
-                      </span>
+                      {additionalNotices.map((item) => (
+                        <span key={item.label} className="flex items-center gap-[0.2rem] text-[1.2rem]">
+                          {item.label}
+                          {item.type === 'refuse' ? <RefuseIcon size={16} /> : <CircleCheckIcon size={14} />}
+                        </span>
+                      ))}
                     </Grow>
                   </Grow>
 
