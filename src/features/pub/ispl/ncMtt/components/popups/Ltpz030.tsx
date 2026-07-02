@@ -507,11 +507,13 @@ const Ltpz030 = () => {
               </Typo>
               <BulletList color={'warning'} size="sm">
                 <BulletListItem>
-                  추천유형 안내 :{' '}
-                  <em>일반/건강고지형은 &quot;심사가능&quot; 유형, 간편고지형은 &quot;인수가능&quot; 유형 안내</em>
+                  고지유형 찾기 :{' '}
+                  <em className="font-normal!">
+                    일반/건강고지형은 &quot;심사가능&quot; 유형, 간편고지형은 &quot;인수가능&quot; 유형 안내
+                  </em>
                   <BulletItem size="sm" type="dash" className="text-[var(--color-danger-50)]">
-                    <em>단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의</em>(유병력자일 경우라도 사고력
-                    &middot; 가입담보에 따라 표준체/건강체로 가입가능)
+                    단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의(유병력자일 경우라도 사고력 &middot;
+                    가입담보에 따라 표준체/건강체로 가입가능)
                   </BulletItem>
                 </BulletListItem>
                 <BulletListItem>
@@ -533,6 +535,11 @@ const Ltpz030 = () => {
                     <BulletItem size="sm" type="dash">
                       적용담보 : [기본 적용] 질병후유 3%, 암, 2대, 질병입원비, 질병수술비, 상해입원비, 상해수술비 +
                       [필요시 선택] 상해휴유3%, 요양진단비
+                      <BulletList>
+                        <BulletItem size="sm" type="dash">
+                          적용담보 직접 선택/해제 가능
+                        </BulletItem>
+                      </BulletList>
                     </BulletItem>
                     <BulletItem size="sm" type="dash">
                       활용정보 : 보험금지급정보
