@@ -491,7 +491,7 @@ const Ltpz030 = () => {
                       간편고지
                     </Typo>
                     <Grow gap={2} className="items-center">
-                      <Typo variant={'body-sm'} weight={'bold'}>
+                      <Typo variant={'body-sm'} weight={'bold'} className="text-[var(--color-gray-70)]">
                         추가고지
                       </Typo>
                       <Divider />
