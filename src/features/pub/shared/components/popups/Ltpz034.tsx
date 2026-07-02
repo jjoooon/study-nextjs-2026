@@ -15,7 +15,15 @@ import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { ArrowDoubleIcon, AuditIcon, CircleCheckIcon, ConditionalIcon, DiamondIcon, RefuseIcon } from '@icons';
+import {
+  ArrowDoubleIcon,
+  AuditIcon,
+  CircleCheckIcon,
+  CloseIcon,
+  ConditionalIcon,
+  DiamondIcon,
+  RefuseIcon,
+} from '@icons';
 
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
@@ -373,7 +381,7 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
   );
 
   //등록 여부
-  const isRegistered = true;
+  const isRegistered = false;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} minimized={minimized} onMinimizeChange={onMinimizeChange}>
@@ -396,26 +404,45 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
                 <FormRow>
                   <FormCell
                     title={
-                      <Badge size="md" variant="contained" className="bg-[#338CF5] text-[#FFF]">
-                        등록
-                      </Badge>
+                      isRegistered ? (
+                        <Badge size="md" variant="contained" className="bg-[#338CF5] text-[#FFF]">
+                          등록
+                        </Badge>
+                      ) : (
+                        <Badge size="md" variant="contained" className="bg-[#E4E7EC] text-[#414141]">
+                          미등록
+                        </Badge>
+                      )
                     }
                   >
-                    <span className="font-bold text-[1.3rem] text-[#FFF]">김한화 32세(여)</span>
+                    {isRegistered ? (
+                      <Typo tag={'span'} weight={'bold'} variant={'body-sm'} className="text-[#FFF]">
+                        김한화 32세(여)
+                      </Typo>
+                    ) : (
+                      <Typo tag={'span'} weight={'bold'} variant={'body-sm'} className="text-[#FFF]">
+                        32세(1994-02-12) / 여
+                      </Typo>
+                    )}
                   </FormCell>
-                  <FormCell title={<span className="text-[#D8DBE0]">기준일자</span>}>
-                    <Grow gap={2}>
-                      <span className="font-bold text-[1.3rem] text-[#FFF]">2026-02-24</span>
-                      <Button variant="contained" size="sm" color={'coolgray-light'}>
-                        최신정보갱신
-                      </Button>
-                    </Grow>
-                  </FormCell>
+                  {isRegistered && (
+                    <FormCell title={<span className="text-[#D8DBE0]">기준일자</span>}>
+                      <Grow gap={2}>
+                        <span className="font-bold text-[1.3rem] text-[#FFF]">2026-02-24</span>
+                        <Button variant="contained" size="sm" color={'coolgray-light'}>
+                          최신정보갱신
+                        </Button>
+                      </Grow>
+                    </FormCell>
+                  )}
                 </FormRow>
               </FormTable>
-              <Button variant="outlined" size="md">
-                N년내 입원수술
-              </Button>
+              {isRegistered && (
+                <Button variant="outlined" size="md">
+                  N년내 입원수술
+                </Button>
+              )}
+
               <Button variant="outlined" size="md">
                 정보 변경
               </Button>
@@ -448,12 +475,67 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
             </Grow>
           </Gcol>
           <Grid className={isRegistered ? 'grid-cols-[18rem_1fr] gap-3' : 'grid-cols-[1fr_auto_1fr]'}>
-            <TableFold variant="default" className="grid grid-rows-[auto_1fr] h-[34.1rem]">
-              <TableFoldHead title="일반/건강고지"></TableFoldHead>
-              <TableFoldBody className="h-full overflow-y-auto bg-[#F2F4F7]">
-                <Ltpa030table healthRows={basicRows} isClick={true} onCheckedChange={handleCheckedChange} colSpan={1} />
-              </TableFoldBody>
-            </TableFold>
+            {isRegistered ? (
+              <TableFold variant="default" className="grid grid-rows-[auto_1fr] h-[34.1rem]">
+                <TableFoldHead title="일반/건강고지"></TableFoldHead>
+                <TableFoldBody className="h-full overflow-y-auto bg-[#F2F4F7]">
+                  <Ltpa030table
+                    healthRows={basicRows}
+                    isClick={true}
+                    onCheckedChange={handleCheckedChange}
+                    colSpan={1}
+                  />
+                </TableFoldBody>
+              </TableFold>
+            ) : (
+              <TableFold variant="default" className="grid grid-rows-[auto_1fr]">
+                <TableFoldHead title="입원/수술 정보(최대4건)">
+                  <Button variant={'outlined'} color={'gray'} size={'md'}>
+                    입력/수정
+                  </Button>
+                </TableFoldHead>
+                <TableFoldBody className="grid h-full grid-flow-col">
+                  <Grid className="grid-rows-[1fr_auto] h-full grid-rows-[1fr]">
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        noRowsOverlayComponentParams={{
+                          message: '[입력/수정]을 선택하여 질병을 검색해 주세요.',
+                        }}
+                        rowData={DUMMY_DATA}
+                        columnDefs={columnDefs}
+                        defaultColDef={{
+                          sortable: false,
+                          resizable: true,
+                        }}
+                        rowSelection={{
+                          mode: 'multiRow',
+                          checkboxes: true,
+                          enableClickSelection: false,
+                        }}
+                        selectionColumnDef={{
+                          headerName: '선택',
+                          width: 30,
+                          cellClass: 'text-center editable-cell',
+                        }}
+                        domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                      />
+                    </div>
+                    <Grow placement="ee">
+                      <Button variant={'outlined'} color={'gray'} size={'md'}>
+                        초기화
+                      </Button>
+                      <Button variant={'contained'} size={'md'}>
+                        고지유형 확인
+                      </Button>
+                    </Grow>
+                  </Grid>
+                </TableFoldBody>
+              </TableFold>
+            )}
             {!isRegistered && (
               <Grow className="w-full h-full flex justify-center items-center ">
                 <ArrowDoubleIcon className="rotate-[270deg]" color="#FF5C2E" size={24} />
@@ -487,12 +569,13 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
               </TableFoldBody>
             </TableFold>
           </Grid>
+          {/* 선택 항목 노출 영역 */}
           <Grow className="w-full border border-[#FF5C2E] rounded-[0.8rem] px-3 py-3 flex items-center justify-between gap-4 bg-[#FFF]">
             <Grow className="flex items-center justify-between gap-4 flex-1">
               {selectedIds.length > 0 ? (
                 <>
                   <Typo className="text-[1.2rem] font-bold text-[#414141] shrink-0">고지유형 선택</Typo>
-                  <Grow className="flex-wrap gap-2 justify-start py-1 flex-1">
+                  <Grow className="flex-wrap gap-[0.6rem] justify-start flex-1">
                     {selectedIds.map((id) => {
                       const label = underwritingItemsMap[id];
                       if (!label) return null;
@@ -500,7 +583,7 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
                       return (
                         <Grow
                           key={id}
-                          className="animate-drop-in-reverse inline-flex items-center gap-1.5 px-3 bg-[#2E3B4E] text-[#FFF] rounded-full text-[1.2rem] font-medium"
+                          className="animate-drop-in-reverse inline-flex items-center gap-1.5 px-3 bg-[#2E3B4E] text-[#FFF] rounded-full text-[1.2rem] py-[0.6rem] px-[0.8rem]"
                           style={
                             {
                               '--dx': `${offset.x}px`,
@@ -512,9 +595,9 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
                           <button
                             type="button"
                             onClick={() => handleRemove(id)}
-                            className="flex items-center justify-center p-0.5 rounded-full hover:bg-gray-700 focus:outline-none"
+                            className="flex items-center justify-center rounded-full hover:bg-gray-700 focus:outline-none"
                           >
-                            <X size={12} className="text-gray-400 hover:text-[#FFF]" />
+                            <CloseIcon size={10} className="text-gray-400 hover:text-[#FFF]" />
                           </button>
                         </Grow>
                       );
