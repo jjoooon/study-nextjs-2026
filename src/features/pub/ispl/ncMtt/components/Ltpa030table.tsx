@@ -22,14 +22,14 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 export interface TooltipItem {
   title: string;
-  content: string | string[];
+  content: string[];
 }
 
 export interface UnderwritingItem {
   id: string;
   label?: string;
   checked?: boolean;
-  state?: '거절' | '연기' | '심사' | '조건부' | '인수' | boolean;
+  state?: '거절' | '연기' | '심사' | '조건부' | '인수';
 }
 
 export interface HealthUnderwritingRow {
