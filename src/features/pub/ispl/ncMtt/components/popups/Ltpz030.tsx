@@ -70,19 +70,22 @@ const Ltpz030 = () => {
       ],
       tooltipData: [
         {
-          title: '$간편고지형명 판정결과$',
-          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$',
-          content2: '$질병수술비(ALL RISK)$',
+          title: '간편고지형명 판정결과',
+          content: ['질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비', '질병수술비(ALL RISK)'],
         },
         {
-          title: '$345조건부(감액)$',
-          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$',
-          content2: '$인수판정룰 사전안내 컬럼에 입력된 값 표시$',
+          title: '345조건부(감액)',
+          content: [
+            '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
+            '인수판정률 사전안내 컬럼에 입력된 값 표시',
+          ],
         },
         {
-          title: '$345(2일)조건부(감액)$',
-          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$',
-          content2: '$질병수술비(ALL RISK)$',
+          title: '345(2일)조건부(감액)',
+          content: [
+            '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
+            '인수판정률 사전안내 컬럼에 입력된 값 표시',
+          ],
         },
       ],
     },
@@ -99,9 +102,8 @@ const Ltpz030 = () => {
       ],
       tooltipData: [
         {
-          title: '$간편고지형명 판정결과$',
-          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$',
-          content2: '$질병수술비(ALL RISK)$',
+          title: '간편고지형명 판정결과',
+          content: ['제한담보: 질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비'],
         },
       ],
     },
@@ -169,9 +171,8 @@ const Ltpz030 = () => {
       ],
       tooltipData: [
         {
-          title: '$간편고지형명 판정결과$',
-          content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$',
-          content2: '$질병수술비(ALL RISK)$',
+          title: '간편고지형명 판정결과',
+          content: ['제한담보: 질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비'],
         },
       ],
     },
@@ -301,7 +302,7 @@ const Ltpz030 = () => {
           <DialogHeader>
             <DialogTitle>
               <Typo tag={'strong'} variant={'heading-lg'}>
-                고지유형 찾기
+                고지유형찾기(UW)
               </Typo>
               <Typo tag={'p'} variant={'body-xl'}>
                 (LTPZ030)
@@ -566,7 +567,14 @@ const Ltpz030 = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {isOpenLtpz110 && <Ltpz110 open={isOpenLtpz110} onOpenChange={setIsOpenLtpz110} isID={true} />}
+      {isOpenLtpz110 && (
+        <Ltpz110
+          open={isOpenLtpz110}
+          onOpenChange={setIsOpenLtpz110}
+          isID={true}
+          defaultValues={['0', '1', '2', '3', '4', '5', '6']}
+        />
+      )}
     </>
   );
 };

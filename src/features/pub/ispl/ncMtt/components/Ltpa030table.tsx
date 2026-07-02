@@ -22,15 +22,14 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 export interface TooltipItem {
   title: string;
-  content: string;
-  content2?: string;
+  content: string | string[];
 }
 
 export interface UnderwritingItem {
   id: string;
   label?: string;
   checked?: boolean;
-  state?: '거절' | '연기' | '심사' | '조건부' | '인수';
+  state?: '거절' | '연기' | '심사' | '조건부' | '인수' | boolean;
 }
 
 export interface HealthUnderwritingRow {
@@ -199,11 +198,11 @@ export default function Ltpa030table({
                               </Button>
                             </Grow>
                             <BulletList color={'warning'} size="sm" className="gap-[0.2rem]">
-                              <BulletListItem>
-                                <strong className="font-bold">제한담보:</strong>{' '}
-                                {tip.content.replace(/^제한담보\s*:\s*/, '')}
-                              </BulletListItem>
-                              {tip.content2 && <BulletListItem>{tip.content2}</BulletListItem>}
+                              {(Array.isArray(tip.content) ? tip.content : [tip.content]).map((item, cIdx) => (
+                                <BulletListItem key={cIdx}>
+                                  {cIdx === 0 && <strong className="font-bold">제한담보:</strong>} {item}
+                                </BulletListItem>
+                              ))}
                             </BulletList>
                           </Gcol>
                         ))}
