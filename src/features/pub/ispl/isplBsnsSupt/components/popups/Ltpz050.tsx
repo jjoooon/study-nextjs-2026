@@ -72,7 +72,6 @@ const Ltpz050 = () => {
                     <Textarea
                       placeholder="내용을 입력하세요"
                       value={'계약자의 12차월(1년)이내 미유지 계약이 직전 1년간 3건(3건이상)입니다.'}
-                      showMinLengthCount
                       readOnly
                     />
                   </Grow>
@@ -84,7 +83,6 @@ const Ltpz050 = () => {
                     <Textarea
                       placeholder="내용을 입력하세요"
                       value={'현재 계약은 정상 유지되고 있으면 암보험담보 추가 계약입니다.'}
-                      showMinLengthCount
                     />
                   </Grow>
                 </FormCell>
@@ -97,7 +95,6 @@ const Ltpz050 = () => {
                     <Textarea
                       placeholder="내용을 입력하세요"
                       value={'계약자의 12차월(1년)이내 미유지 계약이 직전 1년간 3건(3건이상)입니다.'}
-                      showMinLengthCount
                       readOnly
                     />
                   </Grow>
@@ -109,7 +106,6 @@ const Ltpz050 = () => {
                     <Textarea
                       placeholder="내용을 입력하세요"
                       value={'현재 계약은 정상 유지되고 있으면 암보험담보 추가 계약입니다.'}
-                      showMinLengthCount
                     />
                   </Grow>
                 </FormCell>
