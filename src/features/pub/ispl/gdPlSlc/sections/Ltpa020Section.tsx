@@ -6,7 +6,7 @@
 import * as React from 'react';
 import { useCallback, useState } from 'react';
 import Ltpz034 from '@/features/pub/shared/components/popups/Ltpz034';
-import { Gcol, Grow, Divider, Grid } from '@atoms';
+import { Gcol, Grow, Divider, Grid, Typo } from '@atoms';
 
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -366,10 +366,38 @@ export default function Ltpa020Section() {
                             </Grow>
                           )}
 
-                          <Grow>
-                            {/* 고지유형찾기 팝업 호출
-                                - 이미 열려 있으면 '다시보기' 문구로 표시 */}
-                            <Button size={'sm'} onClick={() => setIsLtpz034Open(true)}>
+                          <Grow placement="ec" gap={2}>
+                            {customerType === 'recent' ? (
+                              <>
+                                {comboValues.user ? (
+                                  comboValues.user === '김한화 32세(여)' ? (
+                                    <Typo variant={'body-sm'} icon={'warning'} className="text-[#FFF]">
+                                      [이용제한] 고지유형찾기 서비스 점검중입니다
+                                    </Typo>
+                                  ) : (
+                                    <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
+                                      적정 고지유형을 찾는다면, 클릭해주세요.
+                                    </Typo>
+                                  )
+                                ) : (
+                                  <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
+                                    고객정보를 입력해주세요.
+                                  </Typo>
+                                )}
+                              </>
+                            ) : (
+                              <>
+                                <Typo variant={'body-sm'} icon={'info'} className="text-[#FFF]">
+                                  적정 고지유형을 찾는다면, 클릭해주세요.
+                                </Typo>
+                              </>
+                            )}
+
+                            <Button
+                              disabled={!comboValues.user || comboValues?.user === '김한화 32세(여)'}
+                              size={'sm'}
+                              onClick={() => setIsLtpz034Open(true)}
+                            >
                               {isLtpz034Open ? '+고지유형찾기 다시보기' : '고지유형찾기'}
                             </Button>
                           </Grow>

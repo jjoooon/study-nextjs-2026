@@ -30,8 +30,6 @@ interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEleme
    * @default 'bl'
    */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
-  /** 최소 글자 수 표시 여부 및 최소 입력 글자 수 만족 시 에러 해제 조건 연동 여부 */
-  showMinLengthCount?: boolean;
   /**
    * 텍스트 상자 크기 조절(Resize) 활성화 방향 설정
    * - `true`: 가로/세로 모두 크기 조절 가능
