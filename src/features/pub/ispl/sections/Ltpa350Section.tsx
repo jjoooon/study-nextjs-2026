@@ -284,10 +284,10 @@ export default function Ltpa350Section() {
         asideHead={
           <TaskStatusBoard
             state={[
-              { id: 1, status: '정상', label: '공통', sum: 24 },
-              { id: 2, status: '경고', label: '누적', sum: 1 },
-              { id: 3, status: '중지', label: '직업', sum: 0 },
-              { id: 4, status: '정상', label: '예상UW', sum: 99 },
+              { id: 1, status: '정상', label: '공통' },
+              { id: 2, status: '경고', label: '누적' },
+              { id: 3, status: '중지', label: '직업' },
+              { id: 4, status: '없음', label: '예상UW' },
             ]}
             onItemClick={(item) => {
               const nextActiveTab: Ltpz005TabValue =

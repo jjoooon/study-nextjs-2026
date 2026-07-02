@@ -533,11 +533,18 @@ function DialogContent({
       contentRef.current = node;
 
       if (node) {
-        const checkIframe = () => {
-          return typeof window !== 'undefined' && window.self !== window.parent;
+        const isTestIframe = () => {
+          if (typeof window === 'undefined' || window.self === window.parent) {
+            return false;
+          }
+          try {
+            return !!(window.frameElement && window.frameElement.id === 'testIframe');
+          } catch {
+            return false;
+          }
         };
 
-        if (checkIframe()) {
+        if (isTestIframe()) {
           // data-slot="dialog-footer-area" 안에 닫기버튼(dialog-close)만 있다면 footer-area 전체 숨김
           const footerArea = node.querySelector('[data-slot="dialog-footer-area"]') as HTMLElement;
           if (footerArea) {

@@ -724,8 +724,8 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
   options: {
     idKey: keyof RowType;
     getNextId: (rows: RowType[]) => IDType;
-    createRow: (nextId: IDType, rows: RowType[]) => RowType;
-    insertAt?: 'start' | 'end';
+    createRow: (nextId: IDType, rows: RowType[], focusedRow?: RowType) => RowType;
+    insertAt?: 'start' | 'end' | 'focused';
     getInsertIndex?: (rows: RowType[]) => number;
     gridApiRef?: React.RefObject<GridApi<RowType> | null>;
   }
@@ -735,13 +735,28 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
   return () => {
     setRowData((prev) => {
       const nextId = getNextId(prev);
+
+      let focusedRow: RowType | undefined = undefined;
+      const nextRows = [...prev];
+
+      let defaultIndex = insertAt === 'start' ? 0 : nextRows.length;
+
+      // focused 인 경우 포커스된 행 바로 아래에 인덱스 설정
+      if (insertAt === 'focused' && gridApiRef?.current) {
+        const focusedCell = gridApiRef.current.getFocusedCell();
+        if (focusedCell && focusedCell.rowIndex >= 0) {
+          defaultIndex = focusedCell.rowIndex + 1;
+          focusedRow = prev[focusedCell.rowIndex];
+        } else {
+          defaultIndex = nextRows.length;
+        }
+      }
+
       const newRow = {
-        ...createRow(nextId, prev),
+        ...createRow(nextId, prev, focusedRow),
         [idKey]: nextId,
       } as RowType;
 
-      const nextRows = [...prev];
-      const defaultIndex = insertAt === 'start' ? 0 : nextRows.length;
       const customIndex = getInsertIndex ? getInsertIndex(nextRows) : defaultIndex;
       const boundedIndex = Math.max(0, Math.min(customIndex, nextRows.length));
 
@@ -750,10 +765,19 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
       if (gridApiRef?.current) {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            const viewportElement = document.querySelector('.ag-body-viewport');
-            if (viewportElement) {
-              // 최하단으로 스크롤
-              viewportElement.scrollTop = viewportElement.scrollHeight;
+            // 새로 삽입된 행으로 스크롤 이동
+            gridApiRef.current?.ensureIndexVisible(boundedIndex, 'middle');
+
+            if (insertAt === 'focused') {
+              const focusedCell = gridApiRef.current?.getFocusedCell();
+              if (focusedCell) {
+                gridApiRef.current?.setFocusedCell(boundedIndex, focusedCell.column.getColId());
+              }
+            } else if (insertAt === 'end') {
+              const viewportElement = document.querySelector('.ag-body-viewport');
+              if (viewportElement) {
+                viewportElement.scrollTop = viewportElement.scrollHeight;
+              }
             }
           });
         });
