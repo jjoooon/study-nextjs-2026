@@ -53,7 +53,7 @@ export function getStoryIframeUrl(id: string, path: string, activeStep?: number,
   return `${storybookBaseUrl}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}`;
 }
 
-export default function LinkGo(id: string, path: string, activeStep?: number, subId?: string): string {
+export function linkGo(id: string, path: string, activeStep?: number, subId?: string): string {
   const url = getStoryUrl(id, path, activeStep, subId);
   window.open(url, '_blank', 'noopener,noreferrer');
   return url;

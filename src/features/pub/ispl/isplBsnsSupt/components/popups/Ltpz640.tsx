@@ -3,7 +3,14 @@
  */
 'use client';
 
-import type { CellValueChangedEvent, ColDef, ColGroupDef, GridApi, RowDragEndEvent } from 'ag-grid-enterprise';
+import type {
+  CellValueChangedEvent,
+  ColDef,
+  ColGroupDef,
+  GridApi,
+  RowDragEndEvent,
+  RowDragEnterEvent,
+} from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
 import * as React from 'react';
@@ -152,20 +159,33 @@ const Ltpz640 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
   const [rowData, setRowData] = React.useState<DummyData1Type[]>(DummyData1);
+  const dragStartColumnRef = React.useRef<string | null>(null);
+
+  const handleRowDragEnter = React.useCallback((event: RowDragEnterEvent<DummyData1Type>) => {
+    const targetEl = event.event?.target as HTMLElement | null;
+    const cellEl = targetEl?.closest('.ag-cell');
+    const colId = cellEl?.getAttribute('col-id') || null;
+    dragStartColumnRef.current = colId;
+  }, []);
 
   const handleAddRow = createAddRowHandler<DummyData1Type, number>(setRowData, {
     idKey: 'id',
     getNextId: getNextNumericRowId,
-    createRow: (nextId) => ({
+    createRow: (nextId, rows, focusedRow) => ({
       id: nextId,
       field0: nextId,
-      field1: '',
+      field1: focusedRow ? focusedRow.field1 : '',
       field2: '',
       cheked: false,
     }),
-    insertAt: 'end',
+    insertAt: 'focused',
     gridApiRef,
   });
+
+  const handleOpenAddPackageDialog = React.useCallback(() => {
+    setMergePackageName('');
+    setOpenCellMerge(true);
+  }, []);
 
   const handleDeleteRow = React.useCallback(() => {
     setRowData((prev) => prev.filter((row) => !row.cheked));
@@ -232,30 +252,50 @@ const Ltpz640 = () => {
 
   const handleRowDragEnd = React.useCallback(
     (event: RowDragEndEvent<DummyData1Type>) => {
-      const reorderedRows: DummyData1Type[] = [];
       const draggedRowId = event.node.data?.id;
       const draggedField1 = String(event.node.data?.field1 ?? '');
+      const overIndex = event.overIndex;
 
-      event.api.forEachNodeAfterFilterAndSort((node) => {
-        if (node.data) {
-          reorderedRows.push(node.data);
-        }
-      });
+      const isGroupDrag = dragStartColumnRef.current === 'field1';
 
       if (draggedRowId === undefined || !draggedField1) {
-        setRowData(
-          reorderedRows.map((row, index) => ({
-            ...row,
-            field0: index + 1,
-          }))
-        );
         return;
       }
 
       const sourceIndex = rowData.findIndex((row) => row.id === draggedRowId);
       if (sourceIndex < 0) {
+        return;
+      }
+
+      // 1. [담보그룹명 컬럼 드래그 - 개별 행 이동]
+      if (!isGroupDrag) {
+        const draggedRow = rowData[sourceIndex];
+        const remainingRows = rowData.filter((row) => row.id !== draggedRowId);
+
+        let insertIndex = remainingRows.length;
+        if (overIndex !== undefined && overIndex >= 0) {
+          insertIndex = Math.min(overIndex, remainingRows.length);
+        }
+
+        let overField1 = draggedField1;
+        const overRow = overIndex !== undefined && overIndex >= 0 ? rowData[overIndex] : undefined;
+        if (overRow) {
+          overField1 = overRow.field1;
+        }
+
+        const updatedDraggedRow = {
+          ...draggedRow,
+          field1: overField1,
+        };
+
+        const nextRows = [
+          ...remainingRows.slice(0, insertIndex),
+          updatedDraggedRow,
+          ...remainingRows.slice(insertIndex),
+        ];
+
         setRowData(
-          reorderedRows.map((row, index) => ({
+          nextRows.map((row, index) => ({
             ...row,
             field0: index + 1,
           }))
@@ -263,84 +303,68 @@ const Ltpz640 = () => {
         return;
       }
 
+      // 2. [패키지명 컬럼 드래그 - 그룹 전체 이동]
       let sourceStart = sourceIndex;
       let sourceEnd = sourceIndex;
 
+      // 드래그한 패키지 그룹의 시작과 끝 범위 계산 (전체 rowData 기준)
       while (sourceStart > 0 && rowData[sourceStart - 1]?.field1 === draggedField1) {
         sourceStart -= 1;
       }
-
       while (sourceEnd < rowData.length - 1 && rowData[sourceEnd + 1]?.field1 === draggedField1) {
         sourceEnd += 1;
       }
 
       const sourceBlockRows = rowData.slice(sourceStart, sourceEnd + 1);
       const sourceBlockIdSet = new Set(sourceBlockRows.map((row) => row.id));
-      const originalIndexById = new Map(rowData.map((row, index) => [row.id, index] as const));
+      const remainingRows = rowData.filter((row) => !sourceBlockIdSet.has(row.id));
 
-      if (sourceBlockRows.length <= 1) {
-        setRowData(
-          reorderedRows.map((row, index) => ({
-            ...row,
-            field0: index + 1,
-          }))
-        );
-        return;
+      // 드롭 대상이 된 노드의 패키지명(field1) 구하기
+      let overField1 = draggedField1;
+      const overRow = overIndex !== undefined && overIndex >= 0 ? rowData[overIndex] : undefined;
+      if (overRow && !sourceBlockIdSet.has(overRow.id)) {
+        overField1 = overRow.field1;
       }
 
-      const firstDraggedIndex = reorderedRows.findIndex((row) => row.id === draggedRowId);
-      const removedBefore = reorderedRows
-        .slice(0, Math.max(firstDraggedIndex, 0))
-        .filter((row) => sourceBlockIdSet.has(row.id)).length;
-      const insertIndex = Math.max(firstDraggedIndex - removedBefore, 0);
-
-      const remainingRows = reorderedRows.filter((row) => !sourceBlockIdSet.has(row.id));
-      let normalizedInsertIndex = Math.min(insertIndex, remainingRows.length);
-      const targetRow = remainingRows[normalizedInsertIndex];
-
-      if (targetRow) {
-        const targetField1 = targetRow.field1;
-        let targetStartIndex = normalizedInsertIndex;
-        let targetEndIndex = normalizedInsertIndex;
-
-        while (targetStartIndex > 0 && remainingRows[targetStartIndex - 1]?.field1 === targetField1) {
-          targetStartIndex -= 1;
+      // remainingRows 상에서 overField1 패키지 그룹의 시작과 끝 위치 인덱스 찾기
+      const targetStart = remainingRows.findIndex((row) => row.field1 === overField1);
+      let targetEnd = -1;
+      for (let i = remainingRows.length - 1; i >= 0; i -= 1) {
+        if (remainingRows[i]?.field1 === overField1) {
+          targetEnd = i;
+          break;
         }
+      }
 
-        while (
-          targetEndIndex < remainingRows.length - 1 &&
-          remainingRows[targetEndIndex + 1]?.field1 === targetField1
-        ) {
-          targetEndIndex += 1;
-        }
+      let insertIndex = remainingRows.length;
 
-        const isMergedTarget = targetStartIndex !== targetEndIndex;
-
-        if (!isMergedTarget) {
-          normalizedInsertIndex = targetStartIndex;
+      if (targetStart >= 0 && targetEnd >= 0) {
+        // 드롭된 마우스가 속한 타겟 패키지 전체 그룹을 기준으로,
+        // 하향 이동 중일 때는 타겟 그룹의 아래(targetEnd + 1), 상향 이동 중일 때는 타겟 그룹의 위(targetStart)로 통째로 이동합니다.
+        const isMovingDown = sourceIndex < (overIndex ?? 0);
+        if (isMovingDown) {
+          insertIndex = targetEnd + 1;
         } else {
-          const targetOriginalIndex = originalIndexById.get(targetRow.id);
-
-          if (targetOriginalIndex === undefined) {
-            normalizedInsertIndex = targetStartIndex;
-          } else if (sourceEnd < targetOriginalIndex) {
-            normalizedInsertIndex = targetEndIndex + 1;
-          } else if (sourceStart > targetOriginalIndex) {
-            normalizedInsertIndex = targetStartIndex;
+          insertIndex = targetStart;
+        }
+      } else {
+        if (overIndex !== undefined && overIndex >= 0) {
+          if (sourceIndex < overIndex) {
+            insertIndex = Math.max(0, Math.min(overIndex - sourceBlockRows.length + 1, remainingRows.length));
           } else {
-            normalizedInsertIndex = targetStartIndex;
+            insertIndex = Math.min(overIndex, remainingRows.length);
           }
         }
       }
 
-      const mergedMovedRows = [
-        ...remainingRows.slice(0, normalizedInsertIndex),
+      const nextRows = [
+        ...remainingRows.slice(0, insertIndex),
         ...sourceBlockRows,
-        ...remainingRows.slice(normalizedInsertIndex),
+        ...remainingRows.slice(insertIndex),
       ];
 
       setRowData(
-        mergedMovedRows.map((row, index) => ({
+        nextRows.map((row, index) => ({
           ...row,
           field0: index + 1,
         }))
@@ -407,48 +431,24 @@ const Ltpz640 = () => {
     moveCheckedRowsWithinGroup('down');
   }, [moveCheckedRowsWithinGroup]);
 
-  const handleMergePackageName = React.useCallback(() => {
+  const handleCreateNewPackage = React.useCallback(() => {
     if (!mergePackageName.trim()) {
       return;
     }
 
     setRowData((prev) => {
-      // 1. field1 업데이트
-      const updated = prev.map((row) => {
-        if (!row.cheked) {
-          return row;
-        }
+      const nextId = getNextNumericRowId(prev);
+      const newRow: DummyData1Type = {
+        id: nextId,
+        field0: 1,
+        field1: mergePackageName,
+        field2: '',
+        cheked: false,
+      };
 
-        return {
-          ...row,
-          cheked: false,
-          field1: mergePackageName,
-        };
-      });
+      const nextRows = [newRow, ...prev];
 
-      // 2. 동일 field1끼리 연속 그룹으로 정렬
-      //    기존 순서를 최대한 유지하면서, 같은 field1은 첫 등장 위치로 모음
-      const groups: Map<string, DummyData1Type[]> = new Map();
-      const keyOrder: string[] = [];
-
-      for (const row of updated) {
-        if (!groups.has(row.field1)) {
-          groups.set(row.field1, []);
-          keyOrder.push(row.field1);
-        }
-
-        groups.get(row.field1)!.push(row);
-      }
-
-      const regrouped: DummyData1Type[] = [];
-
-      for (const key of keyOrder) {
-        for (const row of groups.get(key)!) {
-          regrouped.push(row);
-        }
-      }
-
-      return regrouped.map((row, index) => ({
+      return nextRows.map((row, index) => ({
         ...row,
         field0: index + 1,
       }));
@@ -456,22 +456,29 @@ const Ltpz640 = () => {
 
     setMergePackageName('');
     setOpenCellMerge(false);
-  }, [mergePackageName, setRowData]);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        gridApiRef.current?.ensureIndexVisible(0, 'middle');
+        gridApiRef.current?.setFocusedCell(0, 'field1');
+      });
+    });
+  }, [mergePackageName, setRowData, setMergePackageName, setOpenCellMerge]);
 
   // 2026-06-01 width, flex 수정, sortable 추가
   const columnDefs1: (ColDef<DummyData1Type> | ColGroupDef<DummyData1Type>)[] = useMemo(
     () => [
-      {
-        headerName: '순서',
-        field: 'field0',
-        width: attributeColumnWidth(40),
-        editable: true,
-        cellClass: 'text-center',
-        cellEditor: 'agNumberCellEditor',
-        sortable: false,
-        autoHeight: true,
-        spanRows: true,
-      },
+      // {
+      //   headerName: '순서',
+      //   field: 'field0',
+      //   width: attributeColumnWidth(40),
+      //   editable: true,
+      //   cellClass: 'text-center',
+      //   cellEditor: 'agNumberCellEditor',
+      //   sortable: false,
+      //   autoHeight: true,
+      //   spanRows: true,
+      // },
       {
         headerName: '패키지명',
         field: 'field1',
@@ -503,6 +510,7 @@ const Ltpz640 = () => {
         autoHeight: true,
         editable: true,
         cellEditor: 'agTextCellEditor',
+        rowDrag: true,
       },
     ],
     [attributeColumnWidth]
@@ -523,13 +531,8 @@ const Ltpz640 = () => {
           </DialogHeader>
           <DialogSection className="grid-rows-[auto_1fr] gap-1">
             <Grow placement="ec" className="w-full">
-              <Button
-                variant={'outlined'}
-                color={'gray'}
-                disabled={!hasCheckedRows}
-                onClick={() => setOpenCellMerge(true)}
-              >
-                패키지 병합/분리
+              <Button variant={'outlined'} color={'gray'} onClick={handleOpenAddPackageDialog}>
+                패키지 추가
               </Button>
               <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
                 행추가
@@ -575,7 +578,8 @@ const Ltpz640 = () => {
                   resizable: true,
                 }}
                 singleClickEdit={true}
-                rowDragManaged={true}
+                rowDragManaged={false}
+                onRowDragEnter={handleRowDragEnter}
                 onRowDragEnd={handleRowDragEnd}
                 domLayout="normal"
                 animateRows={false}
@@ -602,13 +606,13 @@ const Ltpz640 = () => {
         </DialogContent>
       </Dialog>
       <ConfirmDialog
-        title="패키지 병합/분리"
+        title="패키지 추가"
         description={
           <div className="space-y-2">
-            <p>선택한 담보그룹명의 패키지명을 입력하세요.</p>
+            <p>추가할 패키지명을 입력하세요.</p>
             <Input
               type="text"
-              placeholder="패키지명 입력하세요."
+              placeholder="패키지명을 입력하세요."
               value={mergePackageName}
               onChange={(e) => setMergePackageName(e.target.value)}
             />
@@ -618,7 +622,7 @@ const Ltpz640 = () => {
         confirmLabel="적용"
         cancelLabel="취소"
         onOpenChange={setOpenCellMerge}
-        onConfirm={handleMergePackageName}
+        onConfirm={handleCreateNewPackage}
       />
     </>
   );
