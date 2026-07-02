@@ -10,7 +10,8 @@ import React, { useMemo } from 'react';
 
 import Ltpa030table, { HealthUnderwritingRow } from '@/features/pub/ispl/ncMtt/components/Ltpa030table';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
-import { Grid, Grow, Typo } from '@atoms';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -82,20 +83,9 @@ interface Ltpz034Props {
   onMinimizeChange?: (minimized: boolean) => void;
 }
 
-interface FlyingItem {
-  id: string;
-  label: string;
-  startX: number;
-  startY: number;
-  endX: number;
-  endY: number;
-  width: number;
-  height: number;
-}
-
 const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltpz034Props) => {
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
-  const [flyingItems, setFlyingItems] = React.useState<FlyingItem[]>([]);
+  const [badgeOffsets, setBadgeOffsets] = React.useState<Record<string, { x: number; y: number }>>({});
 
   const healthRows = useMemo<HealthUnderwritingRow[]>(
     () => [
@@ -104,17 +94,15 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
           {
             id: 'health1',
             label: '11형(건강7년)',
-            state: true,
+            state: '심사',
             checked: selectedIds.includes('health1'),
-            disabled: selectedIds.length >= 3 && !selectedIds.includes('health1'),
           },
           { id: '' },
           {
             id: 'health2',
             label: '12형(건강6년)',
-            state: true,
+            state: '연기',
             checked: selectedIds.includes('health2'),
-            disabled: selectedIds.length >= 3 && !selectedIds.includes('health2'),
           },
         ],
         tooltipData: [
@@ -139,17 +127,15 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
           {
             id: 'health7',
             label: '3형(건강7년)',
-            state: true,
+            state: '거절',
             checked: selectedIds.includes('health7'),
-            disabled: selectedIds.length >= 3 && !selectedIds.includes('health7'),
           },
           { id: '' },
           {
             id: 'health8',
             label: '2형(건강6년)',
-            state: true,
+            state: '연기',
             checked: selectedIds.includes('health8'),
-            disabled: selectedIds.length >= 3 && !selectedIds.includes('health8'),
           },
         ],
         tooltipData: [
@@ -170,6 +156,7 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
         ],
       },
     ],
+
     [selectedIds]
   );
 
@@ -199,37 +186,41 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
           const rect = sourceEl.getBoundingClientRect();
           const destRect = destEl.getBoundingClientRect();
 
-          const startX = rect.left + rect.width / 2;
-          const startY = rect.top + rect.height / 2;
-          const endX = destRect.left + 120;
-          const endY = destRect.top + destRect.height / 2;
-          const label = underwritingItemsMap[id] || '';
+          // Estimate target position based on existing badges
+          const existingCount = selectedIds.length;
+          const estimatedBadgeWidth = 110;
+          const targetX = destRect.left + existingCount * estimatedBadgeWidth;
+          const targetY = destRect.top;
 
-          setFlyingItems((prevFlying) => [
-            ...prevFlying,
-            {
-              id: `${Date.now()}_${Math.random()}`,
-              label,
-              startX,
-              startY,
-              endX,
-              endY,
-              width: rect.width,
-              height: rect.height,
-            },
-          ]);
+          const dx = rect.left - targetX;
+          const dy = rect.top - targetY;
+
+          setBadgeOffsets((prev) => ({
+            ...prev,
+            [id]: { x: dx, y: dy },
+          }));
         }
 
         setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
       } else {
         setSelectedIds((prev) => prev.filter((item) => item !== id));
+        setBadgeOffsets((prev) => {
+          const next = { ...prev };
+          delete next[id];
+          return next;
+        });
       }
     },
-    [selectedIds, underwritingItemsMap]
+    [selectedIds]
   );
 
   const handleRemove = React.useCallback((id: string) => {
     setSelectedIds((prev) => prev.filter((item) => item !== id));
+    setBadgeOffsets((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
   }, []);
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -370,10 +361,17 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
                 {selectedIds.map((id) => {
                   const label = underwritingItemsMap[id];
                   if (!label) return null;
+                  const offset = badgeOffsets[id] || { x: 0, y: 0 };
                   return (
                     <Grow
                       key={id}
-                      className="animate-drop-in inline-flex items-center gap-1.5 px-3 bg-[#2E3B4E] text-[#FFF] rounded-full text-[1.2rem] font-medium"
+                      className="animate-drop-in-reverse inline-flex items-center gap-1.5 px-3 bg-[#2E3B4E] text-[#FFF] rounded-full text-[1.2rem] font-medium"
+                      style={
+                        {
+                          '--dx': `${offset.x}px`,
+                          '--dy': `${offset.y}px`,
+                        } as React.CSSProperties
+                      }
                     >
                       <span>{label}</span>
                       <button
@@ -397,6 +395,47 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
               </Button>
             </Grow>
           </Grow>
+          <Gcol className="w-full" placement="ss" variant="box-warning">
+            <Typo icon="warning" variant="body-sm">
+              <b>주의사항</b>
+            </Typo>
+            <BulletList color={'warning'} size="sm">
+              <BulletListItem>
+                추천유형 안내 :
+                <em>일반/건강고지형은 &quot;심사가능&quot; 유형, 간편고지형은 &quot;인수가능&quot; 유형 안내</em>
+                <BulletItem size="sm" type="dash" className="text-[var(--color-danger-50)]">
+                  <em>단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의</em>
+                  <p className="text-[var(--color-gray-70)]">
+                    (유병력자일 경우라도 사고력 &middot; 가입담보에 따라 표준체/건강체로 가입가능)
+                  </p>
+                </BulletItem>
+              </BulletListItem>
+              <BulletListItem>
+                사전심사 적용범위 : 일부 주요상품 및 주요담보만 사전심사 적용
+                <BulletList>
+                  <BulletListItem size="sm" type="dash">
+                    <Grow placement="ss">
+                      적용상품 :
+                      <BulletList>
+                        <BulletItem size="sm" before="①" type="symbols">
+                          건강/일반 - 시그니처 여성건강, 한아름, 굿밸런스, 0540, 신상품
+                        </BulletItem>
+                      </BulletList>
+                    </Grow>
+                  </BulletListItem>
+                  <BulletItem size="sm" type="dash">
+                    적용담보 예시 : 질병후유, 암, 2대진단비, 질병입원비, 질병수술비, 상해입원비, 상해수술비
+                  </BulletItem>
+                  <BulletItem size="sm" type="dash">
+                    활용정보 : 보험금지급정보
+                  </BulletItem>
+                </BulletList>
+              </BulletListItem>
+              <BulletListItem>
+                설계상품 &middot; 고지유형 선정의 보조수단으로 활용바라며, 실제 심사결과와 다를 수 있음
+              </BulletListItem>
+            </BulletList>
+          </Gcol>
         </DialogSection>
 
         <DialogFooter>
@@ -412,93 +451,24 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
           <DialogBottomInfo />
         </DialogFooter>
 
-        {/* 날아가는 애니메이션 요소 */}
-        {flyingItems.map((item) => (
-          <div
-            key={item.id}
-            className="fixed pointer-events-none z-[9999] flex items-center justify-between text-[1.3rem] font-bold select-none border-[0.2rem] border-[#FF5C2E] bg-[#FFEFEA] text-[#000] rounded-[0.4rem] px-[0.6rem]"
-            style={
-              {
-                left: item.startX - item.width / 2,
-                top: item.startY - item.height / 2,
-                width: item.width,
-                height: item.height,
-                '--dx': `${item.endX - item.startX}px`,
-                '--dy': `${item.endY - item.startY}px`,
-                animation: 'flyAndMorph 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards',
-              } as React.CSSProperties
-            }
-            onAnimationEnd={() => {
-              setFlyingItems((prev) => prev.filter((i) => i.id !== item.id));
-            }}
-          >
-            <span>{item.label}</span>
-          </div>
-        ))}
-
         {/* 애니메이션 스타일 */}
         <style>{`
-          @keyframes dropIn {
+          @keyframes dropInReverse {
             0% {
-              transform: translateY(-24px);
-              opacity: 0;
-            }
-            50% {
-              transform: translateY(6px);
-              opacity: 0.8;
-            }
-            75% {
-              transform: translateY(-3px);
-              opacity: 0.9;
-            }
-            100% {
-              transform: translateY(0);
-              opacity: 1;
-            }
-          }
-          .animate-drop-in {
-            animation: dropIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-          }
-          @keyframes flyAndMorph {
-            0% {
-              transform: translate(0, 0) scale(1);
-              box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-              border-radius: 0.4rem;
-              background-color: #FFEFEA;
-              border-color: #FF5C2E;
-              color: #000;
-              opacity: 1;
+              transform: translate(var(--dx), var(--dy)) scale(1.15);
+              opacity: 0.3;
             }
             15% {
-              /* 붕 떠오르는 극적인 모션: scale을 1.15로 키우고 Y축을 -30px 띄우고, 크고 짙은 그림자 반영 */
-              transform: translate(0, -30px) scale(1.15);
-              box-shadow: 0 30px 45px rgba(255, 92, 46, 0.25), 0 15px 15px rgba(0, 0, 0, 0.15);
-              border-radius: 0.6rem;
-              background-color: #FFEFEA;
-              border-color: #FF5C2E;
-              color: #000;
-              opacity: 1;
-            }
-            65% {
-              /* 포물선의 가장 높은 최고 고도: 중간 비행 시 더 높은 호(-65px)를 그려 입체감 극대화 */
-              transform: translate(calc(var(--dx) * 0.65), calc(var(--dy) * 0.65 - 65px)) scale(1.0);
-              box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
-              border-radius: 1.5rem;
-              background-color: #8C99A8;
-              border-color: rgba(255, 92, 46, 0.2);
-              color: #000;
-              opacity: 0.95;
+              transform: translate(calc(var(--dx) * 0.85), calc(var(--dy) * 0.85 - 30px)) scale(1.2);
+              opacity: 0.8;
             }
             100% {
-              /* 목적지로 부드럽게 낙하하며 안착 */
-              transform: translate(var(--dx), var(--dy)) scale(0.85);
-              box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-              border-radius: 9999px;
-              background-color: #2E3B4E;
-              border-color: transparent;
-              color: #FFF;
-              opacity: 0;
+              transform: translate(0, 0) scale(1);
+              opacity: 1;
             }
+          }
+          .animate-drop-in-reverse {
+            animation: dropInReverse 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
           }
         `}</style>
       </DialogContent>
