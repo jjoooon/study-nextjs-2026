@@ -5,7 +5,6 @@
 
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { X } from 'lucide-react';
 import React, { useMemo } from 'react';
 
 import Ltpa030table, { HealthUnderwritingRow } from '@/features/pub/ispl/ncMtt/components/Ltpa030table';
@@ -112,17 +111,17 @@ const BASIC_ROWS: HealthUnderwritingRow[] = [
     tooltipData: [
       {
         title: '$간편고지형명 판정결과$',
-        content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $질병수술비(ALL RISK)$',
+        content: '$질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$, - $질병수술비(ALL RISK)$',
       },
       {
         title: '$345조건부(감액)$',
         content:
-          '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
+          '$질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
       },
       {
         title: '$345(2일)조건부(감액)$',
         content:
-          '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
+          '$질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
       },
     ],
   },
@@ -142,7 +141,7 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
     tooltipData: [
       {
         title: '$간편고지형명 판정결과$',
-        content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $질병수술비(ALL RISK)$',
+        content: '$질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $질병수술비(ALL RISK)$',
       },
     ],
   },
@@ -256,6 +255,12 @@ interface AdditionalNotice {
   label: string;
   type: 'refuse' | 'approve';
 }
+
+// <RefuseIcon /> 거절
+// <DiamondIcon /> 연기
+// <AuditIcon /> 심사
+// <ConditionalIcon /> 조건부
+// <CircleCheckIcon />인수
 
 const additionalNotices: AdditionalNotice[] = [
   { label: '고혈압', type: 'refuse' },
@@ -459,7 +464,7 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
               </Button>
             </Grow>
             <Grow className="w-full" gap={2} placement="ec">
-              <Typo variant={'body-sm'} weight={'bold'}>
+              <Typo variant={'body-sm'} weight={'bold'} className="text-[#414141]">
                 범례
               </Typo>
               <Divider />
@@ -555,7 +560,7 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
             <TableFold variant="default" className="grid grid-rows-[auto_1fr]">
               <TableFoldHead title="간편고지">
                 <Grow gap={2} className="items-center">
-                  <Typo variant={'body-sm'} weight={'bold'}>
+                  <Typo variant={'body-sm'} weight={'bold'} className="text-[#414141]">
                     추가고지
                   </Typo>
                   <Divider />
