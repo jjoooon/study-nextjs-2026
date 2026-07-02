@@ -252,6 +252,17 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
   },
 ];
 
+interface AdditionalNotice {
+  label: string;
+  type: 'refuse' | 'approve';
+}
+
+const additionalNotices: AdditionalNotice[] = [
+  { label: '고혈압', type: 'refuse' },
+  { label: '당뇨', type: 'approve' },
+  { label: '고혈압&당뇨', type: 'refuse' },
+];
+
 const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltpz034Props) => {
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
   const [badgeOffsets, setBadgeOffsets] = React.useState<Record<string, { x: number; y: number }>>({});
@@ -548,20 +559,12 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
                     추가고지
                   </Typo>
                   <Divider />
-                  <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
-                    고혈압
-                    <RefuseIcon size={16} />
-                  </span>
-
-                  <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
-                    당뇨
-                    <CircleCheckIcon size={14} />
-                  </span>
-
-                  <span className="flex items-center gap-[0.2rem] text-[1.2rem]">
-                    고혈압&당뇨
-                    <RefuseIcon size={16} />
-                  </span>
+                  {additionalNotices.map((item) => (
+                    <span key={item.label} className="flex items-center gap-[0.2rem] text-[1.2rem]">
+                      {item.label}
+                      {item.type === 'refuse' ? <RefuseIcon size={16} /> : <CircleCheckIcon size={14} />}
+                    </span>
+                  ))}
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
@@ -624,42 +627,72 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
             <Typo icon="warning" variant="body-sm">
               <b>주의사항</b>
             </Typo>
-            <BulletList color={'warning'} size="sm">
-              <BulletListItem>
-                추천유형 안내 :
-                <em>일반/건강고지형은 &quot;심사가능&quot; 유형, 간편고지형은 &quot;인수가능&quot; 유형 안내</em>
-                <BulletItem size="sm" type="dash" className="text-[var(--color-danger-50)]">
-                  <em>단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의</em>
-                  <p className="text-[var(--color-gray-70)]">
-                    (유병력자일 경우라도 사고력 &middot; 가입담보에 따라 표준체/건강체로 가입가능)
-                  </p>
-                </BulletItem>
-              </BulletListItem>
-              <BulletListItem>
-                사전심사 적용범위 : 일부 주요상품 및 주요담보만 사전심사 적용
-                <BulletList>
-                  <BulletListItem size="sm" type="dash">
-                    <Grow placement="ss">
-                      적용상품 :
-                      <BulletList>
-                        <BulletItem size="sm" before="①" type="symbols">
-                          건강/일반 - 시그니처 여성건강, 한아름, 굿밸런스, 0540, 신상품
-                        </BulletItem>
-                      </BulletList>
-                    </Grow>
-                  </BulletListItem>
-                  <BulletItem size="sm" type="dash">
-                    적용담보 예시 : 질병후유, 암, 2대진단비, 질병입원비, 질병수술비, 상해입원비, 상해수술비
+            {isRegistered ? (
+              <BulletList color={'warning'} size="sm">
+                <BulletListItem>
+                  추천유형 안내 :
+                  <em className="font-normal!">
+                    일반/건강고지형은 &quot;심사가능&quot; 유형, 간편고지형은 &quot;인수가능&quot; 유형 안내
+                  </em>
+                  <BulletItem size="sm" type="dash" className="text-[var(--color-danger-50)]">
+                    단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의
+                    <p className="text-[var(--color-gray-70)]">
+                      (유병력자일 경우라도 사고력 &middot; 가입담보에 따라 표준체/건강체로 가입가능)
+                    </p>
                   </BulletItem>
+                </BulletListItem>
+                <BulletListItem>
+                  사전심사 적용범위 : 일부 주요상품 및 주요담보만 사전심사 적용
+                  <BulletList>
+                    <BulletListItem size="sm" type="dash">
+                      <Grow placement="ss">
+                        적용상품 :
+                        <BulletList>
+                          <BulletItem size="sm" before="①" type="symbols">
+                            건강/일반 - 시그니처 여성건강, 한아름, 굿밸런스, 0540, 신상품
+                          </BulletItem>
+                        </BulletList>
+                      </Grow>
+                    </BulletListItem>
+                    <BulletItem size="sm" type="dash">
+                      적용담보 예시 : 질병후유, 암, 2대진단비, 질병입원비, 질병수술비, 상해입원비, 상해수술비
+                    </BulletItem>
+                    <BulletItem size="sm" type="dash">
+                      활용정보 : 보험금지급정보
+                    </BulletItem>
+                  </BulletList>
+                </BulletListItem>
+                <BulletListItem>
+                  설계상품 &middot; 고지유형 선정의 보조수단으로 활용바라며, 실제 심사결과와 다를 수 있음
+                </BulletListItem>
+              </BulletList>
+            ) : (
+              <BulletList color={'warning'} size="sm">
+                <BulletListItem>
+                  추천유형 안내 :
                   <BulletItem size="sm" type="dash">
-                    활용정보 : 보험금지급정보
+                    단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의
+                    <p className="text-[var(--color-gray-70)]">
+                      (유병력자일 경우라도 사고력 &middot; 가입담보에 따라 표준체/건강체로 가입가능)
+                    </p>
                   </BulletItem>
-                </BulletList>
-              </BulletListItem>
-              <BulletListItem>
-                설계상품 &middot; 고지유형 선정의 보조수단으로 활용바라며, 실제 심사결과와 다를 수 있음
-              </BulletListItem>
-            </BulletList>
+                </BulletListItem>
+                <BulletListItem>
+                  사전심사 적용범위 : 일부 주요상품 및 주요담보만 사전심사 적용
+                  <BulletList>
+                    <BulletListItem size="sm" type="dash">
+                      적용상품 : 더경증간편, 시그니처 여성간편, 3N5 더간편, 311 간편, 신상품 간편
+                    </BulletListItem>
+                    <BulletItem size="sm" type="dash">
+                      적용담보 예시 : 질병후유, 암, 2대진단비, 질병입원비, 질병수술비, 상해입원비, 상해수술비
+                    </BulletItem>
+                  </BulletList>
+                </BulletListItem>
+                <BulletListItem>
+                  설계가능한 상품 선정의 보조수단으로 활용바라며, 실제 심사결과와 다를 수 있음
+                </BulletListItem>
+              </BulletList>
+            )}
           </Gcol>
         </DialogSection>
 

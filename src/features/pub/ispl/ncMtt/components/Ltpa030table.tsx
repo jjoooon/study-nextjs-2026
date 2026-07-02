@@ -56,17 +56,8 @@ export default function Ltpa030table({
   healthRows = [],
   isClick = true,
   onCheckedChange,
-  onCheckboxClick,
   colSpan = 3,
 }: Ltpa030tableProps) {
-  const [flyingEffects, setFlyingEffects] = React.useState<
-    {
-      id: number;
-      text: string;
-      colId: string;
-    }[]
-  >([]);
-
   const tableContent = (
     <Table variant="default" style={{ tableLayout: 'fixed' }}>
       {colSpan === 1 ? (
@@ -124,20 +115,6 @@ export default function Ltpa030table({
                         checked={col.checked}
                         disabled={col.state === '거절' || !isClick}
                         onCheckedChange={(checked) => onCheckedChange?.(col.id, checked)}
-                        onClick={() => {
-                          if (!onCheckboxClick) {
-                            if (!col.checked) {
-                              setFlyingEffects((prev) => [
-                                ...prev,
-                                {
-                                  id: Date.now() + Math.random(),
-                                  text: col.label || '',
-                                  colId: col.id,
-                                },
-                              ]);
-                            }
-                          }
-                        }}
                       >
                         {col.label}
                         {col.state === '거절' && <RefuseIcon />}
@@ -146,22 +123,6 @@ export default function Ltpa030table({
                         {col.state === '조건부' && <ConditionalIcon />}
                         {col.state === '인수' && <CircleCheckIcon size={14} />}
                       </Checkbox>
-
-                      {/* 테이블 셀 내부에서 떨어지는 복제 텍스트 */}
-                      {flyingEffects
-                        .filter((eff) => eff.colId === col.id)
-                        .map((eff) => (
-                          <div
-                            key={eff.id}
-                            className="animate-fly-down-cell absolute left-0 top-0 w-full h-full  pointer-events-none z-[10] flex items-center justify-between text-[1.3rem] font-bold "
-                            onAnimationEnd={() => {
-                              setFlyingEffects((prev) => prev.filter((item) => item.id !== eff.id));
-                            }}
-                          >
-                            <span>{eff.text}</span>
-                            {col.state === '거절' && <RefuseIcon />}
-                          </div>
-                        ))}
                     </Grow>
                   ) : (
                     <div className={unavailableStyle} />
