@@ -88,6 +88,9 @@ interface Ltpz034Props {
   onOpenChange?: (open: boolean) => void;
   minimized?: boolean;
   onMinimizeChange?: (minimized: boolean) => void;
+  isRegistered?: boolean;
+  basicRows?: HealthUnderwritingRow[];
+  healthRows?: HealthUnderwritingRow[];
 }
 
 const BASIC_ROWS: HealthUnderwritingRow[] = [
@@ -268,32 +271,40 @@ const additionalNotices: AdditionalNotice[] = [
   { label: '고혈압&당뇨', type: 'refuse' },
 ];
 
-const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltpz034Props) => {
+const Ltpz034 = ({
+  open = true,
+  onOpenChange,
+  minimized,
+  onMinimizeChange,
+  isRegistered = false,
+  basicRows: initialBasicRows,
+  healthRows: initialHealthRows,
+}: Ltpz034Props) => {
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
   const [badgeOffsets, setBadgeOffsets] = React.useState<Record<string, { x: number; y: number }>>({});
 
   const basicRows = useMemo<HealthUnderwritingRow[]>(
     () =>
-      BASIC_ROWS.map((row) => ({
+      (initialBasicRows ?? BASIC_ROWS).map((row) => ({
         ...row,
         data: row.data.map((item) => ({
           ...item,
           checked: item.id ? selectedIds.includes(item.id) : false,
         })),
       })),
-    [selectedIds]
+    [initialBasicRows, selectedIds]
   );
 
   const healthRows = useMemo<HealthUnderwritingRow[]>(
     () =>
-      HEALTH_ROWS.map((row) => ({
+      (initialHealthRows ?? HEALTH_ROWS).map((row) => ({
         ...row,
         data: row.data.map((item) => ({
           ...item,
           checked: item.id ? selectedIds.includes(item.id) : false,
         })),
       })),
-    [selectedIds]
+    [initialHealthRows, selectedIds]
   );
 
   const underwritingItemsMap = useMemo(() => {
@@ -395,9 +406,6 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
     ],
     [attributeColumnWidth]
   );
-
-  //등록 여부
-  const isRegistered = false;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} minimized={minimized} onMinimizeChange={onMinimizeChange}>
