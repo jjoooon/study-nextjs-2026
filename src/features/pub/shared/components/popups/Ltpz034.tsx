@@ -63,17 +63,29 @@ const DUMMY_DATA: DummyDataType[] = [
   { id: 3, isChecked: false, field01: 'M00.0', field02: '후천성 백내장', field03: '10개월' },
 ];
 
+/**
+ * Ltpz034 컴포넌트의 Props 인터페이스
+ */
 interface Ltpz034Props {
+  /** 팝업 활성화 여부 */
   open?: boolean;
+  /** 팝업 활성화 상태 변경 콜백 */
   onOpenChange?: (open: boolean) => void;
+  /** 최소화 여부 */
   minimized?: boolean;
+  /** 최소화 상태 변경 콜백 */
   onMinimizeChange?: (minimized: boolean) => void;
+  /** 등록 상태 여부 (true: 기등록 / false: 미등록) */
   isRegistered?: boolean;
+  /** 일반/건강고지 테이블 로우 데이터 */
   basicRows?: HealthUnderwritingRow[];
+  /** 간편고지 테이블 로우 데이터 */
   healthRows?: HealthUnderwritingRow[];
+  /** 미등록 모드 시 좌측 그리드에 노출할 임시 데이터 */
   dummyRows?: DummyDataType[];
 }
 
+//일반/건강고지 데이터
 const BASIC_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
@@ -137,7 +149,7 @@ const BASIC_ROWS: HealthUnderwritingRow[] = [
     ],
   },
 ];
-
+//간편고지 데이터
 const HEALTH_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
@@ -273,6 +285,11 @@ interface UnderwritingBadgeProps {
   onRemove: (id: string) => void;
 }
 
+/**
+ * UnderwritingBadge 컴포넌트
+ * - 선택된 고지유형을 하단 영역에 노출하는 뱃지
+ * - 클릭된 오리지널 셀 위치를 추적하여 해당 좌표에서 최종 위치로 미끄러져 들어오는(slide) 마이크로 애니메이션을 제공
+ */
 const UnderwritingBadge = ({ id, label, onRemove }: UnderwritingBadgeProps) => {
   const [offset, setOffset] = React.useState({ x: 0, y: 0 });
   const [isReady, setIsReady] = React.useState(false);
@@ -340,6 +357,9 @@ const CustomNoRowsOverlay = () => (
   </Gcol>
 );
 
+/**
+ * Ltpz034 컴포넌트 - 고지유형찾기 팝업
+ */
 const Ltpz034 = ({
   open = true,
   onOpenChange,
@@ -350,19 +370,15 @@ const Ltpz034 = ({
   healthRows: initialHealthRows,
   dummyRows,
 }: Ltpz034Props) => {
+  // 선택된 고지유형 ID 목록 상태 관리 (최대 3개 제한)
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
 
-  const handleCheckboxClick = React.useCallback(
-    (_id: string, _label: string, _isChecked: boolean, _event: React.MouseEvent<HTMLButtonElement>) => {
-      // 뱃지 자체 계산을 위해 더 이상 부모의 클릭 핸들러에서 오프셋이나 좌표 상태를 관리하지 않음
-    },
-    []
-  );
-
+  // 선택 개수 초과 안내 토스트 노출
   const showSelectionLimitToast = () => {
     toast.info('최대 3건의 고지유형을 선택해 주세요', { duration: 3000 });
   };
 
+  // 일반/건강고지 데이터 가공: 각 고지유형 셀에 식별자 ID를 부여하고 선택 여부(checked)를 계산
   const basicRows = useMemo<HealthUnderwritingRow[]>(
     () =>
       (initialBasicRows ?? BASIC_ROWS).map((row, rowIndex) => ({
@@ -379,6 +395,7 @@ const Ltpz034 = ({
     [initialBasicRows, selectedIds]
   );
 
+  // 간편고지 데이터 가공: 각 고지유형 셀에 식별자 ID를 부여하고 선택 여부(checked)를 계산
   const healthRows = useMemo<HealthUnderwritingRow[]>(
     () =>
       (initialHealthRows ?? HEALTH_ROWS).map((row, rowIndex) => ({
@@ -395,6 +412,7 @@ const Ltpz034 = ({
     [initialHealthRows, selectedIds]
   );
 
+  // 선택된 뱃지의 한글 라벨 조회를 빠르게 처리하기 위해 ID -> Label 형태의 룩업 테이블(Map) 캐싱
   const underwritingItemsMap = useMemo(() => {
     const map: Record<string, string> = {};
     const processRows = (rows: HealthUnderwritingRow[]) => {
@@ -570,7 +588,6 @@ const Ltpz034 = ({
                     healthRows={basicRows}
                     isClick={true}
                     onCheckedChange={handleCheckedChange}
-                    onCheckboxClick={handleCheckboxClick}
                     colSpan={1}
                   />
                 </TableFoldBody>
@@ -642,12 +659,7 @@ const Ltpz034 = ({
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <Ltpa030table
-                  healthRows={healthRows}
-                  isClick={true}
-                  onCheckedChange={handleCheckedChange}
-                  onCheckboxClick={handleCheckboxClick}
-                />
+                <Ltpa030table healthRows={healthRows} isClick={true} onCheckedChange={handleCheckedChange} />
               </TableFoldBody>
             </TableFold>
           </Grid>
@@ -770,25 +782,8 @@ const Ltpz034 = ({
           <DialogBottomInfo />
         </DialogFooter>
 
-        {/* 애니메이션 스타일 */}
+        {/* 선택한 고지유형이 클릭 지점으로부터 날아오는 slide 효과를 정의하는 스타일 */}
         <style>{`
-          @keyframes dropInReverse {
-            0% {
-              transform: translate(var(--dx), var(--dy)) scale(1.15);
-              opacity: 0.3;
-            }
-            15% {
-              transform: translate(calc(var(--dx) * 0.85), calc(var(--dy) * 0.85 - 30px)) scale(1.2);
-              opacity: 0.8;
-            }
-            100% {
-              transform: translate(0, 0) scale(1);
-              opacity: 1;
-            }
-          }
-          .animate-drop-in-reverse {
-            animation: dropInReverse 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-          }
           @keyframes slideFromClick {
             0% {
               transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(0.5) !important;

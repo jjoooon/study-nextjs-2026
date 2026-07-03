@@ -53,260 +53,252 @@ const additionalNotices: AdditionalNotice[] = [
   { label: '고혈압&당뇨', type: 'refuse' },
 ];
 
+const HEALTH_ROWS: HealthUnderwritingRow[] = [
+  {
+    data: [
+      {
+        label: '6형(건강10년)',
+        state: '거절',
+      },
+      {
+        label: '5형(건강9년)',
+        state: '연기',
+      },
+      {
+        label: '4형(건강8년)',
+        state: '인수',
+      },
+    ],
+    tooltipData: [
+      {
+        title: '간편고지형명 판정결과',
+        content: ['질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비', '질병수술비(ALL RISK)'],
+      },
+      {
+        title: '345조건부(감액)',
+        content: [
+          '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
+          '인수판정률 사전안내 컬럼에 입력된 값 표시',
+        ],
+      },
+      {
+        title: '345(2일)조건부(감액)',
+        content: [
+          '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
+          '인수판정률 사전안내 컬럼에 입력된 값 표시',
+        ],
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '5형(건강9년)',
+        state: '거절',
+      },
+      {},
+      {},
+    ],
+    tooltipData: [
+      {
+        title: '간편고지형명 판정결과',
+        content: [
+          '제한담보: 질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
+          '인수판정률 사전안내 컬럼에 입력된 값 표시',
+        ],
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '4형(건강8년)',
+        state: '거절',
+      },
+      {},
+      {},
+    ],
+  },
+  {
+    data: [
+      {
+        label: '3형(건강7년)',
+        state: '거절',
+      },
+      {},
+      {},
+    ],
+  },
+  {
+    data: [
+      {
+        label: '2형(건강6년)',
+        state: '거절',
+      },
+      {},
+      {},
+    ],
+  },
+  {
+    data: [
+      {
+        label: '일반고지형(5년)',
+        state: '거절',
+      },
+      {},
+      {},
+    ],
+  },
+];
+
+const CONVENIENCE_ROWS: HealthUnderwritingRow[] = [
+  {
+    data: [
+      {
+        label: '3105',
+        state: '거절',
+      },
+      {},
+      {},
+    ],
+    tooltipData: [
+      {
+        title: '간편고지형명 판정결과',
+        content: ['제한담보: 질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비'],
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '385',
+        state: '거절',
+      },
+      {},
+      {},
+    ],
+  },
+  {
+    data: [
+      {
+        label: '365',
+        state: '거절',
+      },
+      {},
+      {},
+    ],
+  },
+  {
+    data: [
+      {
+        label: '355',
+        state: '거절',
+      },
+      {
+        label: '355(2일)',
+        state: '거절',
+      },
+      {},
+    ],
+  },
+  {
+    data: [
+      {
+        label: '345',
+        state: '거절',
+      },
+      {
+        label: '345(2일)',
+        state: '인수',
+      },
+      {},
+    ],
+  },
+  {
+    data: [
+      {},
+      {
+        label: '335(2일)',
+        state: '인수',
+      },
+      {},
+    ],
+  },
+  {
+    data: [
+      {
+        label: '325',
+        state: '거절',
+      },
+      {
+        label: '325(2일)',
+        state: '인수',
+      },
+      {},
+    ],
+  },
+  {
+    data: [
+      {},
+      {
+        label: '315(2일)',
+        state: '인수',
+      },
+      {},
+    ],
+  },
+  {
+    data: [
+      {
+        label: '305',
+        state: '인수',
+      },
+      {
+        label: '305(2일)',
+        state: '인수',
+      },
+      {},
+    ],
+  },
+];
+
 // ===== 컴포넌트 시작 =====
 const Ltpz030 = () => {
   const [isOpenLtpz110, setIsOpenLtpz110] = React.useState(false);
 
-  const healthRows: HealthUnderwritingRow[] = [
-    {
-      data: [
-        {
-          id: 'health10',
-          label: '6형(건강10년)',
-          state: '거절',
-          checked: false,
-        },
-        {
-          id: 'health9',
-          label: '5형(건강9년)',
-          state: '연기',
-          checked: false,
-        },
-        {
-          id: 'health8',
-          label: '4형(건강8년)',
-          state: '인수',
-          checked: false,
-        },
-      ],
-      tooltipData: [
-        {
-          title: '간편고지형명 판정결과',
-          content: ['질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비', '질병수술비(ALL RISK)'],
-        },
-        {
-          title: '345조건부(감액)',
-          content: [
-            '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
-            '인수판정률 사전안내 컬럼에 입력된 값 표시',
-          ],
-        },
-        {
-          title: '345(2일)조건부(감액)',
-          content: [
-            '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
-            '인수판정률 사전안내 컬럼에 입력된 값 표시',
-          ],
-        },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'health9',
-          label: '5형(건강9년)',
-          state: '거절',
-          checked: false,
-        },
-        { id: '' },
-        { id: '' },
-      ],
-      tooltipData: [
-        {
-          title: '간편고지형명 판정결과',
-          content: [
-            '제한담보: 질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
-            '인수판정률 사전안내 컬럼에 입력된 값 표시',
-          ],
-        },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'health8',
-          label: '4형(건강8년)',
-          state: '거절',
-          checked: false,
-        },
-        { id: '' },
-        { id: '' },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'health7',
-          label: '3형(건강7년)',
-          state: '거절',
-          checked: false,
-        },
-        { id: '' },
-        { id: '' },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'health6',
-          label: '2형(건강6년)',
-          state: '거절',
-          checked: false,
-        },
-        { id: '' },
-        { id: '' },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'health5',
-          label: '일반고지형(5년)',
-          state: '거절',
-          checked: false,
-        },
-        { id: '' },
-        { id: '' },
-      ],
-    },
-  ];
+  // 일반/건강고지 데이터 가공: 각 고지유형 셀에 식별자 ID를 동적 부여하고 checked를 false로 매핑
+  const healthRows = React.useMemo<HealthUnderwritingRow[]>(
+    () =>
+      HEALTH_ROWS.map((row, rowIndex) => ({
+        ...row,
+        data: row.data.map((item, colIndex) => {
+          const id = item.id || `health-${rowIndex}-${colIndex}`;
+          return {
+            ...item,
+            id,
+            checked: false,
+          };
+        }),
+      })),
+    []
+  );
 
-  const convenienceRows: HealthUnderwritingRow[] = [
-    {
-      data: [
-        {
-          id: 'convenience3105',
-          label: '3105',
-          state: '거절',
-          checked: false,
-        },
-        { id: '' },
-        { id: '' },
-      ],
-      tooltipData: [
-        {
-          title: '간편고지형명 판정결과',
-          content: ['제한담보: 질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비'],
-        },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'convenience385',
-          label: '385',
-          state: '거절',
-          checked: false,
-        },
-        { id: '' },
-        { id: '' },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'convenience365',
-          label: '365',
-          state: '거절',
-          checked: false,
-        },
-        { id: '' },
-        { id: '' },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'convenience355',
-          label: '355',
-          state: '거절',
-          checked: false,
-        },
-        {
-          id: 'convenience355_2',
-          label: '355(2일)',
-          state: '거절',
-          checked: false,
-        },
-        { id: '' },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'convenience345',
-          label: '345',
-          state: '거절',
-          checked: false,
-        },
-        {
-          id: 'convenience345_2',
-          label: '345(2일)',
-          state: '인수',
-          checked: false,
-        },
-        { id: '' },
-      ],
-    },
-    {
-      data: [
-        { id: '' },
-        {
-          id: 'convenience335',
-          label: '335(2일)',
-          state: '인수',
-          checked: false,
-        },
-        { id: '' },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'convenience325',
-          label: '325',
-          state: '거절',
-          checked: false,
-        },
-        {
-          id: 'convenience325_2',
-          label: '325(2일)',
-          state: '인수',
-          checked: false,
-        },
-        { id: '' },
-      ],
-    },
-    {
-      data: [
-        { id: '' },
-        {
-          id: 'convenience335',
-          label: '315(2일)',
-          state: '인수',
-          checked: false,
-        },
-        { id: '' },
-      ],
-    },
-    {
-      data: [
-        {
-          id: 'convenience305',
-          label: '305',
-          state: '인수',
-          checked: false,
-        },
-        {
-          id: 'convenience305_2',
-          label: '305(2일)',
-          state: '인수',
-          checked: false,
-        },
-        { id: '' },
-      ],
-    },
-  ];
+  // 간편고지 데이터 가공: 각 고지유형 셀에 식별자 ID를 동적 부여하고 checked를 false로 매핑
+  const convenienceRows = React.useMemo<HealthUnderwritingRow[]>(
+    () =>
+      CONVENIENCE_ROWS.map((row, rowIndex) => ({
+        ...row,
+        data: row.data.map((item, colIndex) => {
+          const id = item.id || `convenience-${rowIndex}-${colIndex}`;
+          return {
+            ...item,
+            id,
+            checked: false,
+          };
+        }),
+      })),
+    []
+  );
 
   // ===== 다이얼로그 렌더링 =====
   return (
