@@ -22,10 +22,10 @@ const meta: Meta<DatePickerInputStoryProps> = {
           <StoryDocTemplate
             overview={`DatePickerInput 컴포넌트는 입력 필드와 캘린더 팝오버를 결합한 날짜 입력 UI입니다.
 single, multiple, range 모드를 지원하며, 에러 메시지와 크기/너비 설정을 일관된 방식으로 제공합니다.
-기간(range) 모드에서는 퀵 옵션(options), 범위 고정 지정(autoRangeFix), 자동 캘린더 닫기(autoClose) 등의 고급 설정을 활용할 수 있습니다.`}
+기간(range) 모드에서는 퀵 옵션(options) 등의 고급 설정을 활용할 수 있습니다.`}
             history={[
               '2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화',
-              '2026.06.24 - 신규 Props(autoRangeFix, autoClose) 추가 및 명세 동기화',
+              '2026.07.03 - autoRangeFix, autoClose Props 삭제',
             ]}
             usageCode={`
 import { DatePickerInput } from '@common/DatePicker';
@@ -69,9 +69,7 @@ const [value, setValue] = useState('');
               <DatePickerInput
                 mode="range"
                 width="lg"
-                // autoRangeFix
                 autoRangeDays={7}
-                autoClose
                 rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
                 onChange={() => undefined}
               />
@@ -229,16 +227,6 @@ const [value, setValue] = useState('');
       table: { category: '설정 props' },
       description: '시작일 선택 시 자동으로 계산할 종료일과의 간격 일수',
     },
-    autoRangeFix: {
-      control: { type: 'boolean' },
-      table: { category: '설정 props' },
-      description: '시작일 선택 시 종료일이 autoRangeDays 만큼 더해진 범위로 고정되어 선택되는지 여부',
-    },
-    autoClose: {
-      control: { type: 'boolean' },
-      table: { category: '설정 props' },
-      description: '날짜를 선택했을 때 캘린더 팝업이 자동으로 닫히는지 여부 (range 모드 포함)',
-    },
     min: {
       control: { type: 'text' },
       table: { category: '설정 props' },
@@ -275,8 +263,6 @@ const [value, setValue] = useState('');
     monthOnly: false,
     options: false,
     autoRangeDays: 7,
-    autoRangeFix: false,
-    autoClose: false,
   },
 };
 

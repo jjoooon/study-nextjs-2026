@@ -133,19 +133,41 @@ export function productNameCellRenderer<
  * [공용 셀 렌더러] UW 상태 원형 아이콘
  */
 export function uwIconRenderer<T>(params: ICellRendererParams<T>) {
-  const value = params.value as string;
-  const color =
-    value === '인수가능'
+  const value = params.value;
+
+  const getColor = (val: string) => {
+    return val === '인수가능'
       ? 'var(--color-success-60)'
-      : value === '인수불가'
+      : val === '인수불가'
         ? 'var(--color-danger-50)'
         : 'var(--color-warning-40)';
+  };
 
-  return (
-    <Gcol className="h-full" placement="cc">
-      <div className="w-[1rem] h-[1rem] rounded-full" style={{ backgroundColor: color }}></div>
-    </Gcol>
-  );
+  if (Array.isArray(value)) {
+    return (
+      <Gcol className="h-full" placement="cc">
+        <div className="flex gap-1 justify-center items-center">
+          {value.map((val, idx) => (
+            <div
+              key={idx}
+              className="w-[1rem] h-[1rem] rounded-full shrink-0"
+              style={{ backgroundColor: getColor(String(val)) }}
+            />
+          ))}
+        </div>
+      </Gcol>
+    );
+  }
+
+  if (typeof value === 'string' && value !== '') {
+    return (
+      <Gcol className="h-full" placement="cc">
+        <div className="w-[1rem] h-[1rem] rounded-full" style={{ backgroundColor: getColor(value) }}></div>
+      </Gcol>
+    );
+  }
+
+  return null;
 }
 
 /**

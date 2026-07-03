@@ -138,10 +138,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   options?: boolean;
   /** 시작일 선택 시 자동으로 설정될 종료일과의 간격 일수 (기본값: 7) */
   autoRangeDays?: number;
-  /** 시작일 선택 시 언제나 시작일만 선택되고 종료일은 자동으로 지정되는 고정 범위 잠금 여부 */
-  autoRangeFix?: boolean;
-  /** 시작일 선택 시 자동으로 종료일도 선택되고 팝업이 닫히는지 여부 (기본값: false) */
-  autoClose?: boolean;
+
   /** 선택 가능한 최소 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
   min?: string | Date;
   /** 선택 가능한 최대 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
@@ -170,11 +167,11 @@ export function DatePickerInput({
   onMonthSelect,
   options = false,
   autoRangeDays = 0,
-  autoRangeFix = false,
-  autoClose = false,
   min,
   max,
 }: UIInputProps) {
+  const autoClose = true;
+  const autoRangeFix = false;
   const generatedId = React.useId();
   const finalId = id || generatedId;
   const errorId = React.useId();
@@ -252,7 +249,10 @@ export function DatePickerInput({
       const from = rangeValue.from ? new Date(rangeValue.from) : undefined;
       const to = rangeValue.to ? new Date(rangeValue.to) : undefined;
 
-      if (from && isValidDate(from) && to && isValidDate(to)) {
+      const isFromValid = from && isValidDate(from);
+      const isToValid = to && isValidDate(to);
+
+      if (isFromValid && isToValid) {
         setSelected({ from, to });
         setMonth(from);
         setRangeInput({
@@ -260,6 +260,14 @@ export function DatePickerInput({
           to: formatDate(to),
         });
         setNumericValue(`${formatDate(from).replace(/\D/g, '')}${formatDate(to).replace(/\D/g, '')}`);
+      } else if (isFromValid) {
+        setSelected({ from, to: undefined });
+        setMonth(from);
+        setRangeInput({
+          from: formatDate(from),
+          to: '',
+        });
+        setNumericValue(formatDate(from).replace(/\D/g, ''));
       } else {
         setSelected(undefined);
         setMonth(undefined);
