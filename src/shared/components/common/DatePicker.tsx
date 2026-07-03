@@ -101,11 +101,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
    * @default 'lg'
    */
   size?: FormItemSize;
-  /**
-   * 입력 필드의 너비 (예: 'full', 'auto', '20rem' 등)
-   * @default 'full'
-   */
-  width?: FormItemWidth;
+
   /** 필수 입력(체크) 스타일 적용 여부 */
   required?: boolean;
   /** 읽기 전용 상태 여부 */
@@ -156,7 +152,6 @@ export function DatePickerInput({
   mode = 'single',
   onChange,
   size = 'lg',
-  width = 'full',
   required = false,
   readOnly = false,
   disabled = false,
@@ -661,18 +656,9 @@ export function DatePickerInput({
     return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}-${numericValue.slice(6, 8)}`;
   })();
 
-  const inlineWidthStyle = (() => {
-    if (typeof width === 'string') {
-      if (/^\d+(\.\d+)?$/.test(width)) return { width: `${width}rem` };
-      if (/^\d+(\.\d+)?rem$/.test(width)) return { width };
-      if (/^\d+(\.\d+)?px$/.test(width)) return { width };
-    }
-    return undefined;
-  })();
-
   const inputStyle: React.CSSProperties | undefined = readOnly
-    ? { ...(inlineWidthStyle ?? {}), backgroundColor: '#F4F4F4', border: '0.1rem solid #F4F4F4' }
-    : inlineWidthStyle;
+    ? { backgroundColor: '#F4F4F4', border: '0.1rem solid #F4F4F4' }
+    : undefined;
 
   const handleQuickSelect = (type: 'today' | 'week' | 'month' | '3months') => {
     const today = new Date();
@@ -759,7 +745,6 @@ export function DatePickerInput({
             className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
             style={inputStyle}
             data-size={size}
-            data-width={width}
             ref={fromInputRef}
           />
           -
@@ -785,7 +770,6 @@ export function DatePickerInput({
             className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
             style={inputStyle}
             data-size={size}
-            data-width={width}
             ref={toInputRef}
           />
         </>
@@ -814,7 +798,6 @@ export function DatePickerInput({
           className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
           style={inputStyle}
           data-size={size}
-          data-width={width}
         />
       )}
       <Popover open={open} onOpenChange={handleOpenChange}>

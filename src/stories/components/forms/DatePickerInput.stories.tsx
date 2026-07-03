@@ -21,11 +21,12 @@ const meta: Meta<DatePickerInputStoryProps> = {
         return (
           <StoryDocTemplate
             overview={`DatePickerInput 컴포넌트는 입력 필드와 캘린더 팝오버를 결합한 날짜 입력 UI입니다.
-single, multiple, range 모드를 지원하며, 에러 메시지와 크기/너비 설정을 일관된 방식으로 제공합니다.
+single, range 모드를 지원하며, 에러 메시지와 크기 설정을 일관된 방식으로 제공합니다.
 기간(range) 모드에서는 퀵 옵션(options) 등의 고급 설정을 활용할 수 있습니다.`}
             history={[
               '2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화',
               '2026.07.03 - autoRangeFix, autoClose Props 삭제',
+              '2026.07.03 - width Props 삭제 및 기본 너비 고정',
             ]}
             usageCode={`
 import { DatePickerInput } from '@common/DatePicker';
@@ -36,23 +37,21 @@ const [value, setValue] = useState('');
 <DatePickerInput
   mode="single"
   size="lg"
-  width="sm"
   value={value}
   onChange={(date, formattedValue) => setValue(formattedValue)}
 />
             `}
           >
             <h2>Mode</h2>
-            <p>single, multiple, range 모드를 지원합니다. min, max 설정을 통한 날짜 선택 범위 제어도 가능합니다.</p>
+            <p>single, range 모드를 지원합니다. min, max 설정을 통한 날짜 선택 범위 제어도 가능합니다.</p>
             <Grow
               gap={8}
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
-              <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" value="2026-03-07" onChange={() => undefined} />
 
               <DatePickerInput
                 mode="single"
-                width="sm"
                 min="2026-03-05"
                 max="2026-03-20"
                 value="2026-03-07"
@@ -61,14 +60,12 @@ const [value, setValue] = useState('');
 
               <DatePickerInput
                 mode="range"
-                width="lg"
                 rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
                 onChange={() => undefined}
               />
 
               <DatePickerInput
                 mode="range"
-                width="lg"
                 autoRangeDays={7}
                 rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
                 onChange={() => undefined}
@@ -76,7 +73,6 @@ const [value, setValue] = useState('');
 
               <DatePickerInput
                 mode="range"
-                width="lg"
                 min="2026-06-25"
                 max="2026-07-15"
                 rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
@@ -90,8 +86,8 @@ const [value, setValue] = useState('');
               gap={8}
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
-              <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" size="md" width="sm" value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" size="md" value="2026-03-07" onChange={() => undefined} />
             </Grow>
             <h2 className="mt-8">State</h2>
             <p>required, readOnly, disabled 상태를 지원합니다.</p>
@@ -99,9 +95,9 @@ const [value, setValue] = useState('');
               gap={8}
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
-              <DatePickerInput mode="single" width="sm" required value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="sm" readOnly value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="sm" disabled value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" required value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" readOnly value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" disabled value="2026-03-07" onChange={() => undefined} />
             </Grow>
 
             <h2 className="mt-8">Error</h2>
@@ -111,16 +107,8 @@ const [value, setValue] = useState('');
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
               <Grow gap={8}>
+                <DatePickerInput value="2026-03-07" error errorPs="tl" errorMsg="top left" onChange={() => undefined} />
                 <DatePickerInput
-                  width="lg"
-                  value="2026-03-07"
-                  error
-                  errorPs="tl"
-                  errorMsg="top left"
-                  onChange={() => undefined}
-                />
-                <DatePickerInput
-                  width="lg"
                   value="2026-03-07"
                   error
                   errorPs="tc"
@@ -128,7 +116,6 @@ const [value, setValue] = useState('');
                   onChange={() => undefined}
                 />
                 <DatePickerInput
-                  width="lg"
                   value="2026-03-07"
                   error
                   errorPs="tr"
@@ -138,7 +125,6 @@ const [value, setValue] = useState('');
               </Grow>
               <Grow gap={8} className="mt-2">
                 <DatePickerInput
-                  width="lg"
                   value="2026-03-07"
                   error
                   errorPs="bl"
@@ -146,7 +132,6 @@ const [value, setValue] = useState('');
                   onChange={() => undefined}
                 />
                 <DatePickerInput
-                  width="lg"
                   value="2026-03-07"
                   error
                   errorPs="bc"
@@ -154,7 +139,6 @@ const [value, setValue] = useState('');
                   onChange={() => undefined}
                 />
                 <DatePickerInput
-                  width="lg"
                   value="2026-03-07"
                   error
                   errorPs="br"
@@ -177,13 +161,9 @@ const [value, setValue] = useState('');
     size: {
       control: { type: 'select' },
       options: ['lg', 'md'],
-      table: { category: '스타일 props' },
+      table: { category: '설정 props' },
     },
-    width: {
-      control: { type: 'select' },
-      options: ['full', 'auto', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
-      table: { category: '스타일 props' },
-    },
+
     required: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
@@ -253,7 +233,6 @@ const [value, setValue] = useState('');
   args: {
     mode: 'single',
     size: 'lg',
-    width: 'sm',
     required: false,
     readOnly: false,
     disabled: false,
