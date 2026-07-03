@@ -25,7 +25,7 @@ const meta: Meta<StoryProps> = {
   },
   args: {
     isRegistered: false,
-    hasTableData: true,
+    hasTableData: false,
   },
 };
 
@@ -36,8 +36,9 @@ export const Default: Story = {
   render: (args) => {
     const [open, setOpen] = React.useState(true);
 
-    const basicRows = args.hasTableData ? undefined : [];
-    const healthRows = args.hasTableData ? undefined : [];
+    const basicRows = args.isRegistered || args.hasTableData ? undefined : [];
+    const healthRows = args.isRegistered || args.hasTableData ? undefined : [];
+    const dummyRows = args.isRegistered || args.hasTableData ? undefined : [];
 
     return (
       <LayoutDoc>
@@ -61,6 +62,7 @@ export const Default: Story = {
           isRegistered={args.isRegistered}
           basicRows={basicRows}
           healthRows={healthRows}
+          dummyRows={dummyRows}
         />
       </LayoutDoc>
     );

@@ -26,10 +26,10 @@ export interface TooltipItem {
 }
 
 export interface UnderwritingItem {
-  id: string;
+  id?: string;
   label?: string;
   checked?: boolean;
-  state?: '거절' | '연기' | '심사' | '조건부' | '인수';
+  state?: '거절' | '연기' | '심사' | '조건부' | '인수' | '';
 }
 
 export interface HealthUnderwritingRow {
@@ -56,8 +56,16 @@ export default function Ltpa030table({
   healthRows = [],
   isClick = true,
   onCheckedChange,
+  onCheckboxClick,
   colSpan = 3,
 }: Ltpa030tableProps) {
+  const handleCheckboxClick = React.useCallback(
+    (colId: string, colLabel: string, colChecked: boolean, event: React.MouseEvent<HTMLButtonElement>) => {
+      onCheckboxClick?.(colId, colLabel, colChecked, event);
+    },
+    [onCheckboxClick]
+  );
+
   const tableContent = (
     <Table variant="default" style={{ tableLayout: 'fixed' }}>
       {colSpan === 1 ? (
@@ -96,39 +104,44 @@ export default function Ltpa030table({
         ) : (
           healthRows.map((row, index) => (
             <TableRow key={index} className="text-center">
-              {row.data.map((col, colIdx) => (
-                <TableCell
-                  key={colIdx}
-                  style={{ height: '3rem' }}
-                  className="relative bg-[#FFF] overflow-hidden px-0! py-0!"
-                >
-                  {col.id && col.label ? (
-                    <Grow
-                      className={`w-full h-full [&>div]:w-full [&>div]:h-full relative px-[0.6rem] bg-[#FFF] ${col.state === '거절' && isClick ? disabledStyle : col.checked ? selectedStyle : ''}`}
-                    >
-                      <Checkbox
-                        id={`grow-underwriting-${col.id}`}
-                        className={`w-full h-full flex items-center justify-between no-underline py-0!  ${col.state === '거절' || !isClick ? 'cursor-default' : ''}`}
-                        color="primary"
-                        size="lg"
-                        variant="text"
-                        checked={col.checked}
-                        disabled={col.state === '거절' || !isClick}
-                        onCheckedChange={(checked) => onCheckedChange?.(col.id, checked)}
+              {row.data.map((col, colIdx) => {
+                const { id, label, state, checked } = col;
+                return (
+                  <TableCell
+                    key={colIdx}
+                    style={{ height: '3rem' }}
+                    className="relative bg-[#FFF] overflow-hidden px-0! py-0!"
+                  >
+                    {id && label && state ? (
+                      <Grow
+                        id={`grow-underwriting-${id}`}
+                        className={`w-full h-full [&>div]:w-full [&>div]:h-full relative px-[0.6rem] bg-[#FFF] ${state === '거절' && isClick ? disabledStyle : checked ? selectedStyle : ''}`}
                       >
-                        {col.label}
-                        {col.state === '거절' && <RefuseIcon />}
-                        {col.state === '연기' && <DiamondIcon />}
-                        {col.state === '심사' && <AuditIcon />}
-                        {col.state === '조건부' && <ConditionalIcon />}
-                        {col.state === '인수' && <CircleCheckIcon size={14} />}
-                      </Checkbox>
-                    </Grow>
-                  ) : (
-                    <div className={unavailableStyle} />
-                  )}
-                </TableCell>
-              ))}
+                        <Checkbox
+                          id={`checkbox-underwriting-${id}`}
+                          className={`w-full h-full flex items-center justify-between no-underline py-0!  ${state === '거절' || !isClick ? 'cursor-default' : ''}`}
+                          color="primary"
+                          size="lg"
+                          variant="text"
+                          checked={checked}
+                          disabled={state === '거절' || !isClick}
+                          onCheckedChange={(checkedVal) => onCheckedChange?.(id, checkedVal)}
+                          onClick={(event) => handleCheckboxClick(id, label, !checked, event)}
+                        >
+                          {label}
+                          {state === '거절' && <RefuseIcon />}
+                          {state === '연기' && <DiamondIcon />}
+                          {state === '심사' && <AuditIcon />}
+                          {state === '조건부' && <ConditionalIcon />}
+                          {state === '인수' && <CircleCheckIcon size={14} />}
+                        </Checkbox>
+                      </Grow>
+                    ) : (
+                      <div className={unavailableStyle} />
+                    )}
+                  </TableCell>
+                );
+              })}
               <TableCell
                 style={{ height: '30px' }}
                 className={`py-0! px-0! bg-[#FFF] ${row.tooltipData && row.tooltipData.length > 0 ? 'text-center bg-[#FFF]' : ''}`}

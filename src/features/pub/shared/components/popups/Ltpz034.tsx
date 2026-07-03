@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import React, { useMemo } from 'react';
 
 import Ltpa030table, { HealthUnderwritingRow } from '@/features/pub/ispl/ncMtt/components/Ltpa030table';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -21,6 +21,7 @@ import {
   CloseIcon,
   ConditionalIcon,
   DiamondIcon,
+  InfoBoxWarningIcon,
   RefuseIcon,
 } from '@icons';
 
@@ -37,6 +38,7 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 
+import { toast } from '@uiux/Sonner';
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
@@ -59,28 +61,6 @@ const DUMMY_DATA: DummyDataType[] = [
   },
   { id: 2, isChecked: false, field01: 'M00.0', field02: '척추 염좌', field03: '10개월', field04: 'SI경증(감액)' },
   { id: 3, isChecked: false, field01: 'M00.0', field02: '후천성 백내장', field03: '10개월' },
-  { id: 4, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10년내' },
-  { id: 5, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
-  { id: 6, isChecked: false, field01: 'M00.0', field02: '급성인지 만성인지 명시되지 않은 기관지염', field03: '10개월' },
-  { id: 7, isChecked: false, field01: 'M00.0', field02: '후천성 백내장', field03: '10개월' },
-  { id: 8, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10개월' },
-  { id: 9, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
-  {
-    id: 10,
-    isChecked: false,
-    field01: 'M00.0',
-    field02: '급성인지 만성인지 명시되지 않은 기관지염',
-    field03: '10개월',
-  },
-  { id: 11, isChecked: false, field01: 'M00.0', field02: '치핵/치질', field03: '10개월' },
-  { id: 12, isChecked: false, field01: 'M00.0', field02: '헤르페스바이러스[단순헤르페스]감염', field03: '10개월' },
-  {
-    id: 13,
-    isChecked: false,
-    field01: 'M00.0',
-    field02: '급성인지 만성인지 명시되지 않은 기관지염',
-    field03: '10개월',
-  },
 ];
 
 interface Ltpz034Props {
@@ -91,14 +71,14 @@ interface Ltpz034Props {
   isRegistered?: boolean;
   basicRows?: HealthUnderwritingRow[];
   healthRows?: HealthUnderwritingRow[];
+  dummyRows?: DummyDataType[];
 }
 
 const BASIC_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
       {
-        id: 'basic1',
-        label: '6형(건강 10년)',
+        label: '일반고지형(5년)',
         state: '심사',
       },
     ],
@@ -106,14 +86,29 @@ const BASIC_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
       {
-        id: 'basic7',
+        label: '일반고지형(5년)',
+        state: '조건부',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '일반고지형(5년)',
+        state: '연기',
+      },
+    ],
+  },
+  {
+    data: [
+      {
         label: '일반고지형(5년)',
         state: '거절',
       },
     ],
     tooltipData: [
       {
-        title: '간편고지형명 판정결과',
+        title: '일반고지형명 판정결과',
         content: ['질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비', '질병수술비(ALL RISK)'],
       },
       {
@@ -123,12 +118,21 @@ const BASIC_ROWS: HealthUnderwritingRow[] = [
           '인수판정률 사전안내 컬럼에 입력된 값 표시',
         ],
       },
+    ],
+  },
+  {
+    data: [
       {
-        title: '345(2일)조건부(감액)',
-        content: [
-          '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
-          '인수판정률 사전안내 컬럼에 입력된 값 표시',
-        ],
+        label: '2형(건강 6년)',
+        state: '인수',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '1형(건강 5년)',
+        state: '심사',
       },
     ],
   },
@@ -138,12 +142,17 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
       {
-        id: 'convenience3105',
-        label: '3105',
+        label: '355',
         state: '거절',
       },
-      { id: '' },
-      { id: '' },
+      {
+        label: '355(2일)',
+        state: '연기',
+      },
+      {
+        label: '',
+        state: '',
+      },
     ],
     tooltipData: [
       {
@@ -157,117 +166,86 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
           '인수판정률 사전안내 컬럼에 입력된 값 표시',
         ],
       },
-      {
-        title: '345(2일)조건부(감액)',
-        content: [
-          '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
-          '인수판정률 사전안내 컬럼에 입력된 값 표시',
-        ],
-      },
     ],
   },
   {
     data: [
       {
-        id: 'convenience385',
-        label: '385',
-        state: '거절',
-      },
-      { id: '' },
-      { id: '' },
-    ],
-  },
-  {
-    data: [
-      {
-        id: 'convenience365',
-        label: '365',
-        state: '거절',
-      },
-      { id: '' },
-      { id: '' },
-    ],
-  },
-  {
-    data: [
-      {
-        id: 'convenience355',
-        label: '355',
-        state: '거절',
-      },
-      {
-        id: 'convenience355_2',
-        label: '355(2일)',
-        state: '거절',
-      },
-      { id: '' },
-    ],
-  },
-  {
-    data: [
-      {
-        id: 'convenience345',
         label: '345',
-        state: '거절',
+        state: '조건부',
       },
       {
-        id: 'convenience345_2',
         label: '345(2일)',
         state: '인수',
       },
-      { id: '' },
-    ],
-  },
-  {
-    data: [
-      { id: '' },
       {
-        id: 'convenience335',
-        label: '335(2일)',
-        state: '인수',
+        label: '345(5일)',
+        state: '거절',
       },
-      { id: '' },
     ],
   },
   {
     data: [
       {
-        id: 'convenience325',
-        label: '325',
+        label: '335',
+        state: '연기',
+      },
+      {
+        label: '335(2일)',
+        state: '심사',
+      },
+      {
+        label: '335(5일)',
+        state: '조건부',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '',
+        state: '',
+      },
+      {
+        label: '325(2일)',
         state: '거절',
       },
       {
-        id: 'convenience325_2',
-        label: '325(2일)',
-        state: '인수',
+        label: '325(5일)',
+        state: '연기',
       },
-      { id: '' },
     ],
   },
   {
     data: [
-      { id: '' },
       {
-        id: 'convenience315_2',
+        label: '315',
+        state: '심사',
+      },
+      {
         label: '315(2일)',
+        state: '조건부',
+      },
+      {
+        label: '315(5일)',
         state: '인수',
       },
-      { id: '' },
     ],
   },
   {
     data: [
       {
-        id: 'convenience305',
         label: '305',
-        state: '인수',
+        state: '거절',
       },
       {
-        id: 'convenience305_2',
         label: '305(2일)',
-        state: '인수',
+        state: '연기',
       },
-      { id: '' },
+      {
+        label: '305(5일)',
+        state: '심사',
+      },
     ],
   },
 ];
@@ -289,6 +267,79 @@ const additionalNotices: AdditionalNotice[] = [
   { label: '고혈압&당뇨', type: 'refuse' },
 ];
 
+interface UnderwritingBadgeProps {
+  id: string;
+  label: string;
+  onRemove: (id: string) => void;
+}
+
+const UnderwritingBadge = ({ id, label, onRemove }: UnderwritingBadgeProps) => {
+  const [offset, setOffset] = React.useState({ x: 0, y: 0 });
+  const [isReady, setIsReady] = React.useState(false);
+  const badgeRef = React.useRef<HTMLDivElement>(null);
+
+  React.useLayoutEffect(() => {
+    const badgeEl = badgeRef.current;
+    const sourceEl = document.getElementById(`grow-underwriting-${id}`);
+    if (badgeEl && sourceEl) {
+      const badgeRect = badgeEl.getBoundingClientRect();
+      const sourceRect = sourceEl.getBoundingClientRect();
+
+      // 클릭된 원본 셀의 중심 좌표
+      const sourceCenterX = sourceRect.left + sourceRect.width / 2;
+      const sourceCenterY = sourceRect.top + sourceRect.height / 2;
+
+      // 뱃지 목적지의 원래 중심 좌표
+      const badgeCenterX = badgeRect.left + badgeRect.width / 2;
+      const badgeCenterY = badgeRect.top + badgeRect.height / 2;
+
+      // 오프셋 계산 (원래 위치로 가기 전의 시작 translate 값)
+      const dx = Math.round(sourceCenterX - badgeCenterX);
+      const dy = Math.round(sourceCenterY - badgeCenterY);
+
+      setOffset({ x: dx, y: dy });
+      setIsReady(true);
+    } else {
+      setIsReady(true);
+    }
+  }, [id]);
+
+  return (
+    <div
+      ref={badgeRef}
+      className={`inline-flex flex-row items-center gap-1 bg-[#2E3B4E] text-[#FFF] rounded-full text-[1.2rem] py-[0.5rem] px-[0.6rem] transition-opacity duration-150 ${
+        isReady ? 'animate-slide-from-click' : 'opacity-0'
+      }`}
+      style={
+        {
+          '--dx': `${offset.x}px`,
+          '--dy': `${offset.y}px`,
+        } as React.CSSProperties
+      }
+    >
+      <span>{label}</span>
+      <button
+        type="button"
+        onClick={() => onRemove(id)}
+        className="flex items-center justify-center rounded-full hover:bg-gray-700 focus:outline-none ml-1"
+      >
+        <CloseIcon size={10} className="text-gray-400 hover:text-[#FFF]" />
+      </button>
+    </div>
+  );
+};
+
+const CustomNoRowsOverlay = () => (
+  <Gcol placement="cc" className="w-full h-full text-center justify-center items-center" gap={1}>
+    <InfoBoxWarningIcon size={14} color="#777" />
+    <Typo variant="body-sm" className="leading-normal text-[#414141]">
+      [입력/수정]을 선택하여
+      <br />
+      질병을 검색해 주세요.
+    </Typo>
+  </Gcol>
+);
+
 const Ltpz034 = ({
   open = true,
   onOpenChange,
@@ -297,30 +348,49 @@ const Ltpz034 = ({
   isRegistered = false,
   basicRows: initialBasicRows,
   healthRows: initialHealthRows,
+  dummyRows,
 }: Ltpz034Props) => {
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
-  const [badgeOffsets, setBadgeOffsets] = React.useState<Record<string, { x: number; y: number }>>({});
+
+  const handleCheckboxClick = React.useCallback(
+    (_id: string, _label: string, _isChecked: boolean, _event: React.MouseEvent<HTMLButtonElement>) => {
+      // 뱃지 자체 계산을 위해 더 이상 부모의 클릭 핸들러에서 오프셋이나 좌표 상태를 관리하지 않음
+    },
+    []
+  );
+
+  const showSelectionLimitToast = () => {
+    toast.info('최대 3건의 고지유형을 선택해 주세요', { duration: 3000 });
+  };
 
   const basicRows = useMemo<HealthUnderwritingRow[]>(
     () =>
-      (initialBasicRows ?? BASIC_ROWS).map((row) => ({
+      (initialBasicRows ?? BASIC_ROWS).map((row, rowIndex) => ({
         ...row,
-        data: row.data.map((item) => ({
-          ...item,
-          checked: item.id ? selectedIds.includes(item.id) : false,
-        })),
+        data: row.data.map((item, colIndex) => {
+          const id = item.id || `basic-${rowIndex}-${colIndex}`;
+          return {
+            ...item,
+            id,
+            checked: selectedIds.includes(id),
+          };
+        }),
       })),
     [initialBasicRows, selectedIds]
   );
 
   const healthRows = useMemo<HealthUnderwritingRow[]>(
     () =>
-      (initialHealthRows ?? HEALTH_ROWS).map((row) => ({
+      (initialHealthRows ?? HEALTH_ROWS).map((row, rowIndex) => ({
         ...row,
-        data: row.data.map((item) => ({
-          ...item,
-          checked: item.id ? selectedIds.includes(item.id) : false,
-        })),
+        data: row.data.map((item, colIndex) => {
+          const id = item.id || `health-${rowIndex}-${colIndex}`;
+          return {
+            ...item,
+            id,
+            checked: selectedIds.includes(id),
+          };
+        }),
       })),
     [initialHealthRows, selectedIds]
   );
@@ -345,39 +415,12 @@ const Ltpz034 = ({
     (id: string, checked: boolean | 'indeterminate') => {
       if (checked === true) {
         if (selectedIds.length >= 3) {
+          showSelectionLimitToast();
           return;
         }
-
-        // Toggling on -> Capture coordinate from the target element using its custom ID
-        const sourceEl = document.getElementById(`grow-underwriting-${id}`);
-        const destEl = document.getElementById('selected-underwriting-container');
-        if (sourceEl && destEl) {
-          const rect = sourceEl.getBoundingClientRect();
-          const destRect = destEl.getBoundingClientRect();
-
-          // Estimate target position based on existing badges
-          const existingCount = selectedIds.length;
-          const estimatedBadgeWidth = 110;
-          const targetX = destRect.left + existingCount * estimatedBadgeWidth;
-          const targetY = destRect.top;
-
-          const dx = rect.left - targetX;
-          const dy = rect.top - targetY;
-
-          setBadgeOffsets((prev) => ({
-            ...prev,
-            [id]: { x: dx, y: dy },
-          }));
-        }
-
         setSelectedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
       } else {
         setSelectedIds((prev) => prev.filter((item) => item !== id));
-        setBadgeOffsets((prev) => {
-          const next = { ...prev };
-          delete next[id];
-          return next;
-        });
       }
     },
     [selectedIds]
@@ -385,11 +428,6 @@ const Ltpz034 = ({
 
   const handleRemove = React.useCallback((id: string) => {
     setSelectedIds((prev) => prev.filter((item) => item !== id));
-    setBadgeOffsets((prev) => {
-      const next = { ...prev };
-      delete next[id];
-      return next;
-    });
   }, []);
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -399,28 +437,34 @@ const Ltpz034 = ({
       {
         headerName: 'KCD코드',
         field: 'field01',
-        width: attributeColumnWidth(80),
-        cellClass: 'text-center',
+        width: attributeColumnWidth(70),
+        cellClass: 'text-center !flex !justify-center',
       },
       {
         headerName: '질병명',
         field: 'field02',
         flex: 1,
-        cellClass: 'text-left',
+        cellClass: 'text-left whitespace-normal break-all',
+        wrapText: true,
+        autoHeight: true,
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
-          <Grow className="w-full min-w-0 justify-between">
-            <span className="overflow-hidden whitespace-nowrap text-clip">{params.value}</span>
-            {params.data?.field04 && <Badge color={'blue'}>{params.data.field04}</Badge>}
+          <Grow className="w-full min-w-0 justify-between items-center !flex !justify-start leading-normal">
+            <span className="line-clamp-2 text-clip">{params.value}</span>
+            {params.data?.field04 && (
+              <Badge color={'blue'} className="shrink-0">
+                {params.data.field04}
+              </Badge>
+            )}
           </Grow>
         ),
       },
       {
         headerName: 'N년이내',
         field: 'field03',
-        width: attributeColumnWidth(80),
+        width: attributeColumnWidth(60),
         headerClass: 'bg-[#FFCCBE]',
-        cellClass: 'text-center',
+        cellClass: 'text-center !flex !justify-center',
       },
     ],
     [attributeColumnWidth]
@@ -428,7 +472,7 @@ const Ltpz034 = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} minimized={minimized} onMinimizeChange={onMinimizeChange}>
-      <DialogContent showCloseButton resizable size="lg" minimized={true}>
+      <DialogContent showCloseButton resizable minimized={true} className={isRegistered ? 'w-[69.2rem]' : 'w-[76rem]'}>
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
@@ -519,13 +563,14 @@ const Ltpz034 = ({
           </Gcol>
           <Grid className={isRegistered ? 'grid-cols-[18rem_1fr] gap-3' : 'grid-cols-[1fr_auto_1fr]'}>
             {isRegistered ? (
-              <TableFold variant="default" className="grid grid-rows-[auto_1fr] h-[34.1rem]">
+              <TableFold variant="default" className="grid grid-rows-[auto_1fr] h-full">
                 <TableFoldHead title="일반/건강고지"></TableFoldHead>
                 <TableFoldBody className="h-full overflow-y-auto bg-[#F2F4F7]">
                   <Ltpa030table
                     healthRows={basicRows}
                     isClick={true}
                     onCheckedChange={handleCheckedChange}
+                    onCheckboxClick={handleCheckboxClick}
                     colSpan={1}
                   />
                 </TableFoldBody>
@@ -542,18 +587,15 @@ const Ltpz034 = ({
                     <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        noRowsOverlayComponentParams={{
-                          message: '[입력/수정]을 선택하여 질병을 검색해 주세요.',
-                        }}
-                        rowData={DUMMY_DATA}
+                        noRowsOverlayComponent={CustomNoRowsOverlay}
+                        rowData={dummyRows ?? DUMMY_DATA}
                         columnDefs={columnDefs}
                         defaultColDef={{
                           sortable: false,
                           resizable: true,
                         }}
                         rowSelection={{
-                          mode: 'multiRow',
+                          mode: 'singleRow',
                           checkboxes: true,
                           enableClickSelection: false,
                         }}
@@ -563,8 +605,8 @@ const Ltpz034 = ({
                           cellClass: 'text-center editable-cell',
                         }}
                         domLayout="normal"
-                        tooltipShowMode="whenTruncated"
-                        tooltipShowDelay={0}
+                        // tooltipShowMode="whenTruncated"
+                        // tooltipShowDelay={0}
                       />
                     </div>
                     <Grow placement="ee">
@@ -600,56 +642,40 @@ const Ltpz034 = ({
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <Ltpa030table healthRows={healthRows} isClick={true} onCheckedChange={handleCheckedChange} />
+                <Ltpa030table
+                  healthRows={healthRows}
+                  isClick={true}
+                  onCheckedChange={handleCheckedChange}
+                  onCheckboxClick={handleCheckboxClick}
+                />
               </TableFoldBody>
             </TableFold>
           </Grid>
           {/* 선택 항목 노출 영역 */}
-          <Grow className="w-full border border-[#FF5C2E] rounded-[0.8rem] px-3 py-3 flex items-center justify-between gap-4 bg-[#FFF]">
-            <Grow className="flex items-center justify-between gap-4 flex-1">
-              {selectedIds.length > 0 ? (
-                <>
-                  <Typo className="text-[1.2rem] font-bold text-[#414141] shrink-0">고지유형 선택</Typo>
-                  <Grow className="flex-wrap gap-[0.6rem] justify-start flex-1">
-                    {selectedIds.map((id) => {
-                      const label = underwritingItemsMap[id];
-                      if (!label) return null;
-                      const offset = badgeOffsets[id] || { x: 0, y: 0 };
-                      return (
-                        <Grow
-                          key={id}
-                          className="animate-drop-in-reverse inline-flex items-center gap-1.5 px-3 bg-[#2E3B4E] text-[#FFF] rounded-full text-[1.2rem] py-[0.6rem] px-[0.8rem]"
-                          style={
-                            {
-                              '--dx': `${offset.x}px`,
-                              '--dy': `${offset.y}px`,
-                            } as React.CSSProperties
-                          }
-                        >
-                          <span>{label}</span>
-                          <button
-                            type="button"
-                            onClick={() => handleRemove(id)}
-                            className="flex items-center justify-center rounded-full hover:bg-gray-700 focus:outline-none"
-                          >
-                            <CloseIcon size={10} className="text-gray-400 hover:text-[#FFF]" />
-                          </button>
-                        </Grow>
-                      );
-                    })}
-                  </Grow>
-                </>
-              ) : (
-                <Typo color="default" icon="info" tag="p" variant="body-sm" weight="normal">
-                  최대 3건의 고지유형을 선택해 주세요.
-                </Typo>
+          <Grow className="w-full border border-[#FF5C2E] rounded-[0.8rem] px-3 py-3 flex items-center justify-between bg-[#FFF] h-[5.6rem] p-[1rem]">
+            <Grow className="flex items-center justify-between gap-2 flex-1">
+              {selectedIds.length > 0 && (
+                <Typo className="text-[1.2rem] font-bold text-[#414141] shrink-0">고지유형 선택</Typo>
               )}
+              <Grow className="flex-wrap gap-[0.1rem] justify-start flex-1" id="selected-underwriting-container">
+                {selectedIds.length > 0 ? (
+                  selectedIds.map((id) => {
+                    const label = underwritingItemsMap[id];
+                    if (!label) return null;
+                    return <UnderwritingBadge key={id} id={id} label={label} onRemove={handleRemove} />;
+                  })
+                ) : (
+                  <Typo color="default" icon="info" tag="p" variant="body-sm" weight="normal">
+                    최대 3건의 고지유형을 선택해 주세요.
+                  </Typo>
+                )}
+              </Grow>
             </Grow>
-            <Grow className="flex gap-2 shrink-0">
-              <Button variant="contained" size="lg" color="primary">
+            <Grow className="flex gap-0.5 shrink-0">
+              <Button variant="contained" size="xl" color="primary">
                 가능상품 보기
               </Button>
-              <Button variant="contained" size="lg" color="primary">
+              <Button variant="contained" size="xl" color="primary">
                 추천설계 이동
               </Button>
             </Grow>
@@ -762,6 +788,19 @@ const Ltpz034 = ({
           }
           .animate-drop-in-reverse {
             animation: dropInReverse 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+          }
+          @keyframes slideFromClick {
+            0% {
+              transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(0.5) !important;
+              opacity: 0.3;
+            }
+            100% {
+              transform: translate(0, 0) scale(1) !important;
+              opacity: 1;
+            }
+          }
+          .animate-slide-from-click {
+            animation: slideFromClick 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
           }
         `}</style>
       </DialogContent>
