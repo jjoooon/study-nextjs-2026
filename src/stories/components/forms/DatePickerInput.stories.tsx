@@ -69,7 +69,7 @@ const [value, setValue] = useState('');
               <DatePickerInput
                 mode="range"
                 width="lg"
-                autoRangeFix
+                // autoRangeFix
                 autoRangeDays={7}
                 autoClose
                 rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
