@@ -377,7 +377,7 @@ const Ltpz030 = () => {
                       <TableHead colSpan={4}>간편</TableHead>
                     </TableRow>
                     <TableRow>
-                      <TableHead>경증외입원수술</TableHead>
+                      <TableHead>경증외 입원수술</TableHead>
                       <TableHead>10대중대질환</TableHead>
                       <TableHead>
                         경증외 입원수술
@@ -518,9 +518,13 @@ const Ltpz030 = () => {
                   <em className="font-normal!">
                     일반/건강고지형은 &quot;심사가능&quot; 유형, 간편고지형은 &quot;인수가능&quot; 유형 안내
                   </em>
-                  <BulletItem size="sm" type="dash" className="text-[var(--color-danger-50)]">
-                    단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의(유병력자일 경우라도 사고력 &middot;
-                    가입담보에 따라 표준체/건강체로 가입가능)
+                  <BulletItem size="sm" type="dash" color="warning">
+                    <Grow>
+                      단순 비교시 고객에게 불리한 고지유형이 적용될 수 있으므로 주의
+                      <p className="text-[var(--color-gray-70)]">
+                        (유병력자일 경우라도 사고력 &middot; 가입담보에 따라 표준체/건강체로 가입가능)
+                      </p>
+                    </Grow>
                   </BulletItem>
                 </BulletListItem>
                 <BulletListItem>
