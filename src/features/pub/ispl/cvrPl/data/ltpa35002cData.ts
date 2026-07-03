@@ -11,7 +11,7 @@ export type DummyDataType = {
   field5?: string | number | boolean;
   field6?: string | number | boolean;
   field7?: string | number | boolean;
-  field8?: string | number | boolean;
+  field8?: string[];
   [key: string]: unknown;
 };
 
@@ -26,7 +26,7 @@ export const dummyData: DummyDataType[] = [
     field5: '일체',
     field6: '건물내',
     field7: '아니오',
-    field8: '가연성',
+    field8: ['가연성'],
 
     isEditedField6: true,
     isEditedField7: true,
@@ -59,7 +59,7 @@ export type DummyData2Type = {
   field5?: string | number | boolean;
   field6?: string | number | boolean;
   field7?: string | number | boolean;
-  field8?: string | number | boolean;
+  field8?: string[];
 
   isEditedtitle?: boolean;
   isEditedInsuredAmount?: boolean;

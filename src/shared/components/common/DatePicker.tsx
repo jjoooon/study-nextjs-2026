@@ -138,10 +138,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   options?: boolean;
   /** 시작일 선택 시 자동으로 설정될 종료일과의 간격 일수 (기본값: 7) */
   autoRangeDays?: number;
-  /** 시작일 선택 시 언제나 시작일만 선택되고 종료일은 자동으로 지정되는 고정 범위 잠금 여부 */
-  autoRangeFix?: boolean;
-  /** 시작일 선택 시 자동으로 종료일도 선택되고 팝업이 닫히는지 여부 (기본값: false) */
-  autoClose?: boolean;
+
   /** 선택 가능한 최소 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
   min?: string | Date;
   /** 선택 가능한 최대 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
@@ -170,11 +167,11 @@ export function DatePickerInput({
   onMonthSelect,
   options = false,
   autoRangeDays = 0,
-  autoRangeFix = false,
-  autoClose = false,
   min,
   max,
 }: UIInputProps) {
+  const autoClose = true;
+  const autoRangeFix = false;
   const generatedId = React.useId();
   const finalId = id || generatedId;
   const errorId = React.useId();
@@ -204,8 +201,23 @@ export function DatePickerInput({
     if (maxDate) {
       rules.push({ after: maxDate });
     }
+
+    if (autoRangeDays > 0 && selected && !Array.isArray(selected) && !(selected instanceof Date)) {
+      const from = selected.from;
+      const to = selected.to;
+      if (from && (!to || isSelectingEnd)) {
+        const fromCopy = new Date(from);
+        fromCopy.setHours(0, 0, 0, 0);
+
+        rules.push({ before: fromCopy });
+
+        const maxAllowed = new Date(fromCopy);
+        maxAllowed.setDate(maxAllowed.getDate() + autoRangeDays - 1);
+        rules.push({ after: maxAllowed });
+      }
+    }
     return rules.length > 0 ? rules : undefined;
-  }, [minDate, maxDate]);
+  }, [minDate, maxDate, autoRangeDays, selected, isSelectingEnd]);
   const [numericValue, setNumericValue] = React.useState(initialValue?.replace(/\D/g, '') || '');
   const [rangeInput, setRangeInput] = React.useState({ from: '', to: '' });
   const [invalidRange, setInvalidRange] = React.useState({ from: false, to: false });
@@ -237,7 +249,10 @@ export function DatePickerInput({
       const from = rangeValue.from ? new Date(rangeValue.from) : undefined;
       const to = rangeValue.to ? new Date(rangeValue.to) : undefined;
 
-      if (from && isValidDate(from) && to && isValidDate(to)) {
+      const isFromValid = from && isValidDate(from);
+      const isToValid = to && isValidDate(to);
+
+      if (isFromValid && isToValid) {
         setSelected({ from, to });
         setMonth(from);
         setRangeInput({
@@ -245,6 +260,14 @@ export function DatePickerInput({
           to: formatDate(to),
         });
         setNumericValue(`${formatDate(from).replace(/\D/g, '')}${formatDate(to).replace(/\D/g, '')}`);
+      } else if (isFromValid) {
+        setSelected({ from, to: undefined });
+        setMonth(from);
+        setRangeInput({
+          from: formatDate(from),
+          to: '',
+        });
+        setNumericValue(formatDate(from).replace(/\D/g, ''));
       } else {
         setSelected(undefined);
         setMonth(undefined);
@@ -273,6 +296,49 @@ export function DatePickerInput({
   const handleSelect = (selectedValue: CalendarSelection, selectedDay?: Date) => {
     if (mode === 'range') {
       if (selectedDay) {
+        if (autoRangeDays > 0 && !autoRangeFix) {
+          const currentRangeSelected =
+            selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
+
+          if (!isSelectingEnd || !currentRangeSelected || !currentRangeSelected.from) {
+            const nextFrom = selectedDay;
+            setSelected({ from: nextFrom, to: undefined });
+            setRangeInput({ from: formatDate(nextFrom), to: '' });
+            setNumericValue(formatDate(nextFrom).replace(/\D/g, ''));
+            setIsSelectingEnd(true);
+            onChange?.(nextFrom, formatDate(nextFrom));
+            setInvalidDate(false);
+            return;
+          }
+
+          if (isSelectingEnd && currentRangeSelected.from) {
+            const fromDate = currentRangeSelected.from;
+            const maxAllowed = new Date(fromDate);
+            maxAllowed.setDate(maxAllowed.getDate() + autoRangeDays - 1);
+
+            if (selectedDay < fromDate || selectedDay > maxAllowed) {
+              const nextFrom = selectedDay;
+              setSelected({ from: nextFrom, to: undefined });
+              setRangeInput({ from: formatDate(nextFrom), to: '' });
+              setNumericValue(formatDate(nextFrom).replace(/\D/g, ''));
+              setIsSelectingEnd(true);
+              onChange?.(nextFrom, formatDate(nextFrom));
+              setInvalidDate(false);
+              return;
+            }
+
+            const nextTo = selectedDay;
+            setSelected({ from: fromDate, to: nextTo });
+            setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
+            setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
+            setIsSelectingEnd(false);
+            onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
+            setOpen(false);
+            setInvalidDate(false);
+            return;
+          }
+        }
+
         const offset = autoRangeDays ?? 7;
 
         if (autoRangeFix) {
