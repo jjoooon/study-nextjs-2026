@@ -95,13 +95,11 @@ const renderHighlightedText = (text: string, keyword: string) => {
 };
 
 interface Ltpz034Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
   minimized?: boolean;
   onMinimizeChange?: (minimized: boolean) => void;
 }
 
-const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltpz034Props) => {
+const Ltpz034 = ({ minimized, onMinimizeChange }: Ltpz034Props) => {
   type ComboFieldKey = 'hash';
 
   const [isClick, setIsClick] = React.useState(false);
@@ -259,7 +257,7 @@ const Ltpz034 = ({ open = true, onOpenChange, minimized, onMinimizeChange }: Ltp
   ];
   const { tabs, active, setActive } = useTabs(DATA_TABS);
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} minimized={minimized} onMinimizeChange={onMinimizeChange}>
+    <Dialog open minimized={minimized} onMinimizeChange={onMinimizeChange}>
       <DialogContent showCloseButton resizable size="lg" minimized={true}>
         <DialogHeader>
           <DialogTitle>

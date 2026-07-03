@@ -2,7 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 import LTPA260 from '@/app/pub/ispl/pages/LTPA260';
-import { LayoutDoc } from '@layout/BaseLayout';
+import { StorySite } from '@/shared/components/storybook/StoryWrap';
 
 export default {
   title: 'app/ispl/isplBsnsSupt/LTPA260',
@@ -10,7 +10,7 @@ export default {
 };
 
 export const Default = () => (
-  <LayoutDoc>
+  <StorySite>
     <LTPA260 />
-  </LayoutDoc>
+  </StorySite>
 );

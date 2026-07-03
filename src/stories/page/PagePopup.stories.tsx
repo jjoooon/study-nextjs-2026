@@ -16,7 +16,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { LayoutDoc } from '@layout/BaseLayout';
+import { StorySite } from '@/shared/components/storybook/StoryWrap';
 
 export default {
   title: '페이지인팝업Test/LTPA010',
@@ -28,7 +28,7 @@ export default {
 };
 
 export const Default = () => (
-  <LayoutDoc>
+  <StorySite>
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="full">
         <DialogHeader>
@@ -60,7 +60,7 @@ export const Default = () => (
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  </LayoutDoc>
+  </StorySite>
 );
 Default.args = {
   open: true,
