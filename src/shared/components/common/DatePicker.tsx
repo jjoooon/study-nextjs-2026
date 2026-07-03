@@ -5,7 +5,7 @@
 
 import * as React from 'react';
 import { type DateRange } from 'react-day-picker';
-import { FormItemSize, FormItemWidth } from '@/shared/types/uiTypes';
+import { FormItemSize } from '@/shared/types/uiTypes';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { CalendarIcon } from '@icons';
 import { Button } from '@uiux/Button';

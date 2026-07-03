@@ -1005,6 +1005,17 @@
   } */
 }
 
+[role='dialog'] [data-layout='main-foot'] > [data-variant='default'] {
+  border: 0 !important;
+  padding: 1.4rem 0 0 0 !important;
+  box-shadow: none !important;
+}
+[role='dialog'] [data-layout='main-foot'] > [data-variant='default'] > [data-variant='default'] {
+  border: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
 .dialog-bounce-transition {
   transition:
     transform 0.45s cubic-bezier(0.25, 1, 0.5, 1),
