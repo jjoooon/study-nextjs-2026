@@ -922,7 +922,7 @@ const Ltpz031 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="xl">
+      <DialogContent showCloseButton resizable={false} size="full">
         {/* 1. 다이얼로그 헤더 영역: 화면 타이틀 및 ID 표시 */}
         <DialogHeader>
           <DialogTitle>
@@ -964,8 +964,8 @@ const Ltpz031 = () => {
                 <Grow variant="box-round" placement={'bwc'}>
                   <CheckboxGroup className="gap-1" minSelected={2} defaultValue={[]} variant="button">
                     {[
-                      { value: '대장·직장용종', label: '대장·직장용종' },
-                      { value: '척주염좌', label: '척주염좌' },
+                      { value: '대장·직장용종', label: '대장·직장용종 장·직장용종 장·직장용종' },
+                      { value: '척주염좌', label: '척주염좌척주염좌척주염좌 척주염좌' },
                       { value: '등통증', label: '등통증' },
                       { value: '후천성 백내장', label: '후천성 백내장' },
                       { value: '열상·표재성손상', label: '열상·표재성손상' },
@@ -976,7 +976,7 @@ const Ltpz031 = () => {
                       { value: '자궁근종', label: '자궁근종' },
                     ].map((item) => (
                       <CheckboxGroupItem key={item.value} value={item.value}>
-                        {item.label}
+                        {item.label.length > 8 ? `${item.label.slice(0, 8)}...` : item.label}
                       </CheckboxGroupItem>
                     ))}
                   </CheckboxGroup>

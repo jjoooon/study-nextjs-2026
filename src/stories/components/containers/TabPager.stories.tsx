@@ -713,7 +713,6 @@ export const DynamicTabs: Story = {
   render: (args) => {
     const [tabs, setTabs] = React.useState([
       { name: '홍길동', age: '30', gender: '남', value: 'tab1', info: ['초기 탭 1'] },
-      { name: '김철수', age: '25', gender: '남', value: 'tab2', info: ['초기 탭 2'] },
     ]);
     const [active, setActive] = React.useState('tab1');
 

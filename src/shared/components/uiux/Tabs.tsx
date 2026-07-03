@@ -132,7 +132,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
           ref={ref}
           className={cn(
             tabsTriggerVariants({ variant: variant as 'default' | 'box' | 'vertical' | undefined }),
-            removable && totalTabs! > 1 ? 'isRemovable' : '',
+            removable ? 'isRemovable' : '',
             '[&[data-tab-error=true]:not([data-state=active])]:text-[var(--color-danger-50)]!',
             '[&[data-tab-error=true]:not([data-state=active])]:border-[var(--color-danger-50)]!',
             '[&[data-tab-error=true]:not([data-state=active])]:border!',
@@ -153,7 +153,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
           {variant === 'vertical' && <SelectArrowIcon className="rotate-270 vertical-icon-hide" />}
           <span className="flex items-center">{children}</span>
         </TabsPrimitive.Trigger>
-        {removable && totalTabs! > 1 && (
+        {removable && (
           <button
             type="button"
             className="absolute top-[calc(50%-0.6rem)] right-[0.9rem] z-10"
