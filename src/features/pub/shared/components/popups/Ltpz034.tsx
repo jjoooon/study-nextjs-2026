@@ -223,8 +223,8 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
         state: '연기',
       },
       {
-        label: '335(2일)',
-        state: '심사',
+        label: '',
+        state: '',
       },
       {
         label: '335(5일)',
@@ -267,8 +267,8 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
       {
-        label: '305',
-        state: '거절',
+        label: '',
+        state: '',
       },
       {
         label: '305(2일)',
@@ -283,8 +283,8 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
       {
-        label: '305',
-        state: '거절',
+        label: '',
+        state: '',
       },
       {
         label: '305(2일)',
@@ -295,12 +295,32 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
         state: '심사',
       },
     ],
+    tooltipData: [
+      {
+        title: '간편고지형명 판정결과',
+        content: ['질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비', '질병수술비(ALL RISK)'],
+      },
+      {
+        title: '345조건부(감액)',
+        content: [
+          '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
+          '인수판정률 사전안내 컬럼에 입력된 값 표시',
+        ],
+      },
+      {
+        title: '345조건부(감액)',
+        content: [
+          '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
+          '인수판정률 사전안내 컬럼에 입력된 값 표시',
+        ],
+      },
+    ],
   },
   {
     data: [
       {
-        label: '305',
-        state: '거절',
+        label: '',
+        state: '',
       },
       {
         label: '305(2일)',
