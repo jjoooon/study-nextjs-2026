@@ -349,7 +349,7 @@ const UnderwritingBadge = ({ id, label, onRemove }: UnderwritingBadgeProps) => {
 const CustomNoRowsOverlay = () => (
   <Gcol placement="cc" className="w-full h-full text-center justify-center items-center" gap={1}>
     <InfoBoxWarningIcon size={14} color="#777" />
-    <Typo variant="body-sm" className="leading-normal text-[#414141]">
+    <Typo variant="body-sm" className="leading-normal text-[1.3rem] text-[#414141]">
       [입력/수정]을 선택하여
       <br />
       질병을 검색해 주세요.
