@@ -93,7 +93,7 @@ export default function Ltpa030table({
             <TableCell colSpan={colSpan + 1} className="py-10 text-center align-middle h-[27rem]">
               <Gcol placement="cc" className="w-full h-full text-center justify-center items-center" gap={1}>
                 <InfoBoxWarningIcon size={14} color="#777" />
-                <Typo variant="body-sm" className="leading-normal text-[#414141]">
+                <Typo className="leading-normal text-[#414141] !text-[1.3rem]">
                   입력/수술 정보를 입력 후
                   <br />
                   [고지유형 확인]을 선택해 주세요.
