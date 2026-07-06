@@ -250,6 +250,7 @@ export const FormCell = ({
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
         >
           <Typo
+            tag="div"
             variant={'body-md'}
             weight="bold"
             color={titleTypoColor}

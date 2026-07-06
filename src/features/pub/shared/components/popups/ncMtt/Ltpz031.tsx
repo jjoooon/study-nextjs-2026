@@ -1474,9 +1474,13 @@ const Ltpz031 = () => {
                       <TableFold>
                         <TableFoldHead title="추가질문" />
                         <TableFoldBody>
-                          <FormTable cols={['w-[8rem]', 'w-auto']}>
+                          <FormTable cols={['w-auto', 'w-auto']} className="[&_td>div]:min-w-[50rem]">
                             <FormRow vertical={false}>
-                              <FormCell title={'발생부위'}>
+                              <FormCell
+                                title={
+                                  '발생부위 발생부위발생부위 발생부위 발생부위발생부위 발생부위 발생부위발생부위 발생부위 생부위발 발생부 발생부위발생부위 발생부위 발생부생부위  '
+                                }
+                              >
                                 <Grow className="w-full" gap={3} placement="sc">
                                   <RadioGroup className="gap-x-3 gap-y-1" onValueChange={() => {}}>
                                     {[
