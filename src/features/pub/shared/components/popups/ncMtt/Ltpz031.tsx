@@ -34,6 +34,7 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 /**
@@ -927,7 +928,7 @@ const Ltpz031 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="full">
+      <DialogContent showCloseButton resizable={true} minimized className="w-[100rem]">
         {/* 1. 다이얼로그 헤더 영역: 화면 타이틀 및 ID 표시 */}
         <DialogHeader>
           <DialogTitle>
@@ -940,7 +941,7 @@ const Ltpz031 = () => {
           </DialogTitle>
         </DialogHeader>
         {/* 2. 다이얼로그 본문 영역 */}
-        <DialogSection className="w-full gap-3">
+        <DialogSection className="w-full gap-3 grid-rows-[auto_1fr]">
           {/* 2-1. 최상단: 자동고지 조회 및 연계 정보 가져오기 단축 실행바 */}
           <Grow variant={'box-info-line'} placement={'bwc'} className="border-transparent">
             <Typo variant={'body-lg'}>
@@ -960,632 +961,643 @@ const Ltpz031 = () => {
           </Grow>
 
           {/* 2-2. 중앙 스플릿 레이아웃: 좌측(질병검색 패널) & 우측(선택 질병별 입력 폼 패널) */}
-          <Grow className="grid w-full grid-cols-[28.5rem_1fr] gap-3" placement={'ss'}>
-            {/* 좌측 영역: 많이 찾는 질병 목록 및 질병 검색창 & 결과 목록 그리드 */}
-            <Grid placement={'ss'} className="w-full h-full overflow-hidden grid-rows-[auto_1fr]" gap={5}>
-              {/* 많이 찾는 질병 (퀵 태그 버튼들) */}
-              <Gcol className="w-full" placement={'ss'} gap={2}>
-                <Typo variant="heading-md">많이 찾는 질병</Typo>
-                <Grow variant="box-round" placement={'bwc'}>
-                  <CheckboxGroup className="gap-1" minSelected={2} defaultValue={[]} variant="button">
-                    {[
-                      { value: '대장·직장용종', label: '대장직장용종장직장용종 장·직장용종' },
-                      { value: '척주염좌', label: '척주염좌척주염좌척주염좌 척주염좌' },
-                      { value: '등통증', label: '등통증' },
-                      { value: '후천성 백내장', label: '후천성 백내장' },
-                      { value: '열상·표재성손상', label: '열상·표재성손상' },
-                      { value: '추간판장애', label: '추간판장애' },
-                      { value: '금성 비인두염', label: '금성 비인두염' },
-                      { value: '교통사고', label: '교통사고' },
-                      { value: '치액/치질', label: '치액/치질' },
-                      { value: '자궁근종', label: '자궁근종' },
-                    ].map((item) => (
-                      <CheckboxGroupItem key={item.value} value={item.value}>
-                        {item.label.length > 8 ? `${item.label.slice(0, 8)}...` : item.label}
-                      </CheckboxGroupItem>
-                    ))}
-                  </CheckboxGroup>
-                </Grow>
-              </Gcol>
-              {/* 질병 검색창 및 ag-Grid 결과 테이블 */}
-              <Grid className="w-full grid-rows-[auto_1fr]" placement={'ss'} gap={2}>
-                <Grow placement={'bwe'}>
-                  <Typo variant="heading-md">질병검색</Typo>
-                  <Badge color="blue" size="md" variant="contained" className="">
-                    입력된 질병 6건
-                  </Badge>
-                </Grow>
-                <Gcol variant="box-round" className="bg-[var(--color-blue-gray-15)]">
-                  <Grow className="w-full">
-                    <Input placeholder="병명 또는 코드 입력" className="w-full" />
-                    <Button aria-label="검색" variant={'outlined'} size={'lg'} color="gray-light" only="icon">
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
+          {/* 좌측 영역: 많이 찾는 질병 목록 및 질병 검색창 & 결과 목록 그리드 */}
+          <ResizablePanelGroup orientation="horizontal" className="w-full">
+            <ResizablePanel defaultSize={31} maxSize={290}>
+              <Grid placement={'ss'} className="w-full h-full overflow-hidden grid-rows-[auto_1fr]" gap={5}>
+                {/* 많이 찾는 질병 (퀵 태그 버튼들) */}
+                <Gcol className="w-full" placement={'ss'} gap={2}>
+                  <Typo variant="heading-md">많이 찾는 질병</Typo>
+                  <Grow variant="box-round" placement={'bwc'}>
+                    <CheckboxGroup className="gap-1" minSelected={2} defaultValue={[]} variant="button">
+                      {[
+                        { value: '대장·직장용종', label: '대장직장용종장직장용종 장·직장용종' },
+                        { value: '척주염좌', label: '척주염좌척주염좌척주염좌 척주염좌' },
+                        { value: '등통증', label: '등통증' },
+                        { value: '후천성 백내장', label: '후천성 백내장' },
+                        { value: '열상·표재성손상', label: '열상·표재성손상' },
+                        { value: '추간판장애', label: '추간판장애' },
+                        { value: '금성 비인두염', label: '금성 비인두염' },
+                        { value: '교통사고', label: '교통사고' },
+                        { value: '치액/치질', label: '치액/치질' },
+                        { value: '자궁근종', label: '자궁근종' },
+                      ].map((item) => (
+                        <CheckboxGroupItem key={item.value} value={item.value}>
+                          {item.label.length > 8 ? `${item.label.slice(0, 8)}...` : item.label}
+                        </CheckboxGroupItem>
+                      ))}
+                    </CheckboxGroup>
                   </Grow>
-                  <Grow placement={'ss'} className="w-full">
-                    <Typo>
-                      총 <b className="text-[var(--color-primary-50)]">18건</b>
-                    </Typo>
-                  </Grow>
-                  <Grow className="text-[1.1rem] w-full" placement="sc">
-                    <Grow placement="sc">
-                      <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>할증
-                    </Grow>
-                    <Grow placement="sc">
-                      <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>부담보
-                    </Grow>
-                    <Grow placement="sc">
-                      <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>SI검증
-                    </Grow>
-                    <Grow placement="sc">
-                      <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>
-                      SI경증(감액)
-                    </Grow>
-                  </Grow>
-
-                  <div className="ag-theme-alpine min-h-[30rem] ">
-                    <AgGridReact<DummyDataType>
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                    />
-                  </div>
                 </Gcol>
+                {/* 질병 검색창 및 ag-Grid 결과 테이블 */}
+                <Grid className="w-full grid-rows-[auto_1fr]" placement={'ss'} gap={2}>
+                  <Grow placement={'bwe'}>
+                    <Typo variant="heading-md">질병검색</Typo>
+                    <Badge color="blue" size="md" variant="contained" className="">
+                      입력된 질병 6건
+                    </Badge>
+                  </Grow>
+                  <Gcol variant="box-round" className="bg-[var(--color-blue-gray-15)]">
+                    <Grow className="w-full">
+                      <Input placeholder="병명 또는 코드 입력" className="w-full" />
+                      <Button aria-label="검색" variant={'outlined'} size={'lg'} color="gray-light" only="icon">
+                        <SearchIcon color={'var(--color-primary-50)'} />
+                      </Button>
+                    </Grow>
+                    <Grow placement={'ss'} className="w-full">
+                      <Typo>
+                        총 <b className="text-[var(--color-primary-50)]">18건</b>
+                      </Typo>
+                    </Grow>
+                    <Grow className="text-[1.1rem] w-full" placement="sc">
+                      <Grow placement="sc">
+                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>할증
+                      </Grow>
+                      <Grow placement="sc">
+                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>부담보
+                      </Grow>
+                      <Grow placement="sc">
+                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>
+                        SI검증
+                      </Grow>
+                      <Grow placement="sc">
+                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>
+                        SI경증(감액)
+                      </Grow>
+                    </Grow>
+
+                    <div className="ag-theme-alpine min-h-[30rem] ">
+                      <AgGridReact<DummyDataType>
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                      />
+                    </div>
+                  </Gcol>
+                </Grid>
               </Grid>
-            </Grid>
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel defaultSize={69}>
+              {/* 우측 영역: 선택한 질병 리스트 탭 및 탭별 세부 정보 입력 폼 */}
+              <Grow placement={'ss'} className="w-full min-w-0" gap={2}>
+                <Grow className="w-full min-w-0">
+                  <Gcol className="w-full min-w-0" placement={'ss'}>
+                    <TabPager
+                      data={tabs}
+                      active={active}
+                      setActive={setActive}
+                      removable={true}
+                      onRemove={handleRemove}
+                      getValue={(tab) => tab.value}
+                      renderTab={(tab) => {
+                        const isTruncated = tab.label.length > 6;
+                        const displayLabel = isTruncated ? `${tab.label.slice(0, 6)}...` : tab.label;
+                        return isTruncated ? (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span>{displayLabel}</span>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" align="center" sideOffset={8}>
+                              {tab.label}
+                            </TooltipContent>
+                          </Tooltip>
+                        ) : (
+                          <span>{displayLabel}</span>
+                        );
+                      }}
+                      visibleCount={5}
+                    >
+                      {/* Tab1 (활성화된 질병별 상세 질문 카드 리스트) */}
+                      <Gcol placement={'ss'} className="w-full mt-2" gap={3}>
+                        {/* [세부 폼 1] 기본질문 아코디언 */}
+                        <TableFold>
+                          <TableFoldHead title="기본질문">
+                            <Button variant={'outlined'} size={'md'} color={'gray'}>
+                              초기화
+                              <ResetIcon size={14} color={'var(--color-gray-60)'} />
+                            </Button>
+                          </TableFoldHead>
+                          <TableFoldBody>
+                            <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+                              <FormRow vertical={false}>
+                                <FormCell title={'병명'}>
+                                  <Grow placement={'bwc'}>
+                                    {active === 'TAB1' ? (
+                                      <Grow placement={'sc'}>
+                                        척추염좌
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button only="icon" size={'md'} variant="none">
+                                              <QuestionMark color="var(--color-gray-500)" />
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent
+                                            align="start"
+                                            side="bottom"
+                                            sideOffset={0}
+                                            variant="default"
+                                            className="z-[60] w-[22.1rem] block"
+                                          >
+                                            <Gcol placement={'ss'} gap={1.5}>
+                                              <Typo className="body-md font-bold">척추염좌</Typo>
+                                              <Grow>
+                                                <Badge color="primary" size="md" variant="contained">
+                                                  할증
+                                                </Badge>
+                                                <Badge color="green" size="md" variant="contained">
+                                                  부담보
+                                                </Badge>
+                                                <Badge color="blue" size="md" variant="contained">
+                                                  SI경증
+                                                </Badge>
+                                              </Grow>
+                                              <Typo tag={'p'} className="text-wrap">
+                                                경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및
+                                                간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
+                                              </Typo>
+                                            </Gcol>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </Grow>
+                                    ) : active === 'TAB2' ? (
+                                      <Grow placement={'sc'}>
+                                        자궁근종
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button only="icon" size={'md'} variant="none">
+                                              <QuestionMark color="var(--color-gray-500)" />
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent
+                                            align="start"
+                                            side="bottom"
+                                            sideOffset={0}
+                                            variant="default"
+                                            className="z-[60] w-[22.1rem] block"
+                                          >
+                                            <Gcol placement={'ss'} gap={1.5}>
+                                              <Typo className="body-md font-bold">자궁근종</Typo>
+                                              <Grow>
+                                                <Badge color="primary" size="md" variant="contained">
+                                                  할증
+                                                </Badge>
+                                                <Badge color="green" size="md" variant="contained">
+                                                  부담보
+                                                </Badge>
+                                                <Badge color="blue" size="md" variant="contained">
+                                                  SI경증
+                                                </Badge>
+                                              </Grow>
+                                              <Typo className="text-wrap">
+                                                자궁근종, 난소낭종, 자궁내막증, 자궁선근증, 난소종양, 자궁근종의 염좌 및
+                                                난소, 자궁의 염좌 및 긴장, 자궁근종의 염좌 및 긴장
+                                              </Typo>
+                                            </Gcol>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </Grow>
+                                    ) : active === 'TAB3' ? (
+                                      <Grow placement={'sc'}>
+                                        대장·직장용종
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button only="icon" size={'md'} variant="none">
+                                              <QuestionMark color="var(--color-gray-500)" />
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent
+                                            align="start"
+                                            side="bottom"
+                                            sideOffset={0}
+                                            variant="default"
+                                            className="z-[60] w-[22.1rem] block"
+                                          >
+                                            <Gcol placement={'ss'} gap={1.5}>
+                                              <Typo className="body-md font-bold">대장·직장용종</Typo>
+                                              <Grow>
+                                                <Badge color="primary" size="md" variant="contained">
+                                                  할증
+                                                </Badge>
+                                                <Badge color="green" size="md" variant="contained">
+                                                  부담보
+                                                </Badge>
+                                                <Badge color="blue" size="md" variant="contained">
+                                                  SI경증
+                                                </Badge>
+                                              </Grow>
+                                              <Typo tag={'p'} className="text-wrap">
+                                                자궁근종, 난소낭종, 자궁내막증, 자궁선근증, 난소종양, 자궁근종의 염좌 및
+                                                난소, 자궁의 염좌 및 긴장, 자궁근종의 염좌 및 긴장
+                                              </Typo>
+                                            </Gcol>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </Grow>
+                                    ) : active === 'TAB4' ? (
+                                      <Grow placement={'sc'}>
+                                        추간판장애
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button only="icon" size={'md'} variant="none">
+                                              <QuestionMark color="var(--color-gray-500)" />
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent
+                                            align="start"
+                                            side="bottom"
+                                            sideOffset={0}
+                                            variant="default"
+                                            className="z-[60] w-[22.1rem] block"
+                                          >
+                                            <Gcol placement={'ss'} gap={1.5}>
+                                              <Typo className="body-md font-bold">추간판장애</Typo>
+                                              <Grow>
+                                                <Badge color="primary" size="md" variant="contained">
+                                                  할증
+                                                </Badge>
+                                                <Badge color="green" size="md" variant="contained">
+                                                  부담보
+                                                </Badge>
+                                                <Badge color="blue" size="md" variant="contained">
+                                                  SI경증
+                                                </Badge>
+                                              </Grow>
+                                              <Typo className="text-wrap">
+                                                경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및
+                                                간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
+                                              </Typo>
+                                            </Gcol>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </Grow>
+                                    ) : active === 'TAB5' ? (
+                                      <Grow placement={'sc'}>
+                                        어깨병변
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button only="icon" size={'md'} variant="none">
+                                              <QuestionMark color="var(--color-gray-500)" />
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent
+                                            align="start"
+                                            side="bottom"
+                                            sideOffset={0}
+                                            variant="default"
+                                            className="z-[60] w-[22.1rem] block"
+                                          >
+                                            <Gcol placement={'ss'} gap={1.5}>
+                                              <Typo className="body-md font-bold">어깨병변</Typo>
+                                              <Grow>
+                                                <Badge color="primary" size="md" variant="contained">
+                                                  할증
+                                                </Badge>
+                                                <Badge color="green" size="md" variant="contained">
+                                                  부담보
+                                                </Badge>
+                                                <Badge color="blue" size="md" variant="contained">
+                                                  SI경증
+                                                </Badge>
+                                              </Grow>
+                                              <Typo className="text-wrap">
+                                                어깨병변, 회전근개 손상, 견봉하 점액낭염, 어깨 탈구, 어깨 관절염, 어깨
+                                                근육 손상
+                                              </Typo>
+                                            </Gcol>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </Grow>
+                                    ) : null}
 
-            {/* 우측 영역: 선택한 질병 리스트 탭 및 탭별 세부 정보 입력 폼 */}
-            <Grow placement={'ss'} className="w-full min-w-0" gap={2}>
-              <Grow className="w-full min-w-0">
-                <Gcol className="w-full min-w-0" placement={'ss'}>
-                  <TabPager
-                    data={tabs}
-                    active={active}
-                    setActive={setActive}
-                    removable={true}
-                    onRemove={handleRemove}
-                    getValue={(tab) => tab.value}
-                    renderTab={(tab) => {
-                      const isTruncated = tab.label.length > 8;
-                      const displayLabel = isTruncated ? `${tab.label.slice(0, 8)}...` : tab.label;
-                      return isTruncated ? (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <span>{displayLabel}</span>
-                          </TooltipTrigger>
-                          <TooltipContent side="top" align="center" sideOffset={8}>
-                            {tab.label}
-                          </TooltipContent>
-                        </Tooltip>
-                      ) : (
-                        <span>{displayLabel}</span>
-                      );
-                    }}
-                    visibleCount={5}
-                  >
-                    {/* Tab1 (활성화된 질병별 상세 질문 카드 리스트) */}
-                    <Gcol placement={'ss'} className="w-full mt-2" gap={3}>
-                      {/* [세부 폼 1] 기본질문 아코디언 */}
-                      <TableFold>
-                        <TableFoldHead title="기본질문">
-                          <Button variant={'outlined'} size={'md'} color={'gray'}>
-                            초기화
-                            <ResetIcon size={14} color={'var(--color-gray-60)'} />
-                          </Button>
-                        </TableFoldHead>
-                        <TableFoldBody>
-                          <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
-                            <FormRow vertical={false}>
-                              <FormCell title={'병명'}>
-                                <Grow placement={'bwc'}>
-                                  {active === 'TAB1' ? (
-                                    <Grow placement={'sc'}>
-                                      척추염좌
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <Button only="icon" size={'md'} variant="none">
-                                            <QuestionMark color="var(--color-gray-500)" />
-                                          </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent
-                                          align="start"
-                                          side="bottom"
-                                          sideOffset={0}
-                                          variant="default"
-                                          className="z-[60] w-[22.1rem] block"
-                                        >
-                                          <Gcol placement={'ss'} gap={1.5}>
-                                            <Typo className="body-md font-bold">척추염좌</Typo>
-                                            <Grow>
-                                              <Badge color="primary" size="md" variant="contained">
-                                                할증
-                                              </Badge>
-                                              <Badge color="green" size="md" variant="contained">
-                                                부담보
-                                              </Badge>
-                                              <Badge color="blue" size="md" variant="contained">
-                                                SI경증
-                                              </Badge>
-                                            </Grow>
-                                            <Typo tag={'p'} className="text-wrap">
-                                              경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및
-                                              간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
-                                            </Typo>
-                                          </Gcol>
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    </Grow>
-                                  ) : active === 'TAB2' ? (
-                                    <Grow placement={'sc'}>
-                                      자궁근종
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <Button only="icon" size={'md'} variant="none">
-                                            <QuestionMark color="var(--color-gray-500)" />
-                                          </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent
-                                          align="start"
-                                          side="bottom"
-                                          sideOffset={0}
-                                          variant="default"
-                                          className="z-[60] w-[22.1rem] block"
-                                        >
-                                          <Gcol placement={'ss'} gap={1.5}>
-                                            <Typo className="body-md font-bold">자궁근종</Typo>
-                                            <Grow>
-                                              <Badge color="primary" size="md" variant="contained">
-                                                할증
-                                              </Badge>
-                                              <Badge color="green" size="md" variant="contained">
-                                                부담보
-                                              </Badge>
-                                              <Badge color="blue" size="md" variant="contained">
-                                                SI경증
-                                              </Badge>
-                                            </Grow>
-                                            <Typo className="text-wrap">
-                                              자궁근종, 난소낭종, 자궁내막증, 자궁선근증, 난소종양, 자궁근종의 염좌 및
-                                              난소, 자궁의 염좌 및 긴장, 자궁근종의 염좌 및 긴장
-                                            </Typo>
-                                          </Gcol>
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    </Grow>
-                                  ) : active === 'TAB3' ? (
-                                    <Grow placement={'sc'}>
-                                      대장·직장용종
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <Button only="icon" size={'md'} variant="none">
-                                            <QuestionMark color="var(--color-gray-500)" />
-                                          </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent
-                                          align="start"
-                                          side="bottom"
-                                          sideOffset={0}
-                                          variant="default"
-                                          className="z-[60] w-[22.1rem] block"
-                                        >
-                                          <Gcol placement={'ss'} gap={1.5}>
-                                            <Typo className="body-md font-bold">대장·직장용종</Typo>
-                                            <Grow>
-                                              <Badge color="primary" size="md" variant="contained">
-                                                할증
-                                              </Badge>
-                                              <Badge color="green" size="md" variant="contained">
-                                                부담보
-                                              </Badge>
-                                              <Badge color="blue" size="md" variant="contained">
-                                                SI경증
-                                              </Badge>
-                                            </Grow>
-                                            <Typo tag={'p'} className="text-wrap">
-                                              자궁근종, 난소낭종, 자궁내막증, 자궁선근증, 난소종양, 자궁근종의 염좌 및
-                                              난소, 자궁의 염좌 및 긴장, 자궁근종의 염좌 및 긴장
-                                            </Typo>
-                                          </Gcol>
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    </Grow>
-                                  ) : active === 'TAB4' ? (
-                                    <Grow placement={'sc'}>
-                                      추간판장애
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <Button only="icon" size={'md'} variant="none">
-                                            <QuestionMark color="var(--color-gray-500)" />
-                                          </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent
-                                          align="start"
-                                          side="bottom"
-                                          sideOffset={0}
-                                          variant="default"
-                                          className="z-[60] w-[22.1rem] block"
-                                        >
-                                          <Gcol placement={'ss'} gap={1.5}>
-                                            <Typo className="body-md font-bold">추간판장애</Typo>
-                                            <Grow>
-                                              <Badge color="primary" size="md" variant="contained">
-                                                할증
-                                              </Badge>
-                                              <Badge color="green" size="md" variant="contained">
-                                                부담보
-                                              </Badge>
-                                              <Badge color="blue" size="md" variant="contained">
-                                                SI경증
-                                              </Badge>
-                                            </Grow>
-                                            <Typo className="text-wrap">
-                                              경추염좌, 요추염좌, 흉추염좌, 목염좌, 등염좌, 허리염좌, 강추의 염좌 및
-                                              간장, 흉추의 염좌 및 긴장, 요추의 염좌 및 긴장
-                                            </Typo>
-                                          </Gcol>
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    </Grow>
-                                  ) : active === 'TAB5' ? (
-                                    <Grow placement={'sc'}>
-                                      어깨병변
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <Button only="icon" size={'md'} variant="none">
-                                            <QuestionMark color="var(--color-gray-500)" />
-                                          </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent
-                                          align="start"
-                                          side="bottom"
-                                          sideOffset={0}
-                                          variant="default"
-                                          className="z-[60] w-[22.1rem] block"
-                                        >
-                                          <Gcol placement={'ss'} gap={1.5}>
-                                            <Typo className="body-md font-bold">어깨병변</Typo>
-                                            <Grow>
-                                              <Badge color="primary" size="md" variant="contained">
-                                                할증
-                                              </Badge>
-                                              <Badge color="green" size="md" variant="contained">
-                                                부담보
-                                              </Badge>
-                                              <Badge color="blue" size="md" variant="contained">
-                                                SI경증
-                                              </Badge>
-                                            </Grow>
-                                            <Typo className="text-wrap">
-                                              어깨병변, 회전근개 손상, 견봉하 점액낭염, 어깨 탈구, 어깨 관절염, 어깨
-                                              근육 손상
-                                            </Typo>
-                                          </Gcol>
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    </Grow>
-                                  ) : null}
-
-                                  <Badge color="green" size="md" variant="contained" className="">
-                                    자동완성
-                                  </Badge>
-                                </Grow>
-                              </FormCell>
-
-                              <FormCell title={'의료기관명'}>
-                                <Input
-                                  value={form.type01_02}
-                                  onChange={(e) => setFormField('type01_02', e.target.value)}
-                                  required
-                                />
-                              </FormCell>
-                            </FormRow>
-                            <FormRow vertical={false}>
-                              <FormCell title={'치료기간'}>
-                                <DatePickerInput
-                                  errorMsg=""
-                                  errorPs="bl"
-                                  mode="range"
-                                  onChange={() => {}}
-                                  rangeValue={{
-                                    from: '2026-03-01',
-                                    to: '2026-03-07',
-                                  }}
-                                  required
-                                  size="lg"
-                                />
-                              </FormCell>
-                              <FormCell title={'수술여부'}>
-                                <RadioGroup
-                                  className="gap-3"
-                                  onValueChange={() => {}}
-                                  width="full"
-                                  required
-                                  defaultValue={'예'}
-                                >
-                                  {[
-                                    { value: '예', label: '예' },
-                                    { value: '아니오', label: '아니오' },
-                                  ].map((item) => (
-                                    <RadioGroupItem key={item.value} value={item.value}>
-                                      {item.label}
-                                    </RadioGroupItem>
-                                  ))}
-                                </RadioGroup>
-                              </FormCell>
-                            </FormRow>
-                            <FormRow vertical={false}>
-                              <FormCell title={'치료일수'} titleRowSpan={2}>
-                                <Grow gap={3}>
-                                  <Checkbox onCheckedChange={() => {}} required>
-                                    입원
-                                  </Checkbox>
-                                  <Grow>
-                                    <Input
-                                      commaAmount={true}
-                                      value={form.type01_03}
-                                      onChange={(e) => setFormField('type01_03', e.target.value)}
-                                      width={40}
-                                      required
-                                    />
-                                    일
+                                    <Badge color="green" size="md" variant="contained" className="">
+                                      자동완성
+                                    </Badge>
                                   </Grow>
-                                </Grow>
-                              </FormCell>
-                              <FormCell title={'완치여부'}>
-                                <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
-                                  {[
-                                    { value: '예', label: '예' },
-                                    { value: '아니오', label: '아니오' },
-                                  ].map((item) => (
-                                    <RadioGroupItem key={item.value} value={item.value}>
-                                      {item.label}
-                                    </RadioGroupItem>
-                                  ))}
-                                </RadioGroup>
-                              </FormCell>
-                            </FormRow>
-                            <FormRow vertical={false}>
-                              <FormCell title={null}>
-                                <Grow gap={3}>
-                                  <Checkbox onCheckedChange={() => {}} required>
-                                    통원
-                                  </Checkbox>
-                                  <Grow>
-                                    <Input
-                                      commaAmount={true}
-                                      value={form.type01_04}
-                                      onChange={(e) => setFormField('type01_04', e.target.value)}
-                                      required
-                                      width={40}
-                                    />
-                                    회
-                                  </Grow>
-                                </Grow>
-                              </FormCell>
-                              <FormCell title={'재발유무'}>
-                                <Grow gap={3}>
+                                </FormCell>
+
+                                <FormCell title={'의료기관명'}>
+                                  <Input
+                                    value={form.type01_02}
+                                    onChange={(e) => setFormField('type01_02', e.target.value)}
+                                    required
+                                  />
+                                </FormCell>
+                              </FormRow>
+                              <FormRow vertical={false}>
+                                <FormCell title={'치료기간'}>
+                                  <DatePickerInput
+                                    errorMsg=""
+                                    errorPs="bl"
+                                    mode="range"
+                                    onChange={() => {}}
+                                    rangeValue={{
+                                      from: '2026-03-01',
+                                      to: '2026-03-07',
+                                    }}
+                                    required
+                                    size="lg"
+                                  />
+                                </FormCell>
+                                <FormCell title={'수술여부'}>
                                   <RadioGroup
                                     className="gap-3"
-                                    errorMsg="하나를 선택해주세요."
-                                    errorPs="bl"
                                     onValueChange={() => {}}
+                                    width="full"
                                     required
+                                    defaultValue={'예'}
                                   >
                                     {[
-                                      { value: '없음', label: '없음' },
-                                      { value: '있음', label: '있음' },
+                                      { value: '예', label: '예' },
+                                      { value: '아니오', label: '아니오' },
                                     ].map((item) => (
                                       <RadioGroupItem key={item.value} value={item.value}>
                                         {item.label}
                                       </RadioGroupItem>
                                     ))}
                                   </RadioGroup>
-                                  <Grow>
-                                    <Input
-                                      commaAmount={true}
-                                      value={form.type01_05}
-                                      onChange={(e) => setFormField('type01_05', e.target.value)}
-                                      width={40}
-                                    />
-                                    회
+                                </FormCell>
+                              </FormRow>
+                              <FormRow vertical={false}>
+                                <FormCell title={'치료일수'} titleRowSpan={2}>
+                                  <Grow gap={3}>
+                                    <Checkbox onCheckedChange={() => {}} required>
+                                      입원
+                                    </Checkbox>
+                                    <Grow>
+                                      <Input
+                                        commaAmount={true}
+                                        value={form.type01_03}
+                                        onChange={(e) => setFormField('type01_03', e.target.value)}
+                                        width={40}
+                                        required
+                                      />
+                                      일
+                                    </Grow>
                                   </Grow>
-                                </Grow>
-                              </FormCell>
-                            </FormRow>
-                          </FormTable>
-                        </TableFoldBody>
-                      </TableFold>
-
-                      {/* [세부 폼 2] (선택) 치료내용 아코디언 */}
-                      <TableFold defaultOpen={false}>
-                        <TableFoldHead title="(선택)치료내용">
-                          <Grow>
-                            <BulletItem
-                              className="text-right w-full break-words whitespace-pre-line"
-                              color="default"
-                              onClick={() => {}}
-                              size="md"
-                              type="dot"
-                            >
-                              치료내용은 심사자 심사시 참고하는 항목으로 필요시 선택바랍니다.
-                            </BulletItem>
-                          </Grow>
-                        </TableFoldHead>
-                        <TableFoldBody className="border-t border-[var(--color-gray-100)] border-t-[0.2rem]">
-                          <CheckboxGroup className="gap-0" defaultValue={[]}>
-                            {(() => {
-                              const items = [
-                                { value: '진단/검사/검진', label: '진단/검사/검진' },
-                                { value: '약처방/투약(주사,연고,안약 등)', label: '약처방/투약(주사,연고,안약 등)' },
-                                { value: '물리치료', label: '물리치료' },
-                                { value: '상담/언어치료', label: '상담/언어치료' },
-                                { value: '치과치료', label: '치과치료' },
-                                { value: '한방치료', label: '한방치료' },
-                                { value: '기타', label: '기타' },
-                              ];
-                              const groups: React.ReactNode[] = [];
-                              for (let i = 0; i < items.length; i += 3) {
-                                const isEtcGroup = i === 6;
-                                groups.push(
-                                  <>
-                                    <Grid
-                                      key={i}
-                                      className={
-                                        isEtcGroup
-                                          ? 'w-full min-h-[3.8rem]'
-                                          : 'grid grid-cols-3 gap-3 w-full min-h-[3.8rem]'
-                                      }
-                                    >
-                                      {items.slice(i, i + 3).map((item) => (
-                                        <Grow key={item.value} gap={3} placement="bwc" className="w-full">
-                                          <CheckboxGroupItem value={item.value}>{item.label}</CheckboxGroupItem>
-
-                                          {item.value === '한방치료' && (
-                                            <Button variant={'outlined'} size={'md'} color={'gray'}>
-                                              기타
-                                            </Button>
-                                          )}
-                                          {item.value === '기타' && (
-                                            <Input
-                                              aria-label="기타 치료 입력"
-                                              value={''}
-                                              readOnly
-                                              className="!w-[calc(100%-7.5rem)]"
-                                            />
-                                          )}
-                                        </Grow>
-                                      ))}
-                                    </Grid>
-                                    <Divider dir="row" className="w-full" />
-                                  </>
-                                );
-                              }
-                              // 기타 항목 3열 전체
-                              return groups;
-                            })()}
-                          </CheckboxGroup>
-                        </TableFoldBody>
-                      </TableFold>
-                      {/* [세부 폼 3] 추가질문 아코디언 */}
-                      <TableFold>
-                        <TableFoldHead title="추가질문" />
-                        <TableFoldBody>
-                          <FormTable cols={['w-auto', 'w-auto']} className="[&_td>div]:min-w-[50rem]">
-                            <FormRow vertical={false}>
-                              <FormCell
-                                title={
-                                  '발생부위 발생부위발생부위 발생부위 발생부위발생부위 발생부위 발생부위발생부위 발생부위 생부위발 발생부 발생부위발생부위 발생부위 발생부생부위  '
-                                }
-                              >
-                                <Grow className="w-full" gap={3} placement="sc">
-                                  <RadioGroup className="gap-x-3 gap-y-1" onValueChange={() => {}}>
+                                </FormCell>
+                                <FormCell title={'완치여부'}>
+                                  <RadioGroup className="gap-3" onValueChange={() => {}} width="full" required>
                                     {[
-                                      { value: '경추', label: '경추' },
-                                      { value: '흉추', label: '흉추' },
-                                      { value: '요추', label: '요추' },
-                                      { value: '그외 부위 또는 여러부위', label: '그외 부위 또는 여러부위' },
+                                      { value: '예', label: '예' },
+                                      { value: '아니오', label: '아니오' },
                                     ].map((item) => (
                                       <RadioGroupItem key={item.value} value={item.value}>
                                         {item.label}
                                       </RadioGroupItem>
                                     ))}
-                                    <Input aria-label="" placeholder="직접 입력" value={''} readOnly />
                                   </RadioGroup>
-                                </Grow>
-                              </FormCell>
-                            </FormRow>
-                            <FormRow>
-                              <FormCell title={'발생원인'}>
-                                <RadioGroup className="gap-3" onValueChange={() => {}}>
-                                  {[
-                                    { value: '교통사고 外원인', label: '교통사고 外원인' },
-                                    { value: '교통사고 원인', label: '교통사고 원인' },
-                                  ].map((item) => (
-                                    <RadioGroupItem key={item.value} value={item.value}>
-                                      {item.label}
-                                    </RadioGroupItem>
-                                  ))}
-                                </RadioGroup>
-                              </FormCell>
-                            </FormRow>
-                          </FormTable>
-                        </TableFoldBody>
-                      </TableFold>
-                      {/* M1. 테이블 추가  */}
-                      {/* [세부 폼 4] 질병별 사전심사 안내 아코디언 */}
-                      <TableFold>
-                        <TableFoldHead title="질병별 사전심사 안내" />
-                        <TableFoldBody>
-                          <RadioGroup
-                            className="gap-1 mb-[0.4rem]"
-                            onValueChange={setSubTabs}
-                            width="full"
-                            value={subTabs}
-                          >
-                            {[
-                              { value: 'tab1', label: '일반고지형' },
-                              { value: 'tab2', label: '간편고지형' },
-                            ].map((option) => (
-                              <RadioGroupItem
-                                key={option.value}
-                                size="md"
-                                value={option.value}
-                                variant="chipBox"
-                                className="bg-[#E5E5E5] text-[#777] data-[state=checked]:bg-[#414141] data-[state=checked]:text-white data-[state=checked]:border-solid data-[state=checked]:border data-[state=checked]:border-[#414141] hover:border-[#414141]"
-                              >
-                                {option.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
+                                </FormCell>
+                              </FormRow>
+                              <FormRow vertical={false}>
+                                <FormCell title={null}>
+                                  <Grow gap={3}>
+                                    <Checkbox onCheckedChange={() => {}} required>
+                                      통원
+                                    </Checkbox>
+                                    <Grow>
+                                      <Input
+                                        commaAmount={true}
+                                        value={form.type01_04}
+                                        onChange={(e) => setFormField('type01_04', e.target.value)}
+                                        required
+                                        width={40}
+                                      />
+                                      회
+                                    </Grow>
+                                  </Grow>
+                                </FormCell>
+                                <FormCell title={'재발유무'}>
+                                  <Grow gap={3}>
+                                    <RadioGroup
+                                      className="gap-3"
+                                      errorMsg="하나를 선택해주세요."
+                                      errorPs="bl"
+                                      onValueChange={() => {}}
+                                      required
+                                    >
+                                      {[
+                                        { value: '없음', label: '없음' },
+                                        { value: '있음', label: '있음' },
+                                      ].map((item) => (
+                                        <RadioGroupItem key={item.value} value={item.value}>
+                                          {item.label}
+                                        </RadioGroupItem>
+                                      ))}
+                                    </RadioGroup>
+                                    <Grow>
+                                      <Input
+                                        commaAmount={true}
+                                        value={form.type01_05}
+                                        onChange={(e) => setFormField('type01_05', e.target.value)}
+                                        width={40}
+                                      />
+                                      회
+                                    </Grow>
+                                  </Grow>
+                                </FormCell>
+                              </FormRow>
+                            </FormTable>
+                          </TableFoldBody>
+                        </TableFold>
 
-                          {subTabs === 'tab1' && (
-                            <div className="ag-theme-alpine w-full inner-scroll" data-row={dummyData2.length}>
-                              <AgGridReact<DummyDataType2>
-                                getRowId={(params) => String(params.data.id)}
-                                noRowsOverlayComponent={AgGridEmptyComponent}
-                                rowData={dummyData2}
-                                columnDefs={columnDefs2}
-                                defaultColDef={{
-                                  sortable: true,
-                                  resizable: true,
-                                }}
-                                domLayout="normal"
-                                tooltipShowMode="whenTruncated"
-                                tooltipShowDelay={0}
-                                headerHeight={50}
-                              />
-                            </div>
-                          )}
-                          {subTabs === 'tab2' && (
-                            <div className="ag-theme-alpine w-full inner-scroll" data-row={dummyData3.length}>
-                              <AgGridReact<DummyDataType3>
-                                getRowId={(params) => String(params.data.id)}
-                                noRowsOverlayComponent={AgGridEmptyComponent}
-                                rowData={dummyData3}
-                                columnDefs={columnDefs3}
-                                defaultColDef={{
-                                  sortable: true,
-                                  resizable: true,
-                                }}
-                                headerHeight={50}
-                                domLayout="normal"
-                                tooltipShowMode="whenTruncated"
-                                tooltipShowDelay={0}
-                              />
-                            </div>
-                          )}
-                        </TableFoldBody>
-                      </TableFold>
-                    </Gcol>
-                  </TabPager>
-                </Gcol>
+                        {/* [세부 폼 2] (선택) 치료내용 아코디언 */}
+                        <TableFold defaultOpen={false}>
+                          <TableFoldHead title="(선택)치료내용">
+                            <Grow>
+                              <BulletItem
+                                className="text-right w-full break-words whitespace-pre-line"
+                                color="default"
+                                onClick={() => {}}
+                                size="md"
+                                type="dot"
+                              >
+                                치료내용은 심사자 심사시 참고하는 항목으로 필요시 선택바랍니다.
+                              </BulletItem>
+                            </Grow>
+                          </TableFoldHead>
+                          <TableFoldBody className="border-t border-[var(--color-gray-100)] border-t-[0.2rem]">
+                            <CheckboxGroup className="gap-0" defaultValue={[]}>
+                              {(() => {
+                                const items = [
+                                  { value: '진단/검사/검진', label: '진단/검사/검진' },
+                                  {
+                                    value: '약처방/투약(주사,연고,안약 등)',
+                                    label: '약처방/투약(주사,연고,안약 등)',
+                                  },
+                                  { value: '물리치료', label: '물리치료' },
+                                  { value: '상담/언어치료', label: '상담/언어치료' },
+                                  { value: '치과치료', label: '치과치료' },
+                                  { value: '한방치료', label: '한방치료' },
+                                  { value: '기타', label: '기타' },
+                                ];
+                                const groups: React.ReactNode[] = [];
+                                for (let i = 0; i < items.length; i += 3) {
+                                  const isEtcGroup = i === 6;
+                                  groups.push(
+                                    <>
+                                      <Grid
+                                        key={i}
+                                        className={
+                                          isEtcGroup
+                                            ? 'w-full min-h-[3.8rem]'
+                                            : 'grid grid-cols-3 gap-3 w-full min-h-[3.8rem]'
+                                        }
+                                      >
+                                        {items.slice(i, i + 3).map((item) => (
+                                          <Grow key={item.value} gap={3} placement="bwc" className="w-full">
+                                            <CheckboxGroupItem value={item.value}>{item.label}</CheckboxGroupItem>
+
+                                            {item.value === '한방치료' && (
+                                              <Button variant={'outlined'} size={'md'} color={'gray'}>
+                                                기타
+                                              </Button>
+                                            )}
+                                            {item.value === '기타' && (
+                                              <Input
+                                                aria-label="기타 치료 입력"
+                                                value={''}
+                                                readOnly
+                                                className="!w-[calc(100%-7.5rem)]"
+                                              />
+                                            )}
+                                          </Grow>
+                                        ))}
+                                      </Grid>
+                                      <Divider dir="row" className="w-full" />
+                                    </>
+                                  );
+                                }
+                                // 기타 항목 3열 전체
+                                return groups;
+                              })()}
+                            </CheckboxGroup>
+                          </TableFoldBody>
+                        </TableFold>
+                        {/* [세부 폼 3] 추가질문 아코디언 */}
+                        <TableFold>
+                          <TableFoldHead title="추가질문" />
+                          <TableFoldBody>
+                            <FormTable
+                              variant="head"
+                              className="border-t border-t-[0.2rem] [&_dl+dl]:mt-0! [&_dl]:border-t-[var(--color-gray-100)] [&_dl>div]:flex-col [&_dl>div]:gap-0! [&_dl>div]:w-full [&_dl]:w-full [&_dl_dt]:bg-[var(--color-gray-5)] [&_dl_dt]:w-full [&_dl_dt]:p-2 [&_dl_dt]:border-b [&_dl_dt]:border-b-[var(--color-gray-10)] [&_dl_dt_span]:text-[#000] [&_dl_dd]:border-b [&_dl_dd]:border-b-[var(--color-gray-10)] [&_dl_dd]:w-full [&_dl_dd]:p-2 "
+                            >
+                              <FormRow vertical={false}>
+                                <FormCell
+                                  title={
+                                    '발생부위 발생부위발생부위 발생부위 발생부위발생부위 발생부위 발생부위발생부위 발생부위 생부위발 발생부 발생부위발생부위 발생부위 발생부생부위  '
+                                  }
+                                >
+                                  <Grow className="w-full" gap={3} placement="sc">
+                                    <RadioGroup className="gap-x-3 gap-y-1" onValueChange={() => {}}>
+                                      {[
+                                        { value: '경추', label: '경추' },
+                                        { value: '흉추', label: '흉추' },
+                                        { value: '요추', label: '요추' },
+                                        { value: '그외 부위 또는 여러부위', label: '그외 부위 또는 여러부위' },
+                                      ].map((item) => (
+                                        <RadioGroupItem key={item.value} value={item.value}>
+                                          {item.label}
+                                        </RadioGroupItem>
+                                      ))}
+                                      <Input aria-label="" placeholder="직접 입력" value={''} readOnly />
+                                    </RadioGroup>
+                                  </Grow>
+                                </FormCell>
+                              </FormRow>
+                              <FormRow>
+                                <FormCell title={'발생원인'}>
+                                  <RadioGroup className="gap-3" onValueChange={() => {}}>
+                                    {[
+                                      { value: '교통사고 外원인', label: '교통사고 外원인' },
+                                      { value: '교통사고 원인', label: '교통사고 원인' },
+                                    ].map((item) => (
+                                      <RadioGroupItem key={item.value} value={item.value}>
+                                        {item.label}
+                                      </RadioGroupItem>
+                                    ))}
+                                  </RadioGroup>
+                                </FormCell>
+                              </FormRow>
+                            </FormTable>
+                          </TableFoldBody>
+                        </TableFold>
+                        {/* M1. 테이블 추가  */}
+                        {/* [세부 폼 4] 질병별 사전심사 안내 아코디언 */}
+                        <TableFold>
+                          <TableFoldHead title="질병별 사전심사 안내" />
+                          <TableFoldBody>
+                            <RadioGroup
+                              className="gap-1 mb-[0.4rem]"
+                              onValueChange={setSubTabs}
+                              width="full"
+                              value={subTabs}
+                            >
+                              {[
+                                { value: 'tab1', label: '일반고지형' },
+                                { value: 'tab2', label: '간편고지형' },
+                              ].map((option) => (
+                                <RadioGroupItem
+                                  key={option.value}
+                                  size="md"
+                                  value={option.value}
+                                  variant="chipBox"
+                                  className="bg-[#E5E5E5] text-[#777] data-[state=checked]:bg-[#414141] data-[state=checked]:text-white data-[state=checked]:border-solid data-[state=checked]:border data-[state=checked]:border-[#414141] hover:border-[#414141]"
+                                >
+                                  {option.label}
+                                </RadioGroupItem>
+                              ))}
+                            </RadioGroup>
+
+                            {subTabs === 'tab1' && (
+                              <div className="ag-theme-alpine w-full inner-scroll" data-row={dummyData2.length}>
+                                <AgGridReact<DummyDataType2>
+                                  getRowId={(params) => String(params.data.id)}
+                                  noRowsOverlayComponent={AgGridEmptyComponent}
+                                  rowData={dummyData2}
+                                  columnDefs={columnDefs2}
+                                  defaultColDef={{
+                                    sortable: true,
+                                    resizable: true,
+                                  }}
+                                  domLayout="normal"
+                                  tooltipShowMode="whenTruncated"
+                                  tooltipShowDelay={0}
+                                  headerHeight={50}
+                                />
+                              </div>
+                            )}
+                            {subTabs === 'tab2' && (
+                              <div className="ag-theme-alpine w-full inner-scroll" data-row={dummyData3.length}>
+                                <AgGridReact<DummyDataType3>
+                                  getRowId={(params) => String(params.data.id)}
+                                  noRowsOverlayComponent={AgGridEmptyComponent}
+                                  rowData={dummyData3}
+                                  columnDefs={columnDefs3}
+                                  defaultColDef={{
+                                    sortable: true,
+                                    resizable: true,
+                                  }}
+                                  headerHeight={50}
+                                  domLayout="normal"
+                                  tooltipShowMode="whenTruncated"
+                                  tooltipShowDelay={0}
+                                />
+                              </div>
+                            )}
+                          </TableFoldBody>
+                        </TableFold>
+                      </Gcol>
+                    </TabPager>
+                  </Gcol>
+                </Grow>
               </Grow>
-            </Grow>
-          </Grow>
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </DialogSection>
 
         {/* 3. 다이얼로그 하단 푸터 영역: FAQ 조회, 저장 및 닫기 */}

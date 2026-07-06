@@ -314,6 +314,9 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                     Self고지
                   </Button>
                   <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                    심평원 동의
+                  </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
                     고지유형찾기(UW)
                   </Button>
                 </Grow>
