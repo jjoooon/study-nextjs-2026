@@ -15,12 +15,29 @@ const meta: Meta<StoryProps> = {
   component: Ltpz034,
   argTypes: {
     isRegistered: {
-      control: 'boolean',
-      description: '등록 여부 (true: 등록 / false: 미등록)',
+      name: '등록, 미등록 여부',
+      options: [true, false],
+      control: {
+        type: 'inline-radio',
+        labels: {
+          true: '등록',
+          false: '미등록',
+        },
+      },
+      description: '등록 여부 (isRegistered)',
     },
     hasTableData: {
-      control: 'boolean',
-      description: 'Ltpa030table 데이터 유무 (true: 데이터 있음 / false: 데이터 없음)',
+      name: '테이블 데이터 유무',
+      options: [true, false],
+      control: {
+        type: 'inline-radio',
+        labels: {
+          true: '데이터 있음',
+          false: '데이터 없음',
+        },
+      },
+      description: 'Ltpa030table 데이터 유무 (hasTableData)',
+      if: { arg: 'isRegistered', eq: false },
     },
   },
   args: {

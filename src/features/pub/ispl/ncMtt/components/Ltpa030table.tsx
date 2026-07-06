@@ -71,14 +71,14 @@ export default function Ltpa030table({
       {colSpan === 1 ? (
         <colgroup>
           <col style={{ width: 'auto' }} />
-          <col style={{ width: '4rem' }} />
+          <col style={{ width: '3.6rem' }} />
         </colgroup>
       ) : (
         <colgroup>
           <col style={{ width: 'auto' }} />
           <col style={{ width: 'auto' }} />
           <col style={{ width: 'auto' }} />
-          <col style={{ width: '4rem' }} />
+          <col style={{ width: '3.6rem' }} />
         </colgroup>
       )}
       <TableHeader>

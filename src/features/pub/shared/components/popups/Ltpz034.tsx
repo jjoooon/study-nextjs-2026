@@ -324,7 +324,7 @@ const UnderwritingBadge = ({ id, label, onRemove }: UnderwritingBadgeProps) => {
   return (
     <div
       ref={badgeRef}
-      className={`inline-flex flex-row items-center gap-1 bg-[#2E3B4E] text-[#FFF] rounded-full text-[1.2rem] py-[0.5rem] px-[0.6rem] transition-opacity duration-150 ${
+      className={`inline-flex flex-row items-center gap-1 bg-[#2E3B4E] text-[#FFF] rounded-full  text-[1.2rem] py-[0.5rem] px-[0.6rem] transition-opacity duration-150 ${
         isReady ? 'animate-slide-from-click' : 'opacity-0'
       }`}
       style={
@@ -334,7 +334,7 @@ const UnderwritingBadge = ({ id, label, onRemove }: UnderwritingBadgeProps) => {
         } as React.CSSProperties
       }
     >
-      <span>{label}</span>
+      <span className="font-bold">{label}</span>
       <button
         type="button"
         onClick={() => onRemove(id)}
@@ -612,9 +612,10 @@ const Ltpz034 = ({
                           resizable: true,
                         }}
                         rowSelection={{
-                          mode: 'singleRow',
+                          mode: 'multiRow',
                           checkboxes: true,
                           enableClickSelection: false,
+                          headerCheckbox: false,
                         }}
                         selectionColumnDef={{
                           headerName: '선택',
@@ -622,8 +623,6 @@ const Ltpz034 = ({
                           cellClass: 'text-center editable-cell',
                         }}
                         domLayout="normal"
-                        // tooltipShowMode="whenTruncated"
-                        // tooltipShowDelay={0}
                       />
                     </div>
                     <Grow placement="ee">
