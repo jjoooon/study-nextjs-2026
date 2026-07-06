@@ -32,7 +32,7 @@ export type IARow = {
   date: string;
   modify: string;
   file?: string;
-  popup?: string;
+  popup?: boolean;
   path?: string;
 };
 

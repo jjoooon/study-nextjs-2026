@@ -248,7 +248,15 @@ export function IaTable({
                 onClick={() => setActiveRowKey(getRowKey(row))}
               >
                 <td className={rowBgClass + ' text-center'}>
-                  <b>{row.num ?? index + 1}</b>
+                  <b
+                    className={
+                      !row.popup
+                        ? 'inline-flex items-center justify-center w-[2.2rem] h-[2.2rem] rounded-full bg-[#c6d8ef] text-[1.1rem]'
+                        : ''
+                    }
+                  >
+                    {row.num ?? index + 1}
+                  </b>
                 </td>
                 <td scope="row" className={rowIdBgClass}>
                   <b>{row.id}</b>

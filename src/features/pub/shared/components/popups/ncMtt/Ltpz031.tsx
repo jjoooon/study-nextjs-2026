@@ -177,11 +177,16 @@ const DummyData: DummyDataType[] = [
 
 /** @description 질병 상세 내용 탭 전환 처리를 위한 상용 질병 목록 설정 */
 const DataTabs = [
-  { label: '척추염좌', value: 'TAB1' },
-  { label: '자궁근종', value: 'TAB2' },
-  { label: '대장·직장용종', value: 'TAB3' },
-  { label: '추간판장애', value: 'TAB4' },
-  { label: '어깨병변', value: 'TAB5' },
+  { label: '척추염좌척추염좌척추염좌척추염좌척추염좌척추염좌척추염좌', value: 'TAB1' },
+  { label: '자궁근종자궁근종자궁근종자궁근종자궁근종자궁근종', value: 'TAB2' },
+  { label: '대장·직장용종대장·직장용종대장·직장용종대장·직장용종대장·직장용종대장·직장용종', value: 'TAB3' },
+  { label: '추간판장애추간판장애추간판장애추간판장애추간판장애추간판장애추간판장애', value: 'TAB4' },
+  { label: '어깨병변어깨병변어깨병변어깨병변어깨병변어깨병변', value: 'TAB5' },
+  { label: '어깨병변', value: 'TAB6' },
+  { label: '자궁근종', value: 'TAB7' },
+  { label: '대장·직장용종', value: 'TAB8' },
+  { label: '추간판장애', value: 'TAB9' },
+  { label: '어깨병변', value: 'TAB10' },
 ];
 
 /**
@@ -955,7 +960,7 @@ const Ltpz031 = () => {
           </Grow>
 
           {/* 2-2. 중앙 스플릿 레이아웃: 좌측(질병검색 패널) & 우측(선택 질병별 입력 폼 패널) */}
-          <Grow className="grid w-full grid-cols-[24.7rem_1fr] gap-3" placement={'ss'}>
+          <Grow className="grid w-full grid-cols-[28.5rem_1fr] gap-3" placement={'ss'}>
             {/* 좌측 영역: 많이 찾는 질병 목록 및 질병 검색창 & 결과 목록 그리드 */}
             <Grid placement={'ss'} className="w-full h-full overflow-hidden grid-rows-[auto_1fr]" gap={5}>
               {/* 많이 찾는 질병 (퀵 태그 버튼들) */}
@@ -964,7 +969,7 @@ const Ltpz031 = () => {
                 <Grow variant="box-round" placement={'bwc'}>
                   <CheckboxGroup className="gap-1" minSelected={2} defaultValue={[]} variant="button">
                     {[
-                      { value: '대장·직장용종', label: '대장·직장용종 장·직장용종 장·직장용종' },
+                      { value: '대장·직장용종', label: '대장직장용종장직장용종 장·직장용종' },
                       { value: '척주염좌', label: '척주염좌척주염좌척주염좌 척주염좌' },
                       { value: '등통증', label: '등통증' },
                       { value: '후천성 백내장', label: '후천성 백내장' },
@@ -1044,7 +1049,22 @@ const Ltpz031 = () => {
                     removable={true}
                     onRemove={handleRemove}
                     getValue={(tab) => tab.value}
-                    renderTab={(tab) => <span>{tab.label}</span>}
+                    renderTab={(tab) => {
+                      const isTruncated = tab.label.length > 8;
+                      const displayLabel = isTruncated ? `${tab.label.slice(0, 8)}...` : tab.label;
+                      return isTruncated ? (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span>{displayLabel}</span>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" align="center" sideOffset={8}>
+                            {tab.label}
+                          </TooltipContent>
+                        </Tooltip>
+                      ) : (
+                        <span>{displayLabel}</span>
+                      );
+                    }}
                     visibleCount={5}
                   >
                     {/* Tab1 (활성화된 질병별 상세 질문 카드 리스트) */}
