@@ -27,9 +27,11 @@ interface Ltpz110Props {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   isID?: boolean;
+  defaultValues?: string[];
 }
 
-const Ltpz110 = ({ open = true, onOpenChange, isID }: Ltpz110Props) => {
+const Ltpz110 = ({ open = true, onOpenChange, isID, defaultValues }: Ltpz110Props) => {
+  const initialValues = defaultValues ?? (isID ? ['0', '1', '2', '3', '4', '5', '6'] : []);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="md">
@@ -77,7 +79,7 @@ const Ltpz110 = ({ open = true, onOpenChange, isID }: Ltpz110Props) => {
               </FormRow>
               <FormRow>
                 <FormCell title="(공통)적용담보" titleColSpan={2}>
-                  <CheckboxGroup className="flex flex-wrap gap-y-2 gap-x-1">
+                  <CheckboxGroup className="flex flex-wrap gap-y-2 gap-x-1" defaultValue={initialValues}>
                     {(isID
                       ? [
                           { label: '질병후유3%', value: '0' },

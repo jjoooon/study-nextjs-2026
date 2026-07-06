@@ -2,10 +2,19 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { Copy } from 'lucide-react';
 import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
-import { RefuseIcon, QuestionMark } from '@icons';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import {
+  RefuseIcon,
+  DiamondIcon,
+  AuditIcon,
+  ConditionalIcon,
+  CircleCheckIcon,
+  QuestionMark,
+  NewWin,
+  InfoBoxWarningIcon,
+} from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
@@ -13,175 +22,131 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 export interface TooltipItem {
   title: string;
-  hasCopy?: boolean;
-  content: string;
+  content: string[];
 }
 
 export interface UnderwritingItem {
-  id: string;
-  label: string;
+  id?: string;
+  label?: string;
   checked?: boolean;
-  disabled?: boolean;
-  hasRefuseIcon?: boolean;
-  hasTooltip?: boolean;
-  tooltipData?: TooltipItem[];
-}
-
-export interface SimpleUnderwritingRow {
-  col1?: UnderwritingItem;
-  col2?: UnderwritingItem;
+  state?: '거절' | '연기' | '심사' | '조건부' | '인수' | '';
 }
 
 export interface HealthUnderwritingRow {
-  col1?: UnderwritingItem;
-  col2?: UnderwritingItem;
-  col3?: UnderwritingItem;
-  hasTooltip?: boolean;
+  data: UnderwritingItem[];
   tooltipData?: TooltipItem[];
 }
 
 interface Ltpa030tableProps {
   healthRows?: HealthUnderwritingRow[];
-  simpleRows?: SimpleUnderwritingRow[];
   onCheckedChange?: (id: string, checked: boolean | 'indeterminate') => void;
+  onCheckboxClick?: (id: string, label: string, isChecked: boolean, event: React.MouseEvent<HTMLButtonElement>) => void;
   isClick?: boolean;
-  hideTitle?: boolean;
+  colSpan?: number;
 }
 
-// $로 감싸진 텍스트를 <strong> 태그로 렌더링하는 헬퍼 함수
-const renderFormattedText = (text: string) => {
-  if (!text) return '';
-  if (!text.includes('$')) {
-    return text;
-  }
-  const parts = text.split('$');
-  return parts.map((part, index) => {
-    if (index % 2 === 1) {
-      return (
-        <strong key={index} className="font-bold text-primary">
-          {part}
-        </strong>
-      );
-    }
-    return part;
-  });
-};
+const unavailableStyle = "bg-[url('/images/checkbox/pattern_checkbox.png')] bg-repeat bg-center w-full h-[30px]";
+
+const selectedStyle =
+  'bg-[#FFEFEA] border-[0.2rem] border-[#FF5C2E] !text-[#000] [&_label]:!text-[#000] [&_span]:!text-[#000] transition-[background-color,border-color] duration-300 delay-300';
+
+const disabledStyle = 'bg-[#E4E7EC] !text-[#000] [&_label]:!text-[#000] [&_span]:!text-[#000]';
 
 export default function Ltpa030table({
   healthRows = [],
-  simpleRows = [],
   isClick = true,
-  hideTitle = false,
   onCheckedChange,
+  onCheckboxClick,
+  colSpan = 3,
 }: Ltpa030tableProps) {
-  const handleCopy = (text: string) => {
-    if (!text) return;
-    navigator.clipboard.writeText(text.replace(/\$/g, '')).catch((err) => {
-      console.error('Failed to copy text: ', err);
-    });
-  };
-
-  const defaultTooltipData = [
-    {
-      title: '$간편고지형명 판정결과$',
-      hasCopy: true,
-      content: '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $질병수술비(ALL RISK)$',
+  const handleCheckboxClick = React.useCallback(
+    (colId: string, colLabel: string, colChecked: boolean, event: React.MouseEvent<HTMLButtonElement>) => {
+      onCheckboxClick?.(colId, colLabel, colChecked, event);
     },
-    {
-      title: '$345조건부(감액)$',
-      hasCopy: true,
-      content:
-        '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
-    },
-    {
-      title: '$345(2일)조건부(감액)$',
-      hasCopy: false,
-      content:
-        '제한담보: $질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비$ - $인수판정룰 사전안내 컬럼에 입력된 값 표시$',
-    },
-  ];
+    [onCheckboxClick]
+  );
 
-  const hasBoth = healthRows.length > 0 && simpleRows.length > 0;
-  const showTitle = !hideTitle && hasBoth;
-
-  const renderHealthTable = () => {
-    if (healthRows.length === 0) return null;
-
-    const tableContent = (
-      <Table variant="default">
+  const tableContent = (
+    <Table variant="default" style={{ tableLayout: 'fixed' }}>
+      {colSpan === 1 ? (
         <colgroup>
-          <col style={{ width: '30%' }} />
-          <col style={{ width: '30%' }} />
           <col style={{ width: 'auto' }} />
-          <col style={{ width: '10%' }} />
+          <col style={{ width: '3.6rem' }} />
         </colgroup>
-        <TableHeader>
+      ) : (
+        <colgroup>
+          <col style={{ width: 'auto' }} />
+          <col style={{ width: 'auto' }} />
+          <col style={{ width: 'auto' }} />
+          <col style={{ width: '3.6rem' }} />
+        </colgroup>
+      )}
+      <TableHeader>
+        <TableRow>
+          <TableHead colSpan={colSpan}>고지유형</TableHead>
+          <TableHead>제한</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody className="[&_td]:border-[#D8D8D8]!">
+        {healthRows.length === 0 ? (
           <TableRow>
-            <TableHead colSpan={3}>고지유형</TableHead>
-            <TableHead>제한</TableHead>
+            <TableCell colSpan={colSpan + 1} className="py-10 text-center align-middle h-[27rem]">
+              <Gcol placement="cc" className="w-full h-full text-center justify-center items-center" gap={1}>
+                <InfoBoxWarningIcon size={14} color="#777" />
+                <Typo variant="body-sm" className="leading-normal text-[#414141]">
+                  입력/수술 정보를 입력 후
+                  <br />
+                  [고지유형 확인]을 선택해 주세요.
+                </Typo>
+              </Gcol>
+            </TableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody>
-          {healthRows.map((row, index) => (
+        ) : (
+          healthRows.map((row, index) => (
             <TableRow key={index} className="text-center">
-              <TableCell>
-                {row.col1 && (
-                  <Grow className="w-full [&>div]:w-full">
-                    <Checkbox
-                      className={`w-full flex items-center justify-between no-underline ${row.col1.disabled || !isClick ? 'cursor-default' : ''}`}
-                      color="primary"
-                      size="lg"
-                      variant="text"
-                      checked={row.col1.checked}
-                      disabled={row.col1.disabled || !isClick}
-                      onCheckedChange={(checked) => onCheckedChange?.(row.col1!.id, checked)}
-                    >
-                      {row.col1.label}
-                      {row.col1.hasRefuseIcon && <RefuseIcon />}
-                    </Checkbox>
-                  </Grow>
-                )}
-              </TableCell>
-              <TableCell>
-                {row.col2 && (
-                  <Grow className="w-full [&>div]:w-full">
-                    <Checkbox
-                      className={`w-full flex items-center justify-between no-underline ${row.col2.disabled || !isClick ? 'cursor-default' : ''}`}
-                      color="primary"
-                      size="lg"
-                      variant="text"
-                      checked={row.col2.checked}
-                      disabled={row.col2.disabled || !isClick}
-                      onCheckedChange={(checked) => onCheckedChange?.(row.col2!.id, checked)}
-                    >
-                      {row.col2.label}
-                      {row.col2.hasRefuseIcon && <RefuseIcon />}
-                    </Checkbox>
-                  </Grow>
-                )}
-              </TableCell>
-              <TableCell>
-                {row.col3 && (
-                  <Grow className="w-full [&>div]:w-full">
-                    <Checkbox
-                      className={`w-full flex items-center justify-between no-underline ${row.col3.disabled || !isClick ? 'cursor-default' : ''}`}
-                      color="primary"
-                      size="lg"
-                      variant="text"
-                      checked={row.col3.checked}
-                      disabled={row.col3.disabled || !isClick}
-                      onCheckedChange={(checked) => onCheckedChange?.(row.col3!.id, checked)}
-                    >
-                      {row.col3.label}
-                      {row.col3.hasRefuseIcon && <RefuseIcon />}
-                    </Checkbox>
-                  </Grow>
-                )}
-              </TableCell>
+              {row.data.map((col, colIdx) => {
+                const { id, label, state, checked } = col;
+                return (
+                  <TableCell
+                    key={colIdx}
+                    style={{ height: '3rem' }}
+                    className="relative bg-[#FFF] overflow-hidden px-0! py-0!"
+                  >
+                    {id && label && state ? (
+                      <Grow
+                        id={`grow-underwriting-${id}`}
+                        className={`w-full h-full [&>div]:w-full [&>div]:h-full relative px-[0.6rem] bg-[#FFF] ${state === '거절' && isClick ? disabledStyle : checked ? selectedStyle : ''}`}
+                      >
+                        <Checkbox
+                          id={`checkbox-underwriting-${id}`}
+                          className={`w-full h-full flex items-center justify-between no-underline py-0!  ${state === '거절' || !isClick ? 'cursor-default' : ''}`}
+                          color="primary"
+                          size="lg"
+                          variant="text"
+                          checked={checked}
+                          disabled={state === '거절' || !isClick}
+                          onCheckedChange={(checkedVal) => onCheckedChange?.(id, checkedVal)}
+                          onClick={(event) => handleCheckboxClick(id, label, !checked, event)}
+                        >
+                          {label}
+                          {state === '거절' && <RefuseIcon />}
+                          {state === '연기' && <DiamondIcon />}
+                          {state === '심사' && <AuditIcon />}
+                          {state === '조건부' && <ConditionalIcon />}
+                          {state === '인수' && <CircleCheckIcon size={14} />}
+                        </Checkbox>
+                      </Grow>
+                    ) : (
+                      <div className={unavailableStyle} />
+                    )}
+                  </TableCell>
+                );
+              })}
               <TableCell
-                className={row.hasTooltip || (row.tooltipData && row.tooltipData.length > 0) ? 'text-center' : ''}
+                style={{ height: '30px' }}
+                className={`py-0! px-0! bg-[#FFF] ${row.tooltipData && row.tooltipData.length > 0 ? 'text-center bg-[#FFF]' : ''}`}
               >
-                {(row.hasTooltip || (row.tooltipData && row.tooltipData.length > 0)) && (
+                {row.tooltipData && row.tooltipData.length > 0 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button only="icon" size={'md'} variant="none">
@@ -196,181 +161,36 @@ export default function Ltpa030table({
                       className="w-[22.1rem] block"
                     >
                       <Gcol placement={'ss'} gap={1.5}>
-                        {(row.tooltipData && row.tooltipData.length > 0 ? row.tooltipData : defaultTooltipData)
-                          .slice(0, 3)
-                          .map((tip, idx) => (
-                            <Gcol key={idx} placement={'ss'}>
-                              <Grow placement={'bwc'}>
-                                <Typo tag={'strong'} className="body-md font-bold">
-                                  {renderFormattedText(tip.title)}
-                                </Typo>
-                                <Button only="icon" size={'md'} variant="none">
-                                  <Copy size={16} color="var(--color-gray-500)" />
-                                </Button>
-                              </Grow>
-                              <Typo tag={'p'} className="text-wrap">
-                                {renderFormattedText(tip.content)}
+                        {row.tooltipData.slice(0, 3).map((tip, idx) => (
+                          <Gcol key={idx} placement={'ss'} className="gap-[0.6rem]">
+                            <Grow placement={'cc'}>
+                              <Typo tag={'strong'} className="body-md font-bold text-[1.2rem]">
+                                {tip.title}
                               </Typo>
-                            </Gcol>
-                          ))}
+                              <Button only="icon" size={'sm'} variant="none" title="복사하기" className="h-[1.8rem]">
+                                <NewWin size={16} color="var(--color-gray-500)" />
+                              </Button>
+                            </Grow>
+                            <BulletList color={'warning'} size="sm" className="gap-[0.2rem]">
+                              {(Array.isArray(tip.content) ? tip.content : [tip.content]).map((item, cIdx) => (
+                                <BulletListItem key={cIdx}>
+                                  {cIdx === 0 && <strong className="font-bold">제한담보:</strong>} {item}
+                                </BulletListItem>
+                              ))}
+                            </BulletList>
+                          </Gcol>
+                        ))}
                       </Gcol>
                     </TooltipContent>
                   </Tooltip>
                 )}
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    );
-
-    if (showTitle) {
-      return (
-        <Gcol className="h-full" placement={'ss'}>
-          <Typo variant="heading-sm" color="default">
-            일반/건강고지
-          </Typo>
-          {tableContent}
-        </Gcol>
-      );
-    }
-
-    return tableContent;
-  };
-
-  const renderSimpleTable = () => {
-    if (simpleRows.length === 0) return null;
-
-    const tableContent = (
-      <Table variant="default">
-        <colgroup>
-          <col style={{ width: '30%' }} />
-          <col style={{ width: '30%' }} />
-          <col style={{ width: 'auto' }} />
-          <col style={{ width: '10%' }} />
-        </colgroup>
-        <TableHeader>
-          <TableRow>
-            <TableHead colSpan={3}>고지유형</TableHead>
-            <TableHead>제한</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {simpleRows.map((row, index) => {
-            const hasTooltip1 = row.col1?.hasTooltip || (row.col1?.tooltipData && row.col1.tooltipData.length > 0);
-            const hasTooltip2 = row.col2?.hasTooltip || (row.col2?.tooltipData && row.col2.tooltipData.length > 0);
-            const tooltipTarget = hasTooltip1 ? row.col1 : hasTooltip2 ? row.col2 : null;
-            return (
-              <TableRow key={index} className="text-center">
-                <TableCell>
-                  {row.col1 && (
-                    <Grow className="w-full [&>div]:w-full">
-                      <Checkbox
-                        className={`w-full flex items-center justify-between no-underline ${row.col1.disabled || !isClick ? 'cursor-default' : ''}`}
-                        color="primary"
-                        size="lg"
-                        variant="text"
-                        checked={row.col1.checked}
-                        disabled={row.col1.disabled || !isClick}
-                        onCheckedChange={(checked) => onCheckedChange?.(row.col1!.id, checked)}
-                      >
-                        {row.col1.label}
-                        {row.col1.hasRefuseIcon && <RefuseIcon />}
-                      </Checkbox>
-                    </Grow>
-                  )}
-                </TableCell>
-                <TableCell>
-                  {row.col2 && (
-                    <Grow className="w-full [&>div]:w-full">
-                      <Checkbox
-                        className={`w-full flex items-center justify-between no-underline ${row.col2.disabled || !isClick ? 'cursor-default' : ''}`}
-                        color="primary"
-                        size="lg"
-                        variant="text"
-                        checked={row.col2.checked}
-                        disabled={row.col2.disabled || !isClick}
-                        onCheckedChange={(checked) => onCheckedChange?.(row.col2!.id, checked)}
-                      >
-                        {row.col2.label}
-                        {row.col2.hasRefuseIcon && <RefuseIcon />}
-                      </Checkbox>
-                    </Grow>
-                  )}
-                </TableCell>
-                <TableCell></TableCell>
-                <TableCell className={tooltipTarget ? 'text-center' : ''}>
-                  {tooltipTarget && (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button only="icon" size={'md'} variant="none">
-                          <QuestionMark color="var(--color-gray-500)" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent
-                        align="start"
-                        side="bottom"
-                        sideOffset={0}
-                        variant="default"
-                        className="w-[22.1rem] block"
-                      >
-                        <Gcol placement={'ss'} gap={1.5}>
-                          {(tooltipTarget.tooltipData && tooltipTarget.tooltipData.length > 0
-                            ? tooltipTarget.tooltipData
-                            : defaultTooltipData
-                          )
-                            .slice(0, 3)
-                            .map((tip, idx) => (
-                              <Gcol key={idx} placement={'ss'}>
-                                <Grow placement={'bwc'}>
-                                  <Typo tag={'strong'} className="body-md font-bold">
-                                    {renderFormattedText(tip.title)}
-                                  </Typo>
-                                  <Button
-                                    only="icon"
-                                    size={'md'}
-                                    variant="none"
-                                    onClick={() => handleCopy(tip.content)}
-                                    title="복사하기"
-                                  >
-                                    <Copy size={16} color="var(--color-gray-500)" />
-                                  </Button>
-                                </Grow>
-                                <Typo tag={'p'} className="text-wrap">
-                                  {renderFormattedText(tip.content)}
-                                </Typo>
-                              </Gcol>
-                            ))}
-                        </Gcol>
-                      </TooltipContent>
-                    </Tooltip>
-                  )}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    );
-
-    if (showTitle) {
-      return (
-        <Gcol className="h-full" placement={'ss'}>
-          <Typo variant="heading-sm" color="default">
-            간편고지
-          </Typo>
-          {tableContent}
-        </Gcol>
-      );
-    }
-
-    return tableContent;
-  };
-
-  return (
-    <>
-      {renderHealthTable()}
-      {renderSimpleTable()}
-    </>
+          ))
+        )}
+      </TableBody>
+    </Table>
   );
+
+  return tableContent;
 }
