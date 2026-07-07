@@ -8,7 +8,6 @@ import type { ColDef, GridApi, ICellRendererParams, RowClickedEvent } from 'ag-g
 import { AgGridReact } from 'ag-grid-react';
 import { useState, useCallback, useRef } from 'react';
 import * as React from 'react';
-import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -397,7 +396,7 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
             <RadioGroupItem value="month">월</RadioGroupItem>
             <RadioGroupItem value="day">일</RadioGroupItem>
           </RadioGroup>
-          <div className="expiry-month-picker">
+          <div className={localDateType === 'month' ? 'expiry-month-picker' : ''}>
             <DatePickerInput
               mode="single"
               size="lg"
@@ -406,13 +405,6 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
               monthOnly={localDateType === 'month'}
             />
           </div>
-          {localDateType === 'month' && (
-            <style>{`
-              .expiry-month-picker input {
-                width: 6.7rem !important;
-              }
-            `}</style>
-          )}
         </Grow>
       )}
     </div>
@@ -451,7 +443,6 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
   const gridRef2 = useRef<AgGridReact<DummyDataType2>>(null);
   const [searchWord] = useState('척추');
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType2>;
 
   // 셀 값 변경 시 상태 업데이트를 위한 핸들러 (입력한 값이 사라지지 않게 함)
   const onCellValueChanged2 = React.useMemo(
@@ -673,12 +664,17 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
         },
       },
     ],
-    [attributeColumnWidth, titleRenderer, getExpiryRenderer]
+    [attributeColumnWidth, titleRenderer]
   );
 
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} className="w-[100rem]">
+        <style>{`
+          .expiry-month-picker input {
+            width: 6.7rem !important;
+          }
+        `}</style>
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -691,7 +687,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
         </DialogHeader>
         <DialogSection className="w-full gap-3">
           <ResizablePanelGroup orientation="horizontal" className="w-full">
-            <ResizablePanel defaultSize={30}>
+            <ResizablePanel defaultSize={31} maxSize={290}>
               {/* 많이찾는질병 & 질병검색 */}
               <Grid placement={'ss'} className="w-full h-full overflow-hidden grid-rows-[auto_1fr]" gap={3}>
                 <Gcol className="w-full" placement={'ss'} gap={2}>
@@ -767,7 +763,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
               </Grid>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel defaultSize={70}>
+            <ResizablePanel defaultSize={69}>
               <TableFold>
                 <TableFoldHead title="입원/수술 정보 입력(최대 4건)">
                   <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleDelete}>
