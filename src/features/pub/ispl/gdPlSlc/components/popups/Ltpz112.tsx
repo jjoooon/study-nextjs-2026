@@ -8,7 +8,6 @@ import type { ColDef, GridApi, ICellRendererParams, RowClickedEvent } from 'ag-g
 import { AgGridReact } from 'ag-grid-react';
 import { useState, useCallback, useRef } from 'react';
 import * as React from 'react';
-import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -54,19 +53,19 @@ export const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
-    field1: 'M34.5',
+    field1: 'M35.5',
     field2: '척추만곡증',
     field3: ['할증', '부담보'],
   },
   {
     id: 3,
-    field1: 'M34.5',
+    field1: 'M48.5',
     field2: '척추분리증',
     field3: ['SI경증(감액)', '부담보'],
   },
   {
     id: 4,
-    field1: 'M34.5',
+    field1: 'M00.5',
     field2: '척추전방전위증',
     field3: ['SI경증(감액)', '부담보'],
   },
@@ -349,8 +348,8 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
   const tooltipElement = (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button only="icon" size="sm" variant="none">
-          <QuestionMark />
+        <Button only="icon" size="md" variant="none">
+          <QuestionMark color="var(--color-gray-500)" />
         </Button>
       </TooltipTrigger>
       <TooltipContent side="bottom" sideOffset={1} variant="default" className="z-[999] [&>span]:whitespace-auto!">
@@ -365,18 +364,29 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
-      <Grow className="w-full" placement="sc">
+      <Grow placement="sc">
         {isChecked ? (
           <Input value={localField6} onChange={handleInputChange} placeholder="" width={80} disabled />
         ) : (
           <NativeSelect value={localField6 || '선택'} onChange={handleSelectChange} width={80}>
-            {['선택', '1년내', '2년내', '3년내', '4년내', '5년내', '6년내', '7년내', '8년내', '9년내', '10년내'].map(
-              (val) => (
-                <NativeSelectOption key={val} value={val}>
-                  {val}
-                </NativeSelectOption>
-              )
-            )}
+            {[
+              '선택',
+              '3개월내',
+              '1년이내',
+              '2년이내',
+              '3년이내',
+              '4년이내',
+              '5년이내',
+              '6년이내',
+              '7년이내',
+              '8년이내',
+              '9년이내',
+              '10년이내',
+            ].map((val) => (
+              <NativeSelectOption key={val} value={val}>
+                {val}
+              </NativeSelectOption>
+            ))}
           </NativeSelect>
         )}
         <Grow gap={0.5}>
@@ -397,13 +407,15 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
             <RadioGroupItem value="month">월</RadioGroupItem>
             <RadioGroupItem value="day">일</RadioGroupItem>
           </RadioGroup>
-          <DatePickerInput
-            mode="single"
-            size="lg"
-            value={localField5}
-            onChange={handleDateChange}
-            monthOnly={localDateType === 'month'}
-          />
+          <div className={localDateType === 'month' ? 'expiry-month-picker' : ''}>
+            <DatePickerInput
+              mode="single"
+              size="lg"
+              value={localField5}
+              onChange={handleDateChange}
+              monthOnly={localDateType === 'month'}
+            />
+          </div>
         </Grow>
       )}
     </div>
@@ -412,14 +424,12 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
 
 const DiseaseEmptyComponent = () => {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center text-(--color-gray-70)">
-      <span className="shrink-0 flex items-center">
-        <InfoBoxWarningIcon color="var(--color-gray-50)" />
-      </span>
-      <span className="whitespace-pre-line text-center text-[1.3rem] leading-normal break-keep">
+    <Gcol className="w-full h-full flex flex-col items-center justify-center">
+      <InfoBoxWarningIcon color="var(--color-gray-50)" />
+      <Typo variant="body-md" className="whitespace-pre-line text-center text-(--color-gray-70) break-keep">
         {'입원/수술 정보를 입력할 질병을\n검색하여 선택해 주세요.'}
-      </span>
-    </div>
+      </Typo>
+    </Gcol>
   );
 };
 
@@ -442,7 +452,6 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
   const gridRef2 = useRef<AgGridReact<DummyDataType2>>(null);
   const [searchWord] = useState('척추');
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType2>;
 
   // 셀 값 변경 시 상태 업데이트를 위한 핸들러 (입력한 값이 사라지지 않게 함)
   const onCellValueChanged2 = React.useMemo(
@@ -546,7 +555,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
             <div className="truncate-no">
               {parts.map((part, idx) =>
                 part === searchWord ? (
-                  <b key={idx} className="font-bold">
+                  <b key={idx} className="font-bold text-[var(--color-primary-50)]">
                     {part}
                   </b>
                 ) : (
@@ -612,12 +621,14 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
         minWidth: attributeColumnWidth(60),
         autoHeight: true,
         cellClass: 'text-center !px-0 !flex !justify-center',
+        cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+          return <span className="flex items-center justify-center h-full w-full">{params.value}</span>;
+        },
       },
       {
         headerName: '질병명',
         field: 'field2',
         flex: 5,
-        minWidth: attributeColumnWidth(220),
         cellClass: 'text-left',
         autoHeight: true,
         cellRenderer: titleRenderer,
@@ -640,10 +651,9 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
       {
         headerName: '경과기간(N년 이상)',
         field: 'field6',
-        flex: 1,
-        minWidth: attributeColumnWidth(220),
+        flex: 5,
         headerClass: 'ag-header-color',
-        cellClass: 'text-center editable-cell ag-row-selected ',
+        cellClass: 'text-center editable-cell',
         autoHeight: true,
         editable: false,
         cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
@@ -664,12 +674,17 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
         },
       },
     ],
-    [attributeColumnWidth, titleRenderer, getExpiryRenderer]
+    [attributeColumnWidth, titleRenderer]
   );
 
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} className="w-[100rem]">
+        <style>{`
+          .expiry-month-picker input {
+            width: 6.7rem !important;
+          }
+        `}</style>
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -682,7 +697,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
         </DialogHeader>
         <DialogSection className="w-full gap-3">
           <ResizablePanelGroup orientation="horizontal" className="w-full">
-            <ResizablePanel defaultSize={30}>
+            <ResizablePanel defaultSize={31} maxSize={290}>
               {/* 많이찾는질병 & 질병검색 */}
               <Grid placement={'ss'} className="w-full h-full overflow-hidden grid-rows-[auto_1fr]" gap={3}>
                 <Gcol className="w-full" placement={'ss'} gap={2}>
@@ -758,7 +773,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
               </Grid>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel defaultSize={70}>
+            <ResizablePanel defaultSize={69}>
               <TableFold>
                 <TableFoldHead title="입원/수술 정보 입력(최대 4건)">
                   <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleDelete}>
