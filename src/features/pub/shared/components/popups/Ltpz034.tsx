@@ -55,12 +55,32 @@ const DUMMY_DATA: DummyDataType[] = [
     id: 1,
     isChecked: true,
     field01: 'M00.0',
-    field02: '대장직장용종대장직장용종대장직장용종대장직장용종대장직장용종12',
+    field02: '대장직장용종대장직장용종대장직장용종대장직장용종대장직장용종12대장',
     field03: '무관',
     field04: 'SI경증',
   },
-  { id: 2, isChecked: false, field01: 'M00.0', field02: '척추 염좌', field03: '10개월', field04: 'SI경증(감액)' },
-  { id: 3, isChecked: false, field01: 'M00.0', field02: '후천성 백내장', field03: '10개월' },
+  {
+    id: 2,
+    isChecked: false,
+    field01: 'M00.0',
+    field02: '12123대장직장용종대장직장용종대장직장용종대장직장용종',
+    field03: '10개월이내',
+    field04: 'SI경증(감액)',
+  },
+  {
+    id: 3,
+    isChecked: false,
+    field01: 'M00.0',
+    field02: '대12312장직장용종대장직장용종대장직장용종대장직장용종대장직장용종12',
+    field03: '10개월이내',
+  },
+  {
+    id: 4,
+    isChecked: false,
+    field01: 'M00.0',
+    field02: '대12312장직장용종대장직장용종대장직장용종대장직장용종대장직장용종12',
+    field03: '10개월이내',
+  },
 ];
 
 /**
@@ -203,8 +223,8 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
         state: '연기',
       },
       {
-        label: '335(2일)',
-        state: '심사',
+        label: '',
+        state: '',
       },
       {
         label: '335(5일)',
@@ -247,8 +267,8 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
       {
-        label: '305',
-        state: '거절',
+        label: '',
+        state: '',
       },
       {
         label: '305(2일)',
@@ -257,6 +277,74 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
       {
         label: '305(5일)',
         state: '심사',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '',
+        state: '',
+      },
+      {
+        label: '305(2일)',
+        state: '연기',
+      },
+      {
+        label: '305(5일)',
+        state: '심사',
+      },
+    ],
+    tooltipData: [
+      {
+        title: '간편고지형명 판정결과',
+        content: ['질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비', '질병수술비(ALL RISK)'],
+      },
+      {
+        title: '345조건부(감액)',
+        content: [
+          '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
+          '인수판정률 사전안내 컬럼에 입력된 값 표시',
+        ],
+      },
+      {
+        title: '345조건부(감액)',
+        content: [
+          '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
+          '인수판정률 사전안내 컬럼에 입력된 값 표시',
+        ],
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '',
+        state: '',
+      },
+      {
+        label: '305(2일)',
+        state: '연기',
+      },
+      {
+        label: '305(5일)',
+        state: '심사',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '305',
+        state: '거절',
+      },
+      {
+        label: '',
+        state: '',
+      },
+      {
+        label: '',
+        state: '',
       },
     ],
   },
@@ -462,13 +550,13 @@ const Ltpz034 = ({
         headerName: '질병명',
         field: 'field02',
         flex: 1,
-        cellClass: 'text-left whitespace-normal break-all',
+        cellClass: 'text-left whitespace-normal break-all justify-between',
         wrapText: true,
         autoHeight: true,
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
-          <Grow className="w-full min-w-0 justify-between items-center !flex !justify-start leading-normal">
-            <span className="line-clamp-2 text-clip">{params.value}</span>
+          <Grow className="w-full min-w-0 !justify-between items-center !flex leading-[1.3]">
+            <span className="">{params.value}</span>
             {params.data?.field04 && (
               <Badge color={'blue'} className="shrink-0">
                 {params.data.field04}
@@ -480,7 +568,7 @@ const Ltpz034 = ({
       {
         headerName: 'N년이내',
         field: 'field03',
-        width: attributeColumnWidth(60),
+        width: attributeColumnWidth(62),
         headerClass: 'bg-[#FFCCBE]',
         cellClass: 'text-center !flex !justify-center',
       },
@@ -594,7 +682,7 @@ const Ltpz034 = ({
               </TableFold>
             ) : (
               <TableFold variant="default" className="grid grid-rows-[auto_1fr]">
-                <TableFoldHead title="입원/수술 정보(최대4건)">
+                <TableFoldHead title="간편고지 입원/수술 정보(최대4건)">
                   <Button variant={'outlined'} color={'gray'} size={'md'}>
                     입력/수정
                   </Button>

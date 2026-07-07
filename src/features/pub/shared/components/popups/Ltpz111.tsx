@@ -36,67 +36,67 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '10년내',
+    field01: '10년이내',
     field02: 'Y',
     field03: 'Y/N',
   },
   {
     id: 2,
-    field01: '9년내',
+    field01: '9년이내',
     field02: 'Y',
     field03: 'Y/N',
   },
   {
     id: 3,
-    field01: '8년내',
+    field01: '8년이내',
     field02: 'Y',
     field03: 'Y/N',
   },
   {
     id: 4,
-    field01: '7년내',
+    field01: '7년이내',
     field02: 'Y',
     field03: 'Y/N',
   },
   {
     id: 5,
-    field01: '6년내',
+    field01: '6년이내',
     field02: 'Y',
     field03: 'Y/N',
   },
   {
     id: 6,
-    field01: '5년내',
+    field01: '5년이내',
     field02: 'Y',
     field03: 'Y/N',
   },
   {
     id: 7,
-    field01: '4년내',
+    field01: '4년이내',
     field02: 'Y',
     field03: 'Y/N',
   },
   {
     id: 8,
-    field01: '3년내',
+    field01: '3년이내',
     field02: 'Y',
     field03: 'Y/N',
   },
   {
     id: 9,
-    field01: '2년내',
+    field01: '2년이내',
     field02: '',
     field03: 'Y/N',
   },
   {
     id: 10,
-    field01: '1년내',
+    field01: '1년이내',
     field02: '',
     field03: 'Y/N',
   },
   {
     id: 11,
-    field01: '3개월내',
+    field01: '3개월이내',
     field02: '',
     field03: 'Y/N',
   },
@@ -142,7 +142,7 @@ const Ltpz111 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              N년내 입원수술
+              N년이내 입원수술
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (Ltpz111)

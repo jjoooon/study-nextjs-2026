@@ -78,7 +78,7 @@ const Ltpz110 = ({ open = true, onOpenChange, isID, defaultValues }: Ltpz110Prop
                 </FormCell>
               </FormRow>
               <FormRow>
-                <FormCell title="(공통)적용담보" titleColSpan={2}>
+                <FormCell title="적용담보" titleColSpan={2}>
                   <CheckboxGroup className="flex flex-wrap gap-y-2 gap-x-1" defaultValue={initialValues}>
                     {(isID
                       ? [
