@@ -19,7 +19,7 @@ import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon, QuestionMark } from '@icons';
+import { SearchIcon, QuestionMark, InfoBoxWarningIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import {
@@ -38,14 +38,14 @@ import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
-type DummyDataType = {
+export type DummyDataType = {
   id: number;
   field1: string;
   field2: string;
   field3: string[];
 };
 
-const DummyData: DummyDataType[] = [
+export const DummyData: DummyDataType[] = [
   {
     id: 1,
     field1: 'M34.5',
@@ -56,7 +56,7 @@ const DummyData: DummyDataType[] = [
     id: 2,
     field1: 'M34.5',
     field2: '척추만곡증',
-    field3: ['SI경증(감액)', '부담보'],
+    field3: ['할증', '부담보'],
   },
   {
     id: 3,
@@ -168,7 +168,7 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-type DummyDataType2 = {
+export type DummyDataType2 = {
   id: number;
   field1: string | number;
   field2: string | number;
@@ -182,8 +182,7 @@ type DummyDataType2 = {
   dateType?: 'month' | 'day';
 };
 
-/*
-const dummyData2: DummyDataType2[] = [
+export const DummyData2: DummyDataType2[] = [
   {
     id: 1,
     field1: 'M00.0',
@@ -233,7 +232,6 @@ const dummyData2: DummyDataType2[] = [
     checkedDisabled: true,
   },
 ];
-*/
 
 type BadgeType = '할증' | '부담보' | 'SI경증(감액)' | 'SI경증';
 
@@ -412,9 +410,35 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
   );
 };
 
-const Ltpz112 = () => {
-  const [rowData] = useState<DummyDataType[]>(DummyData);
-  const [rowData2, setRowData2] = useState<DummyDataType2[]>([]);
+const DiseaseEmptyComponent = () => {
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center text-(--color-gray-70)">
+      <span className="shrink-0 flex items-center">
+        <InfoBoxWarningIcon color="var(--color-gray-50)" />
+      </span>
+      <span className="whitespace-pre-line text-center text-[1.3rem] leading-normal break-keep">
+        {'입원/수술 정보를 입력할 질병을\n검색하여 선택해 주세요.'}
+      </span>
+    </div>
+  );
+};
+
+export interface Ltpz112Props {
+  initialRowData?: DummyDataType[];
+  initialRowData2?: DummyDataType2[];
+}
+
+const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Props) => {
+  const [rowData, setRowData] = useState<DummyDataType[]>(initialRowData);
+  const [rowData2, setRowData2] = useState<DummyDataType2[]>(initialRowData2);
+
+  React.useEffect(() => {
+    setRowData(initialRowData);
+  }, [initialRowData]);
+
+  React.useEffect(() => {
+    setRowData2(initialRowData2);
+  }, [initialRowData2]);
   const gridRef2 = useRef<AgGridReact<DummyDataType2>>(null);
   const [searchWord] = useState('척추');
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -688,50 +712,47 @@ const Ltpz112 = () => {
                   <Grow placement={'bwe'}>
                     <Typo variant="heading-md">질병검색</Typo>
                   </Grow>
-                  <Gcol variant="box-round" className="bg-[var(--color-blue-gray-15)]">
+                  <Gcol variant="box-round" className="bg-[var(--color-blue-gray-15)]" gap={2}>
                     <Grow className="w-full">
                       <Input placeholder="병명 또는 코드 입력" className="w-full" />
                       <Button aria-label="검색" variant={'outlined'} size={'lg'} color="gray-light" only="icon">
                         <SearchIcon color2={'var(--color-primary-50)'} />
                       </Button>
                     </Grow>
-                    <Grow placement={'ss'} className="w-full">
+                    <Gcol placement={'ss'} className="w-full">
                       <Typo>
                         총 <b className="text-[var(--color-primary-50)]">18건</b>
                       </Typo>
-                    </Grow>
-                    <Grow className="text-[1.1rem] w-full" placement="sc">
-                      <Grow placement="sc">
-                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>할증
+                      <Grow className="text-[1.1rem] w-full" placement="sc">
+                        <Grow placement="sc">
+                          <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>할증
+                        </Grow>
+                        <Grow placement="sc">
+                          <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>부담보
+                        </Grow>
+                        <Grow placement="sc">
+                          <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>
+                          SI경증
+                        </Grow>
+                        <Grow placement="sc">
+                          <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>
+                          SI경증(감액)
+                        </Grow>
                       </Grow>
-                      <Grow placement="sc">
-                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>부담보
-                      </Grow>
-                      <Grow placement="sc">
-                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>
-                        SI경증
-                      </Grow>
-                      <Grow placement="sc">
-                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>
-                        SI경증(감액)
-                      </Grow>
-                    </Grow>
-                    <div className="ag-theme-alpine inner-scroll" data-row={9}>
-                      <AgGridReact<DummyDataType>
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        getRowId={(params) => String(params.data.id)}
-                        noRowsOverlayComponentParams={{
-                          message: '입원/수술 정보를 입력할 질병을 검색하여 선택해 주세요.',
-                        }}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        onRowClicked={handleDiseaseRowClick}
-                        rowClass="cursor-pointer"
-                        domLayout="normal"
-                        tooltipShowMode="whenTruncated"
-                        tooltipShowDelay={0}
-                      />
-                    </div>
+                      <div className="ag-theme-alpine min-h-[30rem] ">
+                        <AgGridReact<DummyDataType>
+                          noRowsOverlayComponent={DiseaseEmptyComponent}
+                          getRowId={(params) => String(params.data.id)}
+                          rowData={rowData}
+                          columnDefs={columnDefs}
+                          onRowClicked={handleDiseaseRowClick}
+                          rowClass="cursor-pointer"
+                          domLayout="normal"
+                          tooltipShowMode="whenTruncated"
+                          tooltipShowDelay={0}
+                        />
+                      </div>
+                    </Gcol>
                   </Gcol>
                 </Grid>
               </Grid>
