@@ -36,7 +36,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: '10년내',
+    field01: '10년이내',
     field02: 'Y',
     field03: 'Y/N',
   },
@@ -142,7 +142,7 @@ const Ltpz111 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              N년내 입원수술
+              N년이내 입원수술
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (Ltpz111)
