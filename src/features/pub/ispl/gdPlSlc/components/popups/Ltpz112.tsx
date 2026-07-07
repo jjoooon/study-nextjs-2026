@@ -53,19 +53,19 @@ export const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
-    field1: 'M34.5',
+    field1: 'M35.5',
     field2: '척추만곡증',
     field3: ['할증', '부담보'],
   },
   {
     id: 3,
-    field1: 'M34.5',
+    field1: 'M48.5',
     field2: '척추분리증',
     field3: ['SI경증(감액)', '부담보'],
   },
   {
     id: 4,
-    field1: 'M34.5',
+    field1: 'M00.5',
     field2: '척추전방전위증',
     field3: ['SI경증(감액)', '부담보'],
   },
@@ -348,8 +348,8 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
   const tooltipElement = (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button only="icon" size="sm" variant="none">
-          <QuestionMark />
+        <Button only="icon" size="md" variant="none">
+          <QuestionMark color="var(--color-gray-500)" />
         </Button>
       </TooltipTrigger>
       <TooltipContent side="bottom" sideOffset={1} variant="default" className="z-[999] [&>span]:whitespace-auto!">
@@ -364,18 +364,29 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
-      <Grow className="w-full" placement="sc">
+      <Grow placement="sc">
         {isChecked ? (
           <Input value={localField6} onChange={handleInputChange} placeholder="" width={80} disabled />
         ) : (
           <NativeSelect value={localField6 || '선택'} onChange={handleSelectChange} width={80}>
-            {['선택', '1년내', '2년내', '3년내', '4년내', '5년내', '6년내', '7년내', '8년내', '9년내', '10년내'].map(
-              (val) => (
-                <NativeSelectOption key={val} value={val}>
-                  {val}
-                </NativeSelectOption>
-              )
-            )}
+            {[
+              '선택',
+              '3개월내',
+              '1년이내',
+              '2년이내',
+              '3년이내',
+              '4년이내',
+              '5년이내',
+              '6년이내',
+              '7년이내',
+              '8년이내',
+              '9년이내',
+              '10년이내',
+            ].map((val) => (
+              <NativeSelectOption key={val} value={val}>
+                {val}
+              </NativeSelectOption>
+            ))}
           </NativeSelect>
         )}
         <Grow gap={0.5}>
@@ -413,14 +424,12 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
 
 const DiseaseEmptyComponent = () => {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center text-(--color-gray-70)">
-      <span className="shrink-0 flex items-center">
-        <InfoBoxWarningIcon color="var(--color-gray-50)" />
-      </span>
-      <span className="whitespace-pre-line text-center text-[1.3rem] leading-normal break-keep">
+    <Gcol className="w-full h-full flex flex-col items-center justify-center">
+      <InfoBoxWarningIcon color="var(--color-gray-50)" />
+      <Typo variant="body-md" className="whitespace-pre-line text-center text-(--color-gray-70) break-keep">
         {'입원/수술 정보를 입력할 질병을\n검색하여 선택해 주세요.'}
-      </span>
-    </div>
+      </Typo>
+    </Gcol>
   );
 };
 
@@ -546,7 +555,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
             <div className="truncate-no">
               {parts.map((part, idx) =>
                 part === searchWord ? (
-                  <b key={idx} className="font-bold">
+                  <b key={idx} className="font-bold text-[var(--color-primary-50)]">
                     {part}
                   </b>
                 ) : (
@@ -612,12 +621,14 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
         minWidth: attributeColumnWidth(60),
         autoHeight: true,
         cellClass: 'text-center !px-0 !flex !justify-center',
+        cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
+          return <span className="flex items-center justify-center h-full w-full">{params.value}</span>;
+        },
       },
       {
         headerName: '질병명',
         field: 'field2',
         flex: 5,
-        minWidth: attributeColumnWidth(220),
         cellClass: 'text-left',
         autoHeight: true,
         cellRenderer: titleRenderer,
@@ -640,10 +651,9 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
       {
         headerName: '경과기간(N년 이상)',
         field: 'field6',
-        flex: 1,
-        minWidth: attributeColumnWidth(220),
+        flex: 5,
         headerClass: 'ag-header-color',
-        cellClass: 'text-center editable-cell ag-row-selected ',
+        cellClass: 'text-center editable-cell',
         autoHeight: true,
         editable: false,
         cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
