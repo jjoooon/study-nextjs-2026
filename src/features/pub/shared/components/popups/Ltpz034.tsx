@@ -64,7 +64,7 @@ const DUMMY_DATA: DummyDataType[] = [
     isChecked: false,
     field01: 'M00.0',
     field02: '12123대장직장용종대장직장용종대장직장용종대장직장용종',
-    field03: '10개월',
+    field03: '10개월이내',
     field04: 'SI경증(감액)',
   },
   {
@@ -72,14 +72,14 @@ const DUMMY_DATA: DummyDataType[] = [
     isChecked: false,
     field01: 'M00.0',
     field02: '대12312장직장용종대장직장용종대장직장용종대장직장용종대장직장용종12',
-    field03: '10개월',
+    field03: '10개월이내',
   },
   {
     id: 4,
     isChecked: false,
     field01: 'M00.0',
     field02: '대12312장직장용종대장직장용종대장직장용종대장직장용종대장직장용종12',
-    field03: '10개월',
+    field03: '10개월이내',
   },
 ];
 
@@ -568,7 +568,7 @@ const Ltpz034 = ({
       {
         headerName: 'N년이내',
         field: 'field03',
-        width: attributeColumnWidth(60),
+        width: attributeColumnWidth(62),
         headerClass: 'bg-[#FFCCBE]',
         cellClass: 'text-center !flex !justify-center',
       },
@@ -682,7 +682,7 @@ const Ltpz034 = ({
               </TableFold>
             ) : (
               <TableFold variant="default" className="grid grid-rows-[auto_1fr]">
-                <TableFoldHead title="입원/수술 정보(최대4건)">
+                <TableFoldHead title="간편고지 입원/수술 정보(최대4건)">
                   <Button variant={'outlined'} color={'gray'} size={'md'}>
                     입력/수정
                   </Button>
