@@ -2860,5 +2860,23 @@
     "modify": "26.06.02",
     "subId": "",
     "popup": false
+  },
+  {
+    "num": 160,
+    "pub": "권오택",
+    "dep1": "차세대가입설계",
+    "dep2": "가입설계",
+    "dep3": "가입설계",
+    "id": "LTPA440",
+    "path": "ispl/isplBsnsSupt",
+    "dep4": "가입설계이관",
+    "file": "",
+    "plan": "안성희",
+    "dev": "김전홍",
+    "sdate": "",
+    "date": "",
+    "modify": "",
+    "subId": "",
+    "popup": false
   }
 ]
