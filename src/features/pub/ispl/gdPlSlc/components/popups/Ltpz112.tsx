@@ -397,13 +397,22 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
             <RadioGroupItem value="month">월</RadioGroupItem>
             <RadioGroupItem value="day">일</RadioGroupItem>
           </RadioGroup>
-          <DatePickerInput
-            mode="single"
-            size="lg"
-            value={localField5}
-            onChange={handleDateChange}
-            monthOnly={localDateType === 'month'}
-          />
+          <div className="expiry-month-picker">
+            <DatePickerInput
+              mode="single"
+              size="lg"
+              value={localField5}
+              onChange={handleDateChange}
+              monthOnly={localDateType === 'month'}
+            />
+          </div>
+          {localDateType === 'month' && (
+            <style>{`
+              .expiry-month-picker input {
+                width: 6.7rem !important;
+              }
+            `}</style>
+          )}
         </Grow>
       )}
     </div>
