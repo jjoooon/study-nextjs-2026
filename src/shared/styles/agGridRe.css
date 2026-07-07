@@ -1074,3 +1074,13 @@
 .ag-cell-value .ag-row-group-leaf-indent .ag-group-value {
   padding-right: 0.1rem;
 }
+
+.ag-theme-alpine {
+  --ag-row-group-indent-size: 1rem !important;
+}
+.ag-row-group-indent-0 { padding-left: 0 !important; }
+.ag-row-group-indent-1 { padding-left: 1rem !important; }
+.ag-row-group-indent-2 { padding-left: 2rem !important; }
+.ag-row-group-indent-3 { padding-left: 3rem !important; }
+.ag-row-group-indent-4 { padding-left: 4rem !important; }
+.ag-row-group-indent-5 { padding-left: 5rem !important; }

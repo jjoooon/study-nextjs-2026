@@ -5,10 +5,12 @@ import type { IHeaderParams, SortDirection } from 'ag-grid-enterprise';
 import React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Divider, Grow, Gcol } from '@atoms';
+import { HashFilter, useHashFilter } from '@common/HashFilter';
 import { HashIcon, SearchIcon, SortArrowIcon, SortArrowDefaultIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
 // 단위 포함 헤더 공통 props
 // - ag-grid의 column/enableSorting/progressSort를 받으면 정렬 가능한 헤더로 동작
@@ -118,6 +120,8 @@ interface ProductNameHeaderProps {
     reset: boolean;
   };
   onCheckedChange?: (key: string) => (checked: boolean | 'indeterminate') => void;
+  selectedHashtags?: string[];
+  onHashtagChange?: (hashtags: string[]) => void;
 }
 
 // 상품명 헤더(체크 필터 + 담보명 검색 + 말풍선 옵션)
@@ -128,7 +132,12 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
   onShowProductNameTooltipChange,
   checkedMap,
   onCheckedChange,
+  selectedHashtags: selectedHashtagsProp,
+  onHashtagChange: onHashtagChangeProp,
 }: ProductNameHeaderProps) {
+  // 공통 훅 사용으로 비즈니스 로직 분리
+  const { selectedHashtags, toggleHashtag, resetHashtags } = useHashFilter(selectedHashtagsProp, onHashtagChangeProp);
+
   return (
     <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
       <Grow gap={1.5} placement={'sc'}>
@@ -142,10 +151,6 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
             <Checkbox variant={'text'} checked={checkedMap.unselected} onCheckedChange={onCheckedChange('unselected')}>
               미선택
             </Checkbox>
-            {/* <Divider /> */}
-            {/* <Checkbox variant={'text'} checked={checkedMap.reset} onCheckedChange={onCheckedChange('reset')}>
-              담보초기화
-            </Checkbox> */}
           </>
         ) : (
           // 제어 props가 없으면 기본(비제어) 체크박스 UI만 표시
@@ -153,8 +158,6 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
             <Checkbox variant={'text'}>선택 24건</Checkbox>
             <Divider />
             <Checkbox variant={'text'}>미선택</Checkbox>
-            {/* <Divider /> */}
-            {/* <Checkbox variant={'text'}>담보초기화</Checkbox> */}
           </>
         )}
       </Grow>
@@ -174,11 +177,32 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
         />
         {/* 검색/초기화 액션 버튼(UI) */}
         <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-          <SearchIcon color={'var(--color-primary-50)'} />
+          <SearchIcon color={'var(--color-primary-50)'} size={14} />
         </Button>
-        <Button aria-label="해쉬 필터" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-          <HashIcon color={'var(--color-primary-50)'} />
-        </Button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              aria-label="해쉬 필터"
+              variant={'outlined'}
+              color={selectedHashtags.length > 0 ? 'primary' : 'gray-light'}
+              only={'icon'}
+              size={'md'}
+              className={cn(
+                selectedHashtags.length > 0 && 'border-[var(--color-primary-50)] bg-[var(--color-primary-5)]'
+              )}
+            >
+              <HashIcon color={'var(--color-primary-50)'} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            side="bottom"
+            align="center"
+            className="w-[20rem] p-[0.6rem] bg-white border border-[var(--color-gray-10)] rounded-[0.8rem] shadow-lg"
+          >
+            {/* 공통 HashFilter 컴포넌트 사용 */}
+            <HashFilter selectedHashtags={selectedHashtags} onHashtagToggle={toggleHashtag} onReset={resetHashtags} />
+          </PopoverContent>
+        </Popover>
       </Grow>
       <Grow placement={'sc'}>
         <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={onShowProductNameTooltipChange}>
@@ -202,6 +226,10 @@ export function AgGridProductNameHeader(props: IHeaderParams) {
   const checkedMap = context?.checkedMap;
   const onCheckedChange = context?.onCheckedChange;
 
+  // 해쉬 필터 추가
+  const selectedHashtags = context?.selectedHashtags;
+  const onHashtagChange = context?.onHashtagChange;
+
   return (
     <ProductNameHeader
       coverageName={coverageName}
@@ -210,6 +238,8 @@ export function AgGridProductNameHeader(props: IHeaderParams) {
       onShowProductNameTooltipChange={onShowProductNameTooltipChange}
       checkedMap={checkedMap}
       onCheckedChange={onCheckedChange}
+      selectedHashtags={selectedHashtags}
+      onHashtagChange={onHashtagChange}
     />
   );
 }

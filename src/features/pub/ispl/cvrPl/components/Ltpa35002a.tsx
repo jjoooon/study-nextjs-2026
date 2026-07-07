@@ -97,6 +97,26 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
 
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
 
+  // 해쉬 필터 상태 및 핸들러
+  const [selectedHashtags, setSelectedHashtags] = useState<string[]>([]);
+  const selectedHashtagsRef = useRef(selectedHashtags);
+
+  const handleHashtagChange = useCallback((hashtags: string[]) => {
+    setSelectedHashtags(hashtags);
+    selectedHashtagsRef.current = hashtags;
+    gridApiRef.current?.onFilterChanged();
+  }, []);
+
+  const isExternalFilterPresent = useCallback(() => {
+    return selectedHashtagsRef.current.length > 0;
+  }, []);
+
+  const doesExternalFilterPass = useCallback((node: any) => {
+    if (selectedHashtagsRef.current.length === 0) return true;
+    const badges = node.data?.badge || [];
+    return selectedHashtagsRef.current.some((tag) => badges.includes(tag));
+  }, []);
+
   // =====================
   // 공용 유틸리티/셀 렌더러
   // =====================
@@ -520,6 +540,8 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 getRowId={(params) => String(params.data.id)} // 그리드 행 식별자로 고유한 ID 지정
                 singleClickEdit={true} // 한 번의 클릭만으로 즉시 편집 모드로 전환
                 onCellValueChanged={handleCellValueChanged} // 편집 종료 후 최종 변경 값이 확정되었을 때 React 상태(rowData) 동기화
+                isExternalFilterPresent={isExternalFilterPresent}
+                doesExternalFilterPass={doesExternalFilterPass}
                 // 2. 다중 행 선택 설정
                 rowSelection={{
                   mode: 'multiRow' as const, // 다중 선택 모드 활성화
@@ -564,6 +586,8 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   showProductNameTooltip,
                   onShowProductNameTooltipChange: (checked: boolean | 'indeterminate') =>
                     setShowProductNameTooltip(checked === true),
+                  selectedHashtags,
+                  onHashtagChange: handleHashtagChange,
                 }}
                 onSelectionChanged={onSelectionChanged} // 선택 상태가 달라졌을 때 (필수 잠금행 강제 유지 및 타 컬럼 갱신 등) 후처리 콜백
                 onGridReady={handleGridReady} // 그리드가 최초 로딩을 끝마쳐 API 참조를 저장할 수 있을 때 호출
