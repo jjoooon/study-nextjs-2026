@@ -268,7 +268,7 @@ const Ltpz045 = () => {
                   <TableFoldBody>
                     <FormTable caption="법정대리인 정보" cols={['w-[10rem]', 'w-auto']}>
                       <FormRow>
-                        <FormCell title={'이름/주민번호'}>
+                        <FormCell title={'이름/주민번호'} tdClassName="flex-wrap">
                           <Input aria-label="성명 검색" width={84} value={''} readOnly />
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />
