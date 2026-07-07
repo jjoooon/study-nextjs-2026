@@ -4,10 +4,10 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
+
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -16,7 +16,7 @@ import {
 } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TabPager } from '@common/TabPager';
+
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -35,29 +35,6 @@ import {
  * @type Ltpz032TabType
  * @description 팝업 내부 상단 대분류 탭 규격
  */
-type Ltpz032TabType = {
-  name: string;
-  value: string;
-  label: string;
-};
-
-/** @description 설계번호별 / 질병코드별 가져오기를 결정하는 대형 탭 목록 정의 */
-const DATA_TABS: Ltpz032TabType[] = [
-  {
-    name: '설계번호별',
-    value: 'tab1',
-    label: '설계번호별',
-  },
-  {
-    name: '질병코드별',
-    value: 'tab2',
-    label: '질병코드별',
-  },
-];
-
-// ==========================================
-// [1] 설계번호별 탭 (tab1) Mock 데이터 정의
-// ==========================================
 
 /**
  * @type DummyDataType11
@@ -598,291 +575,6 @@ const DummyData12: DummyDataType12[] = [
   },
 ];
 
-// ==========================================
-// [2] 질병코드별 탭 (tab2) Mock 데이터 정의
-// ==========================================
-
-/**
- * @type DummyDataType21
- * @description 질병코드별 일반고지 데이터 구조
- * - field2_02: KCD 질병코드
- * - field2_03: 질병명 (치료 발생 원인)
- * - field2_04: 입원 치료 이력 정보
- * - field2_05: 통원 치료 이력 정보
- * - field2_06: 수술 여부
- * - field2_07: 완치 여부
- * - field2_08: 재발 유무
- * - field2_09: 의료기관명
- * - field2_10: 원인설계 상품명
- * - field2_11: 고지유형
- * - field2_12: 설계번호
- * - field2_13: 입력일자
- */
-type DummyDataType21 = {
-  id: number;
-  isCheck: boolean;
-  field2_01: string | number;
-  field2_02: string | number;
-  field2_03: string | number;
-  field2_04: string | number;
-  field2_05: string | number;
-  field2_06: string | number;
-  field2_07: string | number;
-  field2_08: string | number;
-  field2_09: string | number;
-  field2_10: string | number;
-  field2_11: string | number;
-  field2_12: string | number;
-  field2_13: string | number;
-};
-/** @description 질병코드별 일반고지 목록 테스트 데이터 */
-const DummyData21: DummyDataType21[] = [
-  {
-    id: 1,
-    isCheck: true,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '교통사고(상세불명의 염좌/손상)',
-    field2_04: '입원(200일)',
-    field2_05: '통원(200일)',
-    field2_06: '아니오',
-    field2_07: '완치',
-    field2_08: '있음(1회)',
-    field2_09: '한화병원한화병원한화병원한화병원한화병원한화병원',
-    field2_10:
-      '한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-  {
-    id: 2,
-    isCheck: false,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌',
-    field2_04: '입원(200일)',
-    field2_05: '통원(200일)',
-
-    field2_06: '아니오',
-    field2_07: '완치',
-    field2_08: '없음',
-    field2_09: '한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-  {
-    id: 3,
-    isCheck: false,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌',
-    field2_04: '입원(200일)',
-    field2_05: '통원(200일)',
-    field2_06: '아니오',
-    field2_07: '완치',
-    field2_08: '없음',
-    field2_09: '한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-  {
-    id: 4,
-    isCheck: false,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌',
-    field2_04: '입원(2일)',
-    field2_05: '통원(2일)',
-    field2_06: '아니오',
-    field2_07: '완치',
-    field2_08: '없음',
-    field2_09: '한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-  {
-    id: 5,
-    isCheck: false,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌',
-    field2_04: '입원(2일)',
-    field2_05: '통원(2일)',
-    field2_06: '아니오',
-    field2_07: '완치',
-    field2_08: '없음',
-    field2_09: '한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-];
-type DummyDataType22 = {
-  id: number;
-  isCheck: boolean;
-  field2_01: string | number;
-  field2_02: string | number;
-  field2_03: string | number;
-  field2_04: string | number;
-  field2_05: string | number;
-  field2_06: string | number;
-  field2_07: string | number;
-  field2_08: string | number;
-  field2_09: string | number;
-  field2_10: string | number;
-  field2_11: string | number;
-  field2_12: string | number;
-  field2_13: string | number;
-};
-const DummyData22: DummyDataType22[] = [
-  {
-    id: 1,
-    isCheck: true,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌 척추염좌 척추염좌',
-    field2_04: '입원(2일)',
-    field2_05: '-',
-    field2_06: '예',
-    field2_07: '미완치',
-    field2_08: '있음(1회)',
-    field2_09: '한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-  {
-    id: 2,
-    isCheck: true,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌',
-    field2_04: '입원(2일)',
-    field2_05: '-',
-    field2_06: '예',
-    field2_07: '미완치',
-    field2_08: '있음(1회)',
-    field2_09: '한화병원한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601 한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-  {
-    id: 3,
-    isCheck: true,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌',
-    field2_04: '입원(2일)',
-    field2_05: '-',
-    field2_06: '예',
-    field2_07: '미완치',
-    field2_08: '있음(1회)',
-    field2_09: '한화병원한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601 한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-  {
-    id: 4,
-    isCheck: true,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌',
-    field2_04: '입원(2일)',
-    field2_05: '-',
-    field2_06: '예',
-    field2_07: '미완치',
-    field2_08: '있음(1회)',
-    field2_09: '한화병원한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601 한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-  {
-    id: 5,
-    isCheck: true,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌',
-    field2_04: '입원(2일)',
-    field2_05: '-',
-    field2_06: '예',
-    field2_07: '미완치',
-    field2_08: '있음(1회)',
-    field2_09: '한화병원한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601 한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-];
-type DummyDataType23 = {
-  id: number;
-  isCheck: boolean;
-  field2_01: string | number;
-  field2_02: string | number;
-  field2_03: string | number;
-  field2_04: string | number;
-  field2_05: string | number;
-  field2_06: string | number;
-  field2_07: string | number;
-  field2_08: string | number;
-  field2_09: string | number;
-  field2_10: string | number;
-  field2_11: string | number;
-  field2_12: string | number;
-  field2_13: string | number;
-};
-const DummyData23: DummyDataType23[] = [
-  {
-    id: 1,
-    isCheck: false,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌',
-    field2_04: '-',
-    field2_05: '통원(200회)',
-    field2_06: '예',
-    field2_07: '완치',
-    field2_08: '있음(1회)',
-    field2_09: '한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA2401521476365',
-    field2_13: '2026-01-01',
-  },
-  {
-    id: 2,
-    isCheck: true,
-    field2_01: '',
-    field2_02: 'M48.0',
-    field2_03: '척추염좌',
-    field2_04: '-',
-    field2_05: '통원(2회)',
-    field2_06: '예',
-    field2_07: '완치',
-    field2_08: '있음(1회)',
-    field2_09: '한화병원한화병원',
-    field2_10: '한화 더건강한 한아름종합보험2601 한화 더건강한 한아름종합보험2601',
-    field2_11: '납입면제형, 기본형',
-    field2_12: 'LA123456789012',
-    field2_13: '2026-01-01',
-  },
-];
-
 /**
  * @component Ltpz032
  * @description 질병입력 가져오기 다이얼로그 팝업 컴포넌트
@@ -894,12 +586,6 @@ const Ltpz032 = () => {
   const [rowData11, setRowData11] = React.useState<DummyDataType11[]>(DummyData11);
   /** @description 설계번호별 간편고지 목록 그리드 바인딩 데이터 */
   const [rowData12, setRowData12] = React.useState<DummyDataType12[]>(DummyData12);
-  /** @description 질병코드별 일반고지 목록 그리드 바인딩 데이터 */
-  const [rowData21, setRowData21] = React.useState<DummyDataType21[]>(DummyData21);
-  /** @description 질병코드별 건강고지 목록 그리드 바인딩 데이터 */
-  const [rowData22, setRowData22] = React.useState<DummyDataType22[]>(DummyData22);
-  /** @description 질병코드별 간편고지 목록 그리드 바인딩 데이터 */
-  const [rowData23, setRowData23] = React.useState<DummyDataType23[]>(DummyData23);
 
   /**
    * @description 에러 행 상태 관리 핸들러 (현재 구조에서는 비어 있음)
@@ -914,36 +600,6 @@ const Ltpz032 = () => {
   const onCellValueChanged12 = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType12, number>('isCheck', setRowData12, setErrorRows, 'id'),
     [setErrorRows]
-  );
-  const onCellValueChanged21 = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType21, number>('isCheck', setRowData21, setErrorRows, 'id'),
-    [setErrorRows]
-  );
-  const onCellValueChanged22 = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType22, number>('isCheck', setRowData22, setErrorRows, 'id'),
-    [setErrorRows]
-  );
-  const onCellValueChanged23 = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType23, number>('isCheck', setRowData23, setErrorRows, 'id'),
-    [setErrorRows]
-  );
-
-  /**
-   * @function syncSelectionByIsCheck
-   * @description 데이터 리스트 내의 `isCheck` 상태값(true/false)과 ag-Grid 컴포넌트의 체크박스 선택(Selected) 뷰를 동기화합니다.
-   * - 최초 로딩, 데이터 렌더링 완료, 데이터 업데이트 등의 이벤트 발생 시 호출되어 뷰와 데이터 정합성을 유지합니다.
-   */
-  const syncSelectionByIsCheck = React.useCallback(
-    <T extends { id: number; isCheck: boolean }>(api: GridApi<T>, rows: T[]) => {
-      // isCheck가 true인 행들의 id를 Set으로 저장
-      const checkedIdSet = new Set(rows.filter((row) => row.isCheck).map((row) => String(row.id)));
-
-      // grid의 모든 행을 순회하며 체크박스 선택 상태 동기화
-      api.forEachNode((node) => {
-        node.setSelected(checkedIdSet.has(node.id ?? ''));
-      });
-    },
-    []
   );
 
   /** @description 화면 크기별로 고정/반응형 그리드 열 너비를 계산하여 보정하는 유틸 훅 */
@@ -1456,240 +1112,6 @@ const Ltpz032 = () => {
     [attributeColumnWidth]
   );
 
-  // Tab2-1: 일반고지(질병코드별) 테이블 컬럼 정의
-  const columnDefs21 = React.useMemo<ColDef<DummyDataType21>[]>(
-    () => [
-      {
-        headerName: '질병코드',
-        field: 'field2_02',
-        width: attributeColumnWidth(70),
-      },
-      {
-        headerName: '질병명',
-        field: 'field2_03',
-        flex: 1,
-        minWidth: attributeColumnWidth(100),
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType21>({ field: 'field2_03' }),
-      },
-      {
-        headerName: '입원',
-        field: 'field2_04',
-        flex: 1,
-        minWidth: attributeColumnWidth(80),
-      },
-      {
-        headerName: '통원',
-        field: 'field2_05',
-        flex: 1,
-        minWidth: attributeColumnWidth(80),
-      },
-      {
-        headerName: '수술',
-        field: 'field2_06',
-        width: attributeColumnWidth(60),
-      },
-      {
-        headerName: '완치',
-        field: 'field2_07',
-        width: attributeColumnWidth(50),
-      },
-      {
-        headerName: '재발',
-        field: 'field2_08',
-        width: attributeColumnWidth(70),
-      },
-      {
-        headerName: '의료기관',
-        field: 'field2_09',
-        flex: 1,
-        minWidth: attributeColumnWidth(100),
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType21>({ field: 'field2_09' }),
-      },
-      {
-        headerName: '상품명',
-        field: 'field2_10',
-        flex: 2,
-        minWidth: attributeColumnWidth(200),
-        cellClass: 'text-left',
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType21>({ field: 'field2_10' }),
-      },
-      {
-        headerName: '고지유형',
-        field: 'field2_11',
-        flex: 1,
-        minWidth: attributeColumnWidth(120),
-      },
-      {
-        headerName: '설계번호',
-        field: 'field2_12',
-        width: attributeColumnWidth(115),
-      },
-      {
-        headerName: '입력일자',
-        field: 'field2_13',
-        width: attributeColumnWidth(80),
-      },
-    ],
-    [attributeColumnWidth]
-  );
-
-  // Tab2-2: 건강고지(질병코드별) 테이블 컬럼 정의
-  const columnDefs22 = React.useMemo<ColDef<DummyDataType22>[]>(
-    () => [
-      {
-        headerName: '질병코드',
-        field: 'field2_02',
-        width: attributeColumnWidth(70),
-      },
-      {
-        headerName: '질병명',
-        field: 'field2_03',
-        flex: 10,
-        minWidth: attributeColumnWidth(100),
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType21>({ field: 'field2_03' }),
-      },
-      {
-        headerName: '입원',
-        field: 'field2_04',
-        flex: 1,
-        minWidth: attributeColumnWidth(80),
-      },
-      {
-        headerName: '통원',
-        field: 'field2_05',
-        flex: 1,
-        minWidth: attributeColumnWidth(80),
-      },
-      {
-        headerName: '수술',
-        field: 'field2_06',
-        width: attributeColumnWidth(60),
-      },
-      {
-        headerName: '완치',
-        field: 'field2_07',
-        width: attributeColumnWidth(50),
-      },
-      {
-        headerName: '재발',
-        field: 'field2_08',
-        width: attributeColumnWidth(70),
-      },
-      {
-        headerName: '의료기관',
-        field: 'field2_09',
-        flex: 1,
-        minWidth: attributeColumnWidth(100),
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType22>({ field: 'field2_09' }),
-      },
-      {
-        headerName: '상품명',
-        field: 'field2_10',
-        flex: 20,
-        minWidth: attributeColumnWidth(200),
-        cellClass: 'text-left',
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType22>({ field: 'field2_10' }),
-      },
-      {
-        headerName: '고지유형',
-        field: 'field2_11',
-        flex: 1,
-        minWidth: attributeColumnWidth(120),
-      },
-      {
-        headerName: '설계번호',
-        field: 'field2_12',
-        width: attributeColumnWidth(115),
-      },
-      {
-        headerName: '입력일자',
-        field: 'field2_13',
-        width: attributeColumnWidth(80),
-      },
-    ],
-    [attributeColumnWidth]
-  );
-
-  // Tab2-3: 간편고지(질병코드별) 테이블 컬럼 정의
-  const columnDefs23 = React.useMemo<ColDef<DummyDataType23>[]>(
-    () => [
-      {
-        headerName: '질병코드',
-        field: 'field2_02',
-        width: attributeColumnWidth(70),
-      },
-      {
-        headerName: '질병명',
-        field: 'field2_03',
-        flex: 1,
-        minWidth: attributeColumnWidth(100),
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType21>({ field: 'field2_03' }),
-      },
-      {
-        headerName: '입원',
-        field: 'field2_04',
-        flex: 1,
-        minWidth: attributeColumnWidth(80),
-      },
-      {
-        headerName: '통원',
-        field: 'field2_05',
-        flex: 1,
-        minWidth: attributeColumnWidth(80),
-      },
-      {
-        headerName: '수술',
-        field: 'field2_06',
-        width: attributeColumnWidth(60),
-      },
-      {
-        headerName: '완치',
-        field: 'field2_07',
-        width: attributeColumnWidth(50),
-      },
-      {
-        headerName: '재발',
-        field: 'field2_08',
-        width: attributeColumnWidth(70),
-      },
-      {
-        headerName: '의료기관',
-        field: 'field2_09',
-        flex: 1,
-        minWidth: attributeColumnWidth(100),
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType23>({ field: 'field2_09' }),
-      },
-      {
-        headerName: '상품명',
-        field: 'field2_10',
-        flex: 2,
-        minWidth: attributeColumnWidth(200),
-        cellClass: 'text-left',
-        tooltipValueGetter: createTooltipValueGetter<DummyDataType23>({ field: 'field2_10' }),
-      },
-      {
-        headerName: '고지유형',
-        field: 'field2_11',
-        flex: 1,
-        minWidth: attributeColumnWidth(120),
-      },
-      {
-        headerName: '설계번호',
-        field: 'field2_12',
-        width: attributeColumnWidth(115),
-      },
-      {
-        headerName: '입력일자',
-        field: 'field2_13',
-        width: attributeColumnWidth(80),
-      },
-    ],
-    [attributeColumnWidth]
-  );
-
-  /** @description 대분류 탭 제어(설계번호별 / 질병코드별)를 위한 커스텀 훅 */
-  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-
   return (
     <>
       <Dialog open>
@@ -1708,272 +1130,104 @@ const Ltpz032 = () => {
 
           {/* 2. 다이얼로그 본문 영역 */}
           <DialogSection className="grid-rows-[1fr]">
-            {/* 2-1. 대분류 탭페이저 (설계번호별 / 질병코드별) */}
-            <TabPager
-              data={tabs}
-              active={active}
-              setActive={setActive}
-              removable={false}
-              onRemove={handleRemove}
-              visibleCount={4}
-              variant="default"
-              getValue={(tab) => String(tab.value)}
-              renderTab={(tab) => <span>{tab.label}</span>}
-              renderDropdownItem={false}
-            >
-              {active === 'tab1' ? (
-                /* [설계번호별 탭 활성화 시] 일반/건강고지 및 간편고지 그리드 레이아웃 */
-                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[auto_auto_auto]" gap={3}>
-                  <TableFold className="">
-                    <TableFoldHead title="일반/건강고지" />
-                    <TableFoldBody>
-                      <div className="ag-theme-alpine w-full radio-selection inner-scroll" data-row={rowData11.length}>
-                        <AgGridReact<DummyDataType11>
-                          getRowId={(params) => String(params.data.id)} // 행의 고유 ID 설정
-                          noRowsOverlayComponent={AgGridEmptyComponent} // 데이터가 없을 때 표시할 컴포넌트
-                          rowData={rowData11} // 테이블에 표시할 실제 데이터
-                          columnDefs={columnDefs11} // 컬럼 설정
-                          // 모든 컬럼의 기본 설정
-                          defaultColDef={{
-                            sortable: true, // 정렬 가능 여부
-                            resizable: true, // 열 크기 조정 가능 여부
-                            cellClass: 'text-center', // 셀의 기본 스타일
-                          }}
-                          // 체크박스 선택 모드 설정
-                          rowSelection={{
-                            mode: 'singleRow',
-                            checkboxes: true,
-                            enableClickSelection: false,
-                          }}
-                          selectionColumnDef={{
-                            headerName: '선택',
-                            width: 30,
-                            cellClass: 'text-center editable-cell',
-                          }}
-                          // Grid 레이아웃 설정
-                          domLayout="normal"
-                          tooltipShowMode="whenTruncated" // 텍스트가 길면 툴팁 표시
-                          tooltipShowDelay={0} // 툴팁 표시 지연 시간
-                          onCellValueChanged={onCellValueChanged11} // 셀 값 변경 시 실행
-                          // Grid 초기화 완료 시 실행 - isCheck가 true인 행들을 체크
-                          onGridReady={(params) => {
-                            params.api.forEachNode((node) => {
-                              if (node.data?.isCheck) {
-                                node.setSelected(true);
-                              }
-                            });
-                          }}
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-                  <TableFold className="">
-                    <TableFoldHead title="간편고지" />
-                    <TableFoldBody>
-                      <div className="ag-theme-alpine w-full radio-selection inner-scroll" data-row={rowData12.length}>
-                        <AgGridReact<DummyDataType12>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={rowData12}
-                          columnDefs={columnDefs12}
-                          defaultColDef={{
-                            sortable: true, // 정렬 가능 여부
-                            resizable: true, // 열 크기 조정 가능 여부
-                            cellClass: 'text-center', // 셀의 기본 스타일
-                          }}
-                          // 체크박스 선택 모드 설정
-                          rowSelection={{
-                            mode: 'singleRow',
-                            checkboxes: true,
-                            enableClickSelection: false,
-                          }}
-                          selectionColumnDef={{
-                            headerName: '선택',
-                            width: 30,
-                            cellClass: 'text-center editable-cell',
-                          }}
-                          domLayout="normal"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                          onCellValueChanged={onCellValueChanged12}
-                          onGridReady={(params) => {
-                            params.api.forEachNode((node) => {
-                              if (node.data?.isCheck) {
-                                node.setSelected(true);
-                              }
-                            });
-                          }}
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
+            <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[auto_auto_auto]" gap={3}>
+              <TableFold className="">
+                <TableFoldHead title="일반/건강고지" />
+                <TableFoldBody>
+                  <div className="ag-theme-alpine w-full radio-selection inner-scroll" data-row={rowData11.length}>
+                    <AgGridReact<DummyDataType11>
+                      getRowId={(params) => String(params.data.id)} // 행의 고유 ID 설정
+                      noRowsOverlayComponent={AgGridEmptyComponent} // 데이터가 없을 때 표시할 컴포넌트
+                      rowData={rowData11} // 테이블에 표시할 실제 데이터
+                      columnDefs={columnDefs11} // 컬럼 설정
+                      // 모든 컬럼의 기본 설정
+                      defaultColDef={{
+                        sortable: true, // 정렬 가능 여부
+                        resizable: true, // 열 크기 조정 가능 여부
+                        cellClass: 'text-center', // 셀의 기본 스타일
+                      }}
+                      // 체크박스 선택 모드 설정
+                      rowSelection={{
+                        mode: 'singleRow',
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        headerName: '선택',
+                        width: 30,
+                        cellClass: 'text-center editable-cell',
+                      }}
+                      // Grid 레이아웃 설정
+                      domLayout="normal"
+                      tooltipShowMode="whenTruncated" // 텍스트가 길면 툴팁 표시
+                      tooltipShowDelay={0} // 툴팁 표시 지연 시간
+                      onCellValueChanged={onCellValueChanged11} // 셀 값 변경 시 실행
+                      // Grid 초기화 완료 시 실행 - isCheck가 true인 행들을 체크
+                      onGridReady={(params) => {
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isCheck) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+              <TableFold className="">
+                <TableFoldHead title="간편고지" />
+                <TableFoldBody>
+                  <div className="ag-theme-alpine w-full radio-selection inner-scroll" data-row={rowData12.length}>
+                    <AgGridReact<DummyDataType12>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={rowData12}
+                      columnDefs={columnDefs12}
+                      defaultColDef={{
+                        sortable: true, // 정렬 가능 여부
+                        resizable: true, // 열 크기 조정 가능 여부
+                        cellClass: 'text-center', // 셀의 기본 스타일
+                      }}
+                      // 체크박스 선택 모드 설정
+                      rowSelection={{
+                        mode: 'singleRow',
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        headerName: '선택',
+                        width: 30,
+                        cellClass: 'text-center editable-cell',
+                      }}
+                      domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      onCellValueChanged={onCellValueChanged12}
+                      onGridReady={(params) => {
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isCheck) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
 
-                  <Gcol className="w-full" placement="ss" variant="box-warning">
-                    <Typo icon="warning" variant="body-sm">
-                      최근 1개월이내 설계번호(유형별 최대 5개) 표시
-                    </Typo>
-                    <Typo icon="warning" variant="body-sm">
-                      질병 가져오기 : 기존 입력사항 초기화 → 선택한 설계번호의 질병입력정보를 가져옵니다
-                    </Typo>
-                    <Typo icon="warning" variant="body-sm">
-                      실제 피보험자의 상태와 다를 경우 고지위반으로 인하여 불이익을 받을 수 있으니, 심사요청에
-                      피보험자에게 최종확인하셔야 합니다.
-                    </Typo>
-                  </Gcol>
-                </Grid>
-              ) : (
-                <Grid placement="ss" className="w-full h-full pt-2 grid-rows-[auto_auto_auto_auto]" gap={3}>
-                  {/* Tab2-1 일반고지 */}
-                  <TableFold>
-                    <TableFoldHead title="일반고지" />
-                    <TableFoldBody>
-                      <div className="ag-theme-alpine w-full inner-scroll" data-row={3}>
-                        <AgGridReact<DummyDataType21>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={rowData21}
-                          columnDefs={columnDefs21}
-                          defaultColDef={{
-                            sortable: true, // 정렬 가능
-                            resizable: true, // 열 크기 조정 가능
-                            cellClass: 'text-center',
-                          }}
-                          //멀티 선택 모드 - 여러 개 행을 동시에 선택 가능
-                          rowSelection={{
-                            mode: 'multiRow', // 여러 행 선택 가능
-                            checkboxes: true, // 체크박스 표시
-                            enableClickSelection: false, // 체크박스로만 선택
-                          }}
-                          selectionColumnDef={{
-                            headerName: '선택',
-                            width: 30,
-                            cellClass: 'text-center editable-cell',
-                          }}
-                          domLayout="normal"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                          onCellValueChanged={onCellValueChanged21}
-                          onGridReady={(params) => {
-                            // Grid 초기화 후 isCheck 필드로 체크박스 동기화
-                            syncSelectionByIsCheck(params.api, rowData21);
-                          }}
-                          onFirstDataRendered={(params) => {
-                            // 첫 데이터 렌더링 후 동기화
-                            syncSelectionByIsCheck(params.api, rowData21);
-                          }}
-                          onRowDataUpdated={(params) => {
-                            // rowData 업데이트 후 동기화
-                            syncSelectionByIsCheck(params.api, rowData21);
-                          }}
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-
-                  {/* Tab2-2 건강고지 */}
-                  <TableFold>
-                    <TableFoldHead title="건강고지" />
-                    <TableFoldBody>
-                      <div className="ag-theme-alpine w-full inner-scroll" data-row={3}>
-                        <AgGridReact<DummyDataType22>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={rowData22}
-                          columnDefs={columnDefs22}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                            cellClass: 'text-center',
-                          }}
-                          // 멀티 선택 모드
-                          rowSelection={{
-                            mode: 'multiRow', // 여러 행 선택 가능
-                            checkboxes: true, // 체크박스 표시
-                            enableClickSelection: false, // 체크박스로만 선택
-                          }}
-                          selectionColumnDef={{
-                            headerName: '선택',
-                            width: 30,
-                            cellClass: 'text-center editable-cell',
-                          }}
-                          domLayout="normal"
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                          onCellValueChanged={onCellValueChanged22}
-                          onGridReady={(params) => {
-                            // Grid 초기화, 데이터 렌더링, 업데이트 시 체크박스 동기화
-                            syncSelectionByIsCheck(params.api, rowData22);
-                          }}
-                          onFirstDataRendered={(params) => {
-                            syncSelectionByIsCheck(params.api, rowData22);
-                          }}
-                          onRowDataUpdated={(params) => {
-                            syncSelectionByIsCheck(params.api, rowData22);
-                          }}
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-
-                  {/* Tab2-3 간편고지 */}
-                  <TableFold>
-                    <TableFoldHead title="간편고지" />
-                    <TableFoldBody>
-                      <div className="ag-theme-alpine w-full inner-scroll" data-row={3}>
-                        <AgGridReact<DummyDataType23>
-                          getRowId={(params) => String(params.data.id)}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          rowData={rowData23}
-                          columnDefs={columnDefs23}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                            cellClass: 'text-center',
-                          }}
-                          // 멀티 선택 모드
-                          rowSelection={{
-                            mode: 'multiRow', // 여러 행 선택 가능
-                            checkboxes: true, // 체크박스 표시
-                            enableClickSelection: false, // 체크박스로만 선택
-                          }}
-                          selectionColumnDef={{
-                            headerName: '선택',
-                            width: 30,
-                            cellClass: 'text-center editable-cell',
-                          }}
-                          domLayout="normal"
-                          onCellValueChanged={onCellValueChanged23}
-                          // Grid 초기화, 데이터 렌더링, 업데이트 시 체크박스 동기화
-                          onGridReady={(params) => {
-                            syncSelectionByIsCheck(params.api, rowData23);
-                          }}
-                          onFirstDataRendered={(params) => {
-                            syncSelectionByIsCheck(params.api, rowData23);
-                          }}
-                          onRowDataUpdated={(params) => {
-                            syncSelectionByIsCheck(params.api, rowData23);
-                          }}
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-
-                  {/* 2-2. 공통 경고 배너: 질병 가져오기 주의사항 및 법적 고지사항 안내 */}
-                  <Gcol className="w-full" placement="ss" variant="box-warning">
-                    <Typo icon="warning" variant="body-sm">
-                      최근 1개월이내 설계번호(유형별 최대 5개) 표시
-                    </Typo>
-                    <Typo icon="warning" variant="body-sm">
-                      질병 가져오기 : 기존 입력사항 초기화 → 선택한 설계번호의 질병입력정보를 가져옵니다
-                    </Typo>
-                    <Typo icon="warning" variant="body-sm">
-                      실제 피보험자의 상태와 다를 경우 고지위반으로 인하여 불이익을 받을 수 있으니, 심사요청에
-                      피보험자에게 최종확인하셔야 합니다.
-                    </Typo>
-                  </Gcol>
-                </Grid>
-              )}
-            </TabPager>
+              <Gcol className="w-full" placement="ss" variant="box-warning">
+                <Typo icon="warning" variant="body-sm">
+                  최근 1개월이내 설계번호(유형별 최대 5개) 표시
+                </Typo>
+                <Typo icon="warning" variant="body-sm">
+                  질병 가져오기 : 기존 입력사항 초기화 → 선택한 설계번호의 질병입력정보를 가져옵니다
+                </Typo>
+                <Typo icon="warning" variant="body-sm">
+                  실제 피보험자의 상태와 다를 경우 고지위반으로 인하여 불이익을 받을 수 있으니, 심사요청에 피보험자에게
+                  최종확인하셔야 합니다.
+                </Typo>
+              </Gcol>
+            </Grid>
           </DialogSection>
 
           {/* 3. 다이얼로그 푸터 영역: 질병 가져오기 실행 및 팝업 닫기 버튼 */}
