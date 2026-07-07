@@ -115,10 +115,7 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
 TabsList.displayName = TabsPrimitive.List.displayName;
 
 const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigger>, TabsTriggerProps>(
-  (
-    { className, variant: _variant, children, removable, onRemove, activeValue: _activeValue, totalTabs, ...rest },
-    ref
-  ) => {
+  ({ className, variant: _variant, children, removable, onRemove, activeValue: _activeValue, ...rest }, ref) => {
     const { variant } = useTabsContext();
     // totalTabs는 DOM에 전달하지 않음
     const triggerProps = { ...rest };

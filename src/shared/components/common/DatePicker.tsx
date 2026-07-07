@@ -397,7 +397,6 @@ export function DatePickerInput({
           setIsSelectingEnd(true); // 종료일 선택 대기 상태로 전환
           onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
 
-          if (autoClose) setOpen(false);
           setInvalidDate(false);
           return;
         }
@@ -438,7 +437,6 @@ export function DatePickerInput({
           setIsSelectingEnd(true); // 다음 클릭은 종료일 선택
           onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
         }
-        if (autoClose) setOpen(false);
         setInvalidDate(false);
         return;
       }

@@ -58,11 +58,7 @@ const [value, setValue] = useState('');
                 onChange={() => undefined}
               />
 
-              <DatePickerInput
-                mode="range"
-                rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
-                onChange={() => undefined}
-              />
+              <DatePickerInput mode="range" onChange={() => undefined} />
 
               <DatePickerInput
                 mode="range"

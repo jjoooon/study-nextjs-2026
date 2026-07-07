@@ -1302,9 +1302,11 @@ export function editableSelectCellRenderer<RowType>(
     justifyClass = 'justify-center';
     textClass = 'text-center';
   }
+  const displayValue =
+    params.valueFormatted !== undefined && params.valueFormatted !== null ? params.valueFormatted : params.value;
   return (
     <div className={`flex items-center px-[0.6rem] ${justifyClass} gap-1 w-full h-full editor-select`}>
-      <span className={`block flex-1 ${textClass}`}>{params.value}</span>
+      <span className={`block flex-1 ${textClass}`}>{displayValue}</span>
       <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
     </div>
   );
