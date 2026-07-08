@@ -5,7 +5,7 @@ import { Title, Primary, Controls, Markdown, Unstyled } from '@storybook/addon-d
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Provider } from 'react-redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { SpinnerRoot } from '@/shared/components/common/SpinnerRoot';
+import { SpinnerRoot, BaseSpinnerRoot } from '@/shared/components/common/SpinnerRoot';
 
 // 스토리북용 Mock Redux Store 생성 도구
 const createMockStore = (initialSpinnerState: any) => {
@@ -152,6 +152,12 @@ dispatch(showSpinner({ message: '데이터를 불러오는 중입니다...' }));
     },
   },
   argTypes: {
+    type: {
+      control: { type: 'select' },
+      options: ['SpinnerRoot', 'BaseSpinnerRoot'],
+      description: '렌더링할 스피너 컴포넌트 타입',
+      table: { category: 'Spinner Type' },
+    },
     isVisible: {
       control: { type: 'boolean' },
       description: '스피너 표시 여부 (Store 상태 모킹)',
@@ -174,6 +180,7 @@ dispatch(showSpinner({ message: '데이터를 불러오는 중입니다...' }));
     },
   },
   args: {
+    type: 'SpinnerRoot',
     isVisible: true,
     message: '데이터 처리 중입니다...',
     transparentBackground: false,
@@ -185,5 +192,7 @@ export default meta;
 type Story = StoryObj<typeof SpinnerRoot>;
 
 export const Default: Story = {
-  render: () => <SpinnerRoot />,
+  render: (args: any) => {
+    return args.type === 'SpinnerRoot' ? <SpinnerRoot /> : <BaseSpinnerRoot />;
+  },
 };

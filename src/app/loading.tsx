@@ -35,10 +35,10 @@
 import { Gcol, Typo } from '@atoms';
 export default function Loading() {
   return (
-    <Gcol className="flex items-center justify-center min-h-screen gap-6">
+    <Gcol className="flex items-center justify-center min-h-screen gap-6 [filter:url(#goo)]">
       <div className="relative w-[3rem] h-[3rem] flex items-center justify-center animate-gather-rotate">
         <div
-          className="absolute w-[3rem] h-[3rem]  bg-[var(--color-danger-50)] rounded-full z-10 animate-gather-move"
+          className="absolute w-[3rem] h-[3rem] bg-[var(--color-danger-50)] rounded-full z-10 animate-gather-move"
           style={{ '--tx': '0px', '--ty': '-1.5rem' } as React.CSSProperties}
         />
 
@@ -53,6 +53,15 @@ export default function Loading() {
         />
       </div>
       <Typo variant={'body-md'}>Loading...</Typo>
+
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+          <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7" />
+          </filter>
+        </defs>
+      </svg>
     </Gcol>
   );
 }

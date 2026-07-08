@@ -115,11 +115,20 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
 TabsList.displayName = TabsPrimitive.List.displayName;
 
 const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigger>, TabsTriggerProps>(
-  ({ className, variant: _variant, children, removable, onRemove, activeValue: _activeValue, ...rest }, ref) => {
+  (
+    {
+      className,
+      variant: _variant,
+      children,
+      removable,
+      onRemove,
+      activeValue: _activeValue,
+      totalTabs: _totalTabs,
+      ...rest
+    },
+    ref
+  ) => {
     const { variant } = useTabsContext();
-    // totalTabs는 DOM에 전달하지 않음
-    const triggerProps = { ...rest };
-    // delete triggerProps.totalTabs; // totalTabs prop을 제거
     // vertical일 때만 적용할 스타일
     const verticalTabWrapClass =
       variant === 'vertical' ? 'w-[100%] h-[100%] p-0 flex items-center justify-end' : 'relative';
@@ -145,7 +154,7 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
               inline: 'center',
             });
           }}
-          {...triggerProps}
+          {...rest}
         >
           {variant === 'vertical' && <SelectArrowIcon className="rotate-270 vertical-icon-hide" />}
           <span className="flex items-center">{children}</span>
