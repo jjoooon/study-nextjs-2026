@@ -242,15 +242,15 @@ const BADGE_STYLES: Record<BadgeType, string> = {
 };
 
 /**
- * 경과기간(N년 이상) 컬럼의 커스텀 셀 렌더러 컴포넌트입니다.
- * '종료시기 입력' 체크박스 선택 여부에 따라 텍스트 인풋 또는 NativeSelect 드롭다운 및 DatePicker 피커가 유기적으로 전환되도록 제어합니다.
+ * 경과기간(N년 이상) 컬럼의 커스텀 셀 렌더러 컴포넌트
+ * '종료시기 입력' 체크박스 선택 여부에 따라 input 또는 NativeSelect 및 DatePicker가 유기적으로 전환되도록 제어한다.
  */
 const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<DummyDataType2> }) => {
   // '종료시기 입력' 체크박스 선택 상태
   const [isChecked, setIsChecked] = React.useState<boolean>(!!params.data?.checked);
   // 종료시기 입력 시 날짜 선택 모드 (월 단위 'month' 또는 일 단위 'day')
   const [localDateType, setLocalDateType] = React.useState<'month' | 'day'>(params.data?.dateType ?? 'month');
-  // 종료일/월 데이트피커 문자열 값 (field5 에 매핑)
+  // 종료일/월 DatePicker 문자열 값 (field5 에 매핑)
   const [localField5, setLocalField5] = React.useState<string>(String(params.data?.field5 ?? ''));
   // 경과기간 및 종료시기 텍스트 값 (field6 에 매핑)
   const [localField6, setLocalField6] = React.useState<string>(String(params.data?.field6 ?? ''));
@@ -312,8 +312,12 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
   );
 
   // DatePicker를 통해 날짜가 변경되었을 때 호출되는 핸들러 (field5 데이터 동기화)
+  /**
+   * DatePicker를 통해 종료시기 날짜가 선택 및 입력되었을 때 호출되는 핸들러
+   * - 입력된 날짜 값을 로컬 상태와 ag-grid의 field5(종료일/월) 데이터에 동기화합니다.
+   */
   const handleDateChange = useCallback(
-    (date: Date | undefined, dateVal: string) => {
+    (_date: Date | undefined, dateVal: string) => {
       setLocalField5(dateVal);
       if (params.node) {
         params.node.setDataValue('field5', dateVal);
@@ -322,7 +326,10 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
     [params.node]
   );
 
-  // 경과기간 인풋(텍스트 상자) 값 변경 시 호출되는 핸들러 (field6 데이터 동기화)
+  /**
+   * 경과기간 텍스트 인풋(텍스트 상자) 값 변경 시 호출되는 핸들러
+   * - 입력한 경과기간 값을 로컬 상태와 ag-grid의 field6(경과기간) 데이터에 동기화합니다.
+   */
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const nextVal = e.target.value;
@@ -334,6 +341,10 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
     [params.node]
   );
 
+  /**
+   * 경과기간 드롭다운(NativeSelect) 선택 변경 핸들러
+   * - 선택된 드롭다운 경과기간 값을 로컬 상태와 ag-grid의 field6(경과기간) 데이터에 동기화한다.
+   */
   const handleSelectChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       const nextVal = e.target.value;
@@ -345,6 +356,7 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
     [params.node]
   );
 
+  /** 종료시기 입력 툴팁 */
   const tooltipElement = (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -352,7 +364,7 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
           <QuestionMark color="var(--color-gray-500)" />
         </Button>
       </TooltipTrigger>
-      <TooltipContent side="bottom" sideOffset={1} variant="default" className="z-[999] [&>span]:whitespace-auto!">
+      <TooltipContent side="bottom" sideOffset={-1} variant="default" className="z-[999] [&>span]:whitespace-auto!">
         <>마지막 치료종료시기 (퇴원일 또는 수술일 등) 또는 경과년수를 입력해 주세요.</>
       </TooltipContent>
     </Tooltip>
@@ -360,15 +372,21 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
 
   return (
     <div
-      className="flex flex-col items-start gap-1 w-full h-full py-1 justify-start"
+      className={`flex flex-col gap-1 w-full ${isChecked ? 'py-1' : ''}`}
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
-      <Grow placement="sc">
+      <Grow placement="sc" className="[&>div>div]:flex [&>div>div]:items-center">
         {isChecked ? (
-          <Input value={localField6} onChange={handleInputChange} placeholder="" width={80} disabled />
+          <Input value={localField6} onChange={handleInputChange} placeholder="" width={80} size="md" disabled />
         ) : (
-          <NativeSelect value={localField6 || '선택'} onChange={handleSelectChange} width={80}>
+          <NativeSelect
+            value={localField6 || '선택'}
+            onChange={handleSelectChange}
+            width={90}
+            size="md"
+            className="leading-6"
+          >
             {[
               '선택',
               '3개월내',
@@ -389,7 +407,7 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
             ))}
           </NativeSelect>
         )}
-        <Grow gap={0.5}>
+        <Grow gap={0}>
           <Checkbox checked={isChecked} onCheckedChange={(checked) => handleCheckboxChange(!!checked)}>
             종료시기 입력
           </Checkbox>
@@ -398,19 +416,15 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
       </Grow>
 
       {isChecked && (
-        <Grow className="w-full justify-start gap-2 shrink-0">
-          <RadioGroup
-            value={localDateType}
-            onValueChange={handleDateTypeChange}
-            className="flex flex-row gap-3 shrink-0"
-          >
+        <Grow className="justify-start gap-2 shrink-0">
+          <RadioGroup value={localDateType} onValueChange={handleDateTypeChange} className="gap-3">
             <RadioGroupItem value="month">월</RadioGroupItem>
             <RadioGroupItem value="day">일</RadioGroupItem>
           </RadioGroup>
           <div className={localDateType === 'month' ? 'expiry-month-picker' : ''}>
             <DatePickerInput
               mode="single"
-              size="lg"
+              size="md"
               value={localField5}
               onChange={handleDateChange}
               monthOnly={localDateType === 'month'}
@@ -424,9 +438,9 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
 
 const DiseaseEmptyComponent = () => {
   return (
-    <Gcol className="w-full h-full flex flex-col items-center justify-center">
+    <Gcol>
       <InfoBoxWarningIcon color="var(--color-gray-50)" />
-      <Typo variant="body-md" className="whitespace-pre-line text-center text-(--color-gray-70) break-keep">
+      <Typo variant="body-md" className="text-(--color-gray-70) whitespace-pre-line">
         {'입원/수술 정보를 입력할 질병을\n검색하여 선택해 주세요.'}
       </Typo>
     </Gcol>
@@ -442,6 +456,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
   const [rowData, setRowData] = useState<DummyDataType[]>(initialRowData);
   const [rowData2, setRowData2] = useState<DummyDataType2[]>(initialRowData2);
 
+  // 부모 컴포넌트로부터 전달받은 초기 그리드 데이터(initialRowData, initialRowData2)가 외부에서 변경될 때 로컬 상태(rowData, rowData2)와 동기화합니다.
   React.useEffect(() => {
     setRowData(initialRowData);
   }, [initialRowData]);
@@ -449,6 +464,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
   React.useEffect(() => {
     setRowData2(initialRowData2);
   }, [initialRowData2]);
+
   const gridRef2 = useRef<AgGridReact<DummyDataType2>>(null);
   const [searchWord] = useState('척추');
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -589,14 +605,14 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
       const badges = params.data?.badge ?? [];
 
       return (
-        <Grow className="h-auto w-full py-1.5" placement={'bwc'}>
+        <Grow className="h-auto py-1.5" placement={'bwc'}>
           <p className="w-full flex-1 whitespace-normal leading-5">{params.data?.field2}</p>
           {badges.length > 0 && (
-            <Grow className="shrink-0 flex-wrap" placement={'ec'}>
+            <Grow className="shrink-0" placement={'ec'}>
               {badges.map((badge) => (
                 <span
                   key={`${params.data?.id ?? 'row'}-${badge}`}
-                  className={`inline-flex h-[1.8rem] items-center rounded px-1.5 text-[1rem] font-semibold leading-none ${getBadge(
+                  className={`inline-flex h-[1.8rem] items-center rounded px-1 text-[1.1rem] font-bold leading-none ${getBadge(
                     badge
                   )}`}
                 >
@@ -620,9 +636,8 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
         flex: 1,
         minWidth: attributeColumnWidth(60),
         autoHeight: true,
-        cellClass: 'text-center !px-0 !flex !justify-center',
         cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
-          return <span className="flex items-center justify-center h-full w-full">{params.value}</span>;
+          return <span className="text-center">{params.value}</span>;
         },
       },
       {
@@ -639,21 +654,19 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
         flex: 1,
         minWidth: attributeColumnWidth(70),
         autoHeight: true,
-        cellClass: 'text-center !flex !justify-center',
       },
       {
         headerName: '수술',
         field: 'field4',
         width: attributeColumnWidth(40),
         autoHeight: true,
-        cellClass: 'text-center !flex !justify-center',
       },
       {
         headerName: '경과기간(N년 이상)',
         field: 'field6',
         flex: 5,
         headerClass: 'ag-header-color',
-        cellClass: 'text-center editable-cell',
+        cellClass: 'editable-cell',
         autoHeight: true,
         editable: false,
         cellRenderer: (params: ICellRendererParams<DummyDataType2>) => {
@@ -665,11 +678,10 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
                 onMouseDown={(e) => e.stopPropagation()}
                 onClick={(e) => e.stopPropagation()}
               >
-                <Input value="무관" readOnly disabled width={80} />
+                <Input value="무관" size="md" width={80} disabled />
               </div>
             );
           }
-
           return <ExpiryInputCellRenderer params={params} />;
         },
       },
@@ -793,7 +805,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
                       defaultColDef={{
                         sortable: true,
                         resizable: true,
-                        cellClass: ['transition-none'],
+                        cellClass: ['transition-none', 'text-center'],
                       }}
                       onCellValueChanged={onCellValueChanged2}
                       onSelectionChanged={handleSelectionChanged} // 최대 4건 제한
@@ -816,9 +828,7 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
               </TableFold>
             </ResizablePanel>
           </ResizablePanelGroup>
-          <Grow className="grid w-full grid-cols-[24.7rem_1fr] gap-3" placement={'ss'}></Grow>
         </DialogSection>
-
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
