@@ -389,7 +389,6 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 <CheckboxGroup
                   className="gap-[0.4rem] flex-wrap type-small"
                   color="primary"
-                  minSelected={0}
                   size="lg"
                   variant="button"
                   width="auto"
@@ -415,7 +414,6 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 <CheckboxGroup
                   className="gap-[0.4rem] flex-nowrap shrink-0 type-small"
                   color="primary"
-                  minSelected={0}
                   size="lg"
                   variant="button"
                   width="auto"

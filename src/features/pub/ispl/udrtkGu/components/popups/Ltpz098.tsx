@@ -252,7 +252,6 @@ const Ltpz098 = () => {
                   <CheckboxGroup
                     className="gap-3"
                     color="primary"
-                    minSelected={0}
                     onValueChange={onVisibleFieldsChange}
                     value={visibleFields}
                     variant="default"

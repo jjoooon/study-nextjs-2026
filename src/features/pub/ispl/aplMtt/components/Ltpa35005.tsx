@@ -514,7 +514,7 @@ export const Ltpa35005 = () => {
                       </FormCell>
                       <FormCell title={'장애인보험 전환'}>
                         <Grow placement="bwc">
-                          <CheckboxGroup color="primary" minSelected={0} size="lg" width="auto" variant="default">
+                          <CheckboxGroup color="primary" size="lg" width="auto" variant="default">
                             {[
                               { label: '피보험자장애인', value: '1' },
                               { label: '수익자장애인', value: '2' },

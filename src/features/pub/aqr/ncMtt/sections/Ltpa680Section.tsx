@@ -1439,7 +1439,6 @@ export default function Ltpa680Section() {
                                   color="primary"
                                   size="lg"
                                   onValueChange={setSurchargeChecks}
-                                  minSelected={0}
                                   value={surchargeChecks}
                                   variant="default"
                                 >
@@ -1467,7 +1466,6 @@ export default function Ltpa680Section() {
                                   color="primary"
                                   size="lg"
                                   onValueChange={setSurchargeChecks2}
-                                  minSelected={0}
                                   value={surchargeChecks2}
                                   variant="default"
                                 >

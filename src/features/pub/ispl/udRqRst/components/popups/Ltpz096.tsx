@@ -259,13 +259,7 @@ const Ltpz096 = () => {
                 <FormCell title={'심사결과'}>
                   <Grow gap={3} placement="sc">
                     <Input value={'보완요청'} variant="info" readOnly />
-                    <CheckboxGroup
-                      className="gap-3"
-                      minSelected={0}
-                      value={requestCheck}
-                      disabled={true}
-                      width={'auto'}
-                    >
+                    <CheckboxGroup className="gap-3" value={requestCheck} disabled={true} width={'auto'}>
                       <CheckboxGroupItem value="고지">고지</CheckboxGroupItem>
                       <CheckboxGroupItem value="제한담보">제한담보</CheckboxGroupItem>
                       <CheckboxGroupItem value="고지유형변경">고지유형변경</CheckboxGroupItem>

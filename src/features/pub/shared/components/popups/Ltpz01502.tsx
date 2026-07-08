@@ -194,7 +194,6 @@ const Ltpz01502 = () => {
                   <CheckboxGroup
                     className="grid grid-cols-2 gap-1"
                     color="primary"
-                    minSelected={0}
                     size="lg"
                     width="auto"
                     variant="default"
