@@ -133,6 +133,10 @@
   /* Additional Colors (bg-*, text-*, border-*) */
   --color-white: #ffffff;
   --color-black: #000000;
+
+  /* LoadingBar Animations */
+  --animate-gather-rotate: gather-rotate 2s infinite ease-in-out;
+  --animate-gather-move: gather-move 2s infinite ease-in-out;
 }
 
 /* 2. 실제 값 창고 (라이트 모드) */
@@ -1052,5 +1056,34 @@
   100% {
     border-color: #ff5c2e;
     border-width: 0.2rem;
+  }
+}
+@keyframes gather-rotate {
+  0%,
+  10% {
+    transform: rotate(0deg);
+  }
+
+  90%,
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
+@keyframes gather-move {
+  0%,
+  15% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  35%,
+  65% {
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(0.5);
+    opacity: 0.5;
+  }
+  85%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
   }
 }
