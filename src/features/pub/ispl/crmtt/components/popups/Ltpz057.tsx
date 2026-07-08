@@ -88,12 +88,7 @@ const Ltpz057 = () => {
                       </Gcol>
                     }
                   >
-                    <CheckboxGroup
-                      errorMsg="2개 이상 선택해 주세요."
-                      errorPs="bl"
-                      minSelected={2}
-                      defaultValue={['Industry2', 'Industry4']}
-                    >
+                    <CheckboxGroup defaultValue={['Industry2', 'Industry4']}>
                       <Grid className="grid-cols-[1.2fr_1fr_1fr_1fr_1fr] gap-x-4 gap-y-2 w-full">
                         {[
                           { value: 'Industry1', label: '이용원, 미용원, 기타미용실' },
