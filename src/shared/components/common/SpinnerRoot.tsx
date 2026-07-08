@@ -31,7 +31,6 @@
  * }
  */
 
-import { Loader2 } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useAppSelector } from '@/redux';
 import {
@@ -40,6 +39,7 @@ import {
   selectIsTransparentBackground,
   selectIsHideLoadingIndicator,
 } from '@/shared/store/spinnerSlice';
+import { Gcol, Typo } from '@atoms';
 
 export function SpinnerRoot() {
   const isVisible = useAppSelector(selectIsSpinnerVisible);
@@ -57,7 +57,7 @@ export function SpinnerRoot() {
   const backgroundStyle = transparentBackground
     ? {}
     : {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0)',
         backdropFilter: 'blur(4px)',
       };
 
@@ -80,31 +80,25 @@ export function SpinnerRoot() {
     >
       {/* Spinner Icon */}
       {!hideLoadingIndicator && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-          <Loader2
-            style={{
-              width: '48px',
-              height: '48px',
-              color: 'white',
-              animation: 'spin 1s linear infinite',
-            }}
-            strokeWidth={2.5}
-          />
+        <Gcol className="flex items-center justify-center min-h-screen gap-6">
+          <div className="relative w-[3rem] h-[3rem] flex items-center justify-center animate-gather-rotate">
+            <div
+              className="absolute w-[3rem] h-[3rem]  bg-[var(--color-danger-50)] rounded-full z-10 animate-gather-move"
+              style={{ '--tx': '0px', '--ty': '-1.5rem' } as React.CSSProperties}
+            />
 
-          {/* Message */}
-          {message && (
-            <p
-              style={{
-                color: 'white',
-                fontSize: '18px',
-                fontWeight: '500',
-                animation: 'pulse 1.5s ease-in-out infinite',
-              }}
-            >
-              {message}
-            </p>
-          )}
-        </div>
+            <div
+              className="absolute w-[3rem] h-[3rem] bg-[var(--color-warning-40)] rounded-full z-20 animate-gather-move"
+              style={{ '--tx': '-1.3rem', '--ty': '0.75rem' } as React.CSSProperties}
+            />
+
+            <div
+              className="absolute w-[3rem] h-[3rem] bg-[var(--color-primary-50)] rounded-full z-30 animate-gather-move"
+              style={{ '--tx': '1.3rem', '--ty': '0.75rem' } as React.CSSProperties}
+            />
+          </div>
+          {message && <Typo variant={'body-md'}>{message}</Typo>}
+        </Gcol>
       )}
 
       {/* Close Button (개발용) */}

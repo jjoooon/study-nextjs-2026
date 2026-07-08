@@ -32,19 +32,27 @@
  *
  * @see https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming
  */
-
+import { Gcol, Typo } from '@atoms';
 export default function Loading() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="flex flex-col items-center gap-4">
-        {/* Loading spinner */}
-        <div className="relative">
-          <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
-        </div>
+    <Gcol className="flex items-center justify-center min-h-screen gap-6">
+      <div className="relative w-[3rem] h-[3rem] flex items-center justify-center animate-gather-rotate">
+        <div
+          className="absolute w-[3rem] h-[3rem]  bg-[var(--color-danger-50)] rounded-full z-10 animate-gather-move"
+          style={{ '--tx': '0px', '--ty': '-1.5rem' } as React.CSSProperties}
+        />
 
-        {/* Loading text */}
-        <p className="text-sm text-gray-600 font-medium">Loading...</p>
+        <div
+          className="absolute w-[3rem] h-[3rem] bg-[var(--color-warning-40)] rounded-full z-20 animate-gather-move"
+          style={{ '--tx': '-1.3rem', '--ty': '0.75rem' } as React.CSSProperties}
+        />
+
+        <div
+          className="absolute w-[3rem] h-[3rem] bg-[var(--color-primary-50)] rounded-full z-30 animate-gather-move"
+          style={{ '--tx': '1.3rem', '--ty': '0.75rem' } as React.CSSProperties}
+        />
       </div>
-    </div>
+      <Typo variant={'body-md'}>Loading...</Typo>
+    </Gcol>
   );
 }
