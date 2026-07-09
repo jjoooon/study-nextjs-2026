@@ -312,30 +312,40 @@ export function isFuture(date: DateInput): boolean {
  * @param dateLeft - 시작 날짜
  * @param dateRight - 끝 날짜
  * @param unit - 단위 (days, hours, minutes, seconds, months, years)
- * @returns 차이 값 (절대값)
+ * @param absolute - 절대값 반환 여부 (기본값: true). false면 dateLeft가 dateRight보다
+ *                   과거일 때 음수를 반환
+ * @returns 차이 값
  *
  * @example
  * diff('2026-02-01', '2026-02-04', 'days'); // 3
  * diff('2026-01-01', '2026-02-01', 'months'); // 1
+ * diff('2026-02-01', '2026-02-04', 'days', false); // -3
  */
-export function diff(dateLeft: DateInput, dateRight: DateInput, unit: DateUnit = 'days'): number {
+export function diff(
+  dateLeft: DateInput,
+  dateRight: DateInput,
+  unit: DateUnit = 'days',
+  absolute: boolean = true
+): number {
   const left = createDate(dateLeft);
   const right = createDate(dateRight);
   if (!left || !right) return 0;
 
+  const applySign = (value: number) => (absolute ? Math.abs(value) : value);
+
   switch (unit) {
     case 'days':
-      return Math.abs(differenceInDays(left, right));
+      return applySign(differenceInDays(left, right));
     case 'hours':
-      return Math.abs(differenceInHours(left, right));
+      return applySign(differenceInHours(left, right));
     case 'minutes':
-      return Math.abs(differenceInMinutes(left, right));
+      return applySign(differenceInMinutes(left, right));
     case 'seconds':
-      return Math.abs(differenceInSeconds(left, right));
+      return applySign(differenceInSeconds(left, right));
     case 'months':
-      return Math.abs(differenceInMonths(left, right));
+      return applySign(differenceInMonths(left, right));
     case 'years':
-      return Math.abs(differenceInYears(left, right));
+      return applySign(differenceInYears(left, right));
     default:
       return 0;
   }
