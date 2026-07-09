@@ -215,7 +215,6 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
               <BulletItem className="w-full font-bold text-[#000]" type="dot" size="md">
                 최근 동의이력
               </BulletItem>
-              ``
               <Typo className="w-full text-right text-[#006FF2]" weight={'bold'} variant="body-md">
                 2026-03-19 10:00:00
               </Typo>
