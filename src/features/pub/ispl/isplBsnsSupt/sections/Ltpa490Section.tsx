@@ -265,6 +265,18 @@ export default function Ltpa490Section() {
   // 2026-06-01 width, flex 수정
   // 2026-06-04 flex, minWidth 수정
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 2026-0-09 select 화살표 추가
+  const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
+    const value = params.value == null ? '' : String(params.value);
+
+    return (
+      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
+        <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
+        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+      </div>
+    );
+  }, []);
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = React.useMemo(
     () => [
       {
@@ -363,11 +375,12 @@ export default function Ltpa490Section() {
         field: 'field11',
         flex: 1,
         minWidth: attributeColumnWidth(60),
-        cellClass: 'editable-cell text-center',
+        cellClass: 'editable-cell text-center ',
         editable: true,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['선택', '파기', '미파기', '미입력'] },
         autoHeight: true,
+        cellRenderer: selectCellRenderer, // 2026-0-09 select 화살표 추가
       },
       {
         headerName: '미파기 사유',
@@ -378,7 +391,7 @@ export default function Ltpa490Section() {
         autoHeight: true,
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, selectCellRenderer]
   );
 
   // form event
@@ -431,7 +444,7 @@ export default function Ltpa490Section() {
                       ))}
                     </NativeSelect>
                     {form.type01 === 'selection4' ? (
-                      <Input aria-label="" width={110} value={''} />
+                      <Input aria-label="" width={140} value={''} /> // 2026-07-09 input width 수정
                     ) : (
                       <>
                         <Input aria-label="" width={90} value={''} />
