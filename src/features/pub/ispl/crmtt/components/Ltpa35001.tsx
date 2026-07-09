@@ -52,17 +52,14 @@ const tooltipContents = [
 /**
  * Ltpa35001 컴포넌트 Props 정의
  * - simpleMode: 간편 설계 모드 여부 (true인 경우 간소화된 폼 표시)
- * - viewKey: 노출할 설계 유형 뷰 키 ('view1': 인보험, 'view2': 태아, 'view3': 재물, 'view4': 단체, 'view5': 연금/저축)
  */
 type Ltpa35001Props = {
   simpleMode: boolean;
-  viewKey?: string;
 };
 
 /**
  * @component Ltpa35001
  * @description 보험 설계 시 기본 정보 및 피보험자/목적물/단체 정보를 입력하는 공통 템플릿 컴포넌트
- * - 인보험, 태아, 재물, 단체, 연금/저축 등 5가지 유형(viewKey)에 맞추어 레이아웃이 분기 렌더링됩니다.
  * - 간편 모드(simpleMode) 여부에 따라 피보험자 등록 및 세부 입력 폼의 노출 조건이 달라집니다.
  */
 export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
@@ -73,9 +70,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
   const currentTab = tabs.find((t) => t.value === active);
 
   // M1. 무한루프에러 수정
-  // viewKey(설계 유형) 변경에 따른 탭 목록의 동적 교체 처리 및 무한루프 방지
   useEffect(() => {
-    // 현재 tabs와 DUMMY_DATA[viewKey]가 다를 때만 replaceTabs 호출
     const isSame =
       tabs.length === TabsData.length &&
       tabs.every((tab, idx) => tab.value === TabsData[idx].value && tab.name === TabsData[idx].name);

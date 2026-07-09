@@ -205,12 +205,10 @@ export default function Ltpa350Section() {
   const [currentViewKey] = useState<ViewKey>('view3');
 
   // 단계별 메인 콘텐츠 매핑
-  // viewKey는 필요없다면 삭제해되 됨. 현재는 1단계에서만 사용되고 있지만, 향후 단계별로 다른 viewKey가 필요할 수도 있어서 일단 유지하는 방향으로 함. (예: 1단계는 인보험, 2단계는 태아보험 이런식으로 viewKey로 구분하여 퍼블 확인할 수도 있어서)
   // - `simpleMode`: 1/3단계에서 간략 UI 여부 제어
-  // - `viewKey`: 퍼블 검증용 화면 분기값(현재는 view1 고정 상태)
   // - `onIsWidthExpandedChange`: 2단계에서 본문 폭 변경 시 상위의 aside 표시 정책 동기화
   const stepMainBody: Record<number, ReactNode> = {
-    1: <Ltpa35001 simpleMode={simpleMode} viewKey={currentViewKey} />,
+    1: <Ltpa35001 simpleMode={simpleMode} />,
     2: <Ltpa35002 onIsWidthExpandedChange={setIsWidthExpanded} />,
     3: <Ltpa35003 simpleMode={simpleMode} />,
     4: <Ltpa35004 />,
@@ -284,10 +282,10 @@ export default function Ltpa350Section() {
         asideHead={
           <TaskStatusBoard
             state={[
-              { id: 1, status: ['정상'], label: '누적', sum: 24 },
-              { id: 2, status: ['경고'], label: '중복', sum: 0 },
-              { id: 3, status: ['정상'], label: '직업', sum: 2 },
-              { id: 4, status: ['경고'], label: '기타', sum: 0 },
+              { id: 1, status: '정상', label: '공통', sum: 24 },
+              { id: 2, status: '경고', label: '누적', sum: 0 },
+              { id: 3, status: '중지', label: '직업', sum: 2 },
+              { id: 4, status: '없음', label: '예상UW', sum: 0 },
             ]}
             onItemClick={(item) => {
               const nextActiveTab: Ltpz005TabValue =
