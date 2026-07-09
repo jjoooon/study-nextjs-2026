@@ -374,7 +374,7 @@ export default function Ltpa490Section() {
         headerName: '파기여부',
         field: 'field11',
         flex: 1,
-        minWidth: attributeColumnWidth(60),
+        minWidth: attributeColumnWidth(80),
         cellClass: 'editable-cell text-center ',
         editable: true,
         cellEditor: 'agSelectCellEditor',
@@ -444,7 +444,7 @@ export default function Ltpa490Section() {
                       ))}
                     </NativeSelect>
                     {form.type01 === 'selection4' ? (
-                      <Input aria-label="" width={140} value={''} /> // 2026-07-09 input width 수정
+                      <Input aria-label="" width={140} value={'12345678901234567'} /> // 2026-07-09 input width 수정
                     ) : (
                       <>
                         <Input aria-label="" width={90} value={''} />

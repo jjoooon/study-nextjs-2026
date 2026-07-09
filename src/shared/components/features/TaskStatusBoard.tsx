@@ -20,24 +20,14 @@ const colorMap = {
   없음: 'var(--color-gray-20)',
 };
 
-function getPieBackground(status: TaskStatus[]) {
-  if (status.length === 0) return colorMap['없음'];
-  if (status.length === 1) return colorMap[status[0]];
-
-  const angle = 360 / status.length;
-  const gradients = status.map((s, idx) => {
-    const color = colorMap[s] || colorMap['없음'];
-    const start = idx * angle;
-    const end = (idx + 1) * angle;
-    return `${color} ${start}deg ${end}deg`;
-  });
-  return `conic-gradient(${gradients.join(', ')})`;
+function getPieBackground(status: TaskStatus) {
+  return colorMap[status] || colorMap['없음'];
 }
 
 type TaskStatusBoardProps<
   T extends {
     id: number;
-    status: TaskStatus[];
+    status: TaskStatus;
     label: string;
   },
 > = {
@@ -52,7 +42,7 @@ type TaskStatusBoardProps<
 export function TaskStatusBoard<
   T extends {
     id: number;
-    status: TaskStatus[];
+    status: TaskStatus;
     label: string;
   },
 >({ state, onItemClick }: TaskStatusBoardProps<T>) {
@@ -72,8 +62,8 @@ export function TaskStatusBoard<
       <Grid className="grid-cols-4 gap-0 w-full h-[4.5rem] bg-[var(--color-gray-0)] px-1.5 rounded-[0.6rem]">
         {state.map((item) => {
           const status = item.status;
-          const isUnderline = status.length > 0 && !(status.length === 1 && status[0] === '없음');
-          const showIcon = status.length === 1;
+          const isUnderline = status !== '없음';
+          const showIcon = status !== '없음';
 
           return (
             <Button
@@ -98,8 +88,8 @@ export function TaskStatusBoard<
                 }}
               >
                 {/* 단일 상태일 때만 해당 아이콘 표시 */}
-                {showIcon && status[0] === '정상' && <CheckIcon color={'#fff'} size={14} />}
-                {showIcon && (status[0] === '경고' || status[0] === '중지') && <ExMarkIcon color={'#fff'} size={14} />}
+                {showIcon && status === '정상' && <CheckIcon color={'#fff'} size={14} />}
+                {showIcon && (status === '경고' || status === '중지') && <ExMarkIcon color={'#fff'} size={14} />}
               </span>
             </Button>
           );
