@@ -207,11 +207,16 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
                 </BulletListItem>
               </BulletList>
             </Gcol>
-            <Grow placement="bwc" variant="box-info">
-              <BulletItem className="w-full" type="dot" size="sm">
+            <Grow
+              placement="bwc"
+              variant="box-info"
+              className="bg-[#F4F4F4] border border-[0.1rem] border-[#D8D8D8] border-solid"
+            >
+              <BulletItem className="w-full font-bold text-[#000]" type="dot" size="md">
                 최근 동의이력
               </BulletItem>
-              <Typo className="w-full text-right text-[#006FF2]" weight={'bold'} variant="body-sm">
+              ``
+              <Typo className="w-full text-right text-[#006FF2]" weight={'bold'} variant="body-md">
                 2026-03-19 10:00:00
               </Typo>
             </Grow>
