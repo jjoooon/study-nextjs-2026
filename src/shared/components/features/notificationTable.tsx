@@ -1,6 +1,7 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
+// eslint-disable-next-line check-file/filename-naming-convention
 'use client';
 import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -37,7 +38,7 @@ export interface HealthUnderwritingRow {
   tooltipData?: TooltipItem[];
 }
 
-interface Ltpa030tableProps {
+interface NotificationTableProps {
   healthRows?: HealthUnderwritingRow[];
   onCheckedChange?: (id: string, checked: boolean | 'indeterminate') => void;
   onCheckboxClick?: (id: string, label: string, isChecked: boolean, event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -52,13 +53,13 @@ const selectedStyle =
 
 const disabledStyle = 'bg-[#E4E7EC] !text-[#000] [&_label]:!text-[#000] [&_span]:!text-[#000]';
 
-export default function Ltpa030table({
+export default function NotificationTable({
   healthRows = [],
   isClick = true,
   onCheckedChange,
   onCheckboxClick,
   colSpan = 3,
-}: Ltpa030tableProps) {
+}: NotificationTableProps) {
   const handleCheckboxClick = React.useCallback(
     (colId: string, colLabel: string, colChecked: boolean, event: React.MouseEvent<HTMLButtonElement>) => {
       onCheckboxClick?.(colId, colLabel, colChecked, event);
@@ -125,8 +126,8 @@ export default function Ltpa030table({
                           variant="text"
                           checked={checked}
                           disabled={state === '거절' || !isClick}
-                          onCheckedChange={(checkedVal) => onCheckedChange?.(id, checkedVal)}
-                          onClick={(event) => handleCheckboxClick(id, label, !checked, event)}
+                          onCheckedChange={(checkedVal) => onCheckedChange?.(id!, checkedVal)}
+                          onClick={(event) => handleCheckboxClick(id!, label!, !checked, event)}
                         >
                           {label}
                           {state === '거절' && <RefuseIcon />}

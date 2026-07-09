@@ -7,13 +7,13 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterpris
 import { AgGridReact } from 'ag-grid-react';
 import React, { useMemo } from 'react';
 
-import Ltpa030table, { HealthUnderwritingRow } from '@/features/pub/ispl/ncMtt/components/Ltpa030table';
 import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import NotificationTable, { HealthUnderwritingRow } from '@features/notificationTable';
 import {
   ArrowDoubleIcon,
   AuditIcon,
@@ -672,7 +672,7 @@ const Ltpz034 = ({
               <TableFold variant="default" className="grid grid-rows-[auto_1fr] h-full">
                 <TableFoldHead title="일반/건강고지"></TableFoldHead>
                 <TableFoldBody className="h-full overflow-y-auto bg-[#F2F4F7]">
-                  <Ltpa030table
+                  <NotificationTable
                     healthRows={basicRows}
                     isClick={true}
                     onCheckedChange={handleCheckedChange}
@@ -746,7 +746,7 @@ const Ltpz034 = ({
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <Ltpa030table healthRows={healthRows} isClick={true} onCheckedChange={handleCheckedChange} />
+                <NotificationTable healthRows={healthRows} isClick={true} onCheckedChange={handleCheckedChange} />
               </TableFoldBody>
             </TableFold>
           </Grid>

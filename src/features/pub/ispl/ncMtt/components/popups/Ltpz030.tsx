@@ -9,6 +9,7 @@ import { Gcol, Grow, Typo, Divider } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import NotificationTable, { HealthUnderwritingRow } from '@features/notificationTable';
 import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon, AuditIcon, DiamondIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -24,8 +25,6 @@ import {
 import { Input } from '@uiux/Input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 import '@/shared/lib/agGridPub';
-
-import Ltpa030table, { HealthUnderwritingRow } from '../Ltpa030table';
 
 // Y 케이스 전용 스타일 클래스 변수 (색상, 굵기 설정)
 const dangerY = 'text-[var(--color-text-danger)]';
@@ -476,7 +475,7 @@ const Ltpz030 = () => {
                       일반/건강고지
                     </Typo>
 
-                    <Ltpa030table healthRows={healthRows} isClick={false} />
+                    <NotificationTable healthRows={healthRows} isClick={false} />
                   </Gcol>
                 </Gcol>
                 {/* 간편고지 테이블 */}
@@ -499,7 +498,7 @@ const Ltpz030 = () => {
                     </Grow>
                   </Grow>
 
-                  <Ltpa030table healthRows={convenienceRows} isClick={false} />
+                  <NotificationTable healthRows={convenienceRows} isClick={false} />
                 </Gcol>
               </Gcol>
             </Grow>
