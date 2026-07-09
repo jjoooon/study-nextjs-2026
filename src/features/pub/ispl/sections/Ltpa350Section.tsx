@@ -129,7 +129,7 @@ const data: Ltpa350DataType = {
     ],
     state: {
       complete: [1], //완료단계
-      active: 2, //현재단계
+      active: 1, //현재단계
     },
   },
 };
@@ -202,7 +202,7 @@ export default function Ltpa350Section() {
   const hideAside = isWidthExpanded ? true : asideToggleState;
 
   // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
-  const [currentViewKey] = useState<ViewKey>('view1');
+  const [currentViewKey] = useState<ViewKey>('view3');
 
   // 단계별 메인 콘텐츠 매핑
   // viewKey는 필요없다면 삭제해되 됨. 현재는 1단계에서만 사용되고 있지만, 향후 단계별로 다른 viewKey가 필요할 수도 있어서 일단 유지하는 방향으로 함. (예: 1단계는 인보험, 2단계는 태아보험 이런식으로 viewKey로 구분하여 퍼블 확인할 수도 있어서)

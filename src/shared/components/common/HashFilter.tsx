@@ -95,17 +95,17 @@ export const HashFilter = React.memo(function HashFilter({
       <PopoverContent
         side="bottom"
         align="center"
-        className="w-[20rem] p-[0.6rem] bg-white border border-[var(--color-gray-10)] rounded-[0.8rem] shadow-lg"
+        className="w-[19rem] p-[0.6rem] bg-white border border-[var(--color-gray-10)] rounded-[0.8rem] shadow-lg"
       >
-        <Gcol className="fgap-3">
-          <Button variant="outlined" size={'md'}>
+        <Gcol gap={2}>
+          <Button variant="outlined" size={'md'} className="w-full">
             <HashIcon color={'var(--color-primary-50)'} /> 검색어 편집
           </Button>
           <Grow className="flex-wrap gap-x-3 gap-y-1.5 max-h-[9.8rem] overflow-y-auto">
             <CheckboxGroup value={selectedHashtags} onValueChange={handleValueChange}>
               {hashtags.map((tag) => {
                 return (
-                  <CheckboxGroupItem variant="text" value={tag} key={tag}>
+                  <CheckboxGroupItem variant="text" value={tag} key={tag} className="no-underline">
                     #{tag}
                   </CheckboxGroupItem>
                 );
