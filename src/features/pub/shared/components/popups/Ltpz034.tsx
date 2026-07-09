@@ -7,13 +7,14 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterpris
 import { AgGridReact } from 'ag-grid-react';
 import React, { useMemo } from 'react';
 
-import NotificationTable, { HealthUnderwritingRow } from '@/shared/components/features/NotificationTable';
 import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import type { HealthUnderwritingRow } from '@features/NotificationTable';
+import NotificationTable from '@features/NotificationTable';
 import {
   ArrowDoubleIcon,
   AuditIcon,

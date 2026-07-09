@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-// eslint-disable-next-line check-file/filename-naming-convention
+
 'use client';
 import * as React from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -33,13 +33,16 @@ export interface UnderwritingItem {
   state?: '거절' | '연기' | '심사' | '조건부' | '인수' | '';
 }
 
-export interface HealthUnderwritingRow {
-  data: UnderwritingItem[];
-  tooltipData?: TooltipItem[];
+export interface HealthUnderwritingRow<
+  T extends UnderwritingItem = UnderwritingItem,
+  U extends TooltipItem = TooltipItem,
+> {
+  data: T[];
+  tooltipData?: U[];
 }
 
-interface NotificationTableProps {
-  healthRows?: HealthUnderwritingRow[];
+interface NotificationTableProps<T extends UnderwritingItem = UnderwritingItem, U extends TooltipItem = TooltipItem> {
+  healthRows?: HealthUnderwritingRow<T, U>[];
   onCheckedChange?: (id: string, checked: boolean | 'indeterminate') => void;
   onCheckboxClick?: (id: string, label: string, isChecked: boolean, event: React.MouseEvent<HTMLButtonElement>) => void;
   isClick?: boolean;
@@ -53,13 +56,10 @@ const selectedStyle =
 
 const disabledStyle = 'bg-[#E4E7EC] !text-[#000] [&_label]:!text-[#000] [&_span]:!text-[#000]';
 
-export default function NotificationTable({
-  healthRows = [],
-  isClick = true,
-  onCheckedChange,
-  onCheckboxClick,
-  colSpan = 3,
-}: NotificationTableProps) {
+export default function NotificationTable<
+  T extends UnderwritingItem = UnderwritingItem,
+  U extends TooltipItem = TooltipItem,
+>({ healthRows = [], isClick = true, onCheckedChange, onCheckboxClick, colSpan = 3 }: NotificationTableProps<T, U>) {
   const handleCheckboxClick = React.useCallback(
     (colId: string, colLabel: string, colChecked: boolean, event: React.MouseEvent<HTMLButtonElement>) => {
       onCheckboxClick?.(colId, colLabel, colChecked, event);

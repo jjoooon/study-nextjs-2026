@@ -5,11 +5,12 @@
 
 import * as React from 'react';
 import Ltpz110 from '@/features/pub/shared/components/popups/Ltpz110';
-import NotificationTable, { HealthUnderwritingRow } from '@/shared/components/features/NotificationTable';
 import { Gcol, Grow, Typo, Divider } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import NotificationTable from '@features/NotificationTable';
+import type { HealthUnderwritingRow } from '@features/NotificationTable';
 import { CircleCheckIcon, ConditionalIcon, RefIcon, RefuseIcon, AuditIcon, DiamondIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
