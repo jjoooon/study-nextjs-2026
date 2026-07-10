@@ -429,8 +429,8 @@
       <input type="text" id="searchInput" class="search-box" placeholder="ID 또는 화면명 검색...">
     </div>
     <div class="sidebar-tabs">
-      <button class="tab-btn active" id="tabPopup" onclick="switchTab('popup')">팝업</button>
-      <button class="tab-btn" id="tabPage" onclick="switchTab('page')">화면</button>
+      <button class="tab-btn" id="tabPopup" onclick="switchTab('popup')">팝업</button>
+      <button class="tab-btn active" id="tabPage" onclick="switchTab('page')">화면</button>
       <button class="tab-btn" id="tabAll" onclick="switchTab('all')">전체</button>
     </div>
     <div class="list-container" id="listContainer">
@@ -515,7 +515,7 @@
     storybookHostInput.value = getInitialStorybookBase();
 
     let allItems = [];
-    let currentTab = 'popup'; // 'popup' | 'page' | 'all'
+    let currentTab = 'page'; // 'popup' | 'page' | 'all'
 
     function updateIframeSizeFromSliders() {
       const w = widthSlider.value;
@@ -610,8 +610,8 @@
         if (!response.ok) throw new Error('Failed to load ialist.json');
         allItems = await response.json();
         
-        // 초기 기본 아이템 선택 (예: LTPZ055)
-        const initialIndex = allItems.findIndex(i => i.id === 'LTPZ055');
+        // 초기 기본 아이템 선택 (예: LTPA020)
+        const initialIndex = allItems.findIndex(i => i.id === 'LTPA020');
         renderList();
         
         if (initialIndex !== -1) {
