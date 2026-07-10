@@ -181,7 +181,7 @@ export function SpinnerRoot() {
       {/* Spinner Icon */}
       {!hideLoadingIndicator && (
         <Gcol className="flex items-center justify-center min-h-screen gap-[5rem]">
-          <div className="relative flex items-center justify-center animate-rotate-move [filter:url(#goo)]">
+          <div className="w-full h-full relative flex items-center justify-center animate-rotate-move [filter:url(#goo)]">
             <div className="absolute w-[1rem] h-[1rem] z-40 rounded-full bg-[var(--color-primary-50)] top-[50%] left[50%] translate-[-50%,-50%]"></div>
             <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-danger-50)] rounded-[80%] z-10 animate-dot-1-move" />
             <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-warning-40)] rounded-[80%] z-20 animate-dot-2-move" />
