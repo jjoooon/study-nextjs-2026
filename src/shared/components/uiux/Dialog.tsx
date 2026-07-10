@@ -402,15 +402,8 @@ function DialogContent({
   }, []);
 
   const resolvedShowCloseButton = showCloseButton;
-  const resolvedResizable = resizable && !isIframeState;
-  const resolvedMinimized = minimized && !isIframeState;
-
-  // iframe 환경에서는 무조건 최소화 상태를 해제
-  React.useEffect(() => {
-    if (isIframeState && isMinimized) {
-      setMinimized?.(false);
-    }
-  }, [isIframeState, isMinimized, setMinimized]);
+  const resolvedResizable = resizable;
+  const resolvedMinimized = minimized;
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
   const [topOpenDialogId, setTopOpenDialogId] = React.useState(getTopOpenDialogId);
@@ -561,7 +554,7 @@ function DialogContent({
 
   const handleMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
-      if (isFullSize || isIframeState) return;
+      if (isFullSize) return;
       e.stopPropagation();
       const target = e.target as HTMLElement;
       const resizeHandle = target.closest('[data-slot="resize-handle"]');
