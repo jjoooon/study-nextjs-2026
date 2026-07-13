@@ -29,6 +29,7 @@ import Ltpz00503 from './Ltpz00503';
 import Ltpz00504 from './Ltpz00504';
 
 /** 체크 항목별 탭 정보 타입 */
+
 type CheckTab = {
   name: string;
   value: string;
@@ -223,7 +224,7 @@ const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Lt
               ) : (
                 <>
                   <Button variant={'contained'} size={'xl'}>
-                    설계생성(1)
+                    설계생성(0)
                   </Button>
                   <DialogClose asChild>
                     <Button variant={'outlined'} size={'xl'} color={'gray-light'}>

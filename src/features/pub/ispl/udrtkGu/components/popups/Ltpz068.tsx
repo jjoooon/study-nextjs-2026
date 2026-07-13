@@ -309,7 +309,13 @@ const PLAN_COLS: Array<{
  *   2. 상단 탭을 Ag-Grid 레이아웃 바로 위쪽에 절대 좌표로 포지셔닝하여 각 안의 열(Column)들과 물리적 열 너비를 시각적으로 일치시킴
  *   3. 탭 클릭 시 선택한 플랜을 활성화(`selectedPlan`)하고 하단 합계행(`sumRow`)과 연계 계산
  */
-const Ltpz068 = () => {
+interface Ltpz068Props {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  onApply?: () => void;
+}
+
+const Ltpz068 = ({ open = true, onOpenChange, onApply }: Ltpz068Props) => {
   // 담보 목록 로우 데이터
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
   // 현재 체크(선택)된 추천 해소안 플랜 상태
@@ -455,7 +461,7 @@ const Ltpz068 = () => {
   }, [numericFormatter, attributeColumnWidth, toNumber]);
 
   return (
-    <Dialog open>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={false} size="2xl">
         {/* 다이얼로그 상단 타이틀 */}
         <DialogHeader>
@@ -570,7 +576,14 @@ const Ltpz068 = () => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'}>
+              <Button
+                variant={'contained'}
+                size={'xl'}
+                onClick={() => {
+                  onOpenChange?.(false);
+                  onApply?.();
+                }}
+              >
                 적용
               </Button>
               <DialogClose asChild>

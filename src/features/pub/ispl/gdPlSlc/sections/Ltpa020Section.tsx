@@ -39,6 +39,9 @@ export default function Ltpa020Section() {
   const [isLtpz034Open, _setIsLtpz034Open] = useState(false);
   const [isLtpz034Minimized, setIsLtpz034Minimized] = useState(false);
 
+  // 가능상품 보기 상태 관리 (Ltpa02001의 데이터 소스를 가능상품용으로 필터링하는 조건)
+  const [isPossibleProductsOnly, setIsPossibleProductsOnly] = useState(false);
+
   // 팝업 open 전용 setter
   // 팝업을 다시 열 때 이전 최소화 상태가 남아있지 않도록 함께 초기화
   const setIsLtpz034Open = useCallback((open: boolean) => {
@@ -413,7 +416,10 @@ export default function Ltpa020Section() {
 
             {tabSelectValue === 'Ltpa02001' ? (
               // 탭: 상품선택
-              <Ltpa02001 />
+              <Ltpa02001
+                isPossibleProductsOnly={isPossibleProductsOnly}
+                onResetPossibleFilter={() => setIsPossibleProductsOnly(false)}
+              />
             ) : (
               // 탭: 추천설계
               // dataNone/setDataNone: 하위에서 데이터 유무 상태를 상위와 동기화
@@ -430,7 +436,18 @@ export default function Ltpa020Section() {
       {/* 고지유형찾기 팝업
           - open 상태일 때만 마운트
           - 최소화 상태는 상위 state로 제어 */}
-      {isLtpz034Open && <Ltpz034 minimized={isLtpz034Minimized} onMinimizeChange={setIsLtpz034Minimized} />}
+      {isLtpz034Open && (
+        <Ltpz034
+          open={isLtpz034Open}
+          onOpenChange={setIsLtpz034Open}
+          minimized={isLtpz034Minimized}
+          onMinimizeChange={setIsLtpz034Minimized}
+          onShowPossibleProducts={() => {
+            setTabSelectValue('Ltpa02001');
+            setIsPossibleProductsOnly(true);
+          }}
+        />
+      )}
     </>
   );
 }

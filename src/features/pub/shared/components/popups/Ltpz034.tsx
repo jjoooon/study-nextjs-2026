@@ -104,6 +104,8 @@ interface Ltpz034Props {
   healthRows?: HealthUnderwritingRow[];
   /** 미등록 모드 시 좌측 그리드에 노출할 임시 데이터 */
   dummyRows?: DummyDataType[];
+  /** 가능상품 보기 클릭 콜백 */
+  onShowPossibleProducts?: () => void;
 }
 
 //일반/건강고지 데이터
@@ -458,6 +460,7 @@ const Ltpz034 = ({
   basicRows: initialBasicRows,
   healthRows: initialHealthRows,
   dummyRows,
+  onShowPossibleProducts,
 }: Ltpz034Props) => {
   // 최소화 로컬 상태 관리 (부모가 관리하지 않을 경우 백업)
   const [localMinimized, setLocalMinimized] = React.useState(false);
@@ -793,7 +796,15 @@ const Ltpz034 = ({
               </Grow>
             </Grow>
             <Grow className="flex gap-0.5 shrink-0">
-              <Button variant="contained" size="xl" color="primary">
+              <Button
+                variant="contained"
+                size="xl"
+                color="primary"
+                onClick={() => {
+                  onOpenChange?.(false);
+                  onShowPossibleProducts?.();
+                }}
+              >
                 가능상품 보기
               </Button>
               <Button variant="contained" size="xl" color="primary">

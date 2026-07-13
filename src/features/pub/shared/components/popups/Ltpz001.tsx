@@ -239,11 +239,25 @@ const Ltpz001 = () => {
     mobileMiddle: '',
     mobileLast: '',
   });
-  const [tabActive, setTabActive] = useState('tab1');
+  const [tabActive, setTabActive] = useState('tabP');
   const [confirmDialog1Open, setConfirmDialog1Open] = useState(false);
   const [confirmDialog2Open, setConfirmDialog2Open] = useState(false);
   const [confirmDialog3Open, setConfirmDialog3Open] = useState(false);
   const [confirmDialog4Open, setConfirmDialog4Open] = useState(false);
+
+  type ScrIdcInfoData = {
+    tabInfo: { value: string; label: string }[];
+  };
+
+  const [scrIdcInfoData, setScrIdcInfoData] = useState<ScrIdcInfoData>({
+    tabInfo: [
+      { value: 'tabP', label: '프린트' },
+      { value: 'tabE', label: '이메일' },
+      { value: 'tabF', label: '팩스' },
+      { value: 'tabM', label: '모바일' },
+    ],
+  });
+
   return (
     <>
       <Dialog open>
@@ -370,12 +384,7 @@ const Ltpz001 = () => {
                 발행방법
               </Typo>
               <TabPager
-                data={[
-                  { value: 'tab1', label: '프린트' },
-                  { value: 'tab2', label: '이메일' },
-                  { value: 'tab3', label: '팩스' },
-                  { value: 'tab4', label: '모바일' },
-                ]}
+                data={scrIdcInfoData.tabInfo}
                 active={tabActive}
                 setActive={setTabActive}
                 visibleCount={4}
@@ -389,7 +398,7 @@ const Ltpz001 = () => {
                   placement={'ss'}
                 >
                   {/* 1. 프린트 설정 */}
-                  {tabActive === 'tab1' && (
+                  {tabActive === 'tabP' && (
                     <>
                       <Gcol placement={'ss'} gap={2}>
                         <Typo tag={'h3'} variant={'heading-sm'}>
@@ -486,7 +495,7 @@ const Ltpz001 = () => {
                     </>
                   )}
                   {/* 2. 이메일 설정 */}
-                  {tabActive === 'tab2' && (
+                  {tabActive === 'tabE' && (
                     <>
                       <Gcol placement={'ss'} gap={2}>
                         <Typo tag={'h3'} variant={'heading-sm'}>
@@ -535,7 +544,7 @@ const Ltpz001 = () => {
                     </>
                   )}
                   {/* 3. 팩스 설정 */}
-                  {tabActive === 'tab3' && (
+                  {tabActive === 'tabF' && (
                     <>
                       <Gcol placement={'ss'} gap={2}>
                         <Typo tag={'h3'} variant={'heading-sm'}>
@@ -575,7 +584,7 @@ const Ltpz001 = () => {
                     </>
                   )}
                   {/* 4. 모바일 설정 (알림톡/한손愛) */}
-                  {tabActive === 'tab4' && (
+                  {tabActive === 'tabM' && (
                     <>
                       <Gcol placement={'ss'} gap={2}>
                         <Typo tag={'h3'} variant={'heading-sm'}>

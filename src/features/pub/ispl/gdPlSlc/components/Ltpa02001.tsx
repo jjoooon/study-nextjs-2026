@@ -5,6 +5,7 @@
 
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -32,6 +33,22 @@ type DummyDataType = {
   badge?: string[];
   field3: string | number;
 };
+type DummyDataType2 = {
+  id: number;
+  field1: string | number;
+  field2: string | number;
+  btn?: boolean;
+};
+type DummyDataType3 = {
+  id: number;
+  field1: string | number;
+};
+
+interface Ltpa02001Props {
+  isPossibleProductsOnly?: boolean;
+  onResetPossibleFilter?: () => void;
+}
+
 const dummyData: DummyDataType[] = [
   {
     id: 1,
@@ -181,13 +198,6 @@ const dummyData: DummyDataType[] = [
     field3: '15~90세',
   },
 ];
-
-type DummyDataType2 = {
-  id: number;
-  field1: string | number;
-  field2: string | number;
-  btn?: boolean;
-};
 const dummyData2: DummyDataType2[] = [
   {
     id: 1,
@@ -237,11 +247,6 @@ const dummyData2: DummyDataType2[] = [
     field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
   },
 ];
-
-type DummyDataType3 = {
-  id: number;
-  field1: string | number;
-};
 const dummyData3: DummyDataType3[] = [
   {
     id: 1,
@@ -334,29 +339,81 @@ const dummyData3c: DummyDataType3[] = [
   },
 ];
 
-const dummyData3Tab: Array<{ value: string; label: string; count: number }> = [
+// 가능상품 보기 활성화 시 사용될 대체 데이터 셋
+const possibleDummyData: DummyDataType[] = [
   {
-    value: 'tab1',
-    label: '회사플랜',
-    count: dummyData3.length,
-  },
-  {
-    value: 'tab2',
-    label: '기관플랜',
-    count: dummyData3b.length,
-  },
-  {
-    value: 'tab3',
-    label: '나만의플랜',
-    count: dummyData3c.length,
+    id: 1,
+    field1: '종합건강22',
+    field2:
+      '한화 더 경증 간편건강보험간연만기 갱신형)2601한화 더 경증 간편건강보험간연만기 갱신형)2601한화 더 경증 간편건강보험간연만기 갱신형)2601',
+    importance: true,
+    badge: ['무해지', '할증', '차움', '여성'],
+    field3: '15~90세',
   },
 ];
 
-export function Ltpa02001() {
+const possibleDummyData2: DummyDataType2[] = [
+  {
+    id: 1,
+    field1: '1종',
+    field2:
+      '한화 3N5 더 간편건강보험(연만기 갱신형)2601한화 3N5 더 간편건강보험(연만기 갱신형)2601한화 3N5 더 간편건강보험(연만기 갱신형)2601한화 3N5 더 간편건강보험(연만기 갱신형)2601한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+    btn: true,
+  },
+];
+
+const possibleDummyData3: DummyDataType3[] = [
+  {
+    id: 1,
+    field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)',
+  },
+];
+
+const possibleDummyData3b: DummyDataType3[] = [
+  {
+    id: 1,
+    field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)',
+  },
+];
+
+const possibleDummyData3c: DummyDataType3[] = [
+  {
+    id: 1,
+    field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)',
+  },
+];
+
+export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilter }: Ltpa02001Props) {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const [productCategory, setProductCategory] = React.useState<string>('');
   const [productFeature, setProductFeature] = React.useState<string[]>(['simple', 'shortTerm']);
+
+  const handleProductCategoryChange = React.useCallback(
+    (val: string) => {
+      setProductCategory(val);
+      onResetPossibleFilter?.();
+    },
+    [onResetPossibleFilter]
+  );
+
+  const handleProductFeatureChange = React.useCallback(
+    (val: string[]) => {
+      setProductFeature(val);
+      onResetPossibleFilter?.();
+    },
+    [onResetPossibleFilter]
+  );
+
+  const router = useRouter();
+
+  const handleStartDesign = React.useCallback(() => {
+    if (typeof window !== 'undefined') {
+      window.parent.postMessage({ type: 'GO_TO_LTPA350' }, '*');
+    }
+    router.push('/pub/ispl/LTPA350');
+  }, [router]);
+
   const {
     rowData: productRowData,
     toggleCloneByRow,
@@ -364,7 +421,7 @@ export function Ltpa02001() {
     getRowId: getProductRowId,
     getCloneRowClass,
   } = useCloneTopRows<DummyDataType, 'id'>({
-    rows: dummyData,
+    rows: isPossibleProductsOnly ? possibleDummyData : dummyData,
     idKey: 'id',
   });
 
@@ -530,13 +587,39 @@ export function Ltpa02001() {
     },
   ];
 
-  const { tabs, active, setActive } = useTabs(dummyData3Tab);
+  const tabData3 = isPossibleProductsOnly ? possibleDummyData3 : dummyData3;
+  const tabData3b = isPossibleProductsOnly ? possibleDummyData3b : dummyData3b;
+  const tabData3c = isPossibleProductsOnly ? possibleDummyData3c : dummyData3c;
+
+  const dynamicDummyData3Tab = React.useMemo(
+    () => [
+      {
+        value: 'tab1',
+        label: '회사플랜',
+        count: tabData3.length,
+      },
+      {
+        value: 'tab2',
+        label: '기관플랜',
+        count: tabData3b.length,
+      },
+      {
+        value: 'tab3',
+        label: '나만의플랜',
+        count: tabData3c.length,
+      },
+    ],
+    [tabData3.length, tabData3b.length, tabData3c.length]
+  );
+
+  const { tabs, active, setActive } = useTabs(dynamicDummyData3Tab);
+
   const planRowDataMap: Record<string, DummyDataType3[]> = {
-    tab1: dummyData3,
-    tab2: dummyData3b,
-    tab3: dummyData3c,
+    tab1: tabData3,
+    tab2: tabData3b,
+    tab3: tabData3c,
   };
-  const selectedPlanRowData = planRowDataMap[active] ?? dummyData3;
+  const selectedPlanRowData = planRowDataMap[active] ?? tabData3;
 
   return (
     <Grid className="w-full grid-rows-[auto_1fr_auto] px-[1rem]" gap={3}>
@@ -545,7 +628,11 @@ export function Ltpa02001() {
           <FormRow className="items-start!">
             <FormCell title={'상품분류'}>
               {/* M5. RadioGroup 수정 */}
-              <RadioGroup value={productCategory} onValueChange={setProductCategory} className="gap-[0.4rem] flex-wrap">
+              <RadioGroup
+                value={productCategory}
+                onValueChange={handleProductCategoryChange}
+                className="gap-[0.4rem] flex-wrap"
+              >
                 {[
                   { value: 'all', label: '전체' },
                   { value: 'comprehensive', label: '종합건강' },
@@ -569,7 +656,7 @@ export function Ltpa02001() {
             <FormCell title={'상품특징'}>
               <CheckboxGroup
                 value={productFeature}
-                onValueChange={setProductFeature}
+                onValueChange={handleProductFeatureChange}
                 variant="button"
                 size="md"
                 className="gap-[0.4rem] flex-wrap"
@@ -589,7 +676,7 @@ export function Ltpa02001() {
             </FormCell>
           </FormRow>
         </FormTable>
-        <Button variant="outlined" color="gray" only="icon">
+        <Button variant="outlined" color="gray" only="icon" onClick={onResetPossibleFilter}>
           <ResetIcon />
         </Button>
       </Grow>
@@ -637,7 +724,7 @@ export function Ltpa02001() {
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={dummyData2}
+                        rowData={isPossibleProductsOnly ? possibleDummyData2 : dummyData2}
                         columnDefs={columnDefs2}
                         domLayout="normal"
                         tooltipShowMode="whenTruncated"
@@ -690,7 +777,7 @@ export function Ltpa02001() {
           <AiIcon size={24} color={'#006FF2'} color2={'#A683FF'} />
           추천설계
         </Button>
-        <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+        <Button type="button" variant={'contained'} color={'primary'} size={'xl'} onClick={handleStartDesign}>
           설계시작
           <ArrowNext size={16} />
         </Button>
