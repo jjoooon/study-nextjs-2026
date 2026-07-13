@@ -6,8 +6,10 @@
 import { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Grid, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -21,8 +23,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Textarea } from '@uiux/Textarea';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 

@@ -4,11 +4,11 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
+import { PageArrowDoubleIcon, CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 import { Grow, Gcol, Grid, Typo } from '@atoms';
+import { BulletItem } from '@common/BulletList';
 import { Button } from '@uiux/Button';
 import { Textarea } from '@uiux/Textarea';
-import { BulletItem } from '@common/BulletList';
 
 // 단일 대화(요청자/심사팀) 묶음 데이터 타입
 // - 하나의 배열 원소가 화면의 한 페이지(한 묶음 카드)를 구성한다.
@@ -301,6 +301,17 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
             </Typo>
           </Button>
           <Grow>
+            <Button
+              variant="outlined"
+              color="gray"
+              only="icon"
+              size="md"
+              onClick={() => scrollToPage(0)}
+              disabled={page === 1}
+              aria-label="이전"
+            >
+              <PageArrowDoubleIcon className="rotate-90" color="var(--color-gray-60)" color2="var(--color-gray-60)" />
+            </Button>
             <Button
               variant="outlined"
               color="gray"

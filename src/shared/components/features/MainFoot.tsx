@@ -6,10 +6,10 @@
 import { useState } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grow, Grid } from '@atoms';
+import { FormRow, FormTable, FormCell } from '@common/FormTable';
 import { ArrowNext, ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
-import { FormRow, FormTable, FormCell } from '@common/FormTable';
 
 // 화면 하단 기본 액션(초기화/설계시작)
 // - 설계시작 버튼은 page2-MainForm 제출을 트리거한다.

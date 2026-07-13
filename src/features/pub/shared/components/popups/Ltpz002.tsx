@@ -7,9 +7,13 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { ResetIcon, SearchIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -24,10 +28,6 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -44,7 +44,7 @@ const dummyData: DummyDataType[] = [
     id: 1,
     field1: '구분정보',
     field2: '보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명보험종목명 ',
-    field3: 'LA26020945959594',
+    field3: 'LA123456789012',
     field4: '한화한화',
     field5: '290000',
     field6: '2023-01-01',
@@ -54,7 +54,7 @@ const dummyData: DummyDataType[] = [
     id: 2,
     field1: '구분정보',
     field2: '보험종목명 ',
-    field3: 'LA26020945959594',
+    field3: 'LA123456789012',
     field4: '계약자',
     field5: '290000',
     field6: '2023-01-01',
@@ -64,7 +64,7 @@ const dummyData: DummyDataType[] = [
     id: 3,
     field1: '구분정보',
     field2: '보험종목명 ',
-    field3: 'LA26020945959594',
+    field3: 'LA123456789012',
     field4: '계약자',
     field5: '290000',
     field6: '2023-01-01',
@@ -294,7 +294,7 @@ const Ltpz002 = () => {
                 </Grow>
               </Grow>
 
-              <Grid gap={3} className="grid-rows-[auto_1fr_auto_auto]">
+              <Grid gap={2} className="grid-rows-[auto_1fr_auto_auto]">
                 <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'동일모집인'}>
@@ -343,7 +343,7 @@ const Ltpz002 = () => {
                     <TableFoldBody className="grid-rows-[auto_1fr] gap-[0.8rem]">
                       <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[14.5rem]']}>
                         <FormRow>
-                          <FormCell title={'설계번호'}>LA260112297637</FormCell>
+                          <FormCell title={'설계번호'}>LA123456789012</FormCell>
                           <FormCell title={'설계상태'}>설계완료</FormCell>
                         </FormRow>
                         <FormRow>
@@ -381,7 +381,7 @@ const Ltpz002 = () => {
                     <TableFoldBody className="grid-rows-[auto_1fr] gap-[0.8rem]">
                       <FormTable cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[14.5rem]']}>
                         <FormRow>
-                          <FormCell title={'설계번호'}>LA260112297637</FormCell>
+                          <FormCell title={'설계번호'}>LA123456789012</FormCell>
                           <FormCell title={'설계상태'}>설계완료</FormCell>
                         </FormRow>
                         <FormRow>

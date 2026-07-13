@@ -8,6 +8,7 @@ import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CircleCheckIcon, InfoToastIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -21,7 +22,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import Ltpz00501 from './Ltpz00501';
 import Ltpz00502 from './Ltpz00502';
@@ -29,6 +29,7 @@ import Ltpz00503 from './Ltpz00503';
 import Ltpz00504 from './Ltpz00504';
 
 /** 체크 항목별 탭 정보 타입 */
+
 type CheckTab = {
   name: string;
   value: string;
@@ -42,6 +43,8 @@ export type Ltpz005TabValue = 'common' | 'accum' | 'job' | 'expected-uw';
 /** 팝업 컴포넌트 Props */
 type Ltpz005Props = PopupBaseProps & {
   initialActiveTab?: Ltpz005TabValue;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 /** 탭 메뉴 구성 데이터: 상태(state)에 따라 아이콘 색상이 결정됨 */
@@ -53,7 +56,7 @@ const CHECK_TABS: CheckTab[] = [
 ];
 
 /** Ltpz005: 설계 과정에서 필수 체크 항목(공통, 누적, 직업 등)을 안내하는 '꼭 해야할 일' 팝업 */
-const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
+const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Ltpz005Props) => {
   const { tabs, active, setActive } = useTabs(CHECK_TABS);
 
   /** 초기 활성 탭 설정 */
@@ -68,7 +71,7 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
   };
 
   return (
-    <Dialog open>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="2xl" className="max-h-[calc(100vh-4rem)] h-full">
         <DialogHeader>
           <DialogTitle>
@@ -221,7 +224,7 @@ const Ltpz005 = ({ initialActiveTab = 'common' }: Ltpz005Props) => {
               ) : (
                 <>
                   <Button variant={'contained'} size={'xl'}>
-                    설계생성(1)
+                    설계생성(0)
                   </Button>
                   <DialogClose asChild>
                     <Button variant={'outlined'} size={'xl'} color={'gray-light'}>

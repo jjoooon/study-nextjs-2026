@@ -7,12 +7,8 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterpris
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Grid, Grow, Gcol } from '@atoms';
-import { ResetIcon, SearchIcon } from '@icons';
 import { AgGridEmptyComponent, createFieldRenderer, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
@@ -22,8 +18,12 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { ResetIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import '@/shared/lib/agGridPub';
 
@@ -47,7 +47,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -62,7 +62,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -77,7 +77,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -92,7 +92,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -107,7 +107,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 5,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -122,7 +122,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 6,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -137,7 +137,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 7,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -152,7 +152,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 8,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -167,7 +167,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 9,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -182,7 +182,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 10,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -197,7 +197,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 11,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -212,7 +212,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 12,
-    field01: 'LA260102288811-1',
+    field01: 'LA123456789012-1',
     field02: '홍길동',
     field03: '홍일홍2',
     field04: '청약중',
@@ -265,6 +265,18 @@ export default function Ltpa490Section() {
   // 2026-06-01 width, flex 수정
   // 2026-06-04 flex, minWidth 수정
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 2026-0-09 select 화살표 추가
+  const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
+    const value = params.value == null ? '' : String(params.value);
+
+    return (
+      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
+        <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
+        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
+      </div>
+    );
+  }, []);
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = React.useMemo(
     () => [
       {
@@ -362,12 +374,13 @@ export default function Ltpa490Section() {
         headerName: '파기여부',
         field: 'field11',
         flex: 1,
-        minWidth: attributeColumnWidth(60),
-        cellClass: 'editable-cell text-center',
+        minWidth: attributeColumnWidth(80),
+        cellClass: 'editable-cell text-center ',
         editable: true,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['선택', '파기', '미파기', '미입력'] },
         autoHeight: true,
+        cellRenderer: selectCellRenderer, // 2026-0-09 select 화살표 추가
       },
       {
         headerName: '미파기 사유',
@@ -378,7 +391,7 @@ export default function Ltpa490Section() {
         autoHeight: true,
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, selectCellRenderer]
   );
 
   // form event
@@ -403,7 +416,7 @@ export default function Ltpa490Section() {
       {/* 2026-05-29 gap 삭제 */}
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr] h-full">
+          <Grid className="grid-rows-[auto_1fr] h-full gap-3">
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}
@@ -431,7 +444,7 @@ export default function Ltpa490Section() {
                       ))}
                     </NativeSelect>
                     {form.type01 === 'selection4' ? (
-                      <Input aria-label="" width={110} value={''} />
+                      <Input aria-label="" width={140} value={'12345678901234567'} /> // 2026-07-09 input width 수정
                     ) : (
                       <>
                         <Input aria-label="" width={90} value={''} />
@@ -547,7 +560,7 @@ export default function Ltpa490Section() {
             <TableFold className="grid-rows-[auto_1fr]">
               <TableFoldHead title="대상리스트" />
               <TableFoldBody className="gap-3">
-                <Grid className="grid-rows-[1fr_auto] h-full">
+                <Grid className="grid-rows-[1fr_auto] h-full gap-2">
                   <Gcol className="w-full" gap={1}>
                     <div className="ag-theme-alpine h-full">
                       <AgGridReact<DummyDataType>
@@ -570,18 +583,21 @@ export default function Ltpa490Section() {
                       onLoadReset={handleLoadReset}
                     />
                   </Gcol>
-                  <BulletList position="col">
-                    <BulletListItem type="dot">
-                      해당 화면은 청약서가 발행된 이력이 있는 신계약 설계번호를 호출하고 있음 (단,
-                      TM/CM/전자서명/전자청약으로 진행된 설계는 제외)
-                    </BulletListItem>
-                    <BulletListItem type="dot">
-                      고액여부판단은 월납기준 100만원 초과시 고액여부 대상건으로 판단
-                    </BulletListItem>
-                    <BulletListItem type="dot">
-                      파기여부 항목에 &apos;미파기&apos;로 선택 시 미파기사유 항목에 해당 사유를 기재하고 저장할 수 있음
-                    </BulletListItem>
-                  </BulletList>
+                  <Gcol variant="box-info" placement="ss">
+                    <BulletList position="col" size="sm">
+                      <BulletListItem type="dot">
+                        해당 화면은 청약서가 발행된 이력이 있는 신계약 설계번호를 호출하고 있음 (단,
+                        TM/CM/전자서명/전자청약으로 진행된 설계는 제외)
+                      </BulletListItem>
+                      <BulletListItem type="dot">
+                        고액여부판단은 월납기준 100만원 초과시 고액여부 대상건으로 판단
+                      </BulletListItem>
+                      <BulletListItem type="dot">
+                        파기여부 항목에 &apos;미파기&apos;로 선택 시 미파기사유 항목에 해당 사유를 기재하고 저장할 수
+                        있음
+                      </BulletListItem>
+                    </BulletList>
+                  </Gcol>
                 </Grid>
               </TableFoldBody>
             </TableFold>
@@ -591,7 +607,10 @@ export default function Ltpa490Section() {
           <MainBottom>
             <MainBottomItem className="justify-end">
               <Grow gap={1}>
-                <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                  엑셀내려받기
+                </Button>
+                <Button variant={'contained'} color={'primary'} size={'xl'}>
                   저장
                 </Button>
               </Grow>

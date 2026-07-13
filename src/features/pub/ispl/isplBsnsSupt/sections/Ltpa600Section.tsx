@@ -7,8 +7,6 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterpris
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
-import { Grow, Grid, Typo } from '@atoms';
-import { ResetIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createInsertCopiedRowButtonCellRenderer,
@@ -17,18 +15,20 @@ import {
   useDynamicColumnWidths,
   createTooltipValueGetter,
 } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Grow, Grid, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { InputTag } from '@common/InputTag';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
+import { ResetIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { createExpiryCellRenderer } from '@grid/CellRenderers';
+import { Button } from '@uiux/Button';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import '@/shared/lib/agGridPub';
 
@@ -332,30 +332,11 @@ export default function Ltpa600Section() {
   const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
   const gridRef = React.useRef<AgGridReact<DummyData2Type>>(null);
   const pageSize = 3;
-  const {
-    loadedCount,
-    totalCount,
-    dataSource,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-    handleSortChanged,
-  } = useAgGridInfiniteAppend({
+  const { totalCount, dataSource, handleSortChanged } = useAgGridInfiniteAppend({
     allRows: rowData2,
     pageSize,
   });
 
-  const handleLoadNext = React.useCallback(() => {
-    handleLoadNextDefault();
-  }, [handleLoadNextDefault]);
-
-  const handleLoadAll = React.useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
-
-  const handleLoadReset = React.useCallback(() => {
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
   // 복사
   const duplicateButtonRenderer = useMemo(
     () =>
@@ -456,42 +437,48 @@ export default function Ltpa600Section() {
         mainBody={
           <Grid className="grid-cols-[1fr_1fr] h-full w-full" gap={3}>
             {/* 담보분류 */}
-            <Grid className="grid-rows-[auto_1fr_auto] h-full w-full">
+            <Grid className="grid-rows-[auto_1fr_auto] h-full w-full" gap={1}>
               <Grow className="w-full" placement="sc">
                 <Typo variant={'heading-md'} tag="h2">
                   담보분류
                 </Typo>
               </Grow>
-              <div className="ag-theme-alpine radio-selection">
-                <AgGridReact<DummyData1Type>
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={rowData}
-                  columnDefs={columnDefs1}
-                  defaultColDef={{
-                    sortable: true,
-                    resizable: false,
-                  }}
-                  singleClickEdit={true}
-                  rowSelection={{
-                    mode: 'singleRow',
-                    checkboxes: true,
-                    enableClickSelection: false,
-                  }}
-                  selectionColumnDef={{
-                    headerName: '선택',
-                    width: 30,
-                    cellClass: 'editable-cell text-center',
-                  }}
-                  domLayout="normal"
-                  animateRows={false}
-                />
-              </div>
-              <Grow placement="ec" className="w-full">
-                <Button variant={'outlined'} size={'sm'}>
-                  시뮬레이션
-                </Button>
-              </Grow>
+              <Grid className="grid-rows-[auto_1fr] h-full w-full" gap={3}>
+                <Grow className="w-full" variant="box-round" placement={'ec'} gap={6}>
+                  <Grow>
+                    <Button color="primary" onClick={() => {}} only="default" size="lg" variant="contained">
+                      시뮬레이션
+                    </Button>
+                  </Grow>
+                </Grow>
+
+                <div className="ag-theme-alpine radio-selection">
+                  <AgGridReact<DummyData1Type>
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={rowData}
+                    columnDefs={columnDefs1}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: false,
+                    }}
+                    singleClickEdit={true}
+                    rowSelection={{
+                      mode: 'singleRow',
+                      checkboxes: true,
+                      enableClickSelection: false,
+                    }}
+                    selectionColumnDef={{
+                      headerName: '선택',
+                      width: 30,
+                      cellClass: 'editable-cell text-center',
+                    }}
+                    domLayout="normal"
+                    animateRows={false}
+                  />
+                </div>
+              </Grid>
+              <div className="h-[1.95rem]"></div>
             </Grid>
 
             {/* 시뮬레이션 */}
@@ -550,7 +537,7 @@ export default function Ltpa600Section() {
                     ref={gridRef}
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
-                    rowData={rowData2.slice(0, loadedCount)}
+                    rowData={rowData2}
                     columnDefs={columnDefs2}
                     defaultColDef={{
                       sortable: true,
@@ -562,7 +549,6 @@ export default function Ltpa600Section() {
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
                     tooltipHideDelay={3000}
-                    rowModelType="infinite"
                     onSortChanged={(event) => {
                       handleSortChanged(
                         event.api
@@ -574,21 +560,17 @@ export default function Ltpa600Section() {
                           }))
                       );
                     }}
-                    cacheBlockSize={pageSize}
-                    maxBlocksInCache={2}
                     datasource={dataSource}
                   />
                 </div>
               </Grid>
               <TableMore
                 gridRef={gridRef}
-                isAll={true}
-                loadedCount={loadedCount}
+                isAll={false}
+                isNext={false}
+                loadedCount={totalCount}
                 totalCount={totalCount}
-                pageSize={pageSize}
-                onLoadAll={handleLoadAll}
-                onLoadNext={handleLoadNext}
-                onLoadReset={handleLoadReset}
+                pageSize={totalCount}
               />
             </Grid>
           </Grid>

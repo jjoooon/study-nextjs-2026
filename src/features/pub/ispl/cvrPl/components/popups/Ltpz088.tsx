@@ -5,6 +5,8 @@
 
 import '@/shared/lib/agGridPub';
 import { Gcol, Grow, Typo } from '@atoms';
+import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { EssentialIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -18,8 +20,6 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 const Ltpz088 = () => {
   return (
@@ -44,7 +44,7 @@ const Ltpz088 = () => {
                   title={'설계번호'}
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                 >
-                  <Input aria-label="" width={'quoteNo'} value={'LA260112297637'} readOnly />
+                  <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
                   -
                   <Input aria-label="" width={26} value={'1'} readOnly />
                   <Input aria-label="" width={'full'} value={'한화 BigPlus 재산종합보험 2601'} readOnly />

@@ -18,8 +18,7 @@ import type {
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { Divider, Gcol, Grow, Grid } from '@atoms';
-import { ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
+import Ltpz022 from '@/features/pub/ispl/udrtkGu/components/popups/Ltpz022';
 import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
@@ -31,19 +30,13 @@ import {
   AgGridEmptyComponent,
   AmountWithPopoverCellEditor,
 } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
+import { Divider, Gcol, Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { KeyValueList } from '@common/KeyValueList';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
 import { TextSelectChange } from '@common/TextSelectChange';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { MyPlanSelect } from '@features/MyPlanSelect';
-import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import {
   createExpiryCellRenderer,
   groupEditableButtonRenderer,
@@ -53,6 +46,14 @@ import {
 } from '@grid/CellRenderers';
 
 import { HeaderWithUnit, AgGridProductNameHeader } from '@grid/HeadRenderers';
+import { ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
+import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002aData';
 import type { DummyDataType } from '../data/ltpa35002aData';
@@ -69,6 +70,27 @@ type AgGridRow = DummyDataType & {
   locked?: boolean;
   isHighlighted?: boolean;
 };
+
+// AI 인수지침 위배해소(Ltpz068) 적용 시 교체될 해소 완료 데이터 셋
+// - 전체 가입 설계 목록의 담보에 대해 가입금액 및 보험료를 일괄적으로 AI 권고 비율(70%)로 최적 조정합니다.
+const resolvedDummyData: AgGridRow[] = dummyData.map((item) => {
+  const originalAmount = typeof item.insuredAmount === 'number' ? item.insuredAmount : Number(item.insuredAmount);
+  const originalPremium = typeof item.field7 === 'number' ? item.field7 : Number(item.field7);
+
+  if (!isNaN(originalAmount) && originalAmount > 0) {
+    const newAmount = Math.round(originalAmount * 0.7);
+    const newPremium = Math.round(originalPremium * 0.7);
+    return {
+      ...item,
+      title: `[AI조정] ${item.title}`,
+      insuredAmount: newAmount,
+      field4: newAmount,
+      field7: newPremium,
+      isHighlighted: true,
+    };
+  }
+  return item;
+});
 interface Ltpa35002Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
@@ -81,7 +103,27 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   // =====================
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 지침확인결과(Ltpz022) 팝업 가시성 상태
+  const [isLtpz022Open, setIsLtpz022Open] = useState(false);
   const [rowData, setRowData] = useState<AgGridRow[]>(dummyData);
+
+  // AI 지침 자동 해소 적용 콜백
+  const handleApplyAiRemedy = useCallback(() => {
+    setIsLtpz022Open(false); // 팝업 닫기
+    setRowData(resolvedDummyData); // 데이터 교체
+  }, []);
+
+  // 전체 보험료(field7) 합계 계산
+  const totalPremium = useMemo(() => {
+    return rowData
+      .filter((row) => row.isChecked)
+      .reduce((sum, row) => {
+        const val = Number(row.field7);
+        return sum + (isNaN(val) ? 0 : val);
+      }, 0);
+  }, [rowData]);
+
   const pendingSelectIdRef = useRef<string | number | null>(null);
   const gridApiRef = useRef<GridApi<AgGridRow> | null>(null);
   const prevSelectedIdsRef = useRef<Set<string | number>>(new Set());
@@ -96,6 +138,26 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   }, []);
 
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
+
+  // 해쉬 필터 상태 및 핸들러
+  const [selectedHashtags, setSelectedHashtags] = useState<string[]>([]);
+  const selectedHashtagsRef = useRef(selectedHashtags);
+
+  const handleHashtagChange = useCallback((hashtags: string[]) => {
+    setSelectedHashtags(hashtags);
+    selectedHashtagsRef.current = hashtags;
+    gridApiRef.current?.onFilterChanged();
+  }, []);
+
+  const isExternalFilterPresent = useCallback(() => {
+    return selectedHashtagsRef.current.length > 0;
+  }, []);
+
+  const doesExternalFilterPass = useCallback((node: any) => {
+    if (selectedHashtagsRef.current.length === 0) return true;
+    const badges = node.data?.badge || [];
+    return selectedHashtagsRef.current.some((tag) => badges.includes(tag));
+  }, []);
 
   // =====================
   // 공용 유틸리티/셀 렌더러
@@ -370,7 +432,6 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 <CheckboxGroup
                   className="gap-[0.2rem] flex-wrap type-small"
                   color="primary"
-                  minSelected={0}
                   size="lg"
                   variant="button"
                   width="auto"
@@ -397,7 +458,6 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 <CheckboxGroup
                   className="gap-[0.2rem] flex-nowrap shrink-0 type-small"
                   color="primary"
-                  minSelected={0}
                   size="lg"
                   variant="button"
                   width="auto"
@@ -520,6 +580,8 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 getRowId={(params) => String(params.data.id)} // 그리드 행 식별자로 고유한 ID 지정
                 singleClickEdit={true} // 한 번의 클릭만으로 즉시 편집 모드로 전환
                 onCellValueChanged={handleCellValueChanged} // 편집 종료 후 최종 변경 값이 확정되었을 때 React 상태(rowData) 동기화
+                isExternalFilterPresent={isExternalFilterPresent}
+                doesExternalFilterPass={doesExternalFilterPass}
                 // 2. 다중 행 선택 설정
                 rowSelection={{
                   mode: 'multiRow' as const, // 다중 선택 모드 활성화
@@ -564,6 +626,8 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                   showProductNameTooltip,
                   onShowProductNameTooltipChange: (checked: boolean | 'indeterminate') =>
                     setShowProductNameTooltip(checked === true),
+                  selectedHashtags,
+                  onHashtagChange: handleHashtagChange,
                 }}
                 onSelectionChanged={onSelectionChanged} // 선택 상태가 달라졌을 때 (필수 잠금행 강제 유지 및 타 컬럼 갱신 등) 후처리 콜백
                 onGridReady={handleGridReady} // 그리드가 최초 로딩을 끝마쳐 API 참조를 저장할 수 있을 때 호출
@@ -673,7 +737,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       <Input
                         type="tel"
                         commaAmount={true}
-                        value={Number(72531).toLocaleString()}
+                        value={totalPremium.toLocaleString()}
                         size={'md'}
                         readOnly={true}
                         className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"
@@ -707,7 +771,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       <Input
                         type="tel"
                         commaAmount={true}
-                        value={72531}
+                        value={totalPremium}
                         clear={true}
                         width={'full'}
                         size={'md'}
@@ -756,12 +820,11 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                 동일상품복사
               </Button>
               <Button
-                type="submit"
-                form={'page2-MainForm'}
+                type="button"
                 variant={'contained'}
                 color={'primary'}
                 size={'xl'}
-                // onClick={onCalcGuidelineClick}
+                onClick={() => setIsLtpz022Open(true)}
               >
                 보험료계산(지침)
               </Button>
@@ -769,6 +832,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           </MainBottomItem>
         </MainBottom>
       </LayoutMainFoot>
+      <Ltpz022 open={isLtpz022Open} onOpenChange={setIsLtpz022Open} onApply={handleApplyAiRemedy} />
     </Gcol>
   );
 }

@@ -21,8 +21,13 @@ const meta: Meta<DatePickerInputStoryProps> = {
         return (
           <StoryDocTemplate
             overview={`DatePickerInput 컴포넌트는 입력 필드와 캘린더 팝오버를 결합한 날짜 입력 UI입니다.
-single, multiple, range 모드를 지원하며, 에러 메시지와 크기/너비 설정을 일관된 방식으로 제공합니다.`}
-            history={['2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화']}
+single, range 모드를 지원하며, 에러 메시지와 크기 설정을 일관된 방식으로 제공합니다.
+기간(range) 모드에서는 퀵 옵션(options) 등의 고급 설정을 활용할 수 있습니다.`}
+            history={[
+              '2026.06.14 - Props 한글 JSDoc 추가 및 스토리북 명세 1:1 동기화',
+              '2026.07.03 - autoRangeFix, autoClose Props 삭제',
+              '2026.07.03 - width Props 삭제 및 기본 너비 고정',
+            ]}
             usageCode={`
 import { DatePickerInput } from '@common/DatePicker';
 import { useState } from 'react';
@@ -32,23 +37,40 @@ const [value, setValue] = useState('');
 <DatePickerInput
   mode="single"
   size="lg"
-  width="sm"
   value={value}
   onChange={(date, formattedValue) => setValue(formattedValue)}
 />
             `}
           >
             <h2>Mode</h2>
-            <p>single, multiple, range 모드를 지원합니다.</p>
+            <p>single, range 모드를 지원합니다. min, max 설정을 통한 날짜 선택 범위 제어도 가능합니다.</p>
             <Grow
               gap={8}
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
-              <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="multiple" width="sm" value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" value="2026-03-07" onChange={() => undefined} />
+
+              <DatePickerInput
+                mode="single"
+                min="2026-03-05"
+                max="2026-03-20"
+                value="2026-03-07"
+                onChange={() => undefined}
+              />
+
+              <DatePickerInput mode="range" onChange={() => undefined} />
+
               <DatePickerInput
                 mode="range"
-                width="lg"
+                autoRangeDays={7}
+                rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
+                onChange={() => undefined}
+              />
+
+              <DatePickerInput
+                mode="range"
+                min="2026-06-25"
+                max="2026-07-15"
                 rangeValue={{ from: '2026-03-01', to: '2026-03-07' }}
                 onChange={() => undefined}
               />
@@ -60,36 +82,18 @@ const [value, setValue] = useState('');
               gap={8}
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
-              <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" size="md" width="sm" value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" size="md" value="2026-03-07" onChange={() => undefined} />
             </Grow>
-
-            <h2 className="mt-8">Width</h2>
-            <p>DatePickerInput 컴포넌트에서 사용할 수 있는 width 옵션은 다음과 같습니다.</p>
-            <Gcol
-              gap={2}
-              className="w-[60rem] p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem]"
-            >
-              <DatePickerInput mode="single" width="full" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="max" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="2xs" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="xs" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="sm" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="md" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="lg" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="xl" value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="2xl" value="2026-03-07" onChange={() => undefined} />
-            </Gcol>
-
             <h2 className="mt-8">State</h2>
             <p>required, readOnly, disabled 상태를 지원합니다.</p>
             <Grow
               gap={8}
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
-              <DatePickerInput mode="single" width="sm" required value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="sm" readOnly value="2026-03-07" onChange={() => undefined} />
-              <DatePickerInput mode="single" width="sm" disabled value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" required value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" readOnly value="2026-03-07" onChange={() => undefined} />
+              <DatePickerInput mode="single" disabled value="2026-03-07" onChange={() => undefined} />
             </Grow>
 
             <h2 className="mt-8">Error</h2>
@@ -99,16 +103,8 @@ const [value, setValue] = useState('');
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
               <Grow gap={8}>
+                <DatePickerInput value="2026-03-07" error errorPs="tl" errorMsg="top left" onChange={() => undefined} />
                 <DatePickerInput
-                  width="lg"
-                  value="2026-03-07"
-                  error
-                  errorPs="tl"
-                  errorMsg="top left"
-                  onChange={() => undefined}
-                />
-                <DatePickerInput
-                  width="lg"
                   value="2026-03-07"
                   error
                   errorPs="tc"
@@ -116,7 +112,6 @@ const [value, setValue] = useState('');
                   onChange={() => undefined}
                 />
                 <DatePickerInput
-                  width="lg"
                   value="2026-03-07"
                   error
                   errorPs="tr"
@@ -126,7 +121,6 @@ const [value, setValue] = useState('');
               </Grow>
               <Grow gap={8} className="mt-2">
                 <DatePickerInput
-                  width="lg"
                   value="2026-03-07"
                   error
                   errorPs="bl"
@@ -134,7 +128,6 @@ const [value, setValue] = useState('');
                   onChange={() => undefined}
                 />
                 <DatePickerInput
-                  width="lg"
                   value="2026-03-07"
                   error
                   errorPs="bc"
@@ -142,7 +135,6 @@ const [value, setValue] = useState('');
                   onChange={() => undefined}
                 />
                 <DatePickerInput
-                  width="lg"
                   value="2026-03-07"
                   error
                   errorPs="br"
@@ -159,19 +151,15 @@ const [value, setValue] = useState('');
   argTypes: {
     mode: {
       control: { type: 'select' },
-      options: ['single', 'multiple', 'range'],
+      options: ['single', 'range'],
       table: { category: '설정 props' },
     },
     size: {
       control: { type: 'select' },
       options: ['lg', 'md'],
-      table: { category: '스타일 props' },
+      table: { category: '설정 props' },
     },
-    width: {
-      control: { type: 'select' },
-      options: ['full', 'auto', 'max', 'min', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
-      table: { category: '스타일 props' },
-    },
+
     required: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
@@ -205,6 +193,26 @@ const [value, setValue] = useState('');
     onMonthSelect: {
       table: { disable: true },
     },
+    options: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '퀵 기간 선택 옵션(당일, 1주일, 1개월, 3개월) 버튼 표시 여부',
+    },
+    autoRangeDays: {
+      control: { type: 'number' },
+      table: { category: '설정 props' },
+      description: '시작일 선택 시 자동으로 계산할 종료일과의 간격 일수',
+    },
+    min: {
+      control: { type: 'text' },
+      table: { category: '설정 props' },
+      description: '선택 가능한 최소 날짜 (포맷: YYYY-MM-DD 또는 Date 객체)',
+    },
+    max: {
+      control: { type: 'text' },
+      table: { category: '설정 props' },
+      description: '선택 가능한 최대 날짜 (포맷: YYYY-MM-DD 또는 Date 객체)',
+    },
     id: {
       table: { disable: true },
     },
@@ -221,7 +229,6 @@ const [value, setValue] = useState('');
   args: {
     mode: 'single',
     size: 'lg',
-    width: 'sm',
     required: false,
     readOnly: false,
     disabled: false,
@@ -229,6 +236,8 @@ const [value, setValue] = useState('');
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
     monthOnly: false,
+    options: false,
+    autoRangeDays: 7,
   },
 };
 

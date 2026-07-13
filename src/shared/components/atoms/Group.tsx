@@ -70,7 +70,7 @@ type Variant =
  * - `gap`으로 내부 간격
  * - `onClick`이 있으면 접근성 가능한 클릭 블록으로 동작
  */
-interface GroupProps {
+interface GroupProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * 그룹 내부에 들어갈 자식 노드
    */
@@ -226,6 +226,7 @@ export const Gcol = ({
   className,
   style,
   onClick,
+  ...props
 }: GroupProps) => {
   return (
     <div
@@ -240,6 +241,7 @@ export const Gcol = ({
       )}
       style={style}
       {...getClickableProps(onClick)}
+      {...props}
     >
       {children}
     </div>
@@ -261,6 +263,7 @@ export const Grow = ({
   className,
   style,
   onClick,
+  ...props
 }: GroupProps) => {
   return (
     <div
@@ -275,6 +278,7 @@ export const Grow = ({
       )}
       style={style}
       {...getClickableProps(onClick)}
+      {...props}
     >
       {children}
     </div>
@@ -288,7 +292,7 @@ export const Grow = ({
  * - 내부 grid-template 클래스는 호출부에서 추가 지정
  * - 공통적으로 gap, variant, clickable 처리만 제공
  */
-export const Grid = ({ children, variant = 'default', gap = 1, className, style, onClick }: GroupProps) => {
+export const Grid = ({ children, variant = 'default', gap = 1, className, style, onClick, ...props }: GroupProps) => {
   return (
     <div
       data-variant={variant}
@@ -296,6 +300,7 @@ export const Grid = ({ children, variant = 'default', gap = 1, className, style,
       className={cn('grid relative tracking-[-0.13rem]', `gap-${gap}`, VARIANT_MAP[variant], className)}
       style={style}
       {...getClickableProps(onClick)}
+      {...props}
     >
       {children}
     </div>
@@ -317,6 +322,7 @@ export const FormItem = ({
   className,
   style,
   onClick,
+  ...props
 }: GroupProps) => {
   return (
     <div
@@ -330,6 +336,7 @@ export const FormItem = ({
       )}
       style={style}
       {...getClickableProps(onClick)}
+      {...props}
     >
       {children}
     </div>
@@ -340,9 +347,9 @@ export const FormItem = ({
  * 단순 간격/시각 분리용 래퍼.
  * - 기본적으로 y축 미세 이동(`translate-y`) 적용
  */
-export const Separator = ({ children, style, onClick }: GroupProps) => {
+export const Separator = ({ children, style, onClick, ...props }: GroupProps) => {
   return (
-    <div className="translate-y-[-.2rem]" style={style} {...getClickableProps(onClick)}>
+    <div className="translate-y-[-.2rem]" style={style} {...getClickableProps(onClick)} {...props}>
       {children}
     </div>
   );

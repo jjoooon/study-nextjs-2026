@@ -5,12 +5,12 @@
 
 import * as React from 'react';
 import { type DateRange } from 'react-day-picker';
-import { FormItemSize, FormItemWidth } from '@/shared/types/uiTypes';
+import { FormItemSize } from '@/shared/types/uiTypes';
+import { ErrorMsg } from '@common/ErrorMsg';
 import { CalendarIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Calendar } from '@uiux/Calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
-import { ErrorMsg } from '@common/ErrorMsg';
 
 type CalendarSelection = Date | Date[] | DateRange | undefined;
 
@@ -38,6 +38,11 @@ function isValidDate(date: Date | undefined) {
   return !isNaN(date.getTime());
 }
 
+function isSameDay(d1: Date | undefined, d2: Date | undefined) {
+  if (!d1 || !d2) return false;
+  return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+}
+
 function formatInputDigits(digits: string) {
   if (digits.length === 0) return '';
   if (digits.length <= 4) return digits;
@@ -63,7 +68,7 @@ function parseDateFromDigits(digits: string) {
 /**
  * DatePickerInput 컴포넌트의 Props 인터페이스입니다.
  */
-interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
+interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange' | 'min' | 'max'> {
   /** 입력 필드 및 관련 요소의 고유 ID */
   id?: string;
   /** 단일 날짜 값 (포맷: YYYY-MM-DD) */
@@ -96,11 +101,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
    * @default 'lg'
    */
   size?: FormItemSize;
-  /**
-   * 입력 필드의 너비 (예: 'full', 'auto', '20rem' 등)
-   * @default 'full'
-   */
-  width?: FormItemWidth;
+
   /** 필수 입력(체크) 스타일 적용 여부 */
   required?: boolean;
   /** 읽기 전용 상태 여부 */
@@ -129,6 +130,15 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
    * @param month 선택된 월 (1~12)
    */
   onMonthSelect?: (month: number) => void;
+  /** 퀵 기간 선택 옵션(당일, 1주일, 1개월, 3개월) 버튼 표시 여부 (mode가 range일 때만 동작) */
+  options?: boolean;
+  /** 시작일 선택 시 자동으로 설정될 종료일과의 간격 일수 (기본값: 7) */
+  autoRangeDays?: number;
+
+  /** 선택 가능한 최소 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
+  min?: string | Date;
+  /** 선택 가능한 최대 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
+  max?: string | Date;
 }
 
 /**
@@ -142,7 +152,6 @@ export function DatePickerInput({
   mode = 'single',
   onChange,
   size = 'lg',
-  width = 'full',
   required = false,
   readOnly = false,
   disabled = false,
@@ -151,7 +160,13 @@ export function DatePickerInput({
   errorPs = 'bl',
   monthOnly = false,
   onMonthSelect,
+  options = false,
+  autoRangeDays = 0,
+  min,
+  max,
 }: UIInputProps) {
+  const autoClose = true;
+  const autoRangeFix = false;
   const generatedId = React.useId();
   const finalId = id || generatedId;
   const errorId = React.useId();
@@ -159,12 +174,56 @@ export function DatePickerInput({
   const toInputRef = React.useRef<HTMLInputElement>(null);
 
   const [open, setOpen] = React.useState(false);
+  const [isSelectingEnd, setIsSelectingEnd] = React.useState(false);
   const [selected, setSelected] = React.useState<CalendarSelection>(initialValue ? new Date(initialValue) : undefined);
   const [month, setMonth] = React.useState<Date | undefined>(initialValue ? new Date(initialValue) : undefined);
+
+  const minDate = React.useMemo(() => {
+    if (!min) return undefined;
+    return min instanceof Date ? min : new Date(min);
+  }, [min]);
+
+  const maxDate = React.useMemo(() => {
+    if (!max) return undefined;
+    return max instanceof Date ? max : new Date(max);
+  }, [max]);
+
+  const disabledDays = React.useMemo(() => {
+    const rules: any[] = [];
+    if (minDate) {
+      rules.push({ before: minDate });
+    }
+    if (maxDate) {
+      rules.push({ after: maxDate });
+    }
+
+    if (autoRangeDays > 0 && selected && !Array.isArray(selected) && !(selected instanceof Date)) {
+      const from = selected.from;
+      const to = selected.to;
+      if (from && (!to || isSelectingEnd)) {
+        const fromCopy = new Date(from);
+        fromCopy.setHours(0, 0, 0, 0);
+
+        rules.push({ before: fromCopy });
+
+        const maxAllowed = new Date(fromCopy);
+        maxAllowed.setDate(maxAllowed.getDate() + autoRangeDays - 1);
+        rules.push({ after: maxAllowed });
+      }
+    }
+    return rules.length > 0 ? rules : undefined;
+  }, [minDate, maxDate, autoRangeDays, selected, isSelectingEnd]);
   const [numericValue, setNumericValue] = React.useState(initialValue?.replace(/\D/g, '') || '');
   const [rangeInput, setRangeInput] = React.useState({ from: '', to: '' });
   const [invalidRange, setInvalidRange] = React.useState({ from: false, to: false });
   const [invalidDate, setInvalidDate] = React.useState(false);
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    if (nextOpen) {
+      setIsSelectingEnd(false);
+    }
+  };
 
   const [prevInitialValue, setPrevInitialValue] = React.useState<string | undefined>(initialValue);
   const [prevMode, setPrevMode] = React.useState<string>(mode);
@@ -185,7 +244,10 @@ export function DatePickerInput({
       const from = rangeValue.from ? new Date(rangeValue.from) : undefined;
       const to = rangeValue.to ? new Date(rangeValue.to) : undefined;
 
-      if (from && isValidDate(from) && to && isValidDate(to)) {
+      const isFromValid = from && isValidDate(from);
+      const isToValid = to && isValidDate(to);
+
+      if (isFromValid && isToValid) {
         setSelected({ from, to });
         setMonth(from);
         setRangeInput({
@@ -193,6 +255,14 @@ export function DatePickerInput({
           to: formatDate(to),
         });
         setNumericValue(`${formatDate(from).replace(/\D/g, '')}${formatDate(to).replace(/\D/g, '')}`);
+      } else if (isFromValid) {
+        setSelected({ from, to: undefined });
+        setMonth(from);
+        setRangeInput({
+          from: formatDate(from),
+          to: '',
+        });
+        setNumericValue(formatDate(from).replace(/\D/g, ''));
       } else {
         setSelected(undefined);
         setMonth(undefined);
@@ -218,7 +288,160 @@ export function DatePickerInput({
     }
   }
 
-  const handleSelect = (selectedValue: CalendarSelection) => {
+  const handleSelect = (selectedValue: CalendarSelection, selectedDay?: Date) => {
+    if (mode === 'range') {
+      if (selectedDay) {
+        if (autoRangeDays > 0 && !autoRangeFix) {
+          const currentRangeSelected =
+            selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
+
+          if (!isSelectingEnd || !currentRangeSelected || !currentRangeSelected.from) {
+            const nextFrom = selectedDay;
+            setSelected({ from: nextFrom, to: undefined });
+            setRangeInput({ from: formatDate(nextFrom), to: '' });
+            setNumericValue(formatDate(nextFrom).replace(/\D/g, ''));
+            setIsSelectingEnd(true);
+            onChange?.(nextFrom, formatDate(nextFrom));
+            setInvalidDate(false);
+            return;
+          }
+
+          if (isSelectingEnd && currentRangeSelected.from) {
+            const fromDate = currentRangeSelected.from;
+            const maxAllowed = new Date(fromDate);
+            maxAllowed.setDate(maxAllowed.getDate() + autoRangeDays - 1);
+
+            if (selectedDay < fromDate || selectedDay > maxAllowed) {
+              const nextFrom = selectedDay;
+              setSelected({ from: nextFrom, to: undefined });
+              setRangeInput({ from: formatDate(nextFrom), to: '' });
+              setNumericValue(formatDate(nextFrom).replace(/\D/g, ''));
+              setIsSelectingEnd(true);
+              onChange?.(nextFrom, formatDate(nextFrom));
+              setInvalidDate(false);
+              return;
+            }
+
+            const nextTo = selectedDay;
+            setSelected({ from: fromDate, to: nextTo });
+            setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
+            setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
+            setIsSelectingEnd(false);
+            onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
+            setOpen(false);
+            setInvalidDate(false);
+            return;
+          }
+        }
+
+        const offset = autoRangeDays ?? 7;
+
+        if (autoRangeFix) {
+          const nextFrom = selectedDay;
+          const nextTo = new Date(nextFrom);
+          nextTo.setDate(nextTo.getDate() + offset);
+
+          setSelected({ from: nextFrom, to: nextTo });
+          setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
+          setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
+          setIsSelectingEnd(false);
+          onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
+
+          setOpen(false);
+          setInvalidDate(false);
+          return;
+        }
+
+        const currentRangeSelected =
+          selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
+
+        const fromDate = currentRangeSelected?.from;
+        const toDate = currentRangeSelected?.to;
+
+        // 1. 선택일(시작일) 다시 선택시 전체 초기화
+        if (fromDate && isSameDay(selectedDay, fromDate)) {
+          setSelected(undefined);
+          setRangeInput({ from: '', to: '' });
+          setNumericValue('');
+          setIsSelectingEnd(false);
+          onChange?.(undefined, '');
+          setInvalidDate(false);
+          return;
+        }
+
+        // 2. 종료일 선택 다시 선택시 종료일 초기화 및 종료일 대기 모드 전환
+        if (toDate && isSameDay(selectedDay, toDate)) {
+          setSelected({ from: fromDate, to: undefined });
+          setRangeInput({ from: formatDate(fromDate), to: '' });
+          setNumericValue(formatDate(fromDate).replace(/\D/g, ''));
+          setIsSelectingEnd(true); // 종료일 선택 대기 상태로 전환
+          onChange?.(fromDate, formatDate(fromDate));
+          setInvalidDate(false);
+          return;
+        }
+
+        // 1. 기존에 이미 기간 선택(from과 to 모두 존재)이 완료되었던 상태에서 세 번째 클릭이 들어온 경우 -> 무조건 새로운 시작일로 지정
+        if (currentRangeSelected?.from && currentRangeSelected?.to && !isSelectingEnd) {
+          const nextFrom = selectedDay;
+          const nextTo = new Date(nextFrom);
+          nextTo.setDate(nextTo.getDate() + offset);
+
+          // 만약 자동으로 계산된 nextTo가 maxDate를 넘는다면 클램프
+          if (maxDate && nextTo > maxDate) {
+            nextTo.setTime(maxDate.getTime());
+          }
+
+          setSelected({ from: nextFrom, to: nextTo });
+          setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
+          setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
+          setIsSelectingEnd(true); // 종료일 선택 대기 상태로 전환
+          onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
+
+          setInvalidDate(false);
+          return;
+        }
+
+        // 2. 종료일 대기 상태이거나, 한쪽만 채워져 있는 경우
+        if (isSelectingEnd && currentRangeSelected?.from) {
+          const fromDate = currentRangeSelected.from;
+          if (selectedDay < fromDate) {
+            // 클릭한 날짜가 시작일보다 전인 경우 -> 새로운 시작일로 지정하고 종료일은 자동 +offset일 계산
+            const nextFrom = selectedDay;
+            const nextTo = new Date(nextFrom);
+            nextTo.setDate(nextTo.getDate() + offset);
+
+            setSelected({ from: nextFrom, to: nextTo });
+            setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
+            setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
+            setIsSelectingEnd(true); // 여전히 종료일 대기 상태
+            onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
+          } else {
+            // 클릭한 날짜가 시작일보다 같거나 후인 경우 -> 종료일로 지정하고 완료
+            const nextTo = selectedDay;
+            setSelected({ from: fromDate, to: nextTo });
+            setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
+            setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
+            setIsSelectingEnd(false); // 선택 완료
+            onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
+            setOpen(false);
+          }
+        } else {
+          // 시작일 선택 단계
+          const nextFrom = selectedDay;
+          const nextTo = new Date(nextFrom);
+          nextTo.setDate(nextTo.getDate() + offset);
+
+          setSelected({ from: nextFrom, to: nextTo });
+          setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
+          setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
+          setIsSelectingEnd(true); // 다음 클릭은 종료일 선택
+          onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
+        }
+        setInvalidDate(false);
+        return;
+      }
+    }
+
     setSelected(selectedValue);
 
     if (selectedValue instanceof Date || selectedValue === undefined) {
@@ -278,16 +501,48 @@ export function DatePickerInput({
     setRangeInput((prev) => ({ ...prev, [part]: formatted }));
 
     const parsedDate = parseDateFromDigits(digits);
-    const isInvalid = digits.length === 8 && !parsedDate;
+
+    // min, max 범위 검사 추가
+    const isWithinRange = parsedDate
+      ? (!minDate || parsedDate >= minDate) && (!maxDate || parsedDate <= maxDate)
+      : true;
+
+    const isInvalid = digits.length === 8 && (!parsedDate || !isWithinRange);
     setInvalidRange((prev) => {
       const next = { ...prev, [part]: isInvalid };
       setInvalidDate(next.from || next.to);
       return next;
     });
+
     const currentRange =
       selected && !Array.isArray(selected) && !(selected instanceof Date)
         ? selected
         : { from: undefined, to: undefined };
+
+    // 만약 시작일이 완성되었고 종료일이 비어있다면 자동 입력 적용
+    if (part === 'from' && parsedDate && digits.length === 8 && isWithinRange) {
+      const offset = autoRangeDays ?? 7;
+      const autoTo = new Date(parsedDate);
+      autoTo.setDate(autoTo.getDate() + offset);
+
+      // autoTo가 maxDate를 넘지 않도록 클램프
+      if (maxDate && autoTo > maxDate) {
+        autoTo.setTime(maxDate.getTime());
+      }
+
+      const autoToFormatted = formatDate(autoTo);
+
+      setRangeInput({ from: formatted, to: autoToFormatted });
+      setSelected({ from: parsedDate, to: autoTo });
+      setNumericValue(`${digits}${autoToFormatted.replace(/\D/g, '')}`);
+      setInvalidRange({ from: false, to: false });
+      setInvalidDate(false);
+      onChange?.(autoTo, `${formatted} ~ ${autoToFormatted}`);
+
+      // 포커스 종료일로 이동
+      toInputRef.current?.focus();
+      return;
+    }
 
     const nextRange: DateRange = { ...currentRange, [part]: parsedDate };
     setSelected(nextRange);
@@ -342,9 +597,18 @@ export function DatePickerInput({
           dateObj.getFullYear() === year && dateObj.getMonth() === month - 1 && dateObj.getDate() === day;
 
         if (isActualValid) {
-          setMonth(dateObj);
-          setInvalidDate(false);
-          onChange?.(dateObj, formatted);
+          // min, max 범위 검사 추가
+          const isWithinMin = !minDate || dateObj >= minDate;
+          const isWithinMax = !maxDate || dateObj <= maxDate;
+
+          if (isWithinMin && isWithinMax) {
+            setMonth(dateObj);
+            setInvalidDate(false);
+            onChange?.(dateObj, formatted);
+          } else {
+            setInvalidDate(true);
+            onChange?.(undefined, '');
+          }
         } else {
           setInvalidDate(true);
           onChange?.(undefined, '');
@@ -390,18 +654,35 @@ export function DatePickerInput({
     return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}-${numericValue.slice(6, 8)}`;
   })();
 
-  const inlineWidthStyle = (() => {
-    if (typeof width === 'string') {
-      if (/^\d+(\.\d+)?$/.test(width)) return { width: `${width}rem` };
-      if (/^\d+(\.\d+)?rem$/.test(width)) return { width };
-      if (/^\d+(\.\d+)?px$/.test(width)) return { width };
-    }
-    return undefined;
-  })();
-
   const inputStyle: React.CSSProperties | undefined = readOnly
-    ? { ...(inlineWidthStyle ?? {}), backgroundColor: '#F4F4F4', border: '0.1rem solid #F4F4F4' }
-    : inlineWidthStyle;
+    ? { backgroundColor: '#F4F4F4', border: '0.1rem solid #F4F4F4' }
+    : undefined;
+
+  const handleQuickSelect = (type: 'today' | 'week' | 'month' | '3months') => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const from = new Date(today);
+    const to = new Date(today);
+
+    if (type === 'week') {
+      from.setDate(from.getDate() - 7);
+    } else if (type === 'month') {
+      from.setMonth(from.getMonth() - 1);
+    } else if (type === '3months') {
+      from.setMonth(from.getMonth() - 3);
+    }
+
+    const fromStr = formatDate(from);
+    const toStr = formatDate(to);
+
+    setSelected({ from, to });
+    setRangeInput({ from: fromStr, to: toStr });
+    setNumericValue(`${fromStr.replace(/\D/g, '')}${toStr.replace(/\D/g, '')}`);
+    setInvalidRange({ from: false, to: false });
+    setIsSelectingEnd(false);
+    onChange?.(to, `${fromStr} ~ ${toStr}`);
+    if (autoClose) setOpen(false);
+  };
 
   const sizeClass = size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]';
   const buttonSizeClass = size === 'lg' ? 'h-[2.8rem] w-[2.8rem]' : 'h-[2.5rem] w-[2.5rem]';
@@ -462,7 +743,6 @@ export function DatePickerInput({
             className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
             style={inputStyle}
             data-size={size}
-            data-width={width}
             ref={fromInputRef}
           />
           -
@@ -488,7 +768,6 @@ export function DatePickerInput({
             className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
             style={inputStyle}
             data-size={size}
-            data-width={width}
             ref={toInputRef}
           />
         </>
@@ -517,10 +796,9 @@ export function DatePickerInput({
           className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
           style={inputStyle}
           data-size={size}
-          data-width={width}
         />
       )}
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <Button
             id={`${finalId}-button`}
@@ -559,6 +837,9 @@ export function DatePickerInput({
                 }
               }}
               onClose={() => setOpen(false)}
+              fromDate={minDate}
+              toDate={maxDate}
+              disabled={disabledDays}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
             />
           ) : mode === 'range' ? (
@@ -571,6 +852,9 @@ export function DatePickerInput({
               month={month}
               onMonthChange={setMonth}
               numberOfMonths={2}
+              fromDate={minDate}
+              toDate={maxDate}
+              disabled={disabledDays}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
               required={true}
             />
@@ -582,6 +866,9 @@ export function DatePickerInput({
               captionLayout={'dropdown'}
               month={month}
               onMonthChange={setMonth}
+              fromDate={minDate}
+              toDate={maxDate}
+              disabled={disabledDays}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
               required={required}
             />
@@ -593,11 +880,59 @@ export function DatePickerInput({
               captionLayout={'dropdown'}
               month={month}
               onMonthChange={setMonth}
+              required={true}
+              fromDate={minDate}
+              toDate={maxDate}
+              disabled={disabledDays}
               className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
             />
           )}
         </PopoverContent>
       </Popover>
+      {mode === 'range' && options && (
+        <div className="flex gap-[0.4rem] items-center shrink-0">
+          <Button
+            type="button"
+            variant="outlined"
+            color="gray-light"
+            size={size}
+            onClick={() => handleQuickSelect('today')}
+            className="px-[0.8rem] min-w-0"
+          >
+            당일
+          </Button>
+          <Button
+            type="button"
+            variant="outlined"
+            color="gray-light"
+            size={size}
+            onClick={() => handleQuickSelect('week')}
+            className="px-[0.8rem] min-w-0"
+          >
+            1주일
+          </Button>
+          <Button
+            type="button"
+            variant="outlined"
+            color="gray-light"
+            size={size}
+            onClick={() => handleQuickSelect('month')}
+            className="px-[0.8rem] min-w-0"
+          >
+            1개월
+          </Button>
+          <Button
+            type="button"
+            variant="outlined"
+            color="gray-light"
+            size={size}
+            onClick={() => handleQuickSelect('3months')}
+            className="px-[0.8rem] min-w-0"
+          >
+            3개월
+          </Button>
+        </div>
+      )}
       {(error || invalidDate) && (
         <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
           {invalidDate && !error ? '유효하지 않은 날짜입니다.' : errorMsg}

@@ -7,8 +7,6 @@ import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterpris
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
 import * as React from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { ArrowDoubleIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createModifiedCellClassRules,
@@ -16,6 +14,12 @@ import {
   numberValueFormatter,
   useDynamicColumnWidths,
 } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { StarStage } from '@features/StarStage';
+import { ArrowDoubleIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -27,10 +31,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { StarStage } from '@features/StarStage';
 
 import '@/shared/lib/agGridPub';
 

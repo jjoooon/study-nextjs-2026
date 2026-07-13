@@ -8,11 +8,11 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import type { UIUXsize } from '@/shared/types/uiTypes';
 import { Gcol, Grow } from '@atoms';
+import { ErrorMsg } from '@common/ErrorMsg';
 import { SelectDropIcon } from '@icons';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { ErrorMsg } from '@common/ErrorMsg';
 
 const CUSTOM_INPUT_VALUE = '__custom_input__' as const;
 

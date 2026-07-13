@@ -11,11 +11,23 @@ import { CheckIcon, ExMarkIcon, BadgeCheckIcon } from '@icons';
 import { Button } from '@uiux/Button';
 
 // TaskStatusBoard 입력 타입
-// - T를 제네릭으로 받아, 기본 필드(id/status/label)를 만족하면 추가 필드도 함께 전달 가능
+type TaskStatus = '정상' | '경고' | '중지' | '없음';
+
+const colorMap = {
+  정상: 'var(--color-success-50)',
+  경고: 'var(--color-warning-40)',
+  중지: 'var(--color-danger-50)',
+  없음: 'var(--color-gray-20)',
+};
+
+function getPieBackground(status: TaskStatus) {
+  return colorMap[status] || colorMap['없음'];
+}
+
 type TaskStatusBoardProps<
   T extends {
     id: number;
-    status: '정상' | '경고' | '중지';
+    status: TaskStatus;
     label: string;
   },
 > = {
@@ -30,7 +42,7 @@ type TaskStatusBoardProps<
 export function TaskStatusBoard<
   T extends {
     id: number;
-    status: '정상' | '경고' | '중지';
+    status: TaskStatus;
     label: string;
   },
 >({ state, onItemClick }: TaskStatusBoardProps<T>) {
@@ -49,12 +61,10 @@ export function TaskStatusBoard<
 
       <Grid className="grid-cols-4 gap-0 w-full h-[4.5rem] bg-[var(--color-gray-0)] px-1.5 rounded-[0.6rem]">
         {state.map((item) => {
-          // 상태값별 원형 아이콘 배경색 매핑
-          const statusColors = {
-            정상: 'bg-[var(--color-success-50)]',
-            경고: 'bg-[var(--color-warning-40)]',
-            중지: 'bg-[var(--color-danger-50)]',
-          };
+          const status = item.status;
+          const isUnderline = status !== '없음';
+          const showIcon = status !== '없음';
+
           return (
             <Button
               key={item.id}
@@ -67,22 +77,19 @@ export function TaskStatusBoard<
               }}
             >
               <span className="flex items-center gap-1">
-                <Typo variant={'body-xs'} className="underline underline-offset-4">
+                <Typo variant={'body-xs'} className={cn(isUnderline && 'underline underline-offset-4')}>
                   {item.label}
                 </Typo>
               </span>
               <span
-                className={cn(
-                  'w-[1.6rem] h-[1.6rem] shrink-0 rounded-full flex items-center justify-center',
-                  statusColors[item.status as keyof typeof statusColors]
-                )}
+                className={cn('w-[1.6rem] h-[1.6rem] shrink-0 rounded-full flex items-center justify-center')}
+                style={{
+                  background: getPieBackground(status),
+                }}
               >
-                {/* 정상은 체크, 경고/중지는 느낌표 아이콘 사용 */}
-                {item.status === '정상' ? (
-                  <CheckIcon color={'#fff'} size={14} />
-                ) : (
-                  <ExMarkIcon color={'#fff'} size={14} />
-                )}
+                {/* 단일 상태일 때만 해당 아이콘 표시 */}
+                {showIcon && status === '정상' && <CheckIcon color={'#fff'} size={14} />}
+                {showIcon && (status === '경고' || status === '중지') && <ExMarkIcon color={'#fff'} size={14} />}
               </span>
             </Button>
           );

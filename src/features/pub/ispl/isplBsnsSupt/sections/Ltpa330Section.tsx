@@ -6,21 +6,21 @@
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
-import { SearchIcon, ResetIcon } from '@icons';
-import { useAgGridInfiniteAppend, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { useFormFields } from '@hooks/useFormFields';
+import { SearchIcon, ResetIcon } from '@icons';
 import { LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { useFormFields } from '@hooks/useFormFields';
+import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import '@/shared/lib/agGridPub';
 
@@ -534,30 +534,78 @@ export default function Ltpa330Section() {
     ],
     [attributeColumnWidth]
   );
+
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 10;
-  const {
-    loadedCount,
-    totalCount,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-  } = useAgGridInfiniteAppend({
-    allRows: Ltpa330DummyData,
-    pageSize,
-  });
 
-  const handleLoadNext = React.useCallback(() => {
-    handleLoadNextDefault();
-  }, [handleLoadNextDefault]);
+  // 초기 렌더는 첫 페이지(10건)만 표시
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => Ltpa330DummyData.slice(0, 10));
+  // 현재 화면에 로드된 누적 건수
+  const [loadedCount, setLoadedCount] = React.useState(10);
+  // 전체 데이터 건수
+  const [totalCount, setTotalCount] = React.useState(Ltpa330DummyData.length);
+  // 중복 요청 방지용 로딩 플래그
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleLoadAll = React.useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
+  // 실데이터 호출 모사 (API 호출)
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      // API 호출 대기 시간 모사 (300ms)
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = Ltpa330DummyData.slice(start, end);
+      return {
+        items,
+        totalCount: Ltpa330DummyData.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // 초기 로딩 및 검색 실행
+  const handleSearch = React.useCallback(async () => {
+    // 검색은 항상 1페이지부터 재조회
+    const res = await fetchMockData(1, pageSize);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+    setTotalCount(res.totalCount);
+  }, [fetchMockData, pageSize]);
+
+  // 다음 버튼 누를 때 데이터 추가 호출 (onLoadNext 콜백)
+  const handleLoadNext = React.useCallback(async () => {
+    // 마지막 페이지 도달 또는 로딩 중이면 중복 호출 차단
+    if (loadedCount >= totalCount || isLoading) return;
+
+    // 현재 로드 건수 기준으로 다음 페이지 번호 계산
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+
+    // 기존 목록 하단에 다음 페이지 데이터 이어붙이기
+    setRowData((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  // 전체조회 버튼 누를 때 데이터 호출 (onLoadAll 콜백)
+  const handleLoadAll = React.useCallback(async () => {
+    // 이미 전체 로드됐거나 로딩 중이면 무시
+    if (loadedCount >= totalCount || isLoading) return;
+
+    // 1페이지부터 totalCount만큼 한 번에 조회
+    const res = await fetchMockData(1, totalCount);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  // 접기 버튼 (onLoadReset 콜백)
   const handleLoadReset = React.useCallback(() => {
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
+    // 현재 목록을 첫 페이지 크기만큼만 유지
+    setRowData((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
 
   return (
     <>
@@ -620,7 +668,7 @@ export default function Ltpa330Section() {
                 <Checkbox>
                   <span className="whitespace-nowrap mr-4">정부24시 실시간 조회</span>
                 </Checkbox>
-                <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button id="btnRA" color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -628,7 +676,7 @@ export default function Ltpa330Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
@@ -642,7 +690,7 @@ export default function Ltpa330Section() {
                   ref={gridRef}
                   getRowId={(params) => String(params.data.id)}
                   columnDefs={columnDefs}
-                  rowData={Ltpa330DummyData.slice(0, loadedCount)}
+                  rowData={rowData}
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
@@ -679,7 +727,7 @@ export default function Ltpa330Section() {
                 onLoadAll={handleLoadAll}
                 onLoadNext={handleLoadNext}
                 onLoadReset={handleLoadReset}
-                isAll={false}
+                isReset={true}
               />
               <Grow placement={'ec'} className="p-2.5 bg-[#EFF8FF] rounded-lg gap-2.5">
                 <Grow gap={2}>

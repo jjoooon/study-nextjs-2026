@@ -6,6 +6,8 @@
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -20,8 +22,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 const Ltpz043 = () => {
   // 2026-05-27 추가
@@ -63,7 +63,7 @@ const Ltpz043 = () => {
                 <FormTable variant="none" cols={['w-1', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
-                      <Input aria-label="" width={140} value={'LA26020945959594'} readOnly />
+                      <Input aria-label="" width={140} value={'LA123456789012'} readOnly />
                       <Input aria-label="" variant={'info'} value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                     </FormCell>
                   </FormRow>
@@ -207,17 +207,14 @@ const Ltpz043 = () => {
                       required
                       onChange={(e) => setFormField('type06', e.target.value)}
                     >
-                      {[
-                        { value: 'selection', id: 'type06-1', label: '선택1' },
-                        { value: 'selection2', id: 'type06-2', label: '선택2' },
-                      ].map((option) => (
+                      {[{ value: 'selection', id: 'type06-1', label: '0천만원' }].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
                       ))}
                     </NativeSelect>
                     (1인장)
-                    <Input onChange={() => {}} size="lg" value={''} variant="default" width={60} readOnly />
+                    <Input onChange={() => {}} size="lg" value={''} variant="default" width={90} readOnly />
                   </FormCell>
                 </FormRow>
                 <FormRow>
@@ -230,10 +227,7 @@ const Ltpz043 = () => {
                       required
                       onChange={(e) => setFormField('type07', e.target.value)}
                     >
-                      {[
-                        { value: 'selection', id: 'type07-1', label: '선택1' },
-                        { value: 'selection2', id: 'type07-2', label: '선택2' },
-                      ].map((option) => (
+                      {[{ value: 'selection', id: 'type07-1', label: '0천만원' }].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}
                         </NativeSelectOption>
@@ -245,14 +239,14 @@ const Ltpz043 = () => {
                   <FormCell title={'공제금액'} titleColSpan={2} colSpan={2}>
                     <NativeSelect
                       aria-label="선택"
-                      width={80}
+                      width={150}
                       value={form.type08}
                       required
                       onChange={(e) => setFormField('type08', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type08-1', label: '선택1' },
-                        { value: 'selection2', id: 'type08-2', label: '선택2' },
+                        { value: 'selection', id: 'type08-1', label: '1사고당 대인' },
+                        { value: 'selection2', id: 'type08-2', label: '대물 각각 00만원' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}

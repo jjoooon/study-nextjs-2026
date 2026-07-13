@@ -166,34 +166,44 @@ function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof A
 
 function AlertDialogDescription({
   className,
+  children,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Description>) {
   return (
     <AlertDialogPrimitive.Description
+      asChild
       data-slot="alert-dialog-description"
-      className={cn('text-muted-foreground text-center text-[1.4rem] w-full p-0', className)}
+      className={cn('text-[1.4rem] w-full p-0', className)}
       {...props}
-    />
+    >
+      <div>{children}</div>
+    </AlertDialogPrimitive.Description>
   );
 }
 
-function AlertDialogAction({ className, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Action>) {
-  return (
-    <AlertDialogPrimitive.Action
-      className={cn(buttonVariants({ variant: 'contained', size: 'xl' }), className)}
-      {...props}
-    />
-  );
-}
+const AlertDialogAction = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Action>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Action
+    ref={ref}
+    className={cn(buttonVariants({ variant: 'contained', size: 'xl' }), className)}
+    {...props}
+  />
+));
+AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
 
-function AlertDialogCancel({ className, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Cancel>) {
-  return (
-    <AlertDialogPrimitive.Cancel
-      className={cn(buttonVariants({ variant: 'outlined', size: 'xl', color: 'gray' }), className)}
-      {...props}
-    />
-  );
-}
+const AlertDialogCancel = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Cancel
+    ref={ref}
+    className={cn(buttonVariants({ variant: 'outlined', size: 'xl', color: 'gray' }), className)}
+    {...props}
+  />
+));
+AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
 
 export {
   AlertDialog,

@@ -7,11 +7,11 @@ import React from 'react';
 import { useTabsPagination } from '@/shared/hooks/useTabs';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow, Gcol, Typo } from '@atoms';
+import { ErrorMsg } from '@common/ErrorMsg';
 import { ArrowIcon, ListIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Popover, PopoverTrigger, PopoverContent } from '@uiux/Popover';
 import { Tabs, TabsList, TabsContent, TabsTrigger, TabsLine } from '@uiux/Tabs';
-import { ErrorMsg } from '@common/ErrorMsg';
 
 interface TabPagerProps<T> {
   /**
@@ -134,6 +134,7 @@ export function TabPager<T>({
     getValue
   );
 
+  console.log('data', data);
   // removable이 true일 때만 onRemove 전달
   const tabsProps = {
     variant,
@@ -155,11 +156,20 @@ export function TabPager<T>({
                 tab !== null &&
                 'error' in tab &&
                 Boolean((tab as { error?: unknown }).error);
+
+              // disabled 속성이 없는 타입도 허용
+              const tabIsDisabled =
+                typeof tab === 'object' &&
+                tab !== null &&
+                'disabled' in tab &&
+                Boolean((tab as { disabled?: unknown }).disabled);
+
               return (
                 <TabsTrigger
                   key={getValue(tab)}
                   value={getValue(tab)}
                   data-tab-error={error && tabHasError ? 'true' : 'false'}
+                  disabled={tabIsDisabled}
                 >
                   {renderTab?.(tab)}
                   {error && tabHasError && (

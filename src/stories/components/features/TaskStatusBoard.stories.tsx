@@ -8,7 +8,7 @@ import { TaskStatusBoard } from '@features/TaskStatusBoard';
 // 꼭 확인해야 할 일!
 type DataTaskState = {
   id: number;
-  status: '정상' | '경고' | '중지';
+  status: '정상' | '경고' | '중지' | '없음';
   label: string;
   sum: number;
 };
@@ -16,7 +16,7 @@ const dataTaskState: DataTaskState[] = [
   { id: 1, status: '정상', label: '누적', sum: 24 },
   { id: 2, status: '경고', label: '중복', sum: 0 },
   { id: 3, status: '중지', label: '직업', sum: 2 },
-  { id: 4, status: '중지', label: '기타', sum: 0 },
+  { id: 4, status: '정상', label: '기타', sum: 0 },
 ];
 
 const meta: Meta<typeof TaskStatusBoard> = {
@@ -41,7 +41,7 @@ const dataTaskState = [
   { id: 1, status: '정상', label: '누적', sum: 24 },
   { id: 2, status: '경고', label: '중복', sum: 0 },
   { id: 3, status: '중지', label: '직업', sum: 2 },
-  { id: 4, status: '중지', label: '기타', sum: 0 },
+  { id: 4, status: '정상', label: '기타', sum: 0 },
 ];
 
 <TaskStatusBoard state={dataTaskState} onItemClick={(item) => console.log(item)} />`}
@@ -83,7 +83,7 @@ type Story = StoryObj<typeof TaskStatusBoard>;
 
 export const Default: Story = {
   render: (args) => (
-    <div className="p-4 flex justify-center items-center">
+    <div className="p-4 flex justify-center items-center w-[19.8rem]">
       <TaskStatusBoard {...args} />
     </div>
   ),

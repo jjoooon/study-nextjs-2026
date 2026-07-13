@@ -6,6 +6,9 @@
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -21,9 +24,6 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 
 const Ltpz045 = () => {
   // 폼 필드 상태를 관리하는 훅 (type01, type02, type03)
@@ -55,7 +55,7 @@ const Ltpz045 = () => {
               <FormTable variant="head" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'설계번호'}>
-                    <Input value={'LA26020945959594'} width={'quoteNo'} readOnly />
+                    <Input value={'LA123456789012'} width={'quoteNo'} readOnly />
                     -
                     <Input width={26} value={'1'} readOnly />
                   </FormCell>
@@ -268,7 +268,7 @@ const Ltpz045 = () => {
                   <TableFoldBody>
                     <FormTable caption="법정대리인 정보" cols={['w-[10rem]', 'w-auto']}>
                       <FormRow>
-                        <FormCell title={'이름/주민번호'}>
+                        <FormCell title={'이름/주민번호'} tdClassName="flex-wrap">
                           <Input aria-label="성명 검색" width={84} value={''} readOnly />
                           <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                             <SearchIcon color={'var(--color-primary-50)'} />

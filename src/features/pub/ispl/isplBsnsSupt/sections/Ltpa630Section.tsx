@@ -3,27 +3,25 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
-import { Grow, Grid, Typo } from '@atoms';
-import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   getNextNumericRowId,
   useDynamicColumnWidths,
   createAddRowHandler,
-  createDeleteSelectedRowsHandler,
-  createTreeNameCellRenderer,
   createTooltipValueGetter,
 } from '@aggrid';
-import { Button } from '@uiux/Button';
+import { Grow, Grid, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { ZoomInIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
 
 import '@/shared/lib/agGridPub';
 
@@ -114,57 +112,24 @@ type DummyData2Type = {
   id: number;
   field1: string;
   field2: string;
-  field3: string;
-  filePath: string[];
+  field3: boolean;
 };
 
 const DummyData2: DummyData2Type[] = [
   {
     id: 1,
-    field1: 'CLA23114',
-    field2:
+    field1:
       '나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망) 나눔의 행복(상해사망)',
-    field3: '',
-    filePath: ['1'],
+    field2: '갱신형',
+    field3: true,
   },
   {
     id: 2,
-    field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
-    field3: '',
-    filePath: ['2'],
-  },
-  {
-    id: 3,
-    field1: 'CLA23114',
-    field2: '통합암(4대유사암제외) 진단비',
-    field3: '세트담보',
-    filePath: ['3'],
-  },
-  {
-    id: 4,
-    field1: '',
-    field2: '나눔의 행복(상해사망)',
-    field3: '',
-    filePath: ['3', '3-1'],
-  },
-  {
-    id: 5,
-    field1: '',
-    field2: '나눔의 행복(상해사망)',
-    field3: '',
-    filePath: ['3', '3-2'],
-  },
-  {
-    id: 6,
-    field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
-    field3: '',
-    filePath: ['4'],
+    field1: '나눔의 행복(상해사망)',
+    field2: '갱신형',
+    field3: false,
   },
 ];
-
-const treeNameCellRenderer = createTreeNameCellRenderer<DummyData2Type>();
 
 export default function Ltpa630Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -202,44 +167,71 @@ export default function Ltpa630Section() {
     getNextId: getNextNumericRowId,
     createRow: (nextId) => ({
       id: nextId,
-      field1: String(nextId),
+      field1: '',
       field2: '',
-      field3: '',
-      filePath: [String(nextId)],
+      field3: false,
     }),
     insertAt: 'end',
     gridApiRef,
-  });
-
-  const handleDeleteRow = createDeleteSelectedRowsHandler<DummyData2Type>(setRowData2, gridApiRef, {
-    idKey: 'id',
   });
 
   // 2026-06-01 width, flex 수정
   const columnDefs2: ColDef<DummyData2Type>[] = useMemo(
     () => [
       {
-        headerName: '담보명',
-        field: 'field2',
+        headerName: '담보명 (포함)',
+        field: 'field1',
         flex: 6,
         minWidth: attributeColumnWidth(300),
-        cellClass: (params) =>
-          params.data && params.data.filePath.length === 1
-            ? 'editable-cell'
-            : 'before:content-["-"] before:inline-block before:mr-1',
-        editable: (params) => Boolean(params.data && params.data.filePath.length === 1),
-        tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field2' }),
+        cellClass: 'editable-cell',
+        editable: true,
+        tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field1' }),
       },
       {
-        headerName: '구분',
-        field: 'field3',
-        cellClass: '[&>*]:justify-center',
+        headerName: '담보명 (미포함)',
+        field: 'field2',
         flex: 1,
-        minWidth: attributeColumnWidth(90),
-        cellRenderer: treeNameCellRenderer,
+        minWidth: attributeColumnWidth(100),
+        cellClass: 'text-center editable-cell',
+        editable: true,
+        tooltipValueGetter: createTooltipValueGetter<DummyData2Type>({ field: 'field1' }),
+      },
+      {
+        headerName: '상태',
+        field: 'field3',
+        cellClass: 'text-center',
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
+        cellRenderer: (params: ICellRendererParams<DummyData2Type>) => {
+          return params.value === true ? '임시저장' : '';
+        },
+      },
+      {
+        headerName: '삭제',
+        field: 'id',
+        cellClass: 'text-center justify-center',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        cellRenderer: (params: ICellRendererParams<DummyData2Type>) => {
+          return (
+            <Button
+              variant="outlined"
+              color="gray-light"
+              size="sm"
+              onClick={() => {
+                const targetId = params.data?.id;
+                if (targetId !== undefined) {
+                  setRowData2((prev) => prev.filter((row) => row.id !== targetId));
+                }
+              }}
+            >
+              삭제
+            </Button>
+          );
+        },
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, setRowData2]
   );
 
   return (
@@ -270,7 +262,8 @@ export default function Ltpa630Section() {
                   columnDefs={columnDefs1}
                   defaultColDef={{
                     sortable: true,
-                    resizable: true, // 2026-06-01 true로 수정
+                    resizable: true,
+                    cellStyle: { cursor: 'pointer' },
                   }}
                   singleClickEdit={true}
                   domLayout="normal"
@@ -291,10 +284,6 @@ export default function Ltpa630Section() {
                     행추가
                     <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
                   </Button>
-                  <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow}>
-                    행삭제
-                    <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
-                  </Button>
                 </Grow>
               </Grow>
               <div className="ag-theme-alpine">
@@ -309,28 +298,14 @@ export default function Ltpa630Section() {
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
+                    // cellStyle: { cursor: 'pointer' },
                   }}
                   singleClickEdit={true}
-                  rowSelection={{
-                    mode: 'multiRow',
-                    headerCheckbox: false,
-                    checkboxes: true,
-                    enableClickSelection: false,
-                  }}
-                  selectionColumnDef={{
-                    headerName: '선택',
-                    width: 30,
-                    cellClass: 'editable-cell text-center',
-                  }}
                   domLayout="normal"
                   animateRows={false}
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                   tooltipHideDelay={3000}
-                  treeData={true}
-                  groupDisplayType={'custom'}
-                  getDataPath={(row) => row.filePath}
-                  groupDefaultExpanded={0}
                 />
               </div>
             </Grid>
@@ -349,6 +324,9 @@ export default function Ltpa630Section() {
               </Grow>
               <Grow gap={1} placement={'ec'} className="w-full">
                 <Button variant={'contained'} color={'primary'} size={'xl'}>
+                  임시저장
+                </Button>
+                <Button variant={'contained'} color={'primary'} size={'xl'} disabled>
                   저장
                 </Button>
               </Grow>

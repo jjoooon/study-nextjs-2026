@@ -36,12 +36,14 @@ export function useTabs<T extends BaseTab>(initialTabs: T[]) {
   const [hiddenTabs, setHiddenTabs] = useState<Set<string>>(new Set());
 
   const handleRemove = (value: string) => {
-    if (tabs.length <= 1) return;
+    if (tabs.length === 0) return;
     setTabs((prev) => {
+      const removeIndex = prev.findIndex((tab) => tab.value === value);
       const next = prev.filter((tab) => tab.value !== value);
-      // 삭제된 탭이 active였다면, 첫 번째 탭을 active로 설정
+      // 삭제된 탭이 active였다면, 바로 이전 탭을 active로 설정
       if (active === value) {
-        setActive(next[0]?.value || '');
+        const nextActiveIndex = removeIndex > 0 ? removeIndex - 1 : 0;
+        setActive(next[nextActiveIndex]?.value || '');
       }
       return next;
     });
@@ -60,8 +62,11 @@ export function useTabs<T extends BaseTab>(initialTabs: T[]) {
     setTabs((prev) => {
       const nextTabs = prev.filter((tab) => tab.value !== value);
       if (active === value) {
+        const currentVisible = prev.filter((tab) => !hiddenTabs.has(tab.value));
+        const removeVisibleIndex = currentVisible.findIndex((tab) => tab.value === value);
         const nextVisible = nextTabs.filter((tab) => !hiddenTabs.has(tab.value));
-        setActive(nextVisible[0]?.value ?? '');
+        const nextActiveIndex = removeVisibleIndex > 0 ? removeVisibleIndex - 1 : 0;
+        setActive(nextVisible[nextActiveIndex]?.value ?? '');
       }
       return nextTabs;
     });

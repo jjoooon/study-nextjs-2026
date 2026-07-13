@@ -4,6 +4,7 @@
 'use client';
 
 import { Gcol, Grow, Typo, Divider } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import {
   CalendarIcon,
   SpinnerBIcon,
@@ -15,7 +16,6 @@ import {
 } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { BulletList, BulletListItem } from '@common/BulletList';
 
 export type InfoContractBaseData = {
   date: string;

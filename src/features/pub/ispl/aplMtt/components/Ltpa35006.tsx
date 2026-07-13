@@ -7,37 +7,46 @@ import '@/shared/lib/agGridPub';
 import type { ColDef, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useState } from 'react';
-import { Grow, Gcol, Typo } from '@atoms';
-import { EssentialIcon, ResetIcon, PlusIcon } from '@icons';
 import { createCellClickSelectionToggleHandler, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Grow, Gcol, Typo } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { useFormFields } from '@hooks/useFormFields';
+import { EssentialIcon, ResetIcon, PlusIcon } from '@icons';
+import { LayoutMain, LayoutMainFoot, LayoutScrollItem, LayoutScrollWrap, LayoutMainBody } from '@layout/BaseLayout';
+import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { DatePickerInput } from '@common/DatePicker';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { LayoutMain, LayoutMainFoot, LayoutScrollItem, LayoutScrollWrap, LayoutMainBody } from '@layout/BaseLayout';
-import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
-import { useFormFields } from '@hooks/useFormFields';
 
+/**
+ * @description 입금사항 ag-Grid 테이블의 각 행(Row) 데이터를 나타내는 타입 정의
+ */
 type Ltpa35006GridRow = {
-  id: number;
-  field1: string | number;
-  field2: string | number;
-  field3: string | number;
-  field4: string | number;
-  field5: string | number;
-  isSumRow?: boolean;
+  id: number; // 고유 식별 번호 (ID)
+  field1: string | number; // 구분 값 (일반 행: 순번, 합계 행: 선택 건수 값)
+  field2: string | number; // 입금일자 (일반 행: YYYY-MM-DD 형식의 문자열, 합계 행: '선택합계' 표시)
+  field3: string | number; // 입금 금액
+  field4: string | number; // 적요 내용
+  field5: string | number; // 비고
+  isSumRow?: boolean; // 합계(Summary) 행 여부를 구분하기 위한 플래그
 };
 
+/**
+ * @description 컴포넌트 내 그리드 및 테이블에서 사용할 더미 데이터의 타입 정의
+ */
 interface DummyDataType {
   agGridTable: Ltpa35006GridRow[];
 }
 
+/**
+ * @description 화면에 표시할 임시 입금사항 데이터 (더미 데이터)
+ */
 const DummyData: DummyDataType = {
   agGridTable: [
     {
@@ -47,7 +56,7 @@ const DummyData: DummyDataType = {
       field3: '선택합계',
       field4: '46,500',
       field5: '',
-      isSumRow: true,
+      isSumRow: true, // 하단 요약(합계) 표시 행
     },
     {
       id: 1,
@@ -69,7 +78,10 @@ const DummyData: DummyDataType = {
 };
 
 export const Ltpa35006 = () => {
+  // 화면 너비에 반응하여 ag-Grid의 컬럼 너비를 동적으로 조정하기 위한 커스텀 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 화면 내부 각종 폼 필드(Input, Select 등)의 값들을 일괄적으로 관리하는 상태 관리 훅
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -99,20 +111,24 @@ export const Ltpa35006 = () => {
     type26: '',
   });
 
+  // 전체 입금 내역 목록을 메모이제이션 로드
   const gridRows = useMemo<Ltpa35006GridRow[]>(() => DummyData.agGridTable ?? [], []);
 
+  // 입금 내역 중에서 하단 합계 행(isSumRow)을 필터링하여 실제 데이터 행만 추출
   const depositGridRows = useMemo(() => gridRows.filter((row) => !row.isSumRow), [gridRows]);
 
+  // ag-Grid 내 체크박스로 선택된 입금 행의 건수 및 총 금액 합계 상태 변수
   const [selectedDepositCount, setSelectedDepositCount] = useState(0);
   const [selectedDepositAmount, setSelectedDepositAmount] = useState(0);
 
+  // ag-Grid 하단에 고정되어 실시간으로 선택 금액 합계를 나타낼 pinned 행 데이터 설정
   const depositSumRow = useMemo<Ltpa35006GridRow[]>(
     () => [
       {
         id: -1,
-        field1: String(selectedDepositCount),
-        field2: '선택합계',
-        field3: selectedDepositAmount,
+        field1: String(selectedDepositCount), // 선택된 건수
+        field2: '선택합계', // 합계 행 레이블
+        field3: selectedDepositAmount, // 선택된 총 입금 금액 합계
         field4: '',
         field5: '',
         isSumRow: true,
@@ -121,7 +137,7 @@ export const Ltpa35006 = () => {
     [selectedDepositAmount, selectedDepositCount]
   );
 
-  // ─── 입금사항 dummy data ──────────────────────────────────────────────────────────
+  // ─── 입금사항 ag-Grid 컬럼 정의 ──────────────────────────────────────────────────────────
   const columnDefs = useMemo<ColDef<Ltpa35006GridRow>[]>(
     () => [
       {
@@ -130,6 +146,7 @@ export const Ltpa35006 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(40),
         cellClass: 'text-center',
+        // 하단 고정 pinned 행일 경우 구분 필드에 아무것도 표시하지 않음
         cellRenderer: (params: ICellRendererParams<Ltpa35006GridRow>) => (params.node.rowPinned ? '' : params.value),
       },
       {
@@ -147,7 +164,7 @@ export const Ltpa35006 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(80),
         cellClass: 'text-right',
-        valueFormatter: numberValueFormatter,
+        valueFormatter: numberValueFormatter, // 금액 세자리마다 천단위 콤마 포맷 적용
       },
       {
         headerName: '적요',
@@ -164,14 +181,21 @@ export const Ltpa35006 = () => {
     [attributeColumnWidth]
   );
 
+  // 그리드 셀 영역을 클릭하면 행이 자동으로 선택/해제(체크박스 토글)되도록 지정하는 핸들러
   const handleGridCellClickToggle = useMemo(() => createCellClickSelectionToggleHandler<Ltpa35006GridRow>(), []);
 
+  /**
+   * @description 그리드의 체크박스 선택 상태가 바뀔 때 실행되는 콜백 함수.
+   *              선택된 일반 데이터들의 합계 금액 및 건수를 계산하여 상태를 동기화합니다.
+   */
   const handleDepositSelectionChanged = useCallback((event: SelectionChangedEvent<Ltpa35006GridRow>) => {
+    // 선택된 노드들 중 합계 행을 제외한 유효한 데이터 행만 필터링하여 가져옵니다.
     const selectedRows = event.api
       .getSelectedNodes()
       .map((node) => node.data)
       .filter((row): row is Ltpa35006GridRow => row !== undefined && !row.isSumRow);
 
+    // 선택된 행들의 금액(field3)의 콤마를 제거한 뒤 전부 합산
     const nextSelectedAmount = selectedRows.reduce((total, row) => {
       let value = row.field3;
       if (typeof value === 'string') {
@@ -184,6 +208,7 @@ export const Ltpa35006 = () => {
       return total + (isNaN(num) ? 0 : num);
     }, 0);
 
+    // 선택된 건수와 총 합계 금액을 React 상태에 반영 -> depositSumRow 메모이제이션 갱신됨
     setSelectedDepositCount(selectedRows.length);
     setSelectedDepositAmount(nextSelectedAmount);
   }, []);
@@ -196,6 +221,9 @@ export const Ltpa35006 = () => {
             <LayoutScrollWrap>
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
+                  {/* ────────────────────────────────────────────────────────────────────────
+                      1. 검색 및 조회 영역 (영수관리번호 조회 조건 설정)
+                      ──────────────────────────────────────────────────────────────────────── */}
                   <Grow className="w-full" variant="box-round" placement={'bwe'}>
                     {/* M1. FormTable 전체 수정 */}
                     <FormTable variant={'head'} lineTop={false} cols={['flex-auto', 'flex-1']}>
@@ -215,6 +243,7 @@ export const Ltpa35006 = () => {
                     {/* //M1. FormTable 전체 수정 */}
 
                     <Grow>
+                      {/* 조회 실행 버튼 */}
                       <Button
                         id="btnRA"
                         color="coolgray"
@@ -225,6 +254,7 @@ export const Ltpa35006 = () => {
                       >
                         조회
                       </Button>
+                      {/* 검색 조건 초기화 버튼 */}
                       <Button
                         color={'gray'}
                         only={'icon'}
@@ -238,6 +268,9 @@ export const Ltpa35006 = () => {
                     </Grow>
                   </Grow>
 
+                  {/* ────────────────────────────────────────────────────────────────────────
+                      2. 청약사항 상세 정보 표시 영역 (읽기 전용 정보 및 라디오 선택)
+                      ──────────────────────────────────────────────────────────────────────── */}
                   <Gcol placement={'ss'} className="w-full gap-1.5">
                     <Typo variant="heading-md">청약사항</Typo>
                     <FormTable cols={['min-w-[8rem]', 'w-[30%]', 'min-w-[8rem]', 'w-[30%]', 'min-w-[8rem]', 'w-[30%]']}>
@@ -252,6 +285,7 @@ export const Ltpa35006 = () => {
                           />
                         </FormCell>
                         <FormCell title={'보험기간'}>
+                          {/* 보험 적용 기간 표시용 날짜 범위 선택 컴포넌트 */}
                           <DatePickerInput readOnly mode={'range'} />
                         </FormCell>
                         <FormCell title={'설계번호'}>
@@ -286,6 +320,7 @@ export const Ltpa35006 = () => {
                           <Input aria-label="계약자명" width={170} value={'김한화(00)'} readOnly />
                           <Input aria-label="계약자 주민등록번호" width={'full'} value={'000000-0******'} readOnly />
                         </FormCell>
+                        {/* 입금 주체 선택 라디오 버튼 */}
                         <FormCell title={'입금선택'} colSpan={4}>
                           <RadioGroup defaultValue="계약자">
                             {[
@@ -301,7 +336,9 @@ export const Ltpa35006 = () => {
                       </FormRow>
                     </FormTable>
                   </Gcol>
-                  {/* 즉시집금 */}
+                  {/* ────────────────────────────────────────────────────────────────────────
+                      3. 즉시집금 설정 영역 (고객 계좌 즉시출금 동의 및 스캔)
+                      ──────────────────────────────────────────────────────────────────────── */}
                   <TableFold variant={'default'}>
                     <TableFoldHead title="즉시집금">
                       <Grow>
@@ -331,9 +368,11 @@ export const Ltpa35006 = () => {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
+                          {/* 첫 번째 즉시집금 행 설정 */}
                           <TableRow>
                             <TableCell className="text-center">1</TableCell>
                             <TableCell>
+                              {/* 은행 선택 셀렉트 */}
                               <NativeSelect
                                 size="lg"
                                 value={form.type07}
@@ -352,6 +391,7 @@ export const Ltpa35006 = () => {
                               </NativeSelect>
                             </TableCell>
                             <TableCell>
+                              {/* 계좌번호 입력창 */}
                               <Input
                                 size="lg"
                                 variant="default"
@@ -361,6 +401,7 @@ export const Ltpa35006 = () => {
                               />
                             </TableCell>
                             <TableCell>
+                              {/* 집금 금액 입력창 */}
                               <Grow>
                                 <Input
                                   size="lg"
@@ -375,6 +416,7 @@ export const Ltpa35006 = () => {
                               </Grow>
                             </TableCell>
                             <TableCell>
+                              {/* 출금 동의를 위한 상태 입력 및 동의서 스캔 처리 영역 */}
                               <Grow>
                                 <Input
                                   onChange={() => {}}
@@ -417,6 +459,7 @@ export const Ltpa35006 = () => {
                               </Grow>
                             </TableCell>
                             <TableCell>
+                              {/* 현재 집금 진행 상태 표시 */}
                               <Input
                                 onChange={() => {}}
                                 size="lg"
@@ -429,6 +472,7 @@ export const Ltpa35006 = () => {
                               />
                             </TableCell>
                             <TableCell className="text-center">
+                              {/* 행 삭제 버튼 */}
                               <Button
                                 variant={'outlined'}
                                 color={'secondary'}
@@ -439,6 +483,8 @@ export const Ltpa35006 = () => {
                               </Button>
                             </TableCell>
                           </TableRow>
+
+                          {/* 두 번째 즉시집금 행 설정 */}
                           <TableRow>
                             <TableCell className="text-center">2</TableCell>
                             <TableCell className="w-[100]">
@@ -550,13 +596,16 @@ export const Ltpa35006 = () => {
                         </TableBody>
                       </Table>
                       {/* M1. 문구추가 */}
+                      {/* 즉시집금 처리 시 주의사항 안내 메시지 */}
                       <Typo variant="body-sm" color="primary" icon="info">
                         같은날 동일계좌의 동일금액으로 출금이 불가합니다. 집금상태 정상시 고객님의 계좌로부터
                         즉시이체출금에 성공한 것이니 입금내역을 확인하세요.
                       </Typo>
                     </TableFoldBody>
                   </TableFold>
-                  {/* 카드 */}
+                  {/* ────────────────────────────────────────────────────────────────────────
+                      4. 카드 결제 정보 영역 (신용카드 결제 및 할부 정보 관리)
+                      ──────────────────────────────────────────────────────────────────────── */}
                   <TableFold variant={'default'}>
                     <TableFoldHead title="카드">
                       <Grow>
@@ -580,6 +629,7 @@ export const Ltpa35006 = () => {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
+                          {/* 첫 번째 카드 결제 내역 행 */}
                           <TableRow>
                             <TableCell className="w-[4.5rem] min-w-[4.5rem] text-center">1</TableCell>
                             <TableCell>
@@ -594,6 +644,7 @@ export const Ltpa35006 = () => {
                               />
                             </TableCell>
                             <TableCell>
+                              {/* 카드 번호 (4자리씩 총 16자리 입력) */}
                               <Grow>
                                 <Input value={form.type10} onChange={(e) => setFormField('type10', e.target.value)} />
                                 -
@@ -605,6 +656,7 @@ export const Ltpa35006 = () => {
                               </Grow>
                             </TableCell>
                             <TableCell>
+                              {/* 카드 유효기간 (월 / 년) */}
                               <Grow>
                                 <Input value={form.type14} onChange={(e) => setFormField('type14', e.target.value)} />
                                 월
@@ -612,11 +664,13 @@ export const Ltpa35006 = () => {
                               </Grow>
                             </TableCell>
                             <TableCell>
+                              {/* 할부 개월 수 입력 */}
                               <Grow>
                                 <Input value={form.type16} onChange={(e) => setFormField('type16', e.target.value)} />월
                               </Grow>
                             </TableCell>
                             <TableCell>
+                              {/* 카드 결제 요청 금액 */}
                               <Grow>
                                 <Input
                                   value={form.type17}
@@ -627,6 +681,7 @@ export const Ltpa35006 = () => {
                               </Grow>
                             </TableCell>
                             <TableCell className="w-[5.5rem] min-w-[5.5rem">
+                              {/* 후청구 선택 체크박스 */}
                               <Grow>
                                 <Checkbox
                                   color="primary"
@@ -639,6 +694,7 @@ export const Ltpa35006 = () => {
                               </Grow>
                             </TableCell>
                             <TableCell>
+                              {/* 카드 승인 성공 시 승인번호 표시창 */}
                               <Input
                                 onChange={() => {}}
                                 size="lg"
@@ -650,6 +706,7 @@ export const Ltpa35006 = () => {
                               />
                             </TableCell>
                             <TableCell>
+                              {/* 승인 성공/실패 상태 표시창 */}
                               <Input
                                 onChange={() => {}}
                                 size="lg"
@@ -671,6 +728,8 @@ export const Ltpa35006 = () => {
                               </Button>
                             </TableCell>
                           </TableRow>
+
+                          {/* 두 번째 카드 결제 내역 행 */}
                           <TableRow>
                             <TableCell className="w-[4.5rem] min-w-[4.5rem] text-center">2</TableCell>
                             <TableCell>
@@ -770,7 +829,9 @@ export const Ltpa35006 = () => {
                       </Table>
                     </TableFoldBody>
                   </TableFold>
-                  {/* 입금사항 */}
+                  {/* ────────────────────────────────────────────────────────────────────────
+                      5. 입금사항 정보 그리드 영역 (ag-Grid를 이용한 다중 선택 및 자동 합계 계산)
+                      ──────────────────────────────────────────────────────────────────────── */}
                   <TableFold variant={'default'}>
                     <TableFoldHead title="입금사항">
                       <Grow>
@@ -783,21 +844,21 @@ export const Ltpa35006 = () => {
                       <div className="ag-theme-alpine  inner-scroll" data-row={depositGridRows.length}>
                         <AgGridReact<Ltpa35006GridRow>
                           getRowId={(params) => String(params.data.id)}
-                          rowData={depositGridRows}
-                          pinnedBottomRowData={depositSumRow}
-                          columnDefs={columnDefs}
+                          rowData={depositGridRows} // 하단 합계를 뺀 순수 입금 내역 리스트
+                          pinnedBottomRowData={depositSumRow} // 선택 건수 및 금액의 합계를 보여주는 하단 고정행
+                          columnDefs={columnDefs} // 컬럼 정의
                           defaultColDef={{ sortable: true, resizable: true }}
                           domLayout="autoHeight"
                           singleClickEdit={true}
                           rowSelection={{
-                            mode: 'multiRow' as const,
-                            checkboxes: true,
-                            headerCheckbox: true,
-                            enableClickSelection: false,
+                            mode: 'multiRow' as const, // 다중 선택 허용
+                            checkboxes: true, // 체크박스 렌더링
+                            headerCheckbox: true, // 헤더의 일괄 선택 체크박스 사용
+                            enableClickSelection: false, // 일반 셀 클릭 시 선택 방지
                             enableSelectionWithoutKeys: true,
                           }}
-                          onCellClicked={handleGridCellClickToggle}
-                          onSelectionChanged={handleDepositSelectionChanged}
+                          onCellClicked={handleGridCellClickToggle} // 셀을 직접 클릭해도 체크박스가 토글되도록 처리
+                          onSelectionChanged={handleDepositSelectionChanged} // 체크 상태 바뀔 시 합계 계산
                           selectionColumnDef={{
                             headerName: '',
                             width: attributeColumnWidth(30),
@@ -815,7 +876,9 @@ export const Ltpa35006 = () => {
                       </div>
                     </TableFoldBody>
                   </TableFold>
-                  {/* 수납사항 */}
+                  {/* ────────────────────────────────────────────────────────────────────────
+                      6. 수납사항 요약 영역 (보험료 영수금액/입금금액 차액 및 계약 정보 확인)
+                      ──────────────────────────────────────────────────────────────────────── */}
                   <TableFold variant={'default'}>
                     <TableFoldHead title="수납사항" />
                     <TableFoldBody>
@@ -840,6 +903,7 @@ export const Ltpa35006 = () => {
                             <Input aria-label="계상일자" width={'full'} value={''} readOnly />
                           </FormCell>
                           <FormCell title={'수납번호'}>
+                            {/* 수납번호 입력 양식 */}
                             <Input
                               size="lg"
                               value={form.type26}
@@ -853,7 +917,10 @@ export const Ltpa35006 = () => {
                       </FormTable>
                     </TableFoldBody>
                   </TableFold>
-                  {/* 수납일자 */}
+
+                  {/* ────────────────────────────────────────────────────────────────────────
+                      7. 수납일자 입력 및 확인 영역
+                      ──────────────────────────────────────────────────────────────────────── */}
                   <Grow>
                     {/* M1. Grow 삭제 및 EssentialIcon 추가 */}
                     <Typo variant="heading-md" className="w-[7.1rem] flex items-center gap-0.5">
@@ -866,6 +933,10 @@ export const Ltpa35006 = () => {
               </LayoutScrollItem>
             </LayoutScrollWrap>
           </LayoutMainBody>
+
+          {/* ────────────────────────────────────────────────────────────────────────
+              8. 화면 하단 공통 기능 버튼 영역 (원수수납, 수납 처리)
+              ──────────────────────────────────────────────────────────────────────── */}
           <LayoutMainFoot>
             {/* M1. MainBottom 수정 , variant="box" 추가 */}
             <MainBottom variant="box">

@@ -4,14 +4,14 @@
 'use client';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { Grid, Grow } from '@atoms';
-import { ResetIcon, SearchIcon } from '@icons';
 import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import { Grid, Grow } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DatePickerInput } from '@common/DatePicker';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 import '@/shared/lib/agGridPub';
 
@@ -51,7 +51,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field09: '한화 시그니처 여성 건강보험4.0 한화 시그니처 여성 건강보험4.0 한화 시그니처 여성 건강보험4.0',
     field10: '12',
     field11: '83000000',
-    field12: 'LA26020945959594',
+    field12: 'LA123456789012',
     field13: '설계중',
     field14: '14',
     field15: '120000000',
@@ -70,7 +70,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field09: '한화 시그니처 여성 건강보험4.0',
     field10: '12',
     field11: '83,000원',
-    field12: 'LA26020945959594',
+    field12: 'LA123456789012',
     field13: '청약중',
     field14: '14',
     field15: '120000',
@@ -89,7 +89,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field09: '한화 시그니처 여성 간편건강보험4.0',
     field10: '12',
     field11: '83,000원',
-    field12: 'LA26020945959594',
+    field12: 'LA123456789012',
     field13: '청약중',
     field14: '10',
     field15: '100000',
@@ -108,7 +108,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field09: '한화 시그니처 여성 간편건강보험4.0',
     field10: '12',
     field11: '83,000원',
-    field12: 'LA26020945959594',
+    field12: 'LA123456789012',
     field13: '청약완료',
     field14: '9',
     field15: '140000',
@@ -127,7 +127,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field09: '한화 시그니처 여성 간편건강보험4.0',
     field10: '12',
     field11: '83,000원',
-    field12: 'LA26020945959594',
+    field12: 'LA123456789012',
     field13: '청약완료',
     field14: '9',
     field15: '140000',
@@ -146,7 +146,7 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field09: '한화 시그니처 여성 간편건강보험4.0',
     field10: '12',
     field11: '83,000원',
-    field12: 'LA26020945959594',
+    field12: 'LA123456789012',
     field13: '청약완료',
     field14: '9',
     field15: '140000',

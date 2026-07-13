@@ -25,7 +25,7 @@ export type DummyDataType = {
   field5?: string | number | boolean;
   field6?: string | number | boolean;
   field7?: string | number | boolean;
-  field8?: string | number | boolean;
+  field8?: string[];
 
   isEditedtitle?: boolean;
   isEditedInsuredAmount?: boolean;
@@ -66,7 +66,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: false,
     field7: 1000,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -99,7 +99,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: false,
     field7: 8000,
-    field8: '인수불가',
+    field8: ['인수불가'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 1특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -132,7 +132,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: true,
     field7: 120,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -166,7 +166,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: false,
     field7: 120,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -199,7 +199,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: false,
     field7: 120,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -232,7 +232,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: false,
     field7: 120,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -265,7 +265,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: true,
     field7: 120,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -298,7 +298,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: false,
     field7: 120,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -331,7 +331,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: false,
     field7: 120,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -364,7 +364,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: false,
     field7: 120,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',
@@ -397,7 +397,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년',
     isEditedField6: false,
     field7: 120,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: true,
     titleDetail: {
       title: '담보명 2특정유사람진단후특정치료비(암전문의료기관(상급종합병원등))(진단후 10년, 연간1회한)(CLA70874)',

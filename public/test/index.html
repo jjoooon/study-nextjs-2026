@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iframe Modal Test Bench</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- 우측 메인 영역 -->
+    <main class="main">
+      <header class="header">
+        <div class="header-top">
+          <img src="./images/iframe-gnb.png" alt="" style="height: 48px" />
+          <div class="header-top-right">
+            <img src="./images/iframe-gnb2.png" alt="" style="height: 40px" />
+            <div class="header-top-text">
+              김한화
+              <img src="./images/iframe-gnb3.png" alt="" style="height: 14px" />
+            </div>
+          </div>
+        </div>
+        <div class="header-bottom">
+          <div class="header-bottom-left">
+            <img src="./images/Home.png" alt="" style="height: 24px" />
+            <div class="header-tabs">
+              <div class="header-tab" data-active="true" data-target-iframe="testIframe1">
+                <button type="button" class="header-tab-active">상품가입설계</button>
+                <img src="./images/tab-del.png" class="header-tab-del" alt="" style="width: 14px" />
+              </div>
+            </div>
+          </div>
+          <img src="./images/iframe-gnb4.png" alt="" style="height: 24px" />
+        </div>
+      </header>
+
+      <div class="container">
+        <aside class="aside">
+          <img src="./images/side1.png" alt="" style="width: 48px" />
+          <img src="./images/side2.png" alt="" style="width: 48px" />
+        </aside>
+        <div class="iframe-wrapper active-glow" id="iframeWrapper" style="width: 100%; height: 100%">
+          <iframe src="" id="testIframe1" style="display: block"></iframe>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
+      const PROD_STORYBOOK_BASE_URL = 'https://jjoooon.github.io/study-nextjs-2026';
+      const HYGITEST_STORYBOOK_BASE_URL = 'https://story-dev.hwgitest.com';
+
+      const LOCAL_HOST_NAMES = new Set(['localhost', '127.0.0.1']);
+      const HYGITEST_HOST_NAMES = new Set(['story-dev.hwgitest.com']);
+
+      function getInitialStorybookBase() {
+        const currentHost = window.location.hostname;
+        if (LOCAL_HOST_NAMES.has(currentHost)) {
+          return LOCAL_STORYBOOK_BASE_URL;
+        } else if (HYGITEST_HOST_NAMES.has(currentHost)) {
+          return HYGITEST_STORYBOOK_BASE_URL;
+        }
+        return PROD_STORYBOOK_BASE_URL;
+      }
+
+      const testIframe1 = document.getElementById('testIframe1');
+      const testIframe2 = document.getElementById('testIframe2');
+      const iframeWrapper = document.getElementById('iframeWrapper');
+      const headerTabs = document.querySelector('.header-tabs');
+
+      // 탭 클릭 이벤트 리스너 추가
+      headerTabs.addEventListener('click', (event) => {
+        const tab = event.target.closest('.header-tab');
+        if (!tab) return;
+
+        const targetId = tab.getAttribute('data-target-iframe');
+        if (!targetId) return;
+
+        // 모든 탭 비활성화
+        document.querySelectorAll('.header-tab').forEach((t) => {
+          t.setAttribute('data-active', 'false');
+        });
+        // 클릭한 탭 활성화
+        tab.setAttribute('data-active', 'true');
+
+        // 모든 iframe 숨김
+        const iframes = iframeWrapper.querySelectorAll('iframe');
+        iframes.forEach((iframe) => {
+          iframe.style.display = 'none';
+        });
+        // 대상 iframe 표시
+        const targetIframe = document.getElementById(targetId);
+        if (targetIframe) {
+          targetIframe.style.display = 'block';
+        }
+      });
+
+      // iframe 내부의 메시지 수신 처리
+      window.addEventListener('message', (event) => {
+        if (!event.data) return;
+
+        // 동적 높이 리사이즈 적용
+        if (event.data.type === 'DIALOG_RESIZE') {
+          const newHeight = event.data.height;
+          iframeWrapper.style.height = newHeight + 'px';
+        }
+
+        // 기존 탭에서 LTPA350 페이지로 단순 전환 처리
+        if (event.data.type === 'GO_TO_LTPA350') {
+          const targetIframe = document.getElementById('testIframe1');
+          if (targetIframe) {
+            targetIframe.src = `${storybookBase}/iframe.html?id=app-ispl-ltpa350--default&viewMode=story`;
+          }
+        }
+
+        // 설계생성(CREATE_SCHEME) 수신 처리
+        if (event.data.type === 'CREATE_SCHEME') {
+          // 1. 기존 모든 탭 및 iframe 비활성화/숨김
+          document.querySelectorAll('.header-tab').forEach((t) => {
+            t.setAttribute('data-active', 'false');
+          });
+          iframeWrapper.querySelectorAll('iframe').forEach((iframe) => {
+            iframe.style.display = 'none';
+          });
+
+          // 2. 새 iframe 2개 동적 생성 및 추가
+          const existingIframeCount = iframeWrapper.querySelectorAll('iframe').length;
+          const newIframeId1 = 'testIframe' + (existingIframeCount + 1);
+          const newIframeId2 = 'testIframe' + (existingIframeCount + 2);
+
+          const iframe3 = document.createElement('iframe');
+          iframe3.id = newIframeId1;
+          iframe3.src = `${storybookBase}/iframe.html?id=app-ispl-ltpa350--default&viewMode=story`;
+          iframe3.style.display = 'block';
+
+          const iframe4 = document.createElement('iframe');
+          iframe4.id = newIframeId2;
+          iframe4.src = `${storybookBase}/iframe.html?id=app-ispl-ltpa350--default&viewMode=story`;
+          iframe4.style.display = 'none';
+
+          iframeWrapper.appendChild(iframe3);
+          iframeWrapper.appendChild(iframe4);
+
+          // 3. 새 탭 2개 생성
+          // 탭 3: 상품가입설계 (활성화)
+          const tab3 = document.createElement('div');
+          tab3.className = 'header-tab';
+          tab3.setAttribute('data-active', 'true');
+          tab3.setAttribute('data-target-iframe', newIframeId1);
+          tab3.innerHTML = `
+          <button type="button" class="header-tab-active">
+            김하나 [한화 3N5더간편건강보험(세만기형)2601]
+          </button>
+          <img src="./images/tab-del.png" class="header-tab-del" alt="" style="width:14px;">
+        `;
+
+          // 탭 4: 비교설계(홍길순)
+          const tab4 = document.createElement('div');
+          tab4.className = 'header-tab';
+          tab4.setAttribute('data-active', 'false');
+          tab4.setAttribute('data-target-iframe', newIframeId2);
+          tab4.innerHTML = `
+          <button type="button" class="header-tab-active">
+            김하나 [한화 3N5더간편건강보험(갱신형)2602]
+          </button>
+          <img src="./images/tab-del.png" class="header-tab-del" alt="" style="width:14px;">
+        `;
+
+          headerTabs.appendChild(tab3);
+          headerTabs.appendChild(tab4);
+        }
+      });
+
+      // LTPA020 페이지 스토리북 URL 연결
+      const storybookBase = getInitialStorybookBase();
+      const storyPath = 'app-ispl-gdplslc-ltpa020';
+      const url = `${storybookBase}/iframe.html?id=${storyPath}--default&viewMode=story`;
+      testIframe1.src = url;
+      testIframe2.src = `${storybookBase}/iframe.html?id=app-ispl-gdplslc-components-popups-ltpz021--default&viewMode=story`;
+    </script>
+  </body>
+</html>

@@ -7,13 +7,13 @@ import '@/shared/lib/agGridPub';
 import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
+import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { RecommendCard } from '@common/RecommendCard';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
 import Ltpz0050401 from './Ltpz0050401';
 export type Ltpz005TabValue = 'common' | 'accum' | 'job' | 'expected-uw';
 

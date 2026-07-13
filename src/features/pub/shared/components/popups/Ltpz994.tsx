@@ -3,7 +3,10 @@
  */
 'use client';
 
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FileDownLoad, formatTotalFileSize } from '@common/FileDownLoad';
+import type { DownloadFileItem } from '@common/FileDownLoad';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -15,13 +18,15 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FileDownLoad, formatTotalFileSize } from '@common/FileDownLoad';
-import type { DownloadFileItem } from '@common/FileDownLoad';
 
 const fileList: DownloadFileItem[] = [
   { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1344024', fileAddress: 'file-address' },
   { filename: '스크린샷 2026-0209-555-8989.png', filesize: '103324', fileAddress: 'file-address' },
+  { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1024', fileAddress: 'file-address' },
+  { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1024', fileAddress: 'file-address' },
+  { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1024', fileAddress: 'file-address' },
+  { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1024', fileAddress: 'file-address' },
+  { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1024', fileAddress: 'file-address' },
   { filename: '스크린샷 2026-0209-555-8989.png', filesize: '1024', fileAddress: 'file-address' },
 ];
 
@@ -40,19 +45,17 @@ export const Ltpz994 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection>
-          <Gcol className="w-full h-full gap-1">
+          <Grid className="w-full h-full gap-1 grid-rows-[1fr_auto]">
             <Gcol
               variant="box-round"
-              className="flex justify-start h-[24rem] bg-[#FFF5F3] border border-dashed border-[var(--color-primary-50)] gap-2"
+              className="flex justify-start h-full bg-[#FFF5F3] border border-dashed border-[var(--color-primary-50)] gap-2 overflow-y-auto overflow-x-hidden relative warning-scroll min-h-[20.5rem]"
             >
-              <Gcol className="w-full min-h-{17rem} overflow-y-auto overflow-x-hidden justify-start">
+              <Gcol className="w-auto justify-start absolute! left-3 right-3 top-3">
                 {fileList.map((file, index) => (
-                  <FileDownLoad
-                    key={index}
-                    filename={file.filename}
-                    filesize={file.filesize}
-                    fileAddress={file.fileAddress}
-                  />
+                  <div key={index} className="w-full">
+                    <FileDownLoad filename={file.filename} filesize={file.filesize} fileAddress={file.fileAddress} />
+                    {index === fileList.length - 1 && <div className="h-3" />}
+                  </div>
                 ))}
               </Gcol>
             </Gcol>
@@ -69,7 +72,7 @@ export const Ltpz994 = () => {
                 용량
               </Typo>
             </Grow>
-          </Gcol>
+          </Grid>
         </DialogSection>
 
         <DialogFooter>

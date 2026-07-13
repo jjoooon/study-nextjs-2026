@@ -31,7 +31,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         },
       }}
       icons={{
-        info: <InfoToastIcon />,
+        info: <InfoToastIcon color="var(--color-information-60)" />,
         close: <CloseIcon className="w-[1.2rem] h-[1.2rem] transition" color="var(--color-information-60)" />,
       }}
       {...props}

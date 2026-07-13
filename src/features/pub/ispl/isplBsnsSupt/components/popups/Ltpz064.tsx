@@ -5,8 +5,6 @@
 import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { EssentialIcon, FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createAddRowHandler,
@@ -14,6 +12,11 @@ import {
   getNextNumericRowId,
   useDynamicColumnWidths,
 } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { EssentialIcon, FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -27,9 +30,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -392,7 +392,7 @@ export const Ltpz064 = () => {
                 <FormCell title={'설계번호'}>
                   <Input
                     aria-label="설계번호 입력"
-                    value={'LA26022432174'}
+                    value={'LA01234567890'}
                     onChange={() => {}}
                     variant="info"
                     readOnly

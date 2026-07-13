@@ -26,7 +26,7 @@ export type DummyDataType = {
   field5?: string | number | boolean;
   field6?: string | number | boolean;
   field7?: string | number | boolean;
-  field8?: string | number | boolean;
+  field8?: string[];
 
   isEditedtitle?: boolean;
   isEditedInsuredAmount?: boolean;
@@ -66,7 +66,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 700,
-    field8: '인수가능',
+    field8: ['인수가능', '인수불가', '조건부인수'],
     rowCopy: false,
     titleDetail: {
       title: '보통약관(상해사망(간편))',
@@ -98,7 +98,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 279,
-    field8: '인수가능',
+    field8: ['인수가능', '조건부인수'],
     rowCopy: false,
     titleDetail: {
       title: '보험료납입면제대상보장(5대사유)(간편)',
@@ -129,7 +129,7 @@ export const dummyData: DummyDataType[] = [
     field6: '전기납',
     isEditedField6: true,
     field7: 942,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: false,
     titleDetail: {
       title: '보장보험료50%납입지원II(4대유사암)',
@@ -162,7 +162,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 5780,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: false,
     titleDetail: {
       title: '유방암(수용체타입)진단비',
@@ -194,7 +194,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 4140,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: false,
     titleDetail: {
       title: '유방암A타입진단비(호르몬수용체양성,HER2양성)',
@@ -226,7 +226,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 700,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: false,
     titleDetail: {
       title: '유방암B타입진단비(호르몬수용체양성,HER2양성)',
@@ -258,7 +258,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 380,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: false,
     titleDetail: {
       title: '유방암C타입진단비(HER2양성)',
@@ -290,7 +290,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 560,
-    field8: '조건부인수',
+    field8: ['조건부인수'],
     rowCopy: false,
     titleDetail: {
       title: '유방암D타입진단비(삼중음성)',
@@ -323,7 +323,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 5305,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '주요순환계질환I특정치료비(요양병원제외,각연간1회한)',
@@ -355,7 +355,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 4140,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '주요순환계질환I특정치료비(수술(혈전제거술제외))(요양병원제외,각연간1회한)',
@@ -387,7 +387,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 180,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '주요순환계질환I특정치료비(혈전제거술)(요양병원제외,연간1회한)',
@@ -419,7 +419,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 300,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '주요순환계질환I특정치료비(혈전용해치료)(요양병원제외,연간1회한)',
@@ -451,7 +451,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1785,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '주요순환계질환I특정치료비(중환자실치료)(요양병원제외,연간1회한)',
@@ -482,7 +482,7 @@ export const dummyData: DummyDataType[] = [
     field6: '전기납',
     isEditedField6: false,
     field7: 434,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: true,
     titleDetail: {
       title: '난임진단비(기혼자용)(갱신형)',
@@ -516,7 +516,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 530,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '난임치료비II(급여인공수정,3회한,기혼자용)(갱신형)',
@@ -548,7 +548,7 @@ export const dummyData: DummyDataType[] = [
     field6: '전기납',
     isEditedField6: false,
     field7: 330,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '난임치료비II(급여인공수정치료비(첫번째)(갱신형))',
@@ -580,7 +580,7 @@ export const dummyData: DummyDataType[] = [
     field6: '전기납',
     isEditedField6: false,
     field7: 150,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '난임치료비II(급여인공수정치료비(두번째)(갱신형))',
@@ -612,7 +612,7 @@ export const dummyData: DummyDataType[] = [
     field6: '전기납',
     isEditedField6: false,
     field7: 150,
-    field8: '인수가능',
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '난임치료비II(급여인공수정치료비(세번째)(갱신형))',

@@ -4,9 +4,9 @@
 'use client';
 
 import { Gcol, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 const Ltpz069 = () => {
   return (

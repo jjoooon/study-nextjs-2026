@@ -7,6 +7,10 @@
 import { useState } from 'react';
 import { Gcol, Grow, Typo } from '@atoms';
 
+import { BulletListItem } from '@common/BulletList';
+import { BulletList } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,10 +25,6 @@ import {
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { BulletListItem } from '@common/BulletList';
-import { BulletList } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 const Ltpz055 = () => {
   const [sendType, setSendType] = useState<string>('option1');
@@ -43,18 +43,17 @@ const Ltpz055 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection>
+        <DialogSection className="grid-rows-[auto_1fr]">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'발송대상 설계번호'}>
-                  <Input value={'LA260212123123'} readOnly variant="info" size="lg" width="full" />
+                  <Input value={'LA123456789012'} readOnly variant="info" size="lg" width="full" />
                 </FormCell>
               </FormRow>
             </FormTable>
           </Grow>
-          {/* 2026-05-27 구조변경(Gcol 추가) */}
-          <Gcol className="gap-2">
+          <Gcol className="gap-2" placement="ss">
             <Table>
               <caption className="a11y-hidden">화면담당자 정보입니다.</caption>
               <colgroup>

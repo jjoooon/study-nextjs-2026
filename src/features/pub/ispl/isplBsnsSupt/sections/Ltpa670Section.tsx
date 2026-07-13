@@ -7,20 +7,20 @@ import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
-import { Grow, Grid, Gcol } from '@atoms';
-import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
+import { Grow, Grid, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
+import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
-import { createExpiryCellRenderer } from '@grid/CellRenderers';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
@@ -124,7 +124,7 @@ export default function Ltpa670Section() {
 
   const [rowData, setRowData] = React.useState<DummyData1Type[]>(() => DummyData1.slice(0, 5));
   const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount, setTotalCount] = React.useState(DummyData1.length);
+  const [totalCount] = React.useState(DummyData1.length);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const pageSize = 5;

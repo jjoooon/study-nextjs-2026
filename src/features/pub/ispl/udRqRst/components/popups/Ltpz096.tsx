@@ -6,8 +6,11 @@
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -23,9 +26,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { Textarea } from '@uiux/Textarea';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -259,13 +259,7 @@ const Ltpz096 = () => {
                 <FormCell title={'심사결과'}>
                   <Grow gap={3} placement="sc">
                     <Input value={'보완요청'} variant="info" readOnly />
-                    <CheckboxGroup
-                      className="gap-3"
-                      minSelected={0}
-                      value={requestCheck}
-                      disabled={true}
-                      width={'auto'}
-                    >
+                    <CheckboxGroup className="gap-3" value={requestCheck} disabled={true} width={'auto'}>
                       <CheckboxGroupItem value="고지">고지</CheckboxGroupItem>
                       <CheckboxGroupItem value="제한담보">제한담보</CheckboxGroupItem>
                       <CheckboxGroupItem value="고지유형변경">고지유형변경</CheckboxGroupItem>

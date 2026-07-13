@@ -5,7 +5,8 @@ import type { IHeaderParams, SortDirection } from 'ag-grid-enterprise';
 import React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Divider, Grow, Gcol } from '@atoms';
-import { HashIcon, SearchIcon, SortArrowIcon, SortArrowDefaultIcon } from '@icons';
+import { HashFilter, useHashFilter } from '@common/HashFilter';
+import { SearchIcon, SortArrowIcon, SortArrowDefaultIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -118,6 +119,8 @@ interface ProductNameHeaderProps {
     reset: boolean;
   };
   onCheckedChange?: (key: string) => (checked: boolean | 'indeterminate') => void;
+  selectedHashtags?: string[];
+  onHashtagChange?: (hashtags: string[]) => void;
 }
 
 // 상품명 헤더(체크 필터 + 담보명 검색 + 말풍선 옵션)
@@ -129,6 +132,14 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
   checkedMap,
   onCheckedChange,
 }: ProductNameHeaderProps) {
+  // 개발자가 연결할 수 있도록 값 변경 시 콘솔에 출력하는 콜백 함수 작성
+  const handleHashtagsChange = React.useCallback((nextHashtags: string[]) => {
+    console.log('[ProductNameHeader] Selected Hashtags Changed (Grid integration placeholder):', nextHashtags);
+  }, []);
+
+  // 공통 훅 사용으로 비즈니스 로직 분리 (외부 props 연결을 제거하고 로컬 상태로 동작하게 함)
+  const { selectedHashtags, toggleHashtag, resetHashtags } = useHashFilter(undefined, handleHashtagsChange);
+
   return (
     <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
       <Grow gap={1.5} placement={'sc'}>
@@ -142,10 +153,6 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
             <Checkbox variant={'text'} checked={checkedMap.unselected} onCheckedChange={onCheckedChange('unselected')}>
               미선택
             </Checkbox>
-            {/* <Divider /> */}
-            {/* <Checkbox variant={'text'} checked={checkedMap.reset} onCheckedChange={onCheckedChange('reset')}>
-              담보초기화
-            </Checkbox> */}
           </>
         ) : (
           // 제어 props가 없으면 기본(비제어) 체크박스 UI만 표시
@@ -153,8 +160,6 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
             <Checkbox variant={'text'}>선택 24건</Checkbox>
             <Divider />
             <Checkbox variant={'text'}>미선택</Checkbox>
-            {/* <Divider /> */}
-            {/* <Checkbox variant={'text'}>담보초기화</Checkbox> */}
           </>
         )}
       </Grow>
@@ -174,11 +179,10 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
         />
         {/* 검색/초기화 액션 버튼(UI) */}
         <Button aria-label="담보명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-          <SearchIcon color={'var(--color-primary-50)'} />
+          <SearchIcon color={'var(--color-primary-50)'} size={14} />
         </Button>
-        <Button aria-label="해쉬 필터" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
-          <HashIcon color={'var(--color-primary-50)'} />
-        </Button>
+        {/* 공통 HashFilter 컴포넌트 사용 (Popover가 내장되어 코드 복잡도 대폭 감소) */}
+        <HashFilter selectedHashtags={selectedHashtags} onHashtagToggle={toggleHashtag} onReset={resetHashtags} />
       </Grow>
       <Grow placement={'sc'}>
         <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={onShowProductNameTooltipChange}>

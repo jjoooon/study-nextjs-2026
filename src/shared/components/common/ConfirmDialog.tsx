@@ -150,6 +150,17 @@ export function ConfirmDialog({
   resolve,
 }: ConfirmDialogProps) {
   const [isLoading, setIsLoading] = React.useState(false);
+  const confirmButtonRef = React.useRef<HTMLButtonElement>(null);
+  const cancelButtonRef = React.useRef<HTMLButtonElement>(null);
+
+  const handleOpenAutoFocus = (e: Event) => {
+    e.preventDefault();
+    if (confirmButtonRef.current) {
+      confirmButtonRef.current.focus();
+    } else if (cancelButtonRef.current) {
+      cancelButtonRef.current.focus();
+    }
+  };
 
   const dialogProps = {
     ...(open !== undefined ? { open } : {}),
@@ -192,15 +203,29 @@ export function ConfirmDialog({
   return (
     <AlertDialog {...dialogProps}>
       {trigger ? <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger> : null}
-      <AlertDialogContent>
+      <AlertDialogContent onOpenAutoFocus={handleOpenAutoFocus}>
         <AlertDialogHeader>
           {title && <AlertDialogTitle>{title}</AlertDialogTitle>}
-          {description ? <AlertDialogDescription>{description}</AlertDialogDescription> : null}
+          {description ? (
+            typeof description === 'string' ? (
+              <AlertDialogDescription
+                className="whitespace-pre-wrap"
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
+            ) : (
+              <AlertDialogDescription className="whitespace-pre-wrap">{description}</AlertDialogDescription>
+            )
+          ) : null}
         </AlertDialogHeader>
         <AlertDialogFooter>
-          {showCancel && <AlertDialogCancel onClick={handleCancel}>{cancelLabel}</AlertDialogCancel>}
+          {showCancel && (
+            <AlertDialogCancel ref={cancelButtonRef} onClick={handleCancel}>
+              {cancelLabel}
+            </AlertDialogCancel>
+          )}
           {showConfirm && (
             <AlertDialogAction
+              ref={confirmButtonRef}
               disabled={isLoading}
               className={
                 tone === 'danger'

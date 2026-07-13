@@ -7,12 +7,12 @@ import { useCallback, useState } from 'react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow } from '@atoms';
-import { Button } from '@uiux/Button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
+import { Button } from '@uiux/Button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { Ltpa3500301 } from './Ltpa3500301';
 
 import '@/shared/lib/agGridPub';
@@ -314,7 +314,10 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                     Self고지
                   </Button>
                   <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
-                    고지유형 추천
+                    심평원 동의
+                  </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
+                    고지유형찾기(UW)
                   </Button>
                 </Grow>
                 <Grow className="gap-1">

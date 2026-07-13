@@ -5,9 +5,11 @@
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { SearchIcon } from '@icons';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,8 +21,6 @@ import {
   DialogTitle,
   DialogClose,
 } from '@uiux/Dialog';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import '@/shared/lib/agGridPub';
 

@@ -6,6 +6,8 @@
 import '@/shared/lib/agGridPub';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TabPager } from '@common/TabPager';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -17,8 +19,6 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TabPager } from '@common/TabPager';
 import Ltpz01501 from './Ltpz01501';
 import Ltpz01502 from './Ltpz01502';
 import Ltpz01503 from './Ltpz01503';

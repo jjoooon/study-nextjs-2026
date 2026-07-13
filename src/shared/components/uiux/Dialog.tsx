@@ -14,8 +14,10 @@ import {
   getDialogLayerIndex,
   subscribeOverlay,
 } from '@/shared/utils/popup/dialogOverlayRegistry';
+import { isIframe } from '@/shared/utils/screenUtils';
 import { Grid } from '@atoms';
 import { CloseIcon } from '@icons';
+import { Button } from '@uiux/Button';
 
 type DialogSizeValue = number | string;
 
@@ -99,14 +101,24 @@ const resolveDialogSize = (size?: DialogSize) => {
   };
 };
 
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+
 type DialogContextValue = {
   depth: number;
   dialogId: string | null;
+  isMinimized: boolean;
+  setMinimized: React.Dispatch<React.SetStateAction<boolean>>;
+  modal: boolean;
+  open: boolean;
 };
 
 const DialogDepthContext = React.createContext<DialogContextValue>({
   depth: 0,
   dialogId: null,
+  isMinimized: false,
+  setMinimized: () => {},
+  modal: true,
+  open: false,
 });
 
 interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> {
@@ -127,21 +139,65 @@ interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimit
    * @default true
    */
   modal?: boolean;
+  /**
+   * 다이얼로그의 접힘 상태 (Controlled)
+   */
+  minimized?: boolean;
+  /**
+   * 다이얼로그의 기본 초기 접힘 상태 (Uncontrolled)
+   */
+  defaultMinimized?: boolean;
+  /**
+   * 다이얼로그 접힘 상태가 바뀔 때 호출되는 콜백 함수
+   */
+  onMinimizeChange?: (minimized: boolean) => void;
 }
 
 /**
  * 다이얼로그 루트 컴포넌트 (Dialog)
  * - 팝업/모달의 라이프사이클과 중첩(Depth) 깊이에 따른 레이어 포커스를 관리합니다.
  */
-function Dialog({ open: openProp, defaultOpen, onOpenChange, ...props }: DialogProps) {
+function Dialog({
+  open: openProp,
+  defaultOpen,
+  onOpenChange,
+  minimized: minimizedProp,
+  defaultMinimized,
+  onMinimizeChange,
+  modal = true,
+  ...props
+}: DialogProps) {
   const parentDialogContext = React.useContext(DialogDepthContext);
   const newDepth = parentDialogContext.depth + 1;
   const dialogId = React.useId();
+
+  // controlled / uncontrolled minimized 상태 모두 추적
+  const [minimizedState, setMinimizedState] = React.useState(defaultMinimized ?? false);
+  const isMinimizedControlled = minimizedProp !== undefined;
+  const isMinimized = isMinimizedControlled ? minimizedProp : minimizedState;
+
+  const handleMinimizeChange = React.useCallback(
+    (val: React.SetStateAction<boolean>) => {
+      const nextVal = typeof val === 'function' ? (val as (prev: boolean) => boolean)(isMinimized) : val;
+      if (!isMinimizedControlled) setMinimizedState(nextVal);
+      onMinimizeChange?.(nextVal);
+    },
+    [isMinimizedControlled, onMinimizeChange, isMinimized]
+  );
 
   // controlled / uncontrolled open 상태 모두 추적
   const [openState, setOpenState] = React.useState(defaultOpen ?? false);
   const isControlled = openProp !== undefined;
   const isOpen = isControlled ? openProp : openState;
+
+  const [prevOpen, setPrevOpen] = React.useState(isOpen);
+
+  if (isOpen !== prevOpen) {
+    setPrevOpen(isOpen);
+    if (!isOpen && !isMinimizedControlled) {
+      setMinimizedState(defaultMinimized ?? false);
+    }
+  }
 
   const handleOpenChange = React.useCallback(
     (val: boolean) => {
@@ -151,20 +207,30 @@ function Dialog({ open: openProp, defaultOpen, onOpenChange, ...props }: DialogP
     [isControlled, onOpenChange]
   );
 
-  // open 상태일 때만 _openDialogs 에 등록
+  // open 상태일 때만 _openDialogs 에 등록 및 최소화 상태 반영
   React.useEffect(() => {
     if (!isOpen) return;
-    registerDialog(dialogId, newDepth);
+    registerDialog(dialogId, newDepth, isMinimized);
     return () => unregisterDialog(dialogId);
-  }, [isOpen, dialogId, newDepth]);
+  }, [isOpen, dialogId, newDepth, isMinimized]);
 
   return (
-    <DialogDepthContext.Provider value={{ depth: newDepth, dialogId }}>
+    <DialogDepthContext.Provider
+      value={{
+        depth: newDepth,
+        dialogId,
+        isMinimized,
+        setMinimized: handleMinimizeChange,
+        modal,
+        open: isOpen,
+      }}
+    >
       <DialogPrimitive.Root
         data-slot="dialog"
         open={isOpen}
         defaultOpen={defaultOpen}
         onOpenChange={handleOpenChange}
+        modal={isMinimized ? false : modal}
         {...props}
       />
     </DialogDepthContext.Provider>
@@ -191,25 +257,56 @@ function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.C
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
+type DialogMinimizeProps = Omit<React.ComponentProps<typeof DialogPrimitive.Close>, 'color'>;
+
+/**
+ * 다이얼로그 접기 컴포넌트 (DialogMinimize)
+ * - 클릭 시 다이얼로그를 접습니다.
+ */
+function DialogMinimize({ className, ...props }: DialogMinimizeProps) {
+  const { isMinimized, setMinimized } = React.useContext(DialogDepthContext);
+  return (
+    <Button
+      variant={'none'}
+      color="transparent"
+      onClick={() => setMinimized(!isMinimized)}
+      className={cn('flex items-center justify-center p-0', className)}
+      {...props}
+    >
+      {isMinimized ? (
+        <span className="w-[1rem] h-[1rem] border border-[var(--color-gray-70)] border-[0.15rem] rounded-[0.2rem]"></span>
+      ) : (
+        <span className="w-[1.3rem] h-[0.2rem] bg-[var(--color-gray-70)] rounded-[0.2rem]"></span>
+      )}
+    </Button>
+  );
+}
+
 interface DialogOverlayProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay> {
   /**
    * 오픈/클로즈 트랜지션 애니메이션 비활성화 여부
    * @default false
    */
   disableMotion?: boolean;
+  /**
+   * 오버레이의 배경 타입 (어두운 배경 / 투명 배경)
+   * @default 'dark'
+   */
+  dim?: 'dark' | 'transparent';
 }
 
 /**
  * 다이얼로그 백드롭 오버레이 (DialogOverlay)
  * - 다이얼로그 배경을 차단하는 어두운 막 레이어입니다.
  */
-function DialogOverlay({ className, style, disableMotion = false, ...props }: DialogOverlayProps) {
+function DialogOverlay({ className, style, disableMotion = false, dim = 'dark', ...props }: DialogOverlayProps) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       style={style}
       className={cn(
-        'fixed inset-0 bg-black/60 pointer-events-none',
+        'fixed inset-0 pointer-events-none',
+        dim === 'dark' ? 'bg-black/60' : 'bg-transparent',
         disableMotion
           ? 'transition-none'
           : 'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
@@ -226,6 +323,7 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * @default true
    */
   showCloseButton?: boolean;
+  minimizeButtonClassName?: string;
   /**
    * 닫기(X) 버튼에 적용할 추가적인 CSS 클래스명
    */
@@ -262,6 +360,15 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
     x: number;
     y: number;
   };
+  minimized?: boolean;
+  /**
+   * 딤 오버레이 적용 여부 및 방식 설정
+   * - 'dark': 어두운 반투명 오버레이
+   * - 'transparent': 투명 오버레이
+   * - 'none': 오버레이 없음
+   * @default 'dark'
+   */
+  dim?: 'dark' | 'transparent' | 'none';
 }
 
 /**
@@ -273,6 +380,7 @@ function DialogContent({
   children,
   showCloseButton = true,
   closeButtonClassName,
+  minimizeButtonClassName,
   showOverlay,
   overlayClassName,
   resizable = false,
@@ -281,9 +389,36 @@ function DialogContent({
   defaultPosition,
   onPointerDownOutside,
   onInteractOutside,
+  minimized,
+  dim = 'dark',
   ...props
 }: DialogContentProps) {
-  const { dialogId } = React.useContext(DialogDepthContext);
+  const { dialogId, isMinimized, setMinimized, open } = React.useContext(DialogDepthContext);
+
+  // iframe 환경 검사 (SSR Hydration mismatch 방지)
+  const [isIframeState, setIsIframeState] = React.useState(false);
+
+  useIsomorphicLayoutEffect(() => {
+    const checkIframe = () => {
+      if (!isIframe()) return false;
+
+      try {
+        // 부모 아이프레임이 스토리북 프리뷰용('storybook-preview-iframe')인 경우 제외
+        if (window.frameElement && window.frameElement.id === 'storybook-preview-iframe') {
+          return false;
+        }
+      } catch {
+        // cross-origin의 경우 frameElement 접근이 제한될 수 있으므로 그대로 true 반환
+      }
+      return true;
+    };
+
+    setIsIframeState(checkIframe());
+  }, []);
+
+  const resolvedShowCloseButton = showCloseButton;
+  const resolvedResizable = resizable;
+  const resolvedMinimized = minimized;
 
   // 오버레이 상태 구독만 (등록은 Dialog 에서 처리)
   const [topOpenDialogId, setTopOpenDialogId] = React.useState(getTopOpenDialogId);
@@ -300,6 +435,39 @@ function DialogContent({
     [dialogId]
   );
 
+  // dim === 'none' 일 때 body의 pointer-events: none 방지
+  React.useEffect(() => {
+    if (open && dim === 'none') {
+      const target = document.body;
+
+      const disablePointerNone = () => {
+        if (target.style.pointerEvents === 'none') {
+          target.style.pointerEvents = 'auto';
+        }
+      };
+
+      // 초기 설정
+      disablePointerNone();
+
+      // body style 속성 모니터링하여 pointer-events: none 방지
+      const observer = new MutationObserver(() => {
+        disablePointerNone();
+      });
+
+      observer.observe(target, {
+        attributes: true,
+        attributeFilter: ['style'],
+      });
+
+      return () => {
+        observer.disconnect();
+        if (target.style.pointerEvents === 'auto') {
+          target.style.pointerEvents = '';
+        }
+      };
+    }
+  }, [open, dim]);
+
   // 레이어 기반 z-index: 열린 순서대로 51, 53, 55 ...
   const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (Math.max(dialogLayerIndex, 1) - 1) * DIALOG_Z_INDEX_STEP;
 
@@ -308,16 +476,73 @@ function DialogContent({
 
   const overlayZIndex = parallelZIndex - 1;
 
-  // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시
-  const resolvedShowOverlay = showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId));
+  // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시 (현재 팝업이 최소화된 경우에는 무조건 암막 숨김, dim이 'none'인 경우에는 오버레이 미표시)
+  const resolvedShowOverlay =
+    dim !== 'none' &&
+    !isMinimized &&
+    (showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId)));
   const disableOverlayMotion = openCount > 1;
   const isFullSize = size === 'full';
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
+  const [isInitialized, setIsInitialized] = React.useState(false);
   const [resizedSize, setResizedSize] = React.useState({ width: 0, height: 0 });
   const [isDragging, setIsDragging] = React.useState(false);
   const [isResizing, setIsResizing] = React.useState<string | null>(null);
   const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
-  const contentRef = React.useRef<HTMLDivElement>(null);
+  const contentRef = React.useRef<HTMLDivElement | null>(null);
+  const prevMinimizedRef = React.useRef(isMinimized);
+  const prevPositionBeforeMinimizeRef = React.useRef<{ x: number; y: number } | null>(null);
+  const prevIsInitializedBeforeMinimizeRef = React.useRef<boolean>(false);
+
+  // 최소화/확대 상태 변화에 따른 위치 제어 (useIsomorphicLayoutEffect 사용하여 껌벅임 방지)
+  useIsomorphicLayoutEffect(() => {
+    if (prevMinimizedRef.current !== isMinimized) {
+      prevMinimizedRef.current = isMinimized;
+
+      if (isMinimized) {
+        // 1) 최소화 시: 현재의 위치와 좌표 모드(isInitialized)를 기억
+        prevPositionBeforeMinimizeRef.current = position;
+        prevIsInitializedBeforeMinimizeRef.current = isInitialized;
+
+        if (contentRef.current) {
+          const rect = contentRef.current.getBoundingClientRect();
+          const minimizedWidth = rect.width;
+          const minimizedHeight = rect.height;
+
+          if (isInitialized) {
+            const x = (window.innerWidth - minimizedWidth) / 2;
+            const y = window.innerHeight - minimizedHeight - 8;
+            setPosition({ x, y });
+          } else {
+            const x = -minimizedWidth / 2;
+            const y = window.innerHeight / 2 - minimizedHeight - 8;
+            setPosition({ x, y });
+          }
+        }
+      } else {
+        // 2) 확대(복원) 시: 최소화 직전에 백업해 두었던 위치와 모드로 복원
+        const restoredPos = prevPositionBeforeMinimizeRef.current ?? defaultPosition ?? { x: 0, y: 0 };
+        const restoredIsInitialized = prevIsInitializedBeforeMinimizeRef.current;
+
+        setIsInitialized(restoredIsInitialized);
+        setPosition(restoredPos);
+      }
+    }
+  }, [isMinimized, defaultPosition, isInitialized, position]);
+
+  const [prevOpen, setPrevOpen] = React.useState(open);
+
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (!open) {
+      setPosition(defaultPosition ?? { x: 0, y: 0 });
+      setIsInitialized(false);
+      setResizedSize({ width: 0, height: 0 });
+      prevPositionBeforeMinimizeRef.current = null;
+      prevIsInitializedBeforeMinimizeRef.current = false;
+    }
+  }
+
   const [prevDefaultPosition, setPrevDefaultPosition] = React.useState<typeof defaultPosition>(defaultPosition);
 
   // defaultPosition 변경 시 최신 상태로 동기화 (렌더 단계에서 동기화, x/y 좌표값 비교로 무한루프 방지)
@@ -325,15 +550,25 @@ function DialogContent({
     setPrevDefaultPosition(defaultPosition);
     if (defaultPosition) {
       setPosition(defaultPosition);
+      setIsInitialized(false);
     }
   }
 
   const resolvedSize = React.useMemo(() => resolveDialogSize(size), [size]);
 
-  const contentStyle = React.useMemo<React.CSSProperties>(
-    () => ({
+  const contentStyle = React.useMemo<React.CSSProperties>(() => {
+    let transformValue = `translate(-50%, -50%)`;
+    if (isInitialized || isMinimized) {
+      transformValue = `translate(${position.x}px, ${position.y}px)`;
+    } else if (defaultPosition) {
+      transformValue = `translate(-50%, -50%) translate(${position.x}px, ${position.y}px)`;
+    }
+
+    return {
       ...(props.style ?? {}),
-      transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px))`,
+      left: isInitialized ? '0px' : '50%',
+      top: isInitialized ? '0px' : '50%',
+      transform: transformValue,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
       width: resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
       height: resizedSize.height > 0 ? `${resizedSize.height}px` : resolvedSize.height,
@@ -342,9 +577,20 @@ function DialogContent({
       maxWidth: resolvedSize.maxWidth,
       maxHeight: resolvedSize.maxHeight,
       zIndex: parallelZIndex,
-    }),
-    [props.style, position.x, position.y, isDragging, isResizing, resizedSize, resolvedSize, parallelZIndex]
-  );
+    };
+  }, [
+    props.style,
+    position.x,
+    position.y,
+    isDragging,
+    isResizing,
+    resizedSize,
+    resolvedSize,
+    parallelZIndex,
+    isInitialized,
+    isMinimized,
+    defaultPosition,
+  ]);
 
   // 1. 상태 변수에 초기값을 저장할 변수 추가 (isResizing과 함께 관리)
   const [initialCapture, setInitialCapture] = React.useState<{
@@ -370,6 +616,22 @@ function DialogContent({
         return;
       }
 
+      const shouldAction =
+        resizeHandle || dialogHeader || !contentRef.current?.querySelector('[data-slot="dialog-header"]');
+
+      if (!shouldAction) {
+        return;
+      }
+
+      // 실제 드래그/리사이즈 동작이 개시될 때만 위치를 px 단위로 고정시킵니다.
+      let currentPos = position;
+      if (!isInitialized && contentRef.current) {
+        const rect = contentRef.current.getBoundingClientRect();
+        currentPos = { x: rect.left, y: rect.top };
+        setPosition(currentPos);
+        setIsInitialized(true);
+      }
+
       if (resizeHandle) {
         e.preventDefault();
         const rect = contentRef.current!.getBoundingClientRect();
@@ -378,21 +640,18 @@ function DialogContent({
         setInitialCapture({
           width: rect.width,
           height: rect.height,
-          x: position.x,
-          y: position.y,
+          x: currentPos.x,
+          y: currentPos.y,
           mouseX: e.clientX,
           mouseY: e.clientY,
         });
         return;
       }
 
-      if (dialogHeader || !contentRef.current?.querySelector('[data-slot="dialog-header"]')) {
-        // 드래그 로직은 기존과 동일하게 유지해도 무방함
-        setIsDragging(true);
-        setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
-      }
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - currentPos.x, y: e.clientY - currentPos.y });
     },
-    [position, isFullSize]
+    [position, isInitialized, isFullSize]
   );
 
   React.useEffect(() => {
@@ -413,32 +672,26 @@ function DialogContent({
 
         // --- X축 계산 ---
         if (isResizing.includes('e')) {
-          // 오른쪽 확장: 너비는 늘어나고, 중심점은 늘어난 양의 절반만큼 오른쪽(+X)으로
-          const addedWidth = deltaX;
-          newWidth = Math.max(300, initialCapture.width + addedWidth);
-          const actualAddedWidth = newWidth - initialCapture.width;
-          newX = initialCapture.x + actualAddedWidth / 2;
+          // 오른쪽 확장: 좌측(left)이 고정되고 우측으로 너비 확대
+          newWidth = Math.max(100, initialCapture.width + deltaX);
+          newX = initialCapture.x;
         } else if (isResizing.includes('w')) {
-          // 왼쪽 확장: 너비는 늘어나고, 중심점은 중심점 이동 규칙에 따라 왼쪽(-X)으로
-          const addedWidth = -deltaX;
-          newWidth = Math.max(300, initialCapture.width + addedWidth);
-          const actualAddedWidth = newWidth - initialCapture.width;
-          newX = initialCapture.x - actualAddedWidth / 2;
+          // 왼쪽 확장: 우측(right)이 고정되고 좌측으로 너비 확대
+          newWidth = Math.max(100, initialCapture.width - deltaX);
+          const actualWidthChange = newWidth - initialCapture.width;
+          newX = initialCapture.x - actualWidthChange;
         }
 
         // --- Y축 계산 ---
         if (isResizing.includes('s')) {
-          // 아래쪽 확장: 높이는 늘어나고, 중심점은 아래(+Y)로
-          const addedHeight = deltaY;
-          newHeight = Math.max(200, initialCapture.height + addedHeight);
-          const actualAddedHeight = newHeight - initialCapture.height;
-          newY = initialCapture.y + actualAddedHeight / 2;
+          // 아래쪽 확장: 위쪽(top)이 고정되고 아래쪽으로 높이 확대
+          newHeight = Math.max(100, initialCapture.height + deltaY);
+          newY = initialCapture.y;
         } else if (isResizing.includes('n')) {
-          // 위쪽 확장: 높이는 늘어나고, 중심점은 위(-Y)로
-          const addedHeight = -deltaY;
-          newHeight = Math.max(200, initialCapture.height + addedHeight);
-          const actualAddedHeight = newHeight - initialCapture.height;
-          newY = initialCapture.y - actualAddedHeight / 2;
+          // 위쪽 확장: 아래쪽(bottom)이 고정되고 위쪽으로 높이 확대
+          newHeight = Math.max(100, initialCapture.height - deltaY);
+          const actualHeightChange = newHeight - initialCapture.height;
+          newY = initialCapture.y - actualHeightChange;
         }
 
         setResizedSize({ width: newWidth, height: newHeight });
@@ -468,6 +721,7 @@ function DialogContent({
     <DialogPortal data-slot="dialog-portal">
       {resolvedShowOverlay && (
         <DialogOverlay
+          dim={dim === 'transparent' ? 'transparent' : 'dark'}
           style={{ zIndex: overlayZIndex }}
           className={overlayClassName}
           disableMotion={disableOverlayMotion}
@@ -477,17 +731,27 @@ function DialogContent({
         ref={contentRef}
         data-slot="dialog-content"
         style={contentStyle}
+        data-isminimize={isMinimized ? 'true' : 'false'}
         className={cn(
-          'fixed left-[50%] top-[50%] grid grid-rows-[auto_1fr_auto] gap-5 transition-none',
+          'fixed grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto',
+          isDragging || !!isResizing ? 'transition-none' : 'dialog-bounce-transition',
           'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
           'w-full grid grid-rows-[auto_1fr_auto]',
+          isIframeState && 'is-iframe',
           className
         )}
         onMouseDown={handleMouseDown}
+        onDoubleClick={() => {
+          if (isMinimized) {
+            setMinimized?.(false);
+          }
+        }}
         onPointerDownOutside={(event) => {
+          event.preventDefault();
           onPointerDownOutside?.(event);
         }}
         onInteractOutside={(event) => {
+          event.preventDefault();
           onInteractOutside?.(event);
         }}
         {...props}
@@ -502,7 +766,16 @@ function DialogContent({
             }}
           />
         )}
-        {showCloseButton && (
+        {resolvedMinimized && (
+          <DialogMinimize
+            className={cn(
+              'flex items-center justify-center w-[2.4rem] h-[2.4rem] absolute top-[2.2rem] rounded-xs transition-opacity disabled:pointer-events-none p-0',
+              resolvedShowCloseButton ? 'right-[5.6rem]' : 'right-[2.4rem]',
+              minimizeButtonClassName
+            )}
+          />
+        )}
+        {resolvedShowCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
             className={cn(
@@ -513,8 +786,9 @@ function DialogContent({
             <CloseIcon color="#2C2724" />
           </DialogPrimitive.Close>
         )}
+
         {/* Resize Handles - Only shown when resizable is true and not full size */}
-        {resizable && !isFullSize && (
+        {resolvedResizable && !isFullSize && (
           <>
             <div
               data-slot="resize-handle"
@@ -667,4 +941,5 @@ export {
   DialogTitle,
   DialogTrigger,
   DialogFooterArea,
+  DialogMinimize,
 };

@@ -162,12 +162,14 @@
 .ag-row-selected {
   background-color: var(--color-warning-10);
 } */
-.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell *,
-.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell {
-  color: #ff5c2e !important;
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell *:not(button) {
+  color: var(--color-gray-50);
+}
+.ag-theme-alpine .ag-row.ag-row-state-true .ag-cell button[data-variant='outlined'] span {
+  color: var(--color-primary-50);
 }
 .ag-theme-alpine .ag-row.ag-row-state-true {
-  --color-text-base: #ff5c2e;
+  --color-text-base: var(--color-gray-50);
 }
 
 /* 분할 정렬 */
@@ -561,6 +563,7 @@
 
 .ag-overlay-wrapper {
   padding-bottom: 3rem;
+  padding-top: 3rem !important;
 }
 
 .is-duplicate .uiux-duplicate-btn {
@@ -794,6 +797,8 @@
 .ag-row.ag-row-subtotal {
   background-color: var(--color-primary-10) !important;
   color: var(--color-primary-50) !important;
+  font-weight: 700;
+  border-top: 1px solid var(--color-primary-50) !important;
 }
 
 .ag-row.ag-row-subtotal:hover,
@@ -865,7 +870,7 @@
 
 .ag-select-list {
   max-height: 200px !important; /* 원하시는 높이로 조절 */
-  overflow-y: auto !important;   /* 항목이 많으면 스크롤 생성 */
+  overflow-y: auto !important; /* 항목이 많으면 스크롤 생성 */
   letter-spacing: 0 !important;
 }
 .ltpz012-final-grid .ag-cell b {
@@ -900,7 +905,7 @@
 .ag-theme-alpine.inner-scroll .ag-root-wrapper-body {
   height: auto !important;
 }
-.ag-theme-alpine.inner-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal {
+.ag-theme-alpine.inner-scroll:not([data-row='0']) .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 15rem !important;
 }
 .ag-theme-alpine.inner-scroll[data-row='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
@@ -1068,4 +1073,26 @@
 
 .ag-cell-value .ag-row-group-leaf-indent .ag-group-value {
   padding-right: 0.1rem;
+}
+
+.ag-theme-alpine {
+  --ag-row-group-indent-size: 1rem !important;
+}
+.ag-row-group-indent-0 {
+  padding-left: 0 !important;
+}
+.ag-row-group-indent-1 {
+  padding-left: 1rem !important;
+}
+.ag-row-group-indent-2 {
+  padding-left: 2rem !important;
+}
+.ag-row-group-indent-3 {
+  padding-left: 3rem !important;
+}
+.ag-row-group-indent-4 {
+  padding-left: 4rem !important;
+}
+.ag-row-group-indent-5 {
+  padding-left: 5rem !important;
 }

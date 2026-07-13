@@ -6,8 +6,9 @@
 import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { Grow, Typo } from '@atoms';
 import { useDynamicColumnWidths } from '@aggrid';
+import { Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -19,7 +20,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 type DummyDataType = {
   id: number;

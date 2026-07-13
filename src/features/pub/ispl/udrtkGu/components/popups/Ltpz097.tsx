@@ -7,9 +7,12 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { Gcol, Grow, Typo, Grid } from '@atoms';
-import { FileExportIcon, ResetIcon, SearchIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { FileExportIcon, ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -23,9 +26,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -239,7 +239,7 @@ const Ltpz097 = () => {
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
-                  <Input width={120} value={'LA260204310632'} />
+                  <Input width={120} value={'LA123456789012'} />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                     <SearchIcon color={'var(--color-primary-50)'} />
                   </Button>

@@ -5,20 +5,20 @@
 
 import React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Grow, Gcol, Typo } from '@atoms';
-import { SearchIcon } from '@icons';
-import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroupItem, CheckboxGroup } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
+import { SearchIcon } from '@icons';
 import { LayoutMain, LayoutScrollWrap, LayoutMainFoot, LayoutMainBody, LayoutScrollItem } from '@layout/BaseLayout';
 import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroupItem, CheckboxGroup } from '@uiux/Checkbox';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 interface TabDataType {
   id: string | number;
@@ -231,6 +231,7 @@ export const Ltpa35005 = () => {
 
   const [firstPay, setFirstPay] = React.useState<string>('선택');
   const [morePay, setMorePay] = React.useState<string>('선택');
+  const [morePayCustomerType, setMorePayCustomerType] = React.useState<string>('개인');
   const isSimilarContractCheckRequired = true; //4-1 특정조건인 경우 문구 노출
 
   const is노후실손자동재가입동의 = true;
@@ -513,7 +514,7 @@ export const Ltpa35005 = () => {
                       </FormCell>
                       <FormCell title={'장애인보험 전환'}>
                         <Grow placement="bwc">
-                          <CheckboxGroup color="primary" minSelected={0} size="lg" width="auto" variant="default">
+                          <CheckboxGroup color="primary" size="lg" width="auto" variant="default">
                             {[
                               { label: '피보험자장애인', value: '1' },
                               { label: '수익자장애인', value: '2' },
@@ -607,7 +608,7 @@ export const Ltpa35005 = () => {
 
                   <FormTable cols={['w-[9.6rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
                     <FormRow>
-                      <FormCell title={'초회보험료'}>
+                      <FormCell title="초회보험료" tdClassName="justify-between">
                         <NativeSelect
                           aria-label="납부방법 선택"
                           width={100}
@@ -627,6 +628,12 @@ export const Ltpa35005 = () => {
                             </NativeSelectOption>
                           ))}
                         </NativeSelect>
+                        {firstPay === '예약이체' && (
+                          <Grow gap={2} placement="ec">
+                            이체일(보험시기)
+                            <Input value={'2025-01-01'} width={90} readOnly />
+                          </Grow>
+                        )}
                       </FormCell>
                       <FormCell title="계속 보험료">
                         <Grow gap={1}>
@@ -754,7 +761,7 @@ export const Ltpa35005 = () => {
                                     </NativeSelectOption>
                                   ))}
                                 </NativeSelect>
-                                <RadioGroup defaultValue="개인" disabled>
+                                <RadioGroup value={morePayCustomerType} onValueChange={setMorePayCustomerType}>
                                   {[
                                     { value: '개인', label: '개인' },
                                     { value: '사업자', label: '사업자' },
@@ -800,7 +807,7 @@ export const Ltpa35005 = () => {
                                     </NativeSelectOption>
                                   ))}
                                 </NativeSelect>
-                                <RadioGroup defaultValue="개인" disabled>
+                                <RadioGroup value={morePayCustomerType} onValueChange={setMorePayCustomerType}>
                                   {[
                                     { value: '개인', label: '개인' },
                                     { value: '사업자', label: '사업자' },
@@ -825,6 +832,9 @@ export const Ltpa35005 = () => {
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -834,12 +844,18 @@ export const Ltpa35005 = () => {
                             <FormCell title="계약자">
                               <Input aria-label="계약자명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                             </FormCell>
                           )}
                           {firstPay === '카드납입' && (
                             <FormCell title="카드주">
                               <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -849,6 +865,9 @@ export const Ltpa35005 = () => {
                             <FormCell title="예금주">
                               <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -857,17 +876,35 @@ export const Ltpa35005 = () => {
 
                           {morePay === '자동이체' && (
                             <FormCell title="예금주">
-                              <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
-                              <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
-                                <SearchIcon color={'var(--color-primary-50)'} />
-                              </Button>
+                              {morePayCustomerType === '개인' ? (
+                                <>
+                                  <Input aria-label="예금주명" width={70} value={'김한화'} readOnly />
+                                  <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                                  <Typo variant={'body-lg'} className="tracking-wide">
+                                    -xxxxxxx
+                                  </Typo>
+                                  <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                                    <SearchIcon color={'var(--color-primary-50)'} />
+                                  </Button>
+                                </>
+                              ) : (
+                                <Grid className="grid-cols-[1fr_auto_auto] w-full">
+                                  <Input aria-label="회사명" value={'회사명'} readOnly />
+                                  <Input aria-label="사업자번호" width={100} value={'000-00-00000'} readOnly />
+                                  <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                                    <SearchIcon color={'var(--color-primary-50)'} />
+                                  </Button>
+                                </Grid>
+                              )}
                             </FormCell>
                           )}
                           {morePay === '급여이체' && (
                             <FormCell title="직원명">
                               <Input aria-label="직원명" width={70} value={'김한화'} readOnly />
                               <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                              <Typo variant={'body-lg'} className="tracking-wide">
+                                -xxxxxxx
+                              </Typo>
                               <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                                 <SearchIcon color={'var(--color-primary-50)'} />
                               </Button>
@@ -875,11 +912,26 @@ export const Ltpa35005 = () => {
                           )}
                           {morePay === '카드이체' && (
                             <FormCell title="카드주">
-                              <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
-                              <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
-                              <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
-                                <SearchIcon color={'var(--color-primary-50)'} />
-                              </Button>
+                              {morePayCustomerType === '개인' ? (
+                                <>
+                                  <Input aria-label="카드주명" width={70} value={'김한화'} readOnly />
+                                  <Input aria-label="주민등록번호" width={70} value={'000000'} readOnly />
+                                  <Typo variant={'body-lg'} className="tracking-wide">
+                                    -xxxxxxx
+                                  </Typo>
+                                  <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                                    <SearchIcon color={'var(--color-primary-50)'} />
+                                  </Button>
+                                </>
+                              ) : (
+                                <Grid className="grid-cols-[1fr_auto_auto] w-full">
+                                  <Input aria-label="회사명" value={'회사명'} readOnly />
+                                  <Input aria-label="사업자번호" width={100} value={'000-00-00000'} readOnly />
+                                  <Button variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
+                                    <SearchIcon color={'var(--color-primary-50)'} />
+                                  </Button>
+                                </Grid>
+                              )}
                             </FormCell>
                           )}
 
@@ -1044,7 +1096,7 @@ export const Ltpa35005 = () => {
                     )}
                   >
                     <FormTable lineTop={false} cols={['w-[9.6rem]', 'w-[40%]', 'w-[9rem]', 'w-[auto]']}>
-                      {/* 사망수익자 / 사망외수익자 (항상 노출) */}
+                      {/* 기본 케이스 */}
                       <FormRow>
                         <FormCell
                           title={
@@ -1103,6 +1155,8 @@ export const Ltpa35005 = () => {
                           </NativeSelect>
                         </FormCell>
                       </FormRow>
+
+                      {/* 기본 케이스 & 피보험자 미성년 */}
                       <FormRow>
                         <FormCell title="지정대리인" colSpan={3}>
                           <Input aria-label="지정대리인" width={84} value={''} readOnly />
@@ -1129,7 +1183,8 @@ export const Ltpa35005 = () => {
                           </Button>
                         </FormCell>
                       </FormRow>
-                      {/* 미성년 */}
+
+                      {/* 피보험자 미성년 */}
                       <FormRow>
                         <FormCell title="법정대리인1" colSpan={3} tdClassName="justify-between">
                           <Grow>
@@ -1183,6 +1238,95 @@ export const Ltpa35005 = () => {
                           <Input value={''} />
                         </FormCell>
                       </FormRow>
+                      {/* 피보험자 미성년 */}
+
+                      {/* 지정대리인 케이스 */}
+                      <FormRow>
+                        <FormCell title="지정대리인1" colSpan={3}>
+                          <Input aria-label="지정대리인1" width={84} value={''} readOnly />
+                          <Input aria-label="지정대리인1" width={114} value={''} readOnly />
+                          <Button
+                            aria-label="지정대리인1 검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                            disabled
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                          <NativeSelect aria-label="지정대리인1 선택" width={100} className="ml-[0.4rem]">
+                            {[{ value: '선택', label: '선택' }].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                          <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                            알림톡발송
+                          </Button>
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title="지정대리인2" colSpan={3}>
+                          <Input aria-label="지정대리인2" width={84} value={''} readOnly />
+                          <Input aria-label="지정대리인2" width={114} value={'000000-0000000'} readOnly />
+                          <Button
+                            aria-label="지정대리인2 검색"
+                            variant={'outlined'}
+                            only="icon"
+                            size={'lg'}
+                            color={'gray-light'}
+                            disabled
+                          >
+                            <SearchIcon color={'var(--color-primary-50)'} />
+                          </Button>
+                          <NativeSelect aria-label="지정대리인2 선택" width={100} className="ml-[0.4rem]">
+                            {[{ value: '선택', label: '선택' }].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title="무기명지정">
+                          <Checkbox variant="noneText"></Checkbox>
+                          <NativeSelect aria-label="무기명지정" width={'auto'} className="ml-[0.4rem]" readOnly>
+                            {[
+                              { value: '선택', label: '선택' },
+                              { value: '배우자', label: '배우자' },
+                              { value: '부모', label: '부모' },
+                              { value: '자녀', label: '자녀' },
+                              { value: '조부모', label: '조부모' },
+                              { value: '직계비속', label: '직계비속' },
+                              { value: '배우자 및 직계존비속', label: '배우자 및 직계존비속' },
+                              { value: '직계존속', label: '직계존속' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                        </FormCell>
+                        <FormCell title="미지정 사유">
+                          <Checkbox variant="noneText"></Checkbox>
+                          <NativeSelect aria-label="미지정 사유" width={'auto'} className="ml-[0.4rem]" readOnly>
+                            {[
+                              { value: '선택', label: '선택' },
+                              { value: '대리인 자격자 부존재', label: '대리인 자격자 부존재' },
+                              { value: '계약자 지정거부', label: '계약자 지정거부' },
+                              { value: '기타', label: '기타' },
+                            ].map((option) => (
+                              <NativeSelectOption key={option.value} value={option.value}>
+                                {option.label}
+                              </NativeSelectOption>
+                            ))}
+                          </NativeSelect>
+                        </FormCell>
+                      </FormRow>
+                      {/* 지정대리인 케이스 */}
                     </FormTable>
                   </TabPager>
                 </Gcol>
@@ -1190,9 +1334,7 @@ export const Ltpa35005 = () => {
             </LayoutScrollWrap>
           </LayoutMainBody>
           <LayoutMainFoot>
-            {/* M1. variant="box" 추가 */}
             <MainBottom variant="box">
-              {/* M1. className 추가 */}
               <MainBottomItem className="bg-[var(--color-gray-5)]">
                 <Grow>
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>

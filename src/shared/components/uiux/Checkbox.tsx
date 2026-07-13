@@ -7,8 +7,8 @@ import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
-import { CheckIcon, Favorite } from '@icons';
 import { ErrorMsg } from '@common/ErrorMsg';
+import { CheckIcon, Favorite } from '@icons';
 
 // 단일 Checkbox 컴포넌트 props
 // - variant/size/color로 UI 모양을 바꾼다.
@@ -331,6 +331,7 @@ interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   required?: boolean;
   disabled?: boolean;
   minSelected?: number;
+  maxSelected?: number;
   validateMode?: 'manual' | 'auto';
   error?: boolean;
   errorMsg?: React.ReactNode;
@@ -370,7 +371,8 @@ function CheckboxGroup({
   onErrorChange,
   required = false,
   disabled = false,
-  minSelected = 1,
+  minSelected = 0,
+  maxSelected,
   validateMode = 'manual',
   error = false,
   errorMsg,
@@ -484,6 +486,11 @@ function CheckboxGroup({
         return;
       }
 
+      // maxSelected 제한이 있고, 새로운 항목을 추가할 때 이미 최대 개수에 도달한 경우 토글을 막음
+      if (maxSelected !== undefined && checked === true && !values.includes(value) && values.length >= maxSelected) {
+        return;
+      }
+
       const nextSelectedValues =
         checked === true
           ? values.includes(value)
@@ -502,7 +509,7 @@ function CheckboxGroup({
 
       setValues(shouldCheckSelectAll ? uniq([...nextWithoutSelectAll, selectAllValue]) : nextWithoutSelectAll);
     },
-    [selectAllValue, selectableValues, setValues, values]
+    [selectAllValue, selectableValues, setValues, values, maxSelected]
   );
 
   // manual 모드에서는 외부 error prop이 들어온 시점부터 검증 표시 시작 (렌더 단계에서 동기화)

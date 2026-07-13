@@ -17,20 +17,21 @@ import type {
   GridReadyEvent,
   CellValueChangedEvent,
 } from 'ag-grid-enterprise';
-import type { AgGridReact } from 'ag-grid-react';
+import type { AgGridReact, CustomLoadingOverlayProps } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import type { RefObject } from 'react';
 import { SCALE_CHANGE_EVENT } from '@/shared/utils/scale';
 import { Typo, Grow, Grid, Gcol } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
+import { DatePickerInput } from '@common/DatePicker';
+import { Ltpa120 } from '@features/Ltpa120';
 import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from '@uiux/Popover';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { DatePickerInput } from '@common/DatePicker';
 
 /**
  * 상단 토글 정렬에 필요한 메타 정보를 원본 행 타입 `T`에 결합한 타입.
@@ -724,8 +725,8 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
   options: {
     idKey: keyof RowType;
     getNextId: (rows: RowType[]) => IDType;
-    createRow: (nextId: IDType, rows: RowType[]) => RowType;
-    insertAt?: 'start' | 'end';
+    createRow: (nextId: IDType, rows: RowType[], focusedRow?: RowType) => RowType;
+    insertAt?: 'start' | 'end' | 'focused';
     getInsertIndex?: (rows: RowType[]) => number;
     gridApiRef?: React.RefObject<GridApi<RowType> | null>;
   }
@@ -735,13 +736,28 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
   return () => {
     setRowData((prev) => {
       const nextId = getNextId(prev);
+
+      let focusedRow: RowType | undefined = undefined;
+      const nextRows = [...prev];
+
+      let defaultIndex = insertAt === 'start' ? 0 : nextRows.length;
+
+      // focused 인 경우 포커스된 행 바로 아래에 인덱스 설정
+      if (insertAt === 'focused' && gridApiRef?.current) {
+        const focusedCell = gridApiRef.current.getFocusedCell();
+        if (focusedCell && focusedCell.rowIndex >= 0) {
+          defaultIndex = focusedCell.rowIndex + 1;
+          focusedRow = prev[focusedCell.rowIndex];
+        } else {
+          defaultIndex = nextRows.length;
+        }
+      }
+
       const newRow = {
-        ...createRow(nextId, prev),
+        ...createRow(nextId, prev, focusedRow),
         [idKey]: nextId,
       } as RowType;
 
-      const nextRows = [...prev];
-      const defaultIndex = insertAt === 'start' ? 0 : nextRows.length;
       const customIndex = getInsertIndex ? getInsertIndex(nextRows) : defaultIndex;
       const boundedIndex = Math.max(0, Math.min(customIndex, nextRows.length));
 
@@ -750,10 +766,19 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
       if (gridApiRef?.current) {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            const viewportElement = document.querySelector('.ag-body-viewport');
-            if (viewportElement) {
-              // 최하단으로 스크롤
-              viewportElement.scrollTop = viewportElement.scrollHeight;
+            // 새로 삽입된 행으로 스크롤 이동
+            gridApiRef.current?.ensureIndexVisible(boundedIndex, 'middle');
+
+            if (insertAt === 'focused') {
+              const focusedCell = gridApiRef.current?.getFocusedCell();
+              if (focusedCell) {
+                gridApiRef.current?.setFocusedCell(boundedIndex, focusedCell.column.getColId());
+              }
+            } else if (insertAt === 'end') {
+              const viewportElement = document.querySelector('.ag-body-viewport');
+              if (viewportElement) {
+                viewportElement.scrollTop = viewportElement.scrollHeight;
+              }
             }
           });
         });
@@ -1278,9 +1303,11 @@ export function editableSelectCellRenderer<RowType>(
     justifyClass = 'justify-center';
     textClass = 'text-center';
   }
+  const displayValue =
+    params.valueFormatted !== undefined && params.valueFormatted !== null ? params.valueFormatted : params.value;
   return (
     <div className={`flex items-center px-[0.6rem] ${justifyClass} gap-1 w-full h-full editor-select`}>
-      <span className={`block flex-1 ${textClass}`}>{params.value}</span>
+      <span className={`block flex-1 ${textClass}`}>{displayValue}</span>
       <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
     </div>
   );
@@ -1922,11 +1949,15 @@ export function createHeaderCheckboxOnCellValueChanged<T>(fields: (keyof T & str
 /**
  * [Ag-Grid Component] 데이터가 없을 때 노출하는 Empty 오버레이 UI
  */
-export function AgGridEmptyComponent({ className: _className }: React.ComponentProps<'div'>) {
+interface AgGridEmptyComponentProps extends React.ComponentProps<'div'> {
+  message?: string;
+}
+
+export function AgGridEmptyComponent({ className: _className, message }: AgGridEmptyComponentProps) {
   return (
     <div className="bg-(--color-gray-0) w-full h-full flex items-center justify-center gap-1 text-(--color-gray-70)">
       <InfoBoxWarningIcon color="var(--color-gray-50)" />
-      조회 결과가 없습니다.
+      {message ?? '조회 결과가 없습니다.'}
     </div>
   );
 }
@@ -2147,38 +2178,63 @@ export const CoveragePopover = ({
   /** 트리거 버튼 ref (접근성/포커스 제어 확장 대비) */
   const triggerRef = useRef<HTMLButtonElement>(null);
 
+  /** AI 질문하기(Ltpa120) 레이어 팝업 열림 상태 */
+  const [isLtpa120Open, setIsLtpa120Open] = useState(false);
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <button
-          ref={triggerRef}
-          type="button"
-          className="truncate-no w-full pl-1.5 flex-1 text-left"
-          aria-haspopup="dialog"
-        >
-          {text}
-        </button>
-      </PopoverTrigger>
-      <PopoverContent side="bottom" align="start" className="max-w-[42.5rem] select-text" closeButton={true}>
-        <Gcol>
-          <Grow className="w-full" placement="bws">
-            <Typo variant={'heading-sm'}>{items?.title}</Typo>
-            <Button size={'sm'} className="-translate-y-[0.2rem]">
-              AI 질문하기
-            </Button>
-          </Grow>
-          <Gcol className="w-full select-text" placement="ss">
-            <Typo variant={'body-sm'} color={'gray'}>
-              {items?.description}
-            </Typo>
-            <BulletList type={'star'} size={'xs'}>
-              {items?.info.map((item, index) => (
-                <BulletListItem key={index}>{item}</BulletListItem>
-              ))}
-            </BulletList>
+    <>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <button
+            ref={triggerRef}
+            type="button"
+            className="truncate-no w-full pl-1.5 flex-1 text-left"
+            aria-haspopup="dialog"
+          >
+            {text}
+          </button>
+        </PopoverTrigger>
+        <PopoverContent side="bottom" align="start" className="max-w-[42.5rem] select-text" closeButton={true}>
+          <Gcol>
+            <Grow className="w-full" placement="bws">
+              <Typo variant={'heading-sm'}>{items?.title}</Typo>
+              <Button
+                size={'sm'}
+                className="-translate-y-[0.2rem]"
+                onClick={() => {
+                  setOpen(false); // 팝오버 닫기
+                  setIsLtpa120Open(true); // AI 질문하기 팝업 열기
+                }}
+              >
+                AI 질문하기
+              </Button>
+            </Grow>
+            <Gcol className="w-full select-text" placement="ss">
+              <Typo variant={'body-sm'} color={'gray'}>
+                {items?.description}
+              </Typo>
+              <BulletList type={'star'} size={'xs'}>
+                {items?.info.map((item, index) => (
+                  <BulletListItem key={index}>{item}</BulletListItem>
+                ))}
+              </BulletList>
+            </Gcol>
           </Gcol>
-        </Gcol>
-      </PopoverContent>
-    </Popover>
+        </PopoverContent>
+      </Popover>
+      <Ltpa120 open={isLtpa120Open} setOpen={setIsLtpa120Open} isButton={false} />
+    </>
+  );
+};
+
+export const CustomGridLoadingOverlay = (props: CustomLoadingOverlayProps & { loadingMessage?: string }) => {
+  return (
+    <div className="ag-overlay-loading-wrapper flex items-center justify-center">
+      <div className="flex flex-col items-center gap-3 p-6 bg-white rounded-lg ">
+        {/* 커스텀 로딩 애니메이션 */}
+        <div className="animate-spin rounded-full h-4 w-4 border-b-1 border-[var(--color-primary-50)]"></div>
+        <span className="text-sm text-gray-700">{props.loadingMessage || '데이터를 가져오는 중입니다...'}</span>
+      </div>
+    </div>
   );
 };

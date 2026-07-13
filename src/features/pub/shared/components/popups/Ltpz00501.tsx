@@ -8,16 +8,16 @@ import '@/shared/lib/agGridPub';
 import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { Divider, Gcol, Grow, Typo } from '@atoms';
 
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TooltipQ } from '@common/TooltipQ';
+import { Badge } from '@uiux/Badge';
+import { Button } from '@uiux/Button';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 /** 인수 지침 위배 내역 및 청약 제한 사항 데이터 타입 */
 type DummyDataType = {
@@ -401,7 +401,7 @@ const Ltpz00501 = () => {
             <FormRow>
               <FormCell title={<b>미지급 휴면보험금 처리</b>}>
                 <Grow gap={3}>
-                  <Typo variant={'body-md'}>대상 증권번호 : LA260112297637 외 N건</Typo>
+                  <Typo variant={'body-md'}>대상 증권번호 : LA123456789012 외 N건</Typo>
                   <Button color="gray" onClick={() => {}} variant="outlined">
                     휴면보험금조회
                   </Button>
@@ -427,13 +427,13 @@ const Ltpz00501 = () => {
                   </Grow>
                 }
               >
-                <Typo variant={'body-md'}>전환전 계약 : LA260112297637</Typo>
+                <Typo variant={'body-md'}>전환전 계약 : LA123456789012</Typo>
               </FormCell>
             </FormRow>
             <FormRow>
               <FormCell title={<b>신계약청약서 미스캔계약처리</b>}>
                 <Grow gap={3}>
-                  <Typo variant={'body-md'}>LA260112297637 외 N건</Typo>
+                  <Typo variant={'body-md'}>LA123456789012 외 N건</Typo>
                   <Grow>
                     <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
                       기 체결건 중 미스캔 건 존재

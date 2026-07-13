@@ -7,14 +7,17 @@ import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } fro
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback } from 'react';
 import * as React from 'react';
-import { Grow, Typo } from '@atoms';
-import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
   editableSelectCellRenderer,
   numberValueFormatter,
 } from '@aggrid';
+import { Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -27,9 +30,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 import '@/shared/lib/agGridPub';
 
@@ -201,7 +201,7 @@ const Ltpz01601 = () => {
             <FormTable caption="보험정보" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" width={150} value={'LA26020945959594'} readOnly />
+                  <Input aria-label="" width={150} value={'LA123456789012'} readOnly />
                   -
                   <Input aria-label="" width={30} value={'1'} readOnly />
                   <b>한화 더 건강한 한여름좋합 보험 2601</b>

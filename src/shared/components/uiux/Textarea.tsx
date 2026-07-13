@@ -5,8 +5,8 @@ import * as React from 'react';
 import { INPUT_RESTRICTED_CHARS } from '@/shared/constants/restrictedChars';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow } from '@atoms';
-import { ReSizeIcon } from '@icons';
 import { ErrorMsg } from '@common/ErrorMsg';
+import { ReSizeIcon } from '@icons';
 
 /**
  * Textarea 컴포넌트의 Props 인터페이스입니다.
@@ -30,8 +30,6 @@ interface UITextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEleme
    * @default 'bl'
    */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
-  /** 최소 글자 수 표시 여부 및 최소 입력 글자 수 만족 시 에러 해제 조건 연동 여부 */
-  showMinLengthCount?: boolean;
   /**
    * 텍스트 상자 크기 조절(Resize) 활성화 방향 설정
    * - `true`: 가로/세로 모두 크기 조절 가능

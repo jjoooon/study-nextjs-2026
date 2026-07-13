@@ -7,8 +7,10 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -23,8 +25,6 @@ import {
 import { Input } from '@uiux/Input';
 import { toast } from '@uiux/Sonner';
 import { Textarea } from '@uiux/Textarea';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 type DummyDataType = {
   id: number;
@@ -161,7 +161,7 @@ const Ltpz009 = () => {
             <FormTable caption="보험정보" cols={['w-1', 'w-auto']} variant="head">
               <FormRow className="grid grid-cols-[auto_1fr] w-full">
                 <FormCell title={'설계번호'}>
-                  <Input aria-label="" value={'LA26020945959594'} readOnly variant="info" />
+                  <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                 </FormCell>
                 <FormCell title={'설계별명'}>
                   <Input

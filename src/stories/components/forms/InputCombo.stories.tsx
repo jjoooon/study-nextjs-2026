@@ -135,9 +135,9 @@ const [value, setValue] = useState('');
   },
   args: {
     options: [
-      { value: 'LA25094848895', label: 'LA25094848895 (활성)' },
-      { value: 'LA24094848896', label: 'LA24094848896 (해지)' },
-      { value: 'LA23094848897', label: 'LA23094848897 (실효)' },
+      { value: 'LA25094848895', label: <td>LA25094848895 (활성)</td> },
+      { value: 'LA24094848896', label: <td>LA24094848896 (해지)</td> },
+      { value: 'LA23094848897', label: <td>LA23094848897 (실효)</td> },
     ],
     value: '',
     placeholder: '증권번호를 입력하세요',

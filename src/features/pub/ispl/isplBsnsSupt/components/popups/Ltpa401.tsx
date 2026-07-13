@@ -4,6 +4,9 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -17,9 +20,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 const Ltpa401 = () => {
   return (
@@ -41,7 +41,7 @@ const Ltpa401 = () => {
             <FormTable variant={'head'} lineTop={false}>
               <FormRow>
                 <FormCell title={'설계접수번호'}>
-                  <Input aria-label="" value={'LA260209313558'} readOnly variant="info" />
+                  <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>

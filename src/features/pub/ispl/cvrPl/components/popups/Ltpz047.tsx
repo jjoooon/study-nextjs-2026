@@ -5,6 +5,8 @@
 
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { EssentialIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -19,8 +21,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 
 const Ltpz047 = () => {
   const [form, setFormField] = useFormFields({
@@ -53,7 +53,7 @@ const Ltpz047 = () => {
                 <FormRow>
                   {/* 2026-05-27 variant 추가 */}
                   <FormCell title={'설계번호'} tdClassName="grid grid-cols-[auto_1fr] items-center gap-1 w-full">
-                    <Input aria-label="" variant="info" width={130} value={'LA26020945959594'} readOnly />
+                    <Input aria-label="" variant="info" width={130} value={'LA123456789012'} readOnly />
                     <Input aria-label="" variant="info" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
                   </FormCell>
                 </FormRow>

@@ -12,7 +12,7 @@ export default {
 export const Default = () => {
   return (
     <LayoutDoc>
-      <Ltpz005 />
+      <Ltpz005 open={true} />
     </LayoutDoc>
   );
 };

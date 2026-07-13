@@ -13,9 +13,9 @@ const DummyList = [
   { fix: true, name: '실손정액조회', link: '/login' },
   { fix: false, name: '다른상품설계', link: '/login' },
   { fix: false, name: '동일상품복사', link: '/login' },
-  { fix: false, name: '설계동의', link: '/login' },
-  { fix: false, name: '전체누적', link: '/login' },
-  { fix: false, name: '약관조회', link: '/login' },
+  // { fix: false, name: '설계동의', link: '/login' },
+  // { fix: false, name: '전체누적', link: '/login' },
+  // { fix: false, name: '약관조회', link: '/login' },
 ];
 
 export function QuickLinks() {
@@ -43,7 +43,12 @@ export function QuickLinks() {
             </Link>
           </Button>
         ))}
-        <Button variant="outlined" color={'gray-light'} size={'sm'} className="w-full">
+        <Button
+          variant="outlined"
+          color={'gray-light'}
+          size={'sm'}
+          className={`${DummyList.length % 2 === 0 ? 'col-span-2' : 'w-full'}`}
+        >
           전체보기
           <AddIcon color="var(--color-gray-50)" size={12} />
         </Button>

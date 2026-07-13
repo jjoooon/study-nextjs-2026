@@ -5,8 +5,10 @@
 
 import { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { Grow, Typo, Grid } from '@atoms';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { Grow, Typo, Grid } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -18,8 +20,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {

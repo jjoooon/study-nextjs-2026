@@ -8,9 +8,12 @@
 import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
-import { FileExportIcon } from '@icons'; // 2026-05-26 추가
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { FileExportIcon } from '@icons'; // 2026-05-26 추가
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -24,9 +27,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -93,7 +93,7 @@ const Ltpz101 = () => {
             <FormTable variant={'head'} lineTop={false} caption="설계번호">
               <FormRow>
                 <FormCell title={'설계번호'}>
-                  <Input readOnly value={'LA2608902384509'} width={'quoteNo'} />
+                  <Input readOnly value={'LA123456789012'} width={'quoteNo'} />
                   -
                   <Input aria-label="" width={26} value={'1'} readOnly />
                 </FormCell>

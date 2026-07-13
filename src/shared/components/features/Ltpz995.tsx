@@ -14,6 +14,7 @@ import { APPLICATION_TYPES, IMAGE_TYPES, TEXT_TYPES, type MimeType } from '@/sha
 import { Ltpz995Result, UploadFileItem } from '@/shared/types/fileTypes';
 import log from '@/shared/utils/logger';
 import { Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -25,7 +26,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import 'filepond/dist/filepond.min.css';
 
 // Register FilePond plugins
@@ -33,7 +33,7 @@ registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
 
 const logger = log.getLogger('FileUploader');
 
-export interface Ltpz995Props {
+interface Ltpz995Props {
   files?: UploadFileItem[];
   onOpenChange?: (open: boolean) => void;
   /** Promise resolve 함수 (결과 반환) */
@@ -215,7 +215,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
             instantUpload={false}
             server={{
               process: {
-                url: `${publicConfig.apiUrl}/ltp/file/uploadFiles`,
+                url: `${publicConfig.apiUrl}/ltp/file/uploads`,
                 method: 'POST',
               },
             }}

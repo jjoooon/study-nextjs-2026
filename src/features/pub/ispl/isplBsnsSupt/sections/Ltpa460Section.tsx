@@ -7,17 +7,13 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
-import { Grid, Grow, Gcol, Typo } from '@atoms';
-import { ResetIcon, FileImportIcon, SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   useAgGridInfiniteAppend,
   createTooltipValueGetter,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Button } from '@uiux/Button';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -25,8 +21,12 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { ResetIcon, FileImportIcon, SearchIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
+import { Button } from '@uiux/Button';
+import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import '@/shared/lib/agGridPub';
 
@@ -87,76 +87,6 @@ const DummyData: DummyDataType[] = [
     field09: 'Data',
     field10: '항목명6',
     field11: '항목명7',
-  },
-  {
-    id: 4,
-    field01: 5,
-    field02: '로그구분1',
-    field03: 'Data',
-    field04: '2026-03-01',
-    field05: 'Data',
-    field06: 'Data',
-    field07: 'Data',
-    field08: 'Data',
-    field09: 'Data',
-    field10: '항목명6',
-    field11: '항목명7',
-  },
-  {
-    id: 5,
-    field01: 4,
-    field02: '로그구분1',
-    field03: 'Data',
-    field04: '2026-03-01',
-    field05: 'Data',
-    field06: 'Data',
-    field07: 'Data',
-    field08: 'Data',
-    field09: 'Data',
-    field10: '항목명6',
-    field11: '항목명7',
-  },
-  {
-    id: 6,
-    field01: 3,
-    field02: '로그구분1',
-    field03: 'Data',
-    field04: '2026-03-01',
-    field05: 'Data',
-    field06: 'Data',
-    field07: 'Data',
-    field08: 'Data',
-    field09: 'Data',
-    field10: '항목명6',
-    field11: '항목명7',
-  },
-  {
-    id: 7,
-    field01: 2,
-    field02: '로그구분1',
-    field03: 'Data',
-    field04: '2026-03-01',
-    field05: 'Data',
-    field06: 'Data',
-    field07: 'Data',
-    field08: 'Data',
-    field09: 'Data',
-    field10: '항목명6',
-    field11: '항목명7',
-  },
-  {
-    id: 8,
-    field01: 1,
-    field02: '로그구분1',
-    field03: 'Data',
-    field04: '2026-03-01',
-    field05: 'Data',
-    field06: 'Data',
-    field07: 'Data',
-    field08: 'Data',
-    field09: 'Data',
-    field10: 'Data',
-    field11: 'Data',
   },
 ];
 
@@ -368,7 +298,7 @@ export default function Ltpa460Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr_auto] h-full w-full" gap={3}>
+          <Grid className="grid-rows-[auto_1fr] h-full w-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}

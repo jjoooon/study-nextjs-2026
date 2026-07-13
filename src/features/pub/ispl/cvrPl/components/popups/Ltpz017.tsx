@@ -4,17 +4,20 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import type { CellValueChangedEvent, ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
   createTooltipValueGetter,
   useDynamicColumnWidths,
 } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -27,9 +30,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 type DummyDataType = {
   id: number;
@@ -65,15 +65,19 @@ const DummyData: DummyDataType[] = [
     registrationDate: '2026-03-22',
     target: true,
   },
+  {
+    id: 4,
+    isCheck: false,
+    planName: '',
+    myPlanName: '',
+    registrationDate: '',
+    target: false,
+  },
 ];
 
 const Ltpz017 = () => {
   // 검색버튼 여부에 따른 셀 렌더러
-  const attributeRenderer = (params: ICellRendererParams<DummyDataType>) => {
-    if (!params.value) {
-      return null;
-    }
-
+  const attributeRenderer = (_params: ICellRendererParams<DummyDataType>) => {
     return (
       <div className="flex h-full w-full flex-wrap items-center justify-center gap-1">
         <Button only={'icon'} variant={'none'} size={'sm'}>
@@ -81,6 +85,29 @@ const Ltpz017 = () => {
         </Button>
       </div>
     );
+  };
+
+  // 나만의플랜명 상시 인풋 노출 렌더러
+  const planNameInputRenderer = (params: ICellRendererParams<DummyDataType>) => {
+    const value = params.value || '';
+    const rowIndex = params.node.rowIndex;
+    const isLastRow = rowIndex !== null && params.api.getDisplayedRowCount() - 1 === rowIndex;
+
+    if (isLastRow || !value.trim()) {
+      return (
+        <div className="w-full h-full flex items-center justify-stretch py-[0.1rem]">
+          <input
+            type="text"
+            className="w-full h-[2.6rem] px-2.5 border border-[var(--color-gray-30)] rounded-[0.4rem] bg-white text-[1.2rem] pointer-events-none"
+            value={value}
+            placeholder="나만의플랜명 입력"
+            readOnly
+          />
+        </div>
+      );
+    }
+
+    return <span className="px-2 text-[1.2rem]">{value}</span>;
   };
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -103,6 +130,8 @@ const Ltpz017 = () => {
         field: 'myPlanName',
         flex: 1,
         minWidth: attributeColumnWidth(110),
+        editable: true,
+        cellRenderer: planNameInputRenderer,
       },
       {
         headerName: '등록일자',
@@ -125,10 +154,33 @@ const Ltpz017 = () => {
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
 
-  const onCellValueChanged = React.useMemo(
-    () => createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id'),
-    [setRowData, setErrorRows]
-  );
+  const onCellValueChanged = React.useMemo(() => {
+    const baseHandler = createCellValueChangedHandler<DummyDataType, number>('isCheck', setRowData, setErrorRows, 'id');
+    return (event: CellValueChangedEvent<DummyDataType>) => {
+      baseHandler(event);
+
+      setRowData((prev) => {
+        if (prev.length === 0) return prev;
+        const lastRow = prev[prev.length - 1];
+
+        if (lastRow && (lastRow.myPlanName?.trim() || lastRow.planName?.trim())) {
+          const nextId = Math.max(...prev.map((r) => r.id), 0) + 1;
+          return [
+            ...prev,
+            {
+              id: nextId,
+              isCheck: false,
+              planName: '',
+              myPlanName: '',
+              registrationDate: '',
+              target: false,
+            },
+          ];
+        }
+        return prev;
+      });
+    };
+  }, [setRowData, setErrorRows]);
 
   return (
     <Dialog open>
@@ -166,14 +218,16 @@ const Ltpz017 = () => {
           <TableFold>
             <TableFoldHead title="플랜등록사항" />
             {/* 2026-05-28 */}
-            <TableFoldBody className="gap-2">
+            <TableFoldBody className="gap-2 grid grid-rows-[auto_1fr]">
               <Gcol className="w-full" placement="ss" variant="box-detail">
                 <Typo icon="detail" variant="body-sm">
-                  적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 전체 노출)
+                  적용대상 설정 시 지정한 취급직원만 플랜이 노출됩니다.(미설정시 전체 노출)
                 </Typo>
-                {/* <Typo icon="detail" variant="body-sm">적용대상 설정 시 지정한 취급지원만 플랜이 노출됩니다.(미설정시 미노출)</Typo> */}
+                <Typo icon="detail" variant="body-sm">
+                  적용대상 설정 시 지정한 취급직원만 플랜이 노출됩니다.(미설정시 미노출)
+                </Typo>
               </Gcol>
-              <div className="ag-theme-alpine min-h-[18.4rem]">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -189,7 +243,7 @@ const Ltpz017 = () => {
                   }}
                   selectionColumnDef={{
                     headerName: '선택',
-                    width: 30,
+                    width: attributeColumnWidth(30),
                   }}
                   onGridReady={(params) => {
                     params.api.forEachNode((node) => {
@@ -209,6 +263,11 @@ const Ltpz017 = () => {
 
         <DialogFooter>
           <DialogFooterArea>
+            <Grow>
+              <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                나만의설계종복사
+              </Button>
+            </Grow>
             <Grow>
               <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 삭제

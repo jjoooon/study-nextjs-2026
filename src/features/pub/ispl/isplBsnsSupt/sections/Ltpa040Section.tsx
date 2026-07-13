@@ -6,11 +6,11 @@ import { LayoutFoot, LayoutHead } from '@/shared/components/layout';
 import { LayoutTemplate } from '@/shared/components/layout/LayoutTemplate';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow } from '@atoms';
-import { Button } from '@uiux/Button';
 import { BottomBar } from '@common/BottomBar';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
+import { Button } from '@uiux/Button';
 import Ltpa04001 from '../components/Ltpa04001';
 import Ltpa04002 from '../components/Ltpa04002';
 

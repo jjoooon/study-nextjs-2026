@@ -16,9 +16,13 @@ import type {
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
-import { Grow, Typo, Gcol } from '@atoms'; // 2026-05-27 Grid 삭제
-import { SearchIcon } from '@icons';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { Grow, Typo, Gcol } from '@atoms'; // 2026-05-27 Grid 삭제
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
+import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -31,10 +35,6 @@ import {
   DialogFooterArea,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
-import { createExpiryCellRenderer } from '@grid/CellRenderers';
 
 type DummyDataType1 = {
   id: number;
@@ -481,7 +481,7 @@ const Ltpz061 = () => {
                   title={'증권번호'}
                   tdClassName="grid grid-cols-[auto_auto_auto_1fr] items-center gap-1 w-full"
                 >
-                  <Input aria-label="" value={'LA2602093135558'} readOnly variant="info" />
+                  <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                   <Input aria-label="" value={'한화 더 건강한 한아름종합보험 2601'} readOnly variant="info" />
                 </FormCell>
               </FormRow>

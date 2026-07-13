@@ -8,8 +8,6 @@ import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
-import { ResetIcon, SearchIcon } from '@icons';
 import {
   AgGridEmptyComponent,
   createTooltipValueGetter,
@@ -17,6 +15,12 @@ import {
   useAgGridInfiniteAppend,
   useDynamicColumnWidths,
 } from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
+import { DatePickerInput } from '@common/DatePicker';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableMore } from '@common/TablePagination';
+import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -30,10 +34,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { DatePickerInput } from '@common/DatePicker';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableMore } from '@common/TablePagination';
 
 // dummy data
 type DummyDataType = {
@@ -324,7 +324,7 @@ const Ltpz038 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
-            <FormTable variant={'none'} lineTop={false} cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}>
+            <FormTable variant={'head'} lineTop={false} cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}>
               <FormRow>
                 {/* 2026-05-27 설계번호, 차량번호 선택시 input만 노출로 수정 */}
                 <FormCell
@@ -387,19 +387,7 @@ const Ltpz038 = () => {
                   <Input aria-label="" value={'신부산GA지점'} readOnly />
                 </FormCell>
                 <FormCell title={'설계일자'}>
-                  <DatePickerInput
-                    errorMsg="입력은 필수입니다."
-                    errorPs="bl"
-                    mode="range"
-                    onChange={() => {}}
-                    rangeValue={{
-                      from: '2026-03-01',
-                      to: '2026-03-07',
-                    }}
-                    required
-                    size="lg"
-                    width="sm"
-                  />
+                  <DatePickerInput mode="range" autoRangeDays={7} onChange={() => {}} required size="lg" width="sm" />
                 </FormCell>
               </FormRow>
             </FormTable>

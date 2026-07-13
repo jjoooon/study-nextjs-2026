@@ -6,9 +6,12 @@ import '@/shared/lib/agGridPub';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import type { CellDoubleClickedEvent, ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { Grid, Grow, Typo } from '@atoms';
-import { ResetIcon, SearchIcon } from '@icons';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { Grid, Grow, Typo } from '@atoms';
+import { DialogBottomInfo } from '@common/DialogBottomInfo';
+import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import {
@@ -22,9 +25,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -199,7 +199,7 @@ const Ltpz054 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="xl">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -329,12 +329,15 @@ const Ltpz054 = () => {
                 자필비교
               </Button>
               <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                팩스&middot;홈페이지 유입문서등록
+              </Button>
+              <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 알림톡발송(홈페이지 문서 등록)
               </Button>
             </Grow>
             <Grow>
-              <Input width={'quoteNo'} value={'LA260204310632'} />
-              <Input width={'quoteNo'} value="" />
+              <Input width={154} value={'1234567890123456789'} />
+              <Input width={154} value="" />
               <Button variant={'outlined'} size={'xl'} color={'gray'}>
                 수정
               </Button>

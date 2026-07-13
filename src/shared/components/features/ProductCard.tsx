@@ -18,11 +18,11 @@
 
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Divider, Gcol, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { CircleCheckIcon, FlagCheckDoutoneIcon, SpeechBubbleIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-import { BulletList, BulletListItem } from '@common/BulletList';
 
 // ─── Types ──────────────────────────────────────────────────────
 
