@@ -38,6 +38,7 @@ const DATA_TABS_3 = [
     age: '2',
     gender: '남',
     value: 'tab2',
+    disabled: true,
     error: true,
     info: [
       '추가정보1',
