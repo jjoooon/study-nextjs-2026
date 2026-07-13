@@ -3,11 +3,12 @@
  */
 'use client';
 
+// 260713 : @uiux/NativeSelect 삭제, useDynamicColumnWidths 추가
 import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
 import * as React from 'react';
-import { createTooltipValueGetter } from '@aggrid';
+import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo, ConTit, ConTitName, Grid } from '@atoms';
 
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -24,7 +25,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 import '@/shared/lib/agGridPub';
 
@@ -32,6 +32,7 @@ import '@/shared/lib/agGridPub';
 type DummyDataType = {
   id: number;
   field01: string;
+  field02: string; // 260713 : field02 추가
 };
 type DummyData2Type = {
   id: number;
@@ -46,16 +47,19 @@ type DummyData3Type = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
-    field01:
+    field01: '(프리미엄올인원플랜)(1.7.8.9형)(15-80세)(프리미엄올인원플랜)(1.7.8.9형)(15-80세)',
+    field02:
       '3대진단 3대진단3대진단3대진단3대진단3대진단3대진단3대진단3대진단3대진단3대진단3대진단3대진단3대진단3대진단3대진단3대진단3대진단',
   },
   {
     id: 2,
-    field01: '하이클래스',
+    field01: '(프리미엄올인원플랜)(1.7.8.9형)(15-80세)',
+    field02: '하이클래스',
   },
   {
     id: 3,
-    field01: '65세남성용',
+    field01: '(프리미엄올인원플랜)(1.7.8.9형)(15-80세)',
+    field02: '65세남성용',
   },
 ];
 
@@ -126,17 +130,27 @@ const Ltpz070 = () => {
   const [rowData2] = React.useState<DummyData2Type[]>(DummyData2);
   const [rowData3] = React.useState<DummyData3Type[]>(DummyData3);
 
+  const { attributeColumnWidth } = useDynamicColumnWidths(); // 260713 : attributeColumnWidth 추가
+
   // AgGrid Column
+  // 260713 : 회사플랜 추가, 텍스트 수정, attributeColumnWidth 추가
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
     () => [
       {
-        headerName: '나만의설계',
+        headerName: '회사플랜',
         field: 'field01',
-        flex: 1,
+        flex: 2,
+        minWidth: attributeColumnWidth(210),
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
       },
+      {
+        headerName: '나만의설계',
+        field: 'field02',
+        flex: 1,
+        tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
+      },
     ],
-    []
+    [attributeColumnWidth]
   );
 
   const columnDefs2: (ColDef<DummyData2Type> | ColGroupDef<DummyData2Type>)[] = useMemo(
@@ -193,37 +207,13 @@ const Ltpz070 = () => {
               <ConTit>
                 <ConTitName>현재</ConTitName>
               </ConTit>
+              {/* 260713 - FormRow 플랜 삭제 */}
               <FormTable caption="계약자 관련 정보 입력하세요." cols={['w-[6rem]', 'w-[auto]']}>
                 <FormRow>
                   <FormCell title="상품명">{'한화 3N5 더간편건강보험(세만기형) 무배당2604'}</FormCell>
                 </FormRow>
                 <FormRow>
                   <FormCell title="종">{'(2종) 납입후50%해약환급금지급형,납입면제 미운형.3N5 간편고지형'}</FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title="플랜">
-                    <NativeSelect
-                      variant="default"
-                      size="lg"
-                      width="full"
-                      required={false}
-                      readOnly={false}
-                      error={false}
-                      errorMsg="선택은 필수입니다."
-                      errorPs="bl"
-                    >
-                      {[
-                        { value: 1, label: ' (2종) 납입후50%해약환급금지급형,납입면제 미운형.3N5 간편고지형' },
-                        { value: 2, label: ' (3종) 납입후50%해약환급금지급형,납입면제 미운형.3N5 간편고지형' },
-                        { value: 3, label: ' (4종) 납입후50%해약환급금지급형,납입면제 미운형.3N5 간편고지형' },
-                        { value: 4, label: ' (5종) 납입후50%해약환급금지급형,납입면제 미운형.3N5 간편고지형' },
-                      ].map((item) => (
-                        <NativeSelectOption key={item.value} value={item.value}>
-                          {item.label}
-                        </NativeSelectOption>
-                      ))}
-                    </NativeSelect>
-                  </FormCell>
                 </FormRow>
               </FormTable>
               <div className="ag-theme-alpine radio-selection inner-scroll" data-row={rowData.length}>
@@ -234,7 +224,7 @@ const Ltpz070 = () => {
                   singleClickEdit={false}
                   defaultColDef={{
                     sortable: true,
-                    resizable: false,
+                    resizable: true, // 260713 : true로 변경
                   }}
                   rowSelection={{
                     mode: 'singleRow',
@@ -297,6 +287,18 @@ const Ltpz070 = () => {
                   tooltipShowDelay={0}
                 />
               </div>
+              {/* 260713 - 안내문구 전체 추가 */}
+              <Gcol placement="ss" variant="box-info">
+                <Typo icon="info" variant="body-sm" className="text-[var(--color-danger-50)]">
+                  안내문구는 추후 확정 예정입니다.
+                </Typo>
+                <Typo icon="info" variant="body-sm">
+                  복사대상의 &#39;종&#39;에 존재하는 담보만 복사합니다.
+                </Typo>
+                <Typo icon="info" variant="body-sm">
+                  추가고지형 플랜 존재하는 경우, 대표플랜으로 복사합니다.
+                </Typo>
+              </Gcol>
             </Gcol>
           </Grid>
         </DialogSection>
