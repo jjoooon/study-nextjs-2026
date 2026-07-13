@@ -141,7 +141,7 @@ const expectedUwExclusionCoverageData: ExpectedUw03Row[] = [
 const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   {
     id: 1,
-    isChecked: true,
+    isChecked: false,
     type: '인수가능',
     title: '한화 시그니처 여성 간편건강보험4.0한화 시그니처 여성 간편건강보험4.0',
     plan: ['2종 · 납입면제 강화형', '납입후 50% 해약환급금지급형'],
@@ -154,7 +154,7 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   },
   {
     id: 2,
-    isChecked: true,
+    isChecked: false,
     type: '인수가능',
     title: '한화 시그니처 여성 간편건강보험4.0',
     plan: ['2종 · 납입면제 강화형', '납입후 50% 해약환급금지급형'],
@@ -167,7 +167,7 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   },
   {
     id: 3,
-    isChecked: true,
+    isChecked: false,
     type: '인수가능',
     title: '한화 시그니처 여성 간편건강보험4.0',
     plan: ['2종 · 납입면제 강화형', '납입후 50% 해약환급금지급형'],
@@ -180,7 +180,11 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   },
 ];
 
-const Ltpz00504 = () => {
+interface Ltpz00504Props {
+  onClose?: () => void;
+}
+
+const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [aiReasonOpen, setAiReasonOpen] = React.useState(false);
 
@@ -253,254 +257,292 @@ const Ltpz00504 = () => {
   const [expectedUwPremiumSurchargeRowData] = React.useState<ExpectedUwSingleRow[]>(expectedUwPremiumSurchargeData);
   const [expectedUwExclusionCoverageRowData] = React.useState<ExpectedUw03Row[]>(expectedUwExclusionCoverageData);
 
+  // AI 추천 설계안 체크 여부 상태 관리
+  const [recommendData, setRecommendData] = React.useState<ExpectedUwRecommendItem[]>(expectedUwRecommendData);
+
+  // 체크된 수 계산
+  const checkedCount = React.useMemo(() => {
+    return recommendData.filter((item) => item.isChecked).length;
+  }, [recommendData]);
+
   return (
-    <>
-      {/* M2. 디자인 변경으로 수정 */}
-      <Gcol className="w-full" gap={3}>
-        <Grow
-          variant={'box-round'}
-          className="w-full bg-[#374151] px-[2rem] py-[1.6rem] flex items-center gap-[2.4rem]"
-        >
-          <div className="w-[18rem] flex flex-col gap-1">
-            <Typo tag={'p'} variant={'body-lg'} className="text-white">
-              알릴사항
-            </Typo>
-            <Typo tag={'strong'} variant={'heading-lg'} className="text-[#FF5C2E] text-right">
-              미입력
-            </Typo>
-          </div>
-
-          <Divider className="h-[4rem] bg-[gray] opacity-20" />
-
-          <div className="w-[18rem] flex flex-col gap-1">
-            <Typo tag={'p'} variant={'body-lg'} className="text-white">
-              고지
-            </Typo>
-            <Typo tag={'strong'} variant={'heading-lg'} className="text-[#FF5C2E] text-right">
-              고지필요
-            </Typo>
-          </div>
-
-          <Divider className="h-[4rem] bg-[gray] opacity-20" />
-
-          <Gcol className="flex-1" gap={1}>
-            <Typo tag={'p'} variant={'body-lg'} className="w-full text-white justify-start">
-              담보별 상세
-            </Typo>
-            <div className="w-full flex items-center justify-end">
-              <Grow className="flex gap-1 items-center">
-                <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
-                  거절 · 감액 · 연기
+    <Grid className="w-full grid-rows-[1fr_auto] gap-[2rem]">
+      <div
+        className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc[+
+    100%+1rem]] h-full rounded-tr-[1rem] overflow-hidden rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]"
+      >
+        <div className="overflow-x-hidden overflow-y-auto w-full h-full">
+          <Gcol className="w-full" gap={3}>
+            <Grow
+              variant={'box-round'}
+              className="w-full bg-[#374151] px-[2rem] py-[1.6rem] flex items-center gap-[2.4rem]"
+            >
+              <div className="w-[18rem] flex flex-col gap-1">
+                <Typo tag={'p'} variant={'body-lg'} className="text-white">
+                  알릴사항
                 </Typo>
-                <Typo tag={'strong'} variant={'heading-lg'} className="text-[#FF5C2E]">
-                  15개
+                <Typo tag={'strong'} variant={'heading-lg'} className="text-[#FF5C2E] text-right">
+                  미입력
                 </Typo>
-              </Grow>
-
-              <Divider className="mx-[1.2rem] h-[1.6rem] bg-[gray] opacity-20" />
-
-              <div className="flex gap-[1.2rem]">
-                <div className="flex gap-1 items-end">
-                  <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
-                    서류
-                  </Typo>
-                  <Typo tag={'strong'} variant={'body-sm'} className="text-white">
-                    11개
-                  </Typo>
-                </div>
-                <div className="flex gap-1 items-end">
-                  <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
-                    진단/적부
-                  </Typo>
-                  <Typo tag={'strong'} variant={'body-sm'} className="text-white">
-                    7개
-                  </Typo>
-                </div>
-                <div className="flex gap-1 items-end">
-                  <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
-                    할증
-                  </Typo>
-                  <Typo tag={'strong'} variant={'body-sm'} className="text-white">
-                    10개
-                  </Typo>
-                </div>
-                <div className="flex gap-1 items-end">
-                  <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
-                    부담보
-                  </Typo>
-                  <Typo tag={'strong'} variant={'body-sm'} className="text-white">
-                    12개
-                  </Typo>
-                </div>
-                <div className="flex gap-1 items-end">
-                  <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
-                    인수
-                  </Typo>
-                  <Typo tag={'strong'} variant={'body-sm'} className="text-white">
-                    5개
-                  </Typo>
-                </div>
               </div>
-            </div>
-          </Gcol>
-        </Grow>
-        <Gcol className="w-full" placement="ss">
-          <Grow className="w-full" gap={5}>
-            <TableFold>
-              <TableFoldHead
-                title="제한담보"
-                className="w-full gap-1 flex [&>[role='button']]:shrink-0! *:data-[group='row']:w-full!"
-              >
-                <Grow placement="bwc" className="w-full">
-                  <Badge color="primary">15개</Badge>
-                  <Button size={'md'}>설계반영</Button>
-                </Grow>
-              </TableFoldHead>
-              <TableFoldBody>
-                {/* 제한담보 */}
-                <div
-                  className="ag-theme-alpine"
-                  style={{
-                    height: expectedUwLimitedCoverageRowData.length >= 4 ? '15rem' : 'auto',
-                    overflow: expectedUwLimitedCoverageRowData.length >= 4 ? 'hidden' : 'visible',
-                  }}
-                >
-                  <AgGridReact<ExpectedUwAmountRow>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={expectedUwLimitedCoverageRowData}
-                    columnDefs={expectedUwAmountColumnDefs}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                      suppressMovable: true,
-                      cellClass: 'flex! items-center!',
-                    }}
-                    headerHeight={28}
-                    rowHeight={30}
-                    domLayout={expectedUwLimitedCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                    animateRows={false}
-                  />
+
+              <Divider className="h-[4rem] bg-[gray] opacity-20" />
+
+              <div className="w-[18rem] flex flex-col gap-1">
+                <Typo tag={'p'} variant={'body-lg'} className="text-white">
+                  고지
+                </Typo>
+                <Typo tag={'strong'} variant={'heading-lg'} className="text-[#FF5C2E] text-right">
+                  고지필요
+                </Typo>
+              </div>
+
+              <Divider className="h-[4rem] bg-[gray] opacity-20" />
+
+              <Gcol className="flex-1" gap={1}>
+                <Typo tag={'p'} variant={'body-lg'} className="w-full text-white justify-start">
+                  담보별 상세
+                </Typo>
+                <div className="w-full flex items-center justify-end">
+                  <Grow className="flex gap-1 items-center">
+                    <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                      거절 · 감액 · 연기
+                    </Typo>
+                    <Typo tag={'strong'} variant={'heading-lg'} className="text-[#FF5C2E]">
+                      15개
+                    </Typo>
+                  </Grow>
+
+                  <Divider className="mx-[1.2rem] h-[1.6rem] bg-[gray] opacity-20" />
+
+                  <div className="flex gap-[1.2rem]">
+                    <div className="flex gap-1 items-end">
+                      <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                        서류
+                      </Typo>
+                      <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                        11개
+                      </Typo>
+                    </div>
+                    <div className="flex gap-1 items-end">
+                      <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                        진단/적부
+                      </Typo>
+                      <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                        7개
+                      </Typo>
+                    </div>
+                    <div className="flex gap-1 items-end">
+                      <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                        할증
+                      </Typo>
+                      <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                        10개
+                      </Typo>
+                    </div>
+                    <div className="flex gap-1 items-end">
+                      <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                        부담보
+                      </Typo>
+                      <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                        12개
+                      </Typo>
+                    </div>
+                    <div className="flex gap-1 items-end">
+                      <Typo tag={'span'} variant={'body-xs'} className="text-[#D8DBE0]">
+                        인수
+                      </Typo>
+                      <Typo tag={'strong'} variant={'body-sm'} className="text-white">
+                        5개
+                      </Typo>
+                    </div>
+                  </div>
                 </div>
-              </TableFoldBody>
-            </TableFold>
-            <TableFold>
-              <TableFoldHead title="보험료 할증" className="justify-start">
-                <Badge color="primary">15개</Badge>
-              </TableFoldHead>
-              <TableFoldBody>
-                {/* 보험료 할증 */}
-                <div
-                  className="ag-theme-alpine"
-                  style={{
-                    height: expectedUwPremiumSurchargeRowData.length >= 4 ? '15rem' : 'auto',
-                    overflow: expectedUwPremiumSurchargeRowData.length >= 4 ? 'hidden' : 'visible',
-                  }}
-                >
-                  <AgGridReact<ExpectedUwSingleRow>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={expectedUwPremiumSurchargeRowData}
-                    columnDefs={expectedUwSingleColumnDefs}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                      suppressMovable: true,
-                      cellClass: 'flex! items-center!',
-                    }}
-                    headerHeight={28}
-                    rowHeight={30}
-                    domLayout={expectedUwPremiumSurchargeRowData.length >= 4 ? 'normal' : 'autoHeight'}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                    animateRows={false}
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>
-            <TableFold>
-              <TableFoldHead title="부 담보(부위/질병)" className="justify-start">
-                <Badge color="primary">15개</Badge>
-              </TableFoldHead>
-              <TableFoldBody>
-                {/* 부 담보(부위/질병) */}
-                <div
-                  className="ag-theme-alpine"
-                  style={{
-                    height: expectedUwExclusionCoverageRowData.length >= 4 ? '15rem' : 'auto',
-                    overflow: expectedUwExclusionCoverageRowData.length >= 4 ? 'hidden' : 'visible',
-                  }}
-                >
-                  <AgGridReact<ExpectedUw03Row>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={expectedUwExclusionCoverageRowData}
-                    columnDefs={expectedUw03ColumnDefs}
-                    defaultColDef={{
-                      sortable: true,
-                      resizable: true,
-                      suppressMovable: true,
-                      cellClass: 'flex! items-center!',
-                    }}
-                    headerHeight={28}
-                    rowHeight={30}
-                    domLayout={expectedUwExclusionCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                    animateRows={false}
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>
-          </Grow>
-          <Grow className="w-full">
-            <Gcol>
-              <Gcol className="w-full">
-                <Gcol variant={'box-info'} placement={'ss'} className="w-full">
-                  <Typo variant={'body-sm'} icon={'info'}>
-                    <b>설계반영 시 유의사항</b>
-                  </Typo>
-                  <BulletList>
-                    <BulletListItem size={'sm'} type="dotBig">
-                      <b>설계반영 클릭시 자동 처리됩니다. 이외의 사항은 심상요청이후 재확인바랍니다.</b>
-                    </BulletListItem>
-                    <BulletListItem size={'sm'} type="dotBig">
-                      고지필요대상 : 알릴 사항 자동입력
-                    </BulletListItem>
-                    <BulletListItem size={'sm'} type="dotBig">
-                      제한담보 : 일괄조정 & 연관담보 동시 조정
-                    </BulletListItem>
-                  </BulletList>
-                </Gcol>
               </Gcol>
+            </Grow>
+            <Gcol className="w-full" placement="ss">
+              <Grow className="w-full" gap={5}>
+                <TableFold>
+                  <TableFoldHead
+                    title="제한담보"
+                    className="w-full gap-1 flex [&>[role='button']]:shrink-0! *:data-[group='row']:w-full!"
+                  >
+                    <Grow placement="bwc" className="w-full">
+                      <Badge color="primary">15개</Badge>
+                      <Button size={'md'}>설계반영</Button>
+                    </Grow>
+                  </TableFoldHead>
+                  <TableFoldBody>
+                    {/* 제한담보 */}
+                    <div
+                      className="ag-theme-alpine"
+                      style={{
+                        height: expectedUwLimitedCoverageRowData.length >= 4 ? '15rem' : 'auto',
+                        overflow: expectedUwLimitedCoverageRowData.length >= 4 ? 'hidden' : 'visible',
+                      }}
+                    >
+                      <AgGridReact<ExpectedUwAmountRow>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={expectedUwLimitedCoverageRowData}
+                        columnDefs={expectedUwAmountColumnDefs}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                          suppressMovable: true,
+                          cellClass: 'flex! items-center!',
+                        }}
+                        headerHeight={28}
+                        rowHeight={30}
+                        domLayout={expectedUwLimitedCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        animateRows={false}
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+                <TableFold>
+                  <TableFoldHead title="보험료 할증" className="justify-start">
+                    <Badge color="primary">15개</Badge>
+                  </TableFoldHead>
+                  <TableFoldBody>
+                    {/* 보험료 할증 */}
+                    <div
+                      className="ag-theme-alpine"
+                      style={{
+                        height: expectedUwPremiumSurchargeRowData.length >= 4 ? '15rem' : 'auto',
+                        overflow: expectedUwPremiumSurchargeRowData.length >= 4 ? 'hidden' : 'visible',
+                      }}
+                    >
+                      <AgGridReact<ExpectedUwSingleRow>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={expectedUwPremiumSurchargeRowData}
+                        columnDefs={expectedUwSingleColumnDefs}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                          suppressMovable: true,
+                          cellClass: 'flex! items-center!',
+                        }}
+                        headerHeight={28}
+                        rowHeight={30}
+                        domLayout={expectedUwPremiumSurchargeRowData.length >= 4 ? 'normal' : 'autoHeight'}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        animateRows={false}
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+                <TableFold>
+                  <TableFoldHead title="부 담보(부위/질병)" className="justify-start">
+                    <Badge color="primary">15개</Badge>
+                  </TableFoldHead>
+                  <TableFoldBody>
+                    {/* 부 담보(부위/질병) */}
+                    <div
+                      className="ag-theme-alpine"
+                      style={{
+                        height: expectedUwExclusionCoverageRowData.length >= 4 ? '15rem' : 'auto',
+                        overflow: expectedUwExclusionCoverageRowData.length >= 4 ? 'hidden' : 'visible',
+                      }}
+                    >
+                      <AgGridReact<ExpectedUw03Row>
+                        getRowId={(params) => String(params.data.id)}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        rowData={expectedUwExclusionCoverageRowData}
+                        columnDefs={expectedUw03ColumnDefs}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                          suppressMovable: true,
+                          cellClass: 'flex! items-center!',
+                        }}
+                        headerHeight={28}
+                        rowHeight={30}
+                        domLayout={expectedUwExclusionCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        animateRows={false}
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+              </Grow>
+              <Grow className="w-full">
+                <Gcol>
+                  <Gcol className="w-full">
+                    <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+                      <Typo variant={'body-sm'} icon={'info'}>
+                        <b>설계반영 시 유의사항</b>
+                      </Typo>
+                      <BulletList>
+                        <BulletListItem size={'sm'} type="dotBig">
+                          <b>설계반영 클릭시 자동 처리됩니다. 이외의 사항은 심상요청이후 재확인바랍니다.</b>
+                        </BulletListItem>
+                        <BulletListItem size={'sm'} type="dotBig">
+                          고지필요대상 : 알릴 사항 자동입력
+                        </BulletListItem>
+                        <BulletListItem size={'sm'} type="dotBig">
+                          제한담보 : 일괄조정 & 연관담보 동시 조정
+                        </BulletListItem>
+                      </BulletList>
+                    </Gcol>
+                  </Gcol>
+                </Gcol>
+              </Grow>
             </Gcol>
-          </Grow>
-        </Gcol>
-        <Gcol>
-          <TableFold>
-            <TableFoldHead title="대안설계"></TableFoldHead>
-            <TableFoldBody className="w-full">
-              <Grid className="w-full mb-[1rem] grid-cols-3" gap={3}>
-                {expectedUwRecommendData.map((item) => (
-                  <RecommendCard
-                    key={item.id}
-                    onAiReasonClick={() => setAiReasonOpen(true)}
-                    type={item.type}
-                    title={item.title}
-                    list={item.list}
-                    plan={item.plan}
-                    variant={'checkbox'}
-                  />
-                ))}
-              </Grid>
-            </TableFoldBody>
-          </TableFold>
-        </Gcol>
-      </Gcol>
-      <Ltpz0050401 open={aiReasonOpen} onOpenChange={setAiReasonOpen} />
-    </>
+            <Gcol>
+              <TableFold>
+                <TableFoldHead title="대안설계"></TableFoldHead>
+                <TableFoldBody className="w-full">
+                  <Grid className="w-full mb-[1rem] grid-cols-3" gap={3}>
+                    {recommendData.map((item) => (
+                      <RecommendCard
+                        key={item.id}
+                        onAiReasonClick={() => setAiReasonOpen(true)}
+                        type={item.type}
+                        title={item.title}
+                        list={item.list}
+                        plan={item.plan}
+                        variant={'checkbox'}
+                        checked={item.isChecked}
+                        onCheckedChange={(checked) => {
+                          setRecommendData((prev) =>
+                            prev.map((d) => (d.id === item.id ? { ...d, isChecked: checked } : d))
+                          );
+                        }}
+                      />
+                    ))}
+                  </Grid>
+                </TableFoldBody>
+              </TableFold>
+            </Gcol>
+          </Gcol>
+          <Ltpz0050401 open={aiReasonOpen} onOpenChange={setAiReasonOpen} />
+        </div>
+      </div>
+      <Grow className="w-full" placement="ec">
+        <Button
+          variant={'contained'}
+          size={'xl'}
+          disabled={checkedCount === 0}
+          onClick={() => {
+            onClose?.();
+            if (typeof window !== 'undefined') {
+              window.parent.postMessage({ type: 'CREATE_SCHEME2' }, '*');
+            }
+          }}
+        >
+          설계생성({checkedCount})
+        </Button>
+        <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onClose}>
+          닫기
+        </Button>
+      </Grow>
+    </Grid>
   );
 };
 

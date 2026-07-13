@@ -11,16 +11,7 @@ import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CircleCheckIcon, InfoToastIcon } from '@icons';
 import { Button } from '@uiux/Button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogFooterArea,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-} from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 
 import Ltpz00501 from './Ltpz00501';
@@ -159,82 +150,19 @@ const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Lt
             </Grid>
 
             {/* 오른쪽: 탭별 상세 내용 (탭 값에 따라 해당 컴포넌트 렌더링) */}
-            <div
-              className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc[+
-            100%+1rem]] h-full rounded-tr-[1rem] overflow-hidden rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]"
-            >
-              <div className="overflow-x-hidden overflow-y-auto w-full h-full">
-                {active === 'common' ? (
-                  <Ltpz00501 />
-                ) : active === 'accum' ? (
-                  <Ltpz00502 />
-                ) : active === 'job' ? (
-                  <Ltpz00503 />
-                ) : (
-                  <Ltpz00504 />
-                )}
-              </div>
-            </div>
+            {active === 'common' ? (
+              <Ltpz00501 onClose={() => onOpenChange?.(false)} />
+            ) : active === 'accum' ? (
+              <Ltpz00502 onClose={() => onOpenChange?.(false)} />
+            ) : active === 'job' ? (
+              <Ltpz00503 onClose={() => onOpenChange?.(false)} />
+            ) : (
+              <Ltpz00504 onClose={() => onOpenChange?.(false)} />
+            )}
           </Grid>
         </DialogSection>
 
         <DialogFooter>
-          <DialogFooterArea>
-            <Grow>
-              {/* 하단 버튼: 현재 활성화된 탭에 따라 서로 다른 버튼 구성 노출 */}
-              {active === 'common' ? (
-                <>
-                  <Button variant={'contained'} color={'gray'} size={'xl'}>
-                    재조회
-                  </Button>
-                  <Button variant={'contained'} size={'xl'}>
-                    저장
-                  </Button>
-                  <DialogClose asChild>
-                    <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                      닫기
-                    </Button>
-                  </DialogClose>
-                </>
-              ) : active === 'accum' ? (
-                <>
-                  <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                    타사정액담보해약확인서 등록
-                  </Button>
-                  <Button variant={'contained'} size={'xl'}>
-                    보험료계산(지침)
-                  </Button>
-                  <DialogClose asChild>
-                    <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                      닫기
-                    </Button>
-                  </DialogClose>
-                </>
-              ) : active === 'job' ? (
-                <>
-                  <Button variant={'contained'} size={'xl'}>
-                    재조회
-                  </Button>
-                  <DialogClose asChild>
-                    <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                      닫기
-                    </Button>
-                  </DialogClose>
-                </>
-              ) : (
-                <>
-                  <Button variant={'contained'} size={'xl'}>
-                    설계생성(0)
-                  </Button>
-                  <DialogClose asChild>
-                    <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                      닫기
-                    </Button>
-                  </DialogClose>
-                </>
-              )}
-            </Grow>
-          </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>

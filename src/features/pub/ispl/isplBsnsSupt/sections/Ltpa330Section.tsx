@@ -3,9 +3,10 @@
  */
 'use client';
 
-import type { ColDef } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { useFormatDateTime } from '@/shared/hooks/useFormatDateTime';
 import { useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
@@ -51,7 +52,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 2,
@@ -65,7 +66,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 3,
@@ -79,7 +80,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 4,
@@ -93,7 +94,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 5,
@@ -107,7 +108,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 6,
@@ -121,7 +122,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 7,
@@ -135,7 +136,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 8,
@@ -149,7 +150,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 9,
@@ -163,7 +164,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 10,
@@ -177,7 +178,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 11,
@@ -191,7 +192,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 12,
@@ -205,7 +206,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 13,
@@ -219,7 +220,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 14,
@@ -233,7 +234,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 15,
@@ -247,7 +248,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 16,
@@ -261,7 +262,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 17,
@@ -275,7 +276,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 18,
@@ -289,7 +290,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 19,
@@ -303,7 +304,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 20,
@@ -317,7 +318,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 21,
@@ -331,7 +332,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 22,
@@ -345,7 +346,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 23,
@@ -359,7 +360,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 24,
@@ -373,7 +374,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 25,
@@ -387,7 +388,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 26,
@@ -401,7 +402,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 27,
@@ -415,7 +416,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 28,
@@ -429,7 +430,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 29,
@@ -443,7 +444,7 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
   {
     id: 30,
@@ -457,12 +458,13 @@ const Ltpa330DummyData: DummyDataType[] = [
     field07: '2026-05-01',
     field08: 'TEXT',
     field09: 'TEXT',
-    field10: '2026-05-01 00:00:00',
+    field10: '2026-03-03T15:00:00.000Z',
   },
 ];
 
 export default function Ltpa330Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const { formatDateTime } = useFormatDateTime();
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -530,9 +532,12 @@ export default function Ltpa330Section() {
         field: 'field10',
         flex: 1,
         minWidth: attributeColumnWidth(170),
+        cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+          return formatDateTime(params.value);
+        },
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, formatDateTime]
   );
 
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
@@ -711,7 +716,7 @@ export default function Ltpa330Section() {
                     enableClickSelection: false,
                   }}
                   selectionColumnDef={{
-                    width: 30,
+                    width: attributeColumnWidth(30),
                     cellClass: 'text-center editable-cell',
                   }}
                   domLayout="normal"

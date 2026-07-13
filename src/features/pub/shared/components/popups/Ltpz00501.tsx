@@ -9,8 +9,7 @@ import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
-import { Divider, Gcol, Grow, Typo } from '@atoms';
-
+import { Divider, Gcol, Grow, Typo, Grid } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -207,11 +206,15 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
+interface Ltpz00501Props {
+  onClose?: () => void;
+}
+
 /**
  * Ltpz00501: '꼭 해야할 일' 팝업 내의 '공통' 탭 컨텐츠입니다.
  * 유사계약 확인, 고객확인(CDD/EDD), 청약 완료 불가 사유 등을 리스트업하여 보여줍니다.
  */
-const Ltpz00501 = () => {
+const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
   /** 화면 해상도에 따른 동적 컬럼 너비 계산 */
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -259,248 +262,269 @@ const Ltpz00501 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   return (
-    <Gcol className="w-full" placement="ss" gap={3}>
-      <Gcol gap={3} placement="ss">
-        {/* 1. 청약완료 전 필수 확인사항 영역 */}
-        <Gcol placement="ss">
-          <Typo tag={'strong'} variant={'body-lg'}>
-            청약완료 전 필수 확인사항
-          </Typo>
-          <FormTable cols={['w-[20.4rem]', 'w-auto']}>
-            <FormRow>
-              <FormCell title={<b>유사계약현황 확인</b>}>
-                <Grow gap={2}>
-                  <Button color="gray" onClick={() => {}} variant="outlined">
-                    유사계약현황
-                  </Button>
-                  <Grow>
-                    <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
-                      미확인 항목 있음
-                    </Typo>
-                    <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
-                    <Typo variant={'body-sm'} color={'gray'}>
-                      [유사계약현황] 내역을 확인해주세요{' '}
-                    </Typo>
-                  </Grow>
-                </Grow>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={<b>CDD(고객확인)</b>}>
-                <Grow gap={3}>
-                  <RadioGroup>
-                    <RadioGroupItem value="계약자 실소유자">계약자 실소유자</RadioGroupItem>
-                    <RadioGroupItem value="실소유자 아님">실소유자 아님</RadioGroupItem>
-                  </RadioGroup>
-                  <Grow gap={2}>
-                    <Button color="gray" onClick={() => {}} variant="outlined">
-                      CDD 등록
-                    </Button>
-                    <Grow>
-                      <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
-                        계약자 CDD(고객확인)대상
-                      </Typo>
-                      <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
-                      <Typo variant={'body-sm'} color={'gray'}>
-                        [CDD 등록] 해주세요
-                      </Typo>
-                    </Grow>
-                  </Grow>
-                </Grow>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={<b>EDD(강화된 고객확인)</b>}>
-                <Grow gap={3}>
-                  <RadioGroup>
-                    <RadioGroupItem value="계약자 실소유자">계약자 실소유자</RadioGroupItem>
-                    <RadioGroupItem value="실소유자 아님">실소유자 아님</RadioGroupItem>
-                  </RadioGroup>
-                  <Grow gap={2}>
-                    <Button color="gray" onClick={() => {}} variant="outlined">
-                      EDD 등록
-                    </Button>
-                    <Grow>
-                      <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
-                        AML 관련 고위험도로 EDD(강화된 고객확인) 대상
-                      </Typo>
-                      <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
-                      <Typo variant={'body-sm'} color={'gray'}>
-                        [EDD 등록] 해주세요
-                      </Typo>
-                    </Grow>
-                  </Grow>
-                </Grow>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={<b>FATCA/CRS 정보등록</b>}>
-                <Grow gap={3}>
-                  <RadioGroup>
-                    <RadioGroupItem value="해당 없음">해당 없음</RadioGroupItem>
-                    <RadioGroupItem value="해당">해당</RadioGroupItem>
-                  </RadioGroup>
-                  <Grow gap={2}>
-                    <Button color="gray" onClick={() => {}} variant="outlined">
-                      FATCA/CRS 입력
-                    </Button>
-                    <Grow>
-                      <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
-                        본인확인서(FATCA/CRS)양식 미등록
-                      </Typo>
-                      <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
-                      <Typo variant={'body-sm'} color={'gray'}>
-                        양식 출력 및 스캔을 진행해주세요
-                      </Typo>
-                    </Grow>
-                  </Grow>
-                </Grow>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={<b>미성년자 법정대리인 정보입력</b>}>
-                <Grow gap={3}>
-                  <Badge>미등록</Badge>
-                  <Grow gap={1}>
-                    <Button color="gray" onClick={() => {}} variant="outlined">
-                      법정대리인등록
-                    </Button>
-                    <Button color="gray" onClick={() => {}} variant="outlined">
-                      재조회
-                    </Button>
-                  </Grow>
-                </Grow>
-              </FormCell>
-            </FormRow>
-          </FormTable>
-        </Gcol>
+    <Grid className="w-full grid-rows-[1fr_auto] gap-[2rem]">
+      <div
+        className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc[+
+    100%+1rem]] h-full rounded-tr-[1rem] overflow-hidden rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]"
+      >
+        <div className="overflow-x-hidden overflow-y-auto w-full h-full">
+          <Gcol className="w-full" placement="ss" gap={3}>
+            <Gcol gap={3} placement="ss">
+              {/* 1. 청약완료 전 필수 확인사항 영역 */}
+              <Gcol placement="ss">
+                <Typo tag={'strong'} variant={'body-lg'}>
+                  청약완료 전 필수 확인사항
+                </Typo>
+                <FormTable cols={['w-[20.4rem]', 'w-auto']}>
+                  <FormRow>
+                    <FormCell title={<b>유사계약현황 확인</b>}>
+                      <Grow gap={2}>
+                        <Button color="gray" onClick={() => {}} variant="outlined">
+                          유사계약현황
+                        </Button>
+                        <Grow>
+                          <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
+                            미확인 항목 있음
+                          </Typo>
+                          <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
+                          <Typo variant={'body-sm'} color={'gray'}>
+                            [유사계약현황] 내역을 확인해주세요{' '}
+                          </Typo>
+                        </Grow>
+                      </Grow>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={<b>CDD(고객확인)</b>}>
+                      <Grow gap={3}>
+                        <RadioGroup>
+                          <RadioGroupItem value="계약자 실소유자">계약자 실소유자</RadioGroupItem>
+                          <RadioGroupItem value="실소유자 아님">실소유자 아님</RadioGroupItem>
+                        </RadioGroup>
+                        <Grow gap={2}>
+                          <Button color="gray" onClick={() => {}} variant="outlined">
+                            CDD 등록
+                          </Button>
+                          <Grow>
+                            <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
+                              계약자 CDD(고객확인)대상
+                            </Typo>
+                            <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
+                            <Typo variant={'body-sm'} color={'gray'}>
+                              [CDD 등록] 해주세요
+                            </Typo>
+                          </Grow>
+                        </Grow>
+                      </Grow>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={<b>EDD(강화된 고객확인)</b>}>
+                      <Grow gap={3}>
+                        <RadioGroup>
+                          <RadioGroupItem value="계약자 실소유자">계약자 실소유자</RadioGroupItem>
+                          <RadioGroupItem value="실소유자 아님">실소유자 아님</RadioGroupItem>
+                        </RadioGroup>
+                        <Grow gap={2}>
+                          <Button color="gray" onClick={() => {}} variant="outlined">
+                            EDD 등록
+                          </Button>
+                          <Grow>
+                            <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
+                              AML 관련 고위험도로 EDD(강화된 고객확인) 대상
+                            </Typo>
+                            <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
+                            <Typo variant={'body-sm'} color={'gray'}>
+                              [EDD 등록] 해주세요
+                            </Typo>
+                          </Grow>
+                        </Grow>
+                      </Grow>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={<b>FATCA/CRS 정보등록</b>}>
+                      <Grow gap={3}>
+                        <RadioGroup>
+                          <RadioGroupItem value="해당 없음">해당 없음</RadioGroupItem>
+                          <RadioGroupItem value="해당">해당</RadioGroupItem>
+                        </RadioGroup>
+                        <Grow gap={2}>
+                          <Button color="gray" onClick={() => {}} variant="outlined">
+                            FATCA/CRS 입력
+                          </Button>
+                          <Grow>
+                            <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
+                              본인확인서(FATCA/CRS)양식 미등록
+                            </Typo>
+                            <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
+                            <Typo variant={'body-sm'} color={'gray'}>
+                              양식 출력 및 스캔을 진행해주세요
+                            </Typo>
+                          </Grow>
+                        </Grow>
+                      </Grow>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={<b>미성년자 법정대리인 정보입력</b>}>
+                      <Grow gap={3}>
+                        <Badge>미등록</Badge>
+                        <Grow gap={1}>
+                          <Button color="gray" onClick={() => {}} variant="outlined">
+                            법정대리인등록
+                          </Button>
+                          <Button color="gray" onClick={() => {}} variant="outlined">
+                            재조회
+                          </Button>
+                        </Grow>
+                      </Grow>
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+              </Gcol>
 
-        {/* 2. 청약완료 불가사항 영역: 반드시 해소해야 청약 진행 가능 */}
-        <Gcol placement="ss">
-          <Typo tag={'strong'} variant={'body-lg'}>
-            청약완료 불가사항
-          </Typo>
-          <FormTable cols={['w-[20.4rem]', 'w-auto']}>
-            <FormRow>
-              <FormCell title={<b>타인의 사망보험 동의 확인 강화</b>}>
-                <Grow gap={1}>
-                  <Grow gap={2}>
-                    <Typo variant={'body-md'}>피보험자 : 김한화</Typo>
-                    <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
-                    <Typo variant={'body-sm'}>스캔</Typo>
-                  </Grow>
-                  <Grow gap={2}>
-                    <Badge>N</Badge>
-                    <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
-                      타인 사망 피보험자 동의 확인서 스캔 후 청약완료 가능합니다.
-                    </Typo>
-                  </Grow>
-                </Grow>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={<b>미지급 휴면보험금 처리</b>}>
-                <Grow gap={3}>
-                  <Typo variant={'body-md'}>대상 증권번호 : LA123456789012 외 N건</Typo>
-                  <Button color="gray" onClick={() => {}} variant="outlined">
-                    휴면보험금조회
-                  </Button>
-                </Grow>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell
-                title={
-                  <Grow placement="sc">
-                    전환대상 계약 변경/해약 확인
-                    <TooltipQ>
-                      전환용 실손의료비 청약완료 가능한 조건은 아래와 같습니다.
-                      <BulletList position="col">
-                        <BulletListItem before="1." size="sm" type="symbols">
-                          전환전 계약(72T088012022) 해약(만기) 또는 전환대상 실손의료비 담보 삭제
-                        </BulletListItem>
-                        <BulletListItem before="2." size="sm" type="symbols">
-                          신계약보험시기 = 전환전 계약의 해약(만기) 일자 또는 변경 기준일
-                        </BulletListItem>
-                      </BulletList>
-                    </TooltipQ>
-                  </Grow>
-                }
-              >
-                <Typo variant={'body-md'}>전환전 계약 : LA123456789012</Typo>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={<b>신계약청약서 미스캔계약처리</b>}>
-                <Grow gap={3}>
-                  <Typo variant={'body-md'}>LA123456789012 외 N건</Typo>
-                  <Grow>
-                    <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
-                      기 체결건 중 미스캔 건 존재
-                    </Typo>
-                    <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
-                    <Typo variant={'body-sm'} color={'gray'}>
-                      스캔완료 후 청약완료가 가능합니다.{' '}
-                    </Typo>
-                  </Grow>
-                </Grow>
-              </FormCell>
-            </FormRow>
-            <FormRow>
-              <FormCell title={<b>계속보험료계좌(당사직원)입력제한</b>}>
-                <Gcol placement="ss">
-                  <Typo variant={'body-md'}>
-                    자동이체, 급여이체, 카드이체의 예금주/소유주가 당사직원입니다.<br></br>
-                    <b className="text-[#FF5C2E]">최종결재권자에 한하여 청약완료가 가능</b>합니다.<br></br>승인기준,
-                    절차 등 자세한 사항은 각 채널지원파트로 문의하세요.
-                  </Typo>
-                  <Typo variant={'body-sm'} color={'gray'}>
-                    ( * 참고 : 업무알림(특별이익제공금지)예금주 확인 프로세스 강화 안내(장기보험 전사시행), 2016.11.10)
-                  </Typo>
-                </Gcol>
-              </FormCell>
-            </FormRow>
-          </FormTable>
-        </Gcol>
+              {/* 2. 청약완료 불가사항 영역: 반드시 해소해야 청약 진행 가능 */}
+              <Gcol placement="ss">
+                <Typo tag={'strong'} variant={'body-lg'}>
+                  청약완료 불가사항
+                </Typo>
+                <FormTable cols={['w-[20.4rem]', 'w-auto']}>
+                  <FormRow>
+                    <FormCell title={<b>타인의 사망보험 동의 확인 강화</b>}>
+                      <Grow gap={1}>
+                        <Grow gap={2}>
+                          <Typo variant={'body-md'}>피보험자 : 김한화</Typo>
+                          <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
+                          <Typo variant={'body-sm'}>스캔</Typo>
+                        </Grow>
+                        <Grow gap={2}>
+                          <Badge>N</Badge>
+                          <Typo variant={'body-sm'} icon={'detail'} color={'gray'}>
+                            타인 사망 피보험자 동의 확인서 스캔 후 청약완료 가능합니다.
+                          </Typo>
+                        </Grow>
+                      </Grow>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={<b>미지급 휴면보험금 처리</b>}>
+                      <Grow gap={3}>
+                        <Typo variant={'body-md'}>대상 증권번호 : LA123456789012 외 N건</Typo>
+                        <Button color="gray" onClick={() => {}} variant="outlined">
+                          휴면보험금조회
+                        </Button>
+                      </Grow>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell
+                      title={
+                        <Grow placement="sc">
+                          전환대상 계약 변경/해약 확인
+                          <TooltipQ>
+                            전환용 실손의료비 청약완료 가능한 조건은 아래와 같습니다.
+                            <BulletList position="col">
+                              <BulletListItem before="1." size="sm" type="symbols">
+                                전환전 계약(72T088012022) 해약(만기) 또는 전환대상 실손의료비 담보 삭제
+                              </BulletListItem>
+                              <BulletListItem before="2." size="sm" type="symbols">
+                                신계약보험시기 = 전환전 계약의 해약(만기) 일자 또는 변경 기준일
+                              </BulletListItem>
+                            </BulletList>
+                          </TooltipQ>
+                        </Grow>
+                      }
+                    >
+                      <Typo variant={'body-md'}>전환전 계약 : LA123456789012</Typo>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={<b>신계약청약서 미스캔계약처리</b>}>
+                      <Grow gap={3}>
+                        <Typo variant={'body-md'}>LA123456789012 외 N건</Typo>
+                        <Grow>
+                          <Typo variant={'body-sm'} icon={'detail'} weight={'bold'} color={'primary'}>
+                            기 체결건 중 미스캔 건 존재
+                          </Typo>
+                          <Divider variant={'default'} className="w-[0.1rem] h-[1rem] bg-[#6B7280]" />
+                          <Typo variant={'body-sm'} color={'gray'}>
+                            스캔완료 후 청약완료가 가능합니다.{' '}
+                          </Typo>
+                        </Grow>
+                      </Grow>
+                    </FormCell>
+                  </FormRow>
+                  <FormRow>
+                    <FormCell title={<b>계속보험료계좌(당사직원)입력제한</b>}>
+                      <Gcol placement="ss">
+                        <Typo variant={'body-md'}>
+                          자동이체, 급여이체, 카드이체의 예금주/소유주가 당사직원입니다.<br></br>
+                          <b className="text-[#FF5C2E]">최종결재권자에 한하여 청약완료가 가능</b>합니다.<br></br>
+                          승인기준, 절차 등 자세한 사항은 각 채널지원파트로 문의하세요.
+                        </Typo>
+                        <Typo variant={'body-sm'} color={'gray'}>
+                          ( * 참고 : 업무알림(특별이익제공금지)예금주 확인 프로세스 강화 안내(장기보험 전사시행),
+                          2016.11.10)
+                        </Typo>
+                      </Gcol>
+                    </FormCell>
+                  </FormRow>
+                </FormTable>
+              </Gcol>
 
-        {/* 3. 단순 참고사항 영역 */}
-        <Gcol placement="ss">
-          <Typo tag={'strong'} variant={'body-lg'}>
-            참고사항
-          </Typo>
-          <FormTable cols={['w-[20.4rem]', 'w-auto']}>
-            <FormRow>
-              <FormCell title={<b>유의승환</b>}>13회차, 25회차, 37회차</FormCell>
-            </FormRow>
-          </FormTable>
-        </Gcol>
-      </Gcol>
+              {/* 3. 단순 참고사항 영역 */}
+              <Gcol placement="ss">
+                <Typo tag={'strong'} variant={'body-lg'}>
+                  참고사항
+                </Typo>
+                <FormTable cols={['w-[20.4rem]', 'w-auto']}>
+                  <FormRow>
+                    <FormCell title={<b>유의승환</b>}>13회차, 25회차, 37회차</FormCell>
+                  </FormRow>
+                </FormTable>
+              </Gcol>
+            </Gcol>
 
-      {/* 4. 하단 필수지침 그리드 영역: Ag-Grid 활용 */}
-      <Gcol>
-        <TableFold>
-          <TableFoldHead title="필수지침"></TableFoldHead>
-          <TableFoldBody>
-            <div className="ag-theme-alpine ">
-              <AgGridReact<DummyDataType>
-                getRowId={(params) => String(params.data.id)}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={rowData}
-                columnDefs={columnDefs}
-                defaultColDef={{
-                  sortable: true,
-                  resizable: true,
-                }}
-                rowClassRules={{}}
-                enableCellSpan={true}
-                domLayout="autoHeight"
-                animateRows={false}
-              />
-            </div>
-          </TableFoldBody>
-        </TableFold>
-      </Gcol>
-    </Gcol>
+            {/* 4. 하단 필수지침 그리드 영역: Ag-Grid 활용 */}
+            <Gcol>
+              <TableFold>
+                <TableFoldHead title="필수지침"></TableFoldHead>
+                <TableFoldBody>
+                  <div className="ag-theme-alpine ">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
+                      rowClassRules={{}}
+                      enableCellSpan={true}
+                      domLayout="autoHeight"
+                      animateRows={false}
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+            </Gcol>
+          </Gcol>
+        </div>
+      </div>
+      <Grow className="w-full" placement="ec">
+        <Button variant={'contained'} color={'gray'} size={'xl'}>
+          재조회
+        </Button>
+        <Button variant={'contained'} size={'xl'}>
+          저장
+        </Button>
+        <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onClose}>
+          닫기
+        </Button>
+      </Grow>
+    </Grid>
   );
 };
 

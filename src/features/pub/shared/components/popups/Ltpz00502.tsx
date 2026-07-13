@@ -16,7 +16,7 @@ import {
   numberValueFormatter,
   useDynamicColumnWidths,
 } from '@aggrid'; // 2026-05-29 numberValueFormatter 추가
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { TabPager } from '@common/TabPager';
 import { AiIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -283,7 +283,11 @@ const DummyData4: DummyDataType4[] = [
   },
 ];
 
-const Ltpz00502 = () => {
+interface Ltpz00502Props {
+  onClose?: () => void;
+}
+
+const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [groupTabValue, setGroupTabValue] = React.useState<string>('tab1');
   const [accumOptionValue, setAccumOptionValue] = React.useState<string>('option1');
@@ -459,88 +463,108 @@ const Ltpz00502 = () => {
   // 누적
   return (
     // M2. 디자인 변경으로 수정
-    <Gcol className="w-full" gap={2} placement="ss">
-      <Gcol variant={'box-info'} placement={'ss'} className="w-full">
-        <Typo variant={'body-sm'} icon={'info'}>
-          청약완료불가(당사누적) 및 청약완료불가(업계누적)은 청약완료 전 까지만 해소하면 됩니다.
-        </Typo>
-      </Gcol>
-      <TabPager
-        active={groupTabValue}
-        data={groupTabs}
-        setActive={setGroupTabValue}
-        visibleCount={5}
-        getValue={(tab) => String(tab.value)}
-        renderTab={(tab) => (
-          <Typo tag={'strong'} variant={'body-md'}>
-            {`${tab.name} ${tab.age}세(${tab.gender})`}
-          </Typo>
-        )}
-        renderAfter={
-          <Button variant={'contained'} size={'md'}>
-            <AiIcon color={'#FFF'} color2={'#FFF'} />
-            AI인수한도해소
-          </Button>
-        }
+    <Grid className="w-full grid-rows-[1fr_auto] gap-[2rem]">
+      <div
+        className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc[+
+    100%+1rem]] h-full rounded-tr-[1rem] overflow-hidden rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]"
       >
-        <div className="w-full mt-2">
-          <RadioGroup
-            className="gap-1"
-            errorMsg="하나를 선택해주세요."
-            errorPs="bl"
-            onValueChange={setAccumOptionValue}
-            value={accumOptionValue}
-            width="auto"
-          >
-            {[
-              {
-                value: 'option1',
-                label: '인수기준(3)',
-              },
-              {
-                value: 'option2',
-                label: '청약완료불가(당수누적)(4)',
-              },
-              {
-                value: 'option3',
-                label: '청약완료불가(업계누적)(1)',
-              },
-            ].map((option) => (
-              <RadioGroupItem key={option.value} size="lg" value={option.value} variant="tab" width="auto">
-                {option.label}
-              </RadioGroupItem>
-            ))}
-          </RadioGroup>
-        </div>
-      </TabPager>
-      <Gcol>
-        <Grow className="f-full" placement="bwe">
-          <Typo tag={'strong'} variant={'body-lg'}>
-            확인사항
-          </Typo>
-          <Typo variant={'body-md'}>단위: 원</Typo>
-        </Grow>
+        <div className="overflow-x-hidden overflow-y-auto w-full h-full">
+          <Gcol className="w-full" gap={2} placement="ss">
+            <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+              <Typo variant={'body-sm'} icon={'info'}>
+                청약완료불가(당사누적) 및 청약완료불가(업계누적)은 청약완료 전 까지만 해소하면 됩니다.
+              </Typo>
+            </Gcol>
+            <TabPager
+              active={groupTabValue}
+              data={groupTabs}
+              setActive={setGroupTabValue}
+              visibleCount={5}
+              getValue={(tab) => String(tab.value)}
+              renderTab={(tab) => (
+                <Typo tag={'strong'} variant={'body-md'}>
+                  {`${tab.name} ${tab.age}세(${tab.gender})`}
+                </Typo>
+              )}
+              renderAfter={
+                <Button variant={'contained'} size={'md'}>
+                  <AiIcon color={'#FFF'} color2={'#FFF'} />
+                  AI인수한도해소
+                </Button>
+              }
+            >
+              <div className="w-full mt-2">
+                <RadioGroup
+                  className="gap-1"
+                  errorMsg="하나를 선택해주세요."
+                  errorPs="bl"
+                  onValueChange={setAccumOptionValue}
+                  value={accumOptionValue}
+                  width="auto"
+                >
+                  {[
+                    {
+                      value: 'option1',
+                      label: '인수기준(3)',
+                    },
+                    {
+                      value: 'option2',
+                      label: '청약완료불가(당수누적)(4)',
+                    },
+                    {
+                      value: 'option3',
+                      label: '청약완료불가(업계누적)(1)',
+                    },
+                  ].map((option) => (
+                    <RadioGroupItem key={option.value} size="lg" value={option.value} variant="tab" width="auto">
+                      {option.label}
+                    </RadioGroupItem>
+                  ))}
+                </RadioGroup>
+              </div>
+            </TabPager>
+            <Gcol>
+              <Grow className="f-full" placement="bwe">
+                <Typo tag={'strong'} variant={'body-lg'}>
+                  확인사항
+                </Typo>
+                <Typo variant={'body-md'}>단위: 원</Typo>
+              </Grow>
 
-        <div className="ag-theme-alpine min-h-[12.3rem]">
-          <AgGridReact<DummyDataType2>
-            getRowId={(params) => String(params.data.id)}
-            noRowsOverlayComponent={AgGridEmptyComponent}
-            rowData={selectedAccumRowData}
-            columnDefs={columnDefs2}
-            defaultColDef={{
-              sortable: true,
-              resizable: true,
-            }}
-            singleClickEdit={true}
-            enableCellSpan={true}
-            domLayout="autoHeight"
-            tooltipShowMode="whenTruncated"
-            tooltipShowDelay={0}
-            animateRows={false}
-          />
+              <div className="ag-theme-alpine min-h-[12.3rem]">
+                <AgGridReact<DummyDataType2>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={selectedAccumRowData}
+                  columnDefs={columnDefs2}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  singleClickEdit={true}
+                  enableCellSpan={true}
+                  domLayout="autoHeight"
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                  animateRows={false}
+                />
+              </div>
+            </Gcol>
+          </Gcol>
         </div>
-      </Gcol>
-    </Gcol>
+      </div>
+      <Grow className="w-full" placement="ec">
+        <Button variant={'outlined'} size={'xl'} color={'gray'}>
+          타사정액담보해약확인서 등록
+        </Button>
+        <Button variant={'contained'} size={'xl'}>
+          보험료계산(지침)
+        </Button>
+        <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onClose}>
+          닫기
+        </Button>
+      </Grow>
+    </Grid>
   );
 };
 
