@@ -534,6 +534,7 @@ export default function Ltpa330Section() {
     ],
     [attributeColumnWidth]
   );
+
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 10;
 
