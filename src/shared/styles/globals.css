@@ -1156,3 +1156,69 @@
     transform: rotate(360deg);
   }
 }
+.ag-theme-alpine {
+  --ag-row-group-indent-size: 10px !important;
+}
+.ag-row-group-indent-0 {
+  padding-left: 0px;
+}
+.ag-row-group-indent-1 {
+  padding-left: 10px !important;
+}
+.ag-row-group-indent-2 {
+  padding-left: 20px !important;
+}
+.ag-row-group-indent-3 {
+  padding-left: 30px !important;
+}
+.ag-row-group-indent-4 {
+  padding-left: 40px !important;
+}
+.ag-row-group-indent-5 {
+  padding-left: 50px !important;
+}
+.ag-row-group-indent-6 {
+  padding-left: 60px !important;
+}
+.ag-row-group-indent-7 {
+  padding-left: 70px !important;
+}
+.ag-row-group-indent-8 {
+  padding-left: 80px !important;
+}
+.ag-row-group-indent-9 {
+  padding-left: 90px !important;
+}
+.ag-row-group-indent-10 {
+  padding-left: 100px !important;
+}
+.ag-row-group-indent-11 {
+  padding-left: 110px !important;
+}
+.ag-row-group-indent-12 {
+  padding-left: 120px !important;
+}
+.ag-row-group-indent-13 {
+  padding-left: 130px !important;
+}
+.ag-row-group-indent-14 {
+  padding-left: 140px !important;
+}
+.ag-row-group-indent-15 {
+  padding-left: 150px !important;
+}
+.ag-row-group-indent-16 {
+  padding-left: 160px !important;
+}
+.ag-row-group-indent-17 {
+  padding-left: 170px !important;
+}
+.ag-row-group-indent-18 {
+  padding-left: 180px !important;
+}
+.ag-row-group-indent-19 {
+  padding-left: 190px !important;
+}
+.ag-row-group-indent-20 {
+  padding-left: 200px !important;
+}
