@@ -130,7 +130,7 @@ const Ltpz070 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
     () => [
       {
-        headerName: '나만의설계명',
+        headerName: '나만의설계',
         field: 'field01',
         flex: 1,
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field01' }),
@@ -142,7 +142,7 @@ const Ltpz070 = () => {
   const columnDefs2: (ColDef<DummyData2Type> | ColGroupDef<DummyData2Type>)[] = useMemo(
     () => [
       {
-        headerName: '종구분',
+        headerName: '종',
         field: 'field01',
         flex: 1,
         cellClass: 'px-0!',
@@ -165,7 +165,7 @@ const Ltpz070 = () => {
   const columnDefs3: (ColDef<DummyData3Type> | ColGroupDef<DummyData3Type>)[] = useMemo(
     () => [
       {
-        headerName: '회사플랜명',
+        headerName: '회사플랜',
         field: 'field01',
         flex: 1,
         tooltipValueGetter: createTooltipValueGetter<DummyData3Type>({ field: 'field01' }),

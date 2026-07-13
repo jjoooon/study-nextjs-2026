@@ -129,7 +129,7 @@ const data: Ltpa350DataType = {
     ],
     state: {
       complete: [1], //완료단계
-      active: 1, //현재단계
+      active: 2, //현재단계
     },
   },
 };

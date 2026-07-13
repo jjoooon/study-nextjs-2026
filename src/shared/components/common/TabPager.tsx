@@ -155,11 +155,20 @@ export function TabPager<T>({
                 tab !== null &&
                 'error' in tab &&
                 Boolean((tab as { error?: unknown }).error);
+
+              // disabled 속성이 없는 타입도 허용
+              const tabIsDisabled =
+                typeof tab === 'object' &&
+                tab !== null &&
+                'disabled' in tab &&
+                Boolean((tab as { disabled?: unknown }).disabled);
+
               return (
                 <TabsTrigger
                   key={getValue(tab)}
                   value={getValue(tab)}
                   data-tab-error={error && tabHasError ? 'true' : 'false'}
+                  disabled={tabIsDisabled}
                 >
                   {renderTab?.(tab)}
                   {error && tabHasError && (
