@@ -13,6 +13,7 @@ import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { Spinner } from '@common/SpinnerRoot';
 import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -498,6 +499,31 @@ export function Ltpa02002({ userType }: { userType: string }) {
   };
 
   const selectedPlanInfo = getSelectedPlanInfo();
+
+  const [dataListLoading1, setDataListLoading1] = React.useState<boolean>(true);
+  const [dataListLoading2, setDataListLoading2] = React.useState<boolean>(true);
+  const [dataListLoading3, setDataListLoading3] = React.useState<boolean>(true);
+  const [isLoadingStarted, setIsLoadingStarted] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (!isLoadingStarted) return;
+
+    const timer1 = setTimeout(() => {
+      setDataListLoading1(false);
+    }, 2400);
+    const timer2 = setTimeout(() => {
+      setDataListLoading2(false);
+    }, 2800);
+    const timer3 = setTimeout(() => {
+      setDataListLoading3(false);
+    }, 3300);
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
+  }, [isLoadingStarted]);
+
   return (
     <Grid className="w-full grid-rows-[auto_1fr]" gap={3}>
       <div className="w-full px-[1rem]">
@@ -632,6 +658,10 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   onClick={() => {
                     setDataNone(false);
                     setIsFilterOptionOpen(false);
+                    setDataListLoading1(true);
+                    setDataListLoading2(true);
+                    setDataListLoading3(true);
+                    setIsLoadingStarted(true);
                   }}
                 >
                   설계추천
@@ -916,7 +946,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
               alt="설명"
               fill
               style={{ objectFit: 'cover' }}
-              onClick={() => setDataNone(false)}
+              onClick={() => {
+                setDataNone(false);
+                setDataListLoading1(true);
+                setDataListLoading2(true);
+                setDataListLoading3(true);
+                setIsLoadingStarted(true);
+              }}
               className="relative!"
             />
           </div>
@@ -940,123 +976,133 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   gap={3}
                   placement="ss"
                 >
-                  {dataList.map((item) => (
+                  {dataList.map((item, index) => (
                     <Grid
                       key={item.id}
-                      className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]"
+                      className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] min-h-[19.1rem]"
                     >
-                      <Gcol gap={2} placement="ss">
-                        <Typo tag="h3" variant="heading-xl" className="break-keep pb-[0.4rem]">
-                          {item.field1}
-                        </Typo>
-                        <Grow
-                          className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-information-5)] flex-wrap gap-x-[0.4rem] gap-y-[0.2rem]"
-                          placement="sc"
-                        >
-                          {item.field2.map((v, idx) => (
-                            <React.Fragment key={idx}>
-                              {idx > 0 && <Divider variant="dot" color="gray-dark" />}
-                              <Typo tag="p" variant="body-sm">
-                                {v}
-                              </Typo>
-                            </React.Fragment>
-                          ))}
-                        </Grow>
-                        <Grow placement="ss">
-                          {item.field3.map((v, idx) => (
+                      {index === 0 && dataListLoading1 ? (
+                        <Spinner texts={['AI가 추천 조건을 설정하고 있습니다...', '데이터 분석을 시작합니다.']} />
+                      ) : index === 1 && dataListLoading2 ? (
+                        <Spinner texts={['인수 한도를 조회하고 있습니다...', '누적 가입금액을 계산 중입니다.']} />
+                      ) : index === 2 && dataListLoading3 ? (
+                        <Spinner texts={['대안 설계를 매칭하고 있습니다...', '최종 추천안을 생성하는 중입니다.']} />
+                      ) : (
+                        <>
+                          <Gcol gap={2} placement="ss">
+                            <Typo tag="h3" variant="heading-xl" className="break-keep pb-[0.4rem]">
+                              {item.field1}
+                            </Typo>
                             <Grow
-                              key={idx}
-                              className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-warning-5)]"
-                              placement="ss"
+                              className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-information-5)] flex-wrap gap-x-[0.4rem] gap-y-[0.2rem]"
+                              placement="sc"
                             >
-                              <Typo tag="p" variant="body-sm">
-                                {v}
-                              </Typo>
+                              {item.field2.map((v, idx) => (
+                                <React.Fragment key={idx}>
+                                  {idx > 0 && <Divider variant="dot" color="gray-dark" />}
+                                  <Typo tag="p" variant="body-sm">
+                                    {v}
+                                  </Typo>
+                                </React.Fragment>
+                              ))}
                             </Grow>
-                          ))}
-                        </Grow>
-                      </Gcol>
-                      <Grow>
-                        {item.field4.map((v, idx) => {
-                          const planKey = `${item.id}-${idx}`;
-                          const isSelected = selectedPlanKey === planKey;
-                          return (
-                            <Grid
-                              key={idx}
-                              className={`grid-rows-[1fr_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-shadow gap-0 ${
-                                isSelected
-                                  ? 'bg-[var(--color-primary-10)] after:pointer-events-none after:content-[""] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-[1rem] after:border-[0.2rem] after:border-[var(--color-primary-50)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)] [&>button_*]:text-white [&>button_path]:fill-white [&>button_path]:fill-white'
-                                  : 'bg-[var(--color-primary-5)] shadow-[inset_0_0_0_0.1rem_rgba(0,0,0,0.1)]'
-                              }`}
-                              style={
-                                isSelected
-                                  ? {
-                                      backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
-                                      backgroundRepeat: 'no-repeat',
-                                      backgroundPosition: 'calc(100% + 120%) -4%',
-                                      backgroundSize: '10rem, cover',
-                                    }
-                                  : undefined
-                              }
-                            >
-                              <button
-                                type="button"
-                                className="p-[1.2rem] h-full flex flex-col justify-between items-start"
-                                onClick={() => setSelectedPlanKey(isSelected ? null : planKey)}
-                                aria-pressed={isSelected}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="40"
-                                  height="40"
-                                  viewBox="0 0 40 40"
-                                  fill="none"
+                            <Grow placement="ss">
+                              {item.field3.map((v, idx) => (
+                                <Grow
+                                  key={idx}
+                                  className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-warning-5)]"
+                                  placement="ss"
                                 >
-                                  <circle cx="30.5" cy="29.5" r="9.5" fill="var(--color-primary-20)" />
-                                  <path
-                                    d="M18.9854 22.4062C19.7586 22.4062 20.3857 23.0334 20.3857 23.8066C20.3857 24.5798 19.7585 25.207 18.9854 25.207H11.8066C11.0335 25.207 10.4063 24.5798 10.4062 23.8066C10.4062 23.0334 11.0334 22.4062 11.8066 22.4062H18.9854Z"
-                                    fill="#61554F"
-                                  />
-                                  <path
-                                    d="M22.6484 16.3994C23.4215 16.3996 24.0479 17.0267 24.0479 17.7998C24.0479 18.5729 23.4215 19.2 22.6484 19.2002H11.8066C11.0334 19.2002 10.4062 18.573 10.4062 17.7998C10.4062 17.0266 11.0334 16.3994 11.8066 16.3994H22.6484Z"
-                                    fill="#61554F"
-                                  />
-                                  <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M23.8057 4C25.5194 4.00002 27.1515 4.73281 28.29 6.01367L32.9844 11.2949C33.9606 12.3932 34.5 13.8118 34.5 15.2812V31C34.5 34.3137 31.8137 37 28.5 37H11.5L11.1914 36.9922C8.02111 36.8316 5.5 34.2102 5.5 31V10C5.5 6.68629 8.18629 4 11.5 4H23.8057ZM11.5 6.59961C9.62223 6.59961 8.09961 8.12223 8.09961 10V31C8.09961 32.8778 9.62223 34.4004 11.5 34.4004H28.5C30.3778 34.4004 31.9004 32.8778 31.9004 31V15.2998H28.5C25.5729 15.2998 23.2002 12.9271 23.2002 10V6.59961H11.5ZM25.7998 10C25.7998 11.4912 27.0088 12.7002 28.5 12.7002H30.7549L26.3467 7.74121C26.1814 7.55526 25.9979 7.38952 25.7998 7.24609V10Z"
-                                    fill="#61554F"
-                                  />
-                                </svg>
-                                <Gcol placement="ss" gap={0}>
-                                  <Typo tag="p" variant="body-sm" className="text-[var(--color-gray-70)]">
-                                    예상보험료
+                                  <Typo tag="p" variant="body-sm">
+                                    {v}
                                   </Typo>
-                                  <Typo tag="p" variant="heading-xl" className="text-[var(--color-primary-50)]">
-                                    {v.field1.toLocaleString()}원
-                                  </Typo>
-                                </Gcol>
-                              </button>
-                              <Grow className="w-full h-[4rem] bg-[var(--color-secondary-50)]" placement="cc">
-                                <Checkbox
-                                  checked={comparedPlanKeys.includes(planKey)}
-                                  onCheckedChange={(checked) => {
-                                    const isChecked = checked === true;
-                                    setComparedPlanKeys((prev) => {
-                                      if (isChecked) {
-                                        return prev.includes(planKey) ? prev : [...prev, planKey];
-                                      }
-                                      return prev.filter((key) => key !== planKey);
-                                    });
-                                  }}
+                                </Grow>
+                              ))}
+                            </Grow>
+                          </Gcol>
+                          <Grow>
+                            {item.field4.map((v, idx) => {
+                              const planKey = `${item.id}-${idx}`;
+                              const isSelected = selectedPlanKey === planKey;
+                              return (
+                                <Grid
+                                  key={idx}
+                                  className={`grid-rows-[1fr_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-shadow gap-0 ${
+                                    isSelected
+                                      ? 'bg-[var(--color-primary-10)] after:pointer-events-none after:content-[""] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-[1rem] after:border-[0.2rem] after:border-[var(--color-primary-50)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)] [&>button_*]:text-white [&>button_path]:fill-white [&>button_path]:fill-white'
+                                      : 'bg-[var(--color-primary-5)] shadow-[inset_0_0_0_0.1rem_rgba(0,0,0,0.1)]'
+                                  }`}
+                                  style={
+                                    isSelected
+                                      ? {
+                                          backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
+                                          backgroundRepeat: 'no-repeat',
+                                          backgroundPosition: 'calc(100% + 120%) -4%',
+                                          backgroundSize: '10rem, cover',
+                                        }
+                                      : undefined
+                                  }
                                 >
-                                  <span className="text-[#FFF]">비교하기</span>
-                                </Checkbox>
-                              </Grow>
-                            </Grid>
-                          );
-                        })}
-                      </Grow>
+                                  <button
+                                    type="button"
+                                    className="p-[1.2rem] h-full flex flex-col justify-between items-start"
+                                    onClick={() => setSelectedPlanKey(isSelected ? null : planKey)}
+                                    aria-pressed={isSelected}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="40"
+                                      height="40"
+                                      viewBox="0 0 40 40"
+                                      fill="none"
+                                    >
+                                      <circle cx="30.5" cy="29.5" r="9.5" fill="var(--color-primary-20)" />
+                                      <path
+                                        d="M18.9854 22.4062C19.7586 22.4062 20.3857 23.0334 20.3857 23.8066C20.3857 24.5798 19.7585 25.207 18.9854 25.207H11.8066C11.0335 25.207 10.4063 24.5798 10.4062 23.8066C10.4062 23.0334 11.0334 22.4062 11.8066 22.4062H18.9854Z"
+                                        fill="#61554F"
+                                      />
+                                      <path
+                                        d="M22.6484 16.3994C23.4215 16.3996 24.0479 17.0267 24.0479 17.7998C24.0479 18.5729 23.4215 19.2 22.6484 19.2002H11.8066C11.0334 19.2002 10.4062 18.573 10.4062 17.7998C10.4062 17.0266 11.0334 16.3994 11.8066 16.3994H22.6484Z"
+                                        fill="#61554F"
+                                      />
+                                      <path
+                                        fillRule="evenodd"
+                                        clipRule="evenodd"
+                                        d="M23.8057 4C25.5194 4.00002 27.1515 4.73281 28.29 6.01367L32.9844 11.2949C33.9606 12.3932 34.5 13.8118 34.5 15.2812V31C34.5 34.3137 31.8137 37 28.5 37H11.5L11.1914 36.9922C8.02111 36.8316 5.5 34.2102 5.5 31V10C5.5 6.68629 8.18629 4 11.5 4H23.8057ZM11.5 6.59961C9.62223 6.59961 8.09961 8.12223 8.09961 10V31C8.09961 32.8778 9.62223 34.4004 11.5 34.4004H28.5C30.3778 34.4004 31.9004 32.8778 31.9004 31V15.2998H28.5C25.5729 15.2998 23.2002 12.9271 23.2002 10V6.59961H11.5ZM25.7998 10C25.7998 11.4912 27.0088 12.7002 28.5 12.7002H30.7549L26.3467 7.74121C26.1814 7.55526 25.9979 7.38952 25.7998 7.24609V10Z"
+                                        fill="#61554F"
+                                      />
+                                    </svg>
+                                    <Gcol placement="ss" gap={0}>
+                                      <Typo tag="p" variant="body-sm" className="text-[var(--color-gray-70)]">
+                                        예상보험료
+                                      </Typo>
+                                      <Typo tag="p" variant="heading-xl" className="text-[var(--color-primary-50)]">
+                                        {v.field1.toLocaleString()}원
+                                      </Typo>
+                                    </Gcol>
+                                  </button>
+                                  <Grow className="w-full h-[4rem] bg-[var(--color-secondary-50)]" placement="cc">
+                                    <Checkbox
+                                      checked={comparedPlanKeys.includes(planKey)}
+                                      onCheckedChange={(checked) => {
+                                        const isChecked = checked === true;
+                                        setComparedPlanKeys((prev) => {
+                                          if (isChecked) {
+                                            return prev.includes(planKey) ? prev : [...prev, planKey];
+                                          }
+                                          return prev.filter((key) => key !== planKey);
+                                        });
+                                      }}
+                                    >
+                                      <span className="text-[#FFF]">비교하기</span>
+                                    </Checkbox>
+                                  </Grow>
+                                </Grid>
+                              );
+                            })}
+                          </Grow>
+                        </>
+                      )}
                     </Grid>
                   ))}
                 </Gcol>
