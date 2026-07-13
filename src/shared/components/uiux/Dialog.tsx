@@ -288,19 +288,25 @@ interface DialogOverlayProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * @default false
    */
   disableMotion?: boolean;
+  /**
+   * 오버레이의 배경 타입 (어두운 배경 / 투명 배경)
+   * @default 'dark'
+   */
+  dim?: 'dark' | 'transparent';
 }
 
 /**
  * 다이얼로그 백드롭 오버레이 (DialogOverlay)
  * - 다이얼로그 배경을 차단하는 어두운 막 레이어입니다.
  */
-function DialogOverlay({ className, style, disableMotion = false, ...props }: DialogOverlayProps) {
+function DialogOverlay({ className, style, disableMotion = false, dim = 'dark', ...props }: DialogOverlayProps) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       style={style}
       className={cn(
-        'fixed inset-0 bg-black/60 pointer-events-none',
+        'fixed inset-0 pointer-events-none',
+        dim === 'dark' ? 'bg-black/60' : 'bg-transparent',
         disableMotion
           ? 'transition-none'
           : 'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
@@ -355,6 +361,14 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
     y: number;
   };
   minimized?: boolean;
+  /**
+   * 딤 오버레이 적용 여부 및 방식 설정
+   * - 'dark': 어두운 반투명 오버레이
+   * - 'transparent': 투명 오버레이
+   * - 'none': 오버레이 없음
+   * @default 'dark'
+   */
+  dim?: 'dark' | 'transparent' | 'none';
 }
 
 /**
@@ -376,6 +390,7 @@ function DialogContent({
   onPointerDownOutside,
   onInteractOutside,
   minimized,
+  dim = 'dark',
   ...props
 }: DialogContentProps) {
   const { dialogId, isMinimized, setMinimized, open } = React.useContext(DialogDepthContext);
@@ -420,6 +435,39 @@ function DialogContent({
     [dialogId]
   );
 
+  // dim === 'none' 일 때 body의 pointer-events: none 방지
+  React.useEffect(() => {
+    if (open && dim === 'none') {
+      const target = document.body;
+
+      const disablePointerNone = () => {
+        if (target.style.pointerEvents === 'none') {
+          target.style.pointerEvents = 'auto';
+        }
+      };
+
+      // 초기 설정
+      disablePointerNone();
+
+      // body style 속성 모니터링하여 pointer-events: none 방지
+      const observer = new MutationObserver(() => {
+        disablePointerNone();
+      });
+
+      observer.observe(target, {
+        attributes: true,
+        attributeFilter: ['style'],
+      });
+
+      return () => {
+        observer.disconnect();
+        if (target.style.pointerEvents === 'auto') {
+          target.style.pointerEvents = '';
+        }
+      };
+    }
+  }, [open, dim]);
+
   // 레이어 기반 z-index: 열린 순서대로 51, 53, 55 ...
   const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (Math.max(dialogLayerIndex, 1) - 1) * DIALOG_Z_INDEX_STEP;
 
@@ -428,9 +476,11 @@ function DialogContent({
 
   const overlayZIndex = parallelZIndex - 1;
 
-  // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시 (현재 팝업이 최소화된 경우에는 무조건 암막 숨김)
+  // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시 (현재 팝업이 최소화된 경우에는 무조건 암막 숨김, dim이 'none'인 경우에는 오버레이 미표시)
   const resolvedShowOverlay =
-    !isMinimized && (showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId)));
+    dim !== 'none' &&
+    !isMinimized &&
+    (showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId)));
   const disableOverlayMotion = openCount > 1;
   const isFullSize = size === 'full';
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
@@ -601,7 +651,7 @@ function DialogContent({
       setIsDragging(true);
       setDragStart({ x: e.clientX - currentPos.x, y: e.clientY - currentPos.y });
     },
-    [position, isInitialized, isFullSize, isIframeState]
+    [position, isInitialized, isFullSize]
   );
 
   React.useEffect(() => {
@@ -671,6 +721,7 @@ function DialogContent({
     <DialogPortal data-slot="dialog-portal">
       {resolvedShowOverlay && (
         <DialogOverlay
+          dim={dim === 'transparent' ? 'transparent' : 'dark'}
           style={{ zIndex: overlayZIndex }}
           className={overlayClassName}
           disableMotion={disableOverlayMotion}

@@ -6,6 +6,7 @@
 import { useEffect } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
@@ -22,20 +23,59 @@ import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 type TabsDataType = {
+  id: number;
   value: string;
   name: string;
   type: string;
+  info: string[];
 };
 
 const TabsData: TabsDataType[] = [
-  { value: 'user1', name: '인보험', type: '일반' },
-  { value: 'user2', name: '어린이태아', type: '태아' },
-  { value: 'user3', name: '재물피보험자', type: '재물피보험자' },
-  { value: 'user4', name: '재물목적물', type: '재물목적물' },
-  { value: 'user5', name: '단체최한화', type: '단체' },
-  { value: 'user6', name: '연금저축', type: '연금저축' },
+  {
+    id: 1,
+    value: 'user1',
+    name: '인보험',
+    type: '일반',
+    info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
+  },
+  {
+    id: 2,
+    value: 'user2',
+    name: '어린이태아',
+    type: '태아',
+    info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
+  },
+  {
+    id: 3,
+    value: 'user3',
+    name: '재물피보험자',
+    type: '재물피보험자',
+    info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
+  },
+  {
+    id: 4,
+    value: 'user4',
+    name: '재물목적물',
+    type: '재물목적물',
+    info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
+  },
+  {
+    id: 5,
+    value: 'user5',
+    name: '단체최한화',
+    type: '단체',
+    info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
+  },
+  {
+    id: 6,
+    value: 'user6',
+    name: '연금저축',
+    type: '연금저축',
+    info: ['추가정보1', '추가정보2', '추가정보3', '추가정보4', '추가정보5'],
+  },
 ];
 
 /**
@@ -604,7 +644,24 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                       onRemove={handleRemove}
                       visibleCount={5}
                       getValue={(tab) => String(tab.value)}
-                      renderTab={(tab) => <span>{tab.name}</span>}
+                      renderTab={(tab) => (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span className="flex items-center">
+                              <span className="max-w-20 truncate block">{tab.name}</span>
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" sideOffset={8}>
+                            <BulletList className="gap-[0.5rem]">
+                              {tab.info.map((info: string, index: number) => (
+                                <BulletListItem key={index} type="dot">
+                                  {info}
+                                </BulletListItem>
+                              ))}
+                            </BulletList>
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
                       renderButtons={
                         <Grow gap={2.5}>
                           {/* 인보험, 태아, 제물 */}

@@ -18,6 +18,7 @@ import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import Ltpz021 from './popups/Ltpz021';
 
 import '@/shared/lib/agGridPub';
 
@@ -246,17 +247,110 @@ const dummyDataList: DummyDataListType[] = [
       },
     ],
   },
+  {
+    id: 3,
+    field1: '한화 시그니처 여성 간편건강보험',
+    field2: ['납입면제형납입면제형', '기본형', '23N5간편 고지형', '23N5간편 고지형'],
+    field3: ['20년납', '100세만기'],
+    field4: [
+      {
+        field1: 98000,
+        field2:
+          '고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
+        field3: [
+          {
+            id: 1,
+            field1: '보통약관(상해사망)',
+            field2: '3000',
+            field3: '0',
+          },
+          {
+            id: 2,
+            field1: '한화 더 경증 간편건강보험간(연만기 갱신형)2601 ',
+            field2: '3000',
+            field3: '0',
+          },
+          {
+            id: 3,
+            field1: '한화 더 경증 간편건강보험간(연만기 갱신형)2601 ',
+            field2: '3000',
+            field3: '100',
+          },
+          {
+            id: 4,
+            field1: '한화 더 경증 간편건강보험간(연만기 갱신형)2601 ',
+            field2: '3000',
+            field3: '100',
+          },
+        ],
+      },
+      {
+        field1: 152000,
+        field2:
+          '02 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
+        field3: [
+          {
+            id: 1,
+            field1: '보통약관(상해사망)',
+            field2: '3000',
+            field3: '100',
+          },
+          {
+            id: 2,
+            field1: '한화 더 경증 간편건강보험간(연만기 갱신형)2601 ',
+            field2: '3000',
+            field3: '100',
+          },
+          {
+            id: 3,
+            field1: '한화 더 경증 간편건강보험간(연만기 갱신형)2601 ',
+            field2: '3000',
+            field3: '0',
+          },
+          {
+            id: 4,
+            field1: '한화 더 경증 간편건강보험간(연만기 갱신형)2601 ',
+            field2: '3000',
+            field3: '100',
+          },
+        ],
+      },
+      {
+        field1: 159000,
+        field2:
+          '03 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
+        field3: [
+          {
+            id: 1,
+            field1: '보통약관(상해사망)',
+            field2: '3000',
+            field3: '100',
+          },
+          {
+            id: 2,
+            field1: '한화 더 경증 간편건강보험간(연만기 갱신형)2601 ',
+            field2: '3000',
+            field3: '100',
+          },
+          {
+            id: 3,
+            field1: '한화 더 경증 간편건강보험간(연만기 갱신형)2601 ',
+            field2: '3000',
+            field3: '100',
+          },
+          {
+            id: 4,
+            field1: '한화 더 경증 간편건강보험간(연만기 갱신형)2601 ',
+            field2: '3000',
+            field3: '100',
+          },
+        ],
+      },
+    ],
+  },
 ];
 
-export function Ltpa02002({
-  dataNone,
-  userType,
-  setDataNone,
-}: {
-  userType: string;
-  dataNone: boolean;
-  setDataNone: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export function Ltpa02002({ userType }: { userType: string }) {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const dataList = dummyDataList;
   const columnDefs4: ColDef<DummyDataListDetailType>[] = [
@@ -289,7 +383,8 @@ export function Ltpa02002({
 
   const customerType = userType;
   const [isAmountInputVisible, setIsAmountInputVisible] = useState<boolean>(false);
-  const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(false);
+  const [dataNone, setDataNone] = useState<boolean>(true);
+  const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(true);
   const [isProductOptionOpen, setIsProductOptionOpen] = useState<string>('상품옵션');
   const coverageOptions = [
     { value: '사망/후유', label: '사망/후유' },
@@ -341,6 +436,7 @@ export function Ltpa02002({
   // dataNone, setDataNone은 부모에서 props로 받음
   const [selectedPlanKey, setSelectedPlanKey] = useState<string | null>('1-0');
   const [comparedPlanKeys, setComparedPlanKeys] = useState<string[]>([]);
+  const [openLtpz021, setOpenLtpz021] = useState<boolean>(false);
   const [isAiReasonExpanded, setIsAiReasonExpanded] = useState<boolean>(false);
 
   // 비교하기 체크 애니메이션 페이즈 상태 및 효과
@@ -529,7 +625,15 @@ export function Ltpa02002({
                 </FormRow>
               </FormTable>
               <Grow>
-                <Button variant="contained" color="coolgray" size={'lg'}>
+                <Button
+                  variant="contained"
+                  color="coolgray"
+                  size={'lg'}
+                  onClick={() => {
+                    setDataNone(false);
+                    setIsFilterOptionOpen(false);
+                  }}
+                >
                   설계추천
                 </Button>
                 <Button variant="outlined" color="gray" size={'lg'} only="icon" aria-label="초기화">
@@ -825,7 +929,7 @@ export function Ltpa02002({
       ) : (
         <Grid className="w-full grid-rows-[1fr_auto]" gap={0}>
           <Grid
-            className="w-[calc(100vw + 2rem)] h-full grid-rows-[1fr] grid-cols-[2fr_1fr] min-[1600px]:grid-cols-[1fr_1fr] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
+            className="w-[calc(100vw + 2rem)] h-full grid-rows-[1fr] grid-cols-[2fr_1fr] min-[1600px]:grid-cols-[5fr_4fr] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
             gap={3}
           >
             {/* 리스트 */}
@@ -850,12 +954,12 @@ export function Ltpa02002({
                           placement="sc"
                         >
                           {item.field2.map((v, idx) => (
-                            <>
+                            <React.Fragment key={idx}>
                               {idx > 0 && <Divider variant="dot" color="gray-dark" />}
-                              <Typo key={idx} tag="p" variant="body-sm">
+                              <Typo tag="p" variant="body-sm">
                                 {v}
                               </Typo>
-                            </>
+                            </React.Fragment>
                           ))}
                         </Grow>
                         <Grow placement="ss">
@@ -865,7 +969,7 @@ export function Ltpa02002({
                               className="py-[0.5rem] px-2 rounded-[0.6rem] bg-[var(--color-warning-5)]"
                               placement="ss"
                             >
-                              <Typo key={idx} tag="p" variant="body-sm">
+                              <Typo tag="p" variant="body-sm">
                                 {v}
                               </Typo>
                             </Grow>
@@ -1043,6 +1147,8 @@ export function Ltpa02002({
               variant={'outlined'}
               color={'gray'}
               size={'xl'}
+              onClick={() => setOpenLtpz021(true)}
+              disabled={comparedPlanKeys.length === 0}
               style={
                 isButtonShaking
                   ? {
@@ -1073,6 +1179,7 @@ export function Ltpa02002({
           </Grow>
         </Grid>
       )}
+      <Ltpz021 open={openLtpz021} onOpenChange={setOpenLtpz021} />
       <style>{`
         @keyframes button-shake {
           0%, 100% { transform: translate(0, 0) scale(1); }

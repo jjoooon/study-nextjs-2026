@@ -459,6 +459,21 @@ const Ltpz034 = ({
   healthRows: initialHealthRows,
   dummyRows,
 }: Ltpz034Props) => {
+  // 최소화 로컬 상태 관리 (부모가 관리하지 않을 경우 백업)
+  const [localMinimized, setLocalMinimized] = React.useState(false);
+  const isMinimizedControlled = minimized !== undefined;
+  const isMinimized = isMinimizedControlled ? minimized : localMinimized;
+
+  const handleMinimizeChange = React.useCallback(
+    (val: boolean) => {
+      if (!isMinimizedControlled) {
+        setLocalMinimized(val);
+      }
+      onMinimizeChange?.(val);
+    },
+    [isMinimizedControlled, onMinimizeChange]
+  );
+
   // 선택된 고지유형 ID 목록 상태 관리 (최대 3개 제한)
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
 
@@ -578,8 +593,14 @@ const Ltpz034 = ({
   );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} minimized={minimized} onMinimizeChange={onMinimizeChange}>
-      <DialogContent showCloseButton resizable minimized={true} className={isRegistered ? 'w-[69.2rem]' : 'w-[76rem]'}>
+    <Dialog open={open} onOpenChange={onOpenChange} minimized={isMinimized} onMinimizeChange={handleMinimizeChange}>
+      <DialogContent
+        showCloseButton
+        resizable
+        minimized={true}
+        dim={'dark'}
+        className={isRegistered ? 'w-[69.2rem]' : 'w-[76rem]'}
+      >
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
@@ -857,7 +878,12 @@ const Ltpz034 = ({
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'outlined'} size={'xl'} color={'gray'}>
+              <Button
+                variant={'outlined'}
+                size={'xl'}
+                color={'gray'}
+                onClick={() => handleMinimizeChange(!isMinimized)}
+              >
                 접어두기
               </Button>
               <DialogClose asChild>
@@ -883,7 +909,7 @@ const Ltpz034 = ({
             }
           }
           .animate-slide-from-click {
-            animation: slideFromClick 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: slideFromClick 0.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
           }
         `}</style>
       </DialogContent>

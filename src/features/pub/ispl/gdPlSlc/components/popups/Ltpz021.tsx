@@ -252,12 +252,18 @@ const DummyData2: DummyDataType[] = [
   },
 ];
 
-const Ltpz021 = () => {
+interface Ltpz021Props {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   const [rowData1] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2] = React.useState<DummyDataType[]>(DummyData1);
   const [rowData3] = React.useState<DummyDataType[]>(DummyData2);
+  const [checkedStates, setCheckedStates] = React.useState<boolean[]>([false, false, false]);
 
   // --- 그리드 공통 컬럼 정의 ---
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -346,7 +352,7 @@ const Ltpz021 = () => {
   );
 
   return (
-    <Dialog open>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -398,7 +404,19 @@ const Ltpz021 = () => {
                     </Typo>
                   </Gcol>
                   <Grow>
-                    <Checkbox color="info" onCheckedChange={() => {}} size="lg" variant="default"></Checkbox>
+                    <Checkbox
+                      color="info"
+                      checked={checkedStates[i]}
+                      onCheckedChange={(checked) => {
+                        setCheckedStates((prev) => {
+                          const next = [...prev];
+                          next[i] = !!checked;
+                          return next;
+                        });
+                      }}
+                      size="lg"
+                      variant="default"
+                    ></Checkbox>
                   </Grow>
                 </Grow>
                 <Gcol className="w-full h-full px-[1rem] pb-[2rem]" placement="ss" gap={0}>
@@ -407,7 +425,8 @@ const Ltpz021 = () => {
                     - 루프 인덱스(i: 0, 1, 2)에 따라 각 그리드의 DOM Element 참조를 `gridContainerRefs` 배열에 저장합니다.
                   */}
                   <div
-                    className="ag-theme-alpine w-full min-h-[20.8rem] "
+                    className="ag-theme-alpine w-full inner-scroll"
+                    data-rows={rowData1.length}
                     ref={(el) => {
                       gridContainerRefs.current[i] = el;
                     }}
@@ -468,8 +487,19 @@ const Ltpz021 = () => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'} color={'primary'}>
-                설계생성(0)
+              <Button
+                variant={'contained'}
+                size={'xl'}
+                color={'primary'}
+                disabled={checkedStates.filter(Boolean).length === 0}
+                onClick={() => {
+                  onOpenChange?.(false);
+                  if (typeof window !== 'undefined') {
+                    window.parent.postMessage({ type: 'CREATE_SCHEME' }, '*');
+                  }
+                }}
+              >
+                설계생성({checkedStates.filter(Boolean).length})
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>

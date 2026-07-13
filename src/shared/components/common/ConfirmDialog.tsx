@@ -208,9 +208,12 @@ export function ConfirmDialog({
           {title && <AlertDialogTitle>{title}</AlertDialogTitle>}
           {description ? (
             typeof description === 'string' ? (
-              <AlertDialogDescription dangerouslySetInnerHTML={{ __html: description }} />
+              <AlertDialogDescription
+                className="whitespace-pre-wrap"
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
             ) : (
-              <AlertDialogDescription>{description}</AlertDialogDescription>
+              <AlertDialogDescription className="whitespace-pre-wrap">{description}</AlertDialogDescription>
             )
           ) : null}
         </AlertDialogHeader>

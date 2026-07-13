@@ -28,7 +28,11 @@ export default function Ltpa020Section() {
   // 상단 탭 상태
   // - Ltpa02001: 상품선택
   // - Ltpa02002: 추천설계
-  const [tabSelectValue, setTabSelectValue] = useState('Ltpa02002');
+  const [tabSelectValue, setTabSelectValue] = useState('Ltpa02001');
+  // 추천설계 하위 컴포넌트(Ltpa02002) 데이터 유무 제어 상태
+  // 화면 분기/Empty 상태 표현에 사용
+  const [dataNone, setDataNone] = useState<boolean>(false);
+  const [userAdmin, setUserAdmin] = useState<boolean>(false);
 
   // 고지유형찾기(Ltpz034) 팝업 표시/최소화 상태
   // open 시 minimized를 false로 초기화해 항상 정상 크기로 시작하도록 보정
@@ -99,10 +103,6 @@ export default function Ltpa020Section() {
     }
   }, []);
 
-  // 추천설계 하위 컴포넌트(Ltpa02002) 데이터 유무 제어 상태
-  // 화면 분기/Empty 상태 표현에 사용
-  const [dataNone, setDataNone] = useState<boolean>(false);
-
   return (
     <>
       <LayoutHead>
@@ -139,31 +139,33 @@ export default function Ltpa020Section() {
               />
             </RadioGroupItem>
           </RadioGroup>
-          <Grow>
-            <FormTable variant="none">
-              <FormRow>
-                <FormCell title={'기준일자'}>
-                  <DatePickerInput value="2026-01-01" />
-                </FormCell>
-                <FormCell title={'판매채널'}>
-                  <RadioGroup>
-                    {[
-                      { value: '전체', label: '전체' },
-                      { value: '전속', label: '전속' },
-                      { value: 'GA', label: 'GA' },
-                      { value: 'TM', label: 'TM' },
-                      { value: 'CM', label: 'CM' },
-                      { value: '방카', label: '방카' },
-                    ].map((option) => (
-                      <RadioGroupItem key={option.value} value={option.value}>
-                        {option.label}
-                      </RadioGroupItem>
-                    ))}
-                  </RadioGroup>
-                </FormCell>
-              </FormRow>
-            </FormTable>
-          </Grow>
+          {userAdmin && (
+            <Grow>
+              <FormTable variant="none">
+                <FormRow>
+                  <FormCell title={'기준일자'}>
+                    <DatePickerInput value="2026-01-01" />
+                  </FormCell>
+                  <FormCell title={'판매채널'}>
+                    <RadioGroup>
+                      {[
+                        { value: '전체', label: '전체' },
+                        { value: '전속', label: '전속' },
+                        { value: 'GA', label: 'GA' },
+                        { value: 'TM', label: 'TM' },
+                        { value: 'CM', label: 'CM' },
+                        { value: '방카', label: '방카' },
+                      ].map((option) => (
+                        <RadioGroupItem key={option.value} value={option.value}>
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}
+                    </RadioGroup>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Grow>
+          )}
           <EmpInput empNo={'12314'} empName={'홍길동'} />
         </Grow>
       </LayoutHead>
@@ -179,7 +181,7 @@ export default function Ltpa020Section() {
                   <FormRow className="items-start!">
                     <FormCell
                       title={'고객정보'}
-                      className="align-top [&>span]:block [&>span]:pt-1 [&>span]:text-[#fff]"
+                      className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff]"
                     >
                       <Grow placement="ss" gap={5} className="w-full">
                         <ViewMode
@@ -416,7 +418,7 @@ export default function Ltpa020Section() {
               // 탭: 추천설계
               // dataNone/setDataNone: 하위에서 데이터 유무 상태를 상위와 동기화
               // userType: 고객 등록/미등록 모드 전달
-              <Ltpa02002 dataNone={dataNone} setDataNone={setDataNone} userType={customerType} />
+              <Ltpa02002 userType={customerType} />
             )}
           </Grid>
         }

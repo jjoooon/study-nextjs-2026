@@ -272,7 +272,7 @@ import { Button } from '@uiux/Button';
     defaultOpen: false,
     title: '알림',
     description:
-      '시스템의 중요한 상태 변화, 처리 결과, <br />또는 즉각적인 주의가 필요한 정보를 사용자에게 전달합니다.',
+      '시스템의 중요한<br /> 상태 변화, 처리 결과, \n 또는 즉각적인 주의가 필요한 정보를 사용자에게 전달합니다.',
     confirmLabel: '확인',
     cancelLabel: '취소',
     tone: 'info',
