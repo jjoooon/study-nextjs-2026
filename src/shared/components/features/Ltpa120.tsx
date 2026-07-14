@@ -138,7 +138,7 @@ export const Ltpa120 = ({
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[1px] border-[var(--color-blue-gray-30)]">
           <iframe
             ref={(el) => chatbotUtils.setRef(el)}
-            src={publicConfig.domain.chatbot}
+            src={withPublicUrl('/test/chatbot.html')}
             title={'AI 챗봇'}
             className="w-full h-full border-0"
             allow="clipboard-read; clipboard-write"

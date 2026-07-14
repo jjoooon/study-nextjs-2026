@@ -2,229 +2,64 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" chatbot="width=device-width, initial-scale=1.0">
   <title>Iframe Modal Test Bench</title>
   
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="chatbot-style.css">
 </head>
 <body>  
-  <!-- 우측 메인 영역 -->
-  <main class="main">
-    <header class="header">
-      <div class="header-top">
-        <img src="./images/iframe-gnb.png" alt="" style="height: 48px;">
-        <div class="header-top-right">
-          <img src="./images/iframe-gnb2.png" alt="" style="height: 40px;">
-          <div class="header-top-text">
-            김한화
-            <img src="./images/iframe-gnb3.png" alt="" style="height: 14px;">
-          </div>
-        </div>
-      </div>
-      <div class="header-bottom">
-        <div class="header-bottom-left"> 
-          <img src="./images/Home.png" alt="" style="height: 24px;">
-          <div class="header-tabs">
-          </div>
-        </div>
-        <img src="./images/iframe-gnb4.png" alt="" style="height: 24px;">
-      </div>
-    </header>
-    
-    <div class="container">
-      <aside class="aside">
-        <img src="./images/side1.png" alt="" style="width: 48px;">
-        <img src="./images/side2.png" alt="" style="width: 48px">
-      </aside>
+  <div class="chatbot">
+    <section class="chatbot-header">
+      <button class="btn-hambur">
+        <img src="./images/hambur-btn.png" alt="" style="height: 20px;">
+      </button>
+      <strong class="chatbot-header-name">김*희 ∙ 32세 ∙ 여 ∙ LA99999999999999</strong>
+      <button class="btn-info">
+        <img src="./images/dots-info-btn.png" alt="">
+      </button>
+    </section>
 
-      <!-- chatbot 영역 -->
-      <div class="content">
-        <section class="content-header">
-          <button class="btn-hambur">
-            <img src="./images/hambur-btn.png" alt="" style="height: 20px;">
-          </button>
-          <strong class="content-header-name">김*희 ∙ 32세 ∙ 여 ∙ LA99999999999999</strong>
-          <button class="btn-info">
-            <img src="./images/dots-info-btn.png" alt="">
-          </button>
-        </section>
-
-        <!-- chatbot 질문 영역 -->
-        <section class="content-body">
-          <div class="question-top">
-            <h1>안녕하세요<br>
-  무엇을 도와드릴까요?
-            </h1>
-            <ul class="question-list">
-              <li>
-                <button>원스탑 가입설계 시작하기</button>
-              </li>
-              <li><button>업무 처리 도움 받기</button></li>
-            </ul>
-            <p>위 2가지 질문유형 중 선택해 주세요. 이외의 필요한 업무는 대화창에 자유롭게 말씀해 주세요.</p>
-          </div>
-          <p class="user-question">한화 시그니처 여성 건강보험4.0과 한화 더 경증 간편건강보험Ⅱ(세만기형) 2601_TM 두 상품 비교해줘</p>
-          <div class="question-answer">
-            <div class="question-answer-group">
-              <ul class="question-answer-list">
-                <li>질문 이해</li>
-                <li>고객 정보 확인</li>
-                <li>담보 조건 분석</li>
-                <li>가입금액과 보험료 계산</li>
-              </ul>
-              <p class="question-ing">고객 정보를 확인하고 있어요</p>
-            </div>
-            <p class="question-answer-end">알겠습니다.<br>
+    <!-- chatbot 질문 영역 -->
+    <section class="chatbot-body">
+      <div class="question-top">
+        <h1>안녕하세요<br>
+무엇을 도와드릴까요?
+        </h1>
+        <ul class="question-list">
+          <li>
+            <button>원스탑 가입설계 시작하기</button>
+          </li>
+          <li><button>업무 처리 도움 받기</button></li>
+        </ul>
+        <p>위 2가지 질문유형 중 선택해 주세요. 이외의 필요한 업무는 대화창에 자유롭게 말씀해 주세요.</p>
+      </div>
+      <p class="user-question">한화 시그니처 여성 건강보험4.0과 한화 더 경증 간편건강보험Ⅱ(세만기형) 2601_TM 두 상품 비교해줘</p>
+      <div class="question-answer">
+        <div class="question-answer-group">
+          <ul class="question-answer-list">
+            <li>질문 이해</li>
+            <li>고객 정보 확인</li>
+            <li>담보 조건 분석</li>
+            <li>가입금액과 보험료 계산</li>
+          </ul>
+          <p class="question-ing">고객 정보를 확인하고 있어요</p>
+        </div>
+        <p class="question-answer-end">알겠습니다.<br>
 상품 성격·가입 대상·보장 구조 차이 중심으로, 설계 현장에서 바로 활용할 수 있도록 정확한 범위 내 비교를 정리해 드리겠습니다.</p>
-          </div>
-        </section>
-
-        <!-- 입력창 -->
-        <section class="content-footer">
-          <div class="footer-question-area">
-            <input type="text" placeholder="메시지 입력">
-            <div class="footer-question-btn"> 
-              <button class="btn-audio"><img src="./images/icon-microphone.png" alt=""></button>
-              <button class="btn-stop"><img src="./images/icon-stop.png" alt=""></button>
-            </div>
-          </div>
-          <p class="footer-text">개인정보를 입력하지 말아주세요.</p>
-        </section>
       </div>
-      <!-- // chatbot content 영역 -->
-    </div>
-    
-  </main>
+    </section>
 
-  <script>
-    const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
-    const PROD_STORYBOOK_BASE_URL = 'https://jjoooon.github.io/study-nextjs-2026';
-    const HYGITEST_STORYBOOK_BASE_URL = 'https://story-dev.hwgitest.com';
-
-    const LOCAL_HOST_NAMES = new Set(['localhost', '127.0.0.1']);
-    const HYGITEST_HOST_NAMES = new Set(['story-dev.hwgitest.com']);
-
-    function getInitialStorybookBase() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const env = urlParams.get('env');
-      if (env === 'prod') return PROD_STORYBOOK_BASE_URL;
-      if (env === 'hygitest') return HYGITEST_STORYBOOK_BASE_URL;
-      if (env === 'local') return LOCAL_STORYBOOK_BASE_URL;
-
-      const currentHost = window.location.hostname;
-      if (LOCAL_HOST_NAMES.has(currentHost)) {
-        return LOCAL_STORYBOOK_BASE_URL;
-      } else if (HYGITEST_HOST_NAMES.has(currentHost)) {
-        return HYGITEST_STORYBOOK_BASE_URL;
-      }
-      return PROD_STORYBOOK_BASE_URL;
-    }
-
-    const testIframe2 = document.getElementById('testIframe2');
-    const iframeWrapper = document.getElementById('iframeWrapper');
-    const headerTabs = document.querySelector('.header-tabs');
-
-    // 탭 클릭 이벤트 리스너 추가
-    headerTabs.addEventListener('click', (event) => {
-      const tab = event.target.closest('.header-tab');
-      if (!tab) return;
-
-      const targetId = tab.getAttribute('data-target-iframe');
-      if (!targetId) return;
-
-      // 모든 탭 비활성화
-      document.querySelectorAll('.header-tab').forEach((t) => {
-        t.setAttribute('data-active', 'false');
-      });
-      // 클릭한 탭 활성화
-      tab.setAttribute('data-active', 'true');
-
-      // 모든 iframe 숨김
-      const iframes = iframeWrapper.querySelectorAll('iframe');
-      iframes.forEach((iframe) => {
-        iframe.style.display = 'none';
-      });
-      // 대상 iframe 표시
-      const targetIframe = document.getElementById(targetId);
-      if (targetIframe) {
-        targetIframe.style.display = 'block';
-      }
-    });
-
-    // iframe 내부의 메시지 수신 처리
-    window.addEventListener('message', (event) => {
-      if (!event.data) return;
-
-      // 동적 높이 리사이즈 적용
-      if (event.data.type === 'DIALOG_RESIZE') {
-        const newHeight = event.data.height;
-        iframeWrapper.style.height = newHeight + 'px';
-      }
-
-      // 설계생성(CREATE_SCHEME) 수신 처리
-      if (event.data.type === 'CREATE_SCHEME') {
-        // 1. 기존 모든 탭 및 iframe 비활성화/숨김
-        document.querySelectorAll('.header-tab').forEach((t) => {
-          t.setAttribute('data-active', 'false');
-        });
-        iframeWrapper.querySelectorAll('iframe').forEach((iframe) => {
-          iframe.style.display = 'none';
-        });
-
-        // 2. 새 iframe 2개 동적 생성 및 추가
-        const existingIframeCount = iframeWrapper.querySelectorAll('iframe').length;
-        const newIframeId1 = 'testIframe' + (existingIframeCount + 1);
-        const newIframeId2 = 'testIframe' + (existingIframeCount + 2);
-
-        const iframe3 = document.createElement('iframe');
-        iframe3.id = newIframeId1;
-        iframe3.src = `${storybookBase}/iframe.html?id=app-ispl-ltpa350--default&viewMode=story`;
-        iframe3.style.display = 'block';
-
-        const iframe4 = document.createElement('iframe');
-        iframe4.id = newIframeId2;
-        iframe4.src = `${storybookBase}/iframe.html?id=app-ispl-ltpa350--default&viewMode=story`;
-        iframe4.style.display = 'none';
-
-        iframeWrapper.appendChild(iframe3);
-        iframeWrapper.appendChild(iframe4);
-
-        // 3. 새 탭 2개 생성
-        // 탭 3: 상품가입설계 (활성화)
-        const tab3 = document.createElement('div');
-        tab3.className = 'header-tab';
-        tab3.setAttribute('data-active', 'true');
-        tab3.setAttribute('data-target-iframe', newIframeId1);
-        tab3.innerHTML = `
-          <button type="button" class="header-tab-active">
-            김하나 [한화 3N5더간편건강보험(세만기형)2601]
-          </button>
-          <img src="./images/tab-del.png" class="header-tab-del" alt="" style="width:14px;">
-        `;
-
-        // 탭 4: 비교설계(홍길순)
-        const tab4 = document.createElement('div');
-        tab4.className = 'header-tab';
-        tab4.setAttribute('data-active', 'false');
-        tab4.setAttribute('data-target-iframe', newIframeId2);
-        tab4.innerHTML = `
-          <button type="button" class="header-tab-active">
-            김하나 [한화 3N5더간편건강보험(갱신형)2602]
-          </button>
-          <img src="./images/tab-del.png" class="header-tab-del" alt="" style="width:14px;">
-        `;
-
-        headerTabs.appendChild(tab3);
-        headerTabs.appendChild(tab4);
-      }
-    });
-
-    // 스토리북 URL 연결
-    const storybookBase = getInitialStorybookBase();
-    if (testIframe2) {
-      testIframe2.src = `${storybookBase}/iframe.html?id=app-ispl-gdplslc-components-popups-ltpz021--default&viewMode=story`;
-    }
-  </script>
+    <!-- 입력창 -->
+    <section class="chatbot-footer">
+      <div class="footer-question-area">
+        <input type="text" placeholder="메시지 입력">
+        <div class="footer-question-btn"> 
+          <button class="btn-audio"><img src="./images/icon-microphone.png" alt=""></button>
+          <button class="btn-stop"><img src="./images/icon-stop.png" alt=""></button>
+        </div>
+      </div>
+      <p class="footer-text">개인정보를 입력하지 말아주세요.</p>
+    </section>
+  </div>
 </body>
 </html>
