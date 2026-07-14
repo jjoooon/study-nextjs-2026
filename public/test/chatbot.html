@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" chatbot="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iframe Modal Test Bench</title>
   
   <link rel="stylesheet" href="chatbot-style.css">
@@ -67,5 +67,79 @@
       <p class="footer-text">개인정보를 입력하지 말아주세요.</p>
     </section>
   </div>
+
+  <script>
+    let isTopVisited = false;
+    let isAutoScrolling = false;
+    let targetScrollTop = 0;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const chatBody = document.querySelector('.chatbot-body');
+      const userQuestion = document.querySelector('.user-question');
+      const answerGroup = document.querySelector('.question-answer-group');
+      const answerIng = document.querySelector('.question-answer-ing');
+
+      if (!chatBody || !userQuestion) return;
+
+      // 챗봇창 열릴 때 질문 영역부터 노출 (위로 여백 유지)
+      function scrollToAnswer() {
+        const bodyRect = chatBody.getBoundingClientRect();
+        const targetRect = userQuestion.getBoundingClientRect();
+        
+        targetScrollTop = targetRect.top - bodyRect.top + chatBody.scrollTop - 20;
+        
+        isAutoScrolling = true;
+        chatBody.scrollTop = targetScrollTop;
+        
+        // 처음 열릴 때 애니메이션 활성화
+        answerGroup?.classList.add('active');
+        answerIng?.classList.add('active');
+
+        setTimeout(() => { isAutoScrolling = false; }, 100);
+      }
+
+      // 초기 실행
+      scrollToAnswer();
+      window.addEventListener('load', scrollToAnswer);
+
+      // 스크롤 감지 및 스냅 처리
+      let lastScrollTop = 0;
+      chatBody.addEventListener('scroll', () => {
+        if (isAutoScrolling) return;
+
+        const currentScroll = chatBody.scrollTop;
+
+        // 1. 스크롤을 최상단 영역까지 올렸을 때 재스냅 준비
+        if (currentScroll < 10) {
+          isTopVisited = true;
+        }
+
+        // 2. 위로 올렸다가 다시 아래로 스크롤을 내릴 때
+        if (currentScroll > lastScrollTop && isTopVisited) {
+          if (currentScroll >= targetScrollTop) {
+            isAutoScrolling = true;
+            chatBody.scrollTop = targetScrollTop;
+            isTopVisited = false;
+            
+            // 애니메이션 강제 리셋 및 재시작 (Reflow 적용)
+            if (answerGroup && answerIng) {
+              answerGroup.classList.remove('active');
+              answerIng.classList.remove('active');
+              
+              // Reflow를 유도하여 CSS 상태를 강제 초기화
+              void answerGroup.offsetWidth;
+              void answerIng.offsetWidth;
+              
+              answerGroup.classList.add('active');
+              answerIng.classList.add('active');
+            }
+
+            setTimeout(() => { isAutoScrolling = false; }, 150);
+          }
+        }
+        lastScrollTop = currentScroll;
+      });
+    });
+  </script>
 </body>
 </html>
