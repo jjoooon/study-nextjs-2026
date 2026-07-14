@@ -155,9 +155,7 @@ function Checkbox({
   };
 
   // controlled/ uncontrolled 공용 상태 처리
-  const [internalChecked, setInternalChecked] = React.useState<boolean | 'indeterminate'>(
-    defaultChecked ?? false
-  );
+  const [internalChecked, setInternalChecked] = React.useState<boolean | 'indeterminate'>(defaultChecked ?? false);
   const isControlled = propsChecked !== undefined;
   const checkedState: boolean | 'indeterminate' = isControlled
     ? (propsChecked as boolean | 'indeterminate')
