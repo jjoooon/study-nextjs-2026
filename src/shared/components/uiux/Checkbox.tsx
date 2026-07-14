@@ -65,6 +65,7 @@ function Checkbox({
   const generatedId = React.useId();
   const {
     checked: propsChecked,
+    defaultChecked,
     onCheckedChange: propsOnCheckedChange,
     id: propsId,
     required: isRequired = false,
@@ -154,7 +155,9 @@ function Checkbox({
   };
 
   // controlled/ uncontrolled 공용 상태 처리
-  const [internalChecked, setInternalChecked] = React.useState<boolean | 'indeterminate'>(false);
+  const [internalChecked, setInternalChecked] = React.useState<boolean | 'indeterminate'>(
+    defaultChecked ?? false
+  );
   const isControlled = propsChecked !== undefined;
   const checkedState: boolean | 'indeterminate' = isControlled
     ? (propsChecked as boolean | 'indeterminate')

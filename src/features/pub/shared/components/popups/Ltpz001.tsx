@@ -383,25 +383,13 @@ const Ltpz001 = () => {
                 </Gcol>
               </div>
               {/* 필수 스캔 대상 안내 문구 */}
-              <Gcol gap={1}>
-                <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-                  <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
-                    기타 필수 스캔 대상 서류안내
-                  </Typo>
-                  <Typo variant={'body-sm'} icon={'dot'} color={'gray'}>
-                    실명증표사본, 실명증표진위여부확인서(법인), 실명증표진위여부확인서(법인대리인), 실소유자확인서류
-                  </Typo>
-                </Gcol>
-                <Gcol placement={'ss'} variant="box-info">
-                  <Typo variant={'body-sm'} icon={'info'}>
-                    <b>발행관련 안내사항</b>
-                  </Typo>
-                  <BulletList size={'sm'}>
-                    <BulletListItem>
-                      상품설명서 및 청양서류의 부분출력은 발급물을 최초 발행한 이후에만 가능합니다.
-                    </BulletListItem>
-                  </BulletList>
-                </Gcol>
+              <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+                <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
+                  기타 필수 스캔 대상 서류안내
+                </Typo>
+                <Typo variant={'body-sm'} icon={'dot'} color={'gray'}>
+                  실명증표사본, 실명증표진위여부확인서(법인), 실명증표진위여부확인서(법인대리인), 실소유자확인서류
+                </Typo>
               </Gcol>
             </Grid>
 
@@ -716,7 +704,7 @@ const Ltpz001 = () => {
                     <Typo tag={'h3'} variant={'heading-sm'}>
                       리포트내용선택
                     </Typo>
-                    <Grow className="gap-1.5">
+                    <Gcol className="gap-1.5" placement="ss">
                       {[
                         { value: '설계단계 안내', label: '설계단계 안내' },
                         { value: '고객 및 기계약 요약정보', label: '고객 및 기계약 요약정보' },
@@ -735,7 +723,7 @@ const Ltpz001 = () => {
                           {option.label}
                         </Checkbox>
                       ))}
-                    </Grow>
+                    </Gcol>
                   </Gcol>
                 </Gcol>
               </TabPager>
