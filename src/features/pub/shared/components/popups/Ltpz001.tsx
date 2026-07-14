@@ -290,94 +290,96 @@ const Ltpz001 = () => {
             {/* 왼쪽 영역: 설계 정보 및 트리형 출력물 리스트 */}
             <Grid className="grid-rows-[1fr_auto] h-full gap-2">
               <div className=" w-full h-full relative min-h-[30rem] overflow-y-auto">
-                <Gcol gap={5} placement={'ss'} className="absolute">
-                  {/* 설계 정보 요약 영역 (예시로 2회 반복 렌더링) */}
-                  {[0, 1].map((idx) => (
-                    <Gcol gap={2} placement={'ss'} key={idx}>
-                      <Grow variant={'box-info-line'} className="w-full">
-                        <FormTable variant={'head'} className="w-full">
-                          <FormRow>
-                            <FormCell title={'설계번호'}>
-                              <Input value={'LA123456789012'} variant="info" readOnly />
-                            </FormCell>
-                            <FormCell title={'계약자명'}>
-                              <Input value={'김한화'} readOnly variant="info" />
-                            </FormCell>
-                            <FormCell title={'상품명'}>
-                              <Input value={'한화시그니처여성 건강 보험 3.0 무배당'} readOnly variant="info" />
-                            </FormCell>
-                          </FormRow>
-                        </FormTable>
-                      </Grow>
+                <Gcol gap={2} placement={'ss'} className="absolute">
+                  {/* 로그인계정: 상품지원팀 or IT팀에만 노출되는 영역 */}
+                  <Grow placement="ss" className="w-full">
+                    <Grow placement={'ss'} gap={2}>
+                      <Typo tag={'h4'} variant={'heading-sm'}>
+                        청약서발행이력
+                      </Typo>
+                      <RadioGroup defaultValue="실시간처리">
+                        {[
+                          { value: '실시간처리', label: '실시간처리' },
+                          { value: '대용량처리', label: '대용량처리' },
+                        ].map((option) => (
+                          <RadioGroupItem key={option.value} value={option.value}>
+                            {option.label}
+                          </RadioGroupItem>
+                        ))}
+                      </RadioGroup>
+                    </Grow>
+                  </Grow>
+                  {/* //로그인계정: 상품지원팀 or IT팀에만 노출되는 영역 */}
 
-                      {/* 로그인계정: 상품지원팀 or IT팀에만 노출되는 영역 */}
-                      <Grow placement="es" className="w-full">
-                        <Grow placement={'ss'} gap={2}>
-                          <Typo tag={'h4'} variant={'heading-sm'}>
-                            청약서발행이력
-                          </Typo>
-                          <RadioGroup defaultValue="실시간처리">
-                            {[
-                              { value: '실시간처리', label: '실시간처리' },
-                              { value: '대용량처리', label: '대용량처리' },
-                            ].map((option) => (
-                              <RadioGroupItem key={option.value} value={option.value}>
-                                {option.label}
-                              </RadioGroupItem>
-                            ))}
-                          </RadioGroup>
+                  <Gcol gap={5} placement={'ss'} className="absolute">
+                    {/* 설계 정보 요약 영역 (예시로 2회 반복 렌더링) */}
+                    {[0, 1].map((idx) => (
+                      <Gcol gap={2} placement={'ss'} key={idx}>
+                        <Grow variant={'box-info-line'} className="w-full">
+                          <FormTable variant={'head'} className="w-full">
+                            <FormRow>
+                              <FormCell title={'설계번호'}>
+                                <Input value={'LA123456789012'} variant="info" readOnly />
+                              </FormCell>
+                              <FormCell title={'계약자명'}>
+                                <Input value={'김한화'} readOnly variant="info" />
+                              </FormCell>
+                              <FormCell title={'상품명'}>
+                                <Input value={'한화시그니처여성 건강 보험 3.0 무배당'} readOnly variant="info" />
+                              </FormCell>
+                            </FormRow>
+                          </FormTable>
                         </Grow>
-                      </Grow>
-                      {/* //로그인계정: 상품지원팀 or IT팀에만 노출되는 영역 */}
 
-                      <div className="ag-theme-alpine">
-                        <AgGridReact<DummyDataType>
-                          // 필수 props
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          getRowId={(params) => String(params.data.id)}
-                          rowData={rowData}
-                          columnDefs={columnDefs}
-                          defaultColDef={{
-                            cellClass: 'text-center',
-                          }}
-                          domLayout="autoHeight"
-                          // 트리 데이터 설정: filePath 배열을 기준으로 계층 구조 형성
-                          treeData={true}
-                          getDataPath={(row) => row.filePath}
-                          groupDefaultExpanded={-1}
-                          // 그룹 컬럼(출력물 명칭) 정의
-                          autoGroupColumnDef={{
-                            headerName: '출력물',
-                            field: 'field1',
-                            flex: 11,
-                            tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
-                          }}
-                          // selection 설정
-                          rowSelection={{
-                            mode: 'multiRow',
-                            groupSelects: 'descendants',
-                            headerCheckbox: true,
-                            checkboxes: true,
-                            enableClickSelection: false,
-                            isRowSelectable: (params) => !params.data?.disabled && !params.data?.allDisabled,
-                          }}
-                          selectionColumnDef={{
-                            width: 30,
-                            cellClass: 'text-center editable-cell',
-                          }}
-                          onGridReady={(params) => {
-                            params.api.forEachNode((node) => {
-                              if (node.data?.isCheck) {
-                                node.setSelected(true);
-                              }
-                            });
-                          }}
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                        />
-                      </div>
-                    </Gcol>
-                  ))}
+                        <div className="ag-theme-alpine">
+                          <AgGridReact<DummyDataType>
+                            // 필수 props
+                            noRowsOverlayComponent={AgGridEmptyComponent}
+                            getRowId={(params) => String(params.data.id)}
+                            rowData={rowData}
+                            columnDefs={columnDefs}
+                            defaultColDef={{
+                              cellClass: 'text-center',
+                            }}
+                            domLayout="autoHeight"
+                            // 트리 데이터 설정: filePath 배열을 기준으로 계층 구조 형성
+                            treeData={true}
+                            getDataPath={(row) => row.filePath}
+                            groupDefaultExpanded={-1}
+                            // 그룹 컬럼(출력물 명칭) 정의
+                            autoGroupColumnDef={{
+                              headerName: '출력물',
+                              field: 'field1',
+                              flex: 11,
+                              tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field1' }),
+                            }}
+                            // selection 설정
+                            rowSelection={{
+                              mode: 'multiRow',
+                              groupSelects: 'descendants',
+                              headerCheckbox: true,
+                              checkboxes: true,
+                              enableClickSelection: false,
+                              isRowSelectable: (params) => !params.data?.disabled && !params.data?.allDisabled,
+                            }}
+                            selectionColumnDef={{
+                              width: 30,
+                              cellClass: 'text-center editable-cell',
+                            }}
+                            onGridReady={(params) => {
+                              params.api.forEachNode((node) => {
+                                if (node.data?.isCheck) {
+                                  node.setSelected(true);
+                                }
+                              });
+                            }}
+                            tooltipShowMode="whenTruncated"
+                            tooltipShowDelay={0}
+                          />
+                        </div>
+                      </Gcol>
+                    ))}
+                  </Gcol>
                 </Gcol>
               </div>
               {/* 필수 스캔 대상 안내 문구 */}
