@@ -6,7 +6,7 @@
 import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
@@ -17,7 +17,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
-import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Checkbox } from '@uiux/Checkbox';
 
 import {
   Dialog,
@@ -238,7 +238,20 @@ const Ltpz001 = () => {
     mobileArea: '010',
     mobileMiddle: '',
     mobileLast: '',
+    batchPrintOptions: ['고객용', '회사용'],
+    agreementTypes: ['요약'],
+    reportOptions: ['설계단계 안내', '고객 및 기계약 요약정보', '주요문의 FAQ 요약'],
   });
+
+  const handleToggleOption = useCallback(
+    (key: 'batchPrintOptions' | 'agreementTypes' | 'reportOptions', value: string, checked: boolean) => {
+      const currentList = form[key];
+      const nextList = checked ? [...currentList, value] : currentList.filter((item) => item !== value);
+      setFormField(key, nextList);
+    },
+    [form, setFormField]
+  );
+
   const [tabActive, setTabActive] = useState('tabP');
   const [confirmDialog1Open, setConfirmDialog1Open] = useState(false);
   const [confirmDialog2Open, setConfirmDialog2Open] = useState(false);
@@ -432,32 +445,46 @@ const Ltpz001 = () => {
                         <Typo tag={'h3'} variant={'heading-sm'}>
                           일괄출력
                         </Typo>
-                        <CheckboxGroup className="gap-3" defaultValue={['고객용']}>
+                        <Grow className="gap-3">
                           {[
                             { value: '고객용', label: '고객용' },
                             { value: '회사용', label: '회사용' },
                           ].map((option) => (
-                            <CheckboxGroupItem key={option.value} value={option.value}>
+                            <Checkbox
+                              key={option.value}
+                              value={option.value}
+                              checked={form.batchPrintOptions.includes(option.value)}
+                              onCheckedChange={(checked) =>
+                                handleToggleOption('batchPrintOptions', option.value, Boolean(checked))
+                              }
+                            >
                               {option.label}
-                            </CheckboxGroupItem>
+                            </Checkbox>
                           ))}
-                        </CheckboxGroup>
+                        </Grow>
                       </Gcol>
 
                       <Gcol placement={'ss'} gap={2}>
                         <Typo tag={'h3'} variant={'heading-sm'}>
                           계약체결동의서 유형
                         </Typo>
-                        <CheckboxGroup className="gap-3" defaultValue={['요약']}>
+                        <Grow className="gap-3">
                           {[
                             { value: '요약', label: '요약' },
                             { value: '상세', label: '상세' },
                           ].map((option) => (
-                            <CheckboxGroupItem key={option.value} value={option.value}>
+                            <Checkbox
+                              key={option.value}
+                              value={option.value}
+                              checked={form.agreementTypes.includes(option.value)}
+                              onCheckedChange={(checked) =>
+                                handleToggleOption('agreementTypes', option.value, Boolean(checked))
+                              }
+                            >
                               {option.label}
-                            </CheckboxGroupItem>
+                            </Checkbox>
                           ))}
-                        </CheckboxGroup>
+                        </Grow>
                       </Gcol>
 
                       <Gcol placement={'ss'} gap={2}>
@@ -631,7 +658,6 @@ const Ltpz001 = () => {
                           ))}
                         </RadioGroup>
                       </Gcol>
-
                       <Gcol placement={'ss'} gap={2}>
                         <Typo tag={'h3'} variant={'heading-sm'}>
                           수신자명
@@ -688,7 +714,7 @@ const Ltpz001 = () => {
                     <Typo tag={'h3'} variant={'heading-sm'}>
                       리포트내용선택
                     </Typo>
-                    <CheckboxGroup className="gap-1.5" defaultValue={['']}>
+                    <Grow className="gap-1.5">
                       {[
                         { value: '설계단계 안내', label: '설계단계 안내' },
                         { value: '고객 및 기계약 요약정보', label: '고객 및 기계약 요약정보' },
@@ -696,11 +722,18 @@ const Ltpz001 = () => {
                         { value: '발급서류 및 비발급서류 안내', label: '발급서류 및 비발급서류 안내' },
                         { value: '주요문의 FAQ 요약', label: '주요문의 FAQ 요약' },
                       ].map((option) => (
-                        <CheckboxGroupItem key={option.value} value={option.value}>
+                        <Checkbox
+                          key={option.value}
+                          value={option.value}
+                          checked={form.reportOptions.includes(option.value)}
+                          onCheckedChange={(checked) =>
+                            handleToggleOption('reportOptions', option.value, Boolean(checked))
+                          }
+                        >
                           {option.label}
-                        </CheckboxGroupItem>
+                        </Checkbox>
                       ))}
-                    </CheckboxGroup>
+                    </Grow>
                   </Gcol>
                 </Gcol>
               </TabPager>
