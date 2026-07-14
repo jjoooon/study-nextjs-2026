@@ -793,3 +793,118 @@ export const DynamicTabs: Story = {
     );
   },
 };
+
+export const EffectActivation: Story = {
+  render: (args) => {
+    const [tabs, setTabs] = React.useState([
+      { name: '1단계: 기본 정보', value: 'step1', disabled: false },
+      { name: '2단계: 건강 고지', value: 'step2', disabled: true },
+    ]);
+    const [active, setActive] = React.useState('step1');
+    const [isStep1Completed, setIsStep1Completed] = React.useState(false);
+
+    React.useEffect(() => {
+      if (isStep1Completed) {
+        setTabs((prevTabs) => prevTabs.map((tab) => (tab.value === 'step2' ? { ...tab, disabled: false } : tab)));
+      } else {
+        setTabs((prevTabs) => prevTabs.map((tab) => (tab.value === 'step2' ? { ...tab, disabled: true } : tab)));
+        if (active === 'step2') {
+          setActive('step1');
+        }
+      }
+    }, [isStep1Completed]);
+
+    return (
+      <Gcol gap={4} className="w-full p-8">
+        <Grow gap={2} className="mb-2 items-center">
+          <Button
+            variant="contained"
+            color={isStep1Completed ? 'gray' : 'primary'}
+            onClick={() => setIsStep1Completed(!isStep1Completed)}
+          >
+            {isStep1Completed ? '1단계 완료 취소 (탭 비활성화)' : '1단계 검증 완료 (탭 활성화)'}
+          </Button>
+          <span className="text-[1.3rem] text-[var(--color-gray-60)] ml-2">
+            현재 상태: {isStep1Completed ? '1단계 검증 완료 (2단계 활성화됨)' : '1단계 미완료 (2단계 클릭 불가)'}
+          </span>
+        </Grow>
+        <TabPager
+          data={tabs}
+          active={active}
+          setActive={setActive}
+          getValue={(tab) => tab.value}
+          renderTab={(tab) => <span className="text-[1.3rem] font-bold">{tab.name}</span>}
+          visibleCount={args.visibleCount}
+          variant={args.variant}
+        >
+          <div className="w-full p-10 bg-[var(--color-gray-5)] flex flex-col items-center justify-center gap-2">
+            <h4 className="text-[1.6rem] font-bold">
+              현재 보고 있는 탭: {active === 'step1' ? '1단계 기본 정보' : '2단계 건강 고지'}
+            </h4>
+            <p className="text-[1.4rem]">
+              {active === 'step1'
+                ? '기본 정보 입력 화면입니다. 상단의 검증 완료 버튼을 누르시면 2단계 탭이 활성화됩니다.'
+                : '축하합니다! 비활성화되었던 2단계 건강 고지 탭에 진입하셨습니다.'}
+            </p>
+          </div>
+        </TabPager>
+      </Gcol>
+    );
+  },
+};
+
+export const HandlerActivation: Story = {
+  render: (args) => {
+    const [tabs, setTabs] = React.useState([
+      { name: '1단계: 약관 동의', value: 'step1', disabled: false },
+      { name: '2단계: 상품 가입', value: 'step2', disabled: true },
+    ]);
+    const [active, setActive] = React.useState('step1');
+
+    const handleAgreeAndNext = () => {
+      setTabs((prevTabs) => prevTabs.map((tab) => (tab.value === 'step2' ? { ...tab, disabled: false } : tab)));
+      setActive('step2');
+    };
+
+    const handleReset = () => {
+      setTabs((prevTabs) => prevTabs.map((tab) => (tab.value === 'step2' ? { ...tab, disabled: true } : tab)));
+      setActive('step1');
+    };
+
+    return (
+      <Gcol gap={4} className="w-full p-8">
+        <Grow gap={2} className="mb-2">
+          {tabs.find((t) => t.value === 'step2')?.disabled ? (
+            <Button variant="contained" color="primary" onClick={handleAgreeAndNext}>
+              동의하고 다음단계 이동 (이벤트 핸들러에서 즉시 활성화 + 탭이동)
+            </Button>
+          ) : (
+            <Button variant="outlined" color="gray" onClick={handleReset}>
+              초기화 (탭 다시 비활성화)
+            </Button>
+          )}
+        </Grow>
+        <TabPager
+          data={tabs}
+          active={active}
+          setActive={setActive}
+          getValue={(tab) => tab.value}
+          renderTab={(tab) => <span className="text-[1.3rem] font-bold">{tab.name}</span>}
+          visibleCount={args.visibleCount}
+          variant={args.variant}
+        >
+          <div className="w-full p-10 bg-[var(--color-gray-5)] flex flex-col items-center justify-center gap-2">
+            <h4 className="text-[1.6rem] font-bold">
+              현재 보고 있는 탭: {active === 'step1' ? '1단계 약관 동의' : '2단계 상품 가입'}
+            </h4>
+            <p className="text-[1.4rem]">
+              {active === 'step1'
+                ? '약관 내용을 확인하시고 상단 버튼을 클릭하시면 2단계 가입 탭 활성화와 동시에 탭이 자동으로 전환됩니다.'
+                : '가입서 작성 화면입니다.'}
+            </p>
+          </div>
+        </TabPager>
+      </Gcol>
+    );
+  },
+};

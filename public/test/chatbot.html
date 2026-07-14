@@ -11,7 +11,7 @@
   <div class="chatbot">
     <section class="chatbot-header">
       <button class="btn-hambur">
-        <img src="./images/hambur-btn.png" alt="" style="height: 20px;">
+        <img src="./images/hambur-btn.png" alt="">
       </button>
       <strong class="chatbot-header-name">김*희 ∙ 32세 ∙ 여 ∙ LA99999999999999</strong>
       <button class="btn-info">
@@ -22,31 +22,37 @@
     <!-- chatbot 질문 영역 -->
     <section class="chatbot-body">
       <div class="question-top">
-        <h1>안녕하세요<br>
-무엇을 도와드릴까요?
-        </h1>
+        <h1>안녕하세요<br>무엇을 도와드릴까요?</h1>
         <ul class="question-list">
           <li>
-            <button>원스탑 가입설계 시작하기</button>
+            <button type="button">원스탑 가입설계 시작하기</button>
           </li>
-          <li><button>업무 처리 도움 받기</button></li>
+          <li>
+            <button type="button">업무 처리 도움 받기</button>
+          </li>
         </ul>
         <p>위 2가지 질문유형 중 선택해 주세요. 이외의 필요한 업무는 대화창에 자유롭게 말씀해 주세요.</p>
       </div>
       <p class="user-question">한화 시그니처 여성 건강보험4.0과 한화 더 경증 간편건강보험Ⅱ(세만기형) 2601_TM 두 상품 비교해줘</p>
-      <div class="question-answer">
-        <div class="question-answer-group">
-          <ul class="question-answer-list">
-            <li>질문 이해</li>
-            <li>고객 정보 확인</li>
-            <li>담보 조건 분석</li>
-            <li>가입금액과 보험료 계산</li>
-          </ul>
-          <p class="question-ing">고객 정보를 확인하고 있어요</p>
+      <div class="question-answer-group">
+        <button  type="button" class="btn-answer-view">사고 과정 보기</button>
+        <p>네, <strong>뇌혈관(뇌혈관질환) 담보는 약관에서 정한 뇌혈관질환 범위에 '뇌출혈'(통상 160~162 등)이 포함되는 구조</strong>로 확인됩니다.</p>
+        <p>다만 뇌 관련 담보는 상품/담보명에 따라 범위가 달라질 수 있는데, 해당 약관에는 <strong>'특정상해성뇌출혈진단비'처럼 뇌출혈을 별도로 정의해 보장하는 담보</strong>도 함께 규정되어 있습니다.</p>
+        <p>즉, </p>
+        <ul class="question-answer-list">
+          <li><strong>뇌혈관질환 담보</strong>: 약관상 뇌혈관질환 상병 범위(160~167) 안에 <strong>뇌출혈이 포함</strong></li>
+          <li><strong>뇌출혈 단독/특정 담보</strong>: '특정상해성뇌출혈'처럼 <strong>뇌출혈을 별도로 정해 보장</strong></li>
+        </ul>
+        <p>원하시면, 현재 설계에 뇌혈관질환 진단비/수술비를 추가할 때(또는 이미 있다면) 해당 담보명 기준으로 어떤 범위인지까지 딱 맞춰 정리해 드리겠습니다.</p>
+        <p class="question-text">AI 가상비서의 응답이 완벽하지 않을 수 있습니다. 자세한 내용은 출처를 참고해 주세요. </p>
+        <div class="question-answer-btn">
+          <button type="button"><img src="./images/icon-copy.png" alt=""></button>
+          <button type="button"><img src="./images/icon-good.png" alt=""></button>
+          <button type="button"><img src="./images/icon-hate.png" alt=""></button>
         </div>
-        <p class="question-answer-end">알겠습니다.<br>
-상품 성격·가입 대상·보장 구조 차이 중심으로, 설계 현장에서 바로 활용할 수 있도록 정확한 범위 내 비교를 정리해 드리겠습니다.</p>
       </div>
+      <p class="question-answer-ing">알겠습니다.<br>
+상품 성격·가입 대상·보장 구조 차이 중심으로, 설계 현장에서 바로 활용할 수 있도록 정확한 범위 내 비교를 정리해 드리겠습니다.</p>
     </section>
 
     <!-- 입력창 -->

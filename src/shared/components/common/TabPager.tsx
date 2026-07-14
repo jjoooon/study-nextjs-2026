@@ -134,7 +134,6 @@ export function TabPager<T>({
     getValue
   );
 
-  console.log('data', data);
   // removable이 true일 때만 onRemove 전달
   const tabsProps = {
     variant,
