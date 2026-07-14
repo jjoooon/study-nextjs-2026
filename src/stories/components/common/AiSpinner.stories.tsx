@@ -10,7 +10,17 @@ const meta: Meta<typeof AiSpinner> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#202020', padding: '2rem', borderRadius: '1rem' }}>
+      <div
+        style={{
+          minHeight: '400px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#202020',
+          padding: '2rem',
+          borderRadius: '1rem',
+        }}
+      >
         <Story />
       </div>
     ),

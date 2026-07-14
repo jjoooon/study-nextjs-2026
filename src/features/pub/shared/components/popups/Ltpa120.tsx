@@ -40,7 +40,7 @@ function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number }
 
 export interface Ltpa120Props {
   isButton?: boolean;
-  className: string;
+  className?: string;
   open?: boolean;
   setOpen?: (open: boolean) => void;
   minimized?: boolean;

@@ -146,7 +146,8 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
     const readonlyStyle = readOnly
       ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
       : '';
-    const disabledStyle = 'disabled:opacity-50 disabled:cursor-not-allowed';
+    const disabledStyle =
+      'disabled:bg-[var(--color-input-surface-disabled)] disabled:cursor-not-allowed disabled:opacity-100';
     const disabledStyle2 = 'disabled:opacity-100 !border-0 !p-0 !w-auto';
     const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
@@ -160,14 +161,14 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
         ? 'var(--color-danger-50)'
         : required
           ? 'var(--color-gray-50)'
-          : readOnly
+          : readOnly || props.disabled
             ? 'var(--color-gray-30)'
             : 'var(--color-gray-50)';
 
     return (
       <div className={cn('relative', className)} style={widthStyle}>
         <div className="group/native-select relative tracking-[-0.13rem]" data-slot="native-select-wrapper">
-          {variant !== 'text' && !props.disabled ? (
+          {variant !== 'text' ? (
             <>
               <select
                 ref={localRef}
