@@ -352,8 +352,63 @@ const dummyDataList: DummyDataListType[] = [
 ];
 
 export function Ltpa02002({ userType }: { userType: string }) {
+  // 1. Hooks & Refs
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const dataList = dummyDataList;
+  const prevComparedKeysRef = React.useRef<string[]>([]);
+
+  // 2. States (기능 및 비즈니스 영역별로 그룹화)
+  // 2-1. 데이터 로딩 및 결과 관련 상태
+  const [dataNone, setDataNone] = useState<boolean>(true);
+  const [dataList, setDataList] = React.useState<DummyDataListType[]>([]);
+  const [dataListLoading, setDataListLoading] = React.useState<boolean>(false);
+  const [selectedPlanKey, setSelectedPlanKey] = useState<string | null>('1-0');
+  const [comparedPlanKeys, setComparedPlanKeys] = useState<string[]>([]);
+
+  // 2-2. 필터 / 아코디언 / 화면 제어 관련 상태
+  const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(true);
+  const [isProductOptionOpen, setIsProductOptionOpen] = useState<string>('상품옵션');
+  const [isAmountInputVisible, setIsAmountInputVisible] = useState<boolean>(false);
+  const [openLtpz021, setOpenLtpz021] = useState<boolean>(false);
+  const [isAiReasonExpanded, setIsAiReasonExpanded] = useState<boolean>(false);
+
+  // 2-3. 추가 정보 / 보장 분석 / 특징 조건 관련 상태
+  const [selectedCoverageValues, setSelectedCoverageValues] = useState<CoverageOptionValue[]>([]);
+  const [selectedAnalysisValue, setSelectedAnalysisValue] = useState<AnalysisOptionValueWithEmpty>('');
+  const [noRefundValue, setNoRefundValue] = useState<ApplyOptionValue>('');
+  const [premiumWaiverValue, setPremiumWaiverValue] = useState<ApplyOptionValue>('');
+  const [maturityValue, setMaturityValue] = useState<MaturityOptionValue>('');
+  const [simpleType, setSimpleType] = useState<string>(''); // '표준' | '간편' | ''
+  const [additionalDiseases, setAdditionalDiseases] = useState<string[]>([]); // ['고혈압', ...]
+  const [hospitalInputs, setHospitalInputs] = useState<string[]>(['', '', '', '', '']);
+
+  // 2-4. 애니메이션 제어 관련 상태
+  const [animateCardPhase, setAnimateCardPhase] = useState<'idle' | 'appear' | 'fall'>('idle');
+  const [isButtonShaking, setIsButtonShaking] = useState<boolean>(false);
+
+  // 3. Constants & Options (상수 정의)
+  const customerType = userType;
+
+  const coverageOptions = [
+    { value: '사망/후유', label: '사망/후유' },
+    { value: '진단비', label: '진단비' },
+    { value: '입원/통원', label: '입원/통원' },
+    { value: '수술/치료', label: '수술/치료' },
+    { value: '골절/화상', label: '골절/화상' },
+    { value: '검사/지원', label: '검사/지원' },
+  ] as const;
+  type CoverageOptionValue = (typeof coverageOptions)[number]['value'];
+
+  const AnalysisOptions = [
+    { value: '보장분석 부족자금', label: '보장분석 부족자금' },
+    { value: '기계약 누적해소', label: '기계약 누적해소' },
+    { value: '기계약 유지', label: '기계약 유지' },
+  ] as const;
+  type AnalysisOptionValue = (typeof AnalysisOptions)[number]['value'];
+  type AnalysisOptionValueWithEmpty = '' | AnalysisOptionValue;
+
+  type ApplyOptionValue = '' | '적용' | '미적용';
+  type MaturityOptionValue = '' | '세만기' | '연만기';
+
   const columnDefs4: ColDef<DummyDataListDetailType>[] = [
     {
       headerName: '담보명',
@@ -382,69 +437,44 @@ export function Ltpa02002({ userType }: { userType: string }) {
     },
   ];
 
-  const customerType = userType;
-  const [isAmountInputVisible, setIsAmountInputVisible] = useState<boolean>(false);
-  const [dataNone, setDataNone] = useState<boolean>(true);
-  const [isFilterOptionOpen, setIsFilterOptionOpen] = useState<boolean>(true);
-  const [isProductOptionOpen, setIsProductOptionOpen] = useState<string>('상품옵션');
-  const coverageOptions = [
-    { value: '사망/후유', label: '사망/후유' },
-    { value: '진단비', label: '진단비' },
-    { value: '입원/통원', label: '입원/통원' },
-    { value: '수술/치료', label: '수술/치료' },
-    { value: '골절/화상', label: '골절/화상' },
-    { value: '검사/지원', label: '검사/지원' },
-  ] as const;
-  type CoverageOptionValue = (typeof coverageOptions)[number]['value'];
-  const [selectedCoverageValues, setSelectedCoverageValues] = useState<CoverageOptionValue[]>([]);
+  // 4. Derived Values (상태나 프롭으로부터 유도되는 변수)
   const selectedCoverageSummary =
     selectedCoverageValues.length === 0
       ? '선택'
       : selectedCoverageValues.length === 1
         ? selectedCoverageValues[0]
         : `${selectedCoverageValues[0]} 외 ${selectedCoverageValues.length - 1}개`;
-  // 보장분석
-  const AnalysisOptions = [
-    { value: '보장분석 부족자금', label: '보장분석 부족자금' },
-    { value: '기계약 누적해소', label: '기계약 누적해소' },
-    { value: '기계약 유지', label: '기계약 유지' },
-  ] as const;
-  type AnalysisOptionValue = (typeof AnalysisOptions)[number]['value'];
-  type AnalysisOptionValueWithEmpty = '' | AnalysisOptionValue;
-  const [selectedAnalysisValue, setSelectedAnalysisValue] = useState<AnalysisOptionValueWithEmpty>('');
+
   const selectedAnalysisSummary = selectedAnalysisValue ? selectedAnalysisValue : '선택';
-  // 상품특징
-  type ApplyOptionValue = '' | '적용' | '미적용';
-  type MaturityOptionValue = '' | '세만기' | '연만기';
-  const [noRefundValue, setNoRefundValue] = useState<ApplyOptionValue>('');
-  const [premiumWaiverValue, setPremiumWaiverValue] = useState<ApplyOptionValue>('');
-  const [maturityValue, setMaturityValue] = useState<MaturityOptionValue>('');
+
   const productFeatureSummaryValues = [
     noRefundValue === '적용' ? '무해지' : '',
     premiumWaiverValue === '적용' ? '납면' : '',
     maturityValue,
   ].filter((value) => value.length > 0);
+
   const selectedProductFeatureSummary =
     productFeatureSummaryValues.length > 0 ? productFeatureSummaryValues.join(', ') : '선택';
-  const [simpleType, setSimpleType] = useState<string>(''); // '표준' | '간편' | ''
-  const [additionalDiseases, setAdditionalDiseases] = useState<string[]>([]); // ['고혈압', ...]
-  const [hospitalInputs, setHospitalInputs] = useState<string[]>(['', '', '', '', '']);
-  // 고지유형 요약
+
   const hasHospitalInput = hospitalInputs.some((v) => v.trim() !== '');
+
   const selectedNoticeSummary =
     [simpleType, ...additionalDiseases, hasHospitalInput ? '입원수술' : ''].filter(Boolean).join(', ') || '선택';
 
-  // dataNone, setDataNone은 부모에서 props로 받음
-  const [selectedPlanKey, setSelectedPlanKey] = useState<string | null>('1-0');
-  const [comparedPlanKeys, setComparedPlanKeys] = useState<string[]>([]);
-  const [openLtpz021, setOpenLtpz021] = useState<boolean>(false);
-  const [isAiReasonExpanded, setIsAiReasonExpanded] = useState<boolean>(false);
+  // 5. Helper Functions
+  const getSelectedPlanInfo = () => {
+    if (!selectedPlanKey) return null;
+    const [productId, planIndex] = selectedPlanKey.split('-').map(Number);
+    const product = dummyDataList.find((item) => item.id === productId);
+    if (!product) return null;
+    const plan = product.field4[planIndex];
+    return { product, plan };
+  };
 
-  // 비교하기 체크 애니메이션 페이즈 상태 및 효과
-  const [animateCardPhase, setAnimateCardPhase] = useState<'idle' | 'appear' | 'fall'>('idle');
-  const [isButtonShaking, setIsButtonShaking] = useState<boolean>(false);
-  const prevComparedKeysRef = React.useRef<string[]>([]);
+  const selectedPlanInfo = getSelectedPlanInfo();
 
+  // 6. Effects
+  // 6-1. 비교하기 체크 애니메이션 효과
   React.useEffect(() => {
     const prevKeys = prevComparedKeysRef.current;
     const currentKeys = comparedPlanKeys;
@@ -488,41 +518,19 @@ export function Ltpa02002({ userType }: { userType: string }) {
     };
   }, [comparedPlanKeys]);
 
-  // 선택된 플랜 정보 가져오기
-  const getSelectedPlanInfo = () => {
-    if (!selectedPlanKey) return null;
-    const [productId, planIndex] = selectedPlanKey.split('-').map(Number);
-    const product = dummyDataList.find((item) => item.id === productId);
-    if (!product) return null;
-    const plan = product.field4[planIndex];
-    return { product, plan };
-  };
-
-  const selectedPlanInfo = getSelectedPlanInfo();
-
-  const [dataListLoading1, setDataListLoading1] = React.useState<boolean>(true);
-  const [dataListLoading2, setDataListLoading2] = React.useState<boolean>(true);
-  const [dataListLoading3, setDataListLoading3] = React.useState<boolean>(true);
-  const [isLoadingStarted, setIsLoadingStarted] = React.useState<boolean>(false);
-
+  // 6-2. 데이터 로딩 지연 효과 (10초)
   React.useEffect(() => {
-    if (!isLoadingStarted) return;
+    if (!dataListLoading) return;
 
     const timer1 = setTimeout(() => {
-      setDataListLoading1(false);
-    }, 2400);
-    const timer2 = setTimeout(() => {
-      setDataListLoading2(false);
-    }, 2800);
-    const timer3 = setTimeout(() => {
-      setDataListLoading3(false);
-    }, 3300);
+      setDataList(dummyDataList);
+      setDataListLoading(false);
+    }, 1000000);
+
     return () => {
       clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
     };
-  }, [isLoadingStarted]);
+  }, [dataListLoading]);
 
   return (
     <Grid className="w-full grid-rows-[auto_1fr]" gap={3}>
@@ -658,10 +666,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   onClick={() => {
                     setDataNone(false);
                     setIsFilterOptionOpen(false);
-                    setDataListLoading1(true);
-                    setDataListLoading2(true);
-                    setDataListLoading3(true);
-                    setIsLoadingStarted(true);
+                    setDataListLoading(true);
                   }}
                 >
                   설계추천
@@ -948,10 +953,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
               style={{ objectFit: 'cover' }}
               onClick={() => {
                 setDataNone(false);
-                setDataListLoading1(true);
-                setDataListLoading2(true);
-                setDataListLoading3(true);
-                setIsLoadingStarted(true);
+                setDataListLoading(true);
               }}
               className="relative!"
             />
@@ -963,7 +965,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
           </p>
         </Gcol>
       ) : (
-        <Grid className="w-full grid-rows-[1fr_auto]" gap={0}>
+        <>
           <Grid
             className="w-[calc(100vw + 2rem)] h-full grid-rows-[1fr] grid-cols-[2fr_1fr] min-[1600px]:grid-cols-[5fr_4fr] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
             gap={3}
@@ -976,19 +978,20 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   gap={3}
                   placement="ss"
                 >
-                  {dataList.map((item, index) => (
-                    <Grid
-                      key={item.id}
-                      className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] min-h-[19.1rem]"
-                    >
-                      {index === 0 && dataListLoading1 ? (
-                        <Spinner texts={['AI가 추천 조건을 설정하고 있습니다...', '데이터 분석을 시작합니다.']} />
-                      ) : index === 1 && dataListLoading2 ? (
-                        <Spinner texts={['인수 한도를 조회하고 있습니다...', '누적 가입금액을 계산 중입니다.']} />
-                      ) : index === 2 && dataListLoading3 ? (
-                        <Spinner texts={['대안 설계를 매칭하고 있습니다...', '최종 추천안을 생성하는 중입니다.']} />
-                      ) : (
-                        <>
+                  {dataListLoading
+                    ? Array.from({ length: 3 }).map((_, i) => (
+                        <Grid
+                          key={i}
+                          className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] min-h-[19.1rem]"
+                        >
+                          <Spinner texts={['AI가 추천 조건을 설정하고 있습니다...', '데이터 분석을 시작합니다.']} />
+                        </Grid>
+                      ))
+                    : dataList.map((item) => (
+                        <Grid
+                          key={item.id}
+                          className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] min-h-[19.1rem]"
+                        >
                           <Gcol gap={2} placement="ss">
                             <Typo tag="h3" variant="heading-xl" className="break-keep pb-[0.4rem]">
                               {item.field1}
@@ -1101,92 +1104,103 @@ export function Ltpa02002({ userType }: { userType: string }) {
                               );
                             })}
                           </Grow>
-                        </>
-                      )}
-                    </Grid>
-                  ))}
+                        </Grid>
+                      ))}
                 </Gcol>
               </div>
             </div>
             {/* 상세 */}
-            <Grid
-              className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr_auto]"
-              gap={0}
-            >
-              <Gcol
-                className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] rounded-b-[1rem] "
-                placement="ss"
-                style={{
-                  backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
-                  backgroundRepeat: 'no-repeat',
-                  backgroundSize: '10rem, cover',
-                  backgroundPosition: '96% -6%',
-                }}
-              >
-                <Typo tag="p" variant="body-sm" className="text-white opacity-80">
-                  보장내용 확인
-                </Typo>
-                <Typo tag="strong" variant="body-md" weight="bold" className="text-white">
-                  {selectedPlanInfo?.product.field1}
-                </Typo>
+            {dataListLoading ? (
+              <Gcol className="h-full max-h-[61.5rem]" placement="cc">
+                <Gcol className="gap-[2.5rem]">
+                  <img src={withPublicUrl('/images/ai100per.svg')} alt="" style={{ width: '24.6rem' }} />
+                  <p className="text-center text-[1.3rem] font-bold text-[var(--color-primary-50)]">
+                    상품을 추천할 고객과 조건을 선택하고
+                    <br />
+                    <b className="text-[var(--color-primary-50)]">최적의 상품 플랜</b>을 확인하세요!
+                  </p>
+                </Gcol>
               </Gcol>
-
-              <Grid className="px-[1rem] pb-0 pt-[0.8rem] gap-[0.8rem] grid-rows-[auto_1fr]">
-                <Grow
-                  className="grid grid-cols-[6.7rem_1fr] place-items-start gap-2 w-full bg-[var(--color-information-10)] p-2.5 rounded-[1rem] h-full"
-                  placement="ss"
-                >
-                  <Button
-                    variant={'outlined'}
-                    color={'link'}
-                    onClick={() => setIsAiReasonExpanded((prev) => !prev)}
-                    className="group w-full rounded-[1rem] w-full rounded-[0.6rem] border border-[var(--color-information-50)] bg-white px-[0.6rem] py-[0.6rem] h-auto"
-                  >
-                    <Gcol
-                      placement="ss"
-                      gap={0}
-                      className="text-[var(--color-information-50)] font-bold leading-none text-[1.1rem]"
-                    >
-                      <Grow placement="sc" gap={0} className="leading-none">
-                        AI <Ai2Icon size={10} color="var(--color-information-50)" />
-                      </Grow>
-                      <div className="leading-none">추천이유</div>
-                    </Gcol>
-                    <SelectDropIcon
-                      className={`text-[var(--color-information-50)] transition-transform ${isAiReasonExpanded ? 'rotate-180' : 'rotate-0'}`}
-                    />
-                  </Button>
-                  <div
-                    className={`${isAiReasonExpanded ? 'max-h-[100%]' : 'max-h-[3.4rem]'} h-full overflow-y-auto pr-[0.2rem] text-[1.1rem] leading-[1.5] transition-all`}
-                    dangerouslySetInnerHTML={{ __html: selectedPlanInfo?.plan.field2 ?? '' }}
-                  />
-                </Grow>
-                <div className="ag-theme-alpine">
-                  <AgGridReact<DummyDataListDetailType>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={selectedPlanInfo?.plan.field3 ?? []}
-                    columnDefs={columnDefs4}
-                    domLayout="normal"
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                    headerHeight={23}
-                  />
-                </div>
-              </Grid>
-              <Grow
-                className="w-full bg-[var(--color-warning-5)] h-[3rem] px-4 shadow-[0_-0.1rem_0.8rem_0_rgba(0,0,0,0.1)]"
-                placement="ec"
+            ) : (
+              <Grid
+                className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr_auto]"
+                gap={0}
               >
-                <AdderIcon />
-                <Typo tag={'span'} variant={'body-sm'} color={'gray'}>
-                  예상보험료
-                </Typo>
-                <Typo tag={'strong'} variant={'heading-lg'} color={'primary'}>
-                  {selectedPlanInfo?.plan.field1.toLocaleString()}원
-                </Typo>
-              </Grow>
-            </Grid>
+                <Gcol
+                  className="relative px-[1.6rem] py-[1rem] gap-[0.2rem] rounded-b-[1rem] "
+                  placement="ss"
+                  style={{
+                    backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: '10rem, cover',
+                    backgroundPosition: '96% -6%',
+                  }}
+                >
+                  <Typo tag="p" variant="body-sm" className="text-white opacity-80">
+                    보장내용 확인
+                  </Typo>
+                  <Typo tag="strong" variant="body-md" weight="bold" className="text-white">
+                    {selectedPlanInfo?.product.field1}
+                  </Typo>
+                </Gcol>
+
+                <Grid className="px-[1rem] pb-0 pt-[0.8rem] gap-[0.8rem] grid-rows-[auto_1fr]">
+                  <Grow
+                    className="grid grid-cols-[6.7rem_1fr] place-items-start gap-2 w-full bg-[var(--color-information-10)] p-2.5 rounded-[1rem] h-full"
+                    placement="ss"
+                  >
+                    <Button
+                      variant={'outlined'}
+                      color={'link'}
+                      onClick={() => setIsAiReasonExpanded((prev) => !prev)}
+                      className="group w-full rounded-[1rem] w-full rounded-[0.6rem] border border-[var(--color-information-50)] bg-white px-[0.6rem] py-[0.6rem] h-auto"
+                    >
+                      <Gcol
+                        placement="ss"
+                        gap={0}
+                        className="text-[var(--color-information-50)] font-bold leading-none text-[1.1rem]"
+                      >
+                        <Grow placement="sc" gap={0} className="leading-none">
+                          AI <Ai2Icon size={10} color="var(--color-information-50)" />
+                        </Grow>
+                        <div className="leading-none">추천이유</div>
+                      </Gcol>
+                      <SelectDropIcon
+                        className={`text-[var(--color-information-50)] transition-transform ${isAiReasonExpanded ? 'rotate-180' : 'rotate-0'}`}
+                      />
+                    </Button>
+                    <div
+                      className={`${isAiReasonExpanded ? 'max-h-[100%]' : 'max-h-[3.4rem]'} h-full overflow-y-auto pr-[0.2rem] text-[1.1rem] leading-[1.5] transition-all`}
+                      dangerouslySetInnerHTML={{ __html: selectedPlanInfo?.plan.field2 ?? '' }}
+                    />
+                  </Grow>
+                  <div className="ag-theme-alpine">
+                    <AgGridReact<DummyDataListDetailType>
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={selectedPlanInfo?.plan.field3 ?? []}
+                      columnDefs={columnDefs4}
+                      domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      headerHeight={23}
+                    />
+                  </div>
+                </Grid>
+                <Grow
+                  className="w-full bg-[var(--color-warning-5)] h-[3rem] px-4 shadow-[0_-0.1rem_0.8rem_0_rgba(0,0,0,0.1)]"
+                  placement="ec"
+                >
+                  <AdderIcon />
+                  <Typo tag={'span'} variant={'body-sm'} color={'gray'}>
+                    예상보험료
+                  </Typo>
+                  <Typo tag={'strong'} variant={'heading-lg'} color={'primary'}>
+                    {selectedPlanInfo?.plan.field1.toLocaleString()}원
+                  </Typo>
+                </Grow>
+              </Grid>
+            )}
           </Grid>
           <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
             <Button
@@ -1223,7 +1237,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
             </Button>
             <Ltpa120 />
           </Grow>
-        </Grid>
+        </>
       )}
       <Ltpz021 open={openLtpz021} onOpenChange={setOpenLtpz021} />
       <style>{`
