@@ -525,7 +525,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
     const timer1 = setTimeout(() => {
       setDataList(dummyDataList);
       setDataListLoading(false);
-    }, 400000000);
+    }, 4000);
 
     return () => {
       clearTimeout(timer1);
