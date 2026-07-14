@@ -5,6 +5,7 @@
 
 import Image from 'next/image';
 import * as React from 'react';
+import { publicConfig } from '@/shared/config/env';
 import useMounted from '@/shared/hooks/useMounted';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { chatbotUtils } from '@/shared/utils/chatbotUtils';
@@ -143,7 +144,7 @@ export const Ltpa120 = ({
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[1px] border-[var(--color-blue-gray-30)]">
           <iframe
             ref={(el) => chatbotUtils.setRef(el)}
-            src={withPublicUrl('/test/chatbot.html')}
+            src={publicConfig.domain.chatbot}
             title={'AI 챗봇'}
             className="w-full h-full border-0"
             allow="clipboard-read; clipboard-write"
