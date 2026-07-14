@@ -38,7 +38,7 @@
  * // 회원가입 페이지 추가 시
  * PUBLIC_ROUTES.push('/register');
  */
-export const PUBLIC_ROUTES = ['/login'] as const;
+export const PUBLIC_ROUTES = ['/login', '/test'] as const;
 
 /**
  * 공개 경로 여부 확인 헬퍼 함수
