@@ -2222,7 +2222,7 @@ export const CoveragePopover = ({
           </Gcol>
         </PopoverContent>
       </Popover>
-      <Ltpa120 open={isLtpa120Open} setOpen={setIsLtpa120Open} isButton={false} />
+      <Ltpa120 open={isLtpa120Open} setOpen={setIsLtpa120Open} isButton={false} className="w-[32rem]" />
     </>
   );
 };
