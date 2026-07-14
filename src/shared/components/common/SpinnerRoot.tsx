@@ -249,7 +249,7 @@ export function SpinnerRoot(props?: SpinnerRootProps) {
       {/* Spinner Icon */}
       {!hideLoadingIndicator && (
         <Gcol className="flex items-center justify-center min-h-screen gap-[5rem] -translate-y-[2rem]">
-          <div className="w-full h-full absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)]">
+          <div className="w-full h-full absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)] scale-[0.8]">
             <div className="absolute w-[1rem] h-[1rem] z-40 rounded-full bg-[var(--color-primary-50)] top-[50%] left-[50%] translate-[-50%,-50%]"></div>
             <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-danger-50)] rounded-[80%] z-10 animate-dot-1-move" />
             <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-warning-40)] rounded-[80%] z-20 animate-dot-2-move" />
@@ -354,7 +354,7 @@ export function Spinner({ className, texts = ['AI가 분석중입니다.'], inte
 
   return (
     <Gcol className={`flex items-center justify-center gap-[5rem] -translate-y-[2rem] ${className ?? ''}`}>
-      <div className="w-[12rem] h-[5rem] absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)] scale-[0.9]">
+      <div className="w-[12rem] h-[5rem] absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)] scale-[0.7]">
         <div className="absolute w-[1rem] h-[1rem] z-40 rounded-full bg-[var(--color-primary-50)] top-[50%] left-[50%] translate-[-50%,-50%]"></div>
         <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-danger-50)] rounded-[80%] z-10 animate-dot-1-move" />
         <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-warning-40)] rounded-[80%] z-20 animate-dot-2-move" />

@@ -456,7 +456,7 @@ const Ltpz034 = ({
   onOpenChange,
   minimized,
   onMinimizeChange,
-  isRegistered = false,
+  isRegistered = true,
   basicRows: initialBasicRows,
   healthRows: initialHealthRows,
   dummyRows,
@@ -800,6 +800,7 @@ const Ltpz034 = ({
                 variant="contained"
                 size="xl"
                 color="primary"
+                disabled={selectedIds.length === 0}
                 onClick={() => {
                   onOpenChange?.(false);
                   onShowPossibleProducts?.();
@@ -807,7 +808,7 @@ const Ltpz034 = ({
               >
                 가능상품 보기
               </Button>
-              <Button variant="contained" size="xl" color="primary">
+              <Button variant="contained" size="xl" color="primary" disabled={selectedIds.length === 0}>
                 추천설계 이동
               </Button>
             </Grow>

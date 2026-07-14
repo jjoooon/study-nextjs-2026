@@ -525,7 +525,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
     const timer1 = setTimeout(() => {
       setDataList(dummyDataList);
       setDataListLoading(false);
-    }, 1000000);
+    }, 400000000);
 
     return () => {
       clearTimeout(timer1);
@@ -984,7 +984,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           key={i}
                           className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] min-h-[19.1rem]"
                         >
-                          <Spinner texts={['AI가 추천 조건을 설정하고 있습니다...', '데이터 분석을 시작합니다.']} />
+                          <Spinner
+                            texts={[
+                              '잠시만요. 답변을 정리하고 있어요.',
+                              'AI가 최적의 설계를 찾고있어요!',
+                              '곧 결과를 보여드릴께요.',
+                            ]}
+                          />
                         </Grid>
                       ))
                     : dataList.map((item) => (
@@ -1114,10 +1120,11 @@ export function Ltpa02002({ userType }: { userType: string }) {
               <Gcol className="h-full max-h-[61.5rem]" placement="cc">
                 <Gcol className="gap-[2.5rem]">
                   <img src={withPublicUrl('/images/ai100per.svg')} alt="" style={{ width: '24.6rem' }} />
-                  <p className="text-center text-[1.3rem] font-bold text-[var(--color-primary-50)]">
-                    상품을 추천할 고객과 조건을 선택하고
+                  <p className="text-center text-[1.3rem] font-bold">
+                    루미가 <b className="text-[var(--color-primary-50)]">고객 정보에 맞춰 보장 분석</b>을 진행하고
+                    있어요.
                     <br />
-                    <b className="text-[var(--color-primary-50)]">최적의 상품 플랜</b>을 확인하세요!
+                    잠시만 기다려 주세요!
                   </p>
                 </Gcol>
               </Gcol>
