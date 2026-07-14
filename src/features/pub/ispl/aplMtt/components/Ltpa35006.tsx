@@ -340,11 +340,7 @@ export const Ltpa35006 = () => {
                       3. 즉시집금 설정 영역 (고객 계좌 즉시출금 동의 및 스캔)
                       ──────────────────────────────────────────────────────────────────────── */}
                   <TableFold variant={'default'}>
-                    <TableFoldHead title="즉시집금">
-                      <Grow>
-                        <Checkbox id="selectAllDeposits" aria-label="영수보험표 입력"></Checkbox>
-                      </Grow>
-                    </TableFoldHead>
+                    <TableFoldHead title="즉시집금"></TableFoldHead>
                     <TableFoldBody className="gap-1">
                       <Table variant="default">
                         <colgroup>
@@ -607,11 +603,7 @@ export const Ltpa35006 = () => {
                       4. 카드 결제 정보 영역 (신용카드 결제 및 할부 정보 관리)
                       ──────────────────────────────────────────────────────────────────────── */}
                   <TableFold variant={'default'}>
-                    <TableFoldHead title="카드">
-                      <Grow>
-                        <Checkbox id="selectAllDeposits" aria-label="영수보험표 입력"></Checkbox>
-                      </Grow>
-                    </TableFoldHead>
+                    <TableFoldHead title="카드"></TableFoldHead>
                     <TableFoldBody>
                       <Table variant="default">
                         <TableHeader>

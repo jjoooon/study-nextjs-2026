@@ -368,13 +368,25 @@ const Ltpz001 = () => {
                 </Gcol>
               </div>
               {/* 필수 스캔 대상 안내 문구 */}
-              <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-                <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
-                  기타 필수 스캔 대상 서류안내
-                </Typo>
-                <Typo variant={'body-sm'} icon={'dot'} color={'gray'}>
-                  실명증표사본, 실명증표진위여부확인서(법인), 실명증표진위여부확인서(법인대리인), 실소유자확인서류
-                </Typo>
+              <Gcol gap={1}>
+                <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+                  <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
+                    기타 필수 스캔 대상 서류안내
+                  </Typo>
+                  <Typo variant={'body-sm'} icon={'dot'} color={'gray'}>
+                    실명증표사본, 실명증표진위여부확인서(법인), 실명증표진위여부확인서(법인대리인), 실소유자확인서류
+                  </Typo>
+                </Gcol>
+                <Gcol placement={'ss'} variant="box-info">
+                  <Typo variant={'body-sm'} icon={'info'}>
+                    <b>발행관련 안내사항</b>
+                  </Typo>
+                  <BulletList size={'sm'}>
+                    <BulletListItem>
+                      상품설명서 및 청양서류의 부분출력은 발급물을 최초 발행한 이후에만 가능합니다.
+                    </BulletListItem>
+                  </BulletList>
+                </Gcol>
               </Gcol>
             </Grid>
 
@@ -698,6 +710,35 @@ const Ltpz001 = () => {
           <DialogFooter>
             <DialogFooterArea>
               <Grow>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  PDF저장
+                </Button>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  간편출력 이동
+                </Button>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  출력예약하기
+                </Button>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  전환후 계약 담보별 보험료 예시
+                </Button>
+              </Grow>
+              <Grow>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  양식미리보기
+                </Button>
+                <Button variant={'contained'} size={'xl'}>
+                  발행
+                </Button>
+
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+
+              <Grow className="absolute bottom-[-4rem] z-[100]">
                 테스트용:
                 <Button
                   variant={'outlined'}
@@ -739,20 +780,6 @@ const Ltpz001 = () => {
                 >
                   이메일 접수상황
                 </Button>
-              </Grow>
-              <Grow>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  양식미리보기
-                </Button>
-                <Button variant={'contained'} size={'xl'}>
-                  발행
-                </Button>
-
-                <DialogClose asChild>
-                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                    닫기
-                  </Button>
-                </DialogClose>
               </Grow>
             </DialogFooterArea>
             <DialogBottomInfo />
