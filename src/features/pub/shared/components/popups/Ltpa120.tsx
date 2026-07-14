@@ -5,8 +5,8 @@
 
 import Image from 'next/image';
 import * as React from 'react';
-import { publicConfig } from '@/shared/config/env';
 import useMounted from '@/shared/hooks/useMounted';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { chatbotUtils } from '@/shared/utils/chatbotUtils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { Grow } from '@atoms';
@@ -39,6 +39,7 @@ function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number }
 
 export interface Ltpa120Props {
   isButton?: boolean;
+  className: string;
   open?: boolean;
   setOpen?: (open: boolean) => void;
   minimized?: boolean;
@@ -50,6 +51,7 @@ export const Ltpa120 = ({
   open: openProp,
   setOpen: setOpenProp,
   minimized,
+  className,
   onMinimizeChange,
 }: Ltpa120Props) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -115,7 +117,10 @@ export const Ltpa120 = ({
         onEscapeKeyDown={(event) => event.preventDefault()}
         closeButtonClassName="absolute right-[1.2rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:fill-white"
         minimizeButtonClassName="absolute right-[4rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>span]:!bg-[var(--color-gray-0)] [&>span]:!border-[var(--color-gray-0)]"
-        className="ai-chatbot w-[19.8rem] h-[56rem] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0 "
+        className={cn(
+          'ai-chatbot w-[19.8rem] h-[56rem] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0',
+          className
+        )}
       >
         <DialogHeader className="!max-h-[4.9rem] h-[4.9rem] min-h-0 !p-0 items-end">
           <Grow
@@ -138,7 +143,7 @@ export const Ltpa120 = ({
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[1px] border-[var(--color-blue-gray-30)]">
           <iframe
             ref={(el) => chatbotUtils.setRef(el)}
-            src={publicConfig.domain.chatbot}
+            src={withPublicUrl('/test/chatbot.html')}
             title={'AI 챗봇'}
             className="w-full h-full border-0"
             allow="clipboard-read; clipboard-write"
