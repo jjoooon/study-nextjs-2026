@@ -632,13 +632,6 @@ export function AiSpinner({
           .animate-text-change {
             animation: text-fade-in-translate 0.3s ease-out forwards;
           }
-
-          @media (prefers-reduced-motion: reduce) {
-            .ai-loader .orb,
-            .ai-loader::after {
-              animation: none;
-            }
-          }
         `}
       </style>
     </Gcol>
