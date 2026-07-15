@@ -115,24 +115,31 @@ button {
   width: 240px;
   margin-left: auto;
   color: #fff;
+  opacity: 0;
+}
+.user-question.active {
+  animation: slideUpFade 0.6s ease-out forwards;
 }
 .question-answer-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-/* 답변 아래에서 위로 흐르게 */
-.question-answer-group.active > * {
-  animation: slideUpFade 0.8s ease-out both;
+.question-answer-group > * {
+  opacity: 0;
 }
-.question-answer-group.active > *:nth-child(1) { animation-delay: 0.1s; }
-.question-answer-group.active > *:nth-child(2) { animation-delay: 0.2s; }
-.question-answer-group.active > *:nth-child(3) { animation-delay: 0.3s; }
-.question-answer-group.active > *:nth-child(4) { animation-delay: 0.4s; }
-.question-answer-group.active > *:nth-child(5) { animation-delay: 0.5s; }
-.question-answer-group.active > *:nth-child(6) { animation-delay: 0.6s; }
-.question-answer-group.active > *:nth-child(7) { animation-delay: 0.7s; }
-.question-answer-group.active > *:nth-child(8) { animation-delay: 0.8s; }
+/* 답변 아래에서 위로 흐르게 (동적인 바운스 효과 적용) */
+.question-answer-group.active > * {
+  animation: bounceReveal 0.6s cubic-bezier(0.2, 1, 0.2, 1) both;
+}
+.question-answer-group.active > *:nth-child(1) { animation-delay: 0.05s; }
+.question-answer-group.active > *:nth-child(2) { animation-delay: 0.13s; }
+.question-answer-group.active > *:nth-child(3) { animation-delay: 0.21s; }
+.question-answer-group.active > *:nth-child(4) { animation-delay: 0.29s; }
+.question-answer-group.active > *:nth-child(5) { animation-delay: 0.37s; }
+.question-answer-group.active > *:nth-child(6) { animation-delay: 0.45s; }
+.question-answer-group.active > *:nth-child(7) { animation-delay: 0.53s; }
+.question-answer-group.active > *:nth-child(8) { animation-delay: 0.61s; }
 .question-answer-group .btn-answer-view {
   display: flex;
   align-items: center;
@@ -172,9 +179,10 @@ button {
   padding: 30px 0;
   border-top: 1px solid #E5E5EA;
   border-bottom: 1px solid #E5E5EA;
+  opacity: 0;
 }
 .question-answer-ing.active {
-  animation: slideUpFade 0.5s ease-out 0.6s both;
+  animation: slideUpFade 0.1s ease-out 0.3s both;
 }
 .question-answer-btn {
   display: flex;
@@ -254,6 +262,17 @@ button {
     transform: translateY(20px);
   }
   to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
