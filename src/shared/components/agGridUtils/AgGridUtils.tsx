@@ -1163,6 +1163,17 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
     };
   }, [props.node, props.column]);
 
+  // 그리드 바디 스크롤 발생 시 자동으로 에디터 팝업을 닫음
+  useEffect(() => {
+    const handleScroll = () => {
+      props.stopEditing?.(false);
+    };
+    props.api?.addEventListener('bodyScroll', handleScroll);
+    return () => {
+      props.api?.removeEventListener('bodyScroll', handleScroll);
+    };
+  }, [props.api, props.stopEditing]);
+
   useImperativeHandle(
     ref,
     () => ({
