@@ -116,6 +116,7 @@ button {
   margin-left: auto;
   color: #fff;
   opacity: 0;
+  scroll-margin-top: 20px;
 }
 .user-question.active {
   animation: slideUpFade 0.6s ease-out forwards;
