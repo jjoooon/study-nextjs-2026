@@ -90,15 +90,15 @@
         
         isAutoScrolling = true;
         
+        userQuestion.scrollIntoView({
+          behavior: isSmooth ? 'smooth' : 'auto',
+          block: 'start'
+        });
+
         if (isSmooth) {
-          chatBody.scrollTo({
-            top: targetScrollTop,
-            behavior: 'smooth'
-          });
           // smooth 스크롤 완료 후 isAutoScrolling 해제
           setTimeout(() => { isAutoScrolling = false; }, 800);
         } else {
-          chatBody.scrollTop = targetScrollTop;
           setTimeout(() => { isAutoScrolling = false; }, 100);
         }
         
@@ -131,27 +131,12 @@
         if (currentScroll > lastScrollTop && isTopVisited) {
           if (currentScroll >= targetScrollTop) {
             isAutoScrolling = true;
-            chatBody.scrollTop = targetScrollTop;
+            userQuestion.scrollIntoView({
+              behavior: 'auto',
+              block: 'start'
+            });
             isTopVisited = false;
             
-            // 애니메이션 강제 리셋 및 재시작 (Reflow 적용)
-            if (answerGroup && answerIng) {
-              userQuestion?.classList.remove('active');
-              answerGroup.classList.remove('active');
-              answerIng.classList.remove('active');
-              
-              // Reflow를 유도하여 CSS 상태를 강제 초기화
-              if (userQuestion) void userQuestion.offsetWidth;
-              void answerGroup.offsetWidth;
-              void answerIng.offsetWidth;
-              
-              userQuestion?.classList.add('active');
-              setTimeout(() => {
-                answerGroup?.classList.add('active');
-                answerIng?.classList.add('active');
-              }, 600);
-            }
-
             setTimeout(() => { isAutoScrolling = false; }, 150);
           }
         }
