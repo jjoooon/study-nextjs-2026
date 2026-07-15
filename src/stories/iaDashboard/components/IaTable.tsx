@@ -64,7 +64,7 @@ export function IaTable({
       <div className="!text-[1.4rem] IA-list m-0! shrink-0! ![&_b]:tracking-0 !text-[#000] flex items-center gap-4 mb-2">
         반입일: 2026.06.17
       </div>
-      <div className="w-full grid grid-cols-[1fr_auto_auto] gap-4 items-center">
+      <div className="w-full grid grid-cols-[1fr_auto_auto_auto] gap-4 items-center">
         <div className="!mb-2 w-full bg-[#37424e] sticky top-0 border border-[#2da9ff] rounded-[.6rem] flex-1">
           <div
             className="rounded-[.5rem] bg-[#0876ff] !text-[#fff] !px-[0.6rem] !py-[0.3rem] !text-[1.1rem] font-semibold text-[var(--color-gray-700)] !tracking-[0] leading-[1.4] shadow-[0.4rem_0_0.6rem_rgba(255,255,255,0.2)]"
@@ -73,6 +73,14 @@ export function IaTable({
             {doneCount} / {totalCount} ({progressPercent}%)
           </div>
         </div>
+        <a
+          href="/hgi/index.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="!text-[1.2rem] text-[#0876ff] hover:underline shrink-0 block"
+        >
+          🎬시연영상
+        </a>
         <a
           href="/iframe-test.html"
           target="_blank"

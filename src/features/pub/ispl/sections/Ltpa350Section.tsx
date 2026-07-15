@@ -216,6 +216,14 @@ export default function Ltpa350Section() {
     6: <Ltpa35006 />,
   };
 
+  const refinedPageTitle = {
+    ...data.head.pageTitle,
+    options: data.head.pageTitle.options.map((item: string) => ({
+      flgcd: item,
+      flgnm: item,
+    })),
+  };
+
   return (
     <>
       {/* 퍼블 페이지확인용 (섹션에서 통합 관리) */}
@@ -254,7 +262,7 @@ export default function Ltpa350Section() {
         // - data: 상품명/플랜번호/계약자 등 렌더링 데이터
         // - simpleMode: 간략모드 현재값
         // - onSimpleModeChange: 토글 이벤트 핸들러
-        pageTitle={<PageTitle data={data.head.pageTitle} simpleMode={simpleMode} onSimpleModeChange={setSimpleMode} />}
+        pageTitle={<PageTitle data={refinedPageTitle} simpleMode={simpleMode} onSimpleModeChange={setSimpleMode} />}
         // pageProcess: 단계 이동 UI 슬롯
         // - items: 단계 목록(라벨/step)
         // - completeSteps: 완료 표시할 step 배열
