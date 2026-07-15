@@ -50,14 +50,20 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
   if (info === null) {
     return (
       <Gcol gap={3}>
-        <Grow className="w-full px-1" placement={'bwc'}>
+        <Gcol placement="ss" className="w-full px-1">
+          <Grow className="w-full" placement={'bwc'}>
+            <Button variant={'text'} color={'gray'} onClick={() => {}}>
+              <Typo variant={'heading-md'}>누적사전예외</Typo>
+            </Button>
+            <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
+              {'12'}건
+            </Typo>
+          </Grow>
           <Button variant={'text'} color={'gray'} onClick={() => {}}>
-            <Typo variant={'heading-md'}>누적사전예외</Typo>
+            <Typo variant={'heading-md'}>설계누적반영</Typo>
           </Button>
-          <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
-            {'12'}건
-          </Typo>
-        </Grow>
+        </Gcol>
+
         <Grow gap={2} placement={'bwc'}>
           <Grow gap={1.5} placement={'bwc'} className="overflow-hidden px-1">
             <Typo variant={'heading-md'}>계약정보</Typo>
@@ -123,14 +129,19 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
   }
   return (
     <Gcol gap={3}>
-      <Grow className="w-full px-1" placement={'bwc'}>
+      <Gcol placement="ss" className="w-full px-1">
+        <Grow className="w-full" placement={'bwc'}>
+          <Button variant={'text'} color={'gray'} onClick={() => {}}>
+            <Typo variant={'heading-md'}>누적사전예외</Typo>
+          </Button>
+          <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
+            {'12'}건
+          </Typo>
+        </Grow>
         <Button variant={'text'} color={'gray'} onClick={() => {}}>
-          <Typo variant={'heading-md'}>누적사전예외</Typo>
+          <Typo variant={'heading-md'}>설계누적반영</Typo>
         </Button>
-        <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
-          {'12'}건
-        </Typo>
-      </Grow>
+      </Gcol>
 
       <Gcol>
         <Grow gap={2} placement={'bwc'}>
