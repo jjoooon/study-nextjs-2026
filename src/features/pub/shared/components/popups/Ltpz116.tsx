@@ -178,7 +178,6 @@ const Ltpz116 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(90),
       cellClass: 'text-center',
-      editable: true,
     },
     {
       headerName: '상품명',
