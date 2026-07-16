@@ -33,7 +33,7 @@ const Ltpz117 = () => {
     field1: string;
     field2: string;
     field3: string;
-    field4: string;
+    field4: number;
   };
 
   const DummyData: DummyDataType[] = [
@@ -42,14 +42,14 @@ const Ltpz117 = () => {
       field1: '김한화',
       field2: '진단/수술',
       field3: '통풍진단비통풍진단비통풍진단비통풍진단비통풍진단비통풍진단비통풍진단비',
-      field4: '100600000',
+      field4: 100600000,
     },
     {
       id: 2,
       field1: '김한화',
       field2: '진단/수술',
       field3: '통풍진단비',
-      field4: '600000',
+      field4: 600000,
     },
   ];
   const columnDefs: ColDef<DummyDataType>[] = [
