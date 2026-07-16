@@ -225,86 +225,7 @@ type DummyDataType3 = {
   field23: string | number;
 };
 
-const dummyData2: DummyDataType3[] = [
-  {
-    id: 1,
-    field1: '15일이하',
-    field2: true,
-    field3: '즉시',
-    field4: false,
-    field5: '인수',
-    field6: '할증(20)',
-    field7: '거절',
-    field8: '할증(10)',
-    field9: '거절',
-    field10: '거절',
-    field11: '할증(30)',
-    field12: '인수',
-    field13: '인수',
-    field14: '인수',
-    field15: '인수',
-    field16: '인수',
-    field17: '인수',
-    field18: '서류',
-    field19: '서류',
-    field20: '서류',
-    field21: '진단',
-    field22: '',
-    field23: '',
-  },
-  {
-    id: 2,
-    field1: '15일이하',
-    field2: true,
-    field3: '3개월이내',
-    field4: false,
-    field5: '인수',
-    field6: '할증(20)',
-    field7: '거절',
-    field8: '할증(10)',
-    field9: '거절',
-    field10: '거절',
-    field11: '할증(30)',
-    field12: '인수',
-    field13: '인수',
-    field14: '인수',
-    field15: '인수',
-    field16: '인수',
-    field17: '인수',
-    field18: '서류',
-    field19: '서류',
-    field20: '서류',
-    field21: '진단',
-    field22: '',
-    field23: '',
-  },
-  {
-    id: 3,
-    field1: '15일이하',
-    field2: true,
-    field3: '즉시',
-    field4: false,
-    field5: '인수',
-    field6: '할증(20)',
-    field7: '거절',
-    field8: '할증(10)',
-    field9: '거절',
-    field10: '거절',
-    field11: '할증(30)',
-    field12: '인수',
-    field13: '인수',
-    field14: '인수',
-    field15: '인수',
-    field16: '인수',
-    field17: '인수',
-    field18: '서류',
-    field19: '서류',
-    field20: '서류',
-    field21: '진단',
-    field22: '',
-    field23: '',
-  },
-];
+const dummyData2: DummyDataType3[] = [];
 
 const dummyData3: DummyDataType3[] = [
   {
@@ -1486,6 +1407,11 @@ const Ltpz031 = () => {
                               variant="head"
                               className="border-t border-t-[0.2rem] [&_dl+dl]:mt-0! [&_dl]:border-t-[var(--color-gray-100)] [&_dl>div]:flex-col [&_dl>div]:gap-0! [&_dl>div]:w-full [&_dl]:w-full [&_dl_dt]:bg-[var(--color-gray-5)] [&_dl_dt]:w-full [&_dl_dt]:p-2 [&_dl_dt]:border-b [&_dl_dt]:border-b-[var(--color-gray-10)] [&_dl_dt_span]:text-[#000] [&_dl_dd]:border-b [&_dl_dd]:border-b-[var(--color-gray-10)] [&_dl_dd]:w-full [&_dl_dd]:p-2 "
                             >
+                              <FormRow vertical={false}>
+                                <FormCell title={null} tdClassName="justify-center">
+                                  * 해당 질병의 추가 질문은 없습니다.
+                                </FormCell>
+                              </FormRow>
                               <FormRow vertical={false}>
                                 <FormCell
                                   title={

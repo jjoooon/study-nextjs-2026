@@ -7,9 +7,10 @@ interface ViewModeProps {
   state: boolean;
   label?: [string, string];
   onChange?: (value: boolean) => void;
+  disabled?: boolean;
 }
 
-export const ViewMode = ({ state = true, label, onChange }: ViewModeProps) => {
+export const ViewMode = ({ state = true, label, onChange, disabled = false }: ViewModeProps) => {
   return (
     <div className="flex items-center">
       <input
@@ -17,11 +18,14 @@ export const ViewMode = ({ state = true, label, onChange }: ViewModeProps) => {
         id="docType"
         className="peer a11y-hidden"
         checked={!state}
+        disabled={disabled}
         onChange={() => onChange?.(!state)}
       />
       <label
         htmlFor="docType"
-        className={`relative h-[2.8rem] p-[0.1rem] rounded-full border bg-white border-[var(--color-gray-15)] flex justify-center items-center gap-0 cursor-pointer  
+        className={`relative h-[2.8rem] p-[0.1rem] rounded-full border bg-white border-[var(--color-gray-15)] flex justify-center items-center gap-0 ${
+          disabled ? '' : 'cursor-pointer'
+        }  
           [&>.peer-1]:text-[var(--color-gray-0)] 
           [&>.peer-1]:bg-gradient-to-r 
           [&>.peer-1]:from-[#ff5c2e] 

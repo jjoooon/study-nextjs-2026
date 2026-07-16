@@ -110,7 +110,12 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
       {/* 좌측 영역: 보기 모드 전환, 제목, 플랜 선택 드롭다운을 배치한다. */}
       <Grow className="gap-2 flex-1" placement="sc">
         {/* 간편/상세 모드를 토글하는 UI. 실제 상태값은 controlled/uncontrolled 정책에 따라 결정된다. */}
-        <ViewMode label={['간편', '상세']} state={resolvedSimpleMode} onChange={handleSimpleModeChange} />
+        <ViewMode
+          label={['간편', '상세']}
+          state={resolvedSimpleMode}
+          onChange={handleSimpleModeChange}
+          disabled={true}
+        />
 
         {/* 제목이 길 수 있으므로 툴팁으로 전체 제목을 확인할 수 있게 한다. */}
         <Tooltip>

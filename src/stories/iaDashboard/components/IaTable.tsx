@@ -263,7 +263,7 @@ export function IaTable({
                         : ''
                     }
                   >
-                    {row.num ?? index + 1}
+                    {index + 1}
                   </b>
                 </td>
                 <td scope="row" className={rowIdBgClass}>

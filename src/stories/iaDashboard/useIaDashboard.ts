@@ -14,7 +14,6 @@ export type SortState = {
 };
 
 export type IARow = {
-  num?: number;
   no?: number;
   dep1: string;
   dep2: string;
