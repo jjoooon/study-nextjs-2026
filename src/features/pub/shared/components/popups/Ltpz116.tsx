@@ -183,7 +183,7 @@ const Ltpz116 = () => {
       headerName: '상품명',
       field: 'field4',
       flex: 2,
-      cellClass: 'text-center',
+      cellClass: 'text-left',
       minWidth: attributeColumnWidth(200),
     },
     {
