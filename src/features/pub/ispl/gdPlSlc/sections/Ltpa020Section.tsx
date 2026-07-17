@@ -169,7 +169,7 @@ export default function Ltpa020Section() {
               </FormTable>
             </Grow>
           )}
-          <EmpInput empNo={'12314'} empName={'홍길동'} />
+          <EmpInput empNo={'3999999'} empName={'김한손'} />
         </Grow>
       </LayoutHead>
       <LayoutTemplatePx0
@@ -204,11 +204,7 @@ export default function Ltpa020Section() {
                                   aria-label="고객 검색"
                                   width={136}
                                   col={2}
-                                  options={[
-                                    { value: '홍길순 32세(여)', label: <td>홍길순</td> },
-                                    { value: '홍길동 32세(여)', label: <td>홍길동</td> },
-                                    { value: '김한화 32세(여)', label: <td>김한화</td> },
-                                  ]}
+                                  options={[{ value: '김한화 41세(여)', label: <td>김한화</td> }]}
                                   value={comboValues.user}
                                   onChange={handleComboValueChange('user')}
                                   placeholder="고객 검색"
@@ -399,7 +395,7 @@ export default function Ltpa020Section() {
                             )}
 
                             <Button
-                              disabled={!comboValues.user || comboValues?.user === '김한화 32세(여)'}
+                              disabled={!comboValues.user || comboValues?.user === '김한 32세(여)'}
                               size={'sm'}
                               onClick={() => setIsLtpz034Open(true)}
                             >

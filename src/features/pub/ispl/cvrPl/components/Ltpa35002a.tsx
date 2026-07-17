@@ -737,7 +737,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       <Input
                         type="tel"
                         commaAmount={true}
-                        value={totalPremium.toLocaleString()}
+                        value={'121,375'}
                         size={'md'}
                         readOnly={true}
                         className="[&_input]:text-right [&_input]:tracking-[-0.03rem] [&_input]:color-[#000]!"

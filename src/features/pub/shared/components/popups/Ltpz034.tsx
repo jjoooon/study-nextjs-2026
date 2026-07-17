@@ -113,15 +113,31 @@ const BASIC_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
       {
-        label: '일반고지형(5년)',
-        state: '심사',
+        label: '6형(건강10년)',
+        state: '거절',
       },
     ],
   },
   {
     data: [
       {
-        label: '일반고지형(5년)',
+        label: '5형(건강9년)',
+        state: '거절',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '4형(건강8년)',
+        state: '거절',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '3형(건강7년)',
         state: '조건부',
       },
     ],
@@ -129,8 +145,8 @@ const BASIC_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
       {
-        label: '일반고지형(5년)',
-        state: '연기',
+        label: '2형(건강6년)',
+        state: '인수',
       },
     ],
   },
@@ -138,7 +154,7 @@ const BASIC_ROWS: HealthUnderwritingRow[] = [
     data: [
       {
         label: '일반고지형(5년)',
-        state: '거절',
+        state: '인수',
       },
     ],
     tooltipData: [
@@ -155,34 +171,66 @@ const BASIC_ROWS: HealthUnderwritingRow[] = [
       },
     ],
   },
-  {
-    data: [
-      {
-        label: '2형(건강 6년)',
-        state: '인수',
-      },
-    ],
-  },
-  {
-    data: [
-      {
-        label: '1형(건강 5년)',
-        state: '심사',
-      },
-    ],
-  },
 ];
 //간편고지 데이터
 const HEALTH_ROWS: HealthUnderwritingRow[] = [
   {
     data: [
       {
-        label: '355',
+        label: '3105',
         state: '거절',
       },
       {
+        label: '',
+        state: '',
+      },
+      {
+        label: '',
+        state: '',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '385',
+        state: '조건부',
+      },
+      {
+        label: '',
+        state: '',
+      },
+      {
+        label: '',
+        state: '',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '365',
+        state: '인수',
+      },
+      {
+        label: '',
+        state: '',
+      },
+      {
+        label: '',
+        state: '',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '355',
+        state: '인수',
+      },
+      {
         label: '355(2일)',
-        state: '연기',
+        state: '인수',
       },
       {
         label: '',
@@ -207,31 +255,15 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
     data: [
       {
         label: '345',
-        state: '조건부',
+        state: '인수',
       },
       {
         label: '345(2일)',
         state: '인수',
       },
       {
-        label: '345(5일)',
-        state: '거절',
-      },
-    ],
-  },
-  {
-    data: [
-      {
-        label: '335',
-        state: '연기',
-      },
-      {
         label: '',
         state: '',
-      },
-      {
-        label: '335(5일)',
-        state: '조건부',
       },
     ],
   },
@@ -240,98 +272,46 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
       {
         label: '',
         state: '',
+      },
+      {
+        label: '335(2일)',
+        state: '인수',
+      },
+      {
+        label: '',
+        state: '',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        label: '325',
+        state: '인수',
       },
       {
         label: '325(2일)',
-        state: '거절',
+        state: '인수',
       },
       {
-        label: '325(5일)',
-        state: '연기',
+        label: '',
+        state: '',
       },
     ],
   },
   {
     data: [
       {
-        label: '315',
-        state: '심사',
+        label: '',
+        state: '',
       },
       {
         label: '315(2일)',
-        state: '조건부',
-      },
-      {
-        label: '315(5일)',
         state: '인수',
       },
-    ],
-  },
-  {
-    data: [
       {
-        label: '',
-        state: '',
-      },
-      {
-        label: '305(2일)',
-        state: '연기',
-      },
-      {
-        label: '305(5일)',
-        state: '심사',
-      },
-    ],
-  },
-  {
-    data: [
-      {
-        label: '',
-        state: '',
-      },
-      {
-        label: '305(2일)',
-        state: '연기',
-      },
-      {
-        label: '305(5일)',
-        state: '심사',
-      },
-    ],
-    tooltipData: [
-      {
-        title: '간편고지형명 판정결과',
-        content: ['질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비', '질병수술비(ALL RISK)'],
-      },
-      {
-        title: '345조건부(감액)',
-        content: [
-          '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
-          '인수판정률 사전안내 컬럼에 입력된 값 표시',
-        ],
-      },
-      {
-        title: '345조건부(감액)',
-        content: [
-          '질병후유3%, 질병입원비, 질병수술비, 상해입원비, 상해수술비',
-          '인수판정률 사전안내 컬럼에 입력된 값 표시',
-        ],
-      },
-    ],
-  },
-  {
-    data: [
-      {
-        label: '',
-        state: '',
-      },
-      {
-        label: '305(2일)',
-        state: '연기',
-      },
-      {
-        label: '305(5일)',
-        state: '심사',
+        label: '311',
+        state: '인수',
       },
     ],
   },
@@ -339,11 +319,11 @@ const HEALTH_ROWS: HealthUnderwritingRow[] = [
     data: [
       {
         label: '305',
-        state: '거절',
+        state: '인수',
       },
       {
-        label: '',
-        state: '',
+        label: '305(2일)',
+        state: '인수',
       },
       {
         label: '',
@@ -635,11 +615,11 @@ const Ltpz034 = ({
                   >
                     {isRegistered ? (
                       <Typo tag={'span'} weight={'bold'} variant={'body-sm'} className="text-[#FFF]">
-                        김한화 32세(여)
+                        김한화 41세(여)
                       </Typo>
                     ) : (
                       <Typo tag={'span'} weight={'bold'} variant={'body-sm'} className="text-[#FFF]">
-                        32세(1994-02-12) / 여
+                        41세(1994-02-12) / 여
                       </Typo>
                     )}
                   </FormCell>

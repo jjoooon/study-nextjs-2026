@@ -16,14 +16,18 @@ const CHATBOT_DIALOG_WIDTH = 198;
 const CHATBOT_DIALOG_HEIGHT = 560;
 const VIEWPORT_MARGIN = 12;
 
-function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number } {
-  const maxLeft = window.innerWidth - CHATBOT_DIALOG_WIDTH - VIEWPORT_MARGIN;
-  const maxTop = window.innerHeight - CHATBOT_DIALOG_HEIGHT - VIEWPORT_MARGIN;
+function getInitialDialogPosition(
+  buttonRect: DOMRect,
+  dialogWidth: number,
+  dialogHeight: number
+): { x: number; y: number } {
+  const maxLeft = window.innerWidth - dialogWidth - VIEWPORT_MARGIN;
+  const maxTop = window.innerHeight - dialogHeight - VIEWPORT_MARGIN;
 
   // 버튼의 right에 맞추어 모달의 left 결정 (오른쪽 정렬)
-  const targetLeft = buttonRect.right - CHATBOT_DIALOG_WIDTH;
+  const targetLeft = buttonRect.right - dialogWidth;
   // 버튼의 top 기준으로 모달 높이와 12px 간격을 빼서 모달의 top 결정
-  const targetTop = buttonRect.top - CHATBOT_DIALOG_HEIGHT - 12;
+  const targetTop = buttonRect.top - dialogHeight - 12;
 
   const left = Math.min(Math.max(targetLeft, VIEWPORT_MARGIN), maxLeft);
   const top = Math.min(Math.max(targetTop, VIEWPORT_MARGIN), maxTop);
@@ -32,8 +36,8 @@ function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number }
   const centerY = window.innerHeight / 2;
 
   return {
-    x: left + CHATBOT_DIALOG_WIDTH / 2 - centerX,
-    y: top + CHATBOT_DIALOG_HEIGHT / 2 - centerY,
+    x: left + dialogWidth / 2 - centerX,
+    y: top + dialogHeight / 2 - centerY,
   };
 }
 
@@ -61,12 +65,34 @@ export const Ltpa120 = ({
   const setOpen = setOpenProp !== undefined ? setOpenProp : setInternalOpen;
 
   const handleOpen = () => {
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      setDefaultPosition(getInitialDialogPosition(rect));
-    }
     setOpen(true);
   };
+
+  React.useEffect(() => {
+    if (open) {
+      // className에서 w-[xxrem], h-[xxrem] 스타일 추출하여 정확한 모달 크기(px) 계산
+      const widthMatch = className?.match(/w-\[(\d+(\.\d+)?)rem\]/);
+      const actualWidth = widthMatch ? parseFloat(widthMatch[1]) * 10 : CHATBOT_DIALOG_WIDTH;
+
+      const heightMatch = className?.match(/h-\[(\d+(\.\d+)?)rem\]/);
+      const actualHeight = heightMatch ? parseFloat(heightMatch[1]) * 10 : CHATBOT_DIALOG_HEIGHT;
+
+      if (isButton && buttonRef.current) {
+        const rect = buttonRef.current.getBoundingClientRect();
+        setDefaultPosition(getInitialDialogPosition(rect, actualWidth, actualHeight));
+      } else {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        // 1rem = 10px 기준: 우측에서 1rem (10px), 하단에서 7rem (70px) 떨어짐
+        const tx = window.innerWidth - actualWidth - 10;
+        const ty = window.innerHeight - actualHeight - 70;
+        setDefaultPosition({
+          x: tx + actualWidth / 2 - cx,
+          y: ty + actualHeight / 2 - cy,
+        });
+      }
+    }
+  }, [open, isButton, className]);
 
   useMounted(
     () => {},

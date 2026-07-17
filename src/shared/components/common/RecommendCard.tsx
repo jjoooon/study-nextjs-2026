@@ -84,51 +84,53 @@ function NormalRecommendCardItem({
       <Grid className={'rounded-[0.8rem] grid-rows-[1fr_auto] w-full bg-[#817772] gap-0'}>
         <Gcol
           className="relative overflow-visible bg-white rounded-[0.8rem] w-full pt-[2rem] pb-[1.2rem] px-4 shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] [&>div]:[position:initial]"
-          placement="ss"
+          placement="bws"
           gap={2}
         >
-          <Grow className="w-full" placement="bwc">
-            <Badge size="md" variant="rounded" className="text-[#006FF2] bg-[#E0EFFF] h-[2.2rem] px-[0.6rem]">
-              <CircleCheckIcon color="#006FF2" />
-              {type}
-            </Badge>
-            {variant === 'checkbox' ? (
-              <Checkbox
-                checked={isChecked}
-                className={`absolute right-0`}
-                color="primary"
-                onCheckedChange={(nextChecked) => {
-                  const nextValue = nextChecked === true;
-                  if (checked === undefined) {
-                    setInternalChecked(nextValue);
-                  }
-                  onCheckedChange?.(nextValue);
-                }}
-                variant="noneText"
-              >
-                단일
-              </Checkbox>
-            ) : null}
-          </Grow>
-          <Gcol className="w-full" gap={0.5} placement={'ss'}>
-            <Gcol className="w-full" gap={2}>
-              <Typo tag={'strong'} variant={'body-xl'} className="w-full h-[2rem] text-[#000] overflow-hidden">
-                <Tooltip>
-                  <TooltipTrigger>{title}</TooltipTrigger>
-                  <TooltipContent align="center" side="top" sideOffset={0} variant="default">
-                    {title}
-                  </TooltipContent>
-                </Tooltip>
-              </Typo>
-              <Grow className="w-full flex flex-col" placement="ss">
-                {plan && plan.length > 0
-                  ? plan.map((item, index) => (
-                      <Typo key={index} tag={'p'} variant={'body-xs'} className="text-[#414141]">
-                        {item}
-                      </Typo>
-                    ))
-                  : null}
-              </Grow>
+          <Gcol placement="ss" gap={2}>
+            <Grow className="w-full" placement="bwc">
+              <Badge size="md" variant="rounded" className="text-[#006FF2] bg-[#E0EFFF] h-[2.2rem] px-[0.6rem]">
+                <CircleCheckIcon color="#006FF2" />
+                {type}
+              </Badge>
+              {variant === 'checkbox' ? (
+                <Checkbox
+                  checked={isChecked}
+                  className={`absolute right-0`}
+                  color="primary"
+                  onCheckedChange={(nextChecked) => {
+                    const nextValue = nextChecked === true;
+                    if (checked === undefined) {
+                      setInternalChecked(nextValue);
+                    }
+                    onCheckedChange?.(nextValue);
+                  }}
+                  variant="noneText"
+                >
+                  단일
+                </Checkbox>
+              ) : null}
+            </Grow>
+            <Gcol className="w-full" gap={0.5} placement={'ss'}>
+              <Gcol className="w-full" gap={2}>
+                <Typo tag={'strong'} variant={'body-xl'} className="w-full h-[2rem] text-[#000] overflow-hidden">
+                  <Tooltip>
+                    <TooltipTrigger>{title}</TooltipTrigger>
+                    <TooltipContent align="center" side="top" sideOffset={0} variant="default">
+                      {title}
+                    </TooltipContent>
+                  </Tooltip>
+                </Typo>
+                <Grow className="w-full flex flex-col" placement="ss">
+                  {plan && plan.length > 0
+                    ? plan.map((item, index) => (
+                        <Typo key={index} tag={'p'} variant={'body-xs'} className="text-[#414141]">
+                          {item}
+                        </Typo>
+                      ))
+                    : null}
+                </Grow>
+              </Gcol>
             </Gcol>
           </Gcol>
           {variant === 'normal' ? (

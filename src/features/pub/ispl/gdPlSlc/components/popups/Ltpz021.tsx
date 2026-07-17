@@ -38,6 +38,87 @@ import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
+const coverageDummyList = [
+  { id: 1, field1: '보통약관(상해사망)', field2: '5000', field3: '700' },
+  { id: 2, field1: '보험료납입면제대상보장(6대사유Ⅱ)', field2: '10', field3: '154' },
+  { id: 3, field1: '보장보험료50%납입지원Ⅱ(4대유사암)', field2: '5', field3: '2769' },
+  { id: 4, field1: '4대유사암진단비', field2: '2400', field3: '3132' },
+  { id: 5, field1: '4대유사암진단비(기타피부암)', field2: '600', field3: '240' },
+  { id: 6, field1: '4대유사암진단비(제자리암)', field2: '600', field3: '1248' },
+  { id: 7, field1: '4대유사암진단비(경계성종양)', field2: '600', field3: '228' },
+  { id: 8, field1: '4대유사암진단비(갑상선암)', field2: '600', field3: '1416' },
+  { id: 9, field1: '여성통합암(4대유사암제외)진단비Ⅱ', field2: '39000', field3: '31440' },
+  { id: 10, field1: '여성통합암(4대유사암제외)진단비Ⅱ(대장암)', field2: '3000', field3: '4200' },
+  { id: 11, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정소화기관암)', field2: '3000', field3: '7050' },
+  { id: 12, field1: '여성통합암(4대유사암제외)진단비Ⅱ(유방암)', field2: '3000', field3: '8700' },
+  { id: 13, field1: '여성통합암(4대유사암제외)진단비Ⅱ(자궁관련암)', field2: '3000', field3: '2400' },
+  { id: 14, field1: '여성통합암(4대유사암제외)진단비Ⅱ(난소암)', field2: '3000', field3: '900' },
+  { id: 15, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정여성생식기관암)', field2: '3000', field3: '120' },
+  { id: 16, field1: '여성통합암(4대유사암제외)진단비Ⅱ(비뇨기관암(요로암))', field2: '3000', field3: '1050' },
+  { id: 17, field1: '여성통합암(4대유사암제외)진단비Ⅱ(폐암)', field2: '3000', field3: '3060' },
+  { id: 18, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정호흡기및흉곽내기관암)', field2: '3000', field3: '270' },
+  { id: 19, field1: '여성통합암(4대유사암제외)진단비Ⅱ(눈,뇌,중추신경계통및내분비선암)', field2: '3000', field3: '330' },
+  { id: 20, field1: '여성통합암(4대유사암제외)진단비Ⅱ(입술,구강및인두암)', field2: '3000', field3: '390' },
+  {
+    id: 21,
+    field1: '여성통합암(4대유사암제외)진단비Ⅱ(뼈,관절,악성흑색종,중피성및연조직암)',
+    field2: '3000',
+    field3: '510',
+  },
+  { id: 22, field1: '여성통합암(4대유사암제외)진단비Ⅱ(림프및조혈관련특정암)', field2: '3000', field3: '2460' },
+  {
+    id: 23,
+    field1: '암(4대유사암제외)특정치료비(암전문의료기관Ⅱ(상급종합병원등))(각연간1회한)',
+    field2: '9000',
+    field3: '36000',
+  },
+  {
+    id: 24,
+    field1: '암(4대유사암제외)특정치료비(수술)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '2000',
+    field3: '12040',
+  },
+  {
+    id: 25,
+    field1: '암(4대유사암제외)특정치료비(항암방사선치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '2000',
+    field3: '8140',
+  },
+  {
+    id: 26,
+    field1: '암(4대유사암제외)특정치료비(항암약물치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '2000',
+    field3: '14980',
+  },
+  {
+    id: 27,
+    field1: '암(4대유사암제외)특정치료비(중환자실치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '1000',
+    field3: '680',
+  },
+  {
+    id: 28,
+    field1: '암(4대유사암제외)특정치료비(호스피스완화의료치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '2000',
+    field3: '160',
+  },
+];
+
+const productInfoList = [
+  {
+    name: '한화 3N5 더간편건강보험(세만기형) 2601',
+    option: '납입면제형·납입후50%해약환급금지급형',
+  },
+  {
+    name: '한화 더건강한 한아름종합보험 2604',
+    option: '납입면제형·납입후50%해약환급금지급형[할증운영상품]',
+  },
+  {
+    name: '한화 더 경증 간편건강보험(연만기 갱신형)',
+    option: '해약환급금미지급형·3.10.5간편고지형',
+  },
+];
+
 /**
  * 추천설계 비교 그리드 데이터 행(Row) 타입 정의
  */
@@ -47,210 +128,9 @@ type DummyDataType = {
   field2: string | number; // 가입금액
   field3: string | number; // 보험료
 };
-const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    field1: '보통약관(상해80%이상후유장애)(간편)',
-    field2: '3000',
-    field3: '3000',
-  },
-  {
-    id: 2,
-    field1: '보험료납입면제대상보장(5대유해)(간편)',
-    field2: '10',
-    field3: '10',
-  },
-  {
-    id: 3,
-    field1: '상해사망(간편)',
-    field2: '15000',
-    field3: '9600',
-  },
-  {
-    id: 4,
-    field1: '골절(치아파절포함)진단비(간편)',
-    field2: '10',
-    field3: '1185',
-  },
-  {
-    id: 5,
-    field1: '암(4대유사암제외)특정치료비(암전문의료기관)',
-    field2: '13500',
-    field3: '72255',
-  },
-  {
-    id: 6,
-    field1: '암(특정유사암포함)표적항암약물허가치료비(1)',
-    field2: '5000',
-    field3: '1160000000',
-  },
-  {
-    id: 7,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 8,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 9,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 10,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 11,
-    field1: '4444질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-];
-const DummyData1: DummyDataType[] = [
-  {
-    id: 1,
-    field1: '보험료납입면제대상보장(5대유해)(간편)',
-    field2: '20',
-    field3: '20',
-  },
-  {
-    id: 2,
-    field1: '보통약관(상해80%이상후유장애)(간편)',
-    field2: '3000',
-    field3: '3000',
-  },
-  {
-    id: 3,
-    field1: '상해사망(간편)',
-    field2: '15000',
-    field3: '9600',
-  },
-  {
-    id: 4,
-    field1: '골절(치아파절포함)진단비(간편)',
-    field2: '10',
-    field3: '1850',
-  },
-  {
-    id: 5,
-    field1: '암(4대유사암제외)특정치료비(암전문의료기관)',
-    field2: '13500',
-    field3: '72255',
-  },
-  {
-    id: 6,
-    field1: '암(특정유사암포함)표적항암약물허가치료비(1)',
-    field2: '5000',
-    field3: '11600',
-  },
-  {
-    id: 7,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 8,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 9,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 10,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 11,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-];
-const DummyData2: DummyDataType[] = [
-  {
-    id: 1,
-    field1: '보험료납입면제대상보장(5대유해)(간편)',
-    field2: '30',
-    field3: '30',
-  },
-  {
-    id: 2,
-    field1: '보통약관(상해80%이상후유장애)(간편)',
-    field2: '3000',
-    field3: '3000',
-  },
-  {
-    id: 3,
-    field1: '상해사망(간편)',
-    field2: '15000',
-    field3: '9600',
-  },
-  {
-    id: 4,
-    field1: '골절(치아파절포함)진단비(간편)',
-    field2: '10',
-    field3: '3850',
-  },
-  {
-    id: 5,
-    field1: '암(4대유사암제외)특정치료비(암전문의료기관)',
-    field2: '13500',
-    field3: '72255',
-  },
-  {
-    id: 6,
-    field1: '암(특정유사암포함)표적항암약물허가치료비(1)',
-    field2: '5000',
-    field3: '11600',
-  },
-  {
-    id: 7,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 8,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 9,
-    field1: '질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 10,
-    field1: '444질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-  {
-    id: 11,
-    field1: '222질병사항(간편)',
-    field2: '10000',
-    field3: '10000',
-  },
-];
+const DummyData: DummyDataType[] = coverageDummyList;
+const DummyData1: DummyDataType[] = coverageDummyList;
+const DummyData2: DummyDataType[] = coverageDummyList;
 
 interface Ltpz021Props {
   open?: boolean;
@@ -397,10 +277,10 @@ const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
                 <Grow placement="bws" className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">
                   <Gcol placement="ss">
                     <Typo tag={'strong'} variant={'body-lg'} weight={'bold'}>
-                      한화 3N5 더간편건강보험(세만기형) 2601
+                      {productInfoList[i].name}
                     </Typo>
                     <Typo tag={'p'} variant={'body-sm'} color={'gray'}>
-                      기본형·납입면제운영형·3N5간편고간편고지형III
+                      {productInfoList[i].option}
                     </Typo>
                   </Gcol>
                   <Grow>

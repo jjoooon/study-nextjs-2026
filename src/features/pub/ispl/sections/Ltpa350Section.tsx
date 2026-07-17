@@ -101,9 +101,9 @@ const data: Ltpa350DataType = {
     },
     pageTitle: {
       simpleMode: false, // true 심플모드 | false 상세모드
-      title: '한화 시그니처 여성 간편건강보험4.0 무배당2604',
-      options: ['납입면제형', '납입후50%해약환급금지급형'], //셀렉트박스 옵션값
-      planNumber: ['LA20234472050000', '2'],
+      title: '시그니처여성건강(4종/올인원플랜)',
+      options: ['100세만기 월납 / 20년납'], //셀렉트박스 옵션값
+      planNumber: ['LA260706315118', '2'],
       contractHolder: '3999999 김한손',
       //planNumberList는 설계번호 검색시 나오는 리스트목록
       planNumberList: [
@@ -293,7 +293,7 @@ export default function Ltpa350Section() {
               { id: 1, status: '정상', label: '공통', sum: 24 },
               { id: 2, status: '경고', label: '누적', sum: 0 },
               { id: 3, status: '중지', label: '직업', sum: 2 },
-              { id: 4, status: '없음', label: '예상UW', sum: 0 },
+              { id: 4, status: '중지', label: '예상UW', sum: 0 },
             ]}
             onItemClick={(item) => {
               const nextActiveTab: Ltpz005TabValue =
@@ -324,7 +324,7 @@ export default function Ltpa350Section() {
             <Ltpa35003Side
               info={{
                 FP: true, //FP질병제공 동의 Y | N
-                name: '홍길동',
+                name: '김한화',
                 consentEndDate: '2024-06-30', //동의종료일
                 noticeType: '1형(일반고지형)', //공지사항 유형(1형/2형)
                 diseaseCount: 6, //질병개수
@@ -355,7 +355,7 @@ export default function Ltpa350Section() {
                 date: '2026-06-30', //보험시기
                 polName: '김한화', //계약자명
                 insName: '김한화', //피보험자명
-                insAge: '32', //피보험자 나이
+                insAge: '41', //피보험자 나이
                 insGender: '여', //피보험자 성별
                 insGrade: '1급', //피보험자 등급
                 quoteExpiryDate: '2026-06-30', //설계유효기간
