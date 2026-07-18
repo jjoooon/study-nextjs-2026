@@ -4,9 +4,11 @@
 const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
 const PROD_STORYBOOK_BASE_URL = 'https://jjoooon.github.io/study-nextjs-2026';
 const HYGITEST_STORYBOOK_BASE_URL = 'https://story-dev.hwgitest.com';
+const HYGITEST_STORYBOOK_BASE_URL2 = 'https://story.hwgitest.com';
 
 const LOCAL_HOST_NAMES = new Set(['localhost', '127.0.0.1']);
 const HYGITEST_HOST_NAMES = new Set(['story-dev.hwgitest.com']);
+const HYGITEST_HOST_NAMES2 = new Set(['story.hwgitest.com']);
 
 function getStorybookBaseUrl(): string {
   if (typeof window === 'undefined') return LOCAL_STORYBOOK_BASE_URL;
@@ -16,8 +18,12 @@ function getStorybookBaseUrl(): string {
     return LOCAL_STORYBOOK_BASE_URL;
   }
 
-  if (HYGITEST_HOST_NAMES.has(hostname) || hostname.endsWith('.hwgitest.com')) {
+  if (HYGITEST_HOST_NAMES.has(hostname)) {
     return HYGITEST_STORYBOOK_BASE_URL;
+  }
+
+  if (HYGITEST_HOST_NAMES2.has(hostname) || hostname.endsWith('.hwgitest.com')) {
+    return HYGITEST_STORYBOOK_BASE_URL2;
   }
 
   return PROD_STORYBOOK_BASE_URL;
