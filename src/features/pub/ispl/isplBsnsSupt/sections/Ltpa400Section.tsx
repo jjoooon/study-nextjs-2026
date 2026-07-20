@@ -590,7 +590,16 @@ export default function Ltpa400Section() {
       width: 105,
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
-        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+        <Button
+          color="link"
+          onClick={() => {}}
+          only="default"
+          size="lg"
+          variant="text"
+          onDoubleClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           {params.data?.field12 ?? ''}
         </Button>
       ),
