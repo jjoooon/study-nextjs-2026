@@ -93,6 +93,7 @@ interface Ltpa350DataType {
     state: Ltpa350ProcessState;
   };
 }
+
 const data: Ltpa350DataType = {
   head: {
     pageID: {
@@ -101,9 +102,13 @@ const data: Ltpa350DataType = {
     },
     pageTitle: {
       simpleMode: false, // true 심플모드 | false 상세모드
-      title: '시그니처여성건강(4종/올인원플랜)',
-      options: ['100세만기 월납 / 20년납'], //셀렉트박스 옵션값
-      planNumber: ['LA260706315118', '2'],
+      title:
+        localStorage.getItem('a') === 'true'
+          ? '한화 더 경증 간편건강보험Ⅱ(세만기형) 2604'
+          : '시그니처여성건강(4종/올인원플랜)',
+      options:
+        localStorage.getItem('a') === 'true' ? ['납입후50%해약환급금지급형, 간편고지형'] : ['100세만기 월납 / 20년납'], //셀렉트박스 옵션값
+      planNumber: localStorage.getItem('a') === 'true' ? ['LA260706316585', '2'] : ['LA260706315118', '2'],
       contractHolder: '3999999 김한손',
       //planNumberList는 설계번호 검색시 나오는 리스트목록
       planNumberList: [
