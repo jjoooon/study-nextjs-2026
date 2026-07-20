@@ -100,9 +100,9 @@ const Ltpz117 = () => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="설계누적상세조건" variant="none" cols={['w-[1rem]', 'w-auto']}>
+            <FormTable caption="동시가입누적체크" variant="none" cols={['w-[1rem]', 'w-auto']}>
               <FormRow>
-                <FormCell title={'설계누적상세조건'}>
+                <FormCell title={'동시가입누적체크'}>
                   <Input value={'LA202218975220000'} width={140} readOnly />
                   <Input value={'무배당LIFEPLUS한아름종합보험2206'} width={280} readOnly />
                 </FormCell>
