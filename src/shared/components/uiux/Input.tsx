@@ -44,6 +44,10 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   e2eType?: number;
   /** 허용할 문자 종류 화이트리스트 필터 */
   charFilter?: 'ko' | 'en' | 'num' | 'en-num' | 'ko-en' | 'ko-en-num';
+  /** 입력 최대 길이 지정 */
+  maxLength?: number;
+  /** 입력 최소 길이 지정 */
+  minLength?: number;
   // debug?: boolean;
 }
 
@@ -136,6 +140,8 @@ function Input({
   className,
   e2eType = 0,
   charFilter,
+  maxLength,
+  minLength,
   ...props
 }: UIInputProps) {
   const [focused, setFocused] = useState(false);
@@ -381,6 +387,8 @@ function Input({
               className={cn(align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left')}
               required={required}
               readOnly={readOnly}
+              maxLength={maxLength}
+              minLength={minLength}
               aria-invalid={shouldShowError || undefined}
               aria-describedby={shouldShowError ? errorId : undefined}
               value={isControlled ? displayValue : undefined}
@@ -448,6 +456,8 @@ function Input({
               )}
               required={required}
               readOnly={readOnly}
+              maxLength={maxLength}
+              minLength={minLength}
               aria-invalid={shouldShowError || undefined}
               aria-describedby={shouldShowError ? errorId : undefined}
               value={isControlled ? displayValue : undefined}

@@ -60,12 +60,17 @@
         const currentHost = window.location.hostname;
         if (LOCAL_HOST_NAMES.has(currentHost)) {
           return LOCAL_STORYBOOK_BASE_URL;
-        } else if (HYGITEST_HOST_NAMES.has(currentHost)) {
-          return HYGITEST_STORYBOOK_BASE_URL;
-        } else if (HYGITEST_HOST_NAMES2.has(currentHost)) {
-          return HYGITEST_STORYBOOK_BASE_URL2;
         }
-        return PROD_STORYBOOK_BASE_URL;
+        // 시연 서버 환경 등 동적 도메인 대응:
+        // index.html이 /hgi/index.html 에 위치한 경우 상위 경로(..)로 iframe.html 탐색
+        // 만약 특정 서브패스가 있는 경우 origin + pathname 기반으로 상대 경로 처리
+        const pathParts = window.location.pathname.split('/');
+        pathParts.pop(); // index.html 제거
+        if (pathParts.length > 0 && pathParts[pathParts.length - 1] === 'hgi') {
+          pathParts.pop(); // hgi 디렉터리 상위로 이동
+        }
+        const basePath = pathParts.join('/');
+        return window.location.origin + (basePath === '/' ? '' : basePath);
       }
 
       const testIframe1 = document.getElementById('testIframe1');
@@ -214,8 +219,10 @@
       const storybookBase = getInitialStorybookBase();
       const storyPath = 'app-ispl-gdplslc-ltpa020';
       const url = `${storybookBase}/iframe.html?id=${storyPath}--default&viewMode=story`;
-      testIframe1.src = url;
-      testIframe2.src = `${storybookBase}/iframe.html?id=app-ispl-gdplslc-components-popups-ltpz021--default&viewMode=story`;
+      if (testIframe1) testIframe1.src = url;
+      if (testIframe2) {
+        testIframe2.src = `${storybookBase}/iframe.html?id=app-ispl-gdplslc-components-popups-ltpz021--default&viewMode=story`;
+      }
     </script>
   </body>
 </html>

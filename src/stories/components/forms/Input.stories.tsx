@@ -130,6 +130,14 @@ import { Input } from '@uiux/Input';
       control: { type: 'boolean' },
       table: { category: '설정 props' },
     },
+    maxLength: {
+      control: { type: 'number' },
+      table: { category: '설정 props' },
+    },
+    minLength: {
+      control: { type: 'number' },
+      table: { category: '설정 props' },
+    },
     error: {
       control: { type: 'boolean' },
       table: { category: '에러 props' },
@@ -194,6 +202,8 @@ import { Input } from '@uiux/Input';
     required: false,
     readOnly: false,
     disabled: false,
+    maxLength: 10,
+    minLength: 0,
     error: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
