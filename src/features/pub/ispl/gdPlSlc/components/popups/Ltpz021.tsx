@@ -14,7 +14,7 @@
  * 4. 각 설계안에 포함된 담보 보험료(field3)의 실시간 총합 집계(Array.reduce) 및 화면 출력
  */
 
-import type { BodyScrollEvent, ColDef } from 'ag-grid-enterprise';
+import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths, numberValueFormatter } from '@aggrid'; // 2026-05-29 tooltip 추가
@@ -102,20 +102,324 @@ const coverageDummyList = [
     field2: '2000',
     field3: '160',
   },
+  {
+    id: 29,
+    field1: '4대유사암특정치료비(암전문의료기관Ⅱ(상급종합병원등))(각연간1회한)',
+    field2: '1500',
+    field3: '1547',
+  },
+  {
+    id: 30,
+    field1: '4대유사암특정치료비(수술)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '400',
+    field3: '1188',
+  },
+  {
+    id: 31,
+    field1: '4대유사암특정치료비(항암방사선치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '400',
+    field3: '260',
+  },
+  {
+    id: 32,
+    field1: '4대유사암특정치료비(항암약물치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '400',
+    field3: '96',
+  },
+  {
+    id: 33,
+    field1: '4대유사암특정치료비(중환자실치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '300',
+    field3: '3',
+  },
+  {
+    id: 34,
+    field1: '암(특정유사암포함)항암세기조절방사선치료비(1회한)',
+    field2: '2000',
+    field3: '2880',
+  },
+  {
+    id: 35,
+    field1: '암(특정유사암포함)항암양성자방사선치료비(1회한)',
+    field2: '3000',
+    field3: '960',
+  },
+  {
+    id: 36,
+    field1: '암(특정유사암포함)항암중입자방사선치료비(1회한)',
+    field2: '5000',
+    field3: '1750',
+  },
+  {
+    id: 37,
+    field1: '암(특정유사암포함)표적항암약물허가치료비(1회한)',
+    field2: '2000',
+    field3: '5120',
+  },
+  {
+    id: 38,
+    field1: '카티(CAR-T)항암약물허가치료비(1회한)',
+    field2: '5000',
+    field3: '120',
+  },
+  {
+    id: 39,
+    field1: '암(4대유사암제외)특정항암호르몬약물허가치료비(연간1회한)',
+    field2: '300',
+    field3: '894',
+  },
+  { id: 40, field1: '뇌혈관질환진단비', field2: '1000', field3: '7860' },
+  { id: 41, field1: '뇌졸중진단비', field2: '1000', field3: '3740' },
+  { id: 42, field1: '뇌출혈진단비', field2: '1500', field3: '1590' },
+  { id: 43, field1: '뇌전증진단비', field2: '1000', field3: '1960' },
+  { id: 44, field1: '허혈성심장질환진단비', field2: '1000', field3: '2460' },
+  { id: 45, field1: '급성심근경색증진단비', field2: '1000', field3: '600' },
+  { id: 46, field1: '심근병증진단비', field2: '1000', field3: '1210' },
+  { id: 47, field1: '심장판막협착증(대동맥판막)진단비', field2: '100', field3: '69' },
+  { id: 48, field1: '암(4대유사암제외)수술비Ⅱ(수술1회당)', field2: '500', field3: '4750' },
+  { id: 49, field1: '4대유사암수술비Ⅱ(수술1회당)', field2: '100', field3: '530' },
+  { id: 50, field1: '뇌혈관질환수술비(1회한)', field2: '1000', field3: '2700' },
+  { id: 51, field1: '뇌졸중수술비(1회한)', field2: '1000', field3: '1700' },
+  { id: 52, field1: '허혈성심장질환수술비(1회한)', field2: '1000', field3: '2800' },
+  { id: 53, field1: '급성심근경색증수술비(1회한)', field2: '1000', field3: '600' },
+  { id: 54, field1: '상해중환자실입원비(1일이상10일한도)', field2: '20', field3: '800' },
+  { id: 55, field1: '질병중환자실입원비(1일이상10일한도)', field2: '20', field3: '540' },
+  { id: 56, field1: '치료비 선지급서비스Ⅱ 특별약관', field2: '', field3: '' },
+];
+
+const coverageDummyList1 = [
+  { id: 1, field1: '보통약관(상해사망)', field2: '5000', field3: '700' },
+  { id: 2, field1: '보험료납입면제대상보장(6대사유Ⅱ)', field2: '10', field3: '151' },
+  { id: 3, field1: '보장보험료50%납입지원Ⅱ(4대유사암)', field2: '5', field3: '2396' },
+  { id: 4, field1: '4대유사암진단비', field2: '2100', field3: '2890' },
+  { id: 5, field1: '4대유사암진단비(기타피부암)', field2: '500', field3: '190' },
+  { id: 6, field1: '4대유사암진단비(제자리암)', field2: '500', field3: '1070' },
+  { id: 7, field1: '4대유사암진단비(경계성종양)', field2: '500', field3: '190' },
+  { id: 8, field1: '4대유사암진단비(갑상선암)', field2: '600', field3: '1440' },
+  { id: 9, field1: '여성통합암(4대유사암제외)진단비Ⅱ', field2: '28000', field3: '21680' },
+  { id: 10, field1: '여성통합암(4대유사암제외)진단비Ⅱ(대장암)', field2: '2000', field3: '2740' },
+  { id: 11, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정소화기관암)', field2: '2000', field3: '4600' },
+  { id: 12, field1: '여성통합암(4대유사암제외)진단비Ⅱ(유방암)', field2: '2000', field3: '5800' },
+  { id: 13, field1: '여성통합암(4대유사암제외)진단비Ⅱ(자궁관련암)', field2: '2000', field3: '1600' },
+  { id: 14, field1: '여성통합암(4대유사암제외)진단비Ⅱ(난소암)', field2: '2000', field3: '600' },
+  { id: 15, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정여성생식기관암)', field2: '2000', field3: '80' },
+  { id: 16, field1: '여성통합암(4대유사암제외)진단비Ⅱ(비뇨기관암(요로암))', field2: '2000', field3: '680' },
+  { id: 17, field1: '여성통합암(4대유사암제외)진단비Ⅱ(폐암)', field2: '2000', field3: '1980' },
+  { id: 18, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정호흡기및흉곽내기관암)', field2: '2000', field3: '180' },
+  { id: 19, field1: '여성통합암(4대유사암제외)진단비Ⅱ(눈,뇌,중추신경계통및내분비선암)', field2: '2000', field3: '220' },
+  { id: 20, field1: '여성통합암(4대유사암제외)진단비Ⅱ(입술,구강및인두암)', field2: '2000', field3: '260' },
+  {
+    id: 21,
+    field1: '여성통합암(4대유사암제외)진단비Ⅱ(뼈,관절,악성흑색종,중피성및연조직암)',
+    field2: '3000',
+    field3: '510',
+  },
+  { id: 22, field1: '여성통합암(4대유사암제외)진단비Ⅱ(림프및조혈관련특정암)', field2: '3000', field3: '2430' },
+  {
+    id: 23,
+    field1: '암(4대유사암제외)특정치료비(암전문의료기관Ⅱ(상급종합병원등))(각연간1회한)',
+    field2: '9000',
+    field3: '35710',
+  },
+  {
+    id: 24,
+    field1: '암(4대유사암제외)특정치료비(수술)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '2000',
+    field3: '11940',
+  },
+  {
+    id: 25,
+    field1: '암(4대유사암제외)특정치료비(항암방사선치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '2000',
+    field3: '8080',
+  },
+  {
+    id: 26,
+    field1: '암(4대유사암제외)특정치료비(항암약물치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '2000',
+    field3: '14860',
+  },
+  {
+    id: 27,
+    field1: '암(4대유사암제외)특정치료비(중환자실치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '1000',
+    field3: '670',
+  },
+  {
+    id: 28,
+    field1: '암(4대유사암제외)특정치료비(호스피스완화의료치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '2000',
+    field3: '160',
+  },
+  {
+    id: 29,
+    field1: '4대유사암특정치료비(암전문의료기관Ⅱ(상급종합병원등))(각연간1회한)',
+    field2: '1500',
+    field3: '1567',
+  },
+  {
+    id: 30,
+    field1: '4대유사암특정치료비(수술)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '400',
+    field3: '1204',
+  },
+  {
+    id: 31,
+    field1: '4대유사암특정치료비(항암방사선치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '400',
+    field3: '260',
+  },
+  {
+    id: 32,
+    field1: '4대유사암특정치료비(항암약물치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '400',
+    field3: '100',
+  },
+  {
+    id: 33,
+    field1: '4대유사암특정치료비(중환자실치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
+    field2: '300',
+    field3: '3',
+  },
+  {
+    id: 34,
+    field1: '암(특정유사암포함)항암세기조절방사선치료비(1회한)',
+    field2: '2000',
+    field3: '2860',
+  },
+  {
+    id: 35,
+    field1: '암(특정유사암포함)항암양성자방사선치료비(1회한)',
+    field2: '3000',
+    field3: '930',
+  },
+  {
+    id: 36,
+    field1: '암(특정유사암포함)항암중입자방사선치료비(1회한)',
+    field2: '5000',
+    field3: '1700',
+  },
+  {
+    id: 37,
+    field1: '암(특정유사암포함)표적항암약물허가치료비(1회한)',
+    field2: '2000',
+    field3: '5060',
+  },
+  {
+    id: 38,
+    field1: '카티(CAR-T)항암약물허가치료비(1회한)',
+    field2: '5000',
+    field3: '120',
+  },
+  {
+    id: 39,
+    field1: '암(4대유사암제외)특정항암호르몬약물허가치료비(연간1회한)',
+    field2: '300',
+    field3: '876',
+  },
+  { id: 40, field1: '뇌혈관질환진단비', field2: '1000', field3: '7620' },
+  { id: 41, field1: '뇌졸중진단비', field2: '1000', field3: '3630' },
+  { id: 42, field1: '뇌출혈진단비', field2: '1500', field3: '1545' },
+  { id: 43, field1: '허혈성심장질환진단비', field2: '1000', field3: '2400' },
+  { id: 44, field1: '암(4대유사암제외)수술비Ⅱ(수술1회당)', field2: '500', field3: '4700' },
+  { id: 45, field1: '4대유사암수술비Ⅱ(수술1회당)', field2: '100', field3: '540' },
+  { id: 46, field1: '뇌혈관질환수술비(1회한)', field2: '1000', field3: '2600' },
+  { id: 47, field1: '허혈성심장질환수술비(1회한)', field2: '1000', field3: '2700' },
+  { id: 48, field1: '상해중환자실입원비(1일이상10일한도)', field2: '20', field3: '800' },
+  { id: 49, field1: '질병중환자실입원비(1일이상10일한도)', field2: '20', field3: '520' },
+  { id: 50, field1: '치료비 선지급서비스Ⅱ 특별약관', field2: '', field3: '' },
+];
+
+const coverageDummyList2 = [
+  { id: 1, field1: '보통약관(상해사망)', field2: '5000', field3: '600' },
+  { id: 2, field1: '보험료납입면제대상보장(6대사유Ⅱ)', field2: '10', field3: '182' },
+  { id: 3, field1: '보장보험료50%납입지원Ⅱ(4대유사암)', field2: '4', field3: '1844' },
+  { id: 4, field1: '4대유사암진단비', field2: '2000', field3: '2420' },
+  { id: 5, field1: '4대유사암진단비(기타피부암)', field2: '500', field3: '200' },
+  { id: 6, field1: '4대유사암진단비(제자리암)', field2: '500', field3: '975' },
+  { id: 7, field1: '4대유사암진단비(경계성종양)', field2: '500', field3: '190' },
+  { id: 8, field1: '4대유사암진단비(갑상선암)', field2: '500', field3: '1055' },
+  { id: 9, field1: '여성통합암(4대유사암제외)진단비Ⅱ', field2: '39000', field3: '31476' },
+  { id: 10, field1: '여성통합암(4대유사암제외)진단비Ⅱ(대장암)', field2: '3000', field3: '4290' },
+  { id: 11, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정소화기관암)', field2: '3000', field3: '7410' },
+  { id: 12, field1: '여성통합암(4대유사암제외)진단비Ⅱ(유방암)', field2: '3000', field3: '7836' },
+  { id: 13, field1: '여성통합암(4대유사암제외)진단비Ⅱ(자궁관련암)', field2: '3000', field3: '2424' },
+  { id: 14, field1: '여성통합암(4대유사암제외)진단비Ⅱ(난소암)', field2: '3000', field3: '414' },
+  { id: 15, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정여성생식기관암)', field2: '3000', field3: '906' },
+  { id: 16, field1: '여성통합암(4대유사암제외)진단비Ⅱ(비뇨기관암(요로암))', field2: '3000', field3: '120' },
+  { id: 17, field1: '여성통합암(4대유사암제외)진단비Ⅱ(폐암)', field2: '3000', field3: '1152' },
+  { id: 18, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정호흡기및흉곽내기관암)', field2: '3000', field3: '3246' },
+  { id: 19, field1: '여성통합암(4대유사암제외)진단비Ⅱ(눈,뇌,중추신경계통및내분비선암)', field2: '3000', field3: '324' },
+  { id: 20, field1: '여성통합암(4대유사암제외)진단비Ⅱ(입술,구강및인두암)', field2: '3000', field3: '348' },
+  {
+    id: 21,
+    field1: '여성통합암(4대유사암제외)진단비Ⅱ(뼈,관절,악성흑색종,중피성및연조직암)',
+    field2: '3000',
+    field3: '516',
+  },
+  { id: 22, field1: '여성통합암(4대유사암제외)진단비Ⅱ(림프및조혈관련특정암)', field2: '3000', field3: '2490' },
+  {
+    id: 23,
+    field1: '암(특정유사암포함)항암세기조절방사선치료비(1회한)',
+    field2: '1000',
+    field3: '1430',
+  },
+  {
+    id: 24,
+    field1: '암(특정유사암포함)항암양성자방사선치료비(1회한)',
+    field2: '3000',
+    field3: '990',
+  },
+  {
+    id: 25,
+    field1: '암(특정유사암포함)항암중입자방사선치료비(1회한)',
+    field2: '5000',
+    field3: '1750',
+  },
+  {
+    id: 26,
+    field1: '암(특정유사암포함)표적항암약물허가치료비(1회한)',
+    field2: '1000',
+    field3: '2520',
+  },
+  {
+    id: 27,
+    field1: '카티(CAR-T)항암약물허가치료비(1회한)',
+    field2: '5000',
+    field3: '130',
+  },
+  {
+    id: 28,
+    field1: '암(4대유사암제외)특정항암호르몬약물허가치료비(연간1회한)',
+    field2: '300',
+    field3: '954',
+  },
+  { id: 29, field1: '뇌혈관질환진단비', field2: '2000', field3: '15680' },
+  { id: 30, field1: '뇌졸중진단비', field2: '2000', field3: '7680' },
+  { id: 31, field1: '뇌출혈진단비', field2: '1500', field3: '1605' },
+  { id: 32, field1: '뇌전증진단비', field2: '1000', field3: '1990' },
+  { id: 33, field1: '허혈성심장질환진단비', field2: '2000', field3: '5220' },
+  { id: 34, field1: '급성심근경색증진단비', field2: '1000', field3: '680' },
+  { id: 35, field1: '심근병증진단비', field2: '1000', field3: '1240' },
+  { id: 36, field1: '심장판막협착증(대동맥판막)진단비', field2: '100', field3: '69' },
+  { id: 37, field1: '암(4대유사암제외)수술비Ⅱ(수술1회당)', field2: '500', field3: '4800' },
+  { id: 38, field1: '4대유사암수술비Ⅱ(수술1회당)', field2: '100', field3: '470' },
+  { id: 39, field1: '뇌혈관질환수술비(1회한)', field2: '1000', field3: '2700' },
+  { id: 40, field1: '허혈성심장질환수술비(1회한)', field2: '1000', field3: '2800' },
 ];
 
 const productInfoList = [
   {
-    name: '한화 3N5 더간편건강보험(세만기형) 2601',
-    option: '납입면제형·납입후50%해약환급금지급형',
+    name: '시그니처여성건강(4종/올인원플랜) ',
+    option: '100세만기 월납 / 20년납',
   },
   {
-    name: '한화 더건강한 한아름종합보험 2604',
-    option: '납입면제형·납입후50%해약환급금지급형[할증운영상품]',
+    name: '시그니처여성건강(4종/올인원플랜)',
+    option: '100세만기 월납 / 20년납',
   },
   {
-    name: '한화 더 경증 간편건강보험(연만기 갱신형)',
-    option: '해약환급금미지급형·3.10.5간편고지형',
+    name: '한화 더건강한 한아름종합보험 무배당2604',
+    option: '100세만기 월납 / 20년납',
   },
 ];
 
@@ -129,8 +433,8 @@ type DummyDataType = {
   field3: string | number; // 보험료
 };
 const DummyData: DummyDataType[] = coverageDummyList;
-const DummyData1: DummyDataType[] = coverageDummyList;
-const DummyData2: DummyDataType[] = coverageDummyList;
+const DummyData1: DummyDataType[] = coverageDummyList1;
+const DummyData2: DummyDataType[] = coverageDummyList2;
 
 interface Ltpz021Props {
   open?: boolean;
@@ -172,65 +476,6 @@ const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
     },
   ];
 
-  // =====================
-  // AG Grid 간 세로 스크롤 동기화 로직
-  // =====================
-
-  // 3개 그리드의 컨테이너 DOM Element 노드들을 참조하는 Ref 배열
-  const gridContainerRefs = React.useRef<(HTMLDivElement | null)[]>([]);
-  // 스크롤 이벤트가 전파되며 서로를 무한 호출하는 스크롤 루프 현상을 방지하기 위한 Lock 플래그
-  const isSyncingBodyScroll = React.useRef(false);
-
-  /**
-   * 대상 그리드 컨테이너 내부의 실제 스크롤 뷰포트(.ag-body-viewport) 엘리먼트를 찾아서
-   * 기준 스크롤 높이값(scrollTop)을 주입해 동기화해주는 함수입니다.
-   */
-  const setGridBodyScrollTop = React.useCallback((container: HTMLDivElement, top: number) => {
-    const viewport = container.querySelector('.ag-body-viewport');
-
-    // ag-Grid 렌더러가 올바르게 Div 형태로 마운트되어 있는지 타입 체킹
-    if (!(viewport instanceof HTMLDivElement)) {
-      return;
-    }
-
-    // 소수점 스크롤 편차나 무의미한 1px 미만의 스크롤 갱신 요구는 리렌더링 방지를 위해 스킵
-    if (Math.abs(viewport.scrollTop - top) > 1) {
-      viewport.scrollTop = top;
-    }
-  }, []);
-
-  /**
-   * 임의의 그리드에서 세로 스크롤 이벤트(onBodyScroll)가 발생했을 때 호출되는 연동 핸들러
-   * - `sourceIndex`: 이벤트를 최초로 유발한 그리드의 인덱스 (0, 1, 2)
-   * - `event`: Ag-Grid 바디 스크롤 이벤트 객체
-   */
-  const handleGridBodyScroll = React.useCallback(
-    (sourceIndex: number, event: BodyScrollEvent<DummyDataType>) => {
-      // 1. 이미 다른 그리드가 스크롤을 동기화 중(Lock)이거나 가로 스크롤인 경우에는 무시
-      if (isSyncingBodyScroll.current || event.direction !== 'vertical') {
-        return;
-      }
-
-      // 2. 동기화 작업을 시작하므로 Lock 플래그를 true로 선언
-      isSyncingBodyScroll.current = true;
-
-      // 3. 최초 발생한 그리드(sourceIndex)를 제외한 나머지 그리드의 scrollTop을 강제 보정
-      gridContainerRefs.current.forEach((container, index) => {
-        if (!container || index === sourceIndex) {
-          return;
-        }
-
-        setGridBodyScrollTop(container, event.top);
-      });
-
-      // 4. 다음 브라우저 렌더링 프레임(requestAnimationFrame) 시점에 Lock 플래그를 안전하게 해제
-      requestAnimationFrame(() => {
-        isSyncingBodyScroll.current = false;
-      });
-    },
-    [setGridBodyScrollTop]
-  );
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent showCloseButton resizable={true} size="2xl">
@@ -250,7 +495,7 @@ const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
             <FormTable variant={'head'} lineTop={false}>
               <FormRow>
                 <FormCell title={'피보험자'}>
-                  <Input value={'홍길순 32세(여)'} variant="info" readOnly />
+                  <Input value={'김한화 41세(여)'} variant="info" readOnly />
                 </FormCell>
                 <FormCell title={'직업'}>
                   <Input value={'(1급)회사 사무직 종사자'} variant="info" readOnly />
@@ -263,7 +508,7 @@ const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
                 </FormCell>
 
                 <FormCell title={'피보험자'}>
-                  <Input value={'32세(1994-02-12) / 여 / 1급'} variant="info" readOnly />
+                  <Input value={'41세(1994-02-12) / 여 / 1급'} variant="info" readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -300,17 +545,7 @@ const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
                   </Grow>
                 </Grow>
                 <Gcol className="w-full h-full px-[1rem] pb-[2rem]" placement="ss" gap={0}>
-                  {/* 
-                    스크롤 동기화를 위한 ag-Grid 컨테이너
-                    - 루프 인덱스(i: 0, 1, 2)에 따라 각 그리드의 DOM Element 참조를 `gridContainerRefs` 배열에 저장합니다.
-                  */}
-                  <div
-                    className="ag-theme-alpine w-full inner-scroll"
-                    data-rows={rowData1.length}
-                    ref={(el) => {
-                      gridContainerRefs.current[i] = el;
-                    }}
-                  >
+                  <div className="ag-theme-alpine w-full inner-scroll" data-rows={rowData1.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -324,10 +559,6 @@ const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
                       }}
                       tooltipShowMode="whenTruncated" // 컬럼 너비 초과 시에만 툴팁 노출
                       tooltipShowDelay={0}
-                      // [중요] 사용자가 본 그리드를 스크롤할 때, 다른 2개 그리드의 세로 스크롤도 실시간 동기화
-                      onBodyScroll={(event) => {
-                        handleGridBodyScroll(i, event);
-                      }}
                       animateRows={false}
                     />
                   </div>
@@ -341,21 +572,7 @@ const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
                       예상보험료
                     </Typo>
                     <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">
-                      {(() => {
-                        // 1. 해당 그리드에 바인딩된 로우 데이터를 조회
-                        const data = i === 0 ? rowData1 : i === 1 ? rowData2 : rowData3;
-                        // 2. 각 담보 보험료(field3)의 값을 문자 정제 후 누적하여 총합 계산
-                        const sum = data.reduce(
-                          (acc, cur) =>
-                            acc +
-                            (typeof cur.field3 === 'number'
-                              ? cur.field3
-                              : Number(cur.field3.toString().replace(/[^\d.-]/g, ''))),
-                          0
-                        );
-                        // 3. 천단위 콤마 포맷팅 후 반환
-                        return sum.toLocaleString();
-                      })()}
+                      {i === 0 ? '121,375' : i === 1 ? '103,695' : '89,230'}
                     </Typo>
                   </Grow>
                 </Gcol>

@@ -19,6 +19,7 @@ import type {
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import Ltpz022 from '@/features/pub/ispl/udrtkGu/components/popups/Ltpz022';
+import useMounted from '@/shared/hooks/useMounted';
 import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
@@ -57,6 +58,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002aData';
 import type { DummyDataType } from '../data/ltpa35002aData';
+import { dummyDataA } from '../data/ltpa35002aDataA';
 import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
 import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChangedHandler';
 import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
@@ -71,26 +73,6 @@ type AgGridRow = DummyDataType & {
   isHighlighted?: boolean;
 };
 
-// AI 인수지침 위배해소(Ltpz068) 적용 시 교체될 해소 완료 데이터 셋
-// - 전체 가입 설계 목록의 담보에 대해 가입금액 및 보험료를 일괄적으로 AI 권고 비율(70%)로 최적 조정합니다.
-const resolvedDummyData: AgGridRow[] = dummyData.map((item) => {
-  const originalAmount = typeof item.insuredAmount === 'number' ? item.insuredAmount : Number(item.insuredAmount);
-  const originalPremium = typeof item.field7 === 'number' ? item.field7 : Number(item.field7);
-
-  if (!isNaN(originalAmount) && originalAmount > 0) {
-    const newAmount = Math.round(originalAmount * 0.7);
-    const newPremium = Math.round(originalPremium * 0.7);
-    return {
-      ...item,
-      title: `[AI조정] ${item.title}`,
-      insuredAmount: newAmount,
-      field4: newAmount,
-      field7: newPremium,
-      isHighlighted: true,
-    };
-  }
-  return item;
-});
 interface Ltpa35002Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
@@ -98,6 +80,20 @@ interface Ltpa35002Props {
 }
 
 export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa35002Props) {
+  // 로컬스토리지 'a' 상태 판별 및 초기 데이터 세팅
+  const [useDummyDataA] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const isA = localStorage.getItem('a') === 'true';
+      if (isA) {
+        setTimeout(() => {
+          localStorage.removeItem('a');
+        }, 100);
+      }
+      return isA;
+    }
+    return false;
+  });
+
   // =====================
   // 상태 및 참조 관리
   // =====================
@@ -106,13 +102,44 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
 
   // 지침확인결과(Ltpz022) 팝업 가시성 상태
   const [isLtpz022Open, setIsLtpz022Open] = useState(false);
-  const [rowData, setRowData] = useState<AgGridRow[]>(dummyData);
+  const [rowData, setRowData] = useState<AgGridRow[]>(() => (useDummyDataA ? dummyDataA : dummyData));
+
+  useMounted(() => {
+    if (typeof window !== 'undefined') {
+      const isA = localStorage.getItem('a') === 'true';
+      if (isA) {
+        setRowData(dummyDataA);
+        setTimeout(() => {
+          localStorage.removeItem('a');
+        }, 100);
+      }
+    }
+  });
 
   // AI 지침 자동 해소 적용 콜백
   const handleApplyAiRemedy = useCallback(() => {
     setIsLtpz022Open(false); // 팝업 닫기
-    setRowData(resolvedDummyData); // 데이터 교체
-  }, []);
+    const currentBase = useDummyDataA ? dummyDataA : dummyData;
+    const resolved = currentBase.map((item) => {
+      const originalAmount = typeof item.insuredAmount === 'number' ? item.insuredAmount : Number(item.insuredAmount);
+      const originalPremium = typeof item.field7 === 'number' ? item.field7 : Number(item.field7);
+
+      if (!isNaN(originalAmount) && originalAmount > 0) {
+        const newAmount = Math.round(originalAmount * 0.7);
+        const newPremium = Math.round(originalPremium * 0.7);
+        return {
+          ...item,
+          title: `[AI조정] ${item.title}`,
+          insuredAmount: newAmount,
+          field4: newAmount,
+          field7: newPremium,
+          isHighlighted: true,
+        };
+      }
+      return item;
+    });
+    setRowData(resolved); // 데이터 교체
+  }, [useDummyDataA]);
 
   // 전체 보험료(field7) 합계 계산
   const totalPremium = useMemo(() => {
