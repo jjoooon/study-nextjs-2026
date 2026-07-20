@@ -28,6 +28,7 @@ interface TabDataType {
 
 interface Ltpa35002Props {
   onIsWidthExpandedChange?: (isExpanded: boolean) => void;
+  onApplyAiRemedy?: () => void;
 }
 
 const TabData: TabDataType[] = [
@@ -69,7 +70,7 @@ const TabData: TabDataType[] = [
   },
 ];
 
-export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {
+export function Ltpa35002({ onIsWidthExpandedChange, onApplyAiRemedy }: Ltpa35002Props) {
   // =====================
   // 상태 및 참조 관리
   // =====================
@@ -86,7 +87,13 @@ export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {
   const renderByTabValue = () => {
     switch (TabActive) {
       case '1':
-        return <Ltpa35002a isWidthExpanded={isWidthExpanded} setIsWidthExpanded={handleSetIsWidthExpanded} />;
+        return (
+          <Ltpa35002a
+            isWidthExpanded={isWidthExpanded}
+            setIsWidthExpanded={handleSetIsWidthExpanded}
+            onApplyAiRemedy={onApplyAiRemedy}
+          />
+        );
       case '2':
         return <Ltpa35002b isWidthExpanded={isWidthExpanded} setIsWidthExpanded={handleSetIsWidthExpanded} />;
       case '3':
