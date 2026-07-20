@@ -154,7 +154,7 @@ const Ltpz116 = () => {
       width: attributeColumnWidth(80),
     },
     {
-      headerName: '화면코드',
+      headerName: '설계번호',
       field: 'field2',
       flex: 2,
       minWidth: attributeColumnWidth(100),
