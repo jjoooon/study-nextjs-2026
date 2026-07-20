@@ -90,7 +90,7 @@ const Ltpz117 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              동시가입누적체크
+              동시가입누적상세조건
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ117)
