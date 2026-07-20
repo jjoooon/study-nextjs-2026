@@ -77,9 +77,15 @@ interface Ltpa35002Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
+  onApplyAiRemedy?: () => void;
 }
 
-export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa35002Props) {
+export function Ltpa35002a({
+  onSelectPlan,
+  isWidthExpanded = false,
+  setIsWidthExpanded,
+  onApplyAiRemedy,
+}: Ltpa35002Props) {
   // 로컬스토리지 'a' 상태 판별 및 초기 데이터 세팅
   const [useDummyDataA] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
@@ -139,7 +145,8 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
       return item;
     });
     setRowData(resolved); // 데이터 교체
-  }, [useDummyDataA]);
+    onApplyAiRemedy?.(); // 상위 '꼭 해야할 일' 상태 업데이트 콜백 호출
+  }, [useDummyDataA, onApplyAiRemedy]);
 
   // 전체 보험료(field7) 합계 계산
   const totalPremium = useMemo(() => {

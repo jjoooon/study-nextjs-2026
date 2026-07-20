@@ -6,9 +6,10 @@
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
-import { Grow, Grid, Gcol } from '@atoms';
+import { Grow, Grid, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -48,6 +49,7 @@ type Ltpa400DummyDataRow = {
   field10: string | number;
   field11: string | number;
   field12: string | number;
+  field13: boolean;
 };
 const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
   {
@@ -64,6 +66,7 @@ const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
     field10: '김한화김',
     field11: '심한화화',
     field12: 'LA251028678825',
+    field13: true,
   },
   {
     id: 2,
@@ -79,6 +82,7 @@ const Ltpa400DummyData: Ltpa400DummyDataRow[] = [
     field10: '김한화화',
     field11: '심한화화',
     field12: 'LA251028678825',
+    field13: false,
   },
 ];
 
@@ -537,6 +541,9 @@ export default function Ltpa400Section() {
       flex: 1,
       minWidth: 70,
       cellClass: 'text-center',
+      cellClassRules: {
+        'bg-[#B3B3B3]': (params) => params.value === '요청취소',
+      },
     },
     {
       headerName: '담당SM',
@@ -548,13 +555,33 @@ export default function Ltpa400Section() {
     {
       headerName: '지원SM',
       field: 'field11',
-      width: 70,
+      width: 90,
       cellClass: 'truncate text-center',
       tooltipValueGetter: createTooltipValueGetter<Ltpa400DummyDataRow>({ field: 'field11' }),
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
-        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+        <Grow gap={1}>
           {params.data?.field11 ?? ''}
-        </Button>
+          {params.data?.field13 && (
+            <Button
+              color="gray-light"
+              onClick={(e) => {
+                e.stopPropagation();
+                // 버튼 클릭 시 실행할 동작을 여기에 작성하시면 됩니다.
+              }}
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+              }}
+              only="default"
+              size="sm"
+              variant="outlined"
+              className="w-[2.2rem] h-[2.2rem] min-w-[2.2rem] p-0 z-50"
+            >
+              <Typo color="primary" tag="span" variant="body-xs" weight="bold">
+                I
+              </Typo>
+            </Button>
+          )}
+        </Grow>
       ),
     },
     {
@@ -563,7 +590,16 @@ export default function Ltpa400Section() {
       width: 105,
       cellClass: 'text-center',
       cellRenderer: (params: ICellRendererParams<Ltpa400DummyDataRow>) => (
-        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+        <Button
+          color="link"
+          onClick={() => {}}
+          only="default"
+          size="lg"
+          variant="text"
+          onDoubleClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           {params.data?.field12 ?? ''}
         </Button>
       ),
@@ -744,10 +780,14 @@ export default function Ltpa400Section() {
                           value={form.type02 || '12345678'}
                           onChange={(e) => setFormField('type02', e.target.value)}
                         />
-                        <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                          <SearchIcon color={'var(--color-primary-50)'} />
-                        </Button>
-                        <Input aria-label="" width={200} value={'신부산지점GA지점'} readOnly />
+                        {form.type01 !== '설계접수번호' && (
+                          <>
+                            <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
+                              <SearchIcon color={'var(--color-primary-50)'} />
+                            </Button>
+                            <Input aria-label="" width={200} value={'신부산지점GA지점'} readOnly />
+                          </>
+                        )}
                       </FormCell>
                       <FormCell title={'설계일자'}>
                         <DatePickerInput
@@ -810,6 +850,11 @@ export default function Ltpa400Section() {
                     }}
                     singleClickEdit={true}
                     onCellValueChanged={() => {}}
+                    onRowDoubleClicked={(event) => {
+                      const target = event.event?.target as HTMLElement;
+                      if (target?.closest('button')) return;
+                      console.log('Row double clicked (tab1):', event.data);
+                    }}
                     domLayout="normal"
                   />
                 </div>
@@ -892,7 +937,7 @@ export default function Ltpa400Section() {
                       </FormCell>
                     </FormRow>
                     <FormRow>
-                      <FormCell title={'대리인'}>
+                      <FormCell title={'대리점'}>
                         <NativeSelect
                           aria-label="대리점 선택"
                           width={120}
@@ -970,6 +1015,9 @@ export default function Ltpa400Section() {
                         tooltipShowMode="whenTruncated" // 2026-06-01 tooltip(3가지) 추가
                         tooltipShowDelay={0}
                         tooltipHideDelay={3000}
+                        onRowDoubleClicked={(event) => {
+                          console.log('Row double clicked (tab2):', event.data);
+                        }}
                       />
                     </div>
                     {/* 2026-05-22 페이징 추가 */}

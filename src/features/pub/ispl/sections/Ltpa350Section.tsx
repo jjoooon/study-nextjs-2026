@@ -209,12 +209,33 @@ export default function Ltpa350Section() {
   // 퍼블 확인용 viewKey 상태 (섹션에서 통합 관리)
   const [currentViewKey] = useState<ViewKey>('view3');
 
+  // 신호등(TaskStatusBoard) 항목별 상태 관리
+  type TaskStatusItem = { id: number; status: '정상' | '경고' | '중지' | '없음'; label: string; sum: number };
+  const [taskStatusList, setTaskStatusList] = useState<TaskStatusItem[]>([
+    { id: 1, status: '정상', label: '공통', sum: 24 },
+    { id: 2, status: '경고', label: '누적', sum: 0 },
+    { id: 3, status: '중지', label: '직업', sum: 2 },
+    { id: 4, status: '중지', label: '예상UW', sum: 0 },
+  ]);
+
+  // AI자동해소 적용 시 '꼭 해야할 일' (누적, 예상UW) 상태를 '정상'으로 업데이트하는 핸들러
+  const handleApplyAiRemedy = () => {
+    setTaskStatusList((prev) =>
+      prev.map((item) => {
+        if (item.label === '누적' || item.label === '예상UW') {
+          return { ...item, status: '정상' };
+        }
+        return item;
+      })
+    );
+  };
+
   // 단계별 메인 콘텐츠 매핑
   // - `simpleMode`: 1/3단계에서 간략 UI 여부 제어
   // - `onIsWidthExpandedChange`: 2단계에서 본문 폭 변경 시 상위의 aside 표시 정책 동기화
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa35001 simpleMode={simpleMode} />,
-    2: <Ltpa35002 onIsWidthExpandedChange={setIsWidthExpanded} />,
+    2: <Ltpa35002 onIsWidthExpandedChange={setIsWidthExpanded} onApplyAiRemedy={handleApplyAiRemedy} />,
     3: <Ltpa35003 simpleMode={simpleMode} />,
     4: <Ltpa35004 />,
     5: <Ltpa35005 />,
@@ -294,12 +315,7 @@ export default function Ltpa350Section() {
         // - onItemClick: 클릭 시 팝업 탭 이동 + 필요 시 step=2 강제 이동
         asideHead={
           <TaskStatusBoard
-            state={[
-              { id: 1, status: '정상', label: '공통', sum: 24 },
-              { id: 2, status: '경고', label: '누적', sum: 0 },
-              { id: 3, status: '중지', label: '직업', sum: 2 },
-              { id: 4, status: '중지', label: '예상UW', sum: 0 },
-            ]}
+            state={taskStatusList}
             onItemClick={(item) => {
               const nextActiveTab: Ltpz005TabValue =
                 item.label === '공통'
