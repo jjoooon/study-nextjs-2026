@@ -203,7 +203,7 @@ const Ltpz116 = () => {
     {
       headerName: '상세조건',
       width: attributeColumnWidth(60),
-      cellClass: '!px-0 text-center ',
+      cellClass: 'text-center',
       cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
         <Grow className="justify-center items-center h-full">
           <Button aria-label="질병 상세내용 보기" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
