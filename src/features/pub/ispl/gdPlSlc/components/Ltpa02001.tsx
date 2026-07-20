@@ -332,7 +332,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
   const [productCategory, setProductCategory] = React.useState<string>('');
-  const [productFeature, setProductFeature] = React.useState<string[]>(['simple', 'shortTerm']);
+  const [productFeature, setProductFeature] = React.useState<string[]>(['']);
 
   const handleProductCategoryChange = React.useCallback(
     (val: string) => {

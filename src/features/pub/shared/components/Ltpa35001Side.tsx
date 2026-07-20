@@ -60,7 +60,7 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
             </Typo>
           </Grow>
           <Button variant={'text'} color={'gray'} onClick={() => {}}>
-            <Typo variant={'heading-md'}>설계누적반영</Typo>
+            <Typo variant={'heading-md'}>동시가입누적체크</Typo>
           </Button>
         </Gcol>
 
