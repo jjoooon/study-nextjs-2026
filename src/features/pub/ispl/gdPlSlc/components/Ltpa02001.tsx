@@ -354,6 +354,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
 
   const handleStartDesign = React.useCallback(() => {
     if (typeof window !== 'undefined') {
+      localStorage.setItem('a', 'true');
       window.parent.postMessage({ type: 'GO_TO_LTPA350' }, '*');
     }
     router.push('/pub/ispl/LTPA350');

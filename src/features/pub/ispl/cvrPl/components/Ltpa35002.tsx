@@ -34,7 +34,7 @@ const TabData: TabDataType[] = [
   {
     id: 1,
     name: '김한화',
-    age: '32',
+    age: '41',
     gender: '여',
     value: 'tab1',
     error: false,
