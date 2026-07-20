@@ -552,9 +552,10 @@ export const dummyDataA: DummyDataType[] = [
     field8: ['조건부인수'],
     rowCopy: false,
     titleDetail: {
-      title: '허혈성심장질환진단비(간편)',
-      description: '',
-      info: [],
+      title: '허혈성심장질환진단비(간편)(CLA11938)',
+      description:
+        '보험기간 중에 약관에서 정한 "허혈성심장질환"으로 진단확정된 경우 보험가입금액 지급(최초 1회한, 계약일부터 경과기간 1년 미만시 보험가입금액의 50% 지급)* ',
+      info: ['가입단위:100만원', '플랜상품 가입금액 : 100만원~1,000만원'],
     },
     locked: false,
     badge: [],
