@@ -81,6 +81,30 @@ export default function RootLayout({
 
   return (
     <html lang="ko">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var ua = navigator.userAgent;
+                  var is109 = /(Chrome|Edg(e|A|iOS)?)\\/109\\./i.test(ua);
+                  if (is109) {
+                    document.documentElement.classList.add('v109');
+                    if (document.body) {
+                      document.body.classList.add('v109');
+                    } else {
+                      document.addEventListener('DOMContentLoaded', function() {
+                        document.body.classList.add('v109');
+                      });
+                    }
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body>
         <Providers authHeader={authHeader}>
           <AuthGuard>

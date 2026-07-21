@@ -1,0 +1,43 @@
+
+/* Chrome 109 버전 전용 ag-Grid 레거시 호환 스타일 */
+.v109 .ag-checkbox-input-wrapper,
+.v109 .ag-radio-button-input-wrapper {
+  background-color: var(--ag-checkbox-unchecked-background-color);
+  border: solid var(--ag-checkbox-border-width) #babbbc;
+  flex: none;
+  height: var(--ag-icon-size);
+  position: relative;
+  width: var(--ag-icon-size);
+  border-radius: var(--ag-checkbox-border-radius);
+}
+
+.v109 .ag-checkbox-input,
+.v109 .ag-radio-button-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  display: block;
+  height: var(--ag-icon-size);
+  margin: 0;
+  opacity: 0;
+  width: var(--ag-icon-size);
+}
+
+.v109 .ag-checked:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='7' viewBox='0 0 9 7' fill='none'%3E%3Cpath d='M7.16129 0.215987C7.39628 -0.0491056 7.80185 -0.0735298 8.06705 0.161299C8.33222 0.396336 8.35671 0.801858 8.12174 1.06706L3.57185 6.20028C3.33954 6.46237 2.93998 6.48973 2.67406 6.2618L0.223948 4.16203C-0.0449526 3.93138 -0.0761161 3.52642 0.154449 3.25741C0.385033 2.98843 0.790015 2.95746 1.05907 3.18791L3.02953 4.87696L7.16129 0.215987Z' fill='white'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  pointer-events: none;
+}
+.v109 .pointer-events-none .ag-checked:after {
+  background-color: transparent !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='7' viewBox='0 0 9 7' fill='none'%3E%3Cpath d='M7.16129 0.215987C7.39628 -0.0491056 7.80185 -0.0735298 8.06705 0.161299C8.33222 0.396336 8.35671 0.801858 8.12174 1.06706L3.57185 6.20028C3.33954 6.46237 2.93998 6.48973 2.67406 6.2618L0.223948 4.16203C-0.0449526 3.93138 -0.0761161 3.52642 0.154449 3.25741C0.385033 2.98843 0.790015 2.95746 1.05907 3.18791L3.02953 4.87696L7.16129 0.215987Z' fill='%23777777'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
