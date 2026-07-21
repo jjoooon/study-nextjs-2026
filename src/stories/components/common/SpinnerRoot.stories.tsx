@@ -5,7 +5,7 @@ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Provider } from 'react-redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { SpinnerRoot, BaseSpinnerRoot, AiSpinner } from '@/shared/components/common/SpinnerRoot';
+import { SpinnerRoot, BaseSpinnerRoot, AiSpinner, DnaSpinnerRoot, HpSpinnerRoot } from '@/shared/components/common/SpinnerRoot';
 
 // 스토리북용 Mock Redux Store 생성 도구
 const createMockStore = (initialSpinnerState: any) => {
@@ -64,6 +64,7 @@ const meta: Meta<typeof SpinnerRoot> = {
             <h2>History</h2>
             <ul>
               <li>2026.07.08 - 최초 생성</li>
+              <li>2026.07.21 - DnaSpinnerRoot, HpSpinnerRoot 스피너 컴포넌트 추가</li>
             </ul>
 
             <h2>Overview</h2>
@@ -85,7 +86,7 @@ const meta: Meta<typeof SpinnerRoot> = {
             <Markdown>
               {`
 \`\`\`tsx
-import { SpinnerRoot } from '@/shared/components/common/SpinnerRoot';
+import { SpinnerRoot, DnaSpinnerRoot, HpSpinnerRoot } from '@/shared/components/common/SpinnerRoot';
 
 // src/app/layout.tsx (전역 레이아웃)에 한번 등록하여 사용
 export default function RootLayout({ children }) {
@@ -93,7 +94,7 @@ export default function RootLayout({ children }) {
     <html>
       <body>
         {children}
-        <SpinnerRoot />
+        <HpSpinnerRoot />
       </body>
     </html>
   );
@@ -154,7 +155,7 @@ dispatch(showSpinner({ message: '데이터를 불러오는 중입니다...' }));
   argTypes: {
     type: {
       control: { type: 'select' },
-      options: ['SpinnerRoot', 'BaseSpinnerRoot', 'AiSpinner'],
+      options: ['SpinnerRoot', 'BaseSpinnerRoot', 'AiSpinner', 'DnaSpinnerRoot', 'HpSpinnerRoot'],
       description: '렌더링할 스피너 컴포넌트 타입',
       table: { category: 'Spinner Type' },
     },
@@ -197,6 +198,28 @@ export const Default: Story = {
     if (args.type === 'AiSpinner') {
       return <AiSpinner texts={args.message ? [args.message] : undefined} />;
     }
+    if (args.type === 'DnaSpinnerRoot') {
+      return <DnaSpinnerRoot />;
+    }
+    if (args.type === 'HpSpinnerRoot') {
+      return <HpSpinnerRoot />;
+    }
     return args.type === 'SpinnerRoot' ? <SpinnerRoot /> : <BaseSpinnerRoot />;
   },
+};
+
+export const DnaSpinner: Story = {
+  args: {
+    type: 'DnaSpinnerRoot' as any,
+    isVisible: true,
+  },
+  render: () => <DnaSpinnerRoot />,
+};
+
+export const HpSpinner: Story = {
+  args: {
+    type: 'HpSpinnerRoot' as any,
+    isVisible: true,
+  },
+  render: () => <HpSpinnerRoot />,
 };

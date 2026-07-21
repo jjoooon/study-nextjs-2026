@@ -1083,7 +1083,7 @@
   35%,
   65% {
     transform: translate(var(--tx, 0), var(--ty, 0)) scale(0.5);
-    opacity: 0.5;
+    opacity: 1;
   }
   85%,
   100% {
@@ -1189,7 +1189,4 @@
 [data-loading='true'] .skeleton-item::after,
 [data-loading='true'] .skeleton-item::before {
   content: none !important;
-}
-
-.skeleton-ltpa02002 {
 }

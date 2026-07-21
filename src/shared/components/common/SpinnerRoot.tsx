@@ -43,7 +43,7 @@ import {
 import { Gcol, Typo } from '@atoms';
 
 export interface SpinnerRootProps {
-  type?: 'SpinnerRoot' | 'BaseSpinnerRoot';
+  type?: 'SpinnerRoot' | 'BaseSpinnerRoot' | 'AiSpinner' | 'DnaSpinnerRoot' | 'HpSpinnerRoot';
   isVisible?: boolean;
   message?: string | null;
   transparentBackground?: boolean;
@@ -51,7 +51,6 @@ export interface SpinnerRootProps {
   texts?: string[];
   interval?: number; // 텍스트 변경 주기 (ms)
 }
-
 export function BaseSpinnerRoot(props?: SpinnerRootProps) {
   const isVisible = useAppSelector(selectIsSpinnerVisible);
   const message = useAppSelector(selectSpinnerMessage);
@@ -135,28 +134,6 @@ export function BaseSpinnerRoot(props?: SpinnerRootProps) {
         </Gcol>
       )}
 
-      {/* Close Button (개발용) */}
-      <button
-        type="button"
-        onClick={() => window.location.reload()}
-        style={{
-          position: 'absolute',
-          top: '16px',
-          right: '16px',
-          color: 'rgba(255, 255, 255, 0.5)',
-          background: 'none',
-          border: 'none',
-          fontSize: '20px',
-          cursor: 'pointer',
-          padding: '8px',
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = 'white')}
-        onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)')}
-        aria-label="스피너 닫기"
-      >
-        ✕
-      </button>
-
       {/* Inline Animations */}
       <style>
         {`
@@ -187,7 +164,6 @@ export function BaseSpinnerRoot(props?: SpinnerRootProps) {
     document.body
   );
 }
-
 export function SpinnerRoot(props?: SpinnerRootProps) {
   const isVisible = useAppSelector(selectIsSpinnerVisible);
   const message = useAppSelector(selectSpinnerMessage);
@@ -328,7 +304,6 @@ export interface LocalSpinnerProps {
   texts?: string[];
   interval?: number; // 텍스트 변경 주기 (ms)
 }
-
 /**
  * Spinner
  * - Portal이나 Redux 스토어 상태에 구애받지 않고 특정 영역(Grid 등) 내부에서 인라인으로 직접 돌아가는 독립형 로컬 스피너 컴포넌트입니다.
@@ -403,7 +378,6 @@ export interface AiSpinnerProps {
   texts?: React.ReactNode[];
   interval?: number; // 텍스트 변경 주기 (ms)
 }
-
 export function AiSpinner({
   className,
   size = 'min(46vmin, 360px)',
@@ -635,5 +609,363 @@ export function AiSpinner({
         `}
       </style>
     </Gcol>
+  );
+}
+
+export function DnaSpinnerRoot(props?: SpinnerRootProps) {
+  const isVisible = useAppSelector(selectIsSpinnerVisible);
+  const message = useAppSelector(selectSpinnerMessage);
+  const transparentBackground = useAppSelector(selectIsTransparentBackground);
+  const hideLoadingIndicator = useAppSelector(selectIsHideLoadingIndicator);
+
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // texts 및 interval 처리
+  const texts = props?.texts ?? (message ? [message] : ['Loading...']);
+  const interval = props?.interval ?? 2000;
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!texts || texts.length <= 1) {
+      setCurrentIndex(0);
+      return;
+    }
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % texts.length);
+    }, interval);
+    return () => clearInterval(timer);
+  }, [texts, interval]);
+
+  const currentText = texts[currentIndex] ?? '';
+
+  // Hydration 불일치 방지 및 spinner 상태 검사
+  if (!isMounted || !isVisible) return null;
+
+  // 배경 스타일 결정
+  const backgroundStyle = transparentBackground
+    ? {}
+    : {
+        background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%)',
+        backdropFilter: 'blur(4px)',
+      };
+
+  // Portal로 body 하단에 렌더링
+  return createPortal(
+    <div
+      role="dialog"
+      aria-busy="true"
+      aria-label={currentText}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...backgroundStyle,
+      }}
+    >
+      {/* Spinner Icon */}
+      {!hideLoadingIndicator && (
+        <Gcol className="flex items-center justify-center min-h-screen gap-6 -translate-y-[2rem]">
+          <div>
+            <div className="row rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+
+            <div className="row2 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row3 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row4 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row5 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row6 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row7 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row8 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row9 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row10 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row11 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row12 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+            <div className="row13 rowc">
+              <div className="circle c1"></div>
+              <div className="circle c2"></div>
+            </div>
+          </div>
+        </Gcol>
+      )}
+
+      {/* Inline Animations */}
+      <style>
+        {`
+          
+.circle{
+  border-radius:50%;
+  width:10px;
+  height:10px;
+  background-color:#FF9F6E;
+  margin-bottom:25px;
+  position:relative;
+}
+
+.rowc{
+  display:inline-block;
+  margin-left:2px;
+}
+
+.c1{
+  animation: c1 1.5s linear infinite;
+}
+
+.c2{
+  animation: c2 1.5s linear infinite;
+  background-color:#FF5C2E;
+}
+
+@keyframes c1{
+  0%{transform:translateY(0px) scale(1);}
+  25%{transform:translateY(12px) scale(1.5);background-color:#FF5C2E;z-index:10;}
+  50%{transform:translateY(34px) scale(1);}
+  75%{transform:translateY(12px) scale(.6);background-color:#FF9F6E;z-index:1;opacity:.1}
+  100%{transform:translateY(0px) scale(1);}
+}
+
+@keyframes c2{
+  0%{transform:translateY(0px) scale(1);}
+  25%{transform:translateY(-12px) scale(.6);background-color:#FFD187;z-index:1;opacity:.1}
+  50%{transform:translateY(-34px) scale(1);}
+  75%{transform:translateY(-12px) scale(1.5);background-color:#FFD900;z-index:10;}
+  100%{transform:translateY(0px) scale(1);}
+}
+
+.row2 .c1{animation-delay:.1s;}.row2 .c2{animation-delay:.1s;}
+.row3 .c1{animation-delay:.22s;}.row3 .c2{animation-delay:.22s;}
+.row4 .c1{animation-delay:.37s;}.row4 .c2{animation-delay:.37s;}
+.row5 .c1{animation-delay:.49s;}.row5 .c2{animation-delay:.49s;}
+.row6 .c1{animation-delay:.67s;}.row6 .c2{animation-delay:.67s;}
+.row7 .c1{animation-delay:.89s;}.row7 .c2{animation-delay:.89s;}
+.row8 .c1{animation-delay:.95s;}.row8 .c2{animation-delay:.95s;}
+.row9 .c1{animation-delay:1.2s;}.row9 .c2{animation-delay:1.2s;}
+.row10 .c1{animation-delay:1.45s;}.row10 .c2{animation-delay:1.45s;}
+.row11 .c1{animation-delay:1.62s;}.row11 .c2{animation-delay:1.62s;}
+.row12 .c1{animation-delay:1.88s;}.row12 .c2{animation-delay:1.88s;}
+.row13 .c1{animation-delay:2s;}.row13 .c2{animation-delay:2s;}
+
+        `}
+      </style>
+    </div>,
+    document.body
+  );
+}
+
+export function HpSpinnerRoot(props?: SpinnerRootProps) {
+  const isVisible = useAppSelector(selectIsSpinnerVisible);
+  const message = useAppSelector(selectSpinnerMessage);
+  const transparentBackground = useAppSelector(selectIsTransparentBackground);
+  const hideLoadingIndicator = useAppSelector(selectIsHideLoadingIndicator);
+
+  const [isMounted, setIsMounted] = React.useState(false);
+  // 물결 위치 애니메이션용 state (jQuery의 .wave:before, .wave:after top 위치)
+  const [waveTop, setWaveTop] = React.useState<number>(50);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // jQuery changeVal 로직을 React / TypeScript로 전환 (속도 단축 반영)
+  React.useEffect(() => {
+    if (!isVisible) return;
+
+    let timerId: NodeJS.Timeout;
+
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem('itemquantity', '50');
+    }
+
+    const changeVal = (val: number) => {
+      const nextVal = val - 1;
+      setWaveTop(nextVal);
+
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem('itemquantity', String(nextVal));
+      }
+
+      if (nextVal > -55) {
+        timerId = setTimeout(() => {
+          changeVal(nextVal);
+        }, 60); // 파도 차오르는 속도: 500ms -> 60ms
+      } else {
+        setWaveTop(50);
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.setItem('itemquantity', '50');
+        }
+        timerId = setTimeout(() => {
+          changeVal(50);
+        }, 200); // 리셋 후 재시작 대기: 1000ms -> 200ms
+      }
+    };
+
+    timerId = setTimeout(() => {
+      changeVal(50);
+    }, 100);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [isVisible]);
+
+  // texts 및 interval 처리
+  const texts = props?.texts ?? (message ? [message] : ['Loading...']);
+  const interval = props?.interval ?? 2000;
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!texts || texts.length <= 1) {
+      setCurrentIndex(0);
+      return;
+    }
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % texts.length);
+    }, interval);
+    return () => clearInterval(timer);
+  }, [texts, interval]);
+
+  const currentText = texts[currentIndex] ?? '';
+
+  // Hydration 불일치 방지 및 spinner 상태 검사
+  if (!isMounted || !isVisible) return null;
+
+  // 배경 스타일 결정
+  const backgroundStyle = transparentBackground
+    ? {}
+    : {
+        background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%)',
+        backdropFilter: 'blur(4px)',
+      };
+
+  // Portal로 body 하단에 렌더링
+  return createPortal(
+    <div
+      role="dialog"
+      aria-busy="true"
+      aria-label={currentText}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...backgroundStyle,
+      }}
+    >
+      {/* Spinner Icon */}
+      {!hideLoadingIndicator && (
+        <Gcol className="flex items-center justify-center min-h-screen gap-6 -translate-y-[2rem]">
+          <div className="hp-wave-circle">
+            <div className="hp-wave"></div>
+          </div>
+        </Gcol>
+      )}
+
+      {/* Inline Animations */}
+      <style>
+        {`
+.hp-wave-circle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 5px solid #fff;
+  box-shadow: 0 0 0 5px #FF5C2E;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.hp-wave {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #FF8D02;
+  border-radius: 50%;
+  box-shadow: inset 0 0 50px rgba(255, 92, 46, 1);
+}
+
+.hp-wave:before,
+.hp-wave:after {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  content: '';
+  top: ${waveTop}%;
+  left: 50%;
+  transform: translate(-50%, -75%);
+  transition: all 0.1s linear;
+}
+
+.hp-wave:before {
+  border-radius: 45%;
+  background: rgba(255, 255, 255, 1);
+  animation: hpWaveAnimate 5s linear infinite;
+}
+
+.hp-wave:after {
+  border-radius: 40%;
+  background: rgba(255, 255, 255, 0.5);
+  animation: hpWaveAnimate 10s linear infinite;
+}
+
+@keyframes hpWaveAnimate {
+  0% {
+    transform: translate(-50%, -75%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -75%) rotate(360deg);
+  }
+}
+
+        `}
+      </style>
+    </div>,
+    document.body
   );
 }
