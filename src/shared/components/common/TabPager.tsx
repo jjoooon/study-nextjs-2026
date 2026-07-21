@@ -223,10 +223,16 @@ export function TabPager<T>({
                         <ListIcon />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-[0.2rem] flex flex-col" align={'end'} closeButton={true}>
+                    <PopoverContent
+                      className="w-auto p-[0.2rem] flex flex-col"
+                      align={'end'}
+                      closeButton={true}
+                      onWheel={(e) => e.stopPropagation()}
+                    >
                       <Gcol
-                        className="overflow-auto z-0 max-h-[20rem] [&>button]:h-[2.8rem] [&>button]:w-full gap-0"
+                        className="overflow-y-auto min-h-0 z-0 max-h-[20rem] [&>button]:h-[2.8rem] [&>button]:w-full gap-0"
                         placement="ss"
+                        onWheel={(e) => e.stopPropagation()}
                       >
                         {data.map((tab) => renderDropdownItem(tab, setActive, setVisibleStart, data, visibleCount))}
                       </Gcol>
