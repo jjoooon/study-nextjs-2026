@@ -686,3 +686,20 @@
   75% { opacity: 0.2; }
   100% { opacity: 1; }
 }
+
+/* textarea */
+.v109 .cp-textarea textarea::placeholder {
+  color: var(--color-gray-30);
+}
+
+.v109 .cp-textarea svg path {
+  color: var(--color-gray-30);
+}
+
+.v109 .cp-thcontext th, .v109 {
+  border-left: 0;
+}
+
+.v109 .cp-thcontext th:last-child, .v109 .cp-thcontext td:last-child {
+  border-right: 0;
+}
