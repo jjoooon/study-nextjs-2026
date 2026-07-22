@@ -305,7 +305,7 @@ function DialogOverlay({ className, style, disableMotion = false, dim = 'dark', 
       data-slot="dialog-overlay"
       style={style}
       className={cn(
-        'fixed inset-0 pointer-events-none',
+        'cp-dialog-overlay fixed inset-0 pointer-events-none',
         dim === 'dark' ? 'bg-black/60' : 'bg-transparent',
         disableMotion
           ? 'transition-none'
@@ -733,7 +733,7 @@ function DialogContent({
         style={contentStyle}
         data-isminimize={isMinimized ? 'true' : 'false'}
         className={cn(
-          'fixed grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto',
+          'cp-dialog fixed grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto',
           isDragging || !!isResizing ? 'transition-none' : 'dialog-bounce-transition',
           'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
           'w-full grid grid-rows-[auto_1fr_auto]',

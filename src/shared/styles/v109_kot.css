@@ -240,6 +240,36 @@ body.v109 [data-slot="alert-dialog-content"],
   box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.15) !important;
 }
 
+/* Chrome 109 전용 Dialog 레거시 호환 스타일 */
+.v109 .cp-dialog-overlay,
+html.v109 .cp-dialog-overlay,
+body.v109 .cp-dialog-overlay,
+.v109 [data-slot="dialog-overlay"],
+body.v109 [data-slot="dialog-overlay"],
+[data-slot="dialog-overlay"].cp-dialog-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.v109 .cp-dialog,
+html.v109 .cp-dialog,
+body.v109 .cp-dialog,
+.v109 [data-slot="dialog-content"],
+body.v109 [data-slot="dialog-content"],
+[data-slot="dialog-content"].cp-dialog {
+  background-color: #ffffff !important;
+  border-radius: 0.8rem !important;
+  border: 0.1rem solid var(--color-gray-20, #e5e5e5) !important;
+  box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.15) !important;
+  box-sizing: border-box !important;
+}
+
 
 
 
