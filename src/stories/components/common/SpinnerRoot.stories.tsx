@@ -5,7 +5,14 @@ import { Title, Primary, Controls, Markdown } from '@storybook/addon-docs/blocks
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Provider } from 'react-redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { SpinnerRoot, BaseSpinnerRoot, AiSpinner, DnaSpinnerRoot, HpSpinnerRoot } from '@/shared/components/common/SpinnerRoot';
+import {
+  SpinnerRoot,
+  BaseSpinnerRoot,
+  AiSpinner,
+  DnaSpinnerRoot,
+  HpSpinnerRoot,
+  VerticalRollingSpinner,
+} from '@/shared/components/common/SpinnerRoot';
 
 // 스토리북용 Mock Redux Store 생성 도구
 const createMockStore = (initialSpinnerState: any) => {
@@ -45,7 +52,7 @@ const meta: Meta<typeof SpinnerRoot> = {
 
       return (
         <Provider store={store}>
-          <div style={{ minHeight: '300px', position: 'relative' }}>
+          <div className='flex flex-col h-full w-full items-center justify-center' style={{ minHeight: '100dvh', position: 'relative' }}>
             <Story />
           </div>
         </Provider>
@@ -65,6 +72,7 @@ const meta: Meta<typeof SpinnerRoot> = {
             <ul>
               <li>2026.07.08 - 최초 생성</li>
               <li>2026.07.21 - DnaSpinnerRoot, HpSpinnerRoot 스피너 컴포넌트 추가</li>
+              <li>2026.07.22 - VerticalRollingSpinner 세로 무한 롤링 스피너 컴포넌트 추가</li>
             </ul>
 
             <h2>Overview</h2>
@@ -86,9 +94,18 @@ const meta: Meta<typeof SpinnerRoot> = {
             <Markdown>
               {`
 \`\`\`tsx
-import { SpinnerRoot, DnaSpinnerRoot, HpSpinnerRoot } from '@/shared/components/common/SpinnerRoot';
+import { SpinnerRoot, DnaSpinnerRoot, HpSpinnerRoot, VerticalRollingSpinner } from '@/shared/components/common/SpinnerRoot';
 
-// src/app/layout.tsx (전역 레이아웃)에 한번 등록하여 사용
+// 1. 세로 무한 롤링 스피너 개별 사용
+export function MyPage() {
+  return (
+    <div className="py-8">
+      <VerticalRollingSpinner />
+    </div>
+  );
+}
+
+// 2. src/app/layout.tsx (전역 레이아웃)에 한번 등록하여 사용
 export default function RootLayout({ children }) {
   return (
     <html>
@@ -155,7 +172,7 @@ dispatch(showSpinner({ message: '데이터를 불러오는 중입니다...' }));
   argTypes: {
     type: {
       control: { type: 'select' },
-      options: ['SpinnerRoot', 'BaseSpinnerRoot', 'AiSpinner', 'DnaSpinnerRoot', 'HpSpinnerRoot'],
+      options: ['SpinnerRoot', 'BaseSpinnerRoot', 'AiSpinner', 'DnaSpinnerRoot', 'HpSpinnerRoot', 'VerticalRollingSpinner'],
       description: '렌더링할 스피너 컴포넌트 타입',
       table: { category: 'Spinner Type' },
     },
@@ -179,11 +196,16 @@ dispatch(showSpinner({ message: '데이터를 불러오는 중입니다...' }));
       description: '로딩 인디케이터 숨김 여부 (Store 상태 모킹)',
       table: { category: 'Store Mock State' },
     },
+    texts: {
+      control: { type: 'object' },
+      description: '순차적으로 교체/롤링되는 여러 텍스트 배열 (HTML 태그 지원)',
+      table: { category: 'Props' },
+    },
   },
   args: {
     type: 'SpinnerRoot',
     isVisible: true,
-    message: '데이터 처리 중입니다...',
+    message: 'AI가 <span style="color:var(--color-primary-50)">최적의 설계</span>를 찾고있어요!',
     transparentBackground: false,
     hideLoadingIndicator: false,
   },
@@ -195,16 +217,25 @@ type Story = StoryObj<typeof SpinnerRoot>;
 export const Default: Story = {
   render: (args: any) => {
     if (!args.isVisible) return <></>;
+    const effectiveTexts = args.texts ?? (args.message ? [args.message] : undefined);
+
     if (args.type === 'AiSpinner') {
-      return <AiSpinner texts={args.message ? [args.message] : undefined} />;
+      return <AiSpinner texts={effectiveTexts} />;
     }
     if (args.type === 'DnaSpinnerRoot') {
-      return <DnaSpinnerRoot />;
+      return <DnaSpinnerRoot texts={effectiveTexts} />;
     }
     if (args.type === 'HpSpinnerRoot') {
-      return <HpSpinnerRoot />;
+      return <HpSpinnerRoot texts={effectiveTexts} />;
     }
-    return args.type === 'SpinnerRoot' ? <SpinnerRoot /> : <BaseSpinnerRoot />;
+    if (args.type === 'VerticalRollingSpinner') {
+      return <VerticalRollingSpinner />;
+    }
+    return args.type === 'SpinnerRoot' ? (
+      <SpinnerRoot texts={effectiveTexts} />
+    ) : (
+      <BaseSpinnerRoot texts={effectiveTexts} />
+    );
   },
 };
 
@@ -213,7 +244,7 @@ export const DnaSpinner: Story = {
     type: 'DnaSpinnerRoot' as any,
     isVisible: true,
   },
-  render: () => <DnaSpinnerRoot />,
+  render: (args: any) => <DnaSpinnerRoot texts={args.texts ?? (args.message ? [args.message] : undefined)} />,
 };
 
 export const HpSpinner: Story = {
@@ -221,5 +252,14 @@ export const HpSpinner: Story = {
     type: 'HpSpinnerRoot' as any,
     isVisible: true,
   },
-  render: () => <HpSpinnerRoot />,
+  render: (args: any) => <HpSpinnerRoot texts={args.texts ?? (args.message ? [args.message] : undefined)} />,
 };
+
+export const VerticalRolling: Story = {
+  args: {
+    type: 'VerticalRollingSpinner' as any,
+    isVisible: true,
+  },
+  render: (args: any) => <VerticalRollingSpinner />,
+};
+
