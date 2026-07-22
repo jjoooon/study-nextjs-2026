@@ -2,6 +2,7 @@
 @import './agGridRe.css';
 @import './shardcnRe.css';
 @import './v109.css';
+@import './v109_sy.css';
 @import './v109_kot.css';
 @plugin "tailwindcss-animate";
 @custom-variant dark (&:is(.dark *));
