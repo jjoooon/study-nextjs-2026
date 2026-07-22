@@ -1141,3 +1141,22 @@
 .ag-row-group-indent-20 {
   padding-left: 20rem !important;
 }
+
+
+/* Chrome 109 버전 전용 ag-Grid */
+.v109 .ag-theme-alpine .ag-root {
+  width: 100%;
+}
+
+.v109 .ag-row {
+  border-bottom: 1px solid var(--color-gray-10);
+}
+
+/* Chrome 109에서 TableFold 및 inner-scroll 그리드가 높이 축소되는 현상 방지 */
+.v109 .ag-root-wrapper {
+  height: 100%;
+}
+
+.v109 .ag-theme-alpine.inner-scroll .ag-root-wrapper-body {
+  height: 100% !important;
+}

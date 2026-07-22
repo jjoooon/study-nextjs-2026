@@ -1,0 +1,14 @@
+/* Chrome 109 버전 전용 ag-Grid */
+
+/* 팝업 푸터영역 */
+.v109 [data-slot='dialog-footer-area'] {
+  justify-content: flex-end;
+}
+
+.v109 .cp-mainbottomitem {
+  justify-content: flex-end;
+}
+
+.v109 .ch-tablecontext th {
+  border-left: 0;
+}
