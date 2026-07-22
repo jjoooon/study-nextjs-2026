@@ -1,0 +1,43 @@
+
+/* Chrome 109 전용 HashList 레거시 호환 스타일 */
+.v109 .cp-hashlist {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.v109 .cp-hashlist-wrap {
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 auto;
+}
+
+.v109 .cp-hashlist-wrap.has-more::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2rem;
+  height: 100%;
+  background: -webkit-linear-gradient(left, rgba(244, 244, 244, 0) 0%, var(--color-gray-5, #f4f4f4) 100%) !important;
+  background: linear-gradient(to right, rgba(244, 244, 244, 0) 0%, var(--color-gray-5, #f4f4f4) 100%) !important;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.v109 .cp-hashlist-item {
+  width: -webkit-max-content !important;
+  width: max-content !important;
+  min-width: -webkit-max-content !important;
+  min-width: max-content !important;
+  display: block !important;
+}
+
+.v109 .cp-hashlist-list {
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+}
+
+
+
+
