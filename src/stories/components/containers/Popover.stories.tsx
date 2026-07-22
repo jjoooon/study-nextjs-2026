@@ -173,11 +173,11 @@ export const Default: Story = {
             </Button>
           </PopoverTrigger>
           <PopoverContent {...args}>
-            <Gcol className="w-[11rem] [&>*]:w-full">
-              <Button variant={'outlined'} color={'coolgray'}>
+            <Gcol className="w-[11rem]">
+              <Button variant={'outlined'} color={'coolgray'} className='w-full'>
                 옵션 1
               </Button>
-              <Button variant={'outlined'} color={'coolgray'}>
+              <Button variant={'outlined'} color={'coolgray'} className='w-full'>
                 옵션 2
               </Button>
             </Gcol>
@@ -191,8 +191,8 @@ export const Default: Story = {
             </Button>
           </PopoverTrigger>
           <PopoverContent {...args}>
-            <Gcol className="w-[11rem] [&>*]:w-full">
-              <Grow>
+            <Gcol className="w-[11rem]">
+              <Grow className='w-full'>
                 <Typo variant={'body-xl'}>안면부창상봉합술치료발생금(1일1회,급여)(CLA09217)</Typo>
               </Grow>
               <Gcol>
