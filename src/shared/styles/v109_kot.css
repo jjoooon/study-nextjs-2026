@@ -185,6 +185,61 @@
   stroke: var(--color-primary-50, #ff5c2e) !important;
 }
 
+/* Chrome 109 전용 AlertDialog 레거시 호환 스타일 */
+.v109 .cp-alertdialog-overlay,
+html.v109 .cp-alertdialog-overlay,
+body.v109 .cp-alertdialog-overlay,
+.v109 [data-slot="alert-dialog-overlay"],
+body.v109 [data-slot="alert-dialog-overlay"],
+[data-slot="alert-dialog-overlay"].cp-alertdialog-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  z-index: 2050 !important;
+}
+
+.v109 .cp-alertdialog,
+html.v109 .cp-alertdialog,
+body.v109 .cp-alertdialog,
+.v109 [data-slot="alert-dialog-content"],
+body.v109 [data-slot="alert-dialog-content"],
+[data-slot="alert-dialog-content"].cp-alertdialog {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  margin: auto !important;
+  width: -webkit-fit-content !important;
+  width: -moz-fit-content !important;
+  width: fit-content !important;
+  height: -webkit-fit-content !important;
+  height: -moz-fit-content !important;
+  height: fit-content !important;
+  min-width: 28rem !important;
+  max-width: calc(100vw - 4rem) !important;
+  max-height: calc(100vh - 4rem) !important;
+  -webkit-transform: none !important;
+  transform: none !important;
+  -webkit-translate: none !important;
+  translate: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+  padding: 1.25rem 1.5rem !important;
+  box-sizing: border-box !important;
+  z-index: 2051 !important;
+  background-color: #ffffff !important;
+  border-radius: 1rem !important;
+  border: 0.1rem solid var(--color-gray-15, #d8d8d8) !important;
+  box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.15) !important;
+}
+
 
 
 
