@@ -38,6 +38,21 @@
   white-space: nowrap !important;
 }
 
+.v109 .cp-hashlist-more-list {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+}
+
+.v109 .cp-hashlist-more-item {
+  width: auto !important;
+  min-width: auto !important;
+}
+
+.v109 .cp-hashlist-more-item > div {
+  width: auto !important;
+}
+
 
 
 
