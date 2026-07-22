@@ -187,10 +187,7 @@
 
 /* Chrome 109 전용 AlertDialog 레거시 호환 스타일 */
 .v109 .cp-alertdialog-overlay,
-html.v109 .cp-alertdialog-overlay,
-body.v109 .cp-alertdialog-overlay,
 .v109 [data-slot="alert-dialog-overlay"],
-body.v109 [data-slot="alert-dialog-overlay"],
 [data-slot="alert-dialog-overlay"].cp-alertdialog-overlay {
   position: fixed !important;
   top: 0 !important;
@@ -204,10 +201,7 @@ body.v109 [data-slot="alert-dialog-overlay"],
 }
 
 .v109 .cp-alertdialog,
-html.v109 .cp-alertdialog,
-body.v109 .cp-alertdialog,
 .v109 [data-slot="alert-dialog-content"],
-body.v109 [data-slot="alert-dialog-content"],
 [data-slot="alert-dialog-content"].cp-alertdialog {
   position: fixed !important;
   top: 0 !important;
@@ -242,10 +236,7 @@ body.v109 [data-slot="alert-dialog-content"],
 
 /* Chrome 109 전용 Dialog 레거시 호환 스타일 */
 .v109 .cp-dialog-overlay,
-html.v109 .cp-dialog-overlay,
-body.v109 .cp-dialog-overlay,
 .v109 [data-slot="dialog-overlay"],
-body.v109 [data-slot="dialog-overlay"],
 [data-slot="dialog-overlay"].cp-dialog-overlay {
   position: fixed !important;
   top: 0 !important;
@@ -258,10 +249,7 @@ body.v109 [data-slot="dialog-overlay"],
 }
 
 .v109 .cp-dialog,
-html.v109 .cp-dialog,
-body.v109 .cp-dialog,
 .v109 [data-slot="dialog-content"],
-body.v109 [data-slot="dialog-content"],
 [data-slot="dialog-content"].cp-dialog {
   background-color: #ffffff !important;
   border-radius: 0.8rem !important;
@@ -272,10 +260,7 @@ body.v109 [data-slot="dialog-content"],
 
 /* Chrome 109 전용 Popover 레거시 호환 스타일 */
 .v109 .cp-popover button:not([aria-label="Close"]),
-html.v109 .cp-popover button:not([aria-label="Close"]),
-body.v109 .cp-popover button:not([aria-label="Close"]),
 .v109 [data-slot="popover-content"] button:not([aria-label="Close"]),
-body.v109 [data-slot="popover-content"] button:not([aria-label="Close"]),
 [data-slot="popover-content"].cp-popover button:not([aria-label="Close"]) {
   width: 100% !important;
   display: flex !important;
@@ -290,10 +275,7 @@ body.v109 [data-slot="popover-content"] button:not([aria-label="Close"]),
 }
 
 .v109 .cp-scrollarea,
-html.v109 .cp-scrollarea,
-body.v109 .cp-scrollarea,
 .v109 [data-slot="scroll-area-viewport"],
-body.v109 [data-slot="scroll-area-viewport"],
 [data-slot="scroll-area-viewport"].cp-scrollarea {
   width: 100% !important;
   height: 100% !important;
@@ -302,10 +284,7 @@ body.v109 [data-slot="scroll-area-viewport"],
 }
 
 .v109 .cp-scrollarea > div,
-html.v109 .cp-scrollarea > div,
-body.v109 .cp-scrollarea > div,
-.v109 [data-slot="scroll-area-viewport"] > div,
-body.v109 [data-slot="scroll-area-viewport"] > div {
+.v109 [data-slot="scroll-area-viewport"] > div {
   min-width: 100% !important;
   display: table !important;
 }
@@ -329,9 +308,7 @@ body.v109 .cp-tabs {
   position: relative;
 }
 
-.v109 .cp-tabs-line,
-html.v109 .cp-tabs-line,
-body.v109 .cp-tabs-line {
+.v109 .cp-tabs-line {
   position: relative !important;
   display: -webkit-box !important;
   display: -webkit-flex !important;
@@ -340,9 +317,7 @@ body.v109 .cp-tabs-line {
   align-items: flex-end !important;
 }
 
-.v109 .cp-tabs-line::after,
-html.v109 .cp-tabs-line::after,
-body.v109 .cp-tabs-line::after {
+.v109 .cp-tabs-line::after {
   content: '' !important;
   position: absolute !important;
   bottom: 0 !important;
@@ -353,22 +328,16 @@ body.v109 .cp-tabs-line::after {
   z-index: 0 !important;
 }
 
-.v109 .cp-tabs-line.after\:\!h-\[0\.2rem\]::after,
-html.v109 .cp-tabs-line.after\:\!h-\[0\.2rem\]::after,
-body.v109 .cp-tabs-line.after\:\!h-\[0\.2rem\]::after {
+.v109 .cp-tabs-line.after\:\!h-\[0\.2rem\]::after {
   height: 0.2rem !important;
 }
 
-.v109 .cp-tabs-line[data-variant="box"]::after,
-html.v109 .cp-tabs-line[data-variant="box"]::after,
-body.v109 .cp-tabs-line[data-variant="box"]::after {
+.v109 .cp-tabs-line[data-variant="box"]::after {
   opacity: 0 !important;
   display: none !important;
 }
 
-.v109 .cp-tabs-list,
-html.v109 .cp-tabs-list,
-body.v109 .cp-tabs-list {
+.v109 .cp-tabs-list {
   display: -webkit-inline-box !important;
   display: -webkit-inline-flex !important;
   display: -ms-inline-flexbox !important;
@@ -376,18 +345,14 @@ body.v109 .cp-tabs-list {
   align-items: flex-start !important;
 }
 
-.v109 .cp-tabs-list[data-variant="box"],
-html.v109 .cp-tabs-list[data-variant="box"],
-body.v109 .cp-tabs-list[data-variant="box"] {
+.v109 .cp-tabs-list[data-variant="box"] {
   width: 100% !important;
   background-color: #e5e7eb !important;
   border-radius: 0.8rem !important;
   padding: 0.2rem !important;
 }
 
-.v109 .cp-tabs-trigger,
-html.v109 .cp-tabs-trigger,
-body.v109 .cp-tabs-trigger {
+.v109 .cp-tabs-trigger {
   display: -webkit-inline-box !important;
   display: -webkit-inline-flex !important;
   display: -ms-inline-flexbox !important;
@@ -414,9 +379,7 @@ body.v109 .cp-tabs-trigger {
   box-shadow: 0 0.1rem 0 #ffffff !important;
 }
 
-.v109 .cp-tabs-trigger[data-state="active"],
-html.v109 .cp-tabs-trigger[data-state="active"],
-body.v109 .cp-tabs-trigger[data-state="active"] {
+.v109 .cp-tabs-trigger[data-state="active"] {
   border-top: 0.3rem solid var(--color-primary-50, #ff5c2e) !important;
   border-left: 0.1rem solid var(--color-primary-50, #ff5c2e) !important;
   border-right: 0.1rem solid var(--color-primary-50, #ff5c2e) !important;
@@ -429,25 +392,19 @@ body.v109 .cp-tabs-trigger[data-state="active"] {
 }
 
 .v109 .cp-tabs-trigger:disabled,
-.v109 .cp-tabs-trigger[disabled],
-html.v109 .cp-tabs-trigger:disabled,
-body.v109 .cp-tabs-trigger:disabled {
+.v109 .cp-tabs-trigger[disabled] {
   pointer-events: none !important;
   opacity: 0.3 !important;
 }
 
-.v109 .cp-tabs-trigger[data-tab-error="true"]:not([data-state="active"]),
-html.v109 .cp-tabs-trigger[data-tab-error="true"]:not([data-state="active"]),
-body.v109 .cp-tabs-trigger[data-tab-error="true"]:not([data-state="active"]) {
+.v109 .cp-tabs-trigger[data-tab-error="true"]:not([data-state="active"]){
   color: var(--color-danger-50, #f04438) !important;
   border: 0.1rem solid var(--color-danger-50, #f04438) !important;
   z-index: 1 !important;
   background-color: var(--color-danger-5, #fef3f2) !important;
 }
 
-.v109 .cp-tabs-trigger[data-variant="box"],
-html.v109 .cp-tabs-trigger[data-variant="box"],
-body.v109 .cp-tabs-trigger[data-variant="box"] {
+.v109 .cp-tabs-trigger[data-variant="box"] {
   height: 3rem !important;
   border: 0 !important;
   border-radius: 0.6rem !important;
@@ -460,18 +417,14 @@ body.v109 .cp-tabs-trigger[data-variant="box"] {
   width: 100% !important;
 }
 
-.v109 .cp-tabs-trigger[data-variant="box"][data-state="active"],
-html.v109 .cp-tabs-trigger[data-variant="box"][data-state="active"],
-body.v109 .cp-tabs-trigger[data-variant="box"][data-state="active"] {
+.v109 .cp-tabs-trigger[data-variant="box"][data-state="active"] {
   background-color: var(--color-gray-0, #ffffff) !important;
   box-shadow: 0 0.4rem 0.8rem 0 rgba(0, 0, 0, 0.12) !important;
   color: #374151 !important;
   border: 0 !important;
 }
 
-.v109 .cp-tabs-trigger[data-variant="vertical"],
-html.v109 .cp-tabs-trigger[data-variant="vertical"],
-body.v109 .cp-tabs-trigger[data-variant="vertical"] {
+.v109 .cp-tabs-trigger[data-variant="vertical"] {
   width: calc(100% - 1.2rem) !important;
   height: 4.4rem !important;
   padding: 0.8rem 0 !important;
@@ -486,9 +439,7 @@ body.v109 .cp-tabs-trigger[data-variant="vertical"] {
   box-shadow: none !important;
 }
 
-.v109 .cp-tabs-trigger[data-variant="vertical"][data-state="active"],
-html.v109 .cp-tabs-trigger[data-variant="vertical"][data-state="active"],
-body.v109 .cp-tabs-trigger[data-variant="vertical"][data-state="active"] {
+.v109 .cp-tabs-trigger[data-variant="vertical"][data-state="active"] {
   width: 100% !important;
   background-color: #f3f4f6 !important;
   border: 0 !important;
@@ -497,69 +448,15 @@ body.v109 .cp-tabs-trigger[data-variant="vertical"][data-state="active"] {
   color: var(--color-button-text-primary, #ff5c2e) !important;
 }
 
-/* Chrome 109 전용 Button disabled 레거시 호환 스타일 */
-.v109 button:disabled,
-.v109 button[disabled],
-.v109 [data-slot="button"]:disabled,
-.v109 [data-slot="button"][disabled],
-html.v109 button:disabled,
-html.v109 button[disabled],
-body.v109 button:disabled,
-body.v109 button[disabled] {
-  cursor: not-allowed !important;
-  pointer-events: none !important;
-}
 
-.v109 button[data-variant="outlined"]:disabled,
-.v109 button[data-variant="outlined"][disabled],
-.v109 [data-slot="button"][data-variant="outlined"]:disabled,
-.v109 [data-slot="button"][data-variant="outlined"][disabled],
-html.v109 button[data-variant="outlined"]:disabled,
-html.v109 button[data-variant="outlined"][disabled],
-body.v109 button[data-variant="outlined"]:disabled,
-body.v109 button[data-variant="outlined"][disabled] {
-  background-color: var(--color-gray-5, #f4f4f4) !important;
-  border-color: var(--color-gray-10, #e5e5e5) !important;
-  color: var(--color-gray-30, #b3b3b3) !important;
-  opacity: 1 !important;
-}
-
-.v109 button[data-variant="outlined"]:disabled svg,
-.v109 button[data-variant="outlined"][disabled] svg,
-.v109 [data-slot="button"][data-variant="outlined"]:disabled svg,
-.v109 [data-slot="button"][data-variant="outlined"][disabled] svg,
-html.v109 button[data-variant="outlined"]:disabled svg,
-body.v109 button[data-variant="outlined"]:disabled svg {
-  color: var(--color-gray-30, #b3b3b3) !important;
-  stroke: var(--color-gray-30, #b3b3b3) !important;
-  opacity: 0.5 !important;
-}
-
-.v109 button[data-variant="contained"]:disabled,
-.v109 button[data-variant="contained"][disabled],
-.v109 [data-slot="button"][data-variant="contained"]:disabled,
-.v109 [data-slot="button"][data-variant="contained"][disabled],
-html.v109 button[data-variant="contained"]:disabled,
-body.v109 button[data-variant="contained"]:disabled {
-  background-color: var(--color-gray-20, #e5e5e5) !important;
-  border-color: var(--color-gray-20, #e5e5e5) !important;
-  color: var(--color-gray-0, #ffffff) !important;
-  opacity: 1 !important;
-}
 
 /* Chrome 109 전용 Accordion 레거시 호환 스타일 */
-.v109 .cp-accordion,
-html.v109 .cp-accordion,
-body.v109 .cp-accordion {
+.v109 .cp-accordion{
   position: relative;
 }
 
 .v109 .cp-accordion-trigger,
-.v109 [data-slot="accordion-trigger"],
-html.v109 .cp-accordion-trigger,
-html.v109 [data-slot="accordion-trigger"],
-body.v109 .cp-accordion-trigger,
-body.v109 [data-slot="accordion-trigger"] {
+.v109 [data-slot="accordion-trigger"] {
   display: -webkit-box !important;
   display: -webkit-flex !important;
   display: -ms-flexbox !important;
@@ -570,53 +467,37 @@ body.v109 [data-slot="accordion-trigger"] {
 }
 
 .v109 .cp-accordion-trigger[data-state="open"] svg,
-.v109 [data-slot="accordion-trigger"][data-state="open"] svg,
-html.v109 .cp-accordion-trigger[data-state="open"] svg,
-html.v109 [data-slot="accordion-trigger"][data-state="open"] svg,
-body.v109 .cp-accordion-trigger[data-state="open"] svg,
-body.v109 [data-slot="accordion-trigger"][data-state="open"] svg {
+.v109 [data-slot="accordion-trigger"][data-state="open"] svg {
   -webkit-transform: rotate(180deg) !important;
   transform: rotate(180deg) !important;
   transition: -webkit-transform 0.2s ease, transform 0.2s ease !important;
 }
 
 .v109 .cp-accordion-trigger[data-variant="tableHead"][data-state="open"] svg,
-.v109 [data-slot="accordion-trigger"][data-variant="tableHead"][data-state="open"] svg,
-html.v109 .cp-accordion-trigger[data-variant="tableHead"][data-state="open"] svg,
-body.v109 .cp-accordion-trigger[data-variant="tableHead"][data-state="open"] svg {
+.v109 [data-slot="accordion-trigger"][data-variant="tableHead"][data-state="open"] svg {
   -webkit-transform: rotate(0deg) !important;
   transform: rotate(0deg) !important;
 }
 
 .v109 .cp-accordion-trigger[data-state="closed"] svg,
-.v109 [data-slot="accordion-trigger"][data-state="closed"] svg,
-html.v109 .cp-accordion-trigger[data-state="closed"] svg,
-html.v109 [data-slot="accordion-trigger"][data-state="closed"] svg,
-body.v109 .cp-accordion-trigger[data-state="closed"] svg,
-body.v109 [data-slot="accordion-trigger"][data-state="closed"] svg {
+.v109 [data-slot="accordion-trigger"][data-state="closed"] svg{
   -webkit-transform: rotate(0deg) !important;
   transform: rotate(0deg) !important;
   transition: -webkit-transform 0.2s ease, transform 0.2s ease !important;
 }
 
 .v109 .cp-accordion-content[data-state="closed"],
-.v109 [data-slot="accordion-content"][data-state="closed"],
-html.v109 .cp-accordion-content[data-state="closed"],
-body.v109 .cp-accordion-content[data-state="closed"] {
+.v109 [data-slot="accordion-content"][data-state="closed"] {
   display: none !important;
 }
 
 .v109 .cp-accordion-content[data-state="open"],
-.v109 [data-slot="accordion-content"][data-state="open"],
-html.v109 .cp-accordion-content[data-state="open"],
-body.v109 .cp-accordion-content[data-state="open"] {
+.v109 [data-slot="accordion-content"][data-state="open"]{
   display: block !important;
 }
 
 /* Chrome 109 전용 AsideFootButtonGroup 레거시 호환 스타일 */
-.v109 .asidefootbuttongroup,
-html.v109 .asidefootbuttongroup,
-body.v109 .asidefootbuttongroup {
+.v109 .asidefootbuttongroup {
   display: -webkit-box !important;
   display: -webkit-flex !important;
   display: -ms-flexbox !important;
@@ -627,13 +508,7 @@ body.v109 .asidefootbuttongroup {
 
 .v109 .asidefootbuttongroup > button,
 .v109 .asidefootbuttongroup > [data-slot="button"],
-.v109 .asidefootbuttongroup button,
-html.v109 .asidefootbuttongroup > button,
-html.v109 .asidefootbuttongroup > [data-slot="button"],
-html.v109 .asidefootbuttongroup button,
-body.v109 .asidefootbuttongroup > button,
-body.v109 .asidefootbuttongroup > [data-slot="button"],
-body.v109 .asidefootbuttongroup button {
+.v109 .asidefootbuttongroup button {
   -webkit-box-flex: 1 !important;
   -webkit-flex: 1 1 0% !important;
   -ms-flex: 1 1 0% !important;
@@ -643,14 +518,656 @@ body.v109 .asidefootbuttongroup button {
   box-sizing: border-box !important;
 }
 
-.v109 .asidefootbuttongroup [data-slot="popover-content"] button,
-html.v109 .asidefootbuttongroup [data-slot="popover-content"] button,
-body.v109 .asidefootbuttongroup [data-slot="popover-content"] button {
+.v109 .asidefootbuttongroup [data-slot="popover-content"] button {
   -webkit-box-flex: 0 1 auto !important;
   -webkit-flex: 0 1 auto !important;
   -ms-flex: 0 1 auto !important;
   flex: 0 1 auto !important;
   width: 100% !important;
+}
+
+/* Chrome 109 전용 ChatResult 너비, 높이 및 세로 레이아웃 완전 일치 스타일 */
+.v109 .cp-chatresult {
+  width: 30.7rem !important;
+  min-width: 30.7rem !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  -ms-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-box-pack: justify !important;
+  -webkit-justify-content: space-between !important;
+  -ms-flex-pack: justify !important;
+  justify-content: space-between !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+
+.v109 .cp-chatresult > div:nth-child(1) {
+  width: 100% !important;
+  height: 4.1rem !important;
+  min-height: 4.1rem !important;
+  max-height: 4.1rem !important;
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 4.1rem !important;
+  -ms-flex: 0 0 4.1rem !important;
+  flex: 0 0 4.1rem !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-chatresult > div:nth-child(2) {
+  width: 100% !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 auto !important;
+  -ms-flex: 1 1 auto !important;
+  flex: 1 1 auto !important;
+  height: calc(100% - 17.3rem) !important;
+  min-height: 0 !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.v109 .cp-chatresult > div:nth-child(3) {
+  width: 100% !important;
+  height: 13.2rem !important;
+  min-height: 13.2rem !important;
+  max-height: 13.2rem !important;
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 13.2rem !important;
+  -ms-flex: 0 0 13.2rem !important;
+  flex: 0 0 13.2rem !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-chatresult div[style*="scrollSnapAlign"] {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-chatresult [class*="bg-[var(--color-warning-10)]"] {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-chatresult [class*="bg-[var(--color-blue-gray-10)]"] {
+  width: 21rem !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Chrome 109 전용 ChatResult 네비게이션 컨트롤 완전 호환 스타일 */
+.v109 .cp-chatresult-nav {
+  position: absolute !important;
+  top: auto !important;
+  bottom: 0.5rem !important;
+  right: 0.75rem !important;
+  z-index: 50 !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  -ms-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-box-align: end !important;
+  -webkit-align-items: flex-end !important;
+  -ms-flex-align: end !important;
+  align-items: flex-end !important;
+  gap: 0.5rem !important;
+  width: auto !important;
+}
+
+.v109 .cp-chatresult-nav > button:first-child {
+  width: 4rem !important;
+  height: 3.7rem !important;
+  background-color: #eff8ff !important;
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1) !important;
+  border-radius: 0.4rem !important;
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 0.2rem !important;
+}
+
+.v109 .cp-chatresult-nav > div,
+.v109 .cp-chatresult-nav > [data-group="row"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  width: auto !important;
+}
+
+.v109 .cp-chatresult-nav > div > button,
+.v109 .cp-chatresult-nav > [data-group="row"] > button {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: -ms-inline-flexbox !important;
+  display: inline-flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  -webkit-box-pack: center !important;
+  -webkit-justify-content: center !important;
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  min-width: 2.5rem !important;
+  min-height: 2.5rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-chatresult-nav > div > button:disabled,
+.v109 .cp-chatresult-nav > div > button[disabled] {
+  background-color: var(--color-gray-5, #f4f4f4) !important;
+  border-color: var(--color-gray-10, #e5e5e5) !important;
+  opacity: 1 !important;
+  cursor: not-allowed !important;
+}
+
+.v109 .cp-chatresult-nav > div > button:disabled svg,
+.v109 .cp-chatresult-nav > div > button[disabled] svg {
+  opacity: 0.4 !important;
+  color: var(--color-gray-30, #b3b3b3) !important;
+  stroke: var(--color-gray-30, #b3b3b3) !important;
+}
+
+/* Chrome 109 전용 ChatResult 스크롤바 완전 호환 두꺼운 둥근 라운드 스타일 */
+.v109 .cp-chatresult *::-webkit-scrollbar {
+  width: 0.8rem !important;
+  height: 0.8rem !important;
+}
+
+.v109 .cp-chatresult *::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.v109 .cp-chatresult *::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.v109 .cp-chatresult *::-webkit-scrollbar-thumb {
+  background-color: #b3b3b3 !important;
+  border-radius: 9999px !important;
+  -webkit-border-radius: 9999px !important;
+  min-height: 4rem !important;
+}
+
+.v109 .cp-chatresult *::-webkit-scrollbar-thumb:hover {
+  background-color: #999999 !important;
+}
+
+/* Chrome 109 전용 MainFoot 완전 1:1 일치 레거시 호환 스타일 */
+.v109 .cp-mainfoot {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.v109 .cp-mainfoot form {
+  background-color: #ffffff !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-mainfoot col.w-\[9rem\] {
+  width: 9.2rem !important;
+}
+
+.v109 .cp-mainfoot col.w-\[8rem\] {
+  width: 8rem !important;
+}
+
+.v109 .cp-mainfoot col.w-\[7rem\] {
+  width: 7rem !important;
+}
+
+.v109 .cp-mainfoot [class*="grid-cols-[1fr_auto]"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-box-pack: space-between !important;
+  -webkit-justify-content: space-between !important;
+  -ms-flex-pack: space-between !important;
+  justify-content: space-between !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-mainfoot [class*="grid-cols-[1fr_auto]"] > table:first-child {
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 auto !important;
+  -ms-flex: 1 1 auto !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  max-width: calc(100% - 21.5rem) !important;
+}
+
+.v109 .cp-mainfoot [class*="grid-cols-[1fr_auto]"] > table:last-child {
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 21rem !important;
+  -ms-flex: 0 0 21rem !important;
+  flex: 0 0 21rem !important;
+  width: 21rem !important;
+  min-width: 21rem !important;
+}
+
+.v109 .cp-mainfoot table {
+  table-layout: auto !important;
+  border-collapse: collapse !important;
+  border: 0 !important;
+}
+
+.v109 .cp-mainfoot tr {
+  display: table-row !important;
+}
+
+.v109 .cp-mainfoot th {
+  display: table-cell !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  width: auto !important;
+  padding-right: 0.3rem !important;
+  border: 0 !important;
+  background-color: transparent !important;
+}
+
+.v109 .cp-mainfoot td {
+  display: table-cell !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  width: auto !important;
+  padding-right: 0.4rem !important;
+  border: 0 !important;
+  background-color: transparent !important;
+}
+
+.v109 .cp-mainfoot td > div {
+  white-space: nowrap !important;
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  -webkit-flex-direction: row !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  width: auto !important;
+  gap: 0.2rem !important;
+  overflow: visible !important;
+}
+
+/* 6rem 인풋 내 after % 기호 잘림 방지 */
+.v109 .cp-mainfoot [style*="width: 6rem"],
+.v109 .cp-mainfoot [style*="width:6rem"] {
+  width: 6.5rem !important;
+  overflow: visible !important;
+}
+
+.v109 .cp-mainfoot button[type="submit"],
+.v109 .cp-mainfoot button[class*="bg-[var(--color-primary-50)]"],
+.v109 .cp-mainfoot [class*="bg-[var(--color-primary-50)]"] {
+  background-color: var(--color-primary-50, #ff5c2e) !important;
+  color: #ffffff !important;
+  border: 0.1rem solid var(--color-primary-50, #ff5c2e) !important;
+  opacity: 1 !important;
+  font-weight: bold !important;
+}
+
+.v109 .cp-mainfoot [class*="bg-[var(--color-gray-5)]"] {
+  background-color: var(--color-gray-5, #f4f4f4) !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-box-pack: space-between !important;
+  -webkit-justify-content: space-between !important;
+  -ms-flex-pack: space-between !important;
+  justify-content: space-between !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-mainfoot [class*="bg-[var(--color-gray-5)]"] > button {
+  width: auto !important;
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 auto !important;
+  -ms-flex: 0 0 auto !important;
+  flex: 0 0 auto !important;
+}
+
+.v109 .cp-mainfoot [class*="bg-[var(--color-gray-5)]"] > div {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  -webkit-flex-direction: row !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  width: auto !important;
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 auto !important;
+  -ms-flex: 0 0 auto !important;
+  flex: 0 0 auto !important;
+}
+
+/* Chrome 109 전용 Checkbox 레거시 호환 스타일 */
+.v109 .cp-checkbox {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-checkbox[data-state="checked"] {
+  background-color: var(--color-primary-50, #ff5c2e) !important;
+  border-color: var(--color-primary-50, #ff5c2e) !important;
+  color: #ffffff !important;
+}
+
+.v109 .cp-checkbox[data-state="checked"] svg,
+.v109 .cp-checkbox[data-state="checked"] path {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: none !important;
+}
+
+.v109 .cp-checkbox:disabled,
+.v109 .cp-checkbox[disabled] {
+  background-color: var(--color-gray-10, #e5e5e5) !important;
+  border-color: var(--color-gray-20, #cccccc) !important;
+  color: var(--color-gray-30, #b3b3b3) !important;
+}
+
+.v109 .cp-checkbox:disabled svg {
+  color: var(--color-gray-30, #b3b3b3) !important;
+  stroke: var(--color-gray-30, #b3b3b3) !important;
+}
+
+/* Chrome 109 전용 DatePicker & Calendar 레거시 호환 스타일 */
+.v109 .cp-datepicker,
+.v109 .cp-datepicker-calendar {
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-datepicker-calendar [data-slot="popover-content"],
+.v109 .cp-datepicker-calendar[data-slot="calendar"],
+.v109 [data-slot="calendar"] {
+  background-color: #ffffff !important;
+  border-radius: 0.8rem !important;
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.v109 .cp-datepicker-calendar .rdp-month_caption,
+.v109 .cp-datepicker .rdp-month_caption {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 3.2rem !important;
+  position: relative !important;
+  margin-bottom: 0.8rem !important;
+  z-index: 1 !important;
+}
+
+.v109 .cp-datepicker-calendar .rdp-nav,
+.v109 .cp-datepicker .rdp-nav {
+  position: absolute !important;
+  right: 1rem !important;
+  display: flex !important;
+  pointer-events: none !important;
+  z-index: 10 !important;
+}
+
+.v109 .cp-datepicker button {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 2.8rem !important;
+  height: 2.8rem !important;
+  min-width: 2.8rem !important;
+  min-height: 2.8rem !important;
+  padding: 0 !important;
+  border-radius: 0.4rem !important;
+  border: 0.1rem solid var(--color-gray-20, #cccccc) !important;
+  background-color: #ffffff !important;
+  box-sizing: border-box !important;
+  vertical-align: middle !important;
+}
+
+.v109 .cp-datepicker-calendar .rdp-button_previous,
+.v109 .cp-datepicker-calendar .rdp-button_next,
+.v109 .cp-datepicker .rdp-button_previous,
+.v109 .cp-datepicker .rdp-button_next,
+.v109 .cp-datepicker-calendar [class*="button_previous"],
+.v109 .cp-datepicker-calendar [class*="button_next"] {
+  pointer-events: auto !important;
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 2.8rem !important;
+  min-width: 2.8rem !important;
+  max-width: 2.8rem !important;
+  height: 2.8rem !important;
+  min-height: 2.8rem !important;
+  max-height: 2.8rem !important;
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 2.8rem !important;
+  -ms-flex: 0 0 2.8rem !important;
+  flex: 0 0 2.8rem !important;
+  border-radius: 0.4rem !important;
+  border: 0.1rem solid var(--color-gray-20, #e5e5e5) !important;
+  background-color: #ffffff !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-datepicker-calendar .rdp-dropdowns,
+.v109 .cp-datepicker .rdp-dropdowns {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-flex-direction: row-reverse !important;
+  flex-direction: row-reverse !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.v109 .cp-datepicker-calendar .rdp-dropdown_root,
+.v109 .cp-datepicker .rdp-dropdown_root {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  height: 2.8rem !important;
+  border: 0.1rem solid var(--color-gray-20, #e5e5e5) !important;
+  border-radius: 0.4rem !important;
+  background-color: #ffffff !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 1 !important;
+}
+
+.v109 .cp-datepicker-calendar .rdp-dropdown,
+.v109 .cp-datepicker .rdp-dropdown {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  height: 100% !important;
+  height: 2.8rem !important;
+  line-height: 2.8rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0.4rem !important;
+  opacity: 0 !important;
+  cursor: pointer !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  outline: none !important;
+  z-index: 5 !important;
+  font-size: 1.3rem !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-datepicker-calendar select,
+.v109 .cp-datepicker select {
+  outline: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.v109 .cp-datepicker-calendar select:focus,
+.v109 .cp-datepicker-calendar select:active,
+.v109 .cp-datepicker select:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.v109 .cp-datepicker-calendar select option,
+.v109 .cp-datepicker select option {
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0.4rem 0.6rem !important;
+  font-size: 1.3rem !important;
+  text-align: center !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  width: 100% !important;
+  min-width: 7.2rem !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-datepicker-calendar select option:checked,
+.v109 .cp-datepicker-calendar select option[selected],
+.v109 .cp-datepicker select option:checked {
+  background-color: #006ff2 !important;
+  color: #ffffff !important;
+  font-weight: bold !important;
+}
+
+.v109 .cp-datepicker-calendar .rdp-caption_label,
+.v109 .cp-datepicker .rdp-caption_label {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.3rem !important;
+  font-size: 1.3rem !important;
+  font-weight: 500 !important;
+  color: var(--color-text-basic, #000) !important;
+}
+
+.v109 .cp-datepicker-calendar .rdp-month_caption button,
+.v109 .cp-datepicker .rdp-month_caption button {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 2.8rem !important;
+  padding: 0 0.8rem !important;
+  border-radius: 0.4rem !important;
+  border: 0.1rem solid var(--color-gray-20, #cccccc) !important;
+  background-color: #ffffff !important;
+  font-size: 1.3rem !important;
+  color: #000000 !important;
+}
+
+.v109 .cp-datepicker-calendar .rdp-weekdays {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  margin-bottom: 0.4rem !important;
+}
+
+.v109 .cp-datepicker-calendar .rdp-day,
+html.v109 .cp-datepicker-calendar .rdp-day {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 !important;
 }
 
 

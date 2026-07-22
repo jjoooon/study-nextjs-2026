@@ -143,7 +143,7 @@ export const ChatResult: React.FC<ChatResultProps> = ({ chatData }) => {
   }, []);
 
   return (
-    <Grid className="h-full grid-rows-[auto_1fr_auto] gap-0">
+    <Grid className="cp-chatresult h-full grid-rows-[auto_1fr_auto] gap-0">
       <Grow
         className="w-full h-[4.1rem] px-2.5 py-5 bg-[var(--color-secondary-50)] rounded-t-lg"
         placement="bwc"

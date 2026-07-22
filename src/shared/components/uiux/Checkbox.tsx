@@ -229,6 +229,7 @@ function Checkbox({
         checked={checkedState}
         onCheckedChange={handleChange}
         className={cn(
+          'cp-checkbox',
           `shrink-0 transition-colors outline-none tracking-[-0.13rem] 
 
           focus-visible:ring-2 
