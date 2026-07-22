@@ -226,7 +226,7 @@ export function MainBottomItem({ children, className }: { children: React.ReactN
     <Grow
       placement={'bwc'}
       className={cn(
-        'px-3 pt-2 pb-2.5 gap-3 rounded-t-[1rem] [&>*]:last:w-full [&>*+*]:last:w-auto [&>*]:last:justify-end ',
+        'cp-mainbottomitem px-3 pt-2 pb-2.5 gap-3 rounded-t-[1rem] [&>*]:last:w-full [&>*+*]:last:w-auto [&>*]:last:justify-end ',
         className
       )}
     >
