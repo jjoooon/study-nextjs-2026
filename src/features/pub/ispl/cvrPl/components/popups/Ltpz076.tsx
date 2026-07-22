@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
 import { useDynamicColumnWidths } from '@aggrid';
-import { Grid, Grow, Typo } from '@atoms';
+import { Grid, Grow, Gcol, Typo } from '@atoms'; // 2026-07-22 : Gcol 추가
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -236,81 +236,85 @@ const Ltpz076 = () => {
             <TableFold className="w-full">
               <TableFoldHead title="대상" />
               <TableFoldBody className="grid gap-[1.2rem]">
-                <Grid className="grid-flow-col grid-rows-[auto_1fr] gap-3">
-                  <Grow placement="bwe" className="w-full" variant={'box-round'}>
-                    <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[1rem]', 'w-auto']}>
-                      <FormRow>
-                        <FormCell title={'직업구분'}>
-                          <NativeSelect aria-label="직업구분 선택" width={80}>
-                            {[
-                              { value: 'selection', label: '설계사' },
-                              { value: 'selection2', label: '대리점' },
-                              { value: 'selection3', label: '중개인' },
-                              { value: 'selection4', label: '사용인' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.value} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'조회구분'}>
-                          <NativeSelect aria-label="조회구분 선택" width={80}>
-                            {[
-                              { value: 'selection', label: '코드' },
-                              { value: 'selection2', label: '상호명' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.value} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                          <Input aria-label="" width={75} value={'1234567'} />
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>
-                    <Grow>
-                      <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                        조회
-                      </Button>
-                      <Button
-                        color={'gray'}
-                        only={'icon'}
-                        size={'lg'}
-                        variant={'outlined'}
-                        onClick={() => {}}
-                        aria-label="새로고침"
-                      >
-                        <ResetIcon />
-                      </Button>
+                {/* 2026-07-22 : 구조 변경, true로 수정 */}
+                <Grid className="grid-flow-col grid-cols-[1fr_auto]" gap={3}>
+                  <Gcol>
+                    <Grow placement="bwe" className="w-full" variant={'box-round'}>
+                      <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[1rem]', 'w-auto']}>
+                        <FormRow>
+                          <FormCell title={'직업구분'}>
+                            <NativeSelect aria-label="직업구분 선택" width={80}>
+                              {[
+                                { value: 'selection', label: '설계사' },
+                                { value: 'selection2', label: '대리점' },
+                                { value: 'selection3', label: '중개인' },
+                                { value: 'selection4', label: '사용인' },
+                              ].map((option) => (
+                                <NativeSelectOption key={option.value} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                          </FormCell>
+                        </FormRow>
+                        <FormRow>
+                          <FormCell title={'조회구분'}>
+                            <NativeSelect aria-label="조회구분 선택" width={80}>
+                              {[
+                                { value: 'selection', label: '코드' },
+                                { value: 'selection2', label: '상호명' },
+                              ].map((option) => (
+                                <NativeSelectOption key={option.value} value={option.value}>
+                                  {option.label}
+                                </NativeSelectOption>
+                              ))}
+                            </NativeSelect>
+                            <Input aria-label="" width={75} value={'1234567'} />
+                          </FormCell>
+                        </FormRow>
+                      </FormTable>
+                      <Grow>
+                        <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                          조회
+                        </Button>
+                        <Button
+                          color={'gray'}
+                          only={'icon'}
+                          size={'lg'}
+                          variant={'outlined'}
+                          onClick={() => {}}
+                          aria-label="새로고침"
+                        >
+                          <ResetIcon />
+                        </Button>
+                      </Grow>
                     </Grow>
-                  </Grow>
-                  <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      enableCellSpan={true}
-                      singleClickEdit={true}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: false,
-                        checkboxes: true,
-                      }}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 30,
-                      }}
-                    />
-                  </div>
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        enableCellSpan={true}
+                        singleClickEdit={true}
+                        rowSelection={{
+                          mode: 'multiRow',
+                          headerCheckbox: true,
+                          checkboxes: true,
+                        }}
+                        selectionColumnDef={{
+                          headerName: '선택',
+                          width: 30,
+                        }}
+                      />
+                    </div>
+                  </Gcol>
                   <Grow className="w-full h-full flex justify-center items-center ">
                     <Button variant={'none'} size={'lg'} color={'primary'} className="p-0">
                       <RightArrowIcon color="#FF5C2E" />
                     </Button>
                   </Grow>
                 </Grid>
+                {/* // 2026-07-22 : 구조 변경 */}
               </TableFoldBody>
             </TableFold>
             <TableFold className="w-full">
@@ -329,7 +333,7 @@ const Ltpz076 = () => {
                     singleClickEdit={true}
                     rowSelection={{
                       mode: 'multiRow',
-                      headerCheckbox: false,
+                      headerCheckbox: true, // 2026-07-22 : true로 수정
                       checkboxes: true,
                     }}
                     selectionColumnDef={{
