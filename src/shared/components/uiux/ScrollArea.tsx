@@ -43,7 +43,7 @@ function ScrollArea({ className, children, type = 'always', ...props }: ScrollAr
       {/* Viewport: 실제 콘텐츠가 렌더링되는 스크롤 가능한 영역 */}
       <ScrollAreaPrimitive.Viewport
         data-slot="scroll-area-viewport"
-        className="size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1"
+        className="cp-scrollarea size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1"
       >
         {children}
       </ScrollAreaPrimitive.Viewport>
