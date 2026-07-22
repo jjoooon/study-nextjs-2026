@@ -613,6 +613,46 @@ body.v109 .cp-accordion-content[data-state="open"] {
   display: block !important;
 }
 
+/* Chrome 109 전용 AsideFootButtonGroup 레거시 호환 스타일 */
+.v109 .asidefootbuttongroup,
+html.v109 .asidefootbuttongroup,
+body.v109 .asidefootbuttongroup {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.v109 .asidefootbuttongroup > button,
+.v109 .asidefootbuttongroup > [data-slot="button"],
+.v109 .asidefootbuttongroup button,
+html.v109 .asidefootbuttongroup > button,
+html.v109 .asidefootbuttongroup > [data-slot="button"],
+html.v109 .asidefootbuttongroup button,
+body.v109 .asidefootbuttongroup > button,
+body.v109 .asidefootbuttongroup > [data-slot="button"],
+body.v109 .asidefootbuttongroup button {
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  -ms-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .asidefootbuttongroup [data-slot="popover-content"] button,
+html.v109 .asidefootbuttongroup [data-slot="popover-content"] button,
+body.v109 .asidefootbuttongroup [data-slot="popover-content"] button {
+  -webkit-box-flex: 0 1 auto !important;
+  -webkit-flex: 0 1 auto !important;
+  -ms-flex: 0 1 auto !important;
+  flex: 0 1 auto !important;
+  width: 100% !important;
+}
+
 
 
 

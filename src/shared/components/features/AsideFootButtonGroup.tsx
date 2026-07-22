@@ -11,7 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
 export function AsideFootButtonGroup() {
   return (
-    <Grow className="[&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>
+    <Grow className="asidefootbuttongroup [&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>
       <Button variant={'outlined'} color={'gray'} size={'lg'}>
         제안서
         <PlusIcon />
