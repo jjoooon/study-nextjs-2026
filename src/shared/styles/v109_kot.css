@@ -547,6 +547,72 @@ body.v109 button[data-variant="contained"]:disabled {
   opacity: 1 !important;
 }
 
+/* Chrome 109 전용 Accordion 레거시 호환 스타일 */
+.v109 .cp-accordion,
+html.v109 .cp-accordion,
+body.v109 .cp-accordion {
+  position: relative;
+}
+
+.v109 .cp-accordion-trigger,
+.v109 [data-slot="accordion-trigger"],
+html.v109 .cp-accordion-trigger,
+html.v109 [data-slot="accordion-trigger"],
+body.v109 .cp-accordion-trigger,
+body.v109 [data-slot="accordion-trigger"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+.v109 .cp-accordion-trigger[data-state="open"] svg,
+.v109 [data-slot="accordion-trigger"][data-state="open"] svg,
+html.v109 .cp-accordion-trigger[data-state="open"] svg,
+html.v109 [data-slot="accordion-trigger"][data-state="open"] svg,
+body.v109 .cp-accordion-trigger[data-state="open"] svg,
+body.v109 [data-slot="accordion-trigger"][data-state="open"] svg {
+  -webkit-transform: rotate(180deg) !important;
+  transform: rotate(180deg) !important;
+  transition: -webkit-transform 0.2s ease, transform 0.2s ease !important;
+}
+
+.v109 .cp-accordion-trigger[data-variant="tableHead"][data-state="open"] svg,
+.v109 [data-slot="accordion-trigger"][data-variant="tableHead"][data-state="open"] svg,
+html.v109 .cp-accordion-trigger[data-variant="tableHead"][data-state="open"] svg,
+body.v109 .cp-accordion-trigger[data-variant="tableHead"][data-state="open"] svg {
+  -webkit-transform: rotate(0deg) !important;
+  transform: rotate(0deg) !important;
+}
+
+.v109 .cp-accordion-trigger[data-state="closed"] svg,
+.v109 [data-slot="accordion-trigger"][data-state="closed"] svg,
+html.v109 .cp-accordion-trigger[data-state="closed"] svg,
+html.v109 [data-slot="accordion-trigger"][data-state="closed"] svg,
+body.v109 .cp-accordion-trigger[data-state="closed"] svg,
+body.v109 [data-slot="accordion-trigger"][data-state="closed"] svg {
+  -webkit-transform: rotate(0deg) !important;
+  transform: rotate(0deg) !important;
+  transition: -webkit-transform 0.2s ease, transform 0.2s ease !important;
+}
+
+.v109 .cp-accordion-content[data-state="closed"],
+.v109 [data-slot="accordion-content"][data-state="closed"],
+html.v109 .cp-accordion-content[data-state="closed"],
+body.v109 .cp-accordion-content[data-state="closed"] {
+  display: none !important;
+}
+
+.v109 .cp-accordion-content[data-state="open"],
+.v109 [data-slot="accordion-content"][data-state="open"],
+html.v109 .cp-accordion-content[data-state="open"],
+body.v109 .cp-accordion-content[data-state="open"] {
+  display: block !important;
+}
+
 
 
 

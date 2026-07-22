@@ -60,7 +60,11 @@ function Accordion({
 
   return (
     <AccordionContext.Provider value={variant}>
-      <AccordionPrimitive.Root data-slot="accordion" className={cn(accordionStyles[variant], className)} {...props} />
+      <AccordionPrimitive.Root
+        data-slot="accordion"
+        className={cn('cp-accordion', accordionStyles[variant], className)}
+        {...props}
+      />
     </AccordionContext.Provider>
   );
 }
@@ -81,7 +85,11 @@ function AccordionItem({ className, ...props }: React.ComponentProps<typeof Acco
   };
 
   return (
-    <AccordionPrimitive.Item data-slot="accordion-item" className={cn(itemStyles[variant], className)} {...props} />
+    <AccordionPrimitive.Item
+      data-slot="accordion-item"
+      className={cn('cp-accordion-item', itemStyles[variant], className)}
+      {...props}
+    />
   );
 }
 
@@ -114,11 +122,12 @@ function AccordionTrigger({
   return (
     <>
       {variant === 'tableHead' ? (
-        <AccordionPrimitive.Header className="flex relative items-center w-full justify-between  ">
+        <AccordionPrimitive.Header className="cp-accordion-header flex relative items-center w-full justify-between  ">
           <AccordionPrimitive.Trigger
             data-slot="accordion-trigger"
+            data-variant={variant}
             aria-label=""
-            className={cn(triggerStyles[variant])}
+            className={cn('cp-accordion-trigger', triggerStyles[variant])}
             {...props}
           >
             <SelectArrowIcon size={14} color={'var(--color-primary-50)'} className="-rotate-90" />
@@ -127,11 +136,16 @@ function AccordionTrigger({
           <div className="flex justify-end items-center">{children}</div>
         </AccordionPrimitive.Header>
       ) : (
-        <AccordionPrimitive.Header className="flex relative min-h-[2.5rem] p-0">
+        <AccordionPrimitive.Header className="cp-accordion-header flex relative min-h-[2.5rem] p-0">
           <AccordionPrimitive.Trigger
             data-slot="accordion-trigger"
+            data-variant={variant}
             aria-label=""
-            className={cn('flex justify-between items-center w-full !m-0 !p-0', triggerStyles[variant], className)}
+            className={cn(
+              'cp-accordion-trigger flex justify-between items-center w-full !m-0 !p-0',
+              triggerStyles[variant],
+              className
+            )}
             {...props}
           >
             {children}
@@ -151,11 +165,14 @@ function AccordionTrigger({
  * 아코디언 콘텐츠 컴포넌트 (Content)
  * - 아코디언이 펼쳐졌을 때 슬라이딩 효과와 함께 드러나는 본문 콘텐츠 영역입니다.
  */
-function AccordionContent({ children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
+function AccordionContent({ children, className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden h-full"
+      className={cn(
+        'cp-accordion-content data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden h-full',
+        className
+      )}
       {...props}
     >
       {children}
