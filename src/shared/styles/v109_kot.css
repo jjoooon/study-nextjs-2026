@@ -322,6 +322,231 @@ body.v109 [data-slot="scroll-area-viewport"] > div {
 .v109 .space-y-6 > * + *, html.v109 .space-y-6 > * + *, body.v109 .space-y-6 > * + * { margin-top: 1.5rem !important; }
 .v109 .space-y-8 > * + *, html.v109 .space-y-8 > * + *, body.v109 .space-y-8 > * + * { margin-top: 2rem !important; }
 
+/* Chrome 109 전용 Tabs 레거시 호환 스타일 */
+.v109 .cp-tabs,
+html.v109 .cp-tabs,
+body.v109 .cp-tabs {
+  position: relative;
+}
+
+.v109 .cp-tabs-line,
+html.v109 .cp-tabs-line,
+body.v109 .cp-tabs-line {
+  position: relative !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  align-items: flex-end !important;
+}
+
+.v109 .cp-tabs-line::after,
+html.v109 .cp-tabs-line::after,
+body.v109 .cp-tabs-line::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 0.1rem !important;
+  background-color: var(--color-primary-50, #ff5c2e) !important;
+  z-index: 0 !important;
+}
+
+.v109 .cp-tabs-line.after\:\!h-\[0\.2rem\]::after,
+html.v109 .cp-tabs-line.after\:\!h-\[0\.2rem\]::after,
+body.v109 .cp-tabs-line.after\:\!h-\[0\.2rem\]::after {
+  height: 0.2rem !important;
+}
+
+.v109 .cp-tabs-line[data-variant="box"]::after,
+html.v109 .cp-tabs-line[data-variant="box"]::after,
+body.v109 .cp-tabs-line[data-variant="box"]::after {
+  opacity: 0 !important;
+  display: none !important;
+}
+
+.v109 .cp-tabs-list,
+html.v109 .cp-tabs-list,
+body.v109 .cp-tabs-list {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: -ms-inline-flexbox !important;
+  display: inline-flex !important;
+  align-items: flex-start !important;
+}
+
+.v109 .cp-tabs-list[data-variant="box"],
+html.v109 .cp-tabs-list[data-variant="box"],
+body.v109 .cp-tabs-list[data-variant="box"] {
+  width: 100% !important;
+  background-color: #e5e7eb !important;
+  border-radius: 0.8rem !important;
+  padding: 0.2rem !important;
+}
+
+.v109 .cp-tabs-trigger,
+html.v109 .cp-tabs-trigger,
+body.v109 .cp-tabs-trigger {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: -ms-inline-flexbox !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  white-space: nowrap !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.039rem !important;
+  height: 3rem !important;
+  padding: 0.6rem 1rem !important;
+  font-size: 1.2rem !important;
+  margin-right: -0.1rem !important;
+  gap: 0.4rem !important;
+  background-color: var(--color-element-inverse, #ffffff) !important;
+  border-top: 0.1rem solid var(--color-gray-15, #d8d8d8) !important;
+  border-left: 0.1rem solid var(--color-gray-15, #d8d8d8) !important;
+  border-right: 0.1rem solid var(--color-gray-15, #d8d8d8) !important;
+  border-bottom: 0 !important;
+  border-top-left-radius: 0.3rem !important;
+  border-top-right-radius: 0.3rem !important;
+  color: var(--color-gray-100, #2c2724) !important;
+  box-shadow: 0 0.1rem 0 #ffffff !important;
+}
+
+.v109 .cp-tabs-trigger[data-state="active"],
+html.v109 .cp-tabs-trigger[data-state="active"],
+body.v109 .cp-tabs-trigger[data-state="active"] {
+  border-top: 0.3rem solid var(--color-primary-50, #ff5c2e) !important;
+  border-left: 0.1rem solid var(--color-primary-50, #ff5c2e) !important;
+  border-right: 0.1rem solid var(--color-primary-50, #ff5c2e) !important;
+  border-bottom: 0 !important;
+  z-index: 1 !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+  background-color: var(--color-element-inverse, #ffffff) !important;
+}
+
+.v109 .cp-tabs-trigger:disabled,
+.v109 .cp-tabs-trigger[disabled],
+html.v109 .cp-tabs-trigger:disabled,
+body.v109 .cp-tabs-trigger:disabled {
+  pointer-events: none !important;
+  opacity: 0.3 !important;
+}
+
+.v109 .cp-tabs-trigger[data-tab-error="true"]:not([data-state="active"]),
+html.v109 .cp-tabs-trigger[data-tab-error="true"]:not([data-state="active"]),
+body.v109 .cp-tabs-trigger[data-tab-error="true"]:not([data-state="active"]) {
+  color: var(--color-danger-50, #f04438) !important;
+  border: 0.1rem solid var(--color-danger-50, #f04438) !important;
+  z-index: 1 !important;
+  background-color: var(--color-danger-5, #fef3f2) !important;
+}
+
+.v109 .cp-tabs-trigger[data-variant="box"],
+html.v109 .cp-tabs-trigger[data-variant="box"],
+body.v109 .cp-tabs-trigger[data-variant="box"] {
+  height: 3rem !important;
+  border: 0 !important;
+  border-radius: 0.6rem !important;
+  background-color: transparent !important;
+  color: #9ca3af !important;
+  font-weight: 700 !important;
+  font-size: 1.3rem !important;
+  box-shadow: none !important;
+  flex: 1 1 0% !important;
+  width: 100% !important;
+}
+
+.v109 .cp-tabs-trigger[data-variant="box"][data-state="active"],
+html.v109 .cp-tabs-trigger[data-variant="box"][data-state="active"],
+body.v109 .cp-tabs-trigger[data-variant="box"][data-state="active"] {
+  background-color: var(--color-gray-0, #ffffff) !important;
+  box-shadow: 0 0.4rem 0.8rem 0 rgba(0, 0, 0, 0.12) !important;
+  color: #374151 !important;
+  border: 0 !important;
+}
+
+.v109 .cp-tabs-trigger[data-variant="vertical"],
+html.v109 .cp-tabs-trigger[data-variant="vertical"],
+body.v109 .cp-tabs-trigger[data-variant="vertical"] {
+  width: calc(100% - 1.2rem) !important;
+  height: 4.4rem !important;
+  padding: 0.8rem 0 !important;
+  background-color: #ffffff !important;
+  border: 0.1rem solid var(--color-border-gray-light, #d8d8d8) !important;
+  border-right: 0 !important;
+  border-bottom-left-radius: 2.2rem !important;
+  border-top-left-radius: 2.2rem !important;
+  font-size: 1.2rem !important;
+  color: var(--color-text-gray, #414141) !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+}
+
+.v109 .cp-tabs-trigger[data-variant="vertical"][data-state="active"],
+html.v109 .cp-tabs-trigger[data-variant="vertical"][data-state="active"],
+body.v109 .cp-tabs-trigger[data-variant="vertical"][data-state="active"] {
+  width: 100% !important;
+  background-color: #f3f4f6 !important;
+  border: 0 !important;
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
+  color: var(--color-button-text-primary, #ff5c2e) !important;
+}
+
+/* Chrome 109 전용 Button disabled 레거시 호환 스타일 */
+.v109 button:disabled,
+.v109 button[disabled],
+.v109 [data-slot="button"]:disabled,
+.v109 [data-slot="button"][disabled],
+html.v109 button:disabled,
+html.v109 button[disabled],
+body.v109 button:disabled,
+body.v109 button[disabled] {
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+.v109 button[data-variant="outlined"]:disabled,
+.v109 button[data-variant="outlined"][disabled],
+.v109 [data-slot="button"][data-variant="outlined"]:disabled,
+.v109 [data-slot="button"][data-variant="outlined"][disabled],
+html.v109 button[data-variant="outlined"]:disabled,
+html.v109 button[data-variant="outlined"][disabled],
+body.v109 button[data-variant="outlined"]:disabled,
+body.v109 button[data-variant="outlined"][disabled] {
+  background-color: var(--color-gray-5, #f4f4f4) !important;
+  border-color: var(--color-gray-10, #e5e5e5) !important;
+  color: var(--color-gray-30, #b3b3b3) !important;
+  opacity: 1 !important;
+}
+
+.v109 button[data-variant="outlined"]:disabled svg,
+.v109 button[data-variant="outlined"][disabled] svg,
+.v109 [data-slot="button"][data-variant="outlined"]:disabled svg,
+.v109 [data-slot="button"][data-variant="outlined"][disabled] svg,
+html.v109 button[data-variant="outlined"]:disabled svg,
+body.v109 button[data-variant="outlined"]:disabled svg {
+  color: var(--color-gray-30, #b3b3b3) !important;
+  stroke: var(--color-gray-30, #b3b3b3) !important;
+  opacity: 0.5 !important;
+}
+
+.v109 button[data-variant="contained"]:disabled,
+.v109 button[data-variant="contained"][disabled],
+.v109 [data-slot="button"][data-variant="contained"]:disabled,
+.v109 [data-slot="button"][data-variant="contained"][disabled],
+html.v109 button[data-variant="contained"]:disabled,
+body.v109 button[data-variant="contained"]:disabled {
+  background-color: var(--color-gray-20, #e5e5e5) !important;
+  border-color: var(--color-gray-20, #e5e5e5) !important;
+  color: var(--color-gray-0, #ffffff) !important;
+  opacity: 1 !important;
+}
+
 
 
 

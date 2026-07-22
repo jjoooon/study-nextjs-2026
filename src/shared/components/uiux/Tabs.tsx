@@ -29,9 +29,9 @@ interface TabsProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.
   // [key: string]: any;
 }
 const Tabs = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Root>, TabsProps>(
-  ({ children, variant, removable, onRemove, ...props }, ref) => (
+  ({ children, variant, removable, onRemove, className, ...props }, ref) => (
     <TabsContext.Provider value={{ variant, removable, onRemove }}>
-      <TabsPrimitive.Root ref={ref} {...props}>
+      <TabsPrimitive.Root ref={ref} className={cn('cp-tabs', className)} {...props}>
         {children}
       </TabsPrimitive.Root>
     </TabsContext.Provider>
@@ -93,7 +93,12 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
     const totalTabs = React.Children.count(children);
     return (
       <TabsPrimitive.List
-        className={cn(tabsListVariants({ variant: variant as 'default' | 'box' | undefined }), className)}
+        className={cn(
+          'cp-tabs-list',
+          tabsListVariants({ variant: variant as 'default' | 'box' | undefined }),
+          className
+        )}
+        data-variant={variant}
         ref={ref}
         {...props}
       >
@@ -136,7 +141,9 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
       <div data-tabs="tab-trigger-wrap" className={verticalTabWrapClass}>
         <TabsPrimitive.Trigger
           ref={ref}
+          data-variant={variant}
           className={cn(
+            'cp-tabs-trigger',
             tabsTriggerVariants({ variant: variant as 'default' | 'box' | 'vertical' | undefined }),
             removable ? 'isRemovable' : '',
             '[&[data-tab-error=true]:not([data-state=active])]:text-[var(--color-danger-50)]!',
@@ -196,6 +203,7 @@ const TabsContent = React.forwardRef<
       ref={ref}
       forceMount
       className={cn(
+        'cp-tabs-content',
         'ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         'data-[state=inactive]:h-0 data-[state=inactive]:overflow-hidden',
         className
@@ -221,6 +229,7 @@ const TabsPanel = React.forwardRef<
       role="tabpanel"
       style={{ display: activeValue === value ? 'block' : 'none' }}
       className={cn(
+        'cp-tabs-panel',
         'ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         className
       )}
@@ -248,6 +257,7 @@ const TabsLine = React.forwardRef<
       data-tabs="tablist-wrap"
       ref={ref}
       className={cn(
+        'cp-tabs-line',
         style,
         'hide-scrollbar grid grid-cols-[1fr_auto] gap-2 relative after:absolute after:content-[""] after:w-full after:bg-[#FF5C2E] after:bottom-0 after:left-0',
         lineHeightClass,
