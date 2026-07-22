@@ -151,7 +151,7 @@ function Carousel({
     >
       <div
         onKeyDownCapture={handleKeyDown}
-        className={cn('relative', className)}
+        className={cn('cp-carousel relative', className)}
         role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
@@ -298,7 +298,7 @@ function CarouselPagination() {
   if (slideCount <= 1) return null;
 
   return (
-    <div className="flex justify-center items-center gap-1 absolute bottom-0 w-full" data-slot="carousel-pagination">
+    <div className=" flex justify-center items-center gap-1 absolute bottom-0 w-full" data-slot="carousel-pagination">
       {Array.from({ length: slideCount }).map((_, idx) => (
         <button
           key={idx}

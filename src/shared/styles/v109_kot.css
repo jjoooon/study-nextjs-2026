@@ -53,6 +53,138 @@
   width: auto !important;
 }
 
+/* Chrome 109 전용 KeyValueList 레거시 호환 스타일 */
+.v109 .cp-keyvaluelist {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
+.v109 .cp-keyvaluelist-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
+.v109 .cp-keyvaluelist-item::after {
+  content: '|' !important;
+  margin-left: 1.2rem !important;
+  margin-right: 1.2rem !important;
+  color: var(--color-gray-40, #9ca3af) !important;
+  font-weight: normal !important;
+  line-height: 1 !important;
+}
+
+.v109 .cp-keyvaluelist-item:last-child::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Chrome 109 전용 Sonner 레거시 호환 스타일 */
+.v109 .cp-sonner [data-sonner-toast] {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 32.6rem !important;
+  width: 100% !important;
+  max-width: 50rem !important;
+  background-color: var(--color-information-5, #eef7ff) !important;
+  border: 0.1rem solid var(--color-information-50, #006ff2) !important;
+  border-radius: 0.8rem !important;
+  padding: 0.8rem 4rem 0.8rem 1rem !important;
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.v109 .cp-sonner [data-close-button] {
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  right: 1.5rem !important;
+  left: auto !important;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  -webkit-transform: none !important;
+  transform: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--color-information-50, #006ff2) !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  line-height: 1 !important;
+}
+
+.v109 .cp-sonner [data-close-button] svg {
+  display: block !important;
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+  margin: auto !important;
+}
+
+.v109 .cp-sonner [data-icon] {
+  margin-left: 0 !important;
+  margin-right: 0.8rem !important;
+  margin-top: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.v109 .cp-sonner [data-content] {
+  font-size: 1.4rem !important;
+  color: var(--color-gray-90, #1e2124) !important;
+  letter-spacing: -0.06rem !important;
+}
+
+/* Chrome 109 전용 Carousel 레거시 호환 스타일 */
+.v109 .cp-carousel [data-slot="carousel-previous"],
+.v109 .cp-carousel [data-slot="carousel-next"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 9999px !important;
+}
+
+.v109 .cp-carousel [data-slot="carousel-previous"]:disabled,
+.v109 .cp-carousel [data-slot="carousel-next"]:disabled,
+.v109 .cp-carousel [data-slot="carousel-previous"][disabled],
+.v109 .cp-carousel [data-slot="carousel-next"][disabled] {
+  background-color: var(--color-gray-5, #f4f4f4) !important;
+  border-color: var(--color-gray-10, #e5e5e5) !important;
+  color: var(--color-gray-30, #b3b3b3) !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+.v109 .cp-carousel [data-slot="carousel-previous"]:disabled svg,
+.v109 .cp-carousel [data-slot="carousel-next"]:disabled svg,
+.v109 .cp-carousel [data-slot="carousel-previous"][disabled] svg,
+.v109 .cp-carousel [data-slot="carousel-next"][disabled] svg {
+  color: var(--color-gray-30, #b3b3b3) !important;
+  stroke: var(--color-gray-30, #b3b3b3) !important;
+  opacity: 0.6 !important;
+}
+
+.v109 .cp-carousel [data-slot="carousel-previous"]:not(:disabled),
+.v109 .cp-carousel [data-slot="carousel-next"]:not(:disabled) {
+  background-color: var(--color-primary-5, #fff7f4) !important;
+  border-color: var(--color-primary-50, #ff5c2e) !important;
+  color: var(--color-primary-50, #ff5c2e) !important;
+}
+
+.v109 .cp-carousel [data-slot="carousel-previous"]:not(:disabled) svg,
+.v109 .cp-carousel [data-slot="carousel-next"]:not(:disabled) svg {
+  color: var(--color-primary-50, #ff5c2e) !important;
+  stroke: var(--color-primary-50, #ff5c2e) !important;
+}
+
 
 
 

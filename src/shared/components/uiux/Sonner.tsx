@@ -15,7 +15,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps['theme']}
-      className="toaster group pointer-events-auto gap-1 [&>li]:!min-w-[32.6rem] [&>li]:!w-full [&>li]:!max-2-[50rem] [&>li]:tracking-[-0.13rem] [&>li]:bg-[var(--color-information-5)]! [&>li]:border! [&>li]:border-[var(--color-information-50)]! [&>li]:shadow-lg! [&>li]:text-[1.4rem]! [&>li]:py-2! [&>li]:px-2.5! [&_[data-sonner-toast]]:relative [&_[data-close-button]]:!absolute [&_[data-close-button]]:!right-[0] [&_[data-close-button]]:!left-auto [&_[data-close-button]]:!top-[2.5rem] [&_[data-close-button]]:bg-transparent! [&_[data-close-button]]:border-0! [&_[data-close-button]]:text-[var(--color-information-50)]! [&>li]:flex [&>li]:items-start! [&_[data-icon]]:!ml-0 [&_[data-icon]]:!mt-[0.5rem]! [&>li]:pr-[3rem]!"
+      className="cp-sonner toaster group pointer-events-auto gap-1 [&>li]:!min-w-[32.6rem] [&>li]:!w-full [&>li]:!max-2-[50rem] [&>li]:tracking-[-0.13rem] [&>li]:bg-[var(--color-information-5)]! [&>li]:border! [&>li]:border-[var(--color-information-50)]! [&>li]:shadow-lg! [&>li]:text-[1.4rem]! [&>li]:py-2! [&>li]:px-2.5! [&_[data-sonner-toast]]:relative [&_[data-close-button]]:!absolute [&_[data-close-button]]:!right-[0] [&_[data-close-button]]:!left-auto [&_[data-close-button]]:!top-[2.5rem] [&_[data-close-button]]:bg-transparent! [&_[data-close-button]]:border-0! [&_[data-close-button]]:text-[var(--color-information-50)]! [&>li]:flex [&>li]:items-start! [&_[data-icon]]:!ml-0 [&_[data-icon]]:!mt-[0.5rem]! [&>li]:pr-[3rem]!"
       closeButton={true}
       toastOptions={{
         duration: 1000000,
