@@ -831,8 +831,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       >
                         {loadingType === 'type1' && <AiSpinner size={'10rem'} />}
                         {loadingType === 'type2' && <AiSpinner size={'10rem'} className="grayscale" />}
-                        {loadingType === 'type3' && <AiSpinner size={'10rem'} />}
-                        {loadingType === 'type4' && <AiSpinner size={'10rem'} className="grayscale" />}
                       </Grid>
                     ))}
                   </Gcol>
@@ -974,8 +972,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
               <Gcol className="h-full max-h-[61.5rem]" placement="cc">
                 {loadingType === 'type1' && <PuzzleSpinner />}
                 {loadingType === 'type2' && <PuzzleSpinner />}
-                {loadingType === 'type3' && <PuzzleSpinner />}
-                {loadingType === 'type4' && <PuzzleSpinner />}
               </Gcol>
             ) : (
               <Grid
@@ -1094,7 +1090,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
           </Grow>
 
           <Grow className="absolute bottom-0 z-20 bg-white/80 p-1 rounded-t-lg shadow" gap={1} placement="ec">
-            {(['type1', 'type2', 'type3', 'type4'] as const).map((t) => (
+            {(['type1', 'type2'] as const).map((t) => (
               <Button
                 key={t}
                 variant={loadingType === t ? 'contained' : 'outlined'}
