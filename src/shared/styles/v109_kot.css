@@ -1321,30 +1321,44 @@ html.v109 .cp-selectdrop {
   box-sizing: border-box !important;
 }
 
-/* SelectDrop 트리거 버튼 기본, 호버, 포커스 및 열림(aria-expanded="true") 검은 테두리/아웃라인 스타일 */
-.v109 .cp-selectdrop button,
-.v109 .cp-selectdrop [data-slot="popover-trigger"],
-html.v109 .cp-selectdrop button {
+/* SelectDrop 트리거 버튼 기본, 호버, 포커스 및 열림(aria-expanded="true") 검은 테두리/아웃라인 스타일 (직계 자식으로만 제한) */
+.v109 .cp-selectdrop > button,
+.v109 .cp-selectdrop > [data-slot="popover-trigger"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-flex-wrap: nowrap !important;
+  -ms-flex-wrap: nowrap !important;
+  flex-wrap: nowrap !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  white-space: nowrap !important;
   box-sizing: border-box !important;
   transition: border-color 0.15s ease, outline 0.15s ease !important;
 }
 
-.v109 .cp-selectdrop button:hover,
-.v109 .cp-selectdrop [data-slot="popover-trigger"]:hover,
-html.v109 .cp-selectdrop button:hover {
+.v109 .cp-selectdrop > button:hover,
+.v109 .cp-selectdrop > [data-slot="popover-trigger"]:hover {
   border-color: #000000 !important;
 }
 
-.v109 .cp-selectdrop button:focus,
-.v109 .cp-selectdrop button:focus-visible,
-.v109 .cp-selectdrop button[aria-expanded="true"],
-html.v109 .cp-selectdrop button[aria-expanded="true"],
-html.v109 .cp-selectdrop button:focus {
-  border-color: #000000 !important;
-  outline: 0.2rem solid #000000 !important;
+.v109 .cp-selectdrop > button:focus,
+.v109 .cp-selectdrop > button:focus-visible,
+.v109 .cp-selectdrop > button[aria-expanded="true"],
+.v109 .cp-selectdrop > [data-slot="popover-trigger"][aria-expanded="true"] {
+  border-color: #006ff2 !important;
+  outline: 0.2rem solid #006ff2 !important;
   outline-style: solid !important;
   outline-width: 0.2rem !important;
-  outline-color: #000000 !important;
+  outline-color: #006ff2 !important;
   outline-offset: -0.2rem !important;
   box-shadow: none !important;
 }
@@ -1358,14 +1372,16 @@ html.v109 .cp-selectdrop-content {
   box-sizing: border-box !important;
 }
 
-/* SelectDrop 개별 옵션 행 Hover & Focus 연노랑(#fff7e6) 배경 강조 (.cp-selectdrop-item 에만 적용) */
+/* SelectDrop 개별 옵션 행 선택/Hover/Focus 연한 파란색(#f0f7ff) 배경 강조 (Chrome 150 1:1 완벽 일치) */
 .v109 .cp-selectdrop-content .cp-selectdrop-item:hover,
 .v109 .cp-selectdrop-content .cp-selectdrop-item:focus,
+.v109 .cp-selectdrop-content .cp-selectdrop-item[data-selected="true"],
 .v109 .cp-selectdrop-content button.cp-selectdrop-item:hover,
 .v109 .cp-selectdrop-content button.cp-selectdrop-item:focus,
 html.v109 .cp-selectdrop-content .cp-selectdrop-item:hover {
-  background-color: #fff7e6 !important;
-  background: #fff7e6 !important;
+  background-color: #f0f7ff !important;
+  background: #f0f7ff !important;
+  color: #006ff2 !important;
   cursor: pointer !important;
 }
 
@@ -1619,6 +1635,439 @@ html.v109 .cp-pagination a[aria-current="page"] {
 html.v109 .cp-pagination button:hover:not([aria-current="page"]):not(.active) {
   background-color: var(--color-blue-gray-15, #e2e8f0) !important;
   background: var(--color-blue-gray-15, #e2e8f0) !important;
+}
+
+/* Chrome 109 전용 AG Grid (.cp-aggrid) 레거시 및 Chrome 150 1:1 완벽 일치 스타일 */
+.v109 .cp-aggrid,
+html.v109 .cp-aggrid {
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+/* Chrome 109 AG-Grid 트리/그룹 및 마스크 아이콘 파란색 네모 블록 깨짐 원천 방지 보정 */
+.v109 .cp-aggrid .ag-icon-tree-closed::before,
+.v109 .cp-aggrid .ag-group-contracted .ag-icon::before,
+.v109 .ag-theme-alpine .ag-icon-tree-closed::before,
+html.v109 .cp-aggrid .ag-icon-tree-closed::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M7.99992 5.66667C8.36811 5.66667 8.66658 5.96514 8.66658 6.33333V8H10.3333C10.7014 8 10.9999 8.29848 10.9999 8.66667C10.9999 9.03486 10.7014 9.33333 10.3333 9.33333H8.66658V11C8.66658 11.3682 8.36811 11.6667 7.99992 11.6667C7.63173 11.6667 7.33325 11.3682 7.33325 11V9.33333H5.66659C5.2984 9.33333 4.99992 9.03486 4.99992 8.66667C4.99992 8.29848 5.2984 8 5.66659 8H7.33325V6.33333C7.33325 5.96514 7.63173 5.66667 7.99992 5.66667Z' fill='%23006FF2'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6.1145 1.93359C6.66244 1.93365 7.18793 2.15102 7.57544 2.53841L8.12817 3.09115C8.24063 3.20348 8.39305 3.26687 8.552 3.26693H12.6666C13.808 3.26693 14.733 4.19195 14.733 5.33333V12C14.733 13.1414 13.808 14.0664 12.6666 14.0664H3.33325C2.19186 14.0664 1.26685 13.1414 1.26685 12V4C1.26685 2.85861 2.19186 1.93359 3.33325 1.93359H6.1145ZM3.33325 3.39974C3.00188 3.39974 2.73299 3.66863 2.73299 4V12C2.73299 12.3314 3.00188 12.6003 3.33325 12.6003H12.6666C12.998 12.6003 13.2668 12.3314 12.6666 4.73307H8.552C8.00407 4.73302 7.47857 4.51564 7.09106 4.12826L6.53833 3.57552C6.42588 3.46319 6.27345 3.39979 6.1145 3.39974H3.33325Z' fill='%23006FF2'/%3E%3C/svg%3E") !important;
+  background-position: center !important;
+  background-size: 1.6rem 1.6rem !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+.v109 .cp-aggrid .ag-icon-tree-open::before,
+.v109 .cp-aggrid .ag-group-expanded .ag-icon::before,
+.v109 .ag-theme-alpine .ag-icon-tree-open::before,
+html.v109 .cp-aggrid .ag-icon-tree-open::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M10.3333 8C10.7014 8 10.9999 8.29848 10.9999 8.66667C10.9999 9.03486 10.7014 9.33333 10.3333 9.33333H5.66659C5.2984 9.33333 4.99992 9.03486 4.99992 8.66667C4.99992 8.29848 5.2984 8 5.66659 8H10.3333Z' fill='%23006FF2'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6.1145 1.93359C6.66244 1.93365 7.18793 2.15102 7.57544 2.53841L8.12817 3.09115C8.24063 3.20348 8.39305 3.26687 8.552 3.26693H12.6666C13.808 3.26693 14.733 4.19195 14.733 5.33333V12C14.733 13.1414 13.808 14.0664 12.6666 14.0664H3.33325C2.19186 14.0664 1.26685 13.1414 1.26685 12V4C1.26685 2.85861 2.19186 1.93359 3.33325 1.93359H6.1145ZM3.33325 3.39974C3.00188 3.39974 2.73299 3.66863 2.73299 4V12C2.73299 12.6003 13.2668 12.3314 13.2668 12V5.33333C13.2668 5.00196 12.998 4.73307 12.6666 4.73307H8.552C8.00407 4.73302 7.47857 4.51564 7.09106 4.12826L6.53833 3.57552C6.42588 3.46319 6.27345 3.39979 6.1145 3.39974H3.33325Z' fill='%23006FF2'/%3E%3C/svg%3E") !important;
+  background-position: center !important;
+  background-size: 1.6rem 1.6rem !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+/* Chrome 109 AG-Grid 기타 마스크 아이콘 호환 보정 */
+.v109 .cp-aggrid [class*="ag-icon"]::before,
+.v109 .cp-aggrid .ag-icon::before {
+  -webkit-mask-position: 50% 50%;
+  mask-position: 50% 50%;
+}
+
+/* Chrome 109 전용 AG Grid (.cp-aggrid) 툴팁 불투명 배경 & 줄바꿈 겹침 방지 보정 */
+.v109 .cp-aggrid .ag-tooltip,
+.v109 .ag-theme-alpine .ag-tooltip,
+html.v109 .cp-aggrid .ag-tooltip,
+html.v109 .ag-theme-alpine .ag-tooltip {
+  position: absolute !important;
+  z-index: 99999 !important;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  color: var(--color-gray-70, #414141) !important;
+  border: 0.1rem solid var(--color-gray-20, #e5e5e5) !important;
+  border-radius: 0.6rem !important;
+  padding: 0.6rem 1rem !important;
+  font-size: 1.2rem !important;
+  line-height: 1.4 !important;
+  letter-spacing: -0.03rem !important;
+  max-width: 32rem !important;
+  word-break: break-all !important;
+  white-space: normal !important;
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.12) !important;
+  pointer-events: none !important;
+  box-sizing: border-box !important;
+  opacity: 1 !important;
+}
+
+/* Chrome 109 전용 AG Grid (.cp-aggrid) 가로/세로 테두리 검은색 실선 깨짐 1:1 완벽 보정 */
+.v109 .cp-aggrid .ag-row,
+.v109 .cp-aggrid .ag-cell,
+.v109 .ag-theme-alpine .ag-row,
+.v109 .ag-theme-alpine .ag-cell,
+html.v109 .cp-aggrid .ag-row,
+html.v109 .cp-aggrid .ag-cell {
+  border-bottom-color: var(--color-gray-10, #e5e5e5) !important;
+  border-right-color: var(--color-gray-10, #e5e5e5) !important;
+}
+
+.v109 .cp-aggrid .ag-row,
+.v109 .ag-theme-alpine .ag-row,
+html.v109 .cp-aggrid .ag-row {
+  border-bottom: 0.1rem solid var(--color-gray-10, #e5e5e5) !important;
+}
+
+.v109 .cp-aggrid .ag-cell,
+.v109 .ag-theme-alpine .ag-cell,
+html.v109 .cp-aggrid .ag-cell {
+  border-right: 0.1rem solid var(--color-gray-10, #e5e5e5) !important;
+  border-bottom-color: var(--color-gray-10, #e5e5e5) !important;
+}
+
+.v109 .cp-aggrid .ag-header-cell,
+.v109 .cp-aggrid .ag-header-group-cell,
+.v109 .ag-theme-alpine .ag-header-cell,
+.v109 .ag-theme-alpine .ag-header-group-cell,
+html.v109 .cp-aggrid .ag-header-cell {
+  border-right: 0.1rem solid var(--color-gray-10, #e5e5e5) !important;
+  border-bottom: 0.1rem solid var(--color-gray-10, #e5e5e5) !important;
+}
+
+/* Chrome 109 전용 Tailwind v4 !divide-gray-200, !border-t, !border-gray-200 레거시 호환 보정 */
+.v109 .border-gray-200,
+.v109 .\!border-gray-200,
+.v109 [class*="border-gray-200"],
+html.v109 .border-gray-200,
+html.v109 .\!border-gray-200 {
+  border-color: #e5e7eb !important;
+}
+
+.v109 .border-t,
+.v109 .\!border-t,
+.v109 [class*="border-t"],
+html.v109 .border-t,
+html.v109 .\!border-t {
+  border-top-style: solid !important;
+  border-top-width: 0.1rem !important;
+  border-top-color: #e5e7eb !important;
+}
+
+.v109 .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+.v109 .\!divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+.v109 [class*="divide-gray-200"] > :not([hidden]) ~ :not([hidden]),
+html.v109 .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+html.v109 .\!divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #e5e7eb !important;
+}
+
+.v109 .divide-x > :not([hidden]) ~ :not([hidden]),
+.v109 .\!divide-x > :not([hidden]) ~ :not([hidden]),
+.v109 [class*="divide-x"] > :not([hidden]) ~ :not([hidden]),
+html.v109 .divide-x > :not([hidden]) ~ :not([hidden]),
+html.v109 .\!divide-x > :not([hidden]) ~ :not([hidden]) {
+  border-left-style: solid !important;
+  border-left-width: 0.1rem !important;
+  border-left-color: #e5e7eb !important;
+}
+
+/* Chrome 109 AG-Grid 셀 내부 드롭다운/버튼 검은색 0.2rem 아웃라인 박스 및 너비 왜곡 방지 보정 */
+.v109 .cp-aggrid .ag-cell button:not(.cp-pagination-num),
+.v109 .ag-theme-alpine .ag-cell button:not(.cp-pagination-num) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Chrome 109 AG-Grid 셀 내부 SelectDrop/에디터 버튼 width 100% 및 flex 정렬 1:1 완벽 보정 */
+.v109 .ag-cell .cp-selectdrop,
+.v109 .ag-cell .editor-select,
+.v109 .cp-aggrid .ag-cell .cp-selectdrop,
+.v109 .ag-theme-alpine .ag-cell .cp-selectdrop,
+html.v109 .ag-cell .cp-selectdrop {
+  width: 100% !important;
+  min-width: 100% !important;
+  display: block !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .ag-cell .cp-selectdrop > button,
+.v109 .ag-cell .cp-selectdrop > [data-slot="popover-trigger"],
+.v109 .cp-aggrid .ag-cell .cp-selectdrop > button,
+.v109 .ag-theme-alpine .ag-cell .cp-selectdrop > button,
+html.v109 .ag-cell .cp-selectdrop > button {
+  width: 100% !important;
+  min-width: 100% !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-flex-wrap: nowrap !important;
+  -ms-flex-wrap: nowrap !important;
+  flex-wrap: nowrap !important;
+  -webkit-box-pack: space-between !important;
+  -webkit-justify-content: space-between !important;
+  -ms-flex-pack: space-between !important;
+  justify-content: space-between !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .ag-cell .cp-selectdrop span,
+html.v109 .ag-cell .cp-selectdrop span {
+  display: inline-block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Chrome 109 전용 AG-Grid 내장 agSelectCellEditor / agRichSelectCellEditor 레거시 1:1 완벽 보정 */
+.v109 .cp-aggrid .ag-picker-field-wrapper,
+.v109 .cp-aggrid .ag-rich-select,
+.v109 .cp-aggrid .ag-select,
+.v109 .ag-theme-alpine .ag-picker-field-wrapper,
+.v109 .ag-theme-alpine .ag-rich-select,
+.v109 .ag-theme-alpine .ag-select,
+html.v109 .ag-picker-field-wrapper {
+  
+  border-radius: 0.4rem !important;
+  background-color: #ffffff !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+  box-shadow: none !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-flex-wrap: nowrap !important;
+  flex-wrap: nowrap !important;
+  -webkit-box-pack: space-between !important;
+  -webkit-justify-content: space-between !important;
+  justify-content: space-between !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 100% !important;
+}
+
+.v109 .cp-aggrid .ag-picker-field-wrapper:focus,
+.v109 .cp-aggrid .ag-picker-field-wrapper:focus-within,
+.v109 .cp-aggrid .ag-picker-field-wrapper.ag-picker-field-wrapper-open,
+.v109 .ag-theme-alpine .ag-picker-field-wrapper:focus-within,
+html.v109 .ag-picker-field-wrapper.ag-picker-field-wrapper-open {
+  border-color: #006ff2 !important;
+  outline: 0.2rem solid #006ff2 !important;
+  outline-offset: -0.2rem !important;
+}
+
+/* AG Grid 에디터 드롭다운 팝업 선택 항목 연파랑(#f0f7ff) 배경 보정 */
+.v109 .ag-rich-select-popup,
+.v109 .ag-select-list,
+.v109 .ag-custom-component-popup .ag-rich-select-popup,
+.ag-custom-component-popup .ag-rich-select-popup,
+html.v109 .ag-rich-select-popup,
+html.v109 .ag-select-list {
+  background-color: #ffffff !important;
+  border-radius: 0.4rem !important;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.16) !important;
+  border: 0.1rem solid #cbd5e1 !important;
+  z-index: 99999 !important;
+}
+
+.v109 .ag-rich-select-list .ag-rich-select-row,
+.v109 .ag-select-list .ag-select-list-item,
+.v109 .ag-list-item,
+.ag-rich-select-row,
+html.v109 .ag-list-item {
+  padding: 0.4rem 0.8rem !important;
+  font-size: 1.3rem !important;
+  color: #333333 !important;
+  background-color: #ffffff !important;
+}
+
+.v109 .ag-rich-select-row:hover,
+.v109 .ag-rich-select-row.ag-rich-select-row-selected,
+.v109 .ag-select-list-item:hover,
+.v109 .ag-select-list-item.ag-selected,
+.v109 .ag-list-item:hover,
+.v109 .ag-list-item.ag-list-item-selected,
+.v109 .ag-list-item.ag-selected,
+.ag-rich-select-row:hover,
+.ag-rich-select-row.ag-rich-select-row-selected,
+html.v109 .ag-list-item:hover,
+html.v109 .ag-list-item.ag-list-item-selected {
+  background-color: #f0f7ff !important;
+  background: #f0f7ff !important;
+  color: #006ff2 !important;
+  font-weight: 500 !important;
+}
+
+/* Chrome 109 전용 NativeSelect (select/option) 레거시 1:1 완벽 보정 */
+.v109 select[data-slot="native-select"],
+.v109 select,
+html.v109 select[data-slot="native-select"] {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  box-sizing: border-box !important;
+  border-radius: 0.4rem !important;
+}
+
+.v109 select[data-slot="native-select"]:focus,
+.v109 select:focus,
+html.v109 select[data-slot="native-select"]:focus {
+  border-color: #006ff2 !important;
+  outline: 0.2rem solid #006ff2 !important;
+  outline-offset: -0.2rem !important;
+  box-shadow: none !important;
+}
+
+.v109 select[data-slot="native-select"] option,
+.v109 select option,
+html.v109 select[data-slot="native-select"] option {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  padding: 0.4rem 0.8rem !important;
+  font-size: 1.3rem !important;
+}
+
+.v109 select[data-slot="native-select"] option:checked,
+.v109 select[data-slot="native-select"] option:hover,
+.v109 select option:checked,
+.v109 select option:hover,
+html.v109 select[data-slot="native-select"] option:checked {
+  background-color: #f0f7ff !important;
+  background: #f0f7ff !important;
+  color: #006ff2 !important;
+}
+
+/* Chrome 109 editableSelectCellRenderer (.editor-select) 화살표 아이콘 우측 고정 보정 */
+.v109 .editor-select,
+html.v109 .editor-select {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .editor-select svg,
+html.v109 .editor-select svg {
+  position: absolute !important;
+  right: 0.6rem !important;
+  top: 50% !important;
+  -webkit-transform: translateY(-50%) !important;
+  transform: translateY(-50%) !important;
+}
+
+/* Chrome 109 전용 AG-Grid 셀 내 모든 중간 래퍼 이중 반달 테두리 및 언더바 완전히 제거 */
+.v109 .ag-cell .ag-cell-wrapper,
+.v109 .ag-cell .ag-react-container,
+.v109 .ag-cell .ag-cell-value,
+.v109 .ag-cell .ag-cell-editor,
+.v109 .ag-cell .editor-select,
+.v109 .ag-cell .cp-selectdrop,
+.v109 .cp-aggrid .ag-cell .ag-cell-wrapper,
+.v109 .cp-aggrid .ag-cell .ag-react-container,
+.v109 .cp-aggrid .ag-cell .ag-cell-value,
+.v109 .cp-aggrid .ag-cell .ag-cell-editor,
+.v109 .cp-aggrid .ag-cell .editor-select,
+.v109 .cp-aggrid .ag-cell .cp-selectdrop,
+.v109 .ag-theme-alpine .ag-cell .ag-cell-wrapper,
+.v109 .ag-theme-alpine .ag-cell .ag-react-container,
+.v109 .ag-theme-alpine .ag-cell .editor-select,
+.v109 .ag-theme-alpine .ag-cell .cp-selectdrop,
+html.v109 .ag-cell .ag-cell-wrapper,
+html.v109 .ag-cell .ag-react-container,
+html.v109 .ag-cell .editor-select {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 100% !important;
+  -ms-flex: 1 1 100% !important;
+  flex: 1 1 100% !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.v109 .cp-aggrid .ag-cell button,
+.v109 .ag-theme-alpine .ag-cell button,
+.v109 .ag-cell .cp-selectdrop > button,
+html.v109 .ag-cell button {
+  width: 100% !important;
+  min-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .ag-cell .editor-select,
+.v109 .cp-aggrid .ag-cell .editor-select,
+.v109 .ag-theme-alpine .ag-cell .editor-select,
+html.v109 .ag-cell .editor-select {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-box-pack: space-between !important;
+  -webkit-justify-content: space-between !important;
+  justify-content: space-between !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* Chrome 109 AG-Grid 셀 내 셀렉트 박스 수직 중앙 정렬(Vertical Center) 보정 */
+.v109 .ag-cell,
+.v109 .cp-aggrid .ag-cell,
+.v109 .ag-theme-alpine .ag-cell,
+html.v109 .ag-cell {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+}
+
+.v109 .ag-cell button,
+.v109 .ag-cell .cp-selectdrop,
+.v109 .ag-cell .editor-select,
+.v109 .ag-cell .ag-react-container,
+html.v109 .ag-cell button {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+  align-self: center !important;
 }
 
 

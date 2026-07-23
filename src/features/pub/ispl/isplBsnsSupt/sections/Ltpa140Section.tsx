@@ -284,7 +284,7 @@ export default function Ltpa140Section() {
             return (
               <div className="grid h-full w-full grid-rows-[1fr_1fr]">
                 <div className="flex items-center justify-center truncate-no px-1">{field25}</div>
-                <div className="grid grid-cols-2 divide-x divide-gray-200 border-t border-gray-200">
+                <div className="grid grid-cols-2 divide-x divide-[#e5e7eb] border-t border-[#e5e7eb]">
                   <div className="flex items-center justify-center truncate-no px-1">{field26}</div>
                   <div className="flex items-center justify-center truncate-no px-1">{field27}</div>
                 </div>

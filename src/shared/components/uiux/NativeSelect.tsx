@@ -139,10 +139,10 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       isInvalid || isErrorActive
         ? 'focus:border-[var(--color-danger-50)] focus:ring-[var(--color-danger-5)]'
         : required
-          ? 'focus:border-[var(--color-warning-70)] focus:border-[0.2rem]'
-          : 'focus:border-[var(--color-gray-100)] focus:border-[0.2rem]'
+          ? 'focus:border-[#006ff2] focus:ring-1 focus:ring-[#006ff2]'
+          : 'focus:border-[#006ff2] focus:ring-1 focus:ring-[#006ff2]'
     } 
-      focus:ring-1 ${!isInvalid && !isErrorActive ? 'focus:ring-[var(--color-gray-5)]' : ''} focus:outline-none`;
+      focus:outline-none`;
     const readonlyStyle = readOnly
       ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
       : '';
