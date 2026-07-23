@@ -384,7 +384,7 @@ export const FormTable = ({
         className={cn(
           'overflow-visible',
           variantStyles[variant as keyof typeof variantStyles],
-          showLineTop ? 'border-t border-t-[.2rem] border-t-[#000]' : 'border-t-0',
+          showLineTop ? '!border-t !border-t-[.2rem] !border-t-[#000]' : '!border-t-0',
           className
         )}
         data-variant={variant}
