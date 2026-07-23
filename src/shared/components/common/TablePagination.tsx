@@ -42,7 +42,7 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
   }
 
   return (
-    <Grow placement={'bwc'} className="w-full py-1 px-4">
+    <Grow placement={'bwc'} className="w-full py-1 px-4 cp-pagination">
       <Grow className="w-auto h-5!">
         <Grow gap={0}>
           <Button
@@ -74,10 +74,12 @@ export function TablePagination({ currentPage, totalPages, onPageChange, itemsPe
           <Button
             key={pageNum}
             variant={'none'}
+            aria-current={pageNum === currentPage ? 'page' : undefined}
+            data-active={pageNum === currentPage ? true : undefined}
             className={
-              'px-2 py-1 text-[1.3rem] border rounded-[0.4rem] w-5! h-5! leading-1!' +
+              'px-2 py-1 text-[1.3rem] border rounded-[0.4rem] w-5! h-5! leading-1! cp-pagination-num ' +
               (pageNum === currentPage
-                ? 'text-[#000] font-bold bg-[var(--color-blue-gray-15)]'
+                ? 'text-[#000] font-bold bg-[var(--color-blue-gray-15)] active'
                 : 'bg-white hover:bg-[var(--color-blue-gray-15)]')
             }
             onClick={() => onPageChange(pageNum)}

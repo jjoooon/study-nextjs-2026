@@ -956,14 +956,11 @@ body.v109 .cp-tabs {
 /* Chrome 109 전용 DatePicker & Calendar 모든 버튼 focus 점선 아웃라인 완전 강제 제거 */
 .v109 .cp-datepicker-calendar button,
 .v109 .cp-datepicker button,
-.v109 [data-slot="popover-content"] button,
 .v109 [data-slot="calendar"] button,
 .v109 .cp-datepicker-calendar button:focus,
 .v109 .cp-datepicker-calendar button:focus-visible,
 .v109 .cp-datepicker button:focus,
-.v109 .cp-datepicker button:focus-visible,
-.v109 [data-slot="popover-content"] button:focus,
-.v109 [data-slot="popover-content"] button:focus-visible {
+.v109 .cp-datepicker button:focus-visible {
   outline: none !important;
   outline-style: none !important;
   outline-width: 0 !important;
@@ -973,8 +970,7 @@ body.v109 .cp-tabs {
 }
 
 .v109 .cp-datepicker-calendar button::-moz-focus-inner,
-.v109 .cp-datepicker button::-moz-focus-inner,
-.v109 [data-slot="popover-content"] button::-moz-focus-inner {
+.v109 .cp-datepicker button::-moz-focus-inner {
   border: 0 !important;
   padding: 0 !important;
 }
@@ -1040,9 +1036,7 @@ body.v109 .cp-tabs {
 .v109 .cp-datepicker .rdp-month_caption button:hover,
 .v109 .cp-datepicker .rdp-month_caption button:focus,
 .v109 [data-slot="calendar"] button:hover,
-.v109 [data-slot="calendar"] button:focus,
-.v109 [data-slot="popover-content"] button:hover,
-.v109 [data-slot="popover-content"] button:focus {
+.v109 [data-slot="calendar"] button:focus {
   background-color: var(--color-gray-5, #f4f4f4) !important;
   background: #f4f4f4 !important;
   border-color: var(--color-gray-40, #999999) !important;
@@ -1344,7 +1338,6 @@ html.v109 .cp-selectdrop button:hover {
 .v109 .cp-selectdrop button:focus,
 .v109 .cp-selectdrop button:focus-visible,
 .v109 .cp-selectdrop button[aria-expanded="true"],
-.v109 .cp-selectdrop [aria-expanded="true"],
 html.v109 .cp-selectdrop button[aria-expanded="true"],
 html.v109 .cp-selectdrop button:focus {
   border-color: #000000 !important;
@@ -1356,48 +1349,31 @@ html.v109 .cp-selectdrop button:focus {
   box-shadow: none !important;
 }
 
-/* Popover Content 드롭다운 목록 (Radix Portal로 body 하위에 생성되므로 전역 .v109 선택자로 대응) */
-.v109 [data-slot="popover-content"],
-.v109 [data-radix-popper-content-wrapper],
-.v109 [role="dialog"],
-html.v109 [data-slot="popover-content"],
-html.v109 [data-radix-popper-content-wrapper],
-html.v109 [role="dialog"] {
+/* Popover Content 드롭다운 목록 (.cp-selectdrop-content 전용 스코프) */
+.v109 .cp-selectdrop-content,
+html.v109 .cp-selectdrop-content {
   background-color: #ffffff !important;
   border-radius: 0.4rem !important;
   box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.16) !important;
   box-sizing: border-box !important;
 }
 
-/* 드롭다운 옵션 행 (기본 '선택', Checkbox, Radio 행) Hover & Focus 연노랑(#fff7e6) 배경 강조 */
-.v109 [data-slot="popover-content"] button:hover,
-.v109 [data-slot="popover-content"] button:focus,
-.v109 [data-slot="popover-content"] [data-group="row"]:hover,
-.v109 [data-slot="popover-content"] [data-group="row"]:focus,
-.v109 [data-slot="popover-content"] div:hover,
-.v109 [data-slot="popover-content"] label:hover,
-.v109 [data-slot="popover-content"] [class*="hover:bg-"]:hover,
-.v109 [data-radix-popper-content-wrapper] button:hover,
-.v109 [data-radix-popper-content-wrapper] [data-group="row"]:hover,
-.v109 [role="dialog"] button:hover,
-.v109 [role="dialog"] [data-group="row"]:hover,
-html.v109 [data-slot="popover-content"] button:hover,
-html.v109 [data-slot="popover-content"] [data-group="row"]:hover {
+/* SelectDrop 개별 옵션 행 Hover & Focus 연노랑(#fff7e6) 배경 강조 (.cp-selectdrop-item 에만 적용) */
+.v109 .cp-selectdrop-content .cp-selectdrop-item:hover,
+.v109 .cp-selectdrop-content .cp-selectdrop-item:focus,
+.v109 .cp-selectdrop-content button.cp-selectdrop-item:hover,
+.v109 .cp-selectdrop-content button.cp-selectdrop-item:focus,
+html.v109 .cp-selectdrop-content .cp-selectdrop-item:hover {
   background-color: #fff7e6 !important;
   background: #fff7e6 !important;
   cursor: pointer !important;
 }
 
-/* 옵션 행 Hover 시 내부 Checkbox / Radio 테두리 오렌지(#ff5c2e) 강조 */
-.v109 [data-slot="popover-content"] [data-group="row"]:hover button[role="checkbox"],
-.v109 [data-slot="popover-content"] [data-group="row"]:hover button[role="radio"],
-.v109 [data-slot="popover-content"] [data-group="row"]:hover [class*="border"],
-.v109 [data-slot="popover-content"] div:hover button[role="checkbox"],
-.v109 [data-slot="popover-content"] div:hover button[role="radio"],
-.v109 [data-slot="popover-content"] div:hover [class*="border"],
-.v109 [data-radix-popper-content-wrapper] [data-group="row"]:hover button[role="checkbox"],
-.v109 [role="dialog"] [data-group="row"]:hover button[role="checkbox"],
-html.v109 [data-slot="popover-content"] [data-group="row"]:hover button[role="checkbox"] {
+/* SelectDrop 개별 옵션 행 Hover 시 해당 행 내부의 Checkbox / Radio 테두리 오렌지(#ff5c2e) 강조 */
+.v109 .cp-selectdrop-content .cp-selectdrop-item:hover button[role="checkbox"],
+.v109 .cp-selectdrop-content .cp-selectdrop-item:hover button[role="radio"],
+.v109 .cp-selectdrop-content .cp-selectdrop-item:hover [class*="border"],
+html.v109 .cp-selectdrop-content .cp-selectdrop-item:hover button[role="checkbox"] {
   border-color: #ff5c2e !important;
 }
 
@@ -1561,6 +1537,88 @@ html.v109 .cp-pagetitle::-webkit-scrollbar {
   opacity: 1 !important;
   filter: none !important;
   -webkit-filter: none !important;
+}
+
+/* Chrome 109 전용 Pagination (.cp-pagination) 레거시 및 Chrome 150 1:1 완벽 일치 스타일 */
+.v109 .cp-pagination,
+html.v109 .cp-pagination {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+/* Pagination 버튼 & 링크 레거시 호환 렌더링 강제 지정 */
+.v109 .cp-pagination button,
+.v109 .cp-pagination a,
+.v109 .cp-pagination .cp-pagination-num,
+.v109 .cp-pagination-num,
+html.v109 .cp-pagination button,
+html.v109 .cp-pagination a {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: -ms-inline-flexbox !important;
+  display: inline-flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  -webkit-box-pack: center !important;
+  -webkit-justify-content: center !important;
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+  width: 2rem !important;
+  min-width: 2rem !important;
+  height: 2rem !important;
+  min-height: 2rem !important;
+  padding: 0 !important;
+  font-size: 1.3rem !important;
+  line-height: 1 !important;
+  border-radius: 0.4rem !important;
+  border: 0.1rem solid transparent !important;
+  background-color: transparent !important;
+  color: #000000 !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Chrome 109 전용 Pagination 선택(Active/Current Page) 1:1 완벽 보정 회색 박스 강조 스타일 */
+.v109 .cp-pagination button[aria-current="page"],
+.v109 .cp-pagination button[data-active="true"],
+.v109 .cp-pagination button.active,
+.v109 .cp-pagination a[aria-current="page"],
+.v109 .cp-pagination a[data-active="true"],
+.v109 .cp-pagination a.active,
+.v109 .cp-pagination .cp-pagination-num.active,
+.v109 .cp-pagination-num.active,
+.v109 .cp-pagination-num[aria-current="page"],
+.v109 .cp-pagination-num[data-active="true"],
+html.v109 .cp-pagination button[aria-current="page"],
+html.v109 .cp-pagination a[aria-current="page"] {
+  background-color: var(--color-blue-gray-15, #e2e8f0) !important;
+  background: var(--color-blue-gray-15, #e2e8f0) !important;
+  color: #000000 !important;
+  font-weight: bold !important;
+  border-radius: 0.4rem !important;
+  border: 0.1rem solid var(--color-blue-gray-20, #cbd5e1) !important;
+  box-sizing: border-box !important;
+}
+
+/* Pagination 호버 스타일 */
+.v109 .cp-pagination button:hover:not([aria-current="page"]):not(.active),
+.v109 .cp-pagination a:hover:not([aria-current="page"]):not(.active),
+.v109 .cp-pagination-num:hover:not([aria-current="page"]):not(.active),
+html.v109 .cp-pagination button:hover:not([aria-current="page"]):not(.active) {
+  background-color: var(--color-blue-gray-15, #e2e8f0) !important;
+  background: var(--color-blue-gray-15, #e2e8f0) !important;
 }
 
 

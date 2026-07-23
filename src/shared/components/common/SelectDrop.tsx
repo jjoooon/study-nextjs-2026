@@ -348,7 +348,7 @@ function SelectDrop<TValue extends string = string>({
           <PopoverPrimitive.Content
             style={inlineWidthStyle}
             className={cn(
-              'z-50 rounded-[0.4rem] bg-(--color-gray-0) shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
+              'z-50 rounded-[0.4rem] bg-(--color-gray-0) shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)] cp-selectdrop-content',
               widthClass
             )}
             {...contentProps}
@@ -360,7 +360,7 @@ function SelectDrop<TValue extends string = string>({
                 <button
                   type="button"
                   value={placeholder}
-                  className={`w-full px-2 hover:bg-[var(--color-warning-10)] flex items-center justify-start text-[1.3rem] ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                  className={`w-full px-2 cp-selectdrop-item hover:bg-[var(--color-warning-10)] flex items-center justify-start text-[1.3rem] ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
                   onClick={() => {
                     setSelectedValues([]);
                     if (allowCustomInput && customInputValue === undefined) {
@@ -384,7 +384,7 @@ function SelectDrop<TValue extends string = string>({
                         <Grow
                           key={option.value}
                           placement={'sc'}
-                          className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                          className={`w-full px-2 cp-selectdrop-item hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
                         >
                           <RadioGroupItem value={option.value} disabled={option.disabled || readOnly} size="md">
                             {option.label}
@@ -397,7 +397,7 @@ function SelectDrop<TValue extends string = string>({
                       <>
                         <Grow
                           placement={'sc'}
-                          className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                          className={`w-full px-2 cp-selectdrop-item hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
                         >
                           <RadioGroupItem value={CUSTOM_INPUT_VALUE} size="md" disabled={readOnly}>
                             {customInputLabel}
@@ -425,7 +425,7 @@ function SelectDrop<TValue extends string = string>({
                       <Grow
                         key={option.value}
                         placement={'ss'}
-                        className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                        className={`w-full px-2 cp-selectdrop-item hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
                       >
                         <Checkbox
                           checked={selectedSet.has(option.value)}
