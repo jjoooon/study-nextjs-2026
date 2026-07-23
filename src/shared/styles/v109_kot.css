@@ -2070,6 +2070,78 @@ html.v109 .ag-cell button {
   align-self: center !important;
 }
 
+/* Chrome 109 전용 TableHeader (sub variant) 레거시 호환 스타일 - thead 영역 (회색배경 + 중앙정렬) */
+.v109 [data-slot="table-header"][data-variant="sub"],
+html.v109 [data-slot="table-header"][data-variant="sub"] {
+  border-bottom: 0 !important;
+}
+
+.v109 [data-slot="table-header"][data-variant="sub"] tr,
+html.v109 [data-slot="table-header"][data-variant="sub"] tr {
+  border-bottom: 0 !important;
+  background-color: #F4F4F4 !important;
+  background: #F4F4F4 !important;
+}
+
+.v109 [data-slot="table-header"][data-variant="sub"] th,
+html.v109 [data-slot="table-header"][data-variant="sub"] th {
+  border-bottom: 0 !important;
+  background-color: #F4F4F4 !important;
+  background: #F4F4F4 !important;
+  padding-top: 0.6rem !important;
+  padding-bottom: 0.6rem !important;
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+}
+
+.v109 [data-slot="table-header"][data-variant="sub"] th:first-child,
+html.v109 [data-slot="table-header"][data-variant="sub"] th:first-child {
+  border-top-left-radius: 0.8rem !important;
+  border-bottom-left-radius: 0.8rem !important;
+}
+
+.v109 [data-slot="table-header"][data-variant="sub"] th:last-child,
+html.v109 [data-slot="table-header"][data-variant="sub"] th:last-child {
+  border-top-right-radius: 0.8rem !important;
+  border-bottom-right-radius: 0.8rem !important;
+}
+
+/* Chrome 109 전용 TableBody & TableCell & TableHead (sub variant) 레거시 호환 스타일 */
+.v109 [data-slot="table-row"][data-variant="sub"],
+html.v109 [data-slot="table-row"][data-variant="sub"] {
+  border-bottom: 0.1rem solid #E5E5E5 !important;
+}
+
+.v109 [data-slot="table-row"][data-variant="sub"]:last-child,
+html.v109 [data-slot="table-row"][data-variant="sub"]:last-child {
+  border-bottom: 0 !important;
+}
+
+.v109 [data-slot="table-body"] [data-slot="table-cell"][data-variant="sub"],
+html.v109 [data-slot="table-body"] [data-slot="table-cell"][data-variant="sub"],
+.v109 [data-slot="table-body"] [data-slot="table-head"][data-variant="sub"],
+html.v109 [data-slot="table-body"] [data-slot="table-head"][data-variant="sub"],
+.v109 [data-slot="table-cell"][data-variant="sub"],
+html.v109 [data-slot="table-cell"][data-variant="sub"] {
+  border-bottom: 0.1rem solid #E5E5E5 !important;
+  background-color: transparent !important;
+  background: transparent !important;
+  font-size: 1.3rem !important;
+  font-weight: normal !important;
+  padding: 0.6rem 0.6rem !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+}
+
+.v109 [data-slot="table-row"][data-variant="sub"]:last-child [data-slot="table-cell"][data-variant="sub"],
+html.v109 [data-slot="table-row"][data-variant="sub"]:last-child [data-slot="table-cell"][data-variant="sub"] {
+  border-bottom: 0 !important;
+}
+
+
+
 
 
 
