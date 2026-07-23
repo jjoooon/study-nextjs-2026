@@ -1986,88 +1986,18 @@ html.v109 .editor-select svg {
   transform: translateY(-50%) !important;
 }
 
-/* Chrome 109 전용 AG-Grid 셀 내 모든 중간 래퍼 이중 반달 테두리 및 언더바 완전히 제거 */
-.v109 .ag-cell .ag-cell-wrapper,
-.v109 .ag-cell .ag-react-container,
-.v109 .ag-cell .ag-cell-value,
-.v109 .ag-cell .ag-cell-editor,
+/* Chrome 109 AG-Grid 셀 내부 SelectDrop / Editor 전용 유연한 정렬 보정 (전체 ag-cell 레이아웃 파괴 방지) */
 .v109 .ag-cell .editor-select,
-.v109 .ag-cell .cp-selectdrop,
-.v109 .cp-aggrid .ag-cell .ag-cell-wrapper,
-.v109 .cp-aggrid .ag-cell .ag-react-container,
-.v109 .cp-aggrid .ag-cell .ag-cell-value,
-.v109 .cp-aggrid .ag-cell .ag-cell-editor,
-.v109 .cp-aggrid .ag-cell .editor-select,
-.v109 .cp-aggrid .ag-cell .cp-selectdrop,
-.v109 .ag-theme-alpine .ag-cell .ag-cell-wrapper,
-.v109 .ag-theme-alpine .ag-cell .ag-react-container,
-.v109 .ag-theme-alpine .ag-cell .editor-select,
-.v109 .ag-theme-alpine .ag-cell .cp-selectdrop,
-html.v109 .ag-cell .ag-cell-wrapper,
-html.v109 .ag-cell .ag-react-container,
-html.v109 .ag-cell .editor-select {
+.v109 .ag-cell .cp-selectdrop {
   width: 100% !important;
-  min-width: 100% !important;
-  max-width: 100% !important;
-  -webkit-box-flex: 1 !important;
-  -webkit-flex: 1 1 100% !important;
-  -ms-flex: 1 1 100% !important;
-  flex: 1 1 100% !important;
   box-sizing: border-box !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-.v109 .cp-aggrid .ag-cell button,
-.v109 .ag-theme-alpine .ag-cell button,
-.v109 .ag-cell .cp-selectdrop > button,
-html.v109 .ag-cell button {
-  width: 100% !important;
-  min-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-.v109 .ag-cell .editor-select,
-.v109 .cp-aggrid .ag-cell .editor-select,
-.v109 .ag-theme-alpine .ag-cell .editor-select,
-html.v109 .ag-cell .editor-select {
-  display: -webkit-box !important;
-  display: -webkit-flex !important;
-  display: flex !important;
-  -webkit-box-orient: horizontal !important;
-  -webkit-flex-direction: row !important;
-  flex-direction: row !important;
-  -webkit-box-pack: space-between !important;
-  -webkit-justify-content: space-between !important;
-  justify-content: space-between !important;
-  -webkit-box-align: center !important;
-  -webkit-align-items: center !important;
-  align-items: center !important;
-  height: 100% !important;
-  width: 100% !important;
-}
-
-/* Chrome 109 AG-Grid 셀 내 셀렉트 박스 수직 중앙 정렬(Vertical Center) 보정 */
-.v109 .ag-cell,
-.v109 .cp-aggrid .ag-cell,
-.v109 .ag-theme-alpine .ag-cell,
-html.v109 .ag-cell {
-  display: -webkit-box !important;
-  display: -webkit-flex !important;
-  display: flex !important;
-  -webkit-box-align: center !important;
-  -webkit-align-items: center !important;
-  align-items: center !important;
 }
 
 .v109 .ag-cell button,
-.v109 .ag-cell .cp-selectdrop,
-.v109 .ag-cell .editor-select,
-.v109 .ag-cell .ag-react-container,
+.v109 .ag-cell .cp-selectdrop > button,
 html.v109 .ag-cell button {
   margin-top: auto !important;
   margin-bottom: auto !important;
-  align-self: center !important;
 }
 
 /* Chrome 109 전용 TableHeader (sub variant) 레거시 호환 스타일 - thead 영역 (회색배경 + 중앙정렬) */
