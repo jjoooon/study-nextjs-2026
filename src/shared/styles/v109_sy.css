@@ -696,10 +696,9 @@
 }
 
 /* FormTable */
-.v109 .cp-thcontext tr {
+/* .v109 .cp-thcontext tr {
   line-height: 1.1;
 }
-/* 1. 일반 가로형 FormTable (기본) */
 .v109 .cp-thcontext th, .v109 .cp-thcontext td {
   text-align: left;
   border-left: 0;
@@ -707,7 +706,6 @@
 .v109 .cp-thcontext th:last-child, .v109 .cp-thcontext td:last-child {
   border-right: 0;
 }
-/* 2. 세로형(Vertical) FormTable (명시도 높은 선택자로 덮어씀) */
 .v109 .cp-thcontext tr[data-vertical="true"] th {
   display: flex;
   align-items: center;
@@ -723,7 +721,7 @@
   overflow: hidden;
   min-height: 3.8rem !important;
   border-top: 0;
-}
+} */
 
 /* MainFoot FormTable CSS */
 .v109 .cp-mainfoot-tb,
@@ -791,7 +789,7 @@
   min-width: 0 !important;
   width: auto !important;
 }
-
+cp-mainfoot-input
 .v109 .cp-input > div > div:last-child {
   flex-shrink: 0 !important;
   white-space: nowrap !important;

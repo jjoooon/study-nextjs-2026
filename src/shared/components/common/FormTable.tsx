@@ -217,11 +217,9 @@ export const FormCell = ({
           ? 'default'
           : 'default';
 
-  const isVertical = contextVertical ? 'true' : undefined;
-
   if (contextVariant === 'head' || usedVariant === 'head') {
     return (
-      <div className="flex items-center gap-2 items-center" data-vertical={isVertical}>
+      <div className="flex items-center gap-2 items-center">
         {title !== null && (
           <dt className={cn('font-bold', className)}>
             <Typo
@@ -247,7 +245,6 @@ export const FormCell = ({
     <>
       {title !== null && (
         <TableHead
-          data-vertical={isVertical}
           className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className)}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
@@ -265,7 +262,6 @@ export const FormCell = ({
       )}
       {!tdNone && (
         <TableCell
-          data-vertical={isVertical}
           className="border-b border-[#E5E5E5] px-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem]"
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
