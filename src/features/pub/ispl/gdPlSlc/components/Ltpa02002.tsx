@@ -373,7 +373,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
     const timer = setTimeout(() => {
       setDataList(dummyDataList);
       setLoadingType(null);
-    }, 3000);
+    }, 30000);
 
     return () => {
       clearTimeout(timer);
@@ -829,10 +829,10 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         key={i}
                         className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] min-h-[19.1rem]"
                       >
-                        {loadingType === 'type1' && <AiSpinner size={'12.5rem'} />}
-                        {loadingType === 'type2' && <DnaSpinnerRoot />}
-                        {loadingType === 'type3' && <HpSpinnerRoot />}
-                        {loadingType === 'type4' && <CircleSpinner />}
+                        {loadingType === 'type1' && <AiSpinner size={'10rem'} />}
+                        {loadingType === 'type2' && <AiSpinner size={'10rem'} className="grayscale" />}
+                        {loadingType === 'type3' && <AiSpinner size={'10rem'} />}
+                        {loadingType === 'type4' && <AiSpinner size={'10rem'} className="grayscale" />}
                       </Grid>
                     ))}
                   </Gcol>
@@ -972,28 +972,10 @@ export function Ltpa02002({ userType }: { userType: string }) {
             {/* 상세 */}
             {loadingType !== null ? (
               <Gcol className="h-full max-h-[61.5rem]" placement="cc">
-                {loadingType === 'type1' && <VerticalRollingSpinner />}
+                {loadingType === 'type1' && <PuzzleSpinner />}
                 {loadingType === 'type2' && <PuzzleSpinner />}
                 {loadingType === 'type3' && <PuzzleSpinner />}
-                {loadingType === 'type4' && (
-                  <AiSpinner
-                    size="16rem"
-                    texts={[
-                      <p key="t1" className="text-center text-[1.6rem] font-bold ">
-                        AI가 <b className="text-[var(--color-primary-50)]">최적의 설계</b>를 찾고있어요!
-                      </p>,
-                      <p key="t2" className="text-center text-[1.6rem] font-bold ">
-                        AI가 <b className="text-[var(--color-primary-50)]">추천설계</b>를 준비중이에요
-                      </p>,
-                      <p key="t3" className="text-center text-[1.6rem] font-bold ">
-                        잠시만요. <b className="text-[var(--color-primary-50)]">답변</b>을 정리하고 있어요.
-                      </p>,
-                      <p key="t4" className="text-center text-[1.6rem] font-bold ">
-                        곧 <b className="text-[var(--color-primary-50)]">결과</b>를 보여드릴께요.
-                      </p>,
-                    ]}
-                  />
-                )}
+                {loadingType === 'type4' && <PuzzleSpinner />}
               </Gcol>
             ) : (
               <Grid

@@ -396,7 +396,8 @@ export default function Ltpa020Section() {
 
                             <Button
                               disabled={!comboValues.user || comboValues?.user === '김한 32세(여)'}
-                              size={'sm'}
+                              size={'md'}
+                              className="px-3"
                               onClick={() => setIsLtpz034Open(true)}
                             >
                               {isLtpz034Open ? '+고지유형찾기 다시보기' : '고지유형찾기'}
