@@ -991,25 +991,28 @@ const Ltpz031 = () => {
                           <span>{displayLabel}</span>
                         );
                       }}
-                      renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
-                        <Button
-                          variant={'none'}
-                          key={String(tab.value)}
-                          onClick={() => {
-                            setActive(String(tab.value));
-                            const idx = data.findIndex((t) => String(t.value) === String(tab.value));
-                            if (idx !== -1) {
-                              const page = Math.floor(idx / visibleCount);
-                              setVisibleStart(page * visibleCount);
-                            }
-                          }}
-                          className="hover:bg-[var(--color-warning-10)] min-h-[2.8rem]"
-                        >
-                          <span className="flex items-start gap-2 w-full">
-                            <span className="block">{tab.label}</span>
-                          </span>
-                        </Button>
-                      )}
+                      renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => {
+                        const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+                        return (
+                          <Button
+                            variant={'none'}
+                            key={String(tab.value)}
+                            onClick={() => {
+                              setActive(String(tab.value));
+                              if (idx !== -1) {
+                                const page = Math.floor(idx / visibleCount);
+                                setVisibleStart(page * visibleCount);
+                              }
+                            }}
+                            className="min-h-[2.8rem]! w-full rounded-none hover:bg-[var(--color-warning-10)]"
+                            style={idx > 0 ? { borderTop: '1px solid var(--color-gray-15)' } : undefined}
+                          >
+                            <span className="flex items-start gap-2 w-full">
+                              <span className="block">{tab.label}</span>
+                            </span>
+                          </Button>
+                        );
+                      }}
                       visibleCount={5}
                     >
                       {/* Tab1 (활성화된 질병별 상세 질문 카드 리스트) */}
