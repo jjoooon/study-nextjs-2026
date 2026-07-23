@@ -88,7 +88,7 @@ export function ProductCard({
     <Gcol
       placement={'ss'}
       className={cn(
-        'relative w-full rounded-[1rem] border-[0.2rem] border-transparent p-4 shadow-md transition-all duration-200 has-[[data-state=checked]]:border-[#FF5C2E]',
+        'cp-productcard relative w-full rounded-[1rem] border-[0.2rem] border-transparent p-4 shadow-md transition-all duration-200 has-[[data-state=checked]]:border-[#FF5C2E]',
         bgColor,
         className
       )}

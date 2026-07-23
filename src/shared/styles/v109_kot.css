@@ -1490,6 +1490,256 @@ html.v109 .cp-datepicker-calendar .rdp-day {
   left: auto !important;
 }
 
+/* Chrome 109 전용 SelectDrop & Popover hover/focus 레거시 완벽 호환 스타일 */
+.v109 .cp-selectdrop,
+html.v109 .cp-selectdrop {
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+/* SelectDrop 트리거 버튼 기본, 호버, 포커스 및 열림(aria-expanded="true") 검은 테두리/아웃라인 스타일 */
+.v109 .cp-selectdrop button,
+.v109 .cp-selectdrop [data-slot="popover-trigger"],
+html.v109 .cp-selectdrop button {
+  box-sizing: border-box !important;
+  transition: border-color 0.15s ease, outline 0.15s ease !important;
+}
+
+.v109 .cp-selectdrop button:hover,
+.v109 .cp-selectdrop [data-slot="popover-trigger"]:hover,
+html.v109 .cp-selectdrop button:hover {
+  border-color: #000000 !important;
+}
+
+.v109 .cp-selectdrop button:focus,
+.v109 .cp-selectdrop button:focus-visible,
+.v109 .cp-selectdrop button[aria-expanded="true"],
+.v109 .cp-selectdrop [aria-expanded="true"],
+html.v109 .cp-selectdrop button[aria-expanded="true"],
+html.v109 .cp-selectdrop button:focus {
+  border-color: #000000 !important;
+  outline: 0.2rem solid #000000 !important;
+  outline-style: solid !important;
+  outline-width: 0.2rem !important;
+  outline-color: #000000 !important;
+  outline-offset: -0.2rem !important;
+  box-shadow: none !important;
+}
+
+/* Popover Content 드롭다운 목록 (Radix Portal로 body 하위에 생성되므로 전역 .v109 선택자로 대응) */
+.v109 [data-slot="popover-content"],
+.v109 [data-radix-popper-content-wrapper],
+.v109 [role="dialog"],
+html.v109 [data-slot="popover-content"],
+html.v109 [data-radix-popper-content-wrapper],
+html.v109 [role="dialog"] {
+  background-color: #ffffff !important;
+  border-radius: 0.4rem !important;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.16) !important;
+  box-sizing: border-box !important;
+}
+
+/* 드롭다운 옵션 행 (기본 '선택', Checkbox, Radio 행) Hover & Focus 연노랑(#fff7e6) 배경 강조 */
+.v109 [data-slot="popover-content"] button:hover,
+.v109 [data-slot="popover-content"] button:focus,
+.v109 [data-slot="popover-content"] [data-group="row"]:hover,
+.v109 [data-slot="popover-content"] [data-group="row"]:focus,
+.v109 [data-slot="popover-content"] div:hover,
+.v109 [data-slot="popover-content"] label:hover,
+.v109 [data-slot="popover-content"] [class*="hover:bg-"]:hover,
+.v109 [data-radix-popper-content-wrapper] button:hover,
+.v109 [data-radix-popper-content-wrapper] [data-group="row"]:hover,
+.v109 [role="dialog"] button:hover,
+.v109 [role="dialog"] [data-group="row"]:hover,
+html.v109 [data-slot="popover-content"] button:hover,
+html.v109 [data-slot="popover-content"] [data-group="row"]:hover {
+  background-color: #fff7e6 !important;
+  background: #fff7e6 !important;
+  cursor: pointer !important;
+}
+
+/* 옵션 행 Hover 시 내부 Checkbox / Radio 테두리 오렌지(#ff5c2e) 강조 */
+.v109 [data-slot="popover-content"] [data-group="row"]:hover button[role="checkbox"],
+.v109 [data-slot="popover-content"] [data-group="row"]:hover button[role="radio"],
+.v109 [data-slot="popover-content"] [data-group="row"]:hover [class*="border"],
+.v109 [data-slot="popover-content"] div:hover button[role="checkbox"],
+.v109 [data-slot="popover-content"] div:hover button[role="radio"],
+.v109 [data-slot="popover-content"] div:hover [class*="border"],
+.v109 [data-radix-popper-content-wrapper] [data-group="row"]:hover button[role="checkbox"],
+.v109 [role="dialog"] [data-group="row"]:hover button[role="checkbox"],
+html.v109 [data-slot="popover-content"] [data-group="row"]:hover button[role="checkbox"] {
+  border-color: #ff5c2e !important;
+}
+
+/* Chrome 109 전용 ProductCard 레거시 및 Chrome 150 1:1 일치 스타일 */
+.v109 .cp-productcard,
+html.v109 .cp-productcard {
+  position: relative !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  -ms-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-box-align: start !important;
+  -webkit-align-items: flex-start !important;
+  -ms-flex-align: start !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+  border-radius: 1rem !important;
+  box-sizing: border-box !important;
+}
+
+/* 추천화법 버튼 위치 및 아웃라인(점선) 완전 제거 */
+.v109 .cp-productcard button.absolute,
+.v109 .cp-productcard button[class*="bottom-0"],
+html.v109 .cp-productcard button.absolute {
+  position: absolute !important;
+  bottom: 0rem !important;
+  right: 0rem !important;
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: -ms-inline-flexbox !important;
+  display: inline-flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  -webkit-box-pack: center !important;
+  -webkit-justify-content: center !important;
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  outline: none !important;
+  outline-style: none !important;
+  outline-width: 0 !important;
+  outline-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  box-sizing: border-box !important;
+}
+
+/* 추천화법 버튼 focus / active / focus-visible 점선 아웃라인 및 주황/빨간선 강제 제거 */
+.v109 .cp-productcard button.absolute:focus,
+.v109 .cp-productcard button.absolute:focus-visible,
+.v109 .cp-productcard button.absolute:active,
+.v109 .cp-productcard button[class*="bottom-0"]:focus,
+.v109 .cp-productcard button[class*="bottom-0"]:focus-visible,
+html.v109 .cp-productcard button.absolute:focus,
+html.v109 .cp-productcard button.absolute:focus-visible {
+  outline: none !important;
+  outline-style: none !important;
+  outline-width: 0 !important;
+  outline-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 체크박스 선택 시 카드 외곽 테두리 주황색(#FF5C2E) 2px 강조 */
+.v109 .cp-productcard:has([data-state="checked"]),
+.v109 .cp-productcard:has([aria-checked="true"]),
+.v109 .cp-productcard:has(input:checked),
+html.v109 .cp-productcard:has([data-state="checked"]) {
+  border-color: #FF5C2E !important;
+}
+
+/* Chrome 109 전용 PageTitle 레거시 및 Chrome 150 1:1 일치 스타일 */
+.v109 .cp-pagetitle,
+html.v109 .cp-pagetitle {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-box-pack: space-between !important;
+  -webkit-justify-content: space-between !important;
+  -ms-flex-pack: space-between !important;
+  justify-content: space-between !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  scrollbar-width: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Chrome 109 자식 요소의 min-width: auto 로 인한 부모 100% 초과 팽창 원천 방지 */
+.v109 .cp-pagetitle > div,
+.v109 .cp-pagetitle .flex-1,
+html.v109 .cp-pagetitle > div {
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .cp-pagetitle::-webkit-scrollbar,
+html.v109 .cp-pagetitle::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+
+
+.v109 .cp-pagetitle table,
+.v109 .cp-pagetitle tr,
+.v109 .cp-pagetitle td,
+.v109 .cp-pagetitle hr {
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.v109 .cp-pagetitle > div {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+}
+
+
+
+
+/* ViewMode 오렌지색 주황 뱃지 태그 레거시 렌더링 강제 지정 */
+.v109 .cp-pagetitle .peer-1,
+.v109 .peer-1 {
+  background-color: #ff5c2e !important;
+  background-image: -webkit-linear-gradient(left, #ff5c2e, #ffb800) !important;
+  background-image: linear-gradient(to right, #ff5c2e, #ffb800) !important;
+  color: #ffffff !important;
+  font-weight: bold !important;
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+
+
+
+
 
 
 

@@ -325,7 +325,7 @@ function SelectDrop<TValue extends string = string>({
         : 'currentColor';
 
   return (
-    <div className={cn('relative', widthClass)} style={inlineWidthStyle}>
+    <div className={cn('relative cp-selectdrop', widthClass)} style={inlineWidthStyle}>
       <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
         <PopoverPrimitive.Trigger asChild disabled={isDisabled}>
           <button
