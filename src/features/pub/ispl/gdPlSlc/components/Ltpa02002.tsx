@@ -211,8 +211,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const [dataNone, setDataNone] = useState<boolean>(true);
   const [dataList, setDataList] = React.useState<DummyDataListType[]>([]);
   const [loadingType, setLoadingType] = React.useState<LoadingType>('type1');
-  const [dataListLoading, setDataListLoading] = React.useState<boolean>(false);
-  const [resetLoading, setResetLoading] = React.useState<boolean>(false);
   const [selectedPlanKey, setSelectedPlanKey] = useState<string | null>('1-0');
   const [comparedPlanKeys, setComparedPlanKeys] = useState<string[]>([]);
 
@@ -375,7 +373,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
     const timer = setTimeout(() => {
       setDataList(dummyDataList);
       setLoadingType(null);
-    }, 100000);
+    }, 3000);
 
     return () => {
       clearTimeout(timer);
@@ -801,8 +799,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
               style={{ objectFit: 'cover' }}
               onClick={() => {
                 setDataNone(false);
-                setResetLoading(false);
-                setDataListLoading(true);
               }}
               className="relative!"
             />
