@@ -217,9 +217,11 @@ export const FormCell = ({
           ? 'default'
           : 'default';
 
+  const isVertical = contextVertical ? 'true' : undefined;
+
   if (contextVariant === 'head' || usedVariant === 'head') {
     return (
-      <div className="flex items-center gap-2 items-center">
+      <div className="flex items-center gap-2 items-center" data-vertical={isVertical}>
         {title !== null && (
           <dt className={cn('font-bold', className)}>
             <Typo
@@ -245,6 +247,7 @@ export const FormCell = ({
     <>
       {title !== null && (
         <TableHead
+          data-vertical={isVertical}
           className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className)}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
@@ -262,6 +265,7 @@ export const FormCell = ({
       )}
       {!tdNone && (
         <TableCell
+          data-vertical={isVertical}
           className="border-b border-[#E5E5E5] px-[1rem] pt-[0.4rem] pb-[0.5rem] h-[3.8rem]"
           {...(colSpan && { colSpan })}
           {...(rowSpan && { rowSpan })}
@@ -287,6 +291,7 @@ export const FormTable = ({
   variant = 'default',
   lineTop = true,
   after,
+  vertical,
 }: FormTableProps) => {
   /**
    * 테이블 외형 프리셋.
@@ -383,6 +388,7 @@ export const FormTable = ({
           className
         )}
         data-variant={variant}
+        data-vertical={vertical}
       >
         {caption && <TableCaption className="a11y-hidden">{caption}</TableCaption>}
         {cols && cols.length > 0 && (
@@ -394,7 +400,9 @@ export const FormTable = ({
           </colgroup>
         )}
         <VariantContext.Provider value={variant as FormVariant}>
-          <TableBody>{children}</TableBody>
+          <VerticalContext.Provider value={vertical}>
+            <TableBody>{children}</TableBody>
+          </VerticalContext.Provider>
         </VariantContext.Provider>
       </Table>
       {/* 테이블 하단 확장 슬롯 */}
@@ -408,8 +416,10 @@ export const FormTable = ({
  * - 필요 시 vertical 컨텍스트를 함께 전달.
  */
 export const FormHead = ({ children, vertical, cols: _cols }: FormTrProps) => {
+  const contextVertical = useContext(VerticalContext);
+  const usedVertical = vertical ?? contextVertical;
   return (
-    <VerticalContext.Provider value={vertical}>
+    <VerticalContext.Provider value={usedVertical}>
       <thead>
         <tr>{children}</tr>
       </thead>
@@ -425,8 +435,11 @@ export const FormHead = ({ children, vertical, cols: _cols }: FormTrProps) => {
  * - 그 외: tr 기반 일반 테이블 행
  *   - vertical=true면 2행 grid 형태로 셀 재배치
  */
-export const FormRow = ({ children, vertical, cols: _cols, className, style }: FormTrProps) => {
+export const FormRow = ({ children, vertical: propVertical, cols: _cols, className, style }: FormTrProps) => {
   const contextVariant = useContext(VariantContext);
+  const contextVertical = useContext(VerticalContext);
+  const vertical = propVertical ?? contextVertical;
+
   if (contextVariant === 'head') {
     return (
       <VerticalContext.Provider value={vertical}>
@@ -439,6 +452,7 @@ export const FormRow = ({ children, vertical, cols: _cols, className, style }: F
   return (
     <VerticalContext.Provider value={vertical}>
       <tr
+        data-vertical={vertical ? 'true' : undefined}
         className={cn(
           vertical
             ? `grid grid-rows-2 grid-flow-col overflow-x-auto border-b-0! 

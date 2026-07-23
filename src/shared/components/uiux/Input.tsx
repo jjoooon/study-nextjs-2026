@@ -370,7 +370,11 @@ function Input({
   //   console.log('[Input] clear:', clear, 'isFocused:', isFocused, 'isInputFocused:', isInputFocused, 'displayValue:', displayValue, 'show:', clear && isInputFocused && displayValue !== '');
   // }
   return (
-    <div className={cn('relative cp-input', className)} style={variant !== 'info' ? widthStyle : undefined}>
+    <div
+      className={cn('relative cp-input', className)}
+      data-comma-amount={commaAmount ? 'true' : undefined}
+      style={variant !== 'info' ? widthStyle : undefined}
+    >
       {before || after ? (
         <div
           className={cn(

@@ -84,14 +84,21 @@ export function LTPA350Step2({ onCalcGuidelineClick }: LTPA350Step2Props) {
             lineTop={false}
             variant={'none'}
             cols={['w-[9rem]', '', 'w-[8rem]', '', 'w-[8rem]', '']}
-            className="w-auto"
+            className="w-auto cp-mainfoot-tb"
           >
             <FormRow>
               <FormCell title="만기금(환급률)">
                 <Button variant={'outlined'} color={'gray'} size={'sm'}>
                   예상
                 </Button>
-                <Input type="tel" commaAmount={true} value="100,000" readOnly={true} after={<span>원</span>} />
+                <Input
+                  type="tel"
+                  commaAmount={true}
+                  value="100,000"
+                  className="cp-mainfoot-input"
+                  readOnly={true}
+                  after={<span>원</span>}
+                />
                 <Input
                   type="text"
                   value={refundRate}
@@ -106,7 +113,7 @@ export function LTPA350Step2({ onCalcGuidelineClick }: LTPA350Step2Props) {
                   commaAmount={true}
                   value="100,000"
                   readOnly={true}
-                  className="text-right"
+                  className="cp-mainfoot-input text-right"
                   after={<span>원</span>}
                 />
               </FormCell>
@@ -116,13 +123,13 @@ export function LTPA350Step2({ onCalcGuidelineClick }: LTPA350Step2Props) {
                   commaAmount={true}
                   value="100,000"
                   readOnly={true}
-                  className="text-right"
+                  className="cp-mainfoot-input text-right"
                   after={<span>원</span>}
                 />
               </FormCell>
             </FormRow>
           </FormTable>
-          <FormTable lineTop={false} className="w-auto" variant={'none'} cols={['w-[7rem]', '']}>
+          <FormTable lineTop={false} className="w-auto cp-mainfoot-tb-sum" variant={'none'} cols={['w-[7rem]', '']}>
             <FormRow>
               <FormCell title="합계보험료">
                 <Input
