@@ -18,8 +18,6 @@ import type {
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import Ltpz022 from '@/features/pub/ispl/udrtkGu/components/popups/Ltpz022';
-import useMounted from '@/shared/hooks/useMounted';
 import {
   createCellClickSelectionToggleHandler,
   createInsertCopiedRowButtonCellRenderer,
@@ -58,7 +56,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 // Shared AgGrid generic utilities & cell renderers
 import { dummyData } from '../data/ltpa35002aData';
 import type { DummyDataType } from '../data/ltpa35002aData';
-import { dummyDataA } from '../data/ltpa35002aDataA';
 import { useGridReadyHandler } from '../hooks/useGridReadyHandler';
 import { useGridSelectionChangedHandler } from '../hooks/useGridSelectionChangedHandler';
 import { useHandleSelectionChanged } from '../hooks/useHandleSelectionChanged';
@@ -77,76 +74,15 @@ interface Ltpa35002Props {
   onSelectPlan?: (planId: number) => void;
   isWidthExpanded?: boolean;
   setIsWidthExpanded?: (value: boolean) => void;
-  onApplyAiRemedy?: () => void;
 }
 
-export function Ltpa35002a({
-  onSelectPlan,
-  isWidthExpanded = false,
-  setIsWidthExpanded,
-  onApplyAiRemedy,
-}: Ltpa35002Props) {
-  // 로컬스토리지 'a' 상태 판별 및 초기 데이터 세팅
-  const [useDummyDataA] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const isA = localStorage.getItem('a') === 'true';
-      if (isA) {
-        setTimeout(() => {
-          localStorage.removeItem('a');
-        }, 100);
-      }
-      return isA;
-    }
-    return false;
-  });
-
+export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthExpanded }: Ltpa35002Props) {
   // =====================
   // 상태 및 참조 관리
   // =====================
   const [isHeightExpanded, setIsHeightExpanded] = useState(false);
   const { attributeColumnWidth } = useDynamicColumnWidths();
-
-  // 지침확인결과(Ltpz022) 팝업 가시성 상태
-  const [isLtpz022Open, setIsLtpz022Open] = useState(false);
-  const [rowData, setRowData] = useState<AgGridRow[]>(() => (useDummyDataA ? dummyDataA : dummyData));
-
-  useMounted(() => {
-    if (typeof window !== 'undefined') {
-      const isA = localStorage.getItem('a') === 'true';
-      if (isA) {
-        setRowData(dummyDataA);
-        setTimeout(() => {
-          localStorage.removeItem('a');
-        }, 100);
-      }
-    }
-  });
-
-  // AI 지침 자동 해소 적용 콜백
-  const handleApplyAiRemedy = useCallback(() => {
-    setIsLtpz022Open(false); // 팝업 닫기
-    const currentBase = useDummyDataA ? dummyDataA : dummyData;
-    const resolved = currentBase.map((item) => {
-      const originalAmount = typeof item.insuredAmount === 'number' ? item.insuredAmount : Number(item.insuredAmount);
-      const originalPremium = typeof item.field7 === 'number' ? item.field7 : Number(item.field7);
-
-      if (!isNaN(originalAmount) && originalAmount > 0) {
-        const newAmount = Math.round(originalAmount * 0.7);
-        const newPremium = Math.round(originalPremium * 0.7);
-        return {
-          ...item,
-          title: `[AI조정] ${item.title}`,
-          insuredAmount: newAmount,
-          field4: newAmount,
-          field7: newPremium,
-          isHighlighted: true,
-        };
-      }
-      return item;
-    });
-    setRowData(resolved); // 데이터 교체
-    onApplyAiRemedy?.(); // 상위 '꼭 해야할 일' 상태 업데이트 콜백 호출
-  }, [useDummyDataA, onApplyAiRemedy]);
+  const [rowData, setRowData] = useState<AgGridRow[]>(() => dummyData);
 
   // 전체 보험료(field7) 합계 계산
   const totalPremium = useMemo(() => {
@@ -853,20 +789,13 @@ export function Ltpa35002a({
               <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 동일상품복사
               </Button>
-              <Button
-                type="button"
-                variant={'contained'}
-                color={'primary'}
-                size={'xl'}
-                onClick={() => setIsLtpz022Open(true)}
-              >
+              <Button type="button" variant={'contained'} color={'primary'} size={'xl'}>
                 보험료계산(지침)
               </Button>
             </Grow>
           </MainBottomItem>
         </MainBottom>
       </LayoutMainFoot>
-      <Ltpz022 open={isLtpz022Open} onOpenChange={setIsLtpz022Open} onApply={handleApplyAiRemedy} />
     </Gcol>
   );
 }
