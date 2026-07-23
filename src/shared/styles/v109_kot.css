@@ -1720,9 +1720,6 @@ html.v109 .cp-pagetitle::-webkit-scrollbar {
   align-items: center !important;
 }
 
-
-
-
 /* ViewMode 오렌지색 주황 뱃지 태그 레거시 렌더링 강제 지정 */
 .v109 .cp-pagetitle .peer-1,
 .v109 .peer-1 {
