@@ -457,3 +457,79 @@ html.v109 input[type="checkbox"]:checked + label .peer-2 {
   background-image: -webkit-linear-gradient(to right, #ff5c2e, #ffb800) !important;
   background-image: linear-gradient(to right, #ff5c2e, #ffb800) !important;
 }
+
+/* Chrome 109 LTPZ003 등 팝업/서식 내 비활성화(disabled) 라디오 버튼 (RadioGroupItem) 스타일 보정 */
+.v109 button[role="radio"]:disabled,
+html.v109 button[role="radio"]:disabled,
+.v109 button[data-slot="radio-group-item"]:disabled,
+html.v109 button[data-slot="radio-group-item"]:disabled,
+.v109 [role="radiogroup"] button:disabled,
+html.v109 [role="radiogroup"] button:disabled,
+.v109 button[disabled][data-state],
+html.v109 button[disabled][data-state],
+.v109 button[data-disabled],
+html.v109 button[data-disabled] {
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+  background-color: var(--color-gray-10, #f1f5f9) !important;
+  border-color: var(--color-gray-15, #e2e8f0) !important;
+  border-style: solid !important;
+}
+
+/* 비활성화 라디오 버튼 내부 선택 점(Indicator / Dot) 색상 보정 */
+.v109 button[role="radio"]:disabled *,
+html.v109 button[role="radio"]:disabled *,
+.v109 button[data-slot="radio-group-item"]:disabled *,
+html.v109 button[data-slot="radio-group-item"]:disabled *,
+.v109 button[data-disabled] *,
+html.v109 button[data-disabled] * {
+  background-color: var(--color-gray-30, #cbd5e1) !important;
+}
+
+/* 비활성화 라디오 버튼 인접 라벨(label) 텍스트 색상 및 커서 보정 */
+.v109 button[role="radio"]:disabled + label,
+html.v109 button[role="radio"]:disabled + label,
+.v109 button[data-slot="radio-group-item"]:disabled + label,
+html.v109 button[data-slot="radio-group-item"]:disabled + label,
+.v109 button[data-disabled] + label,
+html.v109 button[data-disabled] + label {
+  cursor: not-allowed !important;
+  color: var(--color-gray-40, #94a3b8) !important;
+}
+
+/* Chrome 109 LTPZ003 및 공통 비활성화(disabled) 버튼 보정 ("전체조회", "모두 아니오" 등) */
+.v109 button:disabled,
+html.v109 button:disabled,
+.v109 button[data-slot="button"]:disabled,
+html.v109 button[data-slot="button"]:disabled,
+.v109 button.cp-button:disabled,
+html.v109 button.cp-button:disabled,
+.v109 .cp-button:disabled,
+html.v109 .cp-button:disabled {
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+  color: var(--color-gray-30, #cbd5e1) !important;
+  background-color: var(--color-gray-5, #f8fafc) !important;
+  border-color: var(--color-gray-10, #e2e8f0) !important;
+}
+
+/* contained 타입 비활성화 버튼 보정 */
+.v109 button[data-variant="contained"]:disabled,
+html.v109 button[data-variant="contained"]:disabled,
+.v109 button.cp-button[data-variant="contained"]:disabled,
+html.v109 button.cp-button[data-variant="contained"]:disabled {
+  color: var(--color-gray-0, #ffffff) !important;
+  background-color: var(--color-gray-20, #cbd5e1) !important;
+  border-color: var(--color-gray-20, #cbd5e1) !important;
+}
+
+/* outlined 타입 비활성화 버튼 보정 (전체조회, 모두 아니오 등) */
+.v109 button[data-variant="outlined"]:disabled,
+html.v109 button[data-variant="outlined"]:disabled,
+.v109 button.cp-button[data-variant="outlined"]:disabled,
+html.v109 button.cp-button[data-variant="outlined"]:disabled {
+  color: var(--color-gray-30, #cbd5e1) !important;
+  background-color: var(--color-gray-5, #f8fafc) !important;
+  border-color: var(--color-gray-10, #e2e8f0) !important;
+}
