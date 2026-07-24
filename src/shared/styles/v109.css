@@ -514,11 +514,21 @@ html.v109 .cp-button:disabled {
   border-color: var(--color-gray-10, #e2e8f0) !important;
 }
 
-/* contained 타입 비활성화 버튼 보정 */
-.v109 button[data-variant="contained"]:disabled,
-html.v109 button[data-variant="contained"]:disabled,
-.v109 button.cp-button[data-variant="contained"]:disabled,
-html.v109 button.cp-button[data-variant="contained"]:disabled {
+/* contained 타입 비활성화 버튼 보정 (size="xl": 가능상품 보기, 추천설계 이동 등) */
+.v109 button[data-variant="contained"][data-size="xl"]:disabled,
+html.v109 button[data-variant="contained"][data-size="xl"]:disabled,
+.v109 button.cp-button[data-variant="contained"][data-size="xl"]:disabled,
+html.v109 button.cp-button[data-variant="contained"][data-size="xl"]:disabled {
+  color: var(--color-gray-30, #cbd5e1) !important;
+  background-color: var(--color-gray-5, #f8fafc) !important;
+  border-color: var(--color-gray-5, #f8fafc) !important;
+}
+
+/* 일반 contained 타입 비활성화 버튼 보정 (sm, md, lg) */
+.v109 button[data-variant="contained"]:not([data-size="xl"]):disabled,
+html.v109 button[data-variant="contained"]:not([data-size="xl"]):disabled,
+.v109 button.cp-button[data-variant="contained"]:not([data-size="xl"]):disabled,
+html.v109 button.cp-button[data-variant="contained"]:not([data-size="xl"]):disabled {
   color: var(--color-gray-0, #ffffff) !important;
   background-color: var(--color-gray-20, #cbd5e1) !important;
   border-color: var(--color-gray-20, #cbd5e1) !important;
