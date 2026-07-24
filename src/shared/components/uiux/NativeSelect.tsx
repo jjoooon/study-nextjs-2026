@@ -173,7 +173,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
               <select
                 ref={localRef}
                 data-slot="native-select"
-                className={cn(variantStyles[variant])}
+                className={cn('cp-nativeselect', variantStyles[variant])}
                 tabIndex={readOnly ? -1 : props.tabIndex}
                 aria-invalid={isErrorActive || undefined}
                 aria-describedby={isErrorActive ? errorId : undefined}

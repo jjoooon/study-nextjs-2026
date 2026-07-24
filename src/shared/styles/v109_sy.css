@@ -1059,3 +1059,26 @@
 .v109 .cp-mainfoot-tb .cp-mainfoot-input input {
   width: 100%;
 }
+
+.v109 .cp-nativeselect:hover {
+  border-color: var(--color-input-border-hover);
+}
+
+.v109 .cp-radio button:hover {
+  border-color: var(--color-element-primary);
+}
+
+.v109 .cp-radio button[data-state='checked']:hover {
+  border-color: var(--color-border-gray-light);
+}
+
+.v109 .cp-input input:hover {
+  border-color: var(--color-input-border-hover);
+}
+.v109 .cp-datepicker input:hover {
+  border-color: var(--color-input-border-hover);
+}
+.v109 .cp-datepicker button:hover {
+  border: 0.1rem dashed var(--color-input-border-hover) !important;
+  background-color: var(--color-gray-5) !important;
+}

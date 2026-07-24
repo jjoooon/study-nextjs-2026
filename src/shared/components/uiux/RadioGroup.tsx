@@ -224,7 +224,7 @@ const RadioGroup = React.forwardRef<
       <RadioGroupContext.Provider value={{ error: groupError, required: groupRequired, disabled: groupDisabled }}>
         <div className={cn('relative', width === 'full' ? 'w-full' : 'w-auto')}>
           <RadioGroupPrimitive.Root
-            className={cn('flex items-center justify-start flex-wrap gap-x-2 gap-y-1', className)}
+            className={cn('cp-radio flex items-center justify-start flex-wrap gap-x-2 gap-y-1', className)}
             value={value}
             defaultValue={defaultValue}
             onValueChange={handleValueChange}
