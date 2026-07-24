@@ -741,7 +741,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       <Input
                         type="tel"
                         commaAmount={true}
-                        value={totalPremium}
+                        value={/*totalPremium*/ 121375}
                         clear={true}
                         width={'full'}
                         size={'md'}

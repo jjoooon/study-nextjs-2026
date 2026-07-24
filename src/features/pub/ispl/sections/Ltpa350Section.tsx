@@ -105,7 +105,7 @@ const data: Ltpa350DataType = {
     },
     pageTitle: {
       simpleMode: false, // true 심플모드 | false 상세모드
-      title: '시그니처여성건강(4종/올인원플랜)',
+      title: '한화 시그니처 여성 건강보험4.0 2604',
       options: ['100세만기 월납 / 20년납'], //셀렉트박스 옵션값
       planNumber: ['LA260706315118', '2'],
       contractHolder: '3999999 김한손',
@@ -211,10 +211,10 @@ export default function Ltpa350Section() {
   // 신호등(TaskStatusBoard) 항목별 상태 관리
   type TaskStatusItem = { id: number; status: '정상' | '경고' | '중지' | '없음'; label: string; sum: number };
   const [taskStatusList] = useState<TaskStatusItem[]>([
-    { id: 1, status: '정상', label: '공통', sum: 24 },
-    { id: 2, status: '경고', label: '누적', sum: 0 },
+    { id: 1, status: '경고', label: '공통', sum: 24 },
+    { id: 2, status: '정상', label: '누적', sum: 0 },
     { id: 3, status: '중지', label: '직업', sum: 2 },
-    { id: 4, status: '중지', label: '예상UW', sum: 0 },
+    { id: 4, status: '정상', label: '예상UW', sum: 0 },
   ]);
 
   // 단계별 메인 콘텐츠 매핑
@@ -245,15 +245,15 @@ export default function Ltpa350Section() {
         return (
           <Ltpa35002Side
             info={{
-              date: '2026-06-30', //보험시기
+              date: '2026-07-15', //보험시기
               polName: '김한화', //계약자명
               insName: '김한화', //피보험자명
               insAge: '41', //피보험자 나이
               insGender: '여', //피보험자 성별
               insGrade: '1급', //피보험자 등급
-              quoteExpiryDate: '2026-06-30', //설계유효기간
+              quoteExpiryDate: '2026-07-15', //설계유효기간
               insuranceAgeDate: '2026-08-16', //상령일
-              consentEndDate: '2026-06-30', //동의종료일
+              consentEndDate: '2026-07-15', //동의종료일
               note: '알릴사항 대상', //특이사항 메모
               docPrint: true, //문서 출력 여부
               docScan: false, //문서 스캔 여부
@@ -296,15 +296,15 @@ export default function Ltpa350Section() {
         return (
           <Ltpa35005Side
             info={{
-              date: '2026-06-30', //보험시기
+              date: '2026-07-15', //보험시기
               polName: '김한화', //계약자명
               insName: '김한화', //피보험자명
               insAge: '41', //피보험자 나이
               insGender: '여', //피보험자 성별
               insGrade: '1급', //피보험자 등급
-              quoteExpiryDate: '2026-06-30', //설계유효기간
+              quoteExpiryDate: '2026-07-15', //설계유효기간
               insuranceAgeDate: '2026-08-16', //상령일
-              consentEndDate: '2026-06-30', //동의종료일
+              consentEndDate: '2026-08-30', //동의종료일
               note: '알릴사항 대상', //특이사항 메모
               docPrint: true, //문서 출력 여부
               docScan: false, //문서 스캔 여부
@@ -316,15 +316,15 @@ export default function Ltpa350Section() {
         return (
           <Ltpa35006Side
             info={{
-              date: '2026-06-30', //보험시기
+              date: '2026-07-15', //보험시기
               polName: '김한화', //계약자명
               insName: '김한화', //피보험자명
               insAge: '41', //피보험자 나이
               insGender: '여', //피보험자 성별
               insGrade: '1급', //피보험자 등급
-              quoteExpiryDate: '2026-06-30', //설계유효기간
+              quoteExpiryDate: '2026-07-15', //설계유효기간
               insuranceAgeDate: '2026-08-16', //상령일
-              consentEndDate: '2026-06-30', //동의종료일
+              consentEndDate: '2026-08-30', //동의종료일
               note: '알릴사항 대상', //특이사항 메모
               docPrint: true, //문서 출력 여부
               docScan: false, //문서 스캔 여부
@@ -333,7 +333,7 @@ export default function Ltpa350Section() {
           />
         );
       default:
-        return <Ltpa350Side info={null} />;
+        return <Ltpa35001Side info={null} />;
     }
   };
 

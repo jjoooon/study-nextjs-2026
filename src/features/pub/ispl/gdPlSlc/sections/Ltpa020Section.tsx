@@ -230,7 +230,7 @@ export default function Ltpa020Section() {
                                   className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff] gap-2"
                                 >
                                   <Grow gap={2}>
-                                    2026-01-01
+                                    2026-07-15
                                     <Button variant={'contained'} size={'sm'} color={'coolgray-light'}>
                                       조회
                                     </Button>

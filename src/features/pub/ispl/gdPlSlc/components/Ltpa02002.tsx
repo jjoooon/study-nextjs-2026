@@ -140,7 +140,7 @@ const dummyDataList: DummyDataListType[] = [
   {
     id: 2,
     field1: '한화 더건강한 한아름종합보험 2604',
-    field2: ['납입면제형', '납입후50%해약환급금지급형[할증운영상품'],
+    field2: ['납입면제형', '납입후50%해약환급금지급형[할증운영상품]'],
     field3: ['20년납', '100세만기'],
     field4: [
       {
@@ -150,13 +150,13 @@ const dummyDataList: DummyDataListType[] = [
         field3: coverageDummyList,
       },
       {
-        field1: 17200,
+        field1: 172000,
         field2:
           '02 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
         field3: coverageDummyList,
       },
       {
-        field1: 18200,
+        field1: 182000,
         field2:
           '03 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다.  <br />현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다. 고객님의 보장 내용을 분석해 보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로 확인됩니다. <br />목표 보험료 범위 내에서 주요 담보를 평균 수준으로 보완해 설계를 조정했습니다. 현재 조건에서 보장과 보험료 균형을 고려한 추천 설계입니다.',
         field3: coverageDummyList,
@@ -166,8 +166,8 @@ const dummyDataList: DummyDataListType[] = [
   {
     id: 3,
     field1: '한화 더 경증 간편건강보험(연만기 갱신형)',
-    field2: [''],
-    field3: ['해약환급금미지급형', '3.10.5간편고지형'],
+    field2: ['해약환급금미지급형', '3.10.5간편고지형'],
+    field3: ['20년납', '100세만기'],
     field4: [
       {
         field1: 98000,
@@ -365,7 +365,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
     const timer = setTimeout(() => {
       setDataList(dummyDataList);
       setLoadingType(null);
-    }, 300000);
+    }, 3000);
 
     return () => {
       clearTimeout(timer);

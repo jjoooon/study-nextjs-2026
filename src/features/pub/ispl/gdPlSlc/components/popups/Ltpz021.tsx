@@ -405,15 +405,15 @@ const coverageDummyList2 = [
 
 const productInfoList = [
   {
-    name: '시그니처여성건강(4종/올인원플랜) ',
+    name: '한화 시그니처 여성 건강보험4.0 2604',
     option: '100세만기 월납 / 20년납',
   },
   {
-    name: '시그니처여성건강(4종/올인원플랜)',
+    name: '한화 시그니처 여성 건강보험4.0 2604',
     option: '100세만기 월납 / 20년납',
   },
   {
-    name: '한화 더건강한 한아름종합보험 무배당2604',
+    name: '한화 더건강한 한아름종합보험 2604',
     option: '100세만기 월납 / 20년납',
   },
 ];
@@ -496,10 +496,10 @@ const Ltpz021 = ({ open = true, onOpenChange }: Ltpz021Props) => {
                   <Input value={'(1급)회사 사무직 종사자'} variant="info" readOnly />
                 </FormCell>
                 <FormCell title={'보장분석'}>
-                  <Input value={'2026-01-01 진행'} variant="info" readOnly />
+                  <Input value={'2026-07-15 진행'} variant="info" readOnly />
                 </FormCell>
                 <FormCell title={'보험금지급 이력정보'}>
-                  <Input value={'2026-01-01'} variant="info" readOnly />
+                  <Input value={'2026-07-15'} variant="info" readOnly />
                 </FormCell>
 
                 <FormCell title={'피보험자'}>

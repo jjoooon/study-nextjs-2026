@@ -322,6 +322,8 @@ const Ltpz038 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
+
+        {/* iframe */}
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
             <FormTable variant={'head'} lineTop={false} cols={['w-1', 'w-auto', 'w-1', 'w-auto', 'w-1', 'w-auto']}>
@@ -433,7 +435,6 @@ const Ltpz038 = () => {
             />
           </Gcol>
         </DialogSection>
-
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
@@ -446,6 +447,7 @@ const Ltpz038 = () => {
           </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
+        {/*// iframe */}
       </DialogContent>
     </Dialog>
   );
