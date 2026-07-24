@@ -178,15 +178,6 @@
   text-decoration: underline;
 }
 
-.v109 .cp-button[data-variant='none'] {
-  background-color: transparent;
-  border: none;
-}
-
-.v109 .cp-button[data-variant='none']:disabled {
-  opacity: 0.2;
-}
-
 .v109 .cp-button[data-variant='rounded'] {
   border-radius: 9999px !important;
 }
@@ -221,7 +212,6 @@
 }
 
 /* ===== 4. Contained & Rounded Color Variants ===== */
-
 /* primary */
 .v109 .cp-button[data-variant='contained'][data-color='primary'],
 .v109 .cp-button[data-variant='rounded'][data-color='primary'] {
@@ -695,33 +685,301 @@
   color: var(--color-gray-30);
 }
 
-/* FormTable */
-/* .v109 .cp-thcontext tr {
-  line-height: 1.1;
+/* ===== FormTable (1. 일반 가로형 기본 테이블 - default) ===== */
+.v109 .cp-formtable {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
 }
-.v109 .cp-thcontext th, .v109 .cp-thcontext td {
-  text-align: left;
-  border-left: 0;
+
+.v109 .cp-formtable td + th,
+.v109 .cp-formtable td + th[data-variant='default'] {
+  border-left: 0.1rem solid #E5E5E5 !important;
 }
-.v109 .cp-thcontext th:last-child, .v109 .cp-thcontext td:last-child {
-  border-right: 0;
+
+.v109 .cp-formtable td {
+  border-bottom: 0.1rem solid #E5E5E5 !important;
+  padding: 0.4rem 1rem 0.5rem 1rem;
+  height: 3.8rem;
 }
-.v109 .cp-thcontext tr[data-vertical="true"] th {
+
+.v109 .cp-formtable tr > th:first-child,
+.v109 .cp-formtable tr > th:first-of-type {
+  border-left: 0 !important;
+}
+
+.v109 .cp-formtable tr > th:last-child,
+.v109 .cp-formtable tr > th:last-of-type,
+.v109 .cp-formtable tr > td:last-child,
+.v109 .cp-formtable tr > td:last-of-type {
+  border-right: 0 !important;
+}
+
+/* ===== FormCell Variants (primary, secondary, light) ===== */
+.v109 .cp-formtable th[data-variant='primary'] {
+  background-color: #DBEAFE !important;
+  color: #1E3A8A !important;
+}
+
+.v109 .cp-formtable th[data-variant='secondary'] {
+  background-color: #F1F5F9 !important;
+  color: #0F172A !important;
+}
+
+.v109 .cp-formtable th[data-variant='light'] {
+  background-color: #F9FAFB !important;
+}
+
+/* ===== FormTable (variant="none" 무테 특화) ===== */
+.v109 .cp-formtable[data-variant='head'],
+.v109 .cp-formtable[data-variant='bottom'] {
+  table-layout: fixed;
+  border: 0 !important;
+  background-color: transparent !important;
+}
+
+.v109 [data-slot='table-container']:has(.cp-formtable[data-variant='head']),
+.v109 [data-slot='table-container']:has(.cp-formtable[data-variant='bottom']) {
+  border: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.v109 .cp-formtable[data-variant='head'] tr,
+.v109 .cp-formtable[data-variant='bottom'] tr {
+  border: 0 !important;
+}
+
+.v109 .cp-formtable[data-variant='head'] th,
+.v109 .cp-formtable[data-variant='bottom'] th,
+.v109 .cp-formtable th[data-variant='head'],
+.v109 .cp-formtable th[data-variant='bottom'] {
+  background-color: transparent !important;
+  border: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0.8rem !important;
+  height: auto !important;
+  word-break: keep-all !important;
+}
+
+
+.v109 .cp-formtable[data-variant='head'] td,
+.v109 .cp-formtable[data-variant='bottom'] td {
+  border: 0 !important;
+  padding: 0 !important;
+  height: auto !important;
+}
+
+.v109 .cp-formtable th[data-variant='head'] + td,
+.v109 .cp-formtable th[data-variant='bottom'] + td {
+  border: 0 !important;
+}
+
+.v109 .cp-formtable[data-variant='head'] td + th,
+.v109 .cp-formtable[data-variant='bottom'] td + th {
+  padding-left: 2.4rem !important;
+}
+
+.v109 .cp-formtable[data-variant='head'] tr ~ tr > *,
+.v109 .cp-formtable[data-variant='bottom'] tr ~ tr > * {
+  padding-top: 0.6rem !important;
+}
+
+/* ===== FormTable (2. 세로형 Vertical 테이블 - Chrome 109 1:1 보완) ===== */
+.v109 .cp-formtable[data-vertical="true"] tr,
+.v109 .cp-formtable tr[data-vertical="true"] {
+  display: grid !important;
+  grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+  grid-auto-flow: column !important;
+  overflow-x: auto !important;
+  border-bottom: 0 !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] tr > *,
+.v109 .cp-formtable tr[data-vertical="true"] > * {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding-top: 0.4rem !important;
+  padding-bottom: 0.4rem !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] th,
+.v109 .cp-formtable tr[data-vertical="true"] th {
+  text-align: center !important;
+  padding: 0.4rem 0.6rem !important;
+  min-height: 3.8rem !important;
+  height: 3.8rem !important;
+  line-height: 1.1 !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] th > div,
+.v109 .cp-formtable tr[data-vertical="true"] th > div,
+.v109 .cp-formtable[data-vertical="true"] th > span,
+.v109 .cp-formtable tr[data-vertical="true"] th > span {
+  line-height: 1.1 !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] td > div,
+.v109 .cp-formtable tr[data-vertical="true"] td > div {
+  text-align: left !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] th:first-of-type,
+.v109 .cp-formtable tr[data-vertical="true"] th:first-of-type,
+.v109 .cp-formtable[data-vertical="true"] td:first-of-type,
+.v109 .cp-formtable tr[data-vertical="true"] td:first-of-type {
+  border-left: 0 !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] th:last-of-type,
+.v109 .cp-formtable tr[data-vertical="true"] th:last-of-type,
+.v109 .cp-formtable[data-vertical="true"] td:last-of-type,
+.v109 .cp-formtable tr[data-vertical="true"] td:last-of-type {
+  border-right: 0 !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] th + td,
+.v109 .cp-formtable tr[data-vertical="true"] th + td {
+  border-top: 0 !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] td ~ *,
+.v109 .cp-formtable tr[data-vertical="true"] td ~ * {
+  border-left: 0 !important;
+}
+
+/* ===== FormTable (3. boxIn 내부 박스 무테 테이블) ===== */
+.v109 .cp-formtable[data-variant='boxIn'],
+.v109 .cp-formtable[data-variant='boxIn'] tr,
+.v109 .cp-formtable[data-variant='boxIn'] th,
+.v109 .cp-formtable[data-variant='boxIn'] td {
+  border: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.v109 [data-slot='table-container']:has(.cp-formtable[data-variant='boxIn']) {
+  border: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+}
+
+.v109 .cp-formtable[data-variant='boxIn'] th {
+  color: #333 !important;
+  font-weight: 700 !important;
+  padding: 0 !important;
+  height: auto !important;
+}
+
+.v109 .cp-formtable[data-variant='boxIn'] td {
+  padding: 0 !important;
+  height: auto !important;
+}
+
+/* ===== FormTable (4. setting 설정 영역 특화 테이블) ===== */
+.v109 .cp-formtable[data-variant='setting'] {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #F4F4F4 !important;
+  border-top: 0.6rem solid #F4F4F4 !important;
+  border-bottom: 0.6rem solid #F4F4F4 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+}
+
+.v109 [data-slot='table-container']:has(.cp-formtable[data-variant='setting']) {
+  border: 0 !important;
+  background-color: #F4F4F4 !important;
+}
+
+.v109 .cp-formtable[data-variant='setting'] tr {
+  border: 0 !important;
+  background-color: #F4F4F4 !important;
+}
+
+.v109 .cp-formtable[data-variant='setting'] th,
+.v109 .cp-formtable th[data-variant='setting'] {
+  background-color: transparent !important;
+  color: #333 !important;
+  font-weight: 700 !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  padding-top: 0.4rem !important;
+  padding-bottom: 0.4rem !important;
+  border: 0 !important;
+}
+
+.v109 .cp-formtable[data-variant='setting'] td {
+  background-color: transparent !important;
+  padding-top: 0.6rem !important;
+  padding-bottom: 0.6rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  border: 0 !important;
+}
+
+/* ===== FormTable (2. 세로형 Vertical 테이블) ===== */
+.v109 .cp-formtable[data-vertical="true"] tr,
+.v109 .cp-formtable tr[data-vertical="true"] {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: column;
+  overflow-x: auto;
+}
+
+.v109 .cp-formtable[data-vertical="true"] th,
+.v109 .cp-formtable tr[data-vertical="true"] th {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center !important;
+  padding: 0.4rem 0.6rem !important;
   height: 3rem;
   line-height: 1.2;
 }
-.v109 .cp-thcontext tr[data-vertical="true"] th:last-of-type {
-  border-right: 0;
-}
-.v109 .cp-thcontext tr[data-vertical="true"] td {
+
+.v109 .cp-formtable[data-vertical="true"] td,
+.v109 .cp-formtable tr[data-vertical="true"] td {
+  min-height: 3.8rem !important;
+  height: 3.8rem !important;
+  line-height: 1.1;
   white-space: nowrap;
   overflow: hidden;
-  min-height: 3.8rem !important;
-  border-top: 0;
-} */
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  text-align: center;
+}
+
+.v109 .cp-formtable[data-vertical="true"] td > div,
+.v109 .cp-formtable tr[data-vertical="true"] td > div {
+  text-align: left;
+}
+
+.v109 .cp-formtable[data-vertical="true"] td:first-of-type,
+.v109 .cp-formtable tr[data-vertical="true"] td:first-of-type {
+  border-left: 0 !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] td:last-of-type,
+.v109 .cp-formtable tr[data-vertical="true"] td:last-of-type {
+  border-right: 0 !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] th + td,
+.v109 .cp-formtable tr[data-vertical="true"] th + td {
+  border-top: 0 !important;
+}
+
+.v109 .cp-formtable[data-vertical="true"] td ~ *,
+.v109 .cp-formtable tr[data-vertical="true"] td ~ * {
+  border-left: 0 !important;
+}
 
 /* MainFoot FormTable CSS */
 .v109 .cp-mainfoot-tb,
@@ -789,7 +1047,7 @@
   min-width: 0 !important;
   width: auto !important;
 }
-cp-mainfoot-input
+
 .v109 .cp-input > div > div:last-child {
   flex-shrink: 0 !important;
   white-space: nowrap !important;
