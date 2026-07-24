@@ -72,12 +72,35 @@ html.v109 .pointer-events-none .ag-checked:after {
   pointer-events: none !important;
 }
 
-.v109 col.w-1{
-  width: auto !important;
+.v109 th,
+.v109 dt,
+html.v109 th,
+html.v109 dt {
+  white-space: nowrap !important;
 }
 
-.v109 table[data-variant="none"] th, .v109 table[data-variant="none"] td{
+/* .v109 .w-1,
+html.v109 .w-1 {
+  width: 0.25rem !important;
+} */
+
+.v109 table[data-variant="none"] tr + tr > * {
+  padding-top: 0.6rem !important;
+}
+
+.v109 table[data-variant="none"] th {
+  border: 0;
+  padding: 0 0.8rem 0 0 !important;
+  height: auto !important;
+}
+
+.v109 table[data-variant="none"] td {
   border: 0;
   padding: 0 !important;
   height: auto !important;
+}
+
+.v109 table[data-variant="none"] td + th,
+html.v109 table[data-variant="none"] td + th {
+  padding-left: 2.4rem !important;
 }
