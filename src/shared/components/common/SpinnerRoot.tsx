@@ -714,7 +714,6 @@ export function AiSpinner({
 
   return (
     <Gcol className={`flex items-center justify-center relative ${className ?? ''}`}>
-      <div className="w-full absolute h-[1px] bg-[#FF5C2E] top-[50%] opacity-[0.2]"></div>
       <div className="ai-loader" role="status" aria-live="polite" style={{ '--size': size } as React.CSSProperties}>
         <span className="orb" />
         <span className="orb" />
