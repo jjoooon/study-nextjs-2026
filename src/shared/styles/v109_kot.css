@@ -315,6 +315,11 @@ body.v109 .cp-tabs {
   display: -ms-flexbox !important;
   display: flex !important;
   align-items: flex-end !important;
+  -webkit-box-pack: justify !important;
+  -webkit-justify-content: space-between !important;
+  -ms-flex-pack: justify !important;
+  justify-content: space-between !important;
+  width: 100% !important;
 }
 
 .v109 .cp-tabs-line::after {
