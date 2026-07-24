@@ -2159,13 +2159,14 @@ html.v109 .ag-picker-field-wrapper {
   min-width: 100% !important;
 }
 
+/* agGrid agSelectCellEditor focus */
 .v109 .cp-aggrid .ag-picker-field-wrapper:focus,
 .v109 .cp-aggrid .ag-picker-field-wrapper:focus-within,
 .v109 .cp-aggrid .ag-picker-field-wrapper.ag-picker-field-wrapper-open,
 .v109 .ag-theme-alpine .ag-picker-field-wrapper:focus-within,
 html.v109 .ag-picker-field-wrapper.ag-picker-field-wrapper-open {
-  border-color: #006ff2 !important;
-  outline: 0.2rem solid #006ff2 !important;
+  border-color: #000 !important;
+  outline: 0.2rem solid #000 !important;
   outline-offset: -0.2rem !important;
 }
 
@@ -2225,8 +2226,8 @@ html.v109 select[data-slot="native-select"] {
 .v109 select[data-slot="native-select"]:focus,
 .v109 select:focus,
 html.v109 select[data-slot="native-select"]:focus {
-  border-color: #006ff2 !important;
-  outline: 0.2rem solid #006ff2 !important;
+  border-color: #000 !important;
+  outline: 0.2rem solid #000 !important;
   outline-offset: -0.2rem !important;
   box-shadow: none !important;
 }

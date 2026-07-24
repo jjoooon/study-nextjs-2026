@@ -1230,6 +1230,7 @@
   white-space: nowrap !important;
 }
 
+
 /* AG-Grid 내장 agSelectCellEditor / agRichSelectCellEditor 전역 1:1 보정 */
 .v109 .ag-picker-field-wrapper {
   border: 0.1rem solid var(--color-blue-gray-30, #cbd5e1);
@@ -1243,12 +1244,12 @@
   width: 100%;
 }
 
-.v109 .ag-picker-field-wrapper:focus-within,
+/* .v109 .ag-picker-field-wrapper:focus-within,
 .v109 .ag-picker-field-wrapper.ag-picker-field-wrapper-open {
   border-color: #006ff2 !important;
   outline: 0.2rem solid #006ff2 !important;
   outline-offset: -0.2rem !important;
-}
+} */
 
 .v109 .ag-rich-select-popup,
 .v109 .ag-select-list {

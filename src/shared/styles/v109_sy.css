@@ -1082,3 +1082,24 @@
   border: 0.1rem dashed var(--color-input-border-hover) !important;
   background-color: var(--color-gray-5) !important;
 }
+
+
+
+/* NativeSelect 크롬 109 호환성 fix */
+.v109 .cp-nativeselect {
+  position: relative;
+}
+.v109 .cp-nativeselect select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
+}
+.v109 .cp-nativeselect[data-state='open']::after {
+  color: var(--color-icon-strong);
+  transform: translateY(-50%) rotate(180deg);
+}

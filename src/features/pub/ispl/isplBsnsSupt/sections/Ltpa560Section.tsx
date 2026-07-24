@@ -328,7 +328,7 @@ export default function Ltpa560Section() {
           params.data?.field10Type ? (
             <Button
               color="link"
-              className="text-[var(--color-text-danger)]"
+              className="!text-[var(--color-text-danger)]"
               onClick={() => {}}
               only="default"
               size="lg"
