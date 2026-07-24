@@ -14,20 +14,12 @@ import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import {
-  AiSpinner,
-  VerticalRollingSpinner,
-  HpSpinnerRoot,
-  DnaSpinnerRoot,
-  CircleSpinner,
-  PuzzleSpinner,
-} from '@common/SpinnerRoot';
+import { AiSpinner, PuzzleSpinner } from '@common/SpinnerRoot';
 import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-import { Skeleton } from '@uiux/Skeleton';
 
 import '@/shared/lib/agGridPub';
 

@@ -799,6 +799,7 @@ export function AiSpinner({
             font-weight: 800;
             line-height: 1;
             letter-spacing: 0;
+            animation: ai-text-pulse 2.2s ease-in-out infinite;
           }
 
           .ai-loader::after {
@@ -906,6 +907,15 @@ export function AiSpinner({
             50% {
               transform: scale(1.06);
               opacity: 1;
+            }
+          }
+
+          @keyframes ai-text-pulse {
+            0%, 100% {
+              opacity: 1;
+            }
+            50% {
+              opacity: 0.35;
             }
           }
 
