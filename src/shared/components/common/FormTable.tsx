@@ -301,7 +301,7 @@ export const FormTable = ({
     primary: 'table-fixed data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500',
     favorite: 'table-fixed data-[state=checked]:bg-transparent border-0 w-[2rem] h-[2rem] shadow-none',
     setting: `table-fixed w-full border-t-[0.6rem] border-b-[0.6rem] border-[#F4F4F4] border-collapse bg-[#F4F4F4] 
-      [&_th]:bg-[transparent] 
+      [&_th]:bg-[transparent]
       [&_th]:text-[#333] 
       [&_th]:font-bold 
       [&_th]:px-[2rem] 

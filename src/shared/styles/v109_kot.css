@@ -1638,11 +1638,44 @@ html.v109 .cp-pagination button:hover:not([aria-current="page"]):not(.active) {
 }
 
 /* Chrome 109 전용 AG Grid (.cp-aggrid) 레거시 및 Chrome 150 1:1 완벽 일치 스타일 */
-.v109 .cp-aggrid,
-html.v109 .cp-aggrid {
+.v109 .cp-aggrid {
   position: relative !important;
   box-sizing: border-box !important;
 }
+
+/* Chrome 109 및 Chrome 150 간 AG-Grid 트리 (open/closed) 아이콘 수직 정렬 1:1 일치 보정 */
+.v109 .cp-aggrid .ag-group-expanded,
+.v109 .cp-aggrid .ag-group-contracted,
+html.v109 .cp-aggrid .ag-group-expanded,
+html.v109 .cp-aggrid .ag-group-contracted {
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle !important;
+}
+
+.v109 .cp-aggrid .ag-icon-tree-open,
+.v109 .cp-aggrid .ag-icon-tree-closed,
+.v109 .cp-aggrid .ag-group-expanded .ag-icon,
+.v109 .cp-aggrid .ag-group-contracted .ag-icon,
+.v109 .ag-theme-alpine .ag-icon-tree-open,
+.v109 .ag-theme-alpine .ag-icon-tree-closed,
+html.v109 .cp-aggrid .ag-icon-tree-open,
+html.v109 .cp-aggrid .ag-icon-tree-closed {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+}
+
+.v109 .cp-aggrid .ag-icon-tree-open::before,
+.v109 .cp-aggrid .ag-icon-tree-closed::before,
+.v109 .cp-aggrid .ag-group-expanded .ag-icon::before,
+.v109 .cp-aggrid .ag-group-contracted .ag-icon::before,
+html.v109 .cp-aggrid .ag-icon-tree-open::before,
+html.v109 .cp-aggrid .ag-icon-tree-closed::before {
+  vertical-align: middle !important;
+}
+
 
 /* Chrome 109 AG-Grid 트리/그룹 및 마스크 아이콘 파란색 네모 블록 깨짐 원천 방지 보정 */
 .v109 .cp-aggrid .ag-icon-tree-closed::before,

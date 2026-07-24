@@ -72,3 +72,12 @@ html.v109 .pointer-events-none .ag-checked:after {
   pointer-events: none !important;
 }
 
+.v109 col.w-1{
+  width: auto !important;
+}
+
+.v109 table[data-variant="none"] th, .v109 table[data-variant="none"] td{
+  border: 0;
+  padding: 0 !important;
+  height: auto !important;
+}
