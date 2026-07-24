@@ -212,6 +212,7 @@
 }
 
 /* ===== 4. Contained & Rounded Color Variants ===== */
+
 /* primary */
 .v109 .cp-button[data-variant='contained'][data-color='primary'],
 .v109 .cp-button[data-variant='rounded'][data-color='primary'] {
@@ -686,10 +687,8 @@
 }
 
 /* ===== FormTable (1. 일반 가로형 기본 테이블 - default) ===== */
-.v109 .cp-formtable {
-  table-layout: fixed;
-  width: 100%;
-  border-collapse: collapse;
+.v109 .cp-formtable[data-variant='default'] {
+  border-collapse: collapse !important;
 }
 
 .v109 .cp-formtable td + th,
@@ -887,10 +886,11 @@
   width: 100%;
   border-collapse: collapse;
   background-color: #F4F4F4 !important;
-  border-top: 0.6rem solid #F4F4F4 !important;
+  /* border-top: 0.6rem solid #F4F4F4 !important;
   border-bottom: 0.6rem solid #F4F4F4 !important;
   border-left: 0 !important;
-  border-right: 0 !important;
+  border-right: 0 !important; */
+  border: 0 !important;
 }
 
 .v109 [data-slot='table-container']:has(.cp-formtable[data-variant='setting']) {
@@ -905,7 +905,7 @@
 
 .v109 .cp-formtable[data-variant='setting'] th,
 .v109 .cp-formtable th[data-variant='setting'] {
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
   color: #333 !important;
   font-weight: 700 !important;
   padding-left: 2rem !important;
@@ -913,6 +913,7 @@
   padding-top: 0.4rem !important;
   padding-bottom: 0.4rem !important;
   border: 0 !important;
+  border-bottom: 0 !important;
 }
 
 .v109 .cp-formtable[data-variant='setting'] td {
@@ -922,6 +923,8 @@
   padding-left: 1rem !important;
   padding-right: 1rem !important;
   border: 0 !important;
+  border-bottom: 0 !important;
+  border-bottom-width: 0 !important;
 }
 
 /* ===== FormTable (2. 세로형 Vertical 테이블) ===== */

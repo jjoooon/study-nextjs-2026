@@ -434,7 +434,7 @@ html.v109 [data-variant="head"] dd {
   -webkit-box-align: center !important;
   -webkit-align-items: center !important;
   align-items: center !important;
-  gap: 0.25rem !important;
+  gap: 0.4rem !important;
   -webkit-box-flex: 1 !important;
   -webkit-flex: 1 1 auto !important;
   flex: 1 1 auto !important;
