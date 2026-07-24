@@ -30,9 +30,9 @@ function Table({ className, variant = 'default', ...props }: TableProps) {
   const variantClass =
     variant === 'default'
       ? // 기본형: 상단 2px 검정 라인
-        'w-full rounded-0 border-t-[.2rem] border-t-[#000]'
+        'w-full rounded-0 !border-t-[.2rem] !border-t-[#000]'
       : variant === 'message'
-        ? 'w-full rounded-0 border-t-[.2rem] border-t-[#61554F]'
+        ? 'w-full rounded-0 !border-t-[.2rem] !border-t-[#61554F]'
         : 'w-full caption-bottom text-sm border border-[#E5E5E5] rounded-[.8rem] overflow-hidden';
   return (
     <TableVariantContext.Provider value={variant}>
@@ -49,12 +49,13 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
   return (
     <thead
       data-slot="table-header"
+      data-variant={variant}
       className={cn(
         variant === 'default'
           ? '[&_tr]:bg-[var(--color-gray-5)]'
           : variant === 'message'
             ? '[&_tr]:bg-[#F4F4F4] [&_th]:h-18'
-            : '[&_tr]:bg-[#F4F4F4] [&_tr]:border-none [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
+            : 'border-b-0! [&_tr]:border-b-0! [&_th]:border-b-0! [&_tr]:bg-[#F4F4F4] [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
         className
       )}
       {...props}
@@ -68,7 +69,11 @@ function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
   return (
     <tbody
       data-slot="table-body"
-      className={cn(variant === 'default' ? '[&_tr:last-child]:border-b' : '', className)}
+      data-variant={variant}
+      className={cn(
+        variant === 'default' ? '[&_tr:last-child]:border-b' : 'border-t-0! [&>tr:first-child]:border-t-0!',
+        className
+      )}
       {...props}
     />
   );
@@ -80,6 +85,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<'tfoot'>) {
   return (
     <tfoot
       data-slot="table-footer"
+      data-variant={variant}
       className={cn(variant === 'default' ? '' : 'bg-muted/50 border-t font-medium [&>tr]:last:border-b-0', className)}
       {...props}
     />
@@ -92,10 +98,11 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
   return (
     <tr
       data-slot="table-row"
+      data-variant={variant}
       className={cn(
         variant === 'default' || variant === 'message'
           ? ''
-          : 'hover:bg-muted/50 data-[state=selected]:bg-muted border-b border-[#E5E5E5] transition-colors',
+          : 'border-b border-[#E5E5E5] last:border-b-0 transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
         className
       )}
       {...props}
@@ -109,12 +116,13 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
   return (
     <th
       data-slot="table-head"
+      data-variant={variant}
       className={cn(
         variant === 'default'
           ? 'border text-[1.3rem] bg-[var(--color-gray-5)] h-[3rem] py-[.2rem] px-[.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0'
           : variant === 'message'
             ? 'bg-[#F4F4F4] border-b border-r border-[#E5E5E5] last:border-r-0 font-bold px-[1rem] py-[1.2rem] text-center text-[1.3rem]'
-            : 'text-foreground h-[1rem] px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
+            : 'bg-transparent border-b border-[#E5E5E5] text-foreground text-[1.3rem] font-normal py-[.6rem] px-[.6rem] text-left align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
         className
       )}
       {...props}
@@ -128,12 +136,13 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
   return (
     <td
       data-slot="table-cell"
+      data-variant={variant}
       className={cn(
         variant === 'default'
           ? 'border text-[1.3rem] py-[0.2rem] px-[0.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 h-[3.8rem]'
           : variant === 'message'
             ? 'border-b border-[#E5E5E5] px-[1rem] py-[0.8rem] text-center text-[1.3rem]'
-            : 'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
+            : 'border-b border-[#E5E5E5] bg-transparent text-[1.3rem] font-normal py-[.6rem] px-[.6rem] text-left align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
         className
       )}
       {...props}

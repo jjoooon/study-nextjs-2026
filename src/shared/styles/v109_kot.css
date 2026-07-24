@@ -1638,11 +1638,44 @@ html.v109 .cp-pagination button:hover:not([aria-current="page"]):not(.active) {
 }
 
 /* Chrome 109 전용 AG Grid (.cp-aggrid) 레거시 및 Chrome 150 1:1 완벽 일치 스타일 */
-.v109 .cp-aggrid,
-html.v109 .cp-aggrid {
+.v109 .cp-aggrid {
   position: relative !important;
   box-sizing: border-box !important;
 }
+
+/* Chrome 109 및 Chrome 150 간 AG-Grid 트리 (open/closed) 아이콘 수직 정렬 1:1 일치 보정 */
+.v109 .cp-aggrid .ag-group-expanded,
+.v109 .cp-aggrid .ag-group-contracted,
+html.v109 .cp-aggrid .ag-group-expanded,
+html.v109 .cp-aggrid .ag-group-contracted {
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle !important;
+}
+
+.v109 .cp-aggrid .ag-icon-tree-open,
+.v109 .cp-aggrid .ag-icon-tree-closed,
+.v109 .cp-aggrid .ag-group-expanded .ag-icon,
+.v109 .cp-aggrid .ag-group-contracted .ag-icon,
+.v109 .ag-theme-alpine .ag-icon-tree-open,
+.v109 .ag-theme-alpine .ag-icon-tree-closed,
+html.v109 .cp-aggrid .ag-icon-tree-open,
+html.v109 .cp-aggrid .ag-icon-tree-closed {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+}
+
+.v109 .cp-aggrid .ag-icon-tree-open::before,
+.v109 .cp-aggrid .ag-icon-tree-closed::before,
+.v109 .cp-aggrid .ag-group-expanded .ag-icon::before,
+.v109 .cp-aggrid .ag-group-contracted .ag-icon::before,
+html.v109 .cp-aggrid .ag-icon-tree-open::before,
+html.v109 .cp-aggrid .ag-icon-tree-closed::before {
+  vertical-align: middle !important;
+}
+
 
 /* Chrome 109 AG-Grid 트리/그룹 및 마스크 아이콘 파란색 네모 블록 깨짐 원천 방지 보정 */
 .v109 .cp-aggrid .ag-icon-tree-closed::before,
@@ -1986,89 +2019,91 @@ html.v109 .editor-select svg {
   transform: translateY(-50%) !important;
 }
 
-/* Chrome 109 전용 AG-Grid 셀 내 모든 중간 래퍼 이중 반달 테두리 및 언더바 완전히 제거 */
-.v109 .ag-cell .ag-cell-wrapper,
-.v109 .ag-cell .ag-react-container,
-.v109 .ag-cell .ag-cell-value,
-.v109 .ag-cell .ag-cell-editor,
+/* Chrome 109 AG-Grid 셀 내부 SelectDrop / Editor 전용 유연한 정렬 보정 (전체 ag-cell 레이아웃 파괴 방지) */
 .v109 .ag-cell .editor-select,
-.v109 .ag-cell .cp-selectdrop,
-.v109 .cp-aggrid .ag-cell .ag-cell-wrapper,
-.v109 .cp-aggrid .ag-cell .ag-react-container,
-.v109 .cp-aggrid .ag-cell .ag-cell-value,
-.v109 .cp-aggrid .ag-cell .ag-cell-editor,
-.v109 .cp-aggrid .ag-cell .editor-select,
-.v109 .cp-aggrid .ag-cell .cp-selectdrop,
-.v109 .ag-theme-alpine .ag-cell .ag-cell-wrapper,
-.v109 .ag-theme-alpine .ag-cell .ag-react-container,
-.v109 .ag-theme-alpine .ag-cell .editor-select,
-.v109 .ag-theme-alpine .ag-cell .cp-selectdrop,
-html.v109 .ag-cell .ag-cell-wrapper,
-html.v109 .ag-cell .ag-react-container,
-html.v109 .ag-cell .editor-select {
+.v109 .ag-cell .cp-selectdrop {
   width: 100% !important;
-  min-width: 100% !important;
-  max-width: 100% !important;
-  -webkit-box-flex: 1 !important;
-  -webkit-flex: 1 1 100% !important;
-  -ms-flex: 1 1 100% !important;
-  flex: 1 1 100% !important;
   box-sizing: border-box !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-.v109 .cp-aggrid .ag-cell button,
-.v109 .ag-theme-alpine .ag-cell button,
-.v109 .ag-cell .cp-selectdrop > button,
-html.v109 .ag-cell button {
-  width: 100% !important;
-  min-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-.v109 .ag-cell .editor-select,
-.v109 .cp-aggrid .ag-cell .editor-select,
-.v109 .ag-theme-alpine .ag-cell .editor-select,
-html.v109 .ag-cell .editor-select {
-  display: -webkit-box !important;
-  display: -webkit-flex !important;
-  display: flex !important;
-  -webkit-box-orient: horizontal !important;
-  -webkit-flex-direction: row !important;
-  flex-direction: row !important;
-  -webkit-box-pack: space-between !important;
-  -webkit-justify-content: space-between !important;
-  justify-content: space-between !important;
-  -webkit-box-align: center !important;
-  -webkit-align-items: center !important;
-  align-items: center !important;
-  height: 100% !important;
-  width: 100% !important;
-}
-
-/* Chrome 109 AG-Grid 셀 내 셀렉트 박스 수직 중앙 정렬(Vertical Center) 보정 */
-.v109 .ag-cell,
-.v109 .cp-aggrid .ag-cell,
-.v109 .ag-theme-alpine .ag-cell,
-html.v109 .ag-cell {
-  display: -webkit-box !important;
-  display: -webkit-flex !important;
-  display: flex !important;
-  -webkit-box-align: center !important;
-  -webkit-align-items: center !important;
-  align-items: center !important;
 }
 
 .v109 .ag-cell button,
-.v109 .ag-cell .cp-selectdrop,
-.v109 .ag-cell .editor-select,
-.v109 .ag-cell .ag-react-container,
+.v109 .ag-cell .cp-selectdrop > button,
 html.v109 .ag-cell button {
   margin-top: auto !important;
   margin-bottom: auto !important;
-  align-self: center !important;
 }
+
+/* Chrome 109 전용 TableHeader (sub variant) 레거시 호환 스타일 - thead 영역 (회색배경 + 중앙정렬) */
+.v109 [data-slot="table-header"][data-variant="sub"],
+html.v109 [data-slot="table-header"][data-variant="sub"] {
+  border-bottom: 0 !important;
+}
+
+.v109 [data-slot="table-header"][data-variant="sub"] tr,
+html.v109 [data-slot="table-header"][data-variant="sub"] tr {
+  border-bottom: 0 !important;
+  background-color: #F4F4F4 !important;
+  background: #F4F4F4 !important;
+}
+
+.v109 [data-slot="table-header"][data-variant="sub"] th,
+html.v109 [data-slot="table-header"][data-variant="sub"] th {
+  border-bottom: 0 !important;
+  background-color: #F4F4F4 !important;
+  background: #F4F4F4 !important;
+  padding-top: 0.6rem !important;
+  padding-bottom: 0.6rem !important;
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+}
+
+.v109 [data-slot="table-header"][data-variant="sub"] th:first-child,
+html.v109 [data-slot="table-header"][data-variant="sub"] th:first-child {
+  border-top-left-radius: 0.8rem !important;
+  border-bottom-left-radius: 0.8rem !important;
+}
+
+.v109 [data-slot="table-header"][data-variant="sub"] th:last-child,
+html.v109 [data-slot="table-header"][data-variant="sub"] th:last-child {
+  border-top-right-radius: 0.8rem !important;
+  border-bottom-right-radius: 0.8rem !important;
+}
+
+/* Chrome 109 전용 TableBody & TableCell & TableHead (sub variant) 레거시 호환 스타일 */
+.v109 [data-slot="table-row"][data-variant="sub"],
+html.v109 [data-slot="table-row"][data-variant="sub"] {
+  border-bottom: 0.1rem solid #E5E5E5 !important;
+}
+
+.v109 [data-slot="table-row"][data-variant="sub"]:last-child,
+html.v109 [data-slot="table-row"][data-variant="sub"]:last-child {
+  border-bottom: 0 !important;
+}
+
+.v109 [data-slot="table-body"] [data-slot="table-cell"][data-variant="sub"],
+html.v109 [data-slot="table-body"] [data-slot="table-cell"][data-variant="sub"],
+.v109 [data-slot="table-body"] [data-slot="table-head"][data-variant="sub"],
+html.v109 [data-slot="table-body"] [data-slot="table-head"][data-variant="sub"],
+.v109 [data-slot="table-cell"][data-variant="sub"],
+html.v109 [data-slot="table-cell"][data-variant="sub"] {
+  border-bottom: 0.1rem solid #E5E5E5 !important;
+  background-color: transparent !important;
+  background: transparent !important;
+  font-size: 1.3rem !important;
+  font-weight: normal !important;
+  padding: 0.6rem 0.6rem !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+}
+
+.v109 [data-slot="table-row"][data-variant="sub"]:last-child [data-slot="table-cell"][data-variant="sub"],
+html.v109 [data-slot="table-row"][data-variant="sub"]:last-child [data-slot="table-cell"][data-variant="sub"] {
+  border-bottom: 0 !important;
+}
+
+
 
 
 

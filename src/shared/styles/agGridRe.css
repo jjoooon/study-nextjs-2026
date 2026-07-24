@@ -1194,18 +1194,18 @@
 }
 
 /* AG-Grid 셀 내부 SelectDrop 가로 1행 정렬 및 너비 100% 전역 보정 */
-.ag-cell .cp-selectdrop,
-.cp-aggrid .ag-cell .cp-selectdrop,
-.ag-theme-alpine .ag-cell .cp-selectdrop {
+.v109 .ag-cell .cp-selectdrop,
+.v109 .cp-aggrid .ag-cell .cp-selectdrop,
+.v109 .ag-theme-alpine .ag-cell .cp-selectdrop {
   width: 100% !important;
   min-width: 100% !important;
   display: block !important;
   box-sizing: border-box !important;
 }
 
-.ag-cell .cp-selectdrop > button,
-.cp-aggrid .ag-cell .cp-selectdrop > button,
-.ag-theme-alpine .ag-cell .cp-selectdrop > button {
+.v109 .ag-cell .cp-selectdrop > button,
+.v109 .cp-aggrid .ag-cell .cp-selectdrop > button,
+.v109 .ag-theme-alpine .ag-cell .cp-selectdrop > button {
   width: 100% !important;
   min-width: 100% !important;
   display: flex !important;
@@ -1217,8 +1217,8 @@
   box-sizing: border-box !important;
 }
 
-.ag-cell .cp-selectdrop span,
-.cp-aggrid .ag-cell .cp-selectdrop span {
+.v109 .ag-cell .cp-selectdrop span,
+.v109 .cp-aggrid .ag-cell .cp-selectdrop span {
   display: inline-block !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -1226,7 +1226,7 @@
 }
 
 /* AG-Grid 내장 agSelectCellEditor / agRichSelectCellEditor 전역 1:1 보정 */
-.ag-picker-field-wrapper {
+.v109 .ag-picker-field-wrapper {
   border: 0.1rem solid var(--color-blue-gray-30, #cbd5e1);
   border-radius: 0.4rem;
   background-color: #ffffff;
@@ -1238,15 +1238,15 @@
   width: 100%;
 }
 
-.ag-picker-field-wrapper:focus-within,
-.ag-picker-field-wrapper.ag-picker-field-wrapper-open {
+.v109 .ag-picker-field-wrapper:focus-within,
+.v109 .ag-picker-field-wrapper.ag-picker-field-wrapper-open {
   border-color: #006ff2 !important;
   outline: 0.2rem solid #006ff2 !important;
   outline-offset: -0.2rem !important;
 }
 
-.ag-rich-select-popup,
-.ag-select-list {
+.v109 .ag-rich-select-popup,
+.v109 .ag-select-list {
   background-color: #ffffff !important;
   border-radius: 0.4rem !important;
   box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.16) !important;
@@ -1254,35 +1254,39 @@
   z-index: 99999 !important;
 }
 
-.ag-rich-select-row:hover,
-.ag-rich-select-row.ag-rich-select-row-selected,
-.ag-select-list-item:hover,
-.ag-select-list-item.ag-selected,
-.ag-list-item:hover,
-.ag-list-item.ag-list-item-selected {
+.v109 .ag-rich-select-row:hover,
+.v109 .ag-rich-select-row.ag-rich-select-row-selected,
+.v109 .ag-select-list-item:hover,
+.v109 .ag-select-list-item.ag-selected,
+.v109 .ag-list-item:hover,
+.v109 .ag-list-item.ag-list-item-selected {
   background-color: #f0f7ff !important;
   background: #f0f7ff !important;
   color: #006ff2 !important;
   font-weight: 500 !important;
 }
 
-/* AG-Grid 셀 내부 React 컨테이너 및 셀렉터 너비 100% 전역 팽창 보정 */
-.ag-cell .ag-cell-edit-wrapper,
-.ag-cell .ag-react-container,
-.ag-cell .ag-cell-value,
-.ag-cell .editor-select,
-.ag-cell .ag-picker-field-wrapper,
-.cp-aggrid .ag-cell .ag-cell-edit-wrapper,
-.cp-aggrid .ag-cell .ag-react-container,
-.ag-theme-alpine .ag-cell .ag-cell-edit-wrapper,
-.ag-theme-alpine .ag-cell .ag-react-container {
-  width: 100% !important;
-  min-width: 100% !important;
-  flex: 1 1 100% !important;
-  box-sizing: border-box !important;
-  margin-top: auto !important;
-  margin-bottom: auto !important;
-  align-self: center !important;
-  display: flex !important;
-  align-items: center !important;
+/* Chrome 109 전용 ag-Grid 내 divide-y / divide-x 및 divide 색상 보정 */
+.v109 .divide-y > :not([hidden]) ~ :not([hidden]),
+.v109 .divide-y > * + * {
+  border-top-width: 1px !important;
+  border-top-style: solid !important;
 }
+
+.v109 .divide-x > :not([hidden]) ~ :not([hidden]),
+.v109 .divide-x > * + * {
+  border-left-width: 1px !important;
+  border-left-style: solid !important;
+}
+
+.v109 .divide-gray-300 > :not([hidden]) ~ :not([hidden]),
+.v109 .divide-gray-300 > * + * {
+  border-color: #d1d5db !important;
+}
+
+.v109 .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+.v109 .divide-gray-200 > * + * {
+  border-color: #e5e7eb !important;
+}
+
+
