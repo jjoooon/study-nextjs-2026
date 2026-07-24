@@ -245,6 +245,7 @@ export const FormCell = ({
     <>
       {title !== null && (
         <TableHead
+          data-variant={usedVariant}
           className={cn(FormCellVariants({ variant: usedVariant }), 'text-left py-[0.4rem]', className)}
           {...(titleColSpan && { colSpan: titleColSpan })}
           {...(titleRowSpan && { rowSpan: titleRowSpan })}
@@ -378,7 +379,7 @@ export const FormTable = ({
     <>
       <Table
         className={cn(
-          'overflow-visible',
+          'cp-formtable overflow-visible',
           variantStyles[variant as keyof typeof variantStyles],
           showLineTop ? '!border-t !border-t-[.2rem] !border-t-[#000]' : '!border-t-0',
           className

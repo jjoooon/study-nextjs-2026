@@ -105,6 +105,7 @@ html.v109 .w-1 {
 .v109 table[data-variant="head"] td,
 .v109 [data-variant="head"] td {
   border: 0;
+  border-bottom: 0 !important;
   padding: 0 !important;
   height: auto !important;
 }
