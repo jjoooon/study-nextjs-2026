@@ -242,7 +242,8 @@ const Ltpz080 = () => {
         <DialogSection className="grid-rows-[auto_auto_1fr] gap-3">
           <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
             <FormTable variant="head">
-              <FormRow className="w-full">
+              {/* 260727 - FormRow에 w-full 삭제 */}
+              <FormRow>
                 <FormCell title={'상품명'} className="shrink-0" tdClassName="flex-1">
                   <Input width={140} value={'LA123123123123'} />
                   <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>

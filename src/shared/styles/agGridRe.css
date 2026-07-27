@@ -1295,3 +1295,25 @@
   border-color: #e5e7eb !important;
 }
 
+/* Chrome 109 radio-selection */
+.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper {
+  border: 1px solid var(--color-border-gray-light) !important;
+  background-color: var(--color-element-inverse) !important;
+}
+.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 0.8rem !important;
+  height: 0.8rem !important;
+  border-radius: 9999px !important;
+  background-color: transparent !important;
+  transform: translate(-50%, -50%) !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked::after {
+  background-color: var(--color-element-primary) !important;
+  background-image: none !important;
+}
