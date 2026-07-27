@@ -997,29 +997,57 @@ html.v109 [class*="grid-cols-[15rem_15rem_15rem_auto]"] > *:nth-child(3) {
   box-sizing: border-box !important;
 }
 
-.v109 .cp-checkbox[data-state="checked"] {
+.v109 .cp-checkbox[data-state="checked"]:not([data-variant="favorite"]) {
   background-color: var(--color-primary-50, #ff5c2e) !important;
   border-color: var(--color-primary-50, #ff5c2e) !important;
   color: #ffffff !important;
 }
 
-.v109 .cp-checkbox[data-state="checked"] svg,
-.v109 .cp-checkbox[data-state="checked"] path {
+.v109 .cp-checkbox[data-state="checked"]:not([data-variant="favorite"]) svg,
+.v109 .cp-checkbox[data-state="checked"]:not([data-variant="favorite"]) path {
   color: #ffffff !important;
   fill: #ffffff !important;
   stroke: none !important;
 }
 
-.v109 .cp-checkbox:disabled,
-.v109 .cp-checkbox[disabled] {
+.v109 .cp-checkbox:disabled:not([data-variant="favorite"]),
+.v109 .cp-checkbox[disabled]:not([data-variant="favorite"]) {
   background-color: var(--color-gray-10, #e5e5e5) !important;
   border-color: var(--color-gray-20, #cccccc) !important;
   color: var(--color-gray-30, #b3b3b3) !important;
 }
 
-.v109 .cp-checkbox:disabled svg {
+.v109 .cp-checkbox:disabled:not([data-variant="favorite"]) svg {
   color: var(--color-gray-30, #b3b3b3) !important;
   stroke: var(--color-gray-30, #b3b3b3) !important;
+}
+
+/* Chrome 109 즐겨찾기(variant="favorite") 별 체크박스 배경/테두리 투명 및 아이콘 색상 보정 */
+.v109 .cp-checkbox[data-variant="favorite"],
+.v109 .cp-checkbox[data-variant="favorite"][data-state="checked"],
+.v109 .cp-checkbox[data-variant="favorite"][data-state="unchecked"],
+.v109 .cp-checkbox[data-variant="favorite"]:disabled,
+.v109 .cp-checkbox[data-variant="favorite"][disabled] {
+  background-color: transparent !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.v109 .cp-checkbox[data-variant="favorite"][data-state="checked"] svg,
+.v109 .cp-checkbox[data-variant="favorite"][data-state="checked"] path {
+  fill: var(--color-primary-50, #ff5c2e) !important;
+  color: var(--color-primary-50, #ff5c2e) !important;
+  stroke: none !important;
+}
+
+.v109 .cp-checkbox[data-variant="favorite"]:not([data-state="checked"]) svg,
+.v109 .cp-checkbox[data-variant="favorite"]:not([data-state="checked"]) path {
+  fill: var(--color-gray-30, #b3b3b3) !important;
+  color: var(--color-gray-30, #b3b3b3) !important;
+  stroke: none !important;
 }
 
 /* Chrome 109 전용 DatePicker & Calendar 레거시 호환 스타일 */
@@ -1893,29 +1921,50 @@ html.v109 .cp-pagination button:hover:not([aria-current="page"]):not(.active) {
 }
 
 /* Chrome 109 전용 AG Grid (.cp-aggrid) 레거시 및 Chrome 150 1:1 완벽 일치 스타일 */
-.v109 .cp-aggrid {
+.v109 .cp-aggrid,
+.v109 .ag-theme-alpine,
+html.v109 .cp-aggrid,
+html.v109 .ag-theme-alpine {
   position: relative !important;
   box-sizing: border-box !important;
 }
 
+/* Chrome 109 AG-Grid 숨김 요소(!important 재정의로 인한 강제 표시 문제 방지) */
+.v109 .cp-aggrid .ag-hidden,
+.v109 .cp-aggrid .ag-invisible,
+.v109 .ag-theme-alpine .ag-hidden,
+.v109 .ag-theme-alpine .ag-invisible,
+html.v109 .cp-aggrid .ag-hidden,
+html.v109 .cp-aggrid .ag-invisible,
+html.v109 .ag-theme-alpine .ag-hidden,
+html.v109 .ag-theme-alpine .ag-invisible {
+  display: none !important;
+}
+
 /* Chrome 109 및 Chrome 150 간 AG-Grid 트리 (open/closed) 아이콘 수직 정렬 1:1 일치 보정 */
-.v109 .cp-aggrid .ag-group-expanded,
-.v109 .cp-aggrid .ag-group-contracted,
-html.v109 .cp-aggrid .ag-group-expanded,
-html.v109 .cp-aggrid .ag-group-contracted {
+.v109 .cp-aggrid .ag-group-expanded:not(.ag-hidden):not(.ag-invisible),
+.v109 .cp-aggrid .ag-group-contracted:not(.ag-hidden):not(.ag-invisible),
+.v109 .ag-theme-alpine .ag-group-expanded:not(.ag-hidden):not(.ag-invisible),
+.v109 .ag-theme-alpine .ag-group-contracted:not(.ag-hidden):not(.ag-invisible),
+html.v109 .cp-aggrid .ag-group-expanded:not(.ag-hidden):not(.ag-invisible),
+html.v109 .cp-aggrid .ag-group-contracted:not(.ag-hidden):not(.ag-invisible),
+html.v109 .ag-theme-alpine .ag-group-expanded:not(.ag-hidden):not(.ag-invisible),
+html.v109 .ag-theme-alpine .ag-group-contracted:not(.ag-hidden):not(.ag-invisible) {
   display: inline-flex !important;
   align-items: center !important;
   vertical-align: middle !important;
 }
 
-.v109 .cp-aggrid .ag-icon-tree-open,
-.v109 .cp-aggrid .ag-icon-tree-closed,
-.v109 .cp-aggrid .ag-group-expanded .ag-icon,
-.v109 .cp-aggrid .ag-group-contracted .ag-icon,
-.v109 .ag-theme-alpine .ag-icon-tree-open,
-.v109 .ag-theme-alpine .ag-icon-tree-closed,
-html.v109 .cp-aggrid .ag-icon-tree-open,
-html.v109 .cp-aggrid .ag-icon-tree-closed {
+.v109 .cp-aggrid .ag-icon-tree-open:not(.ag-hidden):not(.ag-invisible),
+.v109 .cp-aggrid .ag-icon-tree-closed:not(.ag-hidden):not(.ag-invisible),
+.v109 .cp-aggrid .ag-group-expanded:not(.ag-hidden):not(.ag-invisible) .ag-icon,
+.v109 .cp-aggrid .ag-group-contracted:not(.ag-hidden):not(.ag-invisible) .ag-icon,
+.v109 .ag-theme-alpine .ag-icon-tree-open:not(.ag-hidden):not(.ag-invisible),
+.v109 .ag-theme-alpine .ag-icon-tree-closed:not(.ag-hidden):not(.ag-invisible),
+html.v109 .cp-aggrid .ag-icon-tree-open:not(.ag-hidden):not(.ag-invisible),
+html.v109 .cp-aggrid .ag-icon-tree-closed:not(.ag-hidden):not(.ag-invisible),
+html.v109 .ag-theme-alpine .ag-icon-tree-open:not(.ag-hidden):not(.ag-invisible),
+html.v109 .ag-theme-alpine .ag-icon-tree-closed:not(.ag-hidden):not(.ag-invisible) {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1927,7 +1976,11 @@ html.v109 .cp-aggrid .ag-icon-tree-closed {
 .v109 .cp-aggrid .ag-group-expanded .ag-icon::before,
 .v109 .cp-aggrid .ag-group-contracted .ag-icon::before,
 html.v109 .cp-aggrid .ag-icon-tree-open::before,
-html.v109 .cp-aggrid .ag-icon-tree-closed::before {
+html.v109 .cp-aggrid .ag-icon-tree-closed::before,
+.v109 .ag-theme-alpine .ag-icon-tree-open::before,
+.v109 .ag-theme-alpine .ag-icon-tree-closed::before,
+html.v109 .ag-theme-alpine .ag-icon-tree-open::before,
+html.v109 .ag-theme-alpine .ag-icon-tree-closed::before {
   vertical-align: middle !important;
 }
 
@@ -2620,6 +2673,74 @@ html.v109 button.cp-button[data-variant="outlined"]:disabled {
   color: var(--color-gray-30, #cbd5e1) !important;
   background-color: var(--color-gray-5, #f8fafc) !important;
   border-color: var(--color-gray-10, #e2e8f0) !important;
+}
+
+/* Chrome 109 전용 TableFoldHead 1:1 완벽 호환 레이아웃 스타일 (스크롤 없이 지정 영역 폭 안에서만 잘려서 노출) */
+.v109 [data-table-fold="head"],
+html.v109 [data-table-fold="head"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  -webkit-box-pack: justify !important;
+  -webkit-justify-content: space-between !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 2.5rem !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.v109 [data-table-fold="head"] > div:first-child,
+html.v109 [data-table-fold="head"] > div:first-child {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+}
+
+.v109 [data-table-fold="head"] > div:first-child h3,
+.v109 [data-table-fold="head"] > div:first-child *,
+html.v109 [data-table-fold="head"] > div:first-child h3,
+html.v109 [data-table-fold="head"] > div:first-child * {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  display: inline-block !important;
+  max-width: 100% !important;
+}
+
+.v109 [data-table-fold="head"] > div:last-child,
+.v109 [data-table-fold="head"] > div:nth-child(2),
+html.v109 [data-table-fold="head"] > div:last-child,
+html.v109 [data-table-fold="head"] > div:nth-child(2) {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 auto !important;
+  flex: 0 0 auto !important;
+  -webkit-flex-shrink: 0 !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  margin-left: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 
