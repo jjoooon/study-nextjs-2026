@@ -3291,6 +3291,143 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   -webkit-overflow-scrolling: touch !important;
 }
 
+/* Chrome 109 전용 꼭 해야할 일(Ltpz005) 세로형 탭 메뉴 height 100% 1:1 보정 */
+.v109 .ltpz005-popup .grid-rows-\[1fr_1fr_1fr_1fr\],
+.v109 [data-slot="dialog-content"].ltpz058-popup .grid-rows-\[1fr_1fr_1fr_1fr\] {
+  height: 100% !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+}
+
+.v109 .ltpz005-popup .grid-rows-\[1fr_1fr_1fr_1fr\] > div {
+  height: 100% !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+}
+
+.v109 .ltpz005-popup .grid-rows-\[1fr_1fr_1fr_1fr\] > div > button {
+  height: 100% !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-box-pack: center !important;
+  -webkit-justify-content: center !important;
+  justify-content: center !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+}
+
+/* Chrome 109 전용 Ltpz005 세로형 탭 버튼 1:1 완벽 형태 보정 (첫 번째 이미지 100% 동일) */
+.v109 .ltpz005-popup .grid-cols-\[auto_1fr\] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.v109 .ltpz005-popup .grid-rows-\[1fr_1fr_1fr_1fr\] {
+  width: 6.4rem !important;
+  min-width: 6.4rem !important;
+  margin-left: -1rem !important;
+  margin-right: -0.1rem !important;
+  z-index: 10 !important;
+  position: relative !important;
+}
+
+.v109 .ltpz005-popup .grid-rows-\[1fr_1fr_1fr_1fr\] > div {
+  height: 100% !important;
+  position: relative !important;
+}
+
+.v109 .ltpz005-popup .grid-rows-\[1fr_1fr_1fr_1fr\] > div > button {
+  position: relative !important;
+  box-sizing: border-box !important;
+  border-top-left-radius: 1rem !important;
+  border-bottom-left-radius: 1rem !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* 1) 선택된 활성화 탭 (첫 번째 이미지 공통 탭): 0.8rem 주황색 인셋 + 흰색 배경 + 오른쪽 확장 */
+.v109 .ltpz005-popup .grid-rows-\[1fr_1fr_1fr_1fr\] > div > button[class*="shadow-\[inset_0.8rem"] {
+  width: 6.4rem !important;
+  margin-left: 0 !important;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  -webkit-box-shadow: inset 0.8rem 0 0 0 #FF5C2E, 0 0.2rem 0 0 rgba(0, 0, 0, 0.06) !important;
+  box-shadow: inset 0.8rem 0 0 0 #FF5C2E, 0 0.2rem 0 0 rgba(0, 0, 0, 0.06) !important;
+  border-right: none !important;
+  border-left: none !important;
+  z-index: 20 !important;
+  padding-left: 1.4rem !important;
+}
+
+/* 2) 비활성화 탭 (첫 번째 이미지 누적, 직업, 예상UW 탭): 회색 배경 + 인셋 없음 + 들여쓰기 */
+.v109 .ltpz005-popup .grid-rows-\[1fr_1fr_1fr_1fr\] > div > button[class*="bg-\[\#F4F4F4\]"] {
+  width: 5.4rem !important;
+  margin-left: 1rem !important;
+  background-color: #F4F4F4 !important;
+  background: #F4F4F4 !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  border: 1px solid #E5E7EB !important;
+  border-right: 1px solid #E5E7EB !important;
+  z-index: 5 !important;
+  padding-left: 0 !important;
+}
+
+/* Chrome 109 전용 Ltpz00501 컨텐츠 박스 1:1 풀어서 정의 (Tailwind 어비트러리 calc 호환) */
+.v109 .ltpz00501-content-box,
+html.v109 .ltpz00501-content-box,
+.v109 [class*="ltpz00501-content-box"],
+.v109 [class*="rounded-tr-\[1rem\]"],
+html.v109 [class*="rounded-tr-\[1rem\]"] {
+  position: relative !important;
+  width: -webkit-calc(100% + 1rem) !important;
+  width: calc(100% + 1rem) !important;
+  height: 100% !important;
+  border-top-right-radius: 1rem !important;
+  border-bottom-right-radius: 1rem !important;
+  border-bottom-left-radius: 1rem !important;
+  overflow: hidden !important;
+  border: 0.1rem solid #cccccc !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .ltpz00501-content-box > div,
+html.v109 .ltpz00501-content-box > div,
+.v109 [class*="rounded-tr-\[1rem\]"] > div,
+html.v109 [class*="rounded-tr-\[1rem\]"] > div {
+  position: absolute !important;
+  padding: 1.2rem !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+}
+
 
 
 
