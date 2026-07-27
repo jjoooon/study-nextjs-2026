@@ -394,7 +394,7 @@ export default function Ltpa600Section() {
         field: 'field5',
         flex: 10,
         editable: true,
-        cellClass: 'text-center editable-cell',
+        cellClass: 'text-center editable-cell cp-pr-0',
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
           values: [
