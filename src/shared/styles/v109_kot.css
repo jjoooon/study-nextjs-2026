@@ -2866,6 +2866,71 @@ html.v109 [class*="[&>div]:hidden"] {
   flex-direction: column !important;
 }
 
+/* Chrome 109 전용 Dialog, DialogSection, DialogContent & inner-scroll 1:1 완벽 호환 높이 스타일 */
+.v109 [data-slot="dialog-content"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  max-height: 90vh !important;
+  height: 90vh !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.v109 [data-slot="dialog-section"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.v109 .inner-scroll,
+.v109 .inner-scroll .ag-root-wrapper,
+.v109 .inner-scroll .ag-root-wrapper-body,
+.v109 .inner-scroll .ag-root {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.v109 .inner-scroll .ag-body-viewport {
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
 
 
 
