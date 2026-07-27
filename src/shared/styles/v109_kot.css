@@ -3182,6 +3182,45 @@ html.v109 [class*="[&>div]:hidden"] {
   -webkit-overflow-scrolling: touch !important;
 }
 
+/* Chrome 109 전용 건물구조입력(Ltpz059) 하단 빈 여백 완전 제거 & 자율 피팅 스크롤 1:1 보정 */
+.v109 [data-slot="dialog-content"].ltpz059-popup,
+.v109 .ltpz059-popup,
+.v109 div.ltpz059-popup {
+  height: auto !important;
+  max-height: 85vh !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.v109 .ltpz059-popup [data-slot="dialog-header"] {
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 auto !important;
+  flex: 0 0 auto !important;
+}
+
+.v109 .ltpz059-popup [data-slot="dialog-section"],
+.v109 .ltpz059-popup section {
+  display: block !important;
+  height: auto !important;
+  max-height: calc(85vh - 10rem) !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.v109 .ltpz059-popup [data-slot="dialog-footer"] {
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 auto !important;
+  flex: 0 0 auto !important;
+}
+
 
 
 
