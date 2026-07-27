@@ -2876,8 +2876,6 @@ html.v109 [class*="[&>div]:hidden"] {
   -webkit-flex-direction: column !important;
   flex-direction: column !important;
   max-height: 90vh !important;
-  height: 90vh !important;
-  overflow: hidden !important;
   box-sizing: border-box !important;
 }
 
@@ -2930,6 +2928,31 @@ html.v109 [class*="[&>div]:hidden"] {
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch !important;
 }
+
+/* Chrome 109 전용 AG-Grid 헤더 하단 1px 경계선(border-bottom) 1:1 완벽 보정 */
+.v109 .ag-header,
+.v109 .ag-header-viewport,
+.v109 .ag-header-container,
+.v109 .ag-theme-alpine .ag-header,
+.v109 .ag-theme-alpine .ag-header-viewport {
+  border-bottom: 0.1rem solid var(--color-gray-10, #e2e8f0) !important;
+  border-bottom-color: var(--color-gray-10, #e2e8f0) !important;
+  box-sizing: border-box !important;
+}
+
+/* Chrome 109 전용 AG-Grid domLayout="autoHeight" 최하단 border-bottom 1:1 완벽 보정 */
+.v109 .ag-root-wrapper.ag-layout-auto-height,
+.v109 .ag-root-wrapper {
+  border-bottom: 0.1rem solid var(--color-gray-10, #e2e8f0) !important;
+  border-bottom-color: var(--color-gray-10, #e2e8f0) !important;
+}
+
+/* AG-Grid domLayout="autoHeight" 최하단 border-bottom 1:1 완벽 보정 */
+.v109 .ag-root-wrapper.ag-layout-auto-height,
+.v109 .ag-root-wrapper {
+  border-bottom: 0.1rem solid var(--color-gray-10, #e2e8f0) !important;
+}
+
 
 
 
