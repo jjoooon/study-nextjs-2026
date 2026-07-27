@@ -302,7 +302,6 @@ const Ltpz076 = () => {
                           checkboxes: true,
                         }}
                         selectionColumnDef={{
-                          headerName: '선택',
                           width: 30,
                         }}
                       />
@@ -337,7 +336,6 @@ const Ltpz076 = () => {
                       checkboxes: true,
                     }}
                     selectionColumnDef={{
-                      headerName: '합계',
                       width: 30,
                     }}
                   />
