@@ -186,6 +186,46 @@ const dummyData: DummyDataType[] = [
     badge: [],
     field3: '15~90세',
   },
+  {
+    id: 18,
+    field1: '종합건강',
+    field2: '한화 건강쑥쑥 어린이 보험2601',
+    importance: false,
+    badge: [],
+    field3: '15~90세',
+  },
+  {
+    id: 19,
+    field1: '종합건강',
+    field2: '한화 건강쑥쑥 어린이 보험2601',
+    importance: false,
+    badge: [],
+    field3: '15~90세',
+  },
+  {
+    id: 20,
+    field1: '종합건강',
+    field2: '한화 건강쑥쑥 어린이 보험2601',
+    importance: false,
+    badge: [],
+    field3: '15~90세',
+  },
+  {
+    id: 21,
+    field1: '종합건강',
+    field2: '한화 건강쑥쑥 어린이 보험2601',
+    importance: false,
+    badge: [],
+    field3: '15~90세',
+  },
+  {
+    id: 22,
+    field1: '종합건강',
+    field2: '한화 건강쑥쑥 어린이 보험2601',
+    importance: false,
+    badge: [],
+    field3: '15~90세',
+  },
 ];
 const dummyData2: DummyDataType2[] = [
   {
@@ -568,7 +608,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
   const selectedPlanRowData = planRowDataMap[active] ?? tabData3;
 
   return (
-    <Grid className="w-full grid-rows-[auto_1fr_auto] px-[1rem]" gap={3}>
+    <Grid className="w-full h-full min-h-0 grid-rows-[auto_1fr_auto] px-[1rem] overflow-hidden" gap={3}>
       <Grow variant={'box-round'} className="w-full" placement="bwe">
         <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
           <FormRow className="items-start!">
@@ -626,8 +666,8 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
           <ResetIcon />
         </Button>
       </Grow>
-      <Grow className="w-full overflow-hidden" placement="ss" gap={5}>
-        <ResizablePanelGroup orientation="horizontal" className="w-full">
+      <Grow className="w-full h-full min-h-0 overflow-hidden" placement="ss" gap={5}>
+        <ResizablePanelGroup orientation="horizontal" className="w-full h-full min-h-0">
           <ResizablePanel defaultSize={70}>
             <TableFold className="h-full">
               <TableFoldHead title="상품정보" variant="default" />

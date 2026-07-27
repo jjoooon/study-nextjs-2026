@@ -301,30 +301,73 @@
 .v109 .space-y-6 > * + *, html.v109 .space-y-6 > * + *, body.v109 .space-y-6 > * + * { margin-top: 1.5rem !important; }
 .v109 .space-y-8 > * + *, html.v109 .space-y-8 > * + *, body.v109 .space-y-8 > * + * { margin-top: 2rem !important; }
 
-/* Chrome 109 전용 Tabs 레거시 호환 스타일 */
+/* Chrome 109 전용 Tabs & TabPager 완전 1:1 레거시 호환 스타일 */
 .v109 .cp-tabs,
 html.v109 .cp-tabs,
 body.v109 .cp-tabs {
-  position: relative;
+  position: relative !important;
+  display: grid !important;
+  grid-template-rows: auto 1fr !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
-.v109 .cp-tabs-line {
+.v109 .cp-tabs-line,
+html.v109 .cp-tabs-line {
   position: relative !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  flex-shrink: 0 !important;
+  z-index: 2 !important;
   display: -webkit-box !important;
   display: -webkit-flex !important;
-  display: -ms-flexbox !important;
   display: flex !important;
   align-items: flex-end !important;
-  -webkit-box-pack: justify !important;
-  -webkit-justify-content: space-between !important;
-  -ms-flex-pack: justify !important;
   justify-content: space-between !important;
-  width: 100% !important;
 }
 
 .v109 .cp-tabs-line > *:last-child,
 .v109 .cp-tabs-line > [data-group="row"] {
   margin-left: auto !important;
+}
+
+.v109 .cp-tabs-content,
+html.v109 .cp-tabs-content {
+  position: relative !important;
+  grid-row: 2 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+
+.v109 .cp-tabs-content[data-state="inactive"],
+html.v109 .cp-tabs-content[data-state="inactive"] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+}
+
+.v109 .cp-tabs-content[data-state="active"],
+html.v109 .cp-tabs-content[data-state="active"] {
+  display: block !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+.v109 .cp-tabs-content .ag-theme-alpine,
+.v109 .cp-tabs-content .cp-aggrid,
+html.v109 .cp-tabs-content .ag-theme-alpine,
+html.v109 .cp-tabs-content .cp-aggrid {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
 }
 
 /* Chrome 109 전용 FormTable (variant="head") 완전 1:1 호환 레이아웃 스타일 */
@@ -2467,11 +2510,8 @@ html.v109 [class*="[&>div]:hidden"] {
 }
 
 .v109 [value="Ltpa02001"][data-state="checked"],
-html.v109 [value="Ltpa02001"][data-state="checked"],
 .v109 [value="Ltpa02002"][data-state="checked"],
-html.v109 [value="Ltpa02002"][data-state="checked"],
-.v109 [class*="[&>div]:hidden"][data-state="checked"],
-html.v109 [class*="[&>div]:hidden"][data-state="checked"] {
+.v109 [class*="[&>div]:hidden"][data-state="checked"] {
   background: #FF5C2E !important;
   background: -webkit-linear-gradient(328deg, #FF5C2E 9.4%, #FF8D02 97.24%) !important;
   background: linear-gradient(328deg, #FF5C2E 9.4%, #FF8D02 97.24%) !important;
@@ -2480,37 +2520,36 @@ html.v109 [class*="[&>div]:hidden"][data-state="checked"] {
 }
 
 .v109 [value="Ltpa02001"][data-state="checked"] *,
-html.v109 [value="Ltpa02001"][data-state="checked"] *,
 .v109 [value="Ltpa02002"][data-state="checked"] *,
-html.v109 [value="Ltpa02002"][data-state="checked"] *,
 .v109 [class*="[&>div]:hidden"][data-state="checked"] * {
   color: #ffffff !important;
 }
 
 /* Chrome 109 고객정보 영역(Ltpa020Section) 어두운 배경 내부 텍스트 가독성 보정 */
 .v109 .bg-\[var\(--color-blue-gray-70\)\] *,
-html.v109 .bg-\[var\(--color-blue-gray-70\)\] *,
-.v109 [class*="color-blue-gray-70"] *,
-html.v109 [class*="color-blue-gray-70"] * {
+.v109 [class*="color-blue-gray-70"] * {
   color: #ffffff;
 }
 
 .v109 .bg-\[var\(--color-blue-gray-70\)\] dt,
-html.v109 .bg-\[var\(--color-blue-gray-70\)\] dt,
 .v109 [class*="color-blue-gray-70"] dt,
-html.v109 [class*="color-blue-gray-70"] dt,
-.v109 [class*="color-blue-gray-70"] [class*="label"],
-html.v109 [class*="color-blue-gray-70"] [class*="label"] {
+.v109 [class*="color-blue-gray-70"] [class*="label"] {
   color: #cbd5e1 !important;
+}
+
+.v109 .bg-\[var\(--color-blue-gray-70\)\] input,
+.v109 .bg-\[var\(--color-blue-gray-70\)\] input[type="text"],
+.v109 .bg-\[var\(--color-blue-gray-70\)\] .cp-input,
+.v109 [class*="color-blue-gray-70"] input,
+.v109 [class*="color-blue-gray-70"] input[type="text"],
+.v109 [class*="color-blue-gray-70"] .cp-input {
+  color: #000000 !important;
 }
 
 /* Chrome 109 ViewMode (등록/미등록 또는 간편/상세 스위치 토글) 호환 보정 */
 .v109 label[htmlfor="docType"],
-html.v109 label[htmlfor="docType"],
 .v109 input#docType + label,
-html.v109 input#docType + label,
-.v109 input[type="checkbox"] + label,
-html.v109 input[type="checkbox"] + label {
+.v109 input[type="checkbox"] + label {
   position: relative !important;
   height: 2.8rem !important;
   padding: 0.1rem !important;
@@ -2533,9 +2572,7 @@ html.v109 input[type="checkbox"] + label {
 
 /* 스팬 공통 기본 스타일 */
 .v109 input[type="checkbox"] + label .peer-1,
-html.v109 input[type="checkbox"] + label .peer-1,
-.v109 input[type="checkbox"] + label .peer-2,
-html.v109 input[type="checkbox"] + label .peer-2 {
+.v109 input[type="checkbox"] + label .peer-2 {
   border-radius: 9999px !important;
   display: -webkit-box !important;
   display: -webkit-flex !important;
@@ -2554,8 +2591,7 @@ html.v109 input[type="checkbox"] + label .peer-2 {
 }
 
 /* 1. 체크 안됨 상태 (state=true: 첫번째 옵션 활성화 - 등록 / 간편) */
-.v109 input[type="checkbox"]:not(:checked) + label .peer-1,
-html.v109 input[type="checkbox"]:not(:checked) + label .peer-1 {
+.v109 input[type="checkbox"]:not(:checked) + label .peer-1 {
   color: #ffffff !important;
   font-weight: 700 !important;
   background: #ff5c2e !important;
@@ -2563,8 +2599,7 @@ html.v109 input[type="checkbox"]:not(:checked) + label .peer-1 {
   background-image: linear-gradient(to right, #ff5c2e, #ffb800) !important;
 }
 
-.v109 input[type="checkbox"]:not(:checked) + label .peer-2,
-html.v109 input[type="checkbox"]:not(:checked) + label .peer-2 {
+.v109 input[type="checkbox"]:not(:checked) + label .peer-2 {
   color: var(--color-gray-50, #64748b) !important;
   font-weight: 400 !important;
   background: transparent !important;
@@ -2572,16 +2607,14 @@ html.v109 input[type="checkbox"]:not(:checked) + label .peer-2 {
 }
 
 /* 2. 체크됨 상태 (state=false: 두번째 옵션 활성화 - 미등록 / 상세) */
-.v109 input[type="checkbox"]:checked + label .peer-1,
-html.v109 input[type="checkbox"]:checked + label .peer-1 {
+.v109 input[type="checkbox"]:checked + label .peer-1 {
   color: var(--color-gray-50, #64748b) !important;
   font-weight: 400 !important;
   background: transparent !important;
   background-image: none !important;
 }
 
-.v109 input[type="checkbox"]:checked + label .peer-2,
-html.v109 input[type="checkbox"]:checked + label .peer-2 {
+.v109 input[type="checkbox"]:checked + label .peer-2 {
   color: #ffffff !important;
   font-weight: 700 !important;
   background: #ff5c2e !important;
@@ -2591,15 +2624,10 @@ html.v109 input[type="checkbox"]:checked + label .peer-2 {
 
 /* Chrome 109 LTPZ003 등 팝업/서식 내 비활성화(disabled) 라디오 버튼 (RadioGroupItem) 스타일 보정 */
 .v109 button[role="radio"]:disabled,
-html.v109 button[role="radio"]:disabled,
 .v109 button[data-slot="radio-group-item"]:disabled,
-html.v109 button[data-slot="radio-group-item"]:disabled,
 .v109 [role="radiogroup"] button:disabled,
-html.v109 [role="radiogroup"] button:disabled,
 .v109 button[disabled][data-state],
-html.v109 button[disabled][data-state],
-.v109 button[data-disabled],
-html.v109 button[data-disabled] {
+.v109 button[data-disabled] {
   cursor: not-allowed !important;
   opacity: 1 !important;
   background-color: var(--color-gray-10, #f1f5f9) !important;
@@ -2609,34 +2637,24 @@ html.v109 button[data-disabled] {
 
 /* 비활성화 라디오 버튼 내부 선택 점(Indicator / Dot) 색상 보정 */
 .v109 button[role="radio"]:disabled *,
-html.v109 button[role="radio"]:disabled *,
 .v109 button[data-slot="radio-group-item"]:disabled *,
-html.v109 button[data-slot="radio-group-item"]:disabled *,
-.v109 button[data-disabled] *,
-html.v109 button[data-disabled] * {
+.v109 button[data-disabled] * {
   background-color: var(--color-gray-30, #cbd5e1) !important;
 }
 
 /* 비활성화 라디오 버튼 인접 라벨(label) 텍스트 색상 및 커서 보정 */
 .v109 button[role="radio"]:disabled + label,
-html.v109 button[role="radio"]:disabled + label,
 .v109 button[data-slot="radio-group-item"]:disabled + label,
-html.v109 button[data-slot="radio-group-item"]:disabled + label,
-.v109 button[data-disabled] + label,
-html.v109 button[data-disabled] + label {
+.v109 button[data-disabled] + label {
   cursor: not-allowed !important;
   color: var(--color-gray-40, #94a3b8) !important;
 }
 
 /* Chrome 109 LTPZ003 및 공통 비활성화(disabled) 버튼 보정 ("전체조회", "모두 아니오" 등) */
 .v109 button:disabled,
-html.v109 button:disabled,
 .v109 button[data-slot="button"]:disabled,
-html.v109 button[data-slot="button"]:disabled,
 .v109 button.cp-button:disabled,
-html.v109 button.cp-button:disabled,
-.v109 .cp-button:disabled,
-html.v109 .cp-button:disabled {
+.v109 .cp-button:disabled {
   pointer-events: none !important;
   cursor: not-allowed !important;
   opacity: 1 !important;
@@ -2647,9 +2665,7 @@ html.v109 .cp-button:disabled {
 
 /* contained 타입 비활성화 버튼 보정 (size="xl": 가능상품 보기, 추천설계 이동 등) */
 .v109 button[data-variant="contained"][data-size="xl"]:disabled,
-html.v109 button[data-variant="contained"][data-size="xl"]:disabled,
-.v109 button.cp-button[data-variant="contained"][data-size="xl"]:disabled,
-html.v109 button.cp-button[data-variant="contained"][data-size="xl"]:disabled {
+.v109 button.cp-button[data-variant="contained"][data-size="xl"]:disabled {
   color: var(--color-gray-30, #cbd5e1) !important;
   background-color: var(--color-gray-5, #f8fafc) !important;
   border-color: var(--color-gray-5, #f8fafc) !important;
@@ -2657,9 +2673,7 @@ html.v109 button.cp-button[data-variant="contained"][data-size="xl"]:disabled {
 
 /* 일반 contained 타입 비활성화 버튼 보정 (sm, md, lg) */
 .v109 button[data-variant="contained"]:not([data-size="xl"]):disabled,
-html.v109 button[data-variant="contained"]:not([data-size="xl"]):disabled,
-.v109 button.cp-button[data-variant="contained"]:not([data-size="xl"]):disabled,
-html.v109 button.cp-button[data-variant="contained"]:not([data-size="xl"]):disabled {
+.v109 button.cp-button[data-variant="contained"]:not([data-size="xl"]):disabled {
   color: var(--color-gray-0, #ffffff) !important;
   background-color: var(--color-gray-20, #cbd5e1) !important;
   border-color: var(--color-gray-20, #cbd5e1) !important;
@@ -2667,17 +2681,14 @@ html.v109 button.cp-button[data-variant="contained"]:not([data-size="xl"]):disab
 
 /* outlined 타입 비활성화 버튼 보정 (전체조회, 모두 아니오 등) */
 .v109 button[data-variant="outlined"]:disabled,
-html.v109 button[data-variant="outlined"]:disabled,
-.v109 button.cp-button[data-variant="outlined"]:disabled,
-html.v109 button.cp-button[data-variant="outlined"]:disabled {
+.v109 button.cp-button[data-variant="outlined"]:disabled {
   color: var(--color-gray-30, #cbd5e1) !important;
   background-color: var(--color-gray-5, #f8fafc) !important;
   border-color: var(--color-gray-10, #e2e8f0) !important;
 }
 
 /* Chrome 109 전용 TableFoldHead 1:1 완벽 호환 레이아웃 스타일 (스크롤 없이 지정 영역 폭 안에서만 잘려서 노출) */
-.v109 [data-table-fold="head"],
-html.v109 [data-table-fold="head"] {
+.v109 [data-table-fold="head"] {
   display: -webkit-box !important;
   display: -webkit-flex !important;
   display: flex !important;
@@ -2698,8 +2709,7 @@ html.v109 [data-table-fold="head"] {
   box-sizing: border-box !important;
 }
 
-.v109 [data-table-fold="head"] > div:first-child,
-html.v109 [data-table-fold="head"] > div:first-child {
+.v109 [data-table-fold="head"] > div:first-child {
   display: -webkit-inline-box !important;
   display: -webkit-inline-flex !important;
   display: inline-flex !important;
@@ -2714,9 +2724,7 @@ html.v109 [data-table-fold="head"] > div:first-child {
 }
 
 .v109 [data-table-fold="head"] > div:first-child h3,
-.v109 [data-table-fold="head"] > div:first-child *,
-html.v109 [data-table-fold="head"] > div:first-child h3,
-html.v109 [data-table-fold="head"] > div:first-child * {
+.v109 [data-table-fold="head"] > div:first-child * {
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: clip !important;
@@ -2725,9 +2733,7 @@ html.v109 [data-table-fold="head"] > div:first-child * {
 }
 
 .v109 [data-table-fold="head"] > div:last-child,
-.v109 [data-table-fold="head"] > div:nth-child(2),
-html.v109 [data-table-fold="head"] > div:last-child,
-html.v109 [data-table-fold="head"] > div:nth-child(2) {
+.v109 [data-table-fold="head"] > div:nth-child(2) {
   display: -webkit-inline-box !important;
   display: -webkit-inline-flex !important;
   display: inline-flex !important;
@@ -2741,6 +2747,123 @@ html.v109 [data-table-fold="head"] > div:nth-child(2) {
   margin-left: auto !important;
   visibility: visible !important;
   opacity: 1 !important;
+}
+
+/* Chrome 109 전용 TableFold & TableFoldBody ag-Grid 높이 고정 및 수직 스크롤 강제 활성화 */
+.v109 [data-table-fold="wrap"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .ch-tablecontext,
+.v109 .ch-tablecontext > div,
+.v109 .ch-tablecontext .ag-theme-alpine,
+.v109 .ch-tablecontext .tooltip-hidden-toggle {
+  position: relative !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.v109 .ch-tablecontext .ag-root-wrapper,
+.v109 .ch-tablecontext .ag-root-wrapper-body,
+.v109 .ch-tablecontext .ag-root,
+.v109 .ag-theme-alpine .ag-root-wrapper,
+.v109 .ag-theme-alpine .ag-root-wrapper-body,
+.v109 .ag-theme-alpine .ag-root {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.v109 .ag-theme-alpine .ag-header,
+.v109 .cp-aggrid .ag-header {
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 auto !important;
+  flex: 0 0 auto !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.v109 .ch-tablecontext .ag-body,
+.v109 .ch-tablecontext .ag-body-viewport,
+.v109 .ag-theme-alpine .ag-body,
+.v109 .ag-theme-alpine .ag-body-viewport {
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  z-index: 1 !important;
+}
+
+/* Chrome 109 전용 ResizablePanelGroup 및 ResizablePanel 1:1 완벽 호환 높이 스타일 */
+.v109 [data-panel-group],
+.v109 [data-panel] {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.v109 [data-panel-group][data-panel-group-direction="horizontal"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  flex-direction: row !important;
+}
+
+.v109 [data-panel-group][data-panel-group-direction="vertical"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
 }
 
 
