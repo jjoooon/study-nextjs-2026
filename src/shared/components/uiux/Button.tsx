@@ -24,7 +24,7 @@ const buttonVariants = cva(
         underline underline-offset-3 
         hover:underline 
         focus-visible:underline`,
-        none: 'bg-transparent border-none disabled:opacity-20',
+        none: 'bg-transparent border-none disabled:opacity-20 outline-none! focus:outline-none! focus-visible:outline-none! focus-visible:ring-0! focus-visible:ring-offset-0!',
         rounded: 'rounded-full!',
         banner:
           'bg-[var(--color-blue-gray-20)] text-[var(--color-gray-100)] border border-[var(--color-blue-gray-40)] px-2.5! py-[0.5rem]! justify-between text-[1.3rem] font-bold! h-[3.1rem]! rounded-[0.8rem]! ',
