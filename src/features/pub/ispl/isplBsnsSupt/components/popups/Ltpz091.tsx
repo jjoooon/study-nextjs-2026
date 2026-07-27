@@ -206,7 +206,7 @@ const Ltpz091 = () => {
         flex: 6,
         minWidth: attributeColumnWidth(300),
         field: 'field02',
-        cellClass: 'text-left editable-cell',
+        cellClass: 'cp-w-cellinput text-left editable-cell',
         editable: true,
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
       },
