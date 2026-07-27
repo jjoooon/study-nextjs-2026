@@ -2812,8 +2812,9 @@ html.v109 [class*="[&>div]:hidden"] {
   z-index: 2 !important;
 }
 
-.v109 .ch-tablecontext .ag-body,
-.v109 .ch-tablecontext .ag-body-viewport  {
+
+.v109 .ag-theme-alpine .ag-body,
+.v109 .ag-theme-alpine .ag-body-viewport {
   -webkit-box-flex: 1 !important;
   -webkit-flex: 1 1 0% !important;
   flex: 1 1 0% !important;
@@ -3262,33 +3263,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   height: auto !important;
 }
 
-/* Chrome 109 전용 업종코드조회(Ltpz058) ag-Grid inner-scroll 세로 스크롤바(Scrollbar) 1:1 생성 및 높이 보정 */
-.v109 [data-slot="dialog-content"].ltpz058-popup,
-.v109 .ltpz058-popup {
-  height: auto !important;
-  max-height: 85vh !important;
-}
-
-.v109 .ltpz058-popup .ag-theme-alpine.inner-scroll,
-.v109 .ltpz058-popup .ag-theme-alpine {
-  height: 24rem !important;
-  min-height: 20rem !important;
-  max-height: 32rem !important;
-}
-
-.v109 .ltpz058-popup .ag-theme-alpine .ag-root-wrapper {
-  height: 100% !important;
-}
-
-.v109 .ltpz058-popup .ag-theme-alpine .ag-body-viewport {
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
 /* Chrome 109 전용 꼭 해야할 일(Ltpz005) 세로형 탭 메뉴 height 100% 1:1 보정 */
-.v109 .ltpz005-popup .grid-rows-\[1fr_1fr_1fr_1fr\],
-.v109 [data-slot="dialog-content"].ltpz058-popup .grid-rows-\[1fr_1fr_1fr_1fr\] {
+.v109 .ltpz005-popup .grid-rows-\[1fr_1fr_1fr_1fr\] {
   height: 100% !important;
   display: -webkit-box !important;
   display: -webkit-flex !important;
@@ -3423,41 +3399,6 @@ html.v109 [class*="rounded-tr-\[1rem\]"] > div {
   box-sizing: border-box !important;
 }
 
-/* Chrome 109 전용 청약포인트 상세(Ltpz012) 팝업 세로 스크롤바(Scrollbar) 1:1 생성 및 높이 보정 */
-.v109 [data-slot="dialog-content"].ltpz012-popup,
-.v109 .ltpz012-popup {
-  height: auto !important;
-  max-height: 85vh !important;
-}
-
-.v109 .ltpz012-popup [data-slot="dialog-section"] > .min-h-0,
-.v109 .ltpz012-popup .dialog-section > .min-h-0,
-.v109 .ltpz012-popup [class*="overflow-y-auto"],
-.v109 .ltpz012-popup .overflow-y-auto {
-  max-height: -webkit-calc(85vh - 16rem) !important;
-  max-height: calc(85vh - 16rem) !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-  display: block !important;
-}
-
-/* Chrome 109 전용 LTPZ296 팝업 150버전 1:1 완벽 호환 세로 스크롤바 (Ltpz296.tsx 100% 원본 유지) */
-.v109 [data-slot="dialog-content"] {
-  max-height: 85vh !important;
-}
-
-.v109 [data-slot="dialog-content"] > [data-slot="dialog-section"],
-.v109 [data-slot="dialog-content"] > .dialog-section,
-html.v109 [data-slot="dialog-content"] > [data-slot="dialog-section"]{
-  -webkit-box-flex: 1 !important;
-  -webkit-flex: 1 1 0% !important;
-  flex: 1 1 0% !important;
-  min-height: 0 !important;
-  max-height: -webkit-calc(85vh - 8rem) !important;
-  max-height: calc(85vh - 8rem) !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-}
 
 /* Chrome 109 ag-Grid 라디오 선택(radio-selection) 원형 클릭 및 주황색 원형 점 1:1 완벽 보정 */
 .v109 .ag-theme-alpine.radio-selection .ag-selection-checkbox .ag-checkbox-input-wrapper,
@@ -3492,7 +3433,6 @@ html.v109 .ag-theme-alpine.radio-selection .ag-row-selected .ag-selection-checkb
   visibility: visible !important;
   opacity: 1 !important;
 }
-
 
 
 

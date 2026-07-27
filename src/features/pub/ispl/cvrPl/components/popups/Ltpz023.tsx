@@ -117,9 +117,16 @@ const Ltpz023 = () => {
               </TableHeader>
               <TableBody>
                 {keywords.map((keyword, i) => (
-                  <TableRow key={i} className={selectedIdx === i ? '[&>td]:bg-[var(--color-primary-10)]' : ''}>
+                  <TableRow
+                    key={i}
+                    className={`cursor-pointer ${selectedIdx === i ? '[&>td]:bg-[var(--color-primary-10)]' : ''}`}
+                    onClick={() => setSelectedIdx(i)}
+                  >
                     <TableCell className="text-center align-middle">
-                      <label className="inline-flex cursor-pointer items-center justify-center w-full h-full">
+                      <label
+                        className="inline-flex cursor-pointer items-center justify-center w-full h-full"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <input
                           type="radio"
                           name="keyword-row-selector"
@@ -128,8 +135,10 @@ const Ltpz023 = () => {
                           onChange={() => setSelectedIdx(i)}
                           className="peer sr-only"
                         />
-                        <span className="relative h-[2rem] w-[2rem] rounded-full border border-[var(--color-gray-15)] bg-white transition-colors peer-checked:[&>span]:opacity-100 peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--color-element-primary)] peer-focus-visible:ring-offset-1">
-                          <span className="absolute left-1/2 top-1/2 h-[1.2rem] w-[1.2rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--color-primary-50)] opacity-0 transition-opacity" />
+                        <span
+                          className={`relative h-[2rem] w-[2rem] rounded-full border transition-colors flex items-center justify-center ${selectedIdx === i ? 'border-[#FF5C2E] bg-white' : 'border-[#cccccc] bg-white'}`}
+                        >
+                          {selectedIdx === i && <span className="h-[1rem] w-[1rem] rounded-full bg-[#FF5C2E]" />}
                         </span>
                       </label>
                     </TableCell>
