@@ -3423,6 +3423,78 @@ html.v109 [class*="rounded-tr-\[1rem\]"] > div {
   box-sizing: border-box !important;
 }
 
+/* Chrome 109 전용 청약포인트 상세(Ltpz012) 팝업 세로 스크롤바(Scrollbar) 1:1 생성 및 높이 보정 */
+.v109 [data-slot="dialog-content"].ltpz012-popup,
+.v109 .ltpz012-popup {
+  height: auto !important;
+  max-height: 85vh !important;
+}
+
+.v109 .ltpz012-popup [data-slot="dialog-section"] > .min-h-0,
+.v109 .ltpz012-popup .dialog-section > .min-h-0,
+.v109 .ltpz012-popup [class*="overflow-y-auto"],
+.v109 .ltpz012-popup .overflow-y-auto {
+  max-height: -webkit-calc(85vh - 16rem) !important;
+  max-height: calc(85vh - 16rem) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  display: block !important;
+}
+
+/* Chrome 109 전용 LTPZ296 팝업 150버전 1:1 완벽 호환 세로 스크롤바 (Ltpz296.tsx 100% 원본 유지) */
+.v109 [data-slot="dialog-content"],
+html.v109 [data-slot="dialog-content"] {
+  max-height: 85vh !important;
+}
+
+.v109 [data-slot="dialog-content"] > [data-slot="dialog-section"],
+.v109 [data-slot="dialog-content"] > .dialog-section,
+html.v109 [data-slot="dialog-content"] > [data-slot="dialog-section"],
+.v109 .grid-rows-\[auto_1fr\] {
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  max-height: -webkit-calc(85vh - 8rem) !important;
+  max-height: calc(85vh - 8rem) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Chrome 109 ag-Grid 라디오 선택(radio-selection) 원형 클릭 및 주황색 원형 점 1:1 완벽 보정 */
+.v109 .ag-theme-alpine.radio-selection .ag-selection-checkbox .ag-checkbox-input-wrapper,
+html.v109 .ag-theme-alpine.radio-selection .ag-selection-checkbox .ag-checkbox-input-wrapper {
+  border-radius: 50% !important;
+  border: 1px solid #cbd5e1 !important;
+  background-color: #ffffff !important;
+}
+
+.v109 .ag-theme-alpine.radio-selection .ag-selection-checkbox .ag-checkbox-input-wrapper.ag-checked,
+html.v109 .ag-theme-alpine.radio-selection .ag-selection-checkbox .ag-checkbox-input-wrapper.ag-checked,
+.v109 .ag-theme-alpine.radio-selection .ag-row-selected .ag-selection-checkbox .ag-checkbox-input-wrapper,
+html.v109 .ag-theme-alpine.radio-selection .ag-row-selected .ag-selection-checkbox .ag-checkbox-input-wrapper {
+  border-color: #FF5C2E !important;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+}
+
+.v109 .ag-theme-alpine.radio-selection .ag-selection-checkbox .ag-checkbox-input-wrapper.ag-checked::after,
+html.v109 .ag-theme-alpine.radio-selection .ag-selection-checkbox .ag-checkbox-input-wrapper.ag-checked::after,
+.v109 .ag-theme-alpine.radio-selection .ag-row-selected .ag-selection-checkbox .ag-checkbox-input-wrapper::after,
+html.v109 .ag-theme-alpine.radio-selection .ag-row-selected .ag-selection-checkbox .ag-checkbox-input-wrapper::after {
+  content: '' !important;
+  width: 0.8rem !important;
+  height: 0.8rem !important;
+  border-radius: 50% !important;
+  background-color: #FF5C2E !important;
+  background-image: none !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 
 
 

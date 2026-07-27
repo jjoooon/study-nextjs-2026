@@ -596,7 +596,7 @@ export const Ltpz296 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="full">
+      <DialogContent showCloseButton resizable={true} size="full" className="ltpz296-popup">
         {/* 다이얼로그 타이틀 영역 */}
         <DialogHeader>
           <DialogTitle>
@@ -611,7 +611,7 @@ export const Ltpz296 = () => {
         </DialogHeader>
 
         {/* 다이얼로그 본문 영역 */}
-        <DialogSection className="w-full h-full grid-rows-[auto_1fr]">
+        <DialogSection className="w-full h-full min-h-0 overflow-y-auto">
           {/* 상단: 조회 조건 설정 폼 */}
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable
@@ -788,9 +788,9 @@ export const Ltpz296 = () => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <FormTable cols={['w-[10rem]', 'w-[auto]', 'w-[10rem]', 'w-[auto]']}>
+                <FormTable cols={['w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
                   <FormRow>
-                    <FormCell title={'사망보험금'}>
+                    <FormCell title={'사망보험금'} className="whitespace-nowrap">
                       <NativeSelect aria-label="사망보험금" width={80}>
                         {[
                           { value: '선택1', label: '선택1' },
@@ -812,7 +812,7 @@ export const Ltpz296 = () => {
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
                     </FormCell>
-                    <FormCell title={'사망외보험금'}>
+                    <FormCell title={'사망외보험금'} className="whitespace-nowrap">
                       <NativeSelect aria-label="사망외보험금" width={80}>
                         {[
                           { value: '선택1', label: '선택1' },
@@ -836,7 +836,7 @@ export const Ltpz296 = () => {
                     </FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'기타'} colSpan={3}>
+                    <FormCell title={'기타'} colSpan={3} className="whitespace-nowrap" tdClassName="flex-wrap gap-1">
                       <NativeSelect aria-label="기타" width={80}>
                         {[
                           { value: '그룹명', label: '그룹명' },
