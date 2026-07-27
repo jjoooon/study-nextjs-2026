@@ -412,7 +412,7 @@ const Ltpz029 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="lg" className="ltpz029-popup">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -424,7 +424,7 @@ const Ltpz029 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr] gap-1">
+        <DialogSection className="grid-rows-[auto_1fr] gap-1 h-full min-h-0 overflow-hidden">
           <Grow placement="ec" className="w-full">
             <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
               행추가
@@ -435,7 +435,7 @@ const Ltpz029 = () => {
               <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
             </Button>
           </Grow>
-          <div className="ag-theme-alpine min-h-[50vh]" ref={gridContainerRef}>
+          <div className="ag-theme-alpine w-full h-full min-h-0 inner-scroll" ref={gridContainerRef}>
             <AgGridReact<DummyDataType>
               noRowsOverlayComponent={AgGridEmptyComponent}
               getRowId={(params) => String(params.data.id)}

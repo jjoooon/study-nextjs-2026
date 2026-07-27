@@ -2760,10 +2760,10 @@ html.v109 [class*="[&>div]:hidden"] {
   box-sizing: border-box !important;
 }
 
-.v109 .ch-tablecontext,
-.v109 .ch-tablecontext > div,
-.v109 .ch-tablecontext .ag-theme-alpine,
-.v109 .ch-tablecontext .tooltip-hidden-toggle {
+.v109 .ch-tablecontext:not(.ltpz048-popup):not(.ltpz048-popup *),
+.v109 .ch-tablecontext:not(.ltpz048-popup):not(.ltpz048-popup *) > div,
+.v109 .ch-tablecontext:not(.ltpz048-popup):not(.ltpz048-popup *) .ag-theme-alpine,
+.v109 .ch-tablecontext:not(.ltpz048-popup):not(.ltpz048-popup *) .tooltip-hidden-toggle {
   position: relative !important;
   display: -webkit-box !important;
   display: -webkit-flex !important;
@@ -3116,6 +3116,70 @@ html.v109 [class*="[&>div]:hidden"] {
 .v109 .ag-root-wrapper.ag-layout-auto-height,
 .v109 .ag-root-wrapper {
   border-bottom: 0.1rem solid var(--color-gray-10, #e2e8f0) !important;
+}
+
+/* Chrome 109 전용 바로가기 설정관리(Ltpz029) resizable 가로/세로 리사이즈 및 ag-Grid 스크롤 보정 */
+.v109 [data-slot="dialog-content"].ltpz029-popup,
+.v109 .ltpz029-popup {
+  height: 70vh;
+  min-height: 25rem !important;
+  max-height: 90vh !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  resize: both !important;
+}
+
+.v109 .ltpz029-popup [data-slot="dialog-section"] {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.v109 .ltpz029-popup .ag-theme-alpine,
+.v109 .ltpz029-popup .inner-scroll,
+.v109 .ltpz029-popup .ag-root-wrapper,
+.v109 .ltpz029-popup .ag-root-wrapper-body,
+.v109 .ltpz029-popup .ag-root {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.v109 .ltpz029-popup .ag-body-viewport {
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 
