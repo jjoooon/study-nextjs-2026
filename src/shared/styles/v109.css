@@ -379,8 +379,10 @@ html.v109 [class*="color-blue-gray-70"] [class*="label"] {
 html.v109 label[htmlfor="docType"],
 .v109 input#docType + label,
 html.v109 input#docType + label,
-.v109 input[type="checkbox"] + label,
-html.v109 input[type="checkbox"] + label {
+.v109 .cp-viewmode input[type="checkbox"] + label,
+html.v109 .cp-viewmode input[type="checkbox"] + label,
+.v109 [data-slot="switch"] input[type="checkbox"] + label,
+html.v109 [data-slot="switch"] input[type="checkbox"] + label {
   position: relative !important;
   height: 2.8rem !important;
   padding: 0.1rem !important;

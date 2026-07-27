@@ -2549,7 +2549,8 @@ html.v109 [class*="[&>div]:hidden"] {
 /* Chrome 109 ViewMode (등록/미등록 또는 간편/상세 스위치 토글) 호환 보정 */
 .v109 label[htmlfor="docType"],
 .v109 input#docType + label,
-.v109 input[type="checkbox"] + label {
+.v109 .cp-viewmode input[type="checkbox"] + label,
+.v109 [data-slot="switch"] input[type="checkbox"] + label {
   position: relative !important;
   height: 2.8rem !important;
   padding: 0.1rem !important;
@@ -3251,6 +3252,19 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   visibility: visible !important;
   opacity: 1 !important;
   filter: none !important;
+}
+
+/* 일반 Checkbox 라벨 흉한 캡슐 보더 완전 제거 & 1:1 무테 투명 원형 복원 */
+.v109 .cp-checkbox + label,
+.v109 [data-slot="checkbox"] + label,
+.v109 [role="checkbox"] + label,
+.v109 label:not([htmlfor="docType"]):not([for="docType"]) {
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  height: auto !important;
 }
 
 
