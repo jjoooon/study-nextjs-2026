@@ -365,7 +365,7 @@ const Ltpz012 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="xl">
+      <DialogContent showCloseButton resizable={false} size="xl" className="ltpz012-popup">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -401,7 +401,7 @@ const Ltpz012 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid placement="ss" className="min-h-0 w-full overflow-y-auto" gap={4}>
+          <Grid placement="ss" className="min-h-0 w-full overflow-y-auto max-h-[calc(85vh-16rem)]" gap={4}>
             {/* 1. 가점계산 섹션 */}
             <TableFold>
               <TableFoldHead title="가점계산">
