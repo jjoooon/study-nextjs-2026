@@ -2745,7 +2745,7 @@ html.v109 [class*="[&>div]:hidden"] {
 }
 
 /* Chrome 109 전용 TableFold & TableFoldBody ag-Grid 높이 고정 및 수직 스크롤 강제 활성화 */
-.v109 [data-table-fold="wrap"] {
+/* .v109 [data-table-fold="wrap"] {
   display: -webkit-box !important;
   display: -webkit-flex !important;
   display: flex !important;
@@ -2759,7 +2759,7 @@ html.v109 [class*="[&>div]:hidden"] {
   min-height: 0 !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
-}
+} */
 
 .v109 .ch-tablecontext:not(.ltpz048-popup):not(.ltpz048-popup *),
 .v109 .ch-tablecontext:not(.ltpz048-popup):not(.ltpz048-popup *) > div,
@@ -2785,10 +2785,7 @@ html.v109 [class*="[&>div]:hidden"] {
 
 .v109 .ch-tablecontext .ag-root-wrapper,
 .v109 .ch-tablecontext .ag-root-wrapper-body,
-.v109 .ch-tablecontext .ag-root,
-.v109 .ag-theme-alpine .ag-root-wrapper,
-.v109 .ag-theme-alpine .ag-root-wrapper-body,
-.v109 .ag-theme-alpine .ag-root {
+.v109 .ch-tablecontext .ag-root {
   display: -webkit-box !important;
   display: -webkit-flex !important;
   display: flex !important;
@@ -2890,7 +2887,7 @@ html.v109 [class*="[&>div]:hidden"] {
   min-height: 0 !important;
   overflow: hidden !important;
 }
-
+/* 
 .v109 .inner-scroll,
 .v109 .inner-scroll .ag-root-wrapper,
 .v109 .inner-scroll .ag-root-wrapper-body,
@@ -2921,7 +2918,7 @@ html.v109 [class*="[&>div]:hidden"] {
   min-height: 0 !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch !important;
-}
+} */
 
 /* Chrome 109 전용 AG-Grid 헤더 하단 1px 경계선(border-bottom) 1:1 완벽 보정 */
 .v109 .ag-header,
