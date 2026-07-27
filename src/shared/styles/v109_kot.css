@@ -3267,6 +3267,30 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   height: auto !important;
 }
 
+/* Chrome 109 전용 업종코드조회(Ltpz058) ag-Grid inner-scroll 세로 스크롤바(Scrollbar) 1:1 생성 및 높이 보정 */
+.v109 [data-slot="dialog-content"].ltpz058-popup,
+.v109 .ltpz058-popup {
+  height: auto !important;
+  max-height: 85vh !important;
+}
+
+.v109 .ltpz058-popup .ag-theme-alpine.inner-scroll,
+.v109 .ltpz058-popup .ag-theme-alpine {
+  height: 24rem !important;
+  min-height: 20rem !important;
+  max-height: 32rem !important;
+}
+
+.v109 .ltpz058-popup .ag-theme-alpine .ag-root-wrapper {
+  height: 100% !important;
+}
+
+.v109 .ltpz058-popup .ag-theme-alpine .ag-body-viewport {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
 
 
 
