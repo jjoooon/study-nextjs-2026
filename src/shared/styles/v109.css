@@ -477,15 +477,6 @@ html.v109 button[data-disabled] {
   border-style: solid !important;
 }
 
-/* 비활성화 라디오 버튼 내부 선택 점(Indicator / Dot) 색상 보정 */
-.v109 button[role="radio"]:disabled *,
-html.v109 button[role="radio"]:disabled *,
-.v109 button[data-slot="radio-group-item"]:disabled *,
-html.v109 button[data-slot="radio-group-item"]:disabled *,
-.v109 button[data-disabled] *,
-html.v109 button[data-disabled] * {
-  background-color: var(--color-gray-30, #cbd5e1) !important;
-}
 
 /* 비활성화 라디오 버튼 인접 라벨(label) 텍스트 색상 및 커서 보정 */
 .v109 button[role="radio"]:disabled + label,

@@ -262,7 +262,7 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="lg" className="ltpz018-popup">
         {/* 다이얼로그 헤더 영역 */}
         <DialogHeader>
           <DialogTitle>
@@ -315,7 +315,7 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
                                   variant={'outlined'}
                                   size={'md'}
                                   color={'gray-light'}
-                                  className="w-full min-w-[14.8rem]"
+                                  className="w-full min-w-[14.8rem] justify-start! text-left!"
                                 >
                                   {menu.name}
                                 </Button>
@@ -349,7 +349,7 @@ const Ltpz018 = ({ onSaveMyMenuList }: Ltpz018Props) => {
                                     key={menu.code}
                                     value={menu.code}
                                     size="md"
-                                    className="w-full min-w-[14.8rem]"
+                                    className="w-full min-w-[14.8rem] justify-start! text-left! ltpz018-checkbox-btn"
                                     disabled={menu.fix} // [중요] 기본 필수 고정(fix: true) 메뉴는 비활성화하여 해제 불가 처리
                                   >
                                     {menu.name}
