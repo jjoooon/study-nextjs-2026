@@ -17,7 +17,7 @@ import type {
   GridReadyEvent,
   CellValueChangedEvent,
 } from 'ag-grid-enterprise';
-import type { AgGridReact, CustomLoadingOverlayProps } from 'ag-grid-react';
+import type { AgGridReact, CustomLoadingOverlayProps, CustomCellEditorProps } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import type { RefObject } from 'react';
@@ -26,7 +26,7 @@ import { Typo, Grow, Grid, Gcol } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
 import { Ltpa120 } from '@features/Ltpa120';
-import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon } from '@icons';
+import { InfoBoxWarningIcon, MinusIcon, PlusIcon, TableSelectArrowIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -2249,3 +2249,110 @@ export const CustomGridLoadingOverlay = (props: CustomLoadingOverlayProps & { lo
     </div>
   );
 };
+
+/**
+ * [Ag-Grid Helper] 셀 내부 버튼 클릭 시 그리드가 인풋 편집 모드로 진입하는 것을 방지하는 editable 콜백 생성기
+ */
+export function createEditableCallbackForButton<T = unknown>(
+  isEditable: boolean | ((params: EditableCallbackParams<T>) => boolean) = true
+): (params: EditableCallbackParams<T>) => boolean {
+  return (params: EditableCallbackParams<T>) => {
+    const event = (params as unknown as { event?: MouseEvent }).event;
+    const target = (event?.target ?? document.activeElement) as HTMLElement;
+    if (target && (target.closest('button') || target.tagName === 'BUTTON' || target.closest('[data-slot="button"]'))) {
+      return false; // 버튼 클릭 시 인풋 편집 활성화 방지
+    }
+    return typeof isEditable === 'function' ? isEditable(params) : isEditable;
+  };
+}
+
+/**
+ * [Ag-Grid Helper] 셀 내부 버튼 클릭 시 그리드가 인풋 편집 모드로 진입하는 것을 방지하는 판별 함수
+ */
+export function suppressClickEditForButton(params: { event?: MouseEvent | KeyboardEvent }) {
+  const event = (params as unknown as { event?: MouseEvent }).event;
+  const target = (event?.target ?? document.activeElement) as HTMLElement;
+  return !!(
+    target &&
+    (target.closest('button') || target.tagName === 'BUTTON' || target.closest('[data-slot="button"]'))
+  );
+}
+
+/**
+ * [Ag-Grid Helper] Input + 검색 버튼 공통 Cell Renderer (비편집 셀 상태)
+ */
+export function InputWithSearchCellRenderer<T = unknown>(params: ICellRendererParams<T>) {
+  const onButtonClick = params.colDef?.cellRendererParams?.onButtonClick;
+
+  const handleAction = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+    if (e.nativeEvent) {
+      e.nativeEvent.stopImmediatePropagation();
+    }
+    if (typeof onButtonClick === 'function') {
+      onButtonClick(params);
+    }
+  };
+
+  return (
+    <Grow className="w-full h-full gap-1" placement="bwc">
+      <span className="truncate">{params.value || ''}</span>
+      <Button
+        aria-label="검색"
+        variant="outlined"
+        only="icon"
+        size="md"
+        color="gray-light"
+        onMouseDown={(e) => {
+          handleAction(e); // 마우스다운 시 즉시 실행 및 AG Grid 편집 교체 차단
+        }}
+        onPointerDown={(e) => {
+          e.stopPropagation();
+        }}
+        onClick={(e) => {
+          handleAction(e);
+        }}
+      >
+        <SearchIcon color="var(--color-primary-50)" />
+      </Button>
+    </Grow>
+  );
+}
+
+/**
+ * [Ag-Grid Helper] Input + 검색 버튼 공통 Cell Editor (셀 편집 상태)
+ */
+export function InputWithSearchCellEditor<T = unknown>(props: CustomCellEditorProps<T>) {
+  const [value, setValue] = React.useState(props.value ?? '');
+  const onButtonClick = props.colDef?.cellEditorParams?.onButtonClick;
+  const inputProps = props.colDef?.cellEditorParams?.inputProps;
+
+  return (
+    <Grow className="w-full h-full gap-1" placement="bwc">
+      <Input
+        {...inputProps}
+        value={value}
+        onChange={(e) => {
+          const val = e.target.value;
+          setValue(val);
+          props.onValueChange(val);
+        }}
+        autoFocus
+      />
+      <Button
+        aria-label="검색"
+        variant="outlined"
+        only="icon"
+        size="md"
+        color="gray-light"
+        onClick={() => {
+          if (typeof onButtonClick === 'function') {
+            onButtonClick(value, props);
+          }
+        }}
+      >
+        <SearchIcon color="var(--color-primary-50)" />
+      </Button>
+    </Grow>
+  );
+}

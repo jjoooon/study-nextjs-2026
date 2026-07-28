@@ -5,11 +5,16 @@
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
+import {
+  InputWithSearchCellRenderer,
+  InputWithSearchCellEditor,
+  createEditableCallbackForButton,
+  useDynamicColumnWidths,
+  AgGridEmptyComponent,
+} from '@aggrid';
+import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -21,7 +26,6 @@ import {
   DialogTitle,
   DialogClose,
 } from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
@@ -47,14 +51,14 @@ export interface Ltpz351Props {
 const Ltpz351 = ({ noticeType = 'B', isPayExempt = true }: Ltpz351Props) => {
   const [selectedNotice, setSelectedNotice] = React.useState<NoticeType>(noticeType);
 
-  const [납입면제, set납입면제] = React.useState(isPayExempt);
+  const [isPayExemptState, setIsPayExemptState] = React.useState(isPayExempt);
 
   React.useEffect(() => {
     setSelectedNotice(noticeType);
   }, [noticeType]);
 
   React.useEffect(() => {
-    set납입면제(isPayExempt);
+    setIsPayExemptState(isPayExempt);
   }, [isPayExempt]);
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -71,38 +75,34 @@ const Ltpz351 = ({ noticeType = 'B', isPayExempt = true }: Ltpz351Props) => {
         headerName: '성명',
         field: 'field2',
         flex: 1,
-        cellClass: 납입면제 ? 'text-center editable-cell' : 'text-center',
-        cellRenderer: (_params: ICellRendererParams<DummyDataType>) =>
-          납입면제 ? (
-            <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center gap-1" placement="cc">
-              <Input
-                size="sm"
-                value={_params.value ?? ''}
-                onChange={(e) => {
-                  _params.node.setDataValue('field2', e.target.value);
-                }}
-              />
-              <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-                <SearchIcon color={'var(--color-primary-50)'} />
-              </Button>
-            </Grid>
-          ) : (
-            _params.value
-          ),
+        cellClass: isPayExemptState ? 'text-center editable-cell' : 'text-center',
+        editable: isPayExemptState ? createEditableCallbackForButton() : false,
+        cellRenderer: isPayExemptState ? InputWithSearchCellRenderer : undefined,
+        cellEditor: InputWithSearchCellEditor,
+        cellRendererParams: {
+          onButtonClick: (params: ICellRendererParams<DummyDataType>) => {
+            alert(`[공용 Renderer] 검색 버튼 클릭: ${params.value ?? '빈 값'}`);
+          },
+        },
+        cellEditorParams: {
+          onButtonClick: (val: string) => {
+            alert(`[공용 Editor] 검색 버튼 클릭: ${val}`);
+          },
+        },
       },
       {
         headerName: '휴대폰',
         field: 'field3',
         flex: 1,
-        cellClass: 납입면제 ? 'text-center editable-cell' : 'text-center',
-        editable: 납입면제,
+        cellClass: isPayExemptState ? 'text-center editable-cell' : 'text-center',
+        editable: isPayExemptState,
         cellEditor: 'agTextCellEditor',
         cellEditorParams: {
           maxLength: 13,
         },
       },
     ],
-    [attributeColumnWidth, 납입면제]
+    [attributeColumnWidth, isPayExemptState]
   );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);

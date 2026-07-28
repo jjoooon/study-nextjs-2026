@@ -17,7 +17,13 @@ import { ModuleRegistry, AllCommunityModule, ICellRendererParams } from 'ag-grid
 import type { ColDef, CellEditingStoppedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { numberValueFormatter, createCellValueChangedHandler } from '@aggrid';
+import {
+  numberValueFormatter,
+  createCellValueChangedHandler,
+  InputWithSearchCellRenderer,
+  InputWithSearchCellEditor,
+  createEditableCallbackForButton,
+} from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -37,6 +43,37 @@ const Dummy2Data: Dummy2DataType[] = [
   { id: 4, label: '포도', code: null },
   { id: 5, label: '메론', code: null },
   { id: 6, label: '수박', code: null },
+];
+
+// cellRenderer와 cellEditor 모두 적용된 공용 유틸 활용 컬럼 정의
+const columnDefsWithButton: ColDef<Dummy2DataType>[] = [
+  {
+    headerName: '이름',
+    field: 'label',
+    flex: 1,
+    editable: false,
+  },
+  {
+    headerName: '코드 (공용 InputWithSearchCellRenderer + Editor)',
+    field: 'code',
+    flex: 1,
+    cellClass: 'editable-cell',
+    
+    // 🔥 버튼 클릭 시 인풋 편집 활성화 방지 (표준 AG Grid 콜백)
+    editable: createEditableCallbackForButton(),
+    cellRenderer: InputWithSearchCellRenderer,
+    cellEditor: InputWithSearchCellEditor,
+    cellRendererParams: {
+      onButtonClick: (params: ICellRendererParams<Dummy2DataType>) => {
+        alert(`[공용 Renderer] 검색 버튼 클릭: ${params.value ?? '빈 값'}`);
+      },
+    },
+    cellEditorParams: {
+      onButtonClick: (val: string) => {
+        alert(`[공용 Editor] 검색 버튼 클릭: ${val}`);
+      },
+    },
+  },
 ];
 
 // 커스텀 cellRenderer: 셀 내부에서 input과 ErrorMsg를 함께 렌더링
@@ -142,6 +179,15 @@ export const Default: StoryObj = {
             columnDefs={columnDefsString}
             singleClickEdit={true}
             onCellEditingStopped={onCellEditingStopped}
+            domLayout="autoHeight"
+          />
+        </div>
+        <div className="ag-theme-alpine">
+          <AgGridReact<Dummy2DataType>
+            getRowId={(params) => String(params.data.id)}
+            rowData={rowData2}
+            columnDefs={columnDefsWithButton}
+            singleClickEdit={true}
             domLayout="autoHeight"
           />
         </div>
@@ -306,6 +352,46 @@ const onCellValueChanged = React.useMemo(
               </tr>
             </tbody>
           </table>
+
+          <h2>에러 테두리 및 커스텀 에러 메시지 설정 가이드</h2>
+          <p>
+            셀 편집 시 유효성 검사를 수행하여 **에러 테두리(`ag-cell-error-border`)**를 표시하거나,
+            ColDef의 <strong>`cellStyle`</strong>을 활용하여 **동적 에러 메시지(`--error-msg`)**를 지정할 수 있습니다.
+          </p>
+          <Markdown>
+            {`
+\`\`\`tsx
+const columnDefs: ColDef<MyDataType>[] = [
+  {
+    headerName: '코드',
+    field: 'code',
+    cellClass: 'required editable-cell',
+    editable: true,
+    
+    // 1. 에러 테두리 조건 지정 (ag-cell-error-border)
+    cellClassRules: {
+      'ag-cell-error-border': (params) => {
+        const val = params.value;
+        return val === null || val === undefined || val === '' || (typeof val === 'string' && val.length <= 2);
+      },
+    },
+    
+    // 2. ColDef 내에서 동적 에러 메시지 문구 직접 지정 (--error-msg)
+    cellStyle: (params) => {
+      const val = params.value;
+      if (val === null || val === undefined || val === '') {
+        return { '--error-msg': '"코드를 입력해 주세요."' } as Record<string, string>;
+      }
+      if (typeof val === 'string' && val.length <= 2) {
+        return { '--error-msg': '"코드는 3자 이상 입력해야 합니다."' } as Record<string, string>;
+      }
+      return {};
+    },
+  },
+];
+\`\`\`
+          `}
+          </Markdown>
 
           <h2>커스텀 Cell Editor 사용법</h2>
           <p>

@@ -24,7 +24,7 @@ ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
 
 type DummyDataType = { id: number; label: string; date: string | number };
 const DummyData: DummyDataType[] = [
-  { id: 1, label: '사과', date: '2023-01-01' },
+  { id: 1, label: '사과', date: '' },
   { id: 2, label: '바나나', date: '2022-12-15' },
   { id: 3, label: '오렌지', date: '2024-03-20' },
 ];
@@ -40,9 +40,22 @@ const columnDefs: ColDef<DummyDataType>[] = [
     headerName: '날짜',
     field: 'date',
     flex: 1,
-    cellClass: 'text-center editable-cell',
+    cellClass: 'text-center editable-cell required',
     editable: true, // 날짜 직접 입력 가능
     cellEditor: DatePickerCellEditor,
+    cellClassRules: {
+      'ag-cell-error-border': (params) => {
+        const val = params.value;
+        return val === null || val === undefined || val === '';
+      },
+    },
+    cellStyle: (params) => {
+      const val = params.value;
+      if (val === null || val === undefined || val === '') {
+        return { '--error-msg': '"날짜를 선택해 주세요."' } as Record<string, string>;
+      }
+      return {};
+    },
   },
 ];
 
@@ -103,9 +116,22 @@ const columnDefs: ColDef<DummyDataType>[] = [
     headerName: '날짜',
     field: 'date',
     flex: 1,
-    cellClass: 'text-center editable-cell',
+    cellClass: 'text-center editable-cell required',
     editable: true, // 날짜 직접 입력 가능
     cellEditor: DatePickerCellEditor,
+    cellClassRules: {
+      'ag-cell-error-border': (params) => {
+        const val = params.value;
+        return val === null || val === undefined || val === '';
+      },
+    },
+    cellStyle: (params) => {
+      const val = params.value;
+      if (val === null || val === undefined || val === '') {
+        return { '--error-msg': '"날짜를 선택해 주세요."' } as Record<string, string>;
+      }
+      return {};
+    },
   },
 ];
 
