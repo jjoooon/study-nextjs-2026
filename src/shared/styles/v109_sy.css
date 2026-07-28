@@ -687,7 +687,7 @@
 }
 
 /* ===== FormTable (1. 일반 가로형 기본 테이블 - default) ===== */
-.v109 .cp-formtable[data-variant='default'] {
+/* .v109 .cp-formtable[data-variant='default'] {
   border-collapse: collapse !important;
 }
 
@@ -713,10 +713,10 @@
 .v109 .cp-formtable tr > td:last-child,
 .v109 .cp-formtable tr > td:last-of-type {
   border-right: 0 !important;
-}
+} */
 
 /* ===== FormCell Variants (primary, secondary, light) ===== */
-.v109 .cp-formtable th[data-variant='primary'] {
+/* .v109 .cp-formtable th[data-variant='primary'] {
   background-color: #DBEAFE !important;
   color: #1E3A8A !important;
 }
@@ -728,7 +728,7 @@
 
 .v109 .cp-formtable th[data-variant='light'] {
   background-color: #F9FAFB !important;
-}
+} */
 
 /* ===== FormTable (variant="none" 무테 특화) ===== */
 .v109 .cp-formtable[data-variant='head'],

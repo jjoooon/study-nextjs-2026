@@ -1373,26 +1373,3 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   visibility: visible !important;
   opacity: 1 !important;
 }
-
-/* Chrome 109 전용 ag-Grid 일반 선택(checked) 주황색 체크박스 얇은 stroke-width: 2 흰색 SVG 보정 (radio-selection 제외) */
-.v109 .ag-theme-alpine:not(.radio-selection) .ag-checkbox-input-wrapper.ag-checked::after,
-html.v109 .ag-theme-alpine:not(.radio-selection) .ag-checkbox-input-wrapper.ag-checked::after,
-.v109 .ag-theme-alpine:not(.radio-selection) .ag-row-selected .ag-checkbox-input-wrapper::after,
-.v109 .ag-theme-alpine:not(.radio-selection) .ag-row-selected .ag-selection-checkbox .ag-checkbox-input-wrapper::after,
-.v109 .ag-theme-alpine:not(.radio-selection) .ag-checkbox-input-wrapper[class*="ag-checked"]::after {
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-  color: #ffffff !important;
-  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='19 5 7 17 2 12'></polyline></svg>") !important;
-  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='19 5 7 17 2 12'></polyline></svg>") !important;
-  -webkit-mask-size: 65% 65% !important;
-  mask-size: 65% 65% !important;
-  -webkit-mask-repeat: no-repeat !important;
-  mask-repeat: no-repeat !important;
-  -webkit-mask-position: center !important;
-  mask-position: center !important;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  filter: none !important;
-}

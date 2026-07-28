@@ -248,22 +248,29 @@
 }
 
 /* em 강조 스타일 호환 */
-.v109 [class*="[&>em]:text-[var(--color-information-50)]"] > em {
+.v109 [class*="[&>em]:text-[var(--color-information-50)]"] > em,
+.v109 .\[\&\>em\]\:text-\[var\(--color-information-50\)\] > em {
   color: var(--color-information-50);
 }
-.v109 [class*="[&>em]:text-[var(--color-danger-50)]"] > em {
+.v109 [class*="[&>em]:text-[var(--color-danger-50)]"] > em,
+.v109 .\[\&\>em\]\:text-\[var\(--color-danger-50\)\] > em {
   color: var(--color-danger-50);
 }
-.v109 [class*="[&>em]:text-[var(--color-primary-50)]"] > em {
+.v109 [class*="[&>em]:text-[var(--color-primary-50)]"] > em,
+.v109 .\[\&\>em\]\:text-\[var\(--color-primary-50\)\] > em {
   color: var(--color-primary-50);
 }
-.v109 [class*="[&>em]:font-bold"] > em {
+.v109 [class*="[&>em]:font-bold"] > em,
+.v109 .\[\&\>em\]\:font-bold > em {
   font-weight: bold;
   font-variation-settings: 'wght' 700;
 }
-.v109 [class*="[&>em]:not-italic"] > em,
-.v109 [class*="[&>em]:not-italic!"] > em {
+.v109 [class*="[&>em]:not-italic"] > em {
   font-style: normal;
+}
+.v109 [class*="[&>em]:not-italic!"] > em,
+.v109 .\[\&\>em\]\:not-italic\! > em {
+  font-style: normal !important;
 }
 
 /* ----------------------------------------------------
@@ -361,6 +368,8 @@
  * ---------------------------------------------------- */
 /* SVG 및 disabled 투명도/색상 호환 */
 .v109 [class*="[&>disabled_svg]:opacity-50"]:disabled svg,
+.v109 [class*="[&:disabled_svg]:opacity-50"]:disabled svg,
+.v109 .\[\&\:disabled_svg\]\:opacity-50:disabled svg,
 .v109 button:disabled svg {
   opacity: 0.5;
 }
@@ -371,56 +380,121 @@
 }
 
 /* :has(>svg) 레이아웃 호환 (Chrome 109 지원) */
-.v109 [class*="has-[>svg]:justify-center"]:has(> svg) {
+.v109 [class*="has-[>svg]:justify-center"]:has(> svg),
+.v109 .has-\[\>svg\]\:justify-center:has(> svg) {
   justify-content: center;
 }
-.v109 [class*="has-[>svg]:items-center"]:has(> svg) {
+.v109 [class*="has-[>svg]:items-center"]:has(> svg),
+.v109 .has-\[\>svg\]\:items-center:has(> svg) {
   align-items: center;
 }
-.v109 [class*="has-[>svg]:inline-flex"]:has(> svg) {
+.v109 [class*="has-[>svg]:inline-flex"]:has(> svg),
+.v109 .has-\[\>svg\]\:inline-flex:has(> svg) {
   display: inline-flex;
 }
 
 /* disabled 상태 스타일 호환 */
-.v109 [class*="disabled:opacity-100"]:disabled {
+.v109 [class*="disabled:opacity-50"]:disabled,
+.v109 .disabled\:opacity-50:disabled {
+  opacity: 0.5;
+}
+.v109 [class*="disabled:cursor-not-allowed"]:disabled,
+.v109 .disabled\:cursor-not-allowed:disabled {
+  cursor: not-allowed;
+}
+.v109 [class*="disabled:opacity-100"]:disabled,
+.v109 .disabled\:opacity-100:disabled {
   opacity: 1;
+}
+.v109 [class*="disabled:text-[var(--color-gray-0)]"]:disabled,
+.v109 .disabled\:text-\[var\(--color-gray-0\)\]:disabled {
+  color: var(--color-gray-0);
 }
 .v109 [class*="disabled:text-[var(--color-gray-30)]"]:disabled {
   color: var(--color-gray-30);
 }
+.v109 [class*="disabled:bg-[var(--color-gray-20)]"]:disabled,
+.v109 .disabled\:bg-\[var\(--color-gray-20\)\]:disabled {
+  background-color: var(--color-gray-20);
+}
 .v109 [class*="disabled:bg-[var(--color-gray-5)]"]:disabled {
   background-color: var(--color-gray-5);
+}
+.v109 [class*="disabled:border-[var(--color-gray-20)]!"]:disabled,
+.v109 [class*="disabled:border-[var(--color-gray-20)]"]:disabled,
+.v109 .disabled\:border-\[var\(--color-gray-20\)\]\!:disabled {
+  border-color: var(--color-gray-20) !important;
+}
+.v109 [class*="disabled:border-[var(--color-gray-5)]!"]:disabled,
+.v109 [class*="disabled:border-[var(--color-gray-5)]"]:disabled,
+.v109 .disabled\:border-\[var\(--color-gray-5\)\]\!:disabled {
+  border-color: var(--color-gray-5) !important;
 }
 .v109 [class*="disabled:border-[var(--color-gray-10)]"]:disabled {
   border-color: var(--color-gray-10);
 }
-.v109 [class*="disabled:pointer-events-none"]:disabled {
+.v109 [class*="disabled:pointer-events-none"]:disabled,
+.v109 .disabled\:pointer-events-none:disabled {
   pointer-events: none;
 }
 
 /* focus-visible 상태 호환 */
-.v109 [class*="focus-visible:ring-offset-2"]:focus-visible {
+.v109 [class*="focus-visible:ring-offset-2"]:focus-visible,
+.v109 .focus-visible\:ring-offset-2:focus-visible {
   --tw-ring-offset-width: 2px;
+}
+.v109 [class*="focus-visible:ring-[var(--color-primary-60)]"]:focus-visible,
+.v109 .focus-visible\:ring-\[var\(--color-primary-60\)\]:focus-visible {
+  outline: 0.2rem solid var(--color-primary-60);
+  outline-offset: 0.1rem;
+}
+.v109 [class*="focus-visible:ring-2"]:focus-visible,
+.v109 .focus-visible\:ring-2:focus-visible {
+  outline: 0.2rem solid var(--color-primary-50);
+}
+.v109 [class*="focus-visible:ring-[0.3rem]"]:focus-visible,
+.v109 .focus-visible\:ring-\[0\.3rem\]:focus-visible {
+  outline: 0.3rem solid var(--color-primary-50);
+}
+.v109 [class*="placeholder:text-[var(--color-gray-30)]"]::-webkit-input-placeholder,
+.v109 [class*="placeholder:text-[var(--color-gray-30)]"]::placeholder,
+.v109 .placeholder\:text-\[var\(--color-gray-30\)\]::-webkit-input-placeholder,
+.v109 .placeholder\:text-\[var\(--color-gray-30\)\]::placeholder {
+  color: var(--color-gray-30);
 }
 .v109 [class*="focus-visible:ring-[var(--color-gray-5)]"]:focus-visible {
   outline: 0.2rem solid var(--color-gray-5);
   outline-offset: 0.1rem;
 }
+.v109 [class*="focus-visible:border-[var(--color-gray-0)]"]:focus-visible,
+.v109 .focus-visible\:border-\[var\(--color-gray-0\)\]:focus-visible {
+  border-color: var(--color-gray-0);
+}
 .v109 [class*="focus-visible:border-[var(--color-gray-100)]"]:focus-visible {
   border-color: var(--color-gray-100);
 }
-.v109 [class*="focus-visible:border-dashed"]:focus-visible {
+.v109 [class*="focus-visible:border-dashed"]:focus-visible,
+.v109 .focus-visible\:border-dashed:focus-visible {
   border-style: dashed;
 }
 
 /* hover 상태 호환 */
+.v109 [class*="hover:bg-[var(--color-primary-60)]"]:hover,
+.v109 .hover\:bg-\[var\(--color-primary-60\)\]:hover {
+  background-color: var(--color-primary-60);
+}
 .v109 [class*="hover:bg-[var(--color-gray-5)]"]:hover {
   background-color: var(--color-gray-5);
+}
+.v109 [class*="hover:border-[var(--color-gray-0)]"]:hover,
+.v109 .hover\:border-\[var\(--color-gray-0\)\]:hover {
+  border-color: var(--color-gray-0);
 }
 .v109 [class*="hover:border-[var(--color-gray-100)]"]:hover {
   border-color: var(--color-gray-100);
 }
-.v109 [class*="hover:border-dashed"]:hover {
+.v109 [class*="hover:border-dashed"]:hover,
+.v109 .hover\:border-dashed:hover {
   border-style: dashed;
 }
 .v109 [class*="hover:border-[var(--color-primary-50)]"]:hover {
@@ -621,13 +695,13 @@
 
 .v109 .ltpa020-tab-group [data-slot="radio-group-item"][data-state="checked"] {
   background-image: linear-gradient(328deg, #FF5C2E 9.4%, #FF8D02 97.24%);
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 
 .v109 .ltpa020-tab-group button[role="radio"][data-state="checked"] *,
 .v109 .ltpa020-tab-group [data-slot="radio-group-item"][data-state="checked"] * {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 /* ----------------------------------------------------
@@ -813,8 +887,154 @@
   flex-direction: column;
 }
 
-.v109 [class*="[&_tr:last-child]:border-b"] tr:last-child,
-.v109 .\[\&_tr\:last-child\]\:border-b tr:last-child {
-  border-bottom-width: 0.1rem;
-  border-bottom-style: solid;
+
+/* ----------------------------------------------------
+ * Chrome 109 전용 [&>table>tbody>...]:* 테이블 유틸리티 호환 스타일
+ * ---------------------------------------------------- */
+.v109 [class*="[&>table>tbody>tr~tr>*]:pt-[0.6rem]"] > table > tbody > tr ~ tr > *,
+.v109 .\[\&\>table\>tbody\>tr\~tr\>\*\]\:pt-\[0\.6rem\] > table > tbody > tr ~ tr > * {
+  padding-top: 0.6rem !important;
 }
+
+.v109 [class*="[&>table>tbody>tr>th]:break-keep"] > table > tbody > tr > th,
+.v109 .\[\&\>table\>tbody\>tr\>th\]\:break-keep > table > tbody > tr > th {
+  word-break: keep-all;
+}
+
+.v109 [class*="[&>table>tbody>tr>th]:pl-0"] > table > tbody > tr > th,
+.v109 .\[\&\>table\>tbody\>tr\>th\]\:pl-0 > table > tbody > tr > th {
+  padding-left: 0;
+}
+
+.v109 [class*="[&>table>tbody>tr>th]:pr-[0.8rem]"] > table > tbody > tr > th,
+.v109 .\[\&\>table\>tbody\>tr\>th\]\:pr-\[0\.8rem\] > table > tbody > tr > th {
+  padding-right: 0.8rem;
+}
+
+.v109 [class*="[&>table>tbody>tr>th]:py-0"] > table > tbody > tr > th,
+.v109 .\[\&\>table\>tbody\>tr\>th\]\:py-0 > table > tbody > tr > th {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.v109 [class*="[&>table>tbody>tr>th]:bg-transparent"] > table > tbody > tr > th,
+.v109 .\[\&\>table\>tbody\>tr\>th\]\:bg-transparent > table > tbody > tr > th {
+  background-color: transparent;
+}
+
+.v109 [class*="[&>table>tbody>tr>th]:border-0"] > table > tbody > tr > th,
+.v109 .\[\&\>table\>tbody\>tr\>th\]\:border-0 > table > tbody > tr > th {
+  border: 0;
+}
+
+.v109 [class*="[&>table>tbody>tr>th]:h-auto"] > table > tbody > tr > th,
+.v109 .\[\&\>table\>tbody\>tr\>th\]\:h-auto > table > tbody > tr > th {
+  height: auto;
+}
+
+.v109 [class*="[&>table>tbody>tr>td+th]:pl-[2.4rem]"] > table > tbody > tr > td + th,
+.v109 .\[\&\>table\>tbody\>tr\>td\+th\]\:pl-\[2\.4rem\] > table > tbody > tr > td + th {
+  padding-left: 2.4rem;
+}
+
+.v109 [class*="[&>table>tbody>tr>td]:p-0"] > table > tbody > tr > td,
+.v109 .\[\&\>table\>tbody\>tr\>td\]\:p-0 > table > tbody > tr > td {
+  padding: 0;
+}
+
+.v109 [class*="[&>table>tbody>tr>td]:border-0"] > table > tbody > tr > td,
+.v109 .\[\&\>table\>tbody\>tr\>td\]\:border-0 > table > tbody > tr > td {
+  border: 0;
+}
+
+.v109 [class*="[&>table>tbody>tr>td]:h-auto"] > table > tbody > tr > td,
+.v109 .\[\&\>table\>tbody\>tr\>td\]\:h-auto > table > tbody > tr > td {
+  height: auto;
+}
+
+.v109 [class*="[&>table>tbody>tr]:border-0"] > table > tbody > tr,
+.v109 .\[\&\>table\>tbody\>tr\]\:border-0\! > table > tbody > tr {
+  border: 0;
+}
+
+/* ----------------------------------------------------
+ * Chrome 109 전용 [&>div+div], [&+td], first/last border 유틸리티 호환 스타일
+ * ---------------------------------------------------- */
+.v109 [class*="[&>div+div]:text-[#fff]"] > div + div,
+.v109 [class*="[&>div+div]:!text-[#fff]"] > div + div,
+.v109 .\[\&\>div\+div\]\:\!text-\[\#fff\] > div + div {
+  color: #ffffff;
+}
+
+.v109 [class*="[&>div]:text-[var(--color-gray-20)]"] > div,
+.v109 [class*="[&>div]:!text-[var(--color-gray-20)]"] > div,
+.v109 .\[\&\>div\]\:\!text-\[var\(--color-gray-20\)\] > div {
+  color: var(--color-gray-20);
+}
+
+.v109 [class*="[&+td]:border-none"] + td,
+.v109 [class*="[&+td]:border-none!"] + td,
+.v109 .\[\&\+td\]\:border-none\! + td {
+  border-style: none;
+}
+
+.v109 [class*="[&+td]:border-0"] + td,
+.v109 [class*="[&+td]:border-0!"] + td,
+.v109 .\[\&\+td\]\:border-0\! + td {
+  border-width: 0;
+}
+
+.v109 [class*="first:border-l-0"]:first-child,
+.v109 .first\:border-l-0:first-child {
+  border-left-width: 0;
+}
+
+.v109 [class*="last:border-r-0"]:last-child,
+.v109 .last\:border-r-0:last-child {
+  border-right-width: 0;
+}
+
+/* ----------------------------------------------------
+ * Chrome 109 전용 Textarea 리사이즈 아이콘 래퍼 호환 스타일
+ * ---------------------------------------------------- */
+
+.v109 .text-gray-400 svg,
+.v109 [class*="text-gray-400"] svg,
+.v109 .text-gray-400 svg path,
+.v109 [class*="text-gray-400"] svg path {
+  color: #9ca3af;
+  fill: #9ca3af;
+}
+
+/* ----------------------------------------------------
+ * Chrome 109 전용 [&>div]:* 유틸리티 호환 스타일
+ * ---------------------------------------------------- */
+.v109 [class*="[&>div]:p-3"] > div,
+.v109 .\[\&\>div\]\:p-3 > div {
+  padding: 1.2rem;
+}
+
+.v109 [class*="[&>div]:left-0"] > div,
+.v109 .\[\&\>div\]\:left-0 > div {
+  left: 0;
+}
+
+.v109 [class*="[&>div]:top-0"] > div,
+.v109 .\[\&\>div\]\:top-0 > div {
+  top: 0;
+}
+
+.v109 [class*="[&>div]:absolute"] > div,
+.v109 .\[\&\>div\]\:absolute > div {
+  position: absolute;
+}
+
+/* ----------------------------------------------------
+ * Chrome 109 전용 Ltpz020 보장패키지 선택 팝업 그리드 고정 높이 및 스크롤 생성 스타일
+ * ---------------------------------------------------- */
+.v109 .ltpz020-table-1,
+.v109 [class*="grid-cols-[30rem_1fr]"] .ag-theme-alpine {
+  height: 30.8rem;
+  min-height: 30.8rem;
+}
+
