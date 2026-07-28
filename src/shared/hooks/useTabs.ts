@@ -30,9 +30,10 @@ export interface BaseTab {
  * - 제네릭(`T extends BaseTab`)으로 탭 메타데이터를 타입 안전하게 확장 가능
  * - 활성 탭 삭제 시 첫 번째 사용 가능한 탭으로 자동 보정
  */
-export function useTabs<T extends BaseTab>(initialTabs: T[]) {
-  const [tabs, setTabs] = useState<T[]>(() => initialTabs);
-  const [active, setActive] = useState(() => initialTabs[0]?.value ?? '');
+export function useTabs<T extends BaseTab>(initialTabs?: T[] | null) {
+  const safeInitial = initialTabs ?? [];
+  const [tabs, setTabs] = useState<T[]>(() => safeInitial);
+  const [active, setActive] = useState(() => safeInitial[0]?.value ?? '');
   const [hiddenTabs, setHiddenTabs] = useState<Set<string>>(new Set());
 
   const handleRemove = (value: string) => {
@@ -78,15 +79,16 @@ export function useTabs<T extends BaseTab>(initialTabs: T[]) {
     });
   };
 
-  const replaceTabs = (nextTabs: T[]) => {
-    setTabs(nextTabs);
+  const replaceTabs = (nextTabs?: T[] | null) => {
+    const safeNext = nextTabs ?? [];
+    setTabs(safeNext);
     setHiddenTabs(new Set());
     setActive((prev) => {
-      if (nextTabs.some((tab) => tab.value === prev)) {
+      if (safeNext.some((tab) => tab.value === prev)) {
         return prev;
       }
 
-      return nextTabs[0]?.value ?? '';
+      return safeNext[0]?.value ?? '';
     });
   };
 
@@ -106,25 +108,27 @@ export function useTabs<T extends BaseTab>(initialTabs: T[]) {
  * - `getValue`로 제네릭 데이터에서 탭 고유값을 추출해 타입 안전하게 동작
  */
 export function useTabsPagination<T>(
-  data: T[],
+  data: T[] | null | undefined,
   visibleCount: number,
   variant: string,
   active: string,
   getValue: (item: T) => string
 ) {
+  const safeData = data ?? [];
+
   // variant는 외부 API 호환을 위해 유지
   void variant;
 
   // visibleStart의 초기값을 active에 맞춰 계산
   const getStartByActive = (activeValue: string) => {
-    const idx = data.findIndex((t) => getValue(t) === activeValue);
+    const idx = safeData.findIndex((t) => getValue(t) === activeValue);
     if (idx === -1) return 0;
     return Math.floor(idx / visibleCount) * visibleCount;
   };
 
   const [visibleStart, setVisibleStart] = useState(() => getStartByActive(active));
   const [prevActive, setPrevActive] = useState<string>(active);
-  const [prevData, setPrevData] = useState<T[]>(data);
+  const [prevData, setPrevData] = useState<T[] | null | undefined>(data);
   const [prevVisibleCount, setPrevVisibleCount] = useState<number>(visibleCount);
 
   // active, data, visibleCount 변경 시 보이는 탭 시작 위치 동기화 (렌더 단계에서 동기화)
@@ -142,17 +146,20 @@ export function useTabsPagination<T>(
   const handlePrev = () => setVisibleStart((prev) => Math.max(0, prev - visibleCount));
   const handleNext = () => {
     const maxStart =
-      data.length % visibleCount === 0 ? data.length - visibleCount : data.length - (data.length % visibleCount);
+      safeData.length % visibleCount === 0
+        ? safeData.length - visibleCount
+        : safeData.length - (safeData.length % visibleCount);
     const safeMaxStart = Math.max(0, maxStart);
-    if (visibleStart + visibleCount >= data.length) return;
+    if (visibleStart + visibleCount >= safeData.length) return;
     if (visibleStart + visibleCount >= safeMaxStart) setVisibleStart(safeMaxStart);
     else setVisibleStart(visibleStart + visibleCount);
   };
 
   const isLastPage =
-    visibleStart >= data.length - (data.length % visibleCount === 0 ? visibleCount : data.length % visibleCount);
+    visibleStart >=
+    safeData.length - (safeData.length % visibleCount === 0 ? visibleCount : safeData.length % visibleCount);
 
-  const end = Math.min(visibleStart + visibleCount, data.length);
+  const end = Math.min(visibleStart + visibleCount, safeData.length);
 
   return {
     visibleStart,

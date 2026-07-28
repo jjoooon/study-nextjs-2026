@@ -41,13 +41,26 @@ const columnDefs: ColDef<DummyDataType>[] = [
     headerName: '나이',
     field: 'age',
     flex: 1,
-    cellClass: 'text-right editable-cell',
+    cellClass: 'text-right editable-cell required',
     editable: true, // 나이 직접 입력 가능
     cellEditor: 'agSelectCellEditor',
     cellEditorParams: {
       values: ['60세', '65세', '75세', '80세', '85세', '90세', '100세', '무제한'],
       valueListMaxHeight: 60,
       valueListMaxWidth: 120,
+    },
+    cellClassRules: {
+      'ag-cell-error-border': (params) => {
+        const val = params.value;
+        return val === null || val === undefined || val === '' || val === 0;
+      },
+    },
+    cellStyle: (params) => {
+      const val = params.value;
+      if (val === null || val === undefined || val === '' || val === 0) {
+        return { '--error-msg': '"나이를 선택해 주세요."' } as Record<string, string>;
+      }
+      return {};
     },
   },
 ];
@@ -63,7 +76,7 @@ const columnDefsRich: ColDef<DummyDataType>[] = [
     headerName: '나이',
     field: 'age',
     flex: 1,
-    cellClass: 'text-right editable-cell',
+    cellClass: 'text-right editable-cell required',
     editable: true, // 나이 직접 입력 가능
 
     cellEditor: 'agRichSelectCellEditor',
@@ -80,6 +93,19 @@ const columnDefsRich: ColDef<DummyDataType>[] = [
       searchType: 'matchAny', // 검색 방식 설정
       allowTyping: true, // 직접 타이핑 허용
       filterList: true, // 타이핑 시 리스트 필터링
+    },
+    cellClassRules: {
+      'ag-cell-error-border': (params) => {
+        const val = params.value;
+        return val === null || val === undefined || val === '' || val === 0;
+      },
+    },
+    cellStyle: (params) => {
+      const val = params.value;
+      if (val === null || val === undefined || val === '' || val === 0) {
+        return { '--error-msg': '"나이를 선택해 주세요."' } as Record<string, string>;
+      }
+      return {};
     },
   },
 ];

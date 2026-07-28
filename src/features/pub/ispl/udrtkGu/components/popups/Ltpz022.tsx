@@ -7,7 +7,6 @@ import '@/shared/lib/agGridPub';
 import type { CellClickedEvent, CellStyle, ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import Ltpz068 from '@/features/pub/ispl/udrtkGu/components/popups/Ltpz068';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
@@ -149,20 +148,11 @@ const criteriaColorMap: Record<string, string> = {
   '청약완료불가\n(업계누적)': 'var(--color-information-50)',
 };
 
-interface Ltpz022Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  onApply?: () => void;
-}
-
 /**
  * Ltpz022: 보험 설계의 지침 확인 결과(인수 지침 위배 사항)를 보여주는 팝업 컴포넌트입니다.
  */
-const Ltpz022 = ({ open = true, onOpenChange, onApply }: Ltpz022Props) => {
+const Ltpz022 = () => {
   type SelectedViolationCell = Pick<UnderwritingViolationRow, 'id' | 'criteria'>;
-
-  // AI인수지침 위배해소 결과(Ltpz068) 팝업 가시성 상태
-  const [isLtpz068Open, setIsLtpz068Open] = React.useState(false);
 
   /** 위배내용 텍스트 중 특정 키워드에 색상을 입히는 치환 함수 */
   const applyDetailsColor = (html: string): string => {
@@ -296,7 +286,7 @@ const Ltpz022 = ({ open = true, onOpenChange, onApply }: Ltpz022Props) => {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="md" className="h-[50rem]">
         {/* 헤더: 제목 및 화면ID */}
         <DialogHeader>
@@ -344,7 +334,7 @@ const Ltpz022 = ({ open = true, onOpenChange, onApply }: Ltpz022Props) => {
             renderTab={(tab) => <span>{tab.label}</span>}
             // AI 자동해소 버튼 추가 (플래시 효과 적용)
             renderAfter={
-              <Button variant={'contained'} size={'md'} effect={'flash'} onClick={() => setIsLtpz068Open(true)}>
+              <Button variant={'contained'} size={'md'} effect={'flash'}>
                 <AiIcon color={'#fff'} color2={'#fff'} />
                 AI자동해소
               </Button>
@@ -412,7 +402,6 @@ const Ltpz022 = ({ open = true, onOpenChange, onApply }: Ltpz022Props) => {
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>
-      <Ltpz068 open={isLtpz068Open} onOpenChange={setIsLtpz068Open} onApply={onApply} />
     </Dialog>
   );
 };

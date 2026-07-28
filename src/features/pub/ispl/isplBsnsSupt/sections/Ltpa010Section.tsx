@@ -223,7 +223,7 @@ const DummyData: DummyDataRow[] = [
     field22: '2009-01-01',
     field23: '2009-01-01',
     field09: '설계중',
-    field10: '설계중',
+    field10: '심사대기',
     field11: '미출력',
     field24: '',
     field12: '신부산GA지점/00팀00팀00팀00팀00팀',
@@ -649,7 +649,22 @@ export default function Ltpa010Section() {
             data?.field09
           ),
         (data?: DummyDataRow) =>
-          data?.field10 === '심사결과' ? (
+          // [260725] 심사대기 툴팁 추가
+          data?.field10 === '심사대기' ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button color="link" only="default" size="lg" variant="text">
+                  {data.field10}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="top" sideOffset={1}>
+                <Typo tag="span" variant="body-sm" className="break-all whitespace-pre-wrap">
+                  심사자: 김현화(123457)
+                  <br />- 예상대기시간 30분, 대기건수 5/8 (현재/전체)
+                </Typo>
+              </TooltipContent>
+            </Tooltip>
+          ) : data?.field10 === '심사결과' ? (
             <Button color="link" only="default" size="lg" variant="text">
               {data.field10}
             </Button>

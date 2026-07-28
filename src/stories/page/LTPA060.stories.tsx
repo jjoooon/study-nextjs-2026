@@ -3,7 +3,7 @@
  */
 
 import LTPA060 from '@/app/pub/ispl/pages/LTPA060';
-import { StorySite } from '@/shared/components/storybook/StoryWrap';
+import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
   title: 'app/ispl/ncMtt/LTPA060',
@@ -11,7 +11,7 @@ export default {
 };
 
 export const Default = () => (
-  <StorySite>
+  <LayoutDoc>
     <LTPA060 />
-  </StorySite>
+  </LayoutDoc>
 );

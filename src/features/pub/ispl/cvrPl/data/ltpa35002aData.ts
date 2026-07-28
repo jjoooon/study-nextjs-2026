@@ -63,7 +63,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 700,
-    field8: ['인수가능', '인수불가', '조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '보통약관(상해사망)',
@@ -91,7 +91,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 154,
-    field8: ['인수가능', '조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '보험료납입면제대상보장(6대사유Ⅱ)',
@@ -118,7 +118,7 @@ export const dummyData: DummyDataType[] = [
     field6: '전기납',
     isEditedField6: false,
     field7: 2769,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '보장보험료50%납입지원Ⅱ(4대유사암)',
@@ -145,7 +145,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 3132,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암진단비',
@@ -172,7 +172,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 240,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암진단비(기타피부암)',
@@ -199,7 +199,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1248,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암진단비(제자리암)',
@@ -226,7 +226,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 228,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암진단비(경계성종양)',
@@ -253,7 +253,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1416,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암진단비(갑상선암)',
@@ -280,7 +280,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 31440,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ',
@@ -307,7 +307,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 4200,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(대장암)',
@@ -334,7 +334,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 7050,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(특정소화기관암)',
@@ -361,7 +361,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 8700,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(유방암)',
@@ -388,7 +388,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 2400,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(자궁관련암)',
@@ -415,7 +415,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 900,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(난소암)',
@@ -442,7 +442,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 120,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(특정여성생식기관암)',
@@ -469,7 +469,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1050,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(비뇨기관암(요로암))',
@@ -496,7 +496,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 3060,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(폐암)',
@@ -523,7 +523,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 270,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(특정호흡기및흉곽내기관암)',
@@ -550,7 +550,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 330,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(눈,뇌,중추신경계통및내분비선암)',
@@ -577,7 +577,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 390,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(입술,구강및인두암)',
@@ -604,7 +604,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 510,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(뼈,관절,악성흑색종,중피성및연조직암)',
@@ -631,7 +631,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 2460,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '여성통합암(4대유사암제외)진단비Ⅱ(림프및조혈관련특정암)',
@@ -658,7 +658,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 36000,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(4대유사암제외)특정치료비(암전문의료기관Ⅱ(상급종합병원등))(각연간1회한)',
@@ -685,7 +685,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 12040,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(4대유사암제외)특정치료비(수술)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
@@ -712,7 +712,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 8140,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(4대유사암제외)특정치료비(항암방사선치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
@@ -739,7 +739,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 14980,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(4대유사암제외)특정치료비(항암약물치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
@@ -766,7 +766,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 680,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(4대유사암제외)특정치료비(중환자실치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
@@ -793,7 +793,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 160,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(4대유사암제외)특정치료비(호스피스완화의료치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
@@ -820,7 +820,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1547,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암특정치료비(암전문의료기관Ⅱ(상급종합병원등))(각연간1회한)',
@@ -847,7 +847,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1188,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암특정치료비(수술)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
@@ -874,7 +874,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 260,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암특정치료비(항암방사선치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
@@ -901,7 +901,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 96,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암특정치료비(항암약물치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
@@ -928,7 +928,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 3,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암특정치료비(중환자실치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
@@ -955,7 +955,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 2880,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(특정유사암포함)항암세기조절방사선치료비(1회한)',
@@ -982,7 +982,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 960,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(특정유사암포함)항암양성자방사선치료비(1회한)',
@@ -1009,7 +1009,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1750,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(특정유사암포함)항암중입자방사선치료비(1회한)',
@@ -1036,7 +1036,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 5120,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(특정유사암포함)표적항암약물허가치료비(1회한)',
@@ -1063,7 +1063,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 120,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '카티(CAR-T)항암약물허가치료비(1회한)',
@@ -1090,7 +1090,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 894,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(4대유사암제외)특정항암호르몬약물허가치료비(연간1회한)',
@@ -1117,7 +1117,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 7860,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '뇌혈관질환진단비',
@@ -1144,7 +1144,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 3740,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '뇌졸중진단비',
@@ -1171,7 +1171,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1590,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '뇌출혈진단비',
@@ -1198,7 +1198,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1960,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '뇌전증진단비',
@@ -1225,7 +1225,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 2460,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '허혈성심장질환진단비(간편)(CLA11938)',
@@ -1253,7 +1253,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 600,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '급성심근경색증진단비',
@@ -1280,7 +1280,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1210,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '심근병증진단비',
@@ -1307,7 +1307,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 69,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '심장판막협착증(대동맥판막)진단비',
@@ -1334,7 +1334,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 4750,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '암(4대유사암제외)수술비Ⅱ(수술1회당)',
@@ -1361,7 +1361,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 530,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '4대유사암수술비Ⅱ(수술1회당)',
@@ -1388,7 +1388,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 2700,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '뇌혈관질환수술비(1회한)',
@@ -1415,7 +1415,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 1700,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '뇌졸중수술비(1회한)',
@@ -1442,7 +1442,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 2800,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '허혈성심장질환수술비(1회한)',
@@ -1469,7 +1469,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 600,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '급성심근경색증수술비(1회한)',
@@ -1496,7 +1496,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 800,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '상해중환자실입원비(1일이상10일한도)',
@@ -1523,7 +1523,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 540,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '질병중환자실입원비(1일이상10일한도)',
@@ -1550,7 +1550,7 @@ export const dummyData: DummyDataType[] = [
     field6: '',
     isEditedField6: false,
     field7: 0,
-    field8: ['조건부인수'],
+    field8: ['인수가능'],
     rowCopy: false,
     titleDetail: {
       title: '치료비선지급서비스Ⅱ특별약관',

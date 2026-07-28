@@ -43,7 +43,7 @@ interface InfoContractProps<TData extends InfoContractBaseData = InfoContractBas
 }
 
 // Ltpa35001, Ltpa35002, Ltpa35005, Ltpa35006 공통으로 사용
-export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBaseData>({
+export function Ltpa35005Side<TData extends InfoContractBaseData = InfoContractBaseData>({
   info,
 }: InfoContractProps<TData>) {
   // Ltpa35001
@@ -139,7 +139,7 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
           </Typo>
         </Grow>
         <Button variant={'text'} color={'gray'} onClick={() => {}}>
-          <Typo variant={'heading-md'}>설계누적반영</Typo>
+          <Typo variant={'heading-md'}>동시가입누적체크</Typo>
         </Button>
       </Gcol>
 

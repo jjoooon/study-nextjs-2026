@@ -6,7 +6,6 @@
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -16,7 +15,6 @@ import {
 import { Gcol, Grow, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
@@ -27,35 +25,7 @@ import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
-/**
- * LTPA060 섹션 컴포넌트
- * 자동고지(ICIS/심평원) 질병정보 관리 화면
- * - Tab1: 자동고지(ICIS) - 필수고지/고지확인대상
- * - Tab2: 자동고지(심평원) - 필수고지/고지확인대상
- */
-
-// ===== Tab 정의 =====
-type LTPZ060TabType = {
-  name: string;
-  value: string;
-  label: string;
-};
-
-const DATA_TABS: LTPZ060TabType[] = [
-  {
-    name: '자동고지(ICIS)',
-    value: 'tab1',
-    label: '자동고지(ICIS)',
-  },
-  {
-    name: '자동고지(심평원)',
-    value: 'tab2',
-    label: '자동고지(심평원)',
-  },
-];
-
 // ===== 데이터 타입 정의 =====
-// 자동고지(ICIS) 테이블 데이터 타입
 type DummyDataType = {
   id: number;
   isChecked: boolean;
@@ -69,7 +39,6 @@ type DummyDataType = {
   field8: string;
   field9: string;
 };
-// 자동고지(심평원) 테이블 데이터 타입
 type DummyDataType2 = {
   id: number;
   isChecked: boolean;
@@ -85,7 +54,6 @@ type DummyDataType2 = {
 };
 
 // ===== 샘플 데이터 =====
-// Tab1: 자동고지(ICIS) 샘플 데이터
 const dummyData: DummyDataType[] = [
   {
     id: 1,
@@ -166,7 +134,6 @@ const dummyData: DummyDataType[] = [
     field9: '',
   },
 ];
-// Tab2: 자동고지(심평원) 샘플 데이터
 const dummyData2: DummyDataType2[] = [
   {
     id: 1,
@@ -247,7 +214,6 @@ export default function Ltpa060Section() {
   const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
 
   // ===== ag-Grid 컬럼 정의 =====
-  // Tab1: 자동고지(ICIS) 테이블 컬럼
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대표질병코드',
@@ -306,8 +272,6 @@ export default function Ltpa060Section() {
       ),
     },
   ];
-
-  // Tab2: 자동고지(심평원) 테이블 컬럼
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '대표질병코드',
@@ -375,11 +339,7 @@ export default function Ltpa060Section() {
     [setRowData, setErrorRows]
   );
 
-  // 탭 상태 관리 (ICIS / 심평원)
-  const { tabs, active, setActive } = useTabs(DATA_TABS);
-
   // ===== 페이지 렌더링 =====
-  // LTPA060 자동고지 관리 화면
   return (
     <>
       <LayoutHead>
@@ -393,223 +353,108 @@ export default function Ltpa060Section() {
       <LayoutTemplate
         mainBody={
           // 탭 페이저: Tab1(ICIS), Tab2(심평원)
-          <TabPager
-            data={tabs}
-            active={active}
-            setActive={setActive}
-            visibleCount={6}
-            variant="default"
-            getValue={(tab) => String(tab.value)}
-            renderTab={(tab) => <span>{tab.label}</span>}
-          >
-            {/* ===== Tab1: 자동고지(ICIS) ===== */}
-            {active === 'tab1' && (
-              <Gcol placement="ss" className="w-full" gap={3}>
-                {/* FP정보제공 동의 및 조회 기간 입력 섹션 */}
-                <Grow className="w-full" variant="box-round-b">
-                  <FormTable variant={'head'} lineTop={false} caption="">
-                    <FormRow>
-                      <FormCell title={'FP정보제공동의(유효일자)'}>
-                        <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
-                      </FormCell>
-                      <FormCell title={'전문호출기간'}>
-                        <Input aria-label="전문호출기간 시작일" width={90} value={'2026-03-01'} readOnly />-
-                        <Input aria-label="전문호출기간 종료일" width={90} value={'2026-03-01'} readOnly />
-                      </FormCell>
-                      <FormCell title={'최종적재일'}>
-                        <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Grow>
-                <Gcol placement="ss" className="w-full" gap={3}>
-                  {/* 펼침메뉴: 필수고지 */}
-                  <TableFold>
-                    <TableFoldHead title="필수고지" />
-                    <TableFoldBody>
-                      {/* ag-Grid 테이블: 필수고지 데이터 */}
-                      <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
-                        <AgGridReact<DummyDataType>
-                          getRowId={(params) => String(params.data.id)}
-                          rowData={rowData}
-                          columnDefs={columnDefs}
-                          selectionColumnDef={{
-                            width: 30,
-                          }}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          onCellValueChanged={onCellValueChanged}
-                          // ag-Grid 기본 설정
-                          defaultColDef={{
-                            sortable: true, // 컬럼 정렬 가능
-                            resizable: true, // 컬럼 너비 조절 가능
-                            cellClass: 'text-center', // 중앙 정렬
-                          }}
-                          // 다중행 선택 모드 (고지 상태 행 제외)
-                          rowSelection={{
-                            mode: 'multiRow',
-                            isRowSelectable: (node) => node.data?.field8 !== '고지', // '고지' 상태 행은 선택 불가
-                            checkboxes: true, // 체크박스 표시
-                            enableClickSelection: false, // 행 클릭으로 선택 안됨
-                          }}
-                          // 그리드 초기화 후 체크 상태 복원
-                          onGridReady={(params) => {
-                            params.api.forEachNode((node) => {
-                              if (node.data?.isChecked) {
-                                node.setSelected(true);
-                              }
-                            });
-                          }}
-                          domLayout="normal"
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-                  {/* 펼침메뉴: 고지확인대상 */}
-                  <TableFold>
-                    <TableFoldHead title="고지확인대상" />
-                    <TableFoldBody>
-                      {/* ag-Grid 테이블: 고지확인대상 데이터 */}
-                      <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
-                        <AgGridReact<DummyDataType2>
-                          getRowId={(params) => String(params.data.id)}
-                          rowData={rowData2}
-                          columnDefs={columnDefs2}
-                          selectionColumnDef={{
-                            width: 30,
-                          }}
-                          onCellValueChanged={onCellValueChanged}
-                          noRowsOverlayComponent={AgGridEmptyComponent}
-                          defaultColDef={{
-                            sortable: true,
-                            resizable: true,
-                            cellClass: 'text-center',
-                          }}
-                          rowSelection={{
-                            mode: 'multiRow',
-                            isRowSelectable: (node) => node.data?.field8 !== '고지',
-                            checkboxes: true,
-                            enableClickSelection: false,
-                          }}
-                          onGridReady={(params) => {
-                            params.api.forEachNode((node) => {
-                              if (node.data?.isChecked) {
-                                node.setSelected(true);
-                              }
-                            });
-                          }}
-                          tooltipShowMode="whenTruncated"
-                          tooltipShowDelay={0}
-                          domLayout="normal"
-                        />
-                      </div>
-                    </TableFoldBody>
-                  </TableFold>
-                </Gcol>
-              </Gcol>
-            )}
-            {/* ===== Tab2: 자동고지(심평원) ===== */}
-            {active === 'tab2' && (
-              <Gcol placement="ss" className="w-full h-full" gap={3}>
-                {/* 정보제공 동의 및 조회 기간 입력 섹션 */}
-                <Grow className="w-full" variant="box-round-b">
-                  <FormTable variant={'head'} lineTop={false} caption="">
-                    <FormRow>
-                      <FormCell title={'정보제공동의(유효일자)'}>
-                        <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
-                      </FormCell>
-                      <FormCell title={'전문호출기간'}>
-                        <Input aria-label="전문호출기간 시작일" width={90} value={'2026-03-01'} readOnly />-
-                        <Input aria-label="전문호출기간 종료일" width={90} value={'2026-03-01'} readOnly />
-                      </FormCell>
-                      <FormCell title={'최종적재일'}>
-                        <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Grow>
-                {/* 펼침메뉴: 필수고지 */}
-                <TableFold>
-                  <TableFoldHead title="필수고지" />
-                  <TableFoldBody>
-                    {/* ag-Grid 테이블: 필수고지 데이터 */}
-                    <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        selectionColumnDef={{
-                          width: 30,
-                        }}
-                        onCellValueChanged={onCellValueChanged}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        defaultColDef={{
-                          sortable: true,
-                          resizable: true,
-                          cellClass: 'text-center',
-                        }}
-                        rowSelection={{
-                          mode: 'multiRow',
-                          isRowSelectable: (node) => node.data?.field8 !== '고지',
-                          checkboxes: true,
-                          enableClickSelection: false,
-                        }}
-                        onGridReady={(params) => {
-                          params.api.forEachNode((node) => {
-                            if (node.data?.isChecked) {
-                              node.setSelected(true);
-                            }
-                          });
-                        }}
-                        domLayout="normal"
-                        alwaysShowVerticalScroll={true}
-                        tooltipShowMode="whenTruncated"
-                        tooltipShowDelay={0}
-                      />
-                    </div>
-                  </TableFoldBody>
-                </TableFold>
-                {/* 펼침메뉴: 고지확인대상 */}
-                <TableFold>
-                  <TableFoldHead title="고지확인대상" />
-                  <TableFoldBody>
-                    {/* ag-Grid 테이블: 고지확인대상 데이터 */}
-                    <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
-                      <AgGridReact<DummyDataType2>
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={rowData2}
-                        columnDefs={columnDefs2}
-                        selectionColumnDef={{
-                          width: 30,
-                        }}
-                        onCellValueChanged={onCellValueChanged}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        defaultColDef={{
-                          sortable: true,
-                          resizable: true,
-                          cellClass: 'text-center',
-                        }}
-                        rowSelection={{
-                          mode: 'multiRow',
-                          isRowSelectable: (node) => node.data?.field8 !== '고지',
-                          checkboxes: true,
-                          enableClickSelection: false,
-                        }}
-                        onGridReady={(params) => {
-                          params.api.forEachNode((node) => {
-                            if (node.data?.isChecked) {
-                              node.setSelected(true);
-                            }
-                          });
-                        }}
-                        domLayout="normal"
-                        alwaysShowVerticalScroll={true}
-                      />
-                    </div>
-                  </TableFoldBody>
-                </TableFold>
-              </Gcol>
-            )}
-          </TabPager>
+          <Gcol placement="ss" className="w-full" gap={3}>
+            {/* FP정보제공 동의 및 조회 기간 입력 섹션 */}
+            <Grow className="w-full" variant="box-round">
+              <FormTable variant={'head'} lineTop={false} caption="">
+                <FormRow>
+                  <FormCell title={'FP정보제공동의(유효일자)'}>
+                    <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
+                  </FormCell>
+                  <FormCell title={'전문호출기간'}>
+                    <Input aria-label="전문호출기간 시작일" width={90} value={'2026-03-01'} readOnly />-
+                    <Input aria-label="전문호출기간 종료일" width={90} value={'2026-03-01'} readOnly />
+                  </FormCell>
+                  <FormCell title={'최종적재일'}>
+                    <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Grow>
+            <Gcol placement="ss" className="w-full" gap={3}>
+              {/* 펼침메뉴: 필수고지 */}
+              <TableFold>
+                <TableFoldHead title="필수고지" />
+                <TableFoldBody>
+                  {/* ag-Grid 테이블: 필수고지 데이터 */}
+                  <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      selectionColumnDef={{
+                        width: 30,
+                      }}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      onCellValueChanged={onCellValueChanged}
+                      // ag-Grid 기본 설정
+                      defaultColDef={{
+                        sortable: true, // 컬럼 정렬 가능
+                        resizable: true, // 컬럼 너비 조절 가능
+                        cellClass: 'text-center', // 중앙 정렬
+                      }}
+                      // 다중행 선택 모드 (고지 상태 행 제외)
+                      rowSelection={{
+                        mode: 'multiRow',
+                        isRowSelectable: (node) => node.data?.field8 !== '고지', // '고지' 상태 행은 선택 불가
+                        checkboxes: true, // 체크박스 표시
+                        enableClickSelection: false, // 행 클릭으로 선택 안됨
+                      }}
+                      // 그리드 초기화 후 체크 상태 복원
+                      onGridReady={(params) => {
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isChecked) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                      domLayout="normal"
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+              {/* 펼침메뉴: 고지확인대상 */}
+              <TableFold>
+                <TableFoldHead title="고지확인대상" />
+                <TableFoldBody>
+                  {/* ag-Grid 테이블: 고지확인대상 데이터 */}
+                  <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
+                    <AgGridReact<DummyDataType2>
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData2}
+                      columnDefs={columnDefs2}
+                      selectionColumnDef={{
+                        width: 30,
+                      }}
+                      onCellValueChanged={onCellValueChanged}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                        cellClass: 'text-center',
+                      }}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        isRowSelectable: (node) => node.data?.field8 !== '고지',
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      onGridReady={(params) => {
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isChecked) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      domLayout="normal"
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+            </Gcol>
+          </Gcol>
         }
         mainFoot={
           // 하단 버튼: "알릴사항 반영하기"

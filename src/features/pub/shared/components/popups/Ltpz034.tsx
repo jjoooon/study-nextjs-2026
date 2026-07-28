@@ -432,7 +432,6 @@ const CustomNoRowsOverlay = () => (
  * Ltpz034 컴포넌트 - 고지유형찾기 팝업
  */
 const Ltpz034 = ({
-  open = true,
   onOpenChange,
   minimized,
   onMinimizeChange,
@@ -554,7 +553,7 @@ const Ltpz034 = ({
         autoHeight: true,
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => (
-          <Grow className="w-full min-w-0 !justify-between items-center !flex leading-[1.3]">
+          <Grow placement="bwc" className="w-full min-w-0 py-1 leading-[1.3]">
             <span className="">{params.value}</span>
             {params.data?.field04 && (
               <Badge color={'blue'} className="shrink-0">
@@ -576,7 +575,7 @@ const Ltpz034 = ({
   );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} minimized={isMinimized} onMinimizeChange={handleMinimizeChange}>
+    <Dialog open minimized={isMinimized} onMinimizeChange={handleMinimizeChange}>
       <DialogContent
         showCloseButton
         resizable
@@ -693,7 +692,7 @@ const Ltpz034 = ({
                   </Button>
                 </TableFoldHead>
                 <TableFoldBody className="grid h-full grid-flow-col">
-                  <Grid className="grid-rows-[1fr_auto] h-full grid-rows-[1fr]">
+                  <Grid className="grid-rows-[1fr_auto] h-full">
                     <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}

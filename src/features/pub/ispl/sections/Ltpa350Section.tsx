@@ -35,9 +35,12 @@ import { TaskStatusBoard } from '@features/TaskStatusBoard';
 import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
 
 // 단계별 aside 상세 컴포넌트(심사요청/알릴사항/공통 요약)
+import { Ltpa35001Side } from '../../shared/components/Ltpa35001Side'; //사이드 1.계약사항
+import { Ltpa35002Side } from '../../shared/components/Ltpa35002Side'; //사이드 2.담보설계
 import { Ltpa35003Side } from '../../shared/components/Ltpa35003Side'; //사이드 3.알림사항
 import { Ltpa35004Side } from '../../shared/components/Ltpa35004Side'; //사이드 4.심사요청
-import { Ltpa350Side } from '../../shared/components/Ltpa350Side'; //사이드 공통 1.가입설계,2.담보설계,5.추가사항,6.수납
+import { Ltpa35005Side } from '../../shared/components/Ltpa35005Side'; //사이드 5.추가사항
+import { Ltpa35006Side } from '../../shared/components/Ltpa35006Side'; //사이드 6.수납
 
 // 신호등 클릭 시 열리는 팝업 탭 타입 + 팝업 컴포넌트
 import type { Ltpz005TabValue } from '../../shared/components/popups/Ltpz005';
@@ -102,13 +105,9 @@ const data: Ltpa350DataType = {
     },
     pageTitle: {
       simpleMode: false, // true 심플모드 | false 상세모드
-      title:
-        localStorage.getItem('a') === 'true'
-          ? '한화 더 경증 간편건강보험Ⅱ(세만기형) 2604'
-          : '시그니처여성건강(4종/올인원플랜)',
-      options:
-        localStorage.getItem('a') === 'true' ? ['납입후50%해약환급금지급형, 간편고지형'] : ['100세만기 월납 / 20년납'], //셀렉트박스 옵션값
-      planNumber: localStorage.getItem('a') === 'true' ? ['LA260706316585', '2'] : ['LA260706315118', '2'],
+      title: '한화 시그니처 여성 건강보험4.0 2604',
+      options: ['100세만기 월납 / 20년납'], //셀렉트박스 옵션값
+      planNumber: ['LA260706315118', '2'],
       contractHolder: '3999999 김한손',
       //planNumberList는 설계번호 검색시 나오는 리스트목록
       planNumberList: [
@@ -211,31 +210,19 @@ export default function Ltpa350Section() {
 
   // 신호등(TaskStatusBoard) 항목별 상태 관리
   type TaskStatusItem = { id: number; status: '정상' | '경고' | '중지' | '없음'; label: string; sum: number };
-  const [taskStatusList, setTaskStatusList] = useState<TaskStatusItem[]>([
-    { id: 1, status: '정상', label: '공통', sum: 24 },
-    { id: 2, status: '경고', label: '누적', sum: 0 },
+  const [taskStatusList] = useState<TaskStatusItem[]>([
+    { id: 1, status: '경고', label: '공통', sum: 24 },
+    { id: 2, status: '정상', label: '누적', sum: 0 },
     { id: 3, status: '중지', label: '직업', sum: 2 },
-    { id: 4, status: '중지', label: '예상UW', sum: 0 },
+    { id: 4, status: '정상', label: '예상UW', sum: 0 },
   ]);
-
-  // AI자동해소 적용 시 '꼭 해야할 일' (누적, 예상UW) 상태를 '정상'으로 업데이트하는 핸들러
-  const handleApplyAiRemedy = () => {
-    setTaskStatusList((prev) =>
-      prev.map((item) => {
-        if (item.label === '누적' || item.label === '예상UW') {
-          return { ...item, status: '정상' };
-        }
-        return item;
-      })
-    );
-  };
 
   // 단계별 메인 콘텐츠 매핑
   // - `simpleMode`: 1/3단계에서 간략 UI 여부 제어
   // - `onIsWidthExpandedChange`: 2단계에서 본문 폭 변경 시 상위의 aside 표시 정책 동기화
   const stepMainBody: Record<number, ReactNode> = {
     1: <Ltpa35001 simpleMode={simpleMode} />,
-    2: <Ltpa35002 onIsWidthExpandedChange={setIsWidthExpanded} onApplyAiRemedy={handleApplyAiRemedy} />,
+    2: <Ltpa35002 onIsWidthExpandedChange={setIsWidthExpanded} />,
     3: <Ltpa35003 simpleMode={simpleMode} />,
     4: <Ltpa35004 />,
     5: <Ltpa35005 />,
@@ -248,6 +235,106 @@ export default function Ltpa350Section() {
       flgcd: item,
       flgnm: item,
     })),
+  };
+
+  const renderAsideInfo = () => {
+    switch (activeStep) {
+      case 1:
+        return <Ltpa35001Side info={null} />;
+      case 2:
+        return (
+          <Ltpa35002Side
+            info={{
+              date: '2026-07-15', //보험시기
+              polName: '김한화', //계약자명
+              insName: '김한화', //피보험자명
+              insAge: '41', //피보험자 나이
+              insGender: '여', //피보험자 성별
+              insGrade: '1급', //피보험자 등급
+              quoteExpiryDate: '2026-07-15', //설계유효기간
+              insuranceAgeDate: '2026-08-16', //상령일
+              consentEndDate: '2026-07-15', //동의종료일
+              note: '알릴사항 대상', //특이사항 메모
+              docPrint: true, //문서 출력 여부
+              docScan: false, //문서 스캔 여부
+              eGuideDiscount: [1230, 39990], //전자적안내동의할인 금액 배열
+            }}
+          />
+        );
+      case 3:
+        return (
+          <Ltpa35003Side
+            info={{
+              FP: true, //FP질병제공 동의 Y | N
+              name: '김한화',
+              consentEndDate: '2024-06-30', //동의종료일
+              noticeType: '1형(일반고지형)', //공지사항 유형(1형/2형)
+              diseaseCount: 6, //질병개수
+              reviewers: [
+                ['M40', '척추만곡증'],
+                ['M40', '척추만곡증'],
+                ['M40', '척추만곡증'],
+                ['M40', '척추만곡증'],
+              ], //심사자 정보 배열(심사자명, 심사자코드) - 최대 4명까지 노출, 넘칠 경우 "외 n명"으로 표시
+              systems: 4, //심사 시스템 개수
+            }}
+          />
+        );
+      case 4:
+        return (
+          <Ltpa35004Side
+            info={{
+              reviewType: '특인심사', //심사유형(특인심사/일반심사)
+              reviewStatus: '배정대기', //심사상태(배정대기/심사중/심사완료)
+              msg: '[심사운용 시간 이후 요청]\n심사 자배정대기 중입니다.', //심사 상태 메시지
+              notice:
+                '3월 질병 심사기준 안내 두줄까지 공지사항제목 노출 3월 질병 심사기준 안내 두줄까지 공지사항제목 노출', //심사 관련 공지사항(길면 줄바꿈 최대2줄)
+            }}
+          />
+        );
+      case 5:
+        return (
+          <Ltpa35005Side
+            info={{
+              date: '2026-07-15', //보험시기
+              polName: '김한화', //계약자명
+              insName: '김한화', //피보험자명
+              insAge: '41', //피보험자 나이
+              insGender: '여', //피보험자 성별
+              insGrade: '1급', //피보험자 등급
+              quoteExpiryDate: '2026-07-15', //설계유효기간
+              insuranceAgeDate: '2026-08-16', //상령일
+              consentEndDate: '2026-08-30', //동의종료일
+              note: '알릴사항 대상', //특이사항 메모
+              docPrint: true, //문서 출력 여부
+              docScan: false, //문서 스캔 여부
+              eGuideDiscount: [1230, 39990], //전자적안내동의할인 금액 배열
+            }}
+          />
+        );
+      case 6:
+        return (
+          <Ltpa35006Side
+            info={{
+              date: '2026-07-15', //보험시기
+              polName: '김한화', //계약자명
+              insName: '김한화', //피보험자명
+              insAge: '41', //피보험자 나이
+              insGender: '여', //피보험자 성별
+              insGrade: '1급', //피보험자 등급
+              quoteExpiryDate: '2026-07-15', //설계유효기간
+              insuranceAgeDate: '2026-08-16', //상령일
+              consentEndDate: '2026-08-30', //동의종료일
+              note: '알릴사항 대상', //특이사항 메모
+              docPrint: true, //문서 출력 여부
+              docScan: false, //문서 스캔 여부
+              eGuideDiscount: [1230, 39990], //전자적안내동의할인 금액 배열
+            }}
+          />
+        );
+      default:
+        return <Ltpa35001Side info={null} />;
+    }
   };
 
   return (
@@ -340,56 +427,7 @@ export default function Ltpa350Section() {
         // - step 4: 심사요청 요약(Ltpa35004Side)
         // - step 1: 공백/기본 처리(Ltpa350Side info=null)
         // - 그 외: 공통 계약 요약(Ltpa350Side info=객체)
-        asideInfo={
-          activeStep === 3 ? (
-            <Ltpa35003Side
-              info={{
-                FP: true, //FP질병제공 동의 Y | N
-                name: '김한화',
-                consentEndDate: '2024-06-30', //동의종료일
-                noticeType: '1형(일반고지형)', //공지사항 유형(1형/2형)
-                diseaseCount: 6, //질병개수
-                reviewers: [
-                  ['M40', '척추만곡증'],
-                  ['M40', '척추만곡증'],
-                  ['M40', '척추만곡증'],
-                  ['M40', '척추만곡증'],
-                ], //심사자 정보 배열(심사자명, 심사자코드) - 최대 4명까지 노출, 넘칠 경우 "외 n명"으로 표시
-                systems: 4, //심사 시스템 개수
-              }}
-            />
-          ) : activeStep === 4 ? (
-            <Ltpa35004Side
-              info={{
-                reviewType: '특인심사', //심사유형(특인심사/일반심사)
-                reviewStatus: '배정대기', //심사상태(배정대기/심사중/심사완료)
-                msg: '[심사운용 시간 이후 요청]\n심사 자배정대기 중입니다.', //심사 상태 메시지
-                notice:
-                  '3월 질병 심사기준 안내 두줄까지 공지사항제목 노출 3월 질병 심사기준 안내 두줄까지 공지사항제목 노출', //심사 관련 공지사항(길면 줄바꿈 최대2줄)
-              }}
-            />
-          ) : activeStep === 1 ? (
-            <Ltpa350Side info={null} />
-          ) : (
-            <Ltpa350Side
-              info={{
-                date: '2026-06-30', //보험시기
-                polName: '김한화', //계약자명
-                insName: '김한화', //피보험자명
-                insAge: '41', //피보험자 나이
-                insGender: '여', //피보험자 성별
-                insGrade: '1급', //피보험자 등급
-                quoteExpiryDate: '2026-06-30', //설계유효기간
-                insuranceAgeDate: '2026-08-16', //상령일
-                consentEndDate: '2026-06-30', //동의종료일
-                note: '알릴사항 대상', //특이사항 메모
-                docPrint: true, //문서 출력 여부
-                docScan: false, //문서 스캔 여부
-                eGuideDiscount: [1230, 39990], //전자적안내동의할인 금액 배열
-              }}
-            />
-          )
-        }
+        asideInfo={renderAsideInfo()}
         // asideLinks: 우측 하단 바로가기 메뉴 슬롯
         asideLinks={
           <>

@@ -355,26 +355,29 @@ export function Ltpa35004() {
                 </TooltipContent>
               </Tooltip>
             )}
-            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => (
-              <Button
-                variant={'none'}
-                key={String(tab.id)}
-                onClick={() => {
-                  setActive(String(tab.id));
-                  const idx = data.findIndex((t) => String(t.id) === String(tab.id));
-                  if (idx !== -1) {
-                    const page = Math.floor(idx / visibleCount);
-                    setVisibleStart(page * visibleCount);
-                  }
-                }}
-                className="hover:bg-[var(--color-warning-10)]"
-              >
-                <span className="flex items-start gap-2 w-full">
-                  <span className="block">{tab.name}</span>
-                  <span className="block">{`${tab.age}세(${tab.gender})`}</span>
-                </span>
-              </Button>
-            )}
+            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => {
+              const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+              return (
+                <Button
+                  variant={'none'}
+                  key={String(tab.value)}
+                  onClick={() => {
+                    setActive(String(tab.value));
+                    if (idx !== -1) {
+                      const page = Math.floor(idx / visibleCount);
+                      setVisibleStart(page * visibleCount);
+                    }
+                  }}
+                  className="min-h-[2.8rem]! w-full rounded-none hover:bg-[var(--color-warning-10)]"
+                  style={idx > 0 ? { borderTop: '1px solid var(--color-gray-15)' } : undefined}
+                >
+                  <span className="flex items-start gap-2 w-full">
+                    <span className="block">{tab.name}</span>
+                    <span className="block">{`${tab.age}세(${tab.gender})`}</span>
+                  </span>
+                </Button>
+              );
+            }}
           >
             <Gcol variant={'box-round-b'} placement={'ss'} className={`${!isHeightExpanded ? '' : 'hidden'}`}>
               <FormTable caption="취급자 정보" variant={'head'}>

@@ -5,7 +5,6 @@
 
 import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
@@ -25,30 +24,51 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resi
 
 import '@/shared/lib/agGridPub';
 
+/** 상품 정보 그리드 행 데이터 타입 */
 type DummyDataType = {
+  /** 데이터 ID */
   id: string | number;
+  /** 상품 분류 */
   field1: string | number;
+  /** 상품명 */
   field2: string | number;
+  /** 중요 상품 여부 */
   importance: boolean;
+  /** 상품 태그/배지 (예: 간편, 무해지 등) */
   badge?: string[];
+  /** 가입 연령대 */
   field3: string | number;
 };
+
+/** 상품 종 정보 그리드 행 데이터 타입 */
 type DummyDataType2 = {
+  /** 데이터 ID */
   id: number;
+  /** 종 구분 (예: 1종, 2종 등) */
   field1: string | number;
+  /** 종 상세 명칭 및 옵션 */
   field2: string | number;
+  /** 납입면제 버튼 표시 여부 */
   btn?: boolean;
 };
+
+/** 플랜 정보 그리드 행 데이터 타입 */
 type DummyDataType3 = {
+  /** 데이터 ID */
   id: number;
+  /** 플랜 명칭 및 대상 연령 정보 */
   field1: string | number;
 };
 
+/** Ltpa02001 컴포넌트 Props 인터페이스 */
 interface Ltpa02001Props {
+  /** 가능상품만 보기 필터 활성화 여부 */
   isPossibleProductsOnly?: boolean;
+  /** 가능상품 필터 리셋 콜백 */
   onResetPossibleFilter?: () => void;
 }
 
+/** 기본 상품 데이터 목록 */
 const dummyData: DummyDataType[] = [
   {
     id: 1,
@@ -227,6 +247,8 @@ const dummyData: DummyDataType[] = [
     field3: '15~90세',
   },
 ];
+
+/** 기본 상품 종 데이터 목록 */
 const dummyData2: DummyDataType2[] = [
   {
     id: 1,
@@ -253,6 +275,8 @@ const dummyData2: DummyDataType2[] = [
     btn: true,
   },
 ];
+
+/** 마스터 플랜 목록 데이터 */
 const planDummyDataList: DummyDataType3[] = [
   { id: 1, field1: '1-12형(프리미엄올인원플랜)(15-80세)' },
   { id: 2, field1: '1형(3.10.5간편고지형)(올인원플랜)(1~4형)(15-80세)' },
@@ -269,6 +293,7 @@ const planDummyDataList: DummyDataType3[] = [
   { id: 13, field1: '12형(365간편고지형(고혈압및당뇨추가고지))(올인원플랜)(5~12형)(15-80세)' },
 ];
 
+/** 회사플랜 데이터 목록 */
 const dummyData3: DummyDataType3[] = [
   { id: 1, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
   { id: 2, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
@@ -283,7 +308,9 @@ const dummyData3: DummyDataType3[] = [
   { id: 11, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
   { id: 12, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
 ];
+/** 기관플랜 데이터 목록 (초기 빈 배열) */
 const dummyData3b: DummyDataType3[] = [];
+/** 나만의플랜 데이터 목록 (초기 빈 배열) */
 const dummyData3c: DummyDataType3[] = [];
 
 // 가능상품 보기 활성화 시 사용될 대체 데이터 셋
@@ -368,12 +395,25 @@ const possibleDummyData3: DummyDataType3[] = planDummyDataList;
 const possibleDummyData3b: DummyDataType3[] = [];
 const possibleDummyData3c: DummyDataType3[] = [];
 
+/**
+ * LTPA02001 - 상품 및 플랜 선택 화면 컴포넌트
+ *
+ * @param props - {@link Ltpa02001Props}
+ */
 export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilter }: Ltpa02001Props) {
+  /** AG-Grid 동적 컬럼 폭 계산 훅 */
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  /** 상품명 툴팁/말풍선 노출 여부 상태 */
   const [showProductNameTooltip, setShowProductNameTooltip] = useState(false);
+
+  /** 상품 분류 라디오 버튼 선택값 상태 */
   const [productCategory, setProductCategory] = React.useState<string>('');
+
+  /** 상품 특징 체크박스 선택값 상태 배열 */
   const [productFeature, setProductFeature] = React.useState<string[]>(['']);
 
+  /** 상품 분류 변경 이벤트 처리 */
   const handleProductCategoryChange = React.useCallback(
     (val: string) => {
       setProductCategory(val);
@@ -382,6 +422,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     [onResetPossibleFilter]
   );
 
+  /** 상품 특징 변경 이벤트 처리 */
   const handleProductFeatureChange = React.useCallback(
     (val: string[]) => {
       setProductFeature(val);
@@ -390,16 +431,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     [onResetPossibleFilter]
   );
 
-  const router = useRouter();
-
-  const handleStartDesign = React.useCallback(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('a', 'true');
-      window.parent.postMessage({ type: 'GO_TO_LTPA350' }, '*');
-    }
-    router.push('/pub/ispl/LTPA350');
-  }, [router]);
-
+  /** 즐겨찾기(행 상단 고정 및 복제) 로직을 제어하는 훅 */
   const {
     rowData: productRowData,
     toggleCloneByRow,
@@ -413,7 +445,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
 
   type ProductGridRow = DummyDataType | ClonedTopRow<DummyDataType>;
 
-  // 상품선택 AG-Grid 컬럼 정의
+  /** 상품선택 AG-Grid 헤더 렌더러 (검색/초기화 버튼 및 상품명 말풍선 툴팁 체크박스) */
   const productNameHeader = useCallback(() => {
     const handleTooltipCheck = (checked: boolean | 'indeterminate') => {
       setShowProductNameTooltip(!!checked);
@@ -439,6 +471,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     );
   }, [showProductNameTooltip]);
 
+  /** 상품명 컬럼 셀 렌더러 (즐겨찾기 토글, 상품명, 특성 배지 렌더링) */
   const importanceCellRenderer = (params: ICellRendererParams<ProductGridRow>) => {
     const badgeText = params.data?.badge ?? '';
     const isCloned = isFavoriteRow(params.data);
@@ -451,7 +484,6 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     return (
       <Grow className="w-full" placement="bwc">
         <Grow className="overflow-hidden -tracking-[0.03rem]">
-          {/* M5. 텍스트수정 */}
           <Checkbox
             color="primary"
             onCheckedChange={handleFavoriteChange}
@@ -461,7 +493,6 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
           >
             즐겨찾기
           </Checkbox>
-          {/* M5. truncate > truncate-no 로 수정 */}
           <div className="truncate-no">{params.data?.field2 ?? ''}</div>
         </Grow>
         <Grow>
@@ -488,6 +519,8 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       </Grow>
     );
   };
+
+  /** 종 구분 컬럼 셀 렌더러 (종 구분 텍스트, 상세 텍스트 및 납입면제 버튼) */
   const designCellRenderer = (params: ICellRendererParams<DummyDataType2>) => {
     return (
       <Grow className="h-full w-full">
@@ -507,6 +540,8 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       </Grow>
     );
   };
+
+  /** 상세 보기 버튼 셀 렌더러 */
   const moreCellRenderer = () => {
     return (
       <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
@@ -515,6 +550,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     );
   };
 
+  /** 상품 목록 그리드 컬럼 정의 */
   const columnDefs: ColDef<ProductGridRow>[] = [
     {
       headerName: '상품분류',
@@ -540,6 +576,8 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       minWidth: attributeColumnWidth(80),
     },
   ];
+
+  /** 종 정보 그리드 컬럼 정의 */
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '종구분',
@@ -557,6 +595,8 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       cellRenderer: moreCellRenderer,
     },
   ];
+
+  /** 플랜 정보 그리드 컬럼 정의 */
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
       headerName: '플랜명',
@@ -573,10 +613,12 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     },
   ];
 
+  /** 가능상품 전용 데이터 여부에 따른 탭 3개별 플랜 데이터 구성 */
   const tabData3 = isPossibleProductsOnly ? possibleDummyData3 : dummyData3;
   const tabData3b = isPossibleProductsOnly ? possibleDummyData3b : dummyData3b;
   const tabData3c = isPossibleProductsOnly ? possibleDummyData3c : dummyData3c;
 
+  /** 플랜 선택 탭 항목 데이터 생성 */
   const dynamicDummyData3Tab = React.useMemo(
     () => [
       {
@@ -598,8 +640,10 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     [tabData3.length, tabData3b.length, tabData3c.length]
   );
 
+  /** 탭 활성화 상태 및 클릭 훅 */
   const { tabs, active, setActive } = useTabs(dynamicDummyData3Tab);
 
+  /** 활성화 탭에 해당하는 플랜 그리드 데이터 매핑 */
   const planRowDataMap: Record<string, DummyDataType3[]> = {
     tab1: tabData3,
     tab2: tabData3b,
@@ -613,7 +657,6 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
         <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
           <FormRow className="items-start!">
             <FormCell title={'상품분류'}>
-              {/* M5. RadioGroup 수정 */}
               <RadioGroup
                 value={productCategory}
                 onValueChange={handleProductCategoryChange}
@@ -690,6 +733,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
             </TableFold>
           </ResizablePanel>
           <ResizableHandle />
+          {/* 우측 종 정보 및 플랜 영역 패널 */}
           <ResizablePanel defaultSize={30}>
             <ResizablePanelGroup orientation="vertical" className="w-full h-full min-h-0">
               <ResizablePanel defaultSize={50}>
@@ -721,6 +765,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                 </TableFold>
               </ResizablePanel>
               <ResizableHandle />
+              {/* 플랜 탭 및 플랜 목록 AG-Grid 영역 */}
               <ResizablePanel defaultSize={50}>
                 <TabPager
                   data={tabs}
@@ -760,12 +805,13 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
         </ResizablePanelGroup>
       </Grow>
 
+      {/* 3. 하단 작업 버튼 영역 (추천설계 / 설계시작) */}
       <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
         <Button variant={'outlined'} color={'gray'} size={'xl'}>
           <AiIcon size={24} color={'#006FF2'} color2={'#A683FF'} />
           추천설계
         </Button>
-        <Button type="button" variant={'contained'} color={'primary'} size={'xl'} onClick={handleStartDesign}>
+        <Button type="button" variant={'contained'} color={'primary'} size={'xl'}>
           설계시작
           <ArrowNext size={16} />
         </Button>
