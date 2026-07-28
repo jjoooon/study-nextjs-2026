@@ -191,7 +191,7 @@ const dummyDataList: DummyDataListType[] = [
   },
 ];
 
-export type LoadingType = 'type1' | 'type2' | 'type3' | 'type4' | null;
+export type LoadingAI = 'type1' | 'type2' | 'type3' | 'type4' | null;
 
 export function Ltpa02002({ userType }: { userType: string }) {
   // 1. Hooks & Refs
@@ -202,7 +202,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
   // 2-1. 데이터 로딩 및 결과 관련 상태
   const [dataNone, setDataNone] = useState<boolean>(true);
   const [dataList, setDataList] = React.useState<DummyDataListType[]>([]);
-  const [loadingType, setLoadingType] = React.useState<LoadingType>('type1');
+  const [loadingAI, setLoadingAI] = React.useState<boolean>(true);
   const [selectedPlanKey, setSelectedPlanKey] = useState<string | null>('1-0');
   const [comparedPlanKeys, setComparedPlanKeys] = useState<string[]>([]);
 
@@ -360,17 +360,17 @@ export function Ltpa02002({ userType }: { userType: string }) {
 
   // 6-2. 로딩 지연 효과 및 자동 완료 처리 (2초 후 로딩 종료 및 기존 데이터 표시)
   React.useEffect(() => {
-    if (!loadingType) return;
+    if (!loadingAI) return;
 
     const timer = setTimeout(() => {
       setDataList(dummyDataList);
-      setLoadingType(null);
+      setLoadingAI(false);
     }, 300000);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [loadingType]);
+  }, [loadingAI]);
 
   return (
     <Grid className="w-full grid-rows-[auto_1fr]" gap={3}>
@@ -506,22 +506,12 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   onClick={() => {
                     setDataNone(false);
                     setIsFilterOptionOpen(false);
-                    setLoadingType('type1');
+                    setLoadingAI(true);
                   }}
                 >
                   설계추천
                 </Button>
-                <Button
-                  variant="outlined"
-                  color="gray"
-                  size={'lg'}
-                  only="icon"
-                  aria-label="초기화"
-                  onClick={() => {
-                    setDataNone(false);
-                    setLoadingType('type2');
-                  }}
-                >
+                <Button variant="outlined" color="gray" size={'lg'} only="icon" aria-label="초기화">
                   <ResetIcon />
                 </Button>
               </Grow>
@@ -808,7 +798,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
             gap={3}
           >
             {/* 리스트 */}
-            {loadingType !== null ? (
+            {loadingAI !== null ? (
               <div className="relative w-full h-full after:content-[''] after:block after:absolute after:pointer-events-none after:bottom-0 after:left-0 after:w-[100%] after:h-[3.4rem] after:bg-gradient-to-b after:from-transparent after:to-[#F4F4F4] after:z-10">
                 <div className="relative overflow-y-auto w-full h-full gray-scroll">
                   <Gcol
@@ -821,8 +811,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         key={i}
                         className="w-full px-[2.4rem] py-[1.6rem] grid-cols-[1fr_auto] gap-4 place-items-center bg-white rounded-[3.2rem_0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)] min-h-[19.1rem]"
                       >
-                        {loadingType === 'type1' && <AiSpinner size={'10rem'} />}
-                        {loadingType === 'type2' && <AiSpinner size={'10rem'} className="grayscale" />}
+                        <AiSpinner size={'10rem'} />
                       </Grid>
                     ))}
                   </Gcol>
@@ -960,10 +949,9 @@ export function Ltpa02002({ userType }: { userType: string }) {
               </div>
             )}
             {/* 상세 */}
-            {loadingType !== null ? (
+            {loadingAI !== null ? (
               <Gcol className="h-full max-h-[61.5rem]" placement="cc">
-                {loadingType === 'type1' && <PuzzleSpinner />}
-                {loadingType === 'type2' && <PuzzleSpinner />}
+                <PuzzleSpinner />
               </Gcol>
             ) : (
               <Grid
@@ -1079,20 +1067,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
               <ArrowNext size={16} />
             </Button>
             <Ltpa120 />
-          </Grow>
-
-          <Grow className="absolute bottom-0 z-20 bg-white/80 p-1 rounded-t-lg shadow" gap={1} placement="ec">
-            {(['type1', 'type2'] as const).map((t) => (
-              <Button
-                key={t}
-                variant={loadingType === t ? 'contained' : 'outlined'}
-                color={loadingType === t ? 'primary' : 'gray'}
-                size="sm"
-                onClick={() => setLoadingType((prev) => (prev === t ? null : t))}
-              >
-                {t}
-              </Button>
-            ))}
           </Grow>
         </>
       )}
