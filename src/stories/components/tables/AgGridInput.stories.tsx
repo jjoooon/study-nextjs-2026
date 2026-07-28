@@ -57,12 +57,33 @@ const columnDefsWithButton: ColDef<Dummy2DataType>[] = [
     headerName: '코드 (공용 InputWithSearchCellRenderer + Editor)',
     field: 'code',
     flex: 1,
-    cellClass: 'editable-cell',
+    cellClass: 'required editable-cell',
     
     // 🔥 버튼 클릭 시 인풋 편집 활성화 방지 (표준 AG Grid 콜백)
     editable: createEditableCallbackForButton(),
     cellRenderer: InputWithSearchCellRenderer,
     cellEditor: InputWithSearchCellEditor,
+    
+    // 1. 에러 테두리 표시 조건
+    cellClassRules: {
+      'ag-cell-error-border': (params: { value: string | null | undefined }) => {
+        const val = params.value;
+        return val === null || val === undefined || val === '' || (typeof val === 'string' && val.length <= 2);
+      },
+    },
+    
+    // 2. 동적 에러 메시지 툴팁 지정
+    cellStyle: (params) => {
+      const val = params.value;
+      if (val === null || val === undefined || val === '') {
+        return { '--error-msg': '"코드를 검색해 입력해 주세요."' } as Record<string, string>;
+      }
+      if (typeof val === 'string' && val.length <= 2) {
+        return { '--error-msg': '"코드는 3자 이상이어야 합니다."' } as Record<string, string>;
+      }
+      return {};
+    },
+    
     cellRendererParams: {
       onButtonClick: (params: ICellRendererParams<Dummy2DataType>) => {
         alert(`[공용 Renderer] 검색 버튼 클릭: ${params.value ?? '빈 값'}`);
