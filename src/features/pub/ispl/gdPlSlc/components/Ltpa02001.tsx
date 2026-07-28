@@ -669,11 +669,11 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       <Grow className="w-full h-full min-h-0 overflow-hidden" placement="ss" gap={5}>
         <ResizablePanelGroup orientation="horizontal" className="w-full h-full min-h-0">
           <ResizablePanel defaultSize={70}>
-            <TableFold className="h-full">
+            <TableFold className="h-full flex flex-col min-h-0">
               <TableFoldHead title="상품정보" variant="default" />
-              <TableFoldBody className="w-full h-full">
+              <TableFoldBody className="w-full flex-1 min-h-0 relative">
                 <div
-                  className={`tooltip-hidden-toggle w-full h-full ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                  className={`tooltip-hidden-toggle w-full h-full relative ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                 >
                   <AgGridReact<ProductGridRow>
                     getRowId={(params) => getProductRowId(params.data)}
@@ -691,9 +691,9 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
           </ResizablePanel>
           <ResizableHandle />
           <ResizablePanel defaultSize={30}>
-            <ResizablePanelGroup orientation="vertical" className="w-full">
+            <ResizablePanelGroup orientation="vertical" className="w-full h-full min-h-0">
               <ResizablePanel defaultSize={50}>
-                <TableFold className="w-full h-full">
+                <TableFold className="w-full h-full flex flex-col min-h-0">
                   <TableFoldHead
                     title="한화 3N5 더간편건강보험(세만기형)2601종 정보 한화 3N5 더간편건강보험(세만기형)2601종 정보"
                     variant="default"
@@ -703,9 +703,9 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                       <Checkbox>미판매보종</Checkbox>
                     </Grow>
                   </TableFoldHead>
-                  <TableFoldBody className="w-full h-full">
+                  <TableFoldBody className="w-full flex-1 min-h-0 relative">
                     <div
-                      className={`tooltip-hidden-toggle w-full h-full ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                      className={`tooltip-hidden-toggle w-full h-full relative ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                     >
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
@@ -727,6 +727,8 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                   active={active}
                   setActive={setActive}
                   hasTableBelow={true}
+                  className="w-full h-full min-h-0"
+                  contentClass="w-full h-full min-h-0 relative"
                   getValue={(tab) => String(tab.value)}
                   renderTab={(tab) => {
                     return (
@@ -739,7 +741,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                   renderDropdownItem={false}
                 >
                   <div
-                    className={`tooltip-hidden-toggle w-full h-full ag-border-t ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                    className={`tooltip-hidden-toggle w-full h-full relative ag-border-t ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                   >
                     <AgGridReact<DummyDataType3>
                       getRowId={(params) => String(params.data.id)}
