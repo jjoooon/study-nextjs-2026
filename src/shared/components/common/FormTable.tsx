@@ -22,7 +22,7 @@ const FormCellVariants = cva('', {
       primary: 'bg-blue-100 text-blue-900',
       secondary: 'bg-slate-100 text-slate-900',
       light: 'bg-gray-50',
-      none: 'bg-transparent border-0! p-0 [&+td]:border-0!',
+      none: 'bg-transparent border-0! p-0 [&+td]:border-0! [&+td]:border-none!',
       head: 'bg-transparent border-0! p-0 [&+td]:border-0!',
       bottom: 'bg-transparent border-0! p-0 [&+td]:border-0!',
       vertical: false,
