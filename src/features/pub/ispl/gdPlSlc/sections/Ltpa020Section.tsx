@@ -169,7 +169,7 @@ export default function Ltpa020Section() {
               </FormTable>
             </Grow>
           )}
-          <EmpInput empNo={'3999999'} empName={'김한손'} />
+          <EmpInput empNo={'3999999'} empName={'김한손'} readOnly />
         </Grow>
       </LayoutHead>
       <LayoutTemplatePx0
