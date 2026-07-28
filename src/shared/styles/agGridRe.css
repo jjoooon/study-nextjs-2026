@@ -443,7 +443,7 @@
 }
 
 .ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:after {
-  content: '필수 입력 필드입니다.';
+  content: var(--error-msg, '필수 입력 필드입니다.');
   display: flex;
   align-items: center;
   position: absolute;
@@ -464,6 +464,14 @@
     0 0.4rem 0.6rem -0.1rem rgb(0 0 0 / 0.1),
     0 0.2rem 0.4rem -0.2rem rgb(0 0 0 / 0.1);
   /* shadow-md */
+}
+
+/* cellClassRules로 지정하는 메시지 클래스별 content 오버라이딩 */
+.ag-cell.err-msg-empty.ag-cell-inline-editing:after {
+  content: '코드를 입력해 주세요.';
+}
+.ag-cell.err-msg-min-length.ag-cell-inline-editing:after {
+  content: '코드는 3자 이상 입력해야 합니다.';
 }
 
 .ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:before {

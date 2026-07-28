@@ -85,18 +85,22 @@ const columnDefsString: ColDef<Dummy2DataType>[] = [
       return true;
     },
     cellClassRules: {
-      // 저장된 값을 기준으로 실시간 에러 테두리 표시
+      // 실시간 에러 테두리 표시 (입력값이 없거나 2자 이하인 경우)
       'ag-cell-error-border': (params: { value: string | null | undefined }) => {
         const val = params.value;
-        if (val === null || val === undefined) return false;
-        if (Number(val) === 0) return true;
-        if (typeof val === 'string' && val.length <= 2) return true;
-        return false;
+        return val === null || val === undefined || val === '' || (typeof val === 'string' && val.length <= 2);
       },
-      // 에러 메시지용 클래스 추가
-      'has-error-msg': (params: { value: string | null | undefined }) => {
-        return typeof params.value === 'string' && params.value.length <= 2;
-      },
+    },
+    // 🔥 ColDef 안에서 원하는 텍스트 문구를 직접 지정 (타입 에러 완벽 해결)
+    cellStyle: (params) => {
+      const val = params.value;
+      if (val === null || val === undefined || val === '') {
+        return { '--error-msg': '"코드를 입력해 주세요."' } as Record<string, string>;
+      }
+      if (typeof val === 'string' && val.length <= 2) {
+        return { '--error-msg': '"코드는 3자 이상 입력해야 합니다."' } as Record<string, string>;
+      }
+      return {};
     },
   },
 ];
@@ -115,10 +119,6 @@ export const Default: StoryObj = {
     // 코드 컬럼 실시간 에러 체크 및 반영
     const onCellEditingStopped = React.useCallback((params: CellEditingStoppedEvent<Dummy2DataType>) => {
       if (params.colDef.field !== 'code') return;
-      const val = params.value;
-      // 에러 조건: null/undefined 제외, 0 또는 2글자 이하
-      const isError =
-        val !== null && val !== undefined && (Number(val) === 0 || (typeof val === 'string' && val.length <= 2));
       // rowData2를 강제로 갱신하여 cellClassRules가 즉시 반영되게 함
       setRowData2((prev) => [...prev]);
     }, []);
