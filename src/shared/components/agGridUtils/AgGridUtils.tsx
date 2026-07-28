@@ -2283,8 +2283,10 @@ export function suppressClickEditForButton(params: { event?: MouseEvent | Keyboa
  */
 export function InputWithSearchCellRenderer<T = unknown>(params: ICellRendererParams<T>) {
   const onButtonClick = params.colDef?.cellRendererParams?.onButtonClick;
+  const disabled = Boolean(params.colDef?.cellRendererParams?.disabled || params.colDef?.cellRendererParams?.readOnly);
 
   const handleAction = (e: React.SyntheticEvent) => {
+    if (disabled) return;
     e.stopPropagation();
     if (e.nativeEvent) {
       e.nativeEvent.stopImmediatePropagation();
@@ -2303,17 +2305,18 @@ export function InputWithSearchCellRenderer<T = unknown>(params: ICellRendererPa
         only="icon"
         size="md"
         color="gray-light"
+        disabled={disabled}
         onMouseDown={(e) => {
-          handleAction(e); // 마우스다운 시 즉시 실행 및 AG Grid 편집 교체 차단
+          if (!disabled) handleAction(e);
         }}
         onPointerDown={(e) => {
           e.stopPropagation();
         }}
         onClick={(e) => {
-          handleAction(e);
+          if (!disabled) handleAction(e);
         }}
       >
-        <SearchIcon color="var(--color-primary-50)" />
+        <SearchIcon color={disabled ? 'var(--color-gray-40)' : 'var(--color-primary-50)'} />
       </Button>
     </Grow>
   );
@@ -2326,6 +2329,12 @@ export function InputWithSearchCellEditor<T = unknown>(props: CustomCellEditorPr
   const [value, setValue] = React.useState(props.value ?? '');
   const onButtonClick = props.colDef?.cellEditorParams?.onButtonClick;
   const inputProps = props.colDef?.cellEditorParams?.inputProps;
+  const disabled = Boolean(
+    props.colDef?.cellEditorParams?.disabled ||
+    props.colDef?.cellEditorParams?.readOnly ||
+    inputProps?.disabled ||
+    inputProps?.readOnly
+  );
 
   return (
     <Grow className="w-full h-full gap-1" placement="bwc">
@@ -2345,13 +2354,14 @@ export function InputWithSearchCellEditor<T = unknown>(props: CustomCellEditorPr
         only="icon"
         size="md"
         color="gray-light"
+        disabled={disabled}
         onClick={() => {
-          if (typeof onButtonClick === 'function') {
+          if (!disabled && typeof onButtonClick === 'function') {
             onButtonClick(value, props);
           }
         }}
       >
-        <SearchIcon color="var(--color-primary-50)" />
+        <SearchIcon color={disabled ? 'var(--color-gray-40)' : 'var(--color-primary-50)'} />
       </Button>
     </Grow>
   );

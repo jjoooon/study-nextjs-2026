@@ -342,7 +342,7 @@ export function PuzzleSpinner({
   return (
     <div className={`flex flex-col items-center justify-center gap-3 py-2 px-4 ${className ?? ''}`}>
       <div className="shrink-0 flex items-center justify-center">
-        <Image src={AiLoadingPuzzle} alt="" width={36} height={36} className="w-full h-full object-contain" />
+        <Image src={AiLoadingPuzzle} alt="" width={36} height={36} className="w-[3.6rem] h-[3.6rem] object-contain" />
       </div>
       <div className="h-[3rem]">
         <TypingText
