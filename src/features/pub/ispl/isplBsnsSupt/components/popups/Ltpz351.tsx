@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogClose,
 } from '@uiux/Dialog';
+import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
@@ -40,14 +41,21 @@ export type NoticeType = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I';
 
 export interface Ltpz351Props {
   noticeType?: NoticeType;
+  isPayExempt?: boolean;
 }
 
-const Ltpz351 = ({ noticeType = 'B' }: Ltpz351Props) => {
+const Ltpz351 = ({ noticeType = 'B', isPayExempt = true }: Ltpz351Props) => {
   const [selectedNotice, setSelectedNotice] = React.useState<NoticeType>(noticeType);
+
+  const [납입면제, set납입면제] = React.useState(isPayExempt);
 
   React.useEffect(() => {
     setSelectedNotice(noticeType);
   }, [noticeType]);
+
+  React.useEffect(() => {
+    set납입면제(isPayExempt);
+  }, [isPayExempt]);
 
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
@@ -63,30 +71,38 @@ const Ltpz351 = ({ noticeType = 'B' }: Ltpz351Props) => {
         headerName: '성명',
         field: 'field2',
         flex: 1,
-        cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
-        editable: (params) => params.data?.field1 === '계약자',
-        cellRenderer: (_params: ICellRendererParams<DummyDataType>) => (
-          <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-            <Typo>{_params.value}</Typo>
-            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-              <SearchIcon color={'var(--color-primary-50)'} />
-            </Button>
-          </Grid>
-        ),
+        cellClass: 납입면제 ? 'text-center editable-cell' : 'text-center',
+        cellRenderer: (_params: ICellRendererParams<DummyDataType>) =>
+          납입면제 ? (
+            <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center gap-1" placement="cc">
+              <Input
+                size="sm"
+                value={_params.value ?? ''}
+                onChange={(e) => {
+                  _params.node.setDataValue('field2', e.target.value);
+                }}
+              />
+              <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
+                <SearchIcon color={'var(--color-primary-50)'} />
+              </Button>
+            </Grid>
+          ) : (
+            _params.value
+          ),
       },
       {
         headerName: '휴대폰',
         field: 'field3',
         flex: 1,
-        cellClass: (params) => (params.data?.field1 === '계약자' ? 'text-center editable-cell' : 'text-center'),
-        editable: (params) => params.data?.field1 === '계약자',
+        cellClass: 납입면제 ? 'text-center editable-cell' : 'text-center',
+        editable: 납입면제,
         cellEditor: 'agTextCellEditor',
         cellEditorParams: {
           maxLength: 13,
         },
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, 납입면제]
   );
 
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
