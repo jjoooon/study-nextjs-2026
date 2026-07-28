@@ -873,9 +873,6 @@ const Ltpz031 = () => {
                 자동고지(ICIS)
               </Button>
               <Button color={'gray'} size={'xl'} variant={'outlined'}>
-                자동고지(심평원)
-              </Button>
-              <Button color={'gray'} size={'xl'} variant={'outlined'}>
                 질병 가져오기
               </Button>
             </Grow>
