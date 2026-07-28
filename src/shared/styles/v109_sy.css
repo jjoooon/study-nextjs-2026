@@ -696,6 +696,7 @@
   border-left: 0.1rem solid #E5E5E5 !important;
 }
 
+
 .v109 .cp-formtable td {
   border-bottom: 0.1rem solid #E5E5E5 !important;
   padding: 0.4rem 1rem 0.5rem 1rem;
@@ -1166,7 +1167,6 @@
 .v109 button[role='radio'][data-state='checked'] {
   background-color: #fff7f4 !important;
   color: #ff3800 !important;
-  border-color: #ff6135 !important;
   box-shadow: 0 0.1rem 0.1rem 0 rgba(255, 92, 46, 0.19) !important;
 }
 

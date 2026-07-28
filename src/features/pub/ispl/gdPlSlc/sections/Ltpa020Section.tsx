@@ -115,7 +115,7 @@ export default function Ltpa020Section() {
             1) 상품선택/추천설계 탭 전환
             2) 기준일자/판매채널 조건
             3) 계약자 검색 입력 */}
-        <Grow placement={'bwc'} gap={3} className="w-full pt-1 pb-1">
+        <Grow placement={'bwc'} gap={3} className="w-full pt-1 pb-1 ltpa020-tab-group">
           <RadioGroup
             value={tabSelectValue}
             onValueChange={(value) => setTabSelectValue(value)}
@@ -178,7 +178,7 @@ export default function Ltpa020Section() {
             {/* 검색/고객정보 영역
                 - 등록/미등록 모드에 따라 입력 UI가 완전히 분기됨
                 - 고지유형찾기 팝업 호출 버튼 포함 */}
-            <div className="w-full px-[1rem]">
+            <div className="w-full px-[1rem] ltpa020-info">
               <Gcol placement="ss" className="bg-[var(--color-blue-gray-70)] rounded-[0.8rem] p-[1rem]">
                 <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
                   <FormRow className="items-start!">
