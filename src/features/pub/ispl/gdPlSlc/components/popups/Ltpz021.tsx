@@ -495,12 +495,12 @@ const Ltpz021 = ({ open = true, onOpenChange }: Ltpz021Props) => {
                 <FormCell title={'직업'}>
                   <Input value={'(1급)회사 사무직 종사자'} variant="info" readOnly />
                 </FormCell>
-                <FormCell title={'보장분석'}>
+                {/* <FormCell title={'보장분석'}>
                   <Input value={'2026-07-15 진행'} variant="info" readOnly />
                 </FormCell>
                 <FormCell title={'보험금지급 이력정보'}>
                   <Input value={'2026-07-15'} variant="info" readOnly />
-                </FormCell>
+                </FormCell> */}
 
                 <FormCell title={'피보험자'}>
                   <Input value={'41세(1994-02-12) / 여 / 1급'} variant="info" readOnly />
