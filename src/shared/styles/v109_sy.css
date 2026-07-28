@@ -1133,43 +1133,6 @@
   -moz-appearance: textfield !important;
 }
 
-/* Chrome 109 전용 agGrid inner-scroll: 초기 5행(15rem) 노출 + 레이아웃 리사이즈 시 동적 확장 & 스크롤 지원 */
-/* .v109 .inner-scroll,
-.v109 .inner-scroll .ag-root-wrapper,
-.v109 .inner-scroll .ag-root-wrapper-body,
-.v109 .inner-scroll .ag-root {
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 1 auto !important;
-   
-  width: 100% !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
-} */
-
-/* .v109 .ag-theme-alpine.inner-scroll .ag-root-wrapper-body {
-  flex: 1 1 auto !important;
-  height: auto !important;
-  min-height: 0 !important;
-} */
-/* 
-.v109 .ag-theme-alpine.inner-scroll .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll:not([data-row='0']) .ag-root-wrapper-body .ag-body.ag-layout-normal {
-  flex: 1 1 auto !important;
-  height: 15rem !important;
-  min-height: 15rem !important;
-  max-height: 100% !important;
-}
-
-.v109 .inner-scroll .ag-body-viewport,
-.v109 .ag-theme-alpine.inner-scroll .ag-body-viewport {
-  flex: 1 1 auto !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-} */
-
 /* Chrome 109 전용 cp-ag-scroll (수직 스크롤) */
 .v109 .cp-ag-scroll .ag-root-wrapper,
 .v109 .cp-ag-scroll .ag-root-wrapper-body,
