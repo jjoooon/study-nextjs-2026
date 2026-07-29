@@ -1223,3 +1223,98 @@
 .v109 .border-gray-200{
   border-color:var(--color-gray-20);
 }
+
+.v109 .ag-cell-inline-editing .ag-cell-edit-wrapper,
+.v109 .ag-cell-inline-editing .ag-cell-editor,
+.v109 .ag-cell-inline-editing .ag-cell-wrapper,
+.v109 .ag-cell-inline-editing :where(.ag-cell-editor) .ag-input-field-input,
+.v109 .ag-cell-inline-editing :where(.ag-cell-editor) .ag-wrapper {
+  height: 100%;
+  line-height: normal;
+  min-height: 100%;
+  width: 100%;
+}
+
+/* Chrome 109 전용 AG Grid Row Drag (드래그 그립 아이콘) 호환 보정 */
+.v109 .ag-row-drag,
+.v109 .ag-icon-grip,
+.v109 .cp-ag-icon-grip .ag-row-drag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  min-height: 1.6rem;
+  margin-right: 0.4rem;
+  opacity: 1;
+  visibility: visible;
+}
+
+.v109 .ag-icon-grip::before,
+.v109 .ag-row-drag .ag-icon-grip::before,
+.v109 .ag-row-drag::before,
+.v109 .cp-ag-icon-grip .ag-row-drag::before,
+.v109 .cp-ag-icon-grip .ag-row-drag .ag-icon::before {
+  content: '';
+  display: inline-block;
+  width: 1.6rem;
+  height: 1.6rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='5' cy='4' r='1.25' fill='%23545454'/%3E%3Ccircle cx='11' cy='4' r='1.25' fill='%23545454'/%3E%3Ccircle cx='5' cy='8' r='1.25' fill='%23545454'/%3E%3Ccircle cx='11' cy='8' r='1.25' fill='%23545454'/%3E%3Ccircle cx='5' cy='12' r='1.25' fill='%23545454'/%3E%3Ccircle cx='11' cy='12' r='1.25' fill='%23545454'/%3E%3C/svg%3E");
+  background-position: center;
+  background-size: 1.6rem 1.6rem;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  -webkit-mask-image: none;
+  mask-image: none;
+  opacity: 1;
+  filter: none;
+}
+
+/* Chrome 109 전용 AG Grid Row Drag Ghost (드래그 중 생성되는 플로팅 툴팁) 보정 */
+.ag-dnd-ghost,
+.v109 .ag-dnd-ghost,
+html.v109 .ag-dnd-ghost {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ag-dnd-ghost-icon,
+.ag-dnd-ghost .ag-icon,
+.v109 .ag-dnd-ghost-icon,
+.v109 .ag-dnd-ghost .ag-icon,
+html.v109 .ag-dnd-ghost-icon,
+html.v109 .ag-dnd-ghost .ag-icon {
+  background-color: transparent !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='5' cy='4' r='1.25' fill='%23545454'/%3E%3Ccircle cx='11' cy='4' r='1.25' fill='%23545454'/%3E%3Ccircle cx='5' cy='8' r='1.25' fill='%23545454'/%3E%3Ccircle cx='11' cy='8' r='1.25' fill='%23545454'/%3E%3Ccircle cx='5' cy='12' r='1.25' fill='%23545454'/%3E%3Ccircle cx='11' cy='12' r='1.25' fill='%23545454'/%3E%3C/svg%3E") !important;
+  background-position: center !important;
+  background-size: 1.6rem 1.6rem !important;
+  background-repeat: no-repeat !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+}
+
+.ag-dnd-ghost-icon::before,
+.ag-dnd-ghost .ag-icon::before,
+.v109 .ag-dnd-ghost-icon::before,
+.v109 .ag-dnd-ghost .ag-icon::before,
+html.v109 .ag-dnd-ghost-icon::before,
+html.v109 .ag-dnd-ghost .ag-icon::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='5' cy='4' r='1.25' fill='%23545454'/%3E%3Ccircle cx='11' cy='4' r='1.25' fill='%23545454'/%3E%3Ccircle cx='5' cy='8' r='1.25' fill='%23545454'/%3E%3Ccircle cx='11' cy='8' r='1.25' fill='%23545454'/%3E%3Ccircle cx='5' cy='12' r='1.25' fill='%23545454'/%3E%3Ccircle cx='11' cy='12' r='1.25' fill='%23545454'/%3E%3C/svg%3E") !important;
+  background-position: center !important;
+  background-size: 1.6rem 1.6rem !important;
+  background-repeat: no-repeat !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  background-color: transparent !important;
+}
+
+
+
