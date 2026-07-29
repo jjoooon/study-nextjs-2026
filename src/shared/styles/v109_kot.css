@@ -438,45 +438,6 @@
   pointer-events: none;
 }
 
-/* focus-visible 상태 호환 */
-.v109 [class*="focus-visible:ring-offset-2"]:focus-visible,
-.v109 .focus-visible\:ring-offset-2:focus-visible {
-  --tw-ring-offset-width: 2px;
-}
-.v109 [class*="focus-visible:ring-[var(--color-primary-60)]"]:focus-visible,
-.v109 .focus-visible\:ring-\[var\(--color-primary-60\)\]:focus-visible {
-  outline: 0.2rem solid var(--color-primary-60);
-  outline-offset: 0.1rem;
-}
-.v109 [class*="focus-visible:ring-2"]:focus-visible,
-.v109 .focus-visible\:ring-2:focus-visible {
-  outline: 0.2rem solid var(--color-primary-50);
-}
-.v109 [class*="focus-visible:ring-[0.3rem]"]:focus-visible,
-.v109 .focus-visible\:ring-\[0\.3rem\]:focus-visible {
-  outline: 0.3rem solid var(--color-primary-50);
-}
-.v109 [class*="placeholder:text-[var(--color-gray-30)]"]::-webkit-input-placeholder,
-.v109 [class*="placeholder:text-[var(--color-gray-30)]"]::placeholder,
-.v109 .placeholder\:text-\[var\(--color-gray-30\)\]::-webkit-input-placeholder,
-.v109 .placeholder\:text-\[var\(--color-gray-30\)\]::placeholder {
-  color: var(--color-gray-30);
-}
-.v109 [class*="focus-visible:ring-[var(--color-gray-5)]"]:focus-visible {
-  outline: 0.2rem solid var(--color-gray-5);
-  outline-offset: 0.1rem;
-}
-.v109 [class*="focus-visible:border-[var(--color-gray-0)]"]:focus-visible,
-.v109 .focus-visible\:border-\[var\(--color-gray-0\)\]:focus-visible {
-  border-color: var(--color-gray-0);
-}
-.v109 [class*="focus-visible:border-[var(--color-gray-100)]"]:focus-visible {
-  border-color: var(--color-gray-100);
-}
-.v109 [class*="focus-visible:border-dashed"]:focus-visible,
-.v109 .focus-visible\:border-dashed:focus-visible {
-  border-style: dashed;
-}
 
 /* hover 상태 호환 */
 .v109 [class*="hover:bg-[var(--color-primary-60)]"]:hover,
@@ -1036,5 +997,66 @@
 .v109 [class*="grid-cols-[30rem_1fr]"] .ag-theme-alpine {
   height: 30.8rem;
   min-height: 30.8rem;
+}
+
+/* ----------------------------------------------------
+ * Chrome 109 전용 [&>p_b]:* 및 [&>h3]:* 유틸리티 호환 스타일
+ * ---------------------------------------------------- */
+.v109 [class*="[&>p_b]:text-[var(--color-primary-50)]"] > p b,
+.v109 [class*="[&>p>b]:text-[var(--color-primary-50)]"] > p b,
+.v109 .\[\&\>p_b\]\:text-\[var\(--color-primary-50\)\] > p b {
+  color: var(--color-primary-50);
+}
+
+.v109 [class*="[&>p_b]:font-bold"] > p b,
+.v109 [class*="[&>p>b]:font-bold"] > p b,
+.v109 .\[\&\>p_b\]\:font-bold > p b {
+  font-weight: bold;
+  font-variation-settings: 'wght' 700;
+}
+
+.v109 [class*="[&>h3]:font-bold"] > h3,
+.v109 .\[\&\>h3\]\:font-bold > h3 {
+  font-weight: bold;
+  font-variation-settings: 'wght' 700;
+}
+
+.v109 [class*="[&>h3]:text-center"] > h3,
+.v109 .\[\&\>h3\]\:text-center > h3 {
+  text-align: center;
+}
+
+.v109 [class*="[&>h3]:w-full"] > h3,
+.v109 .\[\&\>h3\]\:w-full > h3 {
+  width: 100%;
+}
+
+.v109 [class*="[&_input]:text-left!"] input,
+.v109 [class*="[&_input]:text-left"] input,
+.v109 .\[\&_input\]\:text-left\! input {
+  text-align: left !important;
+}
+
+/* ----------------------------------------------------
+ * Chrome 109 전용 Ltpz094 질병 상세내용 팝업 그리드 고정 높이 및 스크롤 생성 스타일
+ * ---------------------------------------------------- */
+.v109 [class*="min-h-100"].ag-theme-alpine,
+.v109 .ag-theme-alpine[class*="h-[25rem]"] {
+  height: 25rem;
+  min-height: 25rem;
+}
+
+.v109 [class*="[&>li_em]:text-[var(--color-danger-50)]"] > li em,
+.v109 [class*="[&>li>em]:text-[var(--color-danger-50)]"] > li em,
+.v109 .\[\&\>li_em\]\:text-\[var\(--color-danger-50\)\] > li em {
+  color: var(--color-danger-50);
+}
+
+.v109 [class*="[&>li_em]:not-italic!"] > li em,
+.v109 [class*="[&>li>em]:not-italic!"] > li em,
+.v109 [class*="[&>li_em]:not-italic"] > li em,
+.v109 [class*="[&>li>em]:not-italic"] > li em,
+.v109 .\[\&\>li_em\]\:not-italic\! > li em {
+  font-style: normal !important;
 }
 
