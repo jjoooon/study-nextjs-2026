@@ -86,7 +86,7 @@ export const dummyDataA: DummyDataType[] = [
     isSelectedInsuredAmount: false,
     field4: 10,
     field5: '100세만기',
-    isEditedField5: false,sp
+    isEditedField5: false,
     field6: '20년납',
     isEditedField6: false,
     field7: 247,
