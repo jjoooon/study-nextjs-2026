@@ -221,7 +221,7 @@ export default function Ltpa670Section() {
         field: 'field5',
         flex: 1,
         minWidth: attributeColumnWidth(80),
-        cellClass: 'px-[0.2rem]! editable-cell',
+        cellClass: 'px-[0.2rem]! editable-cell [&>div>span]:px-0!',
         editable: true,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: {
