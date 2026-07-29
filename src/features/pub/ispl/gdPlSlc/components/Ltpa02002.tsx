@@ -798,7 +798,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
             gap={3}
           >
             {/* 리스트 */}
-            {loadingAI !== null ? (
+            {loadingAI ? (
               <div className="relative w-full h-full after:content-[''] after:block after:absolute after:pointer-events-none after:bottom-0 after:left-0 after:w-[100%] after:h-[3.4rem] after:bg-gradient-to-b after:from-transparent after:to-[#F4F4F4] after:z-10">
                 <div className="relative overflow-y-auto w-full h-full gray-scroll">
                   <Gcol
@@ -949,7 +949,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
               </div>
             )}
             {/* 상세 */}
-            {loadingAI !== null ? (
+            {loadingAI ? (
               <Gcol className="h-full max-h-[61.5rem]" placement="cc">
                 <PuzzleSpinner />
               </Gcol>
