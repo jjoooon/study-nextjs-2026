@@ -950,12 +950,12 @@ export function Ltpa02002({ userType }: { userType: string }) {
             )}
             {/* 상세 */}
             {loadingAI ? (
-              <Gcol className="h-full max-h-[61.5rem]" placement="cc">
+              <Gcol className="h-full max-h-[59.6rem]" placement="cc">
                 <PuzzleSpinner />
               </Gcol>
             ) : (
               <Grid
-                className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr_auto] max-h-[60rem]"
+                className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr_auto] max-h-[59.6rem]"
                 gap={0}
               >
                 <Gcol
