@@ -345,7 +345,7 @@ export default function Ltpa060Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '외부정보클렌징 결과 조회(사고력요약)',
+            pageName: '고지대상 조회 및 입력',
             pageId: 'LTPA060',
           }}
         />
@@ -362,8 +362,8 @@ export default function Ltpa060Section() {
                     <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
                   </FormCell>
                   <FormCell title={'전문호출기간'}>
-                    <Input aria-label="전문호출기간 시작일" width={90} value={'2026-03-01'} readOnly />-
-                    <Input aria-label="전문호출기간 종료일" width={90} value={'2026-03-01'} readOnly />
+                    <Input aria-label="전문호출기간" width={40} value={5} readOnly align="center" />
+                    <Typo>년</Typo>
                   </FormCell>
                   <FormCell title={'최종적재일'}>
                     <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />

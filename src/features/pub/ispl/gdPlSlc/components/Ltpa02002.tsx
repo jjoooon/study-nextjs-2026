@@ -365,7 +365,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
     const timer = setTimeout(() => {
       setDataList(dummyDataList);
       setLoadingAI(false);
-    }, 300000);
+    }, 3000);
 
     return () => {
       clearTimeout(timer);
@@ -798,7 +798,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
             gap={3}
           >
             {/* 리스트 */}
-            {loadingAI !== null ? (
+            {loadingAI ? (
               <div className="relative w-full h-full after:content-[''] after:block after:absolute after:pointer-events-none after:bottom-0 after:left-0 after:w-[100%] after:h-[3.4rem] after:bg-gradient-to-b after:from-transparent after:to-[#F4F4F4] after:z-10">
                 <div className="relative overflow-y-auto w-full h-full gray-scroll">
                   <Gcol
@@ -949,13 +949,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
               </div>
             )}
             {/* 상세 */}
-            {loadingAI !== null ? (
-              <Gcol className="h-full max-h-[61.5rem]" placement="cc">
+            {loadingAI ? (
+              <Gcol className="h-full max-h-[59.6rem]" placement="cc">
                 <PuzzleSpinner />
               </Gcol>
             ) : (
               <Grid
-                className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr_auto] max-h-[60rem]"
+                className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr_auto] max-h-[59.6rem]"
                 gap={0}
               >
                 <Gcol
