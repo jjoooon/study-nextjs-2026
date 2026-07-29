@@ -1306,13 +1306,18 @@
   background-color: transparent !important;
 }
 
-.v109 .\[\&\[data-visible\=true\]\]\:\[animation\:sonner-toast-in_220ms_ease-out\][data-visible="true"] {
-  animation: sonner-toast-in 220ms ease-out;
+
+/* Chrome 109 전용 Sonner 토스트 등장/퇴장 애니메이션 지원 */
+.v109 [data-sonner-toast][data-visible="true"],
+.v109 .cp-sonner [data-sonner-toast][data-visible="true"] {
+  animation: sonner-toast-in 220ms ease-out !important;
 }
 
-.v109 .\[\&\[data-removed\=true\]\]\:\[animation\:sonner-toast-out_180ms_ease-in_forwards\][data-removed="true"] {
-  animation: sonner-toast-out 180ms ease-in forwards;
+.v109 [data-sonner-toast][data-removed="true"],
+.v109 .cp-sonner [data-sonner-toast][data-removed="true"] {
+  animation: sonner-toast-out 180ms ease-in forwards !important;
 }
+
 
 .v109 .group.toaster .group-\[\.toaster\]\:shadow-lg {
   --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
@@ -1335,7 +1340,69 @@
   background-color: var(--color-information-5);
 }
 
+/* Chrome 109 전용 Sonner 3D 스택 덱 & 확장 모드 호환 스타일 */
 
+.v109 .cp-sonner [data-sonner-toast] {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 32.6rem !important;
+  width: 100% !important;
+  max-width: 50rem !important;
+  background-color: var(--color-information-5, #eef7ff) !important;
+  border: 0.1rem solid var(--color-information-50, #006ff2) !important;
+  border-radius: 0.8rem !important;
+  padding: 0.8rem 4rem 0.8rem 1rem !important;
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.v109 .cp-sonner [data-close-button] {
+  position: absolute !important;
+  top: 50% !important;
+  bottom: 0 !important;
+  right: 1.5rem !important;
+  left: auto !important;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  -webkit-transform: none !important;
+  transform: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--color-information-50, #006ff2) !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  line-height: 1 !important;
+}
+
+.v109 .cp-sonner [data-close-button] svg {
+  display: block !important;
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+  margin: auto !important;
+}
+
+.v109 .cp-sonner [data-icon] {
+  margin-left: 0 !important;
+  margin-right: 0.8rem !important;
+  margin-top: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.v109 .cp-sonner [data-content] {
+  font-size: 1.4rem !important;
+  color: var(--color-gray-90, #1e2124) !important;
+  letter-spacing: -0.06rem !important;
+}
 
 
 
