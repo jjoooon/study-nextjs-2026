@@ -17,3 +17,45 @@
 .v109 .ag-header-row:not(:first-child) .ag-header-group-cell.ag-header-group-cell-with-group {
   border-top: 0.1rem solid var(--color-gray-10) !important;
 }
+.v109 .ag-header-group-cell {
+  justify-content: center;
+}
+
+/* agGrid form edit style */
+.v109 .ag-cell > span,
+.v109 .editor-select > span {
+  padding-right: 0;
+}
+
+.v109 .ag-cell > button {
+  justify-content: center;
+}
+
+/* AI 챗봇 팝업 (Ltpa120) 닫기/최소화 버튼 Chrome 109 호환 스타일 */
+.v109 .ai-chatbot [data-slot="dialog-close"] > svg {
+  width: 1.4rem !important;
+  height: 1.4rem !important;
+}
+
+.v109 .ai-chatbot [data-slot="dialog-close"] > svg path {
+  fill: #ffffff !important;
+}
+
+.v109 .ai-chatbot button > span {
+  background-color: var(--color-gray-0) !important;
+  border-color: var(--color-gray-0) !important;
+}
+
+/* agGrid number 타입 input 스핀 버튼(상하 화살표) 숨김 */
+.v109 .ag-input-field-input[type='number']::-webkit-outer-spin-button,
+.v109 .ag-input-field-input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+/* 일반 input 및 AG Grid input 포커스 배경색 호환 스타일 */
+.v109 input:focus,
+.v109 .cp-input input:focus,
+.v109 .ag-input-field-input:focus {
+  background-color: #fff;
+}
