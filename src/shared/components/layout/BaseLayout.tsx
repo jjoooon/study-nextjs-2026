@@ -41,7 +41,7 @@ export const LayoutBody = ({ children, className, ...rest }: LayoutProps) => {
   return (
     <div
       data-layout="body"
-      className={cn('relative grid grid-cols-[auto_1fr] pr-[1rem] pt-[.4rem] gap-3', className)}
+      className={cn('relative grid grid-cols-[auto_1fr] pr-[1rem] pt-[.4rem] gap-3 overflow-auto', className)}
       {...rest}
     >
       {children}
@@ -62,7 +62,10 @@ export const LayoutProcess = ({ children, className }: LayoutProps) => {
   // 좌측 프로세스(스텝바) 영역
   // - 최소 너비를 유지해 단계 UI가 줄바꿈되지 않도록 한다.
   return (
-    <div data-layout="process" className={cn('relative grid grid-cols-[1fr] min-w-[4rem]', className)}>
+    <div
+      data-layout="process"
+      className={cn('relative grid grid-cols-[1fr] min-w-[4rem] sticky left-0 z-10', className)}
+    >
       {children}
     </div>
   );
@@ -107,7 +110,7 @@ export const LayoutFolderFoot = ({ children, className }: LayoutProps) => {
 // 메인 영역 래퍼
 export const LayoutMain = ({ children, className }: LayoutProps) => {
   return (
-    <main data-layout="main" className={cn('relative', className)}>
+    <main data-layout="main" className={cn('relative overflow-auto', className)}>
       {children}
     </main>
   );

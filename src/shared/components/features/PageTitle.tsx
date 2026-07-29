@@ -4,6 +4,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useFixedZoomStyle } from '@/shared/hooks/useZoomScale';
 import { FormItem, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { ViewMode } from '@common/ViewMode';
@@ -42,7 +43,7 @@ export function PageTitle({ data }: PageTitleProps) {
   const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
 
   return (
-    <Grow placement={'bwc'} gap={3} className="w-full py-1">
+    <Grow placement={'bwc'} gap={3} className="w-full py-1 flex-wrap">
       {/* 좌측 영역: 화면의 대표 제목을 표시한다. */}
       <Grow className="gap-[.8rem] flex-1" placement={'sc'}>
         <Typo tag={'h2'} variant={'heading-lg'}>
@@ -102,11 +103,8 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
   // 계약자명 역시 화면 내 편집이 가능하므로 로컬 상태로 관리한다.
   const [contractHolder, setContractHolder] = useState<string>(safeData.contractHolder ?? '');
 
-  // 설계번호 콤보에서 사용하는 옵션 목록을 UI 형태에 맞게 변환한다.
-  // 각 옵션은 단순 문자열이 아니라 여러 컬럼을 가진 행 형태로 렌더링된다.
-
   return (
-    <Grow placement="bwc" className="w-full py-1 gap-1.5 overflow-x-auto">
+    <Grow placement="bwc" className="w-full py-1 gap-1.5 flex-wrap">
       {/* 좌측 영역: 보기 모드 전환, 제목, 플랜 선택 드롭다운을 배치한다. */}
       <Grow className="gap-2 flex-1" placement="sc">
         {/* 간편/상세 모드를 토글하는 UI. 실제 상태값은 controlled/uncontrolled 정책에 따라 결정된다. */}
