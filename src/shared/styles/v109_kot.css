@@ -188,27 +188,6 @@
   padding: 0;
 }
 
-
-/* cols={['w-1', 'w-1', ...]} 가 적용된 FormTable 의 모든 th(라벨) 셀 축소 및 셀 간격 0.8rem 지정 */
-.v109 col.w-1 {
-  width: 0.25rem;
-}
-
-.v109 .cp-formtable:has(col.w-1) tbody tr > th,
-.v109 .cp-formtable[data-variant="none"] tbody tr > th {
-  width: 0.4rem;
-  white-space: nowrap;
-  padding-right: 2.4rem;
-}
-
-/* w-1 + w-1 간격 (td 다음 th 또는 td 다음 td의 왼쪽 패딩) 0.8rem으로 통일 */
-.v109 .cp-formtable:has(col.w-1) tbody tr > td + th,
-.v109 .cp-formtable[data-variant="none"] tbody tr > td + th,
-.v109 .cp-formtable:has(col.w-1) tbody tr > td + td,
-.v109 .cp-formtable[data-variant="none"] tbody tr > td + td {
-  padding-left: 2.4rem;
-}
-
 /* ----------------------------------------------------
  * Chrome 109 전용 Typo indentStyle 호환 스타일
  * ---------------------------------------------------- */
@@ -1060,3 +1039,187 @@
   font-style: normal !important;
 }
 
+/* 1. header col ref 마진 설정 */
+.v109 :where(.ag-ltr) :where(.ag-header-cell:not(.ag-right-aligned-header)) .ag-header-col-ref {
+  margin-right: var(--ag-spacing);
+}
+
+/* 2. header label & menu icon 마진 설정 */
+.v109 :where(.ag-ltr) :where(.ag-header-cell:not(.ag-right-aligned-header)) .ag-header-label-icon,
+.v109 :where(.ag-ltr) :where(.ag-header-cell:not(.ag-right-aligned-header)) .ag-header-menu-icon {
+  margin-left: var(--ag-spacing);
+}
+
+/* 3. header col ref 텍스트 색상 설정 */
+.v109 :where(.ag-header-cell:not(.ag-right-aligned-header)) .ag-header-col-ref {
+  color: var(--ag-subtle-text-color);
+}
+
+/*040 테이블 보더 적용*/
+.v109 .ag-header-row:where(:not(:first-child)) :where(.ag-header-cell:not(.ag-header-span-height.ag-header-span-total,.ag-header-parent-hidden)),
+.v109 .ag-header-row:where(:not(:first-child)) :where(.ag-header-group-cell.ag-header-group-cell-with-group) {
+  border-top: 1px solid var(--color-gray-10) !important;
+}
+
+.v109 .data-\[state\=checked\]\:bg-\[\#414141\][data-state="checked"] {
+  background-color: #414141;
+}
+
+.v109 .data-\[state\=checked\]\:border-\[\#414141\][data-state="checked"] {
+  border-color: #414141;
+}
+
+.v109 .\[\&_dl\>div\]\:gap-0\! dl > div {
+  gap: var(--spacing-0) !important;
+}
+
+.v109 .\[\&_dl\>div\]\:flex-col dl > div {
+  flex-direction: column;
+}
+
+.v109 .\[\&_dl\>div\]\:w-full dl > div {
+  width: 100%;
+}
+
+.v109 .\[\&_dl\+dl\]\:mt-0\! dl + dl {
+  margin-top: var(--spacing-0) !important;
+}
+
+.v109 .\[\&_dl_dt_span\]\:text-\[\#000\] dl dt span {
+  color: #000;
+}
+
+.v109 .\[\&_dl_dt\]\:p-2 dl dt {
+  padding: var(--spacing-2);
+}
+
+.v109 .\[\&_dl_dt\]\:bg-\[var\(--color-gray-5\)\] dl dt {
+  background-color: var(--color-gray-5);
+}
+
+.v109 .\[\&_dl_dt\]\:border-b-\[var\(--color-gray-10\)\] dl dt {
+  border-bottom-color: var(--color-gray-10);
+}
+
+.v109 .\[\&_dl_dt\]\:border-b dl dt {
+  border-bottom-style: var(--tw-border-style);
+  border-bottom-width: 1px;
+}
+
+.v109 .\[\&_dl_dt\]\:w-full dl dt {
+  width: 100%;
+}
+
+.v109 .\[\&_dl_dd\]\:p-2 dl dd {
+  padding: var(--spacing-2);
+}
+
+.v109 .\[\&_dl_dd\]\:border-b-\[var\(--color-gray-10\)\] dl dd {
+  border-bottom-color: var(--color-gray-10);
+}
+
+.v109 .\[\&_dl_dd\]\:border-b dl dd {
+  border-bottom-style: var(--tw-border-style);
+  border-bottom-width: 1px;
+}
+
+.v109 .\[\&_dl_dd\]\:w-full dl dd {
+  width: 100%;
+}
+
+.v109 .\[\&_dl\]\:border-t-\[var\(--color-gray-100\)\] dl {
+  border-top-color: var(--color-gray-100);
+}
+
+.v109 .\[\&_dl\]\:w-full dl {
+  width: 100%;
+}
+
+.v109 .disabled\:opacity-50:disabled {
+  opacity: 50%;
+}
+
+.v109 .disabled\:cursor-not-allowed:disabled {
+  cursor: not-allowed;
+}
+
+.v109 .focus-visible\:ring-\[0\.3rem\]:focus-visible {
+  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(0.3rem + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+.v109 .placeholder\:text-\[var\(--color-gray-30\)\]::placeholder {
+  color: var(--color-gray-30);
+}
+
+
+/* Chrome 109 전용 cp-ag-scroll (수직 스크롤) */
+.v109 .cp-ag-scroll .ag-root-wrapper,
+.v109 .cp-ag-scroll .ag-root-wrapper-body,
+.v109 .cp-ag-scroll .ag-root {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.v109 .cp-ag-scroll .ag-body,
+.v109 .cp-ag-scroll .ag-body.ag-layout-normal,
+.v109 .cp-ag-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 33rem !important;
+  min-height: 33rem !important;
+  max-height: 33rem !important;
+}
+
+.v109 .cp-ag-scroll .ag-body-viewport {
+  flex: 1 1 0% !important;
+  height: 100% !important;
+  max-height: 33rem !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Chrome 109 전용 Ltpa680Section 및 공통 레이아웃 스크롤 처리 */
+.v109 [data-layout="main"] {
+  height: 100% !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+}
+
+.v109 [data-layout="main-body"] {
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.v109 [data-layout="scroll-wrap"] {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.v109 [data-layout="scroll-item"] {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.v109 [data-panel-group],
+.v109 [data-panel] {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+.v109 [data-panel] {
+  overflow-y: auto !important;
+}
+
+.v109 .border-gray-200{
+  border-color:var(--color-gray-20);
+}

@@ -1489,7 +1489,7 @@ export default function Ltpa680Section() {
                                       resize="y"
                                       value={considerText1}
                                       readOnly={!isConsiderEditMode}
-                                      className="h-40 w-full "
+                                      className="!h-40 w-full "
                                       onChange={(e) => isConsiderEditMode && setConsiderText1(e.target.value)}
                                     />
                                   </TableCell>
@@ -1509,7 +1509,7 @@ export default function Ltpa680Section() {
                                       resize="y"
                                       value={considerText2}
                                       readOnly={!isConsiderEditMode}
-                                      className="h-40"
+                                      className="!h-40"
                                       onChange={(e) => isConsiderEditMode && setConsiderText2(e.target.value)}
                                     />
                                   </TableCell>
