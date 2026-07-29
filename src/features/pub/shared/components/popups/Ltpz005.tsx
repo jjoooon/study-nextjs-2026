@@ -81,11 +81,7 @@ const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Lt
               <Gcol placement="ss">
                 <Grow>
                   <Typo tag="strong" variant={'body-lg'}>
-                    한화 시그니처 여성간편건강보험4.0 2604
-                  </Typo>
-                  <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
-                  <Typo tag="span" variant={'body-lg'} color={'gray'}>
-                    납입면제 미운영형
+                    한화 더 경증 간편건강보험Ⅱ(세만기형) 2604
                   </Typo>
                   <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
@@ -93,16 +89,12 @@ const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Lt
                   </Typo>
                   <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
-                    3N5간편고지형
+                    간편고지형
                   </Typo>
                 </Grow>
                 <Grow>
                   <Typo tag="span" variant={'body-lg'} color={'gray'}>
-                    9형(3.10.5간편고지형(고혈압및당뇨추가고지))(올케어플랜)(6~9형)(15-80세)
-                  </Typo>
-                  <Divider variant={'dot'} className="w-[0.3rem] h-[0.3rem] bg-[#6B7280] rounded-full" />
-                  <Typo tag="span" variant={'body-lg'} color={'gray'}>
-                    고지유형
+                    9형(365간편고지형)(올인원플랜)(5~12형)(15-80세)
                   </Typo>
                 </Grow>
               </Gcol>

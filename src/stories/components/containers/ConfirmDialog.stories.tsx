@@ -140,7 +140,14 @@ import { Button } from '@uiux/Button';
                   <ConfirmDialog
                     defaultOpen={false}
                     title="변경사항 저장"
-                    description="작성 중인 내용을 저장하시겠습니까?"
+                     description={
+                      <div className="flex flex-col gap-2">
+                        <span className="font-bold text-[var(--color-danger-50)]">
+                          ⚠️ 경고: 데이터가 영구적으로 삭제됩니다.
+                        </span>
+                        <span>정말 이 항목을 삭제하시겠습니까?</span>
+                      </div>
+                    }
                     confirmLabel="저장"
                     cancelLabel="닫기"
                     tone="info"

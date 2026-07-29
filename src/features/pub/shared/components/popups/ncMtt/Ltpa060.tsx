@@ -28,25 +28,6 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 
-type LTPZ060TabType = {
-  name: string;
-  value: string;
-  label: string;
-};
-
-const DATA_TABS: LTPZ060TabType[] = [
-  {
-    name: '자동고지(ICIS)',
-    value: 'TAB1',
-    label: '자동고지(ICIS)',
-  },
-  {
-    name: '자동고지(심평원)',
-    value: 'TAB2',
-    label: '자동고지(심평원)',
-  },
-];
-
 type DummyDataType = {
   id: number;
   isChecked: boolean;
@@ -278,7 +259,6 @@ export const Ltpa060 = () => {
       ),
     },
   ];
-
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
       headerName: '대표질병코드',
@@ -345,8 +325,6 @@ export const Ltpa060 = () => {
     },
   ];
 
-  const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
@@ -361,212 +339,85 @@ export const Ltpa060 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr_1fr] gap-5">
-          <TabPager
-            data={tabs}
-            active={active}
-            setActive={setActive}
-            removable={false}
-            onRemove={handleRemove}
-            visibleCount={4}
-            variant="default"
-            hasTableBelow={true}
-            error={false}
-            errorMsg="에러 메시지 예시"
-            getValue={(tab) => String(tab.value)}
-            renderTab={(tab) => <span>{tab.label}</span>}
-            renderDropdownItem={false}
-          >
-            {active === 'TAB1' ? (
-              <>
-                <Gcol placement="ss" className="w-full pt-3" gap={3}>
-                  <Grow className="w-full" variant="box-round">
-                    <FormTable variant={'head'} lineTop={false} caption="">
-                      <FormRow>
-                        <FormCell title={'FP정보제공동의(유효일자)'}>
-                          <Input aria-label="FP정보제공동의 유효일자" width={100} value={'2026-03-01'} readOnly />
-                        </FormCell>
-                        <FormCell title={'전문호출기간'}>
-                          <Input aria-label="전문호출기간 시작일" width={100} value={'2026-03-01'} readOnly />-
-                          <Input aria-label="전문호출기간 종료일" width={100} value={'2026-03-01'} readOnly />
-                        </FormCell>
-                        <FormCell title={'최종적재일'}>
-                          <Input aria-label="최종적재일" width={100} value={'2026-03-01'} readOnly />
-                        </FormCell>
-                      </FormRow>
-                    </FormTable>
-                  </Grow>
-                  <Gcol placement="ss" className="w-full pt-2" gap={3}>
-                    <TableFold>
-                      <TableFoldHead title="필수고지"></TableFoldHead>
-                      <TableFoldBody>
-                        <div className="ag-theme-alpine min-h-[18.5rem]">
-                          <AgGridReact<DummyDataType>
-                            getRowId={(params) => String(params.data.id)}
-                            rowData={rowData}
-                            columnDefs={columnDefs}
-                            selectionColumnDef={{
-                              width: 30,
-                            }}
-                            noRowsOverlayComponent={AgGridEmptyComponent}
-                            defaultColDef={{
-                              sortable: true,
-                              resizable: true,
-                            }}
-                            rowSelection={{
-                              mode: 'multiRow',
-                              isRowSelectable: (node) => node.data?.field8 !== '고지',
-                              checkboxes: true,
-                              hideDisabledCheckboxes: false,
-                              enableClickSelection: false,
-                            }}
-                            domLayout="normal"
-                            alwaysShowVerticalScroll={true}
-                          />
-                        </div>
-                      </TableFoldBody>
-                    </TableFold>
-                    <TableFold>
-                      <TableFoldHead title="고지확인대상"></TableFoldHead>
-                      <TableFoldBody>
-                        <div className="ag-theme-alpine min-h-[18.5rem]">
-                          <AgGridReact<DummyDataType2>
-                            getRowId={(params) => String(params.data.id)}
-                            rowData={rowData2}
-                            columnDefs={columnDefs2}
-                            selectionColumnDef={{
-                              width: 30,
-                            }}
-                            noRowsOverlayComponent={AgGridEmptyComponent}
-                            defaultColDef={{
-                              sortable: true,
-                              resizable: true,
-                            }}
-                            rowSelection={{
-                              mode: 'multiRow',
-                              isRowSelectable: (node) => node.data?.field8 !== '고지',
-                              checkboxes: true,
-                              hideDisabledCheckboxes: false,
-                              enableClickSelection: false,
-                            }}
-                            domLayout="normal"
-                            alwaysShowVerticalScroll={true}
-                          />
-                        </div>
-                      </TableFoldBody>
-                    </TableFold>
-                  </Gcol>
-                </Gcol>
-              </>
-            ) : (
-              <Gcol placement="ss" className="w-full h-full pt-3" gap={3}>
-                <Grow className="w-full" variant="box-round">
-                  <FormTable variant={'head'} lineTop={false} caption="">
-                    <FormRow>
-                      <FormCell title={'정보제공동의(유효일자)'}>
-                        <Input aria-label="FP정보제공동의 유효일자" width={100} value={'2026-03-01'} readOnly />
-                      </FormCell>
-                      <FormCell title={'전문호출기간'}>
-                        <Input aria-label="전문호출기간 시작일" width={100} value={'2026-03-01'} readOnly />-
-                        <Input aria-label="전문호출기간 종료일" width={100} value={'2026-03-01'} readOnly />
-                      </FormCell>
-                      <FormCell title={'최종적재일'}>
-                        <Input aria-label="최종적재일" width={100} value={'2026-03-01'} readOnly />
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
-                </Grow>
-                <TableFold>
-                  <TableFoldHead title="필수고지"></TableFoldHead>
-                  <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[18.5rem]">
-                      <AgGridReact<DummyDataType>
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        selectionColumnDef={{
-                          width: 30,
-                        }}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        defaultColDef={{
-                          sortable: true,
-                          resizable: true,
-                        }}
-                        rowSelection={{
-                          mode: 'multiRow',
-                          isRowSelectable: (node) => node.data?.field8 !== '고지',
-                          checkboxes: true,
-                          hideDisabledCheckboxes: false,
-                          enableClickSelection: false,
-                        }}
-                        domLayout="normal"
-                        alwaysShowVerticalScroll={true}
-                      />
-                    </div>
-                  </TableFoldBody>
-                </TableFold>
-                <TableFold>
-                  <TableFoldHead title="고지확인대상"></TableFoldHead>
-                  <TableFoldBody>
-                    <div className="ag-theme-alpine min-h-[18.5rem]">
-                      <AgGridReact<DummyDataType2>
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={rowData2}
-                        columnDefs={columnDefs2}
-                        selectionColumnDef={{
-                          width: 30,
-                        }}
-                        noRowsOverlayComponent={AgGridEmptyComponent}
-                        defaultColDef={{
-                          sortable: true,
-                          resizable: true,
-                        }}
-                        rowSelection={{
-                          mode: 'multiRow',
-                          isRowSelectable: (node) => node.data?.field8 !== '고지',
-                          checkboxes: true,
-                          hideDisabledCheckboxes: false,
-                          enableClickSelection: false,
-                        }}
-                        domLayout="normal"
-                        alwaysShowVerticalScroll={true}
-                      />
-                    </div>
-                  </TableFoldBody>
-                </TableFold>
-              </Gcol>
-            )}
-          </TabPager>
-
-          {/* <TableFold>
-            <TableFoldHead title="고지확인대상"></TableFoldHead>
-            <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[18.5rem]">
-                <AgGridReact<DummyDataType2>
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={rowData2}
-                  columnDefs={columnDefs2}
-                  selectionColumnDef={{
-                    width: 30,
-                  }}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  defaultColDef={{
-                    sortable: true,
-                    resizable: true,
-                  }}
-                  rowSelection={{
-                    mode: 'multiRow',
-                    isRowSelectable: (node) => node.data?.field8 !== '고지',
-                    checkboxes: true,
-                    hideDisabledCheckboxes: false,
-                    enableClickSelection: false,
-                  }}
-                  domLayout="normal"
-                  alwaysShowVerticalScroll={true}
-                />
-              </div>
-            </TableFoldBody>
-          </TableFold> */}
+        <DialogSection className="grid-rows-[1fr] gap-5">
+          <Gcol placement="ss" className="w-full pt-3" gap={3}>
+            <Grow className="w-full" variant="box-round">
+              <FormTable variant={'head'} lineTop={false} caption="">
+                <FormRow>
+                  <FormCell title={'FP정보제공동의(유효일자)'}>
+                    <Input aria-label="FP정보제공동의 유효일자" width={100} value={'2026-03-01'} readOnly />
+                  </FormCell>
+                  <FormCell title={'전문호출기간'}>
+                    <Input aria-label="전문호출기간 시작일" width={100} value={'2026-03-01'} readOnly />-
+                    <Input aria-label="전문호출기간 종료일" width={100} value={'2026-03-01'} readOnly />
+                  </FormCell>
+                  <FormCell title={'최종적재일'}>
+                    <Input aria-label="최종적재일" width={100} value={'2026-03-01'} readOnly />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Grow>
+            <Gcol placement="ss" className="w-full pt-2" gap={3}>
+              <TableFold>
+                <TableFoldHead title="필수고지"></TableFoldHead>
+                <TableFoldBody>
+                  <div className="ag-theme-alpine min-h-[18.5rem]">
+                    <AgGridReact<DummyDataType>
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData}
+                      columnDefs={columnDefs}
+                      selectionColumnDef={{
+                        width: 30,
+                      }}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        isRowSelectable: (node) => node.data?.field8 !== '고지',
+                        checkboxes: true,
+                        hideDisabledCheckboxes: false,
+                        enableClickSelection: false,
+                      }}
+                      domLayout="normal"
+                      alwaysShowVerticalScroll={true}
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+              <TableFold>
+                <TableFoldHead title="고지확인대상"></TableFoldHead>
+                <TableFoldBody>
+                  <div className="ag-theme-alpine min-h-[18.5rem]">
+                    <AgGridReact<DummyDataType2>
+                      getRowId={(params) => String(params.data.id)}
+                      rowData={rowData2}
+                      columnDefs={columnDefs2}
+                      selectionColumnDef={{
+                        width: 30,
+                      }}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      defaultColDef={{
+                        sortable: true,
+                        resizable: true,
+                      }}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        isRowSelectable: (node) => node.data?.field8 !== '고지',
+                        checkboxes: true,
+                        hideDisabledCheckboxes: false,
+                        enableClickSelection: false,
+                      }}
+                      domLayout="normal"
+                      alwaysShowVerticalScroll={true}
+                    />
+                  </div>
+                </TableFoldBody>
+              </TableFold>
+            </Gcol>
+          </Gcol>
         </DialogSection>
 
         <DialogFooter>

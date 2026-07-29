@@ -43,7 +43,7 @@ interface InfoContractProps<TData extends InfoContractBaseData = InfoContractBas
 }
 
 // Ltpa35001, Ltpa35002, Ltpa35005, Ltpa35006 공통으로 사용
-export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBaseData>({
+export function Ltpa35001Side<TData extends InfoContractBaseData = InfoContractBaseData>({
   info,
 }: InfoContractProps<TData>) {
   // Ltpa35001
@@ -73,7 +73,7 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
               </Typo>
               <SpinnerBIcon className="text-[var(--color-blue-gray-50)]" />
             </Grow>
-            <Grow className="gap-[0.2rem]" placement={'cc'}>
+            {/* <Grow className="gap-[0.2rem]" placement={'cc'}>
               <Typo variant={'body-sm'} className="font-bold text-[var(--color-blue-gray-50)]">
                 간편설계
               </Typo>
@@ -96,7 +96,7 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
                 수납완료
               </Typo>
               <PaidIcon className="text-[var(--color-blue-gray-50)]" />
-            </Grow>
+            </Grow> */}
           </Grow>
         </Grow>
 
@@ -120,7 +120,7 @@ export function Ltpa350Side<TData extends InfoContractBaseData = InfoContractBas
           </Typo>
         </Grow>
         <Button variant={'text'} color={'gray'} onClick={() => {}}>
-          <Typo variant={'heading-md'}>설계누적반영</Typo>
+          <Typo variant={'heading-md'}>동시가입누적체크</Typo>
         </Button>
       </Gcol>
 

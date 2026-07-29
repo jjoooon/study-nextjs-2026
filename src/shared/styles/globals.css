@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 @import './agGridRe.css';
 @import './shardcnRe.css';
-@import './v109.css';
-@import './v109_sy.css';
+/* @import './v109.css'; */
+/* @import './v109_sy.css'; */
 @import './v109_kot.css';
 @plugin "tailwindcss-animate";
 @custom-variant dark (&:is(.dark *));
@@ -1169,15 +1169,15 @@
   }
 }
 .skeleton-shimmer-screen {
-  background-color: #f3f4f6;
-  background-image: linear-gradient(90deg, #f3f4f6 25%, rgba(255, 255, 255, 0.65) 50%, #f3f4f6 75%);
+  background-color: #d6d9dd;
+  background-image: linear-gradient(120deg, #d6d9dd 25%, rgba(255, 255, 255, 0.65) 50%, #d6d9dd 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer-screen-animation 1.5s infinite linear;
 }
 [data-loading='true'] .skeleton-item {
   color: transparent !important;
-  background-color: #f3f4f6 !important;
-  background-image: linear-gradient(90deg, #f3f4f6 25%, rgba(255, 255, 255, 0.65) 50%, #f3f4f6 75%) !important;
+  background-color: #d6d9dd !important;
+  background-image: linear-gradient(120deg, #d6d9dd 25%, rgba(255, 255, 255, 0.65) 50%, #d6d9dd 75%) !important;
   background-size: 200% 100% !important;
   animation: skeleton-shimmer-screen-animation 1.5s infinite linear !important;
   border-radius: 0.4rem !important;

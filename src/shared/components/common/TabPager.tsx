@@ -17,7 +17,7 @@ interface TabPagerProps<T> {
   /**
    * 탭 목록에 표시될 원본 데이터 배열
    */
-  data: T[];
+  data?: T[] | null;
   /**
    * 한 페이지에 한 번에 보여줄 수 있는 최대 탭 개수
    * @default 6
@@ -125,9 +125,11 @@ export function TabPager<T>({
   className,
   contentClass,
 }: TabPagerProps<T>) {
+  const safeData = data ?? [];
+
   // tab pagination 훅 사용
   const { visibleStart, end, handlePrev, handleNext, isLastPage, setVisibleStart } = useTabsPagination(
-    data, // T[]: data의 타입이 자동으로 T로 추론됨
+    safeData, // T[]: data의 타입이 자동으로 T로 추론됨
     visibleCount,
     variant,
     active ?? '',
@@ -148,7 +150,7 @@ export function TabPager<T>({
       <Tabs {...tabsProps}>
         <TabsLine hasTableBelow={hasTableBelow}>
           <TabsList>
-            {data.slice(visibleStart, end).map((tab) => {
+            {safeData?.slice(visibleStart, end).map((tab) => {
               // error 속성이 없는 타입도 허용
               const tabHasError =
                 typeof tab === 'object' &&
@@ -183,7 +185,7 @@ export function TabPager<T>({
 
           <Grow gap={2.5} className="mb-[0.2rem]" placement={'es'}>
             {renderButtons}
-            {Math.ceil(data.length / visibleCount) > 1 && (
+            {Math.ceil(safeData.length / visibleCount) > 1 && (
               <Grow placement="cc" gap={1}>
                 <Grow className="gap-[0.1rem] pt-[0.1rem]">
                   <Typo className="tracking-[0]!" color={'default'} weight={'bold'}>
@@ -193,7 +195,7 @@ export function TabPager<T>({
                     /
                   </Typo>
                   <Typo className="tracking-[0]! text-[var(--color-gray-30)]" weight={'bold'}>
-                    {Math.ceil(data.length / visibleCount)}
+                    {Math.ceil(safeData.length / visibleCount)}
                   </Typo>
                 </Grow>
                 <Button
@@ -223,12 +225,20 @@ export function TabPager<T>({
                         <ListIcon />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-[0.2rem] flex flex-col" align={'end'} closeButton={true}>
+                    <PopoverContent
+                      className="w-auto p-[0.2rem] flex flex-col border border-[var(--color-gray-20)] shadow-md  "
+                      align={'end'}
+                      closeButton={true}
+                      onWheel={(e) => e.stopPropagation()}
+                    >
                       <Gcol
-                        className="overflow-auto z-0 max-h-[20rem] [&>button]:h-[2.8rem] [&>button]:w-full gap-0"
+                        className="overflow-y-auto min-h-0 z-0 max-h-[20rem] gap-0"
                         placement="ss"
+                        onWheel={(e) => e.stopPropagation()}
                       >
-                        {data.map((tab) => renderDropdownItem(tab, setActive, setVisibleStart, data, visibleCount))}
+                        {safeData.map((tab) =>
+                          renderDropdownItem(tab, setActive, setVisibleStart, safeData, visibleCount)
+                        )}
                       </Gcol>
                     </PopoverContent>
                   </Popover>

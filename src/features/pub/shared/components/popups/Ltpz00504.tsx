@@ -514,17 +514,7 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
         </div>
       </div>
       <Grow className="w-full" placement="ec">
-        <Button
-          variant={'contained'}
-          size={'xl'}
-          disabled={checkedCount === 0}
-          onClick={() => {
-            onClose?.();
-            if (typeof window !== 'undefined') {
-              window.parent.postMessage({ type: 'CREATE_SCHEME2' }, '*');
-            }
-          }}
-        >
+        <Button variant={'contained'} size={'xl'} disabled={checkedCount === 0}>
           설계생성({checkedCount})
         </Button>
         <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onClose}>

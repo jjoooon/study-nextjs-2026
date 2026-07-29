@@ -7,17 +7,12 @@
  * @file Ltpz021.tsx
  * @description 한화손해보험 장기보험 추천설계비교 다이얼로그 팝업 컴포넌트입니다.
  *
- * 주요 기능 및 아키텍처:
- * 1. 3개의 추천 설계안을 나란히(Side-by-Side) 그리드로 배치하여 담보 및 가입금액 비교 뷰 제공
- * 2. 3개의 개별 Ag-Grid 인스턴스 간 세로 스크롤 동기화(.ag-body-viewport의 scrollTop) 기법 적용
- * 3. 락(Lock) 제어를 적용하여 동기화 이벤트 발생 시 서로를 무한 호출하는 스크롤 루프 현상 방지
- * 4. 각 설계안에 포함된 담보 보험료(field3)의 실시간 총합 집계(Array.reduce) 및 화면 출력
  */
 
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths, numberValueFormatter } from '@aggrid'; // 2026-05-29 tooltip 추가
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths, numberValueFormatter } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -410,15 +405,15 @@ const coverageDummyList2 = [
 
 const productInfoList = [
   {
-    name: '시그니처여성건강(4종/올인원플랜) ',
+    name: '한화 시그니처 여성 건강보험4.0 2604',
     option: '100세만기 월납 / 20년납',
   },
   {
-    name: '시그니처여성건강(4종/올인원플랜)',
+    name: '한화 시그니처 여성 건강보험4.0 2604',
     option: '100세만기 월납 / 20년납',
   },
   {
-    name: '한화 더건강한 한아름종합보험 무배당2604',
+    name: '한화 더건강한 한아름종합보험 2604',
     option: '100세만기 월납 / 20년납',
   },
 ];
@@ -441,7 +436,7 @@ interface Ltpz021Props {
   onOpenChange?: (open: boolean) => void;
 }
 
-const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
+const Ltpz021 = ({ open = true, onOpenChange }: Ltpz021Props) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   const [rowData1] = React.useState<DummyDataType[]>(DummyData);
@@ -500,12 +495,12 @@ const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
                 <FormCell title={'직업'}>
                   <Input value={'(1급)회사 사무직 종사자'} variant="info" readOnly />
                 </FormCell>
-                <FormCell title={'보장분석'}>
-                  <Input value={'2026-01-01 진행'} variant="info" readOnly />
+                {/* <FormCell title={'보장분석'}>
+                  <Input value={'2026-07-15 진행'} variant="info" readOnly />
                 </FormCell>
                 <FormCell title={'보험금지급 이력정보'}>
-                  <Input value={'2026-01-01'} variant="info" readOnly />
-                </FormCell>
+                  <Input value={'2026-07-15'} variant="info" readOnly />
+                </FormCell> */}
 
                 <FormCell title={'피보험자'}>
                   <Input value={'41세(1994-02-12) / 여 / 1급'} variant="info" readOnly />
@@ -589,12 +584,6 @@ const Ltpz021 = ({ open = false, onOpenChange }: Ltpz021Props) => {
                 size={'xl'}
                 color={'primary'}
                 disabled={checkedStates.filter(Boolean).length === 0}
-                onClick={() => {
-                  onOpenChange?.(false);
-                  if (typeof window !== 'undefined') {
-                    window.parent.postMessage({ type: 'CREATE_SCHEME' }, '*');
-                  }
-                }}
               >
                 설계생성({checkedStates.filter(Boolean).length})
               </Button>

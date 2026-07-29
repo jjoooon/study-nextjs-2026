@@ -12,7 +12,7 @@ interface ViewModeProps {
 
 export const ViewMode = ({ state = true, label, onChange, disabled = false }: ViewModeProps) => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center cp-viewmode">
       <input
         type="checkbox"
         id="docType"

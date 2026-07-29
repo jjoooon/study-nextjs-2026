@@ -24,7 +24,7 @@ const buttonVariants = cva(
         underline underline-offset-3 
         hover:underline 
         focus-visible:underline`,
-        none: 'bg-transparent border-none disabled:opacity-20',
+        none: 'bg-transparent border-none disabled:opacity-20 outline-none! focus:outline-none! focus-visible:outline-none! focus-visible:ring-0! focus-visible:ring-offset-0!',
         rounded: 'rounded-full!',
         banner:
           'bg-[var(--color-blue-gray-20)] text-[var(--color-gray-100)] border border-[var(--color-blue-gray-40)] px-2.5! py-[0.5rem]! justify-between text-[1.3rem] font-bold! h-[3.1rem]! rounded-[0.8rem]! ',
@@ -48,7 +48,7 @@ const buttonVariants = cva(
       },
       size: {
         xl: `h-[3.2rem] rounded-[0.6rem] text-[1.4rem] font-normal px-2 gap-1 min-w-[6rem] `,
-        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pb-[0.15rem] px-2.5 gap-1`,
+        lg: `h-[2.8rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0.1rem] px-2.5 gap-1`,
         md: `h-[2.5rem] rounded-[0.4rem] text-[1.3rem] font-normal pt-[0rem] px-1.5 gap-[0.2rem]`,
         sm: `h-[2.2rem] rounded-[0.3rem] text-[1.2rem] font-normal px-1.5 gap-[0.2rem] leading-[2rem]`,
         xs: `h-[1.6rem] rounded-[0.3rem] text-[1.1rem] font-normal p-1 gap-[0.2rem]`,

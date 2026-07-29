@@ -1,0 +1,90 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+@keyframes kf_Union_transform_0 {
+  0% {
+    animation-timing-function: ease-out;
+    transform: translateX(2.5px) translateY(2.5px) translate(9.5px, 9.5px) scaleX(0.85) scaleY(0.85) translate(-9.5px, -9.5px);
+  }
+  25.01% {
+    transform: translateX(2.5px) translateY(2.5px) translate(9.5px, 9.5px) scaleX(1) scaleY(1) translate(-9.5px, -9.5px);
+  }
+  100% {
+    transform: translateX(2.5px) translateY(2.5px) translate(9.5px, 9.5px) scaleX(1) scaleY(1) translate(-9.5px, -9.5px);
+  }
+}
+@keyframes kf_Union_opacity_0 {
+  0% {
+    animation-timing-function: ease-out;
+    opacity: 0;
+  }
+  25.01% {
+    animation-timing-function: linear;
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+#Union {
+  transform-origin: 0 0;
+  animation:
+    kf_Union_transform_0 1.599389s linear infinite,
+    kf_Union_opacity_0 1.599389s linear infinite;
+}
+@keyframes kf_Vector_3142_opacity_0 {
+  0% {
+    animation-timing-function: linear;
+    opacity: 0;
+  }
+  31.25% {
+    animation-timing-function: linear;
+    opacity: 0;
+  }
+  31.26% {
+    animation-timing-function: linear;
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes kf_Vector_3142_path-trim_0 {
+  0% {
+    stroke-dasharray: 0 1;
+    visibility: hidden;
+  }
+  31.262% {
+    animation-timing-function: ease-in-out;
+    stroke-dasharray: 0 1;
+    visibility: hidden;
+  }
+  56.271% {
+    stroke-dasharray: 1 1;
+    visibility: visible;
+  }
+  100% {
+    stroke-dasharray: 1 1;
+    visibility: visible;
+  }
+}
+#Vector_3142 {
+  stroke-dashoffset: 0;
+  animation:
+    kf_Vector_3142_opacity_0 1.599389s linear infinite,
+    kf_Vector_3142_path-trim_0 1.599389s linear infinite;
+}
+</style>
+<g id="type-check" clip-path="url(#clip0_2926_37301)">
+<g id="icon_type-check">
+<g id="container" opacity="0.1">
+</g>
+<path id="Union" transform="translate(2.5 2.5)" fill-rule="evenodd" clip-rule="evenodd" d="M13.4508 4.60337e-06C14.2238 4.4767e-06 14.8657 -0.00132527 15.3881 0.0413409C15.9226 0.0850116 16.4226 0.179345 16.8946 0.419797C17.6203 0.78954 18.2105 1.37974 18.5802 2.1054C18.8207 2.57736 18.915 3.07737 18.9587 3.61188C19.0013 4.13426 19 4.77623 19 5.54917V13.4508C19 14.2238 19.0013 14.8657 18.9587 15.3881C18.915 15.9226 18.8207 16.4226 18.5802 16.8946C18.2105 17.6203 17.6203 18.2105 16.8946 18.5802C16.4226 18.8207 15.9226 18.915 15.3881 18.9587C14.8657 19.0013 14.2238 19 13.4508 19H5.54917C4.77623 19 4.13426 19.0013 3.61188 18.9587C3.07737 18.915 2.57736 18.8207 2.1054 18.5802C1.37974 18.2105 0.78954 17.6203 0.419797 16.8946C0.179345 16.4226 0.0850116 15.9226 0.0413409 15.3881C-0.00132533 14.8657 4.47613e-06 14.2238 4.60343e-06 13.4508V5.54917C4.47117e-06 4.77623 -0.00132563 4.13426 0.0413409 3.61188C0.0850119 3.07737 0.179343 2.57736 0.419797 2.1054C0.789541 1.37974 1.37974 0.789541 2.1054 0.419797C2.57736 0.179343 3.07737 0.0850119 3.61188 0.0413409C4.13426 -0.00132562 4.77623 4.4708e-06 5.54917 4.60337e-06H13.4508ZM5.54917 2.06866C4.742 2.06866 4.19859 2.07028 3.77998 2.10448C3.37397 2.13767 3.17673 2.19641 3.04511 2.2634C2.70883 2.43474 2.43474 2.70883 2.2634 3.04511C2.19641 3.17673 2.13767 3.37397 2.10448 3.77998C2.07028 4.19859 2.06866 4.742 2.06866 5.54917V13.4508C2.06866 14.258 2.07028 14.8014 2.10448 15.22C2.13767 15.626 2.19641 15.8233 2.2634 15.9549C2.43474 16.2912 2.70883 16.5653 3.04511 16.7366C3.17673 16.8036 3.37397 16.8623 3.77998 16.8955C4.19859 16.9297 4.742 16.9313 5.54917 16.9313H13.4508C14.258 16.9313 14.8014 16.9297 15.22 16.8955C15.626 16.8623 15.8233 16.8036 15.9549 16.7366C16.2912 16.5653 16.5653 16.2912 16.7366 15.9549C16.8036 15.8233 16.8623 15.626 16.8955 15.22C16.9297 14.8014 16.9313 14.258 16.9313 13.4508V5.54917C16.9313 4.742 16.9297 4.19859 16.8955 3.77998C16.8623 3.37397 16.8036 3.17673 16.7366 3.04511C16.5653 2.70883 16.2912 2.43474 15.9549 2.2634C15.8233 2.19641 15.626 2.13767 15.22 2.10448C14.8014 2.07028 14.258 2.06866 13.4508 2.06866H5.54917Z" fill="#FF5C2E"/>
+<path id="Vector_3142" transform="translate(7.60205 8.80892)" d="M0 2.99528L2.91193 6.07338L8.90218 0" pathLength="1" stroke="#FF5C2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_2926_37301">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

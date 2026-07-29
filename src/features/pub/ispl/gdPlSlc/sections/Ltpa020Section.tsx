@@ -16,7 +16,7 @@ import { KeyValueItem } from '@common/KeyValueList';
 import { ViewMode } from '@common/ViewMode';
 import { EmpInput } from '@features/EmpInput';
 import { PageID } from '@features/PageID';
-import { SearchIcon, AiIcon } from '@icons';
+import { SearchIcon, AiIcon, PlusIcon } from '@icons';
 import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplatePx0 } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -115,7 +115,7 @@ export default function Ltpa020Section() {
             1) 상품선택/추천설계 탭 전환
             2) 기준일자/판매채널 조건
             3) 계약자 검색 입력 */}
-        <Grow placement={'bwc'} gap={3} className="w-full pt-1 pb-1">
+        <Grow placement={'bwc'} gap={3} className="w-full pt-1 pb-1 ltpa020-tab-group">
           <RadioGroup
             value={tabSelectValue}
             onValueChange={(value) => setTabSelectValue(value)}
@@ -169,7 +169,7 @@ export default function Ltpa020Section() {
               </FormTable>
             </Grow>
           )}
-          <EmpInput empNo={'3999999'} empName={'김한손'} />
+          <EmpInput empNo={'3999999'} empName={'김한손'} readOnly />
         </Grow>
       </LayoutHead>
       <LayoutTemplatePx0
@@ -178,7 +178,7 @@ export default function Ltpa020Section() {
             {/* 검색/고객정보 영역
                 - 등록/미등록 모드에 따라 입력 UI가 완전히 분기됨
                 - 고지유형찾기 팝업 호출 버튼 포함 */}
-            <div className="w-full px-[1rem]">
+            <div className="w-full px-[1rem] ltpa020-info">
               <Gcol placement="ss" className="bg-[var(--color-blue-gray-70)] rounded-[0.8rem] p-[1rem]">
                 <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
                   <FormRow className="items-start!">
@@ -230,7 +230,7 @@ export default function Ltpa020Section() {
                                   className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff] gap-2"
                                 >
                                   <Grow gap={2}>
-                                    2026-01-01
+                                    2026-07-15
                                     <Button variant={'contained'} size={'sm'} color={'coolgray-light'}>
                                       조회
                                     </Button>
@@ -396,10 +396,11 @@ export default function Ltpa020Section() {
 
                             <Button
                               disabled={!comboValues.user || comboValues?.user === '김한 32세(여)'}
-                              size={'sm'}
+                              size={'lg'}
                               onClick={() => setIsLtpz034Open(true)}
                             >
-                              {isLtpz034Open ? '+고지유형찾기 다시보기' : '고지유형찾기'}
+                              {isLtpz034Open && <PlusIcon size={16} className="translate-y-[-.1rem]" />}
+                              {isLtpz034Open ? '고지유형찾기 다시보기' : '고지유형찾기'}
                             </Button>
                           </Grow>
                         </Grow>

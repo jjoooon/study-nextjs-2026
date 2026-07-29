@@ -636,22 +636,28 @@ const Ltpz026 = () => {
             variant="default"
             getValue={(tab) => String(tab.value)}
             renderTab={(tab) => <span>{tab.label}</span>}
-            renderDropdownItem={(tab, setActiveTab, setVisibleStart, data, visibleCount) => (
-              <Button
-                variant="text"
-                key={String(tab.value)}
-                onClick={() => {
-                  setActiveTab(String(tab.value));
-                  const currentIndex = data.findIndex((currentTab) => String(currentTab.value) === String(tab.value));
-                  if (currentIndex !== -1) {
-                    const page = Math.floor(currentIndex / visibleCount);
-                    setVisibleStart(page * visibleCount);
-                  }
-                }}
-              >
-                {tab.name}
-              </Button>
-            )}
+            renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => {
+              const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+              return (
+                <Button
+                  variant={'none'}
+                  key={String(tab.value)}
+                  onClick={() => {
+                    setActive(String(tab.value));
+                    if (idx !== -1) {
+                      const page = Math.floor(idx / visibleCount);
+                      setVisibleStart(page * visibleCount);
+                    }
+                  }}
+                  className="min-h-[2.8rem]! w-full rounded-none hover:bg-[var(--color-warning-10)]"
+                  style={idx > 0 ? { borderTop: '1px solid var(--color-gray-15)' } : undefined}
+                >
+                  <span className="flex items-start gap-2 w-full">
+                    <span className="block">{tab.name}</span>
+                  </span>
+                </Button>
+              );
+            }}
           >
             {active === 'tab1' ? (
               /* [피보험자1 탭 활성화 시] 고지콕콕 안내대상 및 조건콕콕 상세 정보 레이아웃 */

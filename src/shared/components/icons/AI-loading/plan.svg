@@ -1,0 +1,164 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+@keyframes kf_Union_transform_0 {
+  0% {
+    animation-timing-function: ease-out;
+    transform: translateX(3.5px) translateY(2.375px) translate(8.5px, 10px) scaleX(0.85) scaleY(0.85) translate(-8.5px, -10px);
+  }
+  26.68% {
+    transform: translateX(3.5px) translateY(2.375px) translate(8.5px, 10px) scaleX(1) scaleY(1) translate(-8.5px, -10px);
+  }
+  100% {
+    transform: translateX(3.5px) translateY(2.375px) translate(8.5px, 10px) scaleX(1) scaleY(1) translate(-8.5px, -10px);
+  }
+}
+@keyframes kf_Union_opacity_0 {
+  0% {
+    animation-timing-function: ease-out;
+    opacity: 0;
+  }
+  26.68% {
+    animation-timing-function: linear;
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+#Union {
+  transform-origin: 0 0;
+  animation:
+    kf_Union_transform_0 1.499254s linear infinite,
+    kf_Union_opacity_0 1.499254s linear infinite;
+}
+@keyframes kf_Union_2_transform_0 {
+  0% {
+    transform: translateX(7.25px) translateY(6.875px) translateX(-6px);
+  }
+  33.35% {
+    animation-timing-function: ease-out;
+    transform: translateX(7.25px) translateY(6.875px) translateX(-6px);
+  }
+  46.69% {
+    transform: translateX(7.25px) translateY(6.875px) translateX(0px);
+  }
+  100% {
+    transform: translateX(7.25px) translateY(6.875px) translateX(0px);
+  }
+}
+@keyframes kf_Union_2_opacity_0 {
+  0% {
+    animation-timing-function: linear;
+    opacity: 0;
+  }
+  33.35% {
+    animation-timing-function: ease-out;
+    opacity: 0;
+  }
+  46.69% {
+    animation-timing-function: linear;
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+#Union_2 {
+  transform-origin: 0 0;
+  animation:
+    kf_Union_2_transform_0 1.499254s linear infinite,
+    kf_Union_2_opacity_0 1.499254s linear infinite;
+}
+@keyframes kf_Union_3_transform_0 {
+  0% {
+    transform: translateX(7.25px) translateY(12.476px) translateX(-6px);
+  }
+  46.69% {
+    animation-timing-function: ease-out;
+    transform: translateX(7.25px) translateY(12.476px) translateX(-6px);
+  }
+  60.03% {
+    transform: translateX(7.25px) translateY(12.476px) translateX(0px);
+  }
+  100% {
+    transform: translateX(7.25px) translateY(12.476px) translateX(0px);
+  }
+}
+@keyframes kf_Union_3_opacity_0 {
+  0% {
+    animation-timing-function: linear;
+    opacity: 0;
+  }
+  46.69% {
+    animation-timing-function: ease-out;
+    opacity: 0;
+  }
+  60.03% {
+    animation-timing-function: linear;
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+#Union_3 {
+  transform-origin: 0 0;
+  animation:
+    kf_Union_3_transform_0 1.499254s linear infinite,
+    kf_Union_3_opacity_0 1.499254s linear infinite;
+}
+@keyframes kf_Union_4_transform_0 {
+  0% {
+    transform: translateX(7.25px) translateY(16.075px) translateX(-6px);
+  }
+  60.03% {
+    animation-timing-function: ease-out;
+    transform: translateX(7.25px) translateY(16.075px) translateX(-6px);
+  }
+  73.37% {
+    transform: translateX(7.25px) translateY(16.075px) translateX(0px);
+  }
+  100% {
+    transform: translateX(7.25px) translateY(16.075px) translateX(0px);
+  }
+}
+@keyframes kf_Union_4_opacity_0 {
+  0% {
+    animation-timing-function: linear;
+    opacity: 0;
+  }
+  60.03% {
+    animation-timing-function: ease-out;
+    opacity: 0;
+  }
+  73.37% {
+    animation-timing-function: linear;
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+#Union_4 {
+  transform-origin: 0 0;
+  animation:
+    kf_Union_4_transform_0 1.499254s linear infinite,
+    kf_Union_4_opacity_0 1.499254s linear infinite;
+}
+</style>
+<g id="plan" clip-path="url(#clip0_2926_37229)">
+<g id="icon_plan">
+<g id="container" opacity="0.1">
+</g>
+<path id="Union" transform="translate(3.5 2.375)" fill-rule="evenodd" clip-rule="evenodd" d="M11.5 3.3479e-07C12.2717 3.3479e-07 12.9086 -0.000524733 13.4258 0.0400394C13.9531 0.0814257 14.442 0.169956 14.9033 0.395508C15.6172 0.744685 16.206 1.30662 16.5771 2.00586C16.8194 2.46249 16.9142 2.94671 16.958 3.46191C17.0008 3.96437 17 4.58145 17 5.32031V14.6797C17 15.4185 17.0008 16.0356 16.958 16.5381C16.9142 17.0533 16.8194 17.5375 16.5771 17.9941C16.206 18.6934 15.6172 19.2553 14.9033 19.6045C14.442 19.83 13.9531 19.9186 13.4258 19.96C12.9086 20.0005 12.2717 20 11.5 20H5.5C4.72828 20 4.09139 20.0005 3.57422 19.96C3.04686 19.9186 2.55803 19.83 2.09668 19.6045C1.38283 19.2553 0.79398 18.6934 0.422852 17.9941C0.180616 17.5375 0.0858408 17.0533 0.0419931 16.5381C-0.000764903 16.0356 9.16183e-07 15.4185 9.16183e-07 14.6797V5.32031C9.15622e-07 4.58145 -0.000764977 3.96437 0.0419931 3.46191C0.0858409 2.94671 0.180615 2.46249 0.422852 2.00586C0.79398 1.30662 1.38283 0.744685 2.09668 0.395508C2.55803 0.169956 3.04686 0.0814259 3.57422 0.0400394C4.09139 -0.000524912 4.72828 3.33509e-07 5.5 3.3479e-07H11.5ZM5.5 2C4.69658 2 4.15128 2.00117 3.73047 2.03418C3.32053 2.06637 3.11457 2.12392 2.97461 2.19238C2.63018 2.36093 2.35757 2.62661 2.18945 2.94336C2.12543 3.06414 2.06789 3.24721 2.03516 3.63184C2.00131 4.02979 2 4.54729 2 5.32031V14.6797C2 15.4527 2.00131 15.9702 2.03516 16.3682C2.06789 16.7528 2.12543 16.9359 2.18945 17.0566C2.35757 17.3734 2.63018 17.6391 2.97461 17.8076C3.11457 17.8761 3.32053 17.9336 3.73047 17.9658C4.15128 17.9988 4.69658 18 5.5 18H11.5C12.3034 18 12.8487 17.9988 13.2695 17.9658C13.6795 17.9336 13.8854 17.8761 14.0254 17.8076C14.3698 17.6391 14.6424 17.3734 14.8105 17.0566C14.8746 16.9359 14.9321 16.7528 14.9648 16.3682C14.9987 15.9702 15 15.4527 15 14.6797V5.32031C15 4.54729 14.9987 4.02979 14.9648 3.63184C14.9321 3.24721 14.8746 3.06414 14.8105 2.94336C14.6424 2.62661 14.3698 2.36093 14.0254 2.19238C13.8854 2.12392 13.6795 2.06637 13.2695 2.03418C12.8487 2.00117 12.3034 2 11.5 2H5.5Z" fill="#FF5C2E"/>
+<path id="Union_2" transform="translate(7.25 6.875)" d="M2.875 0C3.42728 0 3.875 0.447715 3.875 1C3.875 1.55228 3.42728 2 2.875 2H1C0.447716 2 0 1.55228 0 1C0 0.447716 0.447716 5.15408e-07 1 0H2.875Z" fill="#FF5C2E"/>
+<path id="Union_3" transform="translate(7.25 12.4756)" d="M6.625 0C7.17728 0 7.625 0.447715 7.625 1C7.62466 1.55199 7.17707 2 6.625 2H1C0.447927 2 0.000342587 1.55199 0 1C0 0.447716 0.447716 5.15408e-07 1 0H6.625Z" fill="#FF5C2E"/>
+<path id="Union_4" transform="translate(7.25 16.0752)" d="M8.5 0C9.05229 0 9.5 0.447715 9.5 1C9.49987 1.55217 9.0522 2 8.5 2H1C0.447797 2 0.00013192 1.55217 0 1C0 0.447716 0.447716 5.15408e-07 1 0H8.5Z" fill="#FF5C2E"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_2926_37229">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

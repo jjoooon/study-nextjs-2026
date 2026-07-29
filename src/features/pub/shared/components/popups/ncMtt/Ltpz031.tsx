@@ -873,9 +873,6 @@ const Ltpz031 = () => {
                 자동고지(ICIS)
               </Button>
               <Button color={'gray'} size={'xl'} variant={'outlined'}>
-                자동고지(심평원)
-              </Button>
-              <Button color={'gray'} size={'xl'} variant={'outlined'}>
                 질병 가져오기
               </Button>
             </Grow>
@@ -989,6 +986,28 @@ const Ltpz031 = () => {
                           </Tooltip>
                         ) : (
                           <span>{displayLabel}</span>
+                        );
+                      }}
+                      renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => {
+                        const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+                        return (
+                          <Button
+                            variant={'none'}
+                            key={String(tab.value)}
+                            onClick={() => {
+                              setActive(String(tab.value));
+                              if (idx !== -1) {
+                                const page = Math.floor(idx / visibleCount);
+                                setVisibleStart(page * visibleCount);
+                              }
+                            }}
+                            className="min-h-[2.8rem]! w-full rounded-none hover:bg-[var(--color-warning-10)]"
+                            style={idx > 0 ? { borderTop: '1px solid var(--color-gray-15)' } : undefined}
+                          >
+                            <span className="flex items-start gap-2 w-full">
+                              <span className="block">{tab.label}</span>
+                            </span>
+                          </Button>
                         );
                       }}
                       visibleCount={5}
