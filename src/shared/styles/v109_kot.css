@@ -1404,6 +1404,153 @@
   letter-spacing: -0.06rem !important;
 }
 
+/* Chrome 109 전용 cp-hashlist-wrap & after: 레거시 호환 스타일 투명도 수정 */
+.v109 .cp-hashlist-wrap {
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 auto;
+}
+
+.v109 .after\:to-\[var\(--color-gray-5\)\]::after {
+  content: var(--tw-content, '');
+  --tw-gradient-to: var(--color-gray-5);
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+.v109 .after\:from-transparent::after {
+  content: var(--tw-content, '');
+  --tw-gradient-from: transparent;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+
+.v109 .after\:bg-gradient-to-r::after {
+  content: var(--tw-content, '');
+  --tw-gradient-position: to right;
+  background-image: linear-gradient(var(--tw-gradient-stops));
+}
+
+/* .v109 .after\:w-\[2rem\]::after {
+  content: var(--tw-content, '');
+  width: 2rem;
+}
+
+.v109 .after\:h-full::after {
+  content: var(--tw-content, '');
+  height: 100%;
+}
+
+.v109 .after\:block::after {
+  content: var(--tw-content, '');
+  display: block;
+}
+
+.v109 .after\:right-\[0\]::after {
+  content: var(--tw-content, '');
+  right: 0;
+}
+
+.v109 .after\:top-\[0\]::after {
+  content: var(--tw-content, '');
+  top: 0;
+}
+
+.v109 .after\:absolute::after {
+  content: var(--tw-content, '');
+  position: absolute;
+}
+
+.v109 .after\:pointer-events-none::after {
+  content: var(--tw-content, '');
+  pointer-events: none;
+}
+
+/* Chrome 109 전용 KeyValueList 레거시 호환 스타일 */
+.v109 .cp-keyvaluelist {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
+.v109 .cp-keyvaluelist-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+}
+
+.v109 .cp-keyvaluelist-item::after {
+  content: '|' !important;
+  margin-left: 1.2rem !important;
+  margin-right: 1.2rem !important;
+  color: var(--color-gray-40, #9ca3af) !important;
+  font-weight: normal !important;
+  line-height: 1 !important;
+}
+
+.v109 .cp-keyvaluelist-item:last-child::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Chrome 109 전용 Accordion 레거시 호환 및 화살표 회전/콘텐츠 표시 스타일 */
+.v109 .cp-accordion {
+  position: relative;
+}
+
+.v109 .cp-accordion-trigger,
+.v109 [data-slot="accordion-trigger"] {
+  display: -webkit-flex !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.v109 .cp-accordion-trigger[data-state="open"] svg,
+.v109 [data-slot="accordion-trigger"][data-state="open"] svg {
+  -webkit-transform: rotate(180deg) !important;
+  transform: rotate(180deg) !important;
+  transition: -webkit-transform 0.2s ease, transform 0.2s ease !important;
+}
+
+.v109 .cp-accordion-trigger[data-variant="tableHead"][data-state="open"] svg,
+.v109 [data-slot="accordion-trigger"][data-variant="tableHead"][data-state="open"] svg {
+  -webkit-transform: rotate(0deg) !important;
+  transform: rotate(0deg) !important;
+}
+
+.v109 .cp-accordion-trigger[data-state="closed"] svg,
+.v109 [data-slot="accordion-trigger"][data-state="closed"] svg {
+  -webkit-transform: rotate(0deg) !important;
+  transform: rotate(0deg) !important;
+  transition: -webkit-transform 0.2s ease, transform 0.2s ease !important;
+}
+
+.v109 .cp-accordion-content[data-state="closed"],
+.v109 [data-slot="accordion-content"][data-state="closed"] {
+  display: none !important;
+}
+
+.v109 .cp-accordion-content[data-state="open"],
+.v109 [data-slot="accordion-content"][data-state="open"] {
+  display: block !important;
+}
+
+.v109 .border-blue-500 {
+  border-color: #2b7fff !important;
+}
+
+.v109 .text-blue-600 {
+  color: #155dfc !important; 
+}
+
+.v109 .cp-accordion-item:last-child,
+.v109 .last\:border-b-0:last-child {
+  border-bottom-width: 0 !important;
+  border-bottom: 0 !important;
+}
+
+
+
 
 
 
