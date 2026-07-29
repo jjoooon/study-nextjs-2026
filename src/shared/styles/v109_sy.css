@@ -1,0 +1,19 @@
+/* focus:border-[0.2rem] Chrome 109 호환 스타일 */
+.v109 .focus\:border-\[0\.2rem\]:focus,
+.v109 [class*="focus:border-[0.2rem]"]:focus {
+  border-style: var(--tw-border-style, solid);
+  border-width: 0.2rem;
+}
+
+/* hover:border-[var(--color-input-border-hover)] Chrome 109 호환 스타일 */
+@media (hover: hover) {
+  .v109 .hover\:border-\[var\(--color-input-border-hover\)\]:hover,
+  .v109 [class*="hover:border-[var(--color-input-border-hover)]"]:hover {
+    border-color: var(--color-input-border-hover);
+  }
+}
+/* AG Grid Header 2번째 줄 경계선(가로 테두리) Chrome 109 호환 스타일 */
+.v109 .ag-header-row:not(:first-child) .ag-header-cell:not(.ag-header-span-height.ag-header-span-total):not(.ag-header-parent-hidden),
+.v109 .ag-header-row:not(:first-child) .ag-header-group-cell.ag-header-group-cell-with-group {
+  border-top: 0.1rem solid var(--color-gray-10) !important;
+}
