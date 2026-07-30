@@ -1537,8 +1537,88 @@
   border-bottom: 0 !important;
 }
 
+/* v109 호환 유틸리티 클래스 정의 */
+.v109 .\[state\=checked\]\:shadow-\[0_0\.1rem_0\.1rem_0_rgba\(255\,92\,46\,0\.20\)\][data-state="checked"] {
+  --tw-shadow: 0 0.1rem 0.1rem 0 var(--tw-shadow-color, rgba(255, 92, 46, 0.20)) !important;
+  box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+}
 
+.v109 .disabled\:data-\[state\=checked\]\:text-\[var\(--color-gray-30\)\]:disabled[data-state="checked"] {
+  color: var(--color-gray-30) !important;
+}
 
+.v109 .disabled\:data-\[state\=checked\]\:bg-\[var\(--color-gray-10\)\]:disabled[data-state="checked"] {
+  background-color: var(--color-gray-10) !important;
+}
 
+.v109 .disabled\:data-\[state\=checked\]\:border-\[var\(--color-gray-20\)\]:disabled[data-state="checked"] {
+  border-color: var(--color-gray-20) !important;
+}
 
+.v109 .data-\[state\=checked\]\:text-white[data-state="checked"] {
+  color: var(--color-white) !important;
+}
+
+.v109 .data-\[state\=checked\]\:bg-\[var\(--color-information-50\)\][data-state="checked"] {
+  background-color: var(--color-information-50) !important;
+}
+
+.v109 .data-\[state\=checked\]\:border-\[var\(--color-information-50\)\][data-state="checked"] {
+  border-color: var(--color-information-50) !important;
+}
+
+@media (hover: hover) {
+  .v109 .data-\[required\=true\]\:hover\:border-\[var\(--color-primary-50\)\][data-required="true"]:hover {
+    border-color: var(--color-primary-50) !important;
+  }
+}
+
+.v109 .data-\[required\=true\]\:bg-\[var\(--color-warning-10\)\][data-required="true"] {
+  background-color: var(--color-warning-10) !important;
+}
+
+.v109 .data-\[required\=true\]\:border-\[var\(--color-warning-30\)\][data-required="true"] {
+  border-color: var(--color-warning-30) !important;
+}
+
+.v109 .data-\[invalid\=true\]\:bg-\[var\(--color-input-surface-error\)\][data-invalid="true"] {
+  background-color: var(--color-input-surface-error) !important;
+}
+
+.v109 .data-\[invalid\=true\]\:border-\[var\(--color-input-border-error\)\][data-invalid="true"] {
+  border-color: var(--color-input-border-error) !important;
+}
+
+.v109 .data-\[invalid\=true\]\:border-\[0\.2rem\][data-invalid="true"] {
+  border-style: solid !important;
+  border-width: 0.2rem !important;
+}
+
+.v109 .disabled\:bg-\[var\(--color-gray-10\)\]:disabled {
+  background-color: var(--color-gray-10) !important;
+}
+
+.v109 .disabled\:border-\[var\(--color-gray-20\)\]:disabled {
+  border-color: var(--color-gray-20) !important;
+}
+
+.v109 .disabled\:cursor-not-allowed:disabled {
+  cursor: not-allowed !important;
+}
+
+.v109 .focus-visible\:ring-offset-2:focus-visible {
+  --tw-ring-offset-width: 2px !important;
+  --tw-ring-offset-shadow: var(--tw-ring-inset, ) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color) !important;
+}
+
+.v109 .focus-visible\:ring-2:focus-visible {
+  --tw-ring-shadow: var(--tw-ring-inset, ) 0 0 0 calc(2px + var(--tw-ring-offset-width, 0px)) var(--tw-ring-color, currentColor) !important;
+  box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000) !important;
+}
+
+@media (hover: hover) {
+  .v109 .hover\:border-\[var\(--color-information-50\)\]:hover {
+    border-color: var(--color-information-50) !important;
+  }
+}
 
