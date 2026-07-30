@@ -12,6 +12,7 @@ interface StoryProps extends React.ComponentProps<typeof Ltpz010> {
   dataType: 'none' | 'under' | 'over';
   delayTime: number;
   isSimplified?: boolean;
+  isFetusisured?: boolean;
 }
 
 // 기존 Ltpz010 컴포넌트에서 추출 및 복수 데이터 테스트를 위해 가공한 더미 데이터셋
@@ -125,8 +126,14 @@ const meta: Meta<StoryProps> = {
       description: '데이터 로딩 지연 시간 (단위: ms, 0 지정 시 지연 없음)',
     },
     isSimplified: {
+      name: '간편설계인 경우',
       control: 'boolean',
       description: '간편설계 여부 (true 설정 시 알릴사항 영역 숨김)',
+    },
+    isFetusisured: {
+      name: '태아가 피보험자인 경우',
+      control: 'boolean',
+      description: '태아 피보험자 여부 (true: 출생전/출생후 테이블, false: 일반 보험료/만기/납기 테이블)',
     },
     data: { table: { disable: true } },
     loading: { table: { disable: true } },
@@ -135,6 +142,7 @@ const meta: Meta<StoryProps> = {
     dataType: 'over',
     delayTime: 3000,
     isSimplified: false,
+    isFetusisured: true,
   },
 };
 
@@ -157,7 +165,12 @@ export const Default: Story = {
 
     return (
       <LayoutDoc>
-        <Ltpz010 data={resolvedData} loading={isLoading} isSimplified={args.isSimplified} />
+        <Ltpz010
+          data={resolvedData}
+          loading={isLoading}
+          isSimplified={args.isSimplified}
+          isFetusisured={args.isFetusisured}
+        />
       </LayoutDoc>
     );
   },

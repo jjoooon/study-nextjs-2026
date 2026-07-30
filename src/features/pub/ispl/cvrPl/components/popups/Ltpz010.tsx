@@ -63,9 +63,10 @@ export interface Ltpz010Props {
   };
   loading?: boolean;
   isSimplified?: boolean;
+  isFetusisured?: boolean;
 }
 
-const Ltpz010 = ({ data, loading, isSimplified = false }: Ltpz010Props) => {
+const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: Ltpz010Props) => {
   const [relationValue, setRelationValue] = useState('');
   // props인 data?.grid1이 변경되었을 때 렌더링 단계에서 상태를 동기적으로 조정하여 린트 경고를 방지합니다.
   const [prevGridData, setPrevGridData] = useState<DummyDataType[] | undefined>(data?.grid1);
@@ -82,7 +83,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false }: Ltpz010Props) => {
     setErrorRows(list.filter((row) => !row.isCheck).map((row) => row.id));
   }
   const gridRef = useRef<AgGridReact<DummyDataType>>(null);
-
   // '중복 행 추가' 버튼 클릭 시 신규 렌더링된 복사본 행이 감지되면, 이를 자동 체크(Select) 처리하기 위해 임시 보관하는 행 ID ref
   const pendingSelectIdRef = useRef<number | null>(null);
 
@@ -96,7 +96,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false }: Ltpz010Props) => {
    * - 기존 데이터 길이와 신규 데이터 길이를 비교하여 행이 새로 추가되었고, 추가된 행이 복사본(isDuplicate === true)일 경우
    *   해당 행의 ID를 `pendingSelectIdRef`에 기록해 둡니다.
    */
-
 
   const setRowDataWithTracking = useCallback(
     (updater: DummyDataType[] | ((prev: DummyDataType[]) => DummyDataType[])) => {
@@ -251,60 +250,92 @@ const Ltpz010 = ({ data, loading, isSimplified = false }: Ltpz010Props) => {
         },
         cellRenderer: coverageAmountCellRenderer,
       },
-      {
-        headerName: '보험료(원)',
-        children: [
-          {
-            headerName: '출생전',
-            field: 'premium',
-            minWidth: attributeColumnWidth(80),
-            flex: 1,
-            cellClass: 'text-right',
-            headerClass: 'px-0!',
-            sortable: false,
-            filter: false,
-            // 천단위 세자리 콤마 포맷터 바인딩
-            valueFormatter: numberValueFormatter,
-          },
-          {
-            headerName: '출생후',
-            field: 'premium2',
-            minWidth: attributeColumnWidth(80),
-            flex: 1,
-            cellClass: 'text-right',
-            headerClass: 'px-0!',
-            sortable: false,
-            filter: false,
-            // 천단위 세자리 콤마 포맷터 바인딩
-            valueFormatter: numberValueFormatter,
-          },
-        ],
-      },
-      {
-        headerName: '만기/납기',
-        children: [
-          {
-            headerName: '출생전',
-            field: 'expiryPeriod',
-            minWidth: attributeColumnWidth(70),
-            flex: 1,
-            cellClass: 'text-center px-[0.2rem]!',
-            sortable: false,
-            filter: false,
-          },
-          {
-            headerName: '출생후',
-            cellRenderer: createFieldRenderer<DummyDataType>('paymentPeriod', 'paymentPeriod2', 'row'),
-            minWidth: attributeColumnWidth(140),
-            flex: 2,
-            cellClass: 'text-center px-[0.2rem]!',
-            sortable: false,
-            filter: false,
-          },
-        ],
-      },
+      ...(isFetusisured
+        ? [
+            {
+              headerName: '보험료(원)',
+              children: [
+                {
+                  headerName: '출생전',
+                  field: 'premium' as keyof DummyDataType,
+                  minWidth: attributeColumnWidth(80),
+                  flex: 1,
+                  cellClass: 'text-right',
+                  headerClass: 'px-0!',
+                  sortable: false,
+                  filter: false,
+                  valueFormatter: numberValueFormatter,
+                },
+                {
+                  headerName: '출생후',
+                  field: 'premium2' as keyof DummyDataType,
+                  minWidth: attributeColumnWidth(80),
+                  flex: 1,
+                  cellClass: 'text-right',
+                  headerClass: 'px-0!',
+                  sortable: false,
+                  filter: false,
+                  valueFormatter: numberValueFormatter,
+                },
+              ],
+            },
+            {
+              headerName: '만기/납기',
+              children: [
+                {
+                  headerName: '출생전',
+                  field: 'expiryPeriod' as keyof DummyDataType,
+                  minWidth: attributeColumnWidth(70),
+                  flex: 1,
+                  cellClass: 'text-center px-[0.2rem]!',
+                  sortable: false,
+                  filter: false,
+                },
+                {
+                  headerName: '출생후',
+                  cellRenderer: createFieldRenderer<DummyDataType>('paymentPeriod', 'paymentPeriod2', 'row'),
+                  minWidth: attributeColumnWidth(140),
+                  flex: 2,
+                  cellClass: 'text-center px-[0.2rem]!',
+                  sortable: false,
+                  filter: false,
+                },
+              ],
+            },
+          ]
+        : [
+            {
+              headerName: '보험료(원)',
+              field: 'premium' as keyof DummyDataType,
+              minWidth: attributeColumnWidth(80),
+              flex: 1,
+              cellClass: 'text-right',
+              headerClass: 'px-0!',
+              sortable: false,
+              filter: false,
+              valueFormatter: numberValueFormatter,
+            },
+            {
+              headerName: '만기',
+              field: 'expiryPeriod' as keyof DummyDataType,
+              minWidth: attributeColumnWidth(70),
+              flex: 1,
+              cellClass: 'text-center px-[0.2rem]!',
+              sortable: false,
+              filter: false,
+            },
+            {
+              headerName: '납기',
+              field: 'paymentPeriod' as keyof DummyDataType,
+              minWidth: attributeColumnWidth(70),
+              flex: 1,
+              cellClass: 'text-center px-[0.2rem]!',
+              sortable: false,
+              filter: false,
+            },
+          ]),
     ],
-    [attributeColumnWidth, duplicateRenderer, titleRenderer]
+    [attributeColumnWidth, duplicateRenderer, titleRenderer, isFetusisured]
   );
 
   /**
