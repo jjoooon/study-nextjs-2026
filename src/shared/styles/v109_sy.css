@@ -53,9 +53,6 @@
   margin: 0 !important;
 }
 
-/* 일반 input 및 AG Grid input 포커스 배경색 호환 스타일 */
-.v109 input:focus,
-.v109 .cp-input input:focus,
-.v109 .ag-input-field-input:focus {
-  background-color: #fff;
+.v109 .ag-input-field-input:where(input:not([type]), input[type='text'], input[type='number'], input[type='tel'], input[type='date'], input[type='datetime-local'], textarea) {
+  background-color: var(--ag-input-background-color);
 }
