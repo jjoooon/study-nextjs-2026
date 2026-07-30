@@ -449,7 +449,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
               </Grow>
             </Grow>
           </Gcol>
-          <Grow placement={'bwc'} className="gap-1 w-full pb-1 mt-3">
+          <Grow placement={'bwc'} className="gap-1 w-full pb-1 mt-3 flex-wrap">
             <TextSelectChange
               items={[
                 [

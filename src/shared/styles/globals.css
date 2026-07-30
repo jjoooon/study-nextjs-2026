@@ -532,7 +532,7 @@
   }
 
   body {
-    overflow-x: auto;
+    overflow:hidden;
     font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
   }
 
@@ -658,9 +658,9 @@
     letter-spacing: -0.02rem !important;
   }
 
-  [data-layout='doc'] {
+  /* [data-layout='doc'] {
     min-width: 1204px;
-  }
+  } */
 
   /* filefond */
   .filepond--wrapper {
@@ -1189,4 +1189,18 @@
 [data-loading='true'] .skeleton-item::after,
 [data-loading='true'] .skeleton-item::before {
   content: none !important;
+}
+
+[data-zoom="120"] [data-layout="main"] {min-width: 1000px;}
+[data-zoom="125"] [data-layout="main"] {min-width: 1010px;}
+[data-zoom="130"] [data-layout="main"] {min-width: 1020px;}
+[data-zoom="135"] [data-layout="main"] {min-width: 1080px;}
+[data-zoom="140"] [data-layout="main"] {min-width: 1120px;}
+[data-zoom="145"] [data-layout="main"] {min-width: 1160px;}
+[data-zoom="150"] [data-layout="main"] {min-width: 1200px;}
+
+/* 화면 확대/축소(Zoom) 역산 고정 공통 클래스 및 속성 */
+.fixed-zoom,
+[data-fixed-zoom] {
+  zoom: calc(1 / var(--zoom-scale, 1));
 }

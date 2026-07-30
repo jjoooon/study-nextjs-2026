@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { selectZoomPercent } from '@/shared/store/uiSelectors';
-import { resetZoom, zoomIn, zoomOut } from '@/shared/store/uiSlice';
+import { resetZoom, zoomIn, zoomOut, ZOOM_MIN, ZOOM_MAX } from '@/shared/store/uiSlice';
 import { setScale } from '@/shared/utils/scale';
 import { Grow, Typo } from '@atoms';
 import { ZoomOutIcon, ZoomInIcon } from '@icons';
@@ -35,9 +35,11 @@ export const ZoomControl = () => {
 
   useEffect(() => {
     document.documentElement.style.fontSize = `${scale * 10}px`;
+    document.body.setAttribute('data-zoom', zoomPercent.toString());
+    document.documentElement.style.setProperty('--zoom-scale', scale.toString());
     setScale(scale); // scale 값을 공용 함수에 반영
     broadcastZoomToIframes(scale);
-  }, [scale]);
+  }, [scale, zoomPercent]);
 
   const handleZoomIn = () => {
     dispatch(zoomIn());
@@ -58,6 +60,7 @@ export const ZoomControl = () => {
         only={'icon'}
         className="text-[var(--color-primary-50)] !w-[20px] !h-[20px]"
         onClick={handleZoomOut}
+        disabled={scale <= ZOOM_MIN}
       >
         <ZoomOutIcon size={20} className="!w-[20px] !h-[20px]" />
       </Button>
@@ -69,6 +72,7 @@ export const ZoomControl = () => {
         only={'icon'}
         className="text-[var(--color-primary-50)] !w-[20px] !h-[20px]"
         onClick={handleZoomIn}
+        disabled={scale >= ZOOM_MAX}
       >
         <ZoomInIcon size={20} className="!w-[20px] !h-[20px]" />
       </Button>

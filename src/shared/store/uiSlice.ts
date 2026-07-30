@@ -24,10 +24,10 @@ import type { UIState } from '../types/uiTypes';
 /**
  * Zoom 배율 범위
  */
-const ZOOM_MIN = 0.5;
-const ZOOM_MAX = 2.0;
+const ZOOM_MIN = 0.8;
+const ZOOM_MAX = 1.5;
 const ZOOM_DEFAULT = 1.0;
-const ZOOM_STEP = 0.1;
+const ZOOM_STEP = 0.05;
 
 // ============================================================================
 // INITIAL STATE
@@ -62,7 +62,8 @@ const getInitialState = (): UIState => {
  */
 const validateZoom = (value: number): number => {
   const num = typeof value === 'number' ? value : ZOOM_DEFAULT;
-  return Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, num));
+  const clamped = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, num));
+  return Number(clamped.toFixed(2));
 };
 
 /**
@@ -108,7 +109,7 @@ const uiSlice = createSlice({
      * 현재 배율에서 ZOOM_STEP만큼 증가시킵니다.
      */
     zoomIn: (state) => {
-      const newZoom = Math.min(ZOOM_MAX, state.zoom + ZOOM_STEP);
+      const newZoom = validateZoom(state.zoom + ZOOM_STEP);
       state.zoom = newZoom;
 
       // localStorage에 저장
@@ -127,7 +128,7 @@ const uiSlice = createSlice({
      * 현재 배율에서 ZOOM_STEP만큼 감소시킵니다.
      */
     zoomOut: (state) => {
-      const newZoom = Math.max(ZOOM_MIN, state.zoom - ZOOM_STEP);
+      const newZoom = validateZoom(state.zoom - ZOOM_STEP);
       state.zoom = newZoom;
 
       // localStorage에 저장

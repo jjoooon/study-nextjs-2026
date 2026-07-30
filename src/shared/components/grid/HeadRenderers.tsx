@@ -67,14 +67,14 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
 
   // col=true면 세로 배치, 아니면 가로 배치로 라벨+단위를 렌더링
   const content = col ? (
-    <Gcol className={cn('w-full leading-[1.4rem]', className)} placement={'cc'} gap={gap}>
+    <Gcol className={cn('w-full leading-[1.4rem] font-bold', className)} placement={'cc'} gap={gap}>
       {label}
-      <span className={cn(unitClassName)}>{unit}</span>
+      <span className={(cn(unitClassName), 'font-bold')}>{unit}</span>
     </Gcol>
   ) : (
-    <Grow className={cn('w-full', className)} placement={'cc'} gap={gap}>
+    <Grow className={cn('w-full font-bold', className)} placement={'cc'} gap={gap}>
       {label}
-      <span className={cn(unitClassName)}>{unit}</span>
+      <span className={(cn(unitClassName), 'font-bold')}>{unit}</span>
     </Grow>
   );
 
