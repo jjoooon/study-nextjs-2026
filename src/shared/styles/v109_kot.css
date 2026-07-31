@@ -1616,9 +1616,118 @@
   box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000) !important;
 }
 
+
+
+/*달력 달자 2개 선택시 가로 오류 수정*/
+
+/* .v109 .data-\[state\=open\]\:fade-in-0[data-state="open"] {
+  --tw-enter-opacity: 0 !important;
+}
+
+.v109 .data-\[state\=open\]\:animate-in[data-state="open"] {
+  animation-name: enter !important;
+  animation-duration: 150ms !important;
+  --tw-enter-opacity: initial !important;
+  --tw-enter-scale: initial !important;
+  --tw-enter-rotate: initial !important;
+  --tw-enter-translate-x: initial !important;
+  --tw-enter-translate-y: initial !important;
+}
+
+.v109 .data-\[state\=closed\]\:fade-out-0[data-state="closed"] {
+  --tw-exit-opacity: 0 !important;
+}
+
+.v109 .data-\[state\=closed\]\:animate-out[data-state="closed"] {
+  animation-name: exit !important;
+  animation-duration: 150ms !important;
+  --tw-exit-opacity: initial !important;
+  --tw-exit-scale: initial !important;
+  --tw-exit-rotate: initial !important;
+  --tw-exit-translate-x: initial !important;
+  --tw-exit-translate-y: initial !important;
+}
+
+.v109 .data-\[side\=top\]\:slide-in-from-bottom-2[data-side="top"] {
+  --tw-enter-translate-y: calc(var(--base-unit) * 2) !important;
+}
+
+.v109 .data-\[side\=right\]\:slide-in-from-left-2[data-side="right"] {
+  --tw-enter-translate-x: calc(var(--base-unit) * -2) !important;
+}
+
+.v109 .data-\[side\=left\]\:slide-in-from-right-2[data-side="left"] {
+  --tw-enter-translate-x: calc(var(--base-unit) * 2) !important;
+}
+
+.v109 .data-\[side\=bottom\]\:slide-in-from-top-2[data-side="bottom"] {
+  --tw-enter-translate-y: calc(var(--base-unit) * -2) !important;
+}
+
+.v109 [data-slot="popover-content"] .\[\[data-slot\=popover-content\]_\&\]\:bg-transparent {
+  background-color: transparent !important;
+}
+
+.v109 [data-slot="card-content"] .\[\[data-slot\=card-content\]_\&\]\:bg-transparent {
+  background-color: transparent !important;
+}
+
+.v109 [dir="rtl"] .rdp-button_previous > svg,
+.v109 :dir(rtl) .rdp-button_previous > svg {
+  rotate: 180deg !important;
+}
+
+.v109 [dir="rtl"] .rdp-button_next > svg,
+.v109 :dir(rtl) .rdp-button_next > svg {
+  rotate: 180deg !important;
+}
+
+.v109 .\[\&_\.rdp-range_middle\]\:bg-\[\#FF5C2E33\] .rdp-range_middle,
+.v109 .rdp-range_middle {
+  background-color: #FF5C2E33 !important;
+}
+
+.v109 .\[\&_\.rdp-day_range_start\]\:text-white .rdp-day_range_start,
+.v109 .rdp-day_range_start {
+  color: var(--color-white) !important;
+}
+
+.v109 .\[\&_\.rdp-day_range_start\]\:bg-\[\#FF5C2E\] .rdp-day_range_start,
+.v109 .rdp-day_range_start {
+  background-color: #FF5C2E !important;
+}
+
+.v109 .\[\&_\.rdp-day_range_end\]\:text-white .rdp-day_range_end,
+.v109 .rdp-day_range_end {
+  color: var(--color-white) !important;
+}
+
+.v109 .\[\&_\.rdp-day_range_end\]\:bg-\[\#FF5C2E\] .rdp-day_range_end,
+.v109 .rdp-day_range_end {
+  background-color: #FF5C2E !important;
+}
+
+.v109 .\[\&_\.rdp-cell_selected\]\:text-white .rdp-cell_selected,
+.v109 .rdp-cell_selected {
+  color: var(--color-white) !important;
+}
+
+.v109 .\[\&_\.rdp-cell_selected\]\:bg-\[\#FF5C2E\] .rdp-cell_selected,
+.v109 .rdp-cell_selected {
+  background-color: #FF5C2E !important;
+} */
+
+@media (min-width: 48rem) {
+  .v109 .md\:flex-row {
+    flex-direction: row !important;
+  }
+}
+
 @media (hover: hover) {
   .v109 .hover\:border-\[var\(--color-information-50\)\]:hover {
     border-color: var(--color-information-50) !important;
   }
 }
+
+
 
