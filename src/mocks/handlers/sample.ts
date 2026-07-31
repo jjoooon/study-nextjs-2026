@@ -8,7 +8,7 @@
 
 import { http, HttpResponse, delay } from 'msw';
 
-import type { ExcelFilePayload } from '@/features/sample/types/excelUploadTypes';
+import type { ExcelFilePayload } from '@/shared/types/excelUploadTypes';
 
 export const sampleHandlers = [
   /**

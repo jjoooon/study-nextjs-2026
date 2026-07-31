@@ -7,12 +7,9 @@ import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
-import * as XLSX from 'xlsx';
-import { useUploadExcelFileMutation } from '@/features/sample/services/excelUploadService';
-import { base64ToUint8Array, fileToBase64 } from '@/shared/utils/base64FileUtils';
-import log from '@/shared/utils/logger';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow } from '@atoms';
+import { ExcelImportButton } from '@common/ExcelImportButton';
 import { PageID } from '@features/PageID';
 import { createExpiryCellRenderer } from '@grid/CellRenderers';
 import { FileExportIcon } from '@icons';
@@ -114,54 +111,11 @@ const DummyData1: DummyData1Type[] = [
   })),
 ];
 
-const logger = log.getLogger('AggridExcelImport');
-
-const NUMERIC_FIELDS: ReadonlySet<keyof DummyData1Type> = new Set(['field3', 'field4', 'field5']);
-const BOOLEAN_FIELDS: ReadonlySet<keyof DummyData1Type> = new Set(['field6']);
-
-function parseWorkbook(workbook: XLSX.WorkBook): Record<string, unknown>[] {
-  const firstSheetName = workbook.SheetNames[0];
-  const worksheet = workbook.Sheets[firstSheetName];
-  return XLSX.utils.sheet_to_json(worksheet);
-}
-
-function toBooleanValue(value: unknown): boolean {
-  if (typeof value === 'boolean') return value;
-  if (typeof value === 'number') return value !== 0;
-  if (typeof value === 'string') return ['true', '1', 'y', 'yes'].includes(value.trim().toLowerCase());
-  return false;
-}
-
-// 엑셀 헤더(headerName)를 columnDefs2 기준으로 grid field에 매핑해 행을 구성합니다.
-function mapParsedRowToGridRow(
-  parsedRow: Record<string, unknown>,
-  headerFieldMap: Record<string, keyof DummyData1Type>,
-  id: number
-): DummyData1Type {
-  const row: Record<string, unknown> = { id, packageName: '' };
-
-  Object.entries(headerFieldMap).forEach(([headerName, field]) => {
-    const value = parsedRow[headerName];
-
-    if (NUMERIC_FIELDS.has(field)) {
-      row[field] = Number(value ?? 0);
-    } else if (BOOLEAN_FIELDS.has(field)) {
-      row[field] = toBooleanValue(value);
-    } else {
-      row[field] = String(value ?? '');
-    }
-  });
-
-  return row as DummyData1Type;
-}
-
 export default function Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
   const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
   const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const [uploadExcelFile] = useUploadExcelFileMutation();
 
   const [rowData, setRowData] = React.useState<DummyData1Type[]>(() => DummyData1.slice(0, 5));
 
@@ -193,7 +147,7 @@ export default function Section() {
       },
       {
         headerName: '종명',
-        field: 'field7',
+        field: 'packageName',
         cellClass: 'text-center',
         flex: 2,
         minWidth: attributeColumnWidth(200),
@@ -242,45 +196,8 @@ export default function Section() {
     [attributeColumnWidth, getExpiryRenderer]
   );
 
-  // 엑셀 export에 쓰인 headerName을 그대로 import 매핑 기준으로 재사용 (단일 소스 유지)
-  const headerFieldMap = React.useMemo(
-    () =>
-      Object.fromEntries(columnDefs2.map((col) => [col.headerName, col.field])) as Record<string, keyof DummyData1Type>,
-    [columnDefs2]
-  );
-
-  async function importExcel(file: File) {
-    try {
-      const fileContent = await fileToBase64(file);
-      const response = await uploadExcelFile({ fileName: file.name, fileContent }).unwrap();
-
-      const workbook = XLSX.read(base64ToUint8Array(response.fileContent), { type: 'array' });
-      const parsedRows = parseWorkbook(workbook);
-
-      const nextId = rowData.reduce((max, row) => Math.max(max, row.id), 0) + 1;
-      const importedRows = parsedRows.map((parsedRow, index) =>
-        mapParsedRowToGridRow(parsedRow, headerFieldMap, nextId + index)
-      );
-
-      setRowData((prev) => [...prev, ...importedRows]);
-      logger.info(`엑셀 임포트 완료: ${response.fileName} (${importedRows.length}행 추가)`, importedRows);
-    } catch (error) {
-      logger.error('엑셀 업로드 실패:', error);
-      alert('엑셀 파일 업로드에 실패했습니다.');
-    }
-  }
-
   function exportExcel() {
     gridRef?.current?.api.exportDataAsExcel();
-  }
-
-  function handleFileInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    event.target.value = ''; // 같은 파일 재선택 허용
-
-    if (file) {
-      void importExcel(file);
-    }
   }
 
   return (
@@ -301,17 +218,7 @@ export default function Section() {
             </Grow>
             <Gcol>
               <Grow className="w-full" placement="ec">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".xlsx,.xls"
-                  className="hidden"
-                  onChange={handleFileInputChange}
-                />
-                <Button color="success" variant="outlined" onClick={() => fileInputRef.current?.click()}>
-                  엑셀가져오기
-                  <FileExportIcon />
-                </Button>
+                <ExcelImportButton<DummyData1Type> setRowData={setRowData} />
                 <Button color="success" variant="outlined" onClick={exportExcel}>
                   엑셀내보내기
                   <FileExportIcon />

@@ -14,9 +14,9 @@ import type { Reducer, Middleware } from '@reduxjs/toolkit';
 import dashboardService from '@/features/dashboard/services/dashboardService';
 import { customerService } from '@/features/poc/services/customerService';
 import { productService } from '@/features/products/services/productService';
-import { excelUploadService } from '@/features/sample/services/excelUploadService';
 import { authService } from '@/shared/services/authService';
 import { dynamicService } from '@/shared/services/dynamicService';
+import { excelUploadService } from '@/shared/services/excelUploadService';
 
 /**
  * 개별 API 등록 정보 타입

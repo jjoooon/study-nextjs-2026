@@ -71,7 +71,9 @@
       "WebFetch(domain:www.jsboundaries.dev)",
       "Bash(ESLINT_PLUGIN_BOUNDARIES_DEBUG=true npx eslint src/features/test1/test1.ts)",
       "Bash(git stash *)",
-      "Bash(echo \"exit: $?\")"
+      "Bash(echo \"exit: $?\")",
+      "Bash(echo \"exit:$?\")",
+      "Bash(git mv *)"
     ]
   }
 }
