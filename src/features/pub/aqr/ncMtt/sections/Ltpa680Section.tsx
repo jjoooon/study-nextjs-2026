@@ -249,7 +249,7 @@ type DummyDataType5 = {
 const DummyData5: DummyDataType5[] = [
   {
     id: 1,
-    field1: '15일이하',
+    field1: '15일이하15일이하15일이하15일이하15일이하15일이하15일이하15일이하15일이하15일이하15일이하',
     field2: true,
     field3: '즉시',
     field4: false,
@@ -335,6 +335,7 @@ const DummyData6: DummyDataType6[] = [
     field2: true,
     field3: '즉시',
     field4: false,
+
     field5: '인수',
     field6: '할증(20)',
     field7: '거절',
@@ -361,6 +362,7 @@ const DummyData6: DummyDataType6[] = [
     field2: true,
     field3: '3개월이내',
     field4: false,
+
     field5: '인수',
     field6: '할증(20)',
     field7: '거절',
@@ -387,6 +389,7 @@ const DummyData6: DummyDataType6[] = [
     field2: true,
     field3: '즉시',
     field4: false,
+
     field5: '인수',
     field6: '할증(20)',
     field7: '거절',
@@ -540,26 +543,28 @@ export default function Ltpa680Section() {
   const columnDefs5: ColDef<DummyDataType5>[] = [
     {
       headerName: '위험분류',
-      flex: 1,
+      flex: 10,
       minWidth: attributeColumnWidth(240),
-      cellClass: 'text-center',
-      editable: isEditMode,
-      cellRenderer: (params: ICellRendererParams<DummyDataType5>) => {
-        return (
-          <div className="grid h-full w-full items-stretch grid-cols-[35%_15%_35%_15%]">
-            <span className="flex h-full items-center justify-center">{params.data?.field1}</span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200">
-              {typeof params.data?.field2 === 'boolean' ? (params.data.field2 ? 'Y' : 'N') : params.data?.field2}
-            </span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200">
-              {params.data?.field3}
-            </span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200">
-              {typeof params.data?.field4 === 'boolean' ? (params.data.field4 ? 'Y' : 'N') : params.data?.field4}
-            </span>
-          </div>
-        );
-      },
+      cellClass: 'text-left',
+      field: 'field1',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType5>({ field: 'field1' }),
+      // editable: isEditMode,
+      // cellRenderer: (params: ICellRendererParams<DummyDataType5>) => {
+      //   return (
+      //     <div className="grid h-full w-full items-stretch grid-cols-[35%_15%_35%_15%]">
+      //       <span className="flex h-full items-center justify-center">{params.data?.field1}</span>
+      //       <span className="flex h-full items-center justify-center border-l border-gray-200">
+      //         {typeof params.data?.field2 === 'boolean' ? (params.data.field2 ? 'Y' : 'N') : params.data?.field2}
+      //       </span>
+      //       <span className="flex h-full items-center justify-center border-l border-gray-200">
+      //         {params.data?.field3}
+      //       </span>
+      //       <span className="flex h-full items-center justify-center border-l border-gray-200">
+      //         {typeof params.data?.field4 === 'boolean' ? (params.data.field4 ? 'Y' : 'N') : params.data?.field4}
+      //       </span>
+      //     </div>
+      //   );
+      // },
     },
     {
       field: 'field5',
