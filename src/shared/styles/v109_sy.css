@@ -21,11 +21,12 @@
   justify-content: center;
 }
 
-/* agGrid form edit style */
-.v109 .ag-cell > span,
+/* agGrid form edit style  */
+/* 확인요망 029 충동 */
+/* .v109 .ag-cell > span,
 .v109 .editor-select > span {
   padding-right: 0;
-}
+} */
 
 .v109 .ag-cell > button {
   justify-content: center;
