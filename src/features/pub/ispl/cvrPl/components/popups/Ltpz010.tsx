@@ -16,6 +16,7 @@ import {
   createInsertCopiedRowButtonCellRenderer,
   useDynamicColumnWidths,
   CustomGridLoadingOverlay,
+  createFieldRenderer,
 } from '@aggrid';
 import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -49,8 +50,10 @@ export type DummyDataType = {
   attribute: boolean;
   coverageAmount: string;
   premium: number;
+  premium2?: number;
   expiryPeriod: string;
   paymentPeriod: string;
+  paymentPeriod2?: string;
   canEditExpiry: boolean;
 };
 
@@ -59,9 +62,11 @@ export interface Ltpz010Props {
     grid1?: DummyDataType[];
   };
   loading?: boolean;
+  isSimplified?: boolean;
+  isFetusisured?: boolean;
 }
 
-const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
+const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: Ltpz010Props) => {
   const [relationValue, setRelationValue] = useState('');
   // props인 data?.grid1이 변경되었을 때 렌더링 단계에서 상태를 동기적으로 조정하여 린트 경고를 방지합니다.
   const [prevGridData, setPrevGridData] = useState<DummyDataType[] | undefined>(data?.grid1);
@@ -78,7 +83,6 @@ const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
     setErrorRows(list.filter((row) => !row.isCheck).map((row) => row.id));
   }
   const gridRef = useRef<AgGridReact<DummyDataType>>(null);
-
   // '중복 행 추가' 버튼 클릭 시 신규 렌더링된 복사본 행이 감지되면, 이를 자동 체크(Select) 처리하기 위해 임시 보관하는 행 ID ref
   const pendingSelectIdRef = useRef<number | null>(null);
 
@@ -92,6 +96,7 @@ const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
    * - 기존 데이터 길이와 신규 데이터 길이를 비교하여 행이 새로 추가되었고, 추가된 행이 복사본(isDuplicate === true)일 경우
    *   해당 행의 ID를 `pendingSelectIdRef`에 기록해 둡니다.
    */
+
   const setRowDataWithTracking = useCallback(
     (updater: DummyDataType[] | ((prev: DummyDataType[]) => DummyDataType[])) => {
       setRowData((prev) => {
@@ -245,38 +250,92 @@ const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
         },
         cellRenderer: coverageAmountCellRenderer,
       },
-      {
-        headerName: '보험료(원)',
-        field: 'premium',
-        minWidth: attributeColumnWidth(80),
-        flex: 1,
-        cellClass: 'text-right',
-        headerClass: 'px-0!',
-        sortable: false,
-        filter: false,
-        // 천단위 세자리 콤마 포맷터 바인딩
-        valueFormatter: numberValueFormatter,
-      },
-      {
-        headerName: '만기',
-        field: 'expiryPeriod',
-        minWidth: attributeColumnWidth(70),
-        flex: 1,
-        cellClass: 'text-center px-[0.2rem]!',
-        sortable: false,
-        filter: false,
-      },
-      {
-        headerName: '납기',
-        field: 'paymentPeriod',
-        minWidth: attributeColumnWidth(70),
-        flex: 1,
-        cellClass: 'text-center px-[0.2rem]!',
-        sortable: false,
-        filter: false,
-      },
+      ...(isFetusisured
+        ? [
+            {
+              headerName: '보험료(원)',
+              children: [
+                {
+                  headerName: '출생전',
+                  field: 'premium' as keyof DummyDataType,
+                  minWidth: attributeColumnWidth(80),
+                  flex: 1,
+                  cellClass: 'text-right',
+                  headerClass: 'px-0!',
+                  sortable: false,
+                  filter: false,
+                  valueFormatter: numberValueFormatter,
+                },
+                {
+                  headerName: '출생후',
+                  field: 'premium2' as keyof DummyDataType,
+                  minWidth: attributeColumnWidth(80),
+                  flex: 1,
+                  cellClass: 'text-right',
+                  headerClass: 'px-0!',
+                  sortable: false,
+                  filter: false,
+                  valueFormatter: numberValueFormatter,
+                },
+              ],
+            },
+            {
+              headerName: '만기/납기',
+              children: [
+                {
+                  headerName: '출생전',
+                  field: 'expiryPeriod' as keyof DummyDataType,
+                  minWidth: attributeColumnWidth(70),
+                  flex: 1,
+                  cellClass: 'text-center px-[0.2rem]!',
+                  sortable: false,
+                  filter: false,
+                },
+                {
+                  headerName: '출생후',
+                  cellRenderer: createFieldRenderer<DummyDataType>('paymentPeriod', 'paymentPeriod2', 'row'),
+                  minWidth: attributeColumnWidth(140),
+                  flex: 2,
+                  cellClass: 'text-center px-[0.2rem]!',
+                  sortable: false,
+                  filter: false,
+                },
+              ],
+            },
+          ]
+        : [
+            {
+              headerName: '보험료(원)',
+              field: 'premium' as keyof DummyDataType,
+              minWidth: attributeColumnWidth(80),
+              flex: 1,
+              cellClass: 'text-right',
+              headerClass: 'px-0!',
+              sortable: false,
+              filter: false,
+              valueFormatter: numberValueFormatter,
+            },
+            {
+              headerName: '만기',
+              field: 'expiryPeriod' as keyof DummyDataType,
+              minWidth: attributeColumnWidth(70),
+              flex: 1,
+              cellClass: 'text-center px-[0.2rem]!',
+              sortable: false,
+              filter: false,
+            },
+            {
+              headerName: '납기',
+              field: 'paymentPeriod' as keyof DummyDataType,
+              minWidth: attributeColumnWidth(70),
+              flex: 1,
+              cellClass: 'text-center px-[0.2rem]!',
+              sortable: false,
+              filter: false,
+            },
+          ]),
     ],
-    [attributeColumnWidth, duplicateRenderer, titleRenderer]
+    [attributeColumnWidth, duplicateRenderer, titleRenderer, isFetusisured]
   );
 
   /**
@@ -350,7 +409,7 @@ const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
   // ==========================================
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg">
+      <DialogContent showCloseButton resizable={true} size="xl">
         {/* 1. 다이얼로그 헤더 영역: 화면 제목 및 컴포넌트 ID 정의 */}
         <DialogHeader>
           <DialogTitle>
@@ -376,7 +435,7 @@ const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
                   <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
                   -
                   <Input aria-label="" width={26} value={'1'} readOnly />
-                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly variant="info" />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -486,17 +545,19 @@ const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
                         <Input aria-label="" width={70} value={'김한화화'} readOnly />
                         <Input aria-label="" width={114} value={'000000-0******'} readOnly />
                       </FormCell>
-                      <FormCell title={'알림사항'}>
-                        <Grow placement={'bwc'}>
-                          <Grow>
-                            <Input aria-label="" width={32} align="center" value={'무'} readOnly />
-                            <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                              입력
-                            </Button>
+                      {!isSimplified && (
+                        <FormCell title={'알릴사항'}>
+                          <Grow placement={'bwc'}>
+                            <Grow>
+                              <Input aria-label="" width={32} align="center" value={'무'} readOnly />
+                              <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
+                                입력
+                              </Button>
+                            </Grow>
+                            <Checkbox onCheckedChange={() => {}}>의료급여수급권자할인</Checkbox>
                           </Grow>
-                          <Checkbox onCheckedChange={() => {}}>의료급여수급권자할인</Checkbox>
-                        </Grow>
-                      </FormCell>
+                        </FormCell>
+                      )}
                     </FormRow>
                     {/* 계약자 인적 정보 및 관계성 지정 */}
                     <FormRow>
@@ -505,7 +566,7 @@ const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
                         <Input aria-label="" width={114} value={'910101-1******'} readOnly />
                       </FormCell>
                       <FormCell title={'주피와관계'}>
-                        주피보험자(김한화)는 계약자의
+                        주피보험자(김한화)는 계약자(김한화)의
                         <NativeSelect
                           aria-label="주피와관계 선택"
                           width={120}
@@ -536,7 +597,7 @@ const Ltpz010 = ({ data, loading }: Ltpz010Props) => {
                       <FormCell title={'합계보험료'}>
                         <Input aria-label="" width={100} value={'123456'} commaAmount readOnly />원
                         <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
-                          출생후 보혐료
+                          출생후 보험료
                         </Button>
                         <Button color="secondary" onClick={() => {}} only="default" size="lg" variant="outlined">
                           보험료 계산

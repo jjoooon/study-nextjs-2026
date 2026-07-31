@@ -1,18 +1,18 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import Ltpz092 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz092';
+import Ltpz119 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz119';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpz092',
-  component: Ltpz092,
+  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpz119',
+  component: Ltpz119,
 };
 
 export const Default = () => {
   return (
     <LayoutDoc>
-      <Ltpz092 />
+      <Ltpz119 />
     </LayoutDoc>
   );
 };

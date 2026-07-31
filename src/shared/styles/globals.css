@@ -532,7 +532,7 @@
   }
 
   body {
-    overflow:hidden;
+    /* overflow:hidden; */
     font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
   }
 

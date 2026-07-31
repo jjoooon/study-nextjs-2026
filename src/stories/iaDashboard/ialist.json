@@ -2499,7 +2499,7 @@
     "popup": false
   },
   {
-    "pub": "허승하",
+    "pub": "조현민",
     "dep1": "차세대가입설계",
     "dep2": "가입설계",
     "dep3": "가입설계",
@@ -2508,10 +2508,27 @@
     "dep4": "장기심사가이드 더보기",
     "file": "추가계비교(알릴사항)",
     "plan": "이현숙",
-    "dev": "개발목록 누락",
+    "dev": "",
     "sdate": "",
     "date": "26.04.30",
-    "modify": "26.06.04",
+    "modify": "26.07.30",
+    "subId": "",
+    "popup": true
+  },
+  {
+    "pub": "조현민",
+    "dep1": "차세대가입설계",
+    "dep2": "가입설계",
+    "dep3": "가입설계",
+    "id": "LTPZ092",
+    "path": "ispl/isplBsnsSupt/components/popups",
+    "dep4": "장기심사가이드 더보기 상세",
+    "file": "추가계비교(알릴사항)",
+    "plan": "이채우",
+    "dev": "",
+    "sdate": "",
+    "date": "",
+    "modify": "",
     "subId": "",
     "popup": true
   },
@@ -2752,5 +2769,39 @@
     "modify": "",
     "subId": "",
     "popup": false
+  },
+  {
+    "pub": "조현민",
+    "dep1": "차세대가입설계",
+    "dep2": "가입설계",
+    "dep3": "가입설계",
+    "id": "LTPA070",
+    "path": "ispl/isplBsnsSupt",
+    "dep4": "첨부문서 결재관리",
+    "file": "",
+    "plan": "이채우",
+    "dev": "",
+    "sdate": "",
+    "date": "",
+    "modify": "",
+    "subId": "",
+    "popup": false
+  },
+  {
+    "pub": "조현민",
+    "dep1": "차세대가입설계",
+    "dep2": "가입설계",
+    "dep3": "가입설계",
+    "id": "LTPZ119",
+    "path": "ispl/isplBsnsSupt/components/popups",
+    "dep4": "다운로드 파일 등록",
+    "file": "",
+    "plan": "이채우",
+    "dev": "",
+    "sdate": "",
+    "date": "",
+    "modify": "",
+    "subId": "",
+    "popup": true
   }
 ]

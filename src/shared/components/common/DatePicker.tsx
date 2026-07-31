@@ -175,8 +175,26 @@ export function DatePickerInput({
 
   const [open, setOpen] = React.useState(false);
   const [isSelectingEnd, setIsSelectingEnd] = React.useState(false);
-  const [selected, setSelected] = React.useState<CalendarSelection>(initialValue ? new Date(initialValue) : undefined);
-  const [month, setMonth] = React.useState<Date | undefined>(initialValue ? new Date(initialValue) : undefined);
+  const [selected, setSelected] = React.useState<CalendarSelection>(() => {
+    if (mode === 'range' && rangeValue) {
+      const from = rangeValue.from ? new Date(rangeValue.from) : undefined;
+      const to = rangeValue.to ? new Date(rangeValue.to) : undefined;
+      if (from && to && isValidDate(from) && isValidDate(to)) {
+        return { from, to };
+      }
+      if (from && isValidDate(from)) {
+        return { from, to: undefined };
+      }
+    }
+    return initialValue ? new Date(initialValue) : undefined;
+  });
+  const [month, setMonth] = React.useState<Date | undefined>(() => {
+    if (mode === 'range' && rangeValue?.from) {
+      const from = new Date(rangeValue.from);
+      if (isValidDate(from)) return from;
+    }
+    return initialValue ? new Date(initialValue) : undefined;
+  });
 
   const minDate = React.useMemo(() => {
     if (!min) return undefined;
@@ -214,7 +232,10 @@ export function DatePickerInput({
     return rules.length > 0 ? rules : undefined;
   }, [minDate, maxDate, autoRangeDays, selected, isSelectingEnd]);
   const [numericValue, setNumericValue] = React.useState(initialValue?.replace(/\D/g, '') || '');
-  const [rangeInput, setRangeInput] = React.useState({ from: '', to: '' });
+  const [rangeInput, setRangeInput] = React.useState(() => ({
+    from: rangeValue?.from ?? '',
+    to: rangeValue?.to ?? '',
+  }));
   const [invalidRange, setInvalidRange] = React.useState({ from: false, to: false });
   const [invalidDate, setInvalidDate] = React.useState(false);
 
@@ -227,7 +248,7 @@ export function DatePickerInput({
 
   const [prevInitialValue, setPrevInitialValue] = React.useState<string | undefined>(initialValue);
   const [prevMode, setPrevMode] = React.useState<string>(mode);
-  const [prevRangeValue, setPrevRangeValue] = React.useState<DatePickerRangeValue | undefined>(rangeValue);
+  const [prevRangeValue, setPrevRangeValue] = React.useState<DatePickerRangeValue | undefined>(undefined);
 
   // disabled 또는 readOnly가 활성화되면 팝업을 닫음 (렌더 단계에서 동기화)
   if ((disabled || readOnly) && open) {
