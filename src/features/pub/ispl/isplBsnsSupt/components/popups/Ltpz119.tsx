@@ -26,6 +26,7 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import '@/shared/lib/agGridPub';
 
 type DummyDataType1 = {
@@ -326,7 +327,9 @@ export const Ltpz119 = () => {
                   <FormTable variant="head">
                     <FormRow className="w-full">
                       <FormCell title={'결재상태'} className="shrink-0" tdClassName="flex-1">
-                        <Input width={50} aria-label="" value={'승인'} readOnly />
+                        <NativeSelect readOnly={true}>
+                          <NativeSelectOption value="">승인</NativeSelectOption>
+                        </NativeSelect>
                       </FormCell>
                       <FormCell title={'문서번호'} className="shrink-0" tdClassName="flex-1">
                         <Input width={120} aria-label="" value={'xxxxxxxxxx'} />
