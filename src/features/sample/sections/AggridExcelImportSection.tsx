@@ -10,10 +10,10 @@ import { useMemo } from 'react';
 import log from '@/shared/utils/logger';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow } from '@atoms';
-import { ExcelImportButton } from '@common/ExcelImportButton';
 import { PageID } from '@features/PageID';
 import { createExpiryCellRenderer } from '@grid/CellRenderers';
-import { FileExportIcon } from '@icons';
+import { ExcelExportButton } from '@grid/ExcelExportButton';
+import { ExcelImportButton } from '@grid/ExcelImportButton';
 import { LayoutHead } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -199,10 +199,6 @@ export default function Section() {
     [attributeColumnWidth, getExpiryRenderer]
   );
 
-  function exportExcel() {
-    gridRef?.current?.api.exportDataAsExcel();
-  }
-
   return (
     <>
       <LayoutHead>
@@ -228,10 +224,7 @@ export default function Section() {
                     logger.debug('임포트 완료', importedRows);
                   }}
                 />
-                <Button color="success" variant="outlined" onClick={exportExcel}>
-                  엑셀내보내기
-                  <FileExportIcon />
-                </Button>
+                <ExcelExportButton<DummyData1Type> gridRef={gridRef} />
               </Grow>
               <div className="ag-theme-alpine">
                 {/* 2026-06-04 suppressClickEdit 삭제 */}
