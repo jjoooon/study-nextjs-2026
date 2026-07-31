@@ -10,11 +10,13 @@ import { customersHandlers } from './customers';
 import { dashboardHandlers } from './dashboard';
 import { errorHandlers } from './errors';
 import { productsHandlers } from './products';
+import { sampleHandlers } from './sample';
 
 export const handlers = [
   ...authHandlers,
   ...customersHandlers,
   ...dashboardHandlers,
   ...productsHandlers,
+  ...sampleHandlers,
   ...errorHandlers,
 ];
