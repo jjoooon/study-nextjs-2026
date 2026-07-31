@@ -7,7 +7,7 @@ import {
 } from 'ag-grid-enterprise';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { TreeDataModule } from 'ag-grid-enterprise';
-import { RowGroupingModule } from 'ag-grid-enterprise';
+import { RowGroupingModule, ExcelExportModule } from 'ag-grid-enterprise';
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -17,6 +17,7 @@ ModuleRegistry.registerModules([
   RowGroupingModule,
   RichSelectModule,
   TreeDataModule,
+  ExcelExportModule,
   // 필요시 엔터프라이즈 모듈 추가
 ]);
 // 이 파일을 import하는 것만으로 모듈 등록이 보장됨

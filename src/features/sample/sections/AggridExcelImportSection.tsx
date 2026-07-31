@@ -209,6 +209,8 @@ export default function Section() {
     [attributeColumnWidth, getExpiryRenderer]
   );
 
+  // TODO: @YunJunmo
+  // 1. 파일 포맷 결정
   async function importExcel(file: File) {
     try {
       const fileContent = await fileToBase64(file);
@@ -219,11 +221,15 @@ export default function Section() {
 
       // TODO: 이 데이터로 그리드 컬럼 매핑/임포트 작업 진행 예정
       logger.info(`엑셀 업로드 완료: ${response.fileName} (${parsedRows.length}행)`, parsedRows);
-      alert(`${response.fileName} 업로드 완료 (${parsedRows.length}행)`);
+      // alert(`${response.fileName} 업로드 완료 (${parsedRows.length}행)`);
     } catch (error) {
       logger.error('엑셀 업로드 실패:', error);
       alert('엑셀 파일 업로드에 실패했습니다.');
     }
+  }
+
+  function exportExcel() {
+    gridRef?.current?.api.exportDataAsExcel();
   }
 
   function handleFileInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -262,6 +268,10 @@ export default function Section() {
                 />
                 <Button color="success" variant="outlined" onClick={() => fileInputRef.current?.click()}>
                   엑셀가져오기
+                  <FileExportIcon />
+                </Button>
+                <Button color="success" variant="outlined" onClick={exportExcel}>
+                  엑셀내보내기
                   <FileExportIcon />
                 </Button>
               </Grow>
