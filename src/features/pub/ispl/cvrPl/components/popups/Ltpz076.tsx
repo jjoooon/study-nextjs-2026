@@ -7,12 +7,13 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
-import { useDynamicColumnWidths } from '@aggrid';
+import { useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid'; // 2026-07-31 useAgGridInfiniteAppend 추가
 import { Grid, Grow, Gcol, Typo } from '@atoms'; // 2026-07-22 : Gcol 추가
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableFold } from '@common/TableFold';
+import { TableMore } from '@common/TablePagination';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -78,7 +79,7 @@ const DummyData: DummyDataType[] = [
     id: 6,
     isChecked: true,
     field01: 3253180,
-    field02: '(주)씨엔아이보험대리',
+    field02: '(주)씨엔아이보험대리11',
     field03: '대리점',
   },
   {
@@ -201,8 +202,16 @@ const Ltpz076 = () => {
     [attributeColumnWidth]
   );
 
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
+
+  // 2026-07-31 - 페이지네이션 추가
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
+  const pageSize = 5;
+  const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
+    allRows: DummyData,
+    pageSize,
+  });
+  const rowData = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
   return (
     <Dialog open>
@@ -289,8 +298,10 @@ const Ltpz076 = () => {
                         </Button>
                       </Grow>
                     </Grow>
-                    <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+                    {/* 20260731 - data-page={5} 수정, ref 추가 */}
+                    <div className="ag-theme-alpine inner-scroll" data-page={5}>
                       <AgGridReact<DummyDataType>
+                        ref={gridRef}
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData}
                         columnDefs={columnDefs}
@@ -306,6 +317,18 @@ const Ltpz076 = () => {
                         }}
                       />
                     </div>
+                    {/* 2026-07-31 - 페이지네이션 추가 */}
+                    <TableMore
+                      gridRef={gridRef}
+                      loadedCount={loadedCount}
+                      totalCount={totalCount}
+                      pageSize={pageSize}
+                      onLoadAll={handleLoadAll}
+                      onLoadNext={handleLoadNext}
+                      onLoadReset={handleLoadReset}
+                      isReset={true}
+                      isAll={true}
+                    />
                   </Gcol>
                   <Grow className="w-full h-full flex justify-center items-center ">
                     <Button variant={'none'} size={'lg'} color={'primary'} className="p-0">
