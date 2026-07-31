@@ -72,12 +72,6 @@ export const Ltpz092 = () => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                다운로드
-              </Button>
-              <Button variant={'contained'} size={'xl'}>
-                저장
-              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기

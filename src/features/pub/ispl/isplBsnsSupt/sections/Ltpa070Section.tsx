@@ -195,11 +195,6 @@ const DummyData: DummyDataType[] = [
 export default function Ltpa070Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const { formatDateTime } = useFormatDateTime();
-  const [form, setFormField] = useFormFields({
-    type01: '',
-    type02: '',
-    type03: '',
-  });
 
   // 오늘 날짜 기준 1주일 전 ~ 오늘 계산
   const getInitialDateRange = () => {
@@ -375,12 +370,7 @@ export default function Ltpa070Section() {
               <FormTable variant={'head'} lineTop={false} caption="전자증명서(정부24) 등록 현황 조회">
                 <FormRow>
                   <FormCell title={'결재상태'}>
-                    <NativeSelect
-                      aria-label="결재상태 선택"
-                      value={form.type01}
-                      width={100}
-                      onChange={(e) => setFormField('type01', e.target.value)}
-                    >
+                    <NativeSelect aria-label="결재상태 선택" width={100}>
                       {[
                         { value: 'selection1', id: 'type01-1', label: '전체' },
                         { value: 'selection2', id: 'type01-2', label: '등록' },
