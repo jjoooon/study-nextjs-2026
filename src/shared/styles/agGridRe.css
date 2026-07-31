@@ -145,10 +145,15 @@
   background: var(--color-information-5);
 }
 
+.editor-select .pr-4 {
+  padding-right: 0;
+}
 .editor-select svg {
   display: none;
 }
-
+.ag-row-selected .editor-select .pr-4 {
+  padding-right: var(--spacing-4);
+}
 .ag-row-selected .editor-select svg {
   display: block;
 }

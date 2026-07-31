@@ -1305,13 +1305,10 @@ export function editableSelectCellRenderer<RowType>(
   params: ICellRendererParams<RowType> & { align?: 'left' | 'center' | 'right' }
 ) {
   const align = params.align ?? 'right';
-  let justifyClass = 'justify-end';
   let textClass = 'text-right';
   if (align === 'left') {
-    justifyClass = 'justify-start';
     textClass = 'text-left';
   } else if (align === 'center') {
-    justifyClass = 'justify-center';
     textClass = 'text-center';
   }
   const displayValue =
