@@ -7,6 +7,7 @@ import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
+import log from '@/shared/utils/logger';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow } from '@atoms';
 import { ExcelImportButton } from '@common/ExcelImportButton';
@@ -18,6 +19,8 @@ import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 
 import '@/shared/lib/agGridPub';
+
+const logger = log.getLogger('AgridExcelImportSample');
 
 type DummyData1Type = {
   id: number;
@@ -218,7 +221,13 @@ export default function Section() {
             </Grow>
             <Gcol>
               <Grow className="w-full" placement="ec">
-                <ExcelImportButton<DummyData1Type> setRowData={setRowData} />
+                <ExcelImportButton<DummyData1Type>
+                  setRowData={setRowData}
+                  mergeStrategy={'overwrite'}
+                  onImported={(importedRows) => {
+                    logger.debug('임포트 완료', importedRows);
+                  }}
+                />
                 <Button color="success" variant="outlined" onClick={exportExcel}>
                   엑셀내보내기
                   <FileExportIcon />

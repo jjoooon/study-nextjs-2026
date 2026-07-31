@@ -26,7 +26,7 @@ export interface ExcelImportButtonProps<T extends Record<string, unknown>> {
   buttonLabel?: React.ReactNode;
   /** 임포트 완료 시 콜백 */
   onImported?: (importedRows: T[]) => void;
-  /** 임포트 실패 시 콜백 (기본: 로그 + alert) */
+  /** 임포트 실패 시 콜백 (기본: 로그) */
   onError?: (error: unknown) => void;
   /** Button에 그대로 전달할 추가 props */
   buttonProps?: Omit<React.ComponentProps<typeof Button>, 'onClick' | 'children'>;
@@ -56,7 +56,6 @@ function parseWorkbookToRows<T extends Record<string, unknown>>(workbook: XLSX.W
 
 function defaultOnError(error: unknown) {
   logger.error('엑셀 업로드 실패:', error);
-  alert('엑셀 파일 업로드에 실패했습니다.');
 }
 
 /**
