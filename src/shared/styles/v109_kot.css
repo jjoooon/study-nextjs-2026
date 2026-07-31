@@ -1539,7 +1539,7 @@
 
 /* v109 호환 유틸리티 클래스 정의 */
 .v109 .\[state\=checked\]\:shadow-\[0_0\.1rem_0\.1rem_0_rgba\(255\,92\,46\,0\.20\)\][data-state="checked"] {
-  --tw-shadow: 0 0.1rem 0.1rem 0 var(--tw-shadow-color, rgba(255, 92, 46, 0.20)) !important;
+  
   box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 
