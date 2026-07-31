@@ -1620,102 +1620,133 @@
 
 /*달력 달자 2개 선택시 가로 오류 수정*/
 
-/* .v109 .data-\[state\=open\]\:fade-in-0[data-state="open"] {
-  --tw-enter-opacity: 0 !important;
+.v109 .data-\[state\=open\]\:fade-in-0[data-state="open"] {
+  --tw-enter-opacity: 0;
 }
 
 .v109 .data-\[state\=open\]\:animate-in[data-state="open"] {
-  animation-name: enter !important;
-  animation-duration: 150ms !important;
-  --tw-enter-opacity: initial !important;
-  --tw-enter-scale: initial !important;
-  --tw-enter-rotate: initial !important;
-  --tw-enter-translate-x: initial !important;
-  --tw-enter-translate-y: initial !important;
+  animation-name: enter;
+  animation-duration: 150ms;
+  --tw-enter-opacity: initial;
+  --tw-enter-scale: initial;
+  --tw-enter-rotate: initial;
+  --tw-enter-translate-x: initial;
+  --tw-enter-translate-y: initial;
 }
 
 .v109 .data-\[state\=closed\]\:fade-out-0[data-state="closed"] {
-  --tw-exit-opacity: 0 !important;
+  --tw-exit-opacity: 0;
 }
 
 .v109 .data-\[state\=closed\]\:animate-out[data-state="closed"] {
-  animation-name: exit !important;
-  animation-duration: 150ms !important;
-  --tw-exit-opacity: initial !important;
-  --tw-exit-scale: initial !important;
-  --tw-exit-rotate: initial !important;
-  --tw-exit-translate-x: initial !important;
-  --tw-exit-translate-y: initial !important;
+  animation-name: exit;
+  animation-duration: 150ms;
+  --tw-exit-opacity: initial;
+  --tw-exit-scale: initial;
+  --tw-exit-rotate: initial;
+  --tw-exit-translate-x: initial;
+  --tw-exit-translate-y: initial;
 }
 
 .v109 .data-\[side\=top\]\:slide-in-from-bottom-2[data-side="top"] {
-  --tw-enter-translate-y: calc(var(--base-unit) * 2) !important;
+  --tw-enter-translate-y: calc(var(--base-unit) * 2);
 }
 
 .v109 .data-\[side\=right\]\:slide-in-from-left-2[data-side="right"] {
-  --tw-enter-translate-x: calc(var(--base-unit) * -2) !important;
+  --tw-enter-translate-x: calc(var(--base-unit) * -2);
 }
 
 .v109 .data-\[side\=left\]\:slide-in-from-right-2[data-side="left"] {
-  --tw-enter-translate-x: calc(var(--base-unit) * 2) !important;
+  --tw-enter-translate-x: calc(var(--base-unit) * 2);
 }
 
 .v109 .data-\[side\=bottom\]\:slide-in-from-top-2[data-side="bottom"] {
-  --tw-enter-translate-y: calc(var(--base-unit) * -2) !important;
+  --tw-enter-translate-y: calc(var(--base-unit) * -2);
 }
 
-.v109 [data-slot="popover-content"] .\[\[data-slot\=popover-content\]_\&\]\:bg-transparent {
-  background-color: transparent !important;
+.v109 [data-slot="popover-content"] .\[\[data-slot\=popover-content\]_\&\]\:bg-transparent,
+.v109 .\[\[data-slot\=popover-content\]_\&\]\:bg-transparent {
+  background-color: transparent;
 }
 
-.v109 [data-slot="card-content"] .\[\[data-slot\=card-content\]_\&\]\:bg-transparent {
-  background-color: transparent !important;
+.v109 [data-slot="card-content"] .\[\[data-slot\=card-content\]_\&\]\:bg-transparent,
+.v109 .\[\[data-slot\=card-content\]_\&\]\:bg-transparent {
+  background-color: transparent;
 }
 
+.v109 .rtl\:\*\*\:\[\.rdp-button_previous\>svg\]\:rotate-180 .rdp-button_previous > svg,
 .v109 [dir="rtl"] .rdp-button_previous > svg,
 .v109 :dir(rtl) .rdp-button_previous > svg {
-  rotate: 180deg !important;
+  rotate: 180deg;
 }
 
+.v109 .rtl\:\*\*\:\[\.rdp-button_next\>svg\]\:rotate-180 .rdp-button_next > svg,
 .v109 [dir="rtl"] .rdp-button_next > svg,
 .v109 :dir(rtl) .rdp-button_next > svg {
-  rotate: 180deg !important;
+  rotate: 180deg;
 }
 
-.v109 .\[\&_\.rdp-range_middle\]\:bg-\[\#FF5C2E33\] .rdp-range_middle,
-.v109 .rdp-range_middle {
-  background-color: #FF5C2E33 !important;
-}
-
+/* RDP 범위 셀렉터 공통 */
 .v109 .\[\&_\.rdp-day_range_start\]\:text-white .rdp-day_range_start,
-.v109 .rdp-day_range_start {
-  color: var(--color-white) !important;
-}
-
-.v109 .\[\&_\.rdp-day_range_start\]\:bg-\[\#FF5C2E\] .rdp-day_range_start,
-.v109 .rdp-day_range_start {
-  background-color: #FF5C2E !important;
+.v109 .rdp-day_range_start,
+.v109 .rdp-day_range_start * {
+  color: var(--color-white, #ffffff);
+  background-color: #ff5c2e;
+  border-radius: 9999px 0 0 9999px;
 }
 
 .v109 .\[\&_\.rdp-day_range_end\]\:text-white .rdp-day_range_end,
-.v109 .rdp-day_range_end {
-  color: var(--color-white) !important;
+.v109 .rdp-day_range_end,
+.v109 .rdp-day_range_end * {
+  color: var(--color-white, #ffffff);
+  background-color: #ff5c2e;
+  border-radius: 0 9999px 9999px 0;
 }
 
-.v109 .\[\&_\.rdp-day_range_end\]\:bg-\[\#FF5C2E\] .rdp-day_range_end,
-.v109 .rdp-day_range_end {
-  background-color: #FF5C2E !important;
+/* 데이터 속성(data-range-*) 범위 연결 스타일 수정 */
+.v109 .data-\[range-start\=true\]\:text-white[data-range-start="true"],
+.v109 .data-\[range-start\=true\]\:bg-\[\#ff5c2e\][data-range-start="true"],
+.v109 .data-\[range-start\=true\]\:rounded-full[data-range-start="true"],
+.v109 [data-range-start="true"],
+.v109 [data-range-start="true"] * {
+  color: var(--color-white, #ffffff);
+  background-color: #ff5c2e;
+  border-radius: 9999px 0 0 9999px;
 }
 
-.v109 .\[\&_\.rdp-cell_selected\]\:text-white .rdp-cell_selected,
-.v109 .rdp-cell_selected {
-  color: var(--color-white) !important;
+.v109 .data-\[range-start\=true\]\:rounded-full[data-range-start="true"] {
+  border-radius: var(--radius-full);
 }
 
-.v109 .\[\&_\.rdp-cell_selected\]\:bg-\[\#FF5C2E\] .rdp-cell_selected,
-.v109 .rdp-cell_selected {
-  background-color: #FF5C2E !important;
-} */
+.v109 .data-\[range-middle\=true\]\:bg-\[var\(--color-element-gray-lighter\)\][data-range-middle="true"],
+.v109 .data-\[range-middle\=true\]\:rounded-full\![data-range-middle="true"],
+.v109 [data-range-middle="true"],
+.v109 [data-range-middle="true"] * {
+  background-color: var(--color-element-gray-lighter, #e2e8f0);
+  border-radius: 0;
+}
+
+.v109 .data-\[range-middle\=true\]\:rounded-full\![data-range-middle="true"] {
+  border-radius: var(--radius-full) !important;
+}
+
+.v109 .data-\[range-end\=true\]\:text-white[data-range-end="true"],
+.v109 .data-\[range-end\=true\]\:bg-\[\#ff5c2e\][data-range-end="true"],
+.v109 .data-\[range-end\=true\]\:rounded-full[data-range-end="true"],
+.v109 [data-range-end="true"],
+.v109 [data-range-end="true"] * {
+  color: var(--color-white, #ffffff);
+  background-color: #ff5c2e;
+  border-radius: 0 9999px 9999px 0;
+}
+
+/* 시작일과 종료일이 같은 하루인 경우만 완전한 원형 */
+.v109 [data-range-start="true"][data-range-end="true"],
+.v109 [data-range-start="true"][data-range-end="true"] * {
+  border-radius: 9999px !important;
+}
+
+
 
 @media (min-width: 48rem) {
   .v109 .md\:flex-row {
