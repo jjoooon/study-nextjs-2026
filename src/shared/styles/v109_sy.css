@@ -21,13 +21,6 @@
   justify-content: center;
 }
 
-/* agGrid form edit style  */
-/* 확인요망 029 충동 */
-/* .v109 .ag-cell > span,
-.v109 .editor-select > span {
-  padding-right: 0;
-} */
-
 .v109 .ag-cell > button {
   justify-content: center;
 }
@@ -56,4 +49,52 @@
 
 .v109 .ag-input-field-input:where(input:not([type]), input[type='text'], input[type='number'], input[type='tel'], input[type='date'], input[type='datetime-local'], textarea) {
   background-color: var(--ag-input-background-color);
+}
+
+/* InputGroup Required state (Chrome 109 호환) */
+.v109 [data-slot='input-group']:has([data-slot='input-group-control'][required]),
+[data-slot='input-group']:has([data-slot='input-group-control'][required]) {
+  border-color: var(--color-input-border-highlight);
+  background-color: var(--color-input-surface-highlight);
+}
+
+/* InputGroup Focus state */
+.v109 [data-slot='input-group']:has([data-slot='input-group-control']:focus-visible),
+[data-slot='input-group']:has([data-slot='input-group-control']:focus-visible) {
+  border-width: 0.2rem;
+  border-color: var(--color-input-border-hover);
+  box-shadow: 0 0 0 0.1rem var(--color-gray-5);
+}
+
+/* DatePickerInput Focus state (Chrome 109 호환) */
+.v109 .cp-datepicker input:focus:not([aria-invalid='true']),
+.cp-datepicker input:focus:not([aria-invalid='true']) {
+  border-color: var(--color-input-border-highlight-bold);
+}
+
+/* DatePickerInput Hover state (Chrome 109 호환) */
+.v109 .cp-datepicker input:hover,
+.cp-datepicker input:hover {
+  border-color: var(--color-input-border-hover);
+}
+.v109 .cp-datepicker input:required:hover,
+.cp-datepicker input:required:hover {
+  border-color: var(--color-input-border-highlight-bold);
+}
+.v109 .cp-datepicker input[aria-invalid='true']:hover,
+.cp-datepicker input[aria-invalid='true']:hover {
+  border-color: var(--color-input-border-error);
+}
+
+/* NativeSelect Required Hover state (Chrome 109 호환) */
+select.cp-nativeselect:required:hover,
+select.cp-nativeselect[required]:hover,
+select[data-slot='native-select']:required:hover,
+select[data-slot='native-select'][required]:hover,
+.v109 select.cp-nativeselect:required:hover,
+.v109 select.cp-nativeselect[required]:hover,
+.v109 select[data-slot='native-select']:required:hover,
+.v109 [class*="hover:border-[var(--color-warning-70)]"]:hover,
+[class*="hover:border-[var(--color-warning-70)]"]:hover {
+  border-color: var(--color-warning-70) !important;
 }
