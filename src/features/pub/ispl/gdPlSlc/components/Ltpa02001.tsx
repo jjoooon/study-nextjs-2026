@@ -468,7 +468,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                 ] as const
               ).map((badge) =>
                 badgeText.includes(badge.label) ? (
-                  <Badge key={badge.label} color={badge.color} className="w-[3rem]">
+                  <Badge key={badge.label} color={badge.color} className="min-w-[3rem]">
                     {badge.label}
                   </Badge>
                 ) : null

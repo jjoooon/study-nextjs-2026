@@ -593,7 +593,7 @@ export const Ltpa35006 = () => {
                       </Table>
                       {/* M1. 문구추가 */}
                       {/* 즉시집금 처리 시 주의사항 안내 메시지 */}
-                      <Typo variant="body-sm" color="primary" icon="info">
+                      <Typo variant="body-sm" icon="info">
                         같은날 동일계좌의 동일금액으로 출금이 불가합니다. 집금상태 정상시 고객님의 계좌로부터
                         즉시이체출금에 성공한 것이니 입금내역을 확인하세요.
                       </Typo>

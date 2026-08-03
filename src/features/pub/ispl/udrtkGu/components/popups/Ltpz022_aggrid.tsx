@@ -3,8 +3,12 @@
  */
 'use client';
 
+import '@/shared/lib/agGridPub';
+import type { CellClickedEvent, CellStyle, ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
+import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -22,7 +26,6 @@ import {
   DialogTitle,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
 /** 탭 메뉴 구성 타입 정의 */
 type Ltpz022TabType = {
@@ -162,38 +165,122 @@ const Ltpz022 = () => {
       .replace(/(\[당사:[^\]]*\])/g, `<b style="color:var(--color-danger-50)">$1</b>`);
   };
 
-  /** 현재 선택된 셀(위배 내역) 정보 상태 */
-  const [selectedCell, setSelectedCell] = React.useState<SelectedViolationCell | null>(null);
+  /** 현재 선택된 셀(위배 내역) 정보를 저장하는 ref */
+  const selectedCellRef = React.useRef<SelectedViolationCell | null>(null);
+  /** Ag-Grid API 제어를 위한 ref */
+  const gridApiRef = React.useRef<GridApi<UnderwritingViolationRow> | null>(null);
 
-  /** criteria 연속 항목 개수를 계산하여 rowSpan 매핑 생성 */
-  const rowSpanMap = React.useMemo(() => {
-    const spans: number[] = new Array(violationRowData.length).fill(1);
-    let i = 0;
-    while (i < violationRowData.length) {
-      let count = 1;
-      while (
-        i + count < violationRowData.length &&
-        violationRowData[i + count].criteria === violationRowData[i].criteria
-      ) {
-        count++;
-      }
-      spans[i] = count;
-      for (let j = 1; j < count; j++) {
-        spans[i + j] = 0;
-      }
-      i += count;
-    }
-    return spans;
-  }, []);
+  /** 특정 행이 현재 선택된 상태인지 확인하는 유틸 함수 */
+  const isCriteriaSelected = (criteria: string) => criteria !== '' && selectedCellRef.current?.criteria === criteria;
+  const isDetailsSelected = (id: number) => selectedCellRef.current?.id === id;
 
   /** 셀 클릭 이벤트 핸들러: 상세 내용을 클릭하면 해당 행을 강조 표시 */
-  const handleCellClicked = (row: UnderwritingViolationRow) => {
-    if (selectedCell?.id === row.id) return;
-    setSelectedCell({
-      id: row.id,
-      criteria: row.criteria,
-    });
+  const handleCellClicked = (e: CellClickedEvent<UnderwritingViolationRow>) => {
+    if (e.colDef.field !== 'details' || !e.data) return;
+
+    // 이미 선택된 셀이면 무시
+    if (selectedCellRef.current?.id === e.data.id) return;
+
+    // 선택 정보 업데이트 후 셀 리프레시
+    selectedCellRef.current = {
+      id: e.data.id,
+      criteria: e.data.criteria,
+    };
+
+    gridApiRef.current?.refreshCells({ force: true });
   };
+
+  /** 선택된 셀의 배경색 스타일 정의 */
+  const getSelectedCellStyle = (isSelected: boolean): CellStyle => {
+    if (!isSelected) {
+      return {};
+    }
+
+    return {
+      backgroundColor: '#FEF4D4',
+    };
+  };
+
+  /** 행별 교차 배경색 정의 (홀/짝수 구분) */
+  const getAlternatingCellStyle = (rowIndex: number | null | undefined): CellStyle => {
+    const isOddCell = ((rowIndex ?? 0) + 1) % 2 !== 0;
+
+    return {
+      backgroundColor: isOddCell ? '#FFFFFF' : '#F4F4F4',
+    };
+  };
+
+  /** 인수제한 구분에 따른 배경색 정의 (특정 상태값 강조) */
+  const getCriteriaCellStyle = (criteria: string): CellStyle => {
+    if (criteria.startsWith('청약완료불가\n(정액)') || criteria === '참고사항') {
+      return { backgroundColor: '#F4F4F4' };
+    }
+
+    return { backgroundColor: '#FFFFFF' };
+  };
+
+  /** 그리드 기본 열 설정 */
+  const spanDefaultColDef: ColDef<UnderwritingViolationRow> = {
+    sortable: true,
+    filter: false,
+    resizable: true,
+    suppressMovable: true,
+    headerClass: 'ag-header-center',
+  };
+  const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  /** 그리드 컬럼 정의 */
+  const spanColumnDefs = React.useMemo<ColDef<UnderwritingViolationRow>[]>(
+    () => [
+      {
+        headerName: '인수제한',
+        field: 'criteria',
+        flex: 1,
+        width: attributeColumnWidth(80),
+        // 동일한 인수제한 항목은 셀을 병합하여 표시
+        spanRows: true,
+        cellClass: 'flex! items-center! justify-center! whitespace-pre-line text-center',
+        // 상태 및 선택 여부에 따른 스타일 적용
+        cellStyle: (params) => ({
+          ...getCriteriaCellStyle(params.data?.criteria ?? ''),
+          ...getSelectedCellStyle(isCriteriaSelected(params.data?.criteria ?? '')),
+        }),
+        cellRenderer: (params: ICellRendererParams<UnderwritingViolationRow>) => {
+          const criteria = params.data?.criteria ?? '';
+          const color = criteriaColorMap[criteria];
+
+          // 줄바꿈 문자를 <br/>로 치환하여 렌더링
+          return (
+            <div
+              className="w-full leading-[1.3]"
+              style={color ? { color } : undefined}
+              dangerouslySetInnerHTML={{ __html: String(criteria).replace(/\n/g, '<br/>') }}
+            />
+          );
+        },
+      },
+      {
+        headerName: '위배내용',
+        field: 'details',
+        wrapText: true,
+        autoHeight: true,
+        flex: 4,
+        cellStyle: (params) => ({
+          whiteSpace: 'normal',
+          wordWrap: 'break-word',
+          ...getAlternatingCellStyle(params.node.rowIndex),
+          ...getSelectedCellStyle(isDetailsSelected(params.data?.id ?? -1)),
+        }),
+        cellRenderer: (params: ICellRendererParams<UnderwritingViolationRow>) => (
+          <div
+            className="h-full w-full py-1.5 pl-1 leading-[1.3] whitespace-normal"
+            dangerouslySetInnerHTML={{ __html: applyDetailsColor(String(params.data?.details ?? '')) }}
+          />
+        ),
+      },
+    ],
+    [attributeColumnWidth]
+  );
 
   /** 탭 상태 관리 훅 */
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
@@ -213,7 +300,7 @@ const Ltpz022 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr] overflow-x-hidden">
+        <DialogSection className="grid-rows-[auto_1fr]">
           {/* 상단: 설계 기본 정보 표시 영역 */}
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant={'head'}>
@@ -266,65 +353,23 @@ const Ltpz022 = () => {
                 }}
               ></Button>
             )}
-            /* 탭 하단 컨텐츠: 지침 확인 결과 Table */
+            /* 탭 하단 컨텐츠: 지침 확인 결과 Ag-Grid */
           >
-            <div className="absolute h-full">
-              <div className="overflow-y-auto">
-                <Table variant="default" className="border-0">
-                  <colgroup>
-                    <col style={{ width: '12rem' }} />
-                    <col style={{ width: 'auto' }} />
-                  </colgroup>
-                  <TableHeader className="sticky top-[0.1rem]">
-                    <TableRow>
-                      <TableHead className="text-center">인수제한</TableHead>
-                      <TableHead className="text-center">위배내용</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {violationRowData.map((row, index) => {
-                      const span = rowSpanMap[index];
-                      const isSelectedCriteria = selectedCell?.criteria === row.criteria;
-                      const isSelectedDetails = selectedCell?.id === row.id;
-
-                      const criteriaBg = isSelectedCriteria
-                        ? '#FEF4D4'
-                        : row.criteria.startsWith('청약완료불가') || row.criteria === '참고사항'
-                          ? '#F4F4F4'
-                          : '#FFFFFF';
-
-                      const detailsBg = isSelectedDetails ? '#FEF4D4' : (index + 1) % 2 !== 0 ? '#FFFFFF' : '#F4F4F4';
-
-                      const criteriaColor = criteriaColorMap[row.criteria];
-
-                      return (
-                        <TableRow key={row.id}>
-                          {span > 0 && (
-                            <TableCell
-                              rowSpan={span}
-                              className="text-center align-middle whitespace-pre-line border-r border-[#E5E5E5] p-2"
-                              style={{ backgroundColor: criteriaBg }}
-                            >
-                              <div
-                                className="leading-[1.3] text-[1.3rem] font-medium"
-                                style={criteriaColor ? { color: criteriaColor } : undefined}
-                                dangerouslySetInnerHTML={{ __html: String(row.criteria).replace(/\n/g, '<br/>') }}
-                              />
-                            </TableCell>
-                          )}
-                          <TableCell
-                            className="cursor-pointer py-2 px-3 align-middle text-left whitespace-normal break-all leading-[1.3] text-[1.3rem]"
-                            style={{ backgroundColor: detailsBg }}
-                            onClick={() => handleCellClicked(row)}
-                          >
-                            <div dangerouslySetInnerHTML={{ __html: applyDetailsColor(String(row.details)) }} />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </div>
+            <div className="ag-theme-alpine ag-border-t inner-scroll" data-row={violationRowData.length}>
+              <AgGridReact<UnderwritingViolationRow>
+                getRowId={(params) => String(params.data.id)}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                rowData={violationRowData}
+                columnDefs={spanColumnDefs}
+                defaultColDef={spanDefaultColDef}
+                // 셀 병합 기능 활성화
+                enableCellSpan={true}
+                onGridReady={(params) => {
+                  gridApiRef.current = params.api;
+                }}
+                onCellClicked={handleCellClicked}
+                animateRows={false}
+              />
             </div>
           </TabPager>
         </DialogSection>
