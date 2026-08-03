@@ -5,7 +5,7 @@ import Ltpz048 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz048'
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpz048',
+  title: 'app/popup/LTPZ048',
   component: Ltpz048,
 };
 

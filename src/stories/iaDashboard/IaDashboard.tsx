@@ -33,14 +33,14 @@ export function IaDashboard() {
   } = useIaDashboard();
 
   const previewUrl = React.useMemo(() => {
-    return activeRow ? getStoryIframeUrl(activeRow.id, activeRow.path ?? '', activeStep, activeRow.subId) : '';
+    return activeRow ? getStoryIframeUrl(activeRow.id, activeRow.path ?? '', activeStep, activeRow.subId, activeRow.popup) : '';
   }, [activeRow, activeStep]);
 
   const handleMovePage = React.useCallback(() => {
     if (!activeRow) {
       return;
     }
-    linkGo(activeRow.id, activeRow.path ?? '', activeStep, activeRow.subId);
+    linkGo(activeRow.id, activeRow.path ?? '', activeStep, activeRow.subId, activeRow.popup);
   }, [activeRow, activeStep]);
 
   return (

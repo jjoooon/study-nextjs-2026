@@ -5,7 +5,7 @@ import { Ltpa3500401 } from '@/features/pub/ispl/udRqRst/components/popups/Ltpa3
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/ispl/udRqRst/components/popups/Ltpa3500401',
+  title: 'app/_excluded/popup/LTPA3500401',
   component: Ltpa3500401,
 };
 

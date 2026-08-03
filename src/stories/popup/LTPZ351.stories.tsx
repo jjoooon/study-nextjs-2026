@@ -5,7 +5,7 @@ import Ltpz351, { Ltpz351Props } from '@/features/pub/ispl/isplBsnsSupt/componen
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpz351',
+  title: 'app/popup/LTPZ351',
   component: Ltpz351,
   args: {
     noticeType: 'B',

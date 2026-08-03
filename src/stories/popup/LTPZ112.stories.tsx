@@ -12,7 +12,7 @@ interface StoryProps extends React.ComponentProps<typeof Ltpz112> {
 }
 
 const meta: Meta<StoryProps> = {
-  title: 'app/ispl/gdPlSlc/components/popups/Ltpz112',
+  title: 'app/popup/LTPZ112',
   component: Ltpz112,
   argTypes: {
     diseaseDataEmpty: {

@@ -10,6 +10,9 @@ const demoItems = [
   { step: 1, label: '계약사항' },
   { step: 2, label: '담보설계' },
   { step: 3, label: '알릴사항' },
+  { step: 4, label: '심사요청' },
+  { step: 5, label: '추가사항' },
+  { step: 6, label: '수납' },
 ];
 
 const meta: Meta<typeof PageProcess> = {

@@ -5,7 +5,7 @@ import Ltpz118 from '@/features/pub/shared/components/popups/Ltpz118';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/shared/components/popups/Ltpz118',
+  title: 'app/popup/LTPZ118',
   component: Ltpz118,
 };
 

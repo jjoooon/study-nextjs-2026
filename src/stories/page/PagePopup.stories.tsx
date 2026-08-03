@@ -19,7 +19,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { StorySite } from '@/shared/components/storybook/StoryWrap';
 
 export default {
-  title: '페이지인팝업Test/LTPA010',
+  title: 'app/_excluded/page/PagePopup',
   component: LTPA010,
   argTypes: {
     open: { control: 'boolean' },

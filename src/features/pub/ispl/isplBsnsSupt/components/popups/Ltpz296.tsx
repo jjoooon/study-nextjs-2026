@@ -11,12 +11,15 @@ import {
   createDeleteSelectedRowsHandler,
   getNextNumericRowId,
   useDynamicColumnWidths,
+  InputWithSearchCellEditor,
+  InputWithSearchCellRenderer,
+  numberValueFormatter,
 } from '@aggrid';
-import { Grid, Grow, Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { FileExportIcon, FileImportIcon, ResetIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
+import { FileExportIcon, FileImportIcon, SearchIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -66,8 +69,8 @@ const DummyDataA: DummyDataTypeA[] = [
     field6: '회사 사무직 종사자',
     field7: '1/A',
     field8: 'text',
-    field9: '99,999,999원',
-    field10: '3명',
+    field9: '99999999',
+    field10: '3',
   },
 ];
 
@@ -124,7 +127,7 @@ const DummyDataB: DummyDataTypeB[] = [
     field14: 'text',
     field15: 'text',
     field16: 'text',
-    field17: 'text',
+    field17: '없음',
     field18: 'text',
     field19: 'text',
     field20: 'text',
@@ -132,6 +135,11 @@ const DummyDataB: DummyDataTypeB[] = [
     field22: 'text',
   },
 ];
+
+export interface Ltpz296Props {
+  /** 직장주소 표시 타입 (all: 전체, road: 기존 도로명, general: 일반, san: 산, block: 블럭) */
+  addressType?: 'all' | 'road' | 'general' | 'san' | 'block';
+}
 
 /**
  * @component Ltpz296
@@ -142,7 +150,8 @@ const DummyDataB: DummyDataTypeB[] = [
  *   2. 피보험자 명세 관리 (개별/일괄 등록, 엑셀 가져오기 및 내보내기)
  *   3. 수익자/주소/연락처 정보의 일괄 일괄 등록 기능 제공
  */
-export const Ltpz296 = () => {
+export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
+  const activeAddressType = addressType || 'road';
   // 반응형 그리드 열 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -249,25 +258,17 @@ export const Ltpz296 = () => {
         headerName: '직업코드',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(120),
-        editable: true,
-        cellClass: 'editable-cell text-center',
-        // 직업코드 셀 내부에 값과 돋보기 검색 버튼을 함께 노출
-        cellRenderer: (_params: ICellRendererParams<DummyDataTypeA>) => (
-          <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-            <Typo>{_params.value}</Typo>
-            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-              <SearchIcon color={'var(--color-primary-50)'} />
-            </Button>
-          </Grid>
-        ),
+        minWidth: attributeColumnWidth(90),
+        cellClass: 'text-center',
+        cellRenderer: InputWithSearchCellRenderer,
+        cellEditor: InputWithSearchCellEditor,
       },
       {
         headerName: '직업명',
         field: 'field6',
         flex: 7,
         editable: true,
-        cellClass: 'editable-cell text-left',
+        cellClass: 'text-left',
         sortable: false,
       },
       {
@@ -276,7 +277,7 @@ export const Ltpz296 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(60),
         editable: true,
-        cellClass: 'editable-cell text-center',
+        cellClass: 'text-center',
         sortable: false,
       },
       {
@@ -297,7 +298,8 @@ export const Ltpz296 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(90),
         editable: true,
-        cellClass: 'editable-cell text-right',
+        cellRenderer: numberValueFormatter,
+        cellClass: 'text-right',
         sortable: false,
       },
       {
@@ -306,7 +308,7 @@ export const Ltpz296 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(80),
         editable: true,
-        cellClass: 'editable-cell text-right',
+        cellClass: 'text-right',
         sortable: false,
       },
     ],
@@ -382,14 +384,9 @@ export const Ltpz296 = () => {
         cellClass: 'editable-cell text-center',
         sortable: false,
         pinned: 'left', // 좌측 스크롤 고정
-        cellRenderer: (_params: ICellRendererParams<DummyDataTypeB>) => (
-          <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-            <Typo>{_params.value}</Typo>
-            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-              <SearchIcon color={'var(--color-primary-50)'} />
-            </Button>
-          </Grid>
-        ),
+        minWidth: attributeColumnWidth(90),
+        cellRenderer: InputWithSearchCellRenderer,
+        cellEditor: InputWithSearchCellEditor,
       },
       {
         headerName: '주민등록번호',
@@ -433,8 +430,8 @@ export const Ltpz296 = () => {
         field: 'field7',
         flex: 1,
         minWidth: attributeColumnWidth(60),
-        editable: true,
-        cellClass: 'editable-cell text-center',
+        editable: false,
+        cellClass: 'text-center',
         sortable: false,
       },
       {
@@ -453,8 +450,8 @@ export const Ltpz296 = () => {
         field: 'field9',
         flex: 1,
         minWidth: attributeColumnWidth(60),
-        editable: true,
-        cellClass: 'editable-cell text-center',
+        editable: false,
+        cellClass: 'text-center',
         sortable: false,
       },
       {
@@ -462,8 +459,8 @@ export const Ltpz296 = () => {
         field: 'field10',
         flex: 1,
         minWidth: attributeColumnWidth(60),
-        editable: true,
-        cellClass: 'editable-cell text-center',
+        editable: false,
+        cellClass: 'text-center',
         sortable: false,
       },
       {
@@ -471,20 +468,13 @@ export const Ltpz296 = () => {
         field: 'field11',
         flex: 5,
         minWidth: attributeColumnWidth(100),
-        editable: true,
-        cellClass: 'editable-cell text-center',
+        cellClass: 'text-center',
         sortable: false,
-        cellRenderer: (_params: ICellRendererParams<DummyDataTypeB>) => (
-          <Grid className="w-full h-full grid-cols-[1fr_auto] grid-flow-col items-center" placement="cc">
-            <Typo>{_params.value}</Typo>
-            <Button aria-label="검색" variant={'outlined'} only="icon" size={'md'} color={'gray-light'}>
-              <SearchIcon color={'var(--color-primary-50)'} />
-            </Button>
-          </Grid>
-        ),
+        cellRenderer: InputWithSearchCellRenderer,
+        editable: false,
       },
       {
-        headerName: '직업명',
+        headerName: '직장명',
         field: 'field12',
         flex: 2,
         minWidth: attributeColumnWidth(80),
@@ -539,8 +529,11 @@ export const Ltpz296 = () => {
         minWidth: attributeColumnWidth(80),
         editable: true,
         cellClass: 'editable-cell text-center',
+        cellClassRules: {
+          'text-[var(--color-danger-50)]!': (params) => params.value === '없음',
+        },
         cellEditor: 'agSelectCellEditor',
-        cellEditorParams: { values: ['선택1', '선택2'] },
+        cellEditorParams: { values: ['있음', '없음'] },
         cellRenderer: selectCellRenderer,
       },
       {
@@ -562,14 +555,23 @@ export const Ltpz296 = () => {
         editable: true,
         cellClass: 'editable-cell text-center',
         sortable: false,
+        cellRenderer: (params: { data?: DummyDataTypeB }) => (
+          <Grow placement="cc">
+            {params.data?.field19 && (
+              <Button color="link" only="default" size="lg" variant="text">
+                {params.data?.field19}
+              </Button>
+            )}
+          </Grow>
+        ),
       },
       {
         headerName: '사망수익자',
         field: 'field20',
         flex: 1,
         minWidth: attributeColumnWidth(80),
-        editable: true,
-        cellClass: 'editable-cell text-center',
+        editable: false,
+        cellClass: 'text-center',
         sortable: false,
       },
       {
@@ -577,8 +579,8 @@ export const Ltpz296 = () => {
         field: 'field21',
         flex: 1,
         minWidth: attributeColumnWidth(80),
-        editable: true,
-        cellClass: 'editable-cell text-center',
+        editable: false,
+        cellClass: 'text-center',
         sortable: false,
       },
       {
@@ -586,8 +588,8 @@ export const Ltpz296 = () => {
         field: 'field22',
         flex: 1,
         minWidth: attributeColumnWidth(80),
-        editable: true,
-        cellClass: 'editable-cell text-right',
+        editable: false,
+        cellClass: 'text-right',
         sortable: false,
       },
     ],
@@ -618,7 +620,7 @@ export const Ltpz296 = () => {
               variant={'head'}
               lineTop={false}
               caption="정액담보점검목록 조회"
-              cols={['w-[6rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}
+              cols={['w-[6rem]', 'w-[auto]', 'w-[8rem]', 'w-[auto]']}
             >
               <FormRow>
                 <FormCell title={'설계번호'}>
@@ -633,35 +635,34 @@ export const Ltpz296 = () => {
                 <FormCell title={'발행후변경순번'}>
                   <Input aria-label="발행후변경순번 입력" value={'1'} onChange={() => {}} variant="info" readOnly />
                 </FormCell>
-                <FormCell title={'피보험자찾기'}>
-                  <NativeSelect aria-label="점검방법 선택" value={''} width={80} onChange={() => {}}>
-                    {[
-                      { value: 'selection', id: 'type1', label: '이름' },
-                      { value: 'selection2', id: 'type2', label: '이름1' },
-                    ].map((option) => (
-                      <NativeSelectOption key={option.id} value={option.value}>
-                        {option.label}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                  <Input aria-label="조직구분명 입력" width={120} value={'김한화'} onChange={() => {}} />
-                </FormCell>
               </FormRow>
             </FormTable>
 
             <Grow>
-              <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                조회
-              </Button>
-              <Button
-                color={'gray'}
-                only={'icon'}
-                size={'lg'}
-                variant={'outlined'}
-                onClick={() => {}}
-                aria-label="새로고침"
+              <FormTable
+                variant={'head'}
+                lineTop={false}
+                caption="정액담보점검목록 조회"
+                cols={['w-[8rem]', 'w-[auto]']}
               >
-                <ResetIcon />
+                <FormRow>
+                  <FormCell className="whitespace-nowrap" title={'피보험자찾기'}>
+                    <NativeSelect aria-label="점검방법 선택" value={''} width={80} onChange={() => {}}>
+                      {[
+                        { value: 'selection', id: 'type1', label: '이름' },
+                        { value: 'selection2', id: 'type2', label: '이름1' },
+                      ].map((option) => (
+                        <NativeSelectOption key={option.id} value={option.value}>
+                          {option.label}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <Input aria-label="조직구분명 입력" width={120} value={'김한화'} onChange={() => {}} />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+              <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                검색
               </Button>
             </Grow>
           </Grow>
@@ -790,11 +791,11 @@ export const Ltpz296 = () => {
               <TableFoldBody>
                 <FormTable cols={['w-[10rem]', 'w-auto', 'w-[10rem]', 'w-auto']}>
                   <FormRow>
-                    <FormCell title={'사망보험금'} className="whitespace-nowrap">
-                      <NativeSelect aria-label="사망보험금" width={80}>
+                    <FormCell title={'사망보험금'}>
+                      <NativeSelect aria-label="사망보험금" width={120}>
                         {[
-                          { value: '선택1', label: '선택1' },
-                          { value: '선택2', label: '선택2' },
+                          { value: '고용주(사업주)', label: '고용주(사업주)' },
+                          { value: '고용주(사업주)', label: '고용주(사업주)' },
                         ].map((option) => (
                           <NativeSelectOption key={option.value} value={option.value}>
                             {option.label}
@@ -812,11 +813,11 @@ export const Ltpz296 = () => {
                         <SearchIcon color={'var(--color-primary-50)'} />
                       </Button>
                     </FormCell>
-                    <FormCell title={'사망외보험금'} className="whitespace-nowrap">
-                      <NativeSelect aria-label="사망외보험금" width={80}>
+                    <FormCell title={'사망외보험금'}>
+                      <NativeSelect aria-label="사망외보험금" width={120}>
                         {[
-                          { value: '선택1', label: '선택1' },
-                          { value: '선택2', label: '선택2' },
+                          { value: '고용주(사업주)', label: '고용주(사업주)' },
+                          { value: '고용주(사업주)', label: '고용주(사업주)' },
                         ].map((option) => (
                           <NativeSelectOption key={option.value} value={option.value}>
                             {option.label}
@@ -847,10 +848,10 @@ export const Ltpz296 = () => {
                           </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                      <NativeSelect aria-label="기타" width={100}>
+                      <NativeSelect aria-label="기타" width={120}>
                         {[
-                          { value: '그룹명', label: '그룹명' },
-                          { value: '그룹명1', label: '그룹명1' },
+                          { value: '주피와관계', label: '주피와관계' },
+                          { value: '주피와관계1', label: '주피와관계1' },
                         ].map((option) => (
                           <NativeSelectOption key={option.value} value={option.value}>
                             {option.label}
@@ -900,6 +901,16 @@ export const Ltpz296 = () => {
                           </NativeSelectOption>
                         ))}
                       </NativeSelect>
+                      <NativeSelect aria-label="치아병력여부" width={120}>
+                        {[
+                          { value: '치아병력여부', label: '치아병력여부' },
+                          { value: '치아병력여부1', label: '치아병력여부1' },
+                        ].map((option) => (
+                          <NativeSelectOption key={option.value} value={option.value}>
+                            {option.label}
+                          </NativeSelectOption>
+                        ))}
+                      </NativeSelect>
                     </FormCell>
                   </FormRow>
                 </FormTable>
@@ -913,42 +924,122 @@ export const Ltpz296 = () => {
                 <FormTable cols={['w-[10rem]', 'w-[auto]']}>
                   <FormRow>
                     <FormCell title={'직장주소'}>
-                      <div className="flex w-full h-full flex-wrap justify-start items-start gap-1">
-                        <Grow className="basis-lg">
-                          <Input width={80} value={'1234567'} />
-                          <Button
-                            aria-label="피보험자 검색"
-                            variant={'outlined'}
-                            only="icon"
-                            size={'lg'}
-                            color={'gray-light'}
-                          >
-                            <SearchIcon color={'var(--color-primary-50)'} />
-                          </Button>
-                          <Input width={100} value={'1234567'} readOnly />
-                          <Input width={80} value={''} />리
-                        </Grow>
-                        <Grow className="basis-lg">
-                          <NativeSelect aria-label="사망보험금" width={80}>
-                            {[
-                              { value: '선택1', label: '선택1' },
-                              { value: '선택2', label: '선택2' },
-                            ].map((option) => (
-                              <NativeSelectOption key={option.value} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            ))}
-                          </NativeSelect>
-                          <Input width={60} value={''} readOnly />-
-                          <Input width={60} value={''} readOnly />
-                          <Input width={90} value={''} />
-                          <Input width={60} value={''} readOnly />
-                          <Input width={60} value={''} readOnly />
-                          <Input width={90} value={''} />
-                        </Grow>
-                        <Grow className="basis-full">
-                          <Input aria-label="" width={'full'} value={''} />
-                        </Grow>
+                      <div className="flex flex-col w-full gap-2">
+                        {/* 0. 기존 도로명 주소 형태 */}
+                        {(activeAddressType === 'all' || activeAddressType === 'road') && (
+                          <div className="flex w-full h-full flex-wrap justify-start items-start gap-1">
+                            <Grow className="basis-lg">
+                              <Input width={80} value={'07308'} readOnly />
+                              <Button
+                                aria-label="주소 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
+                                <SearchIcon color={'var(--color-primary-50)'} />
+                              </Button>
+                              <Input width={180} value={'서울 영등포구 영등포로'} readOnly />
+                              <Input width={60} value={'254'} readOnly />
+                              <Input width={60} value={''} readOnly />
+                              <Input width={100} value={'A동 5층'} />
+                              <Input width={180} value={''} readOnly />
+                            </Grow>
+                          </div>
+                        )}
+
+                        {/* 2. 일반 타입 */}
+                        {(activeAddressType === 'all' || activeAddressType === 'general') && (
+                          <div className="flex w-full h-full flex-wrap justify-start items-start gap-1">
+                            <Grow placement="sc">
+                              <Input width={80} value={'1234567'} readOnly />
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
+                                <SearchIcon color={'var(--color-primary-50)'} />
+                              </Button>
+                              <Input width={100} value={'1234567'} readOnly />
+                              <Input width={80} value={''} />
+                              <span className="whitespace-nowrap shrink-0 self-center">리</span>
+                            </Grow>
+                            <Grow placement="sc">
+                              <NativeSelect aria-label="번지구분 선택" width={80} value="일반">
+                                <NativeSelectOption value="일반">일반</NativeSelectOption>
+                              </NativeSelect>
+                              <Input width={60} value={''} />
+                              <span className="whitespace-nowrap shrink-0 self-center">-</span>
+                              <Input width={60} value={''} />
+                              <span className="whitespace-nowrap shrink-0 self-center">번지</span>
+                              <Input width={90} value={''} />
+                            </Grow>
+                          </div>
+                        )}
+
+                        {/* 3. 산 타입 */}
+                        {(activeAddressType === 'all' || activeAddressType === 'san') && (
+                          <div className="flex w-full h-full flex-wrap justify-start items-start gap-1">
+                            <Grow placement="sc">
+                              <Input width={80} value={'1234567'} readOnly />
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
+                                <SearchIcon color={'var(--color-primary-50)'} />
+                              </Button>
+                              <Input width={100} value={'1234567'} readOnly />
+                              <Input width={80} value={''} />
+                              <span className="whitespace-nowrap shrink-0 self-center">리</span>
+                            </Grow>
+                            <Grow placement="sc">
+                              <NativeSelect aria-label="번지구분 선택" width={80} value="산">
+                                <NativeSelectOption value="산">산</NativeSelectOption>
+                              </NativeSelect>
+                              <Input width={60} value={''} />
+                              <span className="whitespace-nowrap shrink-0 self-center">번지-</span>
+                              <Input width={60} value={''} />
+                              <span className="whitespace-nowrap shrink-0 self-center">호</span>
+                              <Input width={90} value={''} />
+                            </Grow>
+                          </div>
+                        )}
+
+                        {/* 4. 블럭 타입 */}
+                        {(activeAddressType === 'all' || activeAddressType === 'block') && (
+                          <div className="flex w-full h-full flex-wrap justify-start items-start gap-1">
+                            <Grow placement="sc">
+                              <Input width={80} value={'1234567'} readOnly />
+                              <Button
+                                aria-label="피보험자 검색"
+                                variant={'outlined'}
+                                only="icon"
+                                size={'lg'}
+                                color={'gray-light'}
+                              >
+                                <SearchIcon color={'var(--color-primary-50)'} />
+                              </Button>
+                              <Input width={100} value={'1234567'} readOnly />
+                              <Input width={80} value={''} />
+                              <span className="whitespace-nowrap shrink-0 self-center">리</span>
+                            </Grow>
+                            <Grow placement="sc">
+                              <NativeSelect aria-label="번지구분 선택" width={80} value="블럭">
+                                <NativeSelectOption value="블럭">블럭</NativeSelectOption>
+                              </NativeSelect>
+                              <Input width={60} value={''} />
+                              <span className="whitespace-nowrap shrink-0 self-center">블럭-</span>
+                              <Input width={60} value={''} />
+                              <span className="whitespace-nowrap shrink-0 self-center">롯트</span>
+                              <Input width={90} value={''} />
+                            </Grow>
+                          </div>
+                        )}
                       </div>
                     </FormCell>
                   </FormRow>

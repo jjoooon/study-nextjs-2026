@@ -1193,8 +1193,8 @@ export default function Ltpa010Section() {
               </Grow>
             </Grow>
 
-            <Grid className="grid-rows-[1fr_auto] h-full" gap={2}>
-              <Grid className="grid-rows-[auto_1fr]" gap={1}>
+            <Grid className="w-full grid-rows-[1fr_auto] h-full" gap={2}>
+              <Grid className="w-full grid-rows-[auto_1fr]" gap={1}>
                 <Grow className="w-full" placement="ec">
                   <Button color="success" variant="outlined">
                     엑셀내보내기
@@ -1276,7 +1276,7 @@ export default function Ltpa010Section() {
         mainFoot={
           <MainBottom>
             <MainBottomItem>
-              <Grow gap={1}>
+              <Grow gap={1} className="flex-wrap" placement="sc">
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   삭제설계 확인
                 </Button>

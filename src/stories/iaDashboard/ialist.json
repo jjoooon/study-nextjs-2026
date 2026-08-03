@@ -1734,40 +1734,6 @@
     "popup": true
   },
   {
-    "pub": "허승하",
-    "dep1": "차세대가입설계",
-    "dep2": "가입설계",
-    "dep3": "알릴사항",
-    "id": "LTPZ025",
-    "path": "ispl/ncMtt/components/popups",
-    "dep4": "심평원(투비콘)알림톡발송 및 이력관리",
-    "file": "알릴사항",
-    "plan": "이현숙",
-    "dev": "한형민",
-    "sdate": "",
-    "date": "26.04.28",
-    "modify": "",
-    "subId": "",
-    "popup": true
-  },
-  {
-    "pub": "조현민",
-    "dep1": "차세대가입설계",
-    "dep2": "가입설계",
-    "dep3": "가입설계",
-    "id": "LTPZ024",
-    "path": "ispl/udRqRst/components/popups",
-    "dep4": "질병동의 -> 신사평가원 동의",
-    "file": "알릴사항",
-    "plan": "이현숙",
-    "dev": "한형민",
-    "sdate": "",
-    "date": "26.04.17",
-    "modify": "26.05.26",
-    "subId": "",
-    "popup": true
-  },
-  {
     "pub": "조현민",
     "dep1": "차세대가입설계",
     "dep2": "가입설계",
@@ -2431,23 +2397,6 @@
     "popup": true
   },
   {
-    "pub": "허승하",
-    "dep1": "차세대가입설계",
-    "dep2": "가입설계",
-    "dep3": "설계관리",
-    "id": "LTPA340",
-    "path": "ispl/isplBsnsSupt",
-    "dep4": "장기신계약발급물일괄생성",
-    "file": "전환_가입설계",
-    "plan": "최벼리",
-    "dev": "한지유",
-    "sdate": "",
-    "date": "26.05.26",
-    "modify": "26.06.04",
-    "subId": "",
-    "popup": false
-  },
-  {
     "pub": "권오택",
     "dep1": "차세대가입설계",
     "dep2": "가입설계",
@@ -2499,7 +2448,7 @@
     "popup": false
   },
   {
-    "pub": "허승하",
+    "pub": "조현민",
     "dep1": "차세대가입설계",
     "dep2": "가입설계",
     "dep3": "가입설계",
@@ -2508,10 +2457,27 @@
     "dep4": "장기심사가이드 더보기",
     "file": "추가계비교(알릴사항)",
     "plan": "이현숙",
-    "dev": "개발목록 누락",
+    "dev": "",
     "sdate": "",
     "date": "26.04.30",
-    "modify": "26.06.04",
+    "modify": "26.07.30",
+    "subId": "",
+    "popup": true
+  },
+  {
+    "pub": "조현민",
+    "dep1": "차세대가입설계",
+    "dep2": "가입설계",
+    "dep3": "가입설계",
+    "id": "LTPZ092",
+    "path": "ispl/isplBsnsSupt/components/popups",
+    "dep4": "장기심사가이드 더보기 상세",
+    "file": "추가계비교(알릴사항)",
+    "plan": "이채우",
+    "dev": "",
+    "sdate": "",
+    "date": "26.07.30",
+    "modify": "",
     "subId": "",
     "popup": true
   },
@@ -2752,5 +2718,22 @@
     "modify": "",
     "subId": "",
     "popup": false
+  },
+  {
+    "pub": "조현민",
+    "dep1": "차세대가입설계",
+    "dep2": "가입설계",
+    "dep3": "가입설계",
+    "id": "LTPZ119",
+    "path": "ispl/isplBsnsSupt/components/popups",
+    "dep4": "다운로드 파일 등록",
+    "file": "",
+    "plan": "이채우",
+    "dev": "",
+    "sdate": "",
+    "date": "26.07.30",
+    "modify": "",
+    "subId": "",
+    "popup": true
   }
 ]

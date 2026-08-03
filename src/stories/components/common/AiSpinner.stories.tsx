@@ -16,7 +16,7 @@ const meta: Meta<typeof AiSpinner> = {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#202020',
+          background: '#FFF',
           padding: '2rem',
           borderRadius: '1rem',
         }}

@@ -139,7 +139,7 @@ const dummyItems2: DummyData2Type[] = [
 ];
 
 const meta: Meta<StoryProps> = {
-  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpz051',
+  title: 'app/popup/LTPZ051',
   component: Ltpz051,
   argTypes: {
     dataType: {

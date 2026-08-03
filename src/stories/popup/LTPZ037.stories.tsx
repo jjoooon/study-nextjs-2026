@@ -6,7 +6,7 @@ import Ltpz037 from '@/features/pub/ispl/ncMtt/components/popups/Ltpz037';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 const meta: Meta<typeof Ltpz037> = {
-  title: 'app/ispl/ncMtt/components/popups/Ltpz037',
+  title: 'app/popup/LTPZ037',
   component: Ltpz037,
   argTypes: {
     type: {

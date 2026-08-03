@@ -5,7 +5,7 @@ import LTPA690 from '@/features/pub/shared/components/Ltpa690Section';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/shared/components/LTPA690',
+  title: 'app/_excluded/page/LTPA690',
   component: LTPA690,
 };
 

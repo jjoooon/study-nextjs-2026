@@ -43,7 +43,7 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   onErrorChange?: (nextError: boolean) => void;
   e2eType?: number;
   /** 허용할 문자 종류 화이트리스트 필터 */
-  charFilter?: 'ko' | 'en' | 'num' | 'en-num' | 'ko-en' | 'ko-en-num';
+  charFilter?: 'ko' | 'en' | 'num' | 'en-num' | 'ko-en' | 'ko-en-num' | 'num-dash';
   /** 입력 최대 길이 지정 */
   maxLength?: number;
   /** 입력 최소 길이 지정 */
@@ -59,6 +59,7 @@ const CHAR_FILTER_PATTERNS: Record<string, RegExp> = {
   'en-num': /[^a-zA-Z0-9]/g,
   'ko-en': /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z]/g,
   'ko-en-num': /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/g,
+  'num-dash': /[^0-9-]/g,
 };
 
 /** 허용되지 않은 문자를 제거해 반환 */

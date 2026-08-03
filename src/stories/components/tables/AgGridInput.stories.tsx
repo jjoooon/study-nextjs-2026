@@ -14,9 +14,10 @@
 } from '@storybook/addon-docs/blocks';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ModuleRegistry, AllCommunityModule, ICellRendererParams } from 'ag-grid-enterprise';
-import type { ColDef, CellEditingStoppedEvent } from 'ag-grid-enterprise';
+import type { ColDef, CellEditingStoppedEvent, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { Button } from '@uiux/Button';
 import {
   numberValueFormatter,
   createCellValueChangedHandler,
@@ -213,6 +214,66 @@ export const Default: StoryObj = {
           />
         </div>
       </>
+    );
+  },
+};
+
+export const ErrorFocusTest: StoryObj = {
+  render: () => {
+    const [rowData] = React.useState<Dummy2DataType[]>([
+      { id: 1, label: '항목 1 (정상)', code: 'A101' },
+      { id: 2, label: '항목 2 (에러: 빈 값)', code: '' },
+      { id: 3, label: '항목 3 (에러: 2자 이하)', code: 'B1' },
+      { id: 4, label: '항목 4 (정상)', code: 'C104' },
+      { id: 5, label: '항목 5 (에러: 빈 값)', code: '' },
+    ]);
+    const gridApiRef = React.useRef<GridApi<Dummy2DataType> | null>(null);
+
+    const handleFocusFirstError = () => {
+      if (!gridApiRef.current) return;
+      const api = gridApiRef.current;
+      let targetRowIndex = -1;
+
+      api.forEachNode((node: any, index: number) => {
+        if (targetRowIndex !== -1) return;
+        const val = node.data?.code;
+        if (!val || (typeof val === 'string' && val.length <= 2)) {
+          targetRowIndex = index;
+        }
+      });
+
+      if (targetRowIndex !== -1) {
+        api.ensureIndexVisible(targetRowIndex);
+        api.setFocusedCell(targetRowIndex, 'code');
+        // 🔥 input 편집 모드 진입 (커서 포커스 활성화)
+        api.startEditingCell({
+          rowIndex: targetRowIndex,
+          colKey: 'code',
+        });
+      } else {
+        alert('에러가 발생한 셀이 없습니다.');
+      }
+    };
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px' }}>
+        <div>
+          <Button variant="contained" color="primary" onClick={handleFocusFirstError}>
+            🔥 첫 번째 에러 셀로 강제 포커스 이동 & 툴팁 노출
+          </Button>
+        </div>
+        <div className="ag-theme-alpine" style={{ height: 260 }}>
+          <AgGridReact<Dummy2DataType>
+            getRowId={(params) => String(params.data.id)}
+            rowData={rowData}
+            columnDefs={columnDefsString}
+            singleClickEdit={true}
+            onGridReady={(params) => {
+              gridApiRef.current = params.api;
+            }}
+          />
+        </div>
+      </div>
     );
   },
 };

@@ -5,7 +5,7 @@ import { Ltpz106 } from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz106';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/ispl/gdPlSlc/components/popups/Ltpz106',
+  title: 'app/_excluded/popup/LTPZ106',
   component: Ltpz106,
 };
 

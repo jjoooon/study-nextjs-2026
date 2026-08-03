@@ -196,6 +196,9 @@
   align-items: center;
   justify-content: center;
 }
+.ltpa010-grid .ag-header{height:6.1rem !important; min-height:6.1rem !important}
+.ltpa010-grid .ag-header-row,
+.ltpa010-grid .ag-header-cell{height:6rem !important}
 
 /* 합계 */
 .ag-floating-bottom + .ag-body-horizontal-scroll {
@@ -481,7 +484,9 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
     var(--tw-shadow);
 }
 
-.ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:after {
+.ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:after,
+.ag-cell.required.ag-cell-error-border.ag-cell-focus:after,
+.ag-cell.required.ag-cell-error-border:focus-within:after {
   content: var(--error-msg, '필수 입력 필드입니다.');
   display: flex;
   align-items: center;
@@ -506,14 +511,18 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 }
 
 /* cellClassRules로 지정하는 메시지 클래스별 content 오버라이딩 */
-.ag-cell.err-msg-empty.ag-cell-inline-editing:after {
+.ag-cell.err-msg-empty.ag-cell-inline-editing:after,
+.ag-cell.err-msg-empty.ag-cell-focus:after {
   content: '코드를 입력해 주세요.';
 }
-.ag-cell.err-msg-min-length.ag-cell-inline-editing:after {
+.ag-cell.err-msg-min-length.ag-cell-inline-editing:after,
+.ag-cell.err-msg-min-length.ag-cell-focus:after {
   content: '코드는 3자 이상 입력해야 합니다.';
 }
 
-.ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:before {
+.ag-cell.required.ag-cell-error-border.ag-cell-inline-editing:before,
+.ag-cell.required.ag-cell-error-border.ag-cell-focus:before,
+.ag-cell.required.ag-cell-error-border:focus-within:before {
   content: '';
   display: block;
   position: absolute;
@@ -982,7 +991,10 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .ag-theme-alpine.inner-scroll .ag-root-wrapper-body {
   height: auto !important;
 }
-.ag-theme-alpine.inner-scroll:not([data-row='0']) .ag-root-wrapper-body .ag-body.ag-layout-normal {
+/* .ag-theme-alpine.inner-scroll:not([data-row='0']) .ag-root-wrapper-body .ag-body.ag-layout-normal {
+  height: 15rem !important;
+} */
+.ag-theme-alpine.inner-scroll[data-row] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 15rem !important;
 }
 .ag-theme-alpine.inner-scroll[data-row='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {

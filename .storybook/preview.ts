@@ -19,6 +19,11 @@ const preview: Preview = {
       ),
   ],
   parameters: {
+    options: {
+      storySort: {
+        order: ['app', ['system', 'page', 'popup', '_excluded', 'excluded', '*']],
+      },
+    },
     nextjs: {
       appDirectory: true,
     },

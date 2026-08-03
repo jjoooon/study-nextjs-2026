@@ -5,7 +5,7 @@ import Ltpz094 from '@/features/pub/shared/components/popups/ncMtt/Ltpz094';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/shared/components/popups/ncMtt/Ltpz094',
+  title: 'app/popup/LTPZ094',
   component: Ltpz094,
 };
 
