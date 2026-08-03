@@ -67,7 +67,7 @@ const dummyItems: DummyDataType[] = [
 ];
 
 const meta: Meta<StoryProps> = {
-  title: 'app/shared/components/popups/Ltpz996',
+  title: 'app/popup/LTPZ996',
   component: Ltpz996,
   argTypes: {
     dataType: {

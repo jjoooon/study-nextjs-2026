@@ -7,7 +7,7 @@ import Ltpz999 from '@/features/pub/shared/components/popups/Ltpz999';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 const meta: Meta<typeof Ltpz999> = {
-  title: 'app/shared/components/popups/Ltpz999',
+  title: 'app/popup/LTPZ999',
   component: Ltpz999,
   argTypes: {
     errorType: {

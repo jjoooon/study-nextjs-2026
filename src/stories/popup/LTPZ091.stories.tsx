@@ -6,7 +6,7 @@ import Ltpz091 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz091'
 import { LayoutDoc } from '@layout/BaseLayout';
 
 const meta: Meta<typeof Ltpz091> = {
-  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpz091',
+  title: 'app/popup/LTPZ091',
   component: Ltpz091,
   args: {
     isAdmin: true,

@@ -5,7 +5,7 @@ import Ltpz039, { Ltpz039Props } from '@/features/pub/ispl/cvrPl/components/popu
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/ispl/cvrPl/components/popups/Ltpz039',
+  title: 'app/popup/LTPZ039',
   component: Ltpz039,
   args: {
     isFetus: 'refundGeneral',

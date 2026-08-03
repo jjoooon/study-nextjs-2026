@@ -5,7 +5,7 @@ import Ltpa401 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpa401'
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpa401',
+  title: 'app/popup/LTPA401',
   component: Ltpa401,
 };
 

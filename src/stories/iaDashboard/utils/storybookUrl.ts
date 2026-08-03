@@ -30,15 +30,13 @@ function getStorybookBaseUrl(): string {
 }
 
 /**
- * path: 'ispl/isplBsnsSupt', id: 'LTPA010' => app-ispl-isplbsnssupt-ltpa010--default
+ * path: 'ispl/isplBsnsSupt', id: 'LTPA010' => app-page-ltpa010--default
+ * popup: true => app-popup-ltpz010--default
  */
-export function getStoryUrl(id: string, path: string, activeStep?: number, subId?: string): string {
+export function getStoryUrl(id: string, path: string, activeStep?: number, subId?: string, popup?: boolean): string {
   const storybookBaseUrl = getStorybookBaseUrl();
-  let finalPath = path;
-  if (/^LTPA350/i.test(id)) {
-    finalPath = 'ispl';
-  }
-  const storyPath = 'app-' + finalPath.replace(/\//g, '-').toLowerCase() + '-' + id.toLowerCase();
+  const folder = popup ? 'popup' : 'page';
+  const storyPath = `app-${folder}-${id.toLowerCase()}`;
   const stepQuery = activeStep ? `&activeStep=${activeStep}` : '';
   const subIdQuery = subId && subId.includes('sub_') ? `&step=${encodeURIComponent(subId)}` : '';
   return `${storybookBaseUrl}/?path=/story/${storyPath}--default${stepQuery}${subIdQuery}`;
@@ -47,20 +45,17 @@ export function getStoryUrl(id: string, path: string, activeStep?: number, subId
 /**
  * 사이드바/컨트롤 없이 캔버스만 표시하는 iframe 전용 URL
  */
-export function getStoryIframeUrl(id: string, path: string, activeStep?: number, subId?: string): string {
+export function getStoryIframeUrl(id: string, path: string, activeStep?: number, subId?: string, popup?: boolean): string {
   const storybookBaseUrl = getStorybookBaseUrl();
-  let finalPath = path;
-  if (/^LTPA350/i.test(id)) {
-    finalPath = 'ispl';
-  }
-  const storyPath = 'app-' + finalPath.replace(/\//g, '-').toLowerCase() + '-' + id.toLowerCase();
+  const folder = popup ? 'popup' : 'page';
+  const storyPath = `app-${folder}-${id.toLowerCase()}`;
   const stepQuery = activeStep ? `&activeStep=${activeStep}` : '';
   const subIdQuery = subId && subId.includes('sub_') ? `&step=${encodeURIComponent(subId)}` : '';
   return `${storybookBaseUrl}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}`;
 }
 
-export function linkGo(id: string, path: string, activeStep?: number, subId?: string): string {
-  const url = getStoryUrl(id, path, activeStep, subId);
+export function linkGo(id: string, path: string, activeStep?: number, subId?: string, popup?: boolean): string {
+  const url = getStoryUrl(id, path, activeStep, subId, popup);
   window.open(url, '_blank', 'noopener,noreferrer');
   return url;
 }

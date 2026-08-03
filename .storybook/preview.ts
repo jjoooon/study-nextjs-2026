@@ -18,6 +18,11 @@ const preview: Preview = {
       ),
   ],
   parameters: {
+    options: {
+      storySort: {
+        order: ['app', ['page', 'popup', '_excluded', 'excluded', '*']],
+      },
+    },
     nextjs: {
       appDirectory: true,
     },

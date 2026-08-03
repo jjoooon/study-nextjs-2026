@@ -112,7 +112,7 @@ const dummyItems: DummyDataType[] = [
 ];
 
 const meta: Meta<StoryProps> = {
-  title: 'app/ispl/cvrPl/components/popups/Ltpz010',
+  title: 'app/popup/LTPZ010',
   component: Ltpz010,
   argTypes: {
     dataType: {

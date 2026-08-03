@@ -5,7 +5,7 @@ import { Ltrz085 } from '@/features/pub/shared/components/popups/Ltrz085';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/shared/components/popups/Ltrz085',
+  title: 'app/_excluded/popup/LTRZ085',
   component: Ltrz085,
 };
 

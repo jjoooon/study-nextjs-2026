@@ -6,7 +6,7 @@ import LTPZ296 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz296'
 import { LayoutDoc } from '@layout/BaseLayout';
 
 const meta: Meta<typeof LTPZ296> = {
-  title: 'app/ispl/isplBsnsSupt/components/popups/LTPZ296',
+  title: 'app/popup/LTPZ296',
   component: LTPZ296,
   argTypes: {
     addressType: {

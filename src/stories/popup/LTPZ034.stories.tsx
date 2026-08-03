@@ -11,7 +11,7 @@ interface StoryProps extends React.ComponentProps<typeof Ltpz034> {
 }
 
 const meta: Meta<StoryProps> = {
-  title: 'app/shared/components/popups/Ltpz034',
+  title: 'app/popup/LTPZ034',
   component: Ltpz034,
   argTypes: {
     isRegistered: {

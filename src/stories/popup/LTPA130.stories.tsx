@@ -5,7 +5,7 @@ import Ltpa130 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpa130'
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/ispl/isplBsnsSupt/components/popups/Ltpa130',
+  title: 'app/_excluded/popup/LTPA130',
   component: Ltpa130,
 };
 
