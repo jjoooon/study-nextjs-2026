@@ -79,7 +79,7 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                   onClick={() => onStepChange?.(item.step)}
                 >
                   <b
-                    className={`w-[1.8rem] h-[1.8rem] leading-0 rounded-full flex items-center justify-center ${
+                    className={`w-[1.8rem] h-[1.8rem] ml-[0.1rem] leading-0 rounded-full flex items-center justify-center ${
                       isComplete
                         ? 'bg-[#FFF]'
                         : isActive
@@ -109,7 +109,7 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                     ) : null}
                   </b>
                   <Typo
-                    className={`px-0 w-[2.8rem] text-[1.1rem] leading-[1.3rem] text-center ${isActive ? 'text-white font-[700]' : isComplete ? 'text-white' : 'text-[var(--color-gray-70)]'}`}
+                    className={`px-0 w-[2.9rem] pl-[0.1rem] text-[1.1rem] leading-[1.3rem] text-center ${isActive ? 'text-white font-[700]' : isComplete ? 'text-white' : 'text-[var(--color-gray-70)]'}`}
                   >
                     {item.label}
                   </Typo>
