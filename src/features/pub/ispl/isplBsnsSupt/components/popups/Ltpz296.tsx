@@ -611,7 +611,7 @@ export const Ltpz296 = () => {
         </DialogHeader>
 
         {/* 다이얼로그 본문 영역 */}
-        <DialogSection className="w-full h-full min-h-0 overflow-y-auto">
+        <DialogSection className="w-full h-full min-h-0 overflow-y-auto grid-rows-[auto_1fr]">
           {/* 상단: 조회 조건 설정 폼 */}
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable
