@@ -55,7 +55,7 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
     // 우측 세로형 단계 네비게이션 컨테이너
     <Gcol
       placement="bwe"
-      className="w-[3.8rem] pb-[2rem] bg-[var(--color-gray-5)] border-r-[1px] border-r-[var(--color-gray-15)]"
+      className="w-[3.8rem] pb-[1rem] bg-[var(--color-gray-5)] border-r-[1px] border-r-[var(--color-gray-15)]"
     >
       <Gcol className="h-full max-h-[54rem] gap-0" placement="se">
         {items.map((item) => (
@@ -70,7 +70,7 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                 <button
                   type="button"
                   data-process={stepState}
-                  className={`relative flex flex-col w-[2.9rem] py-[2rem] gap-1 items-center justify-center -mt-[1px] rounded-tl-[0.8rem] border border-[1px] border-[var(--color-gray-15)] border-r-0 rounded-bl-[0.8rem] py-[0.6rem] hover:bg-[var(--color-secondary-5)] bg-[#fff] text-[var(--color-gray-70)] z-0 shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.10)] ${
+                  className={`relative flex flex-col w-[2.9rem] gap-1 items-center justify-center -mt-[1px] rounded-tl-[0.8rem] border border-[1px] border-[var(--color-gray-15)] border-r-0 rounded-bl-[0.8rem]  hover:bg-[var(--color-secondary-5)] bg-[#fff] text-[var(--color-gray-70)] z-0 shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.10)] py-[2rem] [@media(max-height:630px)]:py-[1rem] ${
                     isActive &&
                     'w-[3.3rem] text-white z-1 border-y-[1px] border-l-[1px] border-r-0 border-transparent rounded-l-xl rounded-r-none bg-origin-border [background-clip:padding-box,_border-box] [background-image:linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%),linear-gradient(to_bottom,#ffad4f,#e5561c)]'
                   }
