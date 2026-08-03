@@ -6,7 +6,7 @@
 import { Fragment } from 'react';
 import { Num1, Num2, Num3, Num4, Num5, Num6 } from '@/shared/components/icons/StepNumber';
 import { Gcol, Typo } from '@atoms';
-import { ProcessDot, CheckBoldIcon, ProcessActiveIcon } from '@icons';
+import { CheckBoldIcon, ProcessActiveIcon } from '@icons';
 
 // 단계 표시 기본 데이터
 // - step: 단계 번호(예: 1,2,3...)
@@ -58,7 +58,7 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
       className="w-[3.8rem] pb-[2rem] bg-[var(--color-gray-5)] border-r-[1px] border-r-[var(--color-gray-15)]"
     >
       <Gcol className="h-full max-h-[54rem] gap-0" placement="se">
-        {items.map((item, index) => (
+        {items.map((item) => (
           <Fragment key={item.step}>
             {(() => {
               const stepState = getStepState(item.step);
