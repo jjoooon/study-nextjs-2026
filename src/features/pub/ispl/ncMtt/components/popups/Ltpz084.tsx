@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -31,7 +31,7 @@ const Ltpz084 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid grid-rows-[auto_1fr] h-full">
+        <DialogSection className="grid grid-rows-[auto_1fr] h-full overflow-hidden">
           <Grow placement="bwc" className="w-full" variant={'box-round'}>
             <FormTable caption="성명" cols={['w-auto', 'w-auto']} variant="head">
               <FormRow>
@@ -41,7 +41,7 @@ const Ltpz084 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <div className="relative w-full grid grid-rows-[1fr]">
+          <div className="relative w-full h-full min-h-0">
             <Ltpa3500301
               simpleMode={false}
               mtValue="0rem"
