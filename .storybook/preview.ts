@@ -20,7 +20,7 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        order: ['app', ['page', 'popup', '_excluded', 'excluded', '*']],
+        order: ['app', ['system', 'page', 'popup', '_excluded', 'excluded', '*']],
       },
     },
     nextjs: {
