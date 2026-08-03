@@ -19,13 +19,14 @@
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/not-found
  */
 
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { Gcol, Typo } from '@atoms';
 
 export default function NotFound() {
   return (
     <Gcol className="min-h-screen">
       <Gcol gap={6}>
-        <img src="/images/error_404.svg" alt="404" />
+        <img src={withPublicUrl('/images/error_404.svg')} alt="404" />
         <Gcol gap={4}>
           <Typo tag="strong" variant={'heading-lg'} icon={'warning'}>
             페이지를 찾을 수 없어요

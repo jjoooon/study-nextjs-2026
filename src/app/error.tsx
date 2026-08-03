@@ -28,6 +28,7 @@
 
 import { useEffect } from 'react';
 import log from '@/shared/utils/logger';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { Gcol, Typo } from '@atoms';
 
 interface ErrorProps {
@@ -46,7 +47,7 @@ export default function Error({ error }: ErrorProps) {
   return (
     <Gcol className="min-h-screen">
       <Gcol gap={6}>
-        <img src="/images/error.svg" alt="error" />
+        <img src={withPublicUrl('/images/error.svg')} alt="error" />
         <Gcol gap={4}>
           <Typo tag="strong" variant={'heading-lg'} icon={'warning'}>
             일시적인 오류가 발생했어요
