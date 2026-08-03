@@ -53,8 +53,11 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
 
   return (
     // 우측 세로형 단계 네비게이션 컨테이너
-    <Gcol placement="bwc" className="w-[4rem] pb-[2rem]">
-      <Gcol className="justify-between h-full max-h-[54rem] items-center rounded-tr-[2rem] rounded-br-[0.4rem] bg-[var(--color-warning-5)] shadow-[0_0.1rem_0.1rem_0.1rem_rgba(77, 61, 12, 0.15)] py-[1rem]">
+    <Gcol
+      placement="bwe"
+      className="w-[3.8rem] pb-[2rem] bg-[var(--color-gray-5)] border-r-[1px] border-r-[var(--color-gray-15)]"
+    >
+      <Gcol className="h-full max-h-[54rem] gap-0" placement="se">
         {items.map((item, index) => (
           <Fragment key={item.step}>
             {(() => {
@@ -67,25 +70,26 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                 <button
                   type="button"
                   data-process={stepState}
-                  className={`flex flex-col w-full gap-1 items-center justify-center rounded-tr-[0.8rem] py-[0.6rem] hover:bg-[#FFEFBF] ${
-                    isActive
-                      ? 'bg-[linear-gradient(344deg,_#FF5C2E_-17.78%,_#FF8D02_88.79%)] text-white'
-                      : 'bg-transparent text-[var(--color-gray-70)]'
+                  className={`relative flex flex-col w-[2.9rem] py-[2rem] gap-1 items-center justify-center -mt-[1px] rounded-tl-[0.8rem] border border-[1px] border-[var(--color-gray-15)] border-r-0 rounded-bl-[0.8rem] py-[0.6rem] hover:bg-[var(--color-secondary-5)] bg-[#fff] text-[var(--color-gray-70)] z-0 ${
+                    isActive &&
+                    'w-[3.3rem] text-white z-1 border-y-[1px] border-l-[1px] border-r-0 border-transparent rounded-l-xl rounded-r-none bg-origin-border [background-clip:padding-box,_border-box] [background-image:linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%),linear-gradient(to_bottom,#ffad4f,#e5561c)]'
+                  }
+                  ${isComplete && 'bg-[var(--color-secondary-30)] text-white hover:bg-[var(--color-secondary-40)] border-[#89807c]'}
                   }`}
                   onClick={() => onStepChange?.(item.step)}
                 >
                   <b
                     className={`w-[1.8rem] h-[1.8rem] leading-0 rounded-full flex items-center justify-center ${
                       isComplete
-                        ? 'bg-[#FF5C2E]'
+                        ? 'bg-[#FFF]'
                         : isActive
                           ? 'bg-[#FFF] text-transparent'
-                          : 'bg-[#B7BBC5] text-[var(--color-gray-0)]'
+                          : 'bg-[var(--color-secondary-30)] text-[var(--color-gray-0)]'
                     }`}
                   >
                     {isComplete ? (
                       // 완료 단계: 체크 아이콘
-                      <CheckBoldIcon />
+                      <CheckBoldIcon color="var(--color-secondary-30)" />
                     ) : isActive ? (
                       // 활성 단계: 회전 아이콘
                       <ProcessActiveIcon className="animate-spin [animation-duration:4s]" />
@@ -105,19 +109,13 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                     ) : null}
                   </b>
                   <Typo
-                    className={`px-2 text-[1.1rem] leading-[1.3rem] text-center ${isActive ? 'text-white font-[700]' : 'text-[var(--color-gray-70)]'}`}
+                    className={`px-0 w-[2.8rem] text-[1.1rem] leading-[1.3rem] text-center ${isActive ? 'text-white font-[700]' : isComplete ? 'text-white' : 'text-[var(--color-gray-70)]'}`}
                   >
                     {item.label}
                   </Typo>
                 </button>
               );
             })()}
-            {/* 단계 사이 구분 점(작은 높이에서는 숨김) */}
-            {index < items.length - 1 && (
-              <span className="[@media(max-height:564px)]:hidden">
-                <ProcessDot />
-              </span>
-            )}
           </Fragment>
         ))}
       </Gcol>
