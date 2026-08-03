@@ -142,7 +142,6 @@
   z-index: 0;
 }
 
-
 /* 위치 토큰별 (positionStyles: tl, tc, tr, bl, bc, br) 본체 및 ::after 말풍선 꼬리 Chrome 109 호환 위치값 정의 (.v109 전용) */
 
 /* 1. Top Left (tl) - 트리거 위-좌측 */
@@ -264,8 +263,12 @@
   border-width: 0 !important;
 }
 
-
-
+/* bg-clip-text / background-clip: text Chrome 109 호환 스타일 (.v109 전용) */
+.v109 .bg-clip-text,
+.v109 [class*="bg-clip-text"] {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
 
 
 

@@ -443,9 +443,6 @@
 .v109 .hover\:border-dashed:hover {
   border-style: dashed;
 }
-.v109 [class*="hover:border-[var(--color-primary-50)]"]:hover {
-  border-color: var(--color-primary-50);
-}
 
 /* ----------------------------------------------------
  * Chrome 109 전용 data-[state/required/invalid] 상태 호환 스타일
