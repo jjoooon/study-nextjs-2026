@@ -430,7 +430,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
               </Grow>
               <Grow placement={'ec'}>
                 <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
-                  <ResetIcon color="var(--color-gray-500)" />
+                  <ResetIcon color="var(--color-gray-50)" />
                 </Button>
               </Grow>
             </Grow>

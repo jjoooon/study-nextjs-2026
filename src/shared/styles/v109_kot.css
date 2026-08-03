@@ -355,21 +355,27 @@
 
 .v109 [class*="[&_svg]:!text-[var(--color-gray-60)]"] svg,
 .v109 [class*="[&_svg]:text-[var(--color-gray-60)]"] svg {
-  color: var(--color-gray-60);
+  color: var(--color-gray-60) !important;
 }
 
 /* :has(>svg) 레이아웃 호환 (Chrome 109 지원) */
-.v109 [class*="has-[>svg]:justify-center"]:has(> svg),
-.v109 .has-\[\>svg\]\:justify-center:has(> svg) {
+.v109 [class*="has-[>svg]:justify-center"],
+.v109 .has-\[\>svg\]\:justify-center {
   justify-content: center;
 }
-.v109 [class*="has-[>svg]:items-center"]:has(> svg),
-.v109 .has-\[\>svg\]\:items-center:has(> svg) {
+.v109 [class*="has-[>svg]:items-center"],
+.v109 .has-\[\>svg\]\:items-center {
   align-items: center;
 }
-.v109 [class*="has-[>svg]:inline-flex"]:has(> svg),
-.v109 .has-\[\>svg\]\:inline-flex:has(> svg) {
+.v109 [class*="has-[>svg]:inline-flex"],
+.v109 .has-\[\>svg\]\:inline-flex {
   display: inline-flex;
+}
+
+/* Chrome 109 SVG 아이콘 렌더링 호환 */
+.v109 svg {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* disabled 상태 스타일 호환 */

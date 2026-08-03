@@ -150,7 +150,7 @@ function Content({ id }: { id: string }) {
           />
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">제품을 찾을 수 없습니다.</p>
+            <p className="text-gray-50 mb-4">제품을 찾을 수 없습니다.</p>
             <button
               type="button"
               onClick={() => router.push(returnURL)}

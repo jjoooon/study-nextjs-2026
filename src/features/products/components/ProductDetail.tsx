@@ -60,19 +60,19 @@ export default function ProductDetail({ product, onEdit, onDelete, onBack }: Pro
         <h2 className="text-xl font-semibold text-gray-900 mb-4">기본 정보</h2>
         <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <dt className="text-sm font-medium text-gray-500">제품명</dt>
+            <dt className="text-sm font-medium text-gray-50">제품명</dt>
             <dd className="mt-1 text-lg text-gray-900">{product.name}</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">가격</dt>
+            <dt className="text-sm font-medium text-gray-50">가격</dt>
             <dd className="mt-1 text-2xl font-bold text-blue-600">₩{product.price.toLocaleString()}</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">카테고리</dt>
+            <dt className="text-sm font-medium text-gray-50">카테고리</dt>
             <dd className="mt-1 text-lg text-gray-900">{product.category}</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">상태</dt>
+            <dt className="text-sm font-medium text-gray-50">상태</dt>
             <dd className="mt-1">
               <span className={`px-2 py-1 rounded text-sm font-medium ${getStatusBadgeClass(product.status)}`}>
                 {getStatusLabel(product.status)}
@@ -80,7 +80,7 @@ export default function ProductDetail({ product, onEdit, onDelete, onBack }: Pro
             </dd>
           </div>
           <div className="md:col-span-2">
-            <dt className="text-sm font-medium text-gray-500">설명</dt>
+            <dt className="text-sm font-medium text-gray-50">설명</dt>
             <dd className="mt-1 text-gray-900">{product.description}</dd>
           </div>
         </dl>
@@ -91,11 +91,11 @@ export default function ProductDetail({ product, onEdit, onDelete, onBack }: Pro
         <h2 className="text-xl font-semibold text-gray-900 mb-4">날짜 정보</h2>
         <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <dt className="text-sm font-medium text-gray-500">생성일</dt>
+            <dt className="text-sm font-medium text-gray-50">생성일</dt>
             <dd className="mt-1 text-gray-900">{new Date(product.createdAt).toLocaleString('ko-KR')}</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">수정일</dt>
+            <dt className="text-sm font-medium text-gray-50">수정일</dt>
             <dd className="mt-1 text-gray-900">{new Date(product.updatedAt).toLocaleString('ko-KR')}</dd>
           </div>
         </dl>

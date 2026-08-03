@@ -131,7 +131,7 @@ const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Lt
                     >
                       <Gcol className="py-2 items-center justify-center gap-1.5">
                         {getStateIcon(tab.state)}
-                        <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-500">
+                        <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-50">
                           {tab.label}
                         </Typo>
                       </Gcol>
