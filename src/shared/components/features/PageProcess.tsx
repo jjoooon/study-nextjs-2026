@@ -70,7 +70,7 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
                 <button
                   type="button"
                   data-process={stepState}
-                  className={`relative flex flex-col w-[2.9rem] py-[2rem] gap-1 items-center justify-center -mt-[1px] rounded-tl-[0.8rem] border border-[1px] border-[var(--color-gray-15)] border-r-0 rounded-bl-[0.8rem] py-[0.6rem] hover:bg-[var(--color-secondary-5)] bg-[#fff] text-[var(--color-gray-70)] z-0 ${
+                  className={`relative flex flex-col w-[2.9rem] py-[2rem] gap-1 items-center justify-center -mt-[1px] rounded-tl-[0.8rem] border border-[1px] border-[var(--color-gray-15)] border-r-0 rounded-bl-[0.8rem] py-[0.6rem] hover:bg-[var(--color-secondary-5)] bg-[#fff] text-[var(--color-gray-70)] z-0 shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.10)] ${
                     isActive &&
                     'w-[3.3rem] text-white z-1 border-y-[1px] border-l-[1px] border-r-0 border-transparent rounded-l-xl rounded-r-none bg-origin-border [background-clip:padding-box,_border-box] [background-image:linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%),linear-gradient(to_bottom,#ffad4f,#e5561c)]'
                   }
