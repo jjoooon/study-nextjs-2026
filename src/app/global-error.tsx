@@ -58,7 +58,7 @@ export default function GlobalError({ error }: GlobalErrorProps) {
               <Typo tag="strong" variant={'heading-lg'} icon={'warning'}>
                 일시적인 오류가 발생했어요
               </Typo>
-              <Typo tag="span" variant={'body-md'} className="text-center leading-[1.5]">
+              <Typo tag="span" color={'gray'} variant={'body-md'} className="text-center leading-[1.5]">
                 요청을 처리하는 중 문제가 발생했어요.
                 <br />
                 잠시 후 다시 시도해 주세요.
