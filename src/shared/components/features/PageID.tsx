@@ -25,14 +25,14 @@ export function PageID({ data }: PageIDProps) {
   getHeader('stfno');
 
   return (
-    <Grow placement={'bwc'} className="w-full py-[4px] gap-[4px]">
+    <Grow placement={'bwc'} className="w-full py-[4px] gap-[4px] relative">
       <Grow className="gap-[4px]">
         <Typo tag={'h1'} variant={'heading-sm'} className="!text-[13px]">
           {safeData.pageName}
         </Typo>
         {safeData.pageId && <Typo className="!text-[13px]">({safeData.pageId})</Typo>}
       </Grow>
-      <Grow className="gap-[4px]">
+      <Grow className="gap-[4px] sticky right-[1rem] top-0">
         <ZoomControl />
         <Button variant={'none'} only={'icon'} size={'md'} aria-label="페이지 닫기" className="!w-[16px] !h-[16px]">
           <CloseIcon size={16} className="!w-[16px] !h-[16px]" />
