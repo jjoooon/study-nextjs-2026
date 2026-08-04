@@ -447,69 +447,118 @@
 /* ----------------------------------------------------
  * Chrome 109 전용 data-[state/required/invalid] 상태 호환 스타일
  * ---------------------------------------------------- */
-/* data-state="checked" 및 그림자 */
-.v109 .\[state\=checked\]\:shadow-\[0_0\.1rem_0\.1rem_0_rgba\(255\,92\,46\,0\.20\)\][data-state="checked"],
-.v109 [class*="[state=checked]:shadow"][data-state="checked"] {
+/* ----------------------------------------------------
+ * Chrome 109 전용 Checkbox (.cp-checkbox / [data-slot="checkbox"]) 전용 호환 스타일
+ * ---------------------------------------------------- */
+/* data-state="checked" 및 그림자 (체크박스 한정) */
+.v109 .cp-checkbox.\[state\=checked\]\:shadow-\[0_0\.1rem_0\.1rem_0_rgba\(255\,92\,46\,0\.20\)\][data-state="checked"],
+.v109 .cp-checkbox[class*="[state=checked]:shadow"][data-state="checked"],
+.v109 [data-slot="checkbox"][data-state="checked"],
+.v109 button[role="checkbox"][data-state="checked"] {
   box-shadow: 0 0.1rem 0.1rem 0 rgba(255, 92, 46, 0.20);
 }
 
-.v109 .disabled\:data-\[state\=checked\]\:text-\[var\(--color-gray-30\)\]:disabled[data-state="checked"],
-.v109 [class*="disabled:data-[state=checked]:text-[var(--color-gray-30)]"]:disabled[data-state="checked"] {
+.v109 .cp-checkbox.disabled\:data-\[state\=checked\]\:text-\[var\(--color-gray-30\)\]:disabled[data-state="checked"],
+.v109 .cp-checkbox[class*="disabled:data-[state=checked]:text-[var(--color-gray-30)]"]:disabled[data-state="checked"],
+.v109 [data-slot="checkbox"]:disabled[data-state="checked"] {
   color: var(--color-gray-30);
 }
-.v109 .disabled\:data-\[state\=checked\]\:bg-\[var\(--color-gray-10\)\]:disabled[data-state="checked"],
-.v109 [class*="disabled:data-[state=checked]:bg-[var(--color-gray-10)]"]:disabled[data-state="checked"] {
+.v109 .cp-checkbox.disabled\:data-\[state\=checked\]\:bg-\[var\(--color-gray-10\)\]:disabled[data-state="checked"],
+.v109 .cp-checkbox[class*="disabled:data-[state=checked]:bg-[var(--color-gray-10)]"]:disabled[data-state="checked"],
+.v109 [data-slot="checkbox"]:disabled[data-state="checked"] {
   background-color: var(--color-gray-10);
 }
-.v109 .disabled\:data-\[state\=checked\]\:border-\[var\(--color-gray-20\)\]:disabled[data-state="checked"],
-.v109 [class*="disabled:data-[state=checked]:border-[var(--color-gray-20)]"]:disabled[data-state="checked"] {
+.v109 .cp-checkbox.disabled\:data-\[state\=checked\]\:border-\[var\(--color-gray-20\)\]:disabled[data-state="checked"],
+.v109 .cp-checkbox[class*="disabled:data-[state=checked]:border-[var(--color-gray-20)]"]:disabled[data-state="checked"],
+.v109 [data-slot="checkbox"]:disabled[data-state="checked"] {
   border-color: var(--color-gray-20);
 }
 
-.v109 .data-\[state\=checked\]\:text-white[data-state="checked"],
-.v109 .data-\[state\=checked\]\:text-white[data-state="checked"] *,
-.v109 [class*="data-[state=checked]:text-white"][data-state="checked"],
-.v109 [class*="data-[state=checked]:text-white"][data-state="checked"] *,
-.v109 [data-state="checked"].data-\[state\=checked\]\:text-white,
-.v109 [data-state="checked"].data-\[state\=checked\]\:text-white * {
+.v109 .cp-checkbox.data-\[state\=checked\]\:text-white[data-state="checked"],
+.v109 .cp-checkbox.data-\[state\=checked\]\:text-white[data-state="checked"] *,
+.v109 .cp-checkbox[class*="data-[state=checked]:text-white"][data-state="checked"],
+.v109 .cp-checkbox[class*="data-[state=checked]:text-white"][data-state="checked"] *,
+.v109 [data-slot="checkbox"][data-state="checked"] {
   color: var(--color-white, #ffffff);
 }
-.v109 .data-\[state\=checked\]\:bg-\[var\(--color-primary-50\)\][data-state="checked"],
-.v109 [class*="data-[state=checked]:bg-[var(--color-primary-50)]"][data-state="checked"] {
+.v109 .cp-checkbox.data-\[state\=checked\]\:bg-\[var\(--color-primary-50\)\][data-state="checked"],
+.v109 .cp-checkbox[class*="data-[state=checked]:bg-[var(--color-primary-50)]"][data-state="checked"],
+.v109 [data-slot="checkbox"][data-state="checked"] {
   background-color: var(--color-primary-50);
 }
-.v109 .data-\[state\=checked\]\:border-\[var\(--color-primary-50\)\][data-state="checked"],
-.v109 [class*="data-[state=checked]:border-[var(--color-primary-50)]"][data-state="checked"] {
+.v109 .cp-checkbox.data-\[state\=checked\]\:border-\[var\(--color-primary-50\)\][data-state="checked"],
+.v109 .cp-checkbox[class*="data-[state=checked]:border-[var(--color-primary-50)]"][data-state="checked"],
+.v109 [data-slot="checkbox"][data-state="checked"] {
   border-color: var(--color-primary-50);
 }
 
-/* data-required="true" 상태 */
-.v109 .data-\[required\=true\]\:hover\:border-\[var\(--color-primary-50\)\][data-required="true"]:hover,
-.v109 [class*="data-[required=true]:hover:border-[var(--color-primary-50)]"][data-required="true"]:hover {
+/* data-required="true" 상태 (체크박스 한정) */
+.v109 .cp-checkbox.data-\[required\=true\]\:hover\:border-\[var\(--color-primary-50\)\][data-required="true"]:hover,
+.v109 .cp-checkbox[class*="data-[required=true]:hover:border-[var(--color-primary-50)]"][data-required="true"]:hover,
+.v109 [data-slot="checkbox"][data-required="true"]:hover {
   border-color: var(--color-primary-50);
 }
-.v109 .data-\[required\=true\]\:bg-\[var\(--color-warning-10\)\][data-required="true"],
-.v109 [class*="data-[required=true]:bg-[var(--color-warning-10)]"][data-required="true"] {
+.v109 .cp-checkbox.data-\[required\=true\]\:bg-\[var\(--color-warning-10\)\][data-required="true"],
+.v109 .cp-checkbox[class*="data-[required=true]:bg-[var(--color-warning-10)]"][data-required="true"],
+.v109 [data-slot="checkbox"][data-required="true"] {
   background-color: var(--color-warning-10);
 }
-.v109 .data-\[required\=true\]\:border-\[var\(--color-warning-30\)\][data-required="true"],
-.v109 [class*="data-[required=true]:border-[var(--color-warning-30)]"][data-required="true"] {
+.v109 .cp-checkbox.data-\[required\=true\]\:border-\[var\(--color-warning-30\)\][data-required="true"],
+.v109 .cp-checkbox[class*="data-[required=true]:border-[var(--color-warning-30)]"][data-required="true"],
+.v109 [data-slot="checkbox"][data-required="true"] {
   border-color: var(--color-warning-30);
 }
 
-/* data-invalid="true" 에러 상태 */
-.v109 .data-\[invalid\=true\]\:bg-\[var\(--color-input-surface-error\)\]\![data-invalid="true"],
-.v109 [class*="data-[invalid=true]:bg-[var(--color-input-surface-error)]"][data-invalid="true"] {
+/* data-invalid="true" 에러 상태 (체크박스 한정) */
+.v109 .cp-checkbox.data-\[invalid\=true\]\:bg-\[var\(--color-input-surface-error\)\]\![data-invalid="true"],
+.v109 .cp-checkbox[class*="data-[invalid=true]:bg-[var(--color-input-surface-error)]"][data-invalid="true"],
+.v109 [data-slot="checkbox"][data-invalid="true"] {
   background-color: var(--color-input-surface-error) !important;
 }
-.v109 .data-\[invalid\=true\]\:border-\[var\(--color-input-border-error\)\]\![data-invalid="true"],
-.v109 [class*="data-[invalid=true]:border-[var(--color-input-border-error)]"][data-invalid="true"] {
+.v109 .cp-checkbox.data-\[invalid\=true\]\:border-\[var\(--color-input-border-error\)\]\![data-invalid="true"],
+.v109 .cp-checkbox[class*="data-[invalid=true]:border-[var(--color-input-border-error)]"][data-invalid="true"],
+.v109 [data-slot="checkbox"][data-invalid="true"] {
   border-color: var(--color-input-border-error) !important;
 }
-.v109 .data-\[invalid\=true\]\:border-\[0\.2rem\]\![data-invalid="true"],
-.v109 [class*="data-[invalid=true]:border-[0.2rem]"][data-invalid="true"] {
+.v109 .cp-checkbox.data-\[invalid\=true\]\:border-\[0\.2rem\]\![data-invalid="true"],
+.v109 .cp-checkbox[class*="data-[invalid=true]:border-[0.2rem]"][data-invalid="true"],
+.v109 [data-slot="checkbox"][data-invalid="true"] {
   border-style: solid !important;
   border-width: 0.2rem !important;
+}
+
+/* disabled 상태 (체크박스 한정) */
+.v109 .cp-checkbox.disabled\:bg-\[var\(--color-gray-10\)\]:disabled,
+.v109 .cp-checkbox[class*="disabled:bg-[var(--color-gray-10)]"]:disabled,
+.v109 [data-slot="checkbox"]:disabled {
+  background-color: var(--color-gray-10);
+}
+.v109 .cp-checkbox.disabled\:border-\[var\(--color-gray-20\)\]:disabled,
+.v109 .cp-checkbox[class*="disabled:border-[var(--color-gray-20)]"]:disabled,
+.v109 [data-slot="checkbox"]:disabled {
+  border-color: var(--color-gray-20);
+}
+.v109 .cp-checkbox.disabled\:cursor-not-allowed:disabled,
+.v109 .cp-checkbox[class*="disabled:cursor-not-allowed"]:disabled,
+.v109 [data-slot="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+/* focus-visible & hover 상태 */
+.v109 .cp-checkbox:focus-visible {
+  outline: none;
+}
+.v109 .cp-checkbox.hover\:border-\[var\(--color-primary-50\)\]:hover {
+  border-color: var(--color-primary-50);
+}
+
+/* Chrome 109 전용 버튼(.cp-button) 포커스 시 주황색 아웃라인/링 제거 */
+.v109 .cp-button:focus,
+.v109 .cp-button:focus-visible,
+.v109 [data-slot="button"]:focus,
+.v109 [data-slot="button"]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* 추가 disabled 상태 */
@@ -1380,7 +1429,7 @@
 
 .v109 .cp-sonner [data-close-button] {
   position: absolute !important;
-  top: 50% !important;
+  top: calc(50% - 1.6rem) !important;
   bottom: 0 !important;
   right: 1.5rem !important;
   left: auto !important;
