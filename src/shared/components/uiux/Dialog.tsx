@@ -665,9 +665,9 @@ function DialogContent({
 
     return {
       ...(props.style ?? {}),
-      left: isFullWidth ? '50%' : isInitialized ? '0px' : '50%',
+      left: isFullSize ? '50%' : isInitialized ? '0px' : '50%',
       top: isFullSize ? '50%' : isInitialized ? '0px' : '50%',
-      transform: isFullWidth ? `translate(-50%, -50%)` : transformValue,
+      transform: isFullSize ? `translate(-50%, -50%)` : transformValue,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
       width: isFullWidth ? DIALOG_FULL_WIDTH : resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
       height: isFullSize
