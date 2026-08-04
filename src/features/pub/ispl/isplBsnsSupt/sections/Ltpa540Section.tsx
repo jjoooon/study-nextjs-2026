@@ -411,7 +411,7 @@ export default function Ltpa540Section() {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody className="gap-2">
-                <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
