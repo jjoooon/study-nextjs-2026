@@ -20,7 +20,7 @@ export interface ExcelExportButtonProps<T> {
   /** 버튼 라벨 (기본: '엑셀내보내기') */
   buttonLabel?: React.ReactNode;
   /** 내보내기 완료 후 콜백 */
-  onExported?: () => void;
+  onSuccess?: () => void;
   /** 내보내기 실패 시 콜백 (기본: 로그 + alert) */
   onError?: (error: unknown) => void;
   /** Button에 그대로 전달할 추가 props */
@@ -40,14 +40,14 @@ export function ExcelExportButton<T>({
   gridRef,
   exportParams,
   buttonLabel = '엑셀내보내기',
-  onExported,
+  onSuccess,
   onError = defaultOnError,
   buttonProps,
 }: ExcelExportButtonProps<T>) {
   function exportExcel() {
     try {
       gridRef.current?.api.exportDataAsExcel(exportParams);
-      onExported?.();
+      onSuccess?.();
     } catch (error) {
       onError(error);
     }
