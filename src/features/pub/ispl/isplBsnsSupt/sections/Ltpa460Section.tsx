@@ -335,7 +335,7 @@ export default function Ltpa460Section() {
                     <Input aria-label="번호" width={150} value={''} />
                   </FormCell>
                   <FormCell title={'발행후변경순번'}>
-                    <Input aria-label="번호" width={150} value={''} />
+                    <Input aria-label="번호" width={120} value={''} />
                   </FormCell>
                 </FormRow>
                 <FormRow>
