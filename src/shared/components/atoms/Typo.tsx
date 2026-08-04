@@ -170,11 +170,11 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
    * - info/warning/detail은 `em` 강조 색과 굵기를 표준화
    */
   const indentStyle = {
-    info: 'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-information-50)] [&>em]:font-bold [&>em]:not-italic!',
+    info: 'inline-block relative -indent-[2rem] ml-[2rem] text-[var(--color-gray-70)] [&>em]:text-[var(--color-information-50)] [&>em]:font-bold [&>em]:not-italic!',
     warning:
-      'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-danger-50)] [&>em]:font-bold [&>em]:not-italic!',
+      'inline-block relative -indent-[2rem] ml-[2rem] text-[var(--color-gray-70)] [&>em]:text-[var(--color-danger-50)] [&>em]:font-bold [&>em]:not-italic!',
     detail:
-      'inline-block relative -indent-[1.4rem] ml-[1.4rem] [&>em]:text-[var(--color-primary-50)] [&>em]:font-bold [&>em]:not-italic!',
+      'inline-block relative -indent-[1.4rem] ml-[1.4rem] text-[var(--color-gray-70)] [&>em]:text-[var(--color-primary-50)] [&>em]:font-bold [&>em]:not-italic!',
     dot: 'inline-block relative -indent-[0.9rem] ml-[0.9rem]',
     dotBig: 'inline-block relative -indent-[1.2rem] ml-[1.2rem]',
     hash: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',
