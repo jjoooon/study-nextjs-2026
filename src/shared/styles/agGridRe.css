@@ -1243,7 +1243,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 }
 
 /* Chrome 109에서 TableFold 및 inner-scroll 그리드가 높이 축소되는 현상 방지 */
-.v109 .ag-root-wrapper {
+/* .v109 .ag-root-wrapper {
   height: 100%;
 }
 
@@ -1253,7 +1253,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 
 .v109 .ag-theme-alpine.inner-scroll .ag-root-wrapper-body {
   height: 100% !important;
-}
+} */
 
 /* AG-Grid 셀 내부 SelectDrop 가로 1행 정렬 및 너비 100% 전역 보정 */
 .v109 .ag-cell .cp-selectdrop,

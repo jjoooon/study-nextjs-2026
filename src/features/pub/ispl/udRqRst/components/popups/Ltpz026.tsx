@@ -731,7 +731,7 @@ const Ltpz026 = () => {
                             {rowDataT1.length}개
                           </Badge>
                         </Grow>
-                        <div className="ag-theme-alpine inner-scroll">
+                        <div className="ag-theme-alpine">
                           <AgGridReact<DummyDataTypeT1>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -757,7 +757,7 @@ const Ltpz026 = () => {
                             {rowDataT2.length}개
                           </Badge>
                         </Grow>
-                        <div className="ag-theme-alpine inner-scroll">
+                        <div className="ag-theme-alpine">
                           <AgGridReact<DummyDataTypeT2>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -781,7 +781,7 @@ const Ltpz026 = () => {
                             {rowDataT3.length}개
                           </Badge>
                         </Grow>
-                        <div className="w-full ag-theme-alpine inner-scroll">
+                        <div className="w-full ag-theme-alpine">
                           <AgGridReact<DummyDataTypeT3>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}

@@ -91,7 +91,6 @@
   border-style: dashed;
   border-color: var(--color-gray-0);
 }
-
 .v109 [data-slot="button"][data-color="gray"]:is([data-variant="contained"], [data-variant="rounded"]):focus-visible {
   background-color: var(--color-gray-60);
   border-style: dashed;
@@ -105,7 +104,6 @@
   border-style: dashed;
   border-color: var(--color-gray-0);
 }
-
 .v109 [data-slot="button"][data-color="coolgray"]:is([data-variant="contained"], [data-variant="rounded"]):focus-visible {
   background-color: var(--color-blue-gray-80);
   border-style: dashed;
@@ -113,7 +111,77 @@
   box-shadow: 0 0 0 2px var(--color-blue-gray-80);
 }
 
+/* Button (contained/rounded, color: coolgray-light) Chrome 109 호환 Hover & Focus-Visible 스타일 (.v109 전용) */
+.v109 [data-slot="button"][data-color="coolgray-light"]:is([data-variant="contained"], [data-variant="rounded"]):hover {
+  background-color: var(--color-blue-gray-60);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+}
+.v109 [data-slot="button"][data-color="coolgray-light"]:is([data-variant="contained"], [data-variant="rounded"]):focus-visible {
+  background-color: var(--color-blue-gray-60);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+  box-shadow: 0 0 0 2px var(--color-blue-gray-60);
+}
+
+/* Button (color: success) Chrome 109 호환 스타일 (.v109 전용) */
+.v109 [data-slot="button"][data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]),
+.v109 .cp-button[data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]) {
+  border: 1px solid var(--color-success-50);
+  background-color: var(--color-success-50);
+  color: var(--color-gray-0);
+  font-weight: 700;
+}
+.v109 [data-slot="button"][data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):hover,
+.v109 .cp-button[data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):hover {
+  background-color: var(--color-success-60);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+}
+.v109 [data-slot="button"][data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):focus-visible,
+.v109 .cp-button[data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):focus-visible {
+  background-color: var(--color-success-60);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+  box-shadow: 0 0 0 2px var(--color-success-60);
+}
+.v109 [data-slot="button"][data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):disabled,
+.v109 .cp-button[data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):disabled {
+  color: var(--color-gray-0);
+  background-color: var(--color-gray-20);
+  border-color: var(--color-gray-20);
+}
+
+.v109 [data-slot="button"][data-color="success"][data-variant="outlined"]:hover,
+.v109 .cp-button[data-color="success"][data-variant="outlined"]:hover {
+  background-color: var(--color-success-10);
+  border-style: dashed;
+  border-color: var(--color-success-60);
+}
+.v109 [data-slot="button"][data-color="success"][data-variant="outlined"]:focus-visible,
+.v109 .cp-button[data-color="success"][data-variant="outlined"]:focus-visible {
+  background-color: var(--color-success-5);
+  border-style: dashed;
+  border-color: var(--color-success-60);
+  box-shadow: 0 0 0 2px var(--color-success-5);
+}
+
+.v109 [data-slot="button"][data-color="success"][data-variant="text"],
+.v109 .cp-button[data-color="success"][data-variant="text"] {
+  color: var(--color-success-60);
+}
+
 /* RadioGroupItem data-[state=checked] & hover Chrome 109 호환 (.v109 전용) */
+.v109 .cp-radio button[data-state='checked'],
+.v109 button[role="radio"][data-state='checked'],
+.v109 [class*="data-[state=checked]"][data-state='checked'] {
+  background-color: var(--color-primary-5) !important;
+  color: var(--color-primary-50) !important;
+  border-color: var(--color-primary-50) !important;
+  border-style: solid !important;
+  box-shadow: 0 0.1rem 0.1rem 0 rgba(255, 92, 46, 0.19) !important;
+}
+
 .v109 [class*="data-[state=checked]:bg-[#414141]"][data-state='checked'] {
   background-color: #414141;
   color: #ffffff;
@@ -270,12 +338,24 @@
   background-clip: text !important;
 }
 
+/* MainFoot / MainBottom 컴포넌트 하위 div 패딩 0 스타일 (.v109 및 공통) */
+.v109 .cp-mainfoot div {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 
+/* agGrid .ag-body-viewport.ag-layout-normal 수직 스크롤 생성 스타일 (.v109 전용 보정) */
+.v109 .ag-theme-alpine .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll .ag-body-viewport.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll .ag-body-viewport:where(.ag-layout-normal) {
+  height: 15rem !important;
+  /* max-height: 15rem !important; */
+}
 
-
-
-
-
-
-
-
+.v109 .ag-body-viewport.ag-layout-normal,
+.v109 .ag-body-viewport:where(.ag-layout-normal) {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
