@@ -253,6 +253,15 @@ export default function Section() {
                     setRowData(importedRows);
                   }}
                 />
+                {/*
+                  화면과 다른 데이터로 export하고 싶을 때:
+                  - 행 개수만 줄이기: exportParams.shouldRowBeSkipped로 특정 행 제외
+                  - 화면보다 많거나 완전히 다른 데이터: export 직전 api.setGridOption('rowData', 커스텀데이터) →
+                    exportDataAsExcel() → 원래 데이터로 복원
+                  - 셀 내용만 다르게: processCellCallback에서 params.value 대신 원하는 값 return
+                  - 그리드 데이터와 무관한 시트(표지 등): 필터로 행을 0개로 만든 뒤 api.getSheetDataForExcel({ prependContent, processHeaderCallback: () => '' })로
+                    커스텀 시트를 만들고, 필터를 풀어 실제 데이터 시트를 추가로 뽑아 api.exportMultipleSheetsAsExcel({ data: [...] })로 합치기
+                */}
                 <ExcelExportButton<DummyData1Type>
                   gridRef={gridRef}
                   fileName={'hello.xlsx'}
