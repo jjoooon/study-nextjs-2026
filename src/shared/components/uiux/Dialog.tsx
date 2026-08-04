@@ -210,6 +210,7 @@ type DialogContextValue = {
   isMinimized: boolean;
   setMinimized: React.Dispatch<React.SetStateAction<boolean>>;
   modal: boolean;
+  setModalOverride?: (override: boolean | null) => void;
   open: boolean;
 };
 
@@ -285,6 +286,7 @@ function Dialog({
   const parentDialogContext = React.useContext(DialogDepthContext);
   const newDepth = parentDialogContext.depth + 1;
   const dialogId = React.useId();
+  const [modalOverride, setModalOverride] = React.useState<boolean | null>(null);
 
   // controlled / uncontrolled minimized 상태 모두 추적
   const [minimizedState, setMinimizedState] = React.useState(defaultMinimized ?? false);
@@ -329,6 +331,8 @@ function Dialog({
     return () => unregisterDialog(dialogId);
   }, [isOpen, dialogId, newDepth, isMinimized]);
 
+  const effectiveModal = isMinimized || modalOverride === false ? false : (modalOverride ?? modal);
+
   return (
     <DialogDepthContext.Provider
       value={{
@@ -337,6 +341,7 @@ function Dialog({
         isMinimized,
         setMinimized: handleMinimizeChange,
         modal,
+        setModalOverride,
         open: isOpen,
       }}
     >
@@ -345,7 +350,7 @@ function Dialog({
         open={isOpen}
         defaultOpen={defaultOpen}
         onOpenChange={handleOpenChange}
-        modal={isMinimized ? false : modal}
+        modal={effectiveModal}
         {...props}
       />
     </DialogDepthContext.Provider>
@@ -403,19 +408,25 @@ interface DialogOverlayProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * @default false
    */
   disableMotion?: boolean;
+  /**
+   * 오버레이 배경의 딤 타입 (어두운 배경 / 투명 배경)
+   * @default 'dark'
+   */
+  dim?: 'dark' | 'transparent';
 }
 
 /**
  * 다이얼로그 백드롭 오버레이 (DialogOverlay)
  * - 다이얼로그 배경을 차단하는 어두운 막 레이어입니다.
  */
-function DialogOverlay({ className, style, disableMotion = false, ...props }: DialogOverlayProps) {
+function DialogOverlay({ className, style, disableMotion = false, dim = 'dark', ...props }: DialogOverlayProps) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       style={style}
       className={cn(
-        'fixed inset-0 bg-black/60 pointer-events-none',
+        'fixed inset-0 pointer-events-none',
+        dim === 'dark' ? 'bg-black/60' : 'bg-transparent',
         disableMotion
           ? 'transition-none'
           : 'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
@@ -470,6 +481,14 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
     y: number;
   };
   minimized?: boolean;
+  /**
+   * 백드롭 딤(Dim) 오버레이 모드 설정
+   * - 'dark': 어두운 반투명 백드롭 오버레이 표시 (기본값)
+   * - 'transparent': 클릭 차단용 투명 오버레이 표시
+   * - 'none': 백드롭 오버레이를 전혀 렌더링하지 않음
+   * @default 'dark'
+   */
+  dim?: 'dark' | 'transparent' | 'none';
 }
 
 /**
@@ -491,12 +510,33 @@ function DialogContent({
   onPointerDownOutside,
   onInteractOutside,
   minimized,
+  dim = 'dark',
   ...props
 }: DialogContentProps) {
-  const { dialogId, isMinimized, setMinimized, open } = React.useContext(DialogDepthContext);
+  const { dialogId, isMinimized, setMinimized, open, setModalOverride } = React.useContext(DialogDepthContext);
 
   // iframe 환경 검사 (SSR Hydration mismatch 방지)
   const [isIframeState, setIsIframeState] = React.useState(false);
+
+  // dim === 'none' 일 때는 Radix 비모달(modal=false) 전환 및 바닥 클릭 가능 처리
+  useIsomorphicLayoutEffect(() => {
+    if (dim === 'none') {
+      setModalOverride?.(false);
+      if (typeof document !== 'undefined') {
+        const originalPointerEvents = document.body.style.pointerEvents;
+        document.body.style.pointerEvents = 'auto';
+        return () => {
+          setModalOverride?.(null);
+          document.body.style.pointerEvents = originalPointerEvents;
+        };
+      }
+      return () => {
+        setModalOverride?.(null);
+      };
+    } else {
+      setModalOverride?.(null);
+    }
+  }, [dim, setModalOverride]);
 
   useIsomorphicLayoutEffect(() => {
     const checkIframe = () => {
@@ -825,8 +865,9 @@ function DialogContent({
   return (
     <DialogSizeContext.Provider value={{ size, initialSectionWidth, isFullSize, isAutoFullWidth }}>
       <DialogPortal data-slot="dialog-portal">
-        {resolvedShowOverlay && (
+        {resolvedShowOverlay && dim !== 'none' && (
           <DialogOverlay
+            dim={dim === 'transparent' ? 'transparent' : 'dark'}
             style={{ zIndex: overlayZIndex }}
             className={overlayClassName}
             disableMotion={disableOverlayMotion}
