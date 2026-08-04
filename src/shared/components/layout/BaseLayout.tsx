@@ -62,10 +62,7 @@ export const LayoutProcess = ({ children, className }: LayoutProps) => {
   // 좌측 프로세스(스텝바) 영역
   // - 최소 너비를 유지해 단계 UI가 줄바꿈되지 않도록 한다.
   return (
-    <div
-      data-layout="process"
-      className={cn('relative grid grid-cols-[1fr] min-w-[4rem] sticky left-0 z-10', className)}
-    >
+    <div data-layout="process" className={cn('relative grid grid-cols-[1fr] min-w-[4rem]', className)}>
       {children}
     </div>
   );

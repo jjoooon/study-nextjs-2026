@@ -534,8 +534,12 @@
   body {
     /* overflow:hidden; */
     font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
+    background-color: #fff;
   }
-
+  #storybook-root{
+    width: 1195px;
+    border-right:1px solid #ccc
+  }
   .a11y-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
