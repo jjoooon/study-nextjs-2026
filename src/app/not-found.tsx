@@ -28,7 +28,7 @@ export default function NotFound() {
       <Gcol gap={6}>
         <img src={withPublicUrl('/images/error_404.svg')} alt="404" />
         <Gcol gap={4}>
-          <Typo tag="strong" variant={'heading-lg'} icon={'warning'}>
+          <Typo tag="strong" variant={'heading-lg'} icon={'warning'} className="text-[#000]">
             페이지를 찾을 수 없어요
           </Typo>
           <Typo tag="span" color={'gray'} variant={'body-md'} className="text-center leading-[1.5]">

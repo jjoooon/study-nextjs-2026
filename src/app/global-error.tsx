@@ -55,7 +55,7 @@ export default function GlobalError({ error }: GlobalErrorProps) {
           <Gcol gap={6}>
             <img src={withPublicUrl('/images/error.svg')} alt="error" />
             <Gcol gap={4}>
-              <Typo tag="strong" variant={'heading-lg'} icon={'warning'}>
+              <Typo tag="strong" variant={'heading-lg'} icon={'warning'} className="text-[#000]">
                 일시적인 오류가 발생했어요
               </Typo>
               <Typo tag="span" color={'gray'} variant={'body-md'} className="text-center leading-[1.5]">
