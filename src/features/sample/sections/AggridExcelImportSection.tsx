@@ -218,10 +218,9 @@ export default function Section() {
             <Gcol>
               <Grow className="w-full" placement="ec">
                 <ExcelImportButton<DummyData1Type>
-                  setRowData={setRowData}
-                  mergeStrategy={'overwrite'}
                   onImported={(importedRows) => {
                     logger.debug('임포트 완료', importedRows);
+                    setRowData(importedRows);
                   }}
                 />
                 <ExcelExportButton<DummyData1Type> gridRef={gridRef} />

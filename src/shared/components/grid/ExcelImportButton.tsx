@@ -13,13 +13,7 @@ import { Button } from '@uiux/Button';
 
 const logger = log.getLogger('ExcelImportButton');
 
-export type ExcelImportMergeStrategy = 'append' | 'prepend' | 'overwrite';
-
 export interface ExcelImportButtonProps<T extends Record<string, unknown>> {
-  /** 임포트 결과를 반영할 그리드 rowData setState */
-  setRowData: React.Dispatch<React.SetStateAction<T[]>>;
-  /** 임포트 결과 병합 방식 (기본: 'append') */
-  mergeStrategy?: ExcelImportMergeStrategy;
   /** input accept 속성 (기본: '.xlsx,.xls') */
   accept?: string;
   /** 버튼 라벨 (기본: '엑셀가져오기') */
@@ -59,13 +53,11 @@ function defaultOnError(error: unknown) {
 }
 
 /**
- * 엑셀 파일을 업로드해 그리드 rowData 타입(T)과 동일한 shape의 데이터로 파싱한 뒤 그대로 반영하는 버튼.
+ * 엑셀 파일을 업로드해 그리드 rowData 타입(T)과 동일한 shape의 데이터로 파싱한 뒤 onImported로 전달하는 버튼.
  * 엑셀 헤더가 T의 field명과 일치하는 "완전한 데이터 파일"이라고 가정한다 (id 포함, 별도 매핑/채번 없음).
  * 업로드 API는 프로젝트 공용 엔드포인트(`excelUploadService`) 하나만 사용한다.
  */
 export function ExcelImportButton<T extends Record<string, unknown>>({
-  setRowData,
-  mergeStrategy = 'append',
   accept = '.xlsx,.xls',
   buttonLabel = '엑셀가져오기',
   onImported,
@@ -85,12 +77,6 @@ export function ExcelImportButton<T extends Record<string, unknown>>({
 
       onImported?.(importedRows);
       logger.info(`엑셀 임포트 완료: ${response.fileName} (${importedRows.length}행 추가)`, importedRows);
-
-      setRowData((prev) => {
-        if (mergeStrategy === 'prepend') return [...importedRows, ...prev];
-        if (mergeStrategy === 'overwrite') return importedRows;
-        return [...prev, ...importedRows];
-      });
     } catch (error) {
       onError(error);
     }
