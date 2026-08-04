@@ -173,8 +173,7 @@
 
 /* RadioGroupItem data-[state=checked] & hover Chrome 109 호환 (.v109 전용) */
 .v109 .cp-radio button[data-state='checked'],
-.v109 button[role="radio"][data-state='checked'],
-.v109 [class*="data-[state=checked]"][data-state='checked'] {
+.v109 button[role="radio"][data-state='checked'] {
   background-color: var(--color-primary-5) !important;
   color: var(--color-primary-50) !important;
   border-color: var(--color-primary-50) !important;
