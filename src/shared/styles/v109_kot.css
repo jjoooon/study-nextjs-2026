@@ -448,65 +448,83 @@
  * Chrome 109 전용 data-[state/required/invalid] 상태 호환 스타일
  * ---------------------------------------------------- */
 /* data-state="checked" 및 그림자 */
+.v109 .\[state\=checked\]\:shadow-\[0_0\.1rem_0\.1rem_0_rgba\(255\,92\,46\,0\.20\)\][data-state="checked"],
 .v109 [class*="[state=checked]:shadow"][data-state="checked"] {
   box-shadow: 0 0.1rem 0.1rem 0 rgba(255, 92, 46, 0.20);
 }
 
+.v109 .disabled\:data-\[state\=checked\]\:text-\[var\(--color-gray-30\)\]:disabled[data-state="checked"],
 .v109 [class*="disabled:data-[state=checked]:text-[var(--color-gray-30)]"]:disabled[data-state="checked"] {
   color: var(--color-gray-30);
 }
+.v109 .disabled\:data-\[state\=checked\]\:bg-\[var\(--color-gray-10\)\]:disabled[data-state="checked"],
 .v109 [class*="disabled:data-[state=checked]:bg-[var(--color-gray-10)]"]:disabled[data-state="checked"] {
   background-color: var(--color-gray-10);
 }
+.v109 .disabled\:data-\[state\=checked\]\:border-\[var\(--color-gray-20\)\]:disabled[data-state="checked"],
 .v109 [class*="disabled:data-[state=checked]:border-[var(--color-gray-20)]"]:disabled[data-state="checked"] {
   border-color: var(--color-gray-20);
 }
 
+.v109 .data-\[state\=checked\]\:text-white[data-state="checked"],
+.v109 .data-\[state\=checked\]\:text-white[data-state="checked"] *,
 .v109 [class*="data-[state=checked]:text-white"][data-state="checked"],
 .v109 [class*="data-[state=checked]:text-white"][data-state="checked"] *,
 .v109 [data-state="checked"].data-\[state\=checked\]\:text-white,
 .v109 [data-state="checked"].data-\[state\=checked\]\:text-white * {
   color: var(--color-white, #ffffff);
 }
+.v109 .data-\[state\=checked\]\:bg-\[var\(--color-primary-50\)\][data-state="checked"],
 .v109 [class*="data-[state=checked]:bg-[var(--color-primary-50)]"][data-state="checked"] {
   background-color: var(--color-primary-50);
 }
+.v109 .data-\[state\=checked\]\:border-\[var\(--color-primary-50\)\][data-state="checked"],
 .v109 [class*="data-[state=checked]:border-[var(--color-primary-50)]"][data-state="checked"] {
   border-color: var(--color-primary-50);
 }
 
 /* data-required="true" 상태 */
+.v109 .data-\[required\=true\]\:hover\:border-\[var\(--color-primary-50\)\][data-required="true"]:hover,
 .v109 [class*="data-[required=true]:hover:border-[var(--color-primary-50)]"][data-required="true"]:hover {
   border-color: var(--color-primary-50);
 }
+.v109 .data-\[required\=true\]\:bg-\[var\(--color-warning-10\)\][data-required="true"],
 .v109 [class*="data-[required=true]:bg-[var(--color-warning-10)]"][data-required="true"] {
   background-color: var(--color-warning-10);
 }
+.v109 .data-\[required\=true\]\:border-\[var\(--color-warning-30\)\][data-required="true"],
 .v109 [class*="data-[required=true]:border-[var(--color-warning-30)]"][data-required="true"] {
   border-color: var(--color-warning-30);
 }
 
 /* data-invalid="true" 에러 상태 */
+.v109 .data-\[invalid\=true\]\:bg-\[var\(--color-input-surface-error\)\]\![data-invalid="true"],
 .v109 [class*="data-[invalid=true]:bg-[var(--color-input-surface-error)]"][data-invalid="true"] {
-  background-color: var(--color-input-surface-error);
+  background-color: var(--color-input-surface-error) !important;
 }
+.v109 .data-\[invalid\=true\]\:border-\[var\(--color-input-border-error\)\]\![data-invalid="true"],
 .v109 [class*="data-[invalid=true]:border-[var(--color-input-border-error)]"][data-invalid="true"] {
-  border-color: var(--color-input-border-error);
+  border-color: var(--color-input-border-error) !important;
 }
+.v109 .data-\[invalid\=true\]\:border-\[0\.2rem\]\![data-invalid="true"],
 .v109 [class*="data-[invalid=true]:border-[0.2rem]"][data-invalid="true"] {
-  border-width: 0.2rem;
+  border-style: solid !important;
+  border-width: 0.2rem !important;
 }
 
 /* 추가 disabled 상태 */
+.v109 .disabled\:bg-\[var\(--color-gray-10\)\]:disabled,
 .v109 [class*="disabled:bg-[var(--color-gray-10)]"]:disabled {
   background-color: var(--color-gray-10);
 }
+.v109 .disabled\:border-\[var\(--color-gray-20\)\]:disabled,
 .v109 [class*="disabled:border-[var(--color-gray-20)]"]:disabled {
   border-color: var(--color-gray-20);
 }
 .v109 [class*="disabled:border-[var(--color-gray-15)]"]:disabled {
   border-color: var(--color-gray-15);
 }
+.v109 .disabled\:cursor-not-allowed:disabled,
 .v109 [class*="disabled:cursor-not-allowed"]:disabled {
   cursor: not-allowed;
 }
@@ -554,6 +572,16 @@
 }
 
 /* focus, hover 및 트랜지션 / 색상 유틸리티 */
+.v109 .focus-visible\:ring-offset-2:focus-visible,
+.v109 [class*="focus-visible:ring-offset-2"]:focus-visible {
+  --tw-ring-offset-width: 2px;
+  box-shadow: 0 0 0 var(--tw-ring-offset-width, 2px) var(--tw-ring-offset-color, #ffffff);
+}
+.v109 .focus-visible\:ring-2:focus-visible,
+.v109 [class*="focus-visible:ring-2"]:focus-visible {
+  outline: 2px solid var(--color-primary-50, #ff5c2e);
+  box-shadow: 0 0 0 2px var(--color-primary-50, #ff5c2e);
+}
 .v109 [class*="focus-visible:ring-1"]:focus-visible {
   outline: 0.1rem solid var(--color-gray-5);
 }
@@ -562,6 +590,10 @@
 .v109 [class*="focus:outline-none!"]:focus {
   outline: none;
   outline-style: none;
+}
+.v109 .hover\:border-\[var\(--color-primary-50\)\]:hover,
+.v109 [class*="hover:border-[var(--color-primary-50)]"]:hover {
+  border-color: var(--color-primary-50);
 }
 .v109 [class*="hover:border-[var(--color-element-primary)]"]:hover {
   border-color: var(--color-element-primary);
