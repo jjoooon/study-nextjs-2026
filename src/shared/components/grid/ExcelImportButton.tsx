@@ -14,12 +14,16 @@ import { Button } from '@uiux/Button';
 const logger = log.getLogger('ExcelImportButton');
 
 export interface ExcelImportButtonProps<T extends Record<string, unknown>> {
+  /** 엑셀 컬럼 순서와 1:1 매칭되는 필드명 목록 (헤더 유무와 무관하게 순서로 매핑) */
+  excelColName: Array<Extract<keyof T, string>>;
+  /** 데이터를 읽기 시작할 [row, column] (0-index, 기본: [0, 0] = 엑셀 A1). 헤더 행이 있다면 그 다음 행을 지정 */
+  start?: [row: number, column: number];
   /** input accept 속성 (기본: '.xlsx,.xls') */
   accept?: string;
   /** 버튼 라벨 (기본: '엑셀가져오기') */
   buttonLabel?: React.ReactNode;
   /** 임포트 완료 시 콜백 */
-  onImported?: (importedRows: T[]) => void;
+  onSuccess?: (importedRows: T[]) => void;
   /** 임포트 실패 시 콜백 (기본: 로그) */
   onError?: (error: unknown) => void;
   /** Button에 그대로 전달할 추가 props */
@@ -42,10 +46,21 @@ function normalizeBooleanStrings<T extends Record<string, unknown>>(row: T): T {
   return normalized as T;
 }
 
-function parseWorkbookToRows<T extends Record<string, unknown>>(workbook: XLSX.WorkBook): T[] {
+// 시작 셀 이후 ~ 시트의 실제 끝까지를 읽기 범위로 지정한다.
+function computeReadRange(worksheet: XLSX.WorkSheet, [startRow, startColumn]: [number, number]): XLSX.Range {
+  const sheetRange = XLSX.utils.decode_range(worksheet['!ref'] ?? 'A1');
+  return { s: { r: startRow, c: startColumn }, e: sheetRange.e };
+}
+
+function parseWorkbookToRows<T extends Record<string, unknown>>(
+  workbook: XLSX.WorkBook,
+  excelColName: Array<Extract<keyof T, string>>,
+  start: [number, number]
+): T[] {
   const firstSheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[firstSheetName];
-  return XLSX.utils.sheet_to_json<T>(worksheet).map(normalizeBooleanStrings);
+  const range = computeReadRange(worksheet, start);
+  return XLSX.utils.sheet_to_json<T>(worksheet, { header: excelColName, range }).map(normalizeBooleanStrings);
 }
 
 function defaultOnError(error: unknown) {
@@ -54,13 +69,15 @@ function defaultOnError(error: unknown) {
 
 /**
  * 엑셀 파일을 업로드해 그리드 rowData 타입(T)과 동일한 shape의 데이터로 파싱한 뒤 onImported로 전달하는 버튼.
- * 엑셀 헤더가 T의 field명과 일치하는 "완전한 데이터 파일"이라고 가정한다 (id 포함, 별도 매핑/채번 없음).
- * 업로드 API는 프로젝트 공용 엔드포인트(`excelUploadService`) 하나만 사용한다.
+ * 헤더 유무와 무관하게 `start`부터 실제 데이터로 간주하고, `excelColName` 순서대로 필드명을 매칭한다
+ * (id 포함, 별도 채번 없음). 업로드 API는 프로젝트 공용 엔드포인트(`excelUploadService`) 하나만 사용한다.
  */
 export function ExcelImportButton<T extends Record<string, unknown>>({
+  excelColName,
+  start = [0, 0],
   accept = '.xlsx,.xls',
   buttonLabel = '엑셀가져오기',
-  onImported,
+  onSuccess,
   onError = defaultOnError,
   buttonProps,
 }: ExcelImportButtonProps<T>) {
@@ -73,9 +90,9 @@ export function ExcelImportButton<T extends Record<string, unknown>>({
       const response = await uploadExcelFile({ fileName: file.name, fileContent }).unwrap();
 
       const workbook = XLSX.read(base64ToUint8Array(response.fileContent), { type: 'array' });
-      const importedRows = parseWorkbookToRows<T>(workbook);
+      const importedRows = parseWorkbookToRows<T>(workbook, excelColName, start);
 
-      onImported?.(importedRows);
+      onSuccess?.(importedRows);
       logger.info(`엑셀 임포트 완료: ${response.fileName} (${importedRows.length}행 추가)`, importedRows);
     } catch (error) {
       onError(error);

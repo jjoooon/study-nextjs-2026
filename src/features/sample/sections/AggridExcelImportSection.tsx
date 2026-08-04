@@ -218,7 +218,19 @@ export default function Section() {
             <Gcol>
               <Grow className="w-full" placement="ec">
                 <ExcelImportButton<DummyData1Type>
-                  onImported={(importedRows) => {
+                  excelColName={[
+                    'id',
+                    'packageName',
+                    'field1',
+                    'field2',
+                    'field7',
+                    'field3',
+                    'field4',
+                    'field5',
+                    'field6',
+                  ]}
+                  start={[1, 1]}
+                  onSuccess={(importedRows) => {
                     logger.debug('임포트 완료', importedRows);
                     setRowData(importedRows);
                   }}
