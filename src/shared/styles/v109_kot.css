@@ -1416,7 +1416,7 @@
 
 .v109 .cp-sonner [data-sonner-toast] {
   display: flex !important;
-  align-items: center !important;
+  align-items: start !important;
   min-width: 32.6rem !important;
   width: 100% !important;
   max-width: 50rem !important;
@@ -1429,8 +1429,8 @@
 
 .v109 .cp-sonner [data-close-button] {
   position: absolute !important;
-  top: calc(50% - 1.6rem) !important;
-  bottom: 0 !important;
+  top: 1.6rem !important;
+  /* bottom: 0 !important; */
   right: 1.5rem !important;
   left: auto !important;
   margin-top: auto !important;
