@@ -12,13 +12,9 @@ export default {
 };
 
 export const Default = () => {
-  const [open, setOpen] = React.useState(false);
   return (
     <LayoutDoc>
-      <Button className="w-auto" variant="outlined" color="gray" onClick={() => setOpen(true)}>
-        열기
-      </Button>
-      <Ltpz021 open={open} onOpenChange={(value) => setOpen(value)} />
+      <Ltpz021 />
     </LayoutDoc>
   );
 };
