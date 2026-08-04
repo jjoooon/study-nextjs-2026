@@ -25,10 +25,12 @@ export function fileToBase64(file: File, stripDataUrlPrefix = false): Promise<st
 }
 
 /**
- * base64 문자열을 Uint8Array로 변환합니다 (XLSX.read 입력용)
+ * base64 문자열을 Uint8Array로 변환합니다 (XLSX.read 입력용).
+ * data URL(`data:...;base64,`)이 그대로 들어와도 접두사를 제거하고 처리합니다.
  */
 export function base64ToUint8Array(base64: string): Uint8Array {
-  const binaryString = atob(base64);
+  const pureBase64 = base64.startsWith('data:') ? base64.slice(base64.indexOf(',') + 1) : base64;
+  const binaryString = atob(pureBase64);
   const bytes = new Uint8Array(binaryString.length);
 
   for (let i = 0; i < binaryString.length; i++) {
