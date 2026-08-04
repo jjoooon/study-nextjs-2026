@@ -431,12 +431,7 @@ const DummyData: DummyDataType[] = coverageDummyList;
 const DummyData1: DummyDataType[] = coverageDummyList1;
 const DummyData2: DummyDataType[] = coverageDummyList2;
 
-interface Ltpz021Props {
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
-
-const Ltpz021 = ({ open = true, onOpenChange }: Ltpz021Props) => {
+const Ltpz021 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   const [rowData1] = React.useState<DummyDataType[]>(DummyData);
@@ -472,7 +467,7 @@ const Ltpz021 = ({ open = true, onOpenChange }: Ltpz021Props) => {
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
@@ -540,7 +535,7 @@ const Ltpz021 = ({ open = true, onOpenChange }: Ltpz021Props) => {
                   </Grow>
                 </Grow>
                 <Gcol className="w-full h-full px-[1rem] pb-[2rem]" placement="ss" gap={0}>
-                  <div className="ag-theme-alpine w-full inner-scroll" data-rows={rowData1.length}>
+                  <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData1.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
