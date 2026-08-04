@@ -15,6 +15,8 @@ const logger = log.getLogger('ExcelExportButton');
 export interface ExcelExportButtonProps<T> {
   /** 내보내기 대상 ag-Grid 인스턴스 ref */
   gridRef: React.RefObject<AgGridReact<T> | null>;
+  /** 내보낼 엑셀 파일명 (지정 시 exportParams.fileName보다 우선) */
+  fileName?: string;
   /** ag-Grid `exportDataAsExcel`에 그대로 전달할 옵션 (fileName, sheetName, columnKeys 등) */
   exportParams?: ExcelExportParams;
   /** 버튼 라벨 (기본: '엑셀내보내기') */
@@ -38,6 +40,7 @@ function defaultOnError(error: unknown) {
  */
 export function ExcelExportButton<T>({
   gridRef,
+  fileName,
   exportParams,
   buttonLabel = '엑셀내보내기',
   onSuccess,
@@ -46,7 +49,7 @@ export function ExcelExportButton<T>({
 }: ExcelExportButtonProps<T>) {
   function exportExcel() {
     try {
-      gridRef.current?.api.exportDataAsExcel(exportParams);
+      gridRef.current?.api.exportDataAsExcel(fileName ? { ...exportParams, fileName } : exportParams);
       onSuccess?.();
     } catch (error) {
       onError(error);

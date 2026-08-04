@@ -114,6 +114,24 @@ const DummyData1: DummyData1Type[] = [
   })),
 ];
 
+// 헤더명 커스텀
+const HEADER_NAME_MAP: Record<string, string> = {
+  field1: '상품코드1',
+  field2: '상품명2',
+  packageName: '종명',
+  field3: '판매건수',
+  field4: '판매순위',
+  field5: '순위조정',
+  field6: '추천제외',
+};
+
+// 헤더 width 커스텀
+const COLUMN_WIDTH_MAP: Record<string, number> = {
+  field1: 100,
+  field2: 400,
+  packageName: 200,
+};
+
 export default function Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
@@ -235,7 +253,38 @@ export default function Section() {
                     setRowData(importedRows);
                   }}
                 />
-                <ExcelExportButton<DummyData1Type> gridRef={gridRef} />
+                <ExcelExportButton<DummyData1Type>
+                  gridRef={gridRef}
+                  fileName={'hello.xlsx'}
+                  exportParams={{
+                    // 엑셀에 노출할 필드명 커스텀
+                    // columnKeys: ['field1'],
+                    // 헤더명 커스텀
+                    processHeaderCallback: (params) =>
+                      HEADER_NAME_MAP[params.column.getColId()] ??
+                      params.api.getDisplayNameForColumn(params.column, null),
+                    // 컬럼 width
+                    columnWidth: (params) => {
+                      const colId = params.column?.getColId() ?? '';
+                      return COLUMN_WIDTH_MAP[colId] ?? 100; // 매핑에 없으면 기본값
+                    },
+                    // 상단에 오늘 날짜 한 줄 추가 (그리드 컬럼 수만큼 병합 + 가운데 정렬)
+                    prependContent: [
+                      {
+                        cells: [
+                          {
+                            data: {
+                              value: new Date().toLocaleDateString('ko-KR'),
+                              type: 'String',
+                            },
+                            mergeAcross: columnDefs2.length - 1,
+                            styleId: 'text-center',
+                          },
+                        ],
+                      },
+                    ],
+                  }}
+                />
               </Grow>
               <div className="ag-theme-alpine">
                 {/* 2026-06-04 suppressClickEdit 삭제 */}
@@ -268,6 +317,20 @@ export default function Section() {
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                   tooltipHideDelay={3000}
+                  excelStyles={[
+                    {
+                      id: 'text-right',
+                      alignment: {
+                        horizontal: 'Right',
+                      },
+                    },
+                    {
+                      id: 'text-center',
+                      alignment: {
+                        horizontal: 'Center',
+                      },
+                    },
+                  ]}
                 />
               </div>
             </Gcol>
