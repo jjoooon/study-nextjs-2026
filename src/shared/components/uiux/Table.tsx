@@ -37,7 +37,7 @@ function Table({ className, variant = 'default', ...props }: TableProps) {
   return (
     <TableVariantContext.Provider value={variant}>
       <div data-slot="table-container" className={cn(variantClass, className)}>
-        <table data-slot="table" className="w-full" {...props} />
+        <table data-slot="table" className="w-full table-fixed border-separate border-spacing-0" {...props} />
       </div>
     </TableVariantContext.Provider>
   );
@@ -54,7 +54,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
           ? '[&_tr]:bg-[var(--color-gray-5)]'
           : variant === 'message'
             ? '[&_tr]:bg-[#F4F4F4] [&_th]:h-18'
-            : '[&_tr]:bg-[#F4F4F4] [&_tr]:border-none [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
+            : '[&_tr]:bg-[#F4F4F4]  [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
         className
       )}
       {...props}
@@ -111,7 +111,7 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
       data-slot="table-head"
       className={cn(
         variant === 'default'
-          ? 'border text-[1.3rem] bg-[var(--color-gray-5)] h-[3rem] py-[.2rem] px-[.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0'
+          ? 'border text-[1.3rem] bg-[var(--color-gray-5)] py-[.6rem] px-[.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 [&+*]:border-l-0 border-t-0'
           : variant === 'message'
             ? 'bg-[#F4F4F4] border-b border-r border-[#E5E5E5] last:border-r-0 font-bold px-[1rem] py-[1.2rem] text-center text-[1.3rem]'
             : 'text-foreground h-[1rem] px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
@@ -130,7 +130,7 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
       data-slot="table-cell"
       className={cn(
         variant === 'default'
-          ? 'border text-[1.3rem] py-[0.2rem] px-[0.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 h-[3.8rem]'
+          ? 'border text-[1.3rem] py-[0.2rem] px-[0.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 h-[3.8rem] [&+*]:border-l-0 border-t-0'
           : variant === 'message'
             ? 'border-b border-[#E5E5E5] px-[1rem] py-[0.8rem] text-center text-[1.3rem]'
             : 'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
