@@ -39,6 +39,7 @@ const DEFAULT_DIALOG_CONTENT_Z_INDEX = 51;
 const DIALOG_Z_INDEX_STEP = 2;
 const DIALOG_VIEWPORT_GAP = '2.4rem';
 const DIALOG_DEFAULT_MAX_HEIGHT = `calc(100vh - ${DIALOG_VIEWPORT_GAP})`;
+const DIALOG_DEFAULT_MAX_WIDTH = `calc(100vw - ${DIALOG_VIEWPORT_GAP})`;
 const DIALOG_FULL_WIDTH = `calc(100vw - 2rem)`;
 const DIALOG_FULL_HEIGHT = `calc(100vh - 2rem)`;
 const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
@@ -47,7 +48,7 @@ const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
   md: '56rem',
   ml: '62rem',
   lg: '76rem',
-  xl: '96rem',
+  xl: '960px',
   '2xl': '118rem',
 };
 
@@ -60,13 +61,66 @@ const isDialogSizeConfig = (size?: DialogSize): size is DialogSizeConfig => {
   return typeof size === 'object' && size !== null;
 };
 
-const resolveDialogSize = (size?: DialogSize) => {
+const parseCssSizeToPx = (value?: DialogSizeValue): number | undefined => {
+  if (typeof value === 'number') return value;
+  if (!value || typeof value !== 'string') return undefined;
+  const trimmed = value.trim();
+  if (trimmed.endsWith('rem')) {
+    const num = parseFloat(trimmed);
+    return isNaN(num) ? undefined : num * 10;
+  }
+  if (trimmed.endsWith('px')) {
+    const num = parseFloat(trimmed);
+    return isNaN(num) ? undefined : num;
+  }
+  return undefined;
+};
+
+const getTargetWidthPx = (size?: DialogSize): number | undefined => {
+  if (size === 'full') return undefined;
+  if (typeof size === 'string' && size in DIALOG_PRESET_WIDTH) {
+    return parseCssSizeToPx(DIALOG_PRESET_WIDTH[size as Exclude<DialogSizePreset, 'full'>]);
+  }
+  if (isDialogSizeConfig(size)) {
+    return parseCssSizeToPx(size.width) ?? parseCssSizeToPx(size.maxWidth);
+  }
+  return undefined;
+};
+
+const getTargetHeightPx = (size?: DialogSize): number | undefined => {
+  if (size === 'full') return undefined;
+  if (isDialogSizeConfig(size)) {
+    return parseCssSizeToPx(size.height) ?? parseCssSizeToPx(size.maxHeight);
+  }
+  return undefined;
+};
+
+const resolveDialogSize = (size?: DialogSize, viewportSize?: { width: number; height: number } | null) => {
   if (size === 'full') {
     return {
       width: DIALOG_FULL_WIDTH,
       height: DIALOG_FULL_HEIGHT,
       maxHeight: DIALOG_FULL_HEIGHT,
+      isFullSize: true,
     };
+  }
+
+  // 뷰포트 크기가 측정되었을 때, 팝업 규격(가로 또는 세로)이 뷰포트 크기 이상이면 풀사이즈 팝업으로 반환
+  if (viewportSize) {
+    const targetWidth = getTargetWidthPx(size);
+    const targetHeight = getTargetHeightPx(size);
+
+    const isOverWidth = targetWidth !== undefined && targetWidth >= viewportSize.width;
+    const isOverHeight = targetHeight !== undefined && targetHeight >= viewportSize.height;
+
+    if (isOverWidth || isOverHeight) {
+      return {
+        width: DIALOG_FULL_WIDTH,
+        height: DIALOG_FULL_HEIGHT,
+        maxHeight: DIALOG_FULL_HEIGHT,
+        isFullSize: true,
+      };
+    }
   }
 
   if (
@@ -80,7 +134,9 @@ const resolveDialogSize = (size?: DialogSize) => {
   ) {
     return {
       width: DIALOG_PRESET_WIDTH[size],
+      maxWidth: DIALOG_DEFAULT_MAX_WIDTH,
       maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
+      isFullSize: false,
     };
   }
 
@@ -91,13 +147,16 @@ const resolveDialogSize = (size?: DialogSize) => {
       height: toCssSize(size.height),
       minWidth: toCssSize(size.minWidth),
       minHeight: toCssSize(size.minHeight),
-      maxWidth: toCssSize(size.maxWidth),
+      maxWidth: toCssSize(size.maxWidth) ?? DIALOG_DEFAULT_MAX_WIDTH,
       maxHeight: toCssSize(size.maxHeight) ?? (hasHeight ? undefined : DIALOG_DEFAULT_MAX_HEIGHT),
+      isFullSize: false,
     };
   }
 
   return {
+    maxWidth: DIALOG_DEFAULT_MAX_WIDTH,
     maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
+    isFullSize: false,
   };
 };
 
@@ -482,7 +541,21 @@ function DialogContent({
     !isMinimized &&
     (showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId)));
   const disableOverlayMotion = openCount > 1;
-  const isFullSize = size === 'full';
+
+  const [viewportSize, setViewportSize] = React.useState<{ width: number; height: number } | null>(null);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateViewport = () => {
+      setViewportSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+    updateViewport();
+    window.addEventListener('resize', updateViewport);
+    return () => window.removeEventListener('resize', updateViewport);
+  }, []);
+
+  const resolvedSize = React.useMemo(() => resolveDialogSize(size, viewportSize), [size, viewportSize]);
+  const isFullSize = size === 'full' || resolvedSize.isFullSize;
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
   const [isInitialized, setIsInitialized] = React.useState(false);
   const [resizedSize, setResizedSize] = React.useState({ width: 0, height: 0 });
@@ -554,8 +627,6 @@ function DialogContent({
     }
   }
 
-  const resolvedSize = React.useMemo(() => resolveDialogSize(size), [size]);
-
   const contentStyle = React.useMemo<React.CSSProperties>(() => {
     let transformValue = `translate(-50%, -50%)`;
     if (isInitialized || isMinimized) {
@@ -566,12 +637,12 @@ function DialogContent({
 
     return {
       ...(props.style ?? {}),
-      left: isInitialized ? '0px' : '50%',
-      top: isInitialized ? '0px' : '50%',
-      transform: transformValue,
+      left: isFullSize ? '50%' : isInitialized ? '0px' : '50%',
+      top: isFullSize ? '50%' : isInitialized ? '0px' : '50%',
+      transform: isFullSize ? `translate(-50%, -50%)` : transformValue,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
-      width: resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
-      height: resizedSize.height > 0 ? `${resizedSize.height}px` : resolvedSize.height,
+      width: resizedSize.width > 0 && !isFullSize ? `${resizedSize.width}px` : resolvedSize.width,
+      height: resizedSize.height > 0 && !isFullSize ? `${resizedSize.height}px` : resolvedSize.height,
       minWidth: resolvedSize.minWidth,
       minHeight: resolvedSize.minHeight,
       maxWidth: resolvedSize.maxWidth,
@@ -590,6 +661,7 @@ function DialogContent({
     isInitialized,
     isMinimized,
     defaultPosition,
+    isFullSize,
   ]);
 
   // 1. 상태 변수에 초기값을 저장할 변수 추가 (isResizing과 함께 관리)

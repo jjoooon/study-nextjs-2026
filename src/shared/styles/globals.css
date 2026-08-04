@@ -547,7 +547,7 @@
     overflow-x: auto;
     height: 100%;
   }
-  [data-layout="doc"] {min-width: 109.5rem;}
+  [data-layout="doc"] {min-width: 119.5rem;}
   .a11y-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
