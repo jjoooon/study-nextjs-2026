@@ -7,17 +7,17 @@
  */
 
 /**
- * File을 base64 문자열로 변환합니다 (data URL 접두사는 제거하고 반환)
+ * File을 base64 문자열로 변환합니다.
+ * @param stripDataUrlPrefix true면 data URL 접두사(`data:...;base64,`)를 제거하고 순수 base64만 반환 (기본: false, 전체 텍스트 반환)
  */
-export function fileToBase64(file: File): Promise<string> {
+export function fileToBase64(file: File, stripDataUrlPrefix = false): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
     reader.onerror = () => reject(new Error('파일을 읽는 데 실패했습니다'));
     reader.onload = () => {
       const result = reader.result as string;
-      const base64 = result.slice(result.indexOf(',') + 1);
-      resolve(base64);
+      resolve(stripDataUrlPrefix ? result.slice(result.indexOf(',') + 1) : result);
     };
 
     reader.readAsDataURL(file);

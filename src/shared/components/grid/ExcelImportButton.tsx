@@ -86,7 +86,7 @@ export function ExcelImportButton<T extends Record<string, unknown>>({
 
   async function importExcel(file: File) {
     try {
-      const fileContent = await fileToBase64(file);
+      const fileContent = await fileToBase64(file, true);
       const response = await uploadExcelFile({ fileName: file.name, fileContent }).unwrap();
 
       const workbook = XLSX.read(base64ToUint8Array(response.fileContent), { type: 'array' });
