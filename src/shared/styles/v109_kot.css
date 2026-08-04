@@ -106,7 +106,7 @@
 .v109 .ag-root-wrapper-body,
 .v109 .ag-root {
   height: 100%;
-  min-height: 0;
+  /* min-height: 0; */
 }
 
 .v109 .ag-body-viewport {
