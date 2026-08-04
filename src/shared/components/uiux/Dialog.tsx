@@ -228,6 +228,7 @@ type DialogSizeContextValue = {
   initialSectionWidth?: string;
   isFullSize?: boolean;
   isAutoFullSize?: boolean;
+  isAutoFullWidth?: boolean;
 };
 
 const DialogSizeContext = React.createContext<DialogSizeContextValue>({
@@ -235,6 +236,7 @@ const DialogSizeContext = React.createContext<DialogSizeContextValue>({
   initialSectionWidth: undefined,
   isFullSize: false,
   isAutoFullSize: false,
+  isAutoFullWidth: false,
 });
 
 interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> {
