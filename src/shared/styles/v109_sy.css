@@ -174,11 +174,11 @@
 /* RadioGroupItem data-[state=checked] & hover Chrome 109 호환 (.v109 전용) */
 .v109 .cp-radio button[data-state='checked'],
 .v109 button[role="radio"][data-state='checked'] {
-  background-color: var(--color-primary-5) !important;
-  color: var(--color-primary-50) !important;
-  border-color: var(--color-primary-50) !important;
-  border-style: solid !important;
-  box-shadow: 0 0.1rem 0.1rem 0 rgba(255, 92, 46, 0.19) !important;
+  background-color: var(--color-primary-5);
+  color: var(--color-primary-50);
+  border-color: var(--color-primary-50);
+  border-style: solid;
+  box-shadow: 0 0.1rem 0.1rem 0 rgba(255, 92, 46, 0.19);
 }
 
 .v109 [class*="data-[state=checked]:bg-[#414141]"][data-state='checked'] {

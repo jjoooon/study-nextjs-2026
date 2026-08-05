@@ -1840,3 +1840,49 @@
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.08) !important;
 }
 
+/* Chrome 109 전용 [&_tr]:bg-[var(--color-gray-5)] Tailwind 임의 후손 선택자 호환 보완 */
+.v109 .\[\&\_tr\]\:bg-\[var\(--color-gray-5\)\] tr,
+.v109 [class*="[&_tr]:bg-[var(--color-gray-5)]"] tr {
+  background-color: var(--color-gray-5) !important;
+}
+
+/* Chrome 109 전용 !border-t-0 상단 검은선 제거 보정 */
+.v109 .\!border-t-0,
+.v109 [class*="!border-t-0"] {
+  border-top-width: 0 !important;
+  border-top-style: none !important;
+}
+
+/* Chrome 109 전용 data-[state=checked]:border-[var(--color-border-gray-light)] 호환 보완 */
+.v109 .data-\[state\=checked\]\:border-\[var\(--color-border-gray-light\)\][data-state="checked"],
+.v109 [class*="data-[state=checked]:border-[var(--color-border-gray-light)]"][data-state="checked"] {
+  border-color: var(--color-border-gray-light) !important;
+  border-style: solid !important;
+}
+
+/* !align-start 유틸리티 클래스 (align-items: flex-start !important) */
+.v109 .\!align-start,
+[class*="!align-start"] {
+  align-items: flex-start !important;
+}
+
+/* Chrome 109 전용 grid-cols-[1fr_auto_1fr] 상단 정렬(align-items: flex-start) 보정 */
+.v109 .grid-cols-\[1fr_auto_1fr\],
+.v109 [class*="grid-cols-[1fr_auto_1fr]"] {
+  align-items: flex-start !important;
+}
+
+/* Ltpz076 적용대상 특화 그리드 높이 (8행 = 24rem) 및 data-row='8' Chrome 109 호환 보정 */
+.ltpz076-target-grid.inner-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.ltpz076-target-grid.inner-scroll .ag-body-viewport,
+.v109 .ltpz076-target-grid .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ltpz076-target-grid .ag-body.ag-layout-normal,
+.v109 .ltpz076-target-grid .ag-body-viewport.ag-layout-normal,
+.v109 .ltpz076-target-grid .ag-body-viewport,
+.v109 .ag-theme-alpine.inner-scroll[data-row='8'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='8'] .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='8'] .ag-body-viewport {
+  height: 24rem !important;
+  min-height: 24rem !important;
+  max-height: 24rem !important;
+}

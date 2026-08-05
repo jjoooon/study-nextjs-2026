@@ -270,7 +270,7 @@ const Ltpz022 = () => {
             contentClass="relative"
           >
             <div className="absolute h-full overflow-y-auto">
-              <Table variant="default" className="border-0">
+              <Table variant="default" className="border-0 !border-t-0">
                 <colgroup>
                   <col style={{ width: '12rem' }} />
                   <col style={{ width: 'auto' }} />
