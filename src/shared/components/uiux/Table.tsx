@@ -37,7 +37,7 @@ function Table({ className, variant = 'default', ...props }: TableProps) {
   return (
     <TableVariantContext.Provider value={variant}>
       <div data-slot="table-container" className={cn(variantClass, className)}>
-        <table data-slot="table" className="w-full cp-thcontext" {...props} />
+        <table data-slot="table" className="w-full cp-thcontext border-separate border-spacing-0" {...props} />
       </div>
     </TableVariantContext.Provider>
   );
@@ -119,7 +119,7 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
       data-variant={variant}
       className={cn(
         variant === 'default'
-          ? 'border text-[1.3rem] bg-[var(--color-gray-5)] h-[3rem] py-[.2rem] px-[.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0'
+          ? 'border text-[1.3rem] bg-[var(--color-gray-5)] py-[.6rem] px-[.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 [&+*]:border-l-0 border-t-0'
           : variant === 'message'
             ? 'bg-[#F4F4F4] border-b border-r border-[#E5E5E5] last:border-r-0 font-bold px-[1rem] py-[1.2rem] text-center text-[1.3rem]'
             : 'bg-transparent border-b border-[#E5E5E5] text-foreground text-[1.3rem] font-normal py-[.6rem] px-[.6rem] text-left align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
@@ -139,7 +139,7 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
       data-variant={variant}
       className={cn(
         variant === 'default'
-          ? 'border text-[1.3rem] py-[0.2rem] px-[0.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 h-[3.8rem]'
+          ? 'border text-[1.3rem] py-[0.2rem] px-[0.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 h-[3.8rem] [&+*]:border-l-0 border-t-0'
           : variant === 'message'
             ? 'border-b border-[#E5E5E5] px-[1rem] py-[0.8rem] text-center text-[1.3rem]'
             : 'border-b border-[#E5E5E5] bg-transparent text-[1.3rem] font-normal py-[.6rem] px-[.6rem] text-left align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',

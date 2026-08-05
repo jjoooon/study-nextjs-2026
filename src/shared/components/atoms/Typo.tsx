@@ -132,18 +132,23 @@ interface TypoProps extends VariantProps<typeof typoVariants> {
 export const Typo = ({ tag = 'span', variant, weight, color, children, className, icon, style }: TypoProps) => {
   /** 선택된 icon 토큰에 대응하는 실제 아이콘 노드 */
   let IconComponent: ReactNode = null;
+  const iconSize = variant === 'heading-lg' ? 20 : 16;
 
   if (icon === 'info')
     IconComponent = (
       <InfoBoxInfoIcon
         className="inline-flex -translate-y-[0.1rem] mr-1"
         color="var(--color-information-50)"
-        size={16}
+        size={iconSize}
       />
     );
   if (icon === 'warning')
     IconComponent = (
-      <InfoBoxWarningIcon className="inline-flex -translate-y-[0.1rem] mr-1" color="var(--color-danger-50)" size={16} />
+      <InfoBoxWarningIcon
+        className="inline-flex -translate-y-[0.1rem] mr-1"
+        color="var(--color-danger-50)"
+        size={iconSize}
+      />
     );
   if (icon === 'detail')
     IconComponent = (

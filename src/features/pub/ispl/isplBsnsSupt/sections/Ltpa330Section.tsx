@@ -489,6 +489,7 @@ export default function Ltpa330Section() {
         field: 'field03',
         cellClass: 'text-left',
         flex: 10,
+        minWidth: attributeColumnWidth(300),
         tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field03' }),
       },
       {

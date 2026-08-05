@@ -18,7 +18,7 @@ interface LayoutProps {
 // 문서 전체 래퍼: 상단(head) + 본문(body) 2행 구조
 export const LayoutDoc = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="doc" className={cn('relative grid grid-rows-[auto_1fr] h-screen bg-[#fff]', className)}>
+    <div data-layout="doc" className={cn('relative grid grid-rows-[auto_1fr] h-full bg-[#fff]', className)}>
       {children}
     </div>
   );
@@ -29,7 +29,7 @@ export const LayoutHead = ({ children, className }: LayoutProps) => {
   return (
     <header
       data-layout="head"
-      className={cn('relative flex justify-between items-center flex-col px-[10px]', className)}
+      className={cn('relative flex justify-between items-center flex-col px-[10px] ', className)}
     >
       {children}
     </header>
@@ -41,7 +41,7 @@ export const LayoutBody = ({ children, className, ...rest }: LayoutProps) => {
   return (
     <div
       data-layout="body"
-      className={cn('relative grid grid-cols-[auto_1fr] pr-[1rem] pt-[.4rem] gap-3 overflow-auto', className)}
+      className={cn('relative grid grid-cols-[auto_1fr] pr-[1rem] pt-[.4rem] gap-3', className)}
       {...rest}
     >
       {children}
@@ -62,10 +62,7 @@ export const LayoutProcess = ({ children, className }: LayoutProps) => {
   // 좌측 프로세스(스텝바) 영역
   // - 최소 너비를 유지해 단계 UI가 줄바꿈되지 않도록 한다.
   return (
-    <div
-      data-layout="process"
-      className={cn('relative grid grid-cols-[1fr] min-w-[4rem] sticky left-0 z-10', className)}
-    >
+    <div data-layout="process" className={cn('relative grid grid-cols-[1fr] min-w-[4rem]', className)}>
       {children}
     </div>
   );

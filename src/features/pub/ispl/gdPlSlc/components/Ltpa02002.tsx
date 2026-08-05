@@ -794,7 +794,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       ) : (
         <>
           <Grid
-            className="w-[calc(100vw + 2rem)] h-full grid-rows-[1fr] grid-cols-[2fr_minmax(48rem,1fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
+            className="w-[calc(100vw + 2rem)] h-full grid-rows-[1fr] grid-cols-[minmax(64rem,2fr)_minmax(48rem,1fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
             gap={3}
           >
             {/* 리스트 */}

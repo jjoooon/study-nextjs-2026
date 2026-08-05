@@ -529,6 +529,11 @@
 
 /* 4. 기본 스타일 (HTML 태그 초기화) */
 @layer base {
+  html,
+  body {
+    height: 100%;
+  }
+
   html {
     font-size: 10px;
     /* letter-spacing: -0.13rem; */
@@ -537,8 +542,15 @@
   body {
     /* overflow:hidden; */
     font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
+    background-color: #fff;
   }
-
+  #storybook-root{
+    width: 1195px;
+    border-right:1px solid #ccc;
+    overflow-x: auto;
+    height: 100%;
+  }
+  [data-layout="doc"] {min-width: 119.5rem;}
   .a11y-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -685,6 +697,7 @@
     align-items: center;
     justify-content: center;
     height: 100% !important;
+   font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
   }
 
   .filepond--list-scroller {

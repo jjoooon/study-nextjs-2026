@@ -988,7 +988,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   padding-right: 0.08rem !important;
 }
 
-.ag-theme-alpine.inner-scroll .ag-root-wrapper-body {
+.ag-theme-alpine.inner-scroll .ag-root-wrapper-body{
   height: auto !important;
 }
 /* .ag-theme-alpine.inner-scroll:not([data-row='0']) .ag-root-wrapper-body .ag-body.ag-layout-normal {

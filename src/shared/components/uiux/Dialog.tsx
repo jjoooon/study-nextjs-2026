@@ -60,13 +60,108 @@ const isDialogSizeConfig = (size?: DialogSize): size is DialogSizeConfig => {
   return typeof size === 'object' && size !== null;
 };
 
-const resolveDialogSize = (size?: DialogSize) => {
+const getRootFontSize = (): number => {
+  if (typeof window === 'undefined') return 10;
+  try {
+    const rootFontSize = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
+    return isNaN(rootFontSize) || rootFontSize <= 0 ? 10 : rootFontSize;
+  } catch {
+    return 10;
+  }
+};
+
+const parseCssSizeToPx = (value?: DialogSizeValue): number | undefined => {
+  if (typeof value === 'number') return value;
+  if (!value || typeof value !== 'string') return undefined;
+  const trimmed = value.trim();
+  if (trimmed.endsWith('rem')) {
+    const num = parseFloat(trimmed);
+    return isNaN(num) ? undefined : num * getRootFontSize();
+  }
+  if (trimmed.endsWith('px')) {
+    const num = parseFloat(trimmed);
+    return isNaN(num) ? undefined : num;
+  }
+  return undefined;
+};
+
+const parseWidthFromClassName = (className?: string): number | undefined => {
+  if (!className) return undefined;
+  const match = className.match(/\b(?:w|max-w)-\[(.*?)\]/);
+  if (match && match[1]) {
+    return parseCssSizeToPx(match[1]);
+  }
+  return undefined;
+};
+
+const parseWidthStrFromClassName = (className?: string): string | undefined => {
+  if (!className) return undefined;
+  const match = className.match(/\b(?:w|max-w)-\[(.*?)\]/);
+  if (match && match[1]) {
+    return match[1];
+  }
+  return undefined;
+};
+
+const getTargetWidthPx = (size?: DialogSize, className?: string): number | undefined => {
+  if (size === 'full') return undefined;
+  if (typeof size === 'string' && size in DIALOG_PRESET_WIDTH) {
+    return parseCssSizeToPx(DIALOG_PRESET_WIDTH[size as Exclude<DialogSizePreset, 'full'>]);
+  }
+  if (isDialogSizeConfig(size)) {
+    return parseCssSizeToPx(size.width) ?? parseCssSizeToPx(size.maxWidth);
+  }
+  const classWidth = parseWidthFromClassName(className);
+  if (classWidth !== undefined) {
+    return classWidth;
+  }
+  // size 및 className 미지정 시 기본 2xl (118rem = 1180px) 사용
+  return parseCssSizeToPx(DIALOG_PRESET_WIDTH['2xl']);
+};
+
+const getInitialSectionWidth = (size?: DialogSize, className?: string): string => {
+  if (size === 'full') {
+    return 'calc(100vw - 6.8rem)';
+  }
+  if (typeof size === 'string' && size in DIALOG_PRESET_WIDTH) {
+    const presetW = DIALOG_PRESET_WIDTH[size as Exclude<DialogSizePreset, 'full'>];
+    return `calc(${presetW} - 4.8rem)`;
+  }
+  if (isDialogSizeConfig(size) && size.width !== undefined) {
+    const cssW = toCssSize(size.width);
+    return `calc(${cssW} - 4.8rem)`;
+  }
+  const classW = parseWidthStrFromClassName(className);
+  if (classW) {
+    return `calc(${classW} - 4.8rem)`;
+  }
+  return `calc(${DIALOG_PRESET_WIDTH['2xl']} - 4.8rem)`;
+};
+
+const resolveDialogSize = (size?: DialogSize, viewportWidth?: number | null, className?: string) => {
   if (size === 'full') {
     return {
       width: DIALOG_FULL_WIDTH,
       height: DIALOG_FULL_HEIGHT,
       maxHeight: DIALOG_FULL_HEIGHT,
+      maxWidth: DIALOG_FULL_WIDTH,
+      isFullSize: true,
+      isFullWidth: true,
     };
+  }
+
+  // 모달 목표 가로 크기가 브라우저 뷰포트 크기 - 20px 이상이면 가로만 풀사이즈(width: DIALOG_FULL_WIDTH)로 반환 (세로는 제외)
+  if (viewportWidth) {
+    const targetWidth = getTargetWidthPx(size, className);
+    if (targetWidth !== undefined && targetWidth >= viewportWidth - 20) {
+      return {
+        width: DIALOG_FULL_WIDTH,
+        maxWidth: DIALOG_FULL_WIDTH,
+        maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
+        isFullSize: false,
+        isFullWidth: true,
+      };
+    }
   }
 
   if (
@@ -80,7 +175,10 @@ const resolveDialogSize = (size?: DialogSize) => {
   ) {
     return {
       width: DIALOG_PRESET_WIDTH[size],
+      maxWidth: DIALOG_FULL_WIDTH,
       maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
+      isFullSize: false,
+      isFullWidth: false,
     };
   }
 
@@ -91,13 +189,16 @@ const resolveDialogSize = (size?: DialogSize) => {
       height: toCssSize(size.height),
       minWidth: toCssSize(size.minWidth),
       minHeight: toCssSize(size.minHeight),
-      maxWidth: toCssSize(size.maxWidth),
+      maxWidth: toCssSize(size.maxWidth) ?? DIALOG_FULL_WIDTH,
       maxHeight: toCssSize(size.maxHeight) ?? (hasHeight ? undefined : DIALOG_DEFAULT_MAX_HEIGHT),
+      isFullSize: false,
     };
   }
 
   return {
+    maxWidth: DIALOG_FULL_WIDTH,
     maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
+    isFullSize: false,
   };
 };
 
@@ -109,6 +210,7 @@ type DialogContextValue = {
   isMinimized: boolean;
   setMinimized: React.Dispatch<React.SetStateAction<boolean>>;
   modal: boolean;
+  setModalOverride?: (override: boolean | null) => void;
   open: boolean;
 };
 
@@ -119,6 +221,22 @@ const DialogDepthContext = React.createContext<DialogContextValue>({
   setMinimized: () => {},
   modal: true,
   open: false,
+});
+
+type DialogSizeContextValue = {
+  size?: DialogSize;
+  initialSectionWidth?: string;
+  isFullSize?: boolean;
+  isAutoFullSize?: boolean;
+  isAutoFullWidth?: boolean;
+};
+
+const DialogSizeContext = React.createContext<DialogSizeContextValue>({
+  size: undefined,
+  initialSectionWidth: undefined,
+  isFullSize: false,
+  isAutoFullSize: false,
+  isAutoFullWidth: false,
 });
 
 interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> {
@@ -170,6 +288,7 @@ function Dialog({
   const parentDialogContext = React.useContext(DialogDepthContext);
   const newDepth = parentDialogContext.depth + 1;
   const dialogId = React.useId();
+  const [modalOverride, setModalOverride] = React.useState<boolean | null>(null);
 
   // controlled / uncontrolled minimized 상태 모두 추적
   const [minimizedState, setMinimizedState] = React.useState(defaultMinimized ?? false);
@@ -214,6 +333,8 @@ function Dialog({
     return () => unregisterDialog(dialogId);
   }, [isOpen, dialogId, newDepth, isMinimized]);
 
+  const effectiveModal = isMinimized || modalOverride === false ? false : (modalOverride ?? modal);
+
   return (
     <DialogDepthContext.Provider
       value={{
@@ -222,6 +343,7 @@ function Dialog({
         isMinimized,
         setMinimized: handleMinimizeChange,
         modal,
+        setModalOverride,
         open: isOpen,
       }}
     >
@@ -230,7 +352,7 @@ function Dialog({
         open={isOpen}
         defaultOpen={defaultOpen}
         onOpenChange={handleOpenChange}
-        modal={isMinimized ? false : modal}
+        modal={effectiveModal}
         {...props}
       />
     </DialogDepthContext.Provider>
@@ -289,7 +411,7 @@ interface DialogOverlayProps extends React.ComponentPropsWithoutRef<typeof Dialo
    */
   disableMotion?: boolean;
   /**
-   * 오버레이의 배경 타입 (어두운 배경 / 투명 배경)
+   * 오버레이 배경의 딤 타입 (어두운 배경 / 투명 배경)
    * @default 'dark'
    */
   dim?: 'dark' | 'transparent';
@@ -362,10 +484,10 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
   };
   minimized?: boolean;
   /**
-   * 딤 오버레이 적용 여부 및 방식 설정
-   * - 'dark': 어두운 반투명 오버레이
-   * - 'transparent': 투명 오버레이
-   * - 'none': 오버레이 없음
+   * 백드롭 딤(Dim) 오버레이 모드 설정
+   * - 'dark': 어두운 반투명 백드롭 오버레이 표시 (기본값)
+   * - 'transparent': 클릭 차단용 투명 오버레이 표시
+   * - 'none': 백드롭 오버레이를 전혀 렌더링하지 않음
    * @default 'dark'
    */
   dim?: 'dark' | 'transparent' | 'none';
@@ -393,10 +515,30 @@ function DialogContent({
   dim = 'dark',
   ...props
 }: DialogContentProps) {
-  const { dialogId, isMinimized, setMinimized, open } = React.useContext(DialogDepthContext);
+  const { dialogId, isMinimized, setMinimized, open, setModalOverride } = React.useContext(DialogDepthContext);
 
   // iframe 환경 검사 (SSR Hydration mismatch 방지)
   const [isIframeState, setIsIframeState] = React.useState(false);
+
+  // dim === 'none' 일 때는 Radix 비모달(modal=false) 전환 및 바닥 클릭 가능 처리
+  useIsomorphicLayoutEffect(() => {
+    if (dim === 'none') {
+      setModalOverride?.(false);
+      if (typeof document !== 'undefined') {
+        const originalPointerEvents = document.body.style.pointerEvents;
+        document.body.style.pointerEvents = 'auto';
+        return () => {
+          setModalOverride?.(null);
+          document.body.style.pointerEvents = originalPointerEvents;
+        };
+      }
+      return () => {
+        setModalOverride?.(null);
+      };
+    } else {
+      setModalOverride?.(null);
+    }
+  }, [dim, setModalOverride]);
 
   useIsomorphicLayoutEffect(() => {
     const checkIframe = () => {
@@ -435,39 +577,6 @@ function DialogContent({
     [dialogId]
   );
 
-  // dim === 'none' 일 때 body의 pointer-events: none 방지
-  React.useEffect(() => {
-    if (open && dim === 'none') {
-      const target = document.body;
-
-      const disablePointerNone = () => {
-        if (target.style.pointerEvents === 'none') {
-          target.style.pointerEvents = 'auto';
-        }
-      };
-
-      // 초기 설정
-      disablePointerNone();
-
-      // body style 속성 모니터링하여 pointer-events: none 방지
-      const observer = new MutationObserver(() => {
-        disablePointerNone();
-      });
-
-      observer.observe(target, {
-        attributes: true,
-        attributeFilter: ['style'],
-      });
-
-      return () => {
-        observer.disconnect();
-        if (target.style.pointerEvents === 'auto') {
-          target.style.pointerEvents = '';
-        }
-      };
-    }
-  }, [open, dim]);
-
   // 레이어 기반 z-index: 열린 순서대로 51, 53, 55 ...
   const autoContentZIndex = DEFAULT_DIALOG_CONTENT_Z_INDEX + (Math.max(dialogLayerIndex, 1) - 1) * DIALOG_Z_INDEX_STEP;
 
@@ -476,13 +585,47 @@ function DialogContent({
 
   const overlayZIndex = parallelZIndex - 1;
 
-  // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시 (현재 팝업이 최소화된 경우에는 무조건 암막 숨김, dim이 'none'인 경우에는 오버레이 미표시)
+  // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시 (현재 팝업이 최소화된 경우에는 무조건 암막 숨김)
   const resolvedShowOverlay =
-    dim !== 'none' &&
-    !isMinimized &&
-    (showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId)));
+    !isMinimized && (showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId)));
   const disableOverlayMotion = openCount > 1;
-  const isFullSize = size === 'full';
+
+  const [viewportWidth, setViewportWidth] = React.useState<number | null>(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth;
+    }
+    return null;
+  });
+
+  const [isContentOverflowing, setIsContentOverflowing] = React.useState(false);
+
+  useIsomorphicLayoutEffect(() => {
+    if (typeof window === 'undefined') return;
+    const checkOverflow = () => {
+      setViewportWidth(window.innerWidth);
+      if (contentRef.current) {
+        const rectWidth = contentRef.current.getBoundingClientRect().width;
+        const scrollWidth = contentRef.current.scrollWidth;
+        if (rectWidth >= window.innerWidth - 20 || scrollWidth >= window.innerWidth - 20) {
+          setIsContentOverflowing(true);
+        } else {
+          setIsContentOverflowing(false);
+        }
+      }
+    };
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, []);
+
+  const resolvedSize = React.useMemo(
+    () => resolveDialogSize(size, viewportWidth, className),
+    [size, viewportWidth, className]
+  );
+  const isFullSize = size === 'full' || resolvedSize.isFullSize;
+  const isFullWidth = isFullSize || resolvedSize.isFullWidth || isContentOverflowing;
+  const isAutoFullWidth = isFullWidth && size !== 'full';
+  const initialSectionWidth = React.useMemo(() => getInitialSectionWidth(size, className), [size, className]);
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
   const [isInitialized, setIsInitialized] = React.useState(false);
   const [resizedSize, setResizedSize] = React.useState({ width: 0, height: 0 });
@@ -554,8 +697,6 @@ function DialogContent({
     }
   }
 
-  const resolvedSize = React.useMemo(() => resolveDialogSize(size), [size]);
-
   const contentStyle = React.useMemo<React.CSSProperties>(() => {
     let transformValue = `translate(-50%, -50%)`;
     if (isInitialized || isMinimized) {
@@ -566,16 +707,20 @@ function DialogContent({
 
     return {
       ...(props.style ?? {}),
-      left: isInitialized ? '0px' : '50%',
-      top: isInitialized ? '0px' : '50%',
-      transform: transformValue,
+      left: isFullSize ? '50%' : isInitialized ? '0px' : '50%',
+      top: isFullSize ? '50%' : isInitialized ? '0px' : '50%',
+      transform: isFullSize ? `translate(-50%, -50%)` : transformValue,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
-      width: resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
-      height: resizedSize.height > 0 ? `${resizedSize.height}px` : resolvedSize.height,
+      width: isFullWidth ? DIALOG_FULL_WIDTH : resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width,
+      height: isFullSize
+        ? DIALOG_FULL_HEIGHT
+        : resizedSize.height > 0
+          ? `${resizedSize.height}px`
+          : resolvedSize.height,
       minWidth: resolvedSize.minWidth,
       minHeight: resolvedSize.minHeight,
-      maxWidth: resolvedSize.maxWidth,
-      maxHeight: resolvedSize.maxHeight,
+      maxWidth: DIALOG_FULL_WIDTH,
+      maxHeight: isFullSize ? DIALOG_FULL_HEIGHT : resolvedSize.maxHeight,
       zIndex: parallelZIndex,
     };
   }, [
@@ -590,6 +735,8 @@ function DialogContent({
     isInitialized,
     isMinimized,
     defaultPosition,
+    isFullSize,
+    isFullWidth,
   ]);
 
   // 1. 상태 변수에 초기값을 저장할 변수 추가 (isResizing과 함께 관리)
@@ -651,7 +798,7 @@ function DialogContent({
       setIsDragging(true);
       setDragStart({ x: e.clientX - currentPos.x, y: e.clientY - currentPos.y });
     },
-    [position, isInitialized, isFullSize]
+    [position, isInitialized, isFullSize, isIframeState]
   );
 
   React.useEffect(() => {
@@ -718,123 +865,123 @@ function DialogContent({
   }, [isDragging, isResizing, dragStart, resizedSize, initialCapture]);
 
   return (
-    <DialogPortal data-slot="dialog-portal">
-      {resolvedShowOverlay && (
-        <DialogOverlay
-          dim={dim === 'transparent' ? 'transparent' : 'dark'}
-          style={{ zIndex: overlayZIndex }}
-          className={overlayClassName}
-          disableMotion={disableOverlayMotion}
-        />
-      )}
-      <DialogPrimitive.Content
-        ref={contentRef}
-        data-slot="dialog-content"
-        style={contentStyle}
-        data-isminimize={isMinimized ? 'true' : 'false'}
-        className={cn(
-          'cp-dialog fixed grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto',
-          isDragging || !!isResizing ? 'transition-none' : 'dialog-bounce-transition',
-          'bg-white rounded-lg border border-[var(--color-gray-20)]  px-0 py-0 shadow-lg outline-none',
-          'w-full grid grid-rows-[auto_1fr_auto]',
-          isIframeState && 'is-iframe',
-          className
-        )}
-        onMouseDown={handleMouseDown}
-        onDoubleClick={() => {
-          if (isMinimized) {
-            setMinimized?.(false);
-          }
-        }}
-        onPointerDownOutside={(event) => {
-          event.preventDefault();
-          onPointerDownOutside?.(event);
-        }}
-        onInteractOutside={(event) => {
-          event.preventDefault();
-          onInteractOutside?.(event);
-        }}
-        {...props}
-      >
-        {children}
-        {(isDragging || !!isResizing) && !isFullSize && (
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 z-51 bg-transparent"
-            style={{
-              cursor: isDragging ? 'grabbing' : undefined,
-            }}
+    <DialogSizeContext.Provider value={{ size, initialSectionWidth, isFullSize, isAutoFullWidth }}>
+      <DialogPortal data-slot="dialog-portal">
+        {resolvedShowOverlay && dim !== 'none' && (
+          <DialogOverlay
+            dim={dim === 'transparent' ? 'transparent' : 'dark'}
+            style={{ zIndex: overlayZIndex }}
+            className={overlayClassName}
+            disableMotion={disableOverlayMotion}
           />
         )}
-        {resolvedMinimized && (
-          <DialogMinimize
-            className={cn(
-              'flex items-center justify-center w-[2.4rem] h-[2.4rem] absolute top-[2.2rem] rounded-xs transition-opacity disabled:pointer-events-none p-0',
-              resolvedShowCloseButton ? 'right-[5.6rem]' : 'right-[2.4rem]',
-              minimizeButtonClassName
-            )}
-          />
-        )}
-        {resolvedShowCloseButton && (
-          <DialogPrimitive.Close
-            data-slot="dialog-close"
-            className={cn(
-              'flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-[2.2rem] right-[2.4rem] rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none',
-              closeButtonClassName
-            )}
-          >
-            <CloseIcon color="#2C2724" />
-          </DialogPrimitive.Close>
-        )}
+        <DialogPrimitive.Content
+          ref={contentRef}
+          data-slot="dialog-content"
+          style={contentStyle}
+          data-isminimize={isMinimized ? 'true' : 'false'}
+          className={cn(
+            'fixed w-full grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-lg border border-[var(--color-gray-20)] px-0 py-0 shadow-lg outline-none',
+            isDragging || !!isResizing ? 'transition-none' : 'dialog-bounce-transition',
+            isIframeState && 'is-iframe',
+            className
+          )}
+          onMouseDown={handleMouseDown}
+          onDoubleClick={() => {
+            if (isMinimized) {
+              setMinimized?.(false);
+            }
+          }}
+          onPointerDownOutside={(event) => {
+            event.preventDefault();
+            onPointerDownOutside?.(event);
+          }}
+          onInteractOutside={(event) => {
+            event.preventDefault();
+            onInteractOutside?.(event);
+          }}
+          {...props}
+        >
+          {children}
+          {(isDragging || !!isResizing) && !isFullSize && (
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 z-51 bg-transparent"
+              style={{
+                cursor: isDragging ? 'grabbing' : undefined,
+              }}
+            />
+          )}
+          {resolvedMinimized && (
+            <DialogMinimize
+              className={cn(
+                'flex items-center justify-center w-[2.4rem] h-[2.4rem] absolute top-[2.2rem] rounded-xs transition-opacity disabled:pointer-events-none p-0',
+                resolvedShowCloseButton ? 'right-[5.6rem]' : 'right-[2.4rem]',
+                minimizeButtonClassName
+              )}
+            />
+          )}
+          {resolvedShowCloseButton && (
+            <DialogPrimitive.Close
+              data-slot="dialog-close"
+              className={cn(
+                'flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-[2.2rem] right-[2.4rem] rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none',
+                closeButtonClassName
+              )}
+            >
+              <CloseIcon color="#2C2724" />
+            </DialogPrimitive.Close>
+          )}
 
-        {/* Resize Handles - Only shown when resizable is true and not full size */}
-        {resolvedResizable && !isFullSize && (
-          <>
-            <div
-              data-slot="resize-handle"
-              data-direction="e"
-              className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500/20 transition-colors"
-            />
-            <div
-              data-slot="resize-handle"
-              data-direction="w"
-              className="absolute top-0 left-0 w-1 h-full cursor-col-resize hover:bg-blue-500/20 transition-colors"
-            />
-            <div
-              data-slot="resize-handle"
-              data-direction="s"
-              className="absolute bottom-0 left-0 h-1 w-full cursor-row-resize hover:bg-blue-500/20 transition-colors"
-            />
-            <div
-              data-slot="resize-handle"
-              data-direction="n"
-              className="absolute top-0 left-0 h-1 w-full cursor-row-resize hover:bg-blue-500/20 transition-colors"
-            />
-            {/* Corner resize handles */}
-            <div
-              data-slot="resize-handle"
-              data-direction="se"
-              className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize hover:bg-blue-500/30 transition-colors rounded-bl-lg"
-            />
-            <div
-              data-slot="resize-handle"
-              data-direction="sw"
-              className="absolute bottom-0 left-0 w-4 h-4 cursor-sw-resize hover:bg-blue-500/30 transition-colors rounded-br-lg"
-            />
-            <div
-              data-slot="resize-handle"
-              data-direction="ne"
-              className="absolute top-0 right-0 w-4 h-4 cursor-ne-resize hover:bg-blue-500/30 transition-colors rounded-tl-lg"
-            />
-            <div
-              data-slot="resize-handle"
-              data-direction="nw"
-              className="absolute top-0 left-0 w-4 h-4 cursor-nw-resize hover:bg-blue-500/30 transition-colors rounded-tr-lg"
-            />
-          </>
-        )}
-      </DialogPrimitive.Content>
-    </DialogPortal>
+          {/* Resize Handles - Only shown when resizable is true and not full size */}
+          {resolvedResizable && !isFullSize && (
+            <>
+              <div
+                data-slot="resize-handle"
+                data-direction="e"
+                className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500/20 transition-colors"
+              />
+              <div
+                data-slot="resize-handle"
+                data-direction="w"
+                className="absolute top-0 left-0 w-1 h-full cursor-col-resize hover:bg-blue-500/20 transition-colors"
+              />
+              <div
+                data-slot="resize-handle"
+                data-direction="s"
+                className="absolute bottom-0 left-0 h-1 w-full cursor-row-resize hover:bg-blue-500/20 transition-colors"
+              />
+              <div
+                data-slot="resize-handle"
+                data-direction="n"
+                className="absolute top-0 left-0 h-1 w-full cursor-row-resize hover:bg-blue-500/20 transition-colors"
+              />
+              {/* Corner resize handles */}
+              <div
+                data-slot="resize-handle"
+                data-direction="se"
+                className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize hover:bg-blue-500/30 transition-colors rounded-bl-lg"
+              />
+              <div
+                data-slot="resize-handle"
+                data-direction="sw"
+                className="absolute bottom-0 left-0 w-4 h-4 cursor-sw-resize hover:bg-blue-500/30 transition-colors rounded-br-lg"
+              />
+              <div
+                data-slot="resize-handle"
+                data-direction="ne"
+                className="absolute top-0 right-0 w-4 h-4 cursor-ne-resize hover:bg-blue-500/30 transition-colors rounded-tl-lg"
+              />
+              <div
+                data-slot="resize-handle"
+                data-direction="nw"
+                className="absolute top-0 left-0 w-4 h-4 cursor-nw-resize hover:bg-blue-500/30 transition-colors rounded-tr-lg"
+              />
+            </>
+          )}
+        </DialogPrimitive.Content>
+      </DialogPortal>
+    </DialogSizeContext.Provider>
   );
 }
 
@@ -916,14 +1063,20 @@ function DialogDescription({ className, ...props }: React.ComponentProps<typeof 
  * 다이얼로그 스크롤 가능 세션 콘텐츠 영역 (DialogSection)
  */
 function DialogSection({ children, className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
+  const { size, initialSectionWidth, isAutoFullWidth } = React.useContext(DialogSizeContext);
+  const minWidthValue = isAutoFullWidth
+    ? (initialSectionWidth ?? (size ? getInitialSectionWidth(size) : `calc(${DIALOG_PRESET_WIDTH['2xl']} - 4.8rem)`))
+    : '100%';
+
   return (
-    <Grid
-      gap={3}
-      data-slot="dialog-section"
-      className={cn('px-6 w-full h-full text-[1.4rem] overflow-auto grid-rows-[1fr]', className)}
-      {...props}
-    >
-      {children}
+    <Grid data-slot="dialog-section" className="px-6 w-full h-full overflow-auto grid-rows-[1fr]" {...props}>
+      <Grid
+        gap={3}
+        style={{ minWidth: minWidthValue }}
+        className={cn('w-full h-full text-[1.4rem] grid-rows-[1fr]', className)}
+      >
+        {children}
+      </Grid>
     </Grid>
   );
 }

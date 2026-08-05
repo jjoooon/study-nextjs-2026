@@ -64,7 +64,7 @@ export const ZoomControl = () => {
       >
         <ZoomOutIcon size={20} className="!w-[20px] !h-[20px]" />
       </Button>
-      <Typo variant={'button-sm'} className="!text-[12px]">
+      <Typo variant={'button-sm'} className="!text-[12px] w-[28px] text-center">
         {zoomPercent}%
       </Typo>
       <Button

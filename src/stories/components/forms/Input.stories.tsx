@@ -5,6 +5,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
 import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
 import { Grow, Gcol } from '@atoms';
+import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 
 const meta: Meta<typeof Input> = {
@@ -96,6 +97,24 @@ import { Input } from '@uiux/Input';
                 <Input error errorPs="bc" errorMsg="bottom center 에러" placeholder="bc" />
                 <Input error errorPs="br" errorMsg="bottom right 에러" placeholder="br" />
               </Grow>
+            </Gcol>
+
+            <h2 className="mt-8">Focus Control (Ref)</h2>
+            <p>버튼 클릭 시 ref.current.focus()를 호출하여 Input에 포커스를 부여할 수 있습니다.</p>
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <FocusControlDocExample />
+            </Gcol>
+
+            <h2 className="mt-8">Declarative Focus (isFocused Prop)</h2>
+            <p>ref 없이 isFocused={true} 상태값을 전달하여 상위 컴포넌트에서 선언적으로 포커스를 제어할 수 있습니다.</p>
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <DeclarativeFocusDocExample />
             </Gcol>
           </StoryDocTemplate>
         );
@@ -236,4 +255,49 @@ export const Default: Story = {
       />
     );
   },
+};
+
+function FocusControlDocExample() {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleFocus = () => {
+    inputRef.current?.focus();
+  };
+
+  return (
+    <Grow gap={4} className="items-center">
+      <Input ref={inputRef} placeholder="버튼 클릭 시 포커스가 이동합니다" width="md" />
+      <Button onClick={handleFocus} color="primary" size="md">
+        포커스 이동
+      </Button>
+    </Grow>
+  );
+}
+
+export const FocusWithButton: Story = {
+  name: '버튼 클릭 시 포커스 제어 (Ref)',
+  render: () => <FocusControlDocExample />,
+};
+
+function DeclarativeFocusDocExample() {
+  const [isFocused, setIsFocused] = React.useState(false);
+
+  return (
+    <Grow gap={4} className="items-center">
+      <Input
+        isFocused={isFocused}
+        onBlur={() => setIsFocused(false)}
+        placeholder="isFocused prop으로 제어되는 인풋"
+        width="md"
+      />
+      <Button onClick={() => setIsFocused(true)} color="coolgray" size="md">
+        isFocused={true} 변경
+      </Button>
+    </Grow>
+  );
+}
+
+export const FocusWithProp: Story = {
+  name: 'isFocused Prop으로 포커스 제어 (State)',
+  render: () => <DeclarativeFocusDocExample />,
 };

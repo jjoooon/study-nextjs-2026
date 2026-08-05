@@ -168,6 +168,12 @@ import { Button } from '@uiux/Button';
       description: '오버레이 표시 여부',
       table: { category: 'prop', defaultValue: { summary: 'true' } },
     },
+    dim: {
+      control: 'radio',
+      options: ['dark', 'transparent', 'none'],
+      description: '어두운 백드롭 딤 오버레이 타입 (dark: 반투명 검정, transparent: 클릭 차단용 투명, none: 오버레이 없음)',
+      table: { category: 'prop', defaultValue: { summary: "'dark'" } },
+    },
     // overlayClassName: {
     //   control: 'text',
     //   description: '오버레이에 추가할 CSS 클래스',
@@ -182,6 +188,7 @@ import { Button } from '@uiux/Button';
   },
   args: {
     showOverlay: true,
+    dim: 'dark',
     showCloseButton: true,
     resizable: true,
     defaultPosition: { x: 0, y: 0 },

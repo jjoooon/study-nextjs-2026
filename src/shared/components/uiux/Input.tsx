@@ -115,41 +115,53 @@ function getDigitsBeforePosition(value: string, position: number): number {
   return [...value.slice(0, position)].filter((char) => /\d/.test(char)).length;
 }
 
-function Input({
-  size = 'lg',
-  variant = 'default',
-  width = 'full',
-  type,
-  required = false,
-  readOnly = false,
-  error = false,
-  errorMsg = '입력은 필수입니다.',
-  errorPs = 'bl',
-  after = null,
-  before = null,
-  disabled = false,
-  commaAmount = false,
-  clear = false,
-  forceFocused = false,
-  restrictChars = true,
-  align = 'left',
-  onChange,
-  value,
-  formatter,
-  isFocused,
-  onErrorChange,
-  className,
-  e2eType = 0,
-  charFilter,
-  maxLength,
-  minLength,
-  ...props
-}: UIInputProps) {
+const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
+  {
+    size = 'lg',
+    variant = 'default',
+    width = 'full',
+    type,
+    required = false,
+    readOnly = false,
+    error = false,
+    errorMsg = '입력은 필수입니다.',
+    errorPs = 'bl',
+    after = null,
+    before = null,
+    disabled = false,
+    commaAmount = false,
+    clear = false,
+    forceFocused = false,
+    restrictChars = true,
+    align = 'left',
+    onChange,
+    value,
+    formatter,
+    isFocused,
+    onErrorChange,
+    className,
+    e2eType = 0,
+    charFilter,
+    maxLength,
+    minLength,
+    ...props
+  },
+  ref
+) {
   const [focused, setFocused] = useState(false);
   const [isErrorDismissed, setIsErrorDismissed] = useState(false);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
+
+  React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement, []);
   const focusStartValueRef = React.useRef<string>('');
   const isInputFocused = typeof isFocused === 'boolean' ? isFocused : focused;
+
+  // 외부에서 isFocused prop이 true로 전달될 때 내부 DOM input에 포커스 자동 동기화
+  React.useEffect(() => {
+    if (isFocused && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isFocused]);
   const isControlled = value !== undefined;
   const { onFocus: onFocusProp, onBlur: onBlurProp, style: styleProp, ...inputProps } = props;
 
@@ -508,6 +520,6 @@ function Input({
       )}
     </div>
   );
-}
+});
 
 export { Input };

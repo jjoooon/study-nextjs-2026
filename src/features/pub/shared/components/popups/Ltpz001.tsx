@@ -745,6 +745,50 @@ const Ltpz001 = () => {
                 <Button variant={'outlined'} size={'xl'} color={'gray'}>
                   전환후 계약 담보별 보험료 예시
                 </Button>
+
+                {/* test 용 */}
+                <Grow className="absolute bottom-[-2.6rem] z-[10000] left-[50%]">
+                  <Button
+                    variant={'outlined'}
+                    size={'sm'}
+                    color={'gray-light'}
+                    onClick={() => {
+                      setConfirmDialog1Open(true);
+                    }}
+                  >
+                    출력안하고 닫을 경우
+                  </Button>
+                  <Button
+                    variant={'outlined'}
+                    size={'sm'}
+                    color={'gray-light'}
+                    onClick={() => {
+                      setConfirmDialog2Open(true);
+                    }}
+                  >
+                    모바일 접수상황
+                  </Button>
+                  <Button
+                    variant={'outlined'}
+                    size={'sm'}
+                    color={'gray-light'}
+                    onClick={() => {
+                      setConfirmDialog3Open(true);
+                    }}
+                  >
+                    팩스 접수상황
+                  </Button>
+                  <Button
+                    variant={'outlined'}
+                    size={'sm'}
+                    color={'gray-light'}
+                    onClick={() => {
+                      setConfirmDialog4Open(true);
+                    }}
+                  >
+                    이메일 접수상황
+                  </Button>
+                </Grow>
               </Grow>
               <Grow>
                 <Button variant={'outlined'} size={'xl'} color={'gray'}>
@@ -759,50 +803,6 @@ const Ltpz001 = () => {
                     닫기
                   </Button>
                 </DialogClose>
-              </Grow>
-
-              <Grow className="absolute bottom-[-4rem] z-[100]">
-                테스트용:
-                <Button
-                  variant={'outlined'}
-                  size={'sm'}
-                  color={'gray-light'}
-                  onClick={() => {
-                    setConfirmDialog1Open(true);
-                  }}
-                >
-                  출력안하고 닫을 경우
-                </Button>
-                <Button
-                  variant={'outlined'}
-                  size={'sm'}
-                  color={'gray-light'}
-                  onClick={() => {
-                    setConfirmDialog2Open(true);
-                  }}
-                >
-                  모바일 접수상황
-                </Button>
-                <Button
-                  variant={'outlined'}
-                  size={'sm'}
-                  color={'gray-light'}
-                  onClick={() => {
-                    setConfirmDialog3Open(true);
-                  }}
-                >
-                  팩스 접수상황
-                </Button>
-                <Button
-                  variant={'outlined'}
-                  size={'sm'}
-                  color={'gray-light'}
-                  onClick={() => {
-                    setConfirmDialog4Open(true);
-                  }}
-                >
-                  이메일 접수상황
-                </Button>
               </Grow>
             </DialogFooterArea>
             <DialogBottomInfo />

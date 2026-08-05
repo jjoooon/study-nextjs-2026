@@ -233,8 +233,8 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
               최대 <span className="text-(--color-text-danger) font-semibold">500</span>개{' '}
               <span className="text-(--color-text-danger) font-semibold">1 GB</span> 제한
             </span> */}
-            파일 <span className="text-(--color-text-danger)">{fileCount}</span> 개 /
-            <span className="text-(--color-text-danger)"> {formatFileSize(totalSize)}</span> 용량
+            파일 <span className="text-[var(--color-primary-50)]">{fileCount}</span> 개 /
+            <span className="text-[var(--color-primary-50)]"> {formatFileSize(totalSize)}</span> 용량
           </Grow>
         </DialogSection>
 

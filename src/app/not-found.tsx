@@ -28,10 +28,10 @@ export default function NotFound() {
       <Gcol gap={6}>
         <img src={withPublicUrl('/images/error_404.svg')} alt="404" />
         <Gcol gap={4}>
-          <Typo tag="strong" variant={'heading-lg'} icon={'warning'}>
+          <Typo tag="strong" variant={'heading-lg'} icon={'warning'} className="text-[#000]">
             페이지를 찾을 수 없어요
           </Typo>
-          <Typo tag="span" variant={'body-md'} className="text-center leading-[1.5]">
+          <Typo tag="span" color={'gray'} variant={'body-md'} className="text-center leading-[1.5]">
             주소가 잘못되었거나 페이지가 이동 또는 삭제되었을 수 있어요. <br />
             입력한 주소를 다시 확인해 주세요.
           </Typo>
