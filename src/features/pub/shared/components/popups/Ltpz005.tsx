@@ -112,7 +112,7 @@ const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Lt
           <Grid className="w-full grid-cols-[auto_1fr] h-full" gap={0}>
             {/* 왼쪽: 세로형 탭 메뉴 영역 */}
             <Grid
-              className="ml-[1rem] w-[6.4rem] grid-rows-[1fr_1fr_1fr_1fr] pb-[0.8rem] h-full max-h-[44rem] mr-[-0.1rem] place-self-start"
+              className="w-[6.4rem] grid-rows-[1fr_1fr_1fr_1fr] pb-[0.8rem] h-full max-h-[44rem] mr-[-0.1rem] place-self-start"
               gap={0}
             >
               {tabs.map((tab, index) => {

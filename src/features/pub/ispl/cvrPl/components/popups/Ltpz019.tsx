@@ -488,7 +488,7 @@ const Ltpz019 = () => {
                   <TableFoldBody className="w-full">
                     {/* showProductNameTooltip 값에 따라 말풍선 노출을 제어하기 위해 CSS 클래스 동적 부여 */}
                     <div
-                      className={`h-full tooltip-hidden-toggle ag-theme-alpine inner-scroll ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                      className={`w-full tooltip-hidden-toggle ag-theme-alpine inner-scroll ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                       data-row={dummyData.length}
                     >
                       <AgGridReact<DummyDataType>
@@ -500,6 +500,7 @@ const Ltpz019 = () => {
                           sortable: true,
                           resizable: true,
                         }}
+                        domLayout="normal"
                         tooltipShowDelay={0}
                         tooltipHideDelay={9999}
                         tooltipMouseTrack={true}
