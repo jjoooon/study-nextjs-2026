@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, PostSortRowsParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
@@ -26,6 +26,7 @@ import { Input } from '@uiux/Input';
 
 type DummyDataType = {
   id: number;
+  isViolation?: boolean;
   companyName: string;
   productName: string;
   startDate: string;
@@ -41,6 +42,7 @@ type DummyDataType = {
 const DummyData: DummyDataType[] = [
   {
     id: 1,
+    isViolation: true,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -54,6 +56,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 2,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -67,6 +70,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
+    isViolation: true,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -80,6 +84,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 4,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -93,6 +98,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 5,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -106,6 +112,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 6,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -119,6 +126,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 7,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -132,6 +140,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 8,
+    isViolation: true,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -145,6 +154,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 9,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -158,6 +168,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 10,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -171,6 +182,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 11,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -184,6 +196,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 12,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -197,6 +210,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 13,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -210,6 +224,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 14,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -223,6 +238,7 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 15,
+    isViolation: false,
     companyName: '흥국생명',
     productName: '(무)흥국생명(다)사랑 OK335간편건강보험(갱)',
     startDate: '2026-01-01',
@@ -336,7 +352,18 @@ const Ltpz200 = () => {
     type02: '',
   });
 
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData] = React.useState<DummyDataType[]>(() =>
+    [...DummyData].sort((a, b) => (b.isViolation ? 1 : 0) - (a.isViolation ? 1 : 0))
+  );
+
+  const postSortRows = React.useCallback((params: PostSortRowsParams<DummyDataType>) => {
+    params.nodes.sort((nodeA, nodeB) => {
+      if (nodeA.rowPinned || nodeB.rowPinned) return 0;
+      const aVal = nodeA.data?.isViolation ? 1 : 0;
+      const bVal = nodeB.data?.isViolation ? 1 : 0;
+      return bVal - aVal;
+    });
+  }, []);
 
   const pinnedBottomRowData = React.useMemo<DummyDataType[]>(() => {
     const totalInsuredAmount = rowData.reduce((sum, row) => sum + (Number(row.insuredAmount) || 0), 0);
@@ -352,7 +379,7 @@ const Ltpz200 = () => {
         premium: '',
         coverageCategory: '',
         coverageName: '',
-        insuredAmount: totalInsuredAmount + ' 만원',
+        insuredAmount: totalInsuredAmount.toLocaleString() + ' 만원',
         status: '',
       },
     ];
@@ -418,6 +445,10 @@ const Ltpz200 = () => {
                   sortable: true,
                   resizable: true,
                   suppressMovable: true,
+                }}
+                postSortRows={postSortRows}
+                rowClassRules={{
+                  'bg-[#FFF0F0]!': (params) => !!params.data?.isViolation,
                 }}
                 enableCellSpan={true}
                 domLayout="normal"
