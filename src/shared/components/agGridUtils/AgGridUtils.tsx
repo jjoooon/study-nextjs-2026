@@ -2397,14 +2397,18 @@ export function PortalErrorTooltipCellEditor<T = unknown>(props: CustomCellEdito
     }
   }, []);
 
+  const isError = Boolean(errorMessage);
+  const maxLength = props.colDef?.cellEditorParams?.maxLength;
+
   return (
     <div className="w-full h-full flex items-center relative">
-      <Tooltip open={Boolean(errorMessage)}>
+      <Tooltip open={isError}>
         <TooltipTrigger asChild>
-          <input
+          <Input
             ref={inputRef}
             type="text"
-            className="w-full h-full px-2 text-[1.3rem] border border-[var(--color-text-danger)] rounded bg-[var(--color-input-surface-error)] outline-none"
+            error={isError}
+            maxLength={maxLength}
             value={value}
             onChange={(e) => {
               const val = e.target.value;
