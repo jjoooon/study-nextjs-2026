@@ -1087,9 +1087,13 @@ export function createTooltipValueGetter<T extends Record<string, unknown>>(
 ) {
   const { label, field, valueGetter } = options;
 
-  return (params: { data?: T }) => {
-    if (!params.data) return '';
-    const rawValue = valueGetter ? valueGetter(params.data) : field ? params.data[field] : '';
+  return (params: { data?: T; value?: unknown; valueFormatted?: string | null }) => {
+    const rawValue =
+      valueGetter && params.data
+        ? valueGetter(params.data)
+        : field && params.data
+          ? params.data[field]
+          : (params.valueFormatted ?? params.value ?? '');
     const value = rawValue === null || rawValue === undefined ? '' : String(rawValue);
     if (!label) return value;
     return `${label}: ${value}`;
@@ -2364,5 +2368,57 @@ export function InputWithSearchCellEditor<T = unknown>(props: CustomCellEditorPr
         <SearchIcon color={disabled ? 'var(--color-gray-40)' : 'var(--color-primary-50)'} />
       </Button>
     </Grow>
+  );
+}
+
+/**
+ * [Ag-Grid Helper] 방안 4: React Portal 기반 에러 툴팁 Cell Editor (상공 팝업/확대축소 시 짤림 100% 방지)
+ * - AG Grid의 overflow: hidden 및 뷰포트 영역 제약을 완벽히 극복하기 위해
+ *   Radix Portal(document.body)을 사용해 에러 메시지 툴팁을 띄우는 공용 에디터입니다.
+ */
+export function PortalErrorTooltipCellEditor<T = unknown>(props: CustomCellEditorProps<T>) {
+  const [value, setValue] = React.useState(props.value ?? '');
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
+
+  const getErrorMessage = props.colDef?.cellEditorParams?.getErrorMessage;
+  const errorMessage = React.useMemo(() => {
+    if (typeof getErrorMessage === 'function') {
+      return getErrorMessage(value, props);
+    }
+    if (value === '' || value === null || value === undefined) {
+      return '필수 입력 항목입니다.';
+    }
+    return null;
+  }, [value, getErrorMessage, props]);
+
+  React.useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  return (
+    <div className="w-full h-full flex items-center relative">
+      <Tooltip open={Boolean(errorMessage)}>
+        <TooltipTrigger asChild>
+          <input
+            ref={inputRef}
+            type="text"
+            className="w-full h-full px-2 text-[1.3rem] border border-[var(--color-text-danger)] rounded bg-[var(--color-input-surface-error)] outline-none"
+            value={value}
+            onChange={(e) => {
+              const val = e.target.value;
+              setValue(val);
+              props.onValueChange(val);
+            }}
+          />
+        </TooltipTrigger>
+        {errorMessage && (
+          <TooltipContent side="top" align="start" variant="danger" sideOffset={4}>
+            {errorMessage}
+          </TooltipContent>
+        )}
+      </Tooltip>
+    </div>
   );
 }

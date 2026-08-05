@@ -32,11 +32,13 @@ function TooltipContent({
   sideOffset = -6,
   align,
   alignOffset,
+  arrowPadding = 8,
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content> & {
-  variant?: 'default' | 'dark' | 'light';
+  variant?: 'default' | 'dark' | 'light' | 'danger';
   hideArrow?: boolean;
+  arrowPadding?: number;
 }) {
   const variantStyles = {
     // 1. 외부 컨테이너 배경 및 텍스트 색상 수정
@@ -44,6 +46,8 @@ function TooltipContent({
       'bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]',
     dark: 'bg-[var(--color-gray-90)] text-[var(--color-gray-0)] border border-[var(--color-gray-90)]',
     light: 'bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.4rem]',
+    danger:
+      'bg-[var(--color-input-surface-error)] border border-[var(--color-input-border-error)] text-[var(--color-danger-50)] shadow-md',
   };
 
   const arrowStyles = {
@@ -51,6 +55,8 @@ function TooltipContent({
     default: 'bg-[#FFF] fill-white border-[0.1rem] border border-[#CCC] z-[-1]',
     dark: 'bg-[var(--color-gray-90)] fill-[var(--color-gray-90)] border border-[var(--color-gray-90)]',
     light: 'bg-[#FFF] fill-white  border-[0.1rem] border border-[#CCC] z-[-1]',
+    danger:
+      'bg-[var(--color-input-surface-error)] fill-[var(--color-input-surface-error)] border border-[var(--color-input-border-error)] z-[-1]',
   };
 
   const contentStyles = {
@@ -58,6 +64,8 @@ function TooltipContent({
     default: 'tracking-[-0.08rem]',
     dark: 'bg-[var(--color-gray-90)] fill-[var(--color-gray-90)] rounded-[0.4rem] border border-[var(--color-gray-90)]',
     light: '',
+    danger:
+      'bg-[var(--color-input-surface-error)] fill-[var(--color-input-surface-error)] text-[var(--color-text-danger)]',
   };
 
   return (
@@ -67,8 +75,9 @@ function TooltipContent({
         sideOffset={sideOffset}
         align={align}
         alignOffset={alignOffset ?? 0}
+        arrowPadding={arrowPadding}
         className={cn(
-          'group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-9999 w-auto rounded-[0.6rem] text-[1.2rem] leading-[1.45] text-balance max-w-[24rem] text-(--color-gray-70) px-[1rem] py-[0.4rem]',
+          'relative group zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-1 z-9999 w-auto rounded-[0.6rem] text-[1.2rem] leading-[1.45] text-balance max-w-[24rem] text-(--color-gray-70) px-[1rem] py-[0.4rem]',
           variantStyles[variant],
           className
         )}
@@ -84,18 +93,26 @@ function TooltipContent({
         </div>
         {!hideArrow &&
           (variant === 'default' || variant === 'light' ? (
-            <TooltipPrimitive.Arrow asChild>
-              <svg width="8" height="6" viewBox="0 0 12 7" style={{ overflow: 'visible' }}>
+            <TooltipPrimitive.Arrow asChild style={{ visibility: 'visible' }}>
+              <svg width="8" height="6" viewBox="0 0 12 7" style={{ overflow: 'visible', visibility: 'visible' }}>
                 {/* 흰 fill을 y=-3까지 올려 box border 연결선을 덮음 */}
                 <polygon points="0,-1 6,7 12, -1" fill="#FFF" />
                 {/* 양쪽 사선만 stroke — 상단 가로선 없음 */}
                 <polyline points="0,0 6,7 12,0" fill="none" stroke="#CCC" strokeWidth="1" />
               </svg>
             </TooltipPrimitive.Arrow>
+          ) : variant === 'danger' ? (
+            <TooltipPrimitive.Arrow asChild style={{ visibility: 'visible' }}>
+              <svg width="8" height="6" viewBox="0 0 12 7" style={{ overflow: 'visible', visibility: 'visible' }}>
+                <polygon points="0,-1 6,7 12, -1" fill="var(--color-input-surface-error)" />
+                <polyline points="0,0 6,7 12,0" fill="none" stroke="var(--color-input-border-error)" strokeWidth="1" />
+              </svg>
+            </TooltipPrimitive.Arrow>
           ) : (
             <TooltipPrimitive.Arrow
+              style={{ visibility: 'visible' }}
               className={cn(
-                'bg-foreground fill-foreground size-[0.9rem] translate-y-[calc(-50%-0.25rem)] rotate-45 rounded-[0.1rem] animate-none',
+                'bg-foreground fill-foreground size-[0.9rem] translate-y-[calc(-50%-0.25rem)] rotate-45 rounded-[0.1rem] animate-none !visible',
                 arrowStyles[variant]
               )}
             />

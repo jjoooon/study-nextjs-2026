@@ -22,7 +22,11 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 
-export const Ltpz092 = () => {
+export interface Ltpz092Props {
+  showDownloadButton?: boolean;
+}
+
+export const Ltpz092: React.FC<Ltpz092Props> = ({ showDownloadButton = true }) => {
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
@@ -59,11 +63,13 @@ export const Ltpz092 = () => {
                   </FormCell>
                 </FormRow>
               </FormTable>
-              <Grow>
-                <Button variant="outlined" className="ml-4">
-                  다운로드
-                </Button>
-              </Grow>
+              {showDownloadButton && (
+                <Grow>
+                  <Button variant="outlined" className="ml-4">
+                    다운로드
+                  </Button>
+                </Grow>
+              )}
             </Grow>
             <Gcol className="w-full min-h-[10rem]">등록된 이미지 노출 영역</Gcol>
           </Grid>
