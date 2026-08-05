@@ -381,7 +381,7 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
             );
           }
           return (
-            <Grow className="w-full h-full flex items-center justify-between gap-1 px-1">
+            <Grow className="w-full h-full gap-1 px-1" placement="cc">
               <span className="truncate text-[1.3rem]">{value}</span>
               <Button
                 aria-label="파일 삭제"
@@ -435,7 +435,7 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
             );
           }
           return (
-            <Grow className="w-full h-full flex items-center justify-between gap-1 px-1">
+            <Grow className="w-full h-full gap-1 px-1" placement="cc">
               <span className="truncate text-[1.3rem]">{value}</span>
               <Button
                 aria-label="파일 삭제"
@@ -584,7 +584,23 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
               </Button>
             );
           }
-          return value;
+          return (
+            <Grow className="w-full h-full gap-1 px-1" placement="cc">
+              <span className="truncate text-[1.3rem]">{value}</span>
+              <Button
+                aria-label="파일 삭제"
+                variant="none"
+                only="icon"
+                size="xs"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  params.node.setDataValue('field06', '');
+                }}
+              >
+                <CloseIcon size={12} color="var(--color-gray-60)" />
+              </Button>
+            </Grow>
+          );
         },
       },
     ];
