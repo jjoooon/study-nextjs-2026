@@ -310,12 +310,6 @@
   display: inline-flex;
 }
 
-/* Chrome 109 SVG 아이콘 렌더링 호환 */
-.v109 svg {
-  display: inline-block;
-  vertical-align: middle;
-}
-
 /* disabled 상태 스타일 호환 */
 .v109 [class*="disabled:opacity-50"]:disabled,
 .v109 .disabled\:opacity-50:disabled {
@@ -428,6 +422,28 @@
 .v109 .cp-checkbox[class*="data-[state=checked]:border-[var(--color-primary-50)]"][data-state="checked"],
 .v109 [data-slot="checkbox"][data-state="checked"] {
   border-color: var(--color-primary-50);
+}
+
+/* Chrome 109 전용 Favorite (즐겨찾기/북마크) 체크박스 및 SVG 호환 스타일 */
+.v109 [data-slot="checkbox"][data-variant="favorite"],
+.v109 [data-slot="checkbox"][data-variant="favorite"][data-state="checked"],
+.v109 [data-variant="favorite"],
+.v109 [data-variant="favorite"][data-state="checked"],
+.v109 button[role="checkbox"][data-variant="favorite"],
+.v109 button[role="checkbox"][data-variant="favorite"][data-state="checked"] {
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.v109 [data-variant="favorite"] svg,
+.v109 button[role="checkbox"][data-variant="favorite"] svg {
+  flex-shrink: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  background: transparent !important;
 }
 
 /* data-required="true" 상태 (체크박스 한정) */
@@ -1439,7 +1455,7 @@
   background-image: linear-gradient(var(--tw-gradient-stops));
 }
 
-/* .v109 .after\:w-\[2rem\]::after {
+.v109 .after\:w-\[2rem\]::after {
   content: var(--tw-content, '');
   width: 2rem;
 }

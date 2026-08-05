@@ -537,3 +537,25 @@ html.v109 button.cp-button[data-variant="outlined"]:disabled {
   background-color: var(--color-gray-5, #f8fafc) !important;
   border-color: var(--color-gray-10, #e2e8f0) !important;
 } */
+
+/* Chrome 109 전용 Favorite (즐겨찾기/북마크) 체크박스 및 SVG 호환 스타일 */
+.v109 [data-slot="checkbox"][data-variant="favorite"],
+.v109 [data-slot="checkbox"][data-variant="favorite"][data-state="checked"],
+.v109 [data-variant="favorite"],
+.v109 [data-variant="favorite"][data-state="checked"],
+.v109 button[role="checkbox"][data-variant="favorite"],
+.v109 button[role="checkbox"][data-variant="favorite"][data-state="checked"] {
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.v109 [data-variant="favorite"] svg,
+.v109 button[role="checkbox"][data-variant="favorite"] svg {
+  flex-shrink: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  background: transparent !important;
+}
