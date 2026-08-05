@@ -890,7 +890,7 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
                         <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                       </Button>
                       <Button variant="outlined" className="ml-4">
-                        결제관리
+                        결재관리
                       </Button>
                     </Grow>
                   )}

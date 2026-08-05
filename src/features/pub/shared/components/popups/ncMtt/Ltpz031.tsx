@@ -865,9 +865,7 @@ const Ltpz031 = () => {
         <DialogSection className="w-full gap-3 grid-rows-[auto_1fr]">
           {/* 2-1. 최상단: 자동고지 조회 및 연계 정보 가져오기 단축 실행바 */}
           <Grow variant={'box-info-line'} placement={'bwc'} className="border-transparent">
-            <Typo variant={'body-lg'}>
-              자동고지(ICIS/심평원) 또는 질병 가져오기를 통해 질병 정보를 간편하게 입력하세요.
-            </Typo>
+            <Typo variant={'body-lg'}>자동고지(ICIS) 또는 질병 가져오기를 통해 질병 정보를 간편하게 입력하세요.</Typo>
             <Grow>
               <Button color={'gray'} size={'xl'} variant={'outlined'}>
                 자동고지(ICIS)
