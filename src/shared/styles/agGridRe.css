@@ -995,6 +995,14 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 /* .ag-theme-alpine.inner-scroll:not([data-row='0']) .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 15rem !important;
 } */
+/* Ltpz019 상품정보 특화 그리드 높이 (13행 = 39rem) */
+.ltpz019-product-grid.inner-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.ltpz019-product-grid.inner-scroll .ag-body-viewport {
+  height: 39rem !important;
+  min-height: 39rem !important;
+  max-height: 39rem !important;
+}
+
 .ag-theme-alpine.inner-scroll[data-row] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 15rem !important;
 }
