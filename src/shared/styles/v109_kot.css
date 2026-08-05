@@ -1872,17 +1872,27 @@
   align-items: flex-start !important;
 }
 
-/* Ltpz076 적용대상 특화 그리드 높이 (8행 = 24rem) 및 data-row='8' Chrome 109 호환 보정 */
-.ltpz076-target-grid.inner-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ltpz076-target-grid.inner-scroll .ag-body-viewport,
-.v109 .ltpz076-target-grid .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ltpz076-target-grid .ag-body.ag-layout-normal,
-.v109 .ltpz076-target-grid .ag-body-viewport.ag-layout-normal,
-.v109 .ltpz076-target-grid .ag-body-viewport,
+/* Chrome 109 전용 data-row 6이상 5행(15rem) 제한 및 수직 스크롤바 생성 */
+.v109 .ag-theme-alpine.inner-scroll[data-row='6'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='6'] .ag-body-viewport,
+.v109 .ag-theme-alpine.inner-scroll[data-row='7'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='7'] .ag-body-viewport,
 .v109 .ag-theme-alpine.inner-scroll[data-row='8'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='8'] .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='8'] .ag-body-viewport {
-  height: 24rem !important;
-  min-height: 24rem !important;
-  max-height: 24rem !important;
+.v109 .ag-theme-alpine.inner-scroll[data-row='8'] .ag-body-viewport,
+.v109 .ag-theme-alpine.inner-scroll[data-row='9'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='9'] .ag-body-viewport,
+.v109 .ag-theme-alpine.inner-scroll[data-row='10'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='10'] .ag-body-viewport,
+.v109 .ag-theme-alpine.inner-scroll[data-row='11'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='11'] .ag-body-viewport,
+.v109 .ag-theme-alpine.inner-scroll[data-row='12'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='12'] .ag-body-viewport,
+.v109 .ag-theme-alpine.inner-scroll[data-row='13'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='13'] .ag-body-viewport,
+.v109 .ag-theme-alpine.inner-scroll[data-row='14'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='14'] .ag-body-viewport,
+.v109 .ag-theme-alpine.inner-scroll[data-row='15'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
+.v109 .ag-theme-alpine.inner-scroll[data-row='15'] .ag-body-viewport {
+  max-height: 15rem !important;
+  overflow-y: auto !important;
 }
