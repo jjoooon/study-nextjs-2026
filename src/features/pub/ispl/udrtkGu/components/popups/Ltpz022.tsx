@@ -270,7 +270,7 @@ const Ltpz022 = () => {
             contentClass="relative"
           >
             <div className="absolute h-full overflow-y-auto">
-              <Table variant="default" className="border-0 !border-t-0">
+              <Table variant="default" className="border-0 translate-y-[-0.1rem]">
                 <colgroup>
                   <col style={{ width: '12rem' }} />
                   <col style={{ width: 'auto' }} />
@@ -286,37 +286,26 @@ const Ltpz022 = () => {
                     const span = rowSpanMap[index];
                     const isSelectedCriteria = selectedCell?.criteria === row.criteria;
                     const isSelectedDetails = selectedCell?.id === row.id;
-
                     const criteriaBg = isSelectedCriteria
                       ? '#FEF4D4'
                       : row.criteria.startsWith('청약완료불가') || row.criteria === '참고사항'
                         ? '#F4F4F4'
                         : '#FFFFFF';
-
                     const detailsBg = isSelectedDetails ? '#FEF4D4' : (index + 1) % 2 !== 0 ? '#FFFFFF' : '#F4F4F4';
-
                     const criteriaColor = criteriaColorMap[row.criteria];
 
                     return (
                       <TableRow key={row.id}>
                         {span > 0 && (
-                          <TableCell
-                            rowSpan={span}
-                            className="text-center align-middle whitespace-pre-line border-r border-[#E5E5E5] p-2"
-                            style={{ backgroundColor: criteriaBg }}
-                          >
+                          <TableCell rowSpan={span} style={{ backgroundColor: criteriaBg }}>
                             <div
-                              className="leading-[1.3] text-[1.3rem] font-medium"
+                              className="text-center"
                               style={criteriaColor ? { color: criteriaColor } : undefined}
                               dangerouslySetInnerHTML={{ __html: String(row.criteria).replace(/\n/g, '<br/>') }}
                             />
                           </TableCell>
                         )}
-                        <TableCell
-                          className="cursor-pointer py-2 px-3 align-middle text-left whitespace-normal break-all leading-[1.3] text-[1.3rem]"
-                          style={{ backgroundColor: detailsBg }}
-                          onClick={() => handleCellClicked(row)}
-                        >
+                        <TableCell style={{ backgroundColor: detailsBg }} onClick={() => handleCellClicked(row)}>
                           <div dangerouslySetInnerHTML={{ __html: applyDetailsColor(String(row.details)) }} />
                         </TableCell>
                       </TableRow>
