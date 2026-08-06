@@ -296,7 +296,7 @@
     "id": "LTPZ118",
     "path": "shared/components/popups",
     "dep4": "휴대폰 전자서명 발송이력조회",
-    "file": "심사요청",
+    "file": "전환_가입설계",
     "plan": "이현숙",
     "dev": "장유나",
     "sdate": "",
