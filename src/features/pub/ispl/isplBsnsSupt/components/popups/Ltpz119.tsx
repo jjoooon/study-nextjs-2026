@@ -7,11 +7,12 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import '@/shared/lib/agGridPub';
-import { Grid, Grow, Typo } from '@atoms';
+import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+import { TableMore } from '@common/TablePagination';
 
 import { ResetIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -28,44 +29,6 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import '@/shared/lib/agGridPub';
-
-type DummyDataType1 = {
-  id: number;
-  field01: string | number;
-  field02: string | number;
-};
-const DummyData1: DummyDataType1[] = [
-  {
-    id: 1,
-    field01: '2006년 5월 심사가이드라인.xlsx',
-    field02: '2,849KB',
-  },
-  {
-    id: 2,
-    field01: '2006년 5월 심사가이드라인.xlsx',
-    field02: '2,849KB',
-  },
-  {
-    id: 3,
-    field01: '2006년 5월 심사가이드라인.xlsx',
-    field02: '2,849KB',
-  },
-  {
-    id: 4,
-    field01: '2006년 5월 심사가이드라인.xlsx',
-    field02: '2,849KB',
-  },
-  {
-    id: 5,
-    field01: '2006년 5월 심사가이드라인.xlsx',
-    field02: '2,849KB',
-  },
-  {
-    id: 6,
-    field01: '2006년 5월 심사가이드라인.xlsx',
-    field02: '2,849KB',
-  },
-];
 
 type DummyDataType2 = {
   id: number;
@@ -170,9 +133,55 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 export const Ltpz119 = () => {
-  const [rowData1] = React.useState<DummyDataType1[]>(DummyData1);
-  const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
+  const pageSize = 4;
+  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(() => DummyData2.slice(0, pageSize));
+  const [loadedCount, setLoadedCount] = React.useState(pageSize);
+  const [totalCount, setTotalCount] = React.useState(DummyData2.length);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const gridRef = React.useRef<AgGridReact<DummyDataType2>>(null);
+
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 데이터 호출 모사 (API 호출)
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = DummyData2.slice(start, end);
+      return {
+        items,
+        totalCount: DummyData2.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // 다음 데이터 로드 (onLoadNext 콜백)
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+    setRowData2((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  // 전체 데이터 로드 (onLoadAll 콜백)
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+    const res = await fetchMockData(1, totalCount);
+    setRowData2(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  // 목록 접기 (onLoadReset 콜백)
+  const handleLoadReset = React.useCallback(() => {
+    setRowData2((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
 
   // 오늘 날짜 기준 1주일 전 ~ 오늘 계산
   const getInitialDateRange = () => {
@@ -195,26 +204,9 @@ export const Ltpz119 = () => {
 
   const [dateRange, setDateRange] = React.useState(getInitialDateRange);
 
-  // AgGrid Column
-  const columnDefs1: ColDef<DummyDataType1>[] = [
-    {
-      headerName: '파일목록',
-      field: 'field01',
-      flex: 10,
-      tooltipValueGetter: createTooltipValueGetter<DummyDataType1>({ field: 'field01' }),
-    },
-    {
-      headerName: '파일크기',
-      field: 'field02',
-      flex: 1,
-      cellClass: 'text-center',
-      minWidth: attributeColumnWidth(90),
-    },
-  ];
-
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
-      headerName: '문서',
+      headerName: '문서명',
       field: 'field01',
       flex: 1,
       cellClass: 'text-center',
@@ -286,43 +278,10 @@ export const Ltpz119 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection>
-          <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
-            <TableFold variant="default">
-              <TableFoldHead title="파일목록">
-                <Grow>
-                  <Button color="gray" variant="outlined">
-                    파일삭제
-                  </Button>
-                </Grow>
-              </TableFoldHead>
-              <TableFoldBody>
-                <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
-                  <AgGridReact<DummyDataType1>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData1}
-                    columnDefs={columnDefs1}
-                    defaultColDef={{ sortable: true, resizable: true }}
-                    singleClickEdit={true}
-                    rowSelection={{
-                      mode: 'multiRow',
-                      headerCheckbox: true,
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    selectionColumnDef={{
-                      width: 30,
-                      cellClass: 'text-center editable-cell',
-                    }}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
-                  />
-                </div>
-              </TableFoldBody>
-            </TableFold>
+          <Grid className="w-full grid-rows-[1fr] h-full" gap={3}>
             <TableFold variant="default">
               <TableFoldHead title="첨부문서 결재 관리" />
-              <TableFoldBody>
+              <TableFoldBody className="grid-rows-[auto_1fr]">
                 <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
                   <FormTable variant="head">
                     <FormRow className="w-full">
@@ -363,28 +322,43 @@ export const Ltpz119 = () => {
                     </Button>
                   </Grow>
                 </Grow>
-                <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
-                  <AgGridReact<DummyDataType2>
-                    getRowId={(params) => String(params.data.id)}
-                    noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={rowData2}
-                    columnDefs={columnDefs2}
-                    defaultColDef={{ sortable: true, resizable: true }}
-                    singleClickEdit={true}
-                    rowSelection={{
-                      mode: 'multiRow',
-                      headerCheckbox: true,
-                      checkboxes: true,
-                      enableClickSelection: false,
-                    }}
-                    selectionColumnDef={{
-                      width: 30,
-                      cellClass: 'text-center editable-cell',
-                    }}
-                    tooltipShowMode="whenTruncated"
-                    tooltipShowDelay={0}
+
+                <Gcol gap={1}>
+                  <div className="ag-theme-alpine inner-scroll" data-page={pageSize}>
+                    <AgGridReact<DummyDataType2>
+                      ref={gridRef}
+                      getRowId={(params) => String(params.data.id)}
+                      noRowsOverlayComponent={AgGridEmptyComponent}
+                      rowData={rowData2}
+                      columnDefs={columnDefs2}
+                      defaultColDef={{ sortable: true, resizable: true }}
+                      singleClickEdit={true}
+                      rowSelection={{
+                        mode: 'multiRow',
+                        headerCheckbox: true,
+                        checkboxes: true,
+                        enableClickSelection: false,
+                      }}
+                      selectionColumnDef={{
+                        width: 30,
+                        cellClass: 'text-center editable-cell',
+                      }}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      domLayout="normal"
+                    />
+                  </div>
+                  <TableMore
+                    gridRef={gridRef}
+                    loadedCount={loadedCount}
+                    totalCount={totalCount}
+                    pageSize={pageSize}
+                    onLoadAll={handleLoadAll}
+                    onLoadNext={handleLoadNext}
+                    onLoadReset={handleLoadReset}
+                    isReset={true}
                   />
-                </div>
+                </Gcol>
               </TableFoldBody>
             </TableFold>
           </Grid>

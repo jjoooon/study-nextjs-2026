@@ -29,7 +29,7 @@ const DummyData: DummyDataType[] = [
 
 function CustomTooltip(props: { value: string }) {
   return (
-    <div className="bg-gray-800 text-white p-2 rounded shadow-lg text-sm tracking-tighter">
+    <div className="bg-[#FFF] border-[0.1rem] border-solid border-[#CCC] rounded-[0.6rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]">
       <p>{props.value}</p>
     </div>
   );

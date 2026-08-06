@@ -27,7 +27,7 @@
   border-left: 0;
   border-right: 0;
   border-top: 0.2rem solid #000;
-  /* overflow: visible !important; */
+  overflow: visible !important;
 }
 
 .ag-center-cols-container > [role='row']:nth-child(2n) {
@@ -508,6 +508,23 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
     0 0.4rem 0.6rem -0.1rem rgb(0 0 0 / 0.1),
     0 0.2rem 0.4rem -0.2rem rgb(0 0 0 / 0.1);
   /* shadow-md */
+  white-space: nowrap;
+}
+
+/* 🔥 수동 지정 클래스(.tooltip-right)가 지정된 셀만 툴팁 우측 정렬 (우측 기준, 좌측 방향 펴짐) */
+.ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-inline-editing:after,
+.ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-focus:after,
+.ag-cell.required.ag-cell-error-border.tooltip-right:focus-within:after {
+  left: auto !important;
+  right: 0.4rem !important;
+}
+
+/* 🔥 화살표 삼각 위치도 우측으로 이동 */
+.ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-inline-editing:before,
+.ag-cell.required.ag-cell-error-border.tooltip-right.ag-cell-focus:before,
+.ag-cell.required.ag-cell-error-border.tooltip-right:focus-within:before {
+  left: auto !important;
+  right: 1rem !important;
 }
 
 /* cellClassRules로 지정하는 메시지 클래스별 content 오버라이딩 */

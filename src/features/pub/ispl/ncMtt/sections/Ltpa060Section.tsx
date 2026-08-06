@@ -409,6 +409,9 @@ export default function Ltpa060Section() {
                         });
                       }}
                       domLayout="normal"
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      tooltipHideDelay={1000}
                     />
                   </div>
                 </TableFoldBody>
@@ -448,6 +451,7 @@ export default function Ltpa060Section() {
                       }}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
+                      tooltipHideDelay={1000}
                       domLayout="normal"
                     />
                   </div>

@@ -14,7 +14,7 @@ import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
-import { ResetIcon, ZoomInIcon, ZoomOutIcon } from '@icons';
+import { ResetIcon, ZoomInIcon, ZoomOutIcon, CloseIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -380,7 +380,23 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
               </Button>
             );
           }
-          return value;
+          return (
+            <Grow className="w-full h-full gap-1 px-1" placement="cc">
+              <span className="truncate text-[1.3rem]">{value}</span>
+              <Button
+                aria-label="파일 삭제"
+                variant="none"
+                only="icon"
+                size="xs"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  params.node.setDataValue('field07', '');
+                }}
+              >
+                <CloseIcon size={12} color="var(--color-gray-60)" />
+              </Button>
+            </Grow>
+          );
         },
       },
       {
@@ -418,7 +434,23 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
               </Button>
             );
           }
-          return value;
+          return (
+            <Grow className="w-full h-full gap-1 px-1" placement="cc">
+              <span className="truncate text-[1.3rem]">{value}</span>
+              <Button
+                aria-label="파일 삭제"
+                variant="none"
+                only="icon"
+                size="xs"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  params.node.setDataValue('field09', '');
+                }}
+              >
+                <CloseIcon size={12} color="var(--color-gray-60)" />
+              </Button>
+            </Grow>
+          );
         },
       },
     ];
@@ -552,7 +584,23 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
               </Button>
             );
           }
-          return value;
+          return (
+            <Grow className="w-full h-full gap-1 px-1" placement="cc">
+              <span className="truncate text-[1.3rem]">{value}</span>
+              <Button
+                aria-label="파일 삭제"
+                variant="none"
+                only="icon"
+                size="xs"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  params.node.setDataValue('field06', '');
+                }}
+              >
+                <CloseIcon size={12} color="var(--color-gray-60)" />
+              </Button>
+            </Grow>
+          );
         },
       },
     ];
@@ -842,7 +890,7 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
                         <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                       </Button>
                       <Button variant="outlined" className="ml-4">
-                        결제관리
+                        결재관리
                       </Button>
                     </Grow>
                   )}

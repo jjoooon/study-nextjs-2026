@@ -11,6 +11,7 @@ import {
   createEditableCallbackForButton,
   useDynamicColumnWidths,
   AgGridEmptyComponent,
+  PortalErrorTooltipCellEditor,
 } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -96,9 +97,13 @@ const Ltpz351 = ({ noticeType = 'B', isPayExempt = true }: Ltpz351Props) => {
         flex: 1,
         cellClass: isPayExemptState ? 'text-center editable-cell' : 'text-center',
         editable: isPayExemptState,
-        cellEditor: 'agTextCellEditor',
+        cellEditor: PortalErrorTooltipCellEditor,
         cellEditorParams: {
           maxLength: 13,
+          getErrorMessage: (val: string | null | undefined) => {
+            if (!val) return '휴대폰 번호를 입력해주세요.';
+            return null;
+          },
         },
       },
     ],

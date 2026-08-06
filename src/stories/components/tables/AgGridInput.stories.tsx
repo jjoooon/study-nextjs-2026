@@ -24,6 +24,7 @@ import {
   InputWithSearchCellRenderer,
   InputWithSearchCellEditor,
   createEditableCallbackForButton,
+  PortalErrorTooltipCellEditor,
 } from '@aggrid';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -277,6 +278,59 @@ export const ErrorFocusTest: StoryObj = {
     );
   },
 };
+
+// 🔥 방안 4: React Portal 기반 에러 툴팁 컬럼 정의
+const columnDefsPortal: ColDef<Dummy2DataType>[] = [
+  {
+    headerName: '이름',
+    field: 'label',
+    flex: 1,
+    editable: false,
+  },
+  {
+    headerName: '코드 (방안 4: Portal 기반 툴팁 CellEditor)',
+    field: 'code',
+    flex: 1,
+    editable: true,
+    cellEditor: PortalErrorTooltipCellEditor,
+    cellEditorParams: {
+      getErrorMessage: (val: string | null | undefined) => {
+        if (!val) return '코드를 입력해 주세요 (Portal 방식).';
+        if (typeof val === 'string' && val.length <= 2) return '코드는 3자 이상 입력해야 합니다.';
+        return null;
+      },
+    },
+  },
+];
+
+export const PortalErrorTooltipOption: StoryObj = {
+  render: () => {
+    const [rowData] = React.useState<Dummy2DataType[]>(Dummy2Data);
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px' }}>
+        <div>
+          <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '4px' }}>
+            ✨ 방안 4: React Portal 기반 에러 툴팁 (그리드 밖 절단 100% 방지)
+          </h3>
+          <p style={{ fontSize: '13px', color: '#666', margin: 0 }}>
+            그리드 폭이 가변적이거나 반응형 해상도/확대축소 시에도 document.body 상위 포털에 말풍선을 렌더링하여 절단
+            현상을 방지합니다.
+          </p>
+        </div>
+        <div className="ag-theme-alpine" style={{ height: 260 }}>
+          <AgGridReact<Dummy2DataType>
+            getRowId={(params) => String(params.data.id)}
+            rowData={rowData}
+            columnDefs={columnDefsPortal}
+            singleClickEdit={true}
+          />
+        </div>
+      </div>
+    );
+  },
+};
+
 
 const meta: Meta<typeof AgGridReact<DummyDataType>> = {
   title: 'Components/Tables/AgGrid/CellEditor Input',
