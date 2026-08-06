@@ -182,11 +182,11 @@
 }
 
 .v109 [class*="data-[state=checked]:bg-[#414141]"][data-state='checked'] {
-  background-color: #414141;
-  color: #ffffff;
+  background-color: #414141 !important;
+  color: #ffffff !important;
   border-style: solid;
   border-width: 1px;
-  border-color: #414141;
+  border-color: #414141 !important;
 }
 
 @media (hover: hover) {
@@ -343,15 +343,6 @@
   padding-right: 0 !important;
 }
 
-/* agGrid .ag-body-viewport.ag-layout-normal 수직 스크롤 생성 스타일 (.v109 전용 보정) */
-.v109 .ag-theme-alpine .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll .ag-body-viewport.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll .ag-body-viewport:where(.ag-layout-normal) {
-  height: 15rem !important;
-  /* max-height: 15rem !important; */
-}
 
 .v109 .ag-body-viewport.ag-layout-normal,
 .v109 .ag-body-viewport:where(.ag-layout-normal) {
