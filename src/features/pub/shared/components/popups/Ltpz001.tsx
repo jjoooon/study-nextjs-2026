@@ -15,6 +15,7 @@ import { ConfirmDialog } from '@common/ConfirmDialog';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
+import useMounted from '@hooks/useMounted';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -48,7 +49,6 @@ type DummyDataType = {
   field7: string;
   field8: string;
   isCheck: boolean;
-  checked?: boolean;
   disabled?: boolean;
   allDisabled?: boolean;
 };
@@ -66,7 +66,6 @@ const DummyData: DummyDataType[] = [
     field7: 'Y',
     field8: 'Y',
     isCheck: true,
-    checked: false,
     disabled: false,
     allDisabled: false,
   },
@@ -82,8 +81,7 @@ const DummyData: DummyDataType[] = [
     field6: 'Y',
     field7: 'Y',
     field8: 'Y',
-    isCheck: false,
-    checked: false,
+    isCheck: true,
     disabled: false,
     allDisabled: false,
   },
@@ -99,7 +97,6 @@ const DummyData: DummyDataType[] = [
     field7: 'Y',
     field8: 'Y',
     isCheck: false,
-    checked: false,
     disabled: false,
     allDisabled: false,
   },
@@ -115,7 +112,6 @@ const DummyData: DummyDataType[] = [
     field7: 'Y',
     field8: 'Y',
     isCheck: false,
-    checked: false,
     disabled: false, // 선택 불가 예시
     allDisabled: false,
   },
@@ -131,7 +127,6 @@ const DummyData: DummyDataType[] = [
     field7: 'Y',
     field8: 'Y',
     isCheck: false,
-    checked: false,
     disabled: false,
     allDisabled: false, // 선택 불가 예시
   },
@@ -147,7 +142,6 @@ const DummyData: DummyDataType[] = [
     field7: 'Y',
     field8: 'Y',
     isCheck: false,
-    checked: false,
     disabled: false,
     allDisabled: false,
   },
@@ -163,7 +157,6 @@ const DummyData: DummyDataType[] = [
     field7: 'Y',
     field8: 'Y',
     isCheck: false,
-    checked: false,
     disabled: false,
     allDisabled: false,
   },
@@ -226,7 +219,22 @@ const Ltpz001 = () => {
     },
   ];
 
-  const [rowData] = useState<DummyDataType[]>(DummyData);
+  const [rowData, setRowData] = useState<DummyDataType[]>(DummyData);
+
+  // 2초 후 전체 rowData의 isCheck 값을 true로 변경 시뮬레이션 (useMounted 적용)
+  useMounted(() => {
+    const timer = setTimeout(() => {
+      console.log('--- 2초 후 전체 체크 데이터 변경 ---');
+      setRowData((prev) =>
+        prev.map((item) => ({
+          ...item,
+          isCheck: true,
+        }))
+      );
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  });
   // 발행 방법별(이메일, 팩스 등) 입력 폼 상태 관리
   const [form, setFormField] = useFormFields({
     type01: '',
@@ -373,9 +381,17 @@ const Ltpz001 = () => {
                                 }
                               });
                             }}
-                            onSelectionChanged={(event) => {
+                            onRowDataUpdated={(event) => {
+                              // rowData 업데이트가 완료된 직후 isCheck 상태를 노드 선택 상태로 즉시 반영
+                              event.api.forEachNode((node) => {
+                                if (node.data?.isCheck) {
+                                  node.setSelected(true);
+                                } else if (node.data) {
+                                  node.setSelected(false);
+                                }
+                              });
                               const selectedRows = event.api.getSelectedRows();
-                              console.log('선택된 출력물 데이터:', selectedRows);
+                              console.log('데이터 갱신 후 선택된 행:', selectedRows);
                             }}
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
