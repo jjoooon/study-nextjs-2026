@@ -373,6 +373,10 @@ const Ltpz001 = () => {
                                 }
                               });
                             }}
+                            onSelectionChanged={(event) => {
+                              const selectedRows = event.api.getSelectedRows();
+                              console.log('선택된 출력물 데이터:', selectedRows);
+                            }}
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />

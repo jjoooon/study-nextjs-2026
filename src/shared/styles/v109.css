@@ -36,7 +36,7 @@
   left: 0;
   width: 100%;
   height: 0.1rem;
-  background-color: var(--color-gray-15, #e5e7eb) !important;
+  background-color: var(--color-primary-50, #ff5c2e) !important;
   z-index: 0;
 }
 
@@ -66,8 +66,8 @@
 
 .v109 .cp-tabs-trigger[data-state="active"] {
   border-top: 0.3rem solid var(--color-primary-50, #ff5c2e) !important;
-  border-left: 0.1rem solid var(--color-gray-15, #d1d5db) !important;
-  border-right: 0.1rem solid var(--color-gray-15, #d1d5db) !important;
+  border-left: 0.1rem solid var(--color-primary-50, #ff5c2e) !important;
+  border-right: 0.1rem solid var(--color-primary-50, #ff5c2e) !important;
   border-bottom: 0 !important;
   margin-bottom: -0.1rem;
   z-index: 1;
@@ -2143,7 +2143,7 @@
 
 @media (hover: hover) {
   .v109 [class*="hover:border-[#414141]"]:hover {
-    border-color: #414141;
+    border-color: #414141 !important;
   }
 }
 
@@ -2314,3 +2314,17 @@
 }
 
 .v109 .ltpa35002a-LayoutMainBody{max-height: calc(100dvh - 23.8rem);}
+/* BulletList info em color Chrome 109 호환 스타일 */
+.v109 [class*="[&>li_em]:text-[var(--color-information-50)]"] > li em,
+.v109 [class*="[&>li>em]:text-[var(--color-information-50)]"] > li em,
+.v109 .\[\&\>li_em\]\:text-\[var\(--color-information-50\)\] > li em {
+  color: var(--color-information-50);
+  font-weight: 700;
+}
+
+/* Chrome 109 전용 px-3 호환 스타일 */
+.v109 .px-3,
+.v109 [class*="px-3"] {
+  padding-left: var(--spacing-3) !important;
+  padding-right: var(--spacing-3) !important;
+}
