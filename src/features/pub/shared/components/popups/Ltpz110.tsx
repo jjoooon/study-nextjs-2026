@@ -4,7 +4,6 @@
 'use client';
 
 import { Gcol, Grow, Typo } from '@atoms';
-import { BulletItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import '@/shared/lib/agGridPub';
 
@@ -42,7 +41,7 @@ const Ltpz110 = ({ open = true, onOpenChange, isID, defaultValues }: Ltpz110Prop
             </Typo>
             {!isID && (
               <Typo tag={'p'} variant={'body-xl'}>
-                (Ltpz110)
+                (LTPZ110)
               </Typo>
             )}
           </DialogTitle>
@@ -111,9 +110,11 @@ const Ltpz110 = ({ open = true, onOpenChange, isID, defaultValues }: Ltpz110Prop
               </FormRow>
             </FormTable>
             {!isID && (
-              <BulletItem size="sm" type="star">
-                간편고지 정보 변경 사항은 저장되지 않으므로, 알릴사항 입력시 새로 입력하시기 바랍니다.
-              </BulletItem>
+              <Gcol className="w-full" placement="ss" variant="box-info">
+                <Typo icon="info" variant="body-sm">
+                  간편고지 정보 변경 사항은 저장되지 않으므로, 알릴사항 입력시 새로 입력하시기 바랍니다.
+                </Typo>
+              </Gcol>
             )}
           </Gcol>
         </DialogSection>

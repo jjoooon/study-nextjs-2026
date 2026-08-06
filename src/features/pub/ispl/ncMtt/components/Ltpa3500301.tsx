@@ -1708,7 +1708,7 @@ export const Ltpa3500301 = ({
           </QuestionRadioCard>
           <QuestionRadioCard
             id="question-card-16"
-            className={highlightBadgeNum === 16 ? 'border-[0.2rem] border-[#FF5C2E] mb-[1.4rem]' : 'mb-[1.4rem]'}
+            className={highlightBadgeNum === 16 ? 'border-[0.2rem] border-[#FF5C2E]' : ''}
           >
             <QuestionRadioCardHeader>
               <QuestionRadioCardHeaderTitle badgeLabel="16">현재 키와 몸무게</QuestionRadioCardHeaderTitle>

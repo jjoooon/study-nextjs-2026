@@ -113,7 +113,7 @@ const Ltpz118 = () => {
           </div>
           <Gcol className="w-full" placement="ss" variant="box-info">
             <Typo icon="info" variant="body-sm">
-              <b>위 전자서명 이력은 발송요청이력이며, 실제 발송결과는 UMS 결과조회에서 확인바랍니다.</b>
+              위 전자서명 이력은 발송요청이력이며, 실제 발송결과는 UMS 결과조회에서 확인바랍니다.
             </Typo>
           </Gcol>
         </DialogSection>

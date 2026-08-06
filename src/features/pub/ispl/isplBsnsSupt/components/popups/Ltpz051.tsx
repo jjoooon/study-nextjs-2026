@@ -320,7 +320,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
             </FormTable>
           </Grow>
           {/* 팝업 본문 영역 */}
-          <Grid className="w-full grid-rows-[auto_auto_1fr]" gap={3}>
+          <Grid className="w-full grid-rows-[auto_1fr]" gap={3}>
             <Gcol gap={2}>
               <Gcol variant={'box-info'}>
                 <Typo variant="body-sm" icon={'info'}>
@@ -464,7 +464,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
                       상해급수가 동일하더라도 고객님의 정확한 직업정보의 관리를 위하려 재확인 바랍니다.
                     </BulletListItem>
                     {/* M2. 수정 */}
-                    <BulletListItem className="mt-2" size={'sm'} type="dotBig">
+                    <BulletListItem className="mt-2" size={'sm'} type="dot">
                       관련문서: [대내-150-1552]직업정보(상해급수) 일지 관련 신계약 프로세스 변경통보, 장기계약관리파트
                     </BulletListItem>
                   </BulletList>

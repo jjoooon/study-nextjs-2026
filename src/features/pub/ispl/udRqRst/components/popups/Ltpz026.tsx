@@ -731,7 +731,7 @@ const Ltpz026 = () => {
                             {rowDataT1.length}개
                           </Badge>
                         </Grow>
-                        <div className="ag-theme-alpine">
+                        <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                           <AgGridReact<DummyDataTypeT1>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -748,7 +748,7 @@ const Ltpz026 = () => {
                         </div>
                       </Grid>
                       {/* [그리드 B] 보험료 할증 리스트 */}
-                      <Grid className="grid-rows-[auto_1fr]">
+                      <Grid className="grid-rows-[auto_1fr] inner-scroll" data-row={DummyData.length}>
                         <Grow placement="sc">
                           <Typo tag={'strong'} variant={'body-sm'} icon={'dot'} weight={'bold'} color={'default'}>
                             보험료 할증
@@ -757,7 +757,7 @@ const Ltpz026 = () => {
                             {rowDataT2.length}개
                           </Badge>
                         </Grow>
-                        <div className="ag-theme-alpine">
+                        <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                           <AgGridReact<DummyDataTypeT2>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -781,7 +781,7 @@ const Ltpz026 = () => {
                             {rowDataT3.length}개
                           </Badge>
                         </Grow>
-                        <div className="w-full ag-theme-alpine">
+                        <div className="w-full ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                           <AgGridReact<DummyDataTypeT3>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}

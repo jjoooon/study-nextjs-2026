@@ -798,6 +798,7 @@
     font-weight: 400 !important;
     color: var(--color-primary-50);
     opacity: 1 !important;
+    letter-spacing: -0.11rem !important;
   }
 
   .filepond--file-info-main::before {
