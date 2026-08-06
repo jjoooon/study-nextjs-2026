@@ -304,7 +304,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
                   <option value="018">018</option>
                   <option value="019">019</option>
                 </select>
-                <span className="text-gray-500">-</span>
+                <span className="text-gray-50">-</span>
                 <input
                   type="text"
                   className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"
@@ -313,7 +313,7 @@ export function CustomerSearchDialog({ title = '고객찾기', description = '',
                   placeholder="0000"
                   maxLength={4}
                 />
-                <span className="text-gray-500">-</span>
+                <span className="text-gray-50">-</span>
                 <input
                   type="text"
                   className="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1"

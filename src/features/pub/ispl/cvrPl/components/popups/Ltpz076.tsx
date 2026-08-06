@@ -346,7 +346,7 @@ const Ltpz076 = () => {
                 </Button>
               </TableFoldHead>
               <TableFoldBody className="grid grid-rows-[1fr]">
-                <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
+                <div className="ag-theme-alpine inner-scroll ltpz076-target-grid" data-row={rowData2.length}>
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     rowData={rowData2}

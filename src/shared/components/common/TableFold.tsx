@@ -84,7 +84,10 @@ export const TableFoldBody = ({ children, variant, className }: TableFoldHeadPro
   const v = variant ?? context?.variant ?? 'accordion';
   const isHidden = v === 'accordion' && !context?.open;
   return (
-    <div className={cn('grid w-full', className)} style={isHidden ? { height: 0, overflow: 'hidden' } : undefined}>
+    <div
+      className={cn('grid w-full cp-tablecontext', className)}
+      style={isHidden ? { height: 0, overflow: 'hidden' } : undefined}
+    >
       {children}
     </div>
   );

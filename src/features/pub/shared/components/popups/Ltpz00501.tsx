@@ -263,10 +263,7 @@ const Ltpz00501 = ({ onClose }: Ltpz00501Props) => {
 
   return (
     <Grid className="w-full grid-rows-[1fr_auto] gap-[2rem]">
-      <div
-        className="relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc[+
-    100%+1rem]] h-full rounded-tr-[1rem] overflow-hidden rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]"
-      >
+      <div className="ltpz00501-content-box relative [&>div]:absolute [&>div]:p-3 [&>div]:top-0 [&>div]:left-0 w-[calc(+100%+1rem)] h-full rounded-tr-[1rem] overflow-hidden rounded-br-[1rem] rounded-bl-[1rem] border-[0.1rem]! border-solid border-[#ccc]">
         <div className="overflow-x-hidden overflow-y-auto w-full h-full">
           <Gcol className="w-full" placement="ss" gap={3}>
             <Gcol gap={3} placement="ss">

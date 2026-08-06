@@ -90,7 +90,7 @@ const Ltpz104 = () => {
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable caption="설계번호" variant="none" cols={['w-[1rem]', 'w-auto']}>
+            <FormTable caption="설계번호" variant="none" cols={['w-1', 'w-auto']}>
               <FormRow>
                 <FormCell title={'설계번호'}>
                   <Input value={'LA123123123123-1'} variant="info" readOnly />

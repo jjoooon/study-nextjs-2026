@@ -205,21 +205,28 @@ export const Ltpa3500301 = ({
   });
 
   const scrollToCard = (badgeNum: BadgeId) => {
-    const anchor = document.getElementById(`question-card-${badgeNum}`);
-    if (!anchor) return;
+    // React 렌더링 업데이트 후 DOM 위치 계산을 위해 setTimeout(..., 10) 적용
+    setTimeout(() => {
+      const anchor = document.getElementById(`question-card-${badgeNum}`);
+      if (!anchor) return;
 
-    const container = anchor.closest('[data-layout="scroll-item"]') as HTMLElement | null;
-    if (!container) {
+      // 1. 브라우저 표준 scrollIntoView (Chrome 109 포함 모든 환경 호환)
       anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
 
-    const stickyHeader = container.querySelector('.sticky') as HTMLElement | null;
-    const stickyHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
-    const targetTop =
-      anchor.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - stickyHeight;
+      // 2. 컨테이너 내부 sticky 헤더 오프셋 보정
+      const container = anchor.closest('[data-layout="scroll-item"]') as HTMLElement | null;
+      if (container && container.scrollHeight > container.clientHeight) {
+        const stickyHeader = container.querySelector('.sticky') as HTMLElement | null;
+        const stickyHeight = stickyHeader ? stickyHeader.offsetHeight : 0;
+        const targetTop =
+          anchor.getBoundingClientRect().top -
+          container.getBoundingClientRect().top +
+          container.scrollTop -
+          stickyHeight;
 
-    container.scrollTo({ top: targetTop - 3, behavior: 'smooth' });
+        container.scrollTop = Math.max(0, targetTop - 8);
+      }
+    }, 10);
   };
 
   const getAnswerByBadgeId = (badgeId: BadgeId): 'Y' | 'N' | '' => {
@@ -340,9 +347,9 @@ export const Ltpa3500301 = ({
   }, [pageSize]);
 
   return (
-    <LayoutScrollWrap className={`${sampleMode ? 'grid-cols-[1fr]' : 'grid-cols-[1fr_auto]'} gap-3`}>
+    <LayoutScrollWrap className={`${sampleMode ? 'grid-cols-[1fr]' : 'grid-cols-[1fr_auto]'} gap-3 h-full`}>
       <LayoutScrollItem
-        className="w-full h-full grid grid-rows-[auto_1fr] gap-3 scroll-smooth"
+        className="w-full h-full grid grid-rows-[auto_1fr] gap-3 scroll-smooth overflow-y-auto"
         data-layout="scroll-item"
       >
         {!sampleMode && (
@@ -1768,13 +1775,8 @@ export const Ltpa3500301 = ({
         </Gcol>
       </LayoutScrollItem>
       {!sampleMode && (
-        <LayoutScrollItem
-          className={`h-[100% - 3rem] w-full gap-1 flex flex-col sticky ${mtValue === '-3rem' ? 'mt-[-3rem]' : ''}`}
-        >
-          <Gcol
-            className="top-0 z-20 w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem]"
-            gap={2}
-          >
+        <LayoutScrollItem className={`w-full gap-1 flex flex-col shrink-0 ${mtValue === '-3rem' ? 'mt-[-3rem]' : ''}`}>
+          <Gcol className="w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem] bg-white" gap={2}>
             <Gcol className={isCollapsed ? 'bg-[#F4F4F4] rounded-[0.6rem] p-1' : 'bg-[#F4F4F4] rounded-t-[0.6rem] p-1'}>
               <Typo variant={'body-sm'} weight={'bold'}>
                 답변내용
@@ -1818,7 +1820,7 @@ export const Ltpa3500301 = ({
             )}
           </Gcol>
           <Gcol
-            className="sticky top-0 z-20 w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem] text-center"
+            className="w-[5.6rem] border-[0.1rem] border-solid border-[#1E2124] rounded-[0.6rem] text-center bg-white"
             gap={2}
           >
             <Gcol className="bg-[#F4F4F4] rounded-t-[0.6rem] py-1" gap={1}>

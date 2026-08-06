@@ -738,7 +738,7 @@ export function DatePickerInput({
   const multiSelected = Array.isArray(selected) ? selected : undefined;
 
   return (
-    <div className="relative flex gap-1 items-center justify-center">
+    <div className="cp-datepicker relative flex gap-1 items-center justify-center">
       {mode === 'range' ? (
         <>
           <input

@@ -1,5 +1,6 @@
 // @ts-ignore
 import '../src/shared/styles/globals.css';
+import '../src/shared/lib/browserDetector';
 import { createElement, Fragment } from 'react';
 import { Provider } from 'react-redux';
 import type { Preview } from '@storybook/nextjs-vite';

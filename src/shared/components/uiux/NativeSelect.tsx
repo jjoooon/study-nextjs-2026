@@ -136,13 +136,11 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
           ? 'hover:border-[var(--color-warning-70)]'
           : 'hover:border-[var(--color-input-border-hover)]';
     const focusStyle = `${
-      isInvalid || isErrorActive
-        ? 'focus:border-[var(--color-danger-50)] focus:ring-[var(--color-danger-5)]'
-        : required
-          ? 'focus:border-[var(--color-warning-70)] focus:border-[0.2rem]'
-          : 'focus:border-[var(--color-gray-100)] focus:border-[0.2rem]'
+      isInvalid || isErrorActive ? 'focus:border-[var(--color-danger-50)] focus:ring-[var(--color-danger-5)]' : required
+      // ? 'focus:border-[#006ff2] focus:ring-1 focus:ring-[#006ff2]'
+      // : 'focus:border-[#006ff2] focus:ring-1 focus:ring-[#006ff2]'
     } 
-      focus:ring-1 ${!isInvalid && !isErrorActive ? 'focus:ring-[var(--color-gray-5)]' : ''} focus:outline-none`;
+      focus:outline-none`;
     const readonlyStyle = readOnly
       ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
       : '';
@@ -173,7 +171,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
               <select
                 ref={localRef}
                 data-slot="native-select"
-                className={cn(variantStyles[variant])}
+                className={cn('cp-nativeselect', variantStyles[variant])}
                 tabIndex={readOnly ? -1 : props.tabIndex}
                 aria-invalid={isErrorActive || undefined}
                 aria-describedby={isErrorActive ? errorId : undefined}

@@ -68,7 +68,7 @@ export function LTPA350Step2({ onCalcGuidelineClick }: LTPA350Step2Props) {
   const [testError, setTestError] = useState(false);
 
   return (
-    <Gcol className="w-full rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]">
+    <Gcol className="cp-mainfoot w-full rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]">
       <form
         id="page2-MainForm"
         className="w-full"
@@ -84,14 +84,21 @@ export function LTPA350Step2({ onCalcGuidelineClick }: LTPA350Step2Props) {
             lineTop={false}
             variant={'none'}
             cols={['w-[9rem]', '', 'w-[8rem]', '', 'w-[8rem]', '']}
-            className="w-auto"
+            className="w-auto cp-mainfoot-tb"
           >
             <FormRow>
               <FormCell title="만기금(환급률)">
                 <Button variant={'outlined'} color={'gray'} size={'sm'}>
                   예상
                 </Button>
-                <Input type="tel" commaAmount={true} value="100,000" readOnly={true} after={<span>원</span>} />
+                <Input
+                  type="tel"
+                  commaAmount={true}
+                  value="100,000"
+                  className="cp-mainfoot-input"
+                  readOnly={true}
+                  after={<span>원</span>}
+                />
                 <Input
                   type="text"
                   value={refundRate}
@@ -106,7 +113,7 @@ export function LTPA350Step2({ onCalcGuidelineClick }: LTPA350Step2Props) {
                   commaAmount={true}
                   value="100,000"
                   readOnly={true}
-                  className="text-right"
+                  className="cp-mainfoot-input text-right"
                   after={<span>원</span>}
                 />
               </FormCell>
@@ -116,13 +123,13 @@ export function LTPA350Step2({ onCalcGuidelineClick }: LTPA350Step2Props) {
                   commaAmount={true}
                   value="100,000"
                   readOnly={true}
-                  className="text-right"
+                  className="cp-mainfoot-input text-right"
                   after={<span>원</span>}
                 />
               </FormCell>
             </FormRow>
           </FormTable>
-          <FormTable lineTop={false} className="w-auto" variant={'none'} cols={['w-[7rem]', '']}>
+          <FormTable lineTop={false} className="w-auto cp-mainfoot-tb-sum" variant={'none'} cols={['w-[7rem]', '']}>
             <FormRow>
               <FormCell title="합계보험료">
                 <Input
@@ -181,7 +188,7 @@ export function LTPA350Step2({ onCalcGuidelineClick }: LTPA350Step2Props) {
 // LTPA350 1단계 하단 패널(저장 중심)
 export function LTPA350Step1() {
   return (
-    <Gcol className="w-full rounded-tl-[1rem] overflow-hidden rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]">
+    <Gcol className="cp-mainfoot w-full rounded-tl-[1rem] overflow-hidden rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)]">
       <Grow placement={'bwc'} className="px-3 pt-2 pb-2.5 bg-[var(--color-gray-5)]">
         <Button variant={'outlined'} color={'gray'} size={'xl'}>
           동영상매뉴얼
@@ -213,7 +220,7 @@ export function MainBottom({
       ? 'rounded-tl-[1rem] rounded-tr-[1rem] bg-gray-0 p-0 bg-[var(--color-gray-0)] border border-[var(--color-gray-15)] border-b-0 shadow-[0_-0.1rem_1rem_0_rgba(0,0,0,0.07)] [&>div+div]:bg-[var(--color-gray-5)] [&>div+div]:!rounded-[0]'
       : 'border-0 !shadow-none [&_div]:!px-0 ';
   return (
-    <Gcol gap={0} className={cn('w-full', classStyle, className)}>
+    <Gcol gap={0} className={cn('cp-mainfoot w-full', classStyle, className)}>
       {children}
     </Gcol>
   );
@@ -226,7 +233,7 @@ export function MainBottomItem({ children, className }: { children: React.ReactN
     <Grow
       placement={'bwc'}
       className={cn(
-        'px-3 pt-2 pb-2.5 gap-3 rounded-t-[1rem] [&>*]:last:w-full [&>*+*]:last:w-auto [&>*]:last:justify-end flex-wrap',
+        'px-3 pt-2 pb-2.5 gap-3 rounded-t-[1rem] [&>*:last]:w-full [&>*+*:last]:w-auto [&>*:last]:justify-end flex-wrap',
         className
       )}
     >

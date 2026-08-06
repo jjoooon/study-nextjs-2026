@@ -146,7 +146,7 @@ export default meta;
 export const Default: StoryObj = {
   render: () => (
     <div>
-      <div className="ag-theme-alpine">
+      <div className="ag-theme-alpine cp-aggrid">
         <AgGridReact<DummyDataType>
           // 필수
           getRowId={(params) => String(params.data.id)} // 각 row의 고유 id 지정(React key 역할)

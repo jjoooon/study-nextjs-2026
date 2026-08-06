@@ -9,7 +9,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 import { hasButtonAuth } from '@/shared/utils/authUtils';
 
 const buttonVariants = cva(
-  `relative inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md font-normal transition-all outline-none cursor-pointer leading-[100%] tracking-[-0.13rem] 
+  `cp-button relative inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md font-normal transition-all outline-none cursor-pointer leading-[100%] tracking-[-0.13rem] 
   disabled:pointer-events-none disabled:opacity-100 shrik-0 [&:disabled_svg]:opacity-50 
   focus-visible:ring-2 focus-visible:ring-offset-2 
   has-[>svg]:inline-flex has-[>svg]:items-center has-[>svg]:justify-center`,
@@ -463,6 +463,7 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
         data-slot="button"
         data-variant={variant}
         data-size={size}
+        data-color={color}
         data-only={only}
         className={cn(buttonVariants({ variant, color, size, only }), effectClass, className)}
         type={Comp === 'button' ? (type ?? 'button') : undefined}

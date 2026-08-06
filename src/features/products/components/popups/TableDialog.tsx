@@ -198,36 +198,36 @@ export function TableDialog({
                 <tr>
                   {/* 다중 선택 모드에서만 체크박스 컬럼 표시 */}
                   {allowMultiSelect && (
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-50 uppercase tracking-wider w-12">
                       선택
                     </th>
                   )}
                   <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-50 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                     onClick={() => handleSort('id')}
                   >
                     ID {sortColumn === 'id' && (sortOrder === 'asc' ? '↑' : '↓')}
                   </th>
                   <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-50 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                     onClick={() => handleSort('name')}
                   >
                     이름 {sortColumn === 'name' && (sortOrder === 'asc' ? '↑' : '↓')}
                   </th>
                   <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-50 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                     onClick={() => handleSort('category')}
                   >
                     카테고리 {sortColumn === 'category' && (sortOrder === 'asc' ? '↑' : '↓')}
                   </th>
                   <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-50 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                     onClick={() => handleSort('price')}
                   >
                     가격 {sortColumn === 'price' && (sortOrder === 'asc' ? '↑' : '↓')}
                   </th>
                   <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-50 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                     onClick={() => handleSort('status')}
                   >
                     상태 {sortColumn === 'status' && (sortOrder === 'asc' ? '↑' : '↓')}
@@ -256,7 +256,7 @@ export function TableDialog({
                     )}
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{row.id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{row.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{row.category}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-50">{row.category}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {row.price.toLocaleString()}원
                     </td>
@@ -280,7 +280,7 @@ export function TableDialog({
           </div>
 
           {/* 데이터가 없는 경우 */}
-          {data.length === 0 && <div className="text-center py-8 text-gray-500">표시할 데이터가 없습니다.</div>}
+          {data.length === 0 && <div className="text-center py-8 text-gray-50">표시할 데이터가 없습니다.</div>}
         </div>
 
         {/* 선택된 항목 수 표시 (다중 선택 모드) */}
@@ -294,7 +294,7 @@ export function TableDialog({
         <div className="mt-6 flex justify-between">
           {allowMultiSelect ? (
             <>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-50">
                 {selectedRows.size > 0 ? `${selectedRows.size}개 선택됨` : '항목을 선택해주세요'}
               </div>
               <div className="flex space-x-2">

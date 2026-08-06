@@ -613,7 +613,7 @@ export default function Ltpa010Section() {
           <Grow placement="cc" className="min-h-[3rem]">
             {params.data?.field23 && (
               //유효기간 7이내 className="text-[var(--color-danger-50)]""
-              <Button color="link" className="text-[var(--color-danger-50)]" only="default" size="lg" variant="text">
+              <Button color="link" className="!text-[var(--color-danger-50)]" only="default" size="lg" variant="text">
                 {params.data?.field23}
               </Button>
             )}

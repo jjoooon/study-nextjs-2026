@@ -1309,21 +1309,21 @@ export function editableSelectCellRenderer<RowType>(
   params: ICellRendererParams<RowType> & { align?: 'left' | 'center' | 'right' }
 ) {
   const align = params.align ?? 'right';
-  let justifyClass = 'justify-end';
   let textClass = 'text-right';
   if (align === 'left') {
-    justifyClass = 'justify-start';
     textClass = 'text-left';
   } else if (align === 'center') {
-    justifyClass = 'justify-center';
     textClass = 'text-center';
   }
   const displayValue =
     params.valueFormatted !== undefined && params.valueFormatted !== null ? params.valueFormatted : params.value;
   return (
-    <div className={`flex items-center px-[0.6rem] ${justifyClass} gap-1 w-full h-full editor-select`}>
-      <span className={`block flex-1 ${textClass}`}>{displayValue}</span>
-      <TableSelectArrowIcon color={'var(--color-gray-60)'} className="shrink-0" />
+    <div className="relative flex w-full h-full items-center px-[0.6rem] editor-select select-none">
+      <span className={`block flex-1 min-w-0 pr-4 ${textClass}`}>{displayValue}</span>
+      <TableSelectArrowIcon
+        color={'var(--color-gray-60)'}
+        className="absolute right-[0.6rem] top-1/2 -translate-y-1/2 shrink-0 pointer-events-none"
+      />
     </div>
   );
 }

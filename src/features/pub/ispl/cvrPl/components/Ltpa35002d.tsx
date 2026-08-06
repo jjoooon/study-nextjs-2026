@@ -473,7 +473,7 @@ export function Ltpa35002d({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
             <Grow placement={'ec'}>
               {/* 필터 상태 초기화 버튼(아이콘 전용) */}
               <Button variant={'outlined'} only="icon" color={'gray'} size={'lg'}>
-                <ResetIcon color="var(--color-gray-500)" />
+                <ResetIcon color="var(--color-gray-50)" />
               </Button>
             </Grow>
           </Grow>

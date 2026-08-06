@@ -984,7 +984,7 @@ export default function Ltpa680Section() {
                         {rowData.length}건
                       </Typo>
                     </Grow>
-                    <div className="ag-theme-alpine min-h-144 ">
+                    <div className="cp-ag-scroll ag-theme-alpine min-h-144">
                       <AgGridReact<DummyDataType>
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
@@ -1069,7 +1069,7 @@ export default function Ltpa680Section() {
                       </Button>
                     </Grow>
                     <div
-                      className="ag-theme-alpine no-header inner-scroll"
+                      className="cp-agboard ag-theme-alpine no-header inner-scroll"
                       data-row={3}
                       style={{ borderTop: '0.2rem solid #000' }}
                     >
@@ -1094,7 +1094,7 @@ export default function Ltpa680Section() {
                       </Button>
                     </Grow>
                     <div
-                      className="ag-theme-alpine no-header inner-scroll"
+                      className="cp-agboard ag-theme-alpine no-header inner-scroll"
                       data-row={3}
                       style={{ borderTop: '0.2rem solid #000' }}
                     >
@@ -1119,7 +1119,7 @@ export default function Ltpa680Section() {
                       </Button>
                     </Grow>
                     <div
-                      className="ag-theme-alpine no-header inner-scroll"
+                      className="cp-agboard ag-theme-alpine no-header inner-scroll"
                       data-row={3}
                       style={{ borderTop: '0.2rem solid #000' }}
                     >
@@ -1184,7 +1184,7 @@ export default function Ltpa680Section() {
                         {/* 가이드라인 유형 선택 상태 */}
                         {/* 상단 useState 선언부에 추가: const [guidelineType, setGuidelineType] = useState('일반고지형'); */}
                         <RadioGroup
-                          className="gap-2"
+                          className="cp-tab-rdobtn gap-2"
                           onValueChange={setGuidelineType}
                           width="full"
                           value={guidelineType}
@@ -1214,7 +1214,7 @@ export default function Ltpa680Section() {
                                 <TableFoldBody>
                                   <FormTable
                                     variant="head"
-                                    className="border-t border-t-[0.2rem] [&_dl+dl]:mt-0! [&_dl]:border-t-[var(--color-gray-100)] [&_dl>div]:flex-col [&_dl>div]:gap-0! [&_dl>div]:w-full [&_dl]:w-full [&_dl_dt]:bg-[var(--color-gray-5)] [&_dl_dt]:w-full [&_dl_dt]:p-2 [&_dl_dt]:border-b [&_dl_dt]:border-b-[var(--color-gray-10)] [&_dl_dt_span]:text-[#000] [&_dl_dd]:border-b [&_dl_dd]:border-b-[var(--color-gray-10)] [&_dl_dd]:w-full [&_dl_dd]:p-2 "
+                                    className="cp-tb-question border-t border-t-[0.2rem] [&_dl+dl]:mt-0! [&_dl]:border-t-[var(--color-gray-100)] [&_dl>div]:flex-col [&_dl>div]:gap-0! [&_dl>div]:w-full [&_dl]:w-full [&_dl_dt]:bg-[var(--color-gray-5)] [&_dl_dt]:w-full [&_dl_dt]:p-2 [&_dl_dt]:border-b [&_dl_dt]:border-b-[var(--color-gray-10)] [&_dl_dt_span]:text-[#000] [&_dl_dd]:border-b [&_dl_dd]:border-b-[var(--color-gray-10)] [&_dl_dd]:w-full [&_dl_dd]:p-2 "
                                   >
                                     <FormRow vertical={false}>
                                       <FormCell title={'1. 발생부위'}>
@@ -1494,7 +1494,7 @@ export default function Ltpa680Section() {
                                       resize="y"
                                       value={considerText1}
                                       readOnly={!isConsiderEditMode}
-                                      className="h-40 w-full "
+                                      className="!h-40 w-full "
                                       onChange={(e) => isConsiderEditMode && setConsiderText1(e.target.value)}
                                     />
                                   </TableCell>
@@ -1514,7 +1514,7 @@ export default function Ltpa680Section() {
                                       resize="y"
                                       value={considerText2}
                                       readOnly={!isConsiderEditMode}
-                                      className="h-40"
+                                      className="!h-40"
                                       onChange={(e) => isConsiderEditMode && setConsiderText2(e.target.value)}
                                     />
                                   </TableCell>

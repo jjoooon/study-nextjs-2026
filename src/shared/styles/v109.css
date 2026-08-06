@@ -1,0 +1,561 @@
+
+/* Chrome 109 버전 전용 ag-Grid 레거시 호환 체크박스 스타일 */
+.v109 .ag-selection-checkbox,
+.v109 .ag-checkbox,
+html.v109 .ag-selection-checkbox {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-pack: center !important;
+  -webkit-justify-content: center !important;
+  justify-content: center !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+}
+
+.v109 .ag-checkbox-input-wrapper,
+.v109 .ag-radio-button-input-wrapper,
+html.v109 .ag-checkbox-input-wrapper {
+  background-color: var(--ag-checkbox-unchecked-background-color, #ffffff);
+  border: solid 1px #babbbc !important;
+  flex: none !important;
+  height: 1.6rem !important;
+  width: 1.6rem !important;
+  min-width: 1.6rem !important;
+  min-height: 1.6rem !important;
+  position: relative !important;
+  border-radius: 0.4rem !important;
+  box-sizing: border-box !important;
+  margin: 0 auto !important;
+}
+
+.v109 .ag-checkbox-input-wrapper.ag-checked,
+html.v109 .ag-checkbox-input-wrapper.ag-checked {
+  background-color: var(--color-primary-50, #FF5C2E) !important;
+  border-color: var(--color-primary-50, #FF5C2E) !important;
+}
+
+.v109 .ag-checkbox-input,
+.v109 .ag-radio-button-input {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  cursor: pointer !important;
+  display: block !important;
+  height: 1.6rem !important;
+  width: 1.6rem !important;
+  margin: 0 !important;
+  opacity: 0 !important;
+}
+
+.v109 .ag-checked:after,
+html.v109 .ag-checked:after {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='7' viewBox='0 0 9 7' fill='none'%3E%3Cpath d='M7.16129 0.215987C7.39628 -0.0491056 7.80185 -0.0735298 8.06705 0.161299C8.33222 0.396336 8.35671 0.801858 8.12174 1.06706L3.57185 6.20028C3.33954 6.46237 2.93998 6.48973 2.67406 6.2618L0.223948 4.16203C-0.0449526 3.93138 -0.0761161 3.52642 0.154449 3.25741C0.385033 2.98843 0.790015 2.95746 1.05907 3.18791L3.02953 4.87696L7.16129 0.215987Z' fill='white'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: 50% 50% !important;
+  pointer-events: none !important;
+}
+
+.v109 .pointer-events-none .ag-checked:after,
+html.v109 .pointer-events-none .ag-checked:after {
+  background-color: transparent !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='7' viewBox='0 0 9 7' fill='none'%3E%3Cpath d='M7.16129 0.215987C7.39628 -0.0491056 7.80185 -0.0735298 8.06705 0.161299C8.33222 0.396336 8.35671 0.801858 8.12174 1.06706L3.57185 6.20028C3.33954 6.46237 2.93998 6.48973 2.67406 6.2618L0.223948 4.16203C-0.0449526 3.93138 -0.0761161 3.52642 0.154449 3.25741C0.385033 2.98843 0.790015 2.95746 1.05907 3.18791L3.02953 4.87696L7.16129 0.215987Z' fill='%23777777'/%3E%3C/svg%3E") !important;
+  pointer-events: none !important;
+}
+
+.v109 th,
+.v109 dt,
+html.v109 th,
+html.v109 dt {
+  white-space: nowrap !important;
+}
+
+/* .v109 .w-1,
+html.v109 .w-1 {
+  width: 0.25rem !important;
+} */
+
+.v109 table[data-variant="none"] tr + tr > *,
+.v109 table[data-variant="box-round-b"] tr + tr > *,
+.v109 table[data-variant="head"] tr + tr > *,
+.v109 [data-variant="head"] tr + tr > * {
+  padding-top: 0.6rem !important;
+}
+
+.v109 table[data-variant="none"] th,
+.v109 table[data-variant="box-round-b"] th,
+.v109 table[data-variant="head"] th,
+.v109 [data-variant="head"] th {
+  border: 0;
+  padding: 0 0.8rem 0 0 !important;
+  height: auto !important;
+}
+
+.v109 table[data-variant="none"] td,
+.v109 table[data-variant="box-round-b"] td,
+.v109 table[data-variant="head"] td,
+.v109 [data-variant="head"] td {
+  border: 0;
+  border-bottom: 0 !important;
+  padding: 0 !important;
+  height: auto !important;
+}
+
+.v109 table[data-variant="none"] td + th,
+html.v109 table[data-variant="none"] td + th,
+.v109 table[data-variant="box-round-b"] td + th,
+html.v109 table[data-variant="box-round-b"] td + th,
+.v109 table[data-variant="head"] td + th,
+html.v109 table[data-variant="head"] td + th,
+.v109 [data-variant="head"] td + th,
+html.v109 [data-variant="head"] td + th {
+  padding-left: 2.4rem !important;
+}
+
+/* Chrome 109 전용 FormTable (variant="head") 완전 1:1 호환 레이아웃 스타일 */
+.v109 .formtable-head-root,
+html.v109 .formtable-head-root,
+.v109 [data-variant="head"],
+html.v109 [data-variant="head"] {
+  width: 100% !important;
+  display: block !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .formtable-head-body,
+html.v109 .formtable-head-body {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.4rem !important;
+}
+
+.v109 .formtable-head-root dl,
+html.v109 .formtable-head-root dl,
+.v109 [data-variant="head"] dl,
+html.v109 [data-variant="head"] dl {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-flex-wrap: wrap !important;
+  flex-wrap: wrap !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  -webkit-box-pack: start !important;
+  -webkit-justify-content: flex-start !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  gap: 0.4rem 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .formtable-head-root dl > div,
+html.v109 .formtable-head-root dl > div,
+.v109 [data-variant="head"] dl > div,
+html.v109 [data-variant="head"] dl > div {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+  -webkit-flex-direction: row !important;
+  flex-direction: row !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  -webkit-box-flex: 0 !important;
+  -webkit-flex: 0 0 auto !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .formtable-head-root dl > div:only-child,
+html.v109 .formtable-head-root dl > div:only-child,
+.v109 [data-variant="head"] dl > div:only-child,
+html.v109 [data-variant="head"] dl > div:only-child,
+.v109 .formtable-head-root dl > div.w-full,
+html.v109 .formtable-head-root dl > div.w-full,
+.v109 [data-variant="head"] dl > div.w-full,
+html.v109 [data-variant="head"] dl > div.w-full,
+.v109 .formtable-head-root dl.w-full > div,
+html.v109 .formtable-head-root dl.w-full > div {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  width: 100% !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 100% !important;
+  flex: 1 1 100% !important;
+}
+
+/* dt 태그에 w-full 클래스가 들어오더라도 109버전에서 너비 100% 확장을 강제 차단 */
+.v109 .formtable-head-root dt,
+html.v109 .formtable-head-root dt,
+.v109 [data-variant="head"] dt,
+html.v109 [data-variant="head"] dt {
+  width: auto !important;
+  max-width: max-content !important;
+  white-space: nowrap !important;
+  -webkit-flex-shrink: 0 !important;
+  flex-shrink: 0 !important;
+  font-weight: 700 !important;
+}
+
+.v109 .formtable-head-root dd,
+html.v109 .formtable-head-root dd,
+.v109 [data-variant="head"] dd,
+html.v109 [data-variant="head"] dd {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 auto !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.v109 .formtable-head-root dl > div:only-child dd,
+html.v109 .formtable-head-root dl > div:only-child dd,
+.v109 [data-variant="head"] dl > div:only-child dd,
+html.v109 [data-variant="head"] dl > div:only-child dd,
+.v109 .formtable-head-root dd.w-full,
+html.v109 .formtable-head-root dd.w-full,
+.v109 [data-variant="head"] dd.w-full,
+html.v109 [data-variant="head"] dd.w-full {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  width: 100% !important;
+  -webkit-box-flex: 1 !important;
+  -webkit-flex: 1 1 0% !important;
+  flex: 1 1 0% !important;
+}
+
+.v109 .formtable-head-root dd.justify-between,
+html.v109 .formtable-head-root dd.justify-between,
+.v109 [data-variant="head"] dd.justify-between,
+html.v109 [data-variant="head"] dd.justify-between {
+  -webkit-box-pack: justify !important;
+  -webkit-justify-content: space-between !important;
+  justify-content: space-between !important;
+}
+
+.v109 .formtable-head-root dd.justify-between > *:last-child,
+html.v109 .formtable-head-root dd.justify-between > *:last-child,
+.v109 [data-variant="head"] dd.justify-between > *:last-child,
+html.v109 [data-variant="head"] dd.justify-between > *:last-child {
+  margin-left: auto !important;
+}
+
+.v109 .formtable-head-root dd > .grid,
+html.v109 .formtable-head-root dd > .grid,
+.v109 [data-variant="head"] dd > .grid,
+html.v109 [data-variant="head"] dd > .grid,
+.v109 .formtable-head-root dd [data-group="row"].grid,
+.v109 .formtable-head-root dd [data-group="row"].grid {
+  display: grid !important;
+  width: 100% !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  box-sizing: border-box !important;
+}
+
+/* Chrome 109 상단 탭 라디오 그룹(RadioGroup) 테두리 라인 보정 */
+.v109 [class*="after:border"]::after,
+html.v109 [class*="after:border"]::after,
+.v109 [class*="after:border-"]::after,
+html.v109 [class*="after:border-"]::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 1px solid var(--color-secondary-15, #cbd5e1) !important;
+  border-radius: 0.8rem !important;
+  pointer-events: none !important;
+  box-sizing: border-box !important;
+  z-index: 0 !important;
+}
+
+/* Chrome 109 상단 탭 버튼 (상품선택 / 추천설계 - RadioGroupItem variant="button") 109버전 호환 보정 */
+.v109 [value="Ltpa02001"] > div,
+html.v109 [value="Ltpa02001"] > div,
+.v109 [value="Ltpa02002"] > div,
+html.v109 [value="Ltpa02002"] > div,
+.v109 [class*="[&>div]:hidden"] > div,
+html.v109 [class*="[&>div]:hidden"] > div {
+  display: none !important;
+}
+
+.v109 [value="Ltpa02001"],
+html.v109 [value="Ltpa02001"],
+.v109 [value="Ltpa02002"],
+html.v109 [value="Ltpa02002"],
+.v109 [class*="[&>div]:hidden"],
+html.v109 [class*="[&>div]:hidden"] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  -webkit-box-pack: center !important;
+  -webkit-justify-content: center !important;
+  justify-content: center !important;
+  border: 0 !important;
+  border-radius: 0.8rem !important;
+  background: transparent !important;
+  color: var(--color-secondary-70, #475569) !important;
+  font-weight: 700 !important;
+}
+
+.v109 [value="Ltpa02001"][data-state="checked"],
+html.v109 [value="Ltpa02001"][data-state="checked"],
+.v109 [value="Ltpa02002"][data-state="checked"],
+html.v109 [value="Ltpa02002"][data-state="checked"],
+.v109 [class*="[&>div]:hidden"][data-state="checked"],
+html.v109 [class*="[&>div]:hidden"][data-state="checked"] {
+  background: #FF5C2E !important;
+  background: -webkit-linear-gradient(328deg, #FF5C2E 9.4%, #FF8D02 97.24%) !important;
+  background: linear-gradient(328deg, #FF5C2E 9.4%, #FF8D02 97.24%) !important;
+  color: #ffffff !important;
+  border-radius: 0.8rem !important;
+}
+
+.v109 [value="Ltpa02001"][data-state="checked"] *,
+html.v109 [value="Ltpa02001"][data-state="checked"] *,
+.v109 [value="Ltpa02002"][data-state="checked"] *,
+html.v109 [value="Ltpa02002"][data-state="checked"] *,
+.v109 [class*="[&>div]:hidden"][data-state="checked"] * {
+  color: #ffffff !important;
+}
+
+/* Chrome 109 고객정보 영역(Ltpa020Section) 어두운 배경 내부 텍스트 가독성 보정 */
+.v109 .bg-\[var\(--color-blue-gray-70\)\] *,
+html.v109 .bg-\[var\(--color-blue-gray-70\)\] *,
+.v109 [class*="color-blue-gray-70"] *,
+html.v109 [class*="color-blue-gray-70"] * {
+  color: #ffffff;
+}
+
+.v109 .bg-\[var\(--color-blue-gray-70\)\] dt,
+html.v109 .bg-\[var\(--color-blue-gray-70\)\] dt,
+.v109 [class*="color-blue-gray-70"] dt,
+html.v109 [class*="color-blue-gray-70"] dt,
+.v109 [class*="color-blue-gray-70"] [class*="label"],
+html.v109 [class*="color-blue-gray-70"] [class*="label"] {
+  color: #cbd5e1 !important;
+}
+
+/* Chrome 109 ViewMode (등록/미등록 또는 간편/상세 스위치 토글) 호환 보정 */
+.v109 label[htmlfor="docType"],
+html.v109 label[htmlfor="docType"],
+.v109 input#docType + label,
+html.v109 input#docType + label,
+.v109 .cp-viewmode input[type="checkbox"] + label,
+html.v109 .cp-viewmode input[type="checkbox"] + label,
+.v109 [data-slot="switch"] input[type="checkbox"] + label,
+html.v109 [data-slot="switch"] input[type="checkbox"] + label {
+  position: relative !important;
+  height: 2.8rem !important;
+  padding: 0.1rem !important;
+  border-radius: 9999px !important;
+  border: 1px solid var(--color-gray-15, #e2e8f0) !important;
+  background-color: #ffffff !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-pack: center !important;
+  -webkit-justify-content: center !important;
+  justify-content: center !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  gap: 0 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+/* 스팬 공통 기본 스타일 */
+.v109 input[type="checkbox"] + label .peer-1,
+html.v109 input[type="checkbox"] + label .peer-1,
+.v109 input[type="checkbox"] + label .peer-2,
+html.v109 input[type="checkbox"] + label .peer-2 {
+  border-radius: 9999px !important;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  padding-left: 0.8rem !important;
+  padding-right: 0.6rem !important;
+  height: 100% !important;
+  font-size: 1.1rem !important;
+  letter-spacing: -0.08rem !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s ease !important;
+}
+
+/* 1. 체크 안됨 상태 (state=true: 첫번째 옵션 활성화 - 등록 / 간편) */
+.v109 input[type="checkbox"]:not(:checked) + label .peer-1,
+html.v109 input[type="checkbox"]:not(:checked) + label .peer-1 {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  background: #ff5c2e !important;
+  background-image: -webkit-linear-gradient(to right, #ff5c2e, #ffb800) !important;
+  background-image: linear-gradient(to right, #ff5c2e, #ffb800) !important;
+}
+
+.v109 input[type="checkbox"]:not(:checked) + label .peer-2,
+html.v109 input[type="checkbox"]:not(:checked) + label .peer-2 {
+  color: var(--color-gray-50, #64748b) !important;
+  font-weight: 400 !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* 2. 체크됨 상태 (state=false: 두번째 옵션 활성화 - 미등록 / 상세) */
+.v109 input[type="checkbox"]:checked + label .peer-1,
+html.v109 input[type="checkbox"]:checked + label .peer-1 {
+  color: var(--color-gray-50, #64748b) !important;
+  font-weight: 400 !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+.v109 input[type="checkbox"]:checked + label .peer-2,
+html.v109 input[type="checkbox"]:checked + label .peer-2 {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  background: #ff5c2e !important;
+  background-image: -webkit-linear-gradient(to right, #ff5c2e, #ffb800) !important;
+  background-image: linear-gradient(to right, #ff5c2e, #ffb800) !important;
+}
+
+/* Chrome 109 LTPZ003 등 팝업/서식 내 비활성화(disabled) 라디오 버튼 (RadioGroupItem) 스타일 보정 */
+/* .v109 button[role="radio"]:disabled,
+html.v109 button[role="radio"]:disabled,
+.v109 button[data-slot="radio-group-item"]:disabled,
+html.v109 button[data-slot="radio-group-item"]:disabled,
+.v109 [role="radiogroup"] button:disabled,
+html.v109 [role="radiogroup"] button:disabled,
+.v109 button[disabled][data-state],
+html.v109 button[disabled][data-state],
+.v109 button[data-disabled],
+html.v109 button[data-disabled] {
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+  background-color: var(--color-gray-10, #f1f5f9) !important;
+  border-color: var(--color-gray-15, #e2e8f0) !important;
+  border-style: solid !important;
+} */
+
+
+/* 비활성화 라디오 버튼 인접 라벨(label) 텍스트 색상 및 커서 보정 */
+/* .v109 button[role="radio"]:disabled + label,
+html.v109 button[role="radio"]:disabled + label,
+.v109 button[data-slot="radio-group-item"]:disabled + label,
+html.v109 button[data-slot="radio-group-item"]:disabled + label,
+.v109 button[data-disabled] + label,
+html.v109 button[data-disabled] + label {
+  cursor: not-allowed !important;
+  color: var(--color-gray-40, #94a3b8) !important;
+} */
+
+/* Chrome 109 LTPZ003 및 공통 비활성화(disabled) 버튼 보정 ("전체조회", "모두 아니오" 등) */
+/* .v109 button:disabled,
+html.v109 button:disabled,
+.v109 button[data-slot="button"]:disabled,
+html.v109 button[data-slot="button"]:disabled,
+.v109 button.cp-button:disabled,
+html.v109 button.cp-button:disabled,
+.v109 .cp-button:disabled,
+html.v109 .cp-button:disabled {
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+  color: var(--color-gray-30, #cbd5e1) !important;
+  background-color: var(--color-gray-5, #f8fafc) !important;
+  border-color: var(--color-gray-10, #e2e8f0) !important;
+} */
+
+/* contained 타입 비활성화 버튼 보정 (size="xl": 가능상품 보기, 추천설계 이동 등) */
+/* .v109 button[data-variant="contained"][data-size="xl"]:disabled,
+html.v109 button[data-variant="contained"][data-size="xl"]:disabled,
+.v109 button.cp-button[data-variant="contained"][data-size="xl"]:disabled,
+html.v109 button.cp-button[data-variant="contained"][data-size="xl"]:disabled {
+  color: var(--color-gray-30, #cbd5e1) !important;
+  background-color: var(--color-gray-5, #f8fafc) !important;
+  border-color: var(--color-gray-5, #f8fafc) !important;
+} */
+
+/* 일반 contained 타입 비활성화 버튼 보정 (sm, md, lg) */
+/* .v109 button[data-variant="contained"]:not([data-size="xl"]):disabled,
+html.v109 button[data-variant="contained"]:not([data-size="xl"]):disabled,
+.v109 button.cp-button[data-variant="contained"]:not([data-size="xl"]):disabled,
+html.v109 button.cp-button[data-variant="contained"]:not([data-size="xl"]):disabled {
+  color: var(--color-gray-0, #ffffff) !important;
+  background-color: var(--color-gray-20, #cbd5e1) !important;
+  border-color: var(--color-gray-20, #cbd5e1) !important;
+} */
+
+/* outlined 타입 비활성화 버튼 보정 (전체조회, 모두 아니오 등) */
+/* .v109 button[data-variant="outlined"]:disabled,
+html.v109 button[data-variant="outlined"]:disabled,
+.v109 button.cp-button[data-variant="outlined"]:disabled,
+html.v109 button.cp-button[data-variant="outlined"]:disabled {
+  color: var(--color-gray-30, #cbd5e1) !important;
+  background-color: var(--color-gray-5, #f8fafc) !important;
+  border-color: var(--color-gray-10, #e2e8f0) !important;
+} */
+
+/* Chrome 109 전용 Favorite (즐겨찾기/북마크) 체크박스 및 SVG 호환 스타일 */
+.v109 [data-slot="checkbox"][data-variant="favorite"],
+.v109 [data-slot="checkbox"][data-variant="favorite"][data-state="checked"],
+.v109 [data-variant="favorite"],
+.v109 [data-variant="favorite"][data-state="checked"],
+.v109 button[role="checkbox"][data-variant="favorite"],
+.v109 button[role="checkbox"][data-variant="favorite"][data-state="checked"] {
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.v109 [data-variant="favorite"] svg,
+.v109 button[role="checkbox"][data-variant="favorite"] svg {
+  flex-shrink: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  background: transparent !important;
+}

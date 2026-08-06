@@ -3,6 +3,7 @@
  */
 import LTPA190 from '@/app/pub/ispl/pages/LTPA190';
 import { LayoutDoc } from '@layout/BaseLayout';
+import { DevPageIframe } from '../DevPageIframe';
 
 export default {
   title: 'app/_excluded/page/LTPA190',
@@ -14,3 +15,5 @@ export const Default = () => (
     <LTPA190 />
   </LayoutDoc>
 );
+
+export const Dev = () => <DevPageIframe pageId="LTPA190" />;

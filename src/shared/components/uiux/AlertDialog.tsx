@@ -81,7 +81,7 @@ function AlertDialogOverlay({
     <AlertDialogPrimitive.Overlay
       data-slot="alert-dialog-overlay"
       className={cn(
-        'fixed inset-0 z-2050 bg-black/60',
+        'cp-alertdialog-overlay fixed inset-0 z-2050 bg-black/60',
         disableMotion
           ? 'transition-none'
           : 'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
@@ -117,7 +117,7 @@ function AlertDialogContent({ className, ...props }: React.ComponentProps<typeof
       <AlertDialogPrimitive.Content
         data-slot="alert-dialog-content"
         className={cn(
-          `bg-white 
+          `cp-alertdialog bg-white 
           data-[state=open]:animate-in 
           data-[state=closed]:animate-out 
           data-[state=closed]:fade-out-0 

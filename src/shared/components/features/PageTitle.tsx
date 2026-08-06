@@ -4,7 +4,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useFixedZoomStyle } from '@/shared/hooks/useZoomScale';
 import { FormItem, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { ViewMode } from '@common/ViewMode';

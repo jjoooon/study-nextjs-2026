@@ -69,15 +69,22 @@ export const KeyValueList = ({ data, className, variant = 'default', direction =
   // default variant
   return (
     <ul
-      className={`flex ${isRow ? 'flex-row gap-1 items-center' : 'flex-col gap-y-2'} justify-start flex-1 overflow-x-auto ${className}`}
+      className={cn(
+        'cp-keyvaluelist flex justify-start flex-1 overflow-x-auto',
+        isRow ? 'flex-row gap-1 items-center' : 'flex-col gap-y-2',
+        className
+      )}
     >
       {data.map((item, index) => (
         <li
           key={index}
-          className={`flex flex-row items-center gap-1 ${isRow ? "after:content-['|'] after:mx-3 after:text-gray-400 last:after:hidden" : ''}`}
+          className={cn(
+            'cp-keyvaluelist-item flex flex-row items-center gap-1',
+            isRow && "after:content-['|'] after:mx-3 after:text-gray-400 last:after:hidden"
+          )}
         >
-          <span className="text-[1.4rem] whitespace-nowrap">{item.key}</span>
-          <b className="text-[1.8rem] font-bold whitespace-nowrap">{item.value}</b>
+          <span className="cp-keyvaluelist-key text-[1.4rem] whitespace-nowrap">{item.key}</span>
+          <b className="cp-keyvaluelist-value text-[1.8rem] font-bold whitespace-nowrap">{item.value}</b>
         </li>
       ))}
     </ul>

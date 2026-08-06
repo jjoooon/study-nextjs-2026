@@ -411,7 +411,7 @@ export default function Ltpa540Section() {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody className="gap-2">
-                <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
+                <div className="ag-theme-alpine">
                   <AgGridReact<DummyDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
@@ -431,7 +431,7 @@ export default function Ltpa540Section() {
         mainFoot={
           <MainBottom>
             <MainBottomItem>
-              <Grow gap={1}>
+              <Grow gap={1} placement={'ec'} className="w-full">
                 <Button type="submit" variant={'contained'} color={'primary'} size={'xl'}>
                   저장
                 </Button>

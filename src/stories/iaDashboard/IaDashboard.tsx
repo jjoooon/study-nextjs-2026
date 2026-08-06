@@ -8,7 +8,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resi
 import { IaPreview } from './components/IaPreview';
 import { IaTable } from './components/IaTable';
 import { useIaDashboard } from './useIaDashboard';
-import { linkGo, getStoryIframeUrl } from './utils/storybookUrl';
+import { linkGo, linkGoDev, getStoryIframeUrl } from './utils/storybookUrl';
 
 export function IaDashboard() {
   const {
@@ -43,6 +43,13 @@ export function IaDashboard() {
     linkGo(activeRow.id, activeRow.path ?? '', activeStep, activeRow.subId, activeRow.popup);
   }, [activeRow, activeStep]);
 
+  const handleMoveDevPage = React.useCallback(() => {
+    if (!activeRow) {
+      return;
+    }
+    linkGoDev(activeRow.id, activeRow.path ?? '', activeStep, activeRow.subId, activeRow.popup);
+  }, [activeRow, activeStep]);
+
   return (
     <div className="w-full h-full ia-preview-root">
       <ResizablePanelGroup orientation="horizontal" className="w-full">
@@ -69,7 +76,7 @@ export function IaDashboard() {
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel defaultSize={70}>
-          <IaPreview activeRow={activeRow} previewUrl={previewUrl} onMovePage={handleMovePage} />
+          <IaPreview activeRow={activeRow} previewUrl={previewUrl} onMovePage={handleMovePage} onMoveDevPage={handleMoveDevPage} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

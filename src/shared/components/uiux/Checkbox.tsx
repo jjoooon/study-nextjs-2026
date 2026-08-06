@@ -219,6 +219,7 @@ function Checkbox({
     <div className={cn('relative', `flex items-center gap-x-1 gap-y-[0.2rem] ${isFavorite ? 'h-full' : ''}`)}>
       <CheckboxPrimitive.Root
         data-slot="checkbox"
+        data-variant={variant}
         id={checkboxId}
         required={isRequired}
         aria-required={isRequired ? true : undefined}
@@ -229,6 +230,7 @@ function Checkbox({
         checked={checkedState}
         onCheckedChange={handleChange}
         className={cn(
+          'cp-checkbox',
           `shrink-0 transition-colors outline-none tracking-[-0.13rem] 
 
           focus-visible:ring-2 

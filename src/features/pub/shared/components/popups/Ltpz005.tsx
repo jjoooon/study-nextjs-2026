@@ -63,7 +63,7 @@ const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Lt
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl" className="h-full max-h-[97rem]!">
+      <DialogContent showCloseButton resizable={true} size="2xl" className="h-full max-h-[97rem]! ltpz005-popup">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -118,20 +118,20 @@ const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Lt
               {tabs.map((tab, index) => {
                 const isActive = active === tab.value;
                 return (
-                  <div key={tab.value} className={`${index > 0 ? 'mt-[-0.1rem]' : ''}`}>
+                  <div key={tab.value} className={`h-full ${index > 0 ? 'mt-[-0.1rem]' : ''}`}>
                     <Button
                       variant="outlined"
                       color="gray-light"
-                      className={`w-full h-full p-0 -mr-[0.06rem] z-[99] rounded-[1rem] rounded-tr-[0] rounded-br-[0] border-r border-r-[transparent] ${
+                      className={`w-full h-full py-4 -mr-[0.06rem] z-[99] rounded-[1rem] rounded-tr-[0] rounded-br-[0] border-r border-r-[transparent] ${
                         isActive
-                          ? 'w-full! shadow-[inset_0.8rem_0_0_0_#FF5C2E,0_0.2rem_0_0_#00000010] border-l-0 pl-[1rem] pl-[1.6rem]'
+                          ? 'w-full! shadow-[inset_0.8rem_0_0_0_#FF5C2E,0_0.2rem_0_0_#00000010] border-l-0 pl-[1.6rem]'
                           : 'w-[5.4rem]! ml-[1rem]! bg-[#F4F4F4] '
                       }`}
                       onClick={() => setActive(tab.value)}
                     >
-                      <Gcol>
+                      <Gcol className="py-2 items-center justify-center gap-1.5">
                         {getStateIcon(tab.state)}
-                        <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-500">
+                        <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-50">
                           {tab.label}
                         </Typo>
                       </Gcol>

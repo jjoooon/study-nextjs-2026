@@ -1031,7 +1031,7 @@ const Ltpz031 = () => {
                                         <Tooltip>
                                           <TooltipTrigger asChild>
                                             <Button only="icon" size={'md'} variant="none">
-                                              <QuestionMark color="var(--color-gray-500)" />
+                                              <QuestionMark color="var(--color-gray-50)" />
                                             </Button>
                                           </TooltipTrigger>
                                           <TooltipContent
@@ -1068,7 +1068,7 @@ const Ltpz031 = () => {
                                         <Tooltip>
                                           <TooltipTrigger asChild>
                                             <Button only="icon" size={'md'} variant="none">
-                                              <QuestionMark color="var(--color-gray-500)" />
+                                              <QuestionMark color="var(--color-gray-50)" />
                                             </Button>
                                           </TooltipTrigger>
                                           <TooltipContent
@@ -1105,7 +1105,7 @@ const Ltpz031 = () => {
                                         <Tooltip>
                                           <TooltipTrigger asChild>
                                             <Button only="icon" size={'md'} variant="none">
-                                              <QuestionMark color="var(--color-gray-500)" />
+                                              <QuestionMark color="var(--color-gray-50)" />
                                             </Button>
                                           </TooltipTrigger>
                                           <TooltipContent
@@ -1142,7 +1142,7 @@ const Ltpz031 = () => {
                                         <Tooltip>
                                           <TooltipTrigger asChild>
                                             <Button only="icon" size={'md'} variant="none">
-                                              <QuestionMark color="var(--color-gray-500)" />
+                                              <QuestionMark color="var(--color-gray-50)" />
                                             </Button>
                                           </TooltipTrigger>
                                           <TooltipContent
@@ -1179,7 +1179,7 @@ const Ltpz031 = () => {
                                         <Tooltip>
                                           <TooltipTrigger asChild>
                                             <Button only="icon" size={'md'} variant="none">
-                                              <QuestionMark color="var(--color-gray-500)" />
+                                              <QuestionMark color="var(--color-gray-50)" />
                                             </Button>
                                           </TooltipTrigger>
                                           <TooltipContent

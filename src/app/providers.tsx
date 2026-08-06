@@ -9,6 +9,7 @@ import useMounted from '@/shared/hooks/useMounted';
 import { initializeI18n } from '@/shared/lib/i18n';
 import { setHeader } from '@/shared/store/authSlice';
 import type { AuthHeader } from '@/shared/types/authTypes';
+import '@/shared/lib/browserDetector';
 import log from '@/shared/utils/logger';
 
 const logger = log.getLogger('Global');

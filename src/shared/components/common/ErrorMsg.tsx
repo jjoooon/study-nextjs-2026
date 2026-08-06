@@ -154,7 +154,7 @@ export function ErrorMsg({
         // 말풍선 본체 스타일
         'block absolute z-10 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT',
         // 말풍선 꼬리(after) 기본 스타일
-        'after:w-2 after:h-2 after:absolute after:border after:border-[var(--color-input-border-error)]',
+        "after:content-[''] after:w-2 after:h-2 after:absolute after:border after:border-[var(--color-input-border-error)]",
         'after:bg-[var(--color-input-surface-error)] after:z-0 after:rounded-1 ',
         // 위치 토큰 적용
         positionStyles[position]

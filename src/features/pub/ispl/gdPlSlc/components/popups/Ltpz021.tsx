@@ -480,7 +480,7 @@ const Ltpz021 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_1fr] h-full min-h-0 overflow-hidden">
           <Grow className="w-full" variant="box-round">
             <FormTable variant={'head'} lineTop={false}>
               <FormRow>
@@ -503,10 +503,10 @@ const Ltpz021 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grow gap={3} placement="ss" className="w-full h-full">
+          <Grow gap={3} placement="ss" className="w-full h-full min-h-0 overflow-hidden">
             {[...Array(3)].map((_, i) => (
               <Grid
-                className="grid-rows-[auto_1fr] w-full overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5 h-full"
+                className="grid-rows-[auto_1fr] w-full overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5 h-full min-h-0"
                 key={i}
               >
                 <Grow placement="bws" className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">
@@ -534,8 +534,8 @@ const Ltpz021 = () => {
                     ></Checkbox>
                   </Grow>
                 </Grow>
-                <Gcol className="w-full h-full px-[1rem] pb-[2rem]" placement="ss" gap={0}>
-                  <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData1.length}>
+                <Gcol className="w-full h-full min-h-0 overflow-hidden px-[1rem] pb-[2rem]" placement="ss" gap={0}>
+                  <div className="ag-theme-alpine w-full inner-scroll" data-rows={rowData1.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -555,7 +555,7 @@ const Ltpz021 = () => {
 
                   {/* 예상보험료 요약 영역 */}
                   <Grow
-                    className="flex h-[3rem] w-full border-t border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem]"
+                    className="flex h-[3rem] w-full border-t !border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem] class-expected-premium-bar"
                     placement="bwc"
                   >
                     <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">

@@ -296,7 +296,7 @@ function SelectDrop<TValue extends string = string>({
   const showError = selectionMode === 'custom' ? false : error && !(radioHasValue || checkboxValid);
 
   const triggerStyle = cn(
-    'flex items-center justify-between gap-1 rounded-[0.4rem] border px-1.5 text-[1.3rem]',
+    'flex flex-row flex-nowrap items-center justify-between gap-1 rounded-[0.4rem] border px-1.5 text-[1.3rem] whitespace-nowrap',
     heightClass,
     showError
       ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)]'
@@ -325,7 +325,7 @@ function SelectDrop<TValue extends string = string>({
         : 'currentColor';
 
   return (
-    <div className={cn('relative', widthClass)} style={inlineWidthStyle}>
+    <div className={cn('relative cp-selectdrop w-full', widthClass)} style={inlineWidthStyle}>
       <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
         <PopoverPrimitive.Trigger asChild disabled={isDisabled}>
           <button
@@ -336,11 +336,15 @@ function SelectDrop<TValue extends string = string>({
             aria-readonly={readOnly || undefined}
             className={cn(
               triggerStyle,
-              'w-full aria-[expanded=true]:outline -outline-offset-[0.2rem] aria-[expanded=true]:outline-[0.2rem]'
+              'w-full flex-row flex-nowrap whitespace-nowrap aria-[expanded=true]:outline -outline-offset-[0.2rem] aria-[expanded=true]:outline-[0.2rem]'
             )}
           >
-            <span className="truncate text-left">{displayText}</span>
-            <SelectDropIcon size={size === 'lg' ? 16 : 12} color={arrowStateColor} className={cn('shrink-0')} />
+            <span className="truncate text-left flex-1 min-w-0">{displayText}</span>
+            <SelectDropIcon
+              size={size === 'lg' ? 16 : 12}
+              color={arrowStateColor}
+              className={cn('shrink-0 flex-none')}
+            />
           </button>
         </PopoverPrimitive.Trigger>
 
@@ -348,7 +352,7 @@ function SelectDrop<TValue extends string = string>({
           <PopoverPrimitive.Content
             style={inlineWidthStyle}
             className={cn(
-              'z-50 rounded-[0.4rem] bg-(--color-gray-0) shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)]',
+              'z-50 rounded-[0.4rem] bg-(--color-gray-0) shadow-[0px_2px_8px_0px_rgba(0,0,0,0.16)] cp-selectdrop-content',
               widthClass
             )}
             {...contentProps}
@@ -360,7 +364,13 @@ function SelectDrop<TValue extends string = string>({
                 <button
                   type="button"
                   value={placeholder}
-                  className={`w-full px-2 hover:bg-[var(--color-warning-10)] flex items-center justify-start text-[1.3rem] ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                  data-selected={selectedValues.length === 0}
+                  className={cn(
+                    `w-full px-2 cp-selectdrop-item flex items-center justify-start text-[1.3rem] ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`,
+                    selectedValues.length === 0
+                      ? 'bg-[var(--color-primary-5,#f0f7ff)] text-[var(--color-primary-50,#006ff2)] font-medium'
+                      : 'hover:bg-[var(--color-primary-5,#f0f7ff)]'
+                  )}
                   onClick={() => {
                     setSelectedValues([]);
                     if (allowCustomInput && customInputValue === undefined) {
@@ -384,7 +394,7 @@ function SelectDrop<TValue extends string = string>({
                         <Grow
                           key={option.value}
                           placement={'sc'}
-                          className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                          className={`w-full px-2 cp-selectdrop-item hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
                         >
                           <RadioGroupItem value={option.value} disabled={option.disabled || readOnly} size="md">
                             {option.label}
@@ -397,7 +407,7 @@ function SelectDrop<TValue extends string = string>({
                       <>
                         <Grow
                           placement={'sc'}
-                          className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                          className={`w-full px-2 cp-selectdrop-item hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
                         >
                           <RadioGroupItem value={CUSTOM_INPUT_VALUE} size="md" disabled={readOnly}>
                             {customInputLabel}
@@ -425,7 +435,7 @@ function SelectDrop<TValue extends string = string>({
                       <Grow
                         key={option.value}
                         placement={'ss'}
-                        className={`w-full px-2 hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
+                        className={`w-full px-2 cp-selectdrop-item hover:bg-[var(--color-warning-10)] items-center ${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`}
                       >
                         <Checkbox
                           checked={selectedSet.has(option.value)}

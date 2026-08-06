@@ -8,9 +8,10 @@ type IAPreviewProps = {
   activeRow: IARow | null;
   previewUrl: string;
   onMovePage: () => void;
+  onMoveDevPage: () => void;
 };
 
-export function IaPreview({ activeRow, previewUrl, onMovePage }: IAPreviewProps) {
+export function IaPreview({ activeRow, previewUrl, onMovePage, onMoveDevPage }: IAPreviewProps) {
   const iframeWrapRef = React.useRef<HTMLDivElement>(null);
   const [iframeDimensions, setIframeDimensions] = React.useState({ width: 0, height: 0 });
 
@@ -32,25 +33,37 @@ export function IaPreview({ activeRow, previewUrl, onMovePage }: IAPreviewProps)
   return (
     <div className="ia-preview-pane">
       {activeRow ? (
-        <div>
-          <div
-            className="ia-preview-label cursor-pointer"
-            role="button"
-            tabIndex={0}
-            onClick={onMovePage}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                onMovePage();
-              }
-            }}
-          >
-            {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt;{' '}
-            <b>
-              {activeRow.dep4}({activeRow.id})
-            </b>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <div
+              className="ia-preview-label cursor-pointer hover:underline"
+              role="button"
+              tabIndex={0}
+              onClick={onMoveDevPage}
+            >
+              <b>
+                Dev: {activeRow.dep4}({activeRow.id})
+              </b>
+            </div>
+            <div
+              className="ia-preview-label cursor-pointer hover:underline"
+              role="button"
+              tabIndex={0}
+              onClick={onMovePage}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  onMovePage();
+                }
+              }}
+            >
+              {activeRow.dep1} &gt; {activeRow.dep2} &gt; {activeRow.dep3} &gt;{' '}
+              <b>
+                {activeRow.dep4}({activeRow.id})
+              </b>
+            </div>
+            <div className="ia-preview-path mt-1 text-[#000] tracking-[0] !text-[1.2rem]">{activeRow.path ?? '-'}</div>
           </div>
-          <div className="ia-preview-path mt-2 text-[#000] tracking-[0] !text-[1.2rem]">{activeRow.path ?? '-'}</div>
         </div>
       ) : (
         <div className="ia-preview-label">조건에 맞는 화면이 없습니다.</div>

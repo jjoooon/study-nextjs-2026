@@ -206,6 +206,46 @@ const dummyData: DummyDataType[] = [
     badge: [],
     field3: '15~90세',
   },
+  {
+    id: 18,
+    field1: '종합건강',
+    field2: '한화 건강쑥쑥 어린이 보험2601',
+    importance: false,
+    badge: [],
+    field3: '15~90세',
+  },
+  {
+    id: 19,
+    field1: '종합건강',
+    field2: '한화 건강쑥쑥 어린이 보험2601',
+    importance: false,
+    badge: [],
+    field3: '15~90세',
+  },
+  {
+    id: 20,
+    field1: '종합건강',
+    field2: '한화 건강쑥쑥 어린이 보험2601',
+    importance: false,
+    badge: [],
+    field3: '15~90세',
+  },
+  {
+    id: 21,
+    field1: '종합건강',
+    field2: '한화 건강쑥쑥 어린이 보험2601',
+    importance: false,
+    badge: [],
+    field3: '15~90세',
+  },
+  {
+    id: 22,
+    field1: '종합건강',
+    field2: '한화 건강쑥쑥 어린이 보험2601',
+    importance: false,
+    badge: [],
+    field3: '15~90세',
+  },
 ];
 
 /** 기본 상품 종 데이터 목록 */
@@ -612,8 +652,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
   const selectedPlanRowData = planRowDataMap[active] ?? tabData3;
 
   return (
-    <Grid className="w-full grid-rows-[auto_1fr_auto] px-[1rem]" gap={3}>
-      {/* 1. 상단 상품분류 및 특징 검색/필터 영역 */}
+    <Grid className="w-full h-full min-h-0 grid-rows-[auto_1fr_auto] px-[1rem] overflow-hidden" gap={3}>
       <Grow variant={'box-round'} className="w-full" placement="bwe">
         <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
           <FormRow className="items-start!">
@@ -670,17 +709,14 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
           <ResetIcon />
         </Button>
       </Grow>
-
-      {/* 2. 중앙 메인 컨텐츠 영역 (좌 측: 상품정보 목록 / 우 측 상단: 종 정보 / 우 측 하단: 플랜 목록) */}
-      <Grow className="w-full overflow-hidden" placement="ss" gap={5}>
-        <ResizablePanelGroup orientation="horizontal" className="w-full">
-          {/* 상품 정보 AG-Grid 패널 */}
+      <Grow className="w-full h-full min-h-0 overflow-hidden" placement="ss" gap={5}>
+        <ResizablePanelGroup orientation="horizontal" className="w-full h-full min-h-0">
           <ResizablePanel defaultSize={70}>
-            <TableFold className="h-full">
+            <TableFold className="h-full flex flex-col min-h-0">
               <TableFoldHead title="상품정보" variant="default" />
-              <TableFoldBody className="w-full h-full">
+              <TableFoldBody className="w-full flex-1 min-h-0 relative">
                 <div
-                  className={`tooltip-hidden-toggle w-full h-full ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                  className={`tooltip-hidden-toggle w-full h-full relative ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                 >
                   <AgGridReact<ProductGridRow>
                     getRowId={(params) => getProductRowId(params.data)}
@@ -699,10 +735,9 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
           <ResizableHandle />
           {/* 우측 종 정보 및 플랜 영역 패널 */}
           <ResizablePanel defaultSize={30}>
-            <ResizablePanelGroup orientation="vertical" className="w-full">
-              {/* 종 정보 AG-Grid 영역 */}
+            <ResizablePanelGroup orientation="vertical" className="w-full h-full min-h-0">
               <ResizablePanel defaultSize={50}>
-                <TableFold className="w-full h-full">
+                <TableFold className="w-full h-full flex flex-col min-h-0">
                   <TableFoldHead
                     title="한화 3N5 더간편건강보험(세만기형)2601종 정보 한화 3N5 더간편건강보험(세만기형)2601종 정보"
                     variant="default"
@@ -712,9 +747,9 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                       <Checkbox>미판매보종</Checkbox>
                     </Grow>
                   </TableFoldHead>
-                  <TableFoldBody className="w-full h-full">
+                  <TableFoldBody className="w-full flex-1 min-h-0 relative">
                     <div
-                      className={`tooltip-hidden-toggle w-full h-full ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                      className={`tooltip-hidden-toggle w-full h-full relative ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                     >
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
@@ -737,6 +772,8 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                   active={active}
                   setActive={setActive}
                   hasTableBelow={true}
+                  className="w-full h-full min-h-0"
+                  contentClass="w-full h-full min-h-0 relative"
                   getValue={(tab) => String(tab.value)}
                   renderTab={(tab) => {
                     return (
@@ -749,7 +786,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                   renderDropdownItem={false}
                 >
                   <div
-                    className={`tooltip-hidden-toggle w-full h-full ag-border-t ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                    className={`tooltip-hidden-toggle w-full h-full relative ag-border-t ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                   >
                     <AgGridReact<DummyDataType3>
                       getRowId={(params) => String(params.data.id)}

@@ -690,7 +690,7 @@ const Ltpz059 = () => {
   const [buildingSelectType, setBuildingSelectType] = React.useState<string>('건물구조선택');
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} className="w-[110.4rem]">
+      <DialogContent showCloseButton resizable={true} className="w-[110.4rem] ltpz059-popup">
         {/* 팝업 상단 타이틀 */}
         <DialogHeader>
           <DialogTitle>
@@ -704,7 +704,7 @@ const Ltpz059 = () => {
         </DialogHeader>
 
         {/* 팝업 본문 영역 */}
-        <DialogSection className="flex flex-col w-full">
+        <DialogSection className="flex flex-col w-full max-h-[calc(85vh-10rem)] overflow-y-auto min-h-0">
           {/* 아코디언 섹션 1: 건물구조입력 */}
           <TableFold variant="accordion" className="grid grid-rows-[auto_1fr]">
             <TableFoldHead title="건물구조입력">

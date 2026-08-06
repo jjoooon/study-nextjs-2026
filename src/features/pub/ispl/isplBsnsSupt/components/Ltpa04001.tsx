@@ -400,7 +400,7 @@ const Ltpa04001 = () => {
           </Button>
         </Grow>
       </Grow>
-      <div className="ag-theme-alpine radio-selection inner-scroll" data-row={Ltpa040DummyData.length}>
+      <div className="ag-theme-alpine radio-selection">
         <AgGridReact<Ltpa040DummyDataRow>
           noRowsOverlayComponent={AgGridEmptyComponent}
           getRowId={(params) => String(params.data.id)}

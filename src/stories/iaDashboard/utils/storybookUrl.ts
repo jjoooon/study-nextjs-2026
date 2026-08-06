@@ -59,3 +59,29 @@ export function linkGo(id: string, path: string, activeStep?: number, subId?: st
   window.open(url, '_blank', 'noopener,noreferrer');
   return url;
 }
+
+function getDevBaseUrl(): string {
+  if (typeof window === 'undefined') return 'http://localhost:3000';
+  const { protocol, hostname } = window.location;
+
+  if (LOCAL_HOST_NAMES.has(hostname)) {
+    return 'http://localhost:3000';
+  }
+
+  return `${protocol}//${hostname}:3000`;
+}
+
+export function getDevUrl(id: string, path: string, activeStep?: number, subId?: string, popup?: boolean): string {
+  const devBaseUrl = getDevBaseUrl();
+  const stepQuery = activeStep ? `?activeStep=${activeStep}` : '';
+  const subIdQuery = subId && subId.includes('sub_') ? `${stepQuery ? '&' : '?'}step=${encodeURIComponent(subId)}` : '';
+  const query = `${stepQuery}${subIdQuery}`;
+
+  return `${devBaseUrl}/pub/ispl/${id}${query}`;
+}
+
+export function linkGoDev(id: string, path: string, activeStep?: number, subId?: string, popup?: boolean): string {
+  const url = getDevUrl(id, path, activeStep, subId, popup);
+  window.open(url, '_blank', 'noopener,noreferrer');
+  return url;
+}

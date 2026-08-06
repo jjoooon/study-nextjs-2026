@@ -328,7 +328,7 @@ export default function Ltpa560Section() {
           params.data?.field10Type ? (
             <Button
               color="link"
-              className="text-[var(--color-text-danger)]"
+              className="!text-[var(--color-text-danger)]"
               onClick={() => {}}
               only="default"
               size="lg"
@@ -545,7 +545,7 @@ export default function Ltpa560Section() {
               </Grow>
             </Grow>
             <Grid className="grid-rows-[1fr_auto]">
-              <div className="ag-theme-alpine ltpa010-grid inner-scroll" data-row={rowData.length}>
+              <div className="ag-theme-alpine ltpa010-grid">
                 <AgGridReact<Ltpa560DummyDataRow>
                   ref={gridRef}
                   noRowsOverlayComponent={AgGridEmptyComponent}

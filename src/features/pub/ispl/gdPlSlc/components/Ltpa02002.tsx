@@ -1020,7 +1020,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   </div>
                 </Grid>
                 <Grow
-                  className="w-full bg-[var(--color-warning-5)] h-[3rem] px-4 shadow-[0_-0.1rem_0.8rem_0_rgba(0,0,0,0.1)]"
+                  className="w-full bg-[var(--color-warning-5)] h-[3rem] px-4 shadow-[0_-0.1rem_0.8rem_0_rgba(0,0,0,0.1)] class-expected-premium-bar"
                   placement="ec"
                 >
                   <AdderIcon />

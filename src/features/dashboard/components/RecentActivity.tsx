@@ -64,7 +64,7 @@ export default function RecentActivity() {
                 <span className="font-medium">{activity.user.name}</span>{' '}
                 <span className="text-gray-600">{activity.message}</span>
               </p>
-              <p className="text-xs text-gray-500 mt-1">{formatRelativeTime(activity.timestamp)}</p>
+              <p className="text-xs text-gray-50 mt-1">{formatRelativeTime(activity.timestamp)}</p>
             </div>
           </div>
         ))}

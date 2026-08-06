@@ -1,0 +1,362 @@
+/* focus:border-[0.2rem] Chrome 109 호환 스타일 */
+.v109 .focus\:border-\[0\.2rem\]:focus,
+.v109 [class*="focus:border-[0.2rem]"]:focus {
+  border-style: var(--tw-border-style, solid);
+  border-width: 0.2rem;
+}
+
+/* hover:border-[var(--color-input-border-hover)] Chrome 109 호환 스타일 */
+@media (hover: hover) {
+  .v109 .hover\:border-\[var\(--color-input-border-hover\)\]:hover,
+  .v109 [class*="hover:border-[var(--color-input-border-hover)]"]:hover {
+    border-color: var(--color-input-border-hover);
+  }
+}
+/* AG Grid Header 2번째 줄 경계선(가로 테두리) Chrome 109 호환 스타일 */
+.v109 .ag-header-row:not(:first-child) .ag-header-cell:not(.ag-header-span-height.ag-header-span-total):not(.ag-header-parent-hidden),
+.v109 .ag-header-row:not(:first-child) .ag-header-group-cell.ag-header-group-cell-with-group {
+  border-top: 0.1rem solid var(--color-gray-10) !important;
+}
+.v109 .ag-header-group-cell {
+  justify-content: center;
+}
+
+.v109 .ag-cell > button {
+  justify-content: center;
+}
+
+/* AI 챗봇 팝업 (Ltpa120) 닫기/최소화 버튼 Chrome 109 호환 스타일 */
+.v109 .ai-chatbot [data-slot="dialog-close"] > svg {
+  width: 1.4rem !important;
+  height: 1.4rem !important;
+}
+.v109 .ai-chatbot [data-slot="dialog-close"] > svg path {
+  fill: #ffffff !important;
+}
+.v109 .ai-chatbot button > span {
+  background-color: var(--color-gray-0) !important;
+  border-color: var(--color-gray-0) !important;
+}
+
+/* agGrid number 타입 input 스핀 버튼(상하 화살표) 숨김 */
+.v109 .ag-input-field-input[type='number']::-webkit-outer-spin-button,
+.v109 .ag-input-field-input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+.v109 .ag-input-field-input:where(input:not([type]), input[type='text'], input[type='number'], input[type='tel'], input[type='date'], input[type='datetime-local'], textarea) {
+  background-color: var(--ag-input-background-color);
+}
+/* InputGroup Required state (Chrome 109 호환) */
+.v109 [data-slot='input-group']:has([data-slot='input-group-control'][required]) {
+  border-color: var(--color-input-border-highlight);
+  background-color: var(--color-input-surface-highlight);
+}
+/* InputGroup Focus state */
+.v109 [data-slot='input-group']:has([data-slot='input-group-control']:focus-visible) {
+  border-width: 0.2rem;
+  border-color: var(--color-input-border-hover);
+  box-shadow: 0 0 0 0.1rem var(--color-gray-5);
+}
+
+/* DatePickerInput Focus state (Chrome 109 호환) */
+.v109 .cp-datepicker input:focus:not([aria-invalid='true']) {
+  border-color: var(--color-input-border-highlight-bold);
+}
+
+/* DatePickerInput Hover state (Chrome 109 호환) */
+@media (hover: hover) {
+  .v109 .cp-datepicker input:hover {
+    border-color: var(--color-input-border-hover);
+  }
+  .v109 .cp-datepicker input:required:hover {
+    border-color: var(--color-input-border-highlight-bold);
+  }
+  .v109 .cp-datepicker input[aria-invalid='true']:hover {
+    border-color: var(--color-input-border-error);
+  }
+}
+
+/* NativeSelect Required Hover state (Chrome 109 호환) */
+.v109 select.cp-nativeselect:required:hover,
+.v109 select.cp-nativeselect[required]:hover,
+.v109 select[data-slot='native-select']:required:hover,
+.v109 [class*="hover:border-[var(--color-warning-70)]"]:hover {
+  border-color: var(--color-warning-70) !important;
+}
+
+/* Button (contained/rounded, color: gray) Chrome 109 호환 Hover & Focus-Visible 스타일 (.v109 전용) */
+.v109 [data-slot="button"][data-color="gray"]:is([data-variant="contained"], [data-variant="rounded"]):hover {
+  background-color: var(--color-gray-60);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+}
+.v109 [data-slot="button"][data-color="gray"]:is([data-variant="contained"], [data-variant="rounded"]):focus-visible {
+  background-color: var(--color-gray-60);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+  box-shadow: 0 0 0 2px var(--color-gray-60);
+}
+
+/* Button (contained/rounded, color: coolgray) Chrome 109 호환 Hover & Focus-Visible 스타일 (.v109 전용) */
+.v109 [data-slot="button"][data-color="coolgray"]:is([data-variant="contained"], [data-variant="rounded"]):hover {
+  background-color: var(--color-blue-gray-80);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+}
+.v109 [data-slot="button"][data-color="coolgray"]:is([data-variant="contained"], [data-variant="rounded"]):focus-visible {
+  background-color: var(--color-blue-gray-80);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+  box-shadow: 0 0 0 2px var(--color-blue-gray-80);
+}
+
+/* Button (contained/rounded, color: coolgray-light) Chrome 109 호환 Hover & Focus-Visible 스타일 (.v109 전용) */
+.v109 [data-slot="button"][data-color="coolgray-light"]:is([data-variant="contained"], [data-variant="rounded"]):hover {
+  background-color: var(--color-blue-gray-60);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+}
+.v109 [data-slot="button"][data-color="coolgray-light"]:is([data-variant="contained"], [data-variant="rounded"]):focus-visible {
+  background-color: var(--color-blue-gray-60);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+  box-shadow: 0 0 0 2px var(--color-blue-gray-60);
+}
+
+/* Button (color: success) Chrome 109 호환 스타일 (.v109 전용) */
+.v109 [data-slot="button"][data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]),
+.v109 .cp-button[data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]) {
+  border: 1px solid var(--color-success-50);
+  background-color: var(--color-success-50);
+  color: var(--color-gray-0);
+  font-weight: 700;
+}
+.v109 [data-slot="button"][data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):hover,
+.v109 .cp-button[data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):hover {
+  background-color: var(--color-success-60);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+}
+.v109 [data-slot="button"][data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):focus-visible,
+.v109 .cp-button[data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):focus-visible {
+  background-color: var(--color-success-60);
+  border-style: dashed;
+  border-color: var(--color-gray-0);
+  box-shadow: 0 0 0 2px var(--color-success-60);
+}
+.v109 [data-slot="button"][data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):disabled,
+.v109 .cp-button[data-color="success"]:is([data-variant="contained"], [data-variant="rounded"]):disabled {
+  color: var(--color-gray-0);
+  background-color: var(--color-gray-20);
+  border-color: var(--color-gray-20);
+}
+
+.v109 [data-slot="button"][data-color="success"][data-variant="outlined"]:hover,
+.v109 .cp-button[data-color="success"][data-variant="outlined"]:hover {
+  background-color: var(--color-success-10);
+  border-style: dashed;
+  border-color: var(--color-success-60);
+}
+.v109 [data-slot="button"][data-color="success"][data-variant="outlined"]:focus-visible,
+.v109 .cp-button[data-color="success"][data-variant="outlined"]:focus-visible {
+  background-color: var(--color-success-5);
+  border-style: dashed;
+  border-color: var(--color-success-60);
+  box-shadow: 0 0 0 2px var(--color-success-5);
+}
+
+.v109 [data-slot="button"][data-color="success"][data-variant="text"],
+.v109 .cp-button[data-color="success"][data-variant="text"] {
+  color: var(--color-success-60);
+}
+
+/* RadioGroupItem data-[state=checked] & hover Chrome 109 호환 (.v109 전용) */
+.v109 .cp-radio button[data-state='checked'],
+.v109 button[role="radio"][data-state='checked'] {
+  background-color: var(--color-primary-5);
+  color: var(--color-primary-50);
+  border-color: var(--color-primary-50);
+  border-style: solid;
+  box-shadow: 0 0.1rem 0.1rem 0 rgba(255, 92, 46, 0.19);
+}
+
+.v109 [class*="data-[state=checked]:bg-[#414141]"][data-state='checked'] {
+  background-color: #414141 !important;
+  color: #ffffff !important;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #414141 !important;
+}
+
+@media (hover: hover) {
+  .v109 [class*="hover:border-[#414141]"]:hover {
+    border-color: #414141;
+  }
+}
+
+/* ErrorMsg (data-component="error-msg") 말풍선 꼬리(::after) Chrome 109 호환 스타일 (.v109 전용) */
+.v109 [data-component="error-msg"]::after {
+  content: '';
+  position: absolute;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--color-input-border-error);
+  background-color: var(--color-input-surface-error);
+  border-radius: 0.1rem;
+  z-index: 0;
+}
+
+/* 위치 토큰별 (positionStyles: tl, tc, tr, bl, bc, br) 본체 및 ::after 말풍선 꼬리 Chrome 109 호환 위치값 정의 (.v109 전용) */
+
+/* 1. Top Left (tl) - 트리거 위-좌측 */
+.v109 [data-component="error-msg"][class*="bottom-[calc(100%+0.6rem)]"][class*="left-0"]:not([class*="-translate-x-1/2"]) {
+  bottom: calc(100% + 0.6rem);
+  top: auto;
+  left: 0;
+  right: auto;
+  transform: none;
+}
+.v109 [data-component="error-msg"][class*="bottom-[calc(100%+0.6rem)]"][class*="left-0"]:not([class*="-translate-x-1/2"])::after {
+  top: 100%;
+  bottom: auto;
+  left: 0.4rem;
+  right: auto;
+  transform: translateY(-0.4rem) rotate(45deg);
+}
+
+/* 2. Top Center (tc) - 트리거 위-중앙 */
+.v109 [data-component="error-msg"][class*="bottom-[calc(100%+0.6rem)]"][class*="left-1/2"][class*="-translate-x-1/2"] {
+  bottom: calc(100% + 0.6rem) !important;
+  top: auto !important;
+  left: 50% !important;
+  right: auto !important;
+}
+.v109 [data-component="error-msg"][class*="bottom-[calc(100%+0.6rem)]"][class*="left-1/2"][class*="-translate-x-1/2"]::after {
+  top: 100% !important;
+  bottom: auto !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) translateY(-0.4rem) rotate(45deg) !important;
+}
+
+/* 3. Top Right (tr) - 트리거 위-우측 */
+.v109 [data-component="error-msg"][class*="bottom-[calc(100%+0.6rem)]"][class*="right-0"] {
+  bottom: calc(100% + 0.6rem);
+  top: auto;
+  right: 0;
+  left: auto;
+  transform: none;
+}
+.v109 [data-component="error-msg"][class*="bottom-[calc(100%+0.6rem)]"][class*="right-0"]::after {
+  top: 100%;
+  bottom: auto;
+  right: 0.4rem;
+  left: auto;
+  transform: translateY(-0.4rem) rotate(45deg);
+}
+
+/* 4. Bottom Left (bl) - 트리거 아래-좌측 */
+.v109 [data-component="error-msg"][class*="top-[calc(100%+0.6rem)]"][class*="left-0"]:not([class*="-translate-x-1/2"]) {
+  top: calc(100% + 0.6rem);
+  bottom: auto;
+  left: 0;
+  right: auto;
+  transform: none;
+}
+.v109 [data-component="error-msg"][class*="top-[calc(100%+0.6rem)]"][class*="left-0"]:not([class*="-translate-x-1/2"])::after {
+  bottom: 100%;
+  top: auto;
+  left: 0.4rem;
+  right: auto;
+  transform: translateY(0.4rem) rotate(225deg);
+}
+
+/* 5. Bottom Center (bc) - 트리거 아래-중앙 */
+.v109 [data-component="error-msg"][class*="top-[calc(100%+0.6rem)]"][class*="left-1/2"][class*="-translate-x-1/2"] {
+  top: calc(100% + 0.6rem) !important;
+  bottom: auto !important;
+  left: 50% !important;
+  right: auto !important;
+}
+.v109 [data-component="error-msg"][class*="top-[calc(100%+0.6rem)]"][class*="left-1/2"][class*="-translate-x-1/2"]::after {
+  bottom: 100% !important;
+  top: auto !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) translateY(0.4rem) rotate(225deg) !important;
+}
+
+/* 6. Bottom Right (br) - 트리거 아래-우측 */
+.v109 [data-component="error-msg"][class*="top-[calc(100%+0.6rem)]"][class*="right-0"] {
+  top: calc(100% + 0.6rem);
+  bottom: auto;
+  right: 0;
+  left: auto;
+  transform: none;
+}
+.v109 [data-component="error-msg"][class*="top-[calc(100%+0.6rem)]"][class*="right-0"]::after {
+  bottom: 100%;
+  top: auto;
+  right: 0.4rem;
+  left: auto;
+  transform: translateY(0.4rem) rotate(225deg);
+}
+
+/* Input 컴포넌트 에러 상태 (aria-invalid='true') Chrome 109 호환 스타일 (.v109 전용) */
+/* 1. 단독 input 에러 스타일 (일반 및 포커스 상태 붉은 계열 배경 유지) */
+.v109 input[data-slot='input'][aria-invalid='true'],
+.v109 input[data-slot='input'][aria-invalid='true']:focus {
+  background-color: var(--color-input-surface-error) !important;
+  color: var(--color-text-danger) !important;
+  border-color: var(--color-input-border-error) !important;
+  border-width: 0.2rem !important;
+}
+
+/* 2. before/after가 포함된 Input 래퍼 div 에러 스타일 */
+.v109 .cp-input > div:has(input[aria-invalid='true']),
+.v109 .cp-input > div:has(input[aria-invalid='true']):focus-within {
+  background-color: var(--color-input-surface-error) !important;
+  color: var(--color-text-danger) !important;
+  border-color: var(--color-input-border-error) !important;
+  border-width: 0.2rem !important;
+}
+
+/* 래퍼 div 내부의 input은 투명 배경 유지 */
+.v109 .cp-input > div:has(input[aria-invalid='true']) input {
+  background-color: transparent !important;
+  border-width: 0 !important;
+}
+
+/* bg-clip-text / background-clip: text Chrome 109 호환 스타일 (.v109 전용) */
+.v109 .bg-clip-text,
+.v109 [class*="bg-clip-text"] {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+
+/* MainFoot / MainBottom 컴포넌트 하위 div 패딩 0 스타일 (.v109 및 공통) */
+.v109 .cp-mainfoot div {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+
+.v109 .ag-body-viewport.ag-layout-normal,
+.v109 .ag-body-viewport:where(.ag-layout-normal) {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* MainBottomItem 하위 요소 크롬 109 호환 스타일 */
+.v109 [class*="[&>*:last]:w-full"] > *:last-child,
+.v109 [class*="[&>*]:last:w-full"] > *:last-child {
+  width: 100% !important;
+  justify-content: flex-end !important;
+}
+.v109 [class*="[&>*+*:last]:w-auto"] > * + *:last-child,
+.v109 [class*="[&>*+*]:last:w-auto"] > * + *:last-child {
+  width: auto !important;
+}

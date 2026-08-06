@@ -361,7 +361,7 @@ const ExpiryInputCellRenderer = ({ params }: { params: ICellRendererParams<Dummy
     <Tooltip>
       <TooltipTrigger asChild>
         <Button only="icon" size="md" variant="none">
-          <QuestionMark color="var(--color-gray-500)" />
+          <QuestionMark color="var(--color-gray-50)" />
         </Button>
       </TooltipTrigger>
       <TooltipContent side="bottom" sideOffset={-1} variant="default" className="z-[999] [&>span]:whitespace-auto!">

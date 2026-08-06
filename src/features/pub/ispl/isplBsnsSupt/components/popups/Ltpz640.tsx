@@ -563,7 +563,7 @@ const Ltpz640 = () => {
                 <ArrowIcon className="-rotate-90" color={'#FF5C2E'} size={13} />
               </Button>
             </Grow>
-            <div className="ag-theme-alpine min-h-[50vh]">
+            <div className="cp-ag-icon-grip ag-theme-alpine min-h-[50vh]">
               <AgGridReact<DummyData1Type>
                 onGridReady={(event) => {
                   gridApiRef.current = event.api;

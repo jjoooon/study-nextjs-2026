@@ -151,7 +151,7 @@ export default function NotificationTable<
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button only="icon" size={'md'} variant="none">
-                        <QuestionMark color="var(--color-gray-500)" />
+                        <QuestionMark color="var(--color-gray-50)" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent
@@ -169,7 +169,7 @@ export default function NotificationTable<
                                 {tip.title}
                               </Typo>
                               <Button only="icon" size={'sm'} variant="none" title="복사하기" className="h-[1.8rem]">
-                                <NewWin size={16} color="var(--color-gray-500)" />
+                                <NewWin size={16} color="var(--color-gray-50)" />
                               </Button>
                             </Grow>
                             <BulletList color={'warning'} size="sm" className="gap-[0.2rem]">
