@@ -557,12 +557,12 @@ export default function Ltpa490Section() {
               </Grow>
             </Grow>
             {/* 2026-05-29 수정 */}
-            <TableFold className="grid-rows-[auto_1fr]">
+            <TableFold className="grid-rows-[auto_1fr] ltpa490-section">
               <TableFoldHead title="대상리스트" />
               <TableFoldBody className="gap-3">
                 <Grid className="grid-rows-[1fr_auto] h-full gap-2">
                   <Gcol className="w-full" gap={1}>
-                    <div className="ag-theme-alpine h-full">
+                    <div className="ag-theme-alpine h-full ltpa490-grid">
                       <AgGridReact<DummyDataType>
                         ref={gridRef}
                         noRowsOverlayComponent={AgGridEmptyComponent}
