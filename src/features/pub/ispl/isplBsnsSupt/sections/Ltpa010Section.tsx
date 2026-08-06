@@ -8,6 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import {
   AgGridEmptyComponent,
+  AsyncTooltipButton,
   createCellValueChangedHandler,
   createFieldRenderer,
   OverflowTooltipText,
@@ -435,6 +436,7 @@ export default function Ltpa010Section() {
     type09: '',
   });
 
+
   // Ag-Grid 컬럼 정의
   const columnDefs: (ColDef<DummyDataRow> | ColGroupDef<DummyDataRow>)[] = [
     // 1. 설계번호: 클릭 시 상세 조회 기능을 위한 링크 버튼 형태로 렌더링
@@ -651,19 +653,16 @@ export default function Ltpa010Section() {
         (data?: DummyDataRow) =>
           // [260725] 심사대기 툴팁 추가
           data?.field10 === '심사대기' ? (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button color="link" only="default" size="lg" variant="text">
-                  {data.field10}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="top" sideOffset={1}>
-                <Typo tag="span" variant="body-sm" className="break-all whitespace-pre-wrap">
+            <AsyncTooltipButton
+              label={data.field10}
+              delay={1000}
+              fetchContent={() => (
+                <>
                   심사자: 김현화(123457)
                   <br />- 예상대기시간 30분, 대기건수 5/8 (현재/전체)
-                </Typo>
-              </TooltipContent>
-            </Tooltip>
+                </>
+              )}
+            />
           ) : data?.field10 === '심사결과' ? (
             <Button color="link" only="default" size="lg" variant="text">
               {data.field10}

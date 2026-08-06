@@ -387,7 +387,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   );
   return (
     <Gcol>
-      <LayoutMainBody>
+      <LayoutMainBody className="ltpa35002a-LayoutMainBody">
         <LayoutScrollWrap
           className={`${!isHeightExpanded ? 'grid-rows-[auto_auto_1fr]' : 'grid-rows-[auto_1fr]'} gap-0`}
         >
@@ -633,9 +633,9 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
         </LayoutScrollWrap>
       </LayoutMainBody>
 
-      <LayoutMainFoot>
+      <LayoutMainFoot className="ltpa35002a-LayoutMainFoot">
         <MainBottom variant="box">
-          <MainBottomItem className="!py-0">
+          <MainBottomItem className="!pt-0">
             <FormTable
               className="w-full! [&_tr]:justify-between"
               lineTop={false}

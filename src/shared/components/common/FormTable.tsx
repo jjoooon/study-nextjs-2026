@@ -347,7 +347,8 @@ export const FormTable = ({
     [&>table>tbody>tr>th]:h-auto 
     [&>table>tbody>tr>th]:break-keep   
     [&>table>tbody>tr>td]:border-0 
-    [&>table>tbody>tr>td]:p-0 
+    [&>table>tbody>tr>td]:pl-0 
+    [&>table>tbody>tr>td]:pr-0 
     [&>table>tbody>tr>td]:pt-[1rem] 
     [&>table>tbody>tr>td]:pb-[0.8rem] 
     [&>table>tbody>tr>td]:h-auto   
