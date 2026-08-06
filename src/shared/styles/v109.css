@@ -414,6 +414,10 @@
   border-color: var(--color-gray-20);
 }
 
+.v109 .cp-checkbox.data-\[state\=checked\]\:text-white\![data-state="checked"],
+.v109 .cp-checkbox.data-\[state\=checked\]\:text-white\![data-state="checked"] *,
+.v109 .cp-checkbox[class*="data-[state=checked]:text-white!"][data-state="checked"],
+.v109 .cp-checkbox[class*="data-[state=checked]:text-white!"][data-state="checked"] *,
 .v109 .cp-checkbox.data-\[state\=checked\]\:text-white[data-state="checked"],
 .v109 .cp-checkbox.data-\[state\=checked\]\:text-white[data-state="checked"] *,
 .v109 .cp-checkbox[class*="data-[state=checked]:text-white"][data-state="checked"],
@@ -1596,21 +1600,43 @@
   box-shadow: var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 
-.v109 .disabled\:data-\[state\=checked\]\:text-\[var\(--color-gray-30\)\]:disabled[data-state="checked"] {
+/* Chrome 109 호환: 에스케이프 문자로 인한 CSS 파싱 오류를 방지하기 위해 [class*="..."] 안전 선택자 사용 */
+.v109 [class*="disabled:data-[state=checked]:text-[var(--color-gray-30)]"]:disabled[data-state="checked"],
+.v109 [class*="disabled:data-[state=checked]:text-[var(--color-gray-30)]"][disabled][data-state="checked"] {
   color: var(--color-gray-30) !important;
 }
 
-.v109 .disabled\:data-\[state\=checked\]\:bg-\[var\(--color-gray-10\)\]:disabled[data-state="checked"] {
+.v109 [class*="disabled:data-[state=checked]:bg-[var(--color-gray-10)]"]:disabled[data-state="checked"],
+.v109 [class*="disabled:data-[state=checked]:bg-[var(--color-gray-10)]"][disabled][data-state="checked"] {
   background-color: var(--color-gray-10) !important;
 }
 
-.v109 .disabled\:data-\[state\=checked\]\:border-\[var\(--color-gray-20\)\]:disabled[data-state="checked"] {
-  border-color: var(--color-gray-20) !important;
+.v109 [class*="disabled:data-[state=checked]:border-[var(--color-gray-15)]"]:disabled[data-state="checked"],
+.v109 [class*="disabled:data-[state=checked]:border-[var(--color-gray-15)]"][disabled][data-state="checked"],
+.v109 [class*="disabled:data-[state=checked]:border-[var(--color-gray-15)]"][data-disabled="true"][data-state="checked"] {
+  border-color: var(--color-gray-15, #d8d8d8) !important;
 }
 
-.v109 .data-\[state\=checked\]\:text-white[data-state="checked"] {
-  color: var(--color-white) !important;
+.v109 [class*="disabled:data-[state=checked]:border-[var(--color-gray-20)]"]:disabled[data-state="checked"],
+.v109 [class*="disabled:data-[state=checked]:border-[var(--color-gray-20)]"][disabled][data-state="checked"],
+.v109 [class*="disabled:data-[state=checked]:border-[var(--color-gray-20)]"][data-disabled="true"][data-state="checked"] {
+  border-color: var(--color-gray-20, #cccccc) !important;
 }
+
+/* data-[state=checked]:text-white! 및 text-white 대응 (자식 요소까지 전파) */
+.v109 [class*="data-[state=checked]:text-white"][data-state="checked"],
+.v109 [class*="data-[state=checked]:text-white"][data-state="checked"] *,
+.v109 [class*="data-[state=checked]:text-white!"][data-state="checked"],
+.v109 [class*="data-[state=checked]:text-white!"][data-state="checked"] * {
+  color: var(--color-white, #ffffff) !important;
+}
+
+/* data-[state=checked]:bg-[var(--color-gray-70)]! 및 bg-[var(--color-gray-70)] 대응 */
+.v109 [class*="data-[state=checked]:bg-[var(--color-gray-70)]"][data-state="checked"],
+.v109 [class*="data-[state=checked]:bg-[var(--color-gray-70)]!"][data-state="checked"] {
+  background-color: var(--color-gray-70, #414141) !important;
+}
+
 
 .v109 .data-\[state\=checked\]\:bg-\[var\(--color-information-50\)\][data-state="checked"] {
   background-color: var(--color-information-50) !important;
@@ -2085,9 +2111,44 @@
   color: var(--color-success-60);
 }
 
-/* RadioGroupItem data-[state=checked] & hover Chrome 109 호환 (.v109 전용) */
-.v109 .cp-radio button[data-state='checked'],
-.v109 button[role="radio"][data-state='checked'] {
+/* RadioGroupItem data-[state=checked] & hover Chrome 109 호환 (.v109 및 전용) */
+/* 1. variant="tab" 및 data-[state=checked]:bg-[var(--color-gray-70)] (어두운 배경 + 흰색 텍스트) 강제 호환 스타일 */
+[data-variant="tab"][data-state="checked"],
+.v109 [data-variant="tab"][data-state="checked"],
+button[role="radio"][data-variant="tab"][data-state="checked"],
+.v109 button[role="radio"][data-state='checked'][class*="data-[state=checked]:bg-[var(--color-gray-70)]"],
+.v109 button[role="radio"][data-state='checked'][class*="data-[state=checked]:bg-[#414141]"],
+.v109 button[role="radio"][data-state='checked'][class*="data-[state=checked]:text-white"],
+.v109 .cp-radio button[role="radio"][data-state='checked'][class*="data-[state=checked]:bg-[var(--color-gray-70)]"],
+.v109 [role="radio"][data-state='checked'][class*="data-[state=checked]:bg-[var(--color-gray-70)]"],
+button[role="radio"][data-state='checked'][class*="data-[state=checked]:bg-[var(--color-gray-70)]"],
+button[role="radio"][data-state='checked'][class*="data-[state=checked]:text-white"] {
+  background-color: var(--color-gray-70, #414141) !important;
+  color: var(--color-white, #ffffff) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+[data-variant="tab"][data-state="checked"] *,
+.v109 [data-variant="tab"][data-state="checked"] *,
+.v109 button[role="radio"][data-state='checked'][class*="data-[state=checked]:text-white"] *,
+button[role="radio"][data-state='checked'][class*="data-[state=checked]:text-white"] * {
+  color: var(--color-white, #ffffff) !important;
+}
+
+/* 2. 비선택(unchecked) 탭 항목 기본 스타일 보장 */
+[data-variant="tab"][data-state="unchecked"],
+.v109 [data-variant="tab"][data-state="unchecked"],
+.v109 button[role="radio"][data-state='unchecked'][class*="bg-[var(--color-gray-10)]"],
+button[role="radio"][data-state='unchecked'][class*="bg-[var(--color-gray-10)]"] {
+  background-color: var(--color-gray-10, #e5e5e5) !important;
+  color: var(--color-gray-70, #414141) !important;
+}
+
+
+/* 3. 일반 default/button 라디오 컴포넌트 전용 호환 스타일 (기타 특정 bg 커스텀 제외) */
+.v109 .cp-radio button[role="radio"]:not([class*="data-[state=checked]:bg-"])[data-state='checked'],
+.v109 button[role="radio"]:not([class*="data-[state=checked]:bg-"])[data-state='checked'] {
   background-color: var(--color-primary-5);
   color: var(--color-primary-50);
   border-color: var(--color-primary-50);
@@ -2102,6 +2163,8 @@
   border-width: 1px;
   border-color: #414141 !important;
 }
+
+
 
 @media (hover: hover) {
   .v109 [class*="hover:border-[#414141]"]:hover {
