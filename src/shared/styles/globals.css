@@ -148,11 +148,14 @@
 
 /* 2. 실제 값 창고 (라이트 모드) */
 :root {
-  /* AG Grid 높이 설정 */
+  /* AG Grid 높이 및 폰트 설정 */
   --ag-header-height: 3rem;
   --ag-row-height: 3rem;
   --ag-group-header-height: 3rem;
   --ag-list-item-height: 3rem;
+  --ag-font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  --ag-cell-font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  --ag-header-font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
 
   /* ===== 1. Base Unit ===== */
   --base-unit: 0.4rem;
