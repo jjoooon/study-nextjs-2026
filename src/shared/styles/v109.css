@@ -2253,8 +2253,8 @@
 
 /* MainFoot / MainBottom 컴포넌트 하위 div 패딩 0 스타일 (.v109 및 공통) */
 .v109 .cp-mainfoot div {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 
@@ -2281,4 +2281,11 @@
 .v109 .\[\&\>li_em\]\:text-\[var\(--color-information-50\)\] > li em {
   color: var(--color-information-50);
   font-weight: 700;
+}
+
+/* Chrome 109 전용 px-3 호환 스타일 */
+.v109 .px-3,
+.v109 [class*="px-3"] {
+  padding-left: var(--spacing-3) !important;
+  padding-right: var(--spacing-3) !important;
 }
