@@ -349,3 +349,14 @@
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
 }
+
+/* MainBottomItem 하위 요소 크롬 109 호환 스타일 */
+.v109 [class*="[&>*:last]:w-full"] > *:last-child,
+.v109 [class*="[&>*]:last:w-full"] > *:last-child {
+  width: 100% !important;
+  justify-content: flex-end !important;
+}
+.v109 [class*="[&>*+*:last]:w-auto"] > * + *:last-child,
+.v109 [class*="[&>*+*]:last:w-auto"] > * + *:last-child {
+  width: auto !important;
+}

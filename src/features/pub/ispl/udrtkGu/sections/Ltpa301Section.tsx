@@ -260,7 +260,7 @@ export default function Ltpa301Section() {
                   <Typo variant="body-md">(단위: 만원)</Typo>
                 </TableFoldHead>
                 <TableFoldBody>
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <div className="ag-theme-alpine inner-scroll" data-row={Ltpa301DummyData.length}>
                     <AgGridReact<Ltpa301DummyDataRow>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
