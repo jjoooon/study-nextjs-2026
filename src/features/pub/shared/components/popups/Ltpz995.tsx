@@ -228,7 +228,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
             styleItemPanelAspectRatio={null}
           />
 
-          <Grow className="w-full" placement="ec">
+          <Grow className="w-full text-[1.3rem]" placement="ec">
             {/* <span>
               최대 <span className="text-(--color-text-danger) font-semibold">500</span>개{' '}
               <span className="text-(--color-text-danger) font-semibold">1 GB</span> 제한
