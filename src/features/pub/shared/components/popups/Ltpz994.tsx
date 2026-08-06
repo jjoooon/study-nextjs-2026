@@ -60,7 +60,7 @@ export const Ltpz994 = () => {
               </Gcol>
             </Gcol>
             <Grow className="w-full justify-end">
-              <Typo variant={'body-sm'}>
+              <Typo variant={'body-md'}>
                 파일
                 <Typo tag={'span'} className="text-[var(--color-primary-50)]">
                   {fileList.length}
