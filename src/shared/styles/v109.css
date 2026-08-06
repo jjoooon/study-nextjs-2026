@@ -2105,7 +2105,7 @@
 
 @media (hover: hover) {
   .v109 [class*="hover:border-[#414141]"]:hover {
-    border-color: #414141;
+    border-color: #414141 !important;
   }
 }
 
@@ -2273,4 +2273,12 @@
 .v109 [class*="[&>*+*:last]:w-auto"] > * + *:last-child,
 .v109 [class*="[&>*+*]:last:w-auto"] > * + *:last-child {
   width: auto !important;
+}
+
+/* BulletList info em color Chrome 109 호환 스타일 */
+.v109 [class*="[&>li_em]:text-[var(--color-information-50)]"] > li em,
+.v109 [class*="[&>li>em]:text-[var(--color-information-50)]"] > li em,
+.v109 .\[\&\>li_em\]\:text-\[var\(--color-information-50\)\] > li em {
+  color: var(--color-information-50);
+  font-weight: 700;
 }
