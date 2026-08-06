@@ -33,7 +33,9 @@ export function IaDashboard() {
   } = useIaDashboard();
 
   const previewUrl = React.useMemo(() => {
-    return activeRow ? getStoryIframeUrl(activeRow.id, activeRow.path ?? '', activeStep, activeRow.subId, activeRow.popup) : '';
+    return activeRow
+      ? getStoryIframeUrl(activeRow.id, activeRow.path ?? '', activeStep, activeRow.subId, activeRow.popup)
+      : '';
   }, [activeRow, activeStep]);
 
   const handleMovePage = React.useCallback(() => {
@@ -76,7 +78,12 @@ export function IaDashboard() {
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel defaultSize={70}>
-          <IaPreview activeRow={activeRow} previewUrl={previewUrl} onMovePage={handleMovePage} onMoveDevPage={handleMoveDevPage} />
+          <IaPreview
+            activeRow={activeRow}
+            previewUrl={previewUrl}
+            onMovePage={handleMovePage}
+            onMoveDevPage={handleMoveDevPage}
+          />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

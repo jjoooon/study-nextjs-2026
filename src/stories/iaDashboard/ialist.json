@@ -2369,7 +2369,7 @@
     "dep3": "설계데이터관리",
     "id": "LTPA220",
     "path": "ispl/udrtkGu",
-    "dep4": "CSM계산내역",
+    "dep4": "계약 수익성 분석(CMS)",
     "file": "인수지침심사",
     "plan": "안혜은",
     "dev": "홍건의",
