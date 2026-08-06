@@ -2426,3 +2426,106 @@ export function PortalErrorTooltipCellEditor<T = unknown>(props: CustomCellEdito
     </div>
   );
 }
+
+/**
+ * [Ag-Grid Component] 비동기 데이터 로딩 툴팁 버튼 컴포넌트 (공용)
+ *
+ * - 마우스 호버 시 지정된 delay(기본 1000ms) 또는 fetchContent (Promise 콜백)을 실행해
+ *   로딩 툴팁을 노출한 뒤 데이터가 준비되는 즉시 내용을 표출합니다.
+ */
+export interface AsyncTooltipButtonProps {
+  /** 버튼 텍스트 또는 렌더링 노드 */
+  label: React.ReactNode;
+  /** 비동기 데이터 로드 콜백 (지연 후 표시할 콘텐츠 반환 함수) */
+  fetchContent?: () => Promise<React.ReactNode> | React.ReactNode;
+  /** 호버 후 데이터 요청/딜레이 시간 (ms, 기본값: 1000) */
+  delay?: number;
+  /** 툴팁 노출 방향 ('top' | 'right' | 'bottom' | 'left', 기본값: 'top') */
+  side?: 'top' | 'right' | 'bottom' | 'left';
+  /** 로딩 중 표기할 텍스트/노드 (기본값: '불러오는 중...') */
+  loadingText?: React.ReactNode;
+  /** 비동기 대신 고정 표시할 콘텐츠 */
+  content?: React.ReactNode;
+  /** 버튼 커스텀 스타일 및 속성 */
+  buttonProps?: Omit<React.ComponentProps<typeof Button>, 'children'>;
+}
+
+export function AsyncTooltipButton({
+  label,
+  fetchContent,
+  delay = 1000,
+  side = 'top',
+  loadingText = '불러오는 중...',
+  content,
+  buttonProps,
+}: AsyncTooltipButtonProps) {
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [tooltipContent, setTooltipContent] = React.useState<React.ReactNode | null>(content ?? null);
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setOpen(true);
+
+    if (content) {
+      setTooltipContent(content);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setTooltipContent(null);
+
+    timerRef.current = setTimeout(async () => {
+      if (fetchContent) {
+        try {
+          const res = await fetchContent();
+          setTooltipContent(res);
+        } catch {
+          setTooltipContent('데이터를 불러오지 못했습니다.');
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    }, delay);
+  };
+
+  const handleMouseLeave = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setOpen(false);
+    setLoading(false);
+    setTooltipContent(null);
+  };
+
+  return (
+    <Tooltip open={open} onOpenChange={setOpen}>
+      <TooltipTrigger asChild>
+        <Button
+          color="link"
+          only="default"
+          size="lg"
+          variant="text"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          {...buttonProps}
+        >
+          {label}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent side={side} sideOffset={1}>
+        {loading ? (
+          <Typo tag="span" variant="body-sm" className="break-all whitespace-pre-wrap text-gray-400">
+            {loadingText}
+          </Typo>
+        ) : (
+          <Typo tag="span" variant="body-sm" className="break-all whitespace-pre-wrap">
+            {tooltipContent}
+          </Typo>
+        )}
+      </TooltipContent>
+    </Tooltip>
+  );
+}
