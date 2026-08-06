@@ -44,7 +44,7 @@ export const TableFold = ({ children, variant = 'accordion', className, defaultO
   const [open, setOpen] = React.useState(defaultOpen);
   return (
     <TableFoldContext.Provider value={{ variant, open, setOpen }}>
-      <Grid data-table-fold="wrap" className={cn('w-full grid-rows-[auto_1fr]', className)} placement={'bwc'}>
+      <Grid data-table-fold="wrap" className={cn('w-full grid-rows-[auto_minmax(0,1fr)]', className)} placement={'bwc'}>
         {children}
       </Grid>
     </TableFoldContext.Provider>

@@ -18,7 +18,7 @@ interface LayoutProps {
 // 문서 전체 래퍼: 상단(head) + 본문(body) 2행 구조
 export const LayoutDoc = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="doc" className={cn('relative grid grid-rows-[auto_1fr] h-full bg-[#fff]', className)}>
+    <div data-layout="doc" className={cn('relative grid grid-rows-[auto_1fr_auto] h-full bg-[#fff]', className)}>
       {children}
     </div>
   );
@@ -107,7 +107,7 @@ export const LayoutFolderFoot = ({ children, className }: LayoutProps) => {
 // 메인 영역 래퍼
 export const LayoutMain = ({ children, className }: LayoutProps) => {
   return (
-    <main data-layout="main" className={cn('relative overflow-auto', className)}>
+    <main data-layout="main" className={cn('relative overflow-hidden', className)}>
       {children}
     </main>
   );

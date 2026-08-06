@@ -436,7 +436,6 @@ export default function Ltpa010Section() {
     type09: '',
   });
 
-
   // Ag-Grid 컬럼 정의
   const columnDefs: (ColDef<DummyDataRow> | ColGroupDef<DummyDataRow>)[] = [
     // 1. 설계번호: 클릭 시 상세 조회 기능을 위한 링크 버튼 형태로 렌더링
@@ -996,7 +995,7 @@ export default function Ltpa010Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr] h-full" gap={3}>
+          <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full" gap={3}>
             {/* 상단: 조회 조건 필터 영역 */}
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
@@ -1192,7 +1191,7 @@ export default function Ltpa010Section() {
               </Grow>
             </Grow>
 
-            <Grid className="w-full grid-rows-[1fr_auto] h-full" gap={2}>
+            <Grid className="w-full grid-rows-[minmax(0,1fr)_auto] h-full overflow-hidden" gap={2}>
               <Grid className="w-full grid-rows-[auto_1fr]" gap={1}>
                 <Grow className="w-full" placement="ec">
                   <Button color="success" variant="outlined">
@@ -1202,7 +1201,7 @@ export default function Ltpa010Section() {
                 </Grow>
 
                 {/* 그리드 영역: 데이터 개수에 따라 높이가 조절되며 내부 스크롤을 지원합니다. */}
-                <Gcol gap={1}>
+                <Gcol gap={1} className="overflow-hidden">
                   <div className="ag-theme-alpine ltpa010-grid">
                     <AgGridReact<DummyDataRow>
                       noRowsOverlayComponent={AgGridEmptyComponent}

@@ -955,7 +955,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
               </Gcol>
             ) : (
               <Grid
-                className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_1fr_auto] max-h-[59.6rem]"
+                className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_minmax(0,1fr)_auto] max-h-[59.6rem]"
                 gap={0}
               >
                 <Gcol
@@ -976,7 +976,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   </Typo>
                 </Gcol>
 
-                <Grid className="px-[1rem] pb-0 pt-[0.8rem] gap-[0.8rem] grid-rows-[auto_1fr]">
+                <Grid className="px-[1rem] pb-0 pt-[0.8rem] gap-[0.8rem] grid-rows-[auto_minmax(0,1fr)]">
                   <Grow
                     className="grid grid-cols-[6.7rem_1fr] place-items-start gap-2 w-full bg-[var(--color-information-10)] p-2.5 rounded-[1rem] h-full"
                     placement="ss"

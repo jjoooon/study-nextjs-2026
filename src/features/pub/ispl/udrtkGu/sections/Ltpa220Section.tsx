@@ -289,7 +289,7 @@ export default function Ltpa220Section() {
 
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr] h-full gap-3">
+          <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full gap-3">
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
                 <FormRow>

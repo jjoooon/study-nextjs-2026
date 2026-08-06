@@ -174,7 +174,7 @@ export default function Ltpa020Section() {
       </LayoutHead>
       <LayoutTemplatePx0
         mainBody={
-          <Grid className="w-full h-full grid-rows-[auto_1fr]" gap={2} placement="ss">
+          <Grid className="w-full h-full grid-rows-[auto_minmax(0,1fr)]" gap={2} placement="ss">
             {/* 검색/고객정보 영역
                 - 등록/미등록 모드에 따라 입력 UI가 완전히 분기됨
                 - 고지유형찾기 팝업 호출 버튼 포함 */}

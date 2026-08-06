@@ -159,6 +159,125 @@ const Ltpa300DummyData: Ltpa300DummyDataRow[] = [
     field13: 'data',
     field14: 'data',
   },
+  {
+    id: 8,
+    field01: '신부산GA지점',
+    field02: '123456',
+    field03: '김한화',
+    field04: '123456',
+    field05: '심한화',
+    field06: 'LA20148716422000',
+    field07: 'data',
+    field08: '비활성(직원처리)',
+    field09: '박한화',
+    field10: '2026-03-01',
+    field11: 'data',
+    field12: 'data',
+    field13: 'data',
+    field14: 'data',
+  },
+  {
+    id: 9,
+    field01: '신부산GA지점',
+    field02: '123456',
+    field03: '김한화',
+    field04: '123456',
+    field05: '심한화',
+    field06: 'LA20148716422000',
+    field07: 'data',
+    field08: '비활성(직원처리)',
+    field09: '박한화',
+    field10: '2026-03-01',
+    field11: 'data',
+    field12: 'data',
+    field13: 'data',
+    field14: 'data',
+  },
+  {
+    id: 10,
+    field01: '신부산GA지점',
+    field02: '123456',
+    field03: '김한화',
+    field04: '123456',
+    field05: '심한화',
+    field06: 'LA20148716422000',
+    field07: 'data',
+    field08: '비활성(직원처리)',
+    field09: '박한화',
+    field10: '2026-03-01',
+    field11: 'data',
+    field12: 'data',
+    field13: 'data',
+    field14: 'data',
+  },
+  {
+    id: 11,
+    field01: '신부산GA지점',
+    field02: '123456',
+    field03: '김한화',
+    field04: '123456',
+    field05: '심한화',
+    field06: 'LA20148716422000',
+    field07: 'data',
+    field08: '비활성(직원처리)',
+    field09: '박한화',
+    field10: '2026-03-01',
+    field11: 'data',
+    field12: 'data',
+    field13: 'data',
+    field14: 'data',
+  },
+  {
+    id: 12,
+    field01: '신부산GA지점',
+    field02: '123456',
+    field03: '김한화',
+    field04: '123456',
+    field05: '심한화',
+    field06: 'LA20148716422000',
+    field07: 'data',
+    field08: '비활성(직원처리)',
+    field09: '박한화',
+    field10: '2026-03-01',
+    field11: 'data',
+    field12: 'data',
+    field13: 'data',
+    field14: 'data',
+  },
+  {
+    id: 13,
+    field01: '신부산GA지점',
+    field02: '123456',
+    field03: '김한화',
+    field04: '123456',
+    field05: '심한화',
+    field06: 'LA20148716422000',
+    field07: 'data',
+    field08: '비활성(직원처리)',
+    field09: '박한화',
+    field10: '2026-03-01',
+    field11: 'data',
+    field12: 'data',
+    field13: 'data',
+    field14: 'data',
+  },
+  {
+    id: 14,
+    field01: '신부산GA지점',
+    field02: '123456',
+    field03: '김한화',
+    field04: '123456',
+    field05: '심한화',
+    field06: 'LA20148716422000',
+    field07: 'data',
+    field08: '비활성(직원처리)',
+    field09: '박한화',
+    field10: '2026-03-01',
+    field11: 'data',
+    field12: 'data',
+    field13: 'data',
+    field14: 'data',
+  },
 ];
 
 export default function Ltpa300Section() {
@@ -240,7 +359,7 @@ export default function Ltpa300Section() {
     [attributeColumnWidth]
   );
   const gridRef = React.useRef<AgGridReact<Ltpa300DummyDataRow>>(null);
-  const pageSize = 4;
+  const pageSize = 10;
   const {
     loadedCount,
     totalCount,
@@ -422,8 +541,8 @@ export default function Ltpa300Section() {
                   <FileExportIcon />
                 </Button>
               </TableFoldHead>
-              <TableFoldBody className="grid-rows-[1fr_auto] gap-1">
-                <div className="ag-theme-alpine min-h-[18.4rem]">
+              <TableFoldBody className="grid-rows-[minmax(0,1fr)_auto] gap-1">
+                <div className="ag-theme-alpine inner-scroll" data-page={pageSize}>
                   <AgGridReact<Ltpa300DummyDataRow>
                     ref={gridRef}
                     // noRowsOverlayComponent={AgGridEmptyComponent}

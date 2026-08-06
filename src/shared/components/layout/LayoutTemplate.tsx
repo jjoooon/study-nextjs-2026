@@ -84,7 +84,7 @@ export const LayoutTemplateLTPA350 = ({
 // - 본문은 스크롤 영역으로 감싸고, 하단 슬롯(mainFoot)을 선택적으로 렌더링
 export const LayoutTemplate = ({ mainBody, mainFoot }: Props) => (
   <>
-    <LayoutMain className="grid grid-rows-[1fr_auto] gap-0 px-[1rem]">
+    <LayoutMain className="grid grid-rows-[minmax(0,1fr)_auto] gap-0 px-[1rem]">
       <LayoutMainBody>
         <LayoutScrollWrap>
           <LayoutScrollItem>{mainBody}</LayoutScrollItem>
@@ -99,7 +99,7 @@ export const LayoutTemplate = ({ mainBody, mainFoot }: Props) => (
 // 좌우 패딩이 없는(px-0) 변형 템플릿
 export const LayoutTemplatePx0 = ({ mainBody, mainFoot }: Props) => (
   <>
-    <LayoutMain className="grid grid-rows-[1fr_auto] gap-0 px-0">
+    <LayoutMain className="grid grid-rows-[minmax(0,1fr)_auto] gap-0 px-0">
       <LayoutMainBody>
         <LayoutScrollWrap>
           <LayoutScrollItem>{mainBody}</LayoutScrollItem>

@@ -142,7 +142,7 @@ export function TabPager<T>({
     value: active ?? '',
     removable,
     onValueChange: setActive,
-    className: cn('w-full h-full grid grid-rows-[auto_1fr] content-start', className),
+    className: cn('w-full h-full grid grid-rows-[auto_minmax(0,1fr)] content-start', className),
     ...(removable && onRemove ? { onRemove } : {}),
   };
   return (

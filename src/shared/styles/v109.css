@@ -2313,7 +2313,6 @@
   width: auto !important;
 }
 
-.v109 .ltpa35002a-LayoutMainBody{max-height: calc(100dvh - 23.8rem);}
 /* BulletList info em color Chrome 109 호환 스타일 */
 .v109 [class*="[&>li_em]:text-[var(--color-information-50)]"] > li em,
 .v109 [class*="[&>li>em]:text-[var(--color-information-50)]"] > li em,
