@@ -435,6 +435,39 @@ export default function Ltpa010Section() {
     type09: '',
   });
 
+  const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
+  const [isTooltipLoading, setIsTooltipLoading] = React.useState(false);
+  const [tooltipContent, setTooltipContent] = React.useState<React.ReactNode | null>(null);
+  const tooltipTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnterTooltip = () => {
+    if (tooltipTimerRef.current) {
+      clearTimeout(tooltipTimerRef.current);
+    }
+    setIsTooltipOpen(true);
+    setIsTooltipLoading(true);
+    setTooltipContent(null);
+
+    tooltipTimerRef.current = setTimeout(() => {
+      setTooltipContent(
+        <>
+          심사자: 김현화(123457)
+          <br />- 예상대기시간 30분, 대기건수 5/8 (현재/전체)
+        </>
+      );
+      setIsTooltipLoading(false);
+    }, 1000);
+  };
+
+  const handleMouseLeaveTooltip = () => {
+    if (tooltipTimerRef.current) {
+      clearTimeout(tooltipTimerRef.current);
+    }
+    setIsTooltipOpen(false);
+    setIsTooltipLoading(false);
+    setTooltipContent(null);
+  };
+
   // Ag-Grid 컬럼 정의
   const columnDefs: (ColDef<DummyDataRow> | ColGroupDef<DummyDataRow>)[] = [
     // 1. 설계번호: 클릭 시 상세 조회 기능을 위한 링크 버튼 형태로 렌더링
@@ -651,17 +684,30 @@ export default function Ltpa010Section() {
         (data?: DummyDataRow) =>
           // [260725] 심사대기 툴팁 추가
           data?.field10 === '심사대기' ? (
-            <Tooltip>
+            <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
               <TooltipTrigger asChild>
-                <Button color="link" only="default" size="lg" variant="text">
+                <Button
+                  color="link"
+                  only="default"
+                  size="lg"
+                  variant="text"
+                  onMouseEnter={handleMouseEnterTooltip}
+                  onMouseLeave={handleMouseLeaveTooltip}
+                >
                   {data.field10}
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="top" sideOffset={1}>
-                <Typo tag="span" variant="body-sm" className="break-all whitespace-pre-wrap">
-                  심사자: 김현화(123457)
-                  <br />- 예상대기시간 30분, 대기건수 5/8 (현재/전체)
-                </Typo>
+                {isTooltipLoading ? (
+                  /* 로딩 영역 (추후 로딩 컴포넌트/스피너 적용 공간) */
+                  <Typo tag="span" variant="body-sm" className="break-all whitespace-pre-wrap text-gray-400">
+                    불러오는 중...
+                  </Typo>
+                ) : (
+                  <Typo tag="span" variant="body-sm" className="break-all whitespace-pre-wrap">
+                    {tooltipContent}
+                  </Typo>
+                )}
               </TooltipContent>
             </Tooltip>
           ) : data?.field10 === '심사결과' ? (

@@ -904,6 +904,44 @@
   padding-right: 0.8rem;
 }
 
+.v109 [class*="[&>table>tbody>tr>td]:pt-[1rem]"] > table > tbody > tr > td {
+  padding-top: 1rem;
+}
+.v109 [class*="[&>table>tbody>tr>td]:pb-[0.8rem]"] > table > tbody > tr > td {
+  padding-bottom: 0.8rem;
+}
+
+.v109 [class*="[&>*]:flex"] > *{display: flex;}
+.v109 [class*="[&>*]:items-center"] > *{align-items: center;}
+.v109 [class*="[&>*]:justify-center"] > *{justify-content: center;}
+.v109 [class*="[&>*]:py-1"] > *{padding-top: 1rem; padding-bottom: 1rem;}     
+.v109 [class*="[&>th+td]:border-t-0!"] > th + td{border-top: 0 !important;}
+.v109 [class*="[&>td~*]:border-l-0!"] > td ~ *{border-left: 0 !important;}
+.v109 [class*="[&>th>span]:leading-[1.1]"] > th > span{line-height: 1.1;}
+
+.v109 [class*="[&>td]:min-h-[3.8rem]!"] > td{min-height: 3.8rem !important;}
+.v109 [class*="[&>td]:leading-[1.1]"] > td{line-height: 1.1;}
+.v109 [class*="[&>td]:whitespace-nowrap"] > td{white-space: nowrap;}
+.v109 [class*="[&>td]:overflow-hidden"] > td{overflow: hidden;}
+.v109 [class*="[&>td]:h-[3.8rem]!"] > td{height: 3.8rem !important;}
+.v109 [class*="[&>td]:px-1"] > td{padding-left: 1rem; padding-right: 1rem;}
+.v109 [class*="[&>td]:text-center"] > td{text-align:  center;}
+.v109 [class*="[&>td]:first-of-type:border-l-0!"] > td:first-of-type{border-left: 0 !important;}
+.v109 [class*="[&>td]:last-of-type:border-r-0!"] > td:last-of-type{border-right: 0 !important;}
+.v109 [class*="[&>td>div]:text-left"] > td > div {text-align: left;}
+.v109 [class*="[&>th]:text-center"] > th{text-align: center;}
+.v109 [class*="[&>th]:py-[0.4rem]!"] > th{padding-top: 0.4rem !important; padding-bottom: 0.4rem !important;}
+.v109 [class*="[&>th]:first-of-type:border-l-0!"] > th:first-of-type{border-left: 0 !important;}
+.v109 [class*="[&>th]:last-of-type:border-r-0!"] > th:last-of-type{border-right: 0 !important;}
+
+.v109 [class*="[&>div+div]:bg-[var(--color-gray-5)]"] > div + div {
+  background-color: var(--color-gray-5);
+}
+
+.v109 [class*="[&>div+div]:!rounded-[0]"] > div + div {
+  border-radius: 0;
+}
+
 .v109 [class*="[&>table>tbody>tr>th]:py-0"] > table > tbody > tr > th,
 .v109 .\[\&\>table\>tbody\>tr\>th\]\:py-0 > table > tbody > tr > th {
   padding-top: 0;
@@ -1235,7 +1273,7 @@
 }
 
 /* Chrome 109 전용 Ltpa680Section 및 공통 레이아웃 스크롤 처리 */
-.v109 [data-layout="main"] {
+/* .v109 [data-layout="main"] {
   height: 100% !important;
   max-height: 100vh !important;
   overflow: hidden !important;
@@ -1245,7 +1283,7 @@
   height: 100% !important;
   min-height: 0 !important;
   overflow: hidden !important;
-}
+} */
 
 .v109 [data-layout="scroll-wrap"] {
   position: relative !important;
@@ -2252,10 +2290,10 @@
 }
 
 /* MainFoot / MainBottom 컴포넌트 하위 div 패딩 0 스타일 (.v109 및 공통) */
-.v109 .cp-mainfoot div {
+/* .v109 .cp-mainfoot div {
   padding-left: 0 !important;
   padding-right: 0 !important;
-}
+} */
 
 
 .v109 .ag-body-viewport.ag-layout-normal,
@@ -2274,3 +2312,5 @@
 .v109 [class*="[&>*+*]:last:w-auto"] > * + *:last-child {
   width: auto !important;
 }
+
+.v109 .ltpa35002a-LayoutMainBody{max-height: calc(100dvh - 23.8rem);}

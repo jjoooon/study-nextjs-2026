@@ -17,7 +17,7 @@ import {
 } from '@uiux/Dialog';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { StorySite } from '@/shared/components/storybook/StoryWrap';
-import { DevPageIframe } from '../DevPageIframe';
+
 
 export default {
   title: 'app/_excluded/page/PagePopup',
@@ -66,5 +66,3 @@ export const Default = () => (
 Default.args = {
   open: true,
 };
-
-export const Dev = () => <DevPageIframe pageId="PagePopup" />;
