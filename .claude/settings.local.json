@@ -73,7 +73,10 @@
       "Bash(git stash *)",
       "Bash(echo \"exit: $?\")",
       "Bash(echo \"exit:$?\")",
-      "Bash(git mv *)"
+      "Bash(git mv *)",
+      "Bash(break)",
+      "Read(//tmp/**)",
+      "mcp__playwright__browser_navigate"
     ]
   }
 }

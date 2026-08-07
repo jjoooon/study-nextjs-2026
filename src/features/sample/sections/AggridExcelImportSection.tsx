@@ -132,6 +132,18 @@ const COLUMN_WIDTH_MAP: Record<string, number> = {
   packageName: 200,
 };
 
+// excelColumnDefs 데모: field1 컬럼 1개만 export되도록 별도 컬럼 정의
+// 화면 columnDefs2의 field1 컬럼이 flex: 1이라, 같은 colId를 재사용하는 이 컬럼도
+// flex를 명시적으로 0으로 지워주지 않으면 width가 무시되고 화면의 flex 너비가 그대로 남는다.
+const excelColumnDefs: ColDef<DummyData1Type>[] = [
+  {
+    headerName: '상품코드',
+    field: 'field1',
+    flex: 0,
+    width: 200,
+  },
+];
+
 export default function Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
@@ -265,18 +277,8 @@ export default function Section() {
                 <ExcelExportButton<DummyData1Type>
                   gridRef={gridRef}
                   fileName={'hello.xlsx'}
+                  excelColumnDefs={excelColumnDefs}
                   exportParams={{
-                    // 엑셀에 노출할 필드명 커스텀
-                    // columnKeys: ['field1'],
-                    // 헤더명 커스텀
-                    processHeaderCallback: (params) =>
-                      HEADER_NAME_MAP[params.column.getColId()] ??
-                      params.api.getDisplayNameForColumn(params.column, null),
-                    // 컬럼 width
-                    columnWidth: (params) => {
-                      const colId = params.column?.getColId() ?? '';
-                      return COLUMN_WIDTH_MAP[colId] ?? 100; // 매핑에 없으면 기본값
-                    },
                     // 상단에 오늘 날짜 한 줄 추가 (그리드 컬럼 수만큼 병합 + 가운데 정렬)
                     prependContent: [
                       {
@@ -287,9 +289,12 @@ export default function Section() {
                               type: 'String',
                             },
                             mergeAcross: columnDefs2.length - 1,
-                            styleId: 'text-center',
+                            styleId: ['text-center', 'title-bold'],
                           },
                         ],
+                      },
+                      {
+                        cells: [], // 빈 줄
                       },
                     ],
                   }}
@@ -337,6 +342,13 @@ export default function Section() {
                       id: 'text-center',
                       alignment: {
                         horizontal: 'Center',
+                      },
+                    },
+                    {
+                      id: 'title-bold',
+                      font: {
+                        size: 14,
+                        bold: true,
                       },
                     },
                   ]}
