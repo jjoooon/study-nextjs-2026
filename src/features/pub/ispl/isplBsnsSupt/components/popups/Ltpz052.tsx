@@ -356,7 +356,7 @@ const Ltpz052 = () => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine min-h-[18.4rem]">
+              <div className="ag-theme-alpine inner-scroll" data-rows={rowData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData}

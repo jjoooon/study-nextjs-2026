@@ -373,7 +373,7 @@ export default function Ltpa190Section() {
               </TableFoldHead>
               <TableFoldBody>
                 <Grow className="w-full">
-                  <div className="ag-theme-alpine min-h-[18.4rem]">
+                  <div className="ag-theme-alpine inner-scroll" data-rows={rowData.length}>
                     <AgGridReact<DummyDataType>
                       // getRowId 적용: id 필드를 고유 식별자로 사용
                       getRowId={(params) => String(params.data.id)}

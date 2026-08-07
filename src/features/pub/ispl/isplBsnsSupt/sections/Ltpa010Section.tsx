@@ -467,60 +467,64 @@ export default function Ltpa010Section() {
       width: attributeColumnWidth(400),
       cellClass: '!px-0',
       autoHeight: true,
-      cellRenderer: createFieldRenderer<DummyDataRow>('field02', (data?: DummyDataRow) => {
-        // 메모가 있는 경우 펜 아이콘 버튼 표시 및 닉네임 툴팁 연동
-        const hasTooltip = data?.memo;
-        const hasMemoButton = !data?.memo || hasTooltip;
+      cellRenderer: createFieldRenderer<DummyDataRow>(
+        'field02',
+        (data?: DummyDataRow) => {
+          // 메모가 있는 경우 펜 아이콘 버튼 표시 및 닉네임 툴팁 연동
+          const hasTooltip = data?.memo;
+          const hasMemoButton = !data?.memo || hasTooltip;
 
-        if (!hasMemoButton) {
-          return null;
-        }
+          if (!hasMemoButton) {
+            return null;
+          }
 
-        const memoButton = (
-          <Button
-            color={hasTooltip ? 'primary' : 'gray-light'}
-            onClick={() => {
-              alert('메모장');
-            }}
-            only={data?.nickname && hasTooltip ? 'default' : 'icon'}
-            size={'sm'}
-            variant={'outlined'}
-          >
-            {hasTooltip ? (
-              data?.nickname ? (
-                <span>{data.nickname.slice(0, 5)}</span>
+          const memoButton = (
+            <Button
+              color={hasTooltip ? 'primary' : 'gray-light'}
+              onClick={() => {
+                alert('메모장');
+              }}
+              only={data?.nickname && hasTooltip ? 'default' : 'icon'}
+              size={'sm'}
+              variant={'outlined'}
+            >
+              {hasTooltip ? (
+                data?.nickname ? (
+                  <span>{data.nickname.slice(0, 5)}</span>
+                ) : (
+                  <PenIcon size={14} color={'var(--color-primary-50)'} />
+                )
               ) : (
-                <PenIcon size={14} color={'var(--color-primary-50)'} />
-              )
-            ) : (
-              <PenIcon size={14} color={'var(--color-gray-30)'} />
-            )}
-          </Button>
-        );
+                <PenIcon size={14} color={'var(--color-gray-30)'} />
+              )}
+            </Button>
+          );
 
-        return (
-          <Grow placement="bwc" className="h-full min-h-[3rem]">
-            <div className="truncate-no">{data?.field03}</div>
-
-            {data?.nickname ? (
-              <Tooltip>
-                <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
-                <TooltipContent side="top" sideOffset={8}>
-                  <Typo tag="span" variant="body-sm" className="break-all whitespace-pre-wrap">
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: data?.nickname,
-                      }}
-                    />
-                  </Typo>
-                </TooltipContent>
-              </Tooltip>
-            ) : (
-              memoButton
-            )}
-          </Grow>
-        );
-      }),
+          return (
+            <Grow placement="bwc" className="h-full min-h-[3rem]">
+              <div className="truncate-no">{data?.field03}</div>
+              {data?.nickname ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>{memoButton}</TooltipTrigger>
+                  <TooltipContent side="top" sideOffset={8} hideArrow={false}>
+                    <Typo tag="span" variant="body-sm" className="break-all whitespace-pre-wrap">
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: data?.nickname,
+                        }}
+                      />
+                    </Typo>
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                memoButton
+              )}
+            </Grow>
+          );
+        },
+        'col',
+        { hideArrow: true }
+      ),
     },
     // 3. 계약자 & 생년월일: 두 필드를 하나의 컬럼에 상하로 배치
     {

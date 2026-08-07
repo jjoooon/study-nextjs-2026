@@ -1290,7 +1290,7 @@ export default function Ltpa360Section() {
                     <TableFold variant={'accordion'} className="h-full">
                       <TableFoldHead title="전체현황" />
                       <TableFoldBody>
-                        <div className="ag-theme-alpine min-h-[18.4rem]">
+                        <div className="ag-theme-alpine inner-scroll" data-row={Ltpa360DummyData1.length}>
                           <AgGridReact<Ltpa360DummyDataRow1>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             getRowId={(params) => String(params.data.id)}
@@ -1313,7 +1313,7 @@ export default function Ltpa360Section() {
                     <TableFold variant={'accordion'} className="h-full">
                       <TableFoldHead title="세부현황" />
                       <TableFoldBody>
-                        <div className="ag-theme-alpine min-h-[18.4rem]">
+                        <div className="ag-theme-alpine inner-scroll" data-row={Ltpa360DummyData1b.length}>
                           <AgGridReact<Ltpa360DummyDataRow1b>
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             getRowId={(params) => String(params.data.id)}
@@ -1471,7 +1471,7 @@ export default function Ltpa360Section() {
                           </Button>
                         </Grow>
                       </Grow>
-                      <div className="ag-theme-alpine min-h-[18.4rem] w-full">
+                      <div className="ag-theme-alpine w-full inner-scroll" data-rows={Ltpa360DummyData2.length}>
                         <AgGridReact<Ltpa360DummyDataRow2>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
@@ -1651,7 +1651,7 @@ export default function Ltpa360Section() {
                       <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                     </Button>
                   </Grow>
-                  <div className="ag-theme-alpine min-h-[18.4rem] w-full">
+                  <div className="ag-theme-alpine w-full inner-scroll" data-row={Ltpa360DummyData3.length}>
                     <AgGridReact<Ltpa360DummyDataRow3>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}
@@ -1821,7 +1821,7 @@ export default function Ltpa360Section() {
                       <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                     </Button>
                   </Grow>
-                  <div className="ag-theme-alpine min-h-[18.4rem] w-full">
+                  <div className="ag-theme-alpine w-full inner-scroll" data-row={Ltpa360DummyData4.length}>
                     <AgGridReact<Ltpa360DummyDataRow4>
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       getRowId={(params) => String(params.data.id)}

@@ -207,7 +207,7 @@ const Ltpz01602 = () => {
           <TableFold>
             <TableFoldHead title="골프용품손해(실손)" />
             <TableFoldBody className="gap-2">
-              <div className="ag-theme-alpine min-h-[18.4rem]">
+              <div className="ag-theme-alpine inner-scroll" data-rows={DummyData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
