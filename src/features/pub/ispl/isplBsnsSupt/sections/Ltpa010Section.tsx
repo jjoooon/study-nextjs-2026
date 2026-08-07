@@ -522,8 +522,7 @@ export default function Ltpa010Section() {
             </Grow>
           );
         },
-        'col',
-        { hideArrow: true }
+        'col'
       ),
     },
     // 3. 계약자 & 생년월일: 두 필드를 하나의 컬럼에 상하로 배치
