@@ -351,7 +351,7 @@ const Ltpz008 = () => {
           </Grow>
           <Gcol className="w-full" placement="ss" variant="box-info">
             <Typo icon="info" variant="body-sm">
-              담보명의 순서를 변경항 경우 <b className="text-bold">담보설계(LTRA350)과 고객에게 전달하는 출력물</b>에도
+              담보명의 순서를 변경할 경우 <b className="text-bold">담보설계(LTRA350)과 고객에게 전달하는 출력물</b>에도
               담보 순서가 변경됩니다.
             </Typo>
           </Gcol>

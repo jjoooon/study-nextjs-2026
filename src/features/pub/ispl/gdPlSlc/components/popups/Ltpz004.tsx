@@ -129,9 +129,11 @@ const Ltpz004 = () => {
                   tooltipShowDelay={0}
                 />
               </div>
-              <Typo icon="info" variant="body-sm">
-                담보별 실제 가입금액은 설계 화면에서 확인하실 수 있습니다.
-              </Typo>
+              <Gcol className="w-full" placement="ss" variant="box-info">
+                <Typo icon="info" variant="body-sm">
+                  담보별 실제 가입금액은 설계 화면에서 확인하실 수 있습니다.
+                </Typo>
+              </Gcol>
             </TableFoldBody>
           </TableFold>
         </DialogSection>
