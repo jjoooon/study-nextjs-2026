@@ -634,6 +634,9 @@ export function Ltpa35004() {
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     청약후심사요청
                   </Button>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'} className="is-dialog-view">
+                    닫기
+                  </Button>
                 </Grow>
               </MainBottomItem>
             </MainBottom>
