@@ -228,7 +228,7 @@ const Ltpz116 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr] gap-1">
+        <DialogSection className="grid-rows-[auto_1fr] gap-3">
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable variant={'none'} cols={['w-1', 'w-3', 'w-1', 'w-auto']}>
               <FormRow>
@@ -254,7 +254,7 @@ const Ltpz116 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid placement="ec" className="w-full">
+          <Grid placement="ec" className="w-full gap-2">
             <TableFold>
               <TableFoldHead title="동시가입누적 설계">
                 {' '}
