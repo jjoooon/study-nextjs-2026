@@ -493,13 +493,22 @@
     const HYGITEST_HOST_NAMES2 = new Set(['story.hwgitest.com']);
 
     function getInitialStorybookBase() {
-      const currentHost = window.location.hostname;
-      if (LOCAL_HOST_NAMES.has(currentHost)) {
+      if (typeof window === 'undefined') return LOCAL_STORYBOOK_BASE_URL;
+      const { hostname, origin, pathname } = window.location;
+
+      if (LOCAL_HOST_NAMES.has(hostname)) {
         return LOCAL_STORYBOOK_BASE_URL;
-      } else if (HYGITEST_HOST_NAMES.has(currentHost)) {
+      }
+      if (HYGITEST_HOST_NAMES.has(hostname)) {
         return HYGITEST_STORYBOOK_BASE_URL;
-      } else if (HYGITEST_HOST_NAMES2.has(currentHost) || currentHost.endsWith('.hwgitest.com')) {
+      }
+      if (HYGITEST_HOST_NAMES2.has(hostname) || hostname.endsWith('.hwgitest.com')) {
         return HYGITEST_STORYBOOK_BASE_URL2;
+      }
+      if (hostname.includes('github.io')) {
+        const pathSegments = pathname.split('/').filter(Boolean);
+        const repoName = pathSegments.length > 0 && !pathSegments[0].includes('.') ? pathSegments[0] : 'study-nextjs-2026';
+        return `${origin}/${repoName}`;
       }
       return PROD_STORYBOOK_BASE_URL;
     }
@@ -654,17 +663,32 @@
       }
     });
 
-    // ialist.json 데이터 fetch
+    // ialist.json 데이터 fetch (로컬/외부망 다중 환경 지원)
     async function loadIAList() {
       try {
-        let response = await fetch('src/stories/iaDashboard/ialist.json');
-        if (!response.ok) {
-          response = await fetch('/src/stories/iaDashboard/ialist.json');
+        const storybookBase = getInitialStorybookBase();
+        const fetchUrls = [
+          'src/stories/iaDashboard/ialist.json',
+          '/src/stories/iaDashboard/ialist.json',
+          './ialist.json',
+          'ialist.json',
+          `${storybookBase}/ialist.json`,
+        ];
+
+        let response = null;
+        for (const url of fetchUrls) {
+          try {
+            const res = await fetch(url);
+            if (res.ok) {
+              response = res;
+              break;
+            }
+          } catch (e) {
+            // fallback 진행
+          }
         }
-        if (!response.ok) {
-          response = await fetch('./ialist.json');
-        }
-        if (!response.ok) throw new Error('Failed to load ialist.json');
+
+        if (!response || !response.ok) throw new Error('Failed to load ialist.json');
         const rawData = await response.json();
         allItems = rawData.filter(item => item.dep1 === '차세대가입설계');
         
