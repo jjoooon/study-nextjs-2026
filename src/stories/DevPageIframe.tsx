@@ -18,7 +18,15 @@ export function DevPageIframe({ pageId, activeStep, subId }: DevPageIframeProps)
   const devUrl = `http://localhost:3000/pub/ispl/${pageId}${query}`;
 
   return (
-    <div style={{ width: '100%', height: 'calc(100vh - 20px)', minHeight: '600px', display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        width: '100%',
+        height: 'calc(100vh - 20px)',
+        minHeight: '600px',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <div
         style={{
           padding: '6px 12px',

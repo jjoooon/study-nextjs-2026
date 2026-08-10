@@ -74,12 +74,12 @@ export function IaTable({
           </div>
         </div>
         <a
-          href="/hgi/index.html"
+          href="/iframe-test.html"
           target="_blank"
           rel="noopener noreferrer"
           className="!text-[1.2rem] text-[#0876ff] hover:underline shrink-0 block"
         >
-          🎬시연영상
+          Iframe popup
         </a>
         <a
           href="https://github.com/jjoooon/study-nextjs-2026/archive/refs/heads/pub.zip"

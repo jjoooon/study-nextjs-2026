@@ -14,7 +14,6 @@ import {
   getDialogLayerIndex,
   subscribeOverlay,
 } from '@/shared/utils/popup/dialogOverlayRegistry';
-import { isIframe } from '@/shared/utils/screenUtils';
 import { Grid } from '@atoms';
 import { CloseIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -204,6 +203,40 @@ const resolveDialogSize = (size?: DialogSize, viewportWidth?: number | null, cla
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
+/**
+ * 현재 창이 iframe 내부이고, 직속 부모가 'storybook-preview-iframe'이 아닌지 검사합니다.
+ */
+export const isExternalOrCustomIframe = (): boolean => {
+  if (typeof window === 'undefined') return false;
+
+  // 1. iframe 내부인지 확인
+  let inIframe = false;
+  try {
+    inIframe = window !== window.top || window.self !== window.top;
+  } catch {
+    // Cross-origin 보안 예외 발생 시 iframe 내부에 위치함
+    inIframe = true;
+  }
+  if (!inIframe) return false;
+
+  // 2. 바로 부모의 frameElement 검사
+  try {
+    const frameEl = window.frameElement;
+    if (frameEl) {
+      const frameId = frameEl.id || frameEl.getAttribute('id');
+      // 바로 부모가 storybook-preview-iframe 이면 false
+      if (frameId === 'storybook-preview-iframe') {
+        return false;
+      }
+    }
+  } catch {
+    // cross-origin의 경우 frameElement 접근이 제한되므로 storybook-preview-iframe이 아닌 외부 iframe (true)
+    return true;
+  }
+
+  return true;
+};
+
 type DialogContextValue = {
   depth: number;
   dialogId: string | null;
@@ -212,6 +245,7 @@ type DialogContextValue = {
   modal: boolean;
   setModalOverride?: (override: boolean | null) => void;
   open: boolean;
+  isIframe?: boolean;
 };
 
 const DialogDepthContext = React.createContext<DialogContextValue>({
@@ -221,6 +255,7 @@ const DialogDepthContext = React.createContext<DialogContextValue>({
   setMinimized: () => {},
   modal: true,
   open: false,
+  isIframe: false,
 });
 
 type DialogSizeContextValue = {
@@ -335,6 +370,8 @@ function Dialog({
 
   const effectiveModal = isMinimized || modalOverride === false ? false : (modalOverride ?? modal);
 
+  const isIframeEnv = React.useMemo(() => isExternalOrCustomIframe(), []);
+
   return (
     <DialogDepthContext.Provider
       value={{
@@ -345,6 +382,7 @@ function Dialog({
         modal,
         setModalOverride,
         open: isOpen,
+        isIframe: isIframeEnv,
       }}
     >
       <DialogPrimitive.Root
@@ -517,9 +555,6 @@ function DialogContent({
 }: DialogContentProps) {
   const { dialogId, isMinimized, setMinimized, open, setModalOverride } = React.useContext(DialogDepthContext);
 
-  // iframe 환경 검사 (SSR Hydration mismatch 방지)
-  const [isIframeState, setIsIframeState] = React.useState(false);
-
   // dim === 'none' 일 때는 Radix 비모달(modal=false) 전환 및 바닥 클릭 가능 처리
   useIsomorphicLayoutEffect(() => {
     if (dim === 'none') {
@@ -540,22 +575,14 @@ function DialogContent({
     }
   }, [dim, setModalOverride]);
 
+  // iframe 환경 검사: 바로 부모가 storybook-preview-iframe 이 아닌 외부/테스트 iframe일 때 true
+  const [isIframeState, setIsIframeState] = React.useState(() => {
+    if (typeof window === 'undefined') return false;
+    return isExternalOrCustomIframe();
+  });
+
   useIsomorphicLayoutEffect(() => {
-    const checkIframe = () => {
-      if (!isIframe()) return false;
-
-      try {
-        // 부모 아이프레임이 스토리북 프리뷰용('storybook-preview-iframe')인 경우 제외
-        if (window.frameElement && window.frameElement.id === 'storybook-preview-iframe') {
-          return false;
-        }
-      } catch {
-        // cross-origin의 경우 frameElement 접근이 제한될 수 있으므로 그대로 true 반환
-      }
-      return true;
-    };
-
-    setIsIframeState(checkIframe());
+    setIsIframeState(isExternalOrCustomIframe());
   }, []);
 
   const resolvedShowCloseButton = showCloseButton;
@@ -871,7 +898,7 @@ function DialogContent({
           <DialogOverlay
             dim={dim === 'transparent' ? 'transparent' : 'dark'}
             style={{ zIndex: overlayZIndex }}
-            className={overlayClassName}
+            className={cn(isIframeState && 'is-iframe', overlayClassName)}
             disableMotion={disableOverlayMotion}
           />
         )}
@@ -880,6 +907,7 @@ function DialogContent({
           data-slot="dialog-content"
           style={contentStyle}
           data-isminimize={isMinimized ? 'true' : 'false'}
+          data-is-iframe={isIframeState ? 'true' : undefined}
           className={cn(
             'fixed w-full grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-lg border border-[var(--color-gray-20)] px-0 py-0 shadow-lg outline-none',
             isDragging || !!isResizing ? 'transition-none' : 'dialog-bounce-transition',

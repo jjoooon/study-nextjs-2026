@@ -429,8 +429,8 @@
       <input type="text" id="searchInput" class="search-box" placeholder="ID 또는 화면명 검색...">
     </div>
     <div class="sidebar-tabs">
-      <button class="tab-btn" id="tabPopup" onclick="switchTab('popup')">팝업</button>
-      <button class="tab-btn active" id="tabPage" onclick="switchTab('page')">화면</button>
+      <button class="tab-btn active" id="tabPopup" onclick="switchTab('popup')">팝업</button>
+      <button class="tab-btn" id="tabPage" onclick="switchTab('page')">화면</button>
       <button class="tab-btn" id="tabAll" onclick="switchTab('all')">전체</button>
     </div>
     <div class="list-container" id="listContainer">
@@ -518,8 +518,47 @@
     // 도메인 호스트 기반으로 자동 추정된 스토리북 주소 입력 필드에 설정
     storybookHostInput.value = getInitialStorybookBase();
 
+    const EXCLUDED_IDS = new Set([
+      'LTPZ073', 'LTPZ093', 'LTPZ102', 'LTPZ103', 'LTPZ106', 'LTRZ085', 'LTPZ052',
+      'LTPZ01602', 'LTPZ01601', 'LTPZ015', 'LTPZ01002', 'LTPZ01001', 'LTPA3500401',
+      'LTPA130', 'LTPA083', 'LTPA140', 'LTPA200', 'LTPA210', 'LTPA240', 'LTPA250',
+      'LTPA190', 'LTPA260', 'LTPA070', 'LTPA340', 'LTPA360', 'LTPA390', 'LTPA030',
+      'LTPA690', 'LTPA904', 'PagePopup'
+    ]);
+
+    function isItemPopup(item) {
+      if (item.popup === '팝업' || item.popup === true) return true;
+      if (item.popup === '화면' || item.popup === false) return false;
+      if (item.path && item.path.includes('popups')) return true;
+      if (item.id && (/^LTPZ/i.test(item.id) || /^LTRZ/i.test(item.id))) return true;
+      return false;
+    }
+
+    function getStoryIframeUrl(item, storybookBase) {
+      const isPopup = isItemPopup(item);
+      const folder = isPopup ? 'popup' : 'page';
+      const cleanId = (item.id || '').trim();
+      const isExcluded = EXCLUDED_IDS.has(cleanId.toUpperCase()) || EXCLUDED_IDS.has(cleanId);
+      const prefix = isExcluded ? `app-excluded-${folder}` : `app-${folder}`;
+      const storyPath = `${prefix}-${cleanId.toLowerCase()}`;
+
+      let stepQuery = '';
+      if (item.subId) {
+        const match = item.subId.match(/_(\d)$/);
+        if (match) {
+          const step = Number(match[1]);
+          if (step >= 1 && step <= 6) {
+            stepQuery = `&activeStep=${step}`;
+          }
+        }
+      }
+      const subIdQuery = item.subId && item.subId.includes('sub_') ? `&step=${encodeURIComponent(item.subId)}` : '';
+
+      return `${storybookBase}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}`;
+    }
+
     let allItems = [];
-    let currentTab = 'page'; // 'popup' | 'page' | 'all'
+    let currentTab = 'popup'; // 기본 탭을 팝업으로 설정
 
     function updateIframeSizeFromSliders() {
       const w = widthSlider.value;
@@ -561,7 +600,7 @@
 
     widthVal.addEventListener('blur', () => {
       let w = parseInt(widthVal.value, 10) || 320;
-      w = Math.max(320, Math.min(1200, w));
+      w = Math.max(320, Math.min(1800, w));
       widthVal.value = w;
       updateIframeSizeFromInputs();
     });
@@ -598,29 +637,52 @@
         heightVal.value = defaultHeight;
       }
 
-      // 동적 높이 리사이즈 적용
+      // 동적 크기 리사이즈 적용 (가로/세로 모두 지원)
       if (event.data.type === 'DIALOG_RESIZE') {
-        const newHeight = event.data.height;
-        iframeWrapper.style.height = newHeight + 'px';
-        heightSlider.value = newHeight;
-        heightVal.value = newHeight;
+        if (event.data.width) {
+          const newWidth = event.data.width;
+          iframeWrapper.style.width = newWidth + 'px';
+          widthSlider.value = newWidth;
+          widthVal.value = newWidth;
+        }
+        if (event.data.height) {
+          const newHeight = event.data.height;
+          iframeWrapper.style.height = newHeight + 'px';
+          heightSlider.value = newHeight;
+          heightVal.value = newHeight;
+        }
       }
     });
 
     // ialist.json 데이터 fetch
     async function loadIAList() {
       try {
-        const response = await fetch('./ialist.json');
+        let response = await fetch('src/stories/iaDashboard/ialist.json');
+        if (!response.ok) {
+          response = await fetch('/src/stories/iaDashboard/ialist.json');
+        }
+        if (!response.ok) {
+          response = await fetch('./ialist.json');
+        }
         if (!response.ok) throw new Error('Failed to load ialist.json');
-        allItems = await response.json();
+        const rawData = await response.json();
+        allItems = rawData.filter(item => item.dep1 === '차세대가입설계');
         
-        // 초기 기본 아이템 선택 (예: LTPA020)
-        const initialIndex = allItems.findIndex(i => i.id === 'LTPA020');
+        // 탭 UI 초기화
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        const activeTabBtn = document.getElementById(currentTab === 'popup' ? 'tabPopup' : (currentTab === 'page' ? 'tabPage' : 'tabAll'));
+        if (activeTabBtn) activeTabBtn.classList.add('active');
+
+        // 초기 기본 아이템 선택 (예: 첫 번째 팝업 LTPZ001 또는 첫 팝업 아이템)
+        const initialIndex = allItems.findIndex(i => i.id === 'LTPZ001') !== -1 
+          ? allItems.findIndex(i => i.id === 'LTPZ001') 
+          : allItems.findIndex(i => isItemPopup(i));
+        
         renderList();
         
         if (initialIndex !== -1) {
           setTimeout(() => {
-            const initialItemElement = document.querySelector(`.list-item:nth-child(${initialIndex + 1})`) || document.querySelector('.list-item');
+            const initialItemElement = document.querySelector('.list-item');
             if (initialItemElement) {
               window.selectItem(initialItemElement, initialIndex);
             }
@@ -644,18 +706,12 @@
     // 아이템 선택 시 iframe 로드 주소 변경 (스토리북 캔버스 URL 사용)
     window.selectItem = function(element, itemIndex) {
       const item = allItems[itemIndex];
+      if (!item) return;
       document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
-      element.classList.add('active');
+      if (element) element.classList.add('active');
 
       const storybookBase = storybookHostInput.value.trim() || 'http://localhost:6006';
-      
-      // 스토리북 Iframe URL 계산 공식
-      let finalPath = item.path || '';
-      if (/^LTPA350/i.test(item.id)) {
-        finalPath = 'ispl';
-      }
-      const storyPath = 'app-' + finalPath.replace(/\//g, '-').toLowerCase() + '-' + item.id.toLowerCase();
-      const url = `${storybookBase}/iframe.html?id=${storyPath}--default&viewMode=story`;
+      const url = getStoryIframeUrl(item, storybookBase);
 
       testIframe.src = url;
       currentUrl.textContent = url;
@@ -666,13 +722,14 @@
       const searchKeyword = searchInput.value.toLowerCase().trim();
 
       const filtered = allItems.filter(item => {
+        const isPopup = isItemPopup(item);
         // 1. 탭 필터링
-        if (currentTab === 'popup' && item.popup !== '팝업') return false;
-        if (currentTab === 'page' && item.popup !== '화면') return false;
+        if (currentTab === 'popup' && !isPopup) return false;
+        if (currentTab === 'page' && isPopup) return false;
 
         // 2. 검색어 필터링
         if (searchKeyword) {
-          const idMatch = item.id.toLowerCase().includes(searchKeyword);
+          const idMatch = (item.id || '').toLowerCase().includes(searchKeyword);
           const subIdMatch = item.subId && item.subId.toLowerCase().includes(searchKeyword);
           const dep4Match = item.dep4 && item.dep4.toLowerCase().includes(searchKeyword);
           const fileMatch = item.file && item.file.toLowerCase().includes(searchKeyword);
@@ -687,25 +744,22 @@
         return;
       }
 
+      const storybookBase = storybookHostInput.value.trim() || 'http://localhost:6006';
+      const currentFrameSrc = testIframe.src || '';
+
       listContainer.innerHTML = filtered.map(item => {
         const originalIndex = allItems.findIndex(i => i.id === item.id && i.subId === item.subId && i.dep4 === item.dep4);
-
-        let finalPath = item.path || '';
-        if (/^LTPA350/i.test(item.id)) {
-          finalPath = 'ispl';
-        }
-        const storyPath = 'app-' + finalPath.replace(/\//g, '-').toLowerCase() + '-' + item.id.toLowerCase();
-        const itemUrl = `id=${storyPath}--default`;
-
-        const currentFrameSrc = testIframe.src || '';
-        const isActive = currentFrameSrc.includes(itemUrl);
+        const itemUrl = getStoryIframeUrl(item, storybookBase);
+        const isActive = currentFrameSrc === itemUrl;
         const activeClass = isActive ? 'active' : '';
+        const isPopup = isItemPopup(item);
+        const typeLabel = isPopup ? '팝업' : '화면';
 
         return `
           <div class="list-item ${activeClass}" onclick="selectItem(this, ${originalIndex})">
             <div class="item-meta">
               <span class="item-id">${item.id}${item.subId ? ' (' + item.subId + ')' : ''}</span>
-              <span class="item-type">${item.popup || '화면'}</span>
+              <span class="item-type">${typeLabel}</span>
             </div>
             <div class="item-title" title="${item.dep4}">${item.dep4}</div>
             <div class="item-path" title="${item.path || ''}">${item.path || ''}</div>
