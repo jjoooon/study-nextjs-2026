@@ -1039,7 +1039,7 @@ const Ltpz068 = () => {
               })}
             </Grid>
             {/* 가입 설계 금액 대조용 Ag-Grid 본체 */}
-            <div className="ag-theme-alpine relative !h-[calc(100vh)] !max-h-[50rem]">
+            <div className="ag-theme-alpine relative">
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 rowData={rowData}
