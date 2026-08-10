@@ -849,7 +849,7 @@ const Ltpz031 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} minimized className="w-[100rem]">
+      <DialogContent showCloseButton resizable={true} className="w-[100rem]">
         {/* 1. 다이얼로그 헤더 영역: 화면 타이틀 및 ID 표시 */}
         <DialogHeader>
           <DialogTitle>

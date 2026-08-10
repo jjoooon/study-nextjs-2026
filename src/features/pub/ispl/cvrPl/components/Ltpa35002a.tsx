@@ -386,7 +386,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, numberCellRenderer]
   );
   return (
-    <Gcol>
+    <Grid className="w-full grid-rows-[minmax(0,1fr)_auto]">
       <LayoutMainBody className="ltpa35002a-LayoutMainBody">
         <LayoutScrollWrap
           className={`${!isHeightExpanded ? 'grid-rows-[auto_auto_1fr]' : 'grid-rows-[auto_1fr]'} gap-0`}
@@ -741,7 +741,7 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
                       <Input
                         type="tel"
                         commaAmount={true}
-                        value={/*totalPremium*/ 121375}
+                        value={totalPremium}
                         clear={true}
                         width={'full'}
                         size={'md'}
@@ -796,6 +796,6 @@ export function Ltpa35002a({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           </MainBottomItem>
         </MainBottom>
       </LayoutMainFoot>
-    </Gcol>
+    </Grid>
   );
 }

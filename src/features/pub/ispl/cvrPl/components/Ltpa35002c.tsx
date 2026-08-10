@@ -20,7 +20,7 @@ import {
   AgGridEmptyComponent,
   AmountWithPopoverCellEditor,
 } from '@aggrid';
-import { Grid, Grow, Typo, Gcol } from '@atoms';
+import { Grid, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { KeyValueList } from '@common/KeyValueList';
 import { TooltipQ } from '@common/TooltipQ';
@@ -449,7 +449,7 @@ export function Ltpa35002c() {
   );
 
   return (
-    <Gcol>
+    <Grid className="w-full grid-rows-[minmax(0,1fr)_auto]">
       <LayoutMainBody>
         <ResizablePanelGroup orientation="vertical" className="w-full">
           <ResizablePanel defaultSize={50}>
@@ -713,6 +713,6 @@ export function Ltpa35002c() {
           </MainBottomItem>
         </MainBottom>
       </LayoutMainFoot>
-    </Gcol>
+    </Grid>
   );
 }

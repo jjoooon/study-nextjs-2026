@@ -2336,3 +2336,13 @@
   padding-left: var(--spacing-3) !important;
   padding-right: var(--spacing-3) !important;
 }
+
+.v109 .\[\@media\(max-height\:630px\)\]\:py-\[1rem\] {
+   
+}
+@media (max-height: 630px){
+  .v109 [data-layout="process"] button {
+    padding-top:1rem;
+    padding-bottom:1rem;
+  }
+}

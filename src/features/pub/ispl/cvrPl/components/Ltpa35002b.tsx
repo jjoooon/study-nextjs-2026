@@ -372,7 +372,7 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
   );
 
   return (
-    <Gcol>
+    <Grid className="w-full grid-rows-[minmax(0,1fr)_auto]">
       <LayoutMainBody>
         <LayoutScrollWrap
           className={`${!isHeightExpanded ? 'grid-rows-[auto_auto_1fr]' : 'grid-rows-[auto_1fr]'} gap-0`}
@@ -860,6 +860,6 @@ export function Ltpa35002b({ onSelectPlan, isWidthExpanded = false, setIsWidthEx
           </MainBottomItem>
         </MainBottom>
       </LayoutMainFoot>
-    </Gcol>
+    </Grid>
   );
 }

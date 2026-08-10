@@ -50,7 +50,7 @@ export const LayoutTemplateLTPA350 = ({
   hideAside = false,
 }: Props) => (
   <>
-    <LayoutBody className="grid grid-cols-[auto_minmax(92.2rem,1fr)_auto] grid-rows-[auto_1fr] gap-x-3 gap-y-1">
+    <LayoutBody className="grid grid-cols-[auto_minmax(92.2rem,1fr)_auto] grid-rows-[auto_minmax(0,1fr)] gap-x-3 gap-y-1">
       {/* 페이지 타이틀은 3열 전체에 걸쳐 표시 */}
       <div className="col-span-3 pl-2.5">{pageTitle}</div>
 
@@ -61,7 +61,7 @@ export const LayoutTemplateLTPA350 = ({
       {mainBody}
 
       {/* 우측 사이드 영역(헤더/본문/푸터) */}
-      <LayoutAside className={`grid grid-rows-[auto_1fr_auto] gap-1 ${hideAside ? 'hidden' : ''}`}>
+      <LayoutAside className={`grid grid-rows-[auto_minmax(0,1fr)_auto] gap-1 ${hideAside ? 'hidden' : ''}`}>
         <LayoutAsideHead>{asideHead}</LayoutAsideHead>
         <LayoutAsideBody>
           <LayoutScrollWrap>

@@ -109,7 +109,7 @@ export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {
         noValidate
       >
         <LayoutMain
-          className={`grid ${TabActive !== '4' ? 'grid-rows-[auto_1fr]' : 'grid-rows-[1fr]'} gap-0 h-full w-full`}
+          className={`grid ${TabActive !== '4' ? 'grid-rows-[auto_minmax(0,1fr)]' : 'grid-rows-[minmax(0,1fr)]'} gap-0 h-full w-full`}
         >
           {TabActive !== '4' && (
             <TabPager

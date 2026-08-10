@@ -18,7 +18,10 @@ interface LayoutProps {
 // 문서 전체 래퍼: 상단(head) + 본문(body) 2행 구조
 export const LayoutDoc = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="doc" className={cn('relative grid grid-rows-[auto_1fr_auto] h-full bg-[#fff]', className)}>
+    <div
+      data-layout="doc"
+      className={cn('relative grid grid-rows-[auto_minmax(0,1fr)_auto] h-full min-h-[51rem] bg-[#fff]', className)}
+    >
       {children}
     </div>
   );
@@ -41,7 +44,7 @@ export const LayoutBody = ({ children, className, ...rest }: LayoutProps) => {
   return (
     <div
       data-layout="body"
-      className={cn('relative grid grid-cols-[auto_1fr] pr-[1rem] pt-[.4rem] gap-3', className)}
+      className={cn('relative grid grid-cols-[auto_minmax(0,1fr)] pr-[1rem] pt-[.4rem] gap-3', className)}
       {...rest}
     >
       {children}
@@ -62,7 +65,7 @@ export const LayoutProcess = ({ children, className }: LayoutProps) => {
   // 좌측 프로세스(스텝바) 영역
   // - 최소 너비를 유지해 단계 UI가 줄바꿈되지 않도록 한다.
   return (
-    <div data-layout="process" className={cn('relative grid grid-cols-[1fr] min-w-[4rem]', className)}>
+    <div data-layout="process" className={cn('relative grid grid-cols-[minmax(0,1fr)] min-w-[4rem]', className)}>
       {children}
     </div>
   );
@@ -71,7 +74,7 @@ export const LayoutProcess = ({ children, className }: LayoutProps) => {
 // 폴더형 콘텐츠 래퍼: 헤더 + 본문
 export const LayoutFolder = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="folder" className={cn('relative grid grid-rows-[auto_1fr] gap-2.5', className)}>
+    <div data-layout="folder" className={cn('relative grid grid-rows-[auto_minmax(0,1fr)] gap-2.5', className)}>
       {children}
     </div>
   );
@@ -89,7 +92,7 @@ export const LayoutFolderHead = ({ children, className }: LayoutProps) => {
 // 폴더 본문: 메인(좌) + 보조(우)
 export const LayoutFolderBody = ({ children, className }: LayoutProps) => {
   return (
-    <div data-layout="folder-body" className={cn('relative grid grid-cols-[1fr_auto]', className)}>
+    <div data-layout="folder-body" className={cn('relative grid grid-cols-[minmax(0,1fr)_auto]', className)}>
       {children}
     </div>
   );
