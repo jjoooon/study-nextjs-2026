@@ -638,6 +638,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
 
               {/* 보장분석 or 고지유형 */}
               {customerType === 'recent' ? (
+                // 20260810 - 구조 수정
                 // 등록고객
                 <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem]">
                   <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
@@ -694,6 +695,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 </Gcol>
               ) : (
                 <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem]">
+                  {/* 20260810 -  */}
                   <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'간편'}>
@@ -732,6 +734,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         </CheckboxGroup>
                       </FormCell>
                     </FormRow>
+                    {/* 20260810 - 수정 */}
                     <FormRow className="pt-1">
                       <FormCell
                         title={
@@ -774,6 +777,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         </Grid>
                       </FormCell>
                     </FormRow>
+                    {/* // 20260810 - 수정 */}
                   </FormTable>
                 </Gcol>
               )}
