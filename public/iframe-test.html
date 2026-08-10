@@ -355,6 +355,42 @@
       transform: translateY(-2px);
     }
 
+    .preset-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.25rem 0.35rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      flex-wrap: wrap;
+    }
+
+    .preset-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 0.3rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .preset-btn:hover {
+      color: var(--text-color);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .preset-btn.active {
+      background: var(--accent-color);
+      color: #fff;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
     .iframe-wrapper {
       background: #1e293b;
       border: 1px solid var(--border-color);
@@ -473,6 +509,18 @@
             <input type="range" id="heightSlider" min="100" max="1900" value="700" step="10">
             <input type="number" id="heightVal" class="value-display" min="100" max="1900" value="700">
             <span class="unit-label">px</span>
+          </div>
+        </div>
+
+        <div class="control-group" style="margin-left: auto;">
+          <label>Preset</label>
+          <div class="preset-btn-group" id="presetBtnGroup">
+            <button type="button" class="preset-btn" data-size="sm" onclick="applySizePreset('sm')">SM(480)</button>
+            <button type="button" class="preset-btn" data-size="md" onclick="applySizePreset('md')">MD(560)</button>
+            <button type="button" class="preset-btn" data-size="ml" onclick="applySizePreset('ml')">ML(620)</button>
+            <button type="button" class="preset-btn" data-size="lg" onclick="applySizePreset('lg')">LG(760)</button>
+            <button type="button" class="preset-btn" data-size="xl" onclick="applySizePreset('xl')">XL(960)</button>
+            <button type="button" class="preset-btn" data-size="2xl" onclick="applySizePreset('2xl')">2XL(1180)</button>
           </div>
         </div>
       </div>
@@ -626,13 +674,47 @@
       updateIframeSizeFromInputs();
     });
 
-    function setPreset(w, h) {
-      widthSlider.value = w;
-      heightSlider.value = h;
-      updateIframeSizeFromSliders();
+    const SIZE_PRESETS = {
+      xs: { width: 320, height: 400 },
+      sm: { width: 480, height: 500 },
+      md: { width: 560, height: 560 },
+      ml: { width: 620, height: 600 },
+      lg: { width: 760, height: 650 },
+      xl: { width: 960, height: 750 },
+      '2xl': { width: 1180, height: 800 },
+    };
+
+    function applySizePreset(sizeKey) {
+      const preset = SIZE_PRESETS[sizeKey];
+      if (!preset) return;
+
+      widthSlider.value = preset.width;
+      widthVal.value = preset.width;
+      iframeWrapper.style.width = preset.width + 'px';
+
+      updateActivePresetButton(sizeKey);
     }
 
-    // iframe 내부의 모달 크기 메시지 수신 처리
+    function updateActivePresetButton(sizeKey) {
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        if (btn.getAttribute('data-size') === sizeKey) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function findMatchingPreset(width) {
+      for (const [key, preset] of Object.entries(SIZE_PRESETS)) {
+        if (Math.abs(preset.width - width) <= 15) {
+          return key;
+        }
+      }
+      return null;
+    }
+
+    // iframe 내부의 모달 크기 메시지 수신 처리 (size 정보에 따라 자동 조절)
     window.addEventListener('message', (event) => {
       if (!event.data) return;
 
@@ -641,15 +723,21 @@
         const defaultWidth = event.data.width;
         const defaultHeight = event.data.height;
 
-        // iframe의 가로/세로 조절
-        iframeWrapper.style.width = defaultWidth + 'px';
-        iframeWrapper.style.height = defaultHeight + 'px';
+        if (defaultWidth) {
+          iframeWrapper.style.width = defaultWidth + 'px';
+          widthSlider.value = defaultWidth;
+          widthVal.value = defaultWidth;
+        }
+        if (defaultHeight) {
+          iframeWrapper.style.height = defaultHeight + 'px';
+          heightSlider.value = defaultHeight;
+          heightVal.value = defaultHeight;
+        }
 
-        // 슬라이더 컨트롤러 및 표시 값 동기화
-        widthSlider.value = defaultWidth;
-        widthVal.value = defaultWidth;
-        heightSlider.value = defaultHeight;
-        heightVal.value = defaultHeight;
+        const presetKey = event.data.sizePreset || findMatchingPreset(defaultWidth);
+        if (presetKey) {
+          updateActivePresetButton(presetKey);
+        }
       }
 
       // 동적 크기 리사이즈 적용 (가로/세로 모두 지원)
@@ -659,6 +747,11 @@
           iframeWrapper.style.width = newWidth + 'px';
           widthSlider.value = newWidth;
           widthVal.value = newWidth;
+
+          const presetKey = event.data.sizePreset || findMatchingPreset(newWidth);
+          if (presetKey) {
+            updateActivePresetButton(presetKey);
+          }
         }
         if (event.data.height) {
           const newHeight = event.data.height;

@@ -626,7 +626,7 @@ export default function Ltpa330Section() {
 
       <LayoutTemplate
         mainBody={
-          <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] gap-4 h-full">
+          <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] gap-3 h-full">
             <Grow className="w-full items-center" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable variant={'head'} lineTop={false} caption="전자증명서(정부24) 등록 현황 조회">
                 <FormRow>
@@ -690,7 +690,7 @@ export default function Ltpa330Section() {
               </Grow>
             </Grow>
 
-            <Grid className="grid-rows-[minmax(0,1fr)_auto] gap-2">
+            <Grid className="grid-rows-[minmax(0,1fr)_auto_auto] gap-2">
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyDataType>
                   ref={gridRef}

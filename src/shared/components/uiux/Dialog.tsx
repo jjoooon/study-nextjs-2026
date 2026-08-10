@@ -585,6 +585,39 @@ function DialogContent({
     setIsIframeState(isExternalOrCustomIframe());
   }, []);
 
+  // iframe 환경일 때 부모 창으로 다이얼로그의 기본 너비(size, className 기반) 및 높이 정보 전송
+  React.useEffect(() => {
+    if (!isIframeState || typeof window === 'undefined') return;
+
+    const targetWidth = getTargetWidthPx(size, className);
+    if (!targetWidth) return;
+
+    const timer = setTimeout(() => {
+      let contentHeight = 650;
+      if (contentRef.current) {
+        const rect = contentRef.current.getBoundingClientRect();
+        if (rect.height > 0) {
+          contentHeight = Math.ceil(rect.height) + 32;
+        }
+      }
+      try {
+        window.parent.postMessage(
+          {
+            type: 'DIALOG_DEFAULT_SIZE',
+            width: Math.round(targetWidth),
+            height: Math.min(Math.max(contentHeight, 350), 1200),
+            sizePreset: typeof size === 'string' ? size : undefined,
+          },
+          '*'
+        );
+      } catch {
+        // cross-origin 무시
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [isIframeState, size, className]);
+
   const resolvedShowCloseButton = showCloseButton;
   const resolvedResizable = resizable;
   const resolvedMinimized = minimized;

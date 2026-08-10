@@ -416,7 +416,7 @@ export default function Ltpa490Section() {
       {/* 2026-05-29 gap 삭제 */}
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr] h-full gap-3">
+          <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full gap-3">
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}
@@ -556,13 +556,12 @@ export default function Ltpa490Section() {
                 </Button>
               </Grow>
             </Grow>
-            {/* 2026-05-29 수정 */}
-            <TableFold className="grid-rows-[auto_1fr] ltpa490-section">
+            <TableFold className="grid-rows-[auto_minmax(0,1fr)] ltpa490-section">
               <TableFoldHead title="대상리스트" />
               <TableFoldBody className="gap-3">
-                <Grid className="grid-rows-[1fr_auto] h-full gap-2">
+                <Grid className="grid-rows-[minmax(0,1fr)_auto] gap-2 overflow-y-hidden">
                   <Gcol className="w-full" gap={1}>
-                    <div className="ag-theme-alpine h-full ltpa490-grid">
+                    <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType>
                         ref={gridRef}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -570,6 +569,7 @@ export default function Ltpa490Section() {
                         columnDefs={columnDefs}
                         singleClickEdit={true}
                         rowHeight={60}
+                        domLayout="normal"
                       />
                     </div>
                     <TableMore

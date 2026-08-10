@@ -14,7 +14,7 @@ import {
   useAgGridInfiniteAppend,
   useDynamicColumnWidths,
 } from '@aggrid';
-import { Grid, Grow, Gcol } from '@atoms';
+import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -336,7 +336,7 @@ export default function Ltpa500Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr_auto] h-full" gap={3}>
+          <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'head'}
@@ -436,10 +436,10 @@ export default function Ltpa500Section() {
                 </Button>
               </Grow>
             </Grow>
-            <TableFold>
+            <TableFold className="grid-rows-[auto_minmax(0,1fr)]">
               <TableFoldHead title="대상리스트"></TableFoldHead>
-              <TableFoldBody>
-                <Gcol>
+              <TableFoldBody className="overflow-y-hidden">
+                <Grid className="grid-rows-[minmax(0,1fr)_auto] overflow-y-hidden">
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       ref={gridRef}
@@ -471,7 +471,7 @@ export default function Ltpa500Section() {
                     onLoadNext={handleLoadNext}
                     onLoadReset={handleLoadReset}
                   />
-                </Gcol>
+                </Grid>
               </TableFoldBody>
             </TableFold>
           </Grid>

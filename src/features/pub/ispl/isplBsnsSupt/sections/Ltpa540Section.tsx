@@ -352,7 +352,7 @@ export default function Ltpa540Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr] w-full h-full" gap={3}>
+          <Grid className="grid-rows-[auto_minmax(0,1fr)] w-full h-full" gap={3}>
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable variant={'head'} caption="유사담보관리 조회 테이블" cols={['w-[8rem]', 'w-auto']}>
                 <FormRow>
