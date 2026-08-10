@@ -638,28 +638,64 @@ export function Ltpa02002({ userType }: { userType: string }) {
 
               {/* 보장분석 or 고지유형 */}
               {customerType === 'recent' ? (
+                // 20260810 - 구조 수정
+                // 등록고객
                 <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem]">
-                  <RadioGroup
-                    width={'full'}
-                    className="gap-[0.4rem] [&>div]:w-full"
-                    value={selectedAnalysisValue}
-                    onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
-                  >
-                    {AnalysisOptions.map((opt) => (
-                      <RadioGroupItem
-                        key={opt.value}
-                        value={opt.value}
-                        variant="button"
-                        size={'md'}
-                        className="!w-full !text-left"
-                      >
-                        {opt.label}
-                      </RadioGroupItem>
-                    ))}
-                  </RadioGroup>
+                  <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
+                    <FormRow>
+                      <FormCell title={'보장분석'} className="align-top !pt-[0.3rem]">
+                        <RadioGroup
+                          width={'full'}
+                          className="gap-[0.4rem] [&>div]:w-full"
+                          value={selectedAnalysisValue}
+                          onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
+                        >
+                          {AnalysisOptions.map((opt) => (
+                            <RadioGroupItem
+                              key={opt.value}
+                              value={opt.value}
+                              variant="button"
+                              size={'md'}
+                              className="!w-full !text-left"
+                            >
+                              {opt.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow className="pt-1">
+                      <FormCell title={'추가고지'}>
+                        <CheckboxGroup
+                          className="grid grid-cols-[1fr_1fr] w-full gap-0"
+                          value={additionalDiseases}
+                          onValueChange={(values) => setAdditionalDiseases(values)}
+                        >
+                          {[
+                            { value: '고혈압', label: '고혈압' },
+                            { value: '당뇨', label: '당뇨' },
+                          ].map((opt) => (
+                            <CheckboxGroupItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </CheckboxGroupItem>
+                          ))}
+                        </CheckboxGroup>
+                      </FormCell>
+                    </FormRow>
+                    <FormRow className="pt-1">
+                      <FormCell title={'선택'}>
+                        <Grow placement="ss">
+                          <Typo tag={'p'} variant={'body-xs'}>
+                            345(2일), 325(2일), 일반고지형(5년)
+                          </Typo>
+                        </Grow>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
                 </Gcol>
               ) : (
                 <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem]">
+                  {/* 20260810 -  */}
                   <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell title={'간편'}>
@@ -680,7 +716,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         </RadioGroup>
                       </FormCell>
                     </FormRow>
-                    <FormRow>
+                    <FormRow className="pt-1">
                       <FormCell title={'추가질병'}>
                         <CheckboxGroup
                           className="grid grid-cols-[1fr_1fr] w-full gap-0"
@@ -698,43 +734,50 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         </CheckboxGroup>
                       </FormCell>
                     </FormRow>
-                    <FormRow>
-                      <FormCell title={null} colSpan={2} className="!pt-0">
-                        <Gcol placement="ss">
-                          <Typo variant={'heading-md'} className="text-[var(--color-blue-gray-50)]">
-                            입원수술
-                          </Typo>
-                          <Grid className="grid-cols-[auto_auto_1fr] gap-1 items-center w-full">
-                            {[0, 1, 2, 3].map((idx) => (
-                              <>
-                                <Input
-                                  key={idx}
-                                  size={'sm'}
-                                  width={86}
-                                  placeholder="질병명검색"
-                                  value={hospitalInputs[idx]}
-                                  onChange={(e) => {
-                                    const next = [...hospitalInputs];
-                                    next[idx] = e.target.value;
-                                    setHospitalInputs(next);
-                                  }}
-                                />
-                                <Button
-                                  variant={'outlined'}
-                                  color={'gray-light'}
-                                  size={'md'}
-                                  only={'icon'}
-                                  aria-label="질병 검색"
-                                >
-                                  <SearchIcon color="var(--color-primary-50)" />
-                                </Button>
-                                <Input size={'sm'} readOnly after="년 내" />
-                              </>
-                            ))}
-                          </Grid>
-                        </Gcol>
+                    {/* 20260810 - 수정 */}
+                    <FormRow className="pt-1">
+                      <FormCell
+                        title={
+                          <Gcol gap={1} placement="ss" className="w-full">
+                            <Typo variant={'heading-md'} className="text-[var(--color-blue-gray-50)]">
+                              입원수술
+                            </Typo>
+                            <Button
+                              variant={'outlined'}
+                              color={'gray-light'}
+                              size={'sm'}
+                              className="w-full font-normal"
+                            >
+                              입력/수정
+                            </Button>
+                            <Button
+                              variant={'outlined'}
+                              color={'gray-light'}
+                              size={'sm'}
+                              className="w-full font-normal"
+                            >
+                              초기화
+                            </Button>
+                          </Gcol>
+                        }
+                        className="align-top !pt-[0.3rem]"
+                      >
+                        <Grid className="grid-cols-[10rem_1fr] w-full" gap={1}>
+                          {[
+                            { disease: '척추관협착증', period: '무관' },
+                            { disease: '신장낭종', period: '10년내' },
+                            { disease: '추간판탈출', period: '3개월내' },
+                            { disease: '', period: '' },
+                          ].map((item, idx) => (
+                            <React.Fragment key={idx}>
+                              <Input size={'sm'} value={item.disease} readOnly />
+                              <Input size={'sm'} value={item.period} readOnly />
+                            </React.Fragment>
+                          ))}
+                        </Grid>
                       </FormCell>
                     </FormRow>
+                    {/* // 20260810 - 수정 */}
                   </FormTable>
                 </Gcol>
               )}

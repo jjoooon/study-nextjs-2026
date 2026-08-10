@@ -14,7 +14,10 @@
     "type-check": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "analyze": "next experimental-analyze",
+    "sync:ia": "node -e \"require('fs').copyFileSync('src/stories/iaDashboard/ialist.json', 'public/ialist.json')\"",
+    "prestorybook": "npm run sync:ia",
     "storybook": "storybook dev -p 6006",
+    "prebuild-storybook": "npm run sync:ia",
     "build-storybook": "storybook build",
     "export:pdf": "node scripts/storybook-to-pdf.js"
   },

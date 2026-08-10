@@ -171,7 +171,7 @@ const Ltpz998 = () => {
           </div>
 
           {/* 하단: 선택된 항목의 상세 정보 및 처리 방안 영역 */}
-          <div className="w-full h-[calc(100vh-42rem)] max-h-[24rem] min-h-[10rem]">
+          <div className="w-full min-h-[10rem]">
             {selectedData && (
               <Grid
                 gap={3}
