@@ -74,7 +74,7 @@ export function IaTable({
           </div>
         </div>
         <a
-          href="/iframe-test.html"
+          href="./iframe-test.html"
           target="_blank"
           rel="noopener noreferrer"
           className="!text-[1.2rem] text-[#0876ff] hover:underline shrink-0 block"
