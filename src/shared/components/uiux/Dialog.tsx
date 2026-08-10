@@ -225,7 +225,7 @@ export const isExternalOrCustomIframe = (): boolean => {
     if (frameEl) {
       const frameId = frameEl.id || frameEl.getAttribute('id');
       // 바로 부모가 storybook-preview-iframe 이면 false
-      if (frameId === 'storybook-preview-iframe') {
+      if (frameId !== 'testIframe') {
         return false;
       }
     }
