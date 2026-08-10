@@ -210,6 +210,7 @@
       padding: 2rem;
       overflow-y: auto;
       align-items: center;
+      background-color: #fff;
     }
 
     header {
@@ -356,8 +357,8 @@
 
     .iframe-wrapper {
       background: #1e293b;
-      border: 2px solid var(--border-color);
-      border-radius: 0;
+      border: 1px solid var(--border-color);
+      border-radius: 3px;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -369,8 +370,13 @@
     }
 
     .iframe-wrapper.active-glow {
-      border-color: var(--accent-color);
-      box-shadow: 0 0 30px var(--accent-glow);
+      border-color: #1f1f1f;
+      box-shadow: 0 2px 12px #222222  ;
+    }
+
+    #modalCloseBtn:hover {
+      background-color: rgba(0, 0, 0, 0.08) !important;
+      color: #111827 !important;
     }
 
     iframe {
@@ -476,8 +482,17 @@
         <span class="badge-status">iframe mode active</span>
       </div>
 
-      <div class="iframe-wrapper active-glow" id="iframeWrapper" style="width: 1000px; height: 700px;">
-        <iframe src="" id="testIframe"></iframe>
+      <div class="iframe-wrapper active-glow" id="iframeWrapper" style="width: 1000px; height: 700px; display: flex; flex-direction: column; background-color: #fff;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 5px 0 10px; width: 100%; border-bottom: 1px solid #e5e7eb; height: 30px;">
+          <div id="modalHeaderTitle" style="color: #111827; font-weight: 700; font-size: 14px; letter-spacing: -0.02em;">화면을 선택해주세요</div>
+          <button type="button" id="modalCloseBtn" aria-label="닫기" title="닫기" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #4b5563; transition: all 0.2s;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <iframe src="" id="testIframe" style="flex: 1; border: 0;"></iframe>
       </div>
     </div>
   </main>
@@ -750,7 +765,7 @@
       renderList();
     };
 
-    // 아이템 선택 시 iframe 로드 주소 변경 (스토리북 캔버스 URL 사용)
+    // 아이템 선택 시 iframe 로드 주소 변경 및 모달 헤더 정보 업데이트
     window.selectItem = function(element, itemIndex) {
       const item = allItems[itemIndex];
       if (!item) return;
@@ -762,7 +777,26 @@
 
       testIframe.src = url;
       currentUrl.textContent = url;
+
+      // 상단 모달 헤더에 제목(dep4)과 화면 아이디(id, subId) 동적 반영
+      const modalHeaderTitle = document.getElementById('modalHeaderTitle');
+      if (modalHeaderTitle) {
+        const subIdText = item.subId ? ` (${item.subId})` : '';
+        modalHeaderTitle.textContent = `${item.dep4 || ''} (${item.id}${subIdText})`;
+      }
     };
+
+    // 닫기 버튼 클릭 시 iframe 비우기 및 헤더 리셋
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener('click', () => {
+        testIframe.src = 'about:blank';
+        currentUrl.textContent = '-';
+        const modalHeaderTitle = document.getElementById('modalHeaderTitle');
+        if (modalHeaderTitle) modalHeaderTitle.textContent = '선택된 화면 없음';
+        document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
+      });
+    }
 
     // 리스트 렌더링
     function renderList() {

@@ -1028,6 +1028,7 @@
     border:0 !important;
   }
   .is-iframe > [data-slot='dialog-close'],
+  .is-iframe [data-slot='resize-handle'],
   .is-iframe [data-slot='dialog-header'] {
     display: none !important;
   }
