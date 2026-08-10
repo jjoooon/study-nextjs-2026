@@ -527,14 +527,6 @@
     // 도메인 호스트 기반으로 자동 추정된 스토리북 주소 입력 필드에 설정
     storybookHostInput.value = getInitialStorybookBase();
 
-    const EXCLUDED_IDS = new Set([
-      'LTPZ073', 'LTPZ093', 'LTPZ102', 'LTPZ103', 'LTPZ106', 'LTRZ085', 'LTPZ052',
-      'LTPZ01602', 'LTPZ01601', 'LTPZ015', 'LTPZ01002', 'LTPZ01001', 'LTPA3500401',
-      'LTPA130', 'LTPA083', 'LTPA140', 'LTPA200', 'LTPA210', 'LTPA240', 'LTPA250',
-      'LTPA190', 'LTPA260', 'LTPA070', 'LTPA340', 'LTPA360', 'LTPA390', 'LTPA030',
-      'LTPA690', 'LTPA904', 'PagePopup'
-    ]);
-
     function isItemPopup(item) {
       if (item.popup === '팝업' || item.popup === true) return true;
       if (item.popup === '화면' || item.popup === false) return false;
@@ -546,10 +538,8 @@
     function getStoryIframeUrl(item, storybookBase) {
       const isPopup = isItemPopup(item);
       const folder = isPopup ? 'popup' : 'page';
-      const cleanId = (item.id || '').trim();
-      const isExcluded = EXCLUDED_IDS.has(cleanId.toUpperCase()) || EXCLUDED_IDS.has(cleanId);
-      const prefix = isExcluded ? `app-excluded-${folder}` : `app-${folder}`;
-      const storyPath = `${prefix}-${cleanId.toLowerCase()}`;
+      const cleanId = (item.id || '').trim().toLowerCase();
+      const storyPath = `app-${folder}-${cleanId}`;
 
       let stepQuery = '';
       if (item.subId) {
@@ -563,7 +553,8 @@
       }
       const subIdQuery = item.subId && item.subId.includes('sub_') ? `&step=${encodeURIComponent(item.subId)}` : '';
 
-      return `${storybookBase}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}`;
+      const base = (storybookBase || '').replace(/\/+$/, '');
+      return `${base}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}`;
     }
 
     let allItems = [];
@@ -666,13 +657,13 @@
     // ialist.json 데이터 fetch (로컬/외부망 다중 환경 지원)
     async function loadIAList() {
       try {
-        const storybookBase = getInitialStorybookBase();
+        const storybookBase = (getInitialStorybookBase() || '').replace(/\/+$/, '');
         const fetchUrls = [
-          'src/stories/iaDashboard/ialist.json',
-          '/src/stories/iaDashboard/ialist.json',
           './ialist.json',
           'ialist.json',
           `${storybookBase}/ialist.json`,
+          'src/stories/iaDashboard/ialist.json',
+          '/src/stories/iaDashboard/ialist.json',
         ];
 
         let response = null;
