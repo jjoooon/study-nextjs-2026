@@ -24,6 +24,8 @@ import {
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 
+import '@/shared/lib/agGridPub';
+
 type DummyDataType = {
   id: number;
   isViolation?: boolean;
