@@ -256,7 +256,7 @@ const Ltpz008 = () => {
                   가입설계 선택 담보
                 </Typo>
               </Grow>
-              <div className="ag-theme-alpine min-h-[27rem]">
+              <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -312,7 +312,7 @@ const Ltpz008 = () => {
                 </Grow>
               </Grow>
 
-              <div className="ag-theme-alpine min-h-[27rem]">
+              <div className="ag-theme-alpine inner-scroll" data-row={rightRowData.length}>
                 <AgGridReact<DummyDataType>
                   // 그리드 마운트 완료 시, API 제어를 위해 ref에 Grid API 바인딩
                   onGridReady={(params) => {

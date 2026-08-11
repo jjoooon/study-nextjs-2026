@@ -200,7 +200,7 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
               </FormTable>
 
               <Gcol className="gap-1 relative">
-                <div className="ag-theme-alpine h-full inner-scroll" data-row={JobDummyData.length}>
+                <div className="ag-theme-alpine">
                   <AgGridReact<JobDataType>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}

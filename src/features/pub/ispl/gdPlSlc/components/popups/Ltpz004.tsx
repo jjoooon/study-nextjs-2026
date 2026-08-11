@@ -57,6 +57,24 @@ const DummyData: DummyDataType[] = [
     field2: '15~80세',
     field3: 10000,
   },
+  {
+    id: 5,
+    field1: '보통약관(상해80%이상후유장해)(간편)',
+    field2: '15~80세',
+    field3: 10000,
+  },
+  {
+    id: 6,
+    field1: '보통약관(상해80%이상후유장해)(간편)',
+    field2: '15~80세',
+    field3: 10000,
+  },
+  {
+    id: 7,
+    field1: '보통약관(상해80%이상후유장해)(간편)',
+    field2: '15~80세',
+    field3: 10000,
+  },
 ];
 
 const Ltpz004 = () => {

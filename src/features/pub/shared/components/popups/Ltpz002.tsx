@@ -70,6 +70,36 @@ const dummyData: DummyDataType[] = [
     field6: '2023-01-01',
     field7: '상태',
   },
+  {
+    id: 4,
+    field1: '구분정보',
+    field2: '보험종목명 ',
+    field3: 'LA123456789012',
+    field4: '계약자',
+    field5: '290000',
+    field6: '2023-01-01',
+    field7: '상태',
+  },
+  {
+    id: 5,
+    field1: '구분정보',
+    field2: '보험종목명 ',
+    field3: 'LA123456789012',
+    field4: '계약자',
+    field5: '290000',
+    field6: '2023-01-01',
+    field7: '상태',
+  },
+  {
+    id: 6,
+    field1: '구분정보',
+    field2: '보험종목명 ',
+    field3: 'LA123456789012',
+    field4: '계약자',
+    field5: '290000',
+    field6: '2023-01-01',
+    field7: '상태',
+  },
 ];
 type DummyDataType2 = {
   id: number;
@@ -92,6 +122,24 @@ const dummyData2: DummyDataType2[] = [
   },
   {
     id: 3,
+    field1: '암(4대유사암제외)진단비',
+    field2: '28990',
+    field3: '20년납',
+  },
+  {
+    id: 4,
+    field1: '암(4대유사암제외)진단비',
+    field2: '28990',
+    field3: '20년납',
+  },
+  {
+    id: 5,
+    field1: '암(4대유사암제외)진단비',
+    field2: '28990',
+    field3: '20년납',
+  },
+  {
+    id: 6,
     field1: '암(4대유사암제외)진단비',
     field2: '28990',
     field3: '20년납',
@@ -312,7 +360,7 @@ const Ltpz002 = () => {
                   </FormRow>
                 </FormTable>
 
-                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+                <div className="ag-theme-alpine inner-scroll" data-row={3}>
                   <AgGridReact<DummyDataType>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
@@ -360,7 +408,7 @@ const Ltpz002 = () => {
                           </FormCell>
                         </FormRow>
                       </FormTable>
-                      <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
+                      <div className="ag-theme-alpine inner-scroll" data-row={3}>
                         <AgGridReact<DummyDataType2>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
@@ -398,7 +446,7 @@ const Ltpz002 = () => {
                           </FormCell>
                         </FormRow>
                       </FormTable>
-                      <div className="ag-theme-alpine inner-scroll" data-row={rowData3.length}>
+                      <div className="ag-theme-alpine inner-scroll" data-row={3}>
                         <AgGridReact<DummyDataType2>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}
