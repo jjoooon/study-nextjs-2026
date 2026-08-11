@@ -398,7 +398,7 @@ export default function Ltpa570Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-rows-[auto_1fr] h-full" gap={3}>
+          <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
               <FormTable
                 variant={'none'}
@@ -542,7 +542,7 @@ export default function Ltpa570Section() {
                   <FileExportIcon />
                 </Button>
               </Grow>
-              <div className="ag-theme-alpine ltpa010-grid">
+              <div className="ag-theme-alpine">
                 <AgGridReact<Ltpa570DummyDataRow>
                   ref={gridRef}
                   key={groupBy}
