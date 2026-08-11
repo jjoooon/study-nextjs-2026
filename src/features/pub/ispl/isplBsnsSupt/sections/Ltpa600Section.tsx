@@ -437,13 +437,13 @@ export default function Ltpa600Section() {
         mainBody={
           <Grid className="grid-cols-[1fr_1fr] h-full w-full" gap={3}>
             {/* 담보분류 */}
-            <Grid className="grid-rows-[auto_1fr_auto] h-full w-full" gap={1}>
+            <Grid className="grid-rows-[auto_minmax(0,1fr)_auto] h-full w-full overflow-y-hidden" gap={1}>
               <Grow className="w-full" placement="sc">
                 <Typo variant={'heading-md'} tag="h2">
                   담보분류
                 </Typo>
               </Grow>
-              <Grid className="grid-rows-[auto_1fr] h-full w-full" gap={3}>
+              <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full" gap={3}>
                 <Grow className="w-full" variant="box-round" placement={'ec'} gap={6}>
                   <Grow>
                     <Button color="primary" onClick={() => {}} only="default" size="lg" variant="contained">
@@ -482,13 +482,13 @@ export default function Ltpa600Section() {
             </Grid>
 
             {/* 시뮬레이션 */}
-            <Grid className="grid-rows-[auto_1fr_auto] h-full w-full" gap={1}>
+            <Grid className="grid-rows-[auto_minmax(0,1fr)_auto] h-full w-full overflow-y-hidden" gap={1}>
               <Grow className="w-full" placement="sc">
                 <Typo variant={'heading-md'} tag="h2">
                   시뮬레이션
                 </Typo>
               </Grow>
-              <Grid className="grid-rows-[auto_1fr] h-full w-full" gap={3}>
+              <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full" gap={3}>
                 <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
                   <Grid className="grid-cols-[auto_1fr_auto] place-items-center w-full gap-[0.4rem]">
                     <NativeSelect aria-label="조회구분 선택">
@@ -578,7 +578,7 @@ export default function Ltpa600Section() {
         mainFoot={
           <MainBottom>
             <MainBottomItem>
-              <Grow gap={1} placement={'sc'} className="w-full">
+              <Grow gap={1} placement={'sc'}>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   담보그룹관리
                 </Button>
@@ -586,7 +586,7 @@ export default function Ltpa600Section() {
                   상품별 시뮬레이션
                 </Button>
               </Grow>
-              <Grow gap={1} placement={'ec'} className="w-full">
+              <Grow gap={1} placement={'ec'}>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   엑셀내보내기
                 </Button>

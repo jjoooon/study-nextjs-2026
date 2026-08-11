@@ -219,7 +219,7 @@ export default function Ltpa660Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="w-full grid grid-rows-[auto_1fr] gap-3 h-full">
+          <Grid className="w-full grid grid-rows-[auto_minmax(0,1fr)] gap-3 h-full">
             <Grow placement="bwe" className="w-full" variant={'box-round'}>
               <FormTable variant={'none'} cols={['w-1', 'w-[20rem]', 'w-1', 'w-auto']}>
                 <FormRow>

@@ -248,7 +248,7 @@ export default function Ltpa630Section() {
         mainBody={
           <Grid className="grid-cols-[2fr_3fr] h-full w-full" gap={3}>
             {/* 패키지 관리 */}
-            <Grid className="grid-rows-[auto_1fr] h-full w-full">
+            <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full overflow-y-hidden">
               <Grow className="w-full h-[2.5rem]" placement="sc">
                 <Typo variant={'heading-md'} tag="h2">
                   패키지 관리
@@ -274,7 +274,7 @@ export default function Ltpa630Section() {
             </Grid>
 
             {/* 담보관리 */}
-            <Grid className="grid-rows-[auto_1fr] h-full w-full" gap={1}>
+            <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full overflow-y-hidden" gap={1}>
               <Grow className="w-full" placement="bwc">
                 <Typo variant={'heading-md'} tag="h2">
                   담보관리
@@ -314,7 +314,7 @@ export default function Ltpa630Section() {
         mainFoot={
           <MainBottom>
             <MainBottomItem>
-              <Grow gap={1} placement={'sc'} className="w-full">
+              <Grow gap={1} placement={'sc'}>
                 <Button variant={'outlined'} color={'gray'} size={'xl'}>
                   패키지관리
                 </Button>
@@ -322,7 +322,7 @@ export default function Ltpa630Section() {
                   상품별 시뮬레이션
                 </Button>
               </Grow>
-              <Grow gap={1} placement={'ec'} className="w-full">
+              <Grow gap={1} placement={'ec'}>
                 <Button variant={'contained'} color={'primary'} size={'xl'}>
                   임시저장
                 </Button>
