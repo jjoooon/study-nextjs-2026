@@ -26,6 +26,15 @@
   justify-content: flex-end;
 }
 
+/* Chrome 109 호환 유틸리티 클래스 */
+.v109 .min-h-\[50vh\],
+.v109 [class*="min-h-[50vh]"],
+.min-h-\[50vh\],
+[class*="min-h-[50vh]"] {
+  min-height: 50vh !important;
+  height: 50vh !important;
+}
+
 /* ----------------------------------------------------
  * Chrome 109 전용 Tabs (탭) 스타일
  * ---------------------------------------------------- */
