@@ -36,6 +36,64 @@
 }
 
 /* ----------------------------------------------------
+ * Chrome 109 전용 Checkbox (Button Variant) 스타일
+ * (선택 상태: 연한 주황 배경 + 주황 테두리 + 주황 텍스트 & 아이콘)
+ * ---------------------------------------------------- */
+.v109 .cp-checkbox[data-variant="button"][data-state="checked"],
+.v109 .cp-checkbox[data-variant="button"][data-state="checked"]:hover,
+.v109 .cp-checkbox-group-button .cp-checkbox[data-state="checked"],
+.v109 .cp-checkbox-group-button .cp-checkbox[data-state="checked"]:hover,
+.v109 .cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"],
+.v109 .cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"]:hover,
+.cp-checkbox-group-button .cp-checkbox[data-state="checked"],
+.cp-checkbox-group-button .cp-checkbox[data-state="checked"]:hover,
+.cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"],
+.cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"]:hover {
+  background-color: var(--color-primary-5, #fff5f2) !important;
+  border-color: var(--color-primary-50, #ff5c2e) !important;
+  color: var(--color-primary-50, #ff5c2e) !important;
+  box-shadow: 0 0.2rem 0.2rem 0 rgba(255, 92, 46, 0.2) !important;
+}
+
+.v109 .cp-checkbox[data-variant="button"][data-state="unchecked"]:hover,
+.v109 .cp-checkbox-group-button .cp-checkbox[data-state="unchecked"]:hover,
+.v109 .cp-checkbox-group-button [data-slot="checkbox"][data-state="unchecked"]:hover,
+.cp-checkbox-group-button .cp-checkbox[data-state="unchecked"]:hover,
+.cp-checkbox-group-button [data-slot="checkbox"][data-state="unchecked"]:hover {
+  background-color: var(--color-gray-0, #ffffff) !important;
+  border-color: var(--color-gray-20, #e5e7eb) !important;
+  color: var(--color-gray-100, #111827) !important;
+  box-shadow: none !important;
+}
+
+.v109 .cp-checkbox[data-variant="button"][data-state="checked"] svg,
+.v109 .cp-checkbox[data-variant="button"][data-state="checked"]:hover svg,
+.v109 .cp-checkbox-group-button .cp-checkbox[data-state="checked"] svg,
+.v109 .cp-checkbox-group-button .cp-checkbox[data-state="checked"]:hover svg,
+.v109 .cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"] svg,
+.v109 .cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"]:hover svg,
+.cp-checkbox-group-button .cp-checkbox[data-state="checked"] svg,
+.cp-checkbox-group-button .cp-checkbox[data-state="checked"]:hover svg,
+.cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"] svg,
+.cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"]:hover svg {
+  color: var(--color-primary-50, #ff5c2e) !important;
+  stroke: var(--color-primary-50, #ff5c2e) !important;
+}
+
+.v109 .cp-checkbox[data-variant="button"][data-state="checked"] path,
+.v109 .cp-checkbox[data-variant="button"][data-state="checked"]:hover path,
+.v109 .cp-checkbox-group-button .cp-checkbox[data-state="checked"] path,
+.v109 .cp-checkbox-group-button .cp-checkbox[data-state="checked"]:hover path,
+.v109 .cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"] path,
+.v109 .cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"]:hover path,
+.cp-checkbox-group-button .cp-checkbox[data-state="checked"] path,
+.cp-checkbox-group-button .cp-checkbox[data-state="checked"]:hover path,
+.cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"] path,
+.cp-checkbox-group-button [data-slot="checkbox"][data-state="checked"]:hover path {
+  stroke: var(--color-primary-50, #ff5c2e) !important;
+}
+
+/* ----------------------------------------------------
  * Chrome 109 전용 Tabs (탭) 스타일
  * ---------------------------------------------------- */
 .v109 .cp-tabs-line::after {

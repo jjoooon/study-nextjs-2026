@@ -885,7 +885,12 @@ const Ltpz031 = () => {
                 <Gcol className="w-full" placement={'ss'} gap={2}>
                   <Typo variant="heading-md">많이 찾는 질병</Typo>
                   <Grow variant="box-round" placement={'bwc'}>
-                    <CheckboxGroup className="gap-1" minSelected={2} defaultValue={[]} variant="button">
+                    <CheckboxGroup
+                      className="cp-checkbox-group-button gap-1"
+                      minSelected={2}
+                      defaultValue={[]}
+                      variant="button"
+                    >
                       {[
                         { value: '대장·직장용종', label: '대장직장용종장직장용종 장·직장용종' },
                         { value: '척주염좌', label: '척주염좌척주염좌척주염좌 척주염좌' },
