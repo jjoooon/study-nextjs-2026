@@ -257,16 +257,16 @@ const Ltpz020 = ({ open }: { open: boolean }) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr] ">
-          <Grid className="grid-cols-[30rem_1fr] h-full w-full" gap={3}>
+        <DialogSection className="grid-rows-[minmax(0,1fr)] ">
+          <Grid className="grid-cols-[30rem_1fr] grid-rows-[minmax(0,1fr)] h-full w-full" gap={3}>
             {/* 패키지 유형 */}
-            <Grid className="grid-rows-[auto_1fr] h-full w-full">
+            <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full">
               <Grow className="w-full" placement="sc">
                 <Typo variant={'heading-md'} tag="h2">
                   패키지 유형
                 </Typo>
               </Grow>
-              <div className="ag-theme-alpine ltpz020-table-1 min-h-[30.8rem]">
+              <div className="ag-theme-alpine inner-scroll">
                 <AgGridReact<DummyData1Type>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
@@ -285,13 +285,13 @@ const Ltpz020 = ({ open }: { open: boolean }) => {
             </Grid>
 
             {/* 세부담보 */}
-            <Grid className="grid-rows-[auto_1fr] h-full w-full" gap={1}>
+            <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full" gap={1}>
               <Grow className="w-full" placement="bwc">
                 <Typo variant={'heading-md'} tag="h2">
                   세부담보
                 </Typo>
               </Grow>
-              <div className="ag-theme-alpine min-h-[30.8rem]">
+              <div className="ag-theme-alpine inner-scroll">
                 <AgGridReact<DummyData2Type>
                   onFirstDataRendered={(event) => {
                     event.api.selectAll();

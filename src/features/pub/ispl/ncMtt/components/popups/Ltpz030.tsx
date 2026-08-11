@@ -318,7 +318,7 @@ const Ltpz030 = () => {
               </Typo>
             </DialogTitle>
           </DialogHeader>
-          <DialogSection>
+          <DialogSection className="grid-rows-[auto_auto_auto]">
             <Grow className="w-full" variant="box-round">
               <FormTable variant={'head'} lineTop={false}>
                 <FormRow>
