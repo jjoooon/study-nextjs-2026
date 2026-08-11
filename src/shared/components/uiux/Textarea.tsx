@@ -130,7 +130,7 @@ function Textarea({
       />
       {resize && (
         <div
-          className={`absolute  right-1 pointer-events-none text-gray-400 event-none bg-[#fff] ${maxLength === 0 ? 'bottom-[0.6rem]' : 'bottom-[2.4rem]'}`}
+          className={`absolute right-[0.7rem] pointer-events-none text-gray-400 event-none ${props.readOnly ? 'bg-[#E5E5E5]' : 'bg-[#fff]'} ${maxLength === 0 ? 'bottom-[0.7rem]' : 'bottom-[2.4rem]'}`}
         >
           <ReSizeIcon className={props.readOnly ? 'bg-[#E5E5E5]' : ''} />
         </div>

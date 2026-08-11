@@ -1377,7 +1377,7 @@ export default function Ltpa680Section() {
                                               resize="y"
                                               value={considerText1}
                                               readOnly={!isConsiderEditMode}
-                                              className="h-full w-full "
+                                              className="h-full w-full h-[10rem]"
                                               onChange={(e) => isConsiderEditMode && setConsiderText1(e.target.value)}
                                             />
                                           </TableCell>
@@ -1390,14 +1390,14 @@ export default function Ltpa680Section() {
                                           <TableHead>심사기준</TableHead>
                                         </TableRow>
                                       </TableHeader>
-                                      <TableBody className="">
+                                      <TableBody>
                                         <TableRow>
                                           <TableCell>
                                             <Textarea
                                               resize="y"
                                               value={considerText2}
                                               readOnly={!isConsiderEditMode}
-                                              className="h-full w-full"
+                                              className="h-full w-full h-[10rem]"
                                               onChange={(e) => isConsiderEditMode && setConsiderText2(e.target.value)}
                                             />
                                           </TableCell>
