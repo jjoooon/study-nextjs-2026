@@ -363,13 +363,7 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
                   </TableFoldHead>
                   <TableFoldBody>
                     {/* 제한담보 */}
-                    <div
-                      className="ag-theme-alpine"
-                      style={{
-                        height: expectedUwLimitedCoverageRowData.length >= 4 ? '15rem' : 'auto',
-                        overflow: expectedUwLimitedCoverageRowData.length >= 4 ? 'hidden' : 'visible',
-                      }}
-                    >
+                    <div className="ag-theme-alpine inner-scroll" data-row={4}>
                       <AgGridReact<ExpectedUwAmountRow>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}

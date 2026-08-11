@@ -181,7 +181,9 @@
   height: 100%;
   min-height: 0;
 }
-
+.v109 .ag-theme-alpine.inner-scroll .ag-root-wrapper-body{
+  height: 100% !important;
+}
 .v109 .ag-body-viewport {
   overflow-x: auto;
   overflow-y: auto;
@@ -1999,31 +2001,6 @@
 .v109 .grid-cols-\[1fr_auto_1fr\],
 .v109 [class*="grid-cols-[1fr_auto_1fr]"] {
   align-items: flex-start !important;
-}
-
-/* Chrome 109 전용 data-row 6이상 5행(15rem) 제한 및 수직 스크롤바 생성 */
-.v109 .ag-theme-alpine.inner-scroll[data-row='6'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='6'] .ag-body-viewport,
-.v109 .ag-theme-alpine.inner-scroll[data-row='7'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='7'] .ag-body-viewport,
-.v109 .ag-theme-alpine.inner-scroll[data-row='8'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='8'] .ag-body-viewport,
-.v109 .ag-theme-alpine.inner-scroll[data-row='9'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='9'] .ag-body-viewport,
-.v109 .ag-theme-alpine.inner-scroll[data-row='10'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='10'] .ag-body-viewport,
-.v109 .ag-theme-alpine.inner-scroll[data-row='11'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='11'] .ag-body-viewport,
-.v109 .ag-theme-alpine.inner-scroll[data-row='12'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='12'] .ag-body-viewport,
-.v109 .ag-theme-alpine.inner-scroll[data-row='13'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='13'] .ag-body-viewport,
-.v109 .ag-theme-alpine.inner-scroll[data-row='14'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='14'] .ag-body-viewport,
-.v109 .ag-theme-alpine.inner-scroll[data-row='15'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.v109 .ag-theme-alpine.inner-scroll[data-row='15'] .ag-body-viewport {
-  max-height: 15rem !important;
-  overflow-y: auto !important;
 }
 
 /* focus:border-[0.2rem] Chrome 109 호환 스타일 */

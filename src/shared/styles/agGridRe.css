@@ -1024,6 +1024,9 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 
 .ag-theme-alpine.inner-scroll[data-row] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 15rem !important;
+  max-height: 100% !important;
+  min-height: 15rem !important;
+  overflow-y: auto !important;
 }
 .ag-theme-alpine.inner-scroll[data-row='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 3rem !important;
@@ -1045,35 +1048,22 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   min-height: 12rem !important;
   max-height: 12rem !important;
 }
-.ag-theme-alpine.inner-scroll[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='5'] .ag-body-viewport {
+.ag-theme-alpine.inner-scroll[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 15rem !important;
   min-height: 15rem !important;
   max-height: 15rem !important;
 }
-.ag-theme-alpine.inner-scroll[data-row='6'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='6'] .ag-body-viewport,
-.ag-theme-alpine.inner-scroll[data-row='7'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='7'] .ag-body-viewport,
-.ag-theme-alpine.inner-scroll[data-row='8'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='8'] .ag-body-viewport,
-.ag-theme-alpine.inner-scroll[data-row='9'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='9'] .ag-body-viewport,
-.ag-theme-alpine.inner-scroll[data-row='10'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='10'] .ag-body-viewport,
-.ag-theme-alpine.inner-scroll[data-row='11'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='11'] .ag-body-viewport,
-.ag-theme-alpine.inner-scroll[data-row='12'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='12'] .ag-body-viewport,
-.ag-theme-alpine.inner-scroll[data-row='13'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='13'] .ag-body-viewport,
-.ag-theme-alpine.inner-scroll[data-row='14'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='14'] .ag-body-viewport,
-.ag-theme-alpine.inner-scroll[data-row='15'] .ag-root-wrapper-body .ag-body.ag-layout-normal,
-.ag-theme-alpine.inner-scroll[data-row='15'] .ag-body-viewport {
-  max-height: 15rem !important;
-  overflow-y: auto !important;
-}
+
+
+
+
+
+
+
+
+
+
+
 
 .ag-theme-alpine.inner-scroll[data-page='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 100%;
