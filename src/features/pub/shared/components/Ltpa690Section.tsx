@@ -344,7 +344,7 @@ export default function Ltpa690Section() {
               <TableFold variant="accordion">
                 <TableFoldHead title="메시지 등록"></TableFoldHead>
                 <TableFoldBody>
-                  <FormTable cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}>
+                  <FormTable cols={['w-[9.2rem]', 'w-auto', 'w-[9rem]', 'w-auto']}>
                     <FormRow>
                       <FormCell
                         title={
