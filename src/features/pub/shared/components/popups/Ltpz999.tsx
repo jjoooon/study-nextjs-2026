@@ -72,7 +72,7 @@ const Ltpz999: React.FC<Ltpz999Props> = ({ errorType = '오류' }) => {
     <Dialog open>
       <DialogContent
         showCloseButton={false}
-        resizable={true}
+        resizable={false}
         size={'sm'}
         className="grid-rows-[1fr_auto] !max-h-[42.2rem]"
       >
@@ -81,7 +81,7 @@ const Ltpz999: React.FC<Ltpz999Props> = ({ errorType = '오류' }) => {
           <DialogTitle>시스템 오류 안내</DialogTitle>
         </VisuallyHidden.Root>
 
-        <DialogSection className="pt-5 gap-5 grid-rows-[auto_auto_1fr]">
+        <DialogSection className="pt-5 gap-5 grid-rows-[auto_auto_minmax(0,1fr)] overflow-y-hidden">
           {/* 상단: 코드 표시 */}
           <Grow placement="ec" className="text-[var(--color-gray-70)]">
             코드 LTRE006(trandZomH110)

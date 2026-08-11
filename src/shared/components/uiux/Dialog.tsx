@@ -50,6 +50,16 @@ const DIALOG_PRESET_WIDTH: Record<Exclude<DialogSizePreset, 'full'>, string> = {
   '2xl': '118rem',
 };
 
+const DIALOG_PRESET_HEIGHT: Partial<Record<DialogSizePreset, string>> = {
+  xs: '40rem',
+  sm: '50rem',
+  md: '56rem',
+  ml: '60rem',
+  lg: '65rem',
+  xl: '75rem',
+  '2xl': '80rem',
+};
+
 const toCssSize = (value?: DialogSizeValue): string | undefined => {
   if (typeof value === 'number') return `${value}px`;
   return value;
@@ -93,6 +103,15 @@ const parseWidthFromClassName = (className?: string): number | undefined => {
   return undefined;
 };
 
+const parseHeightFromClassName = (className?: string): number | undefined => {
+  if (!className) return undefined;
+  const match = className.match(/\b(?:h|max-h|min-h)-\[(.*?)\]/);
+  if (match && match[1]) {
+    return parseCssSizeToPx(match[1]);
+  }
+  return undefined;
+};
+
 const parseWidthStrFromClassName = (className?: string): string | undefined => {
   if (!className) return undefined;
   const match = className.match(/\b(?:w|max-w)-\[(.*?)\]/);
@@ -116,6 +135,21 @@ const getTargetWidthPx = (size?: DialogSize, className?: string): number | undef
   }
   // size 및 className 미지정 시 기본 2xl (118rem = 1180px) 사용
   return parseCssSizeToPx(DIALOG_PRESET_WIDTH['2xl']);
+};
+
+const getTargetHeightPx = (size?: DialogSize, className?: string): number | undefined => {
+  if (size === 'full') return undefined;
+  if (typeof size === 'string' && size in DIALOG_PRESET_HEIGHT) {
+    return parseCssSizeToPx(DIALOG_PRESET_HEIGHT[size as DialogSizePreset]);
+  }
+  if (isDialogSizeConfig(size)) {
+    return parseCssSizeToPx(size.height) ?? parseCssSizeToPx(size.maxHeight);
+  }
+  const classHeight = parseHeightFromClassName(className);
+  if (classHeight !== undefined) {
+    return classHeight;
+  }
+  return undefined;
 };
 
 const getInitialSectionWidth = (size?: DialogSize, className?: string): string => {
@@ -582,7 +616,15 @@ function DialogContent({
   });
 
   useIsomorphicLayoutEffect(() => {
-    setIsIframeState(isExternalOrCustomIframe());
+    const inIframe = isExternalOrCustomIframe();
+    setIsIframeState(inIframe);
+
+    if (inIframe && typeof document !== 'undefined') {
+      document.body.classList.add('is-iframe');
+      return () => {
+        document.body.classList.remove('is-iframe');
+      };
+    }
   }, []);
 
   // iframe 환경일 때 부모 창으로 다이얼로그의 기본 너비(size, className 기반) 및 높이 정보 전송
@@ -593,8 +635,8 @@ function DialogContent({
     if (!targetWidth) return;
 
     const timer = setTimeout(() => {
-      let contentHeight = 650;
-      if (contentRef.current) {
+      let contentHeight = getTargetHeightPx(size, className) ?? 650;
+      if (!getTargetHeightPx(size, className) && contentRef.current) {
         const rect = contentRef.current.getBoundingClientRect();
         if (rect.height > 0) {
           contentHeight = Math.ceil(rect.height) + 32;
@@ -604,7 +646,7 @@ function DialogContent({
         window.parent.postMessage(
           {
             type: 'DIALOG_DEFAULT_SIZE',
-            width: Math.round(targetWidth),
+            width: Math.round(targetWidth) + 2,
             height: Math.min(Math.max(contentHeight, 350), 1200),
             sizePreset: typeof size === 'string' ? size : undefined,
           },
@@ -645,9 +687,11 @@ function DialogContent({
 
   const overlayZIndex = parallelZIndex - 1;
 
-  // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시 (현재 팝업이 최소화된 경우에는 무조건 암막 숨김)
+  // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시 (현재 팝업이 최소화되었거나 iframe 환경인 경우에는 암막 숨김)
   const resolvedShowOverlay =
-    !isMinimized && (showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId)));
+    !isMinimized &&
+    !isIframeState &&
+    (showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId)));
   const disableOverlayMotion = openCount > 1;
 
   const [viewportWidth, setViewportWidth] = React.useState<number | null>(() => {
@@ -811,7 +855,7 @@ function DialogContent({
 
   const handleMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
-      if (isFullSize) return;
+      if (isFullSize || isIframeState) return;
       e.stopPropagation();
       const target = e.target as HTMLElement;
       const resizeHandle = target.closest('[data-slot="resize-handle"]');
@@ -927,7 +971,7 @@ function DialogContent({
   return (
     <DialogSizeContext.Provider value={{ size, initialSectionWidth, isFullSize, isAutoFullWidth }}>
       <DialogPortal data-slot="dialog-portal">
-        {resolvedShowOverlay && dim !== 'none' && (
+        {resolvedShowOverlay && dim !== 'none' && !isIframeState && (
           <DialogOverlay
             dim={dim === 'transparent' ? 'transparent' : 'dark'}
             style={{ zIndex: overlayZIndex }}
@@ -964,7 +1008,7 @@ function DialogContent({
           {...props}
         >
           {children}
-          {(isDragging || !!isResizing) && !isFullSize && (
+          {(isDragging || !!isResizing) && !isFullSize && !isIframeState && (
             <div
               aria-hidden="true"
               className="absolute inset-0 z-51 bg-transparent"

@@ -1,935 +1,1039 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iframe Modal Test Bench</title>
-  <style>
-    :root {
-      --bg-color: #0b0f19;
-      --panel-bg: rgba(23, 28, 41, 0.7);
-      --border-color: rgba(255, 255, 255, 0.1);
-      --accent-color: #3b82f6;
-      --accent-glow: rgba(59, 130, 246, 0.5);
-      --text-color: #f3f4f6;
-      --text-muted: #9ca3af;
-      --sidebar-width: 320px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iframe Modal Test Bench</title>
+    <style>
+      :root {
+        --bg-color: #0b0f19;
+        --panel-bg: rgba(23, 28, 41, 1);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --accent-color: #3b82f6;
+        --accent-glow: rgba(59, 130, 246, 0.5);
+        --text-color: #f3f4f6;
+        --text-muted: #9ca3af;
+        --sidebar-width: 320px;
+      }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    body {
-      background: radial-gradient(circle at top right, #1e293b, var(--bg-color));
-      color: var(--text-color);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      overflow: hidden;
-    }
+      body {
+        background: radial-gradient(circle at top right, #1e293b, var(--bg-color));
+        color: var(--text-color);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        overflow: hidden;
+      }
 
-    /* 사이드바 스타일 */
-    .sidebar {
-      width: var(--sidebar-width);
-      height: 100vh;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(20px);
-      border-right: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      z-index: 10;
-    }
+      /* 사이드바 스타일 */
+      .sidebar {
+        width: var(--sidebar-width);
+        height: 100vh;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(20px);
+        border-right: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        z-index: 10;
+      }
 
-    .sidebar-header {
-      padding: 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-    }
+      .sidebar-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+      }
 
-    .sidebar-header h2 {
-      font-size: 1.25rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #60a5fa, #3b82f6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.75rem;
-      letter-spacing: -0.03em;
-    }
+      .sidebar-header h2 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.03em;
+      }
 
-    .search-box {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: var(--text-color);
-      padding: 0.5rem 0.75rem;
-      font-size: 0.875rem;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
+      .search-box {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-color);
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
 
-    .search-box:focus {
-      border-color: var(--accent-color);
-      box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
-    }
+      .search-box:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+      }
 
-    .sidebar-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border-color);
-      background: rgba(0, 0, 0, 0.1);
-    }
+      .sidebar-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--border-color);
+        background: rgba(0, 0, 0, 0.1);
+      }
 
-    .tab-btn {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      padding: 0.75rem;
-      font-size: 0.875rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-    }
+      .tab-btn {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        padding: 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+      }
 
-    .tab-btn:hover {
-      color: var(--text-color);
-      background: rgba(255, 255, 255, 0.02);
-    }
+      .tab-btn:hover {
+        color: var(--text-color);
+        background: rgba(255, 255, 255, 0.02);
+      }
 
-    .tab-btn.active {
-      color: var(--accent-color);
-      border-bottom: 2px solid var(--accent-color);
-      background: rgba(59, 130, 246, 0.05);
-    }
+      .tab-btn.active {
+        color: var(--accent-color);
+        border-bottom: 2px solid var(--accent-color);
+        background: rgba(59, 130, 246, 0.05);
+      }
 
-    .list-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+      .list-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
 
-    /* 스크롤바 커스텀 */
-    .list-container::-webkit-scrollbar {
-      width: 6px;
-    }
-    .list-container::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .list-container::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 3px;
-    }
-    .list-container::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
+      /* 스크롤바 커스텀 */
+      .list-container::-webkit-scrollbar {
+        width: 6px;
+      }
+      .list-container::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .list-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 3px;
+      }
+      .list-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
 
-    .list-item {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 0.75rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
+      .list-item {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
 
-    .list-item:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.15);
-      transform: translateX(2px);
-    }
+      .list-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.15);
+        transform: translateX(2px);
+      }
 
-    .list-item.active {
-      background: rgba(59, 130, 246, 0.15);
-      border-color: var(--accent-color);
-      box-shadow: 0 0 10px rgba(59, 130, 246, 0.15);
-    }
+      .list-item.active {
+        background: rgba(59, 130, 246, 0.15);
+        border-color: var(--accent-color);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.15);
+      }
 
-    .item-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+      .item-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-    .item-id {
-      font-family: monospace;
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: #60a5fa;
-    }
+      .item-id {
+        font-family: monospace;
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #60a5fa;
+      }
 
-    .item-type {
-      font-size: 0.7rem;
-      padding: 0.1rem 0.4rem;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-color);
-      font-weight: 600;
-    }
+      .item-type {
+        font-size: 0.7rem;
+        padding: 0.1rem 0.4rem;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-color);
+        font-weight: 600;
+      }
 
-    .list-item.active .item-type {
-      background: var(--accent-color);
-      color: white;
-    }
+      .list-item.active .item-type {
+        background: var(--accent-color);
+        color: white;
+      }
 
-    .item-title {
-      font-size: 0.8125rem;
-      color: var(--text-color);
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+      .item-title {
+        font-size: 0.8125rem;
+        color: var(--text-color);
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
-    .item-path {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-family: monospace;
-    }
+      .item-path {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: monospace;
+      }
 
-    /* 메인 콘텐츠 영역 스타일 */
-    .main-content {
-      flex: 1;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding: 2rem;
-      overflow-y: auto;
-      align-items: center;
-      background-color: #fff;
-    }
+      /* 메인 콘텐츠 영역 스타일 */
+      .main-content {
+        flex: 1;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        overflow-y: auto;
+        align-items: start;
+        background-color: #fff;
+      }
 
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+      header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
 
-    header h1 {
-      font-size: 2.25rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #60a5fa, #3b82f6, #1d4ed8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.05em;
-    }
+      header h1 {
+        font-size: 2.25rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #60a5fa, #3b82f6, #1d4ed8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.05em;
+      }
 
-    header p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
+      header p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
 
-    .container {
-      width: 100%;
-      max-width: 1000px;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
+      .container {
+        width: 100%;
+        max-width: 1000px;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
 
-    .control-panel {
-      background: var(--panel-bg);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 1.25rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
+      .control-panel {
+        background: var(--panel-bg);
+        backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.25rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      }
 
-    .control-group {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
+      .control-group {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
 
-    label {
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
+      label {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
 
-    .range-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+      .range-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
 
-    input[type="range"] {
-      -webkit-appearance: none;
-      width: 120px;
-      height: 6px;
-      border-radius: 3px;
-      background: #374151;
-      outline: none;
-    }
+      input[type='range'] {
+        -webkit-appearance: none;
+        width: 120px;
+        height: 6px;
+        border-radius: 3px;
+        background: #374151;
+        outline: none;
+      }
 
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--accent-color);
-      cursor: pointer;
-      box-shadow: 0 0 10px var(--accent-glow);
-      transition: transform 0.1s;
-    }
+      input[type='range']::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--accent-color);
+        cursor: pointer;
+        box-shadow: 0 0 10px var(--accent-glow);
+        transition: transform 0.1s;
+      }
 
-    input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-    }
+      input[type='range']::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+      }
 
-    .value-display {
-      font-family: monospace;
-      font-size: 0.8125rem;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 0.25rem 0.5rem;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
-      width: 65px;
-      text-align: center;
-      color: var(--text-color);
-      outline: none;
-      transition: border-color 0.2s;
-    }
+      .value-display {
+        font-family: monospace;
+        font-size: 0.8125rem;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        width: 65px;
+        text-align: center;
+        color: var(--text-color);
+        outline: none;
+        transition: border-color 0.2s;
+      }
 
-    .value-display:focus {
-      border-color: var(--accent-color);
-      box-shadow: 0 0 5px var(--accent-glow);
-    }
+      .value-display:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 5px var(--accent-glow);
+      }
 
-    /* hide input number spin buttons */
-    .value-display::-webkit-outer-spin-button,
-    .value-display::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
+      /* hide input number spin buttons */
+      .value-display::-webkit-outer-spin-button,
+      .value-display::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
 
-    .value-display {
-      -moz-appearance: textfield;
-    }
+      .value-display {
+        -moz-appearance: textfield;
+      }
 
-    .unit-label {
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-      margin-left: 2px;
-      user-select: none;
-    }
+      .unit-label {
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+        margin-left: 2px;
+        user-select: none;
+      }
 
-    .btn-preset {
-      background: #1f2937;
-      border: 1px solid var(--border-color);
-      color: var(--text-color);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+      .btn-preset {
+        background: #1f2937;
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
 
-    .btn-preset:hover {
-      background: var(--accent-color);
-      border-color: var(--accent-color);
-      box-shadow: 0 0 15px var(--accent-glow);
-      transform: translateY(-2px);
-    }
+      .btn-preset:hover {
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+        box-shadow: 0 0 15px var(--accent-glow);
+        transform: translateY(-2px);
+      }
 
-    .preset-btn-group {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 0.25rem 0.35rem;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      flex-wrap: wrap;
-    }
+      .preset-btn-group {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.25rem 0.35rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        flex-wrap: wrap;
+      }
 
-    .preset-btn {
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      padding: 0.3rem 0.65rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
+      .preset-btn {
+        background: transparent;
+        border: 1px solid transparent;
+        color: var(--text-muted);
+        padding: 0.3rem 0.65rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
 
-    .preset-btn:hover {
-      color: var(--text-color);
-      background: rgba(255, 255, 255, 0.08);
-    }
+      .preset-btn:hover {
+        color: var(--text-color);
+        background: rgba(255, 255, 255, 0.08);
+      }
 
-    .preset-btn.active {
-      background: var(--accent-color);
-      color: #fff;
-      border-color: var(--accent-color);
-      box-shadow: 0 0 10px var(--accent-glow);
-    }
+      .preset-btn.active {
+        background: var(--accent-color);
+        color: #fff;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
 
-    .iframe-wrapper {
-      background: #1e293b;
-      border: 1px solid var(--border-color);
-      border-radius: 3px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      position: relative;
-      transition: border-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s;
-      margin: 0 auto;
-    }
+      .iframe-wrapper {
+        background: #1e293b;
+        border: 1px solid var(--border-color);
+        border-radius: 3px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        position: relative;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s,
+          width 0.3s,
+          height 0.3s;
+        margin: 0 auto;
+      }
 
-    .iframe-wrapper.active-glow {
-      border-color: #1f1f1f;
-      box-shadow: 0 2px 12px #222222  ;
-    }
+      .iframe-wrapper.active-glow {
+        border-color: #1f1f1f;
+        box-shadow: 0 2px 12px #222222;
+      }
 
-    #modalCloseBtn:hover {
-      background-color: rgba(0, 0, 0, 0.08) !important;
-      color: #111827 !important;
-    }
+      #modalCloseBtn:hover {
+        background-color: rgba(0, 0, 0, 0.08) !important;
+        color: #111827 !important;
+      }
 
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: #fff;
-    }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: #fff;
+      }
 
-    .info-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem 1rem;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-    }
+      .info-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 8px;
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+      }
 
-    .badge-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: rgba(16, 185, 129, 0.2);
-      color: #10b981;
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      font-weight: 600;
-      font-size: 0.75rem;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
+      .badge-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
 
-    .badge-status::before {
-      content: '';
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      background: #10b981;
-      border-radius: 50%;
-      animation: pulse 1.5s infinite;
-    }
+      .badge-status::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background: #10b981;
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+      }
 
-    @keyframes pulse {
-      0% { transform: scale(0.9); opacity: 1; }
-      50% { transform: scale(1.2); opacity: 0.5; }
-      100% { transform: scale(0.9); opacity: 1; }
-    }
-  </style>
-</head>
-<body>
-  <!-- 좌측 사이드바 -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <h2>IA 화면 목록</h2>
-      <input type="text" id="searchInput" class="search-box" placeholder="ID 또는 화면명 검색...">
-    </div>
-    <div class="sidebar-tabs">
-      <button class="tab-btn active" id="tabPopup" onclick="switchTab('popup')">팝업</button>
-      <button class="tab-btn" id="tabPage" onclick="switchTab('page')">화면</button>
-      <button class="tab-btn" id="tabAll" onclick="switchTab('all')">전체</button>
-    </div>
-    <div class="list-container" id="listContainer">
-      <div style="text-align: center; color: var(--text-muted); margin-top: 2rem;">화면 목록 로딩 중...</div>
-    </div>
-  </aside>
+      @keyframes pulse {
+        0% {
+          transform: scale(0.9);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0.5;
+        }
+        100% {
+          transform: scale(0.9);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 좌측 사이드바 -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>IA 화면 목록</h2>
+        <input type="text" id="searchInput" class="search-box" placeholder="ID 또는 화면명 검색..." />
+      </div>
+      <div class="sidebar-tabs">
+        <button class="tab-btn active" id="tabPopup" onclick="switchTab('popup')">팝업</button>
+        <button class="tab-btn" id="tabPage" onclick="switchTab('page')">화면</button>
+        <button class="tab-btn" id="tabAll" onclick="switchTab('all')">전체</button>
+      </div>
+      <div class="list-container" id="listContainer">
+        <div style="text-align: center; color: var(--text-muted); margin-top: 2rem">화면 목록 로딩 중...</div>
+      </div>
+    </aside>
 
-  <!-- 우측 메인 영역 -->
-  <main class="main-content">
-    <header>
-      <h1>Iframe Modal Test Bench</h1>
-      <p>부모 프레임 안의 모달과 <code>is-iframe</code> 클래스를 테스트합니다.</p>
-    </header>
+    <!-- 우측 메인 영역 -->
+    <main class="main-content">
+      <header>
+        <h1>Iframe Modal Test Bench</h1>
+        <p>부모 프레임 안의 모달과 <code>is-iframe</code> 클래스를 테스트합니다.</p>
+      </header>
 
-    <div class="container">
-      <div class="control-panel">
-        <div class="control-group" >
-          <label>주소</label>
-          <input type="text" id="storybookHost" class="search-box" style="width: 180px;" value="http://localhost:6006">
-        </div>
+      <div class="container">
+        <div class="control-panel">
+          <div class="control-group">
+            <label>주소</label>
+            <input
+              type="text"
+              id="storybookHost"
+              class="search-box"
+              style="width: 180px"
+              value="http://localhost:6006"
+            />
+          </div>
 
-        <div class="control-group">
-          <label>Width</label>
-          <div class="range-wrapper">
-            <input type="range" id="widthSlider" min="320" max="1800" value="1000" step="10">
-            <input type="number" id="widthVal" class="value-display" min="320" max="1200" value="1000">
-            <span class="unit-label">px</span>
+          <div class="control-group">
+            <label>Width</label>
+            <div class="range-wrapper">
+              <input type="range" id="widthSlider" min="320" max="1800" value="1000" step="10" />
+              <input type="number" id="widthVal" class="value-display" min="320" max="1200" value="1000" />
+              <span class="unit-label">px</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>Height</label>
+            <div class="range-wrapper">
+              <input type="range" id="heightSlider" min="100" max="1900" value="700" step="10" />
+              <input type="number" id="heightVal" class="value-display" min="100" max="1900" value="700" />
+              <span class="unit-label">px</span>
+            </div>
+          </div>
+
+          <div class="control-group" style="margin-left: auto">
+            <label>Preset</label>
+            <div class="preset-btn-group" id="presetBtnGroup">
+              <button type="button" class="preset-btn" data-size="xs" onclick="applySizePreset('xs')">
+                XS(320×400)
+              </button>
+              <button type="button" class="preset-btn" data-size="sm" onclick="applySizePreset('sm')">
+                SM(480×500)
+              </button>
+              <button type="button" class="preset-btn" data-size="md" onclick="applySizePreset('md')">
+                MD(560×560)
+              </button>
+              <button type="button" class="preset-btn" data-size="ml" onclick="applySizePreset('ml')">
+                ML(620×600)
+              </button>
+              <button type="button" class="preset-btn" data-size="lg" onclick="applySizePreset('lg')">
+                LG(760×650)
+              </button>
+              <button type="button" class="preset-btn" data-size="xl" onclick="applySizePreset('xl')">
+                XL(960×750)
+              </button>
+              <button type="button" class="preset-btn" data-size="2xl" onclick="applySizePreset('2xl')">
+                2XL(1180×800)
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="control-group">
-          <label>Height</label>
-          <div class="range-wrapper">
-            <input type="range" id="heightSlider" min="100" max="1900" value="700" step="10">
-            <input type="number" id="heightVal" class="value-display" min="100" max="1900" value="700">
-            <span class="unit-label">px</span>
+        <div class="info-bar">
+          <span>Target URL: <code style="color: #60a5fa" id="currentUrl">-</code></span>
+          <span class="badge-status">iframe mode active</span>
+        </div>
+
+        <div
+          class="iframe-wrapper active-glow"
+          id="iframeWrapper"
+          style="width: 1000px; height: 700px; display: flex; flex-direction: column; background-color: #fff"
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 0 5px 0 10px;
+              width: 100%;
+              border-bottom: 1px solid #e5e7eb;
+              height: 30px;
+            "
+          >
+            <div
+              id="modalHeaderTitle"
+              style="color: #111827; font-weight: 700; font-size: 14px; letter-spacing: -0.02em"
+            >
+              화면을 선택해주세요
+            </div>
+            <button
+              type="button"
+              id="modalCloseBtn"
+              aria-label="닫기"
+              title="닫기"
+              style="
+                background: none;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #4b5563;
+                transition: all 0.2s;
+              "
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
           </div>
-        </div>
-
-        <div class="control-group" style="margin-left: auto;">
-          <label>Preset</label>
-          <div class="preset-btn-group" id="presetBtnGroup">
-            <button type="button" class="preset-btn" data-size="sm" onclick="applySizePreset('sm')">SM(480)</button>
-            <button type="button" class="preset-btn" data-size="md" onclick="applySizePreset('md')">MD(560)</button>
-            <button type="button" class="preset-btn" data-size="ml" onclick="applySizePreset('ml')">ML(620)</button>
-            <button type="button" class="preset-btn" data-size="lg" onclick="applySizePreset('lg')">LG(760)</button>
-            <button type="button" class="preset-btn" data-size="xl" onclick="applySizePreset('xl')">XL(960)</button>
-            <button type="button" class="preset-btn" data-size="2xl" onclick="applySizePreset('2xl')">2XL(1180)</button>
-          </div>
+          <iframe src="" id="testIframe" style="flex: 1; border: 0"></iframe>
         </div>
       </div>
+    </main>
 
-      <div class="info-bar">
-        <span>Target URL: <code style="color: #60a5fa;" id="currentUrl">-</code></span>
-        <span class="badge-status">iframe mode active</span>
-      </div>
+    <script>
+      const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
+      const PROD_STORYBOOK_BASE_URL = 'https://jjoooon.github.io/study-nextjs-2026';
+      const HYGITEST_STORYBOOK_BASE_URL = 'https://story-dev.hwgitest.com';
+      const HYGITEST_STORYBOOK_BASE_URL2 = 'https://story.hwgitest.com';
 
-      <div class="iframe-wrapper active-glow" id="iframeWrapper" style="width: 1000px; height: 700px; display: flex; flex-direction: column; background-color: #fff;">
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 5px 0 10px; width: 100%; border-bottom: 1px solid #e5e7eb; height: 30px;">
-          <div id="modalHeaderTitle" style="color: #111827; font-weight: 700; font-size: 14px; letter-spacing: -0.02em;">화면을 선택해주세요</div>
-          <button type="button" id="modalCloseBtn" aria-label="닫기" title="닫기" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #4b5563; transition: all 0.2s;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-        <iframe src="" id="testIframe" style="flex: 1; border: 0;"></iframe>
-      </div>
-    </div>
-  </main>
+      const LOCAL_HOST_NAMES = new Set(['localhost', '127.0.0.1']);
+      const HYGITEST_HOST_NAMES = new Set(['story-dev.hwgitest.com']);
+      const HYGITEST_HOST_NAMES2 = new Set(['story.hwgitest.com']);
 
-  <script>
-    const LOCAL_STORYBOOK_BASE_URL = 'http://localhost:6006';
-    const PROD_STORYBOOK_BASE_URL = 'https://jjoooon.github.io/study-nextjs-2026';
-    const HYGITEST_STORYBOOK_BASE_URL = 'https://story-dev.hwgitest.com';
-    const HYGITEST_STORYBOOK_BASE_URL2 = 'https://story.hwgitest.com';
+      function getInitialStorybookBase() {
+        if (typeof window === 'undefined') return LOCAL_STORYBOOK_BASE_URL;
+        const { hostname, origin, pathname } = window.location;
 
-    const LOCAL_HOST_NAMES = new Set(['localhost', '127.0.0.1']);
-    const HYGITEST_HOST_NAMES = new Set(['story-dev.hwgitest.com']);
-    const HYGITEST_HOST_NAMES2 = new Set(['story.hwgitest.com']);
-
-    function getInitialStorybookBase() {
-      if (typeof window === 'undefined') return LOCAL_STORYBOOK_BASE_URL;
-      const { hostname, origin, pathname } = window.location;
-
-      if (LOCAL_HOST_NAMES.has(hostname)) {
-        return LOCAL_STORYBOOK_BASE_URL;
+        if (LOCAL_HOST_NAMES.has(hostname)) {
+          return LOCAL_STORYBOOK_BASE_URL;
+        }
+        if (HYGITEST_HOST_NAMES.has(hostname)) {
+          return HYGITEST_STORYBOOK_BASE_URL;
+        }
+        if (HYGITEST_HOST_NAMES2.has(hostname) || hostname.endsWith('.hwgitest.com')) {
+          return HYGITEST_STORYBOOK_BASE_URL2;
+        }
+        if (hostname.includes('github.io')) {
+          const pathSegments = pathname.split('/').filter(Boolean);
+          const repoName =
+            pathSegments.length > 0 && !pathSegments[0].includes('.') ? pathSegments[0] : 'study-nextjs-2026';
+          return `${origin}/${repoName}`;
+        }
+        return PROD_STORYBOOK_BASE_URL;
       }
-      if (HYGITEST_HOST_NAMES.has(hostname)) {
-        return HYGITEST_STORYBOOK_BASE_URL;
+
+      const widthSlider = document.getElementById('widthSlider');
+      const heightSlider = document.getElementById('heightSlider');
+      const widthVal = document.getElementById('widthVal');
+      const heightVal = document.getElementById('heightVal');
+      const iframeWrapper = document.getElementById('iframeWrapper');
+      const testIframe = document.getElementById('testIframe');
+      const currentUrl = document.getElementById('currentUrl');
+      const searchInput = document.getElementById('searchInput');
+      const listContainer = document.getElementById('listContainer');
+      const storybookHostInput = document.getElementById('storybookHost');
+
+      // 도메인 호스트 기반으로 자동 추정된 스토리북 주소 입력 필드에 설정
+      storybookHostInput.value = getInitialStorybookBase();
+
+      function isItemPopup(item) {
+        if (item.popup === '팝업' || item.popup === true) return true;
+        if (item.popup === '화면' || item.popup === false) return false;
+        if (item.path && item.path.includes('popups')) return true;
+        if (item.id && (/^LTPZ/i.test(item.id) || /^LTRZ/i.test(item.id))) return true;
+        return false;
       }
-      if (HYGITEST_HOST_NAMES2.has(hostname) || hostname.endsWith('.hwgitest.com')) {
-        return HYGITEST_STORYBOOK_BASE_URL2;
-      }
-      if (hostname.includes('github.io')) {
-        const pathSegments = pathname.split('/').filter(Boolean);
-        const repoName = pathSegments.length > 0 && !pathSegments[0].includes('.') ? pathSegments[0] : 'study-nextjs-2026';
-        return `${origin}/${repoName}`;
-      }
-      return PROD_STORYBOOK_BASE_URL;
-    }
 
-    const widthSlider = document.getElementById('widthSlider');
-    const heightSlider = document.getElementById('heightSlider');
-    const widthVal = document.getElementById('widthVal');
-    const heightVal = document.getElementById('heightVal');
-    const iframeWrapper = document.getElementById('iframeWrapper');
-    const testIframe = document.getElementById('testIframe');
-    const currentUrl = document.getElementById('currentUrl');
-    const searchInput = document.getElementById('searchInput');
-    const listContainer = document.getElementById('listContainer');
-    const storybookHostInput = document.getElementById('storybookHost');
+      function getStoryIframeUrl(item, storybookBase) {
+        const isPopup = isItemPopup(item);
+        const folder = isPopup ? 'popup' : 'page';
+        const cleanId = (item.id || '').trim().toLowerCase();
+        const storyPath = `app-${folder}-${cleanId}`;
 
-    // 도메인 호스트 기반으로 자동 추정된 스토리북 주소 입력 필드에 설정
-    storybookHostInput.value = getInitialStorybookBase();
-
-    function isItemPopup(item) {
-      if (item.popup === '팝업' || item.popup === true) return true;
-      if (item.popup === '화면' || item.popup === false) return false;
-      if (item.path && item.path.includes('popups')) return true;
-      if (item.id && (/^LTPZ/i.test(item.id) || /^LTRZ/i.test(item.id))) return true;
-      return false;
-    }
-
-    function getStoryIframeUrl(item, storybookBase) {
-      const isPopup = isItemPopup(item);
-      const folder = isPopup ? 'popup' : 'page';
-      const cleanId = (item.id || '').trim().toLowerCase();
-      const storyPath = `app-${folder}-${cleanId}`;
-
-      let stepQuery = '';
-      if (item.subId) {
-        const match = item.subId.match(/_(\d)$/);
-        if (match) {
-          const step = Number(match[1]);
-          if (step >= 1 && step <= 6) {
-            stepQuery = `&activeStep=${step}`;
+        let stepQuery = '';
+        if (item.subId) {
+          const match = item.subId.match(/_(\d)$/);
+          if (match) {
+            const step = Number(match[1]);
+            if (step >= 1 && step <= 6) {
+              stepQuery = `&activeStep=${step}`;
+            }
           }
         }
+        const subIdQuery = item.subId && item.subId.includes('sub_') ? `&step=${encodeURIComponent(item.subId)}` : '';
+
+        const base = (storybookBase || '').replace(/\/+$/, '');
+        return `${base}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}`;
       }
-      const subIdQuery = item.subId && item.subId.includes('sub_') ? `&step=${encodeURIComponent(item.subId)}` : '';
 
-      const base = (storybookBase || '').replace(/\/+$/, '');
-      return `${base}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}`;
-    }
+      let allItems = [];
+      let currentTab = 'popup'; // 기본 탭을 팝업으로 설정
 
-    let allItems = [];
-    let currentTab = 'popup'; // 기본 탭을 팝업으로 설정
+      function updateIframeSizeFromSliders() {
+        const w = widthSlider.value;
+        const h = heightSlider.value;
 
-    function updateIframeSizeFromSliders() {
-      const w = widthSlider.value;
-      const h = heightSlider.value;
-      
-      iframeWrapper.style.width = w + 'px';
-      iframeWrapper.style.height = h + 'px';
-      
-      widthVal.value = w;
-      heightVal.value = h;
-    }
+        iframeWrapper.style.width = w + 'px';
+        iframeWrapper.style.height = h + 'px';
 
-    function updateIframeSizeFromInputs() {
-      let w = parseInt(widthVal.value, 10) || 320;
-      let h = parseInt(heightVal.value, 10) || 100;
+        widthVal.value = w;
+        heightVal.value = h;
+      }
 
-      const minW = parseInt(widthSlider.min, 10);
-      const maxW = parseInt(widthSlider.max, 10);
-      const minH = parseInt(heightSlider.min, 10);
-      const maxH = parseInt(heightSlider.max, 10);
+      function updateIframeSizeFromInputs() {
+        let w = parseInt(widthVal.value, 10) || 320;
+        let h = parseInt(heightVal.value, 10) || 100;
 
-      if (w < minW) w = minW;
-      if (w > maxW) w = maxW;
-      if (h < minH) h = minH;
-      if (h > maxH) h = maxH;
+        const minW = parseInt(widthSlider.min, 10);
+        const maxW = parseInt(widthSlider.max, 10);
+        const minH = parseInt(heightSlider.min, 10);
+        const maxH = parseInt(heightSlider.max, 10);
 
-      iframeWrapper.style.width = w + 'px';
-      iframeWrapper.style.height = h + 'px';
+        if (w < minW) w = minW;
+        if (w > maxW) w = maxW;
+        if (h < minH) h = minH;
+        if (h > maxH) h = maxH;
 
-      widthSlider.value = w;
-      heightSlider.value = h;
-    }
+        iframeWrapper.style.width = w + 'px';
+        iframeWrapper.style.height = h + 'px';
 
-    widthSlider.addEventListener('input', updateIframeSizeFromSliders);
-    heightSlider.addEventListener('input', updateIframeSizeFromSliders);
+        widthSlider.value = w;
+        heightSlider.value = h;
+      }
 
-    widthVal.addEventListener('input', updateIframeSizeFromInputs);
-    heightVal.addEventListener('input', updateIframeSizeFromInputs);
+      widthSlider.addEventListener('input', updateIframeSizeFromSliders);
+      heightSlider.addEventListener('input', updateIframeSizeFromSliders);
 
-    widthVal.addEventListener('blur', () => {
-      let w = parseInt(widthVal.value, 10) || 320;
-      w = Math.max(320, Math.min(1800, w));
-      widthVal.value = w;
-      updateIframeSizeFromInputs();
-    });
-    heightVal.addEventListener('blur', () => {
-      let h = parseInt(heightVal.value, 10) || 100;
-      h = Math.max(100, Math.min(1900, h));
-      heightVal.value = h;
-      updateIframeSizeFromInputs();
-    });
+      widthVal.addEventListener('input', updateIframeSizeFromInputs);
+      heightVal.addEventListener('input', updateIframeSizeFromInputs);
 
-    const SIZE_PRESETS = {
-      xs: { width: 320, height: 400 },
-      sm: { width: 480, height: 500 },
-      md: { width: 560, height: 560 },
-      ml: { width: 620, height: 600 },
-      lg: { width: 760, height: 650 },
-      xl: { width: 960, height: 750 },
-      '2xl': { width: 1180, height: 800 },
-    };
-
-    function applySizePreset(sizeKey) {
-      const preset = SIZE_PRESETS[sizeKey];
-      if (!preset) return;
-
-      widthSlider.value = preset.width;
-      widthVal.value = preset.width;
-      iframeWrapper.style.width = preset.width + 'px';
-
-      updateActivePresetButton(sizeKey);
-    }
-
-    function updateActivePresetButton(sizeKey) {
-      document.querySelectorAll('.preset-btn').forEach(btn => {
-        if (btn.getAttribute('data-size') === sizeKey) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
+      widthVal.addEventListener('blur', () => {
+        let w = parseInt(widthVal.value, 10) || 320;
+        w = Math.max(320, Math.min(1800, w));
+        widthVal.value = w;
+        updateIframeSizeFromInputs();
       });
-    }
+      heightVal.addEventListener('blur', () => {
+        let h = parseInt(heightVal.value, 10) || 100;
+        h = Math.max(100, Math.min(1900, h));
+        heightVal.value = h;
+        updateIframeSizeFromInputs();
+      });
 
-    function findMatchingPreset(width) {
-      for (const [key, preset] of Object.entries(SIZE_PRESETS)) {
-        if (Math.abs(preset.width - width) <= 15) {
-          return key;
+      const SIZE_PRESETS = {
+        xs: { width: 320, height: 400 },
+        sm: { width: 480, height: 500 },
+        md: { width: 560, height: 560 },
+        ml: { width: 620, height: 600 },
+        lg: { width: 760, height: 650 },
+        xl: { width: 960, height: 750 },
+        '2xl': { width: 1180, height: 800 },
+      };
+
+      function applySizePreset(sizeKey) {
+        const preset = SIZE_PRESETS[sizeKey];
+        if (!preset) return;
+
+        widthSlider.value = preset.width;
+        widthVal.value = preset.width;
+        iframeWrapper.style.width = preset.width + 'px';
+
+        if (preset.height) {
+          heightSlider.value = preset.height;
+          heightVal.value = preset.height;
+          iframeWrapper.style.height = preset.height + 'px';
         }
-      }
-      return null;
-    }
 
-    // iframe 내부의 모달 크기 메시지 수신 처리 (size 정보에 따라 자동 조절)
-    window.addEventListener('message', (event) => {
-      if (!event.data) return;
-
-      // 초기 디폴트 크기 적용
-      if (event.data.type === 'DIALOG_DEFAULT_SIZE') {
-        const defaultWidth = event.data.width;
-        const defaultHeight = event.data.height;
-
-        if (defaultWidth) {
-          iframeWrapper.style.width = defaultWidth + 'px';
-          widthSlider.value = defaultWidth;
-          widthVal.value = defaultWidth;
-        }
-        if (defaultHeight) {
-          iframeWrapper.style.height = defaultHeight + 'px';
-          heightSlider.value = defaultHeight;
-          heightVal.value = defaultHeight;
-        }
-
-        const presetKey = event.data.sizePreset || findMatchingPreset(defaultWidth);
-        if (presetKey) {
-          updateActivePresetButton(presetKey);
-        }
+        updateActivePresetButton(sizeKey);
       }
 
-      // 동적 크기 리사이즈 적용 (가로/세로 모두 지원)
-      if (event.data.type === 'DIALOG_RESIZE') {
-        if (event.data.width) {
-          const newWidth = event.data.width;
-          iframeWrapper.style.width = newWidth + 'px';
-          widthSlider.value = newWidth;
-          widthVal.value = newWidth;
+      function updateActivePresetButton(sizeKey) {
+        document.querySelectorAll('.preset-btn').forEach((btn) => {
+          if (btn.getAttribute('data-size') === sizeKey) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
 
-          const presetKey = event.data.sizePreset || findMatchingPreset(newWidth);
+      function findMatchingPreset(width, height) {
+        if (width && height) {
+          for (const [key, preset] of Object.entries(SIZE_PRESETS)) {
+            if (Math.abs(preset.width - width) <= 15 && Math.abs(preset.height - height) <= 25) {
+              return key;
+            }
+          }
+        }
+        for (const [key, preset] of Object.entries(SIZE_PRESETS)) {
+          if (Math.abs(preset.width - width) <= 15) {
+            return key;
+          }
+        }
+        return null;
+      }
+
+      // iframe 내부의 모달 크기 메시지 수신 처리 (size 정보에 따라 자동 조절)
+      window.addEventListener('message', (event) => {
+        if (!event.data) return;
+
+        // 초기 디폴트 크기 적용
+        if (event.data.type === 'DIALOG_DEFAULT_SIZE') {
+          const defaultWidth = event.data.width;
+          let defaultHeight = event.data.height;
+
+          const presetKey = event.data.sizePreset || findMatchingPreset(defaultWidth, defaultHeight);
+          if (presetKey && (!defaultHeight || defaultHeight === 650) && SIZE_PRESETS[presetKey]?.height) {
+            defaultHeight = SIZE_PRESETS[presetKey].height;
+          }
+
+          if (defaultWidth) {
+            iframeWrapper.style.width = defaultWidth + 'px';
+            widthSlider.value = defaultWidth;
+            widthVal.value = defaultWidth;
+          }
+          if (defaultHeight) {
+            iframeWrapper.style.height = defaultHeight + 'px';
+            heightSlider.value = defaultHeight;
+            heightVal.value = defaultHeight;
+          }
+
           if (presetKey) {
             updateActivePresetButton(presetKey);
           }
         }
-        if (event.data.height) {
-          const newHeight = event.data.height;
-          iframeWrapper.style.height = newHeight + 'px';
-          heightSlider.value = newHeight;
-          heightVal.value = newHeight;
-        }
-      }
-    });
 
-    // 현재 페이지 위치(HTML) 기준 상대경로 URL 목록 계산
-    function getIaListFetchCandidates() {
-      const candidates = new Set();
+        // 동적 크기 리사이즈 적용 (가로/세로 모두 지원)
+        if (event.data.type === 'DIALOG_RESIZE') {
+          if (event.data.width) {
+            const newWidth = event.data.width;
+            iframeWrapper.style.width = newWidth + 'px';
+            widthSlider.value = newWidth;
+            widthVal.value = newWidth;
 
-      // 1. 현재 HTML 페이지 기준 상대경로 (가장 우선)
-      candidates.add('./ialist.json');
-      candidates.add('ialist.json');
-
-      try {
-        // 현재 location.href 기준 상대경로 절대 URL (예: https://jjoooon.github.io/study-nextjs-2026/ialist.json)
-        candidates.add(new URL('./ialist.json', window.location.href).href);
-        candidates.add(new URL('ialist.json', window.location.href).href);
-
-        // 현재 디렉토리 기준
-        const currentPath = window.location.pathname;
-        const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
-        if (currentDir) {
-          candidates.add(`${currentDir}ialist.json`);
-        }
-      } catch (e) {}
-
-      // 2. 상위 디렉토리 기준 상대경로 (하위 폴더에 배포된 경우 대비)
-      candidates.add('../ialist.json');
-
-      // 3. 자동 감지된 Storybook Base 기준
-      try {
-        const storybookBase = (getInitialStorybookBase() || '').replace(/\/+$/, '');
-        if (storybookBase) {
-          candidates.add(`${storybookBase}/ialist.json`);
-        }
-      } catch (e) {}
-
-      // 4. 로컬 소스 코드 경로 (개발 서버 fallback)
-      candidates.add('src/stories/iaDashboard/ialist.json');
-      candidates.add('/src/stories/iaDashboard/ialist.json');
-
-      return Array.from(candidates);
-    }
-
-    // ialist.json 데이터 fetch (로컬/외부망/서브패스 상대경로 완전 호환)
-    async function loadIAList() {
-      try {
-        const fetchUrls = getIaListFetchCandidates();
-
-        let response = null;
-        for (const url of fetchUrls) {
-          try {
-            const res = await fetch(url);
-            if (res.ok) {
-              response = res;
-              break;
+            const presetKey = event.data.sizePreset || findMatchingPreset(newWidth, event.data.height);
+            if (presetKey) {
+              updateActivePresetButton(presetKey);
             }
-          } catch (e) {
-            // fallback 진행
+          }
+          if (event.data.height) {
+            const newHeight = event.data.height;
+            iframeWrapper.style.height = newHeight + 'px';
+            heightSlider.value = newHeight;
+            heightVal.value = newHeight;
           }
         }
+      });
 
-        if (!response || !response.ok) throw new Error('Failed to load ialist.json');
-        const rawData = await response.json();
-        allItems = rawData.filter(item => item.dep1 === '차세대가입설계');
-        
-        // 탭 UI 초기화
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        const activeTabBtn = document.getElementById(currentTab === 'popup' ? 'tabPopup' : (currentTab === 'page' ? 'tabPage' : 'tabAll'));
-        if (activeTabBtn) activeTabBtn.classList.add('active');
+      // 현재 페이지 위치(HTML) 기준 상대경로 URL 목록 계산
+      function getIaListFetchCandidates() {
+        const candidates = new Set();
 
-        // 초기 기본 아이템 선택 (예: 첫 번째 팝업 LTPZ001 또는 첫 팝업 아이템)
-        const initialIndex = allItems.findIndex(i => i.id === 'LTPZ001') !== -1 
-          ? allItems.findIndex(i => i.id === 'LTPZ001') 
-          : allItems.findIndex(i => isItemPopup(i));
-        
-        renderList();
-        
-        if (initialIndex !== -1) {
-          setTimeout(() => {
-            const initialItemElement = document.querySelector('.list-item');
-            if (initialItemElement) {
-              window.selectItem(initialItemElement, initialIndex);
+        // 1. 현재 HTML 페이지 기준 상대경로 (가장 우선)
+        candidates.add('./ialist.json');
+        candidates.add('ialist.json');
+
+        try {
+          // 현재 location.href 기준 상대경로 절대 URL (예: https://jjoooon.github.io/study-nextjs-2026/ialist.json)
+          candidates.add(new URL('./ialist.json', window.location.href).href);
+          candidates.add(new URL('ialist.json', window.location.href).href);
+
+          // 현재 디렉토리 기준
+          const currentPath = window.location.pathname;
+          const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+          if (currentDir) {
+            candidates.add(`${currentDir}ialist.json`);
+          }
+        } catch (e) {}
+
+        // 2. 상위 디렉토리 기준 상대경로 (하위 폴더에 배포된 경우 대비)
+        candidates.add('../ialist.json');
+
+        // 3. 자동 감지된 Storybook Base 기준
+        try {
+          const storybookBase = (getInitialStorybookBase() || '').replace(/\/+$/, '');
+          if (storybookBase) {
+            candidates.add(`${storybookBase}/ialist.json`);
+          }
+        } catch (e) {}
+
+        // 4. 로컬 소스 코드 경로 (개발 서버 fallback)
+        candidates.add('src/stories/iaDashboard/ialist.json');
+        candidates.add('/src/stories/iaDashboard/ialist.json');
+
+        return Array.from(candidates);
+      }
+
+      // ialist.json 데이터 fetch (로컬/외부망/서브패스 상대경로 완전 호환)
+      async function loadIAList() {
+        try {
+          const fetchUrls = getIaListFetchCandidates();
+
+          let response = null;
+          for (const url of fetchUrls) {
+            try {
+              const res = await fetch(url);
+              if (res.ok) {
+                response = res;
+                break;
+              }
+            } catch (e) {
+              // fallback 진행
             }
-          }, 100);
+          }
+
+          if (!response || !response.ok) throw new Error('Failed to load ialist.json');
+          const rawData = await response.json();
+          allItems = rawData.filter((item) => item.dep1 === '차세대가입설계');
+
+          // 탭 UI 초기화
+          document.querySelectorAll('.tab-btn').forEach((btn) => btn.classList.remove('active'));
+          const activeTabBtn = document.getElementById(
+            currentTab === 'popup' ? 'tabPopup' : currentTab === 'page' ? 'tabPage' : 'tabAll'
+          );
+          if (activeTabBtn) activeTabBtn.classList.add('active');
+
+          // 초기 기본 아이템 선택 (예: 첫 번째 팝업 LTPZ001 또는 첫 팝업 아이템)
+          const initialIndex =
+            allItems.findIndex((i) => i.id === 'LTPZ001') !== -1
+              ? allItems.findIndex((i) => i.id === 'LTPZ001')
+              : allItems.findIndex((i) => isItemPopup(i));
+
+          renderList();
+
+          if (initialIndex !== -1) {
+            setTimeout(() => {
+              const initialItemElement = document.querySelector('.list-item');
+              if (initialItemElement) {
+                window.selectItem(initialItemElement, initialIndex);
+              }
+            }, 100);
+          }
+        } catch (err) {
+          listContainer.innerHTML = `<div style="text-align: center; color: #ef4444; padding: 1rem; font-size: 0.875rem;">데이터를 불러오는 중 오류가 발생했습니다: ${err.message}</div>`;
         }
-      } catch (err) {
-        listContainer.innerHTML = `<div style="text-align: center; color: #ef4444; padding: 1rem; font-size: 0.875rem;">데이터를 불러오는 중 오류가 발생했습니다: ${err.message}</div>`;
       }
-    }
 
-    // 탭 전환
-    window.switchTab = function(tab) {
-      currentTab = tab;
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      if (tab === 'popup') document.getElementById('tabPopup').classList.add('active');
-      else if (tab === 'page') document.getElementById('tabPage').classList.add('active');
-      else document.getElementById('tabAll').classList.add('active');
-      renderList();
-    };
+      // 탭 전환
+      window.switchTab = function (tab) {
+        currentTab = tab;
+        document.querySelectorAll('.tab-btn').forEach((btn) => btn.classList.remove('active'));
+        if (tab === 'popup') document.getElementById('tabPopup').classList.add('active');
+        else if (tab === 'page') document.getElementById('tabPage').classList.add('active');
+        else document.getElementById('tabAll').classList.add('active');
+        renderList();
+      };
 
-    // 아이템 선택 시 iframe 로드 주소 변경 및 모달 헤더 정보 업데이트
-    window.selectItem = function(element, itemIndex) {
-      const item = allItems[itemIndex];
-      if (!item) return;
-      document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
-      if (element) element.classList.add('active');
+      // 아이템 선택 시 iframe 로드 주소 변경 및 모달 헤더 정보 업데이트
+      window.selectItem = function (element, itemIndex) {
+        const item = allItems[itemIndex];
+        if (!item) return;
+        document.querySelectorAll('.list-item').forEach((el) => el.classList.remove('active'));
+        if (element) element.classList.add('active');
 
-      const storybookBase = storybookHostInput.value.trim() || 'http://localhost:6006';
-      const url = getStoryIframeUrl(item, storybookBase);
+        const storybookBase = storybookHostInput.value.trim() || 'http://localhost:6006';
+        const url = getStoryIframeUrl(item, storybookBase);
 
-      testIframe.src = url;
-      currentUrl.textContent = url;
+        testIframe.src = url;
+        currentUrl.textContent = url;
 
-      // 상단 모달 헤더에 제목(dep4)과 화면 아이디(id, subId) 동적 반영
-      const modalHeaderTitle = document.getElementById('modalHeaderTitle');
-      if (modalHeaderTitle) {
-        const subIdText = item.subId ? ` (${item.subId})` : '';
-        modalHeaderTitle.textContent = `${item.dep4 || ''} (${item.id}${subIdText})`;
-      }
-    };
-
-    // 닫기 버튼 클릭 시 iframe 비우기 및 헤더 리셋
-    const modalCloseBtn = document.getElementById('modalCloseBtn');
-    if (modalCloseBtn) {
-      modalCloseBtn.addEventListener('click', () => {
-        testIframe.src = 'about:blank';
-        currentUrl.textContent = '-';
+        // 상단 모달 헤더에 제목(dep4)과 화면 아이디(id, subId) 동적 반영
         const modalHeaderTitle = document.getElementById('modalHeaderTitle');
-        if (modalHeaderTitle) modalHeaderTitle.textContent = '선택된 화면 없음';
-        document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
-      });
-    }
-
-    // 리스트 렌더링
-    function renderList() {
-      const searchKeyword = searchInput.value.toLowerCase().trim();
-
-      const filtered = allItems.filter(item => {
-        const isPopup = isItemPopup(item);
-        // 1. 탭 필터링
-        if (currentTab === 'popup' && !isPopup) return false;
-        if (currentTab === 'page' && isPopup) return false;
-
-        // 2. 검색어 필터링
-        if (searchKeyword) {
-          const idMatch = (item.id || '').toLowerCase().includes(searchKeyword);
-          const subIdMatch = item.subId && item.subId.toLowerCase().includes(searchKeyword);
-          const dep4Match = item.dep4 && item.dep4.toLowerCase().includes(searchKeyword);
-          const fileMatch = item.file && item.file.toLowerCase().includes(searchKeyword);
-          return idMatch || subIdMatch || dep4Match || fileMatch;
+        if (modalHeaderTitle) {
+          const subIdText = item.subId ? ` (${item.subId})` : '';
+          modalHeaderTitle.textContent = `${item.dep4 || ''} (${item.id}${subIdText})`;
         }
+      };
 
-        return true;
-      });
-
-      if (filtered.length === 0) {
-        listContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem; font-size: 0.8125rem;">검색 결과가 없습니다.</div>';
-        return;
+      // 닫기 버튼 클릭 시 iframe 비우기 및 헤더 리셋
+      const modalCloseBtn = document.getElementById('modalCloseBtn');
+      if (modalCloseBtn) {
+        modalCloseBtn.addEventListener('click', () => {
+          testIframe.src = 'about:blank';
+          currentUrl.textContent = '-';
+          const modalHeaderTitle = document.getElementById('modalHeaderTitle');
+          if (modalHeaderTitle) modalHeaderTitle.textContent = '선택된 화면 없음';
+          document.querySelectorAll('.list-item').forEach((el) => el.classList.remove('active'));
+        });
       }
 
-      const storybookBase = storybookHostInput.value.trim() || 'http://localhost:6006';
-      const currentFrameSrc = testIframe.src || '';
+      // 리스트 렌더링
+      function renderList() {
+        const searchKeyword = searchInput.value.toLowerCase().trim();
 
-      listContainer.innerHTML = filtered.map(item => {
-        const originalIndex = allItems.findIndex(i => i.id === item.id && i.subId === item.subId && i.dep4 === item.dep4);
-        const itemUrl = getStoryIframeUrl(item, storybookBase);
-        const isActive = currentFrameSrc === itemUrl;
-        const activeClass = isActive ? 'active' : '';
-        const isPopup = isItemPopup(item);
-        const typeLabel = isPopup ? '팝업' : '화면';
+        const filtered = allItems.filter((item) => {
+          const isPopup = isItemPopup(item);
+          // 1. 탭 필터링
+          if (currentTab === 'popup' && !isPopup) return false;
+          if (currentTab === 'page' && isPopup) return false;
 
-        return `
+          // 2. 검색어 필터링
+          if (searchKeyword) {
+            const idMatch = (item.id || '').toLowerCase().includes(searchKeyword);
+            const subIdMatch = item.subId && item.subId.toLowerCase().includes(searchKeyword);
+            const dep4Match = item.dep4 && item.dep4.toLowerCase().includes(searchKeyword);
+            const fileMatch = item.file && item.file.toLowerCase().includes(searchKeyword);
+            return idMatch || subIdMatch || dep4Match || fileMatch;
+          }
+
+          return true;
+        });
+
+        if (filtered.length === 0) {
+          listContainer.innerHTML =
+            '<div style="text-align: center; color: var(--text-muted); padding: 2rem; font-size: 0.8125rem;">검색 결과가 없습니다.</div>';
+          return;
+        }
+
+        const storybookBase = storybookHostInput.value.trim() || 'http://localhost:6006';
+        const currentFrameSrc = testIframe.src || '';
+
+        listContainer.innerHTML = filtered
+          .map((item) => {
+            const originalIndex = allItems.findIndex(
+              (i) => i.id === item.id && i.subId === item.subId && i.dep4 === item.dep4
+            );
+            const itemUrl = getStoryIframeUrl(item, storybookBase);
+            const isActive = currentFrameSrc === itemUrl;
+            const activeClass = isActive ? 'active' : '';
+            const isPopup = isItemPopup(item);
+            const typeLabel = isPopup ? '팝업' : '화면';
+
+            return `
           <div class="list-item ${activeClass}" onclick="selectItem(this, ${originalIndex})">
             <div class="item-meta">
               <span class="item-id">${item.id}${item.subId ? ' (' + item.subId + ')' : ''}</span>
@@ -939,20 +1043,21 @@
             <div class="item-path" title="${item.path || ''}">${item.path || ''}</div>
           </div>
         `;
-      }).join('');
-    }
-
-    searchInput.addEventListener('input', renderList);
-    storybookHostInput.addEventListener('input', () => {
-      // 스토리북 주소가 변경되었을 때 현재 선택된 아이템의 iframe 새로고침
-      const activeItem = document.querySelector('.list-item.active');
-      if (activeItem) {
-        activeItem.click();
+          })
+          .join('');
       }
-    });
 
-    // 최초 로드
-    loadIAList();
-  </script>
-</body>
+      searchInput.addEventListener('input', renderList);
+      storybookHostInput.addEventListener('input', () => {
+        // 스토리북 주소가 변경되었을 때 현재 선택된 아이템의 iframe 새로고침
+        const activeItem = document.querySelector('.list-item.active');
+        if (activeItem) {
+          activeItem.click();
+        }
+      });
+
+      // 최초 로드
+      loadIAList();
+    </script>
+  </body>
 </html>
