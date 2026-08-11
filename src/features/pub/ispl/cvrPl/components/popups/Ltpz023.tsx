@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { ArrowIcon } from '@/shared/components/icons';
-import { Grow, Typo, Gcol } from '@atoms';
+import { Grow, Typo, Grid } from '@atoms';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -67,14 +67,14 @@ const Ltpz023 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_minmax(0,1fr)]">
           <Grow variant="box-round" placement={'ss'} className="w-full">
             <Input placeholder="키워드 입력(최대 한글 6자)" />
             <Button size={'lg'} color="coolgray">
               추가
             </Button>
           </Grow>
-          <Gcol>
+          <Grid className="grid-rows-[auto_minmax(0,1fr)]">
             <Grow className="flex" placement="bwc">
               <Typo variant="heading-md" tag="h3">
                 등록된 키워드(10/50)
@@ -108,7 +108,7 @@ const Ltpz023 = () => {
                 <col className="w-[4rem]" />
                 <col />
               </colgroup>
-              <TableHeader className="sticky top-0 bg-white z-10">
+              <TableHeader className="sticky top-0 z-10">
                 <TableRow>
                   <TableHead>선택</TableHead>
                   <TableHead>순서</TableHead>
@@ -163,7 +163,7 @@ const Ltpz023 = () => {
                 ))}
               </TableBody>
             </Table>
-          </Gcol>
+          </Grid>
         </DialogSection>
 
         <DialogFooter>

@@ -422,7 +422,7 @@ const Ltpz019 = () => {
         </DialogHeader>
 
         {/* 팝업 본문 콘텐츠 영역 */}
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_minmax(0,1fr)]">
           {/* 상단: 현재 가입 진행 중인 기본 정보 테이블 */}
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="head">
@@ -438,7 +438,7 @@ const Ltpz019 = () => {
           </Grow>
 
           {/* 중단 및 하단: 상품 선택 본문 레이아웃 */}
-          <Gcol placement={'ss'} className="w-full" gap={2}>
+          <Grid className="w-full grid-rows-[auto_auto_minmax(0,1fr)]" gap={2}>
             {/* 간편설계 안내 문구 */}
             <Gcol placement={'ss'} className="w-full">
               <Typo variant={'body-lg'} weight={'bold'} className="flex items-center">
@@ -475,8 +475,8 @@ const Ltpz019 = () => {
             </Gcol>
 
             {/* 본문 그리드: 2분할 레이아웃 (상품정보 vs 종/플랜정보) */}
-            <Grow placement={'ss'} className="w-full gap-3">
-              <Grid className="w-full grid-cols-[5fr_2fr] gap-3">
+            <Grow placement={'ss'} className="w-full gap-3 h-full">
+              <Grid className="w-full grid-cols-[5fr_2fr] grid-rows-[minmax(0,1fr)] gap-3 h-full">
                 {/* 좌측: 상품정보 리스트 (Ag-Grid) */}
                 <TableFold variant={'default'}>
                   <TableFoldHead title="상품정보">
@@ -485,10 +485,10 @@ const Ltpz019 = () => {
                       <DatePickerInput mode={'single'} size={'md'} />
                     </Grow>
                   </TableFoldHead>
-                  <TableFoldBody className="w-full">
+                  <TableFoldBody className="w-full ">
                     {/* showProductNameTooltip 값에 따라 말풍선 노출을 제어하기 위해 CSS 클래스 동적 부여 */}
                     <div
-                      className={`w-full tooltip-hidden-toggle ag-theme-alpine inner-scroll ltpz019-product-grid ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                      className={`w-full tooltip-hidden-toggle ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                       data-row={dummyData.length}
                     >
                       <AgGridReact<DummyDataType>
@@ -513,7 +513,7 @@ const Ltpz019 = () => {
                 <TableFold variant={'default'}>
                   <TableFoldHead title="종정보"></TableFoldHead>
                   <TableFoldBody>
-                    <Gcol className="w-full" gap={3}>
+                    <Grid className="w-full h-full grid-rows-[auto_1fr]" gap={3}>
                       {/* 우측 상단: 종 정보 리스트 (Ag-Grid) */}
                       <Gcol className="w-full">
                         <div className="ag-theme-alpine w-full inner-scroll" data-row={dummyData2.length}>
@@ -567,13 +567,13 @@ const Ltpz019 = () => {
                           </div>
                         </TabPager>
                       </Gcol>
-                    </Gcol>
+                    </Grid>
                   </TableFoldBody>
                 </TableFold>
                 {/* //M2. 수정  */}
               </Grid>
             </Grow>
-          </Gcol>
+          </Grid>
         </DialogSection>
 
         {/* 다이얼로그 하단 푸터 버튼 */}

@@ -135,6 +135,8 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   /** 시작일 선택 시 자동으로 설정될 종료일과의 간격 일수 (기본값: 7) */
   autoRangeDays?: number;
 
+  /** 외부에서 포커스 여부를 제어할 때 사용 */
+  isFocused?: boolean;
   /** 선택 가능한 최소 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
   min?: string | Date;
   /** 선택 가능한 최대 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
@@ -145,33 +147,60 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
  * DatePickerInput 컴포넌트는 입력 필드와 캘린더 팝오버를 결합한 날짜 입력 UI입니다.
  * single, multiple, range 모드를 지원하며, 에러 메시지와 크기/너비 설정을 일관된 방식으로 제공합니다.
  */
-export function DatePickerInput({
-  id,
-  value: initialValue,
-  rangeValue,
-  mode = 'single',
-  onChange,
-  size = 'lg',
-  required = false,
-  readOnly = false,
-  disabled = false,
-  error = false,
-  errorMsg = '입력은 필수입니다.',
-  errorPs = 'bl',
-  monthOnly = false,
-  onMonthSelect,
-  options = false,
-  autoRangeDays = 0,
-  min,
-  max,
-}: UIInputProps) {
+export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(function DatePickerInput(
+  {
+    id,
+    value: initialValue,
+    rangeValue,
+    mode = 'single',
+    onChange,
+    size = 'lg',
+    required = false,
+    readOnly = false,
+    disabled = false,
+    error = false,
+    errorMsg = '입력은 필수입니다.',
+    errorPs = 'bl',
+    monthOnly = false,
+    onMonthSelect,
+    options = false,
+    autoRangeDays = 0,
+    min,
+    max,
+    isFocused,
+    onFocus: onFocusProp,
+    onBlur: onBlurProp,
+    ...props
+  }: UIInputProps,
+  ref
+) {
   const autoClose = true;
   const autoRangeFix = false;
   const generatedId = React.useId();
   const finalId = id || generatedId;
   const errorId = React.useId();
+  const singleInputRef = React.useRef<HTMLInputElement>(null);
   const fromInputRef = React.useRef<HTMLInputElement>(null);
   const toInputRef = React.useRef<HTMLInputElement>(null);
+
+  const activeInputRef = mode === 'range' ? fromInputRef : singleInputRef;
+
+  React.useImperativeHandle(ref, () => activeInputRef.current as HTMLInputElement, [activeInputRef]);
+
+  // 외부에서 isFocused prop이 true로 전달될 때 내부 DOM input에 포커스 자동 동기화
+  React.useEffect(() => {
+    if (isFocused && activeInputRef.current) {
+      activeInputRef.current.focus();
+    }
+  }, [isFocused, activeInputRef]);
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    onFocusProp?.(e);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    onBlurProp?.(e);
+  };
 
   const [open, setOpen] = React.useState(false);
   const [isSelectingEnd, setIsSelectingEnd] = React.useState(false);
@@ -751,6 +780,8 @@ export function DatePickerInput({
             aria-invalid={error || invalidRange.from ? true : undefined}
             aria-describedby={error || invalidDate ? errorId : undefined}
             onChange={handleRangeInputChange('from')}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             onKeyDown={(e) => {
               if (!readOnly && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault();
@@ -765,6 +796,7 @@ export function DatePickerInput({
             style={inputStyle}
             data-size={size}
             ref={fromInputRef}
+            {...props}
           />
           -
           <input
@@ -776,6 +808,8 @@ export function DatePickerInput({
             aria-invalid={error || invalidRange.to ? true : undefined}
             aria-describedby={error || invalidDate ? errorId : undefined}
             onChange={handleRangeInputChange('to')}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             onKeyDown={(e) => {
               if (!readOnly && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault();
@@ -794,6 +828,7 @@ export function DatePickerInput({
         </>
       ) : (
         <input
+          ref={singleInputRef}
           id={finalId}
           type="tel"
           value={displayValue}
@@ -804,6 +839,8 @@ export function DatePickerInput({
           aria-invalid={error || invalidDate ? true : undefined}
           aria-describedby={error || invalidDate ? errorId : undefined}
           onChange={mode === 'multiple' ? undefined : handleDateChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           onKeyDown={(e) => {
             if (!readOnly && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) {
               e.preventDefault();
@@ -817,6 +854,7 @@ export function DatePickerInput({
           className={`transition-[color,box-shadow] outline-none w-[8.4rem] ${sizeClass} ${baseStyle} ${hoverStyle} ${focusClass} ${disabledClass} ${readOnlyClass}`}
           style={inputStyle}
           data-size={size}
+          {...props}
         />
       )}
       <Popover open={open} onOpenChange={handleOpenChange}>
@@ -961,4 +999,4 @@ export function DatePickerInput({
       )}
     </div>
   );
-}
+});

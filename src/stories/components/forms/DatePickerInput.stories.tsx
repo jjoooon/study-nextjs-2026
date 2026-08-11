@@ -6,6 +6,7 @@ import * as React from 'react';
 import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
 import { Grow, Gcol } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
+import { Button } from '@uiux/Button';
 
 type DatePickerInputStoryProps = React.ComponentProps<typeof DatePickerInput>;
 type Story = StoryObj<DatePickerInputStoryProps>;
@@ -143,6 +144,27 @@ const [value, setValue] = useState('');
                 />
               </Grow>
             </Gcol>
+
+            <h2 className="mt-8">Focus Control (Ref)</h2>
+            <p>
+              버튼 클릭 시 ref.current.focus()를 호출하여 DatePickerInput에 포커스를 부여할 수 있습니다. (single, range
+              모드 지원)
+            </p>
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <FocusControlDocExample />
+            </Gcol>
+
+            <h2 className="mt-8">Declarative Focus (isFocused Prop)</h2>
+            <p>ref 없이 isFocused={true} 상태값을 전달하여 상위 컴포넌트에서 선언적으로 포커스를 제어할 수 있습니다.</p>
+            <Gcol
+              gap={4}
+              className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <DeclarativeFocusDocExample />
+            </Gcol>
           </StoryDocTemplate>
         );
       },
@@ -171,6 +193,11 @@ const [value, setValue] = useState('');
     disabled: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
+    },
+    isFocused: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+      description: '외부에서 포커스 여부를 제어할 때 사용',
     },
     error: {
       control: { type: 'boolean' },
@@ -232,6 +259,7 @@ const [value, setValue] = useState('');
     required: false,
     readOnly: false,
     disabled: false,
+    isFocused: false,
     error: false,
     errorMsg: '입력은 필수입니다.',
     errorPs: 'bl',
@@ -350,4 +378,77 @@ export const Default: Story = {
       />
     );
   },
+};
+
+function FocusControlDocExample() {
+  const singleRef = React.useRef<HTMLInputElement>(null);
+  const rangeRef = React.useRef<HTMLInputElement>(null);
+
+  return (
+    <Gcol gap={4}>
+      <Grow gap={4} className="items-center">
+        <DatePickerInput ref={singleRef} mode="single" placeholder="____-__-__" />
+        <Button onClick={() => singleRef.current?.focus()} color="primary" size="md">
+          Single 포커스 이동
+        </Button>
+      </Grow>
+      <Grow gap={4} className="items-center">
+        <DatePickerInput ref={rangeRef} mode="range" />
+        <Button onClick={() => rangeRef.current?.focus()} color="primary" size="md">
+          Range 포커스 이동
+        </Button>
+      </Grow>
+    </Gcol>
+  );
+}
+
+export const FocusWithButton: Story = {
+  name: '버튼 클릭 시 포커스 제어 (Ref)',
+  render: () => <FocusControlDocExample />,
+};
+
+function DeclarativeFocusDocExample() {
+  const [isSingleFocused, setIsSingleFocused] = React.useState(false);
+  const [isRangeFocused, setIsRangeFocused] = React.useState(false);
+
+  const triggerSingleFocus = () => {
+    setIsSingleFocused(false);
+    requestAnimationFrame(() => {
+      setIsSingleFocused(true);
+    });
+  };
+
+  const triggerRangeFocus = () => {
+    setIsRangeFocused(false);
+    requestAnimationFrame(() => {
+      setIsRangeFocused(true);
+    });
+  };
+
+  return (
+    <Gcol gap={4}>
+      <Grow gap={4} className="items-center">
+        <DatePickerInput
+          mode="single"
+          isFocused={isSingleFocused}
+          onBlur={() => setIsSingleFocused(false)}
+          placeholder="____-__-__"
+        />
+        <Button onClick={triggerSingleFocus} color="coolgray" size="md">
+          Single isFocused={true}
+        </Button>
+      </Grow>
+      <Grow gap={4} className="items-center">
+        <DatePickerInput mode="range" isFocused={isRangeFocused} onBlur={() => setIsRangeFocused(false)} />
+        <Button onClick={triggerRangeFocus} color="coolgray" size="md">
+          Range isFocused={true}
+        </Button>
+      </Grow>
+    </Gcol>
+  );
+}
+
+export const FocusWithProp: Story = {
+  name: 'isFocused Prop으로 포커스 제어 (State)',
+  render: () => <DeclarativeFocusDocExample />,
 };

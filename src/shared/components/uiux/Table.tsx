@@ -30,9 +30,9 @@ function Table({ className, variant = 'default', ...props }: TableProps) {
   const variantClass =
     variant === 'default'
       ? // 기본형: 상단 2px 검정 라인
-        'w-full rounded-0 !border-t-[.2rem] !border-t-[#000]'
+        'w-full rounded-0 border-t-[.2rem] border-t-[#000]'
       : variant === 'message'
-        ? 'w-full rounded-0 !border-t-[.2rem] !border-t-[#61554F]'
+        ? 'w-full rounded-0 border-t-[.2rem] border-t-[#61554F]'
         : 'w-full caption-bottom text-sm border border-[#E5E5E5] rounded-[.8rem] overflow-hidden';
   return (
     <TableVariantContext.Provider value={variant}>
@@ -139,7 +139,7 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
       data-variant={variant}
       className={cn(
         variant === 'default'
-          ? 'border text-[1.3rem] py-[0.8rem] px-[0.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 h-[3.8rem] [&+*]:border-l-0 border-t-0'
+          ? 'border text-[1.3rem] py-[0.2rem] px-[0.6rem] border-[var(--color-gray-10)] first:border-l-0 last:border-r-0 h-[3.8rem] [&+*]:border-l-0 border-t-0'
           : variant === 'message'
             ? 'border-b border-[#E5E5E5] px-[1rem] py-[0.8rem] text-center text-[1.3rem]'
             : 'border-b border-[#E5E5E5] bg-transparent text-[1.3rem] font-normal py-[.6rem] px-[.6rem] text-left align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[0.2rem]',
