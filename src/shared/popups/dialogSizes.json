@@ -507,131 +507,146 @@
   {
     "id": "LTPZ100",
     "width": 1180,
-    "height": 800
+    "height": 450
   },
   {
     "id": "LTPZ101",
     "width": 760,
-    "height": 650
+    "height": 574
   },
   {
     "id": "LTPZ102",
     "width": 560,
-    "height": 560
+    "height": 280
   },
   {
     "id": "LTPZ103",
     "width": 560,
-    "height": 560
+    "height": 490
   },
   {
     "id": "LTPZ104",
     "width": 560,
-    "height": 560
+    "height": 411
   },
   {
     "id": "LTPZ105",
     "width": 560,
-    "height": 560
+    "height": 672
   },
   {
     "id": "LTPZ107",
     "width": 960,
-    "height": 750
+    "height": 630
   },
   {
     "id": "LTPZ108",
     "width": 560,
-    "height": 560
+    "height": 438
   },
   {
     "id": "LTPZ109",
     "width": 480,
-    "height": 500
+    "height": 614
   },
   {
     "id": "LTPZ110",
     "width": 560,
-    "height": 560
+    "height": 374
   },
   {
     "id": "LTPZ111",
     "width": 560,
-    "height": 560
+    "height": 570
+  },
+  {
+    "id": "LTPZ112",
+    "width": 1000,
+    "height": 780
   },
   {
     "id": "LTPZ113",
     "width": 960,
-    "height": 750
+    "height": 523
   },
   {
     "id": "LTPZ114",
     "width": 1180,
-    "height": 800
+    "height": 880
   },
   {
     "id": "LTPZ115",
     "width": 960,
-    "height": 750
+    "height": 573
   },
   {
     "id": "LTPZ116",
     "width": 960,
-    "height": 750
+    "height": 793
   },
   {
     "id": "LTPZ117",
     "width": 760,
-    "height": 650
+    "height": 360
   },
   {
     "id": "LTPZ118",
     "width": 560,
-    "height": 560
+    "height": 397
   },
   {
     "id": "LTPZ119",
     "width": 1180,
-    "height": 800
+    "height": 450
   },
   {
     "id": "LTPZ200",
     "width": 1180,
-    "height": 800
+    "height": 470
   },
   {
     "id": "LTPZ296",
     "width": 1180,
-    "height": 800
+    "height": 880
+  },
+  {
+    "id": "LTPZ351",
+    "width": 480,
+    "height": 634
   },
   {
     "id": "LTPZ640",
     "width": 560,
-    "height": 560
+    "height": 657
   },
   {
     "id": "LTPZ993",
     "width": 560,
-    "height": 560
+    "height": 308
   },
   {
     "id": "LTPZ995",
     "width": 560,
-    "height": 560
+    "height": 395
+  },
+  {
+    "id": "LTPZ996",
+    "width": 760,
+    "height": 308
   },
   {
     "id": "LTPZ997",
     "width": 480,
-    "height": 500
+    "height": 270
   },
   {
     "id": "LTPZ998",
     "width": 760,
-    "height": 650
+    "height": 442
   },
   {
     "id": "LTPZ999",
     "width": 480,
-    "height": 422
+    "height": 309
   }
 ]
