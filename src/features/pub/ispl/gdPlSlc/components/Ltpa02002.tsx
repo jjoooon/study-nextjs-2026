@@ -373,7 +373,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
   }, [loadingAI]);
 
   return (
-    <Grid className="w-full grid-rows-[auto_1fr]" gap={3}>
+    <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] relative z-0" gap={3}>
       <div className="w-full px-[1rem]">
         <Grow variant={'box-round'} className="w-full gap-[2rem] relative z-20" placement="ss">
           <Typo tag="h3" variant={'heading-sm'} className="shrink-0 text-[var(--color-text-blue-gray)]">
@@ -777,6 +777,15 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         </Grid>
                       </FormCell>
                     </FormRow>
+                    <FormRow className="pt-1">
+                      <FormCell title={'선택'}>
+                        <Grow placement="ss">
+                          <Typo tag={'p'} variant={'body-xs'}>
+                            345(2일), 325(2일), 일반고지형(5년)
+                          </Typo>
+                        </Grow>
+                      </FormCell>
+                    </FormRow>
                     {/* // 20260810 - 수정 */}
                   </FormTable>
                 </Gcol>
@@ -784,7 +793,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
 
               {/* 담보군 */}
               <Gcol variant={'box-line'} className="gap-[0.4rem]" placement="ss">
-                <Grid className="grid-cols-[1fr_1fr] grid-rows-[1fr] gap-1 w-full">
+                <Grid className="grid-cols-[1fr_1fr] grid-rows-[minmax(0,1fr)] gap-1 w-full">
                   {coverageOptions.map((opt) => (
                     <React.Fragment key={opt.value}>
                       <Checkbox
@@ -837,7 +846,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
       ) : (
         <>
           <Grid
-            className="w-[calc(100vw + 2rem)] h-full grid-rows-[1fr] grid-cols-[minmax(64rem,2fr)_minmax(48rem,1fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
+            className="w-[calc(100vw + 2rem)] h-full grid-rows-[minmax(0,1fr)] grid-cols-[minmax(64rem,2fr)_minmax(48rem,1fr)] gap-4 items-stretch overflow-hidden bg-[var(--color-gray-5)] p-[2rem] "
             gap={3}
           >
             {/* 리스트 */}
@@ -911,7 +920,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             return (
                               <Grid
                                 key={idx}
-                                className={`grid-rows-[1fr_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-shadow gap-0 ${
+                                className={`grid-rows-[minmax(0,1fr)_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-shadow gap-0 ${
                                   isSelected
                                     ? 'bg-[var(--color-primary-10)] after:pointer-events-none after:content-[""] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-[1rem] after:border-[0.2rem] after:border-[var(--color-primary-50)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)] [&>button_*]:text-white [&>button_path]:fill-white [&>button_path]:fill-white'
                                     : 'bg-[var(--color-primary-5)] shadow-[inset_0_0_0_0.1rem_rgba(0,0,0,0.1)]'

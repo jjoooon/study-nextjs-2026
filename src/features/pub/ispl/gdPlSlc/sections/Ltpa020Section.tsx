@@ -178,7 +178,7 @@ export default function Ltpa020Section() {
             {/* 검색/고객정보 영역
                 - 등록/미등록 모드에 따라 입력 UI가 완전히 분기됨
                 - 고지유형찾기 팝업 호출 버튼 포함 */}
-            <div className="w-full px-[1rem] ltpa020-info">
+            <div className="w-full px-[1rem] ltpa020-info relative z-1">
               <Gcol placement="ss" className="bg-[var(--color-blue-gray-70)] rounded-[0.8rem] p-[1rem]">
                 <FormTable caption="" cols={['w-[6rem]', 'w-auto']} variant={'none'}>
                   <FormRow className="items-start!">
@@ -204,6 +204,8 @@ export default function Ltpa020Section() {
                                   aria-label="고객 검색"
                                   width={136}
                                   col={2}
+                                  error={true}
+                                  errorMsg="고객을 선택해 주세요."
                                   options={[{ value: '김한화 41세(여)', label: <td>김한화</td> }]}
                                   value={comboValues.user}
                                   onChange={handleComboValueChange('user')}
