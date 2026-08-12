@@ -926,12 +926,47 @@
         renderList();
       };
 
+      let dialogSizesMap = new Map();
+
+      async function loadDialogSizes() {
+        const candidates = ['./dialogSizes.json', 'dialogSizes.json', 'src/shared/popups/dialogSizes.json'];
+        for (const url of candidates) {
+          try {
+            const res = await fetch(url);
+            if (res.ok) {
+              const list = await res.json();
+              list.forEach((item) => {
+                if (item.id) {
+                  dialogSizesMap.set(item.id.toLowerCase(), item);
+                }
+              });
+              break;
+            }
+          } catch (e) {}
+        }
+      }
+
       // 아이템 선택 시 iframe 로드 주소 변경 및 모달 헤더 정보 업데이트
       window.selectItem = function (element, itemIndex) {
         const item = allItems[itemIndex];
         if (!item) return;
         document.querySelectorAll('.list-item').forEach((el) => el.classList.remove('active'));
         if (element) element.classList.add('active');
+
+        // dialogSizes.json 에 사전 정의된 크기가 있으면 우선 적용
+        const predefined = dialogSizesMap.get((item.id || '').toLowerCase());
+        if (predefined) {
+          if (predefined.width) {
+            iframeWrapper.style.width = predefined.width + 'px';
+            widthSlider.value = predefined.width;
+            widthVal.value = predefined.width;
+          }
+          if (predefined.height) {
+            iframeWrapper.style.height = predefined.height + 'px';
+            heightSlider.value = predefined.height;
+            heightVal.value = predefined.height;
+          }
+        }
 
         const storybookBase = storybookHostInput.value.trim() || 'http://localhost:6006';
         const url = getStoryIframeUrl(item, storybookBase);
@@ -1026,7 +1061,9 @@
       });
 
       // 최초 로드
-      loadIAList();
+      loadDialogSizes().then(() => {
+        loadIAList();
+      });
     </script>
   </body>
 </html>

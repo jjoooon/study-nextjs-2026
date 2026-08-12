@@ -6,6 +6,7 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
+import dialogSizesData from '@/shared/popups/dialogSizes.json';
 import {
   registerDialog,
   unregisterDialog,
@@ -152,7 +153,28 @@ const getTargetHeightPx = (size?: DialogSize, className?: string): number | unde
   return undefined;
 };
 
-const getInitialSectionWidth = (size?: DialogSize, className?: string): string => {
+const resolveSizeValue = (value?: DialogSizeValue, presetMap?: Record<string, string>): string | undefined => {
+  if (value === undefined || value === null) return undefined;
+  if (typeof value === 'number') return `${value}px`;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (presetMap && trimmed in presetMap) {
+      return presetMap[trimmed];
+    }
+    if (trimmed.endsWith('rem') || trimmed.endsWith('px') || trimmed.endsWith('%') || trimmed.startsWith('calc')) {
+      return trimmed;
+    }
+    const num = Number(trimmed);
+    if (!isNaN(num)) return `${num}px`;
+    return trimmed;
+  }
+  return undefined;
+};
+
+const getInitialSectionWidth = (size?: DialogSize, className?: string, predefinedWidth?: string): string => {
+  if (predefinedWidth) {
+    return `calc(${predefinedWidth} - 4.8rem)`;
+  }
   if (size === 'full') {
     return 'calc(100vw - 6.8rem)';
   }
@@ -171,7 +193,12 @@ const getInitialSectionWidth = (size?: DialogSize, className?: string): string =
   return `calc(${DIALOG_PRESET_WIDTH['2xl']} - 4.8rem)`;
 };
 
-const resolveDialogSize = (size?: DialogSize, viewportWidth?: number | null, className?: string) => {
+const resolveDialogSize = (
+  size?: DialogSize,
+  viewportWidth?: number | null,
+  className?: string,
+  predefinedSize?: { width?: DialogSizeValue; height?: DialogSizeValue }
+) => {
   if (size === 'full') {
     return {
       width: DIALOG_FULL_WIDTH,
@@ -183,18 +210,52 @@ const resolveDialogSize = (size?: DialogSize, viewportWidth?: number | null, cla
     };
   }
 
+  // dialogSizesData 에 정의된 값이 있는 경우 해당 값을 우선 적용
+  const predefinedWidthCss = resolveSizeValue(predefinedSize?.width, DIALOG_PRESET_WIDTH);
+  const predefinedHeightCss = resolveSizeValue(predefinedSize?.height, DIALOG_PRESET_HEIGHT);
+
+  const targetWidth =
+    predefinedWidthCss !== undefined ? parseCssSizeToPx(predefinedWidthCss) : getTargetWidthPx(size, className);
+
   // 모달 목표 가로 크기가 브라우저 뷰포트 크기 - 20px 이상이면 가로만 풀사이즈(width: DIALOG_FULL_WIDTH)로 반환 (세로는 제외)
-  if (viewportWidth) {
-    const targetWidth = getTargetWidthPx(size, className);
-    if (targetWidth !== undefined && targetWidth >= viewportWidth - 20) {
-      return {
-        width: DIALOG_FULL_WIDTH,
-        maxWidth: DIALOG_FULL_WIDTH,
-        maxHeight: DIALOG_DEFAULT_MAX_HEIGHT,
-        isFullSize: false,
-        isFullWidth: true,
-      };
-    }
+  if (viewportWidth && targetWidth !== undefined && targetWidth >= viewportWidth - 20) {
+    return {
+      width: DIALOG_FULL_WIDTH,
+      height: predefinedHeightCss,
+      maxWidth: DIALOG_FULL_WIDTH,
+      maxHeight: predefinedHeightCss ?? DIALOG_DEFAULT_MAX_HEIGHT,
+      isFullSize: false,
+      isFullWidth: true,
+    };
+  }
+
+  if (predefinedWidthCss !== undefined || predefinedHeightCss !== undefined) {
+    const hasConfigHeight = isDialogSizeConfig(size) && size.height !== undefined;
+    const defaultMaxH = predefinedHeightCss ?? (hasConfigHeight ? undefined : DIALOG_DEFAULT_MAX_HEIGHT);
+
+    return {
+      width:
+        predefinedWidthCss ??
+        (typeof size === 'string' && size in DIALOG_PRESET_WIDTH
+          ? DIALOG_PRESET_WIDTH[size as Exclude<DialogSizePreset, 'full'>]
+          : isDialogSizeConfig(size)
+            ? toCssSize(size.width)
+            : undefined),
+      height:
+        predefinedHeightCss ??
+        (typeof size === 'string' && size in DIALOG_PRESET_HEIGHT
+          ? DIALOG_PRESET_HEIGHT[size as DialogSizePreset]
+          : isDialogSizeConfig(size)
+            ? toCssSize(size.height)
+            : undefined),
+      minWidth: isDialogSizeConfig(size) ? toCssSize(size.minWidth) : undefined,
+      minHeight: isDialogSizeConfig(size) ? toCssSize(size.minHeight) : undefined,
+      maxWidth: (isDialogSizeConfig(size) ? toCssSize(size.maxWidth) : undefined) ?? DIALOG_FULL_WIDTH,
+      maxHeight:
+        predefinedHeightCss ?? (isDialogSizeConfig(size) ? toCssSize(size.maxHeight) : undefined) ?? defaultMaxH,
+      isFullSize: false,
+      isFullWidth: false,
+    };
   }
 
   if (
@@ -237,6 +298,75 @@ const resolveDialogSize = (size?: DialogSize, viewportWidth?: number | null, cla
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
+type DialogPredefinedSizeItem = {
+  id: string;
+  width?: DialogSizeValue;
+  height?: DialogSizeValue;
+};
+
+const dialogSizesList: DialogPredefinedSizeItem[] = dialogSizesData as DialogPredefinedSizeItem[];
+
+/**
+ * dialogSizes.json에서 ID(대소문자 무관)에 매칭되는 크기 정보를 반환합니다.
+ */
+export const getDialogPredefinedSize = (
+  id?: string
+): { width?: DialogSizeValue; height?: DialogSizeValue } | undefined => {
+  if (!id) return undefined;
+  const cleanId = id.trim().toLowerCase();
+  const found = dialogSizesList.find((item) => item.id?.trim().toLowerCase() === cleanId);
+  if (found) {
+    return { width: found.width, height: found.height };
+  }
+  return undefined;
+};
+
+/**
+ * 현재 브라우저 URL 또는 Storybook 쿼리로부터 팝업 ID를 자동 추출합니다.
+ */
+export const getCurrentPopupIdFromUrl = (): string | undefined => {
+  if (typeof window === 'undefined') return undefined;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const storyId = params.get('id') || params.get('story') || params.get('popupId');
+    if (storyId) {
+      // 1) '--' 뒤의 스토리 명칭 제거 (예: app-popup-ltpz998--default -> app-popup-ltpz998)
+      const baseStoryId = storyId.split('--')[0];
+      // 2) 앞의 접두사 제거 (app-popup-, app-page-, popup-, page- 등)
+      const cleanId = baseStoryId.replace(/^(?:app-)?(?:popup|page)-/i, '');
+      if (cleanId) {
+        return cleanId;
+      }
+    }
+    // 3) pathname 에서 추출 (/popup/system/ltpz999, /popups/ltpz998 등)
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    if (pathSegments.length > 0) {
+      const lastSegment = pathSegments[pathSegments.length - 1];
+      return lastSegment.replace(/^(?:app-)?(?:popup|page)-/i, '');
+    }
+  } catch {
+    return undefined;
+  }
+  return undefined;
+};
+
+/**
+ * 컴포넌트 내부 DOM 요소(타이틀 등)에서 팝업 ID 텍스트(예: LTPZ998, LTPA060)를 추출합니다.
+ */
+export const getPopupIdFromElement = (element?: HTMLElement | null): string | undefined => {
+  if (!element) return undefined;
+  try {
+    const text = element.textContent || '';
+    const match = text.match(/\b(LTP[A-Z0-9_-]+|LTR[A-Z0-9_-]+)\b/i);
+    if (match && match[1]) {
+      return match[1];
+    }
+  } catch {
+    return undefined;
+  }
+  return undefined;
+};
+
 /**
  * 현재 창이 iframe 내부이고, 부모창의 해당 iframe을 감싸고 있는 상위 요소 중 'dialogpopup' 클래스가 존재하는지 검사합니다.
  */
@@ -260,11 +390,11 @@ export const isExternalOrCustomIframe = (): boolean => {
       return Boolean(frameEl.closest?.('.dialogpopup'));
     }
   } catch {
-    // Cross-origin의 경우 부모 DOM에 접근할 수 없으므로 false 반환
-    return false;
+    // Cross-origin의 경우 외부 iframe에서 임베드된 것이므로 true 반환
+    return true;
   }
 
-  return false;
+  return true;
 };
 
 type DialogContextValue = {
@@ -563,6 +693,10 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * iframe 환경일 때 부모 창에 전달할 커스텀 높이 값 (px 또는 rem/string)
    */
   iframeHeight?: number | string;
+  /**
+   * 팝업 고유 ID (생략 시 URL에서 자동 감지하여 dialogSizes.json의 사전 정의 크기를 가져옵니다)
+   */
+  popupId?: string;
 }
 
 /**
@@ -586,6 +720,7 @@ function DialogContent({
   minimized,
   dim = 'dark',
   iframeHeight,
+  popupId,
   ...props
 }: DialogContentProps) {
   const { dialogId, isMinimized, setMinimized, open, setModalOverride } = React.useContext(DialogDepthContext);
@@ -632,18 +767,26 @@ function DialogContent({
   React.useEffect(() => {
     if (!isIframeState || typeof window === 'undefined') return;
 
-    const targetWidth = getTargetWidthPx(size, className);
-    if (!targetWidth) return;
-
     const timer = setTimeout(() => {
+      // dialogSizes.json 에서 현재 팝업의 사전 정의 크기 조회 (URL -> DOM 순 추출)
+      const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
+      const predefinedSize = getDialogPredefinedSize(currentId);
+
+      const predefinedWidthCss = resolveSizeValue(predefinedSize?.width, DIALOG_PRESET_WIDTH);
+      const targetWidthPx =
+        predefinedWidthCss !== undefined ? parseCssSizeToPx(predefinedWidthCss) : getTargetWidthPx(size, className);
+
+      if (!targetWidthPx) return;
+
+      const rawHeight = iframeHeight ?? predefinedSize?.height;
       const parsedIframeHeight =
-        typeof iframeHeight === 'number'
-          ? iframeHeight
-          : iframeHeight !== undefined
-            ? parseCssSizeToPx(iframeHeight)
+        typeof rawHeight === 'number'
+          ? rawHeight
+          : rawHeight !== undefined
+            ? parseCssSizeToPx(resolveSizeValue(rawHeight, DIALOG_PRESET_HEIGHT))
             : undefined;
 
-      let contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
+      let contentHeight: number = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
       if (parsedIframeHeight === undefined && !getTargetHeightPx(size, className) && contentRef.current) {
         const rect = contentRef.current.getBoundingClientRect();
         if (rect.height > 0) {
@@ -654,12 +797,13 @@ function DialogContent({
         window.parent.postMessage(
           {
             type: 'DIALOG_DEFAULT_SIZE',
-            width: Math.round(targetWidth) + 2,
+            width: Math.round(targetWidthPx) + 2,
             height:
               parsedIframeHeight !== undefined
                 ? Math.round(parsedIframeHeight)
                 : Math.min(Math.max(contentHeight, 100), 1900),
             sizePreset: typeof size === 'string' ? size : undefined,
+            popupId: currentId,
           },
           '*'
         );
@@ -669,7 +813,7 @@ function DialogContent({
     }, 150);
 
     return () => clearTimeout(timer);
-  }, [isIframeState, size, className, iframeHeight]);
+  }, [isIframeState, size, className, iframeHeight, popupId]);
 
   const resolvedShowCloseButton = showCloseButton;
   const resolvedResizable = resizable;
@@ -733,14 +877,22 @@ function DialogContent({
     return () => window.removeEventListener('resize', checkOverflow);
   }, []);
 
+  // dialogSizes.json 에서 현재 팝업의 사전 정의 크기 조회 (ID가 있으면 기존 크기 프로세스를 오버라이드)
+  const currentPopupId = popupId || getCurrentPopupIdFromUrl();
+  const predefinedSize = getDialogPredefinedSize(currentPopupId);
+  const predefinedWidthCss = resolveSizeValue(predefinedSize?.width, DIALOG_PRESET_WIDTH);
+
   const resolvedSize = React.useMemo(
-    () => resolveDialogSize(size, viewportWidth, className),
-    [size, viewportWidth, className]
+    () => resolveDialogSize(size, viewportWidth, className, predefinedSize),
+    [size, viewportWidth, className, predefinedSize]
   );
   const isFullSize = size === 'full' || resolvedSize.isFullSize;
   const isFullWidth = isFullSize || resolvedSize.isFullWidth || isContentOverflowing;
   const isAutoFullWidth = isFullWidth && size !== 'full';
-  const initialSectionWidth = React.useMemo(() => getInitialSectionWidth(size, className), [size, className]);
+  const initialSectionWidth = React.useMemo(
+    () => getInitialSectionWidth(size, className, predefinedWidthCss),
+    [size, className, predefinedWidthCss]
+  );
   const [position, setPosition] = React.useState(defaultPosition ?? { x: 0, y: 0 });
   const [isInitialized, setIsInitialized] = React.useState(false);
   const [resizedSize, setResizedSize] = React.useState({ width: 0, height: 0 });
