@@ -2480,3 +2480,12 @@
     padding-bottom: 1rem;
   }
 }
+
+/* Chrome 109 전용 [&>input] 너비 호환 스타일 */
+.v109 [class*="[&>input]:!w-[3.3rem]"] input,
+.v109 [class*="[&>input]:w-[3.3rem]"] input,
+.v109 .\[\&\>input\]\:\!w-\[3\.3rem\] input,
+.v109 .\[\&\>input\]\:w-\[3\.3rem\] input {
+  width: 3.3rem !important;
+}
+
