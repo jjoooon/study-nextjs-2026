@@ -841,7 +841,8 @@ export const Ltpa3500301 = ({
                   <Input
                     size="xl"
                     variant="default"
-                    className="w-[3.3rem]  [&>input]:!w-[3.3rem]"
+                    width="3.3rem"
+                    className="w-[3.3rem] [&>input]:!w-[3.3rem]"
                     readOnly={simpleMode}
                   />{' '}
                   주)
