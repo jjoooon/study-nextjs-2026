@@ -803,6 +803,22 @@
           if (presetKey) {
             updateActivePresetButton(presetKey);
           }
+
+          // iframe 내부(불러오는 파일)에서 전달한 title과 id 정보로 상단 모달 헤더 반영
+          const receivedTitle = event.data.title || event.data.popupTitle;
+          const receivedId = event.data.id || event.data.popupId || event.data.screenId;
+          if (receivedTitle || receivedId) {
+            const modalHeaderTitle = document.getElementById('modalHeaderTitle');
+            if (modalHeaderTitle) {
+              if (receivedTitle && receivedId) {
+                modalHeaderTitle.textContent = `${receivedTitle} (${receivedId})`;
+              } else if (receivedTitle) {
+                modalHeaderTitle.textContent = receivedTitle;
+              } else if (receivedId) {
+                modalHeaderTitle.textContent = `(${receivedId})`;
+              }
+            }
+          }
         }
 
         // 동적 크기 리사이즈 적용 (가로/세로 모두 지원)
@@ -974,11 +990,11 @@
         testIframe.src = url;
         if (currentUrl) currentUrl.textContent = url;
 
-        // 상단 모달 헤더에 제목(dep4)과 화면 아이디(id, subId) 동적 반영
+        // 상단 모달 헤더에 제목과 화면 아이디 동적 반영
         const modalHeaderTitle = document.getElementById('modalHeaderTitle');
         if (modalHeaderTitle) {
           const subIdText = item.subId ? ` (${item.subId})` : '';
-          const titleName = item.dep4 || item.title || item.name || '';
+          const titleName = predefined?.title || item.dep4 || item.title || item.name || '';
           modalHeaderTitle.textContent = `${titleName} (${item.id}${subIdText})`;
         }
       };

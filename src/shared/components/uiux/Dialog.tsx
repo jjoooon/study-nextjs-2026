@@ -306,6 +306,7 @@ const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayou
 
 type DialogPredefinedSizeItem = {
   id: string;
+  title?: string;
   width?: DialogSizeValue;
   height?: DialogSizeValue;
 };
@@ -313,16 +314,16 @@ type DialogPredefinedSizeItem = {
 const dialogSizesList: DialogPredefinedSizeItem[] = dialogSizesData as DialogPredefinedSizeItem[];
 
 /**
- * dialogSizes.json에서 ID(대소문자 무관)에 매칭되는 크기 정보를 반환합니다.
+ * dialogSizes.json에서 ID(대소문자 무관)에 매칭되는 크기 및 제목 정보를 반환합니다.
  */
 export const getDialogPredefinedSize = (
   id?: string
-): { width?: DialogSizeValue; height?: DialogSizeValue } | undefined => {
+): { id?: string; title?: string; width?: DialogSizeValue; height?: DialogSizeValue } | undefined => {
   if (!id) return undefined;
   const cleanId = id.trim().toLowerCase();
   const found = dialogSizesList.find((item) => item.id?.trim().toLowerCase() === cleanId);
   if (found) {
-    return { width: found.width, height: found.height };
+    return { id: found.id, title: found.title, width: found.width, height: found.height };
   }
   return undefined;
 };
@@ -700,9 +701,17 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    */
   iframeHeight?: number | string;
   /**
-   * 팝업 고유 ID (생략 시 URL에서 자동 감지하여 dialogSizes.json의 사전 정의 크기를 가져옵니다)
+   * 팝업 고유 ID (생략 시 URL/DOM에서 자동 감지하여 dialogSizes.json의 사전 정의 크기를 가져옵니다)
    */
   popupId?: string;
+  /**
+   * 화면 제목 (생략 시 dialogSizes.json 또는 DOM의 DialogTitle에서 자동 추출)
+   */
+  title?: string;
+  /**
+   * 화면 제목 별칭
+   */
+  modalHeaderTitle?: string;
 }
 
 /**
@@ -769,22 +778,24 @@ function DialogContent({
     }
   }, []);
 
-  // iframe 환경일 때 부모 창으로 다이얼로그의 지정된 너비 및 높이 정보 전송
+  // iframe 환경일 때 부모 창으로 다이얼로그의 지정된 크기 및 화면 정보 전송 (dialogSizes.json 기반 단일화)
   React.useEffect(() => {
     if (!isIframeState || typeof window === 'undefined') return;
 
     const timer = setTimeout(() => {
-      // dialogSizes.json 에서 현재 팝업의 사전 정의 크기 조회 (URL -> DOM 순 추출)
+      // dialogSizes.json 에서 현재 팝업의 사전 정의 정보 조회
       const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
-      const predefinedSize = getDialogPredefinedSize(currentId);
+      const predefined = getDialogPredefinedSize(currentId);
 
-      const predefinedWidthCss = resolveSizeValue(predefinedSize?.width, DIALOG_PRESET_WIDTH);
+      // 가로 너비 결정
+      const predefinedWidthCss = resolveSizeValue(predefined?.width, DIALOG_PRESET_WIDTH);
       const targetWidthPx =
         predefinedWidthCss !== undefined ? parseCssSizeToPx(predefinedWidthCss) : getTargetWidthPx(size, className);
 
       if (!targetWidthPx) return;
 
-      const rawHeight = iframeHeight ?? predefinedSize?.height;
+      // 세로 높이 결정
+      const rawHeight = iframeHeight ?? predefined?.height;
       const parsedIframeHeight =
         typeof rawHeight === 'number'
           ? rawHeight
@@ -798,10 +809,11 @@ function DialogContent({
         window.parent.postMessage(
           {
             type: 'DIALOG_DEFAULT_SIZE',
+            id: predefined?.id || currentId,
+            title: predefined?.title || '',
             width: Math.round(targetWidthPx) + 2,
             height: Math.round(contentHeight),
             sizePreset: typeof size === 'string' ? size : undefined,
-            popupId: currentId,
           },
           '*'
         );
