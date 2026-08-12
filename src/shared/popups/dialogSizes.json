@@ -2,12 +2,12 @@
   {
     "id": "LTPA083",
     "width": 560,
-    "height": 560
+    "height": 372
   },
   {
     "id": "LTPA095",
     "width": 760,
-    "height": 650
+    "height": 614
   },
   {
     "id": "LTPA130",
@@ -17,57 +17,57 @@
   {
     "id": "LTPA401",
     "width": 760,
-    "height": 650
+    "height": 687
   },
   {
     "id": "LTPZ001",
     "width": 1180,
-    "height": 800
+    "height": 537
   },
   {
     "id": "LTPZ002",
     "width": 960,
-    "height": 750
+    "height": 760
   },
   {
     "id": "LTPZ003",
     "width": 960,
-    "height": 750
+    "height": 720
   },
   {
     "id": "LTPZ004",
     "width": 560,
-    "height": 560
+    "height": 502
   },
   {
     "id": "LTPZ005",
     "width": 1180,
-    "height": 970
+    "height": 950
   },
   {
     "id": "LTPZ006",
     "width": 560,
-    "height": 560
+    "height": 414
   },
   {
     "id": "LTPZ007",
     "width": 560,
-    "height": 560
+    "height": 402
   },
   {
     "id": "LTPZ008",
     "width": 760,
-    "height": 650
+    "height": 522
   },
   {
     "id": "LTPZ009",
     "width": 960,
-    "height": 750
+    "height": 604
   },
   {
     "id": "LTPZ010",
     "width": 960,
-    "height": 750
+    "height": 880
   },
   {
     "id": "LTPZ01002",
@@ -77,12 +77,12 @@
   {
     "id": "LTPZ011",
     "width": 760,
-    "height": 650
+    "height": 472
   },
   {
     "id": "LTPZ012",
     "width": 960,
-    "height": 750
+    "height": 880
   },
   {
     "id": "LTPZ013",
@@ -92,7 +92,7 @@
   {
     "id": "LTPZ014",
     "width": 480,
-    "height": 500
+    "height": 336
   },
   {
     "id": "LTPZ015",
@@ -102,7 +102,7 @@
   {
     "id": "LTPZ016",
     "width": 560,
-    "height": 560
+    "height": 480
   },
   {
     "id": "LTPZ01601",
@@ -117,22 +117,27 @@
   {
     "id": "LTPZ017",
     "width": 620,
-    "height": 600
+    "height": 472
   },
   {
     "id": "LTPZ018",
     "width": 760,
-    "height": 650
+    "height": 476
   },
   {
     "id": "LTPZ019",
     "width": 760,
-    "height": 650
+    "height": 772
   },
   {
     "id": "LTPZ020",
     "width": 760,
-    "height": 650
+    "height": 665
+  },
+  {
+    "id": "LTPZ021",
+    "width": 1180,
+    "height": 800
   },
   {
     "id": "LTPZ022",
@@ -142,52 +147,52 @@
   {
     "id": "LTPZ023",
     "width": 376,
-    "height": 650
+    "height": 727
   },
   {
     "id": "LTPZ024",
     "width": 560,
-    "height": 560
+    "height": 715
   },
   {
     "id": "LTPZ025",
     "width": 560,
-    "height": 560
+    "height": 464
   },
   {
     "id": "LTPZ026",
     "width": 960,
-    "height": 750
+    "height": 770
   },
   {
     "id": "LTPZ027",
     "width": 620,
-    "height": 600
+    "height": 640
   },
   {
     "id": "LTPZ028",
     "width": 560,
-    "height": 560
+    "height": 413
   },
   {
     "id": "LTPZ029",
     "width": 760,
-    "height": 650
+    "height": 839
   },
   {
     "id": "LTPZ030",
     "width": 1100,
-    "height": 650
+    "height": 880
   },
   {
     "id": "LTPZ031",
     "width": 1000,
-    "height": 650
+    "height": 880
   },
   {
     "id": "LTPZ032",
     "width": 1180,
-    "height": 800
+    "height": 740
   },
   {
     "id": "LTPZ033",
