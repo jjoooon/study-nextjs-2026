@@ -14,7 +14,6 @@ import { ErrorMsg } from '@common/ErrorMsg';
 import { TabPager } from '@common/TabPager';
 // import { Tabs, TabsList, TabsTrigger, TabsContent, TabsPanel, TabsLine } from '@uiux/Tabs';
 
-
 const DATA_TABS_4 = [
   {
     name: '홍길동',

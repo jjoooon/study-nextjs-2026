@@ -125,5 +125,3 @@ export const Nabmyeon = (args: Ltpz351Props) => (
   </LayoutDoc>
 );
 Nabmyeon.storyName = '보험료 납입면제 안내';
-
-

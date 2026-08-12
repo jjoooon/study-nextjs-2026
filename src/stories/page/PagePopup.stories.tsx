@@ -18,7 +18,6 @@ import {
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { StorySite } from '@/shared/components/storybook/StoryWrap';
 
-
 export default {
   title: 'app/_excluded/page/PagePopup',
   component: LTPA010,

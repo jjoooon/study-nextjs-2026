@@ -4,7 +4,6 @@
 import LTPA190 from '@/app/pub/ispl/pages/LTPA190';
 import { LayoutDoc } from '@layout/BaseLayout';
 
-
 export default {
   title: 'app/_excluded/page/LTPA190',
   component: LTPA190,

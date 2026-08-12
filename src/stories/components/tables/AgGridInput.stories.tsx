@@ -60,12 +60,12 @@ const columnDefsWithButton: ColDef<Dummy2DataType>[] = [
     field: 'code',
     flex: 1,
     cellClass: 'required editable-cell',
-    
+
     // 🔥 버튼 클릭 시 인풋 편집 활성화 방지 (표준 AG Grid 콜백)
     editable: createEditableCallbackForButton(),
     cellRenderer: InputWithSearchCellRenderer,
     cellEditor: InputWithSearchCellEditor,
-    
+
     // 1. 에러 테두리 표시 조건
     cellClassRules: {
       'ag-cell-error-border': (params: { value: string | null | undefined }) => {
@@ -73,7 +73,7 @@ const columnDefsWithButton: ColDef<Dummy2DataType>[] = [
         return val === null || val === undefined || val === '' || (typeof val === 'string' && val.length <= 2);
       },
     },
-    
+
     // 2. 동적 에러 메시지 툴팁 지정
     cellStyle: (params) => {
       const val = params.value;
@@ -85,7 +85,7 @@ const columnDefsWithButton: ColDef<Dummy2DataType>[] = [
       }
       return {};
     },
-    
+
     cellRendererParams: {
       onButtonClick: (params: ICellRendererParams<Dummy2DataType>) => {
         alert(`[공용 Renderer] 검색 버튼 클릭: ${params.value ?? '빈 값'}`);
@@ -331,7 +331,6 @@ export const PortalErrorTooltipOption: StoryObj = {
   },
 };
 
-
 const meta: Meta<typeof AgGridReact<DummyDataType>> = {
   title: 'Components/Tables/AgGrid/CellEditor Input',
   component: AgGridReact,
@@ -491,8 +490,8 @@ const onCellValueChanged = React.useMemo(
 
           <h2>에러 테두리 및 커스텀 에러 메시지 설정 가이드</h2>
           <p>
-            셀 편집 시 유효성 검사를 수행하여 **에러 테두리(`ag-cell-error-border`)**를 표시하거나,
-            ColDef의 <strong>`cellStyle`</strong>을 활용하여 **동적 에러 메시지(`--error-msg`)**를 지정할 수 있습니다.
+            셀 편집 시 유효성 검사를 수행하여 **에러 테두리(`ag-cell-error-border`)**를 표시하거나, ColDef의{' '}
+            <strong>`cellStyle`</strong>을 활용하여 **동적 에러 메시지(`--error-msg`)**를 지정할 수 있습니다.
           </p>
           <Markdown>
             {`

@@ -171,7 +171,8 @@ import { Button } from '@uiux/Button';
     dim: {
       control: 'radio',
       options: ['dark', 'transparent', 'none'],
-      description: '어두운 백드롭 딤 오버레이 타입 (dark: 반투명 검정, transparent: 클릭 차단용 투명, none: 오버레이 없음)',
+      description:
+        '어두운 백드롭 딤 오버레이 타입 (dark: 반투명 검정, transparent: 클릭 차단용 투명, none: 오버레이 없음)',
       table: { category: 'prop', defaultValue: { summary: "'dark'" } },
     },
     // overlayClassName: {

@@ -4,7 +4,6 @@
 import LTPA220 from '@/app/pub/ispl/pages/LTPA220';
 import { LayoutDoc } from '@layout/BaseLayout';
 
-
 export default {
   title: 'app/page/LTPA220',
   component: LTPA220,

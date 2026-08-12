@@ -110,7 +110,12 @@ export const Default: Story = {
         <Toaster {...args} />
         <Button
           variant={'outlined'}
-          onClick={() => toast.info('테스트 알림! 테스트 알림!테스트 알림! 테스트 알림!테스트 알림! 테스트 알림!테스트 알림! 테스트 알림!테스트 알림! 테스트 알림!', { position: 'top-center', duration: args.duration })}
+          onClick={() =>
+            toast.info(
+              '테스트 알림! 테스트 알림!테스트 알림! 테스트 알림!테스트 알림! 테스트 알림!테스트 알림! 테스트 알림!테스트 알림! 테스트 알림!',
+              { position: 'top-center', duration: args.duration }
+            )
+          }
         >
           Show Toast
         </Button>

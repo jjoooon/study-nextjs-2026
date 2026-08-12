@@ -45,7 +45,13 @@ export function getStoryUrl(id: string, path: string, activeStep?: number, subId
 /**
  * 사이드바/컨트롤 없이 캔버스만 표시하는 iframe 전용 URL
  */
-export function getStoryIframeUrl(id: string, path: string, activeStep?: number, subId?: string, popup?: boolean): string {
+export function getStoryIframeUrl(
+  id: string,
+  path: string,
+  activeStep?: number,
+  subId?: string,
+  popup?: boolean
+): string {
   const storybookBaseUrl = getStorybookBaseUrl();
   const folder = popup ? 'popup' : 'page';
   const storyPath = `app-${folder}-${id.toLowerCase()}`;
