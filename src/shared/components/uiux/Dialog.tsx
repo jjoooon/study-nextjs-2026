@@ -63,6 +63,7 @@ const DIALOG_PRESET_HEIGHT: Partial<Record<DialogSizePreset, string>> = {
 
 const toCssSize = (value?: DialogSizeValue): string | undefined => {
   if (typeof value === 'number') return `${value}px`;
+  if (typeof value === 'string' && value.trim().toLowerCase() === 'auto') return 'auto';
   return value;
 };
 
@@ -84,6 +85,7 @@ const parseCssSizeToPx = (value?: DialogSizeValue): number | undefined => {
   if (typeof value === 'number') return value;
   if (!value || typeof value !== 'string') return undefined;
   const trimmed = value.trim();
+  if (trimmed.toLowerCase() === 'auto') return undefined;
   if (trimmed.endsWith('rem')) {
     const num = parseFloat(trimmed);
     return isNaN(num) ? undefined : num * getRootFontSize();
@@ -158,6 +160,9 @@ const resolveSizeValue = (value?: DialogSizeValue, presetMap?: Record<string, st
   if (typeof value === 'number') return `${value}px`;
   if (typeof value === 'string') {
     const trimmed = value.trim();
+    if (trimmed.toLowerCase() === 'auto') {
+      return 'auto';
+    }
     if (presetMap && trimmed in presetMap) {
       return presetMap[trimmed];
     }
@@ -764,7 +769,7 @@ function DialogContent({
     }
   }, []);
 
-  // iframe 환경일 때 부모 창으로 다이얼로그의 기본 너비(size, className 기반) 및 높이 정보 전송
+  // iframe 환경일 때 부모 창으로 다이얼로그의 지정된 너비 및 높이 정보 전송
   React.useEffect(() => {
     if (!isIframeState || typeof window === 'undefined') return;
 
@@ -787,22 +792,14 @@ function DialogContent({
             ? parseCssSizeToPx(resolveSizeValue(rawHeight, DIALOG_PRESET_HEIGHT))
             : undefined;
 
-      let contentHeight: number = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
-      if (parsedIframeHeight === undefined && !getTargetHeightPx(size, className) && contentRef.current) {
-        const rect = contentRef.current.getBoundingClientRect();
-        if (rect.height > 0) {
-          contentHeight = Math.ceil(rect.height) + 32;
-        }
-      }
+      const contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
+
       try {
         window.parent.postMessage(
           {
             type: 'DIALOG_DEFAULT_SIZE',
             width: Math.round(targetWidthPx) + 2,
-            height:
-              parsedIframeHeight !== undefined
-                ? Math.round(parsedIframeHeight)
-                : Math.min(Math.max(contentHeight, 100), 1900),
+            height: Math.round(contentHeight),
             sizePreset: typeof size === 'string' ? size : undefined,
             popupId: currentId,
           },
@@ -811,7 +808,7 @@ function DialogContent({
       } catch {
         // cross-origin 무시
       }
-    }, 150);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [isIframeState, size, className, iframeHeight, popupId]);

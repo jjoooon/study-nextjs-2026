@@ -165,7 +165,7 @@ const Ltpz044 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr]">
+        <DialogSection className="grid-rows-[auto_minmax(0,1fr)_auto]">
           <Grow className="w-full" variant="box-round" placement={'ss'}>
             <FormTable variant="head">
               <FormRow>

@@ -1028,8 +1028,10 @@
     width: 100% !important;
     min-width: 0 !important;
     min-height: 0 !important;
+    position: fixed;
   }
   .is-iframe[data-slot='dialog-content'] {
+    position: relative !important;
     width: 100% !important;
     height: 100% !important;
     max-height: 100% !important;

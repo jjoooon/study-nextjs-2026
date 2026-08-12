@@ -529,7 +529,7 @@ const Ltpz640 = () => {
               </Typo>
             </DialogTitle>
           </DialogHeader>
-          <DialogSection className="grid-rows-[auto_1fr] gap-1">
+          <DialogSection className="grid-rows-[auto_minmax(0,1fr)] gap-1">
             <Grow placement="ec" className="w-full">
               <Button variant={'outlined'} color={'gray'} onClick={handleOpenAddPackageDialog}>
                 패키지 추가
@@ -563,7 +563,7 @@ const Ltpz640 = () => {
                 <ArrowIcon className="-rotate-90" color={'#FF5C2E'} size={13} />
               </Button>
             </Grow>
-            <div className="cp-ag-icon-grip ag-theme-alpine min-h-[50vh]">
+            <div className="cp-ag-icon-grip ag-theme-alpine">
               <AgGridReact<DummyData1Type>
                 onGridReady={(event) => {
                   gridApiRef.current = event.api;
