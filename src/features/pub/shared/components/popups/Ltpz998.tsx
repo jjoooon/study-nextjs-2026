@@ -231,7 +231,7 @@ const Ltpz998 = () => {
                 오류상세설명
               </Button>
             </Grow>
-            <Grow>
+            <Grow placement="ec">
               <Button variant={'contained'} size={'xl'}>
                 연계버튼
               </Button>
