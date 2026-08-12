@@ -154,6 +154,30 @@ const DummyData2: DummyDataType2[] = [
     field01: 3253180,
     field02: '(주)씨엔아이보험대리',
   },
+  {
+    id: 7,
+    isChecked: true,
+    field01: 3253180,
+    field02: '(주)씨엔아이보험대리',
+  },
+  {
+    id: 8,
+    isChecked: true,
+    field01: 3253180,
+    field02: '(주)씨엔아이보험대리',
+  },
+  {
+    id: 7,
+    isChecked: true,
+    field01: 3253180,
+    field02: '(주)씨엔아이보험대리',
+  },
+  {
+    id: 8,
+    isChecked: true,
+    field01: 3253180,
+    field02: '(주)씨엔아이보험대리',
+  },
 ];
 
 const Ltpz076 = () => {
@@ -241,7 +265,7 @@ const Ltpz076 = () => {
             </FormTable>
           </Grow>
           {/* 2026-05-27 버튼 이동으로 전체수정 */}
-          <Grid className="w-full h-full grid grid-flow-col grid-cols-[6fr_4fr] gap-3" placement="ss">
+          <Grid className="w-full h-full grid grid-flow-col grid-cols-[6fr_minmax(26rem,4fr)] gap-3" placement="ss">
             <TableFold className="w-full">
               <TableFoldHead title="대상" />
               <TableFoldBody className="grid gap-[1.2rem]">
