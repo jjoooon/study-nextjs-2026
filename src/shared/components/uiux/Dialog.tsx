@@ -223,15 +223,17 @@ const resolveDialogSize = (
       width: DIALOG_FULL_WIDTH,
       height: predefinedHeightCss,
       maxWidth: DIALOG_FULL_WIDTH,
-      maxHeight: predefinedHeightCss ?? DIALOG_DEFAULT_MAX_HEIGHT,
+      maxHeight: (isDialogSizeConfig(size) ? toCssSize(size.maxHeight) : undefined) ?? DIALOG_DEFAULT_MAX_HEIGHT,
       isFullSize: false,
       isFullWidth: true,
     };
   }
 
   if (predefinedWidthCss !== undefined || predefinedHeightCss !== undefined) {
-    const hasConfigHeight = isDialogSizeConfig(size) && size.height !== undefined;
-    const defaultMaxH = predefinedHeightCss ?? (hasConfigHeight ? undefined : DIALOG_DEFAULT_MAX_HEIGHT);
+    const isConfig = isDialogSizeConfig(size);
+    const hasConfigHeight = isConfig && size.height !== undefined;
+    const defaultMaxH =
+      hasConfigHeight && (!isConfig || size.maxHeight === undefined) ? undefined : DIALOG_DEFAULT_MAX_HEIGHT;
 
     return {
       width:
@@ -251,8 +253,7 @@ const resolveDialogSize = (
       minWidth: isDialogSizeConfig(size) ? toCssSize(size.minWidth) : undefined,
       minHeight: isDialogSizeConfig(size) ? toCssSize(size.minHeight) : undefined,
       maxWidth: (isDialogSizeConfig(size) ? toCssSize(size.maxWidth) : undefined) ?? DIALOG_FULL_WIDTH,
-      maxHeight:
-        predefinedHeightCss ?? (isDialogSizeConfig(size) ? toCssSize(size.maxHeight) : undefined) ?? defaultMaxH,
+      maxHeight: (isDialogSizeConfig(size) ? toCssSize(size.maxHeight) : undefined) ?? defaultMaxH,
       isFullSize: false,
       isFullWidth: false,
     };
