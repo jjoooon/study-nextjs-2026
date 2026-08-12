@@ -671,7 +671,11 @@ const Ltpz034 = ({
               </span>
             </Grow>
           </Gcol>
-          <Grid className={isRegistered ? 'grid-cols-[18rem_1fr] gap-3' : 'grid-cols-[1fr_auto_1fr]'}>
+          <Grid
+            className={
+              isRegistered ? 'grid-cols-[18rem_1fr] gap-3' : 'grid-cols-[1fr_auto_1fr] grid-rows-[auto_minmax(0,1fr)]'
+            }
+          >
             {isRegistered ? (
               <TableFold variant="default" className="grid grid-rows-[auto_1fr] h-full">
                 <TableFoldHead title="일반/건강고지"></TableFoldHead>
@@ -685,7 +689,7 @@ const Ltpz034 = ({
                 </TableFoldBody>
               </TableFold>
             ) : (
-              <TableFold variant="default" className="grid grid-rows-[auto_1fr]">
+              <TableFold variant="default" className="grid grid-rows-[auto_1fr] h-full">
                 <TableFoldHead title="간편고지 입원/수술 정보(최대4건)">
                   <Button variant={'outlined'} color={'gray'} size={'md'}>
                     입력/수정
