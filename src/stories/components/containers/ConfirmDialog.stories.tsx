@@ -140,7 +140,7 @@ import { Button } from '@uiux/Button';
                   <ConfirmDialog
                     defaultOpen={false}
                     title="변경사항 저장"
-                     description={
+                    description={
                       <div className="flex flex-col gap-2">
                         <span className="font-bold text-[var(--color-danger-50)]">
                           ⚠️ 경고: 데이터가 영구적으로 삭제됩니다.

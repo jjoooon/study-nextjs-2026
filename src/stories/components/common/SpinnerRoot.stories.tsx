@@ -52,7 +52,10 @@ const meta: Meta<typeof SpinnerRoot> = {
 
       return (
         <Provider store={store}>
-          <div className='flex flex-col h-full w-full items-center justify-center' style={{ minHeight: '100dvh', position: 'relative' }}>
+          <div
+            className="flex flex-col h-full w-full items-center justify-center"
+            style={{ minHeight: '100dvh', position: 'relative' }}
+          >
             <Story />
           </div>
         </Provider>
@@ -172,7 +175,14 @@ dispatch(showSpinner({ message: '데이터를 불러오는 중입니다...' }));
   argTypes: {
     type: {
       control: { type: 'select' },
-      options: ['SpinnerRoot', 'BaseSpinnerRoot', 'AiSpinner', 'DnaSpinnerRoot', 'HpSpinnerRoot', 'VerticalRollingSpinner'],
+      options: [
+        'SpinnerRoot',
+        'BaseSpinnerRoot',
+        'AiSpinner',
+        'DnaSpinnerRoot',
+        'HpSpinnerRoot',
+        'VerticalRollingSpinner',
+      ],
       description: '렌더링할 스피너 컴포넌트 타입',
       table: { category: 'Spinner Type' },
     },
@@ -262,4 +272,3 @@ export const VerticalRolling: Story = {
   },
   render: (args: any) => <VerticalRollingSpinner />,
 };
-

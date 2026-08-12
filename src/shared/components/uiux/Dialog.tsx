@@ -238,7 +238,7 @@ const resolveDialogSize = (size?: DialogSize, viewportWidth?: number | null, cla
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
 /**
- * 현재 창이 iframe 내부이고, 직속 부모가 'storybook-preview-iframe'이 아닌지 검사합니다.
+ * 현재 창이 iframe 내부이고, 부모창의 해당 iframe을 감싸고 있는 상위 요소 중 'dialogpopup' 클래스가 존재하는지 검사합니다.
  */
 export const isExternalOrCustomIframe = (): boolean => {
   if (typeof window === 'undefined') return false;
@@ -253,22 +253,18 @@ export const isExternalOrCustomIframe = (): boolean => {
   }
   if (!inIframe) return false;
 
-  // 2. 바로 부모의 frameElement 검사
+  // 2. 부모창의 iframe 요소를 감싸고 있는 상위 요소 중 'dialogpopup' 클래스 검사
   try {
     const frameEl = window.frameElement;
     if (frameEl) {
-      const frameId = frameEl.id || frameEl.getAttribute('id');
-      // 바로 부모가 storybook-preview-iframe 이면 false
-      if (frameId !== 'testIframe') {
-        return false;
-      }
+      return Boolean(frameEl.closest?.('.dialogpopup'));
     }
   } catch {
-    // cross-origin의 경우 frameElement 접근이 제한되므로 storybook-preview-iframe이 아닌 외부 iframe (true)
-    return true;
+    // Cross-origin의 경우 부모 DOM에 접근할 수 없으므로 false 반환
+    return false;
   }
 
-  return true;
+  return false;
 };
 
 type DialogContextValue = {
@@ -563,6 +559,10 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * @default 'dark'
    */
   dim?: 'dark' | 'transparent' | 'none';
+  /**
+   * iframe 환경일 때 부모 창에 전달할 커스텀 높이 값 (px 또는 rem/string)
+   */
+  iframeHeight?: number | string;
 }
 
 /**
@@ -585,6 +585,7 @@ function DialogContent({
   onInteractOutside,
   minimized,
   dim = 'dark',
+  iframeHeight,
   ...props
 }: DialogContentProps) {
   const { dialogId, isMinimized, setMinimized, open, setModalOverride } = React.useContext(DialogDepthContext);
@@ -635,8 +636,15 @@ function DialogContent({
     if (!targetWidth) return;
 
     const timer = setTimeout(() => {
-      let contentHeight = getTargetHeightPx(size, className) ?? 650;
-      if (!getTargetHeightPx(size, className) && contentRef.current) {
+      const parsedIframeHeight =
+        typeof iframeHeight === 'number'
+          ? iframeHeight
+          : iframeHeight !== undefined
+            ? parseCssSizeToPx(iframeHeight)
+            : undefined;
+
+      let contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
+      if (parsedIframeHeight === undefined && !getTargetHeightPx(size, className) && contentRef.current) {
         const rect = contentRef.current.getBoundingClientRect();
         if (rect.height > 0) {
           contentHeight = Math.ceil(rect.height) + 32;
@@ -647,7 +655,10 @@ function DialogContent({
           {
             type: 'DIALOG_DEFAULT_SIZE',
             width: Math.round(targetWidth) + 2,
-            height: Math.min(Math.max(contentHeight, 350), 1200),
+            height:
+              parsedIframeHeight !== undefined
+                ? Math.round(parsedIframeHeight)
+                : Math.min(Math.max(contentHeight, 100), 1900),
             sizePreset: typeof size === 'string' ? size : undefined,
           },
           '*'
@@ -658,7 +669,7 @@ function DialogContent({
     }, 150);
 
     return () => clearTimeout(timer);
-  }, [isIframeState, size, className]);
+  }, [isIframeState, size, className, iframeHeight]);
 
   const resolvedShowCloseButton = showCloseButton;
   const resolvedResizable = resizable;

@@ -545,13 +545,15 @@
     font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
     background-color: #fff;
   }
-  #storybook-root{
+  #storybook-root {
     width: 1196px;
-    border-right:1px solid #ccc;
+    border-right: 1px solid #ccc;
     overflow-x: auto;
     height: 100%;
   }
-  [data-layout="doc"] {min-width: 119.5rem;}
+  [data-layout='doc'] {
+    min-width: 119.5rem;
+  }
   .a11y-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -622,7 +624,7 @@
   textarea:read-only::-webkit-scrollbar-thumb,
   textarea[readonly]::-webkit-scrollbar-thumb,
   .cp-textarea:has(textarea[readonly])::-webkit-scrollbar-thumb {
-    border-color: #E5E5E5 !important;
+    border-color: #e5e5e5 !important;
   }
 
   input::placeholder {
@@ -703,7 +705,7 @@
     align-items: center;
     justify-content: center;
     height: 100% !important;
-   font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
+    font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
   }
 
   .filepond--list-scroller {
@@ -1022,9 +1024,9 @@
     height: 1rem !important;
   }
   body.is-iframe #storybook-root,
-  body.is-iframe [data-layout="doc"] {
+  body.is-iframe [data-layout='doc'] {
     width: 100% !important;
-    min-width:0 !important;
+    min-width: 0 !important;
     min-height: 0 !important;
   }
   .is-iframe[data-slot='dialog-content'] {
@@ -1035,9 +1037,9 @@
     grid-template-rows: 1fr !important;
     padding-top: 2.4rem !important;
     border-radius: 0 !important;
-    border:0 !important;
+    border: 0 !important;
   }
-  .is-iframe [data-slot="dialog-footer"]{
+  .is-iframe [data-slot='dialog-footer'] {
     border-radius: 0 !important;
   }
   .is-iframe > [data-slot='dialog-close'],
@@ -1225,18 +1227,36 @@
   content: none !important;
 }
 
-[data-zoom="120"] [data-layout="main"] {min-width: 1000px;}
-[data-zoom="125"] [data-layout="main"] {min-width: 1010px;}
-[data-zoom="130"] [data-layout="main"] {min-width: 1020px;}
-[data-zoom="135"] [data-layout="main"] {min-width: 1080px;}
-[data-zoom="140"] [data-layout="main"] {min-width: 1120px;}
-[data-zoom="145"] [data-layout="main"] {min-width: 1160px;}
-[data-zoom="150"] [data-layout="main"] {min-width: 1200px;}
+[data-zoom='120'] [data-layout='main'] {
+  min-width: 1000px;
+}
+[data-zoom='125'] [data-layout='main'] {
+  min-width: 1010px;
+}
+[data-zoom='130'] [data-layout='main'] {
+  min-width: 1020px;
+}
+[data-zoom='135'] [data-layout='main'] {
+  min-width: 1080px;
+}
+[data-zoom='140'] [data-layout='main'] {
+  min-width: 1120px;
+}
+[data-zoom='145'] [data-layout='main'] {
+  min-width: 1160px;
+}
+[data-zoom='150'] [data-layout='main'] {
+  min-width: 1200px;
+}
 
 /* 화면 확대/축소(Zoom) 역산 고정 공통 클래스 및 속성 */
 .fixed-zoom,
 [data-fixed-zoom] {
   zoom: calc(1 / var(--zoom-scale, 1));
 }
-[role="dialog"] .is-dialog-view{display: flex;}
-.is-dialog-view{display: none;}
+[role='dialog'] .is-dialog-view {
+  display: flex;
+}
+.is-dialog-view {
+  display: none;
+}
