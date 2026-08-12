@@ -304,7 +304,7 @@ export const Ltpz099 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection>
+        <DialogSection className="grid-rows-[auto_auto_1fr]">
           <TableFold>
             <TableFoldHead title="기본정보" />
             <TableFoldBody>
@@ -324,7 +324,7 @@ export const Ltpz099 = () => {
                 </FormRow>
                 <FormRow>
                   <FormCell title={'고객구분'}>기등록</FormCell>
-                  <FormCell title={'고객'} colSpan={4}>
+                  <FormCell title={'고객'} colSpan={3}>
                     홍길순(32세, 여, 1급) 32세(여, 14급)
                   </FormCell>
                 </FormRow>
@@ -335,7 +335,7 @@ export const Ltpz099 = () => {
             <TableFoldHead title="입력정보" />
             <TableFoldBody>
               <FormTable
-                caption="기본정보 테이블"
+                caption="입력정보 테이블"
                 cols={['w-[7rem]', 'flex-1', 'w-[7rem]', 'flex-1', 'w-[7rem]', 'flex-1']}
               >
                 <FormRow>
@@ -376,8 +376,8 @@ export const Ltpz099 = () => {
               </FormTable>
             </TableFoldBody>
           </TableFold>
-          <Gcol>
-            <TableFold>
+          <Gcol className="h-full min-h-0">
+            <TableFold className="h-full grid-rows-[auto_1fr]">
               <TableFoldHead title="설계비교" />
               <TableFoldBody>
                 <Grow gap={3} placement="ss">
