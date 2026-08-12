@@ -704,14 +704,6 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * 팝업 고유 ID (생략 시 URL/DOM에서 자동 감지하여 dialogSizes.json의 사전 정의 크기를 가져옵니다)
    */
   popupId?: string;
-  /**
-   * 화면 제목 (생략 시 dialogSizes.json 또는 DOM의 DialogTitle에서 자동 추출)
-   */
-  title?: string;
-  /**
-   * 화면 제목 별칭
-   */
-  modalHeaderTitle?: string;
 }
 
 /**
