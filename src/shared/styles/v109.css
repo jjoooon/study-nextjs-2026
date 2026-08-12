@@ -173,7 +173,12 @@
   width: 100%;
 }
 
-/* AgGridReact 컨테이너 및 높이 100% 수직 스크롤 호환 */
+
+/*--ag-wrapper-border 호환*/
+.v109 .ag-root-wrapper {
+  border-bottom: 1px solid var(--color-gray-10, #e5e5e5);
+}
+
 .v109 .ag-theme-alpine,
 .v109 .ag-root-wrapper,
 .v109 .ag-root-wrapper-body,
