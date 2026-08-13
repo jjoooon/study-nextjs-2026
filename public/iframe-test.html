@@ -207,8 +207,8 @@
       .main-content {
         flex: 1;
         height: 100vh;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: auto 1fr;
         padding: 2rem;
         overflow-y: auto;
         align-items: start;
@@ -240,6 +240,7 @@
         flex-direction: column;
         gap: 1.5rem;
         align-items: start;
+        height: 100%;
         justify-content: start;
       }
 
@@ -969,9 +970,9 @@
         document.querySelectorAll('.list-item').forEach((el) => el.classList.remove('active'));
         if (element) element.classList.add('active');
 
-        // dialogSizes.json 에 사전 정의된 크기가 있으면 우선 적용
+        // dialogSizes.json 에 사전 정의된 크기가 있고 isIframe !== false 이면 우선 적용
         const predefined = dialogSizesMap.get((item.id || '').toLowerCase());
-        if (predefined) {
+        if (predefined && predefined.isIframe !== false && (predefined.width || predefined.height)) {
           if (predefined.width) {
             iframeWrapper.style.width = predefined.width + 'px';
             widthSlider.value = predefined.width;
@@ -982,6 +983,10 @@
             heightSlider.value = predefined.height;
             heightVal.value = predefined.height;
           }
+        } else {
+          // 전달되는 크기 값이 없거나 isIframe이 false인 경우 기본값 width: 100%, height: 100%로 변경
+          iframeWrapper.style.width = '100%';
+          iframeWrapper.style.height = '100%';
         }
 
         const storybookBase = storybookHostInput.value.trim() || 'http://localhost:6006';
@@ -998,6 +1003,38 @@
           modalHeaderTitle.textContent = `${titleName} (${item.id}${subIdText})`;
         }
       };
+
+      // iframe 내부 Dialog에서 전달되는 DIALOG_DEFAULT_SIZE postMessage 수신 처리
+      window.addEventListener('message', (event) => {
+        if (!event.data || typeof event.data !== 'object') return;
+
+        if (event.data.type === 'DIALOG_DEFAULT_SIZE') {
+          const { width, height, title, popupId } = event.data;
+
+          // Dialog에서 전달하는 값으로 크기 조절
+          if (width && height) {
+            iframeWrapper.style.width = width + 'px';
+            iframeWrapper.style.height = height + 'px';
+            if (widthSlider) widthSlider.value = width;
+            if (widthVal) widthVal.value = width;
+            if (heightSlider) heightSlider.value = height;
+            if (heightVal) heightVal.value = height;
+          } else {
+            // 넘어오는 값이 없다면 기본값으로 width, height 를 100% 로 변경
+            iframeWrapper.style.width = '100%';
+            iframeWrapper.style.height = '100%';
+          }
+
+          const modalHeaderTitle = document.getElementById('modalHeaderTitle');
+          if (title && modalHeaderTitle && popupId) {
+            const currentItem = allItems.find(
+              (i) => (i.id || '').toLowerCase() === (popupId || '').toLowerCase()
+            );
+            const subIdText = currentItem?.subId ? ` (${currentItem.subId})` : '';
+            modalHeaderTitle.textContent = `${title} (${popupId}${subIdText})`;
+          }
+        }
+      });
 
       // 닫기 버튼 클릭 시 iframe 비우기 및 헤더 리셋
       const modalCloseBtn = document.getElementById('modalCloseBtn');

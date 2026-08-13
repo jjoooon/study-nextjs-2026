@@ -18,14 +18,14 @@
     "title": "화면권한보기",
     "width": 560,
     "height": 308,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ997",
     "title": "화면담당자",
     "width": 480,
     "height": 273,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ996",

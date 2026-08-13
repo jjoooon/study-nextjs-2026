@@ -764,7 +764,8 @@ function DialogContent({
   });
 
   useIsomorphicLayoutEffect(() => {
-    const inIframe = isExternalOrCustomIframe(popupId);
+    const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
+    const inIframe = isExternalOrCustomIframe(currentId);
     setIsIframeState(inIframe);
 
     if (inIframe && typeof document !== 'undefined') {
@@ -772,17 +773,23 @@ function DialogContent({
       return () => {
         document.body.classList.remove('is-iframe');
       };
+    } else if (typeof document !== 'undefined') {
+      document.body.classList.remove('is-iframe');
     }
   }, [popupId]);
 
   // iframe 환경일 때 부모 창으로 다이얼로그의 지정된 크기 및 화면 정보 전송 (dialogSizes.json 기반 단일화)
   React.useEffect(() => {
-    if (!isIframeState || typeof window === 'undefined') return;
+    if (typeof window === 'undefined') return;
 
     const timer = setTimeout(() => {
       // dialogSizes.json 에서 현재 팝업의 사전 정의 정보 조회
       const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
       const predefined = getDialogPredefinedSize(currentId);
+
+      // isIframe이 명시적으로 false이거나, iframe 환경이 아닌 경우 부모 창에 정보 전달 안 함
+      const inIframe = predefined?.isIframe !== undefined ? predefined.isIframe : isIframeState;
+      if (!inIframe) return;
 
       // 가로 너비 결정
       const predefinedWidthCss = resolveSizeValue(predefined?.width, DIALOG_PRESET_WIDTH);
