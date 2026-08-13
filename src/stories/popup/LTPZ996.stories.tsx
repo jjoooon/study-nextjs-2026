@@ -85,7 +85,7 @@ const meta: Meta<StoryProps> = {
   },
   args: {
     dataType: 'over',
-    delayTime: 60000,
+    delayTime: 3000,
   },
 };
 
