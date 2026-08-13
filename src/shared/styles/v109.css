@@ -14,7 +14,7 @@
   width: 100%;
 }
 
-.v109 [class*='[&>div]:first:justify-start'] > div:first-child {
+.v109 [class*='[&>div]:first-child:justify-start'] > div:first-child {
   -webkit-box-pack: start;
   -webkit-justify-content: flex-start;
   justify-content: flex-start;
@@ -920,17 +920,17 @@
   overflow: hidden;
 }
 
-.v109 [class*='[&>div]:first:flex'] > div:first-child {
+.v109 [class*='[&>div]:first-child:flex'] > div:first-child {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
 }
 
-.v109 [class*='[&>div]:first:whitespace-nowrap'] > div:first-child {
+.v109 [class*='[&>div]:first-child:whitespace-nowrap'] > div:first-child {
   white-space: nowrap;
 }
 
-.v109 [class*='[&>div]:first:w-full'] > div:first-child {
+.v109 [class*='[&>div]:first-child:w-full'] > div:first-child {
   width: 100%;
 }
 

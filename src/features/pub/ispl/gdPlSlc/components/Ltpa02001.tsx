@@ -741,7 +741,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                   <TableFoldHead
                     title="한화 3N5 더간편건강보험(세만기형)2601종 정보 한화 3N5 더간편건강보험(세만기형)2601종 정보"
                     variant="default"
-                    className="grid grid-cols-[1fr_auto] gap-2 [&>div]:first:overflow-hidden [&>div]:first:flex [&>div]:first:whitespace-nowrap [&>div]:first:w-full"
+                    className="grid grid-cols-[1fr_auto] gap-2 [&>div]:first-child:overflow-hidden [&>div]:first-child:flex [&>div]:first-child:whitespace-nowrap [&>div]:first-child:w-full"
                   >
                     <Grow>
                       <Checkbox>미판매보종</Checkbox>

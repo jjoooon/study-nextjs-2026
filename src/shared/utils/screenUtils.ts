@@ -10,6 +10,13 @@ export const isIframe = () => {
   }
 };
 
+export const changeTitle = (title: string) => {
+  console.log(title, '타이틀 변경');
+};
+export const resizeWindow = (options: { width: number; height: number }) => {
+  console.log(options, '리사이즈 변경');
+};
+
 /**
  * 새 브라우저 창(또는 탭)을 열어 지정한 URL로 이동한다.
  * @param url - 열 페이지의 URL

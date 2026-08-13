@@ -15,6 +15,7 @@ import {
   getDialogLayerIndex,
   subscribeOverlay,
 } from '@/shared/utils/popup/dialogOverlayRegistry';
+import { changeTitle, resizeWindow } from '@/shared/utils/screenUtils';
 import { Grid } from '@atoms';
 import { CloseIcon } from '@icons';
 import { Button } from '@uiux/Button';
@@ -309,6 +310,7 @@ type DialogPredefinedSizeItem = {
   title?: string;
   width?: DialogSizeValue;
   height?: DialogSizeValue;
+  isIframe?: boolean;
 };
 
 const dialogSizesList: DialogPredefinedSizeItem[] = dialogSizesData as DialogPredefinedSizeItem[];
@@ -318,12 +320,14 @@ const dialogSizesList: DialogPredefinedSizeItem[] = dialogSizesData as DialogPre
  */
 export const getDialogPredefinedSize = (
   id?: string
-): { id?: string; title?: string; width?: DialogSizeValue; height?: DialogSizeValue } | undefined => {
+):
+  | { id?: string; title?: string; width?: DialogSizeValue; height?: DialogSizeValue; isIframe?: boolean }
+  | undefined => {
   if (!id) return undefined;
   const cleanId = id.trim().toLowerCase();
   const found = dialogSizesList.find((item) => item.id?.trim().toLowerCase() === cleanId);
   if (found) {
-    return { id: found.id, title: found.title, width: found.width, height: found.height };
+    return { id: found.id, title: found.title, width: found.width, height: found.height, isIframe: found.isIframe };
   }
   return undefined;
 };
@@ -375,33 +379,34 @@ export const getPopupIdFromElement = (element?: HTMLElement | null): string | un
 };
 
 /**
- * 현재 창이 iframe 내부이고, 부모창의 해당 iframe을 감싸고 있는 상위 요소 중 'dialogpopup' 클래스가 존재하는지 검사합니다.
+ * dialogSizes.json의 isIframe 설정 또는 URL 기반으로 현재 창의 iframe 모드 여부를 검사합니다.
+ * - 단, 부모 iframe ID가 'storybook-preview-iframe'인 경우 Storybook 환경이므로 false를 반환합니다.
  */
-export const isExternalOrCustomIframe = (): boolean => {
+export const isExternalOrCustomIframe = (popupId?: string): boolean => {
   if (typeof window === 'undefined') return false;
 
-  // 1. iframe 내부인지 확인
-  let inIframe = false;
+  // 1. Storybook 프리뷰 iframe(storybook-preview-iframe)인 경우 항상 false
   try {
-    inIframe = window !== window.top || window.self !== window.top;
-  } catch {
-    // Cross-origin 보안 예외 발생 시 iframe 내부에 위치함
-    inIframe = true;
-  }
-  if (!inIframe) return false;
-
-  // 2. 부모창의 iframe 요소를 감싸고 있는 상위 요소 중 'dialogpopup' 클래스 검사
-  try {
-    const frameEl = window.frameElement;
-    if (frameEl) {
-      return Boolean(frameEl.closest?.('.dialogpopup'));
+    if (
+      window.name === 'storybook-preview-iframe' ||
+      window.frameElement?.id === 'storybook-preview-iframe' ||
+      Boolean(window.parent?.document?.getElementById('storybook-preview-iframe'))
+    ) {
+      return false;
     }
   } catch {
-    // Cross-origin의 경우 외부 iframe에서 임베드된 것이므로 true 반환
-    return true;
+    // Cross-origin 등으로 접근 불가 시 무시하고 다음 단계 진행
   }
 
-  return true;
+  // 2. dialogSizes.json에서 현재 팝업의 isIframe 설정값 조회
+  const currentId = popupId || getCurrentPopupIdFromUrl();
+  const predefined = getDialogPredefinedSize(currentId);
+  if (predefined?.isIframe !== undefined) {
+    return predefined.isIframe;
+  }
+
+  // 3. 사전 정의되지 않은 경우 최상위 창 여부로 기본 판별
+  return window.self !== window.top;
 };
 
 type DialogContextValue = {
@@ -752,14 +757,14 @@ function DialogContent({
     }
   }, [dim, setModalOverride]);
 
-  // iframe 환경 검사: 바로 부모가 storybook-preview-iframe 이 아닌 외부/테스트 iframe일 때 true
+  // iframe 환경 검사: dialogSizes.json 의 isIframe 설정 기반으로 판별
   const [isIframeState, setIsIframeState] = React.useState(() => {
     if (typeof window === 'undefined') return false;
-    return isExternalOrCustomIframe();
+    return isExternalOrCustomIframe(popupId);
   });
 
   useIsomorphicLayoutEffect(() => {
-    const inIframe = isExternalOrCustomIframe();
+    const inIframe = isExternalOrCustomIframe(popupId);
     setIsIframeState(inIframe);
 
     if (inIframe && typeof document !== 'undefined') {
@@ -768,7 +773,7 @@ function DialogContent({
         document.body.classList.remove('is-iframe');
       };
     }
-  }, []);
+  }, [popupId]);
 
   // iframe 환경일 때 부모 창으로 다이얼로그의 지정된 크기 및 화면 정보 전송 (dialogSizes.json 기반 단일화)
   React.useEffect(() => {
@@ -797,18 +802,25 @@ function DialogContent({
 
       const contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
 
+      const popupTitle = predefined?.title || '';
+
       try {
         window.parent.postMessage(
           {
             type: 'DIALOG_DEFAULT_SIZE',
-            id: predefined?.id || currentId,
-            title: predefined?.title || '',
+            popupId: currentId,
+            title: popupTitle,
             width: Math.round(targetWidthPx) + 2,
             height: Math.round(contentHeight),
             sizePreset: typeof size === 'string' ? size : undefined,
           },
           '*'
         );
+
+        if (popupTitle) {
+          changeTitle(popupTitle);
+        }
+        resizeWindow({ width: Math.round(targetWidthPx) + 2, height: Math.round(contentHeight) });
       } catch {
         // cross-origin 무시
       }
@@ -1291,7 +1303,7 @@ function DialogFooterArea({ className, ...props }: React.ComponentProps<'div'>) 
     <div
       data-slot="dialog-footer-area"
       className={cn(
-        'flex gap-2 pb-5 px-6 justify-between [&>div]:w-full [&>div]:first:justify-start [&>div]:last:justify-end',
+        'flex gap-2 pb-5 px-6 justify-between [&>div]:w-full [&>div]:first-child:justify-start [&>div]:last:justify-end',
         className
       )}
       {...props}

@@ -77,15 +77,15 @@ const meta: Meta<StoryProps> = {
     },
     delayTime: {
       control: 'select',
-      options: [0, 3000],
-      description: '데이터 로딩 지연 시간 (단위: ms, 0 지정 시 지연 없음)',
+      options: [0, 3000, 60000],
+      description: '데이터 로딩 지연 시간 (단위: ms, 60000 지정 시 1분 동안 로딩)',
     },
     data: { table: { disable: true } },
     loading: { table: { disable: true } },
   },
   args: {
     dataType: 'over',
-    delayTime: 3000,
+    delayTime: 60000,
   },
 };
 

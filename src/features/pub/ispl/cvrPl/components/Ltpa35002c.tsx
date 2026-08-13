@@ -14,6 +14,7 @@ import type {
 } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 import {
   numberValueFormatter,
   useDynamicColumnWidths,
@@ -331,7 +332,6 @@ export function Ltpa35002c() {
         cellClass: 'text-left',
         headerComponent: AgGridProductNameHeader,
         cellRenderer: productNameCellRenderer,
-        // 셀 툴팁에 표시할 문자열 지정 (빈값 방지)
         tooltipValueGetter: (params) => params.data?.title ?? '',
       },
       {
@@ -445,7 +445,7 @@ export function Ltpa35002c() {
         cellRenderer: getExpiryRenderer('center'),
       },
     ],
-    [attributeColumnWidth, getExpiryRenderer]
+    [attributeColumnWidth, getExpiryRenderer, showProductNameTooltip, coverageName, checkedMap]
   );
 
   return (
@@ -522,7 +522,10 @@ export function Ltpa35002c() {
                 </Grow>
               </Grow>
               <div
-                className={`tooltip-hidden-toggle ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
+                className={cn(
+                  'tooltip-hidden-toggle ag-theme-alpine',
+                  showProductNameTooltip && 'show-product-tooltip'
+                )}
               >
                 <AgGridReact<AgGridRow2>
                   enableCellSpan={true}

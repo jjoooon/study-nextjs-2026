@@ -3,714 +3,833 @@
     "id": "LTPZ999",
     "title": "시스템 메시지(단건)",
     "width": 480,
-    "height": 360
+    "height": 360,
+    "isIframe": true
   },
   {
     "id": "LTPZ998",
     "title": "시스템 메시지(다건)",
     "width": 760,
-    "height": 442
+    "height": 442,
+    "isIframe": true
   },
   {
     "id": "LTPZ993",
     "title": "화면권한보기",
     "width": 560,
-    "height": 308
+    "height": 308,
+    "isIframe": true
   },
   {
     "id": "LTPZ997",
     "title": "화면담당자",
     "width": 480,
-    "height": 273
+    "height": 273,
+    "isIframe": true
   },
   {
     "id": "LTPZ996",
     "title": "선택패키지 상품 상세조회",
     "width": 760,
-    "height": 650
+    "height": 308,
+    "isIframe": true
   },
   {
     "id": "LTPZ995",
     "title": "파일 업로드",
     "width": 560,
-    "height": 396
+    "height": 396,
+    "isIframe": true
   },
   {
     "id": "LTPZ994",
     "title": "파일 다운로드",
     "width": 560,
-    "height": 402
+    "height": 402,
+    "isIframe": true
   },
   {
     "id": "LTPZ001",
     "title": "출력(장기출력물)",
     "width": 1180,
-    "height": 537
+    "height": 537,
+    "isIframe": true
   },
   {
     "id": "LTPZ113",
     "title": "출력(장기출력물)",
     "width": 960,
-    "height": 523
+    "height": 523,
+    "isIframe": true
   },
   {
     "id": "LTPZ079",
     "title": "설계이미지조회",
     "width": 960,
-    "height": 420
+    "height": 420,
+    "isIframe": true
   },
   {
     "id": "LTPZ051",
     "title": "고객 직업정보(상해급수)변경안내",
     "width": 760,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ055",
     "title": "휴대폰 전자서명 알림톡 발송",
     "width": 480,
-    "height": 582
+    "height": 582,
+    "isIframe": true
   },
   {
     "id": "LTPZ054",
     "title": "신계약 등록문서 목록조회",
     "width": 1180,
-    "height": 554
+    "height": 554,
+    "isIframe": true
   },
   {
     "id": "LTPZ104",
     "title": "가입설계 이력조회",
     "width": 560,
-    "height": 411
+    "height": 411,
+    "isIframe": true
   },
   {
     "id": "LTPZ105",
     "title": "보험계약 중요기한 안내",
     "width": 560,
-    "height": 672
+    "height": 672,
+    "isIframe": true
   },
   {
     "id": "LTPZ114",
     "title": "심사요청",
     "width": 1180,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ118",
     "title": "휴대폰 전자서명 발송이력조회",
     "width": 560,
-    "height": 397
+    "height": 397,
+    "isIframe": true
   },
   {
     "id": "LTPZ107",
     "title": "보험료 납입면제 안내",
     "width": 960,
-    "height": 630
+    "height": 630,
+    "isIframe": true
   },
   {
     "id": "LTPZ003",
     "title": "알릴사항",
     "width": 960,
-    "height": 720
+    "height": 720,
+    "isIframe": true
   },
   {
     "id": "LTPZ004",
     "title": "담보보기",
     "width": 560,
-    "height": 502
+    "height": 502,
+    "isIframe": true
   },
   {
     "id": "LTPZ021",
     "title": "추가설계비교",
     "width": 1180,
-    "height": 800
+    "height": 800,
+    "isIframe": true
   },
   {
     "id": "LTPZ034",
     "title": "예외질환",
     "width": 1180,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ110",
     "title": "고지유형찾기 정보 변경",
     "width": 560,
-    "height": 374
+    "height": 374,
+    "isIframe": true
   },
   {
     "id": "LTPZ111",
     "title": "N년내 입원수술",
     "width": 560,
-    "height": 570
+    "height": 570,
+    "isIframe": true
   },
   {
     "id": "LTPZ112",
     "title": "입원/수술 정보 입력",
     "width": 1000,
-    "height": 780
+    "height": 780,
+    "isIframe": true
   },
   {
     "id": "LTPZ008",
     "title": "담보순서조정",
     "width": 760,
-    "height": 522
+    "height": 522,
+    "isIframe": true
   },
   {
     "id": "LTPZ018",
     "title": "바로가기 설정",
     "width": 760,
-    "height": 476
+    "height": 476,
+    "isIframe": true
   },
   {
     "id": "LTPZ029",
     "title": "바로가기설정관리",
     "width": 760,
-    "height": 839
+    "height": 839,
+    "isIframe": true
   },
   {
     "id": "LTPZ089",
     "title": "건물형태수용장소",
     "width": 760,
-    "height": 529
+    "height": 529,
+    "isIframe": true
   },
   {
     "id": "LTPZ038",
     "title": "설계검색",
     "width": 960,
-    "height": 635
+    "height": 635,
+    "isIframe": true
   },
   {
     "id": "LTPZ101",
     "title": "청약완료불가사전안내",
     "width": 760,
-    "height": 574
+    "height": 574,
+    "isIframe": true
   },
   {
     "id": "LTPZ048",
     "title": "QA심사이력",
     "width": 760,
-    "height": 480
+    "height": 480,
+    "isIframe": true
   },
   {
     "id": "LTPZ050",
     "title": "부실유의계약 선별인수 확인서",
     "width": 560,
-    "height": 748
+    "height": 748,
+    "isIframe": true
   },
   {
     "id": "LTPZ053",
     "title": "원클릭스캔",
     "width": 760,
-    "height": 560
+    "height": 560,
+    "isIframe": true
   },
   {
     "id": "LTPZ059",
     "title": "건물구조입력",
     "width": 1104,
-    "height": 846
+    "height": 846,
+    "isIframe": true
   },
   {
     "id": "LTPZ075",
     "title": "복합건물관리",
     "width": 480,
-    "height": 583
+    "height": 583,
+    "isIframe": true
   },
   {
     "id": "LTPZ009",
     "title": "메모입력",
     "width": 960,
-    "height": 604
+    "height": 604,
+    "isIframe": true
   },
   {
     "id": "LTPZ116",
     "title": "동시가입누적체크",
     "width": 960,
-    "height": 793
+    "height": 793,
+    "isIframe": true
   },
   {
     "id": "LTPZ117",
     "title": "동시가입누적상세조건",
     "width": 760,
-    "height": 360
+    "height": 360,
+    "isIframe": true
   },
   {
     "id": "LTPZ006",
     "title": "가족연계할인 안내 및 기계약 찾기",
     "width": 560,
-    "height": 414
+    "height": 414,
+    "isIframe": true
   },
   {
     "id": "LTPZ014",
     "title": "동영상매뉴얼바로가기",
     "width": 480,
-    "height": 336
+    "height": 336,
+    "isIframe": true
   },
   {
     "id": "LTPZ057",
     "title": "업종선택",
     "width": 1180,
-    "height": 582
+    "height": 582,
+    "isIframe": true
   },
   {
     "id": "LTPZ058",
     "title": "업종코드조회",
     "width": 560,
-    "height": 526
+    "height": 526,
+    "isIframe": true
   },
   {
     "id": "LTPZ005",
     "title": "꼭 해야할 일-예상(UW)",
     "width": 1180,
-    "height": 950
+    "height": 950,
+    "isIframe": true
   },
   {
     "id": "LTPZ085",
     "title": "꼭 해야할 일-누적>통합/세트담보누적조정",
     "width": 560,
-    "height": 330
+    "height": 330,
+    "isIframe": true
   },
   {
     "id": "LTPZ086",
     "title": "꼭 해야할 일-누적>기누적금액 조회",
     "width": 960,
-    "height": 580
+    "height": 580,
+    "isIframe": true
   },
   {
     "id": "LTPZ012",
     "title": "청약포인트 상세",
     "width": 960,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ296",
     "title": "담보별 피보험자명세관리",
     "width": 1180,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ064",
     "title": "다수피보험자명세관리",
     "width": 1180,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ351",
     "title": "가입설계동우미 알림톡발송",
     "width": 480,
-    "height": 634
+    "height": 634,
+    "isIframe": true
   },
   {
     "id": "LTPZ041",
     "title": "개인사업자 정보 등록",
     "width": 320,
-    "height": 378
+    "height": 378,
+    "isIframe": true
   },
   {
     "id": "LTPZ042",
     "title": "은행유자격자조회",
     "width": 560,
-    "height": 420
+    "height": 420,
+    "isIframe": true
   },
   {
     "id": "LTPZ019",
     "title": "다른상품설계",
     "width": 760,
-    "height": 772
+    "height": 772,
+    "isIframe": true
   },
   {
     "id": "LTPZ020",
     "title": "담보패키지 선택",
     "width": 760,
-    "height": 665
+    "height": 665,
+    "isIframe": true
   },
   {
     "id": "LTPZ023",
     "title": "검색어 편집",
     "width": 376,
-    "height": 727
+    "height": 727,
+    "isIframe": true
   },
   {
     "id": "LTPZ044",
     "title": "출생전후 예정보험료",
     "width": 760,
-    "height": 367
+    "height": 367,
+    "isIframe": true
   },
   {
     "id": "LTPZ069",
     "title": "설계복사 선택",
     "width": 320,
-    "height": 258
+    "height": 258,
+    "isIframe": true
   },
   {
     "id": "LTPZ072",
     "title": "특정부위/질병부담보",
     "width": 760,
-    "height": 334
+    "height": 334,
+    "isIframe": true
   },
   {
     "id": "LTPZ013",
     "title": "비교설계",
     "width": 1180,
-    "height": 800
+    "height": 800,
+    "isIframe": true
   },
   {
     "id": "LTPZ087",
     "title": "질권설정",
     "width": 560,
-    "height": 728
+    "height": 728,
+    "isIframe": true
   },
   {
     "id": "LTPZ088",
     "title": "나눔의행복 수익자",
     "width": 480,
-    "height": 424
+    "height": 424,
+    "isIframe": true
   },
   {
     "id": "LTPZ007",
     "title": "담보전환",
     "width": 560,
-    "height": 402
+    "height": 402,
+    "isIframe": true
   },
   {
     "id": "LTPZ022",
     "title": "지침확인결과",
     "width": 560,
-    "height": 500
+    "height": 500,
+    "isIframe": true
   },
   {
     "id": "LTPZ200",
     "title": "정액담보 상세조회",
     "width": 1180,
-    "height": 470
+    "height": 470,
+    "isIframe": true
   },
   {
     "id": "LTPZ108",
     "title": "대용량지침체크방법안내",
     "width": 560,
-    "height": 438
+    "height": 438,
+    "isIframe": true
   },
   {
     "id": "LTPZ068",
     "title": "AI인수지침 위배해소 결과 확인 및 적용",
     "width": 1180,
-    "height": 800
+    "height": 800,
+    "isIframe": true
   },
   {
     "id": "LTPZ070",
     "title": "CSM 시뮬레이션",
     "width": 960,
-    "height": 826
+    "height": 826,
+    "isIframe": true
   },
   {
     "id": "LTPZ010",
     "title": "동시가입설계상세",
     "width": 960,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ040",
     "title": "실손의료비 전환 계약 조회",
     "width": 1180,
-    "height": 537
+    "height": 537,
+    "isIframe": true
   },
   {
     "id": "LTPZ084",
     "title": "알릴사항",
     "width": 1180,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ016",
     "title": "설계담보상세정보등록",
     "width": 560,
-    "height": 480
+    "height": 480,
+    "isIframe": true
   },
   {
     "id": "LTPZ083",
     "title": "플랜선택",
     "width": 560,
-    "height": 560
+    "height": 560,
+    "isIframe": true
   },
   {
     "id": "LTPZ017",
     "title": "나만의설계",
     "width": 620,
-    "height": 472
+    "height": 472,
+    "isIframe": true
   },
   {
     "id": "LTPZ115",
     "title": "나만의설계 종복사",
     "width": 960,
-    "height": 573
+    "height": 573,
+    "isIframe": true
   },
   {
     "id": "LTPZ076",
     "title": "적용대상관리 및 조회",
     "width": 760,
-    "height": 558
+    "height": 558,
+    "isIframe": true
   },
   {
     "id": "LTPZ039",
     "title": "예상환급금(장기)",
     "width": 1180,
-    "height": 635
+    "height": 635,
+    "isIframe": true
   },
   {
     "id": "LTPZ043",
     "title": "주차장배상책임",
     "width": 560,
-    "height": 545
+    "height": 545,
+    "isIframe": true
   },
   {
     "id": "LTPZ046",
     "title": "화재대물배상책임부호선택",
     "width": 560,
-    "height": 463
+    "height": 463,
+    "isIframe": true
   },
   {
     "id": "LTPZ047",
     "title": "화재배상책임 추가속성",
     "width": 760,
-    "height": 688
+    "height": 688,
+    "isIframe": true
   },
   {
     "id": "LTPZ065",
     "title": "단체 실손의료비 전환대상 조회",
     "width": 1180,
-    "height": 407
+    "height": 407,
+    "isIframe": true
   },
   {
     "id": "LTPZ066",
     "title": "장기가입금액세부속성",
     "width": 560,
-    "height": 583
+    "height": 583,
+    "isIframe": true
   },
   {
     "id": "LTPZ060",
     "title": "급배수스프링부호선택",
     "width": 760,
-    "height": 500
+    "height": 500,
+    "isIframe": true
   },
   {
     "id": "LTPZ061",
     "title": "특정부위부담보입력",
     "width": 760,
-    "height": 650
+    "height": 650,
+    "isIframe": true
   },
   {
     "id": "LTPZ067",
     "title": "납입보험료상세",
     "width": 760,
-    "height": 678
+    "height": 678,
+    "isIframe": true
   },
   {
     "id": "LTPZ049",
     "title": "특별조건부특약조회",
     "width": 760,
-    "height": 485
+    "height": 485,
+    "isIframe": true
   },
   {
     "id": "LTPZ062",
     "title": "고지콕콕",
     "width": 760,
-    "height": 582
+    "height": 582,
+    "isIframe": true
   },
   {
     "id": "LTPZ031",
     "title": "질병검색 및 입력",
     "width": 1000,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ033",
     "title": "질병검색 및 입력>치료내용 상세 예시",
     "width": 560,
-    "height": 674
+    "height": 674,
+    "isIframe": true
   },
   {
     "id": "LTPZ027",
     "title": "SELF고지 알림톡 발송",
     "width": 620,
-    "height": 640
+    "height": 640,
+    "isIframe": true
   },
   {
     "id": "LTPZ109",
     "title": "카카오알림톡 발송",
     "width": 480,
-    "height": 614
+    "height": 614,
+    "isIframe": true
   },
   {
     "id": "LTPZ028",
     "title": "SELF고지 답변내용",
     "width": 560,
-    "height": 413
+    "height": 413,
+    "isIframe": true
   },
   {
     "id": "LTPZ032",
     "title": "질병가져오기>질병코드별",
     "width": 1180,
-    "height": 740
+    "height": 740,
+    "isIframe": true
   },
   {
     "id": "LTPZ094",
     "title": "질병상세내용",
     "width": 1180,
-    "height": 426
+    "height": 426,
+    "isIframe": true
   },
   {
     "id": "LTPZ030",
     "title": "고지유형추천>일반/건강고지유형 사전체크",
     "width": 1100,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ037",
     "title": "외부정보 FP제공 및 활용 동의",
     "width": 560,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPA095",
     "title": "조건부 특약 가입 상세",
     "width": 760,
-    "height": 614
+    "height": 614,
+    "isIframe": true
   },
   {
     "id": "LTPZ011",
     "title": "담보내용상세",
     "width": 760,
-    "height": 472
+    "height": 472,
+    "isIframe": true
   },
   {
     "id": "LTPZ090",
     "title": "인수심사요청및결과 이력 상세(팝업)",
     "width": 960,
-    "height": 512
+    "height": 512,
+    "isIframe": true
   },
   {
     "id": "LTPZ036",
     "title": "재심사 대상 설계변경 상세내용",
     "width": 960,
-    "height": 360
+    "height": 360,
+    "isIframe": true
   },
   {
     "id": "LTPZ100",
     "title": "심사결과 상세보기",
     "width": 1180,
-    "height": 450
+    "height": 450,
+    "isIframe": true
   },
   {
     "id": "LTPZ096",
     "title": "심사결과 상세보기(보안요청)",
     "width": 1138,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ026",
     "title": "심사콕콕",
     "width": 960,
-    "height": 770
+    "height": 770,
+    "isIframe": true
   },
   {
     "id": "LTPZ056",
     "title": "카카오알림톡 발송",
     "width": 480,
-    "height": 596
+    "height": 596,
+    "isIframe": true
   },
   {
     "id": "LTPZ097",
     "title": "피보험자별누적조회",
     "width": 1180,
-    "height": 606
+    "height": 606,
+    "isIframe": true
   },
   {
     "id": "LTPZ098",
     "title": "계약별누적위험",
     "width": 960,
-    "height": 570
+    "height": 570,
+    "isIframe": true
   },
   {
     "id": "LTPZ045",
     "title": "고객신원정보확인",
     "width": 620,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ063",
     "title": "비교안내확인서(타사용) 입력",
     "width": 1180,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPZ082",
     "title": "65세이상 가입사유확인",
     "width": 480,
-    "height": 287
+    "height": 287,
+    "isIframe": true
   },
   {
     "id": "LTPZ099",
     "title": "추천설계상세보기",
     "width": 960,
-    "height": 880
+    "height": 880,
+    "isIframe": true
   },
   {
     "id": "LTPA401",
     "title": "GA대리점 설계 지원_상세조회",
     "width": 760,
-    "height": 687
+    "height": 687,
+    "isIframe": true
   },
   {
     "id": "LTPA120",
     "title": "AI 챗봇",
     "width": 198,
-    "height": 560
+    "height": 560,
+    "isIframe": true
   },
   {
     "id": "LTPZ002",
     "title": "가입설계검색",
     "width": 960,
-    "height": 760
+    "height": 760,
+    "isIframe": true
   },
   {
     "id": "LTPZ091",
     "title": "장기심사가이드 더보기",
     "width": 1180,
-    "height": 388
+    "height": 388,
+    "isIframe": true
   },
   {
     "id": "LTPZ092",
     "title": "장기심사가이드 더보기 상세",
     "width": 960,
-    "height": 334
+    "height": 334,
+    "isIframe": true
   },
   {
     "id": "LTPZ071",
     "title": "담보그룹관리",
     "width": 480,
-    "height": 363
+    "height": 363,
+    "isIframe": true
   },
   {
     "id": "LTPZ080",
     "title": "담보그룹정보관리",
     "width": 960,
-    "height": 525
+    "height": 525,
+    "isIframe": true
   },
   {
     "id": "LTPZ640",
     "title": "보장패키지유형관리",
     "width": 560,
-    "height": 690
+    "height": 690,
+    "isIframe": true
   },
   {
     "id": "LTPZ035",
     "title": "담보 속성별 상품관리",
     "width": 560,
-    "height": 360
+    "height": 360,
+    "isIframe": true
   },
   {
     "id": "LTPZ119",
     "title": "다운로드 파일 등록",
     "width": 1180,
-    "height": 450
+    "height": 450,
+    "isIframe": true
   }
 ]

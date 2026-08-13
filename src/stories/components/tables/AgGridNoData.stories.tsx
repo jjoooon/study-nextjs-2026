@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/*
- * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */ import {
+import {
   Title,
   Subtitle,
   Description,
@@ -18,7 +15,13 @@ import { ModuleRegistry, AllCommunityModule } from 'ag-grid-enterprise';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { createCellValueChangedHandler, useAgGridPagination, AgGridEmptyComponent } from '@aggrid';
+import {
+  createCellValueChangedHandler,
+  useAgGridPagination,
+  AgGridEmptyComponent,
+  CustomGridLoadingOverlay,
+} from '@aggrid';
+import { Button } from '@uiux/Button';
 import { TablePagination } from '@common/TablePagination';
 
 ModuleRegistry.registerModules([AllCommunityModule, RichSelectModule]);
@@ -41,8 +44,14 @@ const columnDefs: ColDef<DummyDataType>[] = [
   },
 ];
 
+const SampleRows: DummyDataType[] = [
+  { id: 1, label: '홍길동', age: '30세' },
+  { id: 2, label: '김철수', age: '45세' },
+  { id: 3, label: '이영희', age: '28세' },
+];
+
 const meta: Meta<typeof AgGridReact<DummyDataType>> = {
-  title: 'Components/Tables/AgGrid/NoData',
+  title: 'Components/Tables/AgGrid/NoData & Loading',
   component: AgGridReact,
   tags: ['autodocs'],
   parameters: {
@@ -54,7 +63,7 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
           <br />
           <h2>Overview</h2>
           <div>
-            <b>ag-Grid No Data(Empty) 오버레이 설정</b>
+            <b>ag-Grid No Data(Empty) & Loading 오버레이 설정</b>
             <br />
             <ul>
               <li>
@@ -62,8 +71,15 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
                 React 컴포넌트로 데이터가 없을 때 표시할 UI를 자유롭게 커스터마이즈할 수 있습니다.
                 <br />
                 <code>noRowsOverlayComponent={'{AgGridEmptyComponent}'}</code>처럼 사용합니다.
+              </li>
+              <li>
+                <b>loading / loadingOverlayComponent</b>:<br />
+                비동기 데이터 통신 중일 때 <code>loading={'{true}'}</code> 속성과 함께{' '}
+                <code>loadingOverlayComponent={'{CustomGridLoadingOverlay}'}</code>를 설정하여 로딩 스피너 및 안내 문구를
+                표시합니다.
                 <br />
-                디자인 가이드에 맞는 컴포넌트를 만들어 연결하면 됩니다.
+                <code>loadingOverlayComponentParams={`{{ loadingMessage: '데이터를 가져오는 중입니다...' }}`}</code>을 통해
+                원하는 안내 문구를 전달할 수 있습니다.
               </li>
             </ul>
           </div>
@@ -72,13 +88,27 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
           <Markdown>
             {`
 \`\`\`tsx
-import { AgGridEmptyComponent } from '@aggrid';
+import { AgGridEmptyComponent, CustomGridLoadingOverlay } from '@aggrid';
 
+// 1. 데이터 없음 (Empty) 설정
 <div className="ag-theme-alpine">
   <AgGridReact<DummyDataType>
-    // 필수
-    ...
+    rowData={[]}
+    columnDefs={columnDefs}
     noRowsOverlayComponent={AgGridEmptyComponent} // 데이터 없을 때 표시할 컴포넌트
+    ...
+  />
+</div>
+
+// 2. 로딩 중 (Loading) 설정
+<div className="ag-theme-alpine">
+  <AgGridReact<DummyDataType>
+    loading={true} // 로딩 상태 활성화
+    loadingOverlayComponent={CustomGridLoadingOverlay} // 커스텀 로딩 오버레이
+    loadingOverlayComponentParams={{ loadingMessage: '조회 중입니다...' }}
+    rowData={rowData}
+    columnDefs={columnDefs}
+    ...
   />
 </div>
 \`\`\`
@@ -94,7 +124,7 @@ export default meta;
 
 export const Default: StoryObj = {
   render: () => {
-    const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
+    const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
     // ag-Grid + TablePagination 연동 (공통 훅 사용)
     const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
@@ -125,3 +155,77 @@ export const Default: StoryObj = {
     );
   },
 };
+
+export const Loading: StoryObj = {
+  render: () => {
+    return (
+      <div style={{ height: '24rem' }}>
+        <div className="ag-theme-alpine h-full">
+          <AgGridReact<DummyDataType>
+            loading={true}
+            loadingOverlayComponent={CustomGridLoadingOverlay}
+            loadingOverlayComponentParams={{ loadingMessage: '데이터를 가져오는 중입니다...' }}
+            noRowsOverlayComponent={AgGridEmptyComponent}
+            getRowId={(params) => String(params.data.id)}
+            rowData={[]}
+            columnDefs={columnDefs}
+            domLayout="normal"
+          />
+        </div>
+      </div>
+    );
+  },
+};
+
+export const InteractiveLoading: StoryObj = {
+  render: () => {
+    const [loading, setLoading] = React.useState(false);
+    const [rowData, setRowData] = React.useState<DummyDataType[]>([]);
+
+    const handleFetchData = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setRowData(SampleRows);
+        setLoading(false);
+      }, 1200);
+    };
+
+    const handleClearData = () => {
+      setLoading(true);
+      setTimeout(() => {
+        setRowData([]);
+        setLoading(false);
+      }, 800);
+    };
+
+    return (
+      <div className="flex flex-col gap-3">
+        <div className="flex gap-2">
+          <Button size="sm" onClick={handleFetchData} disabled={loading}>
+            데이터 조회 (로딩 후 채우기)
+          </Button>
+          <Button size="sm" variant="outlined" color="gray" onClick={handleClearData} disabled={loading}>
+            데이터 초기화 (로딩 후 Empty)
+          </Button>
+          <Button size="sm" variant="outlined" color="primary" onClick={() => setLoading((prev) => !prev)}>
+            로딩 상태 토글 ({loading ? 'ON' : 'OFF'})
+          </Button>
+        </div>
+
+        <div className="ag-theme-alpine" style={{ height: '26rem' }}>
+          <AgGridReact<DummyDataType>
+            loading={loading}
+            loadingOverlayComponent={CustomGridLoadingOverlay}
+            loadingOverlayComponentParams={{ loadingMessage: '데이터를 불러오는 중입니다...' }}
+            noRowsOverlayComponent={AgGridEmptyComponent}
+            getRowId={(params) => String(params.data.id)}
+            rowData={rowData}
+            columnDefs={columnDefs}
+            domLayout="normal"
+          />
+        </div>
+      </div>
+    );
+  },
+};
+
