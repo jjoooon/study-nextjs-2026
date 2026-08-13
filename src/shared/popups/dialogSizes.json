@@ -39,14 +39,14 @@
     "title": "파일 업로드",
     "width": 560,
     "height": 396,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ994",
     "title": "파일 다운로드",
     "width": 560,
     "height": 402,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ001",
