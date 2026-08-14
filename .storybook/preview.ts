@@ -21,6 +21,7 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
+        method: 'alphabetical',
         order: ['app', ['system', 'page', 'popup', '_excluded', 'excluded', '*']],
       },
     },

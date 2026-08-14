@@ -138,7 +138,7 @@ function CardBox({ children, bottom, color }: { children: React.ReactNode; botto
     <Grid
       placement="ss"
       data-recommend-item="true"
-      className={`group gap-0 rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative max-w-[31.2rem] min-w-[31.2rem] grid-rows-[1fr_auto] `}
+      className={`group gap-0 rounded-[1rem] after:content-[''] after:rounded-[1rem] after:absolute after:shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] after:w-full after:h-full after:pointer-events-none after:top-0 after:left-0 shadow-[0_0.2rem_0.2rem_0_rgba(0,0,0,0.1)] overflow-hidden relative max-w-[31.2rem] min-w-[31.2rem] h-full grid-rows-[minmax(0,1fr)_auto] `}
       style={{
         background: color
           ? `linear-gradient(to bottom, white, ${color})`
@@ -280,7 +280,7 @@ const Ltpz013 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="2xl" className="Ltpz013">
         {/* 다이얼로그 타이틀 */}
         <DialogHeader>
           <DialogTitle>
@@ -294,10 +294,10 @@ const Ltpz013 = () => {
         </DialogHeader>
 
         {/* 다이얼로그 본문 영역 */}
-        <DialogSection>
-          <Grid className="w-full grid-cols-[auto_1fr] gap-6">
+        <DialogSection className="min-w-[0]!">
+          <Grid className="w-full grid-cols-[auto_1fr] grid-rows-[1fr] gap-6">
             {/* [좌측 영역] 기준설계 고정 카드 */}
-            <Grid className="h-full pb-[1.6rem] grid-rows-[1fr]">
+            <Grid className="h-full pb-[1.6rem] grid-rows-[1fr] overflow-y-hidden">
               <CardBox
                 bottom={
                   <div>
@@ -305,7 +305,7 @@ const Ltpz013 = () => {
                   </div>
                 }
               >
-                <Grid className="grid-rows-[auto_1fr]">
+                <Grid className="grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden">
                   {/* 카드 헤더 고정핀 */}
                   <Grow className="bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem] font-[700]">
                     <FixingPinIcon className="" />
@@ -370,7 +370,7 @@ const Ltpz013 = () => {
 
                     {/* 담보 그리드 감싸는 컨테이너 - 스크롤 동기화 타겟 (index 0) */}
                     <div
-                      className="ag-theme-alpine no-header w-full max-h-[calc(100vh-53rem)] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                      className="ag-theme-alpine no-header w-full overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
                       ref={(el) => {
                         scrollRefs.current[0] = el;
                       }}
@@ -429,7 +429,7 @@ const Ltpz013 = () => {
                   }
                   key={i}
                 >
-                  <Gcol className="p-[1.6rem] gap-5" placement="ss">
+                  <Grid className="p-[1.6rem] gap-5 grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden" placement="ss">
                     <Gcol className="gap-2" placement="ss">
                       {/* 비교설계 적용 대상 선택 체크박스 및 변경 버튼 */}
                       <Grow placement="bwc" className="w-full">
@@ -520,7 +520,7 @@ const Ltpz013 = () => {
 
                     {/* 담보 그리드 감싸는 컨테이너 - 스크롤 동기화 타겟 (index 1 ~ 3) */}
                     <div
-                      className="ag-theme-alpine no-header w-full max-h-[calc(100vh-53rem)] overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
+                      className="ag-theme-alpine no-header w-full overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
                       ref={(el) => {
                         scrollRefs.current[i + 1] = el;
                       }}
@@ -561,7 +561,7 @@ const Ltpz013 = () => {
                         tooltipShowDelay={0}
                       />
                     </div>
-                  </Gcol>
+                  </Grid>
                 </CardBox>
               ))}
             </Grow>

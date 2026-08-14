@@ -419,7 +419,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
   );
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="full">
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             {/* 2026-05-27 타이틀 수정 */}

@@ -479,8 +479,7 @@ const Ltpz021 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-
-        <DialogSection className="grid-rows-[auto_1fr] h-full min-h-0 overflow-hidden">
+        <DialogSection className="grid-rows-[auto_1fr] h-full min-h-0 overflow-hidden min-w-[0]!">
           <Grow className="w-full" variant="box-round">
             <FormTable variant={'head'} lineTop={false}>
               <FormRow>
@@ -506,7 +505,7 @@ const Ltpz021 = () => {
           <Grow gap={3} placement="ss" className="w-full h-full min-h-0 overflow-hidden">
             {[...Array(3)].map((_, i) => (
               <Grid
-                className="grid-rows-[auto_1fr] w-full overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5 h-full min-h-0"
+                className="grid-rows-[auto_1fr] w-full overflow-hidden border border-[#CBE3FF] rounded-[0.6rem] gap-5 h-full min-h-0 pb-[1rem]"
                 key={i}
               >
                 <Grow placement="bws" className="w-full bg-[#EFF8FF] p-[1rem] rounded-t-[0.6rem]">

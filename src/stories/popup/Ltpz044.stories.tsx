@@ -5,7 +5,7 @@ import Ltpz044 from '@/features/pub/ispl/cvrPl/components/popups/Ltpz044';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/popup/Ltpz044',
+  title: 'app/popup/LTPZ044',
   component: Ltpz044,
 };
 
