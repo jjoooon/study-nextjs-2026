@@ -63,7 +63,7 @@ const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Lt
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={true} size="2xl" className="h-full max-h-[97rem]! ltpz005-popup">
+      <DialogContent showCloseButton resizable={true} size="2xl" className="h-full ltpz005-popup">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
