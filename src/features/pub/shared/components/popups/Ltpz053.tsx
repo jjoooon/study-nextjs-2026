@@ -62,7 +62,7 @@ const Ltpz053 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '고객명',
-      width: attributeColumnWidth(120),
+      width: attributeColumnWidth(150),
       field: 'field01',
       cellClass: 'text-center !px-0',
       autoHeight: true,

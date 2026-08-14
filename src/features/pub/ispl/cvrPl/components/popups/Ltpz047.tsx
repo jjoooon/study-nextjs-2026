@@ -108,7 +108,7 @@ const Ltpz047 = () => {
                 >
                   <NativeSelect
                     aria-label="선택"
-                    width="10rem"
+                    width="14rem"
                     value={form.type01}
                     onChange={(e) => setFormField('type01', e.target.value)}
                   >
@@ -129,13 +129,13 @@ const Ltpz047 = () => {
                 {/* 게임제공업(005), 인터넷컴퓨터게임시설제공업(006), 복합유통게임제공업(014) 인 경우 */}
                 {['selection2', 'selection3', 'selection4'].includes(form.type01) && (
                   <FormCell title={'대수'}>
-                    <Input size="lg" value="" variant="default" width="18rem" required placeholder="0" commaAmount />
+                    <Input size="lg" value="" variant="default" width="14rem" required placeholder="0" commaAmount />
                   </FormCell>
                 )}
                 {/* 영화상영관(008) 인 경우 */}
                 {form.type01 === 'selection5' && (
                   <FormCell title={'좌석수'}>
-                    <Input size="lg" value="" variant="default" width="18rem" required />
+                    <Input size="lg" value="" variant="default" width="14rem" required />
                   </FormCell>
                 )}
                 {/* 고시원(016) 인 경우 */}
