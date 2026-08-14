@@ -55,7 +55,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
           ? '[&_tr]:bg-[var(--color-gray-5)]'
           : variant === 'message'
             ? '[&_tr]:bg-[#F4F4F4] [&_th]:h-18'
-            : 'border-b-0! [&_tr]:border-b-0! [&_th]:border-b-0! [&_tr]:bg-[#F4F4F4] [&_th]:py-[.6rem] [&_th]:first-child:rounded-tl-[.8rem] [&_th]:first-child:rounded-bl-[.8rem] [&_th]:last-child:rounded-tr-[.8rem] [&_th]:last-child:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
+            : 'border-b-0! [&_tr]:border-b-0! [&_th]:border-b-0! [&_tr]:bg-[#F4F4F4] [&_th]:py-[.6rem] [&_th]:first:rounded-tl-[.8rem] [&_th]:first:rounded-bl-[.8rem] [&_th]:last:rounded-tr-[.8rem] [&_th]:last:rounded-br-[.8rem] [&_th]:text-[1.3rem] [&_th]:font-semibold [&_th]:text-center',
         className
       )}
       {...props}
@@ -86,10 +86,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<'tfoot'>) {
     <tfoot
       data-slot="table-footer"
       data-variant={variant}
-      className={cn(
-        variant === 'default' ? '' : 'bg-muted/50 border-t font-medium [&>tr]:last-child:border-b-0',
-        className
-      )}
+      className={cn(variant === 'default' ? '' : 'bg-muted/50 border-t font-medium [&>tr]:last:border-b-0', className)}
       {...props}
     />
   );

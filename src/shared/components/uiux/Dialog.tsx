@@ -1310,7 +1310,7 @@ function DialogFooterArea({ className, ...props }: React.ComponentProps<'div'>) 
     <div
       data-slot="dialog-footer-area"
       className={cn(
-        'flex gap-2 pb-5 px-6 justify-between [&>div]:w-full [&>div]:first-child:justify-start [&>div]:last-child:justify-end',
+        'flex gap-2 pb-5 px-6 justify-between [&>div]:w-full [&>div]:first:justify-start [&>div]:last:justify-end',
         className
       )}
       {...props}

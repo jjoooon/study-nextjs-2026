@@ -14,13 +14,13 @@
   width: 100%;
 }
 
-.v109 [class*='[&>div]:first-child:justify-start'] > div:first-child {
+.v109 [class*='[&>div]:first:justify-start'] > div:first-child {
   -webkit-box-pack: start;
   -webkit-justify-content: flex-start;
   justify-content: flex-start;
 }
 
-.v109 [class*='[&>div]:last-child:justify-end'] > div:last-child {
+.v109 [class*='[&>div]:last:justify-end'] > div:last-child {
   -webkit-box-pack: end;
   -webkit-justify-content: flex-end;
   justify-content: flex-end;
@@ -920,17 +920,17 @@
   overflow: hidden;
 }
 
-.v109 [class*='[&>div]:first-child:flex'] > div:first-child {
+.v109 [class*='[&>div]:first:flex'] > div:first-child {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
 }
 
-.v109 [class*='[&>div]:first-child:whitespace-nowrap'] > div:first-child {
+.v109 [class*='[&>div]:first:whitespace-nowrap'] > div:first-child {
   white-space: nowrap;
 }
 
-.v109 [class*='[&>div]:first-child:w-full'] > div:first-child {
+.v109 [class*='[&>div]:first:w-full'] > div:first-child {
   width: 100%;
 }
 
@@ -1128,12 +1128,12 @@
   border-width: 0;
 }
 
-.v109 [class*='first:border-l-0']:first-child,
+.v109 [class*='first:border-l-0']:first,
 .v109 .first\:border-l-0:first-child {
   border-left-width: 0;
 }
 
-.v109 [class*='last:border-r-0']:last-child,
+.v109 [class*='last:border-r-0']:last,
 .v109 .last\:border-r-0:last-child {
   border-right-width: 0;
 }
@@ -2443,12 +2443,12 @@
 
 /* MainBottomItem 하위 요소 크롬 109 호환 스타일 */
 .v109 [class*='[&>*:last-child]:w-full'] > *:last-child,
-.v109 [class*='[&>*]:last-child:w-full'] > *:last-child {
+.v109 [class*='[&>*]:last:w-full'] > *:last-child {
   width: 100% !important;
   justify-content: flex-end !important;
 }
 .v109 [class*='[&>*+*:last-child]:w-auto'] > * + *:last-child,
-.v109 [class*='[&>*+*]:last-child:w-auto'] > * + *:last-child {
+.v109 [class*='[&>*+*]:last:w-auto'] > * + *:last-child {
   width: auto !important;
 }
 

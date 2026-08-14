@@ -458,7 +458,7 @@ export const FormRow = ({ children, vertical: propVertical, cols: _cols, classNa
             [&>th+td]:border-t-0! [&>td~*]:border-l-0! [&>th>span]:leading-[1.1] 
             [&>td]:min-h-[3.8rem]! [&>td]:leading-[1.1] [&>td>div]:text-left [&>td]:whitespace-nowrap [&>td]:overflow-hidden [&>td]:h-[3.8rem]! [&>td]:px-1 [&>td]:text-center [&>td]:first-of-type:border-l-0! [&>td]:last-of-type:border-r-0! 
             [&>th]:text-center [&>th]:py-[0.4rem]! [&>th]:first-of-type:border-l-0! [&>th]:last-of-type:border-r-0! `
-            : '[&>th]:first-child:border-l-0! [&>td]:last-child:border-r-0!',
+            : '[&>th]:first:border-l-0! [&>td]:last:border-r-0!',
           className
         )}
         {...(style && { style })}
