@@ -1407,6 +1407,10 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   padding-left: 20rem !important;
 }
 
+.class-expected-premium-bar {
+  min-height: 3rem;
+}
+
 /* Chrome 109 버전 전용 ag-Grid */
 .v109 .ag-theme-alpine .ag-root-wrapper {
   background-color: var(--color-gray-5);

@@ -534,7 +534,7 @@ const Ltpz021 = () => {
                     ></Checkbox>
                   </Grow>
                 </Grow>
-                <Gcol className="w-full h-full min-h-0 overflow-hidden px-[1rem] pb-[2rem]" placement="ss" gap={0}>
+                <Gcol className="w-full h-full min-h-0 overflow-hidden px-[1rem] pb-[3rem]" placement="ss" gap={0}>
                   <div className="ag-theme-alpine w-full inner-scroll" data-rows={rowData1.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
