@@ -328,7 +328,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const baseStyle = cn(
     'w-full rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate pb-[0.1rem]',
     isInvalid || shouldShowError
-      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
+      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'
@@ -344,7 +344,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
         : 'hover:border-[var(--color-input-border-hover)]';
   const focusStyle = `${
     isInvalid || shouldShowError
-      ? 'focus:border-[var(--color-input-border-error)] focus:ring-[var(--color-input-surface-error)] focus:border-[0.2rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.20)]'
+      ? 'focus:border-[var(--color-input-border-error)] focus:ring-0 focus:border-[0.2rem] shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.20)]'
       : required
         ? 'focus:border-[var(--color-input-border-highlight-bold)] focus:border-[0.2rem]'
         : 'focus:border-[var(--color-gray-100)]! focus:border-[0.2rem]'
@@ -362,7 +362,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const infoStyle = cn(
     'rounded-[0.4rem] px-2 text-[1.3rem] border border-[0.1rem] box-border tracking-[-0.03rem] appearance-none truncate',
     isInvalid || shouldShowError
-      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
+      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] border-[0.2rem] hover:px-[0.7rem] px-[0.7rem] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.10)]'
       : required
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
         : 'text-[var(--color-text-basic)] border-[var(--color-input-border)] bg-white'

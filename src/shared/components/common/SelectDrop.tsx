@@ -299,7 +299,7 @@ function SelectDrop<TValue extends string = string>({
     'flex flex-row flex-nowrap items-center justify-between gap-1 rounded-[0.4rem] border px-1.5 text-[1.3rem] whitespace-nowrap',
     heightClass,
     showError
-      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)] ring-1 ring-[var(--color-input-surface-error)]'
+      ? 'text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] border-[var(--color-input-border-error)]'
       : required
         ? 'text-[var(--color-text-basic)] bg-[var(--color-input-surface-highlight)] border-[var(--color-input-border-highlight)]'
         : 'text-[var(--color-text-basic)] border-(--color-blue-gray-30) bg-(--color-gray-0)',
