@@ -59,7 +59,7 @@
     "id": "LTPZ113",
     "title": "출력(장기출력물)",
     "width": 960,
-    "height": 523,
+    "height": 524,
     "isIframe": true
   },
   {
@@ -262,7 +262,7 @@
     "id": "LTPZ116",
     "title": "동시가입누적체크",
     "width": 960,
-    "height": 793,
+    "height": 496,
     "isIframe": true
   },
   {
@@ -514,7 +514,7 @@
     "id": "LTPZ115",
     "title": "나만의설계 종복사",
     "width": 960,
-    "height": 573,
+    "height": 574,
     "isIframe": true
   },
   {
@@ -829,7 +829,7 @@
     "id": "LTPZ119",
     "title": "다운로드 파일 등록",
     "width": 1180,
-    "height": 450,
+    "height": 436,
     "isIframe": true
   }
 ]

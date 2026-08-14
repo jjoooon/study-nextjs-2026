@@ -77,7 +77,7 @@ export const Ltpz994 = () => {
 
         <DialogFooter>
           <DialogFooterArea>
-            <Grow placement="ec">
+            <Grow>
               <Button variant={'contained'} size={'xl'}>
                 다운로드
               </Button>

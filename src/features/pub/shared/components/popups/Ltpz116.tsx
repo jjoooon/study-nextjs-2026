@@ -268,7 +268,7 @@ const Ltpz116 = () => {
                 </Button>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine min-h-[50vh]" ref={gridContainerRef}>
+                <div className="ag-theme-alpine inner-scroll" data-row={rowData.length} ref={gridContainerRef}>
                   <AgGridReact<DummyDataType>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}

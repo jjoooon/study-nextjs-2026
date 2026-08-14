@@ -240,7 +240,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
 
         <DialogFooter>
           <DialogFooterArea>
-            <Grow placement="ec">
+            <Grow>
               <Button variant={'outlined'} size={'xl'} color={'gray'} onClick={handleSearch}>
                 파일찾기
               </Button>
