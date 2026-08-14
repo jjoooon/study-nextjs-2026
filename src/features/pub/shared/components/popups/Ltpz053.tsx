@@ -14,7 +14,6 @@ import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -63,7 +62,7 @@ const Ltpz053 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '고객명',
-      width: attributeColumnWidth(70),
+      width: attributeColumnWidth(120),
       field: 'field01',
       cellClass: 'text-center !px-0',
       autoHeight: true,
@@ -79,7 +78,7 @@ const Ltpz053 = () => {
     },
     {
       headerName: '타인사망피보험자 동의확인서',
-      flex: 1,
+      width: attributeColumnWidth(200),
       field: 'field04',
       cellClass: 'text-center',
       autoHeight: true,
@@ -112,8 +111,8 @@ const Ltpz053 = () => {
                     width={'quoteNo'}
                     onChange={(e) => setFormField('type01', e.target.value)}
                   />
-                  <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                    <SearchIcon color={'var(--color-primary-50)'} />
+                  <Button color="coolgray" only="default" size="lg" variant="contained">
+                    조회
                   </Button>
                 </FormCell>
                 <FormCell title={'상품명'}>
@@ -263,7 +262,7 @@ const Ltpz053 = () => {
               <FormTable caption="월클릭스켄" cols={['w-[7rem]', 'w-auto', 'w-[7rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'진위여부'}>
-                    <Input aria-label="" value={'12345678'} readOnly />
+                    <Input aria-label="" value={'Y'} readOnly width={'4rem'} />
                   </FormCell>
                   <FormCell title={'사유'} tdClassName="grid grid-cols-[1fr_auto] gap-1">
                     <Input aria-label="" value={'12345678'} readOnly />
