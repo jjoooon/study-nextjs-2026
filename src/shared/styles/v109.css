@@ -2488,3 +2488,10 @@
 .v109 .\[\&\>input\]\:w-\[3\.3rem\] input {
   width: 3.3rem !important;
 }
+
+.v109 [data-slot="table-body"] td:last-child {
+  border-right: 0 !important
+}
+.v109 [data-slot="table-body"] tr > *:first-child {
+  border-left: 0 !important
+}
