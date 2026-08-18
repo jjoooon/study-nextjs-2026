@@ -311,13 +311,16 @@ export function Ltpa35002a({
     [gridReadyHandler]
   );
 
-  const handleCellValueChanged = useCallback((params: CellValueChangedEvent<AgGridRow>) => {
-    const { data, colDef, newValue } = params;
-    if (!colDef.field) return;
-    setRowData((prev) =>
-      prev.map((row) => (row.id === data.id ? { ...row, [colDef.field as string]: newValue } : row))
-    );
-  }, []);
+  const handleCellValueChanged = useCallback(
+    (params: CellValueChangedEvent<AgGridRow>) => {
+      const { data, colDef, newValue } = params;
+      if (!colDef.field) return;
+      setRowData((prev) =>
+        prev.map((row) => (row.id === data.id ? { ...row, [colDef.field as string]: newValue } : row))
+      );
+    },
+    [setRowData]
+  );
 
   const [cellWidth, setCellWidth] = useState([30, 70, 74, 70, 80, 64, 50, 30]);
 
