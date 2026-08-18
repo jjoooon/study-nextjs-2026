@@ -74,7 +74,7 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
   ) : (
     <Grow className={cn('w-full font-bold', className)} placement={'cc'} gap={gap}>
       {label}
-      <span className={(cn(unitClassName), 'font-bold')}>{unit}</span>
+      <span className={(cn(unitClassName), 'font-bold text-[1.1rem]')}>{unit}</span>
     </Grow>
   );
 
