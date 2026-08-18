@@ -9,6 +9,7 @@ import * as React from 'react';
 import { useFormatDateTime } from '@/shared/hooks/useFormatDateTime';
 import { useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
@@ -16,7 +17,7 @@ import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
 import { SearchIcon, ResetIcon } from '@icons';
-import { LayoutHead } from '@layout/BaseLayout';
+import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -761,6 +762,9 @@ export default function Ltpa330Section() {
           </MainBottom>
         }
       />
+      <LayoutFoot>
+        <BottomBar />
+      </LayoutFoot>
     </>
   );
 }

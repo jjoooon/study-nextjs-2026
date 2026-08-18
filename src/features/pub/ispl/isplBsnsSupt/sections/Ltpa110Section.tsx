@@ -74,12 +74,168 @@ const DummyData: DummyDataType[] = [
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
   },
+  {
+    id: 3,
+    isCheck: false,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '999,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 4,
+    isCheck: false,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '999,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 5,
+    isCheck: false,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '999,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 6,
+    isCheck: false,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '999,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 7,
+    isCheck: false,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '999,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
 ];
 
 const DummyData2: DummyDataType2[] = [
   {
     id: 1,
     isCheck: false,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '199,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '199,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '199,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '199,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '199,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '199,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '199,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 2,
+    isCheck: true,
+    field01: 'LA123456789012',
+    field02: '',
+    field03: '김한화',
+    field04: '2026-08-25',
+    field05: '199,000원',
+    field06:
+      '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
+    field07: '설계중',
+  },
+  {
+    id: 2,
+    isCheck: true,
     field01: 'LA123456789012',
     field02: '',
     field03: '김한화',
@@ -243,7 +399,7 @@ export default function Ltpa110Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
+          <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] h-full" gap={3}>
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable variant={'head'} lineTop={false}>
                 <FormRow>
@@ -307,7 +463,7 @@ export default function Ltpa110Section() {
                 </Button>
               </Grow>
             </Grow>
-            <Gcol>
+            <Gcol placement="ss">
               <TableFold>
                 <TableFoldHead title="기본사항" />
                 <TableFoldBody className="gap-2">
@@ -360,7 +516,7 @@ export default function Ltpa110Section() {
                 </TableFoldBody>
               </TableFold>
 
-              <TableFold className="h-full grid-rows-[auto_1fr]">
+              <TableFold className="h-full grid-rows-[auto_minmax(0,1fr)]">
                 <TableFoldHead title="선택설계">
                   <Grow>
                     <Button color="gray" variant="outlined" onClick={handleDeleteRow}>
@@ -370,7 +526,7 @@ export default function Ltpa110Section() {
                   </Grow>
                 </TableFoldHead>
                 <TableFoldBody>
-                  <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
+                  <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData2}
@@ -390,7 +546,7 @@ export default function Ltpa110Section() {
                       }}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
-                      domLayout="autoHeight"
+                      domLayout="normal"
                       //2026-05-29 코드 추가
                       onGridReady={(params) => {
                         gridApiRef.current = params.api;

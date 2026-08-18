@@ -10,10 +10,11 @@ import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Grid } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { PageID } from '@features/PageID';
-import { LayoutHead } from '@layout/BaseLayout';
+import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
@@ -346,6 +347,9 @@ export default function Ltpa220Section() {
           </Grid>
         }
       />
+      <LayoutFoot>
+        <BottomBar />
+      </LayoutFoot>
     </>
   );
 }

@@ -20,7 +20,14 @@ export const LayoutDoc = ({ children, className }: LayoutProps) => {
   return (
     <div
       data-layout="doc"
-      className={cn('relative grid grid-rows-[auto_minmax(0,1fr)_auto] h-full min-h-[51rem] bg-[#fff]', className)}
+      className={cn(
+        'relative grid h-full min-h-[51rem] bg-[#fff]',
+        // 기본 2개 구조 (Head + Body)
+        'grid-rows-[auto_minmax(0,1fr)]',
+        // 직계 자식(>) 중 3번째 자식이 존재하면 3행 구조 (Head + Body + Foot)로 변경
+        '[&:has(>*:nth-child(3))]:grid-rows-[auto_minmax(0,1fr)_auto]',
+        className
+      )}
     >
       {children}
     </div>

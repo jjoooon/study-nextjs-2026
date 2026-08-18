@@ -9,6 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow } from '@atoms';
+import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -16,7 +17,7 @@ import { TableMore } from '@common/TablePagination';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
 import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
-import { LayoutHead } from '@layout/BaseLayout';
+import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
@@ -397,7 +398,7 @@ export default function Ltpa300Section() {
 
       <LayoutTemplate
         mainBody={
-          <Grid className="w-full grid-rows-[auto_1fr] gap-4 h-full">
+          <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] gap-4 h-full">
             <Grow className="w-full" variant="box-round" placement={'bwe'}>
               <FormTable
                 variant={'none'}
@@ -576,6 +577,9 @@ export default function Ltpa300Section() {
           </Grid>
         }
       />
+      <LayoutFoot>
+        <BottomBar />
+      </LayoutFoot>
     </>
   );
 }

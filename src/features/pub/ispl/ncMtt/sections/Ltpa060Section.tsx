@@ -12,7 +12,7 @@ import {
   useDynamicColumnWidths,
   createTooltipValueGetter,
 } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Gcol, Grow, Typo, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -22,6 +22,7 @@ import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 import '@/shared/lib/agGridPub';
 
@@ -120,19 +121,6 @@ const dummyData: DummyDataType[] = [
     field8: '고지',
     field9: '',
   },
-  {
-    id: 6,
-    isChecked: false,
-    field1: 'M54',
-    field2: '요통',
-    field3: '2025-12-01',
-    field4: '2021-03-02',
-    field5: '22(2025-12-01~2027-12-01)',
-    field6: '',
-    field7: 'Y',
-    field8: '고지',
-    field9: '',
-  },
 ];
 const dummyData2: DummyDataType2[] = [
   {
@@ -189,6 +177,45 @@ const dummyData2: DummyDataType2[] = [
   },
   {
     id: 5,
+    isChecked: true,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '3',
+    field7: 'Y',
+    field8: '고지',
+    field9: '',
+  },
+  {
+    id: 6,
+    isChecked: true,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '3',
+    field7: 'Y',
+    field8: '고지',
+    field9: '',
+  },
+  {
+    id: 7,
+    isChecked: true,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '3',
+    field7: 'Y',
+    field8: '고지',
+    field9: '',
+  },
+  {
+    id: 8,
     isChecked: true,
     field1: 'M54',
     field2: '요통',
@@ -353,7 +380,7 @@ export default function Ltpa060Section() {
       <LayoutTemplate
         mainBody={
           // 탭 페이저: Tab1(ICIS), Tab2(심평원)
-          <Gcol placement="ss" className="w-full" gap={3}>
+          <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] h-full" gap={3}>
             {/* FP정보제공 동의 및 조회 기간 입력 섹션 */}
             <Grow className="w-full" variant="box-round">
               <FormTable variant={'head'} lineTop={false} caption="">
@@ -371,94 +398,103 @@ export default function Ltpa060Section() {
                 </FormRow>
               </FormTable>
             </Grow>
-            <Gcol placement="ss" className="w-full" gap={3}>
-              {/* 펼침메뉴: 필수고지 */}
-              <TableFold>
-                <TableFoldHead title="필수고지" />
-                <TableFoldBody>
-                  {/* ag-Grid 테이블: 필수고지 데이터 */}
-                  <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      selectionColumnDef={{
-                        width: 30,
-                      }}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      onCellValueChanged={onCellValueChanged}
-                      // ag-Grid 기본 설정
-                      defaultColDef={{
-                        sortable: true, // 컬럼 정렬 가능
-                        resizable: true, // 컬럼 너비 조절 가능
-                        cellClass: 'text-center', // 중앙 정렬
-                      }}
-                      // 다중행 선택 모드 (고지 상태 행 제외)
-                      rowSelection={{
-                        mode: 'multiRow',
-                        isRowSelectable: (node) => node.data?.field8 !== '고지', // '고지' 상태 행은 선택 불가
-                        checkboxes: true, // 체크박스 표시
-                        enableClickSelection: false, // 행 클릭으로 선택 안됨
-                      }}
-                      // 그리드 초기화 후 체크 상태 복원
-                      onGridReady={(params) => {
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isChecked) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      tooltipHideDelay={1000}
-                    />
-                  </div>
-                </TableFoldBody>
-              </TableFold>
-              {/* 펼침메뉴: 고지확인대상 */}
-              <TableFold>
-                <TableFoldHead title="고지확인대상" />
-                <TableFoldBody>
-                  {/* ag-Grid 테이블: 고지확인대상 데이터 */}
-                  <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
-                    <AgGridReact<DummyDataType2>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData2}
-                      columnDefs={columnDefs2}
-                      selectionColumnDef={{
-                        width: 30,
-                      }}
-                      onCellValueChanged={onCellValueChanged}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                        cellClass: 'text-center',
-                      }}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        isRowSelectable: (node) => node.data?.field8 !== '고지',
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      onGridReady={(params) => {
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isChecked) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      tooltipHideDelay={1000}
-                      domLayout="normal"
-                    />
-                  </div>
-                </TableFoldBody>
-              </TableFold>
-            </Gcol>
-          </Gcol>
+            <ResizablePanelGroup orientation="vertical" className="w-full h-full min-h-0">
+              <ResizablePanel defaultSize={50}>
+                {/* 펼침메뉴: 필수고지 */}
+                <TableFold className="h-full flex flex-col min-h-0">
+                  <TableFoldHead title="필수고지" variant="default" />
+                  <TableFoldBody className="w-full flex-1 min-h-0 relative">
+                    {/* ag-Grid 테이블: 필수고지 데이터 */}
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        selectionColumnDef={{
+                          width: 30,
+                        }}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        onCellValueChanged={onCellValueChanged}
+                        // ag-Grid 기본 설정
+                        defaultColDef={{
+                          sortable: true, // 컬럼 정렬 가능
+                          resizable: true, // 컬럼 너비 조절 가능
+                          cellClass: 'text-center', // 중앙 정렬
+                        }}
+                        // 다중행 선택 모드 (고지 상태 행 제외)
+                        rowSelection={{
+                          mode: 'multiRow',
+                          isRowSelectable: (node) => node.data?.field8 !== '고지', // '고지' 상태 행은 선택 불가
+                          checkboxes: true, // 체크박스 표시
+                          enableClickSelection: false, // 행 클릭으로 선택 안됨
+                        }}
+                        // 그리드 초기화 후 체크 상태 복원
+                        onGridReady={(params) => {
+                          params.api.forEachNode((node) => {
+                            if (node.data?.isChecked) {
+                              node.setSelected(true);
+                            }
+                          });
+                        }}
+                        domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        tooltipHideDelay={1000}
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel defaultSize={50}>
+                {/* 펼침메뉴: 고지확인대상 */}
+                <TableFold className="h-full flex flex-col min-h-0">
+                  <TableFoldHead title="고지확인대상" variant="default" />
+                  <TableFoldBody className="w-full flex-1 min-h-0 relative">
+                    {/* ag-Grid 테이블: 고지확인대상 데이터 */}
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<DummyDataType2>
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData2}
+                        columnDefs={columnDefs2}
+                        selectionColumnDef={{
+                          width: 30,
+                        }}
+                        onCellValueChanged={onCellValueChanged}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                          cellClass: 'text-center',
+                        }}
+                        rowSelection={{
+                          mode: 'multiRow',
+                          isRowSelectable: (node) => node.data?.field8 !== '고지',
+                          checkboxes: true,
+                          enableClickSelection: false,
+                        }}
+                        onGridReady={(params) => {
+                          params.api.forEachNode((node) => {
+                            if (node.data?.isChecked) {
+                              node.setSelected(true);
+                            }
+                          });
+                        }}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        tooltipHideDelay={1000}
+                        domLayout="normal"
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+            {/* <Grid className="w-full h-full grid-rows-[1fr_1fr]" gap={3}>
+             
+             
+            </Grid> */}
+          </Grid>
         }
         mainFoot={
           // 하단 버튼: "알릴사항 반영하기"
