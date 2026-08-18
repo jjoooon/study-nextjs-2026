@@ -1322,7 +1322,7 @@ export function editableSelectCellRenderer<RowType>(
       <span className={`block flex-1 min-w-0 pr-4 ${textClass}`}>{displayValue}</span>
       <TableSelectArrowIcon
         color={'var(--color-gray-60)'}
-        className="absolute right-[0.6rem] top-1/2 -translate-y-1/2 shrink-0 pointer-events-none"
+        className="absolute right-[0rem] top-1/2 -translate-y-1/2 shrink-0 pointer-events-none"
       />
     </div>
   );

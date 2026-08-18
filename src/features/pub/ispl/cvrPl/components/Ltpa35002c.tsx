@@ -59,7 +59,33 @@ type AgGridRow2 = DummyData2Type & {
   isHighlighted?: boolean;
 };
 
-export function Ltpa35002c() {
+// 렌더링 성능 최적화를 위해 불변 설정 및 순수 함수는 컴포넌트 외부로 분리
+const ROW_SELECTION = {
+  mode: 'multiRow' as const,
+  checkboxes: true,
+  headerCheckbox: false,
+  enableClickSelection: false,
+  enableSelectionWithoutKeys: true,
+};
+
+const getRowId = (params: { data: { id: string | number } }) => String(params.data.id);
+
+export type AgGridRow35002c = AgGridRow;
+export type AgGridRow35002c2 = AgGridRow2;
+
+interface Ltpa35002cProps {
+  rowData?: AgGridRow[];
+  setRowData?: React.Dispatch<React.SetStateAction<AgGridRow[]>>;
+  rowData2?: AgGridRow2[];
+  setRowData2?: React.Dispatch<React.SetStateAction<AgGridRow2[]>>;
+}
+
+export function Ltpa35002c({
+  rowData: externalRowData,
+  setRowData: externalSetRowData,
+  rowData2: externalRowData2,
+  setRowData2: externalSetRowData2,
+}: Ltpa35002cProps = {}) {
   // =====================
   // 상태 및 참조 관리
   // =====================
@@ -71,9 +97,14 @@ export function Ltpa35002c() {
   // 화면 폭 기반으로 컬럼 폭을 계산하는 공통 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
   // 상단(화재기본담보) 그리드 데이터
-  const [rowData, setRowData] = useState<AgGridRow[]>(dummyData);
+  const [internalRowData, setInternalRowData] = useState<AgGridRow[]>(dummyData);
+  const rowData = externalRowData ?? internalRowData;
+  const setRowData = externalSetRowData ?? setInternalRowData;
+
   // 하단(화재특약담보) 그리드 데이터
-  const [rowData2, setRowData2] = useState<AgGridRow2[]>(dummyData2);
+  const [internalRowData2, setInternalRowData2] = useState<AgGridRow2[]>(dummyData2);
+  const rowData2 = externalRowData2 ?? internalRowData2;
+  const setRowData2 = externalSetRowData2 ?? setInternalRowData2;
   // 현재 선택/포커스된 담보명 (그리드 context 공유용)
   const [coverageName, _setCoverageName] = useState('');
   // 그리드 내부 콜백에서 최신값을 즉시 참조하기 위한 ref
@@ -87,6 +118,10 @@ export function Ltpa35002c() {
     coverageNameRef.current = value;
   }, []);
 
+  const handleShowProductNameTooltipChange = useCallback((checked: boolean | 'indeterminate') => {
+    setShowProductNameTooltip(checked === true);
+  }, []);
+
   // =====================
   // 핸들러/콜백
   // =====================
@@ -96,6 +131,32 @@ export function Ltpa35002c() {
     (key: string) => (checked: boolean | 'indeterminate') => {
       setCheckedMap((map) => ({ ...map, [key]: !!checked }));
     },
+    []
+  );
+
+  // 하단 그리드 Context 메모이제이션
+  const gridContext2 = useMemo(
+    () => ({
+      coverageName,
+      setCoverageName,
+      showProductNameTooltip,
+      onShowProductNameTooltipChange: handleShowProductNameTooltipChange,
+      checkedMap,
+      onCheckedChange: handleCheckedChange,
+    }),
+    [coverageName, setCoverageName, showProductNameTooltip, handleShowProductNameTooltipChange, checkedMap, handleCheckedChange]
+  );
+
+  // 상단 그리드 selectionColumnDef 메모이제이션
+  const selectionColumnDef = useMemo(
+    () => ({
+      headerName: '선택',
+      width: 30,
+      cellClass: 'text-center p-0!',
+      cellClassRules: {
+        'pointer-events-none': (params: CellClassParams<AgGridRow>) => !!params.data?.locked,
+      },
+    }),
     []
   );
 
@@ -152,7 +213,7 @@ export function Ltpa35002c() {
         field: 'insuredAmount',
         flex: 1,
         minWidth: attributeColumnWidth(80),
-        cellClass: () => 'text-right editable-cell [&_input]:text-right',
+        cellClass: 'text-right editable-cell [&_input]:text-right',
         valueFormatter: numberValueFormatter<AgGridRow>,
         cellClassRules: {
           'style-select': (params) => !!params.data?.isSelectedInsuredAmount,
@@ -310,7 +371,7 @@ export function Ltpa35002c() {
         flex: 1,
         minWidth: attributeColumnWidth(80),
         spanRows: true,
-        cellClass: (_params: CellClassParams<AgGridRow2>) => 'flex! items-center! justify-center! text-center',
+        cellClass: 'flex! items-center! justify-center! text-center',
       } as ColDef<AgGridRow2>,
       {
         headerName: '선택',
@@ -344,12 +405,16 @@ export function Ltpa35002c() {
       },
       {
         headerName: '가입금액(만원)',
-        headerComponent: () => <HeaderWithUnit label="가입금액" unit="(만원)" />,
+        headerComponent: HeaderWithUnit,
+        headerComponentParams: {
+          label: '가입금액',
+          unit: '(만원)',
+        },
         sortable: true,
         field: 'insuredAmount',
         flex: 1,
         minWidth: attributeColumnWidth(74),
-        cellClass: () => 'text-right editable-cell [&_input]:text-right',
+        cellClass: 'text-right editable-cell [&_input]:text-right',
         valueFormatter: numberValueFormatter<AgGridRow2>,
         cellClassRules: {
           // 금액 선택형 여부에 따른 스타일 분기
@@ -445,7 +510,7 @@ export function Ltpa35002c() {
         cellRenderer: getExpiryRenderer('center'),
       },
     ],
-    [attributeColumnWidth, getExpiryRenderer, showProductNameTooltip, coverageName, checkedMap]
+    [attributeColumnWidth, getExpiryRenderer]
   );
 
   return (
@@ -482,25 +547,11 @@ export function Ltpa35002c() {
                 <AgGridReact<AgGridRow>
                   rowData={rowData}
                   columnDefs={columnDefs}
-                  getRowId={(params) => String(params.data.id)}
+                  getRowId={getRowId}
                   singleClickEdit={true}
                   onCellValueChanged={handleCellValueChanged}
-                  rowSelection={{
-                    mode: 'multiRow' as const,
-                    checkboxes: true,
-                    headerCheckbox: false,
-                    enableClickSelection: false,
-                    enableSelectionWithoutKeys: true,
-                  }}
-                  selectionColumnDef={{
-                    headerName: '선택',
-                    width: 30,
-                    // pinned: 'left',
-                    cellClass: 'text-center p-0!',
-                    cellClassRules: {
-                      'pointer-events-none': (params) => !!params.data?.locked,
-                    },
-                  }}
+                  rowSelection={ROW_SELECTION}
+                  selectionColumnDef={selectionColumnDef}
                 />
               </div>
             </Grid>
@@ -531,18 +582,10 @@ export function Ltpa35002c() {
                   enableCellSpan={true}
                   rowData={rowData2}
                   columnDefs={columnDefs2}
-                  getRowId={(params) => String(params.data.id)}
+                  getRowId={getRowId}
                   singleClickEdit={true}
                   onCellValueChanged={handleCellValueChanged2}
-                  context={{
-                    coverageName,
-                    setCoverageName,
-                    showProductNameTooltip,
-                    onShowProductNameTooltipChange: (checked: boolean | 'indeterminate') =>
-                      setShowProductNameTooltip(checked === true),
-                    checkedMap,
-                    onCheckedChange: handleCheckedChange,
-                  }}
+                  context={gridContext2}
                   // onRowDataUpdated={handleRowDataUpdated}
                   tooltipShowDelay={0}
                   tooltipHideDelay={9999}

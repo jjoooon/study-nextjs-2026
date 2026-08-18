@@ -10,7 +10,6 @@ import type { PopupBaseProps } from '@/shared/types/uiTypes';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CircleCheckIcon, InfoToastIcon } from '@icons';
-import { Button } from '@uiux/Button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 
@@ -111,35 +110,34 @@ const Ltpz005 = ({ open = false, onOpenChange, initialActiveTab = 'common' }: Lt
 
           <Grid className="w-full grid-cols-[auto_1fr] h-full" gap={0}>
             {/* 왼쪽: 세로형 탭 메뉴 영역 */}
-            <Grid
-              className="w-[6.4rem] grid-rows-[1fr_1fr_1fr_1fr] pb-[0.8rem] h-full max-h-[44rem] mr-[-0.1rem] place-self-start"
+            <Gcol
+              placement="ss"
+              className="w-[6.4rem] overflow-hidden pb-[0.8rem] h-full max-h-[calc(100dvh-29rem)] mr-[-1px]"
               gap={0}
             >
               {tabs.map((tab, index) => {
                 const isActive = active === tab.value;
                 return (
-                  <div key={tab.value} className={`h-full ${index > 0 ? 'mt-[-0.1rem]' : ''}`}>
-                    <Button
-                      variant="outlined"
-                      color="gray-light"
-                      className={`w-full h-full py-4 -mr-[0.06rem] z-[99] rounded-[1rem] rounded-tr-[0] rounded-br-[0] border-r border-r-[transparent] ${
-                        isActive
-                          ? 'w-full! shadow-[inset_0.8rem_0_0_0_#FF5C2E,0_0.2rem_0_0_#00000010] border-l-0 pl-[1.6rem]'
-                          : 'w-[5.4rem]! ml-[1rem]! bg-[#F4F4F4] '
-                      }`}
-                      onClick={() => setActive(tab.value)}
-                    >
-                      <Gcol className="py-2 items-center justify-center gap-1.5">
-                        {getStateIcon(tab.state)}
-                        <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-50">
-                          {tab.label}
-                        </Typo>
-                      </Gcol>
-                    </Button>
-                  </div>
+                  <button
+                    key={tab.value}
+                    type="button"
+                    className={`relative w-full h-full -mr-[0.06rem] rounded-l-[1rem] border border-[var(--color-gray-20)] border-r-0! transition-none! max-h-[10.8rem] min-h-[7.4rem] ${
+                      isActive
+                        ? 'w-full! shadow-[inset_0.8rem_0_0_0_var(--color-element-primary,#FF5C2E),0.6rem_0.4rem_0.6rem_0_rgba(0,0,0,0.16)] pl-[1.6rem] bg-[#fff] z-2'
+                        : 'w-[5.4rem]! ml-[1rem]! bg-[#F4F4F4] z-1'
+                    } ${index > 0 ? ' mt-[-1px]' : ''}`}
+                    onClick={() => setActive(tab.value)}
+                  >
+                    <Gcol className="items-center justify-center gap-1.5">
+                      {getStateIcon(tab.state)}
+                      <Typo tag="strong" variant={'body-lg'} weight="bold" className="text-gray-50">
+                        {tab.label}
+                      </Typo>
+                    </Gcol>
+                  </button>
                 );
               })}
-            </Grid>
+            </Gcol>
 
             {/* 오른쪽: 탭별 상세 내용 (탭 값에 따라 해당 컴포넌트 렌더링) */}
             {active === 'common' ? (

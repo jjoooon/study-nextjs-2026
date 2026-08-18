@@ -458,9 +458,9 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   gap: 0.4rem;
 }
 
-.ag-picker-field-wrapper .ag-picker-field-display {
+/* .ag-picker-field-wrapper .ag-picker-field-display {
   text-align: right;
-}
+} */
 
 .ag-input-field-input.ag-number-field-input {
   text-align: right;
