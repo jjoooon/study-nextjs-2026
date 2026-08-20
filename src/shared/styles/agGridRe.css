@@ -1579,3 +1579,8 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   visibility: visible !important;
   opacity: 1 !important;
 }
+
+.group-style .ag-center-cols-container > [role='row']:nth-child(2n) {
+  background-color: #fff;
+}
+.is-sub-row .ag-cell {background-color: var(--color-gray-5)}

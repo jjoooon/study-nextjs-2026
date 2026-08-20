@@ -147,7 +147,7 @@ function Checkbox({
       data-[state=checked]:shadow-[0rem_0.2rem_0.2rem_0rem_rgba(27,46,91,0.19)]`,
   };
 
-  const iconSize = size === 'xl' ? 19 : size === 'lg' ? 16 : 14;
+  const iconSize = size === 'xl' ? 19 : size === 'lg' ? 16 : size === 'md' ? 12 : 10;
   const checkedColorStyles = {
     primary: 'var(--color-primary-50)',
     info: 'var(--color-element-information)',
@@ -291,10 +291,7 @@ function Checkbox({
         ) : (
           <CheckboxPrimitive.Indicator
             data-slot="checkbox-indicator"
-            className={cn(
-              'grid place-content-center text-current transition-none',
-              size === 'md' && 'translate-y-[-0.1rem]'
-            )}
+            className={cn('flex items-center justify-center h-full w-full text-current transition-none')}
           >
             <CheckIcon size={iconSize} color={props.disabled ? 'var(--color-icon-gray-light)' : undefined} />
           </CheckboxPrimitive.Indicator>
