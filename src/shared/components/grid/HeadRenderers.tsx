@@ -109,10 +109,10 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
 });
 
 interface ProductNameHeaderProps {
-  coverageName: string;
-  onCoverageNameChange: (value: string) => void;
-  showProductNameTooltip: boolean;
-  onShowProductNameTooltipChange: (checked: boolean | 'indeterminate') => void;
+  coverageName?: string;
+  onCoverageNameChange?: (value: string) => void;
+  showProductNameTooltip?: boolean;
+  onShowProductNameTooltipChange?: (checked: boolean | 'indeterminate') => void;
   checkedMap?: {
     selected: boolean;
     unselected: boolean;
@@ -125,16 +125,16 @@ interface ProductNameHeaderProps {
 
 // 상품명 헤더(체크 필터 + 담보명 검색 + 말풍선 옵션)
 export const ProductNameHeader = React.memo(function ProductNameHeader({
-  coverageName,
+  coverageName = '',
   onCoverageNameChange,
-  showProductNameTooltip,
+  showProductNameTooltip = false,
   onShowProductNameTooltipChange,
   checkedMap,
   onCheckedChange,
 }: ProductNameHeaderProps) {
-  // 개발자가 연결할 수 있도록 값 변경 시 콘솔에 출력하는 콜백 함수 작성
-  const handleHashtagsChange = React.useCallback((nextHashtags: string[]) => {
-    console.log('[ProductNameHeader] Selected Hashtags Changed (Grid integration placeholder):', nextHashtags);
+  // 개발자가 연결할 수 있도록 값 변경 시 처리하는 콜백 함수
+  const handleHashtagsChange = React.useCallback((_nextHashtags: string[]) => {
+    // 그리드 필터링 연동 필요 시 처리
   }, []);
 
   // 공통 훅 사용으로 비즈니스 로직 분리 (외부 props 연결을 제거하고 로컬 상태로 동작하게 함)
@@ -174,7 +174,7 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
           disabled={false} // 명시적으로 disabled를 false로 설정
           value={coverageName}
           onChange={(e) => {
-            onCoverageNameChange(e.target.value);
+            onCoverageNameChange?.(e.target.value);
           }}
         />
         {/* 검색/초기화 액션 버튼(UI) */}
@@ -184,7 +184,7 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
         {/* 공통 HashFilter 컴포넌트 사용 (Popover가 내장되어 코드 복잡도 대폭 감소) */}
         <HashFilter selectedHashtags={selectedHashtags} onHashtagToggle={toggleHashtag} onReset={resetHashtags} />
       </Grow>
-      <Grow placement={'sc'}>
+      <Grow placement={'sc'} onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
         <Checkbox size={'md'} checked={showProductNameTooltip} onCheckedChange={onShowProductNameTooltipChange}>
           담보명 말풍선
         </Checkbox>
@@ -199,21 +199,78 @@ export const ProductNameHeader = React.memo(function ProductNameHeader({
  */
 export function AgGridProductNameHeader(props: IHeaderParams) {
   const { context } = props;
-  const coverageName = context?.coverageName ?? '';
-  const onCoverageNameChange = context?.setCoverageName;
-  const showProductNameTooltip = context?.showProductNameTooltip ?? false;
-  const onShowProductNameTooltipChange = context?.onShowProductNameTooltipChange;
-  const checkedMap = context?.checkedMap;
-  const onCheckedChange = context?.onCheckedChange;
+
+  // 1. 담보명 말풍선 툴팁 상태 관리 및 상위 context 동기화
+  const [showTooltip, setShowTooltip] = React.useState<boolean>(context?.showProductNameTooltip ?? false);
+
+  React.useEffect(() => {
+    if (context?.showProductNameTooltip !== undefined) {
+      setShowTooltip(context.showProductNameTooltip);
+    }
+  }, [context?.showProductNameTooltip]);
+
+  const handleShowTooltipChange = React.useCallback(
+    (checked: boolean | 'indeterminate') => {
+      const nextChecked = checked === true;
+      setShowTooltip(nextChecked);
+      context?.onShowProductNameTooltipChange?.(nextChecked);
+    },
+    [context]
+  );
+
+  // 2. 담보명 검색어 상태 관리 및 상위 context 동기화
+  const [coverageName, setCoverageName] = React.useState<string>(context?.coverageName ?? '');
+
+  React.useEffect(() => {
+    if (context?.coverageName !== undefined) {
+      setCoverageName(context.coverageName);
+    }
+  }, [context?.coverageName]);
+
+  const handleCoverageNameChange = React.useCallback(
+    (value: string) => {
+      setCoverageName(value);
+      context?.setCoverageName?.(value);
+    },
+    [context]
+  );
+
+  // 3. 체크박스 선택 맵 상태 관리
+  const [checkedMap, setCheckedMap] = React.useState(
+    context?.checkedMap ?? { selected: false, unselected: false, reset: false }
+  );
+
+  React.useEffect(() => {
+    if (context?.checkedMap) {
+      setCheckedMap(context.checkedMap);
+    }
+  }, [context?.checkedMap]);
+
+  const handleCheckedChange = React.useCallback(
+    (key: string) => (checked: boolean | 'indeterminate') => {
+      setCheckedMap((prev: { selected: boolean; unselected: boolean; reset: boolean }) => ({
+        ...prev,
+        [key]: checked === true,
+      }));
+      context?.onCheckedChange?.(key)(checked);
+    },
+    [context]
+  );
 
   return (
-    <ProductNameHeader
-      coverageName={coverageName}
-      onCoverageNameChange={onCoverageNameChange}
-      showProductNameTooltip={showProductNameTooltip}
-      onShowProductNameTooltipChange={onShowProductNameTooltipChange}
-      checkedMap={checkedMap}
-      onCheckedChange={onCheckedChange}
-    />
+    <div
+      className="w-full h-full flex items-center"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <ProductNameHeader
+        coverageName={coverageName}
+        onCoverageNameChange={handleCoverageNameChange}
+        showProductNameTooltip={showTooltip}
+        onShowProductNameTooltipChange={handleShowTooltipChange}
+        checkedMap={context?.checkedMap ? checkedMap : undefined}
+        onCheckedChange={context?.onCheckedChange ? handleCheckedChange : undefined}
+      />
+    </div>
   );
 }

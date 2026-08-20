@@ -48,8 +48,8 @@ const Ltpz045 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection>
-          <Gcol className="w-full" gap={3}>
+        <DialogSection className="overflow-x-hidden">
+          <Gcol className="w-full" gap={3} placement="ss">
             {/* 상단 설계번호 및 계약자 정보 표시 영역 */}
             <Grow className="w-full" variant="box-round">
               <FormTable variant="head" cols={['w-1', 'w-auto', 'w-1', 'w-auto']}>

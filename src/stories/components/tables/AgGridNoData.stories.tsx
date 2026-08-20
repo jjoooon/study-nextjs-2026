@@ -75,11 +75,11 @@ const meta: Meta<typeof AgGridReact<DummyDataType>> = {
               <li>
                 <b>loading / loadingOverlayComponent</b>:<br />
                 비동기 데이터 통신 중일 때 <code>loading={'{true}'}</code> 속성과 함께{' '}
-                <code>loadingOverlayComponent={'{CustomGridLoadingOverlay}'}</code>를 설정하여 로딩 스피너 및 안내 문구를
-                표시합니다.
+                <code>loadingOverlayComponent={'{CustomGridLoadingOverlay}'}</code>를 설정하여 로딩 스피너 및 안내
+                문구를 표시합니다.
                 <br />
-                <code>loadingOverlayComponentParams={`{{ loadingMessage: '데이터를 가져오는 중입니다...' }}`}</code>을 통해
-                원하는 안내 문구를 전달할 수 있습니다.
+                <code>loadingOverlayComponentParams={`{{ loadingMessage: '데이터를 가져오는 중입니다...' }}`}</code>을
+                통해 원하는 안내 문구를 전달할 수 있습니다.
               </li>
             </ul>
           </div>
@@ -228,4 +228,3 @@ export const InteractiveLoading: StoryObj = {
     );
   },
 };
-

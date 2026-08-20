@@ -45,6 +45,8 @@ export interface Ltpa120Props {
   setOpen?: (open: boolean) => void;
   minimized?: boolean;
   onMinimizeChange?: (minimized: boolean) => void;
+  buttonImageSrc?: string;
+  borderWidth?: number | string;
 }
 
 export const Ltpa120 = ({
@@ -54,6 +56,8 @@ export const Ltpa120 = ({
   minimized,
   className,
   onMinimizeChange,
+  buttonImageSrc = '/images/AI_01_b2.svg',
+  borderWidth = 1,
 }: Ltpa120Props) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [internalOpen, setInternalOpen] = React.useState(false);
@@ -96,17 +100,20 @@ export const Ltpa120 = ({
           className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0"
           onClick={handleOpen}
         >
-          <Image
-            src={withPublicUrl('/images/chatbot.png')}
-            alt="백프로에게 물어보세요!"
-            width={32}
-            height={32}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[4rem] h-[4rem]"
-          />
+          <span className="w-[3rem] h-[3rem] overflow-hidden relative block">
+            <Image
+              src={withPublicUrl(buttonImageSrc)}
+              alt="백프로에게 물어보세요!"
+              width={40}
+              height={42}
+              className="w-[4rem] h-[4.2rem] object-contain [backface-visibility:hidden] [shape-rendering:geometricPrecision] [image-rendering:-webkit-optimize-contrast]"
+            />
+          </span>
         </button>
       )}
 
       <DialogContent
+        popupId="LTPA120"
         defaultPosition={defaultPosition}
         showCloseButton={true}
         showOverlay={true}
@@ -130,7 +137,7 @@ export const Ltpa120 = ({
             gap={0}
           >
             <div className="pb-[1.2rem] leading-[1.1] bg-[linear-gradient(328deg,rgba(255,92,46,1)_9.4%,rgba(255,244,147,1)_97.24%)] bg-clip-text text-transparent break-keep text-[1.4rem] font-black">
-              백프로AI
+              AI설계비서
             </div>
             <Image
               src={withPublicUrl('/images/chatbot/Chatbot2.png')}
@@ -141,7 +148,10 @@ export const Ltpa120 = ({
             />
           </Grow>
         </DialogHeader>
-        <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[1px] border-[var(--color-blue-gray-30)]">
+        <div
+          className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!"
+          style={{ borderWidth: typeof borderWidth === 'number' ? `${borderWidth}px` : borderWidth }}
+        >
           <iframe
             ref={(el) => chatbotUtils.setRef(el)}
             src={publicConfig.domain.chatbot}

@@ -55,26 +55,6 @@ const expectedUwLimitedCoverageData: ExpectedUwAmountRow[] = [
     coverageName: '보험료압입명제대상보장(8대사유)',
     amount: '-',
   },
-  {
-    id: 3,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-    amount: '-',
-  },
-  {
-    id: 4,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-    amount: '-',
-  },
-  {
-    id: 5,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-    amount: '-',
-  },
-  {
-    id: 6,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-    amount: '-',
-  },
 ];
 
 // 보험료 할증
@@ -91,18 +71,6 @@ const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [
     id: 3,
     coverageName: '보험료압입명제대상보장(8대사유)1',
   },
-  {
-    id: 4,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-  },
-  {
-    id: 5,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-  },
-  {
-    id: 6,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-  },
 ];
 
 //부 담보(부위/질병)
@@ -116,26 +84,6 @@ const expectedUwExclusionCoverageData: ExpectedUw03Row[] = [
     id: 2,
     coverageName: '보험료압입명제대상보장(8대사유)',
     date: '5년 0개월',
-  },
-  {
-    id: 3,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-    date: '-',
-  },
-  {
-    id: 4,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-    date: '-',
-  },
-  {
-    id: 5,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-    date: '-',
-  },
-  {
-    id: 6,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-    date: '-',
   },
 ];
 const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
@@ -377,7 +325,7 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
                         }}
                         headerHeight={28}
                         rowHeight={30}
-                        domLayout={expectedUwLimitedCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
+                        domLayout={'normal'}
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
                         animateRows={false}

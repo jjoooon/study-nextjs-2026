@@ -17,18 +17,14 @@ const CHATBOT_DIALOG_WIDTH = 198;
 const CHATBOT_DIALOG_HEIGHT = 560;
 const VIEWPORT_MARGIN = 12;
 
-function getInitialDialogPosition(
-  buttonRect: DOMRect,
-  dialogWidth: number,
-  dialogHeight: number
-): { x: number; y: number } {
-  const maxLeft = window.innerWidth - dialogWidth - VIEWPORT_MARGIN;
-  const maxTop = window.innerHeight - dialogHeight - VIEWPORT_MARGIN;
+function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number } {
+  const maxLeft = window.innerWidth - CHATBOT_DIALOG_WIDTH - VIEWPORT_MARGIN;
+  const maxTop = window.innerHeight - CHATBOT_DIALOG_HEIGHT - VIEWPORT_MARGIN;
 
   // 버튼의 right에 맞추어 모달의 left 결정 (오른쪽 정렬)
-  const targetLeft = buttonRect.right - dialogWidth;
+  const targetLeft = buttonRect.right - CHATBOT_DIALOG_WIDTH;
   // 버튼의 top 기준으로 모달 높이와 12px 간격을 빼서 모달의 top 결정
-  const targetTop = buttonRect.top - dialogHeight - 12;
+  const targetTop = buttonRect.top - CHATBOT_DIALOG_HEIGHT - 12;
 
   const left = Math.min(Math.max(targetLeft, VIEWPORT_MARGIN), maxLeft);
   const top = Math.min(Math.max(targetTop, VIEWPORT_MARGIN), maxTop);
@@ -37,8 +33,8 @@ function getInitialDialogPosition(
   const centerY = window.innerHeight / 2;
 
   return {
-    x: left + dialogWidth / 2 - centerX,
-    y: top + dialogHeight / 2 - centerY,
+    x: left + CHATBOT_DIALOG_WIDTH / 2 - centerX,
+    y: top + CHATBOT_DIALOG_HEIGHT / 2 - centerY,
   };
 }
 
@@ -49,6 +45,8 @@ export interface Ltpa120Props {
   setOpen?: (open: boolean) => void;
   minimized?: boolean;
   onMinimizeChange?: (minimized: boolean) => void;
+  buttonImageSrc?: string;
+  borderWidth?: number | string;
 }
 
 export const Ltpa120 = ({
@@ -58,6 +56,8 @@ export const Ltpa120 = ({
   minimized,
   className,
   onMinimizeChange,
+  buttonImageSrc = '/images/AI_01_b2.svg',
+  borderWidth = 1,
 }: Ltpa120Props) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [internalOpen, setInternalOpen] = React.useState(false);
@@ -66,34 +66,12 @@ export const Ltpa120 = ({
   const setOpen = setOpenProp !== undefined ? setOpenProp : setInternalOpen;
 
   const handleOpen = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setDefaultPosition(getInitialDialogPosition(rect));
+    }
     setOpen(true);
   };
-
-  React.useEffect(() => {
-    if (open) {
-      // className에서 w-[xxrem], h-[xxrem] 스타일 추출하여 정확한 모달 크기(px) 계산
-      const widthMatch = className?.match(/w-\[(\d+(\.\d+)?)rem\]/);
-      const actualWidth = widthMatch ? parseFloat(widthMatch[1]) * 10 : CHATBOT_DIALOG_WIDTH;
-
-      const heightMatch = className?.match(/h-\[(\d+(\.\d+)?)rem\]/);
-      const actualHeight = heightMatch ? parseFloat(heightMatch[1]) * 10 : CHATBOT_DIALOG_HEIGHT;
-
-      if (isButton && buttonRef.current) {
-        const rect = buttonRef.current.getBoundingClientRect();
-        setDefaultPosition(getInitialDialogPosition(rect, actualWidth, actualHeight));
-      } else {
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
-        // 1rem = 10px 기준: 우측에서 1rem (10px), 하단에서 7rem (70px) 떨어짐
-        const tx = window.innerWidth - actualWidth - 10;
-        const ty = window.innerHeight - actualHeight - 70;
-        setDefaultPosition({
-          x: tx + actualWidth / 2 - cx,
-          y: ty + actualHeight / 2 - cy,
-        });
-      }
-    }
-  }, [open, isButton, className]);
 
   useMounted(
     () => {},
@@ -119,20 +97,23 @@ export const Ltpa120 = ({
           ref={buttonRef}
           type="button"
           aria-label={'백프로에게 물어보세요!'}
-          className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0"
+          className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0 flex justify-center"
           onClick={handleOpen}
         >
-          <Image
-            src={withPublicUrl('/images/chatbot.png')}
-            alt="백프로에게 물어보세요!"
-            width={32}
-            height={32}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[4rem] h-[4rem]"
-          />
+          <span className="w-[2.8rem] h-[2.8rem] relative flex justify-center items-center rounded-full shadow-[0_0.6rem_0.6rem_rgba(255,152,22,0.50)]">
+            <Image
+              src={withPublicUrl(buttonImageSrc)}
+              alt="백프로에게 물어보세요!"
+              width={40}
+              height={40}
+              className="w-[101%] h-[101%] object-contain [backface-visibility:hidden] [shape-rendering:geometricPrecision] [image-rendering:-webkit-optimize-contrast]"
+            />
+          </span>
         </button>
       )}
 
       <DialogContent
+        popupId="LTPA120"
         defaultPosition={defaultPosition}
         showCloseButton={true}
         showOverlay={true}
@@ -156,21 +137,18 @@ export const Ltpa120 = ({
             gap={0}
           >
             <div className="pb-[1.2rem] leading-[1.1] bg-[linear-gradient(328deg,rgba(255,92,46,1)_9.4%,rgba(255,244,147,1)_97.24%)] bg-clip-text text-transparent break-keep text-[1.4rem] font-black">
-              백프로AI
+              AI설계비서
             </div>
-            <Image
-              src={withPublicUrl('/images/chatbot/Chatbot2.png')}
-              alt="백프로"
-              width={49}
-              height={49}
-              className="!w-[4.9rem] !h-[4.9rem]"
-            />
+            <Image src={withPublicUrl('/images/chatbot-top.svg')} alt="백프로" width={50} height={48} />
           </Grow>
         </DialogHeader>
-        <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[1px] border-[var(--color-blue-gray-30)]">
+        <div
+          className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!"
+          style={{ borderWidth: typeof borderWidth === 'number' ? `${borderWidth}px` : borderWidth }}
+        >
           <iframe
             ref={(el) => chatbotUtils.setRef(el)}
-            src={publicConfig.domain.chatbot}
+            src="http://localhost:6006/hgi/chatbot.html"
             title={'AI 챗봇'}
             className="w-full h-full border-0"
             allow="clipboard-read; clipboard-write"

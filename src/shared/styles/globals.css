@@ -646,6 +646,16 @@
     cursor: pointer;
   }
 
+  svg,
+  .svg-icon {
+    /* 3D 렌더링 컨텍스트 활성화로 서브픽셀 뭉개짐 완화 */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+
+    /* 확대/축소 시 리샘플링 품질 유지 */
+    image-rendering: -webkit-optimize-contrast;
+  }
+
   *,
   *::after,
   *::before {
@@ -994,7 +1004,7 @@
     padding: 0 !important;
   }
   .ai-chatbot[data-isminimize='true'] [data-slot='dialog-header'] > div {
-    padding-right: 4.6rem !important;
+    padding-right: 6rem !important;
   }
   .ai-chatbot[data-isminimize='true'] [data-slot='dialog-header'] img:first-child {
     display: none !important;
@@ -1006,22 +1016,22 @@
   .ai-chatbot[data-isminimize='true'] button {
     position: absolute !important;
     margin-left: auto;
-    width: 1.6rem !important;
-    height: 1.6rem !important;
+    width: 2.4rem !important;
+    height: 2.4rem !important;
   }
   .ai-chatbot[data-isminimize='true'] [data-slot='dialog-close'] {
     right: 0.8rem !important;
   }
   .ai-chatbot[data-isminimize='true'] [data-slot='button'] {
-    right: 2.8rem !important;
+    right: 3.6rem !important;
   }
   .ai-chatbot[data-isminimize='true'] [data-slot='button'] span {
-    width: 0.8rem !important;
-    height: 0.8rem !important;
-  }
-  .ai-chatbot[data-isminimize='true'] [data-slot='dialog-close'] svg {
     width: 1rem !important;
     height: 1rem !important;
+  }
+  .ai-chatbot[data-isminimize='true'] [data-slot='dialog-close'] svg {
+    width: 1.4rem !important;
+    height: 1.4rem !important;
   }
   body.is-iframe #storybook-root,
   body.is-iframe [data-layout='doc'] {

@@ -144,7 +144,14 @@ export function Ltpa35002c({
       checkedMap,
       onCheckedChange: handleCheckedChange,
     }),
-    [coverageName, setCoverageName, showProductNameTooltip, handleShowProductNameTooltipChange, checkedMap, handleCheckedChange]
+    [
+      coverageName,
+      setCoverageName,
+      showProductNameTooltip,
+      handleShowProductNameTooltipChange,
+      checkedMap,
+      handleCheckedChange,
+    ]
   );
 
   // 상단 그리드 selectionColumnDef 메모이제이션

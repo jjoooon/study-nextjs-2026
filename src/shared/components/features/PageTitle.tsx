@@ -53,8 +53,8 @@ export function PageTitle({ data }: PageTitleProps) {
       {/* 우측 영역: 계약자명 입력과 조회 버튼을 표시한다. */}
       <Grow className="gap-2.5 shrink-0" placement={'ec'}>
         <FormItem className="w-[19.8rem] ml-1.5">
-          {/* 입력창 hover/focus 시 보조 설명을 툴팁으로 제공한다. */}
-          <Tooltip>
+          {/* 입력창 hover/focus 시 값이 있는 경우에만 툴팁으로 전체 내용을 제공한다. */}
+          <Tooltip open={contractHolder?.trim() ? undefined : false}>
             <TooltipTrigger asChild>
               <Input
                 aria-label="계약자명 입력"
@@ -65,7 +65,7 @@ export function PageTitle({ data }: PageTitleProps) {
               />
             </TooltipTrigger>
             <TooltipContent side="top" sideOffset={0}>
-              계약자명을 입력하세요.
+              {contractHolder}
             </TooltipContent>
           </Tooltip>
           <Button variant={'outlined'} color={'gray-light'} aria-label="계약자 추가" only={'icon'} size={'lg'}>
@@ -114,8 +114,8 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
           disabled={true}
         />
 
-        {/* 제목이 길 수 있으므로 툴팁으로 전체 제목을 확인할 수 있게 한다. */}
-        <Tooltip>
+        {/* 제목이 길 수 있으므로 툴팁으로 전체 제목을 확인할 수 있게 한다. (값이 있을 때만 툴팁 활성화) */}
+        <Tooltip open={safeData.title?.trim() ? undefined : false}>
           <TooltipTrigger asChild>
             <Button variant="none" color="gray" className="px-0">
               <Typo tag="h2" variant="heading-lg">
@@ -164,13 +164,14 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
               <Input aria-label="설계번호 입력" type="text" readOnly value={planNumber[1]} width={26} />
               {/* 설계번호 입력 오른쪽에는 계약자명 입력과 조회 버튼을 함께 배치한다. */}
               <Grow className="ml-1.5">
-                <Tooltip>
+                {/* 입력창 hover/focus 시 값이 있는 경우에만 툴팁으로 전체 내용을 제공한다. */}
+                <Tooltip open={contractHolder?.trim() ? undefined : false}>
                   <TooltipTrigger asChild>
                     <Input
                       aria-label="계약자명 입력"
                       type="text"
                       value={contractHolder}
-                      width={166}
+                      width={'full'}
                       onChange={(e) => setContractHolder(e.target.value)}
                     />
                   </TooltipTrigger>

@@ -543,7 +543,7 @@ export default function Ltpa300Section() {
                 </Button>
               </TableFoldHead>
               <TableFoldBody className="grid-rows-[minmax(0,1fr)_auto] gap-1">
-                <div className="ag-theme-alpine inner-scroll" data-page={pageSize}>
+                <div className="ag-theme-alpine">
                   <AgGridReact<Ltpa300DummyDataRow>
                     ref={gridRef}
                     // noRowsOverlayComponent={AgGridEmptyComponent}

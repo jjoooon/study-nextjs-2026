@@ -23,7 +23,7 @@
 .ag-body-viewport {
   background-color: var(--color-gray-5);
 }
-.ag-react-container > div{
+.ag-react-container > div {
   background-color: transparent !important;
 }
 .ag-overlay {
@@ -1046,7 +1046,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   min-height: 15rem !important;
   overflow-y: auto !important;
 }
-.ag-theme-alpine.inner-scroll[data-row="0"] .ag-root-wrapper-body .ag-body.ag-layout-normal {
+.ag-theme-alpine.inner-scroll[data-row='0'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 0 !important;
   max-height: 100% !important;
   min-height: 0 !important;

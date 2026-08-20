@@ -516,7 +516,7 @@ export default function Ltpa110Section() {
                 </TableFoldBody>
               </TableFold>
 
-              <TableFold className="h-full grid-rows-[auto_minmax(0,1fr)]">
+              <TableFold className="h-full grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden">
                 <TableFoldHead title="선택설계">
                   <Grow>
                     <Button color="gray" variant="outlined" onClick={handleDeleteRow}>

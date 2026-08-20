@@ -9,7 +9,12 @@ import { PlusIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 
-export function AsideFootButtonGroup() {
+export interface AsideFootButtonGroupProps {
+  buttonImageSrc?: string;
+  borderWidth?: number | string;
+}
+
+export function AsideFootButtonGroup({ buttonImageSrc, borderWidth }: AsideFootButtonGroupProps = {}) {
   return (
     <Grow className="asidefootbuttongroup [&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>
       <Button variant={'outlined'} color={'gray'} size={'lg'}>
@@ -42,7 +47,7 @@ export function AsideFootButtonGroup() {
         </PopoverContent>
       </Popover>
 
-      <Ltpa120 />
+      <Ltpa120 buttonImageSrc={buttonImageSrc} borderWidth={borderWidth} />
     </Grow>
   );
 }

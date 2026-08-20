@@ -181,7 +181,12 @@ const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
   return data.process.list.some((item) => item.step === value); // 허용 단계(1~6)에 있는지 확인
 };
 
-export default function Ltpa350Section() {
+export interface Ltpa350SectionProps {
+  buttonImageSrc?: string;
+  borderWidth?: number | string;
+}
+
+export default function Ltpa350Section({ buttonImageSrc, borderWidth }: Ltpa350SectionProps = {}) {
   // simpleMode: 페이지를 간략 모드로 보여줄지 여부 (PageTitle와 step별 본문에서 같이 사용)
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
 
@@ -437,7 +442,14 @@ export default function Ltpa350Section() {
         // asideFoot: 단계별 보험료/포인트 요약
         // - dataTotal: `activeStep`에 맞는 데이터 선택 전달
         // - viewKey: 퍼블 분기키(aside 내부 표시 분기에 활용)
-        asideFoot={<AsideFoot dataTotal={asideFoot[`step${activeStep}`]} viewKey={currentViewKey} />}
+        asideFoot={
+          <AsideFoot
+            dataTotal={asideFoot[`step${activeStep}`]}
+            viewKey={currentViewKey}
+            buttonImageSrc={buttonImageSrc}
+            borderWidth={borderWidth}
+          />
+        }
         // hideAside: 우측 aside 노출 여부
         hideAside={hideAside}
       />

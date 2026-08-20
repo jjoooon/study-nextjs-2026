@@ -385,6 +385,14 @@ export const getPopupIdFromElement = (element?: HTMLElement | null): string | un
 export const isExternalOrCustomIframe = (popupId?: string): boolean => {
   if (typeof window === 'undefined') return false;
 
+  const currentId = popupId || getCurrentPopupIdFromUrl();
+  const cleanId = currentId?.trim().toUpperCase();
+
+  // LTPZ120 / LTPA120(AI 챗봇) 등은 iframe 상태 판별에서 제외(항상 false)
+  if (cleanId === 'LTPZ120' || cleanId === 'LTPA120') {
+    return false;
+  }
+
   // 1. Storybook 프리뷰 iframe(storybook-preview-iframe)인 경우 항상 false
   try {
     if (
@@ -399,7 +407,6 @@ export const isExternalOrCustomIframe = (popupId?: string): boolean => {
   }
 
   // 2. dialogSizes.json에서 현재 팝업의 isIframe 설정값 조회
-  const currentId = popupId || getCurrentPopupIdFromUrl();
   const predefined = getDialogPredefinedSize(currentId);
   if (predefined?.isIframe !== undefined) {
     return predefined.isIframe;
