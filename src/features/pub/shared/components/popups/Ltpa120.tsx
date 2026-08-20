@@ -100,7 +100,7 @@ export const Ltpa120 = ({
           className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0"
           onClick={handleOpen}
         >
-          <span className="w-[3rem] h-[3rem] overflow-hidden relative block">
+          <span className="w-[2.8rem] h-[2.8rem] relative flex justify-center items-center rounded-full shadow-[0_0.6rem_0.6rem_rgba(255,152,22,0.50)]">
             <Image
               src={withPublicUrl(buttonImageSrc)}
               alt="백프로에게 물어보세요!"
