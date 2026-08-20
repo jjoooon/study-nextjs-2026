@@ -4,7 +4,7 @@
 'use client';
 
 import * as React from 'react';
-import { type DateRange } from 'react-day-picker';
+import { type DateRange, type Matcher } from 'react-day-picker';
 import { FormItemSize } from '@/shared/types/uiTypes';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { CalendarIcon } from '@icons';
@@ -36,6 +36,36 @@ function isValidDate(date: Date | undefined) {
     return false;
   }
   return !isNaN(date.getTime());
+}
+
+function normalizeDate(d: Date | undefined): Date | undefined {
+  if (!d) return undefined;
+  const res = new Date(d);
+  res.setHours(0, 0, 0, 0);
+  return res;
+}
+
+function parseLocalDate(dateStr: string | undefined): Date | undefined {
+  if (!dateStr) return undefined;
+  const parts = dateStr.split('-');
+  if (parts.length === 3) {
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    const d = parseInt(parts[2], 10);
+    if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+      const date = new Date(y, m - 1, d);
+      if (date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d) {
+        date.setHours(0, 0, 0, 0);
+        return date;
+      }
+    }
+  }
+  const date = new Date(dateStr);
+  if (isValidDate(date)) {
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }
+  return undefined;
 }
 
 function isSameDay(d1: Date | undefined, d2: Date | undefined) {
@@ -206,8 +236,8 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
   const [isSelectingEnd, setIsSelectingEnd] = React.useState(false);
   const [selected, setSelected] = React.useState<CalendarSelection>(() => {
     if (mode === 'range' && rangeValue) {
-      const from = rangeValue.from ? new Date(rangeValue.from) : undefined;
-      const to = rangeValue.to ? new Date(rangeValue.to) : undefined;
+      const from = parseLocalDate(rangeValue.from);
+      const to = parseLocalDate(rangeValue.to);
       if (from && to && isValidDate(from) && isValidDate(to)) {
         return { from, to };
       }
@@ -215,28 +245,28 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         return { from, to: undefined };
       }
     }
-    return initialValue ? new Date(initialValue) : undefined;
+    return initialValue ? parseLocalDate(initialValue) : undefined;
   });
   const [month, setMonth] = React.useState<Date | undefined>(() => {
     if (mode === 'range' && rangeValue?.from) {
-      const from = new Date(rangeValue.from);
+      const from = parseLocalDate(rangeValue.from);
       if (isValidDate(from)) return from;
     }
-    return initialValue ? new Date(initialValue) : undefined;
+    return initialValue ? parseLocalDate(initialValue) : undefined;
   });
 
   const minDate = React.useMemo(() => {
     if (!min) return undefined;
-    return min instanceof Date ? min : new Date(min);
+    return min instanceof Date ? normalizeDate(min) : parseLocalDate(min);
   }, [min]);
 
   const maxDate = React.useMemo(() => {
     if (!max) return undefined;
-    return max instanceof Date ? max : new Date(max);
+    return max instanceof Date ? normalizeDate(max) : parseLocalDate(max);
   }, [max]);
 
   const disabledDays = React.useMemo(() => {
-    const rules: any[] = [];
+    const rules: Matcher[] = [];
     if (minDate) {
       rules.push({ before: minDate });
     }
@@ -291,8 +321,8 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
     setPrevRangeValue(rangeValue);
 
     if (mode === 'range' && rangeValue) {
-      const from = rangeValue.from ? new Date(rangeValue.from) : undefined;
-      const to = rangeValue.to ? new Date(rangeValue.to) : undefined;
+      const from = parseLocalDate(rangeValue.from);
+      const to = parseLocalDate(rangeValue.to);
 
       const isFromValid = from && isValidDate(from);
       const isToValid = to && isValidDate(to);
@@ -321,7 +351,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
       }
     } else {
       if (initialValue) {
-        const newDate = new Date(initialValue);
+        const newDate = parseLocalDate(initialValue);
         if (isValidDate(newDate)) {
           setSelected(newDate);
           setMonth(newDate);
@@ -341,28 +371,57 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
   const handleSelect = (selectedValue: CalendarSelection, selectedDay?: Date) => {
     if (mode === 'range') {
       if (selectedDay) {
+        const clickedDay = new Date(selectedDay);
+        clickedDay.setHours(0, 0, 0, 0);
+
         if (autoRangeDays > 0 && !autoRangeFix) {
           const currentRangeSelected =
             selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
 
-          if (!isSelectingEnd || !currentRangeSelected || !currentRangeSelected.from) {
-            const nextFrom = selectedDay;
-            setSelected({ from: nextFrom, to: undefined });
-            setRangeInput({ from: formatDate(nextFrom), to: '' });
-            setNumericValue(formatDate(nextFrom).replace(/\D/g, ''));
+          // 1. 이미 from과 to가 모두 선택 완료된 상태에서 다시 클릭했을 때 -> 새로운 시작일로 설정
+          if (currentRangeSelected?.from && currentRangeSelected?.to && !isSelectingEnd) {
+            setSelected({ from: clickedDay, to: undefined });
+            setRangeInput({ from: formatDate(clickedDay), to: '' });
+            setNumericValue(formatDate(clickedDay).replace(/\D/g, ''));
             setIsSelectingEnd(true);
-            onChange?.(nextFrom, formatDate(nextFrom));
+            onChange?.(clickedDay, formatDate(clickedDay));
             setInvalidDate(false);
             return;
           }
 
+          // 2. 시작일 선택 단계이거나, from이 아직 없는 경우
+          if (!isSelectingEnd || !currentRangeSelected || !currentRangeSelected.from) {
+            setSelected({ from: clickedDay, to: undefined });
+            setRangeInput({ from: formatDate(clickedDay), to: '' });
+            setNumericValue(formatDate(clickedDay).replace(/\D/g, ''));
+            setIsSelectingEnd(true);
+            onChange?.(clickedDay, formatDate(clickedDay));
+            setInvalidDate(false);
+            return;
+          }
+
+          // 3. 종료일 선택 대기 상태 (isSelectingEnd === true && currentRangeSelected.from 존재)
           if (isSelectingEnd && currentRangeSelected.from) {
-            const fromDate = currentRangeSelected.from;
+            const fromDate = normalizeDate(currentRangeSelected.from)!;
             const maxAllowed = new Date(fromDate);
             maxAllowed.setDate(maxAllowed.getDate() + autoRangeDays - 1);
 
-            if (selectedDay < fromDate || selectedDay > maxAllowed) {
-              const nextFrom = selectedDay;
+            // 3-1. 시작일과 동일한 날짜를 다시 선택한 경우 -> 취소가 아닌 종료일로 선택되어 시작일과 종료일이 같은 날짜가 됨
+            if (isSameDay(clickedDay, fromDate)) {
+              const nextTo = clickedDay;
+              setSelected({ from: fromDate, to: nextTo });
+              setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
+              setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
+              setIsSelectingEnd(false);
+              onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
+              setOpen(false);
+              setInvalidDate(false);
+              return;
+            }
+
+            // 3-2. 시작일보다 이전이거나 허용 범위를 초과한 날짜를 클릭한 경우 -> 새로운 시작일로 재설정
+            if (clickedDay < fromDate || clickedDay > maxAllowed) {
+              const nextFrom = clickedDay;
               setSelected({ from: nextFrom, to: undefined });
               setRangeInput({ from: formatDate(nextFrom), to: '' });
               setNumericValue(formatDate(nextFrom).replace(/\D/g, ''));
@@ -372,7 +431,8 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               return;
             }
 
-            const nextTo = selectedDay;
+            // 3-3. 허용 범위 내의 날짜를 종료일로 선택한 경우 -> 완료
+            const nextTo = clickedDay;
             setSelected({ from: fromDate, to: nextTo });
             setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
             setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
@@ -387,7 +447,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         const offset = autoRangeDays ?? 7;
 
         if (autoRangeFix) {
-          const nextFrom = selectedDay;
+          const nextFrom = clickedDay;
           const nextTo = new Date(nextFrom);
           nextTo.setDate(nextTo.getDate() + offset);
 
@@ -405,22 +465,24 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         const currentRangeSelected =
           selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
 
-        const fromDate = currentRangeSelected?.from;
-        const toDate = currentRangeSelected?.to;
+        const fromDate = currentRangeSelected?.from ? normalizeDate(currentRangeSelected.from) : undefined;
+        const toDate = currentRangeSelected?.to ? normalizeDate(currentRangeSelected.to) : undefined;
 
-        // 1. 선택일(시작일) 다시 선택시 전체 초기화
-        if (fromDate && isSameDay(selectedDay, fromDate)) {
-          setSelected(undefined);
-          setRangeInput({ from: '', to: '' });
-          setNumericValue('');
+        // 1. 종료일 대기 상태(isSelectingEnd)에서 시작일과 동일한 날짜를 다시 선택한 경우 -> 취소가 아닌 종료일로 선택
+        if (isSelectingEnd && fromDate && isSameDay(clickedDay, fromDate)) {
+          const nextTo = clickedDay;
+          setSelected({ from: fromDate, to: nextTo });
+          setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
+          setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
           setIsSelectingEnd(false);
-          onChange?.(undefined, '');
+          onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
+          setOpen(false);
           setInvalidDate(false);
           return;
         }
 
-        // 2. 종료일 선택 다시 선택시 종료일 초기화 및 종료일 대기 모드 전환
-        if (toDate && isSameDay(selectedDay, toDate)) {
+        // 2. 종료일 선택 다시 선택시 종료일 초기화 및 종료일 대기 모드 전환 (from과 to가 서로 다를 때만)
+        if (toDate && !isSameDay(fromDate, toDate) && isSameDay(clickedDay, toDate)) {
           setSelected({ from: fromDate, to: undefined });
           setRangeInput({ from: formatDate(fromDate), to: '' });
           setNumericValue(formatDate(fromDate).replace(/\D/g, ''));
@@ -430,9 +492,9 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
           return;
         }
 
-        // 1. 기존에 이미 기간 선택(from과 to 모두 존재)이 완료되었던 상태에서 세 번째 클릭이 들어온 경우 -> 무조건 새로운 시작일로 지정
-        if (currentRangeSelected?.from && currentRangeSelected?.to && !isSelectingEnd) {
-          const nextFrom = selectedDay;
+        // 3. 기존에 이미 기간 선택(from과 to 모두 존재)이 완료되었던 상태에서 세 번째 클릭이 들어온 경우 -> 무조건 새로운 시작일로 지정
+        if (fromDate && toDate && !isSelectingEnd) {
+          const nextFrom = clickedDay;
           const nextTo = new Date(nextFrom);
           nextTo.setDate(nextTo.getDate() + offset);
 
@@ -451,12 +513,11 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
           return;
         }
 
-        // 2. 종료일 대기 상태이거나, 한쪽만 채워져 있는 경우
-        if (isSelectingEnd && currentRangeSelected?.from) {
-          const fromDate = currentRangeSelected.from;
-          if (selectedDay < fromDate) {
+        // 4. 종료일 대기 상태이거나, 한쪽만 채워져 있는 경우
+        if (isSelectingEnd && fromDate) {
+          if (clickedDay < fromDate) {
             // 클릭한 날짜가 시작일보다 전인 경우 -> 새로운 시작일로 지정하고 종료일은 자동 +offset일 계산
-            const nextFrom = selectedDay;
+            const nextFrom = clickedDay;
             const nextTo = new Date(nextFrom);
             nextTo.setDate(nextTo.getDate() + offset);
 
@@ -467,7 +528,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
             onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
           } else {
             // 클릭한 날짜가 시작일보다 같거나 후인 경우 -> 종료일로 지정하고 완료
-            const nextTo = selectedDay;
+            const nextTo = clickedDay;
             setSelected({ from: fromDate, to: nextTo });
             setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
             setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
@@ -477,7 +538,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
           }
         } else {
           // 시작일 선택 단계
-          const nextFrom = selectedDay;
+          const nextFrom = clickedDay;
           const nextTo = new Date(nextFrom);
           nextTo.setDate(nextTo.getDate() + offset);
 
@@ -899,7 +960,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}
-              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
+              className="border-none"
             />
           ) : mode === 'range' ? (
             <Calendar
@@ -914,7 +975,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}
-              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
+              className="border-none"
               required={true}
             />
           ) : mode === 'multiple' ? (
@@ -928,7 +989,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}
-              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
+              className="border-none"
               required={required}
             />
           ) : (
@@ -943,7 +1004,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}
-              className="border-none [&_.rdp-cell_selected]:bg-[#FF5C2E] [&_.rdp-cell_selected]:text-white [&_.rdp-range_middle]:bg-[#FF5C2E33] [&_.rdp-day_range_start]:bg-[#FF5C2E] [&_.rdp-day_range_end]:bg-[#FF5C2E] [&_.rdp-day_range_start]:text-white [&_.rdp-day_range_end]:text-white"
+              className="border-none"
             />
           )}
         </PopoverContent>

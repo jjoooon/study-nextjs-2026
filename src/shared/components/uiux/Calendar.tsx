@@ -249,9 +249,9 @@ function Calendar({
           'group/day relative h-full w-full select-none px-1 text-center grid place-items-center',
           defaultClassNames.day
         ),
-        range_start: cn('bg-accent rounded-l-md', defaultClassNames.range_start),
-        range_middle: cn('rounded-none', defaultClassNames.range_middle),
-        range_end: cn('bg-accent rounded-r-md', defaultClassNames.range_end),
+        range_start: cn(defaultClassNames.range_start),
+        range_middle: cn(defaultClassNames.range_middle),
+        range_end: cn(defaultClassNames.range_end),
         today: cn('relative', defaultClassNames.today),
         outside: cn('text-muted-foreground aria-selected:text-muted-foreground', defaultClassNames.outside),
         disabled: cn('text-muted-foreground opacity-50', defaultClassNames.disabled),
