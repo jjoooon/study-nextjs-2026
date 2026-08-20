@@ -2531,3 +2531,10 @@ export function AsyncTooltipButton({
     </Tooltip>
   );
 }
+
+export type TwoRadioCellRendererOptions = {
+  trueLabel?: string;
+  falseLabel?: string;
+  trueValue?: string;
+  falseValue?: string;
+};

@@ -15,7 +15,6 @@ import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { createExpiryCellRenderer } from '@grid/CellRenderers';
 import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
@@ -23,6 +22,7 @@ import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect } from '@uiux/NativeSelect';
+import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 import '@/shared/lib/agGridPub';
 
@@ -33,8 +33,7 @@ type DummyData1Type = {
   field2: string;
   field3: number;
   field4: number;
-  field5: number;
-  field6: boolean;
+  field5: boolean;
 };
 const DummyData1: DummyData1Type[] = [
   {
@@ -44,8 +43,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '나눔의 행복(상해사망)',
     field3: 50000,
     field4: 1,
-    field5: 1,
-    field6: false,
+    field5: true,
   },
   {
     id: 2,
@@ -54,8 +52,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '나눔의 행복(상해사망)',
     field3: 50000,
     field4: 2,
-    field5: 2,
-    field6: true,
+    field5: false,
   },
   {
     id: 3,
@@ -64,8 +61,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '통합암(4대유사암제외) 진단비',
     field3: 50000,
     field4: 3,
-    field5: 3,
-    field6: false,
+    field5: true,
   },
   {
     id: 4,
@@ -74,8 +70,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '나눔의 행복(상해사망)',
     field3: 50000,
     field4: 4,
-    field5: 3,
-    field6: false,
+    field5: true,
   },
   {
     id: 5,
@@ -84,8 +79,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '나눔의 행복(상해사망)',
     field3: 50000,
     field4: 4,
-    field5: 1,
-    field6: true,
+    field5: false,
   },
   {
     id: 6,
@@ -94,8 +88,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '나눔의 행복(상해사망)',
     field3: 50000,
     field4: 6,
-    field5: 1,
-    field6: false,
+    field5: true,
   },
   ...Array.from({ length: 19 }, (_, i) => ({
     id: 7 + i,
@@ -104,14 +97,55 @@ const DummyData1: DummyData1Type[] = [
     field2: `치료담보 ${7 + i}`,
     field3: 50000,
     field4: 7 + i,
-    field5: 1,
-    field6: false,
+    field5: i % 2 === 0,
   })),
 ];
 
+const TwoRadioCellRenderer = (params: ICellRendererParams<DummyData1Type>) => {
+  const rowId = params.node?.rowIndex ?? params.data?.id ?? 0;
+  const initialVal = params.data?.field5 !== false ? 'option1' : 'option2';
+  const [val, setVal] = React.useState<string>(initialVal);
+
+  React.useEffect(() => {
+    const currentVal = params.data?.field5 !== false ? 'option1' : 'option2';
+    setVal(currentVal);
+  }, [params.data?.field5, params.value]);
+
+  const handleChange = (newVal: string) => {
+    setVal(newVal);
+    const boolVal = newVal === 'option1';
+    if (params.node) {
+      try {
+        params.node.setDataValue('field5', boolVal);
+      } catch {
+        // ignore
+      }
+    }
+    params.setValue?.(boolVal);
+  };
+
+  return (
+    <div className="flex items-center justify-center h-full w-full z-50">
+      <RadioGroup
+        className="gap-2 flex items-center justify-center"
+        value={val}
+        onValueChange={handleChange}
+        width="auto"
+        name={`radio-group-ltpa660-${rowId}`}
+      >
+        <RadioGroupItem color="primary" id={`d1-${rowId}`} size="lg" value="option1" variant="default">
+          필수
+        </RadioGroupItem>
+        <RadioGroupItem color="primary" id={`d2-${rowId}`} size="lg" value="option2" variant="default">
+          제외
+        </RadioGroupItem>
+      </RadioGroup>
+    </div>
+  );
+};
+
 export default function Ltpa660Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
   const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
   const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
 
@@ -140,6 +174,7 @@ export default function Ltpa660Section() {
   const handleLoadReset = React.useCallback(() => {
     handleLoadResetDefault();
   }, [handleLoadResetDefault]);
+
   // 2026-06-01 minWidth, flex 수정, valueParser, valueFormatter 추가
   const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
     () => [
@@ -169,7 +204,7 @@ export default function Ltpa660Section() {
         field: 'field3',
         flex: 1,
         minWidth: attributeColumnWidth(80),
-        cellClass: 'text-right',
+        cellClass: 'text-center',
         valueFormatter: numberValueFormatter<DummyData1Type>,
       },
       {
@@ -180,31 +215,17 @@ export default function Ltpa660Section() {
         cellClass: 'text-center',
       },
       {
-        headerName: '순위조정',
+        headerName: '담보추천 구분코드',
         field: 'field5',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
-        cellClass: 'text-center editable-cell',
-        editable: true,
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-          values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        },
-        valueParser: (params) => Number(params.newValue), // 저장 시 숫자로
-        valueFormatter: (params) => String(params.value ?? ''), // 표시 시 문자열로
-        cellRenderer: getExpiryRenderer('center'),
-      },
-      {
-        headerName: '추천제외',
-        field: 'field6',
-        width: attributeColumnWidth(70),
-        editable: true,
-        cellDataType: 'boolean',
-        cellRenderer: 'agCheckboxCellRenderer',
-        cellEditor: 'agCheckboxCellEditor',
+        minWidth: attributeColumnWidth(160),
+        cellClass: 'text-center',
+        cellRenderer: TwoRadioCellRenderer,
+        suppressCellSelection: true,
+        suppressKeyboardEvent: () => true,
       },
     ],
-    [attributeColumnWidth, getExpiryRenderer]
+    [attributeColumnWidth]
   );
 
   return (
