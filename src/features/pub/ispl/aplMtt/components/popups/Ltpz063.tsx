@@ -16,6 +16,7 @@ import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, DatePickerCellEditor, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
+import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
@@ -73,19 +74,19 @@ type WonUnitCellEditorProps = {
 };
 
 // value3(추가계약정보) 탭에서 행 타입별 편집/표시 규칙에 사용
-const TYPE3_NUMBER_FORMAT_TYPES = new Set(['보험료', '보험가입금액', '해약환급금']);
+const TYPE3_NUMBER_FORMAT_TYPES = new Set(['보험료', '보험가입금액', '해약환급금/기준연월']);
 const TYPE3_EDITABLE_TEXT_TYPES = new Set([
   '상품명',
   '계약상태',
   '피보험자',
   '납입주기/기간',
   '주요보장내용',
-  '예정이율',
+  '예정이율/기준연월',
   '보험목적',
   '면책사유 및 면책사항',
 ]);
-const EDITABLE_TARGET_TYPES = new Set(['해약환급금', '예정이율', '보험목적', '면책사유 및 면책사항']);
-const LEFT_ALIGN_TARGET_TYPES = new Set(['보험료', '보험가입금액', '해약환급금', '예정이율']);
+const EDITABLE_TARGET_TYPES = new Set(['해약환급금/기준연월', '예정이율/기준연월', '보험목적', '면책사유 및 면책사항']);
+const LEFT_ALIGN_TARGET_TYPES = new Set(['보험료', '보험가입금액', '해약환급금/기준연월', '예정이율/기준연월']);
 
 const DummyData: DummyDataType[] = [
   {
@@ -107,7 +108,7 @@ const DummyData: DummyDataType[] = [
   {
     id: 3,
     type: '계약상태(발생일)',
-    ourInsurance1: '신규',
+    ourInsurance1: '청약중',
     ourInsurance2: '해지(2024-03-01)',
     externalInsurance1: '실효(2024-03-01)',
     externalInsurance2: '철회(2024-03-01)',
@@ -162,15 +163,15 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 10,
-    type: '해약환급금',
-    ourInsurance1: '3,000,000원',
-    ourInsurance2: '3,000,000원',
+    type: '해약환급금/기준연월',
+    ourInsurance1: '신계약 해당사항 없음',
+    ourInsurance2: '',
     externalInsurance1: '',
     externalInsurance2: '',
   },
   {
     id: 11,
-    type: '예정이율',
+    type: '예정이율/기준연월',
     ourInsurance1: '5.99%',
     ourInsurance2: '5.99%',
     externalInsurance1: '',
@@ -279,15 +280,15 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 10,
-    type: '해약환급금',
-    ourInsurance1: '3,000,000원',
+    type: '해약환급금/기준연월',
+    ourInsurance1: '신계약 해당사항 없음',
     ourInsurance2: '3,000,000원',
     externalInsurance1: '',
     externalInsurance2: '',
   },
   {
     id: 11,
-    type: '예정이율',
+    type: '예정이율/기준연월',
     ourInsurance1: '5.99%',
     ourInsurance2: '5.99%',
     externalInsurance1: '',
@@ -406,15 +407,15 @@ const DummyData3: DummyDataType3[] = [
   },
   {
     id: 10,
-    type: '해약환급금',
-    ourInsurance1: '30,000,000원',
+    type: '해약환급금/기준연월',
+    ourInsurance1: '신계약 해당사항 없음',
     externalInsurance1: '3,000만원',
     externalInsurance2: '3,000만원',
     externalInsurance3: '3,000만원',
   },
   {
     id: 11,
-    type: '예정이율',
+    type: '예정이율/기준연월',
     ourInsurance1: '5.99%',
     externalInsurance1: '5.99%',
     externalInsurance2: '5.99%',
@@ -476,8 +477,9 @@ export const Ltpz063 = () => {
   const isType3CoverageAmountRow = (row: DummyDataType3 | undefined) => row?.type === '보험가입금액';
   const isType3NumberFormatRow = (row: DummyDataType3 | undefined) => TYPE3_NUMBER_FORMAT_TYPES.has(getTypeLabel(row));
   const isType3EditableTextRow = (row: DummyDataType3 | undefined) => TYPE3_EDITABLE_TEXT_TYPES.has(getTypeLabel(row));
-  const isMainRefundRow = (row: { type: string | number } | undefined) => getTypeLabel(row) === '해약환급금';
-  const isMainInterestRateRow = (row: { type: string | number } | undefined) => getTypeLabel(row) === '예정이율';
+  const isMainRefundRow = (row: { type: string | number } | undefined) => getTypeLabel(row) === '해약환급금/기준연월';
+  const isMainInterestRateRow = (row: { type: string | number } | undefined) =>
+    getTypeLabel(row) === '예정이율/기준연월';
   const isType3EditableRow = (row: DummyDataType3 | undefined) =>
     !!row &&
     (isType3CompanyRow(row) || isType3DateRow(row) || isType3NumberFormatRow(row) || isType3EditableTextRow(row));
@@ -567,11 +569,11 @@ export const Ltpz063 = () => {
       return value;
     }
 
-    if (getTypeLabel(row) === '해약환급금') {
+    if (getTypeLabel(row) === '해약환급금/기준연월') {
       return trimmed.endsWith('원') ? trimmed : `${trimmed}원`;
     }
 
-    if (getTypeLabel(row) === '예정이율') {
+    if (getTypeLabel(row) === '예정이율/기준연월') {
       return trimmed.endsWith('%') ? trimmed : `${trimmed}%`;
     }
 
@@ -989,21 +991,20 @@ export const Ltpz063 = () => {
               <b>주의사항</b>
             </Typo>
             <BulletList color={'warning'} size="sm">
-              <BulletListItem>
-                하단의 비교안내 정보는 고객님께 <b>정확한 설명 필요.</b> (고객에게 유리한 내용만 설명하는 행위 금지)
+              <BulletListItem before="1." type="symbols">
+                {"보험회사 면책사유 및 면책사항은 '상품설명서 참조'등의 단순 기재가 불가 (금감원 주의사항)"}
               </BulletListItem>
-              <BulletListItem>
-                항목별 공란은 고객님께 확인 후 <b>정확하게 기재</b>. (별도 설명자료 첨부 가능)
+              <BulletListItem before="2." type="symbols">
+                조회기준일에 따라 일부 기존계약은 계약상태가 다르게 표기될 수 있음
               </BulletListItem>
-              <BulletListItem>
-                휴대폰, 태블릿, 음성녹음 서명의 경우 전자서명 요청 전 모든 공란 기입 필수 (공란 존재 시 발송 불가) /
-                문서서명은 모든 공란 기입 후 스캔
-                <BulletItem color="warning" size="sm" type="ref" className="mt-1">
-                  {"보험회사 면책사유 및 면책사항은 '상품설명서 참조' 등의 단순 기재가 불가. (* 금감원 주의사항)"}
-                </BulletItem>
-                <BulletItem color="warning" size="sm" type="ref">
-                  조회기준일에 따라 일부 기존계약은 계약상태가 다르게 표기될 수 있음
-                </BulletItem>
+              <BulletListItem before="3." type="symbols">
+                해약환급률 및 예정이자율은 전전월말 기준 자료이므로 최근 2개월 내 체결계약은 데이터가 없을 수 있음
+                (공란인 경우 고객 확인 후 기재 필수)
+              </BulletListItem>
+              <BulletListItem before="4." type="symbols">
+                {
+                  '예정이자율은 금리연동형 상품의 경우 공시이율, 금리확정형 상품의 경우 적용이율이며, 이율 미적용 계약의 경우 "적용이율 없음" 으로 표기됨.'
+                }
               </BulletListItem>
             </BulletList>
           </Gcol>
