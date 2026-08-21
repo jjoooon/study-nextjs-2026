@@ -42,6 +42,11 @@ PageTitleProduct는 상품 설계에 특화된 확장형, PageTitle은 기본형
               type: '(value: boolean) => void',
               description: '간편/상세 모드 토글 시 호출되는 콜백 함수',
             },
+            {
+              prop: 'memoButtonColor',
+              type: "'gray' | 'primary'",
+              description: '메모 버튼 색상 스타일 선택 (gray: 회색 테두리, primary: 블루/주색 테두리)',
+            },
           ]}
         />
       ),
@@ -57,6 +62,12 @@ PageTitleProduct는 상품 설계에 특화된 확장형, PageTitle은 기본형
       control: 'boolean',
       description: '간편/상세 모드 상태',
       table: { category: 'State' },
+    },
+    memoButtonColor: {
+      control: { type: 'inline-radio' },
+      options: ['gray', 'primary'],
+      description: '메모 버튼 색상 타입',
+      table: { category: 'Appearance' },
     },
     onSimpleModeChange: {
       action: 'simpleModeChanged',
@@ -79,6 +90,7 @@ export const Default: Story = {
     </div>
   ),
   args: {
+    memoButtonColor: 'gray',
     data: {
       simpleMode: true,
       title: '한화 시그니처 여성 건강보험 3.0 2504',

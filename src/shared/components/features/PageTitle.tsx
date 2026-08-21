@@ -31,6 +31,7 @@ type PageTitleProps = {
   data: DefaultPageTitle;
   simpleMode?: boolean;
   onSimpleModeChange?: (value: boolean) => void;
+  memoButtonColor?: 'gray' | 'primary';
 };
 
 export function PageTitle({ data }: PageTitleProps) {
@@ -77,7 +78,7 @@ export function PageTitle({ data }: PageTitleProps) {
   );
 }
 
-export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageTitleProps) {
+export function PageTitleProduct({ data, simpleMode, onSimpleModeChange, memoButtonColor = 'gray' }: PageTitleProps) {
   // 상품형 타이틀도 동일하게 안전한 기본 객체를 만들어 예외 상황을 방지한다.
   const safeData = data ?? {};
 
@@ -138,8 +139,7 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange }: PageT
 
       {/* 우측 영역: 메모 버튼과 설계번호/계약자 정보를 입력하는 폼을 배치한다. */}
       <Grow className="gap-2.5 shrink-0" placement="ec">
-        <Button variant="outlined" color="gray" size="md">
-          {/* M1. 아이콘 수정 */}
+        <Button variant="outlined" color={memoButtonColor} size="md">
           <PenIcon size={12} />
           메모
         </Button>

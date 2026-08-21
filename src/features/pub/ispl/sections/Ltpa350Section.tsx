@@ -184,9 +184,10 @@ const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
 export interface Ltpa350SectionProps {
   buttonImageSrc?: string;
   borderWidth?: number | string;
+  memoButtonColor?: 'gray' | 'primary';
 }
 
-export default function Ltpa350Section({ buttonImageSrc, borderWidth }: Ltpa350SectionProps = {}) {
+export default function Ltpa350Section({ buttonImageSrc, borderWidth, memoButtonColor }: Ltpa350SectionProps = {}) {
   // simpleMode: 페이지를 간략 모드로 보여줄지 여부 (PageTitle와 step별 본문에서 같이 사용)
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
 
@@ -380,7 +381,14 @@ export default function Ltpa350Section({ buttonImageSrc, borderWidth }: Ltpa350S
         // - data: 상품명/플랜번호/계약자 등 렌더링 데이터
         // - simpleMode: 간략모드 현재값
         // - onSimpleModeChange: 토글 이벤트 핸들러
-        pageTitle={<PageTitle data={refinedPageTitle} simpleMode={simpleMode} onSimpleModeChange={setSimpleMode} />}
+        pageTitle={
+          <PageTitle
+            data={refinedPageTitle}
+            simpleMode={simpleMode}
+            onSimpleModeChange={setSimpleMode}
+            memoButtonColor={memoButtonColor}
+          />
+        }
         // pageProcess: 단계 이동 UI 슬롯
         // - items: 단계 목록(라벨/step)
         // - completeSteps: 완료 표시할 step 배열
