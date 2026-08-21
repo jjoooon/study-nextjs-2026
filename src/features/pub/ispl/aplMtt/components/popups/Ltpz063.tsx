@@ -983,11 +983,6 @@ export const Ltpz063 = () => {
                 </FormCell>
               </FormRow>
             </FormTable>
-            <Grow>
-              <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
-                검색
-              </Button>
-            </Grow>
           </Grow>
           <Gcol className="w-full" placement="ss" variant="box-warning">
             <Typo icon="warning" variant="body-sm">
