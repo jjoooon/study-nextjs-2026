@@ -219,7 +219,7 @@ export default function Ltpa650Section() {
       {
         headerName: '세부',
         field: 'field2',
-        flex: 5,
+        flex: 8,
         minWidth: attributeColumnWidth(360),
         autoHeight: true,
       },
