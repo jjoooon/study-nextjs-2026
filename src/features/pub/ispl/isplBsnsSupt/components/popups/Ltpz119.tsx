@@ -133,7 +133,7 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 export const Ltpz119 = () => {
-  const pageSize = 4;
+  const pageSize = 5;
   const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(() => DummyData2.slice(0, pageSize));
   const [loadedCount, setLoadedCount] = React.useState(pageSize);
   const [totalCount, setTotalCount] = React.useState(DummyData2.length);

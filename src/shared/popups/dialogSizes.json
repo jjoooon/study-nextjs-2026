@@ -535,7 +535,7 @@
     "id": "LTPZ083",
     "title": "플랜선택",
     "width": 560,
-    "height": 560,
+    "height": 360,
     "isIframe": true
   },
   {
@@ -591,7 +591,7 @@
     "id": "LTPZ091",
     "title": "장기심사가이드 더보기",
     "width": 1180,
-    "height": 388,
+    "height": 448,
     "isIframe": true
   },
   {
@@ -731,28 +731,28 @@
     "id": "LTPZ116",
     "title": "동시가입누적체크",
     "width": 960,
-    "height": 540,
+    "height": 526,
     "isIframe": true
   },
   {
     "id": "LTPZ117",
     "title": "동시가입누적상세조건",
     "width": 760,
-    "height": 480,
+    "height": 450,
     "isIframe": true
   },
   {
     "id": "LTPZ118",
     "title": "휴대폰 전자서명 발송이력조회",
     "width": 560,
-    "height": 397,
+    "height": 459,
     "isIframe": true
   },
   {
     "id": "LTPZ119",
     "title": "다운로드 파일 등록",
     "width": 1180,
-    "height": 436,
+    "height": 466,
     "isIframe": true
   },
   {

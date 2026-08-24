@@ -44,7 +44,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection>
+        <DialogSection className="grid-rows-[auto_auto_auto]">
           <Gcol placement={'ss'} gap={2} className="sticky top-0 z-10 bg-[#fff]">
             <Typo variant="body-lg">피보험자의 보험금 지급정보를 조회하는 동의[문자 등의 LMS]를 발송합니다.</Typo>
             <Typo variant="body-lg" weight={'bold'}>
@@ -54,7 +54,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
               지급정보는 민감정보로서 <b>고객권익목적으로만 활용</b>해야 합니다.<br></br> 목적 이외 용도로 활용 또는{' '}
               <b>외부유출 시 법적처벌</b>을 받습니다.
             </Typo>
-            <Grid className="w-full grid-cols-[8rem_2.8rem_8rem_11rem] items-center gap-1 px-5 py-4 bg-[var(--color-gray-5)] rounded-[0.6rem]">
+            <Grid className="w-full grid-cols-[8rem_2.8rem_8rem_11rem] items-center gap-1 px-2.5 py-2 bg-[var(--color-gray-5)] rounded-[0.6rem]">
               <Input value={'1234567'} readOnly />
               <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'} disabled>
                 <SearchIcon color={'var(--color-primary-50)'} />

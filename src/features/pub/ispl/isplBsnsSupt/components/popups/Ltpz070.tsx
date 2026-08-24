@@ -531,7 +531,7 @@ const Ltpz070 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection>
-          <Gcol gap={3}>
+          <Gcol gap={3} placement="ss">
             <TableFold>
               <TableFoldHead title="계약 수익성 상세" />
               <TableFoldBody>

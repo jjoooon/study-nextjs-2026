@@ -2,9 +2,10 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { ColDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import {
   AgGridEmptyComponent,
   createAddRowHandler,
@@ -154,6 +155,8 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
   const activeAddressType = addressType || 'road';
   // 반응형 그리드 열 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const getExpiryRendererA = createExpiryCellRenderer<DummyDataTypeA>;
+  const getExpiryRendererB = createExpiryCellRenderer<DummyDataTypeB>;
 
   // 그리드 A (그룹설정) 제어를 위한 API Ref 및 로우 데이터 상태
   const gridApiRefA = React.useRef<GridApi<DummyDataTypeA> | null>(null);
@@ -186,33 +189,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
     idKey: 'id',
   });
 
-  /**
-   * 2026-05-27 그룹추가시 select 화살표만 노출
-   * 셀렉트(Select) 타입의 편집셀에서 값이 비어있을 때 드롭다운 화살표(ag-icon-small-down)를 표시하여 사용자 편집을 유도하는 공통 렌더러
-   */
-  const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
-    const value = params.value == null ? '' : String(params.value);
-    const hasValue = value.trim().length > 0;
-
-    // 값이 존재하면 가운데 정렬 텍스트 출력
-    if (hasValue) {
-      return (
-        <div className="flex h-full w-full items-center justify-center px-1">
-          <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
-        </div>
-      );
-    }
-
-    // 값이 없을 때는 오른쪽에 드롭다운 모양의 다운 아로우 아이콘 출력
-    return (
-      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
-        <span className="block min-w-0 flex-1" />
-        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
-      </div>
-    );
-  }, []);
-
-  // 2026-05-27 select 부분만 cellRenderer: selectCellRenderer, 추가
+  // 2026-05-27 select 부분만 cellRenderer: getExpiryRendererA('center'), 추가
   // 그리드 A (그룹설정) 컬럼 정의
   const columnDefsA = React.useMemo<ColDef<DummyDataTypeA>[]>(
     () => [
@@ -242,7 +219,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         cellClass: 'editable-cell text-center',
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['남자', '여자'] },
-        cellRenderer: selectCellRenderer,
+        cellRenderer: getExpiryRendererA('center'),
         sortable: false,
       },
       {
@@ -289,7 +266,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         cellClass: 'editable-cell text-center',
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['text1', 'text2'] },
-        cellRenderer: selectCellRenderer,
+        cellRenderer: getExpiryRendererA('center'),
         sortable: false,
       },
       {
@@ -312,7 +289,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         sortable: false,
       },
     ],
-    [attributeColumnWidth, selectCellRenderer]
+    [attributeColumnWidth, getExpiryRendererA]
   );
 
   // 그리드 B (피보험자명세) 제어를 위한 API Ref 및 로우 데이터 상태
@@ -373,7 +350,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         pinned: 'left', // 좌측 스크롤 고정
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['선택1', '선택2'] },
-        cellRenderer: selectCellRenderer,
+        cellRenderer: getExpiryRendererB('center'),
       },
       {
         headerName: '이름',
@@ -443,7 +420,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         cellClass: 'editable-cell text-center',
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['선택1', '선택2'] },
-        cellRenderer: selectCellRenderer,
+        cellRenderer: getExpiryRendererB('center'),
       },
       {
         headerName: '연령',
@@ -509,7 +486,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         cellClass: 'editable-cell text-center',
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['선택1', '선택2'] },
-        cellRenderer: selectCellRenderer,
+        cellRenderer: getExpiryRendererB('center'),
       },
       {
         headerName: '이륜차',
@@ -520,7 +497,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         cellClass: 'editable-cell text-center',
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['선택1', '선택2'] },
-        cellRenderer: selectCellRenderer,
+        cellRenderer: getExpiryRendererB('center'),
       },
       {
         headerName: '병력여부',
@@ -534,7 +511,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         },
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['있음', '없음'] },
-        cellRenderer: selectCellRenderer,
+        cellRenderer: getExpiryRendererB('center'),
       },
       {
         headerName: '치아병력',
@@ -545,7 +522,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         cellClass: 'editable-cell text-center',
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['선택1', '선택2'] },
-        cellRenderer: selectCellRenderer,
+        cellRenderer: getExpiryRendererB('center'),
       },
       {
         headerName: '알릴사항',
@@ -593,7 +570,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         sortable: false,
       },
     ],
-    [attributeColumnWidth, selectCellRenderer]
+    [attributeColumnWidth, getExpiryRendererB]
   );
 
   return (
