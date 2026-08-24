@@ -232,7 +232,7 @@ const DummyData2: DummyDataType2[] = [
   {
     id: 3,
     type: '계약상태',
-    ourInsurance1: '신규',
+    ourInsurance1: '청약중',
     ourInsurance2: '정상',
     externalInsurance1: '정상',
     externalInsurance2: '정상',
@@ -362,7 +362,7 @@ const DummyData3: DummyDataType3[] = [
   {
     id: 3,
     type: '계약상태',
-    ourInsurance1: '신규',
+    ourInsurance1: '청약중',
     externalInsurance1: '계약상태',
     externalInsurance2: '계약상태',
     externalInsurance3: '계약상태',
@@ -675,7 +675,7 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
       {isEditingLeft ? (
         <Grow className="w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] justify-start px-1 flex items-center gap-1 h-full overflow-hidden">
           <input
-            className="ag-input-field-input ag-text-field-input min-w-0 flex-1 text-right! outline-none focus:border-primary-500 border border-gray-300 rounded px-1 text-xs"
+            className="ag-input-field-input ag-text-field-input min-w-0 flex-1 text-right! outline-none focus:border-primary-500 border border-gray-300 rounded px-1 text-xs "
             value={editorValue}
             onChange={(event) => {
               const val = isRefund
@@ -695,7 +695,7 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
         </Grow>
       ) : (
         <Grow
-          className="w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] justify-end pr-1 text-right overflow-hidden cursor-pointer !h-full h-full min-h-[28px] items-center flex self-stretch hover:bg-gray-50/50 transition-colors"
+          className="w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] justify-end pr-1 text-right overflow-hidden cursor-pointer !h-full h-full min-h-[28px] items-center flex self-stretch transition-colors text-[#006ff2]"
           onClick={handleStartLeftEdit}
         >
           {leftContent || '\u00A0'}
@@ -711,7 +711,7 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
           onPointerDown={(e) => e.stopPropagation()}
         >
           <div
-            className="w-full flex items-center justify-center pointer-events-auto"
+            className="w-full flex items-center justify-center pointer-events-auto "
             onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
@@ -728,7 +728,7 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
         </Grow>
       ) : (
         <Grow
-          className="border-l border-solid border-[#ddddde] !h-full h-full pl-1 text-center aspect-auto w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] items-center justify-center overflow-hidden cursor-pointer flex self-stretch min-h-[28px] hover:bg-gray-50/50 transition-colors"
+          className="border-l border-solid border-[#ddddde] !h-full h-full pl-1 text-center aspect-auto w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] items-center justify-center overflow-hidden cursor-pointer flex self-stretch min-h-[28px] transition-colors text-[#006ff2]"
           onClick={(e) => {
             e.stopPropagation();
             setIsEditingRight(true);
