@@ -131,6 +131,7 @@ const Ltpz017 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(110),
         editable: true,
+        cellClass: 'editable-cell',
         cellRenderer: planNameInputRenderer,
       },
       {
@@ -244,6 +245,7 @@ const Ltpz017 = () => {
                   selectionColumnDef={{
                     headerName: '선택',
                     width: attributeColumnWidth(30),
+                    cellClass: 'editable-cell',
                   }}
                   onGridReady={(params) => {
                     params.api.forEachNode((node) => {

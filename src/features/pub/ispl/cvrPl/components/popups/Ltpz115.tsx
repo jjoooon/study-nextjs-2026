@@ -234,7 +234,7 @@ const Ltpz070 = () => {
                   selectionColumnDef={{
                     headerName: '선택',
                     width: 30,
-                    cellClass: 'text-center',
+                    cellClass: 'text-center editable-cell',
                   }}
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
@@ -281,7 +281,7 @@ const Ltpz070 = () => {
                   selectionColumnDef={{
                     headerName: '선택',
                     width: 30,
-                    cellClass: 'text-center',
+                    cellClass: 'text-center editable-cell',
                   }}
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}

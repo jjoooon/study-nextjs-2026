@@ -122,7 +122,7 @@ const Ltpz023 = () => {
                     className={`cursor-pointer ${selectedIdx === i ? '[&>td]:bg-[var(--color-primary-10)]' : ''}`}
                     onClick={() => setSelectedIdx(i)}
                   >
-                    <TableCell className="text-center align-middle">
+                    <TableCell className="text-center align-middle editable-cell">
                       <label
                         className="inline-flex cursor-pointer items-center justify-center w-full h-full"
                         onClick={(e) => e.stopPropagation()}
@@ -145,7 +145,7 @@ const Ltpz023 = () => {
                     <TableCell className="text-center">
                       <b>{i + 1}</b>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="editable-cell">
                       <Input
                         key={i}
                         errorMsg="입력은 필수입니다."
