@@ -761,6 +761,7 @@ const Ltpz059 = () => {
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
+                        cellClass: 'editable-cell',
                       }}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
@@ -787,6 +788,7 @@ const Ltpz059 = () => {
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
+                        cellClass: 'editable-cell',
                       }}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
@@ -813,6 +815,7 @@ const Ltpz059 = () => {
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
+                        cellClass: 'editable-cell',
                       }}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"

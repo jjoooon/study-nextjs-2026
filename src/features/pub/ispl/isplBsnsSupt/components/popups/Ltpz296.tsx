@@ -748,6 +748,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
                     selectionColumnDef={{
                       width: 30,
                       pinned: 'left',
+                      cellClass: 'editable-cell',
                     }}
                     groupHeaderHeight={30}
                     headerHeight={0}

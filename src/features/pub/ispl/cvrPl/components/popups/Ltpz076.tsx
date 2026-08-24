@@ -338,6 +338,7 @@ const Ltpz076 = () => {
                         }}
                         selectionColumnDef={{
                           width: 30,
+                          cellClass: 'editable-cell',
                         }}
                       />
                     </div>
@@ -384,6 +385,7 @@ const Ltpz076 = () => {
                     }}
                     selectionColumnDef={{
                       width: 30,
+                      cellClass: 'editable-cell',
                     }}
                   />
                 </div>

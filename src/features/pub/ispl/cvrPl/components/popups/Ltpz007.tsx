@@ -187,6 +187,7 @@ const Ltpz007 = () => {
         cellClass: 'text-center justify-center',
         cellClassRules: {
           'bg-[var(--color-primary-5)]': (params) => Boolean(params.data?.field02),
+          'editable-cell': (params) => !params.data?.field02,
         },
         autoHeight: false,
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -225,6 +226,7 @@ const Ltpz007 = () => {
         cellClass: 'text-center',
         cellClassRules: {
           'bg-[var(--color-primary-5)]': (params) => Boolean(params.data?.field03),
+          'editable-cell': (params) => !params.data?.field03,
         },
         autoHeight: false,
         cellRenderer: (params: ICellRendererParams<DummyDataType>) => {

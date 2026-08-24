@@ -239,7 +239,7 @@ const Ltpz042 = () => {
     () => ({ mode: 'singleRow' as const, checkboxes: true, enableClickSelection: false }),
     []
   );
-  const selectionColumnDef = React.useMemo(() => ({ headerName: '선택', width: 30 }), []);
+  const selectionColumnDef = React.useMemo(() => ({ headerName: '선택', width: 30, cellClass: 'editable-cell' }), []);
 
   return (
     <Dialog open>
