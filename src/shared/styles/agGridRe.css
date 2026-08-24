@@ -458,7 +458,7 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   gap: 0.4rem;
 }
 .ag-picker-field-display {
- text-align: left;
+  text-align: left;
 }
 /* .ag-picker-field-wrapper .ag-picker-field-display {
   text-align: right;
@@ -962,8 +962,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   text-align: center;
 }
 .ag-header-cell,
-.ag-header-group-cell{
-  padding:0;
+.ag-header-group-cell {
+  padding: 0;
 }
 .ag-header-group-cell .ag-header-cell-comp-wrapper .ag-header-group-text {
   overflow: visible;

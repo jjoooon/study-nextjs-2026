@@ -45,7 +45,7 @@ import {
 } from '@grid/CellRenderers';
 
 import { HeaderWithUnit, AgGridProductNameHeader } from '@grid/HeadRenderers';
-import { ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
+import { ResetIcon, SizeIcon, SizeOffIcon, PaperIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -322,7 +322,7 @@ export function Ltpa35002a({
     [setRowData]
   );
 
-  const [cellWidth, setCellWidth] = useState([30, 70, 74, 70, 80, 64, 50, 30]);
+  const [cellWidth, setCellWidth] = useState([30, 70, 74, 70, 84, 68, 50, 30]);
 
   // --- 그리드 컬럼 정의 (인보험 뷰) ---
   // M5. 순서변경
@@ -430,7 +430,7 @@ export function Ltpa35002a({
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'tracking-tighter';
-          return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
+          return params.data?.isEditedField5 === true ? `${base} editable-cell` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField5 === true;
@@ -449,7 +449,7 @@ export function Ltpa35002a({
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           const base = 'tracking-tighter';
-          return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
+          return params.data?.isEditedField6 === true ? `${base} editable-cell` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField6 === true;
@@ -489,6 +489,10 @@ export function Ltpa35002a({
     ],
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, groupEditableRenderer]
   );
+
+  //보장패키지 선택여부에 따라
+  const [is보장패키지, set보장패키지] = useState(false);
+
   return (
     <Grid className="w-full grid-rows-[minmax(0,1fr)_auto]">
       <LayoutMainBody className="ltpa35002a-LayoutMainBody">
@@ -498,15 +502,17 @@ export function Ltpa35002a({
           <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
             <Grow className="gap-[0.2rem]" placement={'bwc'}>
               <Grow className="gap-[0.6rem]" placement={'sc'}>
-                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
+                <Button variant={'contained'} color={is보장패키지 ? 'primary' : 'coolgray-light'} size={'md'}>
+                  <PaperIcon />
                   보장패키지
                 </Button>
                 <Divider dir="col" color="primary-light" />
 
                 <CheckboxGroup
-                  className="gap-[0.2rem] flex-wrap type-small"
+                  className="gap-[0.2rem] flex-wrap"
                   color="primary"
-                  size="lg"
+                  size="md"
+                  icon={false}
                   variant="button"
                   width="auto"
                 >
@@ -530,9 +536,10 @@ export function Ltpa35002a({
                 <Divider dir="col" color="primary-light" />
 
                 <CheckboxGroup
-                  className="gap-[0.2rem] flex-nowrap shrink-0 type-small"
+                  className="gap-[0.2rem] flex-nowrap shrink-0"
                   color="primary"
-                  size="lg"
+                  size="md"
+                  icon={false}
                   variant="button"
                   width="auto"
                 >
