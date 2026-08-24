@@ -484,6 +484,7 @@ export default function Ltpa110Section() {
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
+                        cellClass: 'editable-cell',
                       }}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
@@ -543,6 +544,7 @@ export default function Ltpa110Section() {
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
+                        cellClass: 'editable-cell',
                       }}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}

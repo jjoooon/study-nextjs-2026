@@ -760,6 +760,11 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
       return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}-${numericValue.slice(6, 8)} ~ ${numericValue.slice(8, 12)}-${numericValue.slice(12, 14)}-${numericValue.slice(14, 16)}`;
     }
 
+    if (monthOnly) {
+      if (numericValue.length <= 4) return numericValue;
+      return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}`;
+    }
+
     if (numericValue.length <= 4) return numericValue;
     if (numericValue.length <= 6) return `${numericValue.slice(0, 4)}-${numericValue.slice(4)}`;
     return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}-${numericValue.slice(6, 8)}`;

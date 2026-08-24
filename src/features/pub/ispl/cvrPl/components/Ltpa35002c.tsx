@@ -159,7 +159,7 @@ export function Ltpa35002c({
     () => ({
       headerName: '선택',
       width: 30,
-      cellClass: 'text-center p-0!',
+      cellClass: 'text-center p-0! editable-cell',
       cellClassRules: {
         'pointer-events-none': (params: CellClassParams<AgGridRow>) => !!params.data?.locked,
       },

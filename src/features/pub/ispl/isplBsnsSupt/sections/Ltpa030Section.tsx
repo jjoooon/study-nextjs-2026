@@ -806,6 +806,7 @@ export default function Ltpa030Section() {
                         selectionColumnDef={{
                           headerName: '√',
                           width: 30,
+                          cellClass: 'editable-cell',
                         }}
                         // 행추가 된 rowCell
                         getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
@@ -855,6 +856,7 @@ export default function Ltpa030Section() {
                           selectionColumnDef={{
                             headerName: '√',
                             width: 30,
+                            cellClass: 'editable-cell',
                           }}
                           // 행추가 된 rowCell
                           getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}

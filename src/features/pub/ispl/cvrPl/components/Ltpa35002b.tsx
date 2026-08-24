@@ -222,7 +222,7 @@ export function Ltpa35002b({
   const selectionColumnDef = useMemo(
     () => ({
       width: 30,
-      cellClass: 'text-center p-0!',
+      cellClass: 'text-center p-0! editable-cell',
       cellClassRules: {
         'pointer-events-none': (params: CellClassParams<AgGridRow>) => !!params.data?.locked,
       },
