@@ -280,7 +280,7 @@ export default function Ltpa301Section() {
                       }}
                       selectionColumnDef={{
                         width: 30,
-                        cellClass: 'text-center p-0!',
+                        cellClass: 'text-center p-0! editable-cell',
                         cellClassRules: {
                           'pointer-events-none': (params) => !!params.data?.locked,
                         },

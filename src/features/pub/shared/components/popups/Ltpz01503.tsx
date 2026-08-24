@@ -257,6 +257,9 @@ const Ltpz01503 = () => {
                   enableClickSelection: false,
                   enableSelectionWithoutKeys: true,
                 }}
+                selectionColumnDef={{
+                  cellClass: 'editable-cell',
+                }}
                 onGridReady={(params) => {
                   gridApiRef.current = params.api;
                 }}

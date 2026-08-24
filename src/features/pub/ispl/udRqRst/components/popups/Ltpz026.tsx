@@ -697,7 +697,7 @@ const Ltpz026 = () => {
                       }}
                       selectionColumnDef={{
                         width: 30,
-                        cellClass: 'text-center',
+                        cellClass: 'text-center editable-cell',
                       }}
                       onGridReady={(params) => {
                         params.api.forEachNode((node) => {
