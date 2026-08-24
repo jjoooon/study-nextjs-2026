@@ -51,6 +51,34 @@ const Ltpz117 = () => {
       field3: '통풍진단비',
       field4: 600000,
     },
+    {
+      id: 3,
+      field1: '김한화',
+      field2: '진단/수술',
+      field3: '통풍진단비',
+      field4: 600000,
+    },
+    {
+      id: 4,
+      field1: '김한화',
+      field2: '진단/수술',
+      field3: '통풍진단비',
+      field4: 600000,
+    },
+    {
+      id: 5,
+      field1: '김한화',
+      field2: '진단/수술',
+      field3: '통풍진단비',
+      field4: 600000,
+    },
+    {
+      id: 6,
+      field1: '김한화',
+      field2: '진단/수술',
+      field3: '통풍진단비',
+      field4: 600000,
+    },
   ];
   const columnDefs: ColDef<DummyDataType>[] = [
     {

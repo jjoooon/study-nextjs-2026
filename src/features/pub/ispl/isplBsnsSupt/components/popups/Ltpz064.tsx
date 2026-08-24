@@ -536,6 +536,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
                     }}
                     selectionColumnDef={{
                       width: 30,
+                      cellClass: 'editable-cell',
                     }}
                     groupHeaderHeight={30}
                     headerHeight={0}

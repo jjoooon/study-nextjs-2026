@@ -731,14 +731,14 @@
     "id": "LTPZ116",
     "title": "동시가입누적체크",
     "width": 960,
-    "height": 496,
+    "height": 540,
     "isIframe": true
   },
   {
     "id": "LTPZ117",
     "title": "동시가입누적상세조건",
     "width": 760,
-    "height": 360,
+    "height": 480,
     "isIframe": true
   },
   {
