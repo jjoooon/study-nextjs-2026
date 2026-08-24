@@ -3,9 +3,10 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import {
   AgGridEmptyComponent,
@@ -193,6 +194,7 @@ const DummyData: DummyDataType[] = [
 
 export default function Ltpa500Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType>;
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
   const {
@@ -218,16 +220,6 @@ export default function Ltpa500Section() {
   }, [handleLoadResetDefault]);
   const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
 
-  const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
-    const value = params.value == null ? '' : String(params.value);
-
-    return (
-      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
-        <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
-        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
-      </div>
-    );
-  }, []);
   // AgGrid Column
   // 2026-05-29 수정 cellClass 수정
   // 2026-06-01 width, flex 수정 및 cellClass 수정
@@ -306,12 +298,12 @@ export default function Ltpa500Section() {
     {
       headerName: '승인',
       field: 'field11',
-      width: attributeColumnWidth(85),
+      width: attributeColumnWidth(70),
       cellClass: 'editable-cell text-center',
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '승인', '거절'] },
-      cellRenderer: selectCellRenderer,
+      cellRenderer: getExpiryRenderer('center'),
     },
   ];
 

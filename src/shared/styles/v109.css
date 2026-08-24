@@ -1083,12 +1083,12 @@
   border-width: 0;
 }
 
-.v109 [class*='first:border-l-0']:first,
+.v109 [class*='first:border-l-0']:first-child,
 .v109 .first\:border-l-0:first-child {
   border-left-width: 0;
 }
 
-.v109 [class*='last:border-r-0']:last,
+.v109 [class*='last:border-r-0']:last-child,
 .v109 .last\:border-r-0:last-child {
   border-right-width: 0;
 }

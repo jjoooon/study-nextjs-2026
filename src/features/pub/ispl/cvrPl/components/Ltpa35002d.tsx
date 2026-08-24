@@ -443,7 +443,7 @@ export function Ltpa35002d({
         minWidth: attributeColumnWidth(64),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
-          const base = 'px-[0.2rem]! tracking-tighter';
+          const base = 'tracking-tighter';
           // 만기 수정이 불가능한 로우(isEditedField5 !== true)인 경우 스타일 제어용 클래스명 부여
           return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
         },
@@ -464,7 +464,7 @@ export function Ltpa35002d({
         minWidth: attributeColumnWidth(64),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
-          const base = 'px-[0.2rem]! tracking-tighter';
+          const base = 'tracking-tighter';
           // 납기 수정이 불가능한 로우(isEditedField6 !== true)인 경우 스타일 제어용 클래스명 부여
           return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
         },

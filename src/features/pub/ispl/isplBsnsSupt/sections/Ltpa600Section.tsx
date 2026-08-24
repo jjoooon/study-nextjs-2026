@@ -304,13 +304,13 @@ export default function Ltpa600Section() {
               <Grow placement="cc" className="border-b border-[var(--color-gray-10)]">
                 포함
               </Grow>
-              <Grow placement="cc" className="py-1 px-2 border-l border-b border-[var(--color-gray-10)]">
+              <Grow placement="cc" className="py-1 px-2 border-l border-b border-[var(--color-gray-10)] editable-cell">
                 <InputTag value={values[0]} onChange={(value) => handleTagChange(rowId, 0, value)} />
               </Grow>
               <Grow placement="cc" className="">
                 미포함
               </Grow>
-              <Grow placement="cc" className="py-1 px-2 border-l border-[var(--color-gray-10)]">
+              <Grow placement="cc" className="py-1 px-2 border-l border-[var(--color-gray-10)] editable-cell">
                 <InputTag value={values[1]} onChange={(value) => handleTagChange(rowId, 1, value)} />
               </Grow>
             </Grid>
@@ -392,7 +392,8 @@ export default function Ltpa600Section() {
       {
         headerName: '예외',
         field: 'field5',
-        flex: 10,
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
         editable: true,
         cellClass: 'text-center editable-cell cp-pr-0',
         cellEditor: 'agSelectCellEditor',

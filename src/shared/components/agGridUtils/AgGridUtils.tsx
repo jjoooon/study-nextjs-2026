@@ -1306,20 +1306,32 @@ AmountWithPopoverCellEditor.displayName = 'AmountWithPopoverCellEditor';
  * @param params.align 텍스트 정렬(`left` | `center` | `right`, 기본 `right`)
  */
 export function editableSelectCellRenderer<RowType>(
-  params: ICellRendererParams<RowType> & { align?: 'left' | 'center' | 'right' }
+  params: ICellRendererParams<RowType> & {
+    align?: 'left' | 'center' | 'right';
+    paddingClass?: string;
+  }
 ) {
   const align = params.align ?? 'right';
   let textClass = 'text-right';
+  let defaultPaddingClass = 'px-[0.6rem]';
+
   if (align === 'left') {
     textClass = 'text-left';
+    defaultPaddingClass = 'pr-[1.6rem]';
   } else if (align === 'center') {
     textClass = 'text-center';
+    defaultPaddingClass = 'pr-[1.2rem]';
+  } else if (align === 'right') {
+    textClass = 'text-right';
+    defaultPaddingClass = 'pr-[1.2rem]';
   }
+
+  const paddingClass = params.paddingClass ?? defaultPaddingClass;
   const displayValue =
     params.valueFormatted !== undefined && params.valueFormatted !== null ? params.valueFormatted : params.value;
   return (
-    <div className="relative flex w-full h-full items-center px-[0.6rem] editor-select select-none">
-      <span className={`block flex-1 min-w-0 pr-4 ${textClass}`}>{displayValue}</span>
+    <div className={`relative flex w-full h-full items-center ${paddingClass} editor-select select-none`}>
+      <span className={`block flex-1 min-w-0 truncate-no ${textClass}`}>{displayValue}</span>
       <TableSelectArrowIcon
         color={'var(--color-gray-60)'}
         className="absolute right-[0rem] top-1/2 -translate-y-1/2 shrink-0 pointer-events-none"

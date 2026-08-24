@@ -368,7 +368,7 @@ export function Ltpa35002b({
             minWidth: attributeColumnWidth(60),
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
-              const base = 'px-[0.2rem]! tracking-tighter';
+              const base = 'tracking-tighter';
               return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
             },
             editable: (params: EditableCallbackParams) => {
@@ -401,7 +401,7 @@ export function Ltpa35002b({
             minWidth: attributeColumnWidth(60),
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
-              const base = 'px-[0.2rem]! tracking-tighter';
+              const base = 'tracking-tighter';
               return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
             },
             editable: (params: EditableCallbackParams) => {
@@ -424,7 +424,7 @@ export function Ltpa35002b({
             width: attributeColumnWidth(70),
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
-              const base = 'px-[0.2rem]! tracking-tighter';
+              const base = 'tracking-tighter';
               return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
             },
             editable: (params: EditableCallbackParams) => {

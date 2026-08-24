@@ -297,8 +297,8 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
                 </div>
               </Gcol>
             </Grow>
-            <Gcol className="w-full" placement="ss">
-              <Grow className="w-full" gap={5}>
+            <Gcol className="w-full" placement="ss" gap={2}>
+              <Grow className="w-full" gap={5} placement="ss">
                 <TableFold>
                   <TableFoldHead
                     title="제한담보"
@@ -339,13 +339,7 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
                   </TableFoldHead>
                   <TableFoldBody>
                     {/* 보험료 할증 */}
-                    <div
-                      className="ag-theme-alpine"
-                      style={{
-                        height: expectedUwPremiumSurchargeRowData.length >= 4 ? '15rem' : 'auto',
-                        overflow: expectedUwPremiumSurchargeRowData.length >= 4 ? 'hidden' : 'visible',
-                      }}
-                    >
+                    <div className="ag-theme-alpine inner-scroll" data-row={4}>
                       <AgGridReact<ExpectedUwSingleRow>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -359,7 +353,7 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
                         }}
                         headerHeight={28}
                         rowHeight={30}
-                        domLayout={expectedUwPremiumSurchargeRowData.length >= 4 ? 'normal' : 'autoHeight'}
+                        domLayout={'normal'}
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
                         animateRows={false}
@@ -373,13 +367,7 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
                   </TableFoldHead>
                   <TableFoldBody>
                     {/* 부 담보(부위/질병) */}
-                    <div
-                      className="ag-theme-alpine"
-                      style={{
-                        height: expectedUwExclusionCoverageRowData.length >= 4 ? '15rem' : 'auto',
-                        overflow: expectedUwExclusionCoverageRowData.length >= 4 ? 'hidden' : 'visible',
-                      }}
-                    >
+                    <div className="ag-theme-alpine inner-scroll" data-row={4}>
                       <AgGridReact<ExpectedUw03Row>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -393,7 +381,7 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
                         }}
                         headerHeight={28}
                         rowHeight={30}
-                        domLayout={expectedUwExclusionCoverageRowData.length >= 4 ? 'normal' : 'autoHeight'}
+                        domLayout={'normal'}
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
                         animateRows={false}
