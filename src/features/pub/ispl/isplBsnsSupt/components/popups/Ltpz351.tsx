@@ -417,7 +417,6 @@ const Ltpz351 = ({ noticeType = 'B', isPayExempt = true }: Ltpz351Props) => {
                 selectionColumnDef={{
                   cellClass: 'editable-cell',
                   width: 30,
-                  cellClass: 'editable-cell',
                 }}
                 rowSelection={{
                   mode: 'singleRow',
