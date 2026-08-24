@@ -448,6 +448,7 @@ export default function Ltpa500Section() {
                       }}
                       selectionColumnDef={{
                         width: 30,
+                        cellClass: 'editable-cell',
                       }}
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}
