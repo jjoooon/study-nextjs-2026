@@ -57,8 +57,8 @@ type DummyDataType = {
 type GridCellValue = string | number | boolean | null | undefined;
 // value1/value2 탭: 체크박스로 선택 가능한 필드명
 type MainSelectableField = 'ourInsurance2' | 'externalInsurance1' | 'externalInsurance2';
-// value3 탭: 체크박스로 선택 가능한 필드명 (externalInsurance3 추가)
-type ExtraSelectableField = 'externalInsurance1' | 'externalInsurance2' | 'externalInsurance3';
+// value3 탭: 체크박스로 선택 가능한 필드명 (externalInsurance3, externalInsurance4 추가)
+type ExtraSelectableField = 'externalInsurance1' | 'externalInsurance2' | 'externalInsurance3' | 'externalInsurance4';
 
 // 체크박스 렌더러에 전달되는 파라미터
 type CheckboxRendererParams<TData> = {
@@ -336,6 +336,7 @@ type DummyDataType3 = {
   externalInsurance1: string | number | boolean;
   externalInsurance2: string | number | boolean;
   externalInsurance3: string | number | boolean;
+  externalInsurance4?: string | number | boolean;
   baseYm?: string;
 };
 
@@ -350,6 +351,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '한화손보',
     externalInsurance2: '메리츠화재',
     externalInsurance3: '삼성화재',
+    externalInsurance4: 'KB손보',
   },
   {
     id: 2,
@@ -358,6 +360,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: 'ㅇㅇ 간편보험 2601',
     externalInsurance2: '(무)메리츠간편한355건강보험',
     externalInsurance3: '삼성간편건강보험',
+    externalInsurance4: 'KB간편건강보험',
   },
   {
     id: 3,
@@ -366,6 +369,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '계약상태',
     externalInsurance2: '계약상태',
     externalInsurance3: '계약상태',
+    externalInsurance4: '계약상태',
   },
   {
     id: 4,
@@ -374,6 +378,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '홍길순',
     externalInsurance2: '홍길순',
     externalInsurance3: '홍길순',
+    externalInsurance4: '홍길순',
   },
   {
     id: 5,
@@ -382,6 +387,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '2024-03-01 ~ 2026-03-31',
     externalInsurance2: '2025-12-15 ~ 2026-03-15',
     externalInsurance3: '2025-12-15 ~ 2026-03-15',
+    externalInsurance4: '2025-12-15 ~ 2026-03-15',
   },
   {
     id: 6,
@@ -390,6 +396,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '165,000원',
     externalInsurance2: '165,000원',
     externalInsurance3: '165,000원',
+    externalInsurance4: '165,000원',
   },
   {
     id: 7,
@@ -398,6 +405,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '월납/10년납',
     externalInsurance2: '월납/10년납',
     externalInsurance3: '월납/10년납',
+    externalInsurance4: '월납/10년납',
   },
   {
     id: 8,
@@ -406,6 +414,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '유병자상해사망 등',
     externalInsurance2: '유병자상해사망 등',
     externalInsurance3: '유병자상해사망 등',
+    externalInsurance4: '유병자상해사망 등',
   },
   {
     id: 9,
@@ -414,6 +423,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '3,000만원',
     externalInsurance2: '3,000만원',
     externalInsurance3: '3,000만원',
+    externalInsurance4: '3,000만원',
   },
   {
     id: 10,
@@ -422,6 +432,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '3,000만원',
     externalInsurance2: '3,000만원',
     externalInsurance3: '3,000만원',
+    externalInsurance4: '3,000만원',
     baseYm: '2026-06',
   },
   {
@@ -431,6 +442,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '5.99%',
     externalInsurance2: '5.99%',
     externalInsurance3: '5.99%',
+    externalInsurance4: '5.99%',
     baseYm: '2026-06',
   },
   {
@@ -440,6 +452,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '장기상해',
     externalInsurance2: '장기상해',
     externalInsurance3: '장기상해',
+    externalInsurance4: '장기상해',
   },
   {
     id: 13,
@@ -448,6 +461,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: '계약자,피보험자,수익자의 고의사고 등',
     externalInsurance2: '계약자,피보험자,수익자의 고의사고 등',
     externalInsurance3: '계약자,피보험자,수익자의 고의사고 등',
+    externalInsurance4: '계약자,피보험자,수익자의 고의사고 등',
   },
   {
     id: 14,
@@ -456,6 +470,7 @@ const DummyData3: DummyDataType3[] = [
     externalInsurance1: true,
     externalInsurance2: false,
     externalInsurance3: false,
+    externalInsurance4: false,
   },
 ];
 const formatNumberWithComma = (str: string) => {
@@ -1039,6 +1054,7 @@ export const Ltpz063 = () => {
           ? `${getSelectableValueCellClass(params)} editable-cell`
           : getSelectableValueCellClass(params),
     flex: 1,
+    minWidth: attributeColumnWidth(250),
     field,
     editable: ({ data }) => isType3EditableRow(data) && !isMainRefundRow(data) && !isMainInterestRateRow(data),
     cellEditorSelector: getType3CellEditorSelector,
@@ -1165,6 +1181,7 @@ export const Ltpz063 = () => {
     {
       headerName: '당사신규',
       flex: 1,
+      minWidth: attributeColumnWidth(220),
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: getValueCellClass,
       field: 'ourInsurance1',
@@ -1175,6 +1192,7 @@ export const Ltpz063 = () => {
     createThirdExternalColumn('externalInsurance1'),
     createThirdExternalColumn('externalInsurance2'),
     createThirdExternalColumn('externalInsurance3'),
+    createThirdExternalColumn('externalInsurance4'),
   ];
 
   // 탭 선택값에 따라 그리드를 분기 렌더링
