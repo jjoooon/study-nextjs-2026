@@ -45,7 +45,7 @@ type DummyData1Type = {
   field0: number;
   field1: string;
   field2: string;
-  cheked?: boolean;
+  checked?: boolean;
 };
 const DummyData1: DummyData1Type[] = [
   {
@@ -53,105 +53,105 @@ const DummyData1: DummyData1Type[] = [
     field0: 1,
     field1: '간병',
     field2: '간병인사용',
-    cheked: true,
+    checked: true,
   },
   {
     id: 2,
     field0: 2,
     field1: '암주요',
     field2: '암주요치료(상급종합)',
-    cheked: false,
+    checked: false,
   },
   {
     id: 3,
     field0: 2,
     field1: '암주요',
     field2: '암주요치료(종합병원)',
-    cheked: false,
+    checked: false,
   },
   {
     id: 4,
     field0: 2,
     field1: '암주요',
     field2: '암주요치료(비급여)',
-    cheked: false,
+    checked: false,
   },
   {
     id: 5,
     field0: 2,
     field1: '암주요',
     field2: '암주요치료(전이암)',
-    cheked: false,
+    checked: false,
   },
   {
     id: 6,
     field0: 2,
     field1: '암주요',
     field2: '표적항암',
-    cheked: false,
+    checked: false,
   },
   {
     id: 7,
     field0: 3,
     field1: '순환계치료비',
     field2: '요양병원제외',
-    cheked: false,
+    checked: false,
   },
   {
     id: 8,
     field0: 3,
     field1: '순환계치료비',
     field2: '상급종합병원',
-    cheked: false,
+    checked: false,
   },
   {
     id: 9,
     field0: 3,
     field1: '순환계치료비',
     field2: '주요순환계',
-    cheked: false,
+    checked: false,
   },
   {
     id: 10,
     field0: 4,
     field1: '입원',
     field2: '1인실',
-    cheked: false,
+    checked: false,
   },
   {
     id: 11,
     field0: 4,
     field1: '입원',
     field2: '2~3인실',
-    cheked: false,
+    checked: false,
   },
   {
     id: 12,
     field0: 5,
     field1: '운전자',
     field2: '운전자비용',
-    cheked: false,
+    checked: false,
   },
   {
     id: 13,
     field0: 6,
     field1: '여성',
     field2: '유/갑/생',
-    cheked: false,
+    checked: false,
   },
   {
     id: 14,
     field0: 7,
     field1: '출산/난임',
     field2: '미혼자용',
-    cheked: false,
+    checked: false,
   },
   {
     id: 15,
     field0: 7,
     field1: '출산/난임',
     field2: '기혼자용',
-    cheked: false,
+    checked: false,
   },
 ];
 
@@ -188,7 +188,7 @@ const Ltpz640 = () => {
   }, []);
 
   const handleDeleteRow = React.useCallback(() => {
-    setRowData((prev) => prev.filter((row) => !row.cheked));
+    setRowData((prev) => prev.filter((row) => !row.checked));
   }, [setRowData]);
 
   const handleOrderChanged = createSequentialRowReorderHandler<DummyData1Type, number>(setRowData, {
@@ -204,7 +204,7 @@ const Ltpz640 = () => {
         return;
       }
 
-      if (event.colDef.field === 'cheked') {
+      if (event.colDef.field === 'checked') {
         const changedId = event.data.id;
         const newChecked = Boolean(event.newValue);
 
@@ -374,7 +374,7 @@ const Ltpz640 = () => {
   );
   const [openCellMerge, setOpenCellMerge] = React.useState(false);
   const [mergePackageName, setMergePackageName] = React.useState('');
-  const hasCheckedRows = rowData.some((row) => row.cheked);
+  const hasCheckedRows = rowData.some((row) => row.checked);
 
   const moveCheckedRowsWithinGroup = React.useCallback(
     (direction: 'up' | 'down') => {
@@ -394,7 +394,7 @@ const Ltpz640 = () => {
               const current = nextRows[index];
               const previous = nextRows[index - 1];
 
-              if (current?.cheked && !previous?.cheked) {
+              if (current?.checked && !previous?.checked) {
                 nextRows[index - 1] = current;
                 nextRows[index] = previous;
               }
@@ -404,7 +404,7 @@ const Ltpz640 = () => {
               const current = nextRows[index];
               const following = nextRows[index + 1];
 
-              if (current?.cheked && !following?.cheked) {
+              if (current?.checked && !following?.checked) {
                 nextRows[index] = following;
                 nextRows[index + 1] = current;
               }
@@ -443,7 +443,7 @@ const Ltpz640 = () => {
         field0: 1,
         field1: mergePackageName,
         field2: '',
-        cheked: false,
+        checked: false,
       };
 
       const nextRows = [newRow, ...prev];
@@ -493,7 +493,7 @@ const Ltpz640 = () => {
       },
       {
         headerName: '선택',
-        field: 'cheked',
+        field: 'checked',
         flex: 1,
         minWidth: attributeColumnWidth(30),
         sortable: false,
