@@ -40,6 +40,11 @@ const Ltpz118 = () => {
     { id: 1, field1: '모집자전자서명', field2: '알림톡', field3: '2026-03-24 11:19:15' },
     { id: 2, field1: '모집자전자서명', field2: '알림톡', field3: '2026-03-24 11:19:15' },
     { id: 3, field1: '모집자전자서명', field2: '알림톡', field3: '2026-03-24 11:19:15' },
+    { id: 4, field1: '모집자전자서명', field2: '알림톡', field3: '2026-03-24 11:19:15' },
+    { id: 5, field1: '모집자전자서명', field2: '알림톡', field3: '2026-03-24 11:19:15' },
+    { id: 5, field1: '모집자전자서명', field2: '알림톡', field3: '2026-03-24 11:19:15' },
+    { id: 5, field1: '모집자전자서명', field2: '알림톡', field3: '2026-03-24 11:19:15' },
+    { id: 5, field1: '모집자전자서명', field2: '알림톡', field3: '2026-03-24 11:19:15' },
   ];
   // 2026-05-22 cellClass 수정
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -94,7 +99,7 @@ const Ltpz118 = () => {
             </FormTable>
           </Grow>
 
-          <div className="ag-theme-alpine">
+          <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
               getRowId={(params) => String(params.data.id)}
               noRowsOverlayComponent={AgGridEmptyComponent}
@@ -106,7 +111,7 @@ const Ltpz118 = () => {
               }}
               singleClickEdit={true}
               rowClassRules={{}}
-              domLayout="autoHeight"
+              domLayout="normal"
               tooltipShowMode="whenTruncated"
               tooltipShowDelay={0}
             />

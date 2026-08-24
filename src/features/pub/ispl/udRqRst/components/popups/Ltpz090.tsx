@@ -204,7 +204,7 @@ const Ltpz090 = () => {
     {
       headerName: '보기',
       field: 'field07',
-      width: attributeColumnWidth(48),
+      width: attributeColumnWidth(50),
       autoHeight: true,
       cellClass: 'text-center',
       sortable: false,

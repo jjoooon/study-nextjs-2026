@@ -8,6 +8,7 @@ import type { ColDef, ColGroupDef, ICellRendererParams, GridApi } from 'ag-grid-
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
+import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths, DatePickerCellEditor } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
@@ -76,6 +77,42 @@ const DummyData: DummyDataType[] = [
   },
   {
     id: 3,
+    field01: '2026년 4월 심사가이드라인',
+    field02: '요약내용이 노출되는 영역입니다. 요약내용이 노출되는 영역입니다. 요약내용이 노출되는 영역입니다.',
+    field03: '미리보기 link 주소',
+    field04: '2026-04-08',
+    field05: 'N',
+    field06: 3,
+    field07: '다운로드파일 주소',
+    field08: 'N',
+    field09: '미리보기 파일 주소',
+  },
+  {
+    id: 4,
+    field01: '2026년 4월 심사가이드라인',
+    field02: '요약내용이 노출되는 영역입니다. 요약내용이 노출되는 영역입니다. 요약내용이 노출되는 영역입니다.',
+    field03: '미리보기 link 주소',
+    field04: '2026-04-08',
+    field05: 'N',
+    field06: 3,
+    field07: '다운로드파일 주소',
+    field08: 'N',
+    field09: '미리보기 파일 주소',
+  },
+  {
+    id: 5,
+    field01: '2026년 4월 심사가이드라인',
+    field02: '요약내용이 노출되는 영역입니다. 요약내용이 노출되는 영역입니다. 요약내용이 노출되는 영역입니다.',
+    field03: '미리보기 link 주소',
+    field04: '2026-04-08',
+    field05: 'N',
+    field06: 3,
+    field07: '다운로드파일 주소',
+    field08: 'N',
+    field09: '미리보기 파일 주소',
+  },
+  {
+    id: 6,
     field01: '2026년 4월 심사가이드라인',
     field02: '요약내용이 노출되는 영역입니다. 요약내용이 노출되는 영역입니다. 요약내용이 노출되는 영역입니다.',
     field03: '미리보기 link 주소',
@@ -200,6 +237,8 @@ export type Ltpz091Props = {
 };
 
 const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
+  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType>;
+  const getExpiryRenderer4 = createExpiryCellRenderer<DummyDataType4>;
   // AgGrid Column
   const tabsData = useMemo(() => (isAdmin ? DATA_TABS : DATA_TABS.slice(0, 3)), [isAdmin]);
   const { tabs, active, setActive, replaceTabs } = useTabs(tabsData);
@@ -306,6 +345,7 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
         cellClass: 'text-center editable-cell',
         editable: true,
         cellEditor: 'agSelectCellEditor',
+        cellRenderer: getExpiryRenderer('center'),
         cellEditorParams: {
           values: ['Y', 'N'],
         },
@@ -407,6 +447,7 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
         cellClass: 'text-center editable-cell',
         editable: true,
         cellEditor: 'agSelectCellEditor',
+        cellRenderer: getExpiryRenderer('center'),
         cellEditorParams: {
           values: ['Y', 'N'],
         },
@@ -461,7 +502,7 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
     }
 
     return allCols;
-  }, [attributeColumnWidth, isAdmin]);
+  }, [attributeColumnWidth, isAdmin, getExpiryRenderer]);
   const columnDefs4: (ColDef<DummyDataType4> | ColGroupDef<DummyDataType4>)[] = useMemo(() => {
     const allCols: ColDef<DummyDataType4>[] = [
       {
@@ -557,6 +598,7 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
         cellClass: 'text-center editable-cell',
         editable: true,
         cellEditor: 'agSelectCellEditor',
+        cellRenderer: getExpiryRenderer4('center'),
         cellEditorParams: {
           values: ['Y', 'N'],
         },
@@ -611,7 +653,7 @@ const Ltpz091: React.FC<Ltpz091Props> = ({ isAdmin = true }) => {
     }
 
     return allCols;
-  }, [attributeColumnWidth, isAdmin]);
+  }, [attributeColumnWidth, isAdmin, getExpiryRenderer4]);
   // 공지사항
   const [rowData1, setRowData1] = React.useState<DummyDataType[]>(DummyData);
   const gridApiRef1 = React.useRef<GridApi<DummyDataType> | null>(null);

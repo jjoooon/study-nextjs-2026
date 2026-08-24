@@ -340,7 +340,7 @@ const Ltpz029 = () => {
       field: 'field1',
       flex: 1,
       minWidth: attributeColumnWidth(90),
-      cellClass: 'editable-cell !px-0 text-center ag-row-selected',
+      cellClass: 'editable-cell text-center ag-row-selected',
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['공통(기본)1', '공통(기본)2'] },
@@ -367,7 +367,7 @@ const Ltpz029 = () => {
       flex: 1,
       minWidth: attributeColumnWidth(50),
       editable: true,
-      cellClass: 'editable-cell !px-0 text-center ag-row-selected',
+      cellClass: 'editable-cell text-center ag-row-selected',
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['정상', '해지'] },
       cellRenderer: getExpiryRenderer('center'),
@@ -379,7 +379,7 @@ const Ltpz029 = () => {
       minWidth: attributeColumnWidth(50),
       editable: true,
       cellClass: (params) => {
-        const baseClass = 'editable-cell !px-0 text-center ag-row-selected';
+        const baseClass = 'editable-cell text-center ag-row-selected';
         return params.value === 'Y' ? `${baseClass} text-[var(--color-primary-50)]` : baseClass;
       },
       cellEditor: 'agSelectCellEditor',
@@ -393,7 +393,7 @@ const Ltpz029 = () => {
       minWidth: attributeColumnWidth(50),
       editable: true,
       cellClass: (params) => {
-        const baseClass = 'editable-cell !px-0 text-center ag-row-selected';
+        const baseClass = 'editable-cell text-center ag-row-selected';
         return params.value === 'Y' ? `${baseClass} text-[var(--color-primary-50)]` : baseClass;
       },
       cellEditor: 'agSelectCellEditor',
@@ -405,7 +405,7 @@ const Ltpz029 = () => {
       field: 'field7',
       flex: 1,
       minWidth: attributeColumnWidth(80),
-      cellClass: 'editable-cell !px-0 text-center ag-row-selected',
+      cellClass: 'editable-cell text-center ag-row-selected',
       editable: true,
     },
   ];
