@@ -45,8 +45,6 @@ export interface Ltpa120Props {
   setOpen?: (open: boolean) => void;
   minimized?: boolean;
   onMinimizeChange?: (minimized: boolean) => void;
-  buttonImageSrc?: string;
-  borderWidth?: number | string;
 }
 
 export const Ltpa120 = ({
@@ -56,8 +54,6 @@ export const Ltpa120 = ({
   minimized,
   className,
   onMinimizeChange,
-  buttonImageSrc = '/images/AI_01_b2.svg',
-  borderWidth = 1,
 }: Ltpa120Props) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [internalOpen, setInternalOpen] = React.useState(false);
@@ -102,7 +98,7 @@ export const Ltpa120 = ({
         >
           <span className="w-[2.8rem] h-[2.8rem] relative flex justify-center items-center rounded-full shadow-[0_0.6rem_0.6rem_rgba(255,152,22,0.50)]">
             <Image
-              src={withPublicUrl(buttonImageSrc)}
+              src={withPublicUrl('/images/AI_01_b2.svg')}
               alt="백프로에게 물어보세요!"
               width={40}
               height={42}
@@ -148,10 +144,7 @@ export const Ltpa120 = ({
             />
           </Grow>
         </DialogHeader>
-        <div
-          className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!"
-          style={{ borderWidth: typeof borderWidth === 'number' ? `${borderWidth}px` : borderWidth }}
-        >
+        <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!">
           <iframe
             ref={(el) => chatbotUtils.setRef(el)}
             src={publicConfig.domain.chatbot}

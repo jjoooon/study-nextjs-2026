@@ -13,7 +13,7 @@ import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { Grow } from '@atoms';
 import { Dialog, DialogContent, DialogHeader } from '@uiux/Dialog';
 
-const CHATBOT_DIALOG_WIDTH = 198;
+const CHATBOT_DIALOG_WIDTH = 400;
 const CHATBOT_DIALOG_HEIGHT = 560;
 const VIEWPORT_MARGIN = 12;
 
@@ -45,8 +45,6 @@ export interface Ltpa120Props {
   setOpen?: (open: boolean) => void;
   minimized?: boolean;
   onMinimizeChange?: (minimized: boolean) => void;
-  buttonImageSrc?: string;
-  borderWidth?: number | string;
 }
 
 export const Ltpa120 = ({
@@ -56,8 +54,6 @@ export const Ltpa120 = ({
   minimized,
   className,
   onMinimizeChange,
-  buttonImageSrc = '/images/AI_01_b2.svg',
-  borderWidth = 1,
 }: Ltpa120Props) => {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [internalOpen, setInternalOpen] = React.useState(false);
@@ -102,7 +98,7 @@ export const Ltpa120 = ({
         >
           <span className="w-[2.8rem] h-[2.8rem] relative flex justify-center items-center rounded-full shadow-[0_0.6rem_0.6rem_rgba(255,152,22,0.50)]">
             <Image
-              src={withPublicUrl(buttonImageSrc)}
+              src={withPublicUrl('/images/AI_01_b2.svg')}
               alt="백프로에게 물어보세요!"
               width={40}
               height={40}
@@ -126,7 +122,7 @@ export const Ltpa120 = ({
         closeButtonClassName="absolute right-[1.2rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>svg]:w-[1.4rem] [&>svg]:h-[1.4rem] [&>svg_path]:fill-white"
         minimizeButtonClassName="absolute right-[4rem] top-[1.8rem] z-10 flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full bg-[var(--color-primary-50)] transition-colors hover:bg-[var(--color-primary-60)] [&>span]:!bg-[var(--color-gray-0)] [&>span]:!border-[var(--color-gray-0)]"
         className={cn(
-          'ai-chatbot w-[19.8rem] h-[56rem] min-w-[19.8rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0',
+          'ai-chatbot w-[19.8rem] h-[56rem] min-w-[40rem] min-h-[30rem] max-w-[calc(100vw-2.4rem)] max-h-[calc(100vh-2.4rem)] p-0 gap-0 overflow-hidden grid-rows-[auto_1fr] bg-transparent border-0',
           className
         )}
       >
@@ -142,10 +138,7 @@ export const Ltpa120 = ({
             <Image src={withPublicUrl('/images/chatbot-top.svg')} alt="백프로" width={50} height={48} />
           </Grow>
         </DialogHeader>
-        <div
-          className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!"
-          style={{ borderWidth: typeof borderWidth === 'number' ? `${borderWidth}px` : borderWidth }}
-        >
+        <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!">
           <iframe
             ref={(el) => chatbotUtils.setRef(el)}
             src="http://localhost:6006/hgi/chatbot.html"

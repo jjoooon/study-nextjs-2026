@@ -17,8 +17,6 @@ import { AsideFootSummary } from './AsideFootSummary';
 export type AsideFootProps = {
   dataTotal?: AsideFootDataTotal;
   viewKey?: string;
-  buttonImageSrc?: string;
-  borderWidth?: number | string;
 };
 
 /**
@@ -36,7 +34,7 @@ export type AsideFootDataTotal = {
   point: number;
 };
 
-export function AsideFoot({ dataTotal, viewKey, buttonImageSrc, borderWidth }: AsideFootProps) {
+export function AsideFoot({ dataTotal, viewKey }: AsideFootProps) {
   return (
     // 전체 하단 영역 컨테이너
     <Gcol className="w-full pb-1.5 relative">
@@ -53,7 +51,7 @@ export function AsideFoot({ dataTotal, viewKey, buttonImageSrc, borderWidth }: A
         - 출력 버튼(팝오버 메뉴 포함)
         - Ltpa120 팝업 트리거 컴포넌트
       */}
-      <AsideFootButtonGroup buttonImageSrc={buttonImageSrc} borderWidth={borderWidth} />
+      <AsideFootButtonGroup />
     </Gcol>
   );
 }

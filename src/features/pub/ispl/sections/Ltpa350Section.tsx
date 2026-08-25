@@ -182,12 +182,10 @@ const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
 };
 
 export interface Ltpa350SectionProps {
-  buttonImageSrc?: string;
-  borderWidth?: number | string;
   memoButtonColor?: 'gray' | 'primary';
 }
 
-export default function Ltpa350Section({ buttonImageSrc, borderWidth, memoButtonColor }: Ltpa350SectionProps = {}) {
+export default function Ltpa350Section({ memoButtonColor }: Ltpa350SectionProps = {}) {
   // simpleMode: 페이지를 간략 모드로 보여줄지 여부 (PageTitle와 step별 본문에서 같이 사용)
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
 
@@ -454,8 +452,6 @@ export default function Ltpa350Section({ buttonImageSrc, borderWidth, memoButton
           <AsideFoot
             dataTotal={asideFoot[`step${activeStep}`]}
             viewKey={currentViewKey}
-            buttonImageSrc={buttonImageSrc}
-            borderWidth={borderWidth}
           />
         }
         // hideAside: 우측 aside 노출 여부
