@@ -144,6 +144,7 @@ const Ltpz053 = () => {
               selectionColumnDef={{
                 headerName: '선택',
                 width: 30,
+                cellClass: 'editable-cell',
               }}
               onGridReady={(params) => {
                 gridApiRef.current = params.api;
