@@ -448,12 +448,7 @@ export default function Ltpa350Section({ memoButtonColor }: Ltpa350SectionProps 
         // asideFoot: 단계별 보험료/포인트 요약
         // - dataTotal: `activeStep`에 맞는 데이터 선택 전달
         // - viewKey: 퍼블 분기키(aside 내부 표시 분기에 활용)
-        asideFoot={
-          <AsideFoot
-            dataTotal={asideFoot[`step${activeStep}`]}
-            viewKey={currentViewKey}
-          />
-        }
+        asideFoot={<AsideFoot dataTotal={asideFoot[`step${activeStep}`]} viewKey={currentViewKey} />}
         // hideAside: 우측 aside 노출 여부
         hideAside={hideAside}
       />
