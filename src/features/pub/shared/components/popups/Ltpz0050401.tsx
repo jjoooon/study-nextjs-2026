@@ -23,22 +23,27 @@ const Ltpz0050401 = ({ open, onOpenChange }: { open: boolean; onOpenChange: (ope
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild className="hidden"></DialogTrigger>
-      <DialogContent showCloseButton resizable={false} size="md">
+      <DialogContent showCloseButton resizable={false} size="md" className="w-[56rem]! h-[35rem]!">
         <DialogHeader>
-          <DialogTitle>제목</DialogTitle>
+          <DialogTitle>AI 추천이유</DialogTitle>
         </DialogHeader>
 
         <DialogSection className="p-0 flex items-center justify-center">
           <div
             className="relative bg-center bg-no-repeat"
             style={{
-              width: '50rem',
+              width: '51.4rem',
               height: '19rem',
               backgroundImage: `url(${withPublicUrl('/images/Ltpa005/ai_box_img.jpg')})`,
-              backgroundSize: '50.6rem 18.8rem',
+              backgroundSize: '51.4rem 18.8rem',
             }}
           >
-            <Typo tag={'p'} variant={'body-lg'} className="absolute right-[1rem] top-[1rem]" style={{ width: '33rem' }}>
+            <Typo
+              tag={'p'}
+              variant={'body-lg'}
+              className="absolute right-[1.5rem] top-[1.8rem]"
+              style={{ width: '33rem' }}
+            >
               고객님의 보장 내용을 분석해보니 암, 뇌질환, 수술, 치료비 담보가 동일 연령대 대비 다소 부족한 것으로
               확인됩니다.
               <br />
