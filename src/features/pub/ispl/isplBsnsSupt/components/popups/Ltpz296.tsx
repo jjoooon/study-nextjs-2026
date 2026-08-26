@@ -376,7 +376,11 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         pinned: 'left', // 좌측 스크롤 고정
       },
       {
-        headerName: '전화번호(휴대폰)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]">전화번호(휴대폰)</span>
+          </Grow>
+        ),
         // 하위 컬럼을 국/앞/뒤 구조로 3단 분할 구성
         children: [
           {

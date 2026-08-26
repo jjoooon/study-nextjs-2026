@@ -271,6 +271,11 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
       // 고객 및 설계 기본 정보 그룹
       {
         headerName: '고객 및 설계 기본 정보',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">고객 및 설계 기본 정보</span>
+          </Grow>
+        ),
         children: [
           // 관계 선택
           {

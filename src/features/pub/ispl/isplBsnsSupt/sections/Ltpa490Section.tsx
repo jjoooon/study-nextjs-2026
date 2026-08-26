@@ -288,6 +288,11 @@ export default function Ltpa490Section() {
         headerName: '계명자명',
         flex: 1,
         minWidth: attributeColumnWidth(75),
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">계명자명</span>
+          </Grow>
+        ),
         cellClass: 'text-center px-0!',
         autoHeight: true,
         children: [
@@ -311,6 +316,11 @@ export default function Ltpa490Section() {
       },
       {
         headerName: '취급지점',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">취급지점</span>
+          </Grow>
+        ),
         flex: 1,
         minWidth: attributeColumnWidth(110),
         cellClass: 'text-center',

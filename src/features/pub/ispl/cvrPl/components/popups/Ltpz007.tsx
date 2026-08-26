@@ -149,8 +149,8 @@ const Ltpz007 = () => {
             width="auto"
             className="justify-center gap-0"
           >
-            <RadioGroupItem value={field} id={`header-${field}`} variant="default" size="lg">
-              <span>{label}</span>
+            <RadioGroupItem value={field} id={`header-${field}`} variant="default" size="lg" className="font-bold">
+              <span className="font-bold">{label}</span>
             </RadioGroupItem>
           </RadioGroup>
         </div>
@@ -248,9 +248,15 @@ const Ltpz007 = () => {
                 value={row.field02 ? 'field02' : row.field03 ? 'field03' : ''}
                 onValueChange={() => handleRadioChange(row.id, 'field03')}
                 width="auto"
-                className="justify-center gap-0"
+                className="justify-center gap-0 "
               >
-                <RadioGroupItem value="field03" id={`field03-${row.id}`} variant="default" size="lg" />
+                <RadioGroupItem
+                  className="font-bold"
+                  value="field03"
+                  id={`field03-${row.id}`}
+                  variant="default"
+                  size="lg"
+                />
               </RadioGroup>
             </div>
           );

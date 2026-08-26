@@ -1093,7 +1093,7 @@ export const Ltpz063 = () => {
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: (params) =>
         params.data && (isMainRefundRow(params.data) || isMainInterestRateRow(params.data))
-          ? '!p-0'
+          ? '!p-0 !m-0 !h-full'
           : getSelectableValueCellClass(params),
       cellClassRules: externalInsuranceCellClassRules,
       flex: 1,
@@ -1132,7 +1132,7 @@ export const Ltpz063 = () => {
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: (params) =>
         params.data && (isMainRefundRow(params.data) || isMainInterestRateRow(params.data))
-          ? '!p-0'
+          ? '!p-0 !m-0 !h-full'
           : getSelectableValueCellClass(params),
       cellClassRules: externalInsuranceCellClassRules,
       flex: 1,
