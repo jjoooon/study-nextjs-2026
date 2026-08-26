@@ -845,5 +845,12 @@
     "width": 1180,
     "height": 800,
     "isIframe": true
+  },
+  {
+    "id": "LTPZ102",
+    "title": "고지유형별 보험료비교",
+    "width": 960,
+    "height": 448,
+    "isIframe": true
   }
 ]
