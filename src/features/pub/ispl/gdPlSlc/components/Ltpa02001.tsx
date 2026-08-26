@@ -663,7 +663,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     tab3: tabData3c,
   };
   const selectedPlanRowData = planRowDataMap[active] ?? tabData3;
-  const onCellMouseOut = (params: CellMouseOutEvent) => {
+  const onCellMouseOut = (_params: CellMouseOutEvent) => {
     // DOM에 남아있는 모든 AG Grid 툴팁 레이어 강제 즉시 제거
     const tooltips = document.querySelectorAll('.ag-tooltip, .ag-tooltip-custom');
     tooltips.forEach((el) => el.remove());
