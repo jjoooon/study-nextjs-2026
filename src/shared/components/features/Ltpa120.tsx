@@ -12,6 +12,7 @@ import { chatbotUtils } from '@/shared/utils/chatbotUtils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { Grow } from '@atoms';
 import { Dialog, DialogContent, DialogHeader } from '@uiux/Dialog';
+import { AiBotIcon } from './AiBotIcon';
 
 const CHATBOT_DIALOG_WIDTH = 400;
 const CHATBOT_DIALOG_HEIGHT = 560;
@@ -92,18 +93,16 @@ export const Ltpa120 = ({
         <button
           ref={buttonRef}
           type="button"
-          aria-label={'백프로에게 물어보세요!'}
+          aria-label={'AI 설계비서'}
           className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0 flex justify-center"
           onClick={handleOpen}
         >
-          <span className="w-[2.8rem] h-[2.8rem] relative flex justify-center items-center rounded-full shadow-[0_0.6rem_0.6rem_rgba(255,152,22,0.50)]">
-            <Image
-              src={withPublicUrl('/images/AI_01_b2.svg')}
-              alt="백프로에게 물어보세요!"
-              width={40}
-              height={40}
-              className="w-[101%] h-[101%] object-contain [backface-visibility:hidden] [shape-rendering:geometricPrecision] [image-rendering:-webkit-optimize-contrast]"
-            />
+          <span
+            className={cn(
+              'w-[2.8rem] h-[2.8rem] relative flex justify-center items-center rounded-full shadow-[0_0.6rem_0.6rem_rgba(255,152,22,0.50)] transition-all'
+            )}
+          >
+            <AiBotIcon open={open} />
           </span>
         </button>
       )}
@@ -130,12 +129,12 @@ export const Ltpa120 = ({
           <Grow
             className="w-full relative bg-[rgba(0,0,0,0.75)] backdrop-blur-xs h-[4rem] rounded-t-[1rem] pl-3 pr-[6.6rem]"
             placement="se"
-            gap={0}
+            gap={1}
           >
-            <div className="pb-[1.2rem] leading-[1.1] bg-[linear-gradient(328deg,rgba(255,92,46,1)_9.4%,rgba(255,244,147,1)_97.24%)] bg-clip-text text-transparent break-keep text-[1.4rem] font-black">
-              AI설계비서
+            <div className="pb-[1.2rem] leading-[1.1] bg-[linear-gradient(328deg,rgba(255,92,46,1)_9.4%,rgba(255,244,147,1)_97.24%)] bg-clip-text text-transparent break-keep text-[1.4rem] font-[900]">
+              AI 설계비서
             </div>
-            <Image src={withPublicUrl('/images/chatbot-top.svg')} alt="백프로" width={50} height={48} />
+            <Image src={withPublicUrl('/images/chatbot-top.svg')} alt="" width={50} height={48} />
           </Grow>
         </DialogHeader>
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!">

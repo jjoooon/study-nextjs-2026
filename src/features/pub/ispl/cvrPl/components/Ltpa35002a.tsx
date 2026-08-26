@@ -698,7 +698,7 @@ export function Ltpa35002a({
 
       <LayoutMainFoot className="ltpa35002a-LayoutMainFoot">
         <MainBottom variant="box">
-          <MainBottomItem className="!pt-0">
+          <MainBottomItem className="pt-0! pb-0!">
             <FormTable
               className="w-full! [&_tr]:justify-between"
               lineTop={false}

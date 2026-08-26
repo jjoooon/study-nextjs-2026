@@ -64,6 +64,9 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: '한화손해보험 UI 프레임워크',
   description: '한화손해보험 UI 프레임워크',
+  icons: {
+    icon: '/images/favicon-16x16.ico',
+  },
 };
 
 const authHeader: AuthHeader = {

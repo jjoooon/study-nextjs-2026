@@ -205,7 +205,7 @@ export default function Ltpa020Section() {
                                   width={136}
                                   col={2}
                                   error={true}
-                                  errorMsg="고객을 선택해 주세요."
+                                  errorMsg="추천설계를 위하여 고객정보를 입력해 주세요!"
                                   options={[{ value: '김한화 41세(여)', label: <td>김한화</td> }]}
                                   value={comboValues.user}
                                   onChange={handleComboValueChange('user')}
@@ -427,7 +427,7 @@ export default function Ltpa020Section() {
             )}
           </Grid>
         }
-      ></LayoutTemplatePx0>
+      />
       <LayoutFoot>
         <BottomBar />
       </LayoutFoot>

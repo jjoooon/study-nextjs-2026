@@ -831,5 +831,26 @@
     "width": 480,
     "height": 360,
     "isIframe": true
+  },
+  {
+    "id": "LTPA060",
+    "title": "고지대상 조회 및 입력",
+    "width": 1180,
+    "height": 800,
+    "isIframe": true
+  },
+  {
+    "id": "LTPA680",
+    "title": "장기심사가이드",
+    "width": 1180,
+    "height": 800,
+    "isIframe": true
+  },
+  {
+    "id": "LTPZ102",
+    "title": "고지유형별 보험료비교",
+    "width": 960,
+    "height": 448,
+    "isIframe": true
   }
 ]

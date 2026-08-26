@@ -5,6 +5,7 @@
 
 import Image from 'next/image';
 import * as React from 'react';
+import { AiBotIcon } from '@/shared/components/features/AiBotIcon';
 import { publicConfig } from '@/shared/config/env';
 import useMounted from '@/shared/hooks/useMounted';
 import { cn } from '@/shared/lib/shadcn/utils';
@@ -92,18 +93,16 @@ export const Ltpa120 = ({
         <button
           ref={buttonRef}
           type="button"
-          aria-label={'백프로에게 물어보세요!'}
-          className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0"
+          aria-label={'AI 설계비서'}
+          className="max-w-[4rem] w-[4rem] h-[2.8rem] min-w-0 h-[2.8rem] relative shrink-0 flex justify-center"
           onClick={handleOpen}
         >
-          <span className="w-[2.8rem] h-[2.8rem] relative flex justify-center items-center rounded-full shadow-[0_0.6rem_0.6rem_rgba(255,152,22,0.50)]">
-            <Image
-              src={withPublicUrl('/images/AI_01_b2.svg')}
-              alt="백프로에게 물어보세요!"
-              width={40}
-              height={42}
-              className="w-[4rem] h-[4.2rem] object-contain [backface-visibility:hidden] [shape-rendering:geometricPrecision] [image-rendering:-webkit-optimize-contrast]"
-            />
+          <span
+            className={cn(
+              'w-[2.8rem] h-[2.8rem] relative flex justify-center items-center rounded-full shadow-[0_0.6rem_0.6rem_rgba(255,152,22,0.50)] transition-all'
+            )}
+          >
+            <AiBotIcon open={open} />
           </span>
         </button>
       )}
@@ -132,16 +131,10 @@ export const Ltpa120 = ({
             placement="se"
             gap={0}
           >
-            <div className="pb-[1.2rem] leading-[1.1] bg-[linear-gradient(328deg,rgba(255,92,46,1)_9.4%,rgba(255,244,147,1)_97.24%)] bg-clip-text text-transparent break-keep text-[1.4rem] font-black">
-              AI설계비서
+            <div className="pb-[1.2rem] leading-[1.1] bg-[linear-gradient(328deg,rgba(255,92,46,1)_9.4%,rgba(255,244,147,1)_97.24%)] bg-clip-text text-transparent break-keep text-[1.4rem] font-[900]">
+              AI 설계비서
             </div>
-            <Image
-              src={withPublicUrl('/images/chatbot/Chatbot2.png')}
-              alt="백프로"
-              width={49}
-              height={49}
-              className="!w-[4.9rem] !h-[4.9rem]"
-            />
+            <Image src={withPublicUrl('/images/chatbot-top.svg')} alt="" width={50} height={48} />
           </Grow>
         </DialogHeader>
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!">

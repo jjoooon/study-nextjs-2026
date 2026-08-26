@@ -105,8 +105,7 @@ export const LayoutTemplatePx0 = ({ mainBody, mainFoot }: Props) => (
           <LayoutScrollItem>{mainBody}</LayoutScrollItem>
         </LayoutScrollWrap>
       </LayoutMainBody>
-      {/* 하단 슬롯이 없으면 최소 높이 placeholder로 레이아웃 흔들림 방지 */}
-      {mainFoot ? <LayoutMainFoot>{mainFoot}</LayoutMainFoot> : <div className="h-[1rem]"></div>}
+      <LayoutMainFoot>{mainFoot}</LayoutMainFoot>
     </LayoutMain>
   </>
 );
