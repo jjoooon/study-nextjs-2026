@@ -76,7 +76,7 @@ const Ltpz105 = () => {
   /** 첫 번째 그리드: 유효설계 기한 항목 컬럼 정의 */
   const columnDefs: ColDef<DummyDataType>[] = [
     {
-      headerName: '유료설계 기한항목',
+      headerName: '유효설계 기한항목',
       field: 'field1',
       flex: 10,
       cellClass: 'text-center',
@@ -168,7 +168,7 @@ const Ltpz105 = () => {
                   <FormCell title={'보험시기'}>
                     <Input value={'2026-03-18'} variant="info" readOnly />
                   </FormCell>
-                  <FormCell title={'유효기간'}>
+                  <FormCell title={'유효기한'}>
                     <Input value={'2026-03-18'} variant="info" readOnly />
                   </FormCell>
                 </FormRow>
@@ -195,7 +195,7 @@ const Ltpz105 = () => {
             </div>
             <Gcol className="w-full" placement="ss" variant="box-warning">
               <Typo icon="warning" variant="body-sm">
-                상기 유효설계 기한항목중 가장 작은 날짜로 설정됨
+                상기 유효설계 기한항목 중 가장 작은 날짜로 설정됨
               </Typo>
             </Gcol>
           </Gcol>

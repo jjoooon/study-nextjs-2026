@@ -45,6 +45,7 @@ export type DummyDataType = {
   field06: string | number;
   field07: string | number;
   field08: string | number;
+  field09: string | number;
 };
 
 export interface Ltpz079Props {
@@ -92,12 +93,20 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field04' }),
     },
     {
-      headerName: '소재지(발생순번)',
+      headerName: '소재지(목적물순번)',
       field: 'field05',
       minWidth: attributeColumnWidth(100),
       flex: 1,
       cellClass: 'text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field05' }),
+    },
+    {
+      headerName: '발생순번',
+      field: 'field09',
+      minWidth: attributeColumnWidth(60),
+      flex: 1,
+      cellClass: 'text-center',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field09' }),
     },
     {
       headerName: '스캔일시',

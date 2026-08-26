@@ -28,6 +28,7 @@ const dummyItems: DummyDataType[] = [
     field07: '김한화한화김한화한화',
     field08:
       '비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.비고 내용이 들어갑니다.',
+    field09: 1
   },
   {
     id: 2,
@@ -40,6 +41,7 @@ const dummyItems: DummyDataType[] = [
     field06: '2026-06-01 12:20:56',
     field07: '김한화',
     field08: '비고 내용이 들어갑니다.비고 내용이 들어갑니다.',
+    field09: 2
   },
   // 복수의 데이터 사용을 위해 추가 더미 데이터 구성
   {
@@ -53,6 +55,7 @@ const dummyItems: DummyDataType[] = [
     field06: '2026-06-02 09:15:00',
     field07: '박한화',
     field08: '기타 보충 내용이 들어갑니다.',
+    field09: 3
   },
   {
     id: 4,
@@ -65,6 +68,7 @@ const dummyItems: DummyDataType[] = [
     field06: '2026-06-02 10:30:22',
     field07: '이한화',
     field08: '',
+    field09: 4
   },
   {
     id: 5,
@@ -76,7 +80,8 @@ const dummyItems: DummyDataType[] = [
     field05: '소재지(78)',
     field06: '2026-06-02 11:45:11',
     field07: '최한화',
-    field08: '추가 사항 있음',
+    field08: '추가 사항 있음', 
+    field09: 5
   },
   {
     id: 6,
@@ -89,6 +94,7 @@ const dummyItems: DummyDataType[] = [
     field06: '2026-06-02 14:00:55',
     field07: '정한화',
     field08: '작성 완료',
+    field09: 6
   },
 ];
 

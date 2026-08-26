@@ -326,7 +326,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
                 <Typo variant="body-sm" icon={'info'}>
                   {/* 안내 메시지 */}
                   고객 직업정보(상해급수) 또는 이륜차부담보 가입여부가 불일치 할 경우 신계약 체결이 불가능합니다. 해당
-                  신계약 청약완료 이전에 기계약의 직업변경 또는 이윤차부담보 변경 완료 필요. 또한, 신계약 청약서 발행
+                  신계약 청약완료 이전에 기계약의 직업변경 또는 이륜차부담보 변경 완료 필요. 또한, 신계약 청약서 발행
                   이전에 배서(청약중 이후) 진행 필요
                 </Typo>
               </Gcol>
@@ -334,7 +334,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
                 <Typo variant="body-sm">
                   {/* 체크박스 옵션 */}
                   <Checkbox>
-                    계약변경 설계 청약서 발급 및 확인서명을 조건으로 청약 진행 (단, 계약변경 미완료시{' '}
+                    계약변경 설계 청약서 발급 및 확인서명을 조건으로 청약 진행합니다.(단, 계약변경 미완료시{' '}
                     <Typo weight="bold" color="primary">
                       신계약 청약완료불가
                     </Typo>
@@ -366,7 +366,17 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
                     >
                       <FormRow>
                         <FormCell title={'고객명'}>김한화</FormCell>
-                        <FormCell title={'직업정보'}>1급/회사원</FormCell>
+                        <FormCell
+                          title={
+                            <>
+                              직업정보
+                              <br />
+                              (현재 설계기준)
+                            </>
+                          }
+                        >
+                          1급/회사원
+                        </FormCell>
                       </FormRow>
                     </FormTable>
                     {/* 직업정보(상해급수) 상이 계약 그리드 */}
@@ -408,14 +418,24 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
                     >
                       <FormRow>
                         <FormCell title={'고객명'}>김한화2</FormCell>
-                        <FormCell title={'직업정보'}>1급/회사원2</FormCell>
+                        <FormCell
+                          title={
+                            <>
+                              이륜차부담보 정보
+                              <br />
+                              (현재 설계기준)
+                            </>
+                          }
+                        >
+                          1급/회사원2
+                        </FormCell>
                       </FormRow>
                     </FormTable>
                     {/* 이륜차부담보 가입 상이 계약 그리드 */}
                     <Gcol>
                       <Grow className="w-full" gap={1} placement="se">
                         <Typo variant="body-md" color="default">
-                          이륜차부담보 가입 사이 계약
+                          이륜차부담보 가입 상이 계약
                         </Typo>
                         <Typo variant="body-md" weight={'bold'} color="primary">
                           99건
@@ -465,7 +485,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
                     </BulletListItem>
                     {/* M2. 수정 */}
                     <BulletListItem className="mt-2" size={'sm'} type="dot">
-                      관련문서: [대내-150-1552]직업정보(상해급수) 일지 관련 신계약 프로세스 변경통보, 장기계약관리파트
+                      관련문서: [대내-1507-1552]직업정보(상해급수) 일지 관련 신계약 프로세스 변경통보, 장기계약관리파트
                     </BulletListItem>
                   </BulletList>
                 </Gcol>

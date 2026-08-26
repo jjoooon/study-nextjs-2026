@@ -60,6 +60,15 @@ function parseLocalDate(dateStr: string | undefined): Date | undefined {
       }
     }
   }
+  if (parts.length === 2) {
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    if (!isNaN(y) && !isNaN(m) && m >= 1 && m <= 12) {
+      const date = new Date(y, m - 1, 1);
+      date.setHours(0, 0, 0, 0);
+      return date;
+    }
+  }
   const date = new Date(dateStr);
   if (isValidDate(date)) {
     date.setHours(0, 0, 0, 0);
@@ -690,8 +699,31 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(/\D/g, '');
-    const limitedInput = inputValue.slice(0, 8);
+    const maxLen = monthOnly ? 6 : 8;
+    const limitedInput = inputValue.slice(0, maxLen);
     setNumericValue(limitedInput);
+
+    if (monthOnly) {
+      if (limitedInput.length === 6) {
+        const year = parseInt(limitedInput.slice(0, 4), 10);
+        const monthVal = parseInt(limitedInput.slice(4, 6), 10);
+        if (monthVal >= 1 && monthVal <= 12) {
+          const dateObj = new Date(year, monthVal - 1, 1);
+          const formatted = `${year}-${String(monthVal).padStart(2, '0')}`;
+          setMonth(dateObj);
+          setSelected(dateObj);
+          setInvalidDate(false);
+          onChange?.(dateObj, formatted);
+        } else {
+          setInvalidDate(true);
+          onChange?.(undefined, '');
+        }
+      } else {
+        setInvalidDate(false);
+        onChange?.(undefined, '');
+      }
+      return;
+    }
 
     if (limitedInput.length === 8) {
       const formatted = `${limitedInput.slice(0, 4)}-${limitedInput.slice(4, 6)}-${limitedInput.slice(6, 8)}`;
@@ -714,6 +746,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
 
           if (isWithinMin && isWithinMax) {
             setMonth(dateObj);
+            setSelected(dateObj);
             setInvalidDate(false);
             onChange?.(dateObj, formatted);
           } else {
@@ -958,7 +991,12 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               onChange={(val) => {
                 if (val && val.year && val.month) {
                   const formatted = `${val.year}-${String(val.month).padStart(2, '0')}`;
-                  if (onChange) onChange(new Date(val.year, val.month - 1, 1), formatted);
+                  const dateObj = new Date(val.year, val.month - 1, 1);
+                  setSelected(dateObj);
+                  setMonth(dateObj);
+                  setNumericValue(`${val.year}${String(val.month).padStart(2, '0')}`);
+                  setInvalidDate(false);
+                  if (onChange) onChange(dateObj, formatted);
                 }
               }}
               onClose={() => setOpen(false)}

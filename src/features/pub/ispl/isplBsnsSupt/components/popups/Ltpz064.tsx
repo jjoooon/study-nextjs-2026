@@ -414,7 +414,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           {/* 상단: 설계번호 및 피보험자 조회 조건 영역 */}
-          <Grow className="w-full" variant="box-round" placement={'bwe'}>
+          <Grow className="w-full items-center" variant="box-round" placement={'bwe'}>
             <FormTable
               variant={'head'}
               lineTop={false}
