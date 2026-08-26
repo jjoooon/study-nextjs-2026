@@ -256,7 +256,6 @@ export const Ltpz102 = () => {
 
   // 그리드에 주입할 로우 데이터 상태
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={false} size="xl">
