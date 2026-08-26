@@ -912,6 +912,7 @@
     margin: 0 !important;
   }
 
+  [data-slot='dialog-content'] [data-layout='foot'],
   [data-slot='dialog-content'] [data-layout='head'] {
     display: none !important;
   }
@@ -1271,3 +1272,5 @@
 .is-dialog-view {
   display: none;
 }
+
+
