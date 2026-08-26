@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
+import type { CellMouseOutEvent, ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
@@ -663,7 +663,11 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     tab3: tabData3c,
   };
   const selectedPlanRowData = planRowDataMap[active] ?? tabData3;
-
+  const onCellMouseOut = (params: CellMouseOutEvent) => {
+    // DOM에 남아있는 모든 AG Grid 툴팁 레이어 강제 즉시 제거
+    const tooltips = document.querySelectorAll('.ag-tooltip, .ag-tooltip-custom');
+    tooltips.forEach((el) => el.remove());
+  };
   return (
     <Grid className="w-full h-full min-h-0 grid-rows-[auto_1fr_auto] px-[1rem] overflow-hidden" gap={3}>
       <Grow variant={'box-round'} className="w-full" placement="bwe">
@@ -740,6 +744,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                     domLayout="normal"
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
+                    onCellMouseOut={onCellMouseOut}
                   />
                 </div>
               </TableFoldBody>

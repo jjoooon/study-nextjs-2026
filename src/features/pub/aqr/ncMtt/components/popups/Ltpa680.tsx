@@ -6,7 +6,7 @@
 import '@/shared/lib/agGridPub';
 import * as React from 'react';
 import Ltpa680Section from '@/features/pub/aqr/ncMtt/sections/Ltpa680Section';
-import { Grow, Typo } from '@atoms';
+import { Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
