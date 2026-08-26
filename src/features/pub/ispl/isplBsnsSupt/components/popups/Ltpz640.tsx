@@ -8,6 +8,7 @@ import type {
   ColDef,
   ColGroupDef,
   GridApi,
+  ICellRendererParams,
   RowDragEndEvent,
   RowDragEnterEvent,
 } from 'ag-grid-enterprise';
@@ -26,6 +27,7 @@ import { ConfirmDialog } from '@common/ConfirmDialog';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { ZoomInIcon, ZoomOutIcon, ArrowIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogClose,
@@ -40,12 +42,19 @@ import { Input } from '@uiux/Input';
 
 import '@/shared/lib/agGridPub';
 
+type TargetObjectType = {
+  ca?: boolean;
+  ga?: boolean;
+  tm?: boolean;
+};
+
 type DummyData1Type = {
   id: number;
   field0: number;
   field1: string;
   field2: string;
   cheked?: boolean;
+  target?: TargetObjectType;
 };
 const DummyData1: DummyData1Type[] = [
   {
@@ -54,6 +63,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '간병',
     field2: '간병인사용',
     cheked: true,
+    target: { ca: true, ga: true, tm: true },
   },
   {
     id: 2,
@@ -61,6 +71,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '암주요',
     field2: '암주요치료(상급종합)',
     cheked: false,
+    target: { ca: true, ga: true, tm: false },
   },
   {
     id: 3,
@@ -68,6 +79,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '암주요',
     field2: '암주요치료(종합병원)',
     cheked: false,
+    target: { ca: true, ga: true, tm: false },
   },
   {
     id: 4,
@@ -75,6 +87,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '암주요',
     field2: '암주요치료(비급여)',
     cheked: false,
+    target: { ca: true, ga: true, tm: false },
   },
   {
     id: 5,
@@ -82,6 +95,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '암주요',
     field2: '암주요치료(전이암)',
     cheked: false,
+    target: { ca: true, ga: true, tm: false },
   },
   {
     id: 6,
@@ -89,6 +103,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '암주요',
     field2: '표적항암',
     cheked: false,
+    target: { ca: true, ga: true, tm: false },
   },
   {
     id: 7,
@@ -96,6 +111,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '순환계치료비',
     field2: '요양병원제외',
     cheked: false,
+    target: { ca: true, ga: false, tm: true },
   },
   {
     id: 8,
@@ -103,6 +119,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '순환계치료비',
     field2: '상급종합병원',
     cheked: false,
+    target: { ca: true, ga: false, tm: true },
   },
   {
     id: 9,
@@ -110,6 +127,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '순환계치료비',
     field2: '주요순환계',
     cheked: false,
+    target: { ca: true, ga: false, tm: true },
   },
   {
     id: 10,
@@ -117,6 +135,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '입원',
     field2: '1인실',
     cheked: false,
+    target: { ca: true, ga: true, tm: true },
   },
   {
     id: 11,
@@ -124,6 +143,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '입원',
     field2: '2~3인실',
     cheked: false,
+    target: { ca: true, ga: true, tm: true },
   },
   {
     id: 12,
@@ -131,6 +151,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '운전자',
     field2: '운전자비용',
     cheked: false,
+    target: { ca: false, ga: true, tm: false },
   },
   {
     id: 13,
@@ -138,6 +159,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '여성',
     field2: '유/갑/생',
     cheked: false,
+    target: { ca: true, ga: true, tm: true },
   },
   {
     id: 14,
@@ -145,6 +167,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '출산/난임',
     field2: '미혼자용',
     cheked: false,
+    target: { ca: true, ga: true, tm: true },
   },
   {
     id: 15,
@@ -152,6 +175,7 @@ const DummyData1: DummyData1Type[] = [
     field1: '출산/난임',
     field2: '기혼자용',
     cheked: false,
+    target: { ca: true, ga: true, tm: true },
   },
 ];
 
@@ -168,6 +192,40 @@ const Ltpz640 = () => {
     dragStartColumnRef.current = colId;
   }, []);
 
+  const handleTargetChange = React.useCallback(
+    (rowId: number, targetType: 'all' | 'ca' | 'ga' | 'tm', checked: boolean) => {
+      setRowData((prev) =>
+        prev.map((row) => {
+          if (row.id !== rowId) {
+            return row;
+          }
+
+          const currentTarget = row.target ?? { ca: false, ga: false, tm: false };
+
+          if (targetType === 'all') {
+            return {
+              ...row,
+              target: {
+                ca: checked,
+                ga: checked,
+                tm: checked,
+              },
+            };
+          }
+
+          return {
+            ...row,
+            target: {
+              ...currentTarget,
+              [targetType]: checked,
+            },
+          };
+        })
+      );
+    },
+    [setRowData]
+  );
+
   const handleAddRow = createAddRowHandler<DummyData1Type, number>(setRowData, {
     idKey: 'id',
     getNextId: getNextNumericRowId,
@@ -177,6 +235,7 @@ const Ltpz640 = () => {
       field1: focusedRow ? focusedRow.field1 : '',
       field2: '',
       cheked: false,
+      target: focusedRow?.target ? { ...focusedRow.target } : { ca: true, ga: true, tm: true },
     }),
     insertAt: 'focused',
     gridApiRef,
@@ -444,6 +503,7 @@ const Ltpz640 = () => {
         field1: mergePackageName,
         field2: '',
         cheked: false,
+        target: { ca: true, ga: true, tm: true },
       };
 
       const nextRows = [newRow, ...prev];
@@ -512,13 +572,63 @@ const Ltpz640 = () => {
         cellEditor: 'agTextCellEditor',
         rowDrag: true,
       },
+      {
+        headerName: '적용대상',
+        field: 'target',
+        flex: 1,
+        minWidth: attributeColumnWidth(210),
+        autoHeight: true,
+        cellClass: 'text-center justify-center',
+        cellRenderer: (params: ICellRendererParams<DummyData1Type>) => {
+          const target = params.data?.target ?? {};
+          const isCa = Boolean(target.ca);
+          const isGa = Boolean(target.ga);
+          const isTm = Boolean(target.tm);
+          const isAll = isCa && isGa && isTm;
+
+          return (
+            <div className="flex w-full items-center justify-center gap-2" onMouseDown={(e) => e.stopPropagation()}>
+              <Checkbox
+                size="md"
+                checked={isAll}
+                onCheckedChange={(checked) =>
+                  params.data && handleTargetChange(params.data.id, 'all', checked === true)
+                }
+              >
+                전체
+              </Checkbox>
+              <Checkbox
+                size="md"
+                checked={isCa}
+                onCheckedChange={(checked) => params.data && handleTargetChange(params.data.id, 'ca', checked === true)}
+              >
+                전속
+              </Checkbox>
+              <Checkbox
+                size="md"
+                checked={isGa}
+                onCheckedChange={(checked) => params.data && handleTargetChange(params.data.id, 'ga', checked === true)}
+              >
+                GA
+              </Checkbox>
+              <Checkbox
+                size="md"
+                checked={isTm}
+                onCheckedChange={(checked) => params.data && handleTargetChange(params.data.id, 'tm', checked === true)}
+              >
+                TM
+              </Checkbox>
+            </div>
+          );
+        },
+      },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, handleTargetChange]
   );
   return (
     <>
       <Dialog open>
-        <DialogContent showCloseButton resizable={true} size="md">
+        <DialogContent showCloseButton resizable={true} size="lg">
           <DialogHeader>
             <DialogTitle>
               <Typo tag={'strong'} variant={'heading-lg'}>
