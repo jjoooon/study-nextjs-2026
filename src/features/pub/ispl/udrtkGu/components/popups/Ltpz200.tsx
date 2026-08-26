@@ -265,6 +265,11 @@ const Ltpz200 = () => {
     () => [
       {
         headerName: '계약정보',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">계약정보</span>
+          </Grow>
+        ),
         children: [
           {
             headerName: '회사명',
@@ -311,6 +316,11 @@ const Ltpz200 = () => {
       },
       {
         headerName: '담보정보',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">담보정보</span>
+          </Grow>
+        ),
         children: [
           {
             headerName: '담보명',

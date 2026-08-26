@@ -126,6 +126,11 @@ export default function Ltpa140Section() {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '전문개시일',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">전문개시일</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -138,6 +143,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '전문번호',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">전문번호</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -150,6 +160,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '전송순번',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">전송순번</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -162,6 +177,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '종별코드',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">종별코드</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -174,6 +194,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '세부코드',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">세부코드</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -186,6 +211,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '등록구분',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">등록구분</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -198,6 +228,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '응답코드',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">응답코드</span>
+        </Grow>
+      ),
       cellClass: 'text-center',
       autoHeight: true,
       children: [
@@ -211,6 +246,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '처리상태',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">처리상태</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -223,6 +263,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '송신자',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">송신자</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -234,6 +279,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '계약자명',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">계약자명</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -245,6 +295,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '관계순번',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">관계순번</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -257,6 +312,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '피보험자번호',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">피보험자번호</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {
@@ -269,6 +329,11 @@ export default function Ltpa140Section() {
     },
     {
       headerName: '피보험자명',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">피보험자명</span>
+        </Grow>
+      ),
       autoHeight: true,
       children: [
         {

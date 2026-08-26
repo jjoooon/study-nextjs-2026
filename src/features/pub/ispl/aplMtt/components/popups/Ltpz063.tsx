@@ -497,9 +497,8 @@ const getValueCellClass = <TData extends { type: string | number }>(params: Cell
     : 'text-center [&_.ag-input-field-input]:text-center !leading-[1.3] !py-2';
 
 const getSelectableValueCellClass = <TData extends { type: string | number }>(params: CellClassParams<TData>) => {
-  const isExternal = params.colDef.field?.toString().startsWith('externalInsurance');
-  if (isExternal && params.data && (isMainRefundRow(params.data) || isMainInterestRateRow(params.data))) {
-    return '!p-0 !m-0 !h-full flex items-center justify-center';
+  if (params.data && (isMainRefundRow(params.data) || isMainInterestRateRow(params.data))) {
+    return 'split-dual-cell';
   }
   return isLeftAlignTargetRow(params.data)
     ? 'text-right [&_.ag-input-field-input]:text-right !leading-[1.3] !py-2'
@@ -685,7 +684,10 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
   };
 
   return (
-    <Grow className="!h-full h-full w-full flex items-center" onClick={(e) => e.stopPropagation()}>
+    <Grow className="relative !h-full h-full w-full flex items-stretch" onClick={(e) => e.stopPropagation()}>
+      {/* 중앙 세로 구분선 (상/하단 보더와 빈틈없이 완벽히 연결) */}
+      <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-[#ddddde] pointer-events-none z-10" />
+
       {/* 좌측 50% 영역 */}
       {isEditingLeft ? (
         <Grow className="w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] justify-start px-1 flex items-center gap-1 h-full overflow-hidden">
@@ -720,7 +722,7 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
       {/* 우측 50% 영역 */}
       {isEditingRight ? (
         <Grow
-          className="border-l border-solid border-[#ddddde] !h-full h-full pl-1 text-left! aspect-auto w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] items-center justify-center overflow-visible pointer-events-auto z-10"
+          className="!h-full h-full pl-1 text-left! aspect-auto w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] items-center justify-center overflow-visible pointer-events-auto z-10"
           onClick={(e) => e.stopPropagation()}
           onMouseDown={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
@@ -743,7 +745,7 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
         </Grow>
       ) : (
         <Grow
-          className="border-l border-solid border-[#ddddde] !h-full h-full pl-1 text-center aspect-auto w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] items-center justify-center overflow-hidden cursor-pointer flex self-stretch min-h-[28px] transition-colors text-[#006ff2]"
+          className="!h-full h-full pl-1 text-center aspect-auto w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] items-center justify-center overflow-hidden cursor-pointer flex self-stretch min-h-[28px] transition-colors text-[#006ff2]"
           onClick={(e) => {
             e.stopPropagation();
             setIsEditingRight(true);
@@ -1018,7 +1020,7 @@ export const Ltpz063 = () => {
     }
 
     if (isMainRefundRow(params.data) || isMainInterestRateRow(params.data)) {
-      return '!p-0 !m-0 !h-full flex items-center justify-center editable-cell';
+      return 'split-dual-cell editable-cell';
     }
 
     if (isEditableTargetRow(params.data.type)) {
@@ -1093,7 +1095,7 @@ export const Ltpz063 = () => {
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: (params) =>
         params.data && (isMainRefundRow(params.data) || isMainInterestRateRow(params.data))
-          ? '!p-0 !m-0 !h-full'
+          ? 'split-dual-cell'
           : getSelectableValueCellClass(params),
       cellClassRules: externalInsuranceCellClassRules,
       flex: 1,
@@ -1132,7 +1134,7 @@ export const Ltpz063 = () => {
       headerClass: '[&_.ag-header-cell-text]:font-bold',
       cellClass: (params) =>
         params.data && (isMainRefundRow(params.data) || isMainInterestRateRow(params.data))
-          ? '!p-0 !m-0 !h-full'
+          ? 'split-dual-cell'
           : getSelectableValueCellClass(params),
       cellClassRules: externalInsuranceCellClassRules,
       flex: 1,

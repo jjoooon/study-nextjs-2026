@@ -106,6 +106,11 @@ export default function Ltpa250Section() {
     },
     {
       headerName: '담보보장기간',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">담보보장기간</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '시기',
@@ -125,6 +130,11 @@ export default function Ltpa250Section() {
     },
     {
       headerName: '가입금액',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">가입금액</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '(단위:천원)',
@@ -139,6 +149,11 @@ export default function Ltpa250Section() {
     },
     {
       headerName: '공제금액(단위:천원)',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">공제금액(단위:천원)</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '의원',
@@ -203,6 +218,11 @@ export default function Ltpa250Section() {
     },
     {
       headerName: '담보특성',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">담보특성</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '보상기간',
@@ -240,6 +260,11 @@ export default function Ltpa250Section() {
     },
     {
       headerName: '자가부담비율',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">자가부담비율</span>
+        </Grow>
+      ),
       cellClass: 'text-center',
       children: [
         {
@@ -277,6 +302,11 @@ export default function Ltpa250Section() {
     },
     {
       headerName: '공제금액기준',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">공제금액기준</span>
+        </Grow>
+      ),
       cellClass: 'text-center',
       children: [
         {

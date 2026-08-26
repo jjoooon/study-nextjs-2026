@@ -301,6 +301,11 @@ export default function Ltpa240Section() {
     },
     {
       headerName: '계약정보',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">계약정보</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '회사명',
@@ -327,6 +332,11 @@ export default function Ltpa240Section() {
     },
     {
       headerName: '담보정보',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">담보정보</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '보험시기',
@@ -421,6 +431,11 @@ export default function Ltpa240Section() {
     },
     {
       headerName: '계약정보',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">계약정보</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '회사명',
@@ -459,6 +474,11 @@ export default function Ltpa240Section() {
     },
     {
       headerName: '담보정보',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">담보정보</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '담보명',

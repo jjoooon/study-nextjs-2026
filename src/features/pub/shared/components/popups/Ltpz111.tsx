@@ -114,6 +114,11 @@ const Ltpz111 = () => {
       },
       {
         headerName: '경증외 입원수술',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">경증외 입원수술</span>
+          </Grow>
+        ),
         children: [
           {
             headerName: '건강/일반',

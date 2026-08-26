@@ -1277,6 +1277,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '기본계약 및 특약담보(실손의료비 제외)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">기본계약 및 특약담보(실손의료비 제외)</span>
+          </Grow>
+        ),
         cellClass: 'text-center',
         headerClass: 'ag-header-right-divider',
         children: [
@@ -1290,6 +1295,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '예상해약환급금',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold text-[1.3rem]!">예상해약환급금</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -1330,6 +1340,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '실손의료비',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">실손의료비</span>
+          </Grow>
+        ),
         children: [
           {
             headerName: '납입보험료',
@@ -1369,6 +1384,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '기본계약 및 특약담보(실손의료비 제외)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">기본계약 및 특약담보(실손의료비 제외)</span>
+          </Grow>
+        ),
         cellClass: 'text-center',
         headerClass: 'ag-header-right-divider',
         children: [
@@ -1382,6 +1402,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '최저보증이율 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold text-[1.3rem]!">최저보증이율 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
 
@@ -1421,6 +1446,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold text-[1.3rem]!">2026년 2월 현재공시이율(1.5%) 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
 
@@ -1460,6 +1490,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '평균공시이율(1.5%) 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold text-[1.3rem]!">평균공시이율(1.5%) 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-center',
             headerClass: 'ag-header-right-divider',
 
@@ -1501,6 +1536,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '실손의료비',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">실손의료비</span>
+          </Grow>
+        ),
         children: [
           {
             headerName: '납입보험료',
@@ -1542,6 +1582,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '기본계약 및 특약담보(실손의료비 제외)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold! text-[1.3rem]!">기본계약 및 특약담보(실손의료비 제외)</span>
+          </Grow>
+        ),
         cellClass: 'text-center',
         headerClass: 'ag-header-right-divider',
         children: [
@@ -1555,6 +1600,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '예상해약환급금',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">예상해약환급금</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -1613,6 +1663,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '기본계약 및 특약담보(실손의료비 제외)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold! text-[1.3rem]!">기본계약 및 특약담보(실손의료비 제외)</span>
+          </Grow>
+        ),
         cellClass: 'text-center',
         headerClass: 'ag-header-right-divider',
         children: [
@@ -1626,6 +1681,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '예상해약환급금',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">예상해약환급금</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -1684,6 +1744,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '기본계약 및 특약담보(실손의료비 제외)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">기본계약 및 특약담보(실손의료비 제외)</span>
+          </Grow>
+        ),
         cellClass: 'text-center',
         headerClass: 'ag-header-right-divider',
         children: [
@@ -1697,6 +1762,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '최저보증이율 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">최저보증이율 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -1737,6 +1807,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '실손의료비',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold! text-[1.3rem]!">실손의료비</span>
+          </Grow>
+        ),
         children: [
           {
             headerName: '납입보험료',
@@ -1778,6 +1853,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '기본계약 및 특약담보(실손의료비 제외)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold! text-[1.3rem]!">기본계약 및 특약담보(실손의료비 제외)</span>
+          </Grow>
+        ),
         cellClass: 'text-center',
         headerClass: 'ag-header-right-divider',
         children: [
@@ -1791,6 +1871,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '최저보증이율 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">최저보증이율 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
 
@@ -1830,6 +1915,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">2026년 2월 현재공시이율(1.5%) 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
 
@@ -1869,6 +1959,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '평균공시이율(1.5%) 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">평균공시이율(1.5%) 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-center',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -1909,6 +2004,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '실손의료비',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold! text-[1.3rem]!">실손의료비</span>
+          </Grow>
+        ),
         children: [
           {
             headerName: '납입보험료',
@@ -1948,6 +2048,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '기본계약 및 특약담보(실손의료비 제외)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold! text-[1.3rem]!">기본계약 및 특약담보(실손의료비 제외)</span>
+          </Grow>
+        ),
         cellClass: 'text-center',
         headerClass: 'ag-header-right-divider',
         children: [
@@ -1961,6 +2066,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '최저보증이율 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">최저보증이율 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -1999,6 +2109,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">2026년 2월 현재공시이율(1.5%) 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -2037,6 +2152,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '평균공시이율(1.5%) 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">평균공시이율(1.5%) 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-center',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -2077,6 +2197,13 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '실손의료비',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold! text-[1.3rem]!">실손의료비</span>
+          </Grow>
+        ),
+        cellClass: 'text-center',
+        headerClass: 'ag-header-right-divider',
         children: [
           {
             headerName: '납입보험료',
@@ -2116,6 +2243,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '기본계약 및 특약담보(실손의료비 제외)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold! text-[1.3rem]!">기본계약 및 특약담보(실손의료비 제외)</span>
+          </Grow>
+        ),
         cellClass: 'text-center',
         headerClass: 'ag-header-right-divider',
         children: [
@@ -2129,6 +2261,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '최저보증이율 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">최저보증이율 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -2167,6 +2304,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '2026년 2월 현재공시이율(1.5%) 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">2026년 2월 현재공시이율(1.5%) 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-right',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -2205,6 +2347,11 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           },
           {
             headerName: '평균공시이율(1.5%) 적용시',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold! text-[1.3rem]!">평균공시이율(1.5%) 적용시</span>
+              </Grow>
+            ),
             cellClass: 'text-center',
             headerClass: 'ag-header-right-divider',
             children: [
@@ -2245,6 +2392,13 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
       },
       {
         headerName: '실손의료비',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold! text-[1.3rem]!">실손의료비</span>
+          </Grow>
+        ),
+        cellClass: 'text-center',
+        headerClass: 'ag-header-right-divider',
         children: [
           {
             headerName: '납입보험료',

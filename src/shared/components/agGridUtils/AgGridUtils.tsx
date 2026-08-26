@@ -1913,7 +1913,7 @@ export const GridHeaderCheckbox = (props: GridHeaderCheckboxParams) => {
           props.api.refreshHeader();
         }}
       >
-        {display && <span className="ag-header-cell-text">{display}</span>}
+        {display && <span className="ag-header-cell-text font-bold!">{display}</span>}
       </Checkbox>
     </Grow>
   );

@@ -357,6 +357,11 @@ const Ltpz070 = () => {
       },
       {
         headerName: '현재',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">현재</span>
+          </Grow>
+        ),
         cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
         headerClass: 'ag-header-right-divider',
         children: [
@@ -389,6 +394,11 @@ const Ltpz070 = () => {
       },
       {
         headerName: '변경후',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">변경후</span>
+          </Grow>
+        ),
         headerClass: 'ag-header-color',
         cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
         children: [
@@ -447,6 +457,11 @@ const Ltpz070 = () => {
       },
       {
         headerName: '현재',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">현재</span>
+          </Grow>
+        ),
         cellClass: 'text-center px-0! flex [&>div>span]:h-auto!',
         headerClass: 'ag-header-right-divider',
         children: [
@@ -479,6 +494,11 @@ const Ltpz070 = () => {
       },
       {
         headerName: '변경후',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">변경후</span>
+          </Grow>
+        ),
         headerClass: 'ag-header-color',
         children: [
           {
