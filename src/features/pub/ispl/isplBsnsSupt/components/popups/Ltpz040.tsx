@@ -288,12 +288,13 @@ const Ltpz040 = () => {
                     }}
                     rowSelection={{
                       mode: 'multiRow',
-                      headerCheckbox: true,
+                      headerCheckbox: false,
                       checkboxes: true,
                       enableClickSelection: false,
                     }}
                     selectionColumnDef={{
                       width: 30,
+                      headerName: '선택',
                       cellClass: 'text-center editable-cell',
                     }}
                     rowClassRules={{}}
@@ -316,7 +317,7 @@ const Ltpz040 = () => {
                   </Typo>
                   <Typo icon="detail" variant="body-sm">
                     전환전 계약에 「특정 신체부위 질병 보장제한부 인수 특별약관」, 「특별조건부 특별약관」 등이 부가되어
-                    있을 경우, 전환용 계약에 전환전 계약의 조건과 동일하게 부가하여 효력을 갖출 수 있습니다.
+                    있을 경우, 전환용 계약에 전환전 계약의 조건과 동일하게 부가하여 효력을 갖을 수 있습니다.
                   </Typo>
                   <Typo icon="detail" variant="body-sm">
                     <b>

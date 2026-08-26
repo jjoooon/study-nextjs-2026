@@ -27,11 +27,11 @@ import { Input } from '@uiux/Input';
 const Ltpz056 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="sm">
+      <DialogContent showCloseButton resizable={true} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              카카오알림톡 발송대상
+              카카오알림톡 발송
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ056)
@@ -39,7 +39,7 @@ const Ltpz056 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="gap-2">
+        <DialogSection className="gap-2 grid-rows-[auto_1fr_1fr]">
           <TableFold variant="default">
             <TableFoldHead title="카카오알림톡 발송대상"></TableFoldHead>
             <TableFoldBody>

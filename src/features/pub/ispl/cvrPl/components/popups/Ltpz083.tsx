@@ -76,7 +76,7 @@ const Ltpz083 = () => {
               견종검색
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA083)
+              (LTPZ083)
             </Typo>
           </DialogTitle>
         </DialogHeader>

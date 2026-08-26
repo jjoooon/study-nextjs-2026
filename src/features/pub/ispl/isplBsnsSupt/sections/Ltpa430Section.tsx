@@ -298,7 +298,7 @@ export default function Ltpa010Section() {
                 {/* 2.2. 고지유형별 설명 안내 박스 */}
                 <Gcol variant="box-info" placement="ss">
                   <Typo variant="body-sm" weight={'bold'} icon="info">
-                    간편고지 유혈별 보험료 예시
+                    간편고지 유형별 보험료 예시
                   </Typo>
                   <Typo variant="body-sm" icon="dot">
                     이 상품은 일반심사보험대비 보험료가 할증되어 있으며, &apos;간편고지&apos; 유형에 따라 할증수준이
@@ -330,7 +330,8 @@ export default function Ltpa010Section() {
 
                 {/* 하단 참고 정보 */}
                 <Typo icon="ref">
-                  현재 설계 담보로 계산된 합계보험료비교 내용(실제해당 형으로 변경시 가입불가능한 담보가 포함될 수 있음)
+                  현재 설계 담보로 계산된 합계보험료 비교 내용(실제해당 형으로 변경시 가입불가능한 담보가 포함될 수
+                  있음)
                 </Typo>
               </Gcol>
             </Gcol>

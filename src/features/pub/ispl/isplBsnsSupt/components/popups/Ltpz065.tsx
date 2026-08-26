@@ -214,7 +214,7 @@ const Ltpz065 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              단체 손실의료비 전환대상 조회
+              단체 실손의료비 전환대상 조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ065)
@@ -275,7 +275,7 @@ const Ltpz065 = () => {
                       aria-label="주민등록번호 마스킹"
                       width={120}
                       variant="info"
-                      value={'000000-0******'}
+                      value={'(000000-0******)'}
                       readOnly
                     />
                   </FormCell>

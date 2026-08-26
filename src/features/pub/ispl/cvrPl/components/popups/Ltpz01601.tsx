@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { ColDef, EditableCallbackParams, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, GridApi, ICellRendererParams, CellValueChangedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback } from 'react';
 import * as React from 'react';
@@ -12,6 +12,7 @@ import {
   createTooltipValueGetter,
   editableSelectCellRenderer,
   numberValueFormatter,
+  DatePickerCellEditor,
 } from '@aggrid';
 import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -50,7 +51,7 @@ const DummyData: DummyDataType[] = [
     isNew: false,
     field01: '선택',
     field02: '3대진단형3대진단형3대진단형3대진단형',
-    field03: '2026-04-18',
+    field03: '2026-04',
     field04: 3000,
   },
   {
@@ -59,7 +60,7 @@ const DummyData: DummyDataType[] = [
     isNew: false,
     field01: '선택',
     field02: '3대진단형',
-    field03: '2026-03-22',
+    field03: '2026-03',
     field04: 3000,
   },
   {
@@ -68,7 +69,7 @@ const DummyData: DummyDataType[] = [
     isNew: false,
     field01: '선택',
     field02: '3대진단형',
-    field03: '2026-03-22',
+    field03: '2026-03',
     field04: 3000,
   },
 ];
@@ -122,18 +123,20 @@ const Ltpz01601 = () => {
     });
   }, [rowData]);
 
-  // 새로 추가한 행만 편집 가능
-  const isEditableNewRow = React.useCallback(
-    (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
-    []
-  );
-
   const expiryCellRenderer = useCallback(
     (align: 'left' | 'center' | 'right' = 'right') =>
       (params: ICellRendererParams<DummyDataType>) =>
         editableSelectCellRenderer<DummyDataType>({ ...params, align }),
     []
   );
+
+  const handleCellValueChanged = React.useCallback((params: CellValueChangedEvent<DummyDataType>) => {
+    const { data, colDef, newValue } = params;
+    if (!colDef.field) return;
+    setRowData((prev) =>
+      prev.map((row) => (row.id === data.id ? { ...row, [colDef.field as string]: newValue } : row))
+    );
+  }, []);
 
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -146,40 +149,39 @@ const Ltpz01601 = () => {
       headerName: '품명',
       field: 'field01',
       width: 180,
-      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
+      cellClass: 'text-center editable-cell',
       cellEditor: 'agSelectCellEditor',
-      editable: isEditableNewRow,
-      cellEditorParams: { values: ['선택1', '선택2'] },
-      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
-        if (params.data?.isNew) {
-          return expiryCellRenderer('center')(params);
-        }
-        return params.value;
-      },
+      editable: true,
+      cellEditorParams: { values: ['선택', '선택1', '선택2'] },
+      cellRenderer: expiryCellRenderer('center'),
     },
     {
       headerName: '브랜드명',
       field: 'field02',
       flex: 1,
-      cellClass: (params) => (isEditableNewRow(params) ? 'text-left editable-cell' : 'text-left'),
-      editable: isEditableNewRow,
+      cellClass: 'text-left editable-cell',
+      editable: true,
       tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field02' }),
     },
     {
       headerName: '구입년월',
       field: 'field03',
       width: 120,
-      cellClass: (params) => (isEditableNewRow(params) ? 'text-center editable-cell' : 'text-center'),
-      editable: isEditableNewRow,
+      cellClass: 'text-center editable-cell',
+      cellEditor: DatePickerCellEditor,
+      cellEditorParams: {
+        monthOnly: true,
+      },
+      editable: true,
     },
     {
       headerName: '구입가격(만원)',
       field: 'field04',
       width: 130,
-      cellClass: (params) => (isEditableNewRow(params) ? 'text-right editable-cell' : 'text-right'),
+      cellClass: 'text-right editable-cell',
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
-      editable: isEditableNewRow,
+      editable: true,
     },
   ];
   return (
@@ -229,6 +231,7 @@ const Ltpz01601 = () => {
                   getRowId={(params) => String(params.data.id)}
                   rowData={rowData}
                   columnDefs={columnDefs}
+                  onCellValueChanged={handleCellValueChanged}
                   enableCellSpan={true}
                   singleClickEdit={true}
                   noRowsOverlayComponent={AgGridEmptyComponent}
