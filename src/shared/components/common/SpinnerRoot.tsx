@@ -396,7 +396,7 @@ export function BaseSpinnerRoot(props?: SpinnerRootProps) {
     ? {}
     : {
         background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%)',
-        backdropFilter: 'blur(4px)',
+        backdropFilter: 'blur(0)',
       };
 
   // Portal로 body 하단에 렌더링
@@ -510,8 +510,8 @@ export function SpinnerRoot(props?: SpinnerRootProps) {
   const backgroundStyle = transparentBackground
     ? {}
     : {
-        background: 'rgba(255,255,255,0.1)',
-        backdropFilter: 'blur(0.4rem)',
+        background: 'rgba(255,255,255,0)',
+        backdropFilter: 'blur(0)',
       };
 
   // Portal로 body 하단에 렌더링
@@ -541,7 +541,12 @@ export function SpinnerRoot(props?: SpinnerRootProps) {
             <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-primary-50)] rounded-[80%] z-30 animate-dot-3-move" />
           </div>
           {Boolean(currentText) && (
-            <Typo key={currentIndex} variant={'body-md'} className="animate-text-change">
+            <Typo
+              tag={'div'}
+              key={currentIndex}
+              variant={'body-md'}
+              className="animate-text-change bg-white pd-3 rounded-2"
+            >
               {renderTextWithHtml(currentText)}
             </Typo>
           )}
