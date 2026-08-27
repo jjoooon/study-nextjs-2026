@@ -23,7 +23,7 @@ import { ZoomInIcon, ResetIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 
 import '@/shared/lib/agGridPub';
 
