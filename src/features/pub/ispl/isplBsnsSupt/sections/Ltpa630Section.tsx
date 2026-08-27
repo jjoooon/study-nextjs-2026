@@ -23,7 +23,7 @@ import { ZoomInIcon, ResetIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 
 import '@/shared/lib/agGridPub';
 
@@ -31,81 +31,97 @@ type DummyData1Type = {
   id: number;
   field1: string;
   field2: string;
+  field3: string[]; //전속,GA,TM
 };
 const DummyData1: DummyData1Type[] = [
   {
     id: 1,
     field1: '간병',
     field2: '간병인사용',
+    field3: ['전속', 'GA', 'TM'],
   },
   {
     id: 2,
     field1: '암주요',
     field2: '암주요치료(상급종합)',
+    field3: ['전속'],
   },
   {
     id: 3,
     field1: '암주요',
     field2: '암주요치료(종합병원)',
+    field3: ['GA', 'TM'],
   },
   {
     id: 4,
     field1: '암주요',
     field2: '암주요치료(비급여)',
+    field3: ['TM'],
   },
   {
     id: 5,
     field1: '암주요',
+    field3: ['전속', 'TM'],
     field2: '암주요치료(전이암)',
   },
   {
     id: 6,
     field1: '암주요',
+    field3: ['전속'],
     field2: '표적항암',
   },
   {
     id: 7,
     field1: '순환계치료비',
+    field3: ['전속', 'GA', 'TM'],
     field2: '요양병원제외',
   },
   {
     id: 8,
     field1: '순환계치료비',
+    field3: ['GA', 'TM'],
     field2: '상급종합병원',
   },
   {
     id: 9,
     field1: '순환계치료비',
+    field3: ['GA'],
     field2: '주요순환계',
   },
   {
     id: 10,
     field1: '입원',
+    field3: ['GA', 'TM'],
     field2: '1인실',
   },
   {
     id: 11,
     field1: '입원',
+    field3: ['전속', 'GA', 'TM'],
     field2: '2~3인실',
   },
   {
     id: 12,
     field1: '운전자',
+    field3: ['TM'],
     field2: '운전자비용',
   },
   {
     id: 13,
     field1: '여성',
+    field3: ['전속', 'GA', 'TM'],
     field2: '유/갑/생',
   },
   {
     id: 14,
     field1: '출산/난임',
+    field3: ['전속'],
     field2: '미혼자용',
   },
   {
     id: 15,
     field1: '출산/난임',
+    field3: ['전속', 'GA', 'TM'],
     field2: '기혼자용',
   },
 ];
@@ -133,6 +149,8 @@ const DummyData2: DummyData2Type[] = [
   },
 ];
 
+const ALL_CHANNELS = ['전속', 'GA', 'TM']; // 또는 ['1', '2', '3']
+
 export default function Ltpa630Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -153,8 +171,17 @@ export default function Ltpa630Section() {
         headerName: '세부',
         field: 'field2',
         flex: 6,
-        minWidth: attributeColumnWidth(300),
+        minWidth: attributeColumnWidth(150),
         autoHeight: true,
+      },
+      {
+        headerName: '적용대상',
+        field: 'field3',
+        flex: 6,
+        minWidth: attributeColumnWidth(150),
+        autoHeight: true,
+        cellClass: 'text-center',
+        valueFormatter: (params) => (Array.isArray(params.value) ? params.value.join(' / ') : (params.value ?? '')),
       },
     ],
     [attributeColumnWidth]
@@ -176,38 +203,6 @@ export default function Ltpa630Section() {
     insertAt: 'end',
     gridApiRef,
   });
-
-  /*
-// 1. 단 하나의 객체 상태 선언 (key: 그룹ID, value: 선택된 항목 배열)
-const [filters, setFilters] = React.useState<Record<string, string[]>>({});
-const handleGroupChange = (id: string, nextValues: string[]) => {
-  setFilters((prev) => ({
-    ...prev,
-    [id]: nextValues,
-  }));
-};
-// 2. 동적 데이터 리스트가 있다고 가정
-const searchCategories = [
-  { id: 'target1', title: '적용대상 1' },
-  { id: 'target2', title: '적용대상 2' },
-  { id: 'target3', title: '적용대상 3' },
-];
-// 3. map으로 동적 렌더링
-{searchCategories.map((item) => (
-  <FormCell key={item.id} title={item.title}>
-    <CheckboxGroup
-      value={filters[item.id] ?? []}
-      onValueChange={(nextValues) => handleGroupChange(item.id, nextValues)}
-      className="gap-3"
-    >
-      <CheckboxGroupItem value="all" selectAll>전체</CheckboxGroupItem>
-      <CheckboxGroupItem value="1">전속</CheckboxGroupItem>
-      <CheckboxGroupItem value="2">GA</CheckboxGroupItem>
-      <CheckboxGroupItem value="3">TM</CheckboxGroupItem>
-    </CheckboxGroup>
-  </FormCell>
-))}
-*/
 
   // 2026-06-01 width, flex 수정
   const columnDefs2: ColDef<DummyData2Type>[] = useMemo(
@@ -268,10 +263,23 @@ const searchCategories = [
     [attributeColumnWidth, setRowData2]
   );
 
-  const [values, setValues] = React.useState<string[]>([]);
+  const [values, setValues] = React.useState<string[]>(ALL_CHANNELS);
+
   const handleGroupChange = (nextValues: string[]) => {
     setValues(nextValues);
   };
+
+  // 선택된 체크박스값(values)에 해당되는 항목만 필터링
+  const filteredData1 = React.useMemo(() => {
+    if (!values || values.length === 0) return [];
+    const activeChannels = values.filter((v) => v !== 'all');
+    if (activeChannels.length === 0) return [];
+
+    return DummyData1.filter((row) => {
+      if (!row.field3 || row.field3.length === 0) return false;
+      return row.field3.some((channel) => activeChannels.includes(channel));
+    });
+  }, [values]);
 
   return (
     <>
@@ -294,19 +302,9 @@ const searchCategories = [
                       <CheckboxGroupItem value="all" selectAll>
                         전체
                       </CheckboxGroupItem>
-                      <CheckboxGroupItem value="1">전속</CheckboxGroupItem>
-                      <CheckboxGroupItem value="2">GA</CheckboxGroupItem>
-                      <CheckboxGroupItem value="3">TM</CheckboxGroupItem>
-                    </CheckboxGroup>
-                  </FormCell>
-                  <FormCell title={'적용대상검색'} tdClassName="grid-cols-[auto_1fr_auto]">
-                    <CheckboxGroup value={values} onValueChange={handleGroupChange} className="gap-3">
-                      <CheckboxGroupItem value="all" selectAll>
-                        전체
-                      </CheckboxGroupItem>
-                      <CheckboxGroupItem value="1">전속</CheckboxGroupItem>
-                      <CheckboxGroupItem value="2">GA</CheckboxGroupItem>
-                      <CheckboxGroupItem value="3">TM</CheckboxGroupItem>
+                      <CheckboxGroupItem value="전속">전속</CheckboxGroupItem>
+                      <CheckboxGroupItem value="GA">GA</CheckboxGroupItem>
+                      <CheckboxGroupItem value="TM">TM</CheckboxGroupItem>
                     </CheckboxGroup>
                   </FormCell>
                 </FormRow>
@@ -340,7 +338,7 @@ const searchCategories = [
                   <AgGridReact<DummyData1Type>
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
-                    rowData={DummyData1}
+                    rowData={filteredData1}
                     columnDefs={columnDefs1}
                     defaultColDef={{
                       sortable: true,

@@ -4,13 +4,14 @@
 'use client';
 
 /**
- * Spinner Root Container
+ * Spinner Root Container & Common Loading Spinners
  *
  * @description
- * - Redux Store의 spinner 상태를 감지하여 전역 spinner 렌더 링
+ * - Redux Store의 spinner 상태를 감지하여 전역 spinner 렌더링
  * - Portal로 렌더링하여 DOM 계층구조 분리
  * - DialogRoot와 동일한 패턴 사용
  * - 투명 배경 및 로딩 이미지 숨김 옵션 지원
+ * - 세로 롤링, AI 스피너, 퍼즐 스피너, 인라인 스피너 등 공통 로딩 컴포넌트 포함
  *
  * @location
  * src/app/layout.tsx에 추가하여 전역 spinner 관리
@@ -54,6 +55,10 @@ import {
 } from '@/shared/store/spinnerSlice';
 import { Gcol, Typo } from '@atoms';
 
+/* ==========================================================================
+ * Helper Utilities & Custom Hooks
+ * ========================================================================== */
+
 /**
  * 텍스트가 문자열이고 HTML 태그(<b>, <span>, <strong> 등)를 포함하고 있을 경우 태그를 해석하여 렌더링하고,
  * React Element/JSX인 경우 그대로 렌더링하는 헬퍼 함수
@@ -67,42 +72,10 @@ export function renderTextWithHtml(text: React.ReactNode): React.ReactNode {
   return text;
 }
 
-export interface SpinnerRootProps {
-  type?:
-    | 'SpinnerRoot'
-    | 'BaseSpinnerRoot'
-    | 'AiSpinner'
-    | 'DnaSpinnerRoot'
-    | 'HpSpinnerRoot'
-    | 'CircleSpinner'
-    | 'PuzzleSpinner';
-  isVisible?: boolean;
-  message?: string | null;
-  transparentBackground?: boolean;
-  hideLoadingIndicator?: boolean;
-  texts?: string[];
-  interval?: number; // 텍스트 변경 주기 (ms)
-}
-
-export interface CircleSpinnerProps {
-  className?: string;
-  size?: number | string;
-  texts?: (string | React.ReactNode)[];
-  interval?: number;
-  strokeColor?: string;
-  bgColor?: string;
-  isVisible?: boolean;
-}
-
-export function CircleSpinner({
-  className,
-  size = 52,
-  texts,
-  interval = 2000,
-  strokeColor = '#B3B3B3',
-  bgColor = '#EBEBEB',
-  isVisible = true,
-}: CircleSpinnerProps) {
+/**
+ * 텍스트 배열을 지정된 interval(ms) 간격으로 롤링/순환시키는 커스텀 훅
+ */
+function useTextLoop<T>(texts: T[] | undefined, interval = 2000, defaultText?: T) {
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
   React.useEffect(() => {
@@ -116,46 +89,11 @@ export function CircleSpinner({
     return () => clearInterval(timer);
   }, [texts, interval]);
 
-  const currentText = texts && texts.length > 0 ? (texts[currentIndex] ?? '') : '';
+  const fallback = defaultText ?? ('' as unknown as T);
+  const currentText = texts && texts.length > 0 ? (texts[currentIndex] ?? fallback) : fallback;
 
-  if (!isVisible) return null;
-
-  const svgSize = typeof size === 'number' ? `${size}px` : size;
-
-  return (
-    <Gcol
-      className={`w-full h-full flex flex-col items-center justify-center gap-4 py-4 ${className ?? ''}`}
-      placement="cc"
-    >
-      <div className="relative flex items-center justify-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={svgSize}
-          height={svgSize}
-          viewBox="0 0 52 52"
-          fill="none"
-          className="animate-spin"
-        >
-          <circle cx="26.0001" cy="26.0002" r="20.4714" stroke={bgColor} strokeWidth="2.55892" />
-          <path
-            d="M32.6331 45.367C28.753 46.6959 24.5632 46.8287 20.6067 45.7481C16.6502 44.6676 13.1095 42.4235 10.4435 39.3068C7.77756 36.1901 6.10923 32.3445 5.65477 28.2683C5.20032 24.1922 5.9807 20.0736 7.89476 16.4462C9.80883 12.8189 12.7683 9.85011 16.3897 7.92469C20.011 5.99927 24.1272 5.20599 28.2047 5.64768C32.2822 6.08937 36.1331 7.74565 39.2581 10.4019C42.3831 13.0581 44.6383 16.5917 45.7312 20.5448"
-            stroke={strokeColor}
-            strokeWidth="2.55892"
-            strokeLinecap="round"
-          />
-        </svg>
-      </div>
-
-      {Boolean(currentText) && (
-        <Typo key={currentIndex} variant={'body-md'} className="animate-text-change text-center font-bold">
-          {renderTextWithHtml(currentText)}
-        </Typo>
-      )}
-    </Gcol>
-  );
+  return { currentIndex, currentText };
 }
-
-export const CircleSpinnerRoot = CircleSpinner;
 
 /**
  * ReactNode에서 순수 텍스트 문자열만 추출하는 헬퍼 함수
@@ -239,17 +177,122 @@ function sliceReactNode(node: React.ReactNode, visibleLength: number): React.Rea
   return traverse(node);
 }
 
+/* ==========================================================================
+ * Interfaces
+ * ========================================================================== */
+
+export interface SpinnerRootProps {
+  type?: 'SpinnerRoot' | 'BaseSpinnerRoot' | 'AiSpinner' | 'CircleSpinner' | 'PuzzleSpinner';
+  isVisible?: boolean;
+  message?: string | null;
+  transparentBackground?: boolean;
+  hideLoadingIndicator?: boolean;
+  texts?: string[];
+  interval?: number; // 텍스트 변경 주기 (ms)
+}
+
+export interface CircleSpinnerProps {
+  className?: string;
+  size?: number | string;
+  texts?: (string | React.ReactNode)[];
+  interval?: number;
+  strokeColor?: string;
+  bgColor?: string;
+  isVisible?: boolean;
+}
+
 export interface TypingTextProps {
   texts?: (string | React.ReactNode)[];
-  typingSpeed?: number; // 한 글자당 타이핑 속도 (ms, 기본 40ms)
+  typingSpeed?: number; // 한 글자당 타이핑 속도 (ms, 기본 100ms)
   pauseDuration?: number; // 문장 완료 후 대기 시간 (ms, 기본 1000ms = 1초)
   className?: string;
 }
 
+export interface PuzzleSpinnerProps {
+  className?: string;
+  texts?: (string | React.ReactNode)[];
+  typingSpeed?: number;
+  pauseDuration?: number;
+  isVisible?: boolean;
+}
+
+export interface LocalSpinnerProps {
+  className?: string;
+  texts?: string[];
+  interval?: number; // 텍스트 변경 주기 (ms)
+}
+
+export interface AiSpinnerProps {
+  className?: string;
+  size?: string; // 기본값: 'min(46vmin, 360px)'
+  text?: string; // 기본값: 'AI'
+  srText?: string; // 기본값: 'Loading'
+  texts?: React.ReactNode[];
+  interval?: number; // 텍스트 변경 주기 (ms)
+}
+
+/* ==========================================================================
+ * 1. CircleSpinner & CircleSpinnerRoot
+ * ========================================================================== */
+
+export function CircleSpinner({
+  className,
+  size = 52,
+  texts,
+  interval = 2000,
+  strokeColor = '#B3B3B3',
+  bgColor = '#EBEBEB',
+  isVisible = true,
+}: CircleSpinnerProps) {
+  const { currentIndex, currentText } = useTextLoop(texts, interval, '조회중 입니다.');
+
+  if (!isVisible) return null;
+
+  const svgSize = typeof size === 'number' ? `${size}px` : size;
+
+  return (
+    <Gcol
+      className={`w-full h-full flex flex-col items-center justify-center gap-4 py-4 ${className ?? ''}`}
+      placement="cc"
+    >
+      <div className="relative flex items-center justify-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={svgSize}
+          height={svgSize}
+          viewBox="0 0 52 52"
+          fill="none"
+          className="animate-spin"
+        >
+          <circle cx="26.0001" cy="26.0002" r="20.4714" stroke={bgColor} strokeWidth="2.55892" />
+          <path
+            d="M32.6331 45.367C28.753 46.6959 24.5632 46.8287 20.6067 45.7481C16.6502 44.6676 13.1095 42.4235 10.4435 39.3068C7.77756 36.1901 6.10923 32.3445 5.65477 28.2683C5.20032 24.1922 5.9807 20.0736 7.89476 16.4462C9.80883 12.8189 12.7683 9.85011 16.3897 7.92469C20.011 5.99927 24.1272 5.20599 28.2047 5.64768C32.2822 6.08937 36.1331 7.74565 39.2581 10.4019C42.3831 13.0581 44.6383 16.5917 45.7312 20.5448"
+            stroke={strokeColor}
+            strokeWidth="2.55892"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+
+      {Boolean(currentText) && (
+        <Typo key={currentIndex} variant={'body-md'} className="animate-text-change text-center font-bold">
+          {renderTextWithHtml(currentText)}
+        </Typo>
+      )}
+    </Gcol>
+  );
+}
+
+export const CircleSpinnerRoot = CircleSpinner;
+
+/* ==========================================================================
+ * 2. TypingText
+ * ========================================================================== */
+
 /**
  * TypingText
  * - texts 목록을 전달받아 한 글자씩 타이핑되듯 생성되는 애니메이션 모션을 출력하고,
- * - 문장이 모두 타이핑되면 지정된 대기 시간(기본 1초) 동안 유지된 후 다음 글자로 전환되어 다시 타이핑 모션이 시작됩니다.
+ * - 문장이 모두 타이핑되면 지정된 대기 시간 동안 유지된 후 다음 글자로 전환됩니다.
  */
 export function TypingText({
   texts,
@@ -308,13 +351,9 @@ export function TypingText({
   );
 }
 
-export interface PuzzleSpinnerProps {
-  className?: string;
-  texts?: (string | React.ReactNode)[];
-  typingSpeed?: number;
-  pauseDuration?: number;
-  isVisible?: boolean;
-}
+/* ==========================================================================
+ * 3. PuzzleSpinner & PuzzleSpinnerRoot
+ * ========================================================================== */
 
 /**
  * PuzzleSpinner
@@ -358,126 +397,58 @@ export function PuzzleSpinner({
 
 export const PuzzleSpinnerRoot = PuzzleSpinner;
 
-export function BaseSpinnerRoot(props?: SpinnerRootProps) {
-  const isVisible = useAppSelector(selectIsSpinnerVisible);
-  const message = useAppSelector(selectSpinnerMessage);
-  const transparentBackground = useAppSelector(selectIsTransparentBackground);
-  const hideLoadingIndicator = useAppSelector(selectIsHideLoadingIndicator);
+/* ==========================================================================
+ * 4. Internal Component: GooeyDots (스피너 공통 3-Dot Gooey 애니메이션)
+ * ========================================================================== */
 
-  const [isMounted, setIsMounted] = React.useState(false);
+interface GooeyDotsProps {
+  wrapperClassName?: string;
+  innerClassName?: string;
+}
 
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // texts 및 interval 처리
-  const texts = props?.texts ?? (message ? [message] : undefined);
-  const interval = props?.interval ?? 2000;
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    if (!texts || texts.length <= 1) {
-      setCurrentIndex(0);
-      return;
-    }
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % texts.length);
-    }, interval);
-    return () => clearInterval(timer);
-  }, [texts, interval]);
-
-  const currentText = texts && texts.length > 0 ? (texts[currentIndex] ?? '') : '';
-
-  // Hydration 불일치 방지 및 spinner 상태 검사
-  if (!isMounted || !isVisible) return null;
-
-  // 배경 스타일 결정
-  const backgroundStyle = transparentBackground
-    ? {}
-    : {
-        background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%)',
-        backdropFilter: 'blur(0)',
-      };
-
-  // Portal로 body 하단에 렌더링
-  return createPortal(
-    <div
-      role="dialog"
-      aria-busy="true"
-      aria-label={typeof currentText === 'string' ? currentText : undefined}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        ...backgroundStyle,
-      }}
-    >
-      {/* Spinner Icon */}
-      {!hideLoadingIndicator && (
-        <Gcol className="flex items-center justify-center min-h-screen gap-0">
-          <div className="absoulte w-[3rem] h-[3rem] flex items-center justify-center animate-gather-rotate">
-            <div
-              className="absolute w-[3rem] h-[3rem]  bg-[var(--color-danger-50)] rounded-full z-10 animate-gather-move"
-              style={{ '--tx': '0px', '--ty': '-1.5rem' } as React.CSSProperties}
-            />
-
-            <div
-              className="absolute w-[3rem] h-[3rem] bg-[var(--color-warning-40)] rounded-full z-20 animate-gather-move"
-              style={{ '--tx': '-1.3rem', '--ty': '0.75rem' } as React.CSSProperties}
-            />
-
-            <div
-              className="absolute w-[3rem] h-[3rem] bg-[var(--color-primary-50)] rounded-full z-30 animate-gather-move"
-              style={{ '--tx': '1.3rem', '--ty': '0.75rem' } as React.CSSProperties}
-            />
-          </div>
-          {Boolean(currentText) && (
-            <Typo key={currentIndex} variant={'body-md'} className="animate-text-change">
-              {renderTextWithHtml(currentText)}
-            </Typo>
-          )}
-        </Gcol>
-      )}
-
-      {/* Inline Animations */}
-      <style>
-        {`
-          @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-          }
-          @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-          }
-          @keyframes text-fade-in-translate {
-            from {
-              opacity: 0;
-              transform: translateY(3.3rem);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(3rem);
-            }
-          }
-          .animate-text-change {
-            animation: text-fade-in-translate 0.3s ease-out forwards;
-          }
-        `}
-      </style>
-    </div>,
-    document.body
+function GooeyDots({
+  wrapperClassName = 'w-[12rem] h-[5rem] absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)] scale-[0.7]',
+  innerClassName = '',
+}: GooeyDotsProps) {
+  return (
+    <div className={`${wrapperClassName} ${innerClassName}`}>
+      <div className="absolute w-[1rem] h-[1rem] z-40 rounded-full bg-[var(--color-primary-50)] top-[50%] left-[50%] translate-[-50%,-50%]" />
+      <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-danger-50)] rounded-[80%] z-10 animate-dot-1-move" />
+      <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-warning-40)] rounded-[80%] z-20 animate-dot-2-move" />
+      <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-primary-50)] rounded-[80%] z-30 animate-dot-3-move" />
+    </div>
   );
 }
-export function SpinnerRoot(props?: SpinnerRootProps) {
-  const isVisible = useAppSelector(selectIsSpinnerVisible);
+
+function GooeySvgFilter() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" className="absolute">
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7" />
+        </filter>
+      </defs>
+    </svg>
+  );
+}
+
+/* ==========================================================================
+ * 5. Internal Component: GlobalSpinnerPortal (전역 스피너 공통 포탈 오버레이)
+ * ========================================================================== */
+
+interface GlobalSpinnerPortalProps {
+  props?: SpinnerRootProps;
+  backgroundStyle: React.CSSProperties;
+  translateYClass?: string;
+  renderIndicator: (currentText: React.ReactNode, currentIndex: number) => React.ReactNode;
+  animationStyle?: React.ReactNode;
+}
+
+function GlobalSpinnerPortal({ props, backgroundStyle, renderIndicator, animationStyle }: GlobalSpinnerPortalProps) {
+  const isVisibleFromStore = useAppSelector(selectIsSpinnerVisible);
+  const isVisible = props?.isVisible ?? (props?.texts && props.texts.length > 0 ? true : isVisibleFromStore);
   const message = useAppSelector(selectSpinnerMessage);
-  const transparentBackground = useAppSelector(selectIsTransparentBackground);
-  const hideLoadingIndicator = useAppSelector(selectIsHideLoadingIndicator);
 
   const [isMounted, setIsMounted] = React.useState(false);
 
@@ -485,36 +456,12 @@ export function SpinnerRoot(props?: SpinnerRootProps) {
     setIsMounted(true);
   }, []);
 
-  // texts 및 interval 처리
   const texts = props?.texts ?? (message ? [message] : undefined);
   const interval = props?.interval ?? 2000;
-  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const { currentIndex, currentText } = useTextLoop(texts, interval, '조회중입니다.');
 
-  React.useEffect(() => {
-    if (!texts || texts.length <= 1) {
-      setCurrentIndex(0);
-      return;
-    }
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % texts.length);
-    }, interval);
-    return () => clearInterval(timer);
-  }, [texts, interval]);
-
-  const currentText = texts && texts.length > 0 ? (texts[currentIndex] ?? '') : '';
-
-  // Hydration 불일치 방지 및 spinner 상태 검사
   if (!isMounted || !isVisible) return null;
 
-  // 배경 스타일 결정
-  const backgroundStyle = transparentBackground
-    ? {}
-    : {
-        background: 'rgba(255,255,255,0)',
-        backdropFilter: 'blur(0)',
-      };
-
-  // Portal로 body 하단에 렌더링
   return createPortal(
     <div
       role="dialog"
@@ -531,38 +478,9 @@ export function SpinnerRoot(props?: SpinnerRootProps) {
         ...backgroundStyle,
       }}
     >
-      {/* Spinner Icon */}
-      {!hideLoadingIndicator && (
-        <Gcol className="flex items-center justify-center min-h-screen gap-[5rem] -translate-y-[2rem]">
-          <div className="w-full h-full absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)] scale-[0.8]">
-            <div className="absolute w-[1rem] h-[1rem] z-40 rounded-full bg-[var(--color-primary-50)] top-[50%] left-[50%] translate-[-50%,-50%]"></div>
-            <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-danger-50)] rounded-[80%] z-10 animate-dot-1-move" />
-            <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-warning-40)] rounded-[80%] z-20 animate-dot-2-move" />
-            <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-primary-50)] rounded-[80%] z-30 animate-dot-3-move" />
-          </div>
-          {Boolean(currentText) && (
-            <Typo
-              tag={'div'}
-              key={currentIndex}
-              variant={'body-md'}
-              className="animate-text-change bg-white pd-3 rounded-2"
-            >
-              {renderTextWithHtml(currentText)}
-            </Typo>
-          )}
+      {renderIndicator(currentText, currentIndex)}
 
-          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" className="absolute">
-            <defs>
-              <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7" />
-              </filter>
-            </defs>
-          </svg>
-        </Gcol>
-      )}
-
-      {/* Close Button (개발용) */}
+      {/* 개발용 닫기 버튼 */}
       <button
         type="button"
         onClick={() => window.location.reload()}
@@ -584,85 +502,180 @@ export function SpinnerRoot(props?: SpinnerRootProps) {
         ✕
       </button>
 
-      {/* Inline Animations */}
-      <style>
-        {`
-          @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-          }
-          @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-          }
-          @keyframes text-fade-in-translate {
-            from {
-              opacity: 0;
-              transform: translateY(5.3rem);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(5rem);
-            }
-          }
-          .animate-text-change {
-            animation: text-fade-in-translate 0.3s ease-out forwards;
-          }
-        `}
-      </style>
+      {animationStyle}
     </div>,
     document.body
   );
 }
 
-export interface LocalSpinnerProps {
-  className?: string;
-  texts?: string[];
-  interval?: number; // 텍스트 변경 주기 (ms)
+/* ==========================================================================
+ * 6. BaseSpinnerRoot
+ * ========================================================================== */
+
+export function BaseSpinnerRoot(props?: SpinnerRootProps) {
+  const transparentBackground = useAppSelector(selectIsTransparentBackground);
+  const hideLoadingIndicator = useAppSelector(selectIsHideLoadingIndicator);
+
+  const backgroundStyle: React.CSSProperties = transparentBackground
+    ? {}
+    : {
+        background: 'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%)',
+        backdropFilter: 'blur(0)',
+      };
+
+  return (
+    <GlobalSpinnerPortal
+      props={props}
+      backgroundStyle={backgroundStyle}
+      renderIndicator={(currentText, currentIndex) => (
+        <>
+          {!hideLoadingIndicator && (
+            <Gcol className="flex items-center justify-center min-h-screen gap-0">
+              <div className="absolute w-[3rem] h-[3rem] flex items-center justify-center animate-gather-rotate">
+                <div
+                  className="absolute w-[3rem] h-[3rem] bg-[var(--color-danger-50)] rounded-full z-10 animate-gather-move"
+                  style={{ '--tx': '0px', '--ty': '-1.5rem' } as React.CSSProperties}
+                />
+                <div
+                  className="absolute w-[3rem] h-[3rem] bg-[var(--color-warning-40)] rounded-full z-20 animate-gather-move"
+                  style={{ '--tx': '-1.3rem', '--ty': '0.75rem' } as React.CSSProperties}
+                />
+                <div
+                  className="absolute w-[3rem] h-[3rem] bg-[var(--color-primary-50)] rounded-full z-30 animate-gather-move"
+                  style={{ '--tx': '1.3rem', '--ty': '0.75rem' } as React.CSSProperties}
+                />
+              </div>
+              {Boolean(currentText) && (
+                <Typo key={currentIndex} variant={'body-md'} className="animate-text-change">
+                  {renderTextWithHtml(currentText)}
+                </Typo>
+              )}
+            </Gcol>
+          )}
+        </>
+      )}
+      animationStyle={
+        <style>
+          {`
+            @keyframes spin {
+              from { transform: rotate(0deg); }
+              to { transform: rotate(360deg); }
+            }
+            @keyframes pulse {
+              0%, 100% { opacity: 1; }
+              50% { opacity: 0.5; }
+            }
+            @keyframes text-fade-in-translate {
+              from {
+                opacity: 0;
+                transform: translateY(3.3rem);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(3rem);
+              }
+            }
+            .animate-text-change {
+              animation: text-fade-in-translate 0.3s ease-out forwards;
+            }
+          `}
+        </style>
+      }
+    />
+  );
 }
+
+/* ==========================================================================
+ * 7. SpinnerRoot (전역 스피너 루트)
+ * ========================================================================== */
+
+export function SpinnerRoot(props?: SpinnerRootProps) {
+  const transparentBackground = useAppSelector(selectIsTransparentBackground);
+  const hideLoadingIndicator = useAppSelector(selectIsHideLoadingIndicator);
+
+  const backgroundStyle: React.CSSProperties = transparentBackground
+    ? {}
+    : {
+        background: 'rgba(255,255,255,0)',
+        backdropFilter: 'blur(0)',
+      };
+
+  return (
+    <GlobalSpinnerPortal
+      props={props}
+      backgroundStyle={backgroundStyle}
+      renderIndicator={(currentText, currentIndex) => (
+        <>
+          {!hideLoadingIndicator && (
+            <Gcol className="items-center justify-center min-h-screen gap-[5rem] -translate-y-[2rem]">
+              <Gcol className="items-center justify-center bg-[#fff] w-[10.9rem] h-[10.9rem] p-3 rounded-md shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]">
+                <GooeyDots wrapperClassName="w-full h-full absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)] scale-[0.8] translate-y-[-1rem]" />
+                {Boolean(currentText) && (
+                  <Typo
+                    tag={'div'}
+                    key={currentIndex}
+                    variant={'heading-md'}
+                    className="animate-text-change translate-y-[-1.6rem]"
+                  >
+                    {renderTextWithHtml(currentText)}
+                  </Typo>
+                )}
+                <GooeySvgFilter />
+              </Gcol>
+            </Gcol>
+          )}
+        </>
+      )}
+      animationStyle={
+        <style>
+          {`
+            @keyframes spin {
+              from { transform: rotate(0deg); }
+              to { transform: rotate(360deg); }
+            }
+            @keyframes pulse {
+              0%, 100% { opacity: 1; }
+              50% { opacity: 0.5; }
+            }
+            @keyframes text-fade-in-translate {
+              from {
+                opacity: 0;
+                transform: translateY(5.3rem);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(5rem);
+              }
+            }
+            .animate-text-change {
+              animation: text-fade-in-translate 0.3s ease-out forwards;
+            }
+          `}
+        </style>
+      }
+    />
+  );
+}
+
+/* ==========================================================================
+ * 8. Spinner (독립형 로컬 인라인 스피너)
+ * ========================================================================== */
+
 /**
  * Spinner
  * - Portal이나 Redux 스토어 상태에 구애받지 않고 특정 영역(Grid 등) 내부에서 인라인으로 직접 돌아가는 독립형 로컬 스피너 컴포넌트입니다.
  * - 복수의 텍스트 배열을 전달받은 경우 설정된 interval 간격(기본 2000ms)으로 텍스트를 순환하며 출력합니다.
  */
-export function Spinner({ className, texts = ['AI가 분석중입니다.'], interval = 2000 }: LocalSpinnerProps) {
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    if (!texts || texts.length <= 1) {
-      setCurrentIndex(0);
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % texts.length);
-    }, interval);
-
-    return () => clearInterval(timer);
-  }, [texts, interval]);
-
-  const currentText = texts[currentIndex] ?? '';
+export function Spinner({ className, texts = ['조회중입니다.'], interval = 2000 }: LocalSpinnerProps) {
+  const { currentIndex, currentText } = useTextLoop(texts, interval, '조회중입니다.');
 
   return (
     <Gcol className={`flex items-center justify-center gap-[5rem] -translate-y-[2rem] ${className ?? ''}`}>
-      <div className="w-[12rem] h-[5rem] absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)] scale-[0.7]">
-        <div className="absolute w-[1rem] h-[1rem] z-40 rounded-full bg-[var(--color-primary-50)] top-[50%] left-[50%] translate-[-50%,-50%]"></div>
-        <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-danger-50)] rounded-[80%] z-10 animate-dot-1-move" />
-        <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-warning-40)] rounded-[80%] z-20 animate-dot-2-move" />
-        <div className="absolute w-[2.4rem] h-[2.4rem] bg-[var(--color-primary-50)] rounded-[80%] z-30 animate-dot-3-move" />
-      </div>
+      <GooeyDots />
       <Typo key={currentIndex} variant={'body-md'} className="animate-text-change">
         {renderTextWithHtml(currentText)}
       </Typo>
-
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" className="absolute">
-        <defs>
-          <filter id="goo">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7" />
-          </filter>
-        </defs>
-      </svg>
+      <GooeySvgFilter />
 
       {/* Inline Animations */}
       <style>
@@ -686,14 +699,10 @@ export function Spinner({ className, texts = ['AI가 분석중입니다.'], inte
   );
 }
 
-export interface AiSpinnerProps {
-  className?: string;
-  size?: string; // 기본값: 'min(46vmin, 360px)'
-  text?: string; // 기본값: 'AI'
-  srText?: string; // 기본값: 'Loading'
-  texts?: React.ReactNode[];
-  interval?: number; // 텍스트 변경 주기 (ms)
-}
+/* ==========================================================================
+ * 9. AiSpinner
+ * ========================================================================== */
+
 export function AiSpinner({
   className,
   size = 'min(46vmin, 360px)',
@@ -702,20 +711,7 @@ export function AiSpinner({
   texts,
   interval = 2000,
 }: AiSpinnerProps) {
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    if (!texts || texts.length <= 1) {
-      setCurrentIndex(0);
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % texts.length);
-    }, interval);
-
-    return () => clearInterval(timer);
-  }, [texts, interval]);
+  const { currentIndex } = useTextLoop(texts, interval);
 
   return (
     <Gcol className={`flex items-center justify-center relative ${className ?? ''}`}>
@@ -943,304 +939,8 @@ export function AiSpinner({
   );
 }
 
-export function DnaSpinnerRoot(props?: SpinnerRootProps) {
-  const messageStore = useAppSelector(selectSpinnerMessage);
-
-  // props.isVisible이 명시적으로 지정되지 않은 경우 standalone 컴포넌트로 기본 true 처리
-  const isVisible = props?.isVisible ?? true;
-  const message = props?.message ?? messageStore;
-  const texts = props?.texts ?? (message ? [message] : undefined);
-  const interval = props?.interval ?? 2000;
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    if (!texts || texts.length <= 1) {
-      setCurrentIndex(0);
-      return;
-    }
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % texts.length);
-    }, interval);
-    return () => clearInterval(timer);
-  }, [texts, interval]);
-
-  const currentText = texts && texts.length > 0 ? (texts[currentIndex] ?? '') : '';
-
-  if (!isVisible) return null;
-
-  return (
-    <Gcol
-      className="w-full h-full flex flex-col items-center justify-center gap-4 py-4 scale-[0.9] translate-[1rem]"
-      placement="cc"
-    >
-      <div className="flex items-center justify-center">
-        <div className="row rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row2 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row3 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row4 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row5 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row6 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row7 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row8 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row9 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row10 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row11 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row12 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-        <div className="row13 rowc">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
-        </div>
-      </div>
-
-      {Boolean(currentText) && (
-        <Typo key={currentIndex} variant={'body-md'} className="animate-text-change text-center font-bold">
-          {renderTextWithHtml(currentText)}
-        </Typo>
-      )}
-
-      <style>
-        {`
-          
-.circle{
-  border-radius:50%;
-  width:10px;
-  height:10px;
-  background-color:#FF9F6E;
-  margin-bottom:2.5rem;
-  position:relative;
-}
-
-.rowc{
-  display:inline-block;
-  margin-left:2px;
-}
-
-.c1{
-  animation: c1 1.5s linear infinite;
-}
-
-.c2{
-  animation: c2 1.5s linear infinite;
-  background-color:#FF5C2E;
-}
-
-@keyframes c1{
-  0%{transform:translateY(0px) scale(1);}
-  25%{transform:translateY(12px) scale(1.5);background-color:#FF5C2E;z-index:10;}
-  50%{transform:translateY(34px) scale(1);}
-  75%{transform:translateY(12px) scale(.6);background-color:#FF9F6E;z-index:1;opacity:.1}
-  100%{transform:translateY(0px) scale(1);}
-}
-
-@keyframes c2{
-  0%{transform:translateY(0px) scale(1);}
-  25%{transform:translateY(-12px) scale(.6);background-color:#FFD187;z-index:1;opacity:.1}
-  50%{transform:translateY(-34px) scale(1);}
-  75%{transform:translateY(-12px) scale(1.5);background-color:#FFD900;z-index:10;}
-  100%{transform:translateY(0px) scale(1);}
-}
-
-.row2 .c1{animation-delay:.1s;}.row2 .c2{animation-delay:.1s;}
-.row3 .c1{animation-delay:.22s;}.row3 .c2{animation-delay:.22s;}
-.row4 .c1{animation-delay:.37s;}.row4 .c2{animation-delay:.37s;}
-.row5 .c1{animation-delay:.49s;}.row5 .c2{animation-delay:.49s;}
-.row6 .c1{animation-delay:.67s;}.row6 .c2{animation-delay:.67s;}
-.row7 .c1{animation-delay:.89s;}.row7 .c2{animation-delay:.89s;}
-.row8 .c1{animation-delay:.95s;}.row8 .c2{animation-delay:.95s;}
-.row9 .c1{animation-delay:1.2s;}.row9 .c2{animation-delay:1.2s;}
-.row10 .c1{animation-delay:1.45s;}.row10 .c2{animation-delay:1.45s;}
-.row11 .c1{animation-delay:1.62s;}.row11 .c2{animation-delay:1.62s;}
-.row12 .c1{animation-delay:1.88s;}.row12 .c2{animation-delay:1.88s;}
-.row13 .c1{animation-delay:2s;}.row13 .c2{animation-delay:2s;}
-
-        `}
-      </style>
-    </Gcol>
-  );
-}
-
-export function HpSpinnerRoot(props?: SpinnerRootProps) {
-  const messageStore = useAppSelector(selectSpinnerMessage);
-
-  const isVisible = props?.isVisible ?? true;
-  const message = props?.message ?? messageStore;
-  const texts = props?.texts ?? (message ? [message] : undefined);
-  const interval = props?.interval ?? 2000;
-
-  // 물결 위치 애니메이션용 state (jQuery의 .wave:before, .wave:after top 위치)
-  const [waveTop, setWaveTop] = React.useState<number>(50);
-
-  // jQuery changeVal 로직을 React / TypeScript로 전환 (속도 단축 반영)
-  React.useEffect(() => {
-    if (!isVisible) return;
-
-    let timerId: NodeJS.Timeout;
-
-    if (typeof window !== 'undefined' && window.localStorage) {
-      window.localStorage.setItem('itemquantity', '50');
-    }
-
-    const changeVal = (val: number) => {
-      const nextVal = val - 1;
-      setWaveTop(nextVal);
-
-      if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem('itemquantity', String(nextVal));
-      }
-
-      if (nextVal > -55) {
-        timerId = setTimeout(() => {
-          changeVal(nextVal);
-        }, 60);
-      } else {
-        setWaveTop(50);
-        if (typeof window !== 'undefined' && window.localStorage) {
-          window.localStorage.setItem('itemquantity', '50');
-        }
-        timerId = setTimeout(() => {
-          changeVal(50);
-        }, 200);
-      }
-    };
-
-    timerId = setTimeout(() => {
-      changeVal(50);
-    }, 100);
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [isVisible]);
-
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    if (!texts || texts.length <= 1) {
-      setCurrentIndex(0);
-      return;
-    }
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % texts.length);
-    }, interval);
-    return () => clearInterval(timer);
-  }, [texts, interval]);
-
-  const currentText = texts && texts.length > 0 ? (texts[currentIndex] ?? '') : '';
-
-  if (!isVisible) return null;
-
-  return (
-    <Gcol className="w-full h-full flex flex-col items-center justify-center gap-4 py-4" placement="cc">
-      <div className="relative flex items-center justify-center w-[12rem] h-[12rem]">
-        <div className="hp-wave-circle">
-          <div className="hp-wave"></div>
-        </div>
-      </div>
-
-      {Boolean(currentText) && (
-        <Typo key={currentIndex} variant={'body-md'} className="animate-text-change text-center font-bold">
-          {renderTextWithHtml(currentText)}
-        </Typo>
-      )}
-
-      {/* Inline Animations */}
-      <style>
-        {`
-.hp-wave-circle {
-  position: relative;
-  border: 4px solid #fff;
-  box-shadow: 0 0 0 4px #FF5C2E;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.hp-wave {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: #FF8D02;
-  border-radius: 50%;
-  box-shadow: inset 0 0 30px rgba(255, 92, 46, 1);
-}
-
-.hp-wave:before,
-.hp-wave:after {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  content: '';
-  top: ${waveTop}%;
-  left: 50%;
-  transform: translate(-50%, -75%);
-  transition: all 0.1s linear;
-}
-
-.hp-wave:before {
-  border-radius: 45%;
-  background: rgba(255, 255, 255, 1);
-  animation: hpWaveAnimate 5s linear infinite;
-}
-
-.hp-wave:after {
-  border-radius: 40%;
-  background: rgba(255, 255, 255, 0.5);
-  animation: hpWaveAnimate 10s linear infinite;
-}
-
-@keyframes hpWaveAnimate {
-  0% {
-    transform: translate(-50%, -75%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -75%) rotate(360deg);
-  }
-}
-        `}
-      </style>
-    </Gcol>
-  );
-}
-
 /* ==========================================================================
- * VerticalRollingSpinner (세로 무한 롤링 스피너)
+ * 10. VerticalRollingSpinner (세로 무한 롤링 스피너)
  * ========================================================================== */
 
 /** 아이콘 컴포넌트 Props 규격 */
@@ -1274,9 +974,7 @@ export interface VerticalRollingSpinnerProps {
 }
 
 /* --------------------------------------------------------------------------
- * 샘플 아이콘 5종 (사용자가 추후 전달할 5개 아이콘 파일과 100% 동일 구조)
- * - isActive = true: 원색상 적용 + 키프레임 애니메이션 가동
- * - isActive = false: 회색조 적용 + 애니메이션 정지
+ * 샘플 아이콘 5종
  * -------------------------------------------------------------------------- */
 
 /** 1. 톱니바퀴 (설계 조건 확인) */
