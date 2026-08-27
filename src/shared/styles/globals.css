@@ -1273,4 +1273,17 @@
   display: none;
 }
 
+[data-currentMonth="true"][data-selected-month="true"],
+[data-selected="true"][data-today="true"] button {
+  background-color: #ff5c2e;
+}
 
+[data-currentMonth="true"],
+[data-today="true"] button {
+  background-color: var(--color-blue-gray-80);
+  color:#fff;
+}
+[data-today="true"].rdp-range_middle button {
+  background-color: var(--color-element-gray-lighter);;
+  color:#000;
+}

@@ -24,6 +24,24 @@ type CalendarProps = React.ComponentProps<typeof DayPicker> & {
    * monthOnly 모드에서 월 클릭 후 닫기용
    */
   onClose?: () => void;
+  /**
+   * 하단 푸터 영역(오늘, 초기화 버튼) 표시 여부
+   * @default true
+   */
+  showFooter?: boolean;
+  /**
+   * 하단 초기화 버튼 표시 여부
+   * @default true
+   */
+  showReset?: boolean;
+  /**
+   * 오늘 버튼 클릭 시 호출되는 콜백
+   */
+  onTodayClick?: () => void;
+  /**
+   * 초기화 버튼 클릭 시 호출되는 콜백
+   */
+  onResetClick?: () => void;
 };
 
 function Calendar({
@@ -36,6 +54,10 @@ function Calendar({
   components,
   monthOnly = false,
   onMonthSelect,
+  showFooter = true,
+  showReset = true,
+  onTodayClick,
+  onResetClick,
   ...props
 }: CalendarProps) {
   const defaultClassNames = getDefaultClassNames();
@@ -147,7 +169,9 @@ function Calendar({
                 type="button"
                 disabled={isMonthDisabled}
                 data-month={`${currentYear}-${String(month).padStart(2, '0')}`}
-                data-today={today.getFullYear() === currentYear && today.getMonth() + 1 === month ? 'true' : undefined}
+                data-currentMonth={
+                  today.getFullYear() === currentYear && today.getMonth() + 1 === month ? 'true' : undefined
+                }
                 data-selected-month={isSelected ? 'true' : undefined}
                 aria-label={`${currentYear}년 ${month}월`}
                 className={cn(
@@ -164,9 +188,9 @@ function Calendar({
                 }}
               >
                 {month}
-                {today.getFullYear() === currentYear && today.getMonth() + 1 === month && (
-                  <div className="absolute bottom-[0] left-1/2 -translate-x-1/2 w-1 h-1 bg-[#ff5c2e] rounded-full"></div>
-                )}
+                {/* {today.getFullYear() === currentYear && today.getMonth() + 1 === month && (
+                  <span className="absolute bottom-[0] left-1/2 -translate-x-1/2 w-1 h-1 bg-[#5f2eff] rounded-full"></span>
+                )} */}
               </button>
             );
           })}
@@ -175,147 +199,215 @@ function Calendar({
     );
   };
 
+  const handleTodayClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const today = new Date();
+    if (props.onMonthChange) {
+      props.onMonthChange(today);
+    }
+    if (onTodayClick) {
+      onTodayClick();
+    }
+  };
+
+  const handleResetClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onResetClick) {
+      onResetClick();
+    } else {
+      const onSelectProp = (props as { onSelect?: (val: unknown) => void }).onSelect;
+      if (onSelectProp) {
+        if (props.mode === 'multiple') {
+          onSelectProp([]);
+        } else {
+          onSelectProp(undefined);
+        }
+      }
+    }
+  };
+
   if (monthOnly) {
-    return renderMonthOnlyGrid();
+    return (
+      <div className="flex flex-col">
+        {renderMonthOnlyGrid()}
+        {showFooter && (
+          <div className="px-4">
+            <div className="pt-2 border-t border-[var(--color-gray-20)] flex items-center justify-end gap-1 pb-4">
+              <Button
+                type="button"
+                variant="contained"
+                color="coolgray"
+                size="md"
+                className="min-w-[4.5rem]"
+                onClick={(e) => {
+                  const today = new Date();
+                  setCurrentYear(today.getFullYear());
+                  monthMemoryRef.current[today.getFullYear()] = today.getMonth() + 1;
+                  props.onMonthChange?.(today);
+                  handleTodayClick(e);
+                }}
+              >
+                이번달
+              </Button>
+              {showReset && (
+                <Button
+                  type="button"
+                  variant="outlined"
+                  color="coolgray"
+                  size="md"
+                  onClick={(e) => {
+                    monthMemoryRef.current = {};
+                    handleResetClick(e);
+                  }}
+                >
+                  초기화
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (
-    <DayPicker
-      showOutsideDays={showOutsideDays}
-      className={cn(
-        'cp-datepicker-calendar bg-background group/calendar p-3 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent',
-        String.raw`rtl:**:[.rdp-button_previous>svg]:rotate-180`,
-        String.raw`rtl:**:[.rdp-button_next>svg]:rotate-180`,
-        className
-      )}
-      captionLayout={captionLayout}
-      formatters={{
-        formatMonthDropdown: (date) => String(date.getMonth() + 1).padStart(2, '0'),
-        // 필요시 캡션도 01, 02로: formatMonthCaption: (date) => String(date.getMonth() + 1).padStart(2, '0'),
-        formatWeekdayName: (date) => {
-          const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
-          return weekdays[date.getDay()];
-        },
-        ...formatters,
-      }}
-      classNames={{
-        root: cn('w-auto p-4', defaultClassNames.root),
-        months: cn('relative flex flex-col gap-4 md:flex-row', defaultClassNames.months),
-        month: cn('flex w-full flex-col gap-4', defaultClassNames.month),
-        nav: cn(
-          'absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1 pointer-events-none',
-          defaultClassNames.nav
-        ),
-        button_previous: cn(
-          buttonVariants({ variant: buttonVariant }),
-          'h-[2.8rem] w-[2.8rem] border! border-[var(--color-gray-20)]! select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)] border-[0.1rem]! border-solid!',
-          defaultClassNames.button_previous
-        ),
-        button_next: cn(
-          buttonVariants({ variant: buttonVariant }),
-          'h-[2.8rem] w-[2.8rem] border! border-[var(--color-gray-20)]! select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)] border-[0.1rem]! border-solid!',
-          defaultClassNames.button_next
-        ),
-        month_caption: cn(
-          'flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]',
-          defaultClassNames.month_caption
-        ),
-        dropdowns: cn(
-          'flex h-[--cell-size] w-full items-center justify-center gap-1.5 font-medium flex-row-reverse',
-          defaultClassNames.dropdowns
-        ),
-        dropdown_root: cn(
-          'has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border h-[2.8rem] border-[var(--color-gray-20)]',
-          defaultClassNames.dropdown_root
-        ),
-        dropdown: cn('bg-[#fff] absolute inset-0 opacity-0', defaultClassNames.dropdown),
-        caption_label: cn(
-          'select-none font-medium',
-          captionLayout === 'label'
-            ? 'text-sm'
-            : '[&>svg]:text-muted-foreground flex h-full items-center gap-1 rounded-md pl-2 pr-1 text-[1.3rem] [&>svg]:size-3.5',
-          defaultClassNames.caption_label
-        ),
-        table: 'w-full border-collapse',
-        weekdays: cn('grid grid-cols-7 place-items-center w-full', defaultClassNames.weekdays),
-        weekday: cn(
-          'text-muted-foreground flex-1 select-none rounded-md text-[1.4rem] font-normal px-1',
-          defaultClassNames.weekday
-        ),
-        week: cn('grid grid-cols-7 place-items-center w-full h-[3.2rem]', defaultClassNames.week),
-        week_number_header: cn('w-[--cell-size] select-none', defaultClassNames.week_number_header),
-        week_number: cn('text-muted-foreground select-none text-[0.8rem]', defaultClassNames.week_number),
-        day: cn(
-          'group/day relative h-full w-full select-none px-1 text-center grid place-items-center',
-          defaultClassNames.day
-        ),
-        range_start: cn(defaultClassNames.range_start),
-        range_middle: cn(defaultClassNames.range_middle),
-        range_end: cn(defaultClassNames.range_end),
-        today: cn('relative', defaultClassNames.today),
-        outside: cn('text-muted-foreground aria-selected:text-muted-foreground', defaultClassNames.outside),
-        disabled: cn('text-muted-foreground opacity-50', defaultClassNames.disabled),
-        hidden: cn('invisible', defaultClassNames.hidden),
-        ...classNames,
-      }}
-      components={{
-        Root: ({ className, rootRef, ...props }) => {
-          return <div data-slot="calendar" ref={rootRef} className={cn(className)} {...props} />;
-        },
-        Chevron: ({ className, orientation, ...props }) => {
-          if (orientation === 'left') {
-            return <ArrowIcon color={'var(--color-primary-50)'} className={cn('', className)} {...props} />;
-          }
-          if (orientation === 'right') {
-            return <ArrowIcon color={'var(--color-primary-50)'} className={cn('rotate-180', className)} {...props} />;
-          }
-          return <ChevronDownIcon className={cn('size-4', className)} {...props} />;
-        },
-        MonthCaption: ({ ...captionProps }) => {
-          const { onMonthChange } = props as React.ComponentProps<typeof DayPicker> & {
-            onMonthChange?: (date: Date) => void;
-          };
-          const today = new Date();
-          const handleTodayClick = () => {
-            if (onMonthChange) {
-              onMonthChange(today);
+    <div className="cp-datepicker-calendar-wrapper flex flex-col">
+      <DayPicker
+        showOutsideDays={showOutsideDays}
+        className={cn(
+          'cp-datepicker-calendar bg-background group/calendar px-3 pt-3 pb-2 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent',
+          String.raw`rtl:**:[.rdp-button_previous>svg]:rotate-180`,
+          String.raw`rtl:**:[.rdp-button_next>svg]:rotate-180`,
+          className
+        )}
+        captionLayout={captionLayout}
+        formatters={{
+          formatMonthDropdown: (date) => String(date.getMonth() + 1).padStart(2, '0'),
+          // 필요시 캡션도 01, 02로: formatMonthCaption: (date) => String(date.getMonth() + 1).padStart(2, '0'),
+          formatWeekdayName: (date) => {
+            const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+            return weekdays[date.getDay()];
+          },
+          ...formatters,
+        }}
+        classNames={{
+          root: cn('w-auto', defaultClassNames.root),
+          months: cn('relative flex flex-col gap-4 md:flex-row', defaultClassNames.months),
+          month: cn('flex w-full flex-col gap-4', defaultClassNames.month),
+          nav: cn(
+            'absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1 pointer-events-none',
+            defaultClassNames.nav
+          ),
+          button_previous: cn(
+            buttonVariants({ variant: buttonVariant }),
+            'h-[2.8rem] w-[2.8rem] border! border-[var(--color-gray-20)]! select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)] border-[0.1rem]! border-solid!',
+            defaultClassNames.button_previous
+          ),
+          button_next: cn(
+            buttonVariants({ variant: buttonVariant }),
+            'h-[2.8rem] w-[2.8rem] border! border-[var(--color-gray-20)]! select-none p-0! aria-disabled:opacity-50 pointer-events-auto hover:border-dashed hover:border-[var(--color-button-outlined-border-gray-hover)] hover:bg-[var(--color-button-outlined-surface-gray-hover)] border-[0.1rem]! border-solid!',
+            defaultClassNames.button_next
+          ),
+          month_caption: cn(
+            'flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]',
+            defaultClassNames.month_caption
+          ),
+          dropdowns: cn(
+            'flex h-[--cell-size] w-full items-center justify-center gap-1.5 font-medium flex-row-reverse',
+            defaultClassNames.dropdowns
+          ),
+          dropdown_root: cn(
+            'has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border h-[2.8rem] border-[var(--color-gray-20)]',
+            defaultClassNames.dropdown_root
+          ),
+          dropdown: cn('bg-[#fff] absolute inset-0 opacity-0', defaultClassNames.dropdown),
+          caption_label: cn(
+            'select-none font-medium',
+            captionLayout === 'label'
+              ? 'text-sm'
+              : '[&>svg]:text-muted-foreground flex h-full items-center gap-1 rounded-md pl-2 pr-1 text-[1.3rem] [&>svg]:size-3.5',
+            defaultClassNames.caption_label
+          ),
+          table: 'w-full border-collapse',
+          weekdays: cn('grid grid-cols-7 place-items-center w-full', defaultClassNames.weekdays),
+          weekday: cn(
+            'text-muted-foreground flex-1 select-none rounded-md text-[1.4rem] font-normal px-1',
+            defaultClassNames.weekday
+          ),
+          week: cn('grid grid-cols-7 place-items-center w-full h-[3.2rem]', defaultClassNames.week),
+          week_number_header: cn('w-[--cell-size] select-none', defaultClassNames.week_number_header),
+          week_number: cn('text-muted-foreground select-none text-[0.8rem]', defaultClassNames.week_number),
+          day: cn(
+            'group/day relative h-full w-full select-none px-1 text-center grid place-items-center',
+            defaultClassNames.day
+          ),
+          range_start: cn(defaultClassNames.range_start),
+          range_middle: cn(defaultClassNames.range_middle),
+          range_end: cn(defaultClassNames.range_end),
+          today: cn('relative', defaultClassNames.today),
+          outside: cn('text-muted-foreground aria-selected:text-muted-foreground', defaultClassNames.outside),
+          disabled: cn('text-muted-foreground opacity-50', defaultClassNames.disabled),
+          hidden: cn('invisible', defaultClassNames.hidden),
+          ...classNames,
+        }}
+        components={{
+          Root: ({ className, rootRef, ...props }) => {
+            return <div data-slot="calendar" ref={rootRef} className={cn(className)} {...props} />;
+          },
+          Chevron: ({ className, orientation, ...props }) => {
+            if (orientation === 'left') {
+              return <ArrowIcon color={'var(--color-primary-50)'} className={cn('', className)} {...props} />;
             }
-          };
-          return (
-            <>
+            if (orientation === 'right') {
+              return <ArrowIcon color={'var(--color-primary-50)'} className={cn('rotate-180', className)} {...props} />;
+            }
+            return <ChevronDownIcon className={cn('size-4', className)} {...props} />;
+          },
+          MonthCaption: ({ ...captionProps }) => {
+            return (
               <div
                 className="flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]"
                 onClick={(e) => e.stopPropagation()}
                 onKeyDown={(e) => e.stopPropagation()}
               >
-                <div className="flex items-center gap-1">
-                  {captionProps.children}
-                  <Button
-                    variant="outlined"
-                    color="gray"
-                    size="md"
-                    className="font-[1.3rem]"
-                    onClick={handleTodayClick}
-                  >
-                    오늘
-                  </Button>
-                </div>
+                <div className="flex items-center gap-1">{captionProps.children}</div>
               </div>
-            </>
-          );
-        },
-        DayButton: CalendarDayButton,
-        WeekNumber: ({ children, ...props }) => {
-          return (
-            <td {...props}>
-              <div className="flex size-[--cell-size] items-center justify-center text-center">{children}</div>
-            </td>
-          );
-        },
-        ...components,
-      }}
-      {...props}
-    />
+            );
+          },
+          DayButton: CalendarDayButton,
+          WeekNumber: ({ children, ...props }) => {
+            return (
+              <td {...props}>
+                <div className="flex size-[--cell-size] items-center justify-center text-center">{children}</div>
+              </td>
+            );
+          },
+          ...components,
+        }}
+        {...props}
+      />
+      {showFooter && (
+        <div className="px-4">
+          <div className="pt-2 border-t border-[var(--color-gray-20)] flex items-center justify-end gap-1 pb-4">
+            <Button
+              type="button"
+              variant="contained"
+              color="coolgray"
+              size="md"
+              onClick={handleTodayClick}
+              className="min-w-[4.5rem]"
+            >
+              오늘
+            </Button>
+            {showReset && (
+              <Button type="button" variant="outlined" color="coolgray" size="md" onClick={handleResetClick}>
+                초기화
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -345,6 +437,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
     <button
       ref={ref}
       type="button"
+      data-today={isToday ? 'true' : undefined}
       data-day={day.date.toLocaleDateString()}
       data-selected-single={isSelected}
       data-range-start={isRangeStart}
@@ -354,7 +447,9 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
         'relative flex aspect-square h-[2.6rem] w-[2.6rem] flex-col gap-1 text-[1.4rem] leading-none',
         'hover:bg-[var(--color-element-gray-lighter)] rounded-full items-center justify-center',
         // Selected state (주황색 배경, 흰색 텍스트)
+        isToday && 'bg-[#000]',
         isSelected && 'bg-[#ff5c2e] text-white hover:bg-[var(--color-element-primary)]',
+
         // Disabled state (회색 텍스트)
         isDisabled && 'text-[var(--color-text-gray-lighter)] opacity-50 cursor-not-allowed hover:bg-transparent',
         // Saturday (파란색)
@@ -375,9 +470,9 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
     >
       {props.children}
       {/* Today indicator dot (오늘 날짜 표시 점) */}
-      {isToday && !isSelected && (
+      {/* {isToday && !isSelected && (
         <div className="absolute bottom-[0] left-1/2 -translate-x-1/2 w-1 h-1 bg-[#ff5c2e] rounded-full" />
-      )}
+      )} */}
     </button>
   );
 }

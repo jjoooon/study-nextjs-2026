@@ -1004,6 +1004,13 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               toDate={maxDate}
               disabled={disabledDays}
               className="border-none"
+              onResetClick={() => {
+                setSelected(undefined);
+                setMonth(new Date());
+                setNumericValue('');
+                setInvalidDate(false);
+                if (onChange) onChange(undefined, '');
+              }}
             />
           ) : mode === 'range' ? (
             <Calendar
@@ -1020,6 +1027,16 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               disabled={disabledDays}
               className="border-none"
               required={true}
+              onResetClick={() => {
+                setSelected(undefined);
+                setMonth(new Date());
+                setRangeInput({ from: '', to: '' });
+                setNumericValue('');
+                setInvalidRange({ from: false, to: false });
+                setInvalidDate(false);
+                setIsSelectingEnd(false);
+                if (onChange) onChange(undefined, '');
+              }}
             />
           ) : mode === 'multiple' ? (
             <Calendar
@@ -1034,6 +1051,13 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               disabled={disabledDays}
               className="border-none"
               required={required}
+              onResetClick={() => {
+                setSelected([]);
+                setMonth(new Date());
+                setNumericValue('');
+                setInvalidDate(false);
+                if (onChange) onChange(undefined, '');
+              }}
             />
           ) : (
             <Calendar
@@ -1048,6 +1072,13 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               toDate={maxDate}
               disabled={disabledDays}
               className="border-none"
+              onResetClick={() => {
+                setSelected(undefined);
+                setMonth(new Date());
+                setNumericValue('');
+                setInvalidDate(false);
+                if (onChange) onChange(undefined, '');
+              }}
             />
           )}
         </PopoverContent>
