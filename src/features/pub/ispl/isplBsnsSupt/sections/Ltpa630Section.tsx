@@ -16,12 +16,14 @@ import {
 } from '@aggrid';
 import { Grow, Grid, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
+import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ZoomInIcon } from '@icons';
+import { ZoomInIcon, ResetIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
+import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 
 import '@/shared/lib/agGridPub';
 
@@ -175,6 +177,38 @@ export default function Ltpa630Section() {
     gridApiRef,
   });
 
+  /*
+// 1. 단 하나의 객체 상태 선언 (key: 그룹ID, value: 선택된 항목 배열)
+const [filters, setFilters] = React.useState<Record<string, string[]>>({});
+const handleGroupChange = (id: string, nextValues: string[]) => {
+  setFilters((prev) => ({
+    ...prev,
+    [id]: nextValues,
+  }));
+};
+// 2. 동적 데이터 리스트가 있다고 가정
+const searchCategories = [
+  { id: 'target1', title: '적용대상 1' },
+  { id: 'target2', title: '적용대상 2' },
+  { id: 'target3', title: '적용대상 3' },
+];
+// 3. map으로 동적 렌더링
+{searchCategories.map((item) => (
+  <FormCell key={item.id} title={item.title}>
+    <CheckboxGroup
+      value={filters[item.id] ?? []}
+      onValueChange={(nextValues) => handleGroupChange(item.id, nextValues)}
+      className="gap-3"
+    >
+      <CheckboxGroupItem value="all" selectAll>전체</CheckboxGroupItem>
+      <CheckboxGroupItem value="1">전속</CheckboxGroupItem>
+      <CheckboxGroupItem value="2">GA</CheckboxGroupItem>
+      <CheckboxGroupItem value="3">TM</CheckboxGroupItem>
+    </CheckboxGroup>
+  </FormCell>
+))}
+*/
+
   // 2026-06-01 width, flex 수정
   const columnDefs2: ColDef<DummyData2Type>[] = useMemo(
     () => [
@@ -234,6 +268,11 @@ export default function Ltpa630Section() {
     [attributeColumnWidth, setRowData2]
   );
 
+  const [values, setValues] = React.useState<string[]>([]);
+  const handleGroupChange = (nextValues: string[]) => {
+    setValues(nextValues);
+  };
+
   return (
     <>
       <LayoutHead>
@@ -246,68 +285,112 @@ export default function Ltpa630Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-cols-[2fr_3fr] h-full w-full" gap={3}>
-            {/* 패키지 관리 */}
-            <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full overflow-y-hidden">
-              <Grow className="w-full h-[2.5rem]" placement="sc">
-                <Typo variant={'heading-md'} tag="h2">
-                  패키지 관리
-                </Typo>
-              </Grow>
-              <div className="ag-theme-alpine radio-selection">
-                <AgGridReact<DummyData1Type>
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={DummyData1}
-                  columnDefs={columnDefs1}
-                  defaultColDef={{
-                    sortable: true,
-                    resizable: true,
-                    cellStyle: { cursor: 'pointer' },
-                  }}
-                  singleClickEdit={true}
-                  domLayout="normal"
-                  animateRows={false}
-                  enableCellSpan={true}
-                />
-              </div>
-            </Grid>
+          <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] gap-3 h-full">
+            <Grow placement="bwc" className="w-full" variant={'box-round'}>
+              <FormTable variant={'head'}>
+                <FormRow>
+                  <FormCell title={'적용대상검색'} tdClassName="grid-cols-[auto_1fr_auto]">
+                    <CheckboxGroup value={values} onValueChange={handleGroupChange} className="gap-3">
+                      <CheckboxGroupItem value="all" selectAll>
+                        전체
+                      </CheckboxGroupItem>
+                      <CheckboxGroupItem value="1">전속</CheckboxGroupItem>
+                      <CheckboxGroupItem value="2">GA</CheckboxGroupItem>
+                      <CheckboxGroupItem value="3">TM</CheckboxGroupItem>
+                    </CheckboxGroup>
+                  </FormCell>
+                  <FormCell title={'적용대상검색'} tdClassName="grid-cols-[auto_1fr_auto]">
+                    <CheckboxGroup value={values} onValueChange={handleGroupChange} className="gap-3">
+                      <CheckboxGroupItem value="all" selectAll>
+                        전체
+                      </CheckboxGroupItem>
+                      <CheckboxGroupItem value="1">전속</CheckboxGroupItem>
+                      <CheckboxGroupItem value="2">GA</CheckboxGroupItem>
+                      <CheckboxGroupItem value="3">TM</CheckboxGroupItem>
+                    </CheckboxGroup>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
 
-            {/* 담보관리 */}
-            <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full overflow-y-hidden" gap={1}>
-              <Grow className="w-full" placement="bwc">
-                <Typo variant={'heading-md'} tag="h2">
-                  담보관리
-                </Typo>
-                <Grow placement="ec">
-                  <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
-                    행추가
-                    <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
-                  </Button>
-                </Grow>
+              <Grow>
+                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                  조회
+                </Button>
+                <Button
+                  color={'gray'}
+                  only={'icon'}
+                  size={'lg'}
+                  variant={'outlined'}
+                  onClick={() => {}}
+                  aria-label="새로고침"
+                >
+                  <ResetIcon />
+                </Button>
               </Grow>
-              <div className="ag-theme-alpine">
-                <AgGridReact<DummyData2Type>
-                  onGridReady={(event) => {
-                    gridApiRef.current = event.api;
-                  }}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={rowData2}
-                  columnDefs={columnDefs2}
-                  defaultColDef={{
-                    sortable: true,
-                    resizable: true,
-                    // cellStyle: { cursor: 'pointer' },
-                  }}
-                  singleClickEdit={true}
-                  domLayout="normal"
-                  animateRows={false}
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
-                  tooltipHideDelay={3000}
-                />
-              </div>
+            </Grow>
+            <Grid className="grid-cols-[2fr_3fr] h-full w-full" gap={3}>
+              {/* 패키지 관리 */}
+              <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full overflow-y-hidden">
+                <Grow className="w-full h-[2.5rem]" placement="sc">
+                  <Typo variant={'heading-md'} tag="h2">
+                    패키지 관리
+                  </Typo>
+                </Grow>
+                <div className="ag-theme-alpine radio-selection">
+                  <AgGridReact<DummyData1Type>
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={DummyData1}
+                    columnDefs={columnDefs1}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                      cellStyle: { cursor: 'pointer' },
+                    }}
+                    singleClickEdit={true}
+                    domLayout="normal"
+                    animateRows={false}
+                    enableCellSpan={true}
+                  />
+                </div>
+              </Grid>
+
+              {/* 담보관리 */}
+              <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full overflow-y-hidden" gap={1}>
+                <Grow className="w-full" placement="bwc">
+                  <Typo variant={'heading-md'} tag="h2">
+                    담보관리
+                  </Typo>
+                  <Grow placement="ec">
+                    <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
+                      행추가
+                      <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
+                    </Button>
+                  </Grow>
+                </Grow>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyData2Type>
+                    onGridReady={(event) => {
+                      gridApiRef.current = event.api;
+                    }}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={rowData2}
+                    columnDefs={columnDefs2}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                      // cellStyle: { cursor: 'pointer' },
+                    }}
+                    singleClickEdit={true}
+                    domLayout="normal"
+                    animateRows={false}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                    tooltipHideDelay={3000}
+                  />
+                </div>
+              </Grid>
             </Grid>
           </Grid>
         }
