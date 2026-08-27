@@ -254,7 +254,7 @@ const Ltpz067 = () => {
             </Grow>
 
             <TableFold>
-              <TableFoldHead title="단체실손의료비 전환대상" />
+              <TableFoldHead title="보험료 납입 예상 내역" />
               <TableFoldBody className="gap-2">
                 {/* 2026-05-27 Grid 추가 */}
                 <Grid placement={'ss'} className="grid-rows-[1fr_auto] gap-2">

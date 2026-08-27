@@ -80,7 +80,7 @@ const Ltpz045 = () => {
                     <FormCell title={'국적'}>대한민국</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'주소'} colSpan={3}>
+                    <FormCell title={'직장주소'} colSpan={3}>
                       주소 값 전체 노출 영역
                     </FormCell>
                   </FormRow>
@@ -97,7 +97,7 @@ const Ltpz045 = () => {
                     <FormCell title={'직무'}>TEXT</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'주소'} colSpan={3}>
+                    <FormCell title={'직장주소'} colSpan={3}>
                       주소 값 전체 노출 영역
                     </FormCell>
                   </FormRow>
@@ -180,7 +180,7 @@ const Ltpz045 = () => {
                           { value: 'optionA', label: '1단계: 25% 이상 지분증권 소유한 사람' },
                           { value: 'optionB', label: '2-1단계: ① 대표자, 임원, 업무집행사원의 과반수를 선임한 주주' },
                           { value: 'optionC', label: '2-2단계: ② 최대 지분증권을 소유한 사람' },
-                          { value: 'optionD', label: '2-3단계: ③, ①, ② 외에 법인, 단체를 사실상 지배하는 사람' },
+                          { value: 'optionD', label: '2-3단계: ③ ①, ② 외에 법인, 단체를 사실상 지배하는 사람' },
                           { value: 'optionE', label: '3단계: 법인 또는 단체의 대표자' },
                         ].map((option) => (
                           <RadioGroupItem key={option.value} value={option.value}>
@@ -191,7 +191,7 @@ const Ltpz045 = () => {
                     </FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'실소유자 이름'}>김한화</FormCell>
+                    <FormCell title={'설명'}>김한화</FormCell>
                     <FormCell title={'영문명'}>KIM HANHWA</FormCell>
                   </FormRow>
                   <FormRow>
@@ -206,7 +206,7 @@ const Ltpz045 = () => {
             <TableFold>
               <TableFoldHead title="대리인 확인사항(대리인 고객등록 필수)"></TableFoldHead>
               <TableFoldBody>
-                <FormTable caption="고객정보" cols={['w-[10rem]', 'w-[16rem]', 'w-[6rem]', 'w-auto']}>
+                <FormTable caption="고객정보" cols={['w-[11rem]', 'w-[16rem]', 'w-[6rem]', 'w-auto']}>
                   <FormRow>
                     <FormCell title={'성명'}>
                       <Input aria-label="성명 검색" width={84} value={''} readOnly />
@@ -217,7 +217,7 @@ const Ltpz045 = () => {
                     <FormCell title={'영문명'}>KIM HANHWA</FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'계약자와 관계'} colSpan={3}>
+                    <FormCell title={'계약자와의 관계'} colSpan={3}>
                       <NativeSelect
                         aria-label="선택"
                         width={100}

@@ -103,7 +103,7 @@ const Ltpz101 = () => {
           <Grid className="grid-rows-[auto_1fr] gap-2">
             <Grow variant={'box-warning'} placement={'ss'} className="w-full">
               <Typo variant={'body-sm'} icon={'warning'}>
-                아래 내용은 청약완료까지 해소되지 않을경우 수납이 불가능합니다.(청약완료 불가)
+                아래 내용은 청약완료시까지 해소되지 않을 경우 수납이 불가능합니다.(청약완료 불가)
               </Typo>
             </Grow>
             <Gcol>
@@ -133,7 +133,7 @@ const Ltpz101 = () => {
             <TableFoldBody>
               <Gcol className="w-full" placement="ss" variant="box-warning-line">
                 <Typo variant="body-sm">
-                  <Checkbox>모집자 김한화는 상기 내용에 대해 정확히 확인 하였습니다.</Checkbox>
+                  <Checkbox>모집자 김한화은(는) 상기 내용에 대해 정확히 확인 하였습니다.</Checkbox>
                 </Typo>
               </Gcol>
             </TableFoldBody>

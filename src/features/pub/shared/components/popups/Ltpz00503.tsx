@@ -124,6 +124,11 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
     },
     {
       headerName: '변경전 직업정보',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">변경전 직업정보</span>
+        </Grow>
+      ),
       headerClass: 'border-r-1 border-[#E5E5E5]',
       children: [
         {
@@ -143,6 +148,11 @@ const Ltpz00503 = ({ onClose }: Ltpz00503Props) => {
     },
     {
       headerName: '변경후 직업정보',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">변경후 직업정보</span>
+        </Grow>
+      ),
       headerClass: 'border-r-0!',
       children: [
         {

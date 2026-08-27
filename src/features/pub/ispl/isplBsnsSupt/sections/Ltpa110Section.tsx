@@ -57,7 +57,7 @@ const DummyData: DummyDataType[] = [
     field02: '',
     field03: '김한화화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -69,7 +69,7 @@ const DummyData: DummyDataType[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '999,000원',
+    field05: '999,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -81,7 +81,7 @@ const DummyData: DummyDataType[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '999,000원',
+    field05: '999,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -93,7 +93,7 @@ const DummyData: DummyDataType[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '999,000원',
+    field05: '999,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -105,7 +105,7 @@ const DummyData: DummyDataType[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '999,000원',
+    field05: '999,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -117,7 +117,7 @@ const DummyData: DummyDataType[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '999,000원',
+    field05: '999,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -129,7 +129,7 @@ const DummyData: DummyDataType[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '999,000원',
+    field05: '999,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -144,7 +144,7 @@ const DummyData2: DummyDataType2[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -156,7 +156,7 @@ const DummyData2: DummyDataType2[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -168,7 +168,7 @@ const DummyData2: DummyDataType2[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -180,7 +180,7 @@ const DummyData2: DummyDataType2[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -192,7 +192,7 @@ const DummyData2: DummyDataType2[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -204,7 +204,7 @@ const DummyData2: DummyDataType2[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -216,7 +216,7 @@ const DummyData2: DummyDataType2[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -228,7 +228,7 @@ const DummyData2: DummyDataType2[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -240,7 +240,7 @@ const DummyData2: DummyDataType2[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -252,7 +252,7 @@ const DummyData2: DummyDataType2[] = [
     field02: '',
     field03: '김한화',
     field04: '2026-08-25',
-    field05: '199,000원',
+    field05: '199,000',
     field06:
       '한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604 한화 건강쑥쑥 어린이보험 무배당2604',
     field07: '설계중',
@@ -260,6 +260,7 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 export default function Ltpa110Section() {
+  const [dueMonth, setDueMonth] = React.useState('2026-08');
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
@@ -443,7 +444,14 @@ export default function Ltpa110Section() {
                     <Input aria-label="" width={120} value={'000000-0******'} readOnly />
                   </FormCell>
                   <FormCell title={'출산예정년월'}>
-                    <DatePickerInput required mode={'single'} value="2026-08-25" />
+                    <DatePickerInput
+                      required
+                      mode={'single'}
+                      value={dueMonth}
+                      monthOnly={true}
+                      onChange={(_, formatted) => setDueMonth(formatted)}
+                      onMonthSelect={(month) => console.log(month)}
+                    />
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -464,58 +472,53 @@ export default function Ltpa110Section() {
               </Grow>
             </Grow>
             <Gcol placement="ss">
-              <TableFold>
-                <TableFoldHead title="기본사항" />
-                <TableFoldBody className="gap-2">
-                  <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      enableCellSpan={true}
-                      singleClickEdit={true}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        headerCheckbox: false,
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      selectionColumnDef={{
-                        headerName: '선택',
-                        width: 30,
-                        cellClass: 'editable-cell',
-                      }}
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      domLayout="normal"
-                      onGridReady={(params) => {
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isCheck) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                    />
-                  </div>
-                  <Gcol variant={'box-info'} placement={'ss'} className="w-full">
-                    <Typo variant={'body-sm'} icon={'info'} weight={'bold'}>
-                      등록사항을 확인하여 주십시오
-                    </Typo>
-                    <BulletList>
-                      <BulletListItem size={'sm'} type={'dash'}>
-                        설계번호(LA123123123) - 설계중
-                      </BulletListItem>
-                    </BulletList>
-                  </Gcol>
-                  {/* 2026-05-27 버튼 위치 변경 */}
-                  <Grow className="w-full py-1">
-                    <Button color="primary" onClick={() => {}} only="icon" size="lg" variant="outlined">
-                      <ArrowDoubleIcon />
-                    </Button>
-                  </Grow>
-                </TableFoldBody>
-              </TableFold>
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  enableCellSpan={true}
+                  singleClickEdit={true}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowSelection={{
+                    mode: 'multiRow',
+                    headerCheckbox: false,
+                    checkboxes: true,
+                    enableClickSelection: false,
+                  }}
+                  selectionColumnDef={{
+                    headerName: '선택',
+                    width: 30,
+                    cellClass: 'editable-cell',
+                  }}
+                  tooltipShowMode="whenTruncated"
+                  tooltipShowDelay={0}
+                  domLayout="normal"
+                  onGridReady={(params) => {
+                    params.api.forEachNode((node) => {
+                      if (node.data?.isCheck) {
+                        node.setSelected(true);
+                      }
+                    });
+                  }}
+                />
+              </div>
+              <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+                <Typo variant={'body-sm'} icon={'info'} weight={'bold'}>
+                  등록사항을 확인하여 주십시오
+                </Typo>
+                <BulletList>
+                  <BulletListItem size={'sm'} type={'dash'}>
+                    설계번호(LA123123123) - 설계중
+                  </BulletListItem>
+                </BulletList>
+              </Gcol>
+              {/* 2026-05-27 버튼 위치 변경 */}
+              <Grow className="w-full py-1">
+                <Button color="primary" onClick={() => {}} only="icon" size="lg" variant="outlined">
+                  <ArrowDoubleIcon />
+                </Button>
+              </Grow>
 
               <TableFold className="h-full grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden">
                 <TableFoldHead title="선택설계">

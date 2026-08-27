@@ -131,7 +131,7 @@ const Ltpz057 = () => {
                   <FormCell
                     title={
                       <Gcol className="items-start">
-                        <b>주변업종 지접 찾기</b>
+                        <b>주변업종 직접 찾기</b>
                         <span className="font-normal">주변업종 직접 검색 후 선택</span>
                       </Gcol>
                     }
@@ -189,7 +189,7 @@ const Ltpz057 = () => {
                     <Gcol placement="ss" gap={2}>
                       <Input value={'목공 및 목재가공(목선제조 포함)'} />
                       <Typo icon="detail" tag="span" variant="body-md" weight="normal">
-                        건물내 입주업종 중 가장 높은 업종이 &lsquo;요율&rsquo;로 적용된니다.
+                        건물내 입주업종 중 가장 높은 업종이 &lsquo;요율&rsquo;로 적용됩니다.
                       </Typo>
                     </Gcol>
                   </FormCell>

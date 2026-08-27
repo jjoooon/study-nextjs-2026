@@ -221,6 +221,11 @@ export default function Ltpa540Section() {
     () => [
       {
         headerName: '기준담보',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">기준담보</span>
+          </Grow>
+        ),
         flex: 4,
         children: [
           {
@@ -286,6 +291,11 @@ export default function Ltpa540Section() {
       },
       {
         headerName: '변경 후 (조회)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">변경 후 (조회)</span>
+          </Grow>
+        ),
         flex: 4,
         minWidth: attributeColumnWidth(495),
         children: [

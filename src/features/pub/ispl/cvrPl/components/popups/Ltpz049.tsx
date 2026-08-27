@@ -172,7 +172,7 @@ const Ltpz049 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              특별조건특약조회
+              특별조건부특약조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ049)
@@ -212,7 +212,7 @@ const Ltpz049 = () => {
             </div>
             <Gcol variant="box-info" className="w-full" placement="ss">
               <Typo icon="info">
-                할증보험료 계산시 발생할 수 있는 1원 미만의 할증보험료는 0원으로 표시되며, 갱신기 변동될 수 있습니다.
+                할증보험료 계산시 발생할 수 있는 1원 미만의 할증보험료는 0원으로 표시되며, 갱신시 변동될 수 있습니다.
               </Typo>
             </Gcol>
           </Gcol>

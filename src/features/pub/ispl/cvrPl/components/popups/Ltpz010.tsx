@@ -247,6 +247,11 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
         ? [
             {
               headerName: '보험료(원)',
+              headerGroupComponent: () => (
+                <Grow placement="cc" className="w-full">
+                  <span className="font-bold text-[1.3rem]!">보험료(원)</span>
+                </Grow>
+              ),
               children: [
                 {
                   headerName: '출생전',
@@ -274,6 +279,11 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
             },
             {
               headerName: '만기/납기',
+              headerGroupComponent: () => (
+                <Grow placement="cc" className="w-full">
+                  <span className="font-bold text-[1.3rem]!">만기/납기</span>
+                </Grow>
+              ),
               children: [
                 {
                   headerName: '출생전',

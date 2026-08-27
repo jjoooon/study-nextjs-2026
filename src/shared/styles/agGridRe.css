@@ -1659,6 +1659,29 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   opacity: 1 !important;
 }
 
+/* 2분할(해약환급금/예정이율) 셀 전용 상하 패딩 제거 및 세로선 연결 클래스 */
+.ag-theme-alpine .ag-cell.split-dual-cell,
+.cp-aggrid .ag-cell.split-dual-cell {
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: stretch !important;
+  overflow: visible !important;
+}
+
+.ag-theme-alpine .ag-cell.split-dual-cell .ag-cell-wrapper,
+.ag-theme-alpine .ag-cell.split-dual-cell .ag-cell-value,
+.cp-aggrid .ag-cell.split-dual-cell .ag-cell-wrapper,
+.cp-aggrid .ag-cell.split-dual-cell .ag-cell-value {
+  height: 100% !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: stretch !important;
+}
 .group-style .ag-center-cols-container > [role='row']:nth-child(2n) {
   background-color: #fff;
 }

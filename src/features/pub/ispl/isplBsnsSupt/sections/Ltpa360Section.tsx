@@ -800,6 +800,11 @@ export default function Ltpa360Section() {
     },
     {
       headerName: '담당자',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">담당자</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '개발(정)',
@@ -861,6 +866,11 @@ export default function Ltpa360Section() {
     },
     {
       headerName: '메모',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">메모</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '질문',
@@ -909,6 +919,11 @@ export default function Ltpa360Section() {
     },
     {
       headerName: '준비일정',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">준비일정</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '기초서류 송부',
@@ -946,6 +961,11 @@ export default function Ltpa360Section() {
     },
     {
       headerName: '테스트진행',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">테스트진행</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '설계번호',

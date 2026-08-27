@@ -11,7 +11,6 @@ import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } fr
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -108,7 +107,7 @@ const Ltpz060 = () => {
       field: 'field02',
       wrapText: true,
       flex: 20,
-      cellClass: 'text-center h-full',
+      cellClass: 'text-left h-full',
     },
     {
       field: 'field03',
@@ -151,7 +150,7 @@ const Ltpz060 = () => {
           <Grow className="w-full" variant="box-round" placement={'bwe'}>
             <FormTable variant="head" cols={['w-1', 'w-auto', 'w-[16rem]', 'w-auto']}>
               <FormRow>
-                <FormCell title={'증권번호'}>
+                <FormCell title={'설계번호'}>
                   <Input aria-label="" value={'LA123456789012'} readOnly variant="info" />
                   <Input aria-label="" value={'한화 더 건강한 한아름종합보험 2601'} readOnly variant="info" />
                 </FormCell>
@@ -189,26 +188,21 @@ const Ltpz060 = () => {
                 tooltipShowDelay={0}
               />
             </div>
-            <TableFold variant={'default'}>
-              <TableFoldHead title="계약기본사항"></TableFoldHead>
-              <TableFoldBody>
-                <FormTable caption={'계약기본사항'} cols={['w-[6rem]', 'w-auto', 'w-[7rem]', 'w-[13rem]']}>
-                  <FormRow>
-                    <FormCell title={'담보명'}>
-                      <Input value={'풍수재손해(실손전부보상비)'} readOnly />
-                    </FormCell>
-                    <FormCell title={'가입금액'}>
-                      <Grow placement="sc" gap={2}>
-                        <Input value={'0'} readOnly className="[&>input]:text-right" />
-                        <Typo variant={'body-sm'} className="w-[3rem]">
-                          만원
-                        </Typo>
-                      </Grow>
-                    </FormCell>
-                  </FormRow>
-                </FormTable>
-              </TableFoldBody>
-            </TableFold>
+            <FormTable caption={'계약기본사항'} cols={['w-[6rem]', 'w-auto', 'w-[7rem]', 'w-[13rem]']}>
+              <FormRow>
+                <FormCell title={'담보명'}>
+                  <Input value={'풍수재손해(실손전부보상비)'} readOnly />
+                </FormCell>
+                <FormCell title={'가입금액'}>
+                  <Grow placement="sc" gap={2}>
+                    <Input value={'0'} readOnly className="[&>input]:text-right" />
+                    <Typo variant={'body-sm'} className="w-[3rem]">
+                      만원
+                    </Typo>
+                  </Grow>
+                </FormCell>
+              </FormRow>
+            </FormTable>
           </Grid>
         </DialogSection>
         <DialogFooter>

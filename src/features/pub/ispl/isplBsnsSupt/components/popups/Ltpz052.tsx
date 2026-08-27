@@ -167,6 +167,11 @@ const Ltpz052 = () => {
     },
     {
       headerName: '인증방법',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">인증방법</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '동의서',
@@ -281,6 +286,11 @@ const Ltpz052 = () => {
     },
     {
       headerName: '출력/발송 결과',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">출력/발송 결과</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '동의서',

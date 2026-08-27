@@ -143,7 +143,7 @@ const Ltpz098 = () => {
       cellClass: 'text-center',
     },
     {
-      headerName: '최종월드',
+      headerName: '최종월도',
       field: 'field05',
       flex: 1,
       minWidth: attributeColumnWidth(65),
@@ -259,7 +259,7 @@ const Ltpz098 = () => {
                   >
                     <CheckboxGroupItem value="field03">보험시기 표시</CheckboxGroupItem>
                     <CheckboxGroupItem value="field04">보험종기 표시</CheckboxGroupItem>
-                    <CheckboxGroupItem value="field05">최종월드 표시</CheckboxGroupItem>
+                    <CheckboxGroupItem value="field05">최종월도 표시</CheckboxGroupItem>
                   </CheckboxGroup>
                   <Grow>
                     <Button color="success" variant="outlined">
@@ -287,14 +287,14 @@ const Ltpz098 = () => {
                     />
                   </div>
                   <Gcol>
-                    <Gcol variant={'box-warning'} placement={'ss'}>
-                      <Typo variant={'body-sm'} icon={'warning'}>
+                    <Gcol variant={'box-info'} placement={'ss'}>
+                      <Typo variant={'body-sm'} icon={'info'}>
                         <b>안내사항 노출 영역</b>
                       </Typo>
                     </Gcol>
                     <Gcol placement={'ss'}>
                       <Typo variant={'body-sm'} icon={'detail'}>
-                        누적위험 초과인수기준 클릭시에도 조회가 안되는 경우 해당 설계로 인한 누적위험 초과입니다.
+                        누적위험 초과인수기준 클릭 시에도 조회가 안되는 경우 해당 설계로 인한 누적위험 초과입니다.
                       </Typo>
                     </Gcol>
                   </Gcol>

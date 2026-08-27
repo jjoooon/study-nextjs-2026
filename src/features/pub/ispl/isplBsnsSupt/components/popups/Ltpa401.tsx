@@ -31,7 +31,7 @@ const Ltpa401 = () => {
               GA대리점 설계 지원_상세조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA401)
+              (LTPZ401)
             </Typo>
           </DialogTitle>
         </DialogHeader>

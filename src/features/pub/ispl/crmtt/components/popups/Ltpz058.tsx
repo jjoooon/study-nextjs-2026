@@ -127,7 +127,7 @@ const Ltpz058 = () => {
       cellClass: 'text-center',
     },
     {
-      headerName: '영업위종',
+      headerName: '영위업종',
       flex: 10,
       cellClass: 'text-center',
       children: [

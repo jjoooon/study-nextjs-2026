@@ -540,6 +540,11 @@ export default function Ltpa600Section() {
     () => [
       {
         headerName: '담보그룹명',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">담보그룹명</span>
+          </Grow>
+        ),
         children: [
           {
             headerName: '현재',

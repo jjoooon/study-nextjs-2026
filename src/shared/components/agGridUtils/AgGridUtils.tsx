@@ -1353,6 +1353,8 @@ type DatePickerRangeValue = {
 type DatePickerCellEditorParams = {
   /** 셀 편집 모드 지정(미지정 시 single) */
   mode?: DatePickerEditorMode;
+  /** 월만 선택하는 모드(월 단위 그리드 캘린더) 여부 */
+  monthOnly?: boolean;
 };
 
 function parseRangeFromValue(rawValue: unknown): DatePickerRangeValue {
@@ -1475,6 +1477,7 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
   return (
     <DatePickerInput
       mode={mode}
+      monthOnly={editorParams.monthOnly}
       value={mode === 'single' ? value : undefined}
       rangeValue={mode === 'range' ? rangeValue : undefined}
       onChange={handleChange}
@@ -1912,7 +1915,7 @@ export const GridHeaderCheckbox = (props: GridHeaderCheckboxParams) => {
           props.api.refreshHeader();
         }}
       >
-        {display && <span className="ag-header-cell-text">{display}</span>}
+        {display && <span className="ag-header-cell-text font-bold!">{display}</span>}
       </Checkbox>
     </Grow>
   );

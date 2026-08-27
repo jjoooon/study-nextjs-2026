@@ -376,7 +376,11 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         pinned: 'left', // 좌측 스크롤 고정
       },
       {
-        headerName: '전화번호(휴대폰)',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]">전화번호(휴대폰)</span>
+          </Grow>
+        ),
         // 하위 컬럼을 국/앞/뒤 구조로 3단 분할 구성
         children: [
           {
@@ -592,7 +596,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
         {/* 다이얼로그 본문 영역 */}
         <DialogSection className="w-full h-full min-h-0 overflow-y-auto grid-rows-[auto_1fr]">
           {/* 상단: 조회 조건 설정 폼 */}
-          <Grow className="w-full" variant="box-round" placement={'bwe'}>
+          <Grow className="w-full items-center" variant="box-round" placement={'bwe'}>
             <FormTable
               variant={'head'}
               lineTop={false}

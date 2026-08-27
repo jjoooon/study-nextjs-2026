@@ -2,7 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { ColDef, ColGroupDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
@@ -179,7 +179,11 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
   const columnDefs = React.useMemo<(ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[]>(
     () => [
       {
-        headerName: '가입설계동의 시 최소 필요정보',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]">가입설계동의 시 최소 필요정보</span>
+          </Grow>
+        ),
         flex: 1,
         minWidth: attributeColumnWidth(80),
         children: [
@@ -218,7 +222,11 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
           },
           // 전화번호 (3개 필드 분할)
           {
-            headerName: '전화번호(휴대폰)',
+            headerGroupComponent: () => (
+              <Grow placement="cc" className="w-full">
+                <span className="font-bold text-[1.3rem]">전화번호(휴대폰)</span>
+              </Grow>
+            ),
             children: [
               {
                 field: 'field3',
@@ -263,6 +271,11 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
       // 고객 및 설계 기본 정보 그룹
       {
         headerName: '고객 및 설계 기본 정보',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">고객 및 설계 기본 정보</span>
+          </Grow>
+        ),
         children: [
           // 관계 선택
           {
@@ -414,7 +427,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
         </DialogHeader>
         <DialogSection className="grid-rows-[auto_1fr]">
           {/* 상단: 설계번호 및 피보험자 조회 조건 영역 */}
-          <Grow className="w-full" variant="box-round" placement={'bwe'}>
+          <Grow className="w-full items-center" variant="box-round" placement={'bwe'}>
             <FormTable
               variant={'head'}
               lineTop={false}

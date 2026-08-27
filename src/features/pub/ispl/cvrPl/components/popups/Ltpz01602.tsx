@@ -126,7 +126,7 @@ const Ltpz01602 = () => {
       cellRenderer: selectCellRenderer,
     },
     {
-      headerName: '자가부담금',
+      headerName: '자기부담금',
       field: 'field07',
       width: 100,
       cellClass: 'text-center',
@@ -205,7 +205,7 @@ const Ltpz01602 = () => {
             </FormTable>
           </Grow>
           <TableFold>
-            <TableFoldHead title="골프용품손해(실손)" />
+            <TableFoldHead title="시설소유(관리)자배상책임" />
             <TableFoldBody className="gap-2">
               <div className="ag-theme-alpine inner-scroll" data-rows={DummyData.length}>
                 <AgGridReact<DummyDataType>
@@ -234,7 +234,7 @@ const Ltpz01602 = () => {
               </div>
               <Gcol variant={'box-info'} placement={'ss'} className="w-full">
                 <Typo variant={'body-sm'} icon={'info'}>
-                  해당업조의 면적은 ㎡단위(1평=3.3㎡)로 입력하시기 바랍니다.
+                  해당업종의 면적은 ㎡단위(1평=3.3㎡)로 입력하시기 바랍니다.
                 </Typo>
               </Gcol>
             </TableFoldBody>

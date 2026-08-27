@@ -50,7 +50,7 @@ const Ltpz016 = () => {
                   <Input aria-label="" width={'quoteNo'} value={'LA123456789012'} readOnly />
                   -
                   <Input aria-label="" width={26} value={'1'} readOnly />
-                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} readOnly />
+                  <Input aria-label="" value={'무배당 1등 엄마의 똑똑한 자녀보힘 1404'} variant="info" readOnly />
                 </FormCell>
               </FormRow>
             </FormTable>
@@ -107,7 +107,7 @@ const Ltpz016 = () => {
               </FormTable>
               <Gcol variant={'box-info'} placement={'ss'} className="w-full">
                 <Typo variant={'body-sm'} icon={'info'}>
-                  약관상 피보홈자가 소유, 사용, 관리 중 발생한 우연한 사고로 배상책임을 부당하는 주거용 주택을 등록해
+                  약관상 피보험자가 소유, 사용, 관리 중 발생한 우연한 사고로 배상책임을 부담하는 주거용 주택을 등록해
                   주세요.
                 </Typo>
               </Gcol>

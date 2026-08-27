@@ -161,6 +161,11 @@ export default function Ltpa260Section() {
       },
       {
         headerName: '피보험자명',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">피보험자명</span>
+          </Grow>
+        ),
         cellClass: 'text-center',
         autoHeight: true,
         children: [
@@ -176,6 +181,11 @@ export default function Ltpa260Section() {
       },
       {
         headerName: '보장기간',
+        headerGroupComponent: () => (
+          <Grow placement="cc" className="w-full">
+            <span className="font-bold text-[1.3rem]!">보장기간</span>
+          </Grow>
+        ),
         field: 'field09',
         children: [
           {

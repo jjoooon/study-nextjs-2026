@@ -83,6 +83,38 @@ const DummyDataA02: DummyDataTypeA02[] = [
     field4: '1급',
     field5: 1200,
   },
+  {
+    id: 1,
+    field1: '김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1200,
+  },
+  {
+    id: 1,
+    field1: '김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1200,
+  },
+  {
+    id: 1,
+    field1: '김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1200,
+  },
+  {
+    id: 1,
+    field1: '김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1200,
+  },
 ];
 
 type DummyDataTypeA03 = {
@@ -96,6 +128,60 @@ type DummyDataTypeA03 = {
 const DummyDataA03: DummyDataTypeA03[] = [
   {
     id: 1,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 2,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 3,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 4,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 5,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 6,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 7,
     field1:
       '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
     field2: '2026-01-01',
@@ -120,6 +206,48 @@ const DummyDataA04: DummyDataTypeA04[] = [
     field3: '1급',
     field4: 15000,
   },
+  {
+    id: 2,
+    field1: '김한화',
+    field2: 30,
+    field3: '1급',
+    field4: 15000,
+  },
+  {
+    id: 3,
+    field1: '김한화',
+    field2: 30,
+    field3: '1급',
+    field4: 15000,
+  },
+  {
+    id: 4,
+    field1: '김한화',
+    field2: 30,
+    field3: '1급',
+    field4: 15000,
+  },
+  {
+    id: 5,
+    field1: '김한화',
+    field2: 30,
+    field3: '1급',
+    field4: 15000,
+  },
+  {
+    id: 6,
+    field1: '김한화',
+    field2: 30,
+    field3: '1급',
+    field4: 15000,
+  },
+  {
+    id: 7,
+    field1: '김한화',
+    field2: 30,
+    field3: '1급',
+    field4: 15000,
+  },
 ];
 type DummyDataTypeA05 = {
   id: number;
@@ -130,6 +258,48 @@ type DummyDataTypeA05 = {
 const DummyDataA05: DummyDataTypeA05[] = [
   {
     id: 1,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 2,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 3,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 4,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 5,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 6,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 7,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 8,
     field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
     field2: 15000,
     field3: 15000,
@@ -146,6 +316,46 @@ type DummyDataTypeA06 = {
 const DummyDataA06: DummyDataTypeA06[] = [
   {
     id: 1,
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
+    field2: 30,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
+  },
+  {
+    id: 2,
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
+    field2: 30,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
+  },
+  {
+    id: 3,
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
+    field2: 30,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
+  },
+  {
+    id: 4,
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
+    field2: 30,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
+  },
+  {
+    id: 5,
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
+    field2: 30,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
+  },
+  {
+    id: 6,
     field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
     field2: 30,
     field3: 24,
@@ -194,6 +404,54 @@ const DummyDataB02: DummyDataTypeB02[] = [
     field4: '1급',
     field5: 1000,
   },
+  {
+    id: 2,
+    field1: 'B김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1000,
+  },
+  {
+    id: 3,
+    field1: 'B김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1000,
+  },
+  {
+    id: 4,
+    field1: 'B김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1000,
+  },
+  {
+    id: 5,
+    field1: 'B김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1000,
+  },
+  {
+    id: 6,
+    field1: 'B김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1000,
+  },
+  {
+    id: 7,
+    field1: 'B김현화',
+    field2: 30,
+    field3: '회사사무직종사자',
+    field4: '1급',
+    field5: 1000,
+  },
 ];
 
 type DummyDataTypeB03 = {
@@ -207,6 +465,51 @@ type DummyDataTypeB03 = {
 const DummyDataB03: DummyDataTypeB03[] = [
   {
     id: 1,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 2,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 3,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 4,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 5,
+    field1:
+      '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
+    field2: '2026-01-01',
+    field3: '2026-01-01',
+    field4: 12300,
+    field5: 15000,
+  },
+  {
+    id: 6,
     field1:
       '담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.담보명 들어갑니다.',
     field2: '2026-01-01',
@@ -231,6 +534,27 @@ const DummyDataB04: DummyDataTypeB04[] = [
     field3: '1급',
     field4: 0,
   },
+  {
+    id: 2,
+    field1: '김한화',
+    field2: 30,
+    field3: '1급',
+    field4: 0,
+  },
+  {
+    id: 3,
+    field1: '김한화',
+    field2: 30,
+    field3: '1급',
+    field4: 0,
+  },
+  {
+    id: 4,
+    field1: '김한화',
+    field2: 30,
+    field3: '1급',
+    field4: 0,
+  },
 ];
 type DummyDataTypeB05 = {
   id: number;
@@ -241,6 +565,36 @@ type DummyDataTypeB05 = {
 const DummyDataB05: DummyDataTypeB05[] = [
   {
     id: 1,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 2,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 3,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 4,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 5,
+    field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
+    field2: 15000,
+    field3: 15000,
+  },
+  {
+    id: 6,
     field1: '화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.화재기본담보명입니다.',
     field2: 15000,
     field3: 15000,
@@ -257,6 +611,46 @@ type DummyDataTypeB06 = {
 const DummyDataB06: DummyDataTypeB06[] = [
   {
     id: 1,
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
+    field2: 30,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
+  },
+  {
+    id: 2,
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
+    field2: 30,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
+  },
+  {
+    id: 3,
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
+    field2: 30,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
+  },
+  {
+    id: 4,
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
+    field2: 30,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
+  },
+  {
+    id: 5,
+    field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
+    field2: 30,
+    field3: 24,
+    field4: 15000,
+    field5: 15000,
+  },
+  {
+    id: 6,
     field1: '화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.화재특약담보명입니다.',
     field2: 30,
     field3: 24,
@@ -284,49 +678,49 @@ export default function Ltpa050Section() {
       headerName: '보장P',
       field: 'field1',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right `,
       valueFormatter: numberValueFormatter,
     },
     {
-      headerName: '적입P',
+      headerName: '적립P',
       field: 'field2',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right `,
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '일시납P',
       field: 'field3',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right `,
       valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="합계P" unit="(할인전)" col={true} />,
       field: 'field4',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right `,
       valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="합계P" unit="(할인후)" col={true} />,
       field: 'field5',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right `,
       valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="만기환급금" unit="(예상)" col={true} />,
       field: 'field6',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right `,
       valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="환급률" unit="(예상)" col={true} />,
       field: 'field7',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right `,
       valueFormatter: numberValueFormatter,
     },
   ];
@@ -383,7 +777,7 @@ export default function Ltpa050Section() {
       headerName: '담보명',
       field: 'field1',
       flex: 10,
-      cellClass: `text-center `,
+      cellClass: `text-left `,
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA03>({ field: 'field1' }),
     },
     {
@@ -401,18 +795,18 @@ export default function Ltpa050Section() {
       cellClass: `text-center `,
     },
     {
-      headerName: '가압금액',
+      headerName: '가입금액',
       field: 'field4',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보P',
       field: 'field5',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
@@ -464,22 +858,22 @@ export default function Ltpa050Section() {
       headerName: '화재기본담보',
       field: 'field1',
       flex: 20,
-      cellClass: `text-center`,
+      cellClass: `text-left`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA05>({ field: 'field1' }),
     },
     {
       headerName: '가입금액',
       field: 'field2',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보P',
       field: 'field3',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
@@ -494,7 +888,7 @@ export default function Ltpa050Section() {
       headerName: '화재특약담보',
       field: 'field1',
       flex: 10,
-      cellClass: `text-center `,
+      cellClass: `text-left`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeA06>({ field: 'field1' }),
     },
     {
@@ -512,18 +906,18 @@ export default function Ltpa050Section() {
       cellClass: `text-center`,
     },
     {
-      headerName: '가압금액',
+      headerName: '가입금액',
       field: 'field4',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보P',
       field: 'field5',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
@@ -534,49 +928,49 @@ export default function Ltpa050Section() {
       headerName: '보장P',
       field: 'field1',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
-      headerName: '적입P',
+      headerName: '적립P',
       field: 'field2',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '일시납P',
       field: 'field3',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="합계P" unit="(할인전)" col={true} />,
       field: 'field4',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="합계P" unit="(할인후)" col={true} />,
       field: 'field5',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="만기환급금" unit="(예상)" col={true} />,
       field: 'field6',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerComponent: () => <HeaderWithUnit label="환급률" unit="(예상)" col={true} />,
       field: 'field7',
       flex: 1,
-      cellClass: `text-center `,
+      cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
   ];
@@ -633,7 +1027,7 @@ export default function Ltpa050Section() {
       headerName: '담보명',
       field: 'field1',
       flex: 10,
-      cellClass: `text-center `,
+      cellClass: `text-left `,
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB03>({ field: 'field1' }),
     },
     {
@@ -651,18 +1045,18 @@ export default function Ltpa050Section() {
       cellClass: `text-center `,
     },
     {
-      headerName: '가압금액',
+      headerName: '가입금액',
       field: 'field4',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보P',
       field: 'field5',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
@@ -714,22 +1108,22 @@ export default function Ltpa050Section() {
       headerName: '화재기본담보',
       field: 'field1',
       flex: 20,
-      cellClass: `text-center`,
+      cellClass: `text-left`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB05>({ field: 'field1' }),
     },
     {
       headerName: '가입금액',
       field: 'field2',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보P',
       field: 'field3',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
@@ -744,7 +1138,7 @@ export default function Ltpa050Section() {
       headerName: '화재특약담보',
       field: 'field1',
       flex: 10,
-      cellClass: `text-center `,
+      cellClass: `text-left`,
       tooltipValueGetter: createTooltipValueGetter<DummyDataTypeB06>({ field: 'field1' }),
     },
     {
@@ -762,18 +1156,18 @@ export default function Ltpa050Section() {
       cellClass: `text-center`,
     },
     {
-      headerName: '가압금액',
+      headerName: '가입금액',
       field: 'field4',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
     {
       headerName: '담보P',
       field: 'field5',
-      flex: 1,
-      minWidth: attributeColumnWidth(60),
+      flex: 2,
+      minWidth: attributeColumnWidth(100),
       cellClass: `text-right`,
       valueFormatter: numberValueFormatter,
     },
@@ -800,7 +1194,7 @@ export default function Ltpa050Section() {
             [2열 수평 배치 그리드]
             - grid-cols-[auto_auto] 설정을 통해 왼쪽(A안)과 오른쪽(B안) 설계안을 수평(Side-by-Side)으로 대칭 배치합니다.
           */
-          <Grid className="grid-cols-[auto_auto] items-start" placement="ss" gap={3}>
+          <Grid className="grid-cols-2 items-start" placement="ss" gap={3}>
             {/* ======================================================== */}
             {/* [A안] 왼쪽 비교 영역: 첫 번째 설계안 정보                 */}
             {/* ======================================================== */}
@@ -897,7 +1291,10 @@ export default function Ltpa050Section() {
                     data={tabsA}
                     active={activeA}
                     hasTableBelow={true}
-                    setActive={setActiveA}
+                    setActive={(val) => {
+                      setActiveA(val);
+                      setActiveB(val);
+                    }}
                     onRemove={handleRemoveA}
                     error={false}
                     errorMsg="에러 메시지 예시"
@@ -907,28 +1304,28 @@ export default function Ltpa050Section() {
                     {/* [인보험 탭] 피보험자 인적 정보 및 기본/선택 담보 구성 리스트 */}
                     {activeA === 'tab1' && (
                       <Gcol gap={2}>
-                        {/* [그리드 A02] 피보험자 성명, 연령, 직업, 직무급수, 보험료 현황 */}
-                        <div className="ag-theme-alpine ag-border-t">
+                        {/* [그리드 A02] 피보험자 성명, 연령, 직업,  직무급수, 보험료 현황 */}
+                        <div className="ag-theme-alpine ag-border-t inner-scroll h-[9.2rem]!" data-row={2}>
                           <AgGridReact<DummyDataTypeA02>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataA02}
                             columnDefs={columnDefsA02}
                             defaultColDef={{ sortable: true, resizable: true }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />
                         </div>
                         {/* [그리드 A03] 인보험 세부 담보별 가입 금액 및 보험료 명세 */}
-                        <div className="ag-theme-alpine">
+                        <div className="ag-theme-alpine inner-scroll h-[33.2rem]!" data-row={10}>
                           <AgGridReact<DummyDataTypeA03>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataA03}
                             columnDefs={columnDefsA03}
                             defaultColDef={{ sortable: true, resizable: true }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />
@@ -940,14 +1337,14 @@ export default function Ltpa050Section() {
                     {activeA === 'tab2' && (
                       <Gcol gap={2}>
                         {/* [그리드 A04] 물건 피보험자명, 직무급수, 보장보험료 요약 */}
-                        <div className="ag-theme-alpine ag-border-t">
+                        <div className="ag-theme-alpine ag-border-t inner-scroll h-[9.2rem]!" data-row={2}>
                           <AgGridReact<DummyDataTypeA04>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataA04}
                             columnDefs={columnDefsA04}
                             defaultColDef={{ sortable: true, resizable: true }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />
@@ -955,31 +1352,31 @@ export default function Ltpa050Section() {
                         {/* 물건 대상 소재지 주소 폼 테이블 */}
                         <FormTable cols={['w-[8rem]', 'w-auto']}>
                           <FormRow>
-                            <FormCell title={'소재지'}></FormCell>
+                            <FormCell title={'소재지'}>서울특별시 영등포구 63로 50 (여의도동, 63한화생명빌딩)</FormCell>
                           </FormRow>
                         </FormTable>
                         {/* [그리드 A05] 화재기본담보 테이블 */}
-                        <div className="ag-theme-alpine">
+                        <div className="ag-theme-alpine inner-scroll h-[9.2rem]!" data-row={2}>
                           <AgGridReact<DummyDataTypeA05>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataA05}
                             columnDefs={columnDefsA05}
                             defaultColDef={{ sortable: true, resizable: true }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />
                         </div>
                         {/* [그리드 A06] 화재특약담보 테이블 */}
-                        <div className="ag-theme-alpine">
+                        <div className="ag-theme-alpine inner-scroll h-[18.4rem]!" data-row={5}>
                           <AgGridReact<DummyDataTypeA06>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataA06}
                             columnDefs={columnDefsA06}
                             defaultColDef={{ sortable: true, resizable: true }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />
@@ -1055,7 +1452,7 @@ export default function Ltpa050Section() {
                   </FormTable>
 
                   {/* [그리드 B01] 계약정보 요약 테이블 (보장P, 적립P, 할인액, 환급금 등 - A01과 대칭) */}
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine ">
                     <AgGridReact<DummyDataTypeB01>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1087,7 +1484,10 @@ export default function Ltpa050Section() {
                     data={tabsB}
                     active={activeB}
                     hasTableBelow={true}
-                    setActive={setActiveB}
+                    setActive={(val) => {
+                      setActiveA(val);
+                      setActiveB(val);
+                    }}
                     onRemove={handleRemoveB}
                     error={false}
                     errorMsg="에러 메시지 예시"
@@ -1098,27 +1498,27 @@ export default function Ltpa050Section() {
                     {activeB === 'tab1' && (
                       <Gcol gap={2}>
                         {/* [그리드 B02] 피보험자 성명, 연령, 직업, 직무급수, 보험료 현황 */}
-                        <div className="ag-theme-alpine ag-border-t">
+                        <div className="ag-theme-alpine ag-border-t inner-scroll h-[9.2rem]!" data-row={2}>
                           <AgGridReact<DummyDataTypeB02>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB02}
                             columnDefs={columnDefsB02}
                             defaultColDef={{ sortable: true, resizable: true }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />
                         </div>
                         {/* [그리드 B03] 인보험 세부 담보별 가입 금액 및 보험료 명세 */}
-                        <div className="ag-theme-alpine">
+                        <div className="ag-theme-alpine inner-scroll h-[33.2rem]!" data-row={10}>
                           <AgGridReact<DummyDataTypeB03>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB03}
                             columnDefs={columnDefsB03}
                             defaultColDef={{ sortable: true, resizable: true }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />
@@ -1130,14 +1530,14 @@ export default function Ltpa050Section() {
                     {activeB === 'tab2' && (
                       <Gcol gap={2}>
                         {/* [그리드 B04] 물건 피보험자명, 직무급수, 보장보험료 요약 */}
-                        <div className="ag-theme-alpine ag-border-t">
+                        <div className="ag-theme-alpine ag-border-t inner-scroll h-[9.2rem]!" data-row={2}>
                           <AgGridReact<DummyDataTypeB04>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB04}
                             columnDefs={columnDefsB04}
                             defaultColDef={{ sortable: true, resizable: true }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />
@@ -1145,31 +1545,31 @@ export default function Ltpa050Section() {
                         {/* 물건 대상 소재지 주소 폼 테이블 */}
                         <FormTable cols={['w-[8rem]', 'w-auto']}>
                           <FormRow>
-                            <FormCell title={'소재지'}></FormCell>
+                            <FormCell title={'소재지'}>서울특별시 영등포구 63로 50 (여의도동, 63한화생명빌딩)</FormCell>
                           </FormRow>
                         </FormTable>
                         {/* [그리드 B05] 화재기본담보 테이블 */}
-                        <div className="ag-theme-alpine">
+                        <div className="ag-theme-alpine inner-scroll h-[9.2rem]!" data-row={2}>
                           <AgGridReact<DummyDataTypeB05>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB05}
                             columnDefs={columnDefsB05}
                             defaultColDef={{ sortable: true, resizable: true }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />
                         </div>
                         {/* [그리드 B06] 화재특약담보 테이블 */}
-                        <div className="ag-theme-alpine">
+                        <div className="ag-theme-alpine inner-scroll h-[18.4rem]!" data-row={5}>
                           <AgGridReact<DummyDataTypeB06>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
                             rowData={DummyDataB06}
                             columnDefs={columnDefsB06}
                             defaultColDef={{ sortable: true, resizable: true }}
-                            domLayout="autoHeight"
+                            domLayout="normal"
                             tooltipShowMode="whenTruncated"
                             tooltipShowDelay={0}
                           />

@@ -158,6 +158,11 @@ const Ltpa04001 = () => {
   const columnDefs: (ColDef<Ltpa040DummyDataRow> | ColGroupDef<Ltpa040DummyDataRow>)[] = [
     {
       headerName: '추천설계정보',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold">추천설계정보</span>
+        </Grow>
+      ),
       children: [
         {
           headerName: '추천일시',

@@ -31,7 +31,7 @@ const Ltpz055 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="sm">
+      <DialogContent showCloseButton resizable={true} size="sm">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -58,13 +58,13 @@ const Ltpz055 = () => {
               <caption className="a11y-hidden">화면담당자 정보입니다.</caption>
               <colgroup>
                 <col className="w-[6rem]" />
-                <col className="w-auto" />
+                <col className="w-[11.6rem]" />
                 <col className="w-auto" />
                 <col className="w-[14rem]" />
               </colgroup>
               <TableHeader>
                 <TableRow>
-                  <TableHead>구문</TableHead>
+                  <TableHead>구분</TableHead>
                   <TableHead>기존발송번호</TableHead>
                   <TableHead>신규발송번호</TableHead>
                   <TableHead>
@@ -231,7 +231,7 @@ const Ltpz055 = () => {
               <BulletList className="w-full [&>li>div:first-child]:h-full">
                 <BulletListItem size="sm">
                   <Grow placement="ss" className="gap-1 flex items-center justify-between">
-                    <span className="w-[6.2rem] shrink-0">피모집자URL:</span>
+                    <span className="w-[6.2rem] shrink-0">피보험자URL:</span>
                     <Input
                       className="inline-block w-[calc(100%-6rem)]!"
                       readOnly
