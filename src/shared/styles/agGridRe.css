@@ -1659,6 +1659,10 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   opacity: 1 !important;
 }
 
+.group-style .ag-center-cols-container > [role='row']:nth-child(2n) {
+  background-color: #fff;
+}
+.is-sub-row .ag-cell {background-color: var(--color-gray-5)}
 /* AG Grid 툴팁 마우스 오버/이탈 시 CSS 트랜지션 및 모션 애니메이션 즉시 제거 */
 .ag-tooltip,
 .ag-tooltip-showing,
