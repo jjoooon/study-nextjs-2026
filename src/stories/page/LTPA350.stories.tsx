@@ -26,7 +26,6 @@ const meta: Meta<typeof LTPA350> = {
     memoButtonColor: 'gray',
   },
 };
-
 export default meta;
 type Story = StoryObj<typeof LTPA350>;
 
