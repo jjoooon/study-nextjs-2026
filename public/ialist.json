@@ -1500,17 +1500,17 @@
     "dep1": "차세대가입설계",
     "dep2": "가입설계",
     "dep3": "가입설계",
-    "id": "LTPA430",
-    "path": "ispl/isplBsnsSupt",
+    "id": "LTPZ102",
+    "path": "ispl/isplBsnsSupt/components/popups",
     "dep4": "고지유형별 보험료비교",
     "file": "전환_가입설계",
     "plan": "최벼리",
     "dev": "박혜림",
     "sdate": "",
     "date": "26.04.17",
-    "modify": "26.06.04",
+    "modify": "26.08.26",
     "subId": "",
-    "popup": false
+    "popup": true
   },
   {
     "pub": "허승하",
