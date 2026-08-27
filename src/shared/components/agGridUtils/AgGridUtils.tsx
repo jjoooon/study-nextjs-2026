@@ -1583,7 +1583,8 @@ export function OverflowTooltipText({ text, children }: OverflowTooltipTextProps
 export const createFieldRenderer = <T extends Record<string, unknown>>(
   field1: FieldRendererSource<T>,
   field2?: FieldRendererSource<T>,
-  div: 'row' | 'col' = 'col'
+  div: 'row' | 'col' = 'col',
+  ratio: [number, number] = [1, 1]
 ) => {
   const renderer = (params: ICellRendererParams<T>) => {
     const data = params.data as T | undefined;
@@ -1674,10 +1675,11 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
       return <OverflowTooltipText text={tooltipText}>{content}</OverflowTooltipText>;
     };
 
-    const getRowCellStyle = (size?: number): React.CSSProperties => {
+    const getRowCellStyle = (index: 0 | 1, size?: number): React.CSSProperties => {
       if (size === undefined) {
+        const flexRatio = ratio[index];
         return {
-          flex: '1 1 0%',
+          flex: `${flexRatio} ${flexRatio} 0%`,
           minWidth: 0,
         };
       }
@@ -1700,10 +1702,10 @@ export const createFieldRenderer = <T extends Record<string, unknown>>(
       </Grid>
     ) : (
       <div className="flex w-full h-full justify-start divide-x divide-gray-200">
-        <div className="truncate-no" style={getRowCellStyle(parsedField1.size)}>
+        <div className="truncate-no" style={getRowCellStyle(0, parsedField1.size)}>
           {renderCellWithTooltip(aNode, aTooltipText)}
         </div>
-        <div className="truncate-no" style={getRowCellStyle(parsedField2.size)}>
+        <div className="truncate-no" style={getRowCellStyle(1, parsedField2.size)}>
           {renderCellWithTooltip(bNode, bTooltipText)}
         </div>
       </div>
@@ -2541,3 +2543,10 @@ export function AsyncTooltipButton({
     </Tooltip>
   );
 }
+
+export type TwoRadioCellRendererOptions = {
+  trueLabel?: string;
+  falseLabel?: string;
+  trueValue?: string;
+  falseValue?: string;
+};
