@@ -573,7 +573,7 @@ export default function Ltpa200Section() {
                       }}
                       selectionColumnDef={{
                         headerName: '√',
-                        cellClass: 'text-center',
+                        cellClass: 'text-center editable-cell',
                         width: 30,
                       }}
                       // 행추가 된 rowCell

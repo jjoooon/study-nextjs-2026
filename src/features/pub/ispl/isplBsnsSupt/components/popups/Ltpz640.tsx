@@ -53,7 +53,7 @@ type DummyData1Type = {
   field0: number;
   field1: string;
   field2: string;
-  cheked?: boolean;
+  checked?: boolean;
   target?: TargetObjectType;
 };
 const DummyData1: DummyData1Type[] = [
@@ -62,7 +62,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 1,
     field1: '간병',
     field2: '간병인사용',
-    cheked: true,
+    checked: true,
     target: { ca: true, ga: true, tm: true },
   },
   {
@@ -70,7 +70,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 2,
     field1: '암주요',
     field2: '암주요치료(상급종합)',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: true, tm: false },
   },
   {
@@ -78,7 +78,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 2,
     field1: '암주요',
     field2: '암주요치료(종합병원)',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: true, tm: false },
   },
   {
@@ -86,7 +86,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 2,
     field1: '암주요',
     field2: '암주요치료(비급여)',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: true, tm: false },
   },
   {
@@ -94,7 +94,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 2,
     field1: '암주요',
     field2: '암주요치료(전이암)',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: true, tm: false },
   },
   {
@@ -102,7 +102,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 2,
     field1: '암주요',
     field2: '표적항암',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: true, tm: false },
   },
   {
@@ -110,7 +110,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 3,
     field1: '순환계치료비',
     field2: '요양병원제외',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: false, tm: true },
   },
   {
@@ -118,7 +118,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 3,
     field1: '순환계치료비',
     field2: '상급종합병원',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: false, tm: true },
   },
   {
@@ -126,7 +126,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 3,
     field1: '순환계치료비',
     field2: '주요순환계',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: false, tm: true },
   },
   {
@@ -134,7 +134,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 4,
     field1: '입원',
     field2: '1인실',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: true, tm: true },
   },
   {
@@ -142,7 +142,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 4,
     field1: '입원',
     field2: '2~3인실',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: true, tm: true },
   },
   {
@@ -150,7 +150,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 5,
     field1: '운전자',
     field2: '운전자비용',
-    cheked: false,
+    checked: false,
     target: { ca: false, ga: true, tm: false },
   },
   {
@@ -158,7 +158,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 6,
     field1: '여성',
     field2: '유/갑/생',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: true, tm: true },
   },
   {
@@ -166,7 +166,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 7,
     field1: '출산/난임',
     field2: '미혼자용',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: true, tm: true },
   },
   {
@@ -174,7 +174,7 @@ const DummyData1: DummyData1Type[] = [
     field0: 7,
     field1: '출산/난임',
     field2: '기혼자용',
-    cheked: false,
+    checked: false,
     target: { ca: true, ga: true, tm: true },
   },
 ];
@@ -234,7 +234,7 @@ const Ltpz640 = () => {
       field0: nextId,
       field1: focusedRow ? focusedRow.field1 : '',
       field2: '',
-      cheked: false,
+      checked: false,
       target: focusedRow?.target ? { ...focusedRow.target } : { ca: true, ga: true, tm: true },
     }),
     insertAt: 'focused',
@@ -247,7 +247,7 @@ const Ltpz640 = () => {
   }, []);
 
   const handleDeleteRow = React.useCallback(() => {
-    setRowData((prev) => prev.filter((row) => !row.cheked));
+    setRowData((prev) => prev.filter((row) => !row.checked));
   }, [setRowData]);
 
   const handleOrderChanged = createSequentialRowReorderHandler<DummyData1Type, number>(setRowData, {
@@ -263,7 +263,7 @@ const Ltpz640 = () => {
         return;
       }
 
-      if (event.colDef.field === 'cheked') {
+      if (event.colDef.field === 'checked') {
         const changedId = event.data.id;
         const newChecked = Boolean(event.newValue);
 
@@ -433,7 +433,7 @@ const Ltpz640 = () => {
   );
   const [openCellMerge, setOpenCellMerge] = React.useState(false);
   const [mergePackageName, setMergePackageName] = React.useState('');
-  const hasCheckedRows = rowData.some((row) => row.cheked);
+  const hasCheckedRows = rowData.some((row) => row.checked);
 
   const moveCheckedRowsWithinGroup = React.useCallback(
     (direction: 'up' | 'down') => {
@@ -453,7 +453,7 @@ const Ltpz640 = () => {
               const current = nextRows[index];
               const previous = nextRows[index - 1];
 
-              if (current?.cheked && !previous?.cheked) {
+              if (current?.checked && !previous?.checked) {
                 nextRows[index - 1] = current;
                 nextRows[index] = previous;
               }
@@ -463,7 +463,7 @@ const Ltpz640 = () => {
               const current = nextRows[index];
               const following = nextRows[index + 1];
 
-              if (current?.cheked && !following?.cheked) {
+              if (current?.checked && !following?.checked) {
                 nextRows[index] = following;
                 nextRows[index + 1] = current;
               }
@@ -502,7 +502,7 @@ const Ltpz640 = () => {
         field0: 1,
         field1: mergePackageName,
         field2: '',
-        cheked: false,
+        checked: false,
         target: { ca: true, ga: true, tm: true },
       };
 
@@ -542,8 +542,9 @@ const Ltpz640 = () => {
       {
         headerName: '패키지명',
         field: 'field1',
-        cellClass: '',
-        width: attributeColumnWidth(140),
+        flex: 1,
+        cellClass: 'editable-cell',
+        minWidth: attributeColumnWidth(140),
         autoHeight: true,
         spanRows: true,
         editable: true,
@@ -552,11 +553,13 @@ const Ltpz640 = () => {
       },
       {
         headerName: '선택',
-        field: 'cheked',
-        width: 30,
+        field: 'checked',
+        flex: 1,
+        minWidth: attributeColumnWidth(30),
         sortable: false,
         editable: true,
         cellDataType: 'boolean',
+        cellClass: 'editable-cell',
         cellRenderer: 'agCheckboxCellRenderer',
         cellEditor: 'agCheckboxCellEditor',
         autoHeight: true,
@@ -565,8 +568,8 @@ const Ltpz640 = () => {
       {
         headerName: '담보그룹명',
         field: 'field2',
-        flex: 2,
-        minWidth: attributeColumnWidth(200),
+        flex: 10,
+        cellClass: 'editable-cell',
         autoHeight: true,
         editable: true,
         cellEditor: 'agTextCellEditor',

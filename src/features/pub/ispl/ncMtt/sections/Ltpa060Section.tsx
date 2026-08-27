@@ -412,6 +412,7 @@ export default function Ltpa060Section() {
                         columnDefs={columnDefs}
                         selectionColumnDef={{
                           width: 30,
+                          cellClass: 'editable-cell',
                         }}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         onCellValueChanged={onCellValueChanged}
@@ -459,6 +460,7 @@ export default function Ltpa060Section() {
                         columnDefs={columnDefs2}
                         selectionColumnDef={{
                           width: 30,
+                          cellClass: 'editable-cell',
                         }}
                         onCellValueChanged={onCellValueChanged}
                         noRowsOverlayComponent={AgGridEmptyComponent}

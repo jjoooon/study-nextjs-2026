@@ -8,6 +8,7 @@
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import {
   AgGridEmptyComponent,
   createModifiedCellClassRules,
@@ -198,6 +199,7 @@ const DummyData: DummyDataType[] = [
 export default function Ltpa540Section() {
   // rowData를 최상단에 선언 → useMemo보다 먼저 초기화되어야 함
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType>;
 
   const EditCellColor = React.useMemo(
     () => createModifiedCellClassRules({ rows: rowData, idKey: 'id', valueKey: 'field09' }),
@@ -328,6 +330,7 @@ export default function Ltpa540Section() {
             editable: true,
             cellEditor: 'agSelectCellEditor',
             cellEditorParams: { values: ['Y', 'N'] },
+            cellRenderer: getExpiryRenderer('center'),
             cellClassRules: EditCellColor2,
             cellStyle: (params) => {
               const original = rowData.find((r) => r.id === params.data?.id)?.field10;
@@ -338,7 +341,7 @@ export default function Ltpa540Section() {
         ],
       },
     ],
-    [showExisting, EditCellColor, EditCellColor2, rowData, attributeColumnWidth]
+    [showExisting, EditCellColor, EditCellColor2, rowData, attributeColumnWidth, getExpiryRenderer]
   );
   return (
     <>

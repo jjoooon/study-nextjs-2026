@@ -182,6 +182,7 @@ const Ltpz060 = () => {
                 selectionColumnDef={{
                   headerName: '선택',
                   width: 30,
+                  cellClass: 'editable-cell',
                 }}
                 domLayout="normal"
                 tooltipShowMode="whenTruncated"

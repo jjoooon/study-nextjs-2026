@@ -14,7 +14,7 @@ import { Grow, Grid } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { SearchIcon, ResetIcon, AiIcon, ArrowNext } from '@icons';
+import { SearchIcon, ResetIcon, AiIcon, ArrowNext, CheckIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
@@ -58,6 +58,8 @@ type DummyDataType3 = {
   id: number;
   /** 플랜 명칭 및 대상 연령 정보 */
   field1: string | number;
+  /** 체크 여부 */
+  checked?: boolean;
 };
 
 /** Ltpa02001 컴포넌트 Props 인터페이스 */
@@ -278,35 +280,35 @@ const dummyData2: DummyDataType2[] = [
 
 /** 마스터 플랜 목록 데이터 */
 const planDummyDataList: DummyDataType3[] = [
-  { id: 1, field1: '1-12형(프리미엄올인원플랜)(15-80세)' },
-  { id: 2, field1: '1형(3.10.5간편고지형)(올인원플랜)(1~4형)(15-80세)' },
-  { id: 3, field1: '2형(3.10.5간편고지형(고혈압추가고지))(올인원플랜)(1~4형)(15-80세)' },
-  { id: 4, field1: '3형(3.10.5간편고지형(당뇨추가고지))(올인원플랜)(1~4형)(15-80세)' },
-  { id: 5, field1: '4형(3.10.5간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1~4형)(15-80세)' },
-  { id: 6, field1: '5형(385간편고지형)(올인원플랜)(5~12형)(15-80세)' },
-  { id: 7, field1: '6형(385간편고지형(고혈압추가고지))(올인원플랜)(5~12형)(15-80세)' },
-  { id: 8, field1: '7형(385간편고지형(당뇨추가고지))(올인원플랜)(5~12형)(15-80세)' },
-  { id: 9, field1: '8형(385간편고지형(고혈압및당뇨추가고지))(올인원플랜)(5~12형)(15-80세)' },
-  { id: 10, field1: '9형(365간편고지형)(올인원플랜)(5~12형)(15-80세)' },
-  { id: 11, field1: '10형(365간편고지형(고혈압추가고지))(올인원플랜)(5~12형)(15-80세)' },
-  { id: 12, field1: '11형(365간편고지형(당뇨추가고지))(올인원플랜)(5~12형)(15-80세)' },
-  { id: 13, field1: '12형(365간편고지형(고혈압및당뇨추가고지))(올인원플랜)(5~12형)(15-80세)' },
+  { id: 1, checked: true, field1: '(매니저 or 사용자)9형(355간편고지형(고혈압및당뇨 추가고지))(프리미엄올인원플랜)' },
+  { id: 2, checked: true, field1: '1형(355간편고지형)(프리미엄응원입원플랜)(1,718.9형)(15~80세)' },
+  { id: 3, checked: false, field1: '7형(355간편고지형)(고혈압추가고지X)(프리미엄응원입원플랜)(1,718.9형)' },
+  { id: 4, checked: false, field1: '(지점)8형(355간편고지형)(당뇨 추가고지X)(프리미엄응원입원플랜)' },
+  { id: 5, checked: false, field1: '4형(3.10.5간편고지형(고혈압및당뇨추가고지))(올인원플랜)(1~4형)(15-80세)' },
+  { id: 6, checked: false, field1: '5형(385간편고지형)(올인원플랜)(5~12형)(15-80세)' },
+  { id: 7, checked: false, field1: '6형(385간편고지형(고혈압추가고지))(올인원플랜)(5~12형)(15-80세)' },
+  { id: 8, checked: false, field1: '7형(385간편고지형(당뇨추가고지))(올인원플랜)(5~12형)(15-80세)' },
+  { id: 9, checked: false, field1: '8형(385간편고지형(고혈압및당뇨추가고지))(올인원플랜)(5~12형)(15-80세)' },
+  { id: 10, checked: false, field1: '9형(365간편고지형)(올인원플랜)(5~12형)(15-80세)' },
+  { id: 11, checked: false, field1: '10형(365간편고지형(고혈압추가고지))(올인원플랜)(5~12형)(15-80세)' },
+  { id: 12, checked: false, field1: '11형(365간편고지형(당뇨추가고지))(올인원플랜)(5~12형)(15-80세)' },
+  { id: 13, checked: false, field1: '12형(365간편고지형(고혈압및당뇨추가고지))(올인원플랜)(5~12형)(15-80세)' },
 ];
 
 /** 회사플랜 데이터 목록 */
 const dummyData3: DummyDataType3[] = [
-  { id: 1, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 2, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 3, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 4, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 5, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 6, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 7, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 8, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 9, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 10, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 11, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
-  { id: 12, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
+  { id: 1, checked: true, field1: '(매니저 or 사용자)9형(355간편고지형(고혈압및당뇨 추가고지))(프리미엄올인원플랜)' },
+  { id: 2, checked: true, field1: '1형(355간편고지형)(프리미엄응원입원플랜)(1,718.9형)(15~80세)' },
+  { id: 3, checked: false, field1: '7형(355간편고지형)(고혈압추가고지X)(프리미엄응원입원플랜)(1,718.9형)' },
+  { id: 4, checked: false, field1: '(지점)8형(355간편고지형)(당뇨 추가고지X)(프리미엄응원입원플랜)' },
+  { id: 5, checked: false, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
+  { id: 6, checked: true, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
+  { id: 7, checked: true, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
+  { id: 8, checked: false, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
+  { id: 9, checked: false, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
+  { id: 10, checked: false, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
+  { id: 11, checked: false, field1: '1형(355간편고지형)(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
+  { id: 12, checked: true, field1: '7형(355간편(고혈압추가고지))(프리미엄올인원플랜)(1.718.9형)(15~80세)' },
 ];
 /** 기관플랜 데이터 목록 (초기 빈 배열) */
 const dummyData3b: DummyDataType3[] = [];
@@ -530,13 +532,22 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
 
         {/* M5. truncate > truncate-no 로 수정 */}
         <Grow className="flex-1 truncate-no block text-left">{params.data?.field2}</Grow>
-        <Grow>
-          {params.data?.btn && (
+        {params.data?.btn && (
+          <Grow className="pr-1">
             <Button color="gray" onClick={() => {}} only="default" size="sm" variant="outlined">
               납면
             </Button>
-          )}
-        </Grow>
+          </Grow>
+        )}
+      </Grow>
+    );
+  };
+
+  const planNameCellRenderer = (params: ICellRendererParams<DummyDataType3>) => {
+    return (
+      <Grow className="w-full h-full flex items-center justify-between gap-1 overflow-hidden">
+        <span className="truncate-no flex-1">{params.data?.field1}</span>
+        {params.data?.checked && <CheckIcon color="var(--color-primary-50)" className="shrink-0" />}
       </Grow>
     );
   };
@@ -583,7 +594,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       headerName: '종구분',
       field: 'field1',
       flex: 10,
-      cellClass: 'text-center',
+      cellClass: 'text-center pr-0!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
       cellRenderer: designCellRenderer,
     },
@@ -602,7 +613,9 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       headerName: '플랜명',
       field: 'field1',
       flex: 10,
+      cellClass: 'pr-0!',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType3>({ field: 'field1' }),
+      cellRenderer: planNameCellRenderer,
     },
     {
       headerName: '담보보기',
@@ -650,7 +663,6 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     tab3: tabData3c,
   };
   const selectedPlanRowData = planRowDataMap[active] ?? tabData3;
-
   return (
     <Grid className="w-full h-full min-h-0 grid-rows-[auto_1fr_auto] px-[1rem] overflow-hidden" gap={3}>
       <Grow variant={'box-round'} className="w-full" placement="bwe">
@@ -806,7 +818,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       </Grow>
 
       {/* 3. 하단 작업 버튼 영역 (추천설계 / 설계시작) */}
-      <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
+      <Grow gap={1} className="w-full min-h-[3.2rem] pb-2.5" placement="ec">
         <Button variant={'outlined'} color={'gray'} size={'xl'}>
           <AiIcon size={24} color={'#006FF2'} color2={'#A683FF'} />
           추천설계

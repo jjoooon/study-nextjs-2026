@@ -15,9 +15,10 @@ import { CheckIcon, Favorite } from '@icons';
 // - required/error/errorMsg로 검증 상태를 표시할 수 있다.
 interface UICheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
   children?: React.ReactNode;
-  variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipBox';
+  variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'noCheckButton' | 'text' | 'chipBox';
   size?: 'xl' | 'lg' | 'md' | 'sm';
   color?: 'primary' | 'info' | 'secondary';
+  icon?: boolean;
   required?: boolean;
   error?: boolean;
   errorMsg?: React.ReactNode;
@@ -37,6 +38,7 @@ type CheckboxGroupContextValue = {
   variant: UICheckboxProps['variant'];
   size: UICheckboxProps['size'];
   color: UICheckboxProps['color'];
+  icon: boolean;
   isItemChecked: (value: string, selectAll?: boolean) => boolean;
   toggleValue: (value: string, checked: boolean | 'indeterminate', selectAll?: boolean) => void;
   registerItem: (value: string, options?: { disabled?: boolean; selectAll?: boolean }) => () => void;
@@ -50,6 +52,7 @@ const CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | nul
 function Checkbox({
   className,
   children,
+  icon = true,
   variant = 'default',
   size = 'lg',
   color = 'primary',
@@ -58,7 +61,7 @@ function Checkbox({
   const isDefaultMd = variant === 'default' && size === 'md';
   const isFavorite = variant === 'favorite';
   const isNoneText = variant === 'noneText';
-  const isButton = variant === 'button';
+  const isButton = variant === 'button' || variant === 'noCheckButton';
   const isText = variant === 'text';
   const isChipBox = variant === 'chipBox';
 
@@ -285,7 +288,9 @@ function Checkbox({
           <Favorite color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
         ) : isButton || isChipBox ? (
           <Grow className="gap-[0.2rem] tracking-[-0.13rem]" placement="sc">
-            {isButton && <CheckIcon color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />}
+            {icon && variant !== 'noCheckButton' && isButton && (
+              <CheckIcon color={checkedState ? checkedColorStyles[color] : 'var(--color-gray-30)'} />
+            )}
             {children}
           </Grow>
         ) : (
@@ -293,7 +298,7 @@ function Checkbox({
             data-slot="checkbox-indicator"
             className={cn('flex items-center justify-center h-full w-full text-current transition-none')}
           >
-            <CheckIcon size={iconSize} color={props.disabled ? 'var(--color-icon-gray-light)' : undefined} />
+            {icon && <CheckIcon size={iconSize} color={props.disabled ? 'var(--color-icon-gray-light)' : undefined} />}
           </CheckboxPrimitive.Indicator>
         )}
       </CheckboxPrimitive.Root>
@@ -337,9 +342,10 @@ interface CheckboxGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   errorMsg?: React.ReactNode;
   errorPs?: ErrorMsgPosition;
   width?: 'full' | 'auto';
-  variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'text' | 'chipBox';
+  variant?: 'default' | 'favorite' | 'noneText' | 'button' | 'noCheckButton' | 'text' | 'chipBox';
   size?: 'lg' | 'md';
   color?: 'primary' | 'info' | 'secondary';
+  icon?: boolean;
 }
 
 type CheckboxGroupItemRegistration = {
@@ -381,6 +387,7 @@ function CheckboxGroup({
   variant = 'default',
   size = 'lg',
   color = 'primary',
+  icon = true,
   ...props
 }: CheckboxGroupProps) {
   const [internalValues, setInternalValues] = React.useState<string[]>(defaultValue);
@@ -555,11 +562,12 @@ function CheckboxGroup({
       variant,
       size,
       color,
+      icon,
       isItemChecked,
       toggleValue,
       registerItem,
     }),
-    [color, disabled, isError, isItemChecked, registerItem, required, size, toggleValue, values, variant]
+    [color, disabled, icon, isError, isItemChecked, registerItem, required, size, toggleValue, values, variant]
   );
 
   return (
@@ -620,6 +628,7 @@ function CheckboxGroupItem({ value, selectAll = false, ...props }: CheckboxGroup
       variant={props.variant ?? context.variant}
       size={props.size ?? context.size}
       color={props.color ?? context.color}
+      icon={props.icon ?? context.icon}
       required={context.required || props.required}
       disabled={context.disabled || props.disabled}
       error={context.error || props.error}

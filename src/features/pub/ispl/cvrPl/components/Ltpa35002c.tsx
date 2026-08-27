@@ -159,7 +159,7 @@ export function Ltpa35002c({
     () => ({
       headerName: '선택',
       width: 30,
-      cellClass: 'text-center p-0!',
+      cellClass: 'text-center p-0! editable-cell',
       cellClassRules: {
         'pointer-events-none': (params: CellClassParams<AgGridRow>) => !!params.data?.locked,
       },
@@ -312,8 +312,8 @@ export function Ltpa35002c({
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           // 편집 가능 여부를 class로 시각화(no-edited)
-          const base = 'px-[0.2rem]! tracking-tighter ';
-          return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
+          const base = 'tracking-tighter ';
+          return params.data?.isEditedField6 === true ? `${base} editable-cell` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField6 === true;
@@ -332,8 +332,8 @@ export function Ltpa35002c({
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           // 편집 가능 여부를 class로 시각화(no-edited)
-          const base = 'px-[0.2rem]! tracking-tighter';
-          return params.data?.isEditedField7 === true ? base : `${base} no-edited`;
+          const base = 'tracking-tighter';
+          return params.data?.isEditedField7 === true ? `${base} editable-cell` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField7 === true;
@@ -352,8 +352,8 @@ export function Ltpa35002c({
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
           // 편집 가능 여부를 class로 시각화(no-edited)
-          const base = 'px-[0.2rem]! tracking-tighter';
-          return params.data?.isEditedField8 === true ? base : `${base} no-edited`;
+          const base = 'tracking-tighter';
+          return params.data?.isEditedField8 === true ? `${base} editable-cell` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField8 === true;
@@ -484,8 +484,8 @@ export function Ltpa35002c({
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
           // 편집 가능 여부를 class로 시각화(no-edited)
-          const base = 'px-[0.2rem]! tracking-tighter';
-          return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
+          const base = 'tracking-tighter';
+          return params.data?.isEditedField5 === true ? `${base} editable-cell` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField5 === true;
@@ -504,8 +504,8 @@ export function Ltpa35002c({
         cellClassRules: editableCellClassRules<AgGridRow2>(),
         cellClass: (params: CellClassParams<AgGridRow2>) => {
           // 편집 가능 여부를 class로 시각화(no-edited)
-          const base = 'px-[0.2rem]! tracking-tighter';
-          return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
+          const base = 'tracking-tighter';
+          return params.data?.isEditedField6 === true ? `${base} editable-cell` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           return params.data?.isEditedField6 === true;

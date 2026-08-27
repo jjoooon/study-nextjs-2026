@@ -443,9 +443,9 @@ export function Ltpa35002d({
         minWidth: attributeColumnWidth(64),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
-          const base = 'px-[0.2rem]! tracking-tighter';
+          const base = 'tracking-tighter';
           // 만기 수정이 불가능한 로우(isEditedField5 !== true)인 경우 스타일 제어용 클래스명 부여
-          return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
+          return params.data?.isEditedField5 === true ? `${base} editable-cell` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           // 개별 데이터에 'isEditedField5' 속성이 true로 설정된 행만 편집 가능하도록 락 제어
@@ -464,9 +464,9 @@ export function Ltpa35002d({
         minWidth: attributeColumnWidth(64),
         cellClassRules: editableCellClassRules<AgGridRow>(),
         cellClass: (params: CellClassParams<AgGridRow>) => {
-          const base = 'px-[0.2rem]! tracking-tighter';
+          const base = 'tracking-tighter';
           // 납기 수정이 불가능한 로우(isEditedField6 !== true)인 경우 스타일 제어용 클래스명 부여
-          return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
+          return params.data?.isEditedField6 === true ? `${base} editable-cell` : `${base} no-edited`;
         },
         editable: (params: EditableCallbackParams) => {
           // 개별 데이터에 'isEditedField6' 속성이 true로 설정된 행만 편집 가능하도록 락 제어
@@ -491,6 +491,9 @@ export function Ltpa35002d({
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, groupEditableRenderer]
   );
 
+  //보장패키지 선택여부에 따라
+  const [is보장패키지, set보장패키지] = useState(false);
+
   return (
     <Gcol>
       {/* 전체 화면 레이아웃: 상단 필터(가변), 본문 그리드, 하단 요약/액션 영역 */}
@@ -501,15 +504,17 @@ export function Ltpa35002d({
         <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
           <Grow className="gap-[0.2rem]" placement={'bwc'}>
             <Grow className="gap-[0.6rem]" placement={'sc'}>
-              <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
+              <Button variant={'contained'} color={is보장패키지 ? 'primary' : 'coolgray-light'} size={'md'}>
+                <PaperIcon />
                 보장패키지
               </Button>
               <Divider dir="col" color="primary-light" />
 
               <CheckboxGroup
-                className="gap-[0.2rem] flex-wrap type-small"
+                className="gap-[0.2rem] flex-wrap"
                 color="primary"
-                size="lg"
+                size="md"
+                icon={false}
                 variant="button"
                 width="auto"
               >
@@ -533,9 +538,10 @@ export function Ltpa35002d({
               <Divider dir="col" color="primary-light" />
 
               <CheckboxGroup
-                className="gap-[0.2rem] flex-nowrap shrink-0 type-small"
+                className="gap-[0.2rem] flex-nowrap shrink-0"
                 color="primary"
-                size="lg"
+                size="md"
+                icon={false}
                 variant="button"
                 width="auto"
               >

@@ -302,6 +302,7 @@ const Ltpz065 = () => {
                     enableClickSelection: true,
                   }}
                   selectionColumnDef={{
+                    cellClass: 'editable-cell',
                     headerName: '선택',
                     width: 30,
                   }}

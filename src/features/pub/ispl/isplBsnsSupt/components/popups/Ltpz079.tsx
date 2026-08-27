@@ -195,6 +195,7 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
               selectionColumnDef={{
                 // 선택 체크박스 컬럼 너비
                 width: 30,
+                cellClass: 'editable-cell',
               }}
               onGridReady={(params) => {
                 params.api.forEachNode((node) => {

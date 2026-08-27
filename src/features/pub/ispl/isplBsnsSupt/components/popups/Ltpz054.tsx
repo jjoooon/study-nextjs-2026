@@ -276,6 +276,7 @@ const Ltpz054 = () => {
                     }}
                     selectionColumnDef={{
                       width: 30,
+                      cellClass: 'editable-cell',
                     }}
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
@@ -308,6 +309,7 @@ const Ltpz054 = () => {
                     }}
                     selectionColumnDef={{
                       width: 30,
+                      cellClass: 'editable-cell',
                     }}
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}

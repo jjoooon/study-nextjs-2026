@@ -830,7 +830,17 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                 >
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input aria-label="등급" width={40} value={'3급'} align="center" readOnly />
+                                <NativeSelect aria-label="등급" width={60} className="ml-[0.4rem]">
+                                  {[
+                                    { value: '1급', label: '1급' },
+                                    { value: '2급', label: '2급' },
+                                    { value: '3급', label: '3급' },
+                                  ].map((option, index) => (
+                                    <NativeSelectOption key={'등급' + index} value={option.value}>
+                                      {option.label}
+                                    </NativeSelectOption>
+                                  ))}
+                                </NativeSelect>
                               </FormCell>
                             </FormRow>
                             <FormRow>
@@ -1140,7 +1150,17 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                 >
                                   <SearchIcon color={'var(--color-primary-50)'} />
                                 </Button>
-                                <Input aria-label="등급" width={40} value={'2급'} align="center" readOnly />
+                                <NativeSelect aria-label="등급" width={60} className="ml-[0.4rem]">
+                                  {[
+                                    { value: '1급', label: '1급' },
+                                    { value: '2급', label: '2급' },
+                                    { value: '3급', label: '3급' },
+                                  ].map((option, index) => (
+                                    <NativeSelectOption key={'등급' + index} value={option.value}>
+                                      {option.label}
+                                    </NativeSelectOption>
+                                  ))}
+                                </NativeSelect>
                               </FormCell>
                             </FormRow>
                             <FormRow>

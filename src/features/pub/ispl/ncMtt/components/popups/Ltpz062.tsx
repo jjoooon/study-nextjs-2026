@@ -228,6 +228,7 @@ const Ltpz062 = () => {
                   columnDefs={columnDefs}
                   selectionColumnDef={{
                     width: 30,
+                    cellClass: 'editable-cell',
                   }}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   defaultColDef={{
@@ -257,6 +258,7 @@ const Ltpz062 = () => {
                   columnDefs={columnDefs2}
                   selectionColumnDef={{
                     width: 30,
+                    cellClass: 'editable-cell',
                   }}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   defaultColDef={{

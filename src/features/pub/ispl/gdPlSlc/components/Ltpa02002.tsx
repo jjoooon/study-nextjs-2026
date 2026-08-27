@@ -9,13 +9,12 @@ import { AgGridReact } from 'ag-grid-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import * as React from 'react';
-import { Ltpa120 } from '@/features/pub/shared/components/popups/Ltpa120';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AiSpinner, PuzzleSpinner } from '@common/SpinnerRoot';
-import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext } from '@icons';
+import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, KebabIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
@@ -301,6 +300,14 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const selectedNoticeSummary =
     [simpleType, ...additionalDiseases, hasHospitalInput ? '입원수술' : ''].filter(Boolean).join(', ') || '선택';
 
+  const secondSummary = customerType === 'recent' ? selectedAnalysisSummary : selectedNoticeSummary;
+
+  const activeSummaries = [selectedProductFeatureSummary, secondSummary, selectedCoverageSummary].filter(
+    (val) => val && val !== '선택'
+  );
+
+  const combinedSummary = activeSummaries.length > 0 ? activeSummaries.join(' / ') : '선택';
+
   // 5. Helper Functions
   const getSelectedPlanInfo = () => {
     if (!selectedPlanKey) return null;
@@ -380,143 +387,40 @@ export function Ltpa02002({ userType }: { userType: string }) {
             추가정보
           </Typo>
 
-          <Gcol placement="ss" gap={2}>
+          <Grow placement="bwc" gap={6}>
             <Typo tag="div" variant={'body-md'} className="var(--color-text-blue-gray) flex items-start gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <g clipPath="url(#clip0_1945_92923)">
-                  <path
-                    d="M0 2.24795C0 1.0094 1.12076 0 2.50202 0H12.498C13.8792 0 15 1.0094 15 2.24795V15.752C15 16.9961 13.8792 18 12.498 18H2.50202C1.12076 18 0 16.9906 0 15.752V2.24795Z"
-                    fill="#D8DBE0"
-                  />
-                  <path
-                    opacity="0.4"
-                    d="M3 3.82001C3 3.3711 3.38656 3.00488 3.86041 3.00488H11.1396C11.6134 3.00488 12 3.3711 12 3.82001C12 4.26892 11.6134 4.63513 11.1396 4.63513H3.86041C3.38656 4.63513 3 4.26892 3 3.82001Z"
-                    fill="#6B7280"
-                  />
-                  <path
-                    opacity="0.4"
-                    d="M3 7.06927C3 6.62037 3.38656 6.25415 3.86041 6.25415H11.1396C11.6134 6.25415 12 6.62037 12 7.06927C12 7.51818 11.6134 7.8844 11.1396 7.8844H3.86041C3.38656 7.8844 3 7.51818 3 7.06927Z"
-                    fill="#6B7280"
-                  />
-                  <path
-                    opacity="0.4"
-                    d="M3 13.8151C3 13.3662 3.38656 13 3.86041 13H7.13959C7.61344 13 8 13.3662 8 13.8151C8 14.264 7.61344 14.6302 7.13959 14.6302H3.86041C3.38656 14.6302 3 14.264 3 13.8151Z"
-                    fill="#6B7280"
-                  />
-                  <path
-                    d="M17.1437 17.4588C17.1437 17.7556 16.8819 18 16.5639 18H12.5798C12.2619 18 12 17.7556 12 17.4588V9.20105H17.1437V17.4588Z"
-                    fill="#338CF5"
-                  />
-                  <path
-                    d="M17.1437 17.4574C17.1437 17.7542 16.8819 17.9986 16.5639 17.9986H12.5798C12.2619 17.9986 12 17.7542 12 17.4574V16.3983H17.1437V17.4574Z"
-                    fill="#003D85"
-                  />
-                  <path
-                    d="M14.2321 6.17458C14.4067 5.94181 14.7496 5.94181 14.9179 6.17458L17.1437 9.20069H12L14.2321 6.17458Z"
-                    fill="#FEF4D4"
-                  />
-                  <path
-                    d="M14.918 6.17458C14.7496 5.94181 14.4067 5.94181 14.2321 6.17458L13.6086 7.0184H15.5352L14.9117 6.17458H14.918Z"
-                    fill="#6B7280"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0_1945_92923">
-                    <rect width="18" height="18" fill="white" />
-                  </clipPath>
-                </defs>
-              </svg>
+              <KebabIcon />
               추가정보를 입력하면 보다 정확한 추천 결과를 받아보실 수 있습니다. 추가정보를 선택적으로 입력 가능합니다.
             </Typo>
-            <Grow placement="bwc" gap={6}>
-              <FormTable
-                caption=""
-                cols={['w-[4rem]', 'w-[30%]', 'w-[6rem]', 'w-[30%]', 'w-[6rem]', 'w-[30%]']}
-                variant={'none'}
+            <Grow className="w-full">
+              <button
+                type="button"
+                className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                onClick={() => setIsFilterOptionOpen((prev) => !prev)}
+                aria-expanded={isFilterOptionOpen}
               >
-                <FormRow className="items-start!">
-                  <FormCell title={'상품특징'}>
-                    <button
-                      type="button"
-                      className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
-                      onClick={() => setIsFilterOptionOpen((prev) => !prev)}
-                      aria-expanded={isFilterOptionOpen}
-                    >
-                      <span className="w-[100%] flex items-center font-normal">{selectedProductFeatureSummary}</span>
-                      <SelectDropIcon
-                        color="var(--color-gray-50)"
-                        className={isFilterOptionOpen ? 'rotate-[180deg]' : ''}
-                      />
-                    </button>
-                  </FormCell>
-
-                  {customerType === 'recent' ? (
-                    <FormCell title={'보장분석'}>
-                      <button
-                        type="button"
-                        className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
-                        onClick={() => setIsFilterOptionOpen((prev) => !prev)}
-                        aria-expanded={isFilterOptionOpen}
-                      >
-                        <span className="w-[100%] flex items-center font-normal">{selectedAnalysisSummary}</span>
-                        <SelectDropIcon
-                          color="var(--color-gray-50)"
-                          className={isFilterOptionOpen ? 'rotate-[180deg]' : ''}
-                        />
-                      </button>
-                    </FormCell>
-                  ) : (
-                    <FormCell title={'고지유형'}>
-                      <button
-                        type="button"
-                        className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
-                        onClick={() => setIsFilterOptionOpen((prev) => !prev)}
-                        aria-expanded={isFilterOptionOpen}
-                      >
-                        <span className="w-[100%] flex items-center font-normal">{selectedNoticeSummary}</span>
-                        <SelectDropIcon
-                          color="var(--color-gray-50)"
-                          className={isFilterOptionOpen ? 'rotate-[180deg]' : ''}
-                        />
-                      </button>
-                    </FormCell>
-                  )}
-
-                  <FormCell title={'담보군'} className="items-center! min-h-[2.8rem]! pt-[0.6rem]">
-                    <button
-                      type="button"
-                      className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
-                      onClick={() => setIsFilterOptionOpen((prev) => !prev)}
-                      aria-expanded={isFilterOptionOpen}
-                    >
-                      <span className="w-[100%] flex items-center font-normal">{selectedCoverageSummary}</span>
-                      <SelectDropIcon
-                        color="var(--color-gray-50)"
-                        className={isFilterOptionOpen ? 'rotate-[180deg]' : ''}
-                      />
-                    </button>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-              <Grow>
-                <Button
-                  variant="contained"
-                  color="coolgray"
-                  size={'lg'}
-                  onClick={() => {
-                    setDataNone(false);
-                    setIsFilterOptionOpen(false);
-                    setLoadingAI(true);
-                  }}
-                >
-                  설계추천
-                </Button>
-                <Button variant="outlined" color="gray" size={'lg'} only="icon" aria-label="초기화">
-                  <ResetIcon />
-                </Button>
-              </Grow>
+                <span className="w-[100%] flex items-center font-normal">{combinedSummary}</span>
+                <SelectDropIcon color="var(--color-gray-50)" className={isFilterOptionOpen ? 'rotate-[180deg]' : ''} />
+              </button>
             </Grow>
-          </Gcol>
+            <Grow>
+              <Button
+                variant="contained"
+                color="coolgray"
+                size={'lg'}
+                onClick={() => {
+                  setDataNone(false);
+                  setIsFilterOptionOpen(false);
+                  setLoadingAI(true);
+                }}
+              >
+                설계추천
+              </Button>
+              <Button variant="outlined" color="gray" size={'lg'} only="icon" aria-label="초기화">
+                <ResetIcon />
+              </Button>
+            </Grow>
+          </Grow>
           {isFilterOptionOpen && (
             <Grow
               variant="box-round-b"
@@ -1086,7 +990,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
               </Grid>
             )}
           </Grid>
-          <Grow gap={1} className="w-full min-h-[3.2rem] pt-2 pb-2.5" placement="ec">
+          <Grow gap={1} className="w-full min-h-[3.2rem] pb-2.5 px-2" placement="ec">
             <Button
               variant={'outlined'}
               color={'gray'}
@@ -1118,7 +1022,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
               설계생성({comparedPlanKeys.length})
               <ArrowNext size={16} />
             </Button>
-            <Ltpa120 />
           </Grow>
         </>
       )}

@@ -8,10 +8,10 @@ import type { ColDef, EditableCallbackParams, ICellRendererParams, RowSelectedEv
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useState, useRef } from 'react';
 import * as React from 'react';
+import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
-  editableSelectCellRenderer,
   numberValueFormatter,
   createInsertCopiedRowButtonCellRenderer,
   useDynamicColumnWidths,
@@ -192,14 +192,7 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
     );
   }, []);
 
-  /**
-   * @function coverageAmountCellRenderer
-   * @description '가입금액(만원)' 셀 렌더러
-   * - ag-Grid 공통 셀 렌더러 유틸인 `editableSelectCellRenderer`를 바인딩하여,
-   *   편집 가능한 드롭다운 셀 형태의 UI를 통일감 있게 제공합니다.
-   */
-  const coverageAmountCellRenderer = (params: ICellRendererParams<DummyDataType>) =>
-    editableSelectCellRenderer<DummyDataType>(params);
+  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType>;
 
   // 반응형 또는 고정형 그리드 열 너비 조절 훅 활용
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -248,7 +241,7 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
         cellEditorParams: {
           values: ['5천만원(통원20만원)', '2천만원(통원20만원)', '3천만원(통원20만원)', '4천만원(통원20만원)'],
         },
-        cellRenderer: coverageAmountCellRenderer,
+        cellRenderer: getExpiryRenderer('left'),
       },
       ...(isFetusisured
         ? [
@@ -335,7 +328,7 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
             },
           ]),
     ],
-    [attributeColumnWidth, duplicateRenderer, titleRenderer, isFetusisured]
+    [attributeColumnWidth, duplicateRenderer, titleRenderer, isFetusisured, getExpiryRenderer]
   );
 
   /**

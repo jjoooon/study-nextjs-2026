@@ -159,15 +159,15 @@
   background: var(--color-information-5);
 }
 
-.editor-select .pr-4 {
+/* .editor-select .pr-4 {
   padding-right: 0;
-}
-.editor-select svg {
+} */
+/* .editor-select svg {
   display: none;
-}
-.ag-row-selected .editor-select .pr-4 {
+} */
+/* .ag-row-selected .editor-select .pr-4 {
   padding-right: var(--spacing-4);
-}
+} */
 .ag-row-selected .editor-select svg {
   display: block;
 }
@@ -457,7 +457,9 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .ag-picker-field-wrapper {
   gap: 0.4rem;
 }
-
+.ag-picker-field-display {
+  text-align: left;
+}
 /* .ag-picker-field-wrapper .ag-picker-field-display {
   text-align: right;
 } */
@@ -959,7 +961,10 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   line-height: 1.2;
   text-align: center;
 }
-
+.ag-header-cell,
+.ag-header-group-cell {
+  padding: 0;
+}
 .ag-header-group-cell .ag-header-cell-comp-wrapper .ag-header-group-text {
   overflow: visible;
 }
@@ -991,10 +996,58 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   overflow: visible;
 } */
 
-.ag-select-list {
+.ag-select-list,
+.ag-rich-select-popup,
+.v109 .ag-select-list,
+.v109 .ag-rich-select-popup {
   max-height: 200px !important; /* 원하시는 높이로 조절 */
   overflow-y: auto !important; /* 항목이 많으면 스크롤 생성 */
   letter-spacing: 0 !important;
+  min-width: max-content !important; /* 셀이 좁아도 옵션창 텍스트 크기에 맞춰 자동으로 최소 너비 확장 */
+  white-space: nowrap !important;
+}
+
+/* AG-Grid 선택 드롭다운 팝업 목록 전용 개별 스크롤바 스타일 */
+.ag-select-list::-webkit-scrollbar,
+.ag-rich-select-popup::-webkit-scrollbar,
+.v109 .ag-select-list::-webkit-scrollbar,
+.v109 .ag-rich-select-popup::-webkit-scrollbar {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+.ag-select-list::-webkit-scrollbar-track,
+.ag-rich-select-popup::-webkit-scrollbar-track,
+.v109 .ag-select-list::-webkit-scrollbar-track,
+.v109 .ag-rich-select-popup::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 0rem;
+}
+
+.ag-select-list::-webkit-scrollbar-thumb,
+.ag-rich-select-popup::-webkit-scrollbar-thumb,
+.v109 .ag-select-list::-webkit-scrollbar-thumb,
+.v109 .ag-rich-select-popup::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2rem;
+  border: 0.6rem solid #ffffff;
+}
+
+.ag-select-list::-webkit-scrollbar-thumb:hover,
+.ag-rich-select-popup::-webkit-scrollbar-thumb:hover,
+.v109 .ag-select-list::-webkit-scrollbar-thumb:hover,
+.v109 .ag-rich-select-popup::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+  border: 0.4rem solid #ffffff;
+}
+
+.ag-select-list-item,
+.ag-rich-select-row,
+.ag-list-item {
+  white-space: nowrap !important;
+  width: auto !important;
+  padding-left: 0.8rem !important;
+  padding-right: 0.8rem !important; /* 우측 텍스트 여유 패딩 확보 */
 }
 .ltpz012-final-grid .ag-cell b {
   font-weight: 700;
@@ -1470,6 +1523,32 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 }
 
 /* AG-Grid 내장 agSelectCellEditor / agRichSelectCellEditor 전역 1:1 보정 */
+.ag-cell.ag-select-cell:not(.ag-cell-inline-editing),
+.ag-cell.select-cell:not(.ag-cell-inline-editing),
+.ag-cell.cell-select:not(.ag-cell-inline-editing),
+.ag-cell.style-select:not(.ag-cell-inline-editing),
+.ag-cell .editor-select {
+  position: relative !important;
+}
+
+.ag-cell.ag-select-cell:not(.ag-cell-inline-editing)::after,
+.ag-cell.select-cell:not(.ag-cell-inline-editing)::after,
+.ag-cell.cell-select:not(.ag-cell-inline-editing)::after,
+.ag-cell.style-select:not(.ag-cell-inline-editing)::after {
+  content: '';
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.2rem;
+  height: 1.2rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M12.134 5.33325C12.5929 5.33325 12.8361 5.90224 12.5313 6.26236L8.39784 11.1458C8.18629 11.3957 7.81413 11.3957 7.60257 11.1458L3.46846 6.26236C3.16396 5.90222 3.40765 5.33325 3.86642 5.33325H12.134Z' fill='%23545454'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
 .v109 .ag-picker-field-wrapper {
   border: 0.1rem solid var(--color-blue-gray-30, #cbd5e1);
   border-radius: 0.4rem;
@@ -1584,3 +1663,28 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
   background-color: #fff;
 }
 .is-sub-row .ag-cell {background-color: var(--color-gray-5)}
+/* AG Grid 툴팁 마우스 오버/이탈 시 CSS 트랜지션 및 모션 애니메이션 즉시 제거 */
+.ag-tooltip,
+.ag-tooltip-showing,
+.ag-tooltip-hiding,
+.ag-popup-child:has(.ag-tooltip) {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* 빠른 마우스 이동 시 이전 툴팁 DOM이 겹쳐 보이는 현상 방지 (마지막 툴팁 1개만 표시) */
+.ag-popup-child:has(.ag-tooltip):not(:last-child),
+.ag-tooltip:not(:last-child) {
+  display: none !important;
+}
+
+/* 마우스가 셀(ag-cell / ag-header-cell)을 벗어나는 즉시 툴팁 강제 제거(숨김) */
+body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-tooltip,
+body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-popup-child:has(.ag-tooltip) {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+

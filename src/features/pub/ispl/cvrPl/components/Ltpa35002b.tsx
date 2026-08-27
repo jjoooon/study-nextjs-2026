@@ -222,7 +222,7 @@ export function Ltpa35002b({
   const selectionColumnDef = useMemo(
     () => ({
       width: 30,
-      cellClass: 'text-center p-0!',
+      cellClass: 'text-center p-0! editable-cell',
       cellClassRules: {
         'pointer-events-none': (params: CellClassParams<AgGridRow>) => !!params.data?.locked,
       },
@@ -368,7 +368,7 @@ export function Ltpa35002b({
             minWidth: attributeColumnWidth(60),
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
-              const base = 'px-[0.2rem]! tracking-tighter';
+              const base = 'tracking-tighter';
               return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
             },
             editable: (params: EditableCallbackParams) => {
@@ -401,8 +401,8 @@ export function Ltpa35002b({
             minWidth: attributeColumnWidth(60),
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
-              const base = 'px-[0.2rem]! tracking-tighter';
-              return params.data?.isEditedField5 === true ? base : `${base} no-edited`;
+              const base = 'tracking-tighter';
+              return params.data?.isEditedField5 === true ? `${base} editable-cell` : `${base} no-edited`;
             },
             editable: (params: EditableCallbackParams) => {
               return params.data?.isEditedField5 === true;
@@ -424,8 +424,8 @@ export function Ltpa35002b({
             width: attributeColumnWidth(70),
             cellClassRules: editableCellClassRules<AgGridRow>(),
             cellClass: (params: CellClassParams<AgGridRow>) => {
-              const base = 'px-[0.2rem]! tracking-tighter';
-              return params.data?.isEditedField6 === true ? base : `${base} no-edited`;
+              const base = 'tracking-tighter';
+              return params.data?.isEditedField6 === true ? `${base} editable-cell` : `${base} no-edited`;
             },
             editable: (params: EditableCallbackParams) => {
               return params.data?.isEditedField6 === true;
@@ -465,6 +465,9 @@ export function Ltpa35002b({
     [attributeColumnWidth, duplicateRenderer, getExpiryRenderer, groupEditableRenderer]
   );
 
+  //보장패키지 선택여부에 따라
+  const [is보장패키지, set보장패키지] = useState(false);
+
   return (
     <Grid className="w-full grid-rows-[minmax(0,1fr)_auto]">
       <LayoutMainBody>
@@ -474,15 +477,17 @@ export function Ltpa35002b({
           <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
             <Grow className="gap-[0.2rem]" placement={'bwc'}>
               <Grow className="gap-[0.6rem]" placement={'sc'}>
-                <Button variant={'contained'} color={'coolgray-light'} size={'md'}>
+                <Button variant={'contained'} color={is보장패키지 ? 'primary' : 'coolgray-light'} size={'md'}>
+                  <PaperIcon />
                   보장패키지
                 </Button>
                 <Divider dir="col" color="primary-light" />
 
                 <CheckboxGroup
-                  className="gap-[0.2rem] flex-wrap type-small"
+                  className="gap-[0.2rem] flex-wrap"
                   color="primary"
-                  size="lg"
+                  size="md"
+                  icon={false}
                   variant="button"
                   width="auto"
                 >
@@ -506,9 +511,10 @@ export function Ltpa35002b({
                 <Divider dir="col" color="primary-light" />
 
                 <CheckboxGroup
-                  className="gap-[0.2rem] flex-nowrap shrink-0 type-small"
+                  className="gap-[0.2rem] flex-nowrap shrink-0"
                   color="primary"
-                  size="lg"
+                  size="md"
+                  icon={false}
                   variant="button"
                   width="auto"
                 >

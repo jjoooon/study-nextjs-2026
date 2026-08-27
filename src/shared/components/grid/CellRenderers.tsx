@@ -28,9 +28,9 @@ type ProductTitleDetail = {
 };
 
 export const createExpiryCellRenderer =
-  <T,>(align: 'left' | 'center' | 'right' = 'right') =>
+  <T,>(align: 'left' | 'center' | 'right' = 'right', paddingClass?: string) =>
   (params: ICellRendererParams<T>) =>
-    editableSelectCellRenderer<T>({ ...params, align });
+    editableSelectCellRenderer<T>({ ...params, align, paddingClass });
 
 /**
  * [공용 셀 렌더러] 값이 있을 때 돋보기(검색) 버튼 표시

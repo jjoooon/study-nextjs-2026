@@ -8,6 +8,7 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback } from 'react';
 import * as React from 'react';
+import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Grid, Gcol } from '@atoms';
@@ -101,21 +102,7 @@ const DummyData2: DummyDataType2[] = [
 ];
 
 const Ltpz066 = () => {
-  const selectCellRenderer = useCallback(<TData,>(params: ICellRendererParams<TData>) => {
-    const value = params.value == null ? '' : String(params.value);
-    const hasValue = value.trim().length > 0;
-
-    if (!hasValue) {
-      return <div className="h-full w-full" />;
-    }
-
-    return (
-      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
-        <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
-        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
-      </div>
-    );
-  }, []);
+  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType>;
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
@@ -141,14 +128,14 @@ const Ltpz066 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(100),
         resizable: true,
-        cellClass: `text-center`,
+        cellClass: `text-center editable-cell`,
         editable: true,
-        cellRenderer: selectCellRenderer,
+        cellRenderer: getExpiryRenderer('center'),
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['1백만원', '2백만원', '3백만원', '4백만원', '5백만원'] },
       },
     ],
-    [attributeColumnWidth, selectCellRenderer]
+    [attributeColumnWidth, getExpiryRenderer]
   );
 
   const columnDefs2 = React.useMemo<ColDef<DummyDataType2>[]>(

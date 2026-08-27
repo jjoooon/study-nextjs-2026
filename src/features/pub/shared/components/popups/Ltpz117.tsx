@@ -51,6 +51,27 @@ const Ltpz117 = () => {
       field3: '통풍진단비',
       field4: 600000,
     },
+    {
+      id: 3,
+      field1: '김한화',
+      field2: '진단/수술',
+      field3: '통풍진단비',
+      field4: 600000,
+    },
+    {
+      id: 4,
+      field1: '김한화',
+      field2: '진단/수술',
+      field3: '통풍진단비',
+      field4: 600000,
+    },
+    {
+      id: 5,
+      field1: '김한화',
+      field2: '진단/수술',
+      field3: '통풍진단비',
+      field4: 600000,
+    },
   ];
   const columnDefs: ColDef<DummyDataType>[] = [
     {
@@ -112,7 +133,7 @@ const Ltpz117 = () => {
           <TableFold variant={'accordion'}>
             <TableFoldHead title="설계누적 조건 담보" />
             <TableFoldBody>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -124,7 +145,7 @@ const Ltpz117 = () => {
                   }}
                   singleClickEdit={true}
                   rowClassRules={{}}
-                  domLayout="autoHeight"
+                  domLayout="normal"
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                 />

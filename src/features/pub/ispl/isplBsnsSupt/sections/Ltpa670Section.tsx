@@ -239,6 +239,7 @@ export default function Ltpa670Section() {
         cellDataType: 'boolean',
         cellRenderer: 'agCheckboxCellRenderer',
         cellEditor: 'agCheckboxCellEditor',
+        cellClass: 'editable-cell',
       },
     ],
     [attributeColumnWidth, getExpiryRenderer]

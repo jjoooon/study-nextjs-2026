@@ -2311,7 +2311,7 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           </Grow>
           {(isFetus === 'refundGeneral' || isFetus === 'refund' || !isFetus) && (
             <Grid placement="ss" className="w-full grid-rows-[1fr_auto]" gap={0}>
-              <div className="ag-theme-alpine inner-scroll" data-page={10} data-row={0}>
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
                 <AgGridReact<DummyDataType1>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -2328,7 +2328,7 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
           )}
           {isFetus === 'refundSeparated' && (
             <Grid placement="ss" className="w-full grid-rows-[1fr_auto]" gap={0}>
-              <div className="ag-theme-alpine inner-scroll" data-page={10} data-row={0}>
+              <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
                 <AgGridReact<DummyDataType2>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -2350,7 +2350,7 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
                 <TableFold className="grid-rows-[1fr]" variant="default">
                   <TableFoldHead title="태아 피보험자의 예상환급금" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine inner-scroll" data-page={10} data-row={0}>
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData3.length}>
                       <AgGridReact<DummyDataType3>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -2375,7 +2375,7 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
                 <TableFold className="grid-rows-[1fr]" variant="default">
                   <TableFoldHead title="태아 이외 피보험자 및 부양자의 예상환급금" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine inner-scroll" data-page={10} data-row={0}>
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData4.length}>
                       <AgGridReact<DummyDataType4>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -2399,7 +2399,7 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
                 <TableFold className="grid-rows-[1fr]" variant="default">
                   <TableFoldHead title="예상환급금 합계" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine inner-scroll" data-page={10} data-row={0}>
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData5.length}>
                       <AgGridReact<DummyDataType5>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -2427,7 +2427,7 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
                 <TableFold className="grid-rows-[1fr]" variant="default">
                   <TableFoldHead title="태아 피보험자의 예상환급금" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine inner-scroll" data-page={10} data-row={0}>
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData6.length}>
                       <AgGridReact<DummyDataType6>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -2451,7 +2451,7 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
                 <TableFold className="grid-rows-[1fr]" variant="default">
                   <TableFoldHead title="태아 이외 피보험자 및 부양자의 예상환급금" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine inner-scroll" data-page={10} data-row={0}>
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData7.length}>
                       <AgGridReact<DummyDataType7>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -2475,7 +2475,7 @@ const Ltpz039 = ({ isFetus = 'refundGeneral', noticeType = 'default' }: Ltpz039P
                 <TableFold className="grid-rows-[1fr]" variant="default">
                   <TableFoldHead title="예상환급금 합계" />
                   <TableFoldBody>
-                    <div className="ag-theme-alpine inner-scroll" data-page={10} data-row={0}>
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData8.length}>
                       <AgGridReact<DummyDataType8>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}

@@ -8,7 +8,7 @@ import type { ColDef, ICellRendererParams, SelectionChangedEvent } from 'ag-grid
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useMemo, useState } from 'react';
 import { createCellClickSelectionToggleHandler, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
-import { Grow, Gcol, Typo } from '@atoms';
+import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -21,6 +21,7 @@ import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
+import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@uiux/Table';
 
@@ -424,7 +425,25 @@ export const Ltpa35006 = () => {
                                   commaAmount
                                   readOnly
                                 />
-                                <Button
+                                <Popover>
+                                  <PopoverTrigger asChild>
+                                    <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                      출금동의
+                                      <PlusIcon color={'var(--color-secondary-50)'} />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent side="top" align="end" closeButton={true}>
+                                    <Grid className="grid-rows-[1fr]">
+                                      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                        출금동의
+                                      </Button>
+                                      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                        조회
+                                      </Button>
+                                    </Grid>
+                                  </PopoverContent>
+                                </Popover>
+                                {/* <Button
                                   variant={'outlined'}
                                   color={'secondary'}
                                   size={'lg'}
@@ -432,7 +451,7 @@ export const Ltpa35006 = () => {
                                 >
                                   출금동의
                                   <PlusIcon color={'var(--color-secondary-50)'} />
-                                </Button>
+                                </Button> */}
                                 <Input
                                   onChange={() => {}}
                                   size="lg"
@@ -443,7 +462,28 @@ export const Ltpa35006 = () => {
                                   commaAmount
                                   readOnly
                                 />
-                                <Button
+                                <Popover>
+                                  <PopoverTrigger asChild>
+                                    <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                      스캔
+                                      <PlusIcon color={'var(--color-secondary-50)'} />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent side="top" align="end" closeButton={true}>
+                                    <Grid className="grid-rows-[1fr]">
+                                      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                        이미지스캔
+                                      </Button>
+                                      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                        이미지조회
+                                      </Button>
+                                      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                        첨부파일
+                                      </Button>
+                                    </Grid>
+                                  </PopoverContent>
+                                </Popover>
+                                {/* <Button
                                   variant={'outlined'}
                                   color={'secondary'}
                                   size={'lg'}
@@ -451,7 +491,7 @@ export const Ltpa35006 = () => {
                                 >
                                   스캔
                                   <PlusIcon color={'var(--color-secondary-50)'} />
-                                </Button>
+                                </Button> */}
                               </Grow>
                             </TableCell>
                             <TableCell>
@@ -536,15 +576,24 @@ export const Ltpa35006 = () => {
                                   commaAmount
                                   readOnly
                                 />
-                                <Button
-                                  variant={'outlined'}
-                                  color={'secondary'}
-                                  size={'lg'}
-                                  className="flex-1 justify-between! w-[80]"
-                                >
-                                  출금동의
-                                  <PlusIcon color={'var(--color-secondary-50)'} />
-                                </Button>
+                                <Popover>
+                                  <PopoverTrigger asChild>
+                                    <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                      출금동의
+                                      <PlusIcon color={'var(--color-secondary-50)'} />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent side="top" align="end" closeButton={true}>
+                                    <Grid className="grid-rows-[1fr]">
+                                      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                        출금동의
+                                      </Button>
+                                      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                        조회
+                                      </Button>
+                                    </Grid>
+                                  </PopoverContent>
+                                </Popover>
                                 <Input
                                   onChange={() => {}}
                                   size="lg"
@@ -555,15 +604,27 @@ export const Ltpa35006 = () => {
                                   commaAmount
                                   readOnly
                                 />
-                                <Button
-                                  variant={'outlined'}
-                                  color={'secondary'}
-                                  size={'lg'}
-                                  className="flex-1 justify-between!"
-                                >
-                                  스캔
-                                  <PlusIcon color={'var(--color-secondary-50)'} />
-                                </Button>
+                                <Popover>
+                                  <PopoverTrigger asChild>
+                                    <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                      스캔
+                                      <PlusIcon color={'var(--color-secondary-50)'} />
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent side="top" align="end" closeButton={true}>
+                                    <Grid className="grid-rows-[1fr]">
+                                      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                        이미지스캔
+                                      </Button>
+                                      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                        이미지조회
+                                      </Button>
+                                      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+                                        첨부파일
+                                      </Button>
+                                    </Grid>
+                                  </PopoverContent>
+                                </Popover>
                               </Grow>
                             </TableCell>
                             <TableCell>

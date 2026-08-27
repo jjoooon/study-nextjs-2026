@@ -516,18 +516,18 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         // 4. 종료일 대기 상태이거나, 한쪽만 채워져 있는 경우
         if (isSelectingEnd && fromDate) {
           if (clickedDay < fromDate) {
-            // 클릭한 날짜가 시작일보다 전인 경우 -> 새로운 시작일로 지정하고 종료일은 자동 +offset일 계산
+            // 클릭한 날짜가 시작일보다 전인 경우 -> 클릭한 앞날짜가 시작일(from), 전에 선택한 시작일이 종료일(to)이 됨
             const nextFrom = clickedDay;
-            const nextTo = new Date(nextFrom);
-            nextTo.setDate(nextTo.getDate() + offset);
+            const nextTo = fromDate;
 
             setSelected({ from: nextFrom, to: nextTo });
             setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
             setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-            setIsSelectingEnd(true); // 여전히 종료일 대기 상태
+            setIsSelectingEnd(false); // 선택 완료
             onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
+            setOpen(false);
           } else {
-            // 클릭한 날짜가 시작일보다 같거나 후인 경우 -> 종료일로 지정하고 완료
+            // 클릭한 날짜가 시작일보다 같거나 후인 경우 -> 기존 시작일이 시작일(from), 클릭한 날짜가 종료일(to)이 됨
             const nextTo = clickedDay;
             setSelected({ from: fromDate, to: nextTo });
             setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
@@ -758,6 +758,11 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
       if (numericValue.length <= 14)
         return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}-${numericValue.slice(6, 8)} ~ ${numericValue.slice(8, 12)}-${numericValue.slice(12, 14)}`;
       return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}-${numericValue.slice(6, 8)} ~ ${numericValue.slice(8, 12)}-${numericValue.slice(12, 14)}-${numericValue.slice(14, 16)}`;
+    }
+
+    if (monthOnly) {
+      if (numericValue.length <= 4) return numericValue;
+      return `${numericValue.slice(0, 4)}-${numericValue.slice(4, 6)}`;
     }
 
     if (numericValue.length <= 4) return numericValue;

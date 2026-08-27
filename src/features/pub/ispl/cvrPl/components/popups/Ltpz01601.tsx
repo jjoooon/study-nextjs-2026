@@ -241,6 +241,7 @@ const Ltpz01601 = () => {
                   selectionColumnDef={{
                     headerName: '선택',
                     width: 30,
+                    cellClass: 'editable-cell',
                   }}
                   getRowClass={(params) => (params.data?.isNew ? 'ag-row-new' : '')}
                   onGridReady={(params) => {

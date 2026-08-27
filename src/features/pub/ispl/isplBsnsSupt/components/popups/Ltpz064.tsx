@@ -2,9 +2,10 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
-import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import { ColDef, ColGroupDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import {
   AgGridEmptyComponent,
   createAddRowHandler,
@@ -135,6 +136,7 @@ export interface Ltpz064Props {
 export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
   const activeAddressType = addressType || 'road';
   const { attributeColumnWidth } = useDynamicColumnWidths(); // 화면 배율별 컬럼 너비 계산 훅
+  const getExpiryRenderer = createExpiryCellRenderer<DummyDataType>;
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
@@ -173,29 +175,8 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
     idKey: 'id',
   });
 
-  /** 셀 렌더러: 셀에 값이 없을 때만 드롭다운 화살표 아이콘을 표시 (Select UI 연출) */
-  const selectCellRenderer = React.useCallback(<TData,>(params: ICellRendererParams<TData>) => {
-    const value = params.value == null ? '' : String(params.value);
-    const hasValue = value.trim().length > 0;
-
-    if (hasValue) {
-      return (
-        <div className="flex h-full w-full items-center justify-center px-1">
-          <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
-        </div>
-      );
-    }
-
-    return (
-      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
-        <span className="block min-w-0 flex-1" />
-        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
-      </div>
-    );
-  }, []);
-
   /** Ag-Grid 컬럼 정의 */
-  const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
+  const columnDefs = React.useMemo<(ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[]>(
     () => [
       {
         headerName: '가입설계동의 시 최소 필요정보',
@@ -274,9 +255,9 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
         ),
         field: 'field6',
         flex: 1,
-        minWidth: attributeColumnWidth(50),
+        minWidth: attributeColumnWidth(60),
         editable: false,
-        cellClass: 'editable-cell text-center',
+        cellClass: 'text-center',
         sortable: false,
       },
       // 고객 및 설계 기본 정보 그룹
@@ -293,7 +274,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
             cellClass: 'editable-cell text-center',
             cellEditor: 'agSelectCellEditor',
             cellEditorParams: { values: ['선택1', '선택2'] },
-            cellRenderer: selectCellRenderer,
+            cellRenderer: getExpiryRenderer('center'),
           },
           // 연령
           {
@@ -365,7 +346,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
             cellClass: 'editable-cell text-center',
             cellEditor: 'agSelectCellEditor',
             cellEditorParams: { values: ['선택1', '선택2'] },
-            cellRenderer: selectCellRenderer,
+            cellRenderer: getExpiryRenderer('center'),
           },
           {
             headerName: '이륜차',
@@ -376,7 +357,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
             cellClass: 'editable-cell text-center',
             cellEditor: 'agSelectCellEditor',
             cellEditorParams: { values: ['선택1', '선택2'] },
-            cellRenderer: selectCellRenderer,
+            cellRenderer: getExpiryRenderer('center'),
           },
           {
             headerName: '병력여부',
@@ -391,7 +372,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
                 params.value === '없음' || params.value === '비대상',
             },
             cellEditorParams: { values: ['있음', '없음', '비대상'] },
-            cellRenderer: selectCellRenderer,
+            cellRenderer: getExpiryRenderer('center'),
           },
           // 알릴사항
           {
@@ -415,7 +396,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
         ],
       } as ColDef<DummyDataType>,
     ],
-    [attributeColumnWidth, selectCellRenderer]
+    [attributeColumnWidth, getExpiryRenderer]
   );
   return (
     <Dialog open>
@@ -535,7 +516,9 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
                       enableClickSelection: false,
                     }}
                     selectionColumnDef={{
-                      width: 30,
+                      cellClass: 'editable-cell',
+                      flex: 1,
+                      minWidth: attributeColumnWidth(30),
                     }}
                     groupHeaderHeight={30}
                     headerHeight={0}
