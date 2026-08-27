@@ -7,6 +7,7 @@ import * as React from 'react';
 import { StoryDocTemplate } from '@/shared/components/storybook/StoryDocTemplate';
 import { Gcol, Grow } from '@atoms';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@uiux/Tooltip';
 
 type RadioGroupStoryProps = React.ComponentProps<typeof RadioGroup> &
   Pick<React.ComponentProps<typeof RadioGroupItem>, 'variant' | 'size' | 'color'>;
@@ -346,6 +347,63 @@ export const Default: Story = {
           Option 3 (Disabled)
         </RadioGroupItem>
       </RadioGroup>
+    );
+  },
+};
+
+export const WithTooltip: Story = {
+  name: 'With Tooltip (툴팁 연동 예시)',
+  render: () => {
+    const [value, setValue] = React.useState('option1');
+
+    return (
+      <Gcol gap={4} className="p-8 border border-dashed border-[var(--color-gray-20)] rounded-[1rem] w-[50rem]">
+        <p className="text-[1.4rem] font-bold text-[var(--color-gray-90)] mb-2">
+          라디오 항목 및 텍스트 영역 마우스 오버 툴팁 샘플
+        </p>
+
+        <RadioGroup value={value} onValueChange={setValue} width="auto" className="gap-6">
+          {/* 1. 라디오 아이템 전체에 툴팁 적용 (Default 스타일) */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="inline-flex">
+                <RadioGroupItem value="option1" id="rg-tt-1">
+                  옵션 1 (전체 툴팁)
+                </RadioGroupItem>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top" align="center">
+              옵션 1 선택 시 제공되는 혜택 및 상세 안내입니다.
+            </TooltipContent>
+          </Tooltip>
+
+          {/* 2. 텍스트 영역에만 툴팁 적용 */}
+          <RadioGroupItem value="option2" id="rg-tt-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="underline decoration-dotted underline-offset-4 cursor-help">옵션 2 (텍스트 툴팁)</span>
+              </TooltipTrigger>
+              <TooltipContent side="top" variant="dark">
+                텍스트 영역에 마우스 오버 시 표시되는 다크 툴팁입니다.
+              </TooltipContent>
+            </Tooltip>
+          </RadioGroupItem>
+
+          {/* 3. 버튼 타입 라디오에 툴팁 적용 */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="inline-flex">
+                <RadioGroupItem variant="button" value="option3" id="rg-tt-3">
+                  버튼 옵션 3
+                </RadioGroupItem>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" variant="danger">
+              주의: 이 항목은 추가 승인이 필요할 수 있습니다.
+            </TooltipContent>
+          </Tooltip>
+        </RadioGroup>
+      </Gcol>
     );
   },
 };

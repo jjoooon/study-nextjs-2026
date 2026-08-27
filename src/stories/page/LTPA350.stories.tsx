@@ -3,6 +3,9 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import LTPA350, { LTPA350PageProps } from '@/app/pub/ispl/pages/LTPA350';
+import {
+  SpinnerRoot,
+} from '@/shared/components/common/SpinnerRoot';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 const meta: Meta<typeof LTPA350> = {
@@ -30,6 +33,7 @@ type Story = StoryObj<typeof LTPA350>;
 export const Default: Story = {
   render: (args = {}) => (
     <LayoutDoc>
+      <SpinnerRoot texts={['조회중입니다.']} />
       <LTPA350 {...args} />
     </LayoutDoc>
   ),

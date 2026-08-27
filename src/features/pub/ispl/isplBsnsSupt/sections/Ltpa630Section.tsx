@@ -16,12 +16,14 @@ import {
 } from '@aggrid';
 import { Grow, Grid, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
+import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { ZoomInIcon } from '@icons';
+import { ZoomInIcon, ResetIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
+import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 
 import '@/shared/lib/agGridPub';
 
@@ -29,81 +31,97 @@ type DummyData1Type = {
   id: number;
   field1: string;
   field2: string;
+  field3: string[]; //전속,GA,TM
 };
 const DummyData1: DummyData1Type[] = [
   {
     id: 1,
     field1: '간병',
     field2: '간병인사용',
+    field3: ['전속', 'GA', 'TM'],
   },
   {
     id: 2,
     field1: '암주요',
     field2: '암주요치료(상급종합)',
+    field3: ['전속'],
   },
   {
     id: 3,
     field1: '암주요',
     field2: '암주요치료(종합병원)',
+    field3: ['GA', 'TM'],
   },
   {
     id: 4,
     field1: '암주요',
     field2: '암주요치료(비급여)',
+    field3: ['TM'],
   },
   {
     id: 5,
     field1: '암주요',
+    field3: ['전속', 'TM'],
     field2: '암주요치료(전이암)',
   },
   {
     id: 6,
     field1: '암주요',
+    field3: ['전속'],
     field2: '표적항암',
   },
   {
     id: 7,
     field1: '순환계치료비',
+    field3: ['전속', 'GA', 'TM'],
     field2: '요양병원제외',
   },
   {
     id: 8,
     field1: '순환계치료비',
+    field3: ['GA', 'TM'],
     field2: '상급종합병원',
   },
   {
     id: 9,
     field1: '순환계치료비',
+    field3: ['GA'],
     field2: '주요순환계',
   },
   {
     id: 10,
     field1: '입원',
+    field3: ['GA', 'TM'],
     field2: '1인실',
   },
   {
     id: 11,
     field1: '입원',
+    field3: ['전속', 'GA', 'TM'],
     field2: '2~3인실',
   },
   {
     id: 12,
     field1: '운전자',
+    field3: ['TM'],
     field2: '운전자비용',
   },
   {
     id: 13,
     field1: '여성',
+    field3: ['전속', 'GA', 'TM'],
     field2: '유/갑/생',
   },
   {
     id: 14,
     field1: '출산/난임',
+    field3: ['전속'],
     field2: '미혼자용',
   },
   {
     id: 15,
     field1: '출산/난임',
+    field3: ['전속', 'GA', 'TM'],
     field2: '기혼자용',
   },
 ];
@@ -131,6 +149,8 @@ const DummyData2: DummyData2Type[] = [
   },
 ];
 
+const ALL_CHANNELS = ['전속', 'GA', 'TM']; // 또는 ['1', '2', '3']
+
 export default function Ltpa630Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -151,8 +171,17 @@ export default function Ltpa630Section() {
         headerName: '세부',
         field: 'field2',
         flex: 6,
-        minWidth: attributeColumnWidth(300),
+        minWidth: attributeColumnWidth(150),
         autoHeight: true,
+      },
+      {
+        headerName: '적용대상',
+        field: 'field3',
+        flex: 6,
+        minWidth: attributeColumnWidth(150),
+        autoHeight: true,
+        cellClass: 'text-center',
+        valueFormatter: (params) => (Array.isArray(params.value) ? params.value.join(' / ') : (params.value ?? '')),
       },
     ],
     [attributeColumnWidth]
@@ -234,6 +263,24 @@ export default function Ltpa630Section() {
     [attributeColumnWidth, setRowData2]
   );
 
+  const [values, setValues] = React.useState<string[]>(ALL_CHANNELS);
+
+  const handleGroupChange = (nextValues: string[]) => {
+    setValues(nextValues);
+  };
+
+  // 선택된 체크박스값(values)에 해당되는 항목만 필터링
+  const filteredData1 = React.useMemo(() => {
+    if (!values || values.length === 0) return [];
+    const activeChannels = values.filter((v) => v !== 'all');
+    if (activeChannels.length === 0) return [];
+
+    return DummyData1.filter((row) => {
+      if (!row.field3 || row.field3.length === 0) return false;
+      return row.field3.some((channel) => activeChannels.includes(channel));
+    });
+  }, [values]);
+
   return (
     <>
       <LayoutHead>
@@ -246,68 +293,102 @@ export default function Ltpa630Section() {
       </LayoutHead>
       <LayoutTemplate
         mainBody={
-          <Grid className="grid-cols-[2fr_3fr] h-full w-full" gap={3}>
-            {/* 패키지 관리 */}
-            <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full overflow-y-hidden">
-              <Grow className="w-full h-[2.5rem]" placement="sc">
-                <Typo variant={'heading-md'} tag="h2">
-                  패키지 관리
-                </Typo>
-              </Grow>
-              <div className="ag-theme-alpine radio-selection">
-                <AgGridReact<DummyData1Type>
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={DummyData1}
-                  columnDefs={columnDefs1}
-                  defaultColDef={{
-                    sortable: true,
-                    resizable: true,
-                    cellStyle: { cursor: 'pointer' },
-                  }}
-                  singleClickEdit={true}
-                  domLayout="normal"
-                  animateRows={false}
-                  enableCellSpan={true}
-                />
-              </div>
-            </Grid>
+          <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] gap-3 h-full">
+            <Grow placement="bwc" className="w-full" variant={'box-round'}>
+              <FormTable variant={'head'}>
+                <FormRow>
+                  <FormCell title={'적용대상검색'} tdClassName="grid-cols-[auto_1fr_auto]">
+                    <CheckboxGroup value={values} onValueChange={handleGroupChange} className="gap-3">
+                      <CheckboxGroupItem value="all" selectAll>
+                        전체
+                      </CheckboxGroupItem>
+                      <CheckboxGroupItem value="전속">전속</CheckboxGroupItem>
+                      <CheckboxGroupItem value="GA">GA</CheckboxGroupItem>
+                      <CheckboxGroupItem value="TM">TM</CheckboxGroupItem>
+                    </CheckboxGroup>
+                  </FormCell>
+                </FormRow>
+              </FormTable>
 
-            {/* 담보관리 */}
-            <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full overflow-y-hidden" gap={1}>
-              <Grow className="w-full" placement="bwc">
-                <Typo variant={'heading-md'} tag="h2">
-                  담보관리
-                </Typo>
-                <Grow placement="ec">
-                  <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
-                    행추가
-                    <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
-                  </Button>
-                </Grow>
+              <Grow>
+                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                  조회
+                </Button>
+                <Button
+                  color={'gray'}
+                  only={'icon'}
+                  size={'lg'}
+                  variant={'outlined'}
+                  onClick={() => {}}
+                  aria-label="새로고침"
+                >
+                  <ResetIcon />
+                </Button>
               </Grow>
-              <div className="ag-theme-alpine">
-                <AgGridReact<DummyData2Type>
-                  onGridReady={(event) => {
-                    gridApiRef.current = event.api;
-                  }}
-                  noRowsOverlayComponent={AgGridEmptyComponent}
-                  getRowId={(params) => String(params.data.id)}
-                  rowData={rowData2}
-                  columnDefs={columnDefs2}
-                  defaultColDef={{
-                    sortable: true,
-                    resizable: true,
-                    // cellStyle: { cursor: 'pointer' },
-                  }}
-                  singleClickEdit={true}
-                  domLayout="normal"
-                  animateRows={false}
-                  tooltipShowMode="whenTruncated"
-                  tooltipShowDelay={0}
-                  tooltipHideDelay={3000}
-                />
-              </div>
+            </Grow>
+            <Grid className="grid-cols-[2fr_3fr] h-full w-full" gap={3}>
+              {/* 패키지 관리 */}
+              <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full overflow-y-hidden">
+                <Grow className="w-full h-[2.5rem]" placement="sc">
+                  <Typo variant={'heading-md'} tag="h2">
+                    패키지 관리
+                  </Typo>
+                </Grow>
+                <div className="ag-theme-alpine radio-selection">
+                  <AgGridReact<DummyData1Type>
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={filteredData1}
+                    columnDefs={columnDefs1}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                      cellStyle: { cursor: 'pointer' },
+                    }}
+                    singleClickEdit={true}
+                    domLayout="normal"
+                    animateRows={false}
+                    enableCellSpan={true}
+                  />
+                </div>
+              </Grid>
+
+              {/* 담보관리 */}
+              <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full w-full overflow-y-hidden" gap={1}>
+                <Grow className="w-full" placement="bwc">
+                  <Typo variant={'heading-md'} tag="h2">
+                    담보관리
+                  </Typo>
+                  <Grow placement="ec">
+                    <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
+                      행추가
+                      <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
+                    </Button>
+                  </Grow>
+                </Grow>
+                <div className="ag-theme-alpine">
+                  <AgGridReact<DummyData2Type>
+                    onGridReady={(event) => {
+                      gridApiRef.current = event.api;
+                    }}
+                    noRowsOverlayComponent={AgGridEmptyComponent}
+                    getRowId={(params) => String(params.data.id)}
+                    rowData={rowData2}
+                    columnDefs={columnDefs2}
+                    defaultColDef={{
+                      sortable: true,
+                      resizable: true,
+                      // cellStyle: { cursor: 'pointer' },
+                    }}
+                    singleClickEdit={true}
+                    domLayout="normal"
+                    animateRows={false}
+                    tooltipShowMode="whenTruncated"
+                    tooltipShowDelay={0}
+                    tooltipHideDelay={3000}
+                  />
+                </div>
+              </Grid>
             </Grid>
           </Grid>
         }

@@ -9,9 +9,9 @@ import {
   SpinnerRoot,
   BaseSpinnerRoot,
   AiSpinner,
-  DnaSpinnerRoot,
-  HpSpinnerRoot,
-  VerticalRollingSpinner,
+  CircleSpinner,
+  PuzzleSpinner,
+  Spinner,
 } from '@/shared/components/common/SpinnerRoot';
 
 // 스토리북용 Mock Redux Store 생성 도구
@@ -39,7 +39,7 @@ const meta: Meta<typeof SpinnerRoot> = {
       const args = context.args as any;
       const mockState = {
         isVisible: args.isVisible ?? true,
-        message: args.message ?? '로딩 중입니다...',
+        // message: args.message ?? '로딩 중입니다.',
         transparentBackground: args.transparentBackground ?? false,
         hideLoadingIndicator: args.hideLoadingIndicator ?? false,
         count: 1,
@@ -74,8 +74,8 @@ const meta: Meta<typeof SpinnerRoot> = {
             <h2>History</h2>
             <ul>
               <li>2026.07.08 - 최초 생성</li>
-              <li>2026.07.21 - DnaSpinnerRoot, HpSpinnerRoot 스피너 컴포넌트 추가</li>
               <li>2026.07.22 - VerticalRollingSpinner 세로 무한 롤링 스피너 컴포넌트 추가</li>
+              <li>2026.08.27 - CircleSpinner, PuzzleSpinner, Spinner (로컬 인라인 스피너) 추가</li>
             </ul>
 
             <h2>Overview</h2>
@@ -84,8 +84,7 @@ const meta: Meta<typeof SpinnerRoot> = {
                 SpinnerRoot 컴포넌트는 Redux Store의 스피너 상태에 따라 화면 전체에 전역 로딩 오버레이를 렌더링하는
                 컴포넌트입니다.
                 <br />
-                `createPortal`을 사용하여 DOM 계층 구조와 분리되어 렌더링되며, 투명 배경 및 로딩 이미지 숨김 모드를
-                유연하게 지원합니다.
+                `createPortal`을 사용하여 DOM 계층 구조와 분리되어 렌더링되며, CircleSpinner, PuzzleSpinner, Spinner 등 다양한 로컬 및 전역 스피너 형태를 유연하게 지원합니다.
               </p>
             </div>
 
@@ -93,11 +92,17 @@ const meta: Meta<typeof SpinnerRoot> = {
             <Controls />
 
             <h2>Usage</h2>
-            <p>SpinnerRoot 컴포넌트는 다음과 같은 형태로 사용할 수 있습니다.</p>
+            <p>SpinnerRoot 및 각종 Spinner 컴포넌트는 다음과 같은 형태로 사용할 수 있습니다.</p>
             <Markdown>
               {`
 \`\`\`tsx
-import { SpinnerRoot, DnaSpinnerRoot, HpSpinnerRoot, VerticalRollingSpinner } from '@/shared/components/common/SpinnerRoot';
+import { 
+  SpinnerRoot, 
+  VerticalRollingSpinner,
+  CircleSpinner,
+  PuzzleSpinner,
+  Spinner
+} from '@/shared/components/common/SpinnerRoot';
 
 // 1. 세로 무한 롤링 스피너 개별 사용
 export function MyPage() {
@@ -108,24 +113,27 @@ export function MyPage() {
   );
 }
 
-// 2. src/app/layout.tsx (전역 레이아웃)에 한번 등록하여 사용
+// 2. 퍼즐 스피너 / 원형 스피너 로컬 사용
+export function MySection() {
+  return (
+    <div>
+      <PuzzleSpinner />
+      <CircleSpinner texts={['조회 중입니다...', '잠시만 기다려주세요.']} />
+    </div>
+  );
+}
+
+// 3. src/app/layout.tsx (전역 레이아웃)에 한번 등록하여 사용
 export default function RootLayout({ children }) {
   return (
     <html>
       <body>
         {children}
-        <HpSpinnerRoot />
+        <SpinnerRoot />
       </body>
     </html>
   );
 }
-
-// 비즈니스 로직(컴포넌트 또는 Axios 인터셉터 등)에서 액션 디스패치
-import { showSpinner, hideSpinner } from '@/shared/store/spinnerSlice';
-import { useAppDispatch } from '@/redux';
-
-const dispatch = useAppDispatch();
-dispatch(showSpinner({ message: '데이터를 불러오는 중입니다...' }));
 \`\`\`
               `}
             </Markdown>
@@ -179,9 +187,10 @@ dispatch(showSpinner({ message: '데이터를 불러오는 중입니다...' }));
         'SpinnerRoot',
         'BaseSpinnerRoot',
         'AiSpinner',
-        'DnaSpinnerRoot',
-        'HpSpinnerRoot',
         'VerticalRollingSpinner',
+        'CircleSpinner',
+        'PuzzleSpinner',
+        'Spinner',
       ],
       description: '렌더링할 스피너 컴포넌트 타입',
       table: { category: 'Spinner Type' },
@@ -215,7 +224,7 @@ dispatch(showSpinner({ message: '데이터를 불러오는 중입니다...' }));
   args: {
     type: 'SpinnerRoot',
     isVisible: true,
-    message: 'AI가 <span style="color:var(--color-primary-50)">최적의 설계</span>를 찾고있어요!',
+    // message: 'AI가 <span style="color:var(--color-primary-50)">최적의 설계</span>를 찾고있어요!',
     transparentBackground: false,
     hideLoadingIndicator: false,
   },
@@ -232,14 +241,14 @@ export const Default: Story = {
     if (args.type === 'AiSpinner') {
       return <AiSpinner texts={effectiveTexts} />;
     }
-    if (args.type === 'DnaSpinnerRoot') {
-      return <DnaSpinnerRoot texts={effectiveTexts} />;
+    if (args.type === 'CircleSpinner') {
+      return <CircleSpinner texts={effectiveTexts} />;
     }
-    if (args.type === 'HpSpinnerRoot') {
-      return <HpSpinnerRoot texts={effectiveTexts} />;
+    if (args.type === 'PuzzleSpinner') {
+      return <PuzzleSpinner texts={effectiveTexts} />;
     }
-    if (args.type === 'VerticalRollingSpinner') {
-      return <VerticalRollingSpinner />;
+    if (args.type === 'Spinner') {
+      return <Spinner texts={effectiveTexts} />;
     }
     return args.type === 'SpinnerRoot' ? (
       <SpinnerRoot texts={effectiveTexts} />
@@ -249,26 +258,30 @@ export const Default: Story = {
   },
 };
 
-export const DnaSpinner: Story = {
+export const CircleSpinnerStory: Story = {
+  name: 'Circle Spinner',
   args: {
-    type: 'DnaSpinnerRoot' as any,
+    type: 'CircleSpinner' as any,
     isVisible: true,
   },
-  render: (args: any) => <DnaSpinnerRoot texts={args.texts ?? (args.message ? [args.message] : undefined)} />,
+  render: (args: any) => <CircleSpinner texts={args.texts ?? (args.message ? [args.message] : undefined)} />,
 };
 
-export const HpSpinner: Story = {
+export const PuzzleSpinnerStory: Story = {
+  name: 'Puzzle Spinner',
   args: {
-    type: 'HpSpinnerRoot' as any,
+    type: 'PuzzleSpinner' as any,
     isVisible: true,
   },
-  render: (args: any) => <HpSpinnerRoot texts={args.texts ?? (args.message ? [args.message] : undefined)} />,
+  render: (args: any) => <PuzzleSpinner texts={args.texts ?? (args.message ? [args.message] : undefined)} />,
 };
 
-export const VerticalRolling: Story = {
+export const LocalSpinnerStory: Story = {
+  name: 'Local Spinner (Inline)',
   args: {
-    type: 'VerticalRollingSpinner' as any,
+    type: 'Spinner' as any,
     isVisible: true,
   },
-  render: (args: any) => <VerticalRollingSpinner />,
+  render: (args: any) => <Spinner texts={args.texts ?? (args.message ? [args.message] : undefined)} />,
 };
+

@@ -8,6 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import {
   AgGridEmptyComponent,
+  createFieldRenderer,
   createTooltipValueGetter,
   useAgGridInfiniteAppend,
   useDynamicColumnWidths,
@@ -40,6 +41,7 @@ type DummyData1Type = {
   field2: string;
   field3: string;
   field4: string;
+  field5: string;
 };
 const DummyData1: DummyData1Type[] = [
   {
@@ -48,6 +50,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '',
   },
   {
     id: 2,
@@ -56,6 +59,7 @@ const DummyData1: DummyData1Type[] = [
       '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '뇌',
   },
   {
     id: 3,
@@ -63,6 +67,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '진단서',
+    field5: '암',
   },
   {
     id: 4,
@@ -70,6 +75,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '심',
   },
   {
     id: 5,
@@ -77,6 +83,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '기타',
   },
   {
     id: 6,
@@ -84,6 +91,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '암',
   },
   {
     id: 7,
@@ -91,6 +99,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '뇌',
   },
   {
     id: 8,
@@ -98,6 +107,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '심',
   },
   {
     id: 9,
@@ -105,6 +115,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '기타',
   },
   {
     id: 10,
@@ -112,6 +123,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '암',
   },
   {
     id: 11,
@@ -119,6 +131,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '뇌',
   },
   {
     id: 12,
@@ -126,6 +139,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '심',
   },
   {
     id: 13,
@@ -133,6 +147,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '기타',
   },
   {
     id: 14,
@@ -140,6 +155,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '암',
   },
   {
     id: 15,
@@ -147,6 +163,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
+    field5: '뇌',
   },
   {
     id: 16,
@@ -154,13 +171,7 @@ const DummyData1: DummyData1Type[] = [
     field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
     field3: '사망/후유',
     field4: '',
-  },
-  {
-    id: 17,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
+    field5: '심',
   },
 ];
 
@@ -186,8 +197,9 @@ const Ltpz080 = () => {
         headerName: '담보그룹',
         field: 'field3',
         flex: 1,
-        minWidth: attributeColumnWidth(100),
+        minWidth: attributeColumnWidth(140),
         cellClass: 'text-center',
+        cellRenderer: createFieldRenderer<DummyData1Type>('field3', 'field5', 'row', [5, 5]),
       },
       {
         headerName: '예외',
