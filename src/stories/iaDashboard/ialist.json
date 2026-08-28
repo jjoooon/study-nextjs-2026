@@ -2752,5 +2752,39 @@
     "modify": "",
     "subId": "",
     "popup": true
+  },
+  {
+    "pub": "조현민",
+    "dep1": "차세대가입설계",
+    "dep2": "가입설계",
+    "dep3": "알릴사항",
+    "id": "LTPZ201",
+    "path": "ispl/ncMtt/components/popups",
+    "dep4": "동일질병 추가질문 답변확인",
+    "file": "",
+    "plan": "이채우",
+    "dev": "",
+    "sdate": "",
+    "date": "26.08.28",
+    "modify": "",
+    "subId": "",
+    "popup": true
+  },
+  {
+    "pub": "권오택",
+    "dep1": "차세대가입설계",
+    "dep2": "가입설계",
+    "dep3": "알릴사항",
+    "id": "LTPZ202",
+    "path": "ispl/ncMtt/components/popups",
+    "dep4": "질병입력사항 체크결과",
+    "file": "",
+    "plan": "이채우",
+    "dev": "",
+    "sdate": "",
+    "date": "26.08.28",
+    "modify": "",
+    "subId": "",
+    "popup": true
   }
 ]
