@@ -353,6 +353,8 @@
   min-height: 2.6rem !important;
 }
 
+
+
 /* 선택 시 체크박스 배경색(구형 브라우저 대응) */
 .ag-checkbox + .ag-header-cell-comp-wrapper {
   display: none;
@@ -798,6 +800,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 .no-edited svg {
   display: none !important;
 }
+
+/* Cell editor select / picker 화살표 아이콘 색상 유지 */
 
 .no-edited {
   background-color: transparent !important;
