@@ -215,7 +215,7 @@ const Ltpz640 = () => {
       field1: focusedRow ? focusedRow.field1 : '',
       field2: '',
       checked: false,
-      target: focusedRow?.target ? [...focusedRow.target] : [true, true, true],
+      target: [false, false, false],
     }),
     insertAt: 'focused',
     gridApiRef,
@@ -483,7 +483,7 @@ const Ltpz640 = () => {
         field1: mergePackageName,
         field2: '',
         checked: false,
-        target: [true, true, true],
+        target: [false, false, false],
       };
 
       const nextRows = [newRow, ...prev];

@@ -618,6 +618,39 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
   const [isEditingRight, setIsEditingRight] = React.useState(false);
   const [editorValue, setEditorValue] = React.useState('');
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!isEditingLeft && !isEditingRight) return;
+
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node | null;
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(target) &&
+        !(
+          target instanceof Element &&
+          (target.closest('.rdp') ||
+            target.closest('[role="dialog"]') ||
+            target.closest('.react-datepicker') ||
+            target.closest('[data-radix-popper-content-wrapper]'))
+        )
+      ) {
+        if (isEditingLeft) {
+          handleSaveLeft(editorValue);
+        }
+        if (isEditingRight) {
+          setIsEditingRight(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isEditingLeft, isEditingRight, editorValue]);
+
   const handleStartLeftEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     let initVal = rawValue;
@@ -684,7 +717,11 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
   };
 
   return (
-    <Grow className="relative !h-full h-full w-full flex items-stretch" onClick={(e) => e.stopPropagation()}>
+    <Grow
+      ref={containerRef}
+      className="relative !h-full h-full w-full flex items-stretch"
+      onClick={(e) => e.stopPropagation()}
+    >
       {/* 중앙 세로 구분선 (상/하단 보더와 빈틈없이 완벽히 연결) */}
       <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-[#ddddde] pointer-events-none z-10" />
 
@@ -1048,13 +1085,13 @@ export const Ltpz063 = () => {
   const createThirdExternalColumn = (field: ExtraSelectableField): ColDef<DummyDataType3> => ({
     headerName: '타사기존',
     headerComponent: ThirdGridHeaderWithDelete,
-    headerClass: '[&_.ag-header-cell-text]:font-bold',
+    headerClass: '[&_.ag-header-cell-text]:font-bold ',
     cellClass: (params) =>
       params.data && (isMainRefundRow(params.data) || isMainInterestRateRow(params.data))
-        ? '!p-0 !m-0 !h-full flex items-center justify-center editable-cell'
+        ? '!p-0 !m-0 !h-full flex items-center justify-center editable-cell text-[#006ff2]'
         : isType3EditableRow(params.data)
-          ? `${getSelectableValueCellClass(params)} editable-cell`
-          : getSelectableValueCellClass(params),
+          ? `${getSelectableValueCellClass(params)} editable-cell text-[#006ff2]`
+          : `${getSelectableValueCellClass(params)} text-[#006ff2]`,
     flex: 1,
     minWidth: attributeColumnWidth(250),
     field,

@@ -798,6 +798,8 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   display: none !important;
 }
 
+/* Cell editor select / picker 화살표 아이콘 색상 유지 */
+
 .no-edited {
   background-color: transparent !important;
 }
