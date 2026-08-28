@@ -8,6 +8,8 @@ import { Grow, Gcol } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 
+const testMsg = '[<>top left<br /> 에러</>]';
+
 const meta: Meta<typeof Input> = {
   title: 'Components/Forms/Input',
   component: Input,
@@ -88,7 +90,7 @@ import { Input } from '@uiux/Input';
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
               <Grow gap={8}>
-                <Input error errorPs="tl" errorMsg="top left 에러" placeholder="tl" />
+                <Input error errorPs="tl" errorMsg={testMsg} placeholder="tl" />
                 <Input error errorPs="tc" errorMsg="top center 에러" placeholder="tc" />
                 <Input error errorPs="tr" errorMsg="top right 에러" placeholder="tr" />
               </Grow>

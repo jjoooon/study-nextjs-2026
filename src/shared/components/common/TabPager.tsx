@@ -165,10 +165,17 @@ export function TabPager<T>({
                 'disabled' in tab &&
                 Boolean((tab as { disabled?: unknown }).disabled);
 
+              // 개별 tab 객체에 removable 속성이 정의되어 있다면 반영, 없으면 전체 removable 사용
+              const tabIsRemovable =
+                typeof tab === 'object' && tab !== null && 'removable' in tab
+                  ? Boolean((tab as { removable?: unknown }).removable)
+                  : removable;
+
               return (
                 <TabsTrigger
                   key={getValue(tab)}
                   value={getValue(tab)}
+                  removable={tabIsRemovable}
                   data-tab-error={error && tabHasError ? 'true' : 'false'}
                   disabled={tabIsDisabled}
                 >

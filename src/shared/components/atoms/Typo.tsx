@@ -137,7 +137,7 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
   if (icon === 'info')
     IconComponent = (
       <InfoBoxInfoIcon
-        className="inline-flex -translate-y-[0.1rem] mr-1"
+        className="inline-flex -translate-y-[0.2rem] mr-1"
         color="var(--color-information-50)"
         size={iconSize}
       />

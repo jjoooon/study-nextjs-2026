@@ -28,7 +28,7 @@ export default function Ltpa020Section() {
   // 상단 탭 상태
   // - Ltpa02001: 상품선택
   // - Ltpa02002: 추천설계
-  const [tabSelectValue, setTabSelectValue] = useState('Ltpa02001');
+  const [tabSelectValue, setTabSelectValue] = useState('Ltpa02002');
   // 추천설계 하위 컴포넌트(Ltpa02002) 데이터 유무 제어 상태
   // 화면 분기/Empty 상태 표현에 사용
   const [dataNone, setDataNone] = useState<boolean>(false);

@@ -15,6 +15,7 @@ import { useState } from 'react';
 export interface BaseTab {
   value: string;
   label?: string;
+  removable?: boolean;
 }
 
 /**

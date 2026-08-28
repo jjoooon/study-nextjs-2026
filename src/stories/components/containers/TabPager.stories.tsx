@@ -37,6 +37,7 @@ const DATA_TABS_4 = [
     age: '2',
     gender: '남',
     value: 'tab2',
+    removable:true,
     info: [
       '추가정보1',
       '추가정보2',
@@ -316,7 +317,7 @@ const handleRemoveTab = (value: string) => {
   args: {
     variant: 'default',
     hasTableBelow: false,
-    removable: false,
+    removable: true,
     error: false,
     visibleCount: 4,
   },

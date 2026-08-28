@@ -1987,10 +1987,12 @@ interface AgGridEmptyComponentProps extends React.ComponentProps<'div'> {
 
 export function AgGridEmptyComponent({ className: _className, message }: AgGridEmptyComponentProps) {
   return (
-    <div className="bg-(--color-gray-0) w-full h-full flex items-center justify-center gap-1 text-(--color-gray-70)">
-      <InfoBoxWarningIcon color="var(--color-gray-50)" />
-      {message ?? '조회 결과가 없습니다.'}
-    </div>
+    message && (
+      <div className="bg-(--color-gray-0) w-full h-full flex items-center justify-center gap-1 text-(--color-gray-70)">
+        <InfoBoxWarningIcon color="var(--color-gray-50)" />
+        {message ?? '조회 결과가 없습니다.'}
+      </div>
+    )
   );
 }
 
