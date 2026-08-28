@@ -220,7 +220,7 @@
     "id": "LTPZ032",
     "title": "질병가져오기>질병코드별",
     "width": 1180,
-    "height": 742,
+    "height": 756,
     "isIframe": true
   },
   {
@@ -276,7 +276,7 @@
     "id": "LTPZ040",
     "title": "실손의료비 전환 계약 조회",
     "width": 1180,
-    "height": 537,
+    "height": 612,
     "isIframe": true
   },
   {
@@ -794,7 +794,7 @@
     "id": "LTPZ994",
     "title": "파일 다운로드",
     "width": 560,
-    "height": 402,
+    "height": 450,
     "isIframe": false
   },
   {
