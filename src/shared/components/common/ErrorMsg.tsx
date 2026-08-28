@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import log from '@/shared/utils/logger';
 import { Typo } from '@atoms';
@@ -33,7 +33,7 @@ const positionStyles: Record<ErrorMsgPosition, string> = {
   tc: 'bottom-[calc(100%+0.6rem)] left-1/2 -translate-x-1/2 after:top-full after:left-1/2 after:-translate-x-1/2 after:rotate-[45deg] after:translate-y-[-0.4rem]',
   tr: 'bottom-[calc(100%+0.6rem)] right-0 after:top-full after:right-[0.4rem] after:rotate-[45deg] after:translate-y-[-0.4rem]',
   bl: 'top-[calc(100%+0.6rem)] left-0 after:bottom-full after:left-[0.4rem] after:rotate-[225deg] after:translate-y-[0.4rem]',
-  bc: 'top-[calc(100%+0.6rem)] left-1/2 -translate-x-1/2 after:bottom-full after:left-1/2 after:-translate-x-1/2 after:rotate-[225deg] after:translate-y-[0.4rem]',
+  bc: 'top-[calc(100%+0.6rem)] left-1/2 -translate-x-1/2 after:bottom-full after:left-1/2 after:-translate-x-1/2 after:rotate-[225deg] after:translate-y-[0.4rem] w-auto text-center',
   br: 'top-[calc(100%+0.6rem)] right-0 after:bottom-full after:right-[0.4rem] after:rotate-[225deg] after:translate-y-[0.4rem]',
 };
 
@@ -144,6 +144,19 @@ export function ErrorMsg({
   /** 비표시 상태면 DOM 미렌더(접근성/성능 측면에서 명확) */
   if (!show) return null;
 
+  const formattedChildren =
+    typeof children === 'string'
+      ? children
+          .replace(/\\n/g, '\n')
+          .split('\n')
+          .map((line, index) => (
+            <Fragment key={index}>
+              {index > 0 && <br />}
+              {line}
+            </Fragment>
+          ))
+      : children;
+
   return (
     <span
       id={id}
@@ -155,7 +168,7 @@ export function ErrorMsg({
         'block absolute z-10 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT',
         // 말풍선 꼬리(after) 기본 스타일
         "after:content-[''] after:w-2 after:h-2 after:absolute after:border after:border-[var(--color-input-border-error)]",
-        'after:bg-[var(--color-input-surface-error)] after:z-0 after:rounded-1 ',
+        'after:bg-[var(--color-input-surface-error)] after:z-0 after:rounded-1 break-keep',
         // 위치 토큰 적용
         positionStyles[position]
       )}
@@ -165,7 +178,7 @@ export function ErrorMsg({
         tag={'span'}
         className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
       >
-        {children}
+        {formattedChildren}
       </Typo>
     </span>
   );
