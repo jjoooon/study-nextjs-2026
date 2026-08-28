@@ -1233,9 +1233,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                             >
                               <SearchIcon color={'var(--color-primary-50)'} />
                             </Button>
-
                             <Checkbox color="primary" />
-                            <Button variant={'none'} className="px-0">
+                            <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
                               개인사업자
                             </Button>
                           </FormCell>
