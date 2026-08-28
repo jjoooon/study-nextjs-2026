@@ -194,8 +194,8 @@ const Ltpz055 = () => {
                 <b>알림톡/LMS 발송을 위한 팝업 입니다.</b>
               </Typo>
               <BulletList>
-                <BulletListItem size="sm">기존 번호로 발송: 발송버튼 클릭</BulletListItem>
-                <BulletListItem size="sm">새로운 번호로 발송: 신규발송번호 기재 후 발송버튼 클릭</BulletListItem>
+                <BulletListItem size="sm">기존 번호로 발송 : 발송버튼 클릭</BulletListItem>
+                <BulletListItem size="sm">새로운 번호로 발송 : 신규발송번호 기재 후 발송버튼 클릭</BulletListItem>
               </BulletList>
             </Gcol>
             {/* 2026-05-27 스타일 변경 */}
@@ -203,7 +203,7 @@ const Ltpz055 = () => {
               <BulletList className="w-full [&>li>div:first-child]:h-full">
                 <BulletListItem size="sm">
                   <Grow placement="ss" className="gap-1 flex items-center justify-between">
-                    <span className="w-[6.2rem] shrink-0">모집자URL:</span>
+                    <span className="w-[6.8rem] shrink-0">모집자URL :</span>
                     <Input
                       className="inline-block w-[calc(100%-6rem)]!"
                       readOnly
@@ -217,7 +217,7 @@ const Ltpz055 = () => {
               <BulletList className="w-full [&>li>div:first-child]:h-full">
                 <BulletListItem size="sm">
                   <Grow placement="ss" className="gap-1 flex items-center justify-between">
-                    <span className="w-[6.2rem] shrink-0">계약자URL:</span>
+                    <span className="w-[6.8rem] shrink-0">계약자URL :</span>
                     <Input
                       className="inline-block w-[calc(100%-6rem)]!"
                       readOnly
@@ -231,7 +231,7 @@ const Ltpz055 = () => {
               <BulletList className="w-full [&>li>div:first-child]:h-full">
                 <BulletListItem size="sm">
                   <Grow placement="ss" className="gap-1 flex items-center justify-between">
-                    <span className="w-[6.2rem] shrink-0">피보험자URL:</span>
+                    <span className="w-[6.8rem] shrink-0">피보험자URL :</span>
                     <Input
                       className="inline-block w-[calc(100%-6rem)]!"
                       readOnly
