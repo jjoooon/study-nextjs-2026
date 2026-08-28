@@ -32,6 +32,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: #fff;
   /* background-color: rgb(255, 255, 255); */
 }
 
@@ -1689,7 +1690,9 @@ html.v109 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper.ag-checked
 .group-style .ag-center-cols-container > [role='row']:nth-child(2n) {
   background-color: #fff;
 }
-.is-sub-row .ag-cell {background-color: var(--color-gray-5)}
+.is-sub-row .ag-cell {
+  background-color: var(--color-gray-5);
+}
 /* AG Grid 툴팁 마우스 오버/이탈 시 CSS 트랜지션 및 모션 애니메이션 즉시 제거 */
 .ag-tooltip,
 .ag-tooltip-showing,
@@ -1713,5 +1716,3 @@ body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-popup-child:has(.ag-to
   visibility: hidden !important;
   pointer-events: none !important;
 }
-
-

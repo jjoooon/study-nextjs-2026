@@ -252,30 +252,30 @@ const dummyData: DummyDataType[] = [
 
 /** 기본 상품 종 데이터 목록 */
 const dummyData2: DummyDataType2[] = [
-  {
-    id: 1,
-    field1: '1종',
-    field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
-    btn: false,
-  },
-  {
-    id: 2,
-    field1: '2종',
-    field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
-    btn: true,
-  },
-  {
-    id: 3,
-    field1: '3종',
-    field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
-    btn: false,
-  },
-  {
-    id: 4,
-    field1: '4종',
-    field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
-    btn: true,
-  },
+  // {
+  //   id: 1,
+  //   field1: '1종',
+  //   field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+  //   btn: false,
+  // },
+  // {
+  //   id: 2,
+  //   field1: '2종',
+  //   field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+  //   btn: true,
+  // },
+  // {
+  //   id: 3,
+  //   field1: '3종',
+  //   field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+  //   btn: false,
+  // },
+  // {
+  //   id: 4,
+  //   field1: '4종',
+  //   field2: '한화 3N5 더 간편건강보험(연만기 갱신형)2601',
+  //   btn: true,
+  // },
 ];
 
 /** 마스터 플랜 목록 데이터 */
@@ -663,6 +663,11 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     tab3: tabData3c,
   };
   const selectedPlanRowData = planRowDataMap[active] ?? tabData3;
+
+  const tab3EmptyMessage = React.useMemo(() => {
+    return isPossibleProductsOnly ? '가능한 상품이 없습니다.' : '';
+  }, [isPossibleProductsOnly]);
+
   return (
     <Grid className="w-full h-full min-h-0 grid-rows-[auto_1fr_auto] px-[1rem] overflow-hidden" gap={3}>
       <Grow variant={'box-round'} className="w-full" placement="bwe">
@@ -766,6 +771,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
                       <AgGridReact<DummyDataType2>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
+                        noRowsOverlayComponentParams={{ message: '검색결과가 없습니다.' }}
                         rowData={isPossibleProductsOnly ? possibleDummyData2 : dummyData2}
                         columnDefs={columnDefs2}
                         domLayout="normal"

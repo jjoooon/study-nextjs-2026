@@ -36,63 +36,7 @@ type DummyDataType = {
   field6: boolean;
 };
 
-const dummyData: DummyDataType[] = [
-  {
-    id: 1,
-    field1: '2026-02-24',
-    field2: 80939583,
-    field3: '홍길순1',
-    field4: '여의도 GA 지점',
-    field5: '메모 테스트 글입니다.',
-    field6: false,
-  },
-  {
-    id: 2,
-    field1: '2026-02-24',
-    field2: 80939583,
-    field3: '홍길순2',
-    field4: '여의도 GA 지점',
-    field5: '메모 테스트 글입니다.',
-    field6: false,
-  },
-  {
-    id: 3,
-    field1: '2026-02-24',
-    field2: 80939583,
-    field3: '홍길순3홍길순3홍길순3',
-    field4: '여의도 GA 지점여의도 GA 지점여의도 GA 지점여의도 GA 지점',
-    field5:
-      '메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.메모 테스트 글입니다.',
-    field6: false,
-  },
-  {
-    id: 4,
-    field1: '2026-02-24',
-    field2: 80939583,
-    field3: '홍길순3',
-    field4: '여의도 GA 지점',
-    field5: '메모 테스트 글입니다.',
-    field6: false,
-  },
-  {
-    id: 5,
-    field1: '2026-02-24',
-    field2: 80939583,
-    field3: '홍길순3',
-    field4: '여의도 GA 지점',
-    field5: '메모 테스트 글입니다.',
-    field6: false,
-  },
-  {
-    id: 6,
-    field1: '2026-02-24',
-    field2: 80939583,
-    field3: '홍길순3',
-    field4: '여의도 GA 지점',
-    field5: '메모 테스트 글입니다.',
-    field6: false,
-  },
-];
+const dummyData: DummyDataType[] = [];
 
 const Ltpz009 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();

@@ -439,13 +439,18 @@ function GooeySvgFilter() {
 
 interface GlobalSpinnerPortalProps {
   props?: SpinnerRootProps;
-  backgroundStyle: React.CSSProperties;
+  backgroundStyle?: React.CSSProperties;
   translateYClass?: string;
   renderIndicator: (currentText: React.ReactNode, currentIndex: number) => React.ReactNode;
   animationStyle?: React.ReactNode;
 }
 
-function GlobalSpinnerPortal({ props, backgroundStyle, renderIndicator, animationStyle }: GlobalSpinnerPortalProps) {
+function GlobalSpinnerPortal({
+  props,
+  backgroundStyle = {},
+  renderIndicator,
+  animationStyle,
+}: GlobalSpinnerPortalProps) {
   const isVisibleFromStore = useAppSelector(selectIsSpinnerVisible);
   const isVisible = props?.isVisible ?? (props?.texts && props.texts.length > 0 ? true : isVisibleFromStore);
   const message = useAppSelector(selectSpinnerMessage);
@@ -590,32 +595,29 @@ export function BaseSpinnerRoot(props?: SpinnerRootProps) {
  * ========================================================================== */
 
 export function SpinnerRoot(props?: SpinnerRootProps) {
-  const transparentBackground = useAppSelector(selectIsTransparentBackground);
   const hideLoadingIndicator = useAppSelector(selectIsHideLoadingIndicator);
-
-  const backgroundStyle: React.CSSProperties = transparentBackground
-    ? {}
-    : {
-        background: 'rgba(255,255,255,0)',
-        backdropFilter: 'blur(0)',
-      };
 
   return (
     <GlobalSpinnerPortal
       props={props}
-      backgroundStyle={backgroundStyle}
       renderIndicator={(currentText, currentIndex) => (
         <>
           {!hideLoadingIndicator && (
             <Gcol className="items-center justify-center min-h-screen gap-[5rem] -translate-y-[2rem]">
-              <Gcol className="items-center justify-center bg-[#fff] w-[10.9rem] h-[10.9rem] p-3 rounded-md shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.1)]">
-                <GooeyDots wrapperClassName="w-full h-full absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)] scale-[0.8] translate-y-[-1rem]" />
+              <Gcol
+                className="items-center justify-center w-[20rem] h-[20rem] rounded-full"
+                style={{
+                  background:
+                    'radial-gradient(circle at center, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.7) 35%, rgba(255, 255, 255, 0) 70%)',
+                }}
+              >
+                <GooeyDots wrapperClassName="w-full h-full absolute flex items-center justify-center animate-rotate-move [filter:url(#goo)] scale-[0.8] translate-y-[-3rem]" />
                 {Boolean(currentText) && (
                   <Typo
                     tag={'div'}
                     key={currentIndex}
                     variant={'heading-md'}
-                    className="animate-text-change translate-y-[-1.6rem]"
+                    className="animate-text-change translate-y-[-3.6rem]"
                   >
                     {renderTextWithHtml(currentText)}
                   </Typo>

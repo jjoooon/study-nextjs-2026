@@ -84,7 +84,8 @@ const meta: Meta<typeof SpinnerRoot> = {
                 SpinnerRoot 컴포넌트는 Redux Store의 스피너 상태에 따라 화면 전체에 전역 로딩 오버레이를 렌더링하는
                 컴포넌트입니다.
                 <br />
-                `createPortal`을 사용하여 DOM 계층 구조와 분리되어 렌더링되며, CircleSpinner, PuzzleSpinner, Spinner 등 다양한 로컬 및 전역 스피너 형태를 유연하게 지원합니다.
+                `createPortal`을 사용하여 DOM 계층 구조와 분리되어 렌더링되며, CircleSpinner, PuzzleSpinner, Spinner 등
+                다양한 로컬 및 전역 스피너 형태를 유연하게 지원합니다.
               </p>
             </div>
 
@@ -284,4 +285,3 @@ export const LocalSpinnerStory: Story = {
   },
   render: (args: any) => <Spinner texts={args.texts ?? (args.message ? [args.message] : undefined)} />,
 };
-

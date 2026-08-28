@@ -546,7 +546,7 @@
     background-color: #fff;
   }
   #storybook-root {
-    width: 1196px;
+    /* width: 1196px; */
     border-right: 1px solid #ccc;
     overflow-x: auto;
     height: 100%;
@@ -1273,17 +1273,17 @@
   display: none;
 }
 
-[data-currentMonth="true"][data-selected-month="true"],
-[data-selected="true"][data-today="true"] button {
+[data-currentMonth='true'][data-selected-month='true'],
+[data-selected='true'][data-today='true'] button {
   background-color: #ff5c2e;
 }
 
-[data-currentMonth="true"],
-[data-today="true"] button {
+[data-currentMonth='true'],
+[data-today='true'] button {
   background-color: var(--color-blue-gray-80);
-  color:#fff;
+  color: #fff;
 }
-[data-today="true"].rdp-range_middle button {
-  background-color: var(--color-element-gray-lighter);;
-  color:#000;
+[data-today='true'].rdp-range_middle button {
+  background-color: var(--color-element-gray-lighter);
+  color: #000;
 }

@@ -2,11 +2,21 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 import type { Meta, StoryObj } from '@storybook/react';
+import * as React from 'react';
 import LTPA350, { LTPA350PageProps } from '@/app/pub/ispl/pages/LTPA350';
-import {
-  SpinnerRoot,
-} from '@/shared/components/common/SpinnerRoot';
+import { SpinnerRoot } from '@/shared/components/common/SpinnerRoot';
 import { LayoutDoc } from '@layout/BaseLayout';
+
+const TempSpinner = () => {
+  const [isVisible, setIsVisible] = React.useState(true);
+  if (!isVisible) return null;
+
+  return (
+    <div onClick={() => setIsVisible(false)} style={{ cursor: 'pointer' }} className="fixed top-0 left-0 w-full h-full">
+      <SpinnerRoot texts={['조회중입니다.']} />
+    </div>
+  );
+};
 
 const meta: Meta<typeof LTPA350> = {
   title: 'app/page/LTPA350',
@@ -32,7 +42,7 @@ type Story = StoryObj<typeof LTPA350>;
 export const Default: Story = {
   render: (args = {}) => (
     <LayoutDoc>
-      <SpinnerRoot texts={['조회중입니다.']} />
+      <TempSpinner />
       <LTPA350 {...args} />
     </LayoutDoc>
   ),

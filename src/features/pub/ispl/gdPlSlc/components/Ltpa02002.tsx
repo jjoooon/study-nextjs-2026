@@ -15,10 +15,12 @@ import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AiSpinner, PuzzleSpinner } from '@common/SpinnerRoot';
 import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, KebabIcon } from '@icons';
+import { QuestionMark } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 import '@/shared/lib/agGridPub';
 
@@ -213,12 +215,13 @@ export function Ltpa02002({ userType }: { userType: string }) {
   // 2-3. 추가 정보 / 보장 분석 / 특징 조건 관련 상태
   const [selectedCoverageValues, setSelectedCoverageValues] = useState<CoverageOptionValue[]>([]);
   const [selectedAnalysisValue, setSelectedAnalysisValue] = useState<AnalysisOptionValueWithEmpty>('');
-  const [noRefundValue, setNoRefundValue] = useState<ApplyOptionValue>('');
-  const [premiumWaiverValue, setPremiumWaiverValue] = useState<ApplyOptionValue>('');
-  const [maturityValue, setMaturityValue] = useState<MaturityOptionValue>('');
-  const [simpleType, setSimpleType] = useState<string>(''); // '표준' | '간편' | ''
+
+  const [simpleType, setSimpleType] = useState<string>('');
+  const [noRefundValue, setNoRefundValue] = useState<string>('');
+  const [premiumWaiverValue, setPremiumWaiverValue] = useState<string>('');
+  const [maturityValue, setMaturityValue] = useState<string>('');
+
   const [additionalDiseases, setAdditionalDiseases] = useState<string[]>([]); // ['고혈압', ...]
-  const [hospitalInputs, setHospitalInputs] = useState<string[]>(['', '', '', '', '']);
 
   // 2-4. 애니메이션 제어 관련 상태
   const [animateCardPhase, setAnimateCardPhase] = useState<'idle' | 'appear' | 'fall'>('idle');
@@ -244,9 +247,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
   ] as const;
   type AnalysisOptionValue = (typeof AnalysisOptions)[number]['value'];
   type AnalysisOptionValueWithEmpty = '' | AnalysisOptionValue;
-
-  type ApplyOptionValue = '' | '적용' | '미적용';
-  type MaturityOptionValue = '' | '세만기' | '연만기';
 
   const columnDefs4: ColDef<DummyDataListDetailType>[] = [
     {
@@ -277,36 +277,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
   ];
 
   // 4. Derived Values (상태나 프롭으로부터 유도되는 변수)
-  const selectedCoverageSummary =
-    selectedCoverageValues.length === 0
-      ? '선택'
-      : selectedCoverageValues.length === 1
-        ? selectedCoverageValues[0]
-        : `${selectedCoverageValues[0]} 외 ${selectedCoverageValues.length - 1}개`;
-
-  const selectedAnalysisSummary = selectedAnalysisValue ? selectedAnalysisValue : '선택';
-
-  const productFeatureSummaryValues = [
-    noRefundValue === '적용' ? '무해지' : '',
-    premiumWaiverValue === '적용' ? '납면' : '',
-    maturityValue,
-  ].filter((value) => value.length > 0);
-
-  const selectedProductFeatureSummary =
-    productFeatureSummaryValues.length > 0 ? productFeatureSummaryValues.join(', ') : '선택';
-
-  const hasHospitalInput = hospitalInputs.some((v) => v.trim() !== '');
-
-  const selectedNoticeSummary =
-    [simpleType, ...additionalDiseases, hasHospitalInput ? '입원수술' : ''].filter(Boolean).join(', ') || '선택';
-
-  const secondSummary = customerType === 'recent' ? selectedAnalysisSummary : selectedNoticeSummary;
-
-  const activeSummaries = [selectedProductFeatureSummary, secondSummary, selectedCoverageSummary].filter(
-    (val) => val && val !== '선택'
-  );
-
-  const combinedSummary = activeSummaries.length > 0 ? activeSummaries.join(' / ') : '선택';
 
   // 5. Helper Functions
   const getSelectedPlanInfo = () => {
@@ -379,19 +349,33 @@ export function Ltpa02002({ userType }: { userType: string }) {
     };
   }, [loadingAI]);
 
+  const selectOptionInfo = '';
+
+  const handleOnChangeNcMttTpcd = (value: string) => {
+    setSimpleType(value);
+  };
+  const handleOnChangeNcnYn = (value: string) => {
+    setNoRefundValue(value);
+  };
+  const handleOnChangePymXmpYn = (value: string) => {
+    setPremiumWaiverValue(value);
+  };
+  const handleOnChangeNdFlgcd = (value: string) => {
+    setMaturityValue(value);
+  };
+
   return (
     <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] relative z-0" gap={3}>
       <div className="w-full px-[1rem]">
-        <Grow variant={'box-round'} className="w-full gap-[2rem] relative z-20" placement="ss">
-          <Typo tag="h3" variant={'heading-sm'} className="shrink-0 text-[var(--color-text-blue-gray)]">
-            추가정보
+        <Grow variant={'box-round'} className="w-full gap-[0.8rem] relative z-20" placement="ss">
+          <Typo
+            tag="h3"
+            variant={'heading-sm'}
+            className="shrink-0 text-[var(--color-text-blue-gray)] h-[2.8rem] flex items-center"
+          >
+            검색정보
           </Typo>
-
           <Grow placement="bwc" gap={6}>
-            <Typo tag="div" variant={'body-md'} className="var(--color-text-blue-gray) flex items-start gap-1">
-              <KebabIcon />
-              추가정보를 입력하면 보다 정확한 추천 결과를 받아보실 수 있습니다. 추가정보를 선택적으로 입력 가능합니다.
-            </Typo>
             <Grow className="w-full">
               <button
                 type="button"
@@ -399,7 +383,17 @@ export function Ltpa02002({ userType }: { userType: string }) {
                 onClick={() => setIsFilterOptionOpen((prev) => !prev)}
                 aria-expanded={isFilterOptionOpen}
               >
-                <span className="w-[100%] flex items-center font-normal">{combinedSummary}</span>
+                <span className="w-[100%] flex items-center font-normal">
+                  {selectOptionInfo ? (
+                    selectOptionInfo
+                  ) : (
+                    <Typo tag="div" variant={'body-md'} className="var(--color-text-blue-gray) flex items-start gap-1">
+                      <KebabIcon />
+                      추가정보를 입력하면 보다 정확한 추천 결과를 받아보실 수 있습니다. 추가정보를 선택적으로 입력
+                      가능합니다.
+                    </Typo>
+                  )}
+                </span>
                 <SelectDropIcon color="var(--color-gray-50)" className={isFilterOptionOpen ? 'rotate-[180deg]' : ''} />
               </button>
             </Grow>
@@ -424,94 +418,131 @@ export function Ltpa02002({ userType }: { userType: string }) {
           {isFilterOptionOpen && (
             <Grow
               variant="box-round-b"
-              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] py-2.5 gap-[7rem] z-10 pl-[13.2rem]! pr-[13.4rem]! justify-stretch! "
+              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[13.4rem]! justify-stretch! "
               placement="ss"
             >
               {/* 상품특징 */}
-              <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem]" gap={3}>
-                <RadioGroup
-                  width={'full'}
-                  className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
-                  defaultValue={isProductOptionOpen}
-                  onValueChange={(value) => setIsProductOptionOpen(value)}
-                >
-                  {[
-                    { value: '상품옵션', label: '상품옵션' },
-                    { value: '상품선택', label: '상품선택' },
-                  ].map((opt, idx) => (
-                    <RadioGroupItem
-                      key={'po' + idx}
-                      value={opt.value}
-                      variant="button"
-                      size={'md'}
-                      className="w-full text-left"
+              <Gcol gap={2} placement="ss">
+                <Gcol placement="ss" gap={1}>
+                  <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
+                    상품관련
+                  </Typo>
+                  <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
+                    <RadioGroup
+                      width={'full'}
+                      className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
+                      defaultValue={isProductOptionOpen}
+                      onValueChange={(value) => setIsProductOptionOpen(value)}
                     >
-                      {opt.label}
-                    </RadioGroupItem>
-                  ))}
-                </RadioGroup>
-                <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
-                  {isProductOptionOpen === '상품옵션' ? (
-                    <>
-                      <FormRow>
-                        <FormCell title={'무해지'}>
+                      {[
+                        { value: '상품옵션', label: '상품옵션' },
+                        { value: '상품선택', label: '상품선택' },
+                      ].map((opt, idx) => (
+                        <RadioGroupItem
+                          key={'po' + idx}
+                          value={opt.value}
+                          variant="button"
+                          size={'lg'}
+                          className="w-full text-left"
+                        >
+                          {opt.label}
+                        </RadioGroupItem>
+                      ))}
+                    </RadioGroup>
+                    <Gcol className="bg-[var(--color-gray-5)] rounded-[0.4rem] p-2 w-full" placement="ss">
+                      {isProductOptionOpen === '상품옵션' ? (
+                        <>
+                          {/* 간편고지/일반고지 */}
                           <RadioGroup
+                            width={'full'}
+                            value={simpleType}
+                            onValueChange={handleOnChangeNcMttTpcd}
+                            className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
+                          >
+                            {[
+                              { value: '간편고지형', label: '간편고지형' },
+                              { value: '일반고지형', label: '일반고지형' },
+                            ].map((opt) => (
+                              <RadioGroupItem
+                                key={opt.value}
+                                value={opt.value}
+                                variant="button"
+                                size={'lg'}
+                                className="w-full text-left"
+                              >
+                                {opt.label}
+                              </RadioGroupItem>
+                            ))}
+                          </RadioGroup>
+                          {/* 무해지 */}
+                          <RadioGroup
+                            width={'full'}
                             value={noRefundValue}
-                            onValueChange={(value) => setNoRefundValue(value as ApplyOptionValue)}
-                            className="grid grid-cols-[1fr_1fr] w-[16rem]"
+                            onValueChange={handleOnChangeNcnYn}
+                            className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
                           >
                             {[
-                              { value: '적용', label: '적용' },
-                              { value: '미적용', label: '미적용' },
+                              { value: '무해지 적용', label: '무해지 적용' },
+                              { value: '무해지 미적용', label: '무해지 미적용' },
                             ].map((opt) => (
-                              <RadioGroupItem key={opt.value} value={opt.value}>
+                              <RadioGroupItem
+                                key={opt.value}
+                                value={opt.value}
+                                variant="button"
+                                size={'lg'}
+                                className="w-full text-left"
+                              >
                                 {opt.label}
                               </RadioGroupItem>
                             ))}
                           </RadioGroup>
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'납면'}>
+                          {/* 납면 */}
                           <RadioGroup
+                            width={'full'}
                             value={premiumWaiverValue}
-                            onValueChange={(value) => setPremiumWaiverValue(value as ApplyOptionValue)}
-                            className="grid grid-cols-[1fr_1fr] w-[16rem]"
+                            onValueChange={handleOnChangePymXmpYn}
+                            className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
                           >
                             {[
-                              { value: '적용', label: '적용' },
-                              { value: '미적용', label: '미적용' },
+                              { value: '납면 적용', label: '납면 적용' },
+                              { value: '납면 미적용', label: '납면 미적용' },
                             ].map((opt) => (
-                              <RadioGroupItem key={opt.value} value={opt.value}>
+                              <RadioGroupItem
+                                key={opt.value}
+                                value={opt.value}
+                                variant="button"
+                                size={'lg'}
+                                className="w-full text-left"
+                              >
                                 {opt.label}
                               </RadioGroupItem>
                             ))}
                           </RadioGroup>
-                        </FormCell>
-                      </FormRow>
-                      <FormRow>
-                        <FormCell title={'만기'}>
+                          {/* 만기 */}
                           <RadioGroup
+                            width={'full'}
                             value={maturityValue}
-                            onValueChange={(value) => setMaturityValue(value as MaturityOptionValue)}
-                            className="grid grid-cols-[1fr_1fr] w-[16rem]"
+                            onValueChange={handleOnChangeNdFlgcd}
+                            className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
                           >
                             {[
                               { value: '세만기', label: '세만기' },
                               { value: '연만기', label: '연만기' },
                             ].map((opt) => (
-                              <RadioGroupItem key={opt.value} value={opt.value}>
+                              <RadioGroupItem
+                                key={opt.value}
+                                value={opt.value}
+                                variant="button"
+                                size={'lg'}
+                                className="w-full text-left"
+                              >
                                 {opt.label}
                               </RadioGroupItem>
                             ))}
                           </RadioGroup>
-                        </FormCell>
-                      </FormRow>
-                    </>
-                  ) : (
-                    <>
-                      <FormRow>
-                        <FormCell title={'상품명'} className="align-top !pt-[0.3rem]">
+                        </>
+                      ) : (
+                        <>
                           <Gcol placement="ss" gap={1}>
                             <Grid className="grid-cols-[1fr_auto] gap-1 items-center w-full">
                               <Input
@@ -533,93 +564,94 @@ export function Ltpa02002({ userType }: { userType: string }) {
                               납입중50%해약환급금지급형, 납입면제 운영형, 3N52간편고지형Ⅲ
                             </Typo>
                           </Gcol>
-                        </FormCell>
-                      </FormRow>
-                    </>
-                  )}
-                </FormTable>
+                        </>
+                      )}
+                    </Gcol>
+                  </Gcol>
+                </Gcol>
+                <Gcol placement="ss" gap={1}>
+                  <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
+                    추가고지
+                  </Typo>
+                  <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
+                    <CheckboxGroup
+                      className="grid grid-cols-[1fr_1fr] w-full gap-1"
+                      value={additionalDiseases}
+                      onValueChange={(values) => setAdditionalDiseases(values)}
+                    >
+                      {[
+                        { value: '고혈압', label: '고혈압' },
+                        { value: '당뇨', label: '당뇨' },
+                      ].map((opt) => (
+                        <CheckboxGroupItem key={opt.value} value={opt.value} variant="button" className="w-full">
+                          {opt.label}
+                        </CheckboxGroupItem>
+                      ))}
+                    </CheckboxGroup>
+                    <Typo icon="info">추가고지형 있는 상품인 경우에만 적용됩니다.</Typo>
+                  </Gcol>
+                </Gcol>
               </Gcol>
 
               {/* 보장분석 or 고지유형 */}
               {customerType === 'recent' ? (
                 // 20260810 - 구조 수정
                 // 등록고객
-                <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem]">
-                  <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
-                    <FormRow>
-                      <FormCell title={'보장분석'} className="align-top !pt-[0.3rem]">
-                        <RadioGroup
-                          width={'full'}
-                          className="gap-[0.4rem] [&>div]:w-full"
-                          value={selectedAnalysisValue}
-                          onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
+                <Gcol placement="ss" gap={1}>
+                  <Grow gap={0}>
+                    <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
+                      보장분석
+                    </Typo>
+                    <Tooltip defaultOpen>
+                      <TooltipTrigger asChild>
+                        <Button variant={'none'} size={'md'} only={'icon'}>
+                          <QuestionMark color="var(--color-gray-60)" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" align="start" sideOffset={0}>
+                        <dl className="flex flex-col gap-2 divide-y-1">
+                          <div>
+                            qus
+                            <dt className="text-[1.2rem] font-bold text-[#000]">기계약 유지(부족자금)</dt>
+                            <dd>기계약 해약없이 추가 판매</dd>
+                          </div>
+                          <div>
+                            <dt>일부 리모델링</dt>
+                            <dd>보장분석 컨설팅 저장된 정보 이용</dd>
+                          </div>
+                          <div>
+                            <dt>기계약 전체 누적해소</dt>
+                            <dd>기계약 해약을 전제로 설계 진행</dd>
+                          </div>
+                        </dl>
+                      </TooltipContent>
+                    </Tooltip>
+                  </Grow>
+                  <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
+                    <RadioGroup
+                      width={'full'}
+                      className="gap-[0.4rem] [&>div]:w-full"
+                      value={selectedAnalysisValue}
+                      onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
+                    >
+                      {AnalysisOptions.map((opt) => (
+                        <RadioGroupItem
+                          key={opt.value}
+                          value={opt.value}
+                          variant="button"
+                          size={'md'}
+                          className="!w-full !text-left"
                         >
-                          {AnalysisOptions.map((opt) => (
-                            <RadioGroupItem
-                              key={opt.value}
-                              value={opt.value}
-                              variant="button"
-                              size={'md'}
-                              className="!w-full !text-left"
-                            >
-                              {opt.label}
-                            </RadioGroupItem>
-                          ))}
-                        </RadioGroup>
-                      </FormCell>
-                    </FormRow>
-                    <FormRow className="pt-1">
-                      <FormCell title={'추가고지'}>
-                        <CheckboxGroup
-                          className="grid grid-cols-[1fr_1fr] w-full gap-0"
-                          value={additionalDiseases}
-                          onValueChange={(values) => setAdditionalDiseases(values)}
-                        >
-                          {[
-                            { value: '고혈압', label: '고혈압' },
-                            { value: '당뇨', label: '당뇨' },
-                          ].map((opt) => (
-                            <CheckboxGroupItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </CheckboxGroupItem>
-                          ))}
-                        </CheckboxGroup>
-                      </FormCell>
-                    </FormRow>
-                    <FormRow className="pt-1">
-                      <FormCell title={'선택'}>
-                        <Grow placement="ss">
-                          <Typo tag={'p'} variant={'body-xs'}>
-                            345(2일), 325(2일), 일반고지형(5년)
-                          </Typo>
-                        </Grow>
-                      </FormCell>
-                    </FormRow>
-                  </FormTable>
+                          {opt.label}
+                        </RadioGroupItem>
+                      ))}
+                    </RadioGroup>
+                  </Gcol>
                 </Gcol>
               ) : (
                 <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem]">
                   {/* 20260810 -  */}
                   <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
-                    <FormRow>
-                      <FormCell title={'간편'}>
-                        <RadioGroup
-                          width={'full'}
-                          value={simpleType}
-                          onValueChange={(value) => setSimpleType(value)}
-                          className="grid grid-cols-[1fr_1fr] w-full gap-0"
-                        >
-                          {[
-                            { value: '표준', label: '표준' },
-                            { value: '간편', label: '간편' },
-                          ].map((opt) => (
-                            <RadioGroupItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </RadioGroupItem>
-                          ))}
-                        </RadioGroup>
-                      </FormCell>
-                    </FormRow>
                     <FormRow className="pt-1">
                       <FormCell title={'추가질병'}>
                         <CheckboxGroup
