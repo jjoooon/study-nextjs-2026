@@ -747,7 +747,7 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
   };
 
   return (
-    <Grow ref={containerRef} className="relative !h-full h-full w-full flex items-stretch">
+    <div ref={containerRef} className="relative !h-full h-full w-full flex items-stretch">
       {/* 중앙 세로 구분선 (상/하단 보더와 빈틈없이 완벽히 연결) */}
       <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-[#ddddde] pointer-events-none z-10" />
 
@@ -811,7 +811,7 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
           {rightContent || '\u00A0'}
         </Grow>
       )}
-    </Grow>
+    </div>
   );
 };
 
