@@ -222,7 +222,10 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const [isAiReasonExpanded, setIsAiReasonExpanded] = useState<boolean>(false);
 
   // 2-3. 추가 정보 / 보장 분석 / 특징 조건 관련 상태
-  const [selectedCoverageValues, setSelectedCoverageValues] = useState<CoverageOptionValue[]>([]);
+  const [lastInquiryDate, setLastInquiryDate] = useState('');
+  const [isCoveragePackage, setIsCoveragePackage] = useState(false);
+  const [selectedCoverageValues, setSelectedCoverageValues] = useState<string[]>([]);
+  const [coverageSubValues, setCoverageSubValues] = useState<string[]>([]);
   const [selectedAnalysisValue, setSelectedAnalysisValue] = useState('');
 
   const [simpleType, setSimpleType] = useState<string>('');
@@ -230,22 +233,23 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const [premiumWaiverValue, setPremiumWaiverValue] = useState<string>('');
   const [maturityValue, setMaturityValue] = useState<string>('');
 
+  const [productSearchName, setProductSearchName] = useState<string>('');
+  const [isHypertensionChecked, setIsHypertensionChecked] = useState<boolean>(false);
+  const [isDiabetesChecked, setIsDiabetesChecked] = useState<boolean>(false);
+
+  const [medicalHistoryList, setMedicalHistoryList] = useState<Array<{ disease: string; period: string }>>([
+    { disease: '', period: '' },
+    { disease: '', period: '' },
+    { disease: '', period: '' },
+    { disease: '', period: '' },
+  ]);
+
   // 2-4. 애니메이션 제어 관련 상태
   const [animateCardPhase, setAnimateCardPhase] = useState<'idle' | 'appear' | 'fall'>('idle');
   const [isButtonShaking, setIsButtonShaking] = useState<boolean>(false);
 
   // 3. Constants & Options (상수 정의)
   const customerType = userType;
-
-  const coverageOptions = [
-    { value: '사망/후유', label: '사망/후유' },
-    { value: '진단비', label: '진단비' },
-    { value: '입원/통원', label: '입원/통원' },
-    { value: '수술/치료', label: '수술/치료' },
-    { value: '골절/화상', label: '골절/화상' },
-    { value: '검사/지원', label: '검사/지원' },
-  ] as const;
-  type CoverageOptionValue = (typeof coverageOptions)[number]['value'];
 
   const analysisOptionList = [
     { value: '기계약 유지(부족자금)', label: '기계약 유지(부족자금)' },
@@ -282,6 +286,106 @@ export function Ltpa02002({ userType }: { userType: string }) {
   ];
 
   // 4. Derived Values (상태나 프롭으로부터 유도되는 변수)
+  const handleDiagnosisToggle = (checked: boolean | 'indeterminate') => {
+    const isChecked = checked === true;
+    const subItems = ['진단비-암', '진단비-뇌', '진단비-심', '진단비-기타'];
+
+    setSelectedCoverageValues((prev) =>
+      isChecked ? (prev.includes('진단비') ? prev : [...prev, '진단비']) : prev.filter((v) => v !== '진단비')
+    );
+
+    setCoverageSubValues((prev) =>
+      isChecked ? Array.from(new Set([...prev, ...subItems])) : prev.filter((v) => !subItems.includes(v))
+    );
+  };
+
+  const handleSurgeryToggle = (checked: boolean | 'indeterminate') => {
+    const isChecked = checked === true;
+    const subItems = ['수술치료-암', '수술치료-뇌', '수술치료-심', '수술치료-기타'];
+
+    setSelectedCoverageValues((prev) =>
+      isChecked ? (prev.includes('수술/치료') ? prev : [...prev, '수술/치료']) : prev.filter((v) => v !== '수술/치료')
+    );
+
+    setCoverageSubValues((prev) =>
+      isChecked ? Array.from(new Set([...prev, ...subItems])) : prev.filter((v) => !subItems.includes(v))
+    );
+  };
+
+  const handleSubCoverageToggle = (value: string, checked: boolean | 'indeterminate') => {
+    const isChecked = checked === true;
+    setCoverageSubValues((prev) => {
+      const next = isChecked ? (prev.includes(value) ? prev : [...prev, value]) : prev.filter((v) => v !== value);
+
+      const diagnosisSubs = ['진단비-암', '진단비-뇌', '진단비-심', '진단비-기타'];
+      const hasDiagnosisSub = diagnosisSubs.some((item) => next.includes(item));
+      setSelectedCoverageValues((coveragePrev) =>
+        hasDiagnosisSub
+          ? coveragePrev.includes('진단비')
+            ? coveragePrev
+            : [...coveragePrev, '진단비']
+          : coveragePrev.filter((v) => v !== '진단비')
+      );
+
+      const surgerySubs = ['수술치료-암', '수술치료-뇌', '수술치료-심', '수술치료-기타'];
+      const hasSurgerySub = surgerySubs.some((item) => next.includes(item));
+      setSelectedCoverageValues((coveragePrev) =>
+        hasSurgerySub
+          ? coveragePrev.includes('수술/치료')
+            ? coveragePrev
+            : [...coveragePrev, '수술/치료']
+          : coveragePrev.filter((v) => v !== '수술/치료')
+      );
+
+      return next;
+    });
+  };
+
+  const getSelectedTags = () => {
+    const tags: string[] = [];
+
+    // 1) 상품관련 (상품옵션 vs 상품선택 OR 조건)
+    if (isProductOptionOpen === '상품선택') {
+      if (productSearchName.trim()) {
+        tags.push(productSearchName.trim());
+      }
+    } else {
+      if (simpleType) tags.push(simpleType);
+      if (noRefundValue) tags.push(noRefundValue);
+      if (premiumWaiverValue) tags.push(premiumWaiverValue);
+      if (maturityValue) tags.push(maturityValue);
+    }
+
+    // 2) 추가고지: 고혈압, 당뇨 -> '고혈압, 당뇨' 합침
+    const noticeItems: string[] = [];
+    if (isHypertensionChecked) noticeItems.push('고혈압');
+    if (isDiabetesChecked) noticeItems.push('당뇨');
+    if (noticeItems.length > 0) {
+      tags.push(noticeItems.join(', '));
+    }
+
+    // 3) 보장분석 / 병력사항
+    if (selectedAnalysisValue) {
+      tags.push(selectedAnalysisValue);
+    }
+    const hasMedicalHistory = medicalHistoryList.some((item) => item.disease.trim() !== '');
+    if (hasMedicalHistory) {
+      tags.push('병력사항');
+    }
+
+    // 4) 담보군
+    if (isCoveragePackage) {
+      tags.push('보장패키지');
+    }
+    const hasCoverageChecked = selectedCoverageValues.length > 0 || coverageSubValues.length > 0;
+    if (hasCoverageChecked) {
+      tags.push('담보');
+    }
+
+    return tags;
+  };
+
+  const selectedTags = getSelectedTags();
 
   // 5. Helper Functions
   const getSelectedPlanInfo = () => {
@@ -354,8 +458,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
     };
   }, [loadingAI]);
 
-  const selectOptionInfo = '';
-
   const handleOnChangeNcMttTpcd = (value: string) => {
     setSimpleType(value);
   };
@@ -372,9 +474,6 @@ export function Ltpa02002({ userType }: { userType: string }) {
     setSelectedAnalysisValue(value);
   };
 
-  const [lastInquiryDate, setLastInquiryDate] = useState('');
-  const [is보장패키지, set보장패키지] = useState(false);
-
   return (
     <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] relative z-0" gap={3}>
       <div className="w-full px-[1rem]">
@@ -384,19 +483,28 @@ export function Ltpa02002({ userType }: { userType: string }) {
             variant={'heading-sm'}
             className="shrink-0 text-[var(--color-text-blue-gray)] h-[2.8rem] flex items-center"
           >
-            검색정보
+            {selectedTags.length > 0 ? '상품특징' : '검색정보'}
           </Typo>
           <Grow placement="bwc" gap={6}>
             <Grow className="w-full">
               <button
                 type="button"
-                className="w-full p-1 h-[2.8rem] border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
+                className="w-full p-1 min-h-[3.3rem] h-auto border-b border-b-[var(--color-gray-30)] flex justify-between items-center gap-[0.6rem]"
                 onClick={() => setIsFilterOptionOpen((prev) => !prev)}
                 aria-expanded={isFilterOptionOpen}
               >
-                <span className="w-[100%] flex items-center font-normal">
-                  {selectOptionInfo ? (
-                    selectOptionInfo
+                <span className="w-[100%] flex items-center font-normal flex-wrap gap-1.5 py-0.5 ">
+                  {selectedTags.length > 0 ? (
+                    <Grow placement="sc" gap={1.5} className="flex-wrap items-center">
+                      {selectedTags.map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="inline-flex items-center px-2.5 py-1 rounded-full bg-[var(--color-gray-90)] text-white font-normal text-[1.2rem] leading-none shrink-0"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </Grow>
                   ) : (
                     <Typo tag="div" variant={'body-md'} className="var(--color-text-blue-gray) flex items-start gap-1">
                       <KebabIcon />
@@ -421,7 +529,32 @@ export function Ltpa02002({ userType }: { userType: string }) {
               >
                 설계추천
               </Button>
-              <Button variant="outlined" color="gray" size={'lg'} only="icon" aria-label="초기화">
+              <Button
+                variant="outlined"
+                color="gray"
+                size={'lg'}
+                only="icon"
+                aria-label="초기화"
+                onClick={() => {
+                  setSimpleType('');
+                  setNoRefundValue('');
+                  setPremiumWaiverValue('');
+                  setMaturityValue('');
+                  setProductSearchName('');
+                  setIsHypertensionChecked(false);
+                  setIsDiabetesChecked(false);
+                  setMedicalHistoryList([
+                    { disease: '', period: '' },
+                    { disease: '', period: '' },
+                    { disease: '', period: '' },
+                    { disease: '', period: '' },
+                  ]);
+                  setSelectedAnalysisValue('');
+                  setIsCoveragePackage(false);
+                  setSelectedCoverageValues([]);
+                  setCoverageSubValues([]);
+                }}
+              >
                 <ResetIcon />
               </Button>
             </Grow>
@@ -559,7 +692,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
                               <Input
                                 size={'sm'}
                                 placeholder="상품명 검색"
-                                value={'한화 3N5 더 간편건강보험(연만기 갱신형)2601'}
+                                value={productSearchName}
+                                onChange={(e) => setProductSearchName(e.target.value)}
                               />
                               <Button
                                 variant={'outlined'}
@@ -587,8 +721,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
                     <Grid className="grid-cols-[1fr_1fr] w-full gap-1">
                       <Checkbox
-                        checked={false}
-                        onCheckedChange={() => {}}
+                        checked={isHypertensionChecked}
+                        onCheckedChange={(checked) => setIsHypertensionChecked(checked === true)}
                         value="1"
                         variant="button"
                         className="w-full"
@@ -596,8 +730,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         고혈압
                       </Checkbox>
                       <Checkbox
-                        checked={false}
-                        onCheckedChange={() => {}}
+                        checked={isDiabetesChecked}
+                        onCheckedChange={(checked) => setIsDiabetesChecked(checked === true)}
                         value="2"
                         variant="button"
                         className="w-full"
@@ -711,24 +845,67 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     <Grid className="grid-cols-[1fr_6.4rem] w-full" gap={1}>
                       <Typo className="text-center">질병명</Typo>
                       <Typo className="text-center">기간</Typo>
-                      {[
-                        { disease: '척추관협착증', period: '무관' },
-                        { disease: '신장낭종', period: '10년내' },
-                        { disease: '추간판탈출', period: '3개월내' },
-                        { disease: '', period: '' },
-                      ].map((item, idx) => (
+                      {medicalHistoryList.map((item, idx) => (
                         <React.Fragment key={idx}>
-                          <Input size={'sm'} value={item.disease} readOnly />
-                          <Input size={'sm'} value={item.period} readOnly />
+                          <Input
+                            size={'sm'}
+                            value={item.disease}
+                            readOnly={true}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setMedicalHistoryList((prev) => {
+                                const next = [...prev];
+                                next[idx] = { ...next[idx], disease: val };
+                                return next;
+                              });
+                            }}
+                          />
+                          <Input
+                            size={'sm'}
+                            value={item.period}
+                            readOnly={true}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setMedicalHistoryList((prev) => {
+                                const next = [...prev];
+                                next[idx] = { ...next[idx], period: val };
+                                return next;
+                              });
+                            }}
+                          />
                         </React.Fragment>
                       ))}
                     </Grid>
                     <Grow gap={1} placement="ec" className="w-full">
                       <Grow gap={1} placement="ec">
-                        <Button size={'md'} className="w-full font-normal">
+                        <Button
+                          size={'md'}
+                          className="w-full font-normal"
+                          onClick={() =>
+                            setMedicalHistoryList([
+                              { disease: '척추관협착증', period: '무관' },
+                              { disease: '', period: '' },
+                              { disease: '', period: '' },
+                              { disease: '', period: '' },
+                            ])
+                          }
+                        >
                           입력/수정
                         </Button>
-                        <Button variant={'outlined'} color={'gray-light'} size={'md'} className="w-full font-normal">
+                        <Button
+                          variant={'outlined'}
+                          color={'gray-light'}
+                          size={'md'}
+                          className="w-full font-normal"
+                          onClick={() =>
+                            setMedicalHistoryList([
+                              { disease: '', period: '' },
+                              { disease: '', period: '' },
+                              { disease: '', period: '' },
+                              { disease: '', period: '' },
+                            ])
+                          }
+                        >
                           <ResetIcon size={16} color={'var(--color-gray-60)'} />
                           초기화
                         </Button>
@@ -747,9 +924,10 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   <Grow className="w-full">
                     <Button
                       variant={'contained'}
-                      color={is보장패키지 ? 'primary' : 'coolgray-light'}
+                      color={isCoveragePackage ? 'primary' : 'coolgray-light'}
                       size={'lg'}
                       className="w-full"
+                      onClick={() => setIsCoveragePackage((prev) => !prev)}
                     >
                       <PaperIcon />
                       보장패키지
@@ -780,23 +958,39 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         variant="button"
                         className="w-[9.2rem]"
                         checked={selectedCoverageValues.includes('진단비')}
-                        onCheckedChange={(checked) => {
-                          setSelectedCoverageValues((prev) => {
-                            const nextChecked = checked === true;
-                            if (nextChecked) {
-                              return prev.includes('진단비') ? prev : [...prev, '진단비'];
-                            }
-                            return prev.filter((value) => value !== '진단비');
-                          });
-                        }}
+                        onCheckedChange={handleDiagnosisToggle}
                       >
                         진단비
                       </Checkbox>
                       <Grow variant="box" className="h-[2.8rem] py-0 px-2 rounded-1 gap-3 w-full" placement="sc">
-                        <Checkbox size="sm">암</Checkbox>
-                        <Checkbox size="sm">뇌</Checkbox>
-                        <Checkbox size="sm">심장</Checkbox>
-                        <Checkbox size="sm">기타</Checkbox>
+                        <Checkbox
+                          size="sm"
+                          checked={coverageSubValues.includes('진단비-암')}
+                          onCheckedChange={(checked) => handleSubCoverageToggle('진단비-암', checked)}
+                        >
+                          암
+                        </Checkbox>
+                        <Checkbox
+                          size="sm"
+                          checked={coverageSubValues.includes('진단비-뇌')}
+                          onCheckedChange={(checked) => handleSubCoverageToggle('진단비-뇌', checked)}
+                        >
+                          뇌
+                        </Checkbox>
+                        <Checkbox
+                          size="sm"
+                          checked={coverageSubValues.includes('진단비-심')}
+                          onCheckedChange={(checked) => handleSubCoverageToggle('진단비-심', checked)}
+                        >
+                          심장
+                        </Checkbox>
+                        <Checkbox
+                          size="sm"
+                          checked={coverageSubValues.includes('진단비-기타')}
+                          onCheckedChange={(checked) => handleSubCoverageToggle('진단비-기타', checked)}
+                        >
+                          기타
+                        </Checkbox>
                       </Grow>
                     </Grow>
                     <Checkbox
@@ -822,23 +1016,39 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         variant="button"
                         className="w-[9.2rem]"
                         checked={selectedCoverageValues.includes('수술/치료')}
-                        onCheckedChange={(checked) => {
-                          setSelectedCoverageValues((prev) => {
-                            const nextChecked = checked === true;
-                            if (nextChecked) {
-                              return prev.includes('수술/치료') ? prev : [...prev, '수술/치료'];
-                            }
-                            return prev.filter((value) => value !== '수술/치료');
-                          });
-                        }}
+                        onCheckedChange={handleSurgeryToggle}
                       >
                         수술/치료
                       </Checkbox>
                       <Grow variant="box" className="h-[2.8rem] py-0 px-2 rounded-1 gap-3 w-full" placement="sc">
-                        <Checkbox size="sm">암</Checkbox>
-                        <Checkbox size="sm">뇌</Checkbox>
-                        <Checkbox size="sm">심장</Checkbox>
-                        <Checkbox size="sm">기타</Checkbox>
+                        <Checkbox
+                          size="sm"
+                          checked={coverageSubValues.includes('수술치료-암')}
+                          onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-암', checked)}
+                        >
+                          암
+                        </Checkbox>
+                        <Checkbox
+                          size="sm"
+                          checked={coverageSubValues.includes('수술치료-뇌')}
+                          onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-뇌', checked)}
+                        >
+                          뇌
+                        </Checkbox>
+                        <Checkbox
+                          size="sm"
+                          checked={coverageSubValues.includes('수술치료-심')}
+                          onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-심', checked)}
+                        >
+                          심장
+                        </Checkbox>
+                        <Checkbox
+                          size="sm"
+                          checked={coverageSubValues.includes('수술치료-기타')}
+                          onCheckedChange={(checked) => handleSubCoverageToggle('수술치료-기타', checked)}
+                        >
+                          기타
+                        </Checkbox>
                       </Grow>
                     </Grow>
                     <Checkbox
