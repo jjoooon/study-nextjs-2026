@@ -393,23 +393,36 @@ export const isExternalOrCustomIframe = (popupId?: string): boolean => {
     return false;
   }
 
-  // 1. Storybook 프리뷰 iframe(storybook-preview-iframe)인 경우 항상 false
+  // 1. dialogSizes.json에서 현재 팝업의 isIframe 설정값 최우선 조회
+  const predefined = getDialogPredefinedSize(currentId);
+  if (predefined?.isIframe !== undefined) {
+    return predefined.isIframe;
+  }
+
+  // 2. Storybook 프리뷰 iframe(storybook-preview-iframe)인 경우 false
   try {
     if (
       window.name === 'storybook-preview-iframe' ||
-      window.frameElement?.id === 'storybook-preview-iframe' ||
+      window.location.search.includes('id=') ||
+      window.location.search.includes('viewMode=')
+    ) {
+      return false;
+    }
+    if (typeof window.frameElement !== 'undefined' && window.frameElement?.id === 'storybook-preview-iframe') {
+      return false;
+    }
+    if (
+      typeof window.parent !== 'undefined' &&
+      window.parent !== window.self &&
       Boolean(window.parent?.document?.getElementById('storybook-preview-iframe'))
     ) {
       return false;
     }
   } catch {
-    // Cross-origin 등으로 접근 불가 시 무시하고 다음 단계 진행
-  }
-
-  // 2. dialogSizes.json에서 현재 팝업의 isIframe 설정값 조회
-  const predefined = getDialogPredefinedSize(currentId);
-  if (predefined?.isIframe !== undefined) {
-    return predefined.isIframe;
+    // Cross-origin 접근 제한 발생 시 Storybook URL 쿼리로 판별
+    if (typeof window !== 'undefined' && window.location.search.includes('id=')) {
+      return false;
+    }
   }
 
   // 3. 사전 정의되지 않은 경우 최상위 창 여부로 기본 판별
