@@ -229,8 +229,8 @@ export default function Ltpa670Section() {
           values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         },
         cellRenderer: getExpiryRenderer('center'),
-        valueParser: (params) => Number(params.newValue), // 저장 시 숫자로
-        valueFormatter: (params) => String(params.value ?? ''), // 표시 시 문자열로
+        valueParser: (params) => Number(params.newValue),
+        valueFormatter: (params) => String(params.value ?? ''),
       },
       {
         headerName: '추천제외',
