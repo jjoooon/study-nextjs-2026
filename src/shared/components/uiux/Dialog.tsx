@@ -729,6 +729,14 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * 팝업 고유 ID (생략 시 URL/DOM에서 자동 감지하여 dialogSizes.json의 사전 정의 크기를 가져옵니다)
    */
   popupId?: string;
+  /**
+   * 팝업 화면 정렬 위치
+   * - 'center': 중앙 정렬 (기본값)
+   * - 'left': 화면 좌측 정렬 (2.4rem 여백)
+   * - 'right': 화면 우측 정렬 (2.4rem 여백)
+   * @default 'center'
+   */
+  align?: 'center' | 'left' | 'right';
 }
 
 /**
@@ -747,6 +755,7 @@ function DialogContent({
   zIndex,
   size,
   defaultPosition,
+  align = 'center',
   onPointerDownOutside,
   onInteractOutside,
   minimized,
@@ -1006,16 +1015,27 @@ function DialogContent({
   }
 
   const contentStyle = React.useMemo<React.CSSProperties>(() => {
+    let initialLeft = '50%';
     let transformValue = `translate(-50%, -50%)`;
+
+    if (align === 'left') {
+      initialLeft = '2.4rem';
+      transformValue = `translate(0, -50%)`;
+    } else if (align === 'right') {
+      initialLeft = 'calc(100% - 2.4rem)';
+      transformValue = `translate(-100%, -50%)`;
+    }
+
     if (isInitialized || isMinimized) {
+      initialLeft = '0px';
       transformValue = `translate(${position.x}px, ${position.y}px)`;
     } else if (defaultPosition) {
-      transformValue = `translate(-50%, -50%) translate(${position.x}px, ${position.y}px)`;
+      transformValue = `${transformValue} translate(${position.x}px, ${position.y}px)`;
     }
 
     return {
       ...(props.style ?? {}),
-      left: isFullSize ? '50%' : isInitialized ? '0px' : '50%',
+      left: isFullSize ? '50%' : initialLeft,
       top: isFullSize ? '50%' : isInitialized ? '0px' : '50%',
       transform: isFullSize ? `translate(-50%, -50%)` : transformValue,
       cursor: isDragging ? 'grabbing' : isResizing ? 'auto' : undefined,
@@ -1033,6 +1053,7 @@ function DialogContent({
     };
   }, [
     props.style,
+    align,
     position.x,
     position.y,
     isDragging,

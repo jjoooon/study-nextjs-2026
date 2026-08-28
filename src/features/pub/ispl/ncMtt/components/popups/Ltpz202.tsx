@@ -106,15 +106,19 @@ const DummyData: DummyDataType[] = [
 export type Ltpz202Props = {
   /** 미입력 항목 셀 클릭 시 호출되는 콜백 함수 */
   onUnenteredItemClick?: (item: DummyDataType) => void;
+  /** 팝업 화면 정렬 위치 ('center' | 'left' | 'right', 기본값: 'left') */
+  align?: 'center' | 'left' | 'right';
+  /** 팝업 추가 오프셋 위치 설정 (선택 사항) */
+  defaultPosition?: { x: number; y: number };
 };
 
-const Ltpz202 = ({ onUnenteredItemClick }: Ltpz202Props) => {
+const Ltpz202 = ({ onUnenteredItemClick, align = 'left', defaultPosition }: Ltpz202Props) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
     () => [
       {
-        headerName: '패키지명',
+        headerName: '질병명',
         field: 'field01',
         flex: 1,
         minWidth: attributeColumnWidth(90),
@@ -128,6 +132,7 @@ const Ltpz202 = ({ onUnenteredItemClick }: Ltpz202Props) => {
         flex: 10,
         autoHeight: true,
         sortable: true,
+        unSortIcon: true,
         cellClass: 'cursor-pointer hover:underline',
       },
     ],
@@ -143,7 +148,13 @@ const Ltpz202 = ({ onUnenteredItemClick }: Ltpz202Props) => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} className="w-[30rem]">
+      <DialogContent
+        showCloseButton
+        resizable={true}
+        className="w-[30rem]"
+        align={align}
+        defaultPosition={defaultPosition}
+      >
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
