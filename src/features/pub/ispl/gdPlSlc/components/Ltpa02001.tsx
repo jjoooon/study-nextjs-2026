@@ -728,7 +728,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       </Grow>
       <Grow className="w-full h-full min-h-0 overflow-hidden" placement="ss" gap={5}>
         <ResizablePanelGroup orientation="horizontal" className="w-full h-full min-h-0">
-          <ResizablePanel defaultSize={70}>
+          <ResizablePanel defaultSize={60}>
             <TableFold className="h-full flex flex-col min-h-0">
               <TableFoldHead title="상품정보" variant="default" />
               <TableFoldBody className="w-full flex-1 min-h-0 relative">
@@ -751,7 +751,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
           </ResizablePanel>
           <ResizableHandle />
           {/* 우측 종 정보 및 플랜 영역 패널 */}
-          <ResizablePanel defaultSize={30}>
+          <ResizablePanel defaultSize={40}>
             <ResizablePanelGroup orientation="vertical" className="w-full h-full min-h-0">
               <ResizablePanel defaultSize={50}>
                 <TableFold className="w-full h-full flex flex-col min-h-0">

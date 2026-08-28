@@ -353,8 +353,6 @@
   min-height: 2.6rem !important;
 }
 
-
-
 /* 선택 시 체크박스 배경색(구형 브라우저 대응) */
 .ag-checkbox + .ag-header-cell-comp-wrapper {
   display: none;

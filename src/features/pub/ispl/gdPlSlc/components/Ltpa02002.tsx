@@ -13,12 +13,20 @@ import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
 import { BulletItem } from '@common/BulletList';
-import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AiSpinner, PuzzleSpinner } from '@common/SpinnerRoot';
-import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, KebabIcon } from '@icons';
-import { QuestionMark } from '@icons';
+import {
+  Ai2Icon,
+  SelectDropIcon,
+  SearchIcon,
+  ResetIcon,
+  AdderIcon,
+  ArrowNext,
+  KebabIcon,
+  QuestionMark,
+  PaperIcon,
+} from '@icons';
 import { Button } from '@uiux/Button';
-import { Checkbox, CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
+import { Checkbox } from '@uiux/Checkbox';
 import { Input } from '@uiux/Input';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
@@ -215,14 +223,12 @@ export function Ltpa02002({ userType }: { userType: string }) {
 
   // 2-3. 추가 정보 / 보장 분석 / 특징 조건 관련 상태
   const [selectedCoverageValues, setSelectedCoverageValues] = useState<CoverageOptionValue[]>([]);
-  const [selectedAnalysisValue, setSelectedAnalysisValue] = useState<AnalysisOptionValueWithEmpty>('');
+  const [selectedAnalysisValue, setSelectedAnalysisValue] = useState('');
 
   const [simpleType, setSimpleType] = useState<string>('');
   const [noRefundValue, setNoRefundValue] = useState<string>('');
   const [premiumWaiverValue, setPremiumWaiverValue] = useState<string>('');
   const [maturityValue, setMaturityValue] = useState<string>('');
-
-  const [additionalDiseases, setAdditionalDiseases] = useState<string[]>([]); // ['고혈압', ...]
 
   // 2-4. 애니메이션 제어 관련 상태
   const [animateCardPhase, setAnimateCardPhase] = useState<'idle' | 'appear' | 'fall'>('idle');
@@ -367,6 +373,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
   };
 
   const [lastInquiryDate, setLastInquiryDate] = useState('');
+  const [is보장패키지, set보장패키지] = useState(false);
 
   return (
     <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] relative z-0" gap={3}>
@@ -420,9 +427,9 @@ export function Ltpa02002({ userType }: { userType: string }) {
             </Grow>
           </Grow>
           {isFilterOptionOpen && (
-            <Grow
+            <Grid
               variant="box-round-b"
-              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[13.4rem]! justify-stretch! "
+              className="absolute top-[calc(100%-.6rem)] left-0 w-full bg-[var(--color-blue-gray-10)] shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] pt-2.5 pb-[2.5rem] grid-cols-[1fr_1fr_1fr] gap-[2.4rem] z-10 pl-[6.7rem]! pr-[13.4rem]! justify-stretch! "
               placement="ss"
             >
               {/* 상품특징 */}
@@ -696,112 +703,182 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   </Gcol>
                 </Gcol>
               ) : (
-                <Gcol variant={'box-line'} placement="ss" className="!p-[1.2rem] translate-x-[0.6rem]">
-                  {/* 20260810 -  */}
-                  <FormTable variant={'none'} lineTop={false} caption="" cols={['w-[6rem]', 'w-auto']}>
-                    <FormRow className="pt-1">
-                      <FormCell title={'추가질병'}>
-                        <CheckboxGroup
-                          className="grid grid-cols-[1fr_1fr] w-full gap-0"
-                          value={additionalDiseases}
-                          onValueChange={(values) => setAdditionalDiseases(values)}
-                        >
-                          {[
-                            { value: '고혈압', label: '고혈압' },
-                            { value: '당뇨', label: '당뇨' },
-                          ].map((opt) => (
-                            <CheckboxGroupItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </CheckboxGroupItem>
-                          ))}
-                        </CheckboxGroup>
-                      </FormCell>
-                    </FormRow>
-                    {/* 20260810 - 수정 */}
-                    <FormRow className="pt-1">
-                      <FormCell
-                        title={
-                          <Gcol gap={1} placement="ss" className="w-full">
-                            <Typo variant={'heading-md'} className="text-[var(--color-blue-gray-50)]">
-                              입원수술
-                            </Typo>
-                            <Button
-                              variant={'outlined'}
-                              color={'gray-light'}
-                              size={'sm'}
-                              className="w-full font-normal"
-                            >
-                              입력/수정
-                            </Button>
-                            <Button
-                              variant={'outlined'}
-                              color={'gray-light'}
-                              size={'sm'}
-                              className="w-full font-normal"
-                            >
-                              초기화
-                            </Button>
-                          </Gcol>
-                        }
-                        className="align-top !pt-[0.3rem]"
-                      >
-                        <Grid className="grid-cols-[10rem_1fr] w-full" gap={1}>
-                          {[
-                            { disease: '척추관협착증', period: '무관' },
-                            { disease: '신장낭종', period: '10년내' },
-                            { disease: '추간판탈출', period: '3개월내' },
-                            { disease: '', period: '' },
-                          ].map((item, idx) => (
-                            <React.Fragment key={idx}>
-                              <Input size={'sm'} value={item.disease} readOnly />
-                              <Input size={'sm'} value={item.period} readOnly />
-                            </React.Fragment>
-                          ))}
-                        </Grid>
-                      </FormCell>
-                    </FormRow>
-                    <FormRow className="pt-1">
-                      <FormCell title={'선택'}>
-                        <Grow placement="ss">
-                          <Typo tag={'p'} variant={'body-xs'}>
-                            345(2일), 325(2일), 일반고지형(5년)
-                          </Typo>
-                        </Grow>
-                      </FormCell>
-                    </FormRow>
-                    {/* // 20260810 - 수정 */}
-                  </FormTable>
+                <Gcol placement="ss" gap={1}>
+                  <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
+                    병력사항
+                  </Typo>
+                  <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
+                    <Grid className="grid-cols-[1fr_6.4rem] w-full" gap={1}>
+                      <Typo className="text-center">질병명</Typo>
+                      <Typo className="text-center">기간</Typo>
+                      {[
+                        { disease: '척추관협착증', period: '무관' },
+                        { disease: '신장낭종', period: '10년내' },
+                        { disease: '추간판탈출', period: '3개월내' },
+                        { disease: '', period: '' },
+                      ].map((item, idx) => (
+                        <React.Fragment key={idx}>
+                          <Input size={'sm'} value={item.disease} readOnly />
+                          <Input size={'sm'} value={item.period} readOnly />
+                        </React.Fragment>
+                      ))}
+                    </Grid>
+                    <Grow gap={1} placement="ec" className="w-full">
+                      <Grow gap={1} placement="ec">
+                        <Button size={'md'} className="w-full font-normal">
+                          입력/수정
+                        </Button>
+                        <Button variant={'outlined'} color={'gray-light'} size={'md'} className="w-full font-normal">
+                          <ResetIcon size={16} color={'var(--color-gray-60)'} />
+                          초기화
+                        </Button>
+                      </Grow>
+                    </Grow>
+                  </Gcol>
                 </Gcol>
               )}
 
               {/* 담보군 */}
-              <Gcol variant={'box-line'} className="gap-[0.4rem]" placement="ss">
-                <Grid className="grid-cols-[1fr_1fr] grid-rows-[minmax(0,1fr)] gap-1 w-full">
-                  {coverageOptions.map((opt) => (
-                    <React.Fragment key={opt.value}>
+              <Gcol placement="ss" gap={1}>
+                <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
+                  담보군
+                </Typo>
+                <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3 w-full" gap={2}>
+                  <Grow className="w-full">
+                    <Button
+                      variant={'contained'}
+                      color={is보장패키지 ? 'primary' : 'coolgray-light'}
+                      size={'lg'}
+                      className="w-full"
+                    >
+                      <PaperIcon />
+                      보장패키지
+                    </Button>
+                  </Grow>
+                  <Divider dir="row" color="gray-light" className="w-full" />
+                  <Gcol className="gap-1 w-full" placement="ss">
+                    <Checkbox
+                      value="사망/후유"
+                      variant="button"
+                      className="w-[9.2rem]"
+                      checked={selectedCoverageValues.includes('사망/후유')}
+                      onCheckedChange={(checked) => {
+                        setSelectedCoverageValues((prev) => {
+                          const nextChecked = checked === true;
+                          if (nextChecked) {
+                            return prev.includes('사망/후유') ? prev : [...prev, '사망/후유'];
+                          }
+                          return prev.filter((value) => value !== '사망/후유');
+                        });
+                      }}
+                    >
+                      사망/후유
+                    </Checkbox>
+                    <Grow className="w-full" placement="sc">
                       <Checkbox
-                        value={opt.value}
+                        value="진단비"
                         variant="button"
-                        className="w-full"
-                        size={'md'}
-                        checked={selectedCoverageValues.includes(opt.value)}
+                        className="w-[9.2rem]"
+                        checked={selectedCoverageValues.includes('진단비')}
                         onCheckedChange={(checked) => {
                           setSelectedCoverageValues((prev) => {
                             const nextChecked = checked === true;
                             if (nextChecked) {
-                              return prev.includes(opt.value) ? prev : [...prev, opt.value];
+                              return prev.includes('진단비') ? prev : [...prev, '진단비'];
                             }
-                            return prev.filter((value) => value !== opt.value);
+                            return prev.filter((value) => value !== '진단비');
                           });
                         }}
                       >
-                        {opt.label}
+                        진단비
                       </Checkbox>
-                    </React.Fragment>
-                  ))}
-                </Grid>
+                      <Grow variant="box" className="h-[2.8rem] py-0 px-2 rounded-1 gap-3 w-full" placement="sc">
+                        <Checkbox size="sm">암</Checkbox>
+                        <Checkbox size="sm">뇌</Checkbox>
+                        <Checkbox size="sm">심장</Checkbox>
+                        <Checkbox size="sm">기타</Checkbox>
+                      </Grow>
+                    </Grow>
+                    <Checkbox
+                      value="입원/통원"
+                      variant="button"
+                      className="w-[9.2rem]"
+                      checked={selectedCoverageValues.includes('입원/통원')}
+                      onCheckedChange={(checked) => {
+                        setSelectedCoverageValues((prev) => {
+                          const nextChecked = checked === true;
+                          if (nextChecked) {
+                            return prev.includes('입원/통원') ? prev : [...prev, '입원/통원'];
+                          }
+                          return prev.filter((value) => value !== '입원/통원');
+                        });
+                      }}
+                    >
+                      입원/통원
+                    </Checkbox>
+                    <Grow className="w-full" placement="sc">
+                      <Checkbox
+                        value="수술/치료"
+                        variant="button"
+                        className="w-[9.2rem]"
+                        checked={selectedCoverageValues.includes('수술/치료')}
+                        onCheckedChange={(checked) => {
+                          setSelectedCoverageValues((prev) => {
+                            const nextChecked = checked === true;
+                            if (nextChecked) {
+                              return prev.includes('수술/치료') ? prev : [...prev, '수술/치료'];
+                            }
+                            return prev.filter((value) => value !== '수술/치료');
+                          });
+                        }}
+                      >
+                        수술/치료
+                      </Checkbox>
+                      <Grow variant="box" className="h-[2.8rem] py-0 px-2 rounded-1 gap-3 w-full" placement="sc">
+                        <Checkbox size="sm">암</Checkbox>
+                        <Checkbox size="sm">뇌</Checkbox>
+                        <Checkbox size="sm">심장</Checkbox>
+                        <Checkbox size="sm">기타</Checkbox>
+                      </Grow>
+                    </Grow>
+                    <Checkbox
+                      value="골절/화상"
+                      variant="button"
+                      className="w-[9.2rem]"
+                      checked={selectedCoverageValues.includes('골절/화상')}
+                      onCheckedChange={(checked) => {
+                        setSelectedCoverageValues((prev) => {
+                          const nextChecked = checked === true;
+                          if (nextChecked) {
+                            return prev.includes('골절/화상') ? prev : [...prev, '골절/화상'];
+                          }
+                          return prev.filter((value) => value !== '골절/화상');
+                        });
+                      }}
+                    >
+                      골절/화상
+                    </Checkbox>
+                    <Checkbox
+                      value="검사/지원"
+                      variant="button"
+                      className="w-[9.2rem]"
+                      checked={selectedCoverageValues.includes('검사/지원')}
+                      onCheckedChange={(checked) => {
+                        setSelectedCoverageValues((prev) => {
+                          const nextChecked = checked === true;
+                          if (nextChecked) {
+                            return prev.includes('검사/지원') ? prev : [...prev, '검사/지원'];
+                          }
+                          return prev.filter((value) => value !== '검사/지원');
+                        });
+                      }}
+                    >
+                      검사/지원
+                    </Checkbox>
+                  </Gcol>
+                </Gcol>
               </Gcol>
-            </Grow>
+            </Grid>
           )}
         </Grow>
       </div>
