@@ -8,7 +8,7 @@ import { Grow, Gcol } from '@atoms';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
 
-const testMsg = '[<>top left<br /> 에러</>]';
+const testMsg = 'top left\n 에러';
 
 const meta: Meta<typeof Input> = {
   title: 'Components/Forms/Input',
@@ -96,7 +96,7 @@ import { Input } from '@uiux/Input';
               </Grow>
               <Grow gap={8} className="mt-2">
                 <Input error errorPs="bl" errorMsg="bottom left 에러" placeholder="bl" />
-                <Input error errorPs="bc" errorMsg="bottom center 에러" placeholder="bc" />
+                <Input error errorPs="bc" errorMsg="bottom center 에러 bottom center 에러" placeholder="bc" />
                 <Input error errorPs="br" errorMsg="bottom right 에러" placeholder="br" />
               </Grow>
             </Gcol>

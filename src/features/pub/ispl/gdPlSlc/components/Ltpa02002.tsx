@@ -12,6 +12,7 @@ import * as React from 'react';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Grid, Typo, Divider } from '@atoms';
+import { BulletItem } from '@common/BulletList';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { AiSpinner, PuzzleSpinner } from '@common/SpinnerRoot';
 import { Ai2Icon, SelectDropIcon, SearchIcon, ResetIcon, AdderIcon, ArrowNext, KebabIcon } from '@icons';
@@ -240,13 +241,11 @@ export function Ltpa02002({ userType }: { userType: string }) {
   ] as const;
   type CoverageOptionValue = (typeof coverageOptions)[number]['value'];
 
-  const AnalysisOptions = [
-    { value: '보장분석 부족자금', label: '보장분석 부족자금' },
-    { value: '기계약 누적해소', label: '기계약 누적해소' },
-    { value: '기계약 유지', label: '기계약 유지' },
+  const analysisOptionList = [
+    { value: '기계약 유지(부족자금)', label: '기계약 유지(부족자금)' },
+    { value: '일부 리모델링', label: '일부 리모델링' },
+    { value: '기계약 전체 누적해소', label: '기계약 전체 누적해소' },
   ] as const;
-  type AnalysisOptionValue = (typeof AnalysisOptions)[number]['value'];
-  type AnalysisOptionValueWithEmpty = '' | AnalysisOptionValue;
 
   const columnDefs4: ColDef<DummyDataListDetailType>[] = [
     {
@@ -363,6 +362,11 @@ export function Ltpa02002({ userType }: { userType: string }) {
   const handleOnChangeNdFlgcd = (value: string) => {
     setMaturityValue(value);
   };
+  const handleOnChangeLackAmtCcFlgcd = (value: string) => {
+    setSelectedAnalysisValue(value);
+  };
+
+  const [lastInquiryDate, setLastInquiryDate] = useState('');
 
   return (
     <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] relative z-0" gap={3}>
@@ -574,20 +578,26 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     추가고지
                   </Typo>
                   <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
-                    <CheckboxGroup
-                      className="grid grid-cols-[1fr_1fr] w-full gap-1"
-                      value={additionalDiseases}
-                      onValueChange={(values) => setAdditionalDiseases(values)}
-                    >
-                      {[
-                        { value: '고혈압', label: '고혈압' },
-                        { value: '당뇨', label: '당뇨' },
-                      ].map((opt) => (
-                        <CheckboxGroupItem key={opt.value} value={opt.value} variant="button" className="w-full">
-                          {opt.label}
-                        </CheckboxGroupItem>
-                      ))}
-                    </CheckboxGroup>
+                    <Grid className="grid-cols-[1fr_1fr] w-full gap-1">
+                      <Checkbox
+                        checked={false}
+                        onCheckedChange={() => {}}
+                        value="1"
+                        variant="button"
+                        className="w-full"
+                      >
+                        고혈압
+                      </Checkbox>
+                      <Checkbox
+                        checked={false}
+                        onCheckedChange={() => {}}
+                        value="2"
+                        variant="button"
+                        className="w-full"
+                      >
+                        당뇨
+                      </Checkbox>
+                    </Grid>
                     <Typo icon="info">추가고지형 있는 상품인 경우에만 적용됩니다.</Typo>
                   </Gcol>
                 </Gcol>
@@ -602,44 +612,81 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     <Typo tag="h4" variant={'heading-sm'} color={'blueGray'}>
                       보장분석
                     </Typo>
-                    <Tooltip defaultOpen>
+                    <Tooltip>
                       <TooltipTrigger asChild>
                         <Button variant={'none'} size={'md'} only={'icon'}>
                           <QuestionMark color="var(--color-gray-60)" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent side="bottom" align="start" sideOffset={0}>
-                        <dl className="flex flex-col gap-2 divide-y-1">
-                          <div>
-                            qus
+                        <dl className="flex flex-col gap-2 divide-y-1 divide-[var(--color-gray-10)] gap-2">
+                          <div className="pb-1">
                             <dt className="text-[1.2rem] font-bold text-[#000]">기계약 유지(부족자금)</dt>
-                            <dd>기계약 해약없이 추가 판매</dd>
+                            <dd>
+                              <BulletItem type="dot" size="sm">
+                                기계약 해약없이 추가 판매
+                              </BulletItem>
+                            </dd>
+                          </div>
+                          <div className="pb-1">
+                            <dt className="text-[1.2rem] font-bold text-[#000]">일부 리모델링</dt>
+                            <dd>
+                              <BulletItem type="dot" size="sm">
+                                보장분석 컨설팅 저장된 정보 이용
+                              </BulletItem>
+                            </dd>
                           </div>
                           <div>
-                            <dt>일부 리모델링</dt>
-                            <dd>보장분석 컨설팅 저장된 정보 이용</dd>
-                          </div>
-                          <div>
-                            <dt>기계약 전체 누적해소</dt>
-                            <dd>기계약 해약을 전제로 설계 진행</dd>
+                            <dt className="text-[1.2rem] font-bold text-[#000]">기계약 전체 누적해소</dt>
+                            <dd>
+                              <BulletItem type="dot" size="sm">
+                                기계약 해약을 전제로 설계 진행
+                              </BulletItem>
+                            </dd>
                           </div>
                         </dl>
                       </TooltipContent>
                     </Tooltip>
                   </Grow>
                   <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
+                    <Grow gap={2}>
+                      <Typo tag="b" variant={'heading-sm'}>
+                        {lastInquiryDate ? lastInquiryDate : '진행필요'}
+                      </Typo>
+                      {lastInquiryDate ? (
+                        <Button
+                          variant={'contained'}
+                          size={'sm'}
+                          color={'coolgray-light'}
+                          onClick={() => setLastInquiryDate('')}
+                        >
+                          재조회
+                        </Button>
+                      ) : (
+                        <Button
+                          variant={'contained'}
+                          size={'sm'}
+                          color={'coolgray-light'}
+                          onClick={() => setLastInquiryDate('2026-08-01')}
+                        >
+                          조회
+                        </Button>
+                      )}
+                    </Grow>
+
                     <RadioGroup
                       width={'full'}
                       className="gap-[0.4rem] [&>div]:w-full"
                       value={selectedAnalysisValue}
-                      onValueChange={(value) => setSelectedAnalysisValue(value as AnalysisOptionValue)}
+                      onValueChange={handleOnChangeLackAmtCcFlgcd}
                     >
-                      {AnalysisOptions.map((opt) => (
+                      {analysisOptionList.map((opt) => (
                         <RadioGroupItem
                           key={opt.value}
                           value={opt.value}
                           variant="button"
                           size={'md'}
+                          disabled={!lastInquiryDate}
                           className="!w-full !text-left"
                         >
                           {opt.label}

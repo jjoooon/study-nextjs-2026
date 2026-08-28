@@ -224,21 +224,6 @@ export default function Ltpa020Section() {
                                 >
                                   (1급)회사 사무직 종사자
                                 </KeyValueItem>
-                                <Divider color="gray-dark" />
-
-                                <KeyValueItem
-                                  label={'보장분석'}
-                                  variant="info"
-                                  className="[&>div]:!text-[var(--color-gray-20)] [&>div+div]:!text-[#fff] gap-2"
-                                >
-                                  <Grow gap={2}>
-                                    2026-07-15
-                                    <Button variant={'contained'} size={'sm'} color={'coolgray-light'}>
-                                      조회
-                                    </Button>
-                                  </Grow>
-                                </KeyValueItem>
-                                <Divider color="gray-dark" />
                               </Grow>
                             </Grow>
                           )}
