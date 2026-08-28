@@ -7,6 +7,7 @@ import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
 import { Grow, Grid, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -261,7 +262,7 @@ export default function Ltpa670Section() {
             <Grow placement="bwe" className="w-full" variant={'box-round'}>
               <FormTable variant={'none'} cols={['w-1', 'w-[20rem]', 'w-1', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'담보'} tdClassName="grid-cols-[auto_1fr_auto]" colSpan={3}>
+                  <FormCell title={'담보'} tdClassName="grid-cols-[auto_1fr_auto_1fr]" colSpan={1}>
                     <Input width={80} value={'CLA23114'} />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
@@ -272,6 +273,18 @@ export default function Ltpa670Section() {
                       value={'한화시그니처여성건강보험/(1종) 납입면제 강화형 기본형'}
                       readOnly
                     />
+                  </FormCell>
+                  <FormCell title={'판매채널'}>
+                    <RadioGroup defaultValue="판매채널">
+                      {[
+                        { value: '범용', label: '범용' },
+                        { value: 'TM', label: 'TM' },
+                      ].map((option) => (
+                        <RadioGroupItem key={option.value} value={option.value}>
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}
+                    </RadioGroup>
                   </FormCell>
                 </FormRow>
                 <FormRow>
