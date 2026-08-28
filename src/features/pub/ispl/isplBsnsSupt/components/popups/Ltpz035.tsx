@@ -118,7 +118,7 @@ const Ltpz035 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              담보 속성별 상품관리
+              담보별 취급상품 조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ035)

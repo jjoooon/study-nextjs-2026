@@ -102,7 +102,7 @@
     "title": "청약포인트 상세",
     "width": 960,
     "height": 926,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ013",
@@ -165,7 +165,7 @@
     "title": "지침확인결과",
     "width": 560,
     "height": 500,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ023",
@@ -494,7 +494,7 @@
     "title": "특정부위/질병부담보",
     "width": 760,
     "height": 334,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ075",
@@ -620,14 +620,14 @@
     "title": "피보험자별누적조회",
     "width": 1180,
     "height": 606,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ098",
     "title": "계약별누적위험",
     "width": 960,
     "height": 570,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ099",
