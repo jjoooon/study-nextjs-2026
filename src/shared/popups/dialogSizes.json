@@ -830,7 +830,7 @@
     "title": "시스템 메시지(단건)",
     "width": 480,
     "height": 360,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPA060",
