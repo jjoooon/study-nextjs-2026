@@ -739,14 +739,14 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
                   <Grow placement={'bwe'}>
                     <Typo variant="heading-md">질병검색</Typo>
                   </Grow>
-                  <Gcol variant="box-round" className="bg-[var(--color-blue-gray-15)]" gap={2}>
+                  <Gcol variant="box-round" className="bg-[var(--color-blue-gray-15)] flex-1" gap={2}>
                     <Grow className="w-full">
                       <Input placeholder="병명 또는 코드 입력" className="w-full" />
                       <Button aria-label="검색" variant={'outlined'} size={'lg'} color="gray-light" only="icon">
                         <SearchIcon color2={'var(--color-primary-50)'} />
                       </Button>
                     </Grow>
-                    <Gcol placement={'ss'} className="w-full">
+                    <Gcol placement={'ss'} className="w-full flex-1">
                       <Typo>
                         총 <b className="text-[var(--color-primary-50)]">18건</b>
                       </Typo>

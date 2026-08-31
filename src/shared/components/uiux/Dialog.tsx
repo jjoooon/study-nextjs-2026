@@ -385,21 +385,7 @@ export const getPopupIdFromElement = (element?: HTMLElement | null): string | un
 export const isExternalOrCustomIframe = (popupId?: string): boolean => {
   if (typeof window === 'undefined') return false;
 
-  const currentId = popupId || getCurrentPopupIdFromUrl();
-  const cleanId = currentId?.trim().toUpperCase();
-
-  // LTPZ120 / LTPA120(AI 챗봇) 등은 iframe 상태 판별에서 제외(항상 false)
-  if (cleanId === 'LTPZ120' || cleanId === 'LTPA120') {
-    return false;
-  }
-
-  // 1. dialogSizes.json에서 현재 팝업의 isIframe 설정값 최우선 조회
-  const predefined = getDialogPredefinedSize(currentId);
-  if (predefined?.isIframe !== undefined) {
-    return predefined.isIframe;
-  }
-
-  // 2. Storybook 프리뷰 iframe(storybook-preview-iframe)인 경우 false
+  // 1. Storybook 프리뷰 iframe(storybook-preview-iframe)인 경우 최우선으로 false 반환
   try {
     if (
       window.name === 'storybook-preview-iframe' ||
@@ -420,9 +406,26 @@ export const isExternalOrCustomIframe = (popupId?: string): boolean => {
     }
   } catch {
     // Cross-origin 접근 제한 발생 시 Storybook URL 쿼리로 판별
-    if (typeof window !== 'undefined' && window.location.search.includes('id=')) {
+    if (
+      typeof window !== 'undefined' &&
+      (window.location.search.includes('id=') || window.location.search.includes('viewMode='))
+    ) {
       return false;
     }
+  }
+
+  const currentId = popupId || getCurrentPopupIdFromUrl();
+  const cleanId = currentId?.trim().toUpperCase();
+
+  // LTPZ120 / LTPA120(AI 챗봇) 등은 iframe 상태 판별에서 제외(항상 false)
+  if (cleanId === 'LTPZ120' || cleanId === 'LTPA120') {
+    return false;
+  }
+
+  // 2. dialogSizes.json에서 현재 팝업의 isIframe 설정값 조회
+  const predefined = getDialogPredefinedSize(currentId);
+  if (predefined?.isIframe !== undefined) {
+    return predefined.isIframe;
   }
 
   // 3. 사전 정의되지 않은 경우 최상위 창 여부로 기본 판별
