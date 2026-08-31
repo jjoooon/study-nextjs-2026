@@ -123,7 +123,7 @@ const Ltpz201 = () => {
         width: attributeColumnWidth(280),
         autoHeight: true,
         wrapText: true,
-        cellClass: 'text-left',
+        cellClass: 'text-left leading-[1.4]! py-1!',
       },
       {
         headerName: '고지 1순번 답변',
