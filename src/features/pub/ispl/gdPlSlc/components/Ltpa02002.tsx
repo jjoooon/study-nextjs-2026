@@ -1394,7 +1394,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   </Typo>
                 </Gcol>
 
-                <div className="flex flex-col items-center justify-center overflow-y-auto gap-4 px-6">
+                <div className="flex flex-col items-center justify-center overflow-y-auto gap-4 px-6 mt-[-5rem]">
                   {/* 타임라인 / 가이드 스텝 3단계 */}
                   <div
                     className="w-full flex flex-col gap-3 relative pt-[10rem]"
