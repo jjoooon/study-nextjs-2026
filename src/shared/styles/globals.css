@@ -1288,7 +1288,9 @@
   color: #000;
 }
 
-.ai-chatbot{box-shadow: none !important;}
-.ai-chatbot [data-slot="dialog-header"] {
+.ai-chatbot {
+  box-shadow: none !important;
+}
+.ai-chatbot [data-slot='dialog-header'] {
   background-color: transparent !important;
 }

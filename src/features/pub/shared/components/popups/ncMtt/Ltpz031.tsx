@@ -352,6 +352,12 @@ const Ltpz031 = () => {
     type05_04: '',
   });
 
+  /** @description 수술여부 선택 상태 ('예' | '아니오') */
+  const [hasSurgery, setHasSurgery] = useState<string>('');
+
+  /** @description 재발유무 선택 상태 ('없음' | '있음') */
+  const [hasRecurrence, setHasRecurrence] = useState<string>('');
+
   /** @description 질병 상세 페이지의 탭 제어(추가, 선택, 삭제)를 담당하는 커스텀 훅 */
   const { tabs, active, setActive, handleRemove } = useTabs(DataTabs);
 
@@ -1026,7 +1032,7 @@ const Ltpz031 = () => {
                             </Button>
                           </TableFoldHead>
                           <TableFoldBody>
-                            <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-auto']}>
+                            <FormTable caption="기본질문 항목" cols={['w-[8rem]', 'w-auto', 'w-[8rem]', 'w-[20rem]']}>
                               <FormRow vertical={false}>
                                 <FormCell title={'병명'}>
                                   <Grow placement={'bwc'}>
@@ -1216,10 +1222,14 @@ const Ltpz031 = () => {
                                         </Tooltip>
                                       </Grow>
                                     ) : null}
-
-                                    <Badge color="green" size="md" variant="contained" className="">
-                                      자동완성
-                                    </Badge>
+                                    <Grow>
+                                      <Badge color="green" size="md" variant="contained" className="">
+                                        고지
+                                      </Badge>
+                                      <Badge color="primary" size="md" variant="contained" className="">
+                                        자동(ICIS)
+                                      </Badge>
+                                    </Grow>
                                   </Grow>
                                 </FormCell>
 
@@ -1227,7 +1237,6 @@ const Ltpz031 = () => {
                                   <Input
                                     value={form.type01_02}
                                     onChange={(e) => setFormField('type01_02', e.target.value)}
-                                    required
                                   />
                                 </FormCell>
                               </FormRow>
@@ -1247,22 +1256,34 @@ const Ltpz031 = () => {
                                   />
                                 </FormCell>
                                 <FormCell title={'수술여부'}>
-                                  <RadioGroup
-                                    className="gap-3"
-                                    onValueChange={() => {}}
-                                    width="full"
-                                    required
-                                    defaultValue={'예'}
-                                  >
-                                    {[
-                                      { value: '예', label: '예' },
-                                      { value: '아니오', label: '아니오' },
-                                    ].map((item) => (
-                                      <RadioGroupItem key={item.value} value={item.value}>
-                                        {item.label}
-                                      </RadioGroupItem>
-                                    ))}
-                                  </RadioGroup>
+                                  <Grow gap={3}>
+                                    <RadioGroup
+                                      className="gap-3"
+                                      onValueChange={setHasSurgery}
+                                      value={hasSurgery}
+                                      required
+                                    >
+                                      {[
+                                        { value: '예', label: '예' },
+                                        { value: '아니오', label: '아니오' },
+                                      ].map((item) => (
+                                        <RadioGroupItem key={item.value} value={item.value}>
+                                          {item.label}
+                                        </RadioGroupItem>
+                                      ))}
+                                    </RadioGroup>
+                                    {hasSurgery === '예' && (
+                                      <Grow>
+                                        <Input
+                                          commaAmount={true}
+                                          value={form.type01_05}
+                                          onChange={(e) => setFormField('type01_05', e.target.value)}
+                                          width={40}
+                                        />
+                                        회
+                                      </Grow>
+                                    )}
+                                  </Grow>
                                 </FormCell>
                               </FormRow>
                               <FormRow vertical={false}>
@@ -1320,7 +1341,8 @@ const Ltpz031 = () => {
                                       className="gap-3"
                                       errorMsg="하나를 선택해주세요."
                                       errorPs="bl"
-                                      onValueChange={() => {}}
+                                      onValueChange={setHasRecurrence}
+                                      value={hasRecurrence}
                                       required
                                     >
                                       {[
@@ -1332,15 +1354,17 @@ const Ltpz031 = () => {
                                         </RadioGroupItem>
                                       ))}
                                     </RadioGroup>
-                                    <Grow>
-                                      <Input
-                                        commaAmount={true}
-                                        value={form.type01_05}
-                                        onChange={(e) => setFormField('type01_05', e.target.value)}
-                                        width={40}
-                                      />
-                                      회
-                                    </Grow>
+                                    {hasRecurrence === '있음' && (
+                                      <Grow>
+                                        <Input
+                                          commaAmount={true}
+                                          value={form.type01_05}
+                                          onChange={(e) => setFormField('type01_05', e.target.value)}
+                                          width={40}
+                                        />
+                                        회
+                                      </Grow>
+                                    )}
                                   </Grow>
                                 </FormCell>
                               </FormRow>

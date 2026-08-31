@@ -260,7 +260,7 @@ export default function Ltpa670Section() {
         mainBody={
           <Grid className="w-full grid grid-rows-[auto_minmax(0,1fr)] gap-3 h-full">
             <Grow placement="bwe" className="w-full" variant={'box-round'}>
-              <FormTable variant={'none'} cols={['w-1', 'w-[20rem]', 'w-1', 'w-[20rem]', 'w-1', 'w-auto']}>
+              <FormTable variant={'none'} cols={['w-1', 'w-[20rem]', 'w-[2rem]', 'w-[6rem]', 'w-1', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'담보'} tdClassName="grid-cols-[auto_1fr_auto_1fr]" colSpan={3}>
                     <Input width={80} value={'CLA23114'} />
