@@ -579,7 +579,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="full" className="ltpz296-popup">
+      <DialogContent showCloseButton resizable={true} size="2xl" className="ltpz296-popup">
         {/* 다이얼로그 타이틀 영역 */}
         <DialogHeader>
           <DialogTitle>
@@ -665,7 +665,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine inner-scroll" data-row={rowDataA.length}>
+                <div className="ag-theme-alpine inner-scroll" data-row={'3'}>
                   <AgGridReact<DummyDataTypeA>
                     onGridReady={(event) => {
                       gridApiRefA.current = event.api;
@@ -723,7 +723,7 @@ export const Ltpz296 = ({ addressType = 'road' }: Ltpz296Props) => {
                 </Grow>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine inner-scroll" data-row={rowDataB.length}>
+                <div className="ag-theme-alpine inner-scroll" data-row={'3'}>
                   <AgGridReact<DummyDataTypeB>
                     onGridReady={(event) => {
                       gridApiRefB.current = event.api;

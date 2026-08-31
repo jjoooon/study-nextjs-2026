@@ -414,7 +414,7 @@ const Ltpz200 = () => {
 
         <DialogSection className="grid-rows-[1fr] overflow-x-hidden">
           {/* 상단: 설계 기본 정보 표시 영역 */}
-          <Grid className="grid-rows-[auto_1fr] h-full gap-3">
+          <Grid className="grid-rows-[auto_minmax(0,1fr)] h-full gap-3">
             <Grow placement="bwc" className="w-full" variant={'box-round'}>
               <FormTable caption="보험정보" cols={['w-auto', 'w-auto', 'w-auto', 'w-auto']} variant="head">
                 <FormRow>
@@ -446,7 +446,7 @@ const Ltpz200 = () => {
               </Grow>
             </Grow>
 
-            <div className="ag-theme-alpine h-full min-h-[22rem]">
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}

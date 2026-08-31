@@ -752,14 +752,14 @@
     "id": "LTPZ200",
     "title": "정액담보 상세조회",
     "width": 1180,
-    "height": 470,
+    "height": 480,
     "isIframe": true
   },
   {
     "id": "LTPZ296",
     "title": "담보별 피보험자명세관리",
     "width": 1180,
-    "height": 880,
+    "height": 840,
     "isIframe": true
   },
   {

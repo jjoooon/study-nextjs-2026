@@ -561,7 +561,7 @@ const Ltpz640 = () => {
         flex: 1,
         minWidth: attributeColumnWidth(210),
         autoHeight: true,
-        cellClass: 'text-center justify-center',
+        cellClass: 'text-center justify-center editable-cell',
         cellRenderer: (params: ICellRendererParams<DummyData1Type>) => {
           const target = params.data?.target ?? [false, false, false];
           const values: string[] = [];
