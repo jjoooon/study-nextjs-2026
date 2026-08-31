@@ -385,33 +385,20 @@ export const getPopupIdFromElement = (element?: HTMLElement | null): string | un
 export const isExternalOrCustomIframe = (popupId?: string): boolean => {
   if (typeof window === 'undefined') return false;
 
-  // 1. Storybook 프리뷰 iframe(storybook-preview-iframe)인 경우 최우선으로 false 반환
+  // 1. Storybook UI 내부 프리뷰(storybook-preview-iframe)인 경우 최우선으로 false 반환
   try {
-    if (
+    const isInsideStorybookPreview =
       window.name === 'storybook-preview-iframe' ||
-      window.location.search.includes('id=') ||
-      window.location.search.includes('viewMode=')
-    ) {
-      return false;
-    }
-    if (typeof window.frameElement !== 'undefined' && window.frameElement?.id === 'storybook-preview-iframe') {
-      return false;
-    }
-    if (
-      typeof window.parent !== 'undefined' &&
-      window.parent !== window.self &&
-      Boolean(window.parent?.document?.getElementById('storybook-preview-iframe'))
-    ) {
+      (typeof window.frameElement !== 'undefined' && window.frameElement?.id === 'storybook-preview-iframe') ||
+      (typeof window.parent !== 'undefined' &&
+        window.parent !== window.self &&
+        Boolean(window.parent?.document?.getElementById('storybook-preview-iframe')));
+
+    if (isInsideStorybookPreview) {
       return false;
     }
   } catch {
-    // Cross-origin 접근 제한 발생 시 Storybook URL 쿼리로 판별
-    if (
-      typeof window !== 'undefined' &&
-      (window.location.search.includes('id=') || window.location.search.includes('viewMode='))
-    ) {
-      return false;
-    }
+    // Cross-origin 접근 제한 발생 시 (진짜 외부 iframe 환경이므로 isIframe 판별 진행)
   }
 
   const currentId = popupId || getCurrentPopupIdFromUrl();
@@ -1214,7 +1201,7 @@ function DialogContent({
           data-isminimize={isMinimized ? 'true' : 'false'}
           data-is-iframe={isIframeState ? 'true' : undefined}
           className={cn(
-            'fixed w-full grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-lg border border-[var(--color-gray-20)] px-0 py-0 shadow-lg outline-none',
+            'fixed w-full grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-[0.2rem] border border-[#1f1f1f] px-0 py-0 shadow-[0_0.2rem_1.2rem_0_#222222] outline-none',
             isDragging || !!isResizing ? 'transition-none' : 'dialog-bounce-transition',
             isIframeState && 'is-iframe',
             className
@@ -1258,7 +1245,7 @@ function DialogContent({
             <DialogPrimitive.Close
               data-slot="dialog-close"
               className={cn(
-                'flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-[2.2rem] right-[2.4rem] rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none',
+                'flex items-center justify-center w-[2.4rem] h-[2.4rem] ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-[0.3rem] right-[0.5rem] rounded-xs transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none',
                 closeButtonClassName
               )}
             >
@@ -1327,7 +1314,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="dialog-header"
       className={cn(
-        'flex flex-row content-start cursor-grab w-full active:cursor-grabbing min-h-[5.6rem] justify-center shrink-0 px-6 pt-5 shrink-0',
+        'flex flex-row content-start cursor-grab w-full active:cursor-grabbing min-h-[3rem] justify-center shrink-0 pl-[1rem] pr-[0.5rem] shrink-0  border-b border-b-[0.1rem] border-[var(--color-gray-20)] ',
         className
       )}
       {...props}
@@ -1371,7 +1358,7 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
     <DialogPrimitive.Title
       data-slot="dialog-title"
       className={cn(
-        'flex items-end gap-0.5 leading-none text-[1.6rem] tracking-tighter text-left border-b border-b-[0.1rem] border-[var(--color-gray-20)] pb-3 w-full pr-6 [&_.body-xl]:!text-[1.4rem] [&_.body-xl]:!text-[var(--color-gray-70)]',
+        'flex items-center gap-0.5 leading-none text-[1.4rem] tracking-tighter text-left pb-0 w-full pr-6 [&_strong]:text-[1.4rem]! [&_strong]:text-[#111827]! [&_strong]:font-bold!',
         className
       )}
       {...props}

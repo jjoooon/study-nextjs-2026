@@ -1287,3 +1287,8 @@
   background-color: var(--color-element-gray-lighter);
   color: #000;
 }
+
+.ai-chatbot{box-shadow: none !important;}
+.ai-chatbot [data-slot="dialog-header"] {
+  background-color: transparent !important;
+}
