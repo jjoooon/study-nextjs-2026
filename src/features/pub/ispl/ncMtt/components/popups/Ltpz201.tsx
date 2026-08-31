@@ -104,8 +104,8 @@ const GroupHeaderWithSort = (props: IHeaderGroupParams) => {
   return (
     <Grow onClick={handleClick} placement="cc" className="w-full cursor-pointer select-none gap-1">
       <span className="font-bold text-[1.3rem]!">{props.displayName}</span>
-      {sortState === 'asc' && <span className="text-[1.2rem] text-gray-700 font-bold">↑</span>}
-      {sortState === 'desc' && <span className="text-[1.2rem] text-gray-700 font-bold">↓</span>}
+      {sortState === 'asc' && <span className="ag-icon ag-icon-asc" role="presentation" />}
+      {sortState === 'desc' && <span className="ag-icon ag-icon-desc" role="presentation" />}
     </Grow>
   );
 };
@@ -273,11 +273,13 @@ const Ltpz201 = () => {
                     defaultColDef={{
                       sortable: true,
                       resizable: true,
+                      singleClickEdit: true,
                       cellClass: 'text-center',
                       cellClassRules: {
                         'bg-[#fff0f0]!': (params) => !params.value || String(params.value).trim() === '',
                       },
                     }}
+                    singleClickEdit={true}
                     domLayout="autoHeight"
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
@@ -305,11 +307,13 @@ const Ltpz201 = () => {
                     defaultColDef={{
                       sortable: true,
                       resizable: true,
+                      singleClickEdit: true,
                       cellClass: 'text-center',
                       cellClassRules: {
                         'bg-[#fff0f0]!': (params) => !params.value || String(params.value).trim() === '',
                       },
                     }}
+                    singleClickEdit={true}
                     domLayout="autoHeight"
                     tooltipShowMode="whenTruncated"
                     tooltipShowDelay={0}
