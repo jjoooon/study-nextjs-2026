@@ -234,7 +234,7 @@ const Ltpz116 = () => {
               </FormRow>
             </FormTable>
           </Grow>
-          <Grid placement="ec" className="w-full gap-2">
+          <Grid placement="ec" className="w-full gap-2 grid-rows-[minmax(0,1fr)_auto]">
             <TableFold>
               <TableFoldHead title="동시가입누적 설계">
                 {' '}
