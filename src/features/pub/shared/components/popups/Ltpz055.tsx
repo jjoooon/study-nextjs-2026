@@ -28,6 +28,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 const Ltpz055 = () => {
   const [sendType, setSendType] = useState<string>('option1');
+  const [number1, setNumber1] = useState<string>('');
+  const [number2, setNumber2] = useState<string>('');
+  const [number3, setNumber3] = useState<string>('');
 
   return (
     <Dialog open>
@@ -112,9 +115,9 @@ const Ltpz055 = () => {
                     <Input
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
-                      onChange={() => {}}
+                      onChange={(e) => setNumber1(e.target.value)}
                       size="lg"
-                      value=""
+                      value={number1}
                       variant="default"
                       width="full"
                     />
@@ -143,9 +146,9 @@ const Ltpz055 = () => {
                     <Input
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
-                      onChange={() => {}}
+                      onChange={(e) => setNumber2(e.target.value)}
                       size="lg"
-                      value=""
+                      value={number2}
                       variant="default"
                       width="full"
                     />
@@ -174,9 +177,9 @@ const Ltpz055 = () => {
                     <Input
                       errorMsg="입력은 필수입니다."
                       errorPs="bl"
-                      onChange={() => {}}
+                      onChange={(e) => setNumber3(e.target.value)}
                       size="lg"
-                      value=""
+                      value={number3}
                       variant="default"
                       width="full"
                     />
