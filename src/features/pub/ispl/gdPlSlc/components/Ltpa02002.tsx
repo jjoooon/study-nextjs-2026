@@ -1394,10 +1394,10 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   </Typo>
                 </Gcol>
 
-                <div className="flex flex-col items-center justify-center overflow-y-auto gap-4 px-6 mt-[-5rem]">
+                <Gcol className="overflow-y-auto gap-4 px-6 " placement="sc">
                   {/* 타임라인 / 가이드 스텝 3단계 */}
-                  <div
-                    className="w-full flex flex-col gap-3 relative pt-[10rem]"
+                  <Gcol
+                    className="gap-3 relative pt-[10rem]"
                     style={{
                       backgroundImage: `url(${withPublicUrl('/images/Ltpa020/info.png')})`,
                       backgroundRepeat: 'no-repeat',
@@ -1406,52 +1406,56 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     }}
                   >
                     {/* Step 1: 보장내용 상세보기 */}
-                    <div className="relative flex flex-col gap-3">
-                      {/* 세로 연결 점선 */}
-                      <div className="absolute left-[0.85rem] top-[1.6rem] bottom-[5.8rem] w-[0.1rem] border-l border-dashed border-gray-300 z-0" />
-                      <div className="relative z-1 flex items-start gap-3 w-full">
-                        <span className="shrink-0 w-[1.8rem] h-[1.8rem] rounded-[0.4rem] bg-[#009443] text-white flex items-center justify-center font-bold text-[1.1rem] leading-none mt-2">
-                          1
-                        </span>
-                        <div className="flex flex-col gap-1 bg-[#F4F4F5] py-[0.8rem] px-[1.2rem] rounded-[1rem] w-full">
-                          <span className="font-bold text-[#00AA4D] text-[1.2rem]">보장내용 상세보기</span>
-                          <p className="text-[1.2rem] text-[#000] leading-[1.45] break-keep">
-                            추천결과 카드를 선택하여,
-                            <br /> 자세한 보장내용과 보험료를 확인해 보세요.
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Step 2: 추천설계 비교하기 */}
-                      <div className="relative z-1 flex items-start gap-3 w-full">
-                        <span className="shrink-0 w-[1.8rem] h-[1.8rem] rounded-[0.4rem] bg-[#338CF5] text-white flex items-center justify-center font-bold text-[1.1rem] leading-none mt-2">
-                          2
-                        </span>
-                        <div className="flex flex-col gap-1 bg-[#F4F4F5] py-[0.8rem] px-[1.2rem] rounded-[1rem] w-full">
-                          <span className="font-bold text-[#006FF2] text-[1.2rem]">추천설계 비교하기</span>
-                          <p className="text-[1.2rem] text-[#000] leading-[1.45] break-keep">
-                            카드별 &apos;비교하기&apos; 체크하신 후,
-                            <br /> [추천설계비교]를 클릭하여 비교해 보세요. 3개까지 가능해요.
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Step 3: 설계 진행하기 */}
-                      <div className="relative z-1 flex items-start gap-3 w-full">
-                        <span className="shrink-0 w-[1.8rem] h-[1.8rem] rounded-[0.4rem] bg-[#FF5C2E] text-white flex items-center justify-center font-bold text-[1.1rem] leading-none mt-2">
-                          3
-                        </span>
-                        <div className="flex flex-col gap-1 bg-[#F4F4F5] py-[0.8rem] px-[1.2rem] rounded-[1rem] w-full">
-                          <span className="font-bold text-[#FF5C2E] text-[1.2rem]">설계 진행하기</span>
-                          <p className="text-[1.2rem] text-[#000] leading-[1.45] break-keep">
-                            아래의 [설계생성]을 클릭하면 가입설계 탭이 열립니다.
-                            <br /> 여기에서 담보 조정 등으로 최적의 설계를 진행하시기 바랍니다.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                    <Gcol className="relative gap-3" placement="sc">
+                      <ol>
+                        <li>
+                          <div className="relative z-1 flex items-start gap-3 w-full">
+                            <span className="shrink-0 w-[1.8rem] h-[1.8rem] rounded-[0.4rem] bg-[#009443] text-white flex items-center justify-center font-bold text-[1.1rem] leading-none mt-2">
+                              1
+                            </span>
+                            <div className="flex flex-col gap-1 bg-[#F4F4F5] py-[0.8rem] px-[1.2rem] rounded-[1rem] w-full">
+                              <span className="font-bold text-[#00AA4D] text-[1.2rem]">보장내용 상세보기</span>
+                              <p className="text-[1.2rem] text-[#000] leading-[1.45] break-keep">
+                                추천결과 카드를 선택하여,
+                                <br /> 자세한 보장내용과 보험료를 확인해 보세요.
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          {/* Step 2: 추천설계 비교하기 */}
+                          <div className="relative z-1 flex items-start gap-3 w-full">
+                            <span className="shrink-0 w-[1.8rem] h-[1.8rem] rounded-[0.4rem] bg-[#338CF5] text-white flex items-center justify-center font-bold text-[1.1rem] leading-none mt-2">
+                              2
+                            </span>
+                            <div className="flex flex-col gap-1 bg-[#F4F4F5] py-[0.8rem] px-[1.2rem] rounded-[1rem] w-full">
+                              <span className="font-bold text-[#006FF2] text-[1.2rem]">추천설계 비교하기</span>
+                              <p className="text-[1.2rem] text-[#000] leading-[1.45] break-keep">
+                                카드별 &apos;비교하기&apos; 체크하신 후,
+                                <br /> [추천설계비교]를 클릭하여 비교해 보세요. 3개까지 가능해요.
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          {/* Step 3: 설계 진행하기 */}
+                          <div className="relative z-1 flex items-start gap-3 w-full">
+                            <span className="shrink-0 w-[1.8rem] h-[1.8rem] rounded-[0.4rem] bg-[#FF5C2E] text-white flex items-center justify-center font-bold text-[1.1rem] leading-none mt-2">
+                              3
+                            </span>
+                            <div className="flex flex-col gap-1 bg-[#F4F4F5] py-[0.8rem] px-[1.2rem] rounded-[1rem] w-full">
+                              <span className="font-bold text-[#FF5C2E] text-[1.2rem]">설계 진행하기</span>
+                              <p className="text-[1.2rem] text-[#000] leading-[1.45] break-keep">
+                                아래의 [설계생성]을 클릭하면 가입설계 탭이 열립니다.
+                                <br /> 여기에서 담보 조정 등으로 최적의 설계를 진행하시기 바랍니다.
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      </ol>
+                    </Gcol>
+                  </Gcol>
+                </Gcol>
               </Grid>
             )}
           </Grid>

@@ -260,9 +260,9 @@ export default function Ltpa670Section() {
         mainBody={
           <Grid className="w-full grid grid-rows-[auto_minmax(0,1fr)] gap-3 h-full">
             <Grow placement="bwe" className="w-full" variant={'box-round'}>
-              <FormTable variant={'none'} cols={['w-1', 'w-[20rem]', 'w-1', 'w-auto']}>
+              <FormTable variant={'none'} cols={['w-1', 'w-[20rem]', 'w-1', 'w-[20rem]', 'w-1', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'담보'} tdClassName="grid-cols-[auto_1fr_auto_1fr]" colSpan={1}>
+                  <FormCell title={'담보'} tdClassName="grid-cols-[auto_1fr_auto_1fr]" colSpan={3}>
                     <Input width={80} value={'CLA23114'} />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
@@ -291,8 +291,11 @@ export default function Ltpa670Section() {
                   <FormCell title={'조회기간'}>
                     <DatePickerInput mode="range" onChange={() => {}} value="" />
                   </FormCell>
-                  <FormCell title={'기준일자'}>
+                  <FormCell title={'상품판매일자'}>
                     <DatePickerInput mode="single" onChange={() => {}} value="" />
+                  </FormCell>
+                  <FormCell title={'적용기간'}>
+                    <DatePickerInput mode="range" onChange={() => {}} value="" />
                   </FormCell>
                 </FormRow>
               </FormTable>
