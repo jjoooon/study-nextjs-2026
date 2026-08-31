@@ -60,7 +60,7 @@
     "title": "담보전환",
     "width": 560,
     "height": 402,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ008",
@@ -410,7 +410,7 @@
     "title": "특정부위부담보입력",
     "width": 760,
     "height": 650,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ062",
@@ -575,7 +575,7 @@
   },
   {
     "id": "LTPZ090",
-    "title": "인수심사요청및결과 이력 상세(팝업)",
+    "title": "인수심사요청및결과 이력 상세",
     "width": 960,
     "height": 512,
     "isIframe": true
@@ -669,7 +669,7 @@
     "title": "대용량지침체크방법안내",
     "width": 560,
     "height": 438,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ109",

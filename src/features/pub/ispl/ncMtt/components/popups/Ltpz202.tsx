@@ -151,7 +151,7 @@ const Ltpz202 = ({ onUnenteredItemClick, align = 'left', defaultPosition }: Ltpz
       <DialogContent
         showCloseButton
         resizable={true}
-        className="w-[30rem]"
+        className="w-[33rem]"
         align={align}
         defaultPosition={defaultPosition}
       >
@@ -168,9 +168,10 @@ const Ltpz202 = ({ onUnenteredItemClick, align = 'left', defaultPosition }: Ltpz
 
         <DialogSection className="grid-rows-[auto_1fr]">
           <Typo variant="body-md">
-            입력하신 질병정보 항목 체크 결과입니다. 미입력항목을 선택하시면 해당 위치로 이동합니다.
+            입력하신 질병정보 항목 체크 결과입니다. <br />
+            미입력항목을 선택하시면 해당 위치로 이동합니다.
           </Typo>
-          <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
+          <div className="ag-theme-alpine">
             <AgGridReact<DummyDataType>
               noRowsOverlayComponent={AgGridEmptyComponent}
               getRowId={(params) => String(params.data.id)}
@@ -181,7 +182,7 @@ const Ltpz202 = ({ onUnenteredItemClick, align = 'left', defaultPosition }: Ltpz
                 resizable: true,
               }}
               singleClickEdit={true}
-              domLayout="normal"
+              domLayout="autoHeight"
               animateRows={false}
               enableCellSpan={true}
               onCellClicked={handleCellClicked}
