@@ -2181,7 +2181,7 @@
     "dep2": "가입설계",
     "dep3": "가입설계",
     "id": "LTPZ081",
-    "path": "ispl/aplMtt",
+    "path": "ispl/aplMtt/components/popups",
     "dep4": "영수증발행",
     "file": "전환_가입설계",
     "plan": "최벼리",
@@ -2190,7 +2190,7 @@
     "date": "26.05.15",
     "modify": "26.06.04",
     "subId": "",
-    "popup": false
+    "popup": true
   },
   {
     "pub": "허승하",
@@ -2765,7 +2765,7 @@
     "plan": "이채우",
     "dev": "",
     "sdate": "26.08.28",
-    "date": "",
+    "date": "26.08.28",
     "modify": "",
     "subId": "",
     "popup": true
@@ -2782,7 +2782,7 @@
     "plan": "이채우",
     "dev": "",
     "sdate": "26.08.28",
-    "date": "",
+    "date": "26.08.28",
     "modify": "",
     "subId": "",
     "popup": true

@@ -90,9 +90,25 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var ua = navigator.userAgent;
-                  var is109 = /(Chrome|Edg(e|A|iOS)?)\\/109\\./i.test(ua);
-                  if (is109) {
+                  var is109OrLower = false;
+                  var nav = navigator;
+                  if (nav.userAgentData && nav.userAgentData.brands) {
+                    for (var i = 0; i < nav.userAgentData.brands.length; i++) {
+                      var b = nav.userAgentData.brands[i];
+                      if (!/Not/i.test(b.brand) && /(Chrome|Chromium|Edge|Microsoft Edge)/i.test(b.brand)) {
+                        var v = parseInt(b.version, 10);
+                        if (v > 0 && v <= 109) { is109OrLower = true; break; }
+                      }
+                    }
+                  }
+                  if (!is109OrLower && nav.userAgent) {
+                    var match = nav.userAgent.match(/(?:Chrome|Chromium|Edg(?:e|A|iOS|W)?|CriOS)[\\/ ](\\d+)/i);
+                    if (match && match[1]) {
+                      var ver = parseInt(match[1], 10);
+                      if (ver > 0 && ver <= 109) { is109OrLower = true; }
+                    }
+                  }
+                  if (is109OrLower) {
                     document.documentElement.classList.add('v109');
                     if (document.body) {
                       document.body.classList.add('v109');
