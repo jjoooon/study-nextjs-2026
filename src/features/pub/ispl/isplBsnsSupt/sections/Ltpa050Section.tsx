@@ -1194,11 +1194,11 @@ export default function Ltpa050Section() {
             [2열 수평 배치 그리드]
             - grid-cols-[auto_auto] 설정을 통해 왼쪽(A안)과 오른쪽(B안) 설계안을 수평(Side-by-Side)으로 대칭 배치합니다.
           */
-          <Grid className="grid-cols-2 items-start" placement="ss" gap={3}>
+          <Grid className="grid-cols-2 grid-rows-[1fr] items-start h-full" placement="ss" gap={3}>
             {/* ======================================================== */}
             {/* [A안] 왼쪽 비교 영역: 첫 번째 설계안 정보                 */}
             {/* ======================================================== */}
-            <Gcol placement="ss" gap={3}>
+            <Gcol placement="ss" gap={3} className="h-full">
               {/* [설계번호 영역] 설계번호 조회 버튼 및 검색 팝업 실행 아이콘 */}
               <Grow placement="bwc" className="w-full" variant={'box-round'} gap={6}>
                 <FormTable className="flex" variant={'none'} lineTop={false} cols={['w-1', 'w-auto']}>
@@ -1284,9 +1284,9 @@ export default function Ltpa050Section() {
               </TableFold>
 
               {/* [피보험자정보 아코디언] '인보험' / '물보험' 성격에 따라 탭 화면 분기 */}
-              <TableFold>
+              <TableFold className="flex-1 h-full">
                 <TableFoldHead title="피보험자정보"></TableFoldHead>
-                <TableFoldBody>
+                <TableFoldBody className="flex-1">
                   <TabPager
                     data={tabsA}
                     active={activeA}
@@ -1303,9 +1303,9 @@ export default function Ltpa050Section() {
                   >
                     {/* [인보험 탭] 피보험자 인적 정보 및 기본/선택 담보 구성 리스트 */}
                     {activeA === 'tab1' && (
-                      <Gcol gap={2}>
+                      <Grid gap={2} className="h-full grid-rows-[auto_1fr]">
                         {/* [그리드 A02] 피보험자 성명, 연령, 직업,  직무급수, 보험료 현황 */}
-                        <div className="ag-theme-alpine ag-border-t inner-scroll h-[9.2rem]!" data-row={2}>
+                        <div className="ag-theme-alpine ag-border-t inner-scroll" data-row={2}>
                           <AgGridReact<DummyDataTypeA02>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1318,7 +1318,7 @@ export default function Ltpa050Section() {
                           />
                         </div>
                         {/* [그리드 A03] 인보험 세부 담보별 가입 금액 및 보험료 명세 */}
-                        <div className="ag-theme-alpine inner-scroll h-[33.2rem]!" data-row={10}>
+                        <div className="ag-theme-alpine inner-scroll" data-row={10}>
                           <AgGridReact<DummyDataTypeA03>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1330,14 +1330,14 @@ export default function Ltpa050Section() {
                             tooltipShowDelay={0}
                           />
                         </div>
-                      </Gcol>
+                      </Grid>
                     )}
 
                     {/* [물보험 탭] 건물/소재지 관련 정보 및 화재기본/특약 담보 구성 리스트 */}
                     {activeA === 'tab2' && (
-                      <Gcol gap={2}>
+                      <Grid gap={2} className="h-full grid-rows-[auto_auto_auto_1fr]">
                         {/* [그리드 A04] 물건 피보험자명, 직무급수, 보장보험료 요약 */}
-                        <div className="ag-theme-alpine ag-border-t inner-scroll h-[9.2rem]!" data-row={2}>
+                        <div className="ag-theme-alpine ag-border-t inner-scroll" data-row={2}>
                           <AgGridReact<DummyDataTypeA04>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1356,7 +1356,7 @@ export default function Ltpa050Section() {
                           </FormRow>
                         </FormTable>
                         {/* [그리드 A05] 화재기본담보 테이블 */}
-                        <div className="ag-theme-alpine inner-scroll h-[9.2rem]!" data-row={2}>
+                        <div className="ag-theme-alpine inner-scroll" data-row={2}>
                           <AgGridReact<DummyDataTypeA05>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1369,7 +1369,7 @@ export default function Ltpa050Section() {
                           />
                         </div>
                         {/* [그리드 A06] 화재특약담보 테이블 */}
-                        <div className="ag-theme-alpine inner-scroll h-[18.4rem]!" data-row={5}>
+                        <div className="ag-theme-alpine inner-scroll" data-row={5}>
                           <AgGridReact<DummyDataTypeA06>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1381,7 +1381,7 @@ export default function Ltpa050Section() {
                             tooltipShowDelay={0}
                           />
                         </div>
-                      </Gcol>
+                      </Grid>
                     )}
                   </TabPager>
                 </TableFoldBody>
@@ -1391,7 +1391,7 @@ export default function Ltpa050Section() {
             {/* ======================================================== */}
             {/* [B안] 오른쪽 비교 영역: 두 번째 설계안 정보                */}
             {/* ======================================================== */}
-            <Gcol placement="ss" gap={3}>
+            <Gcol placement="ss" gap={3} className="h-full">
               {/* [설계번호 영역] 설계번호 조회 버튼 및 검색 팝업 실행 아이콘 */}
               <Grow placement="bwc" className="w-full" variant={'box-round'} gap={6}>
                 <FormTable className="flex" variant={'none'} lineTop={false} cols={['w-1', 'w-auto']}>
@@ -1477,9 +1477,9 @@ export default function Ltpa050Section() {
               </TableFold>
 
               {/* [피보험자정보 아코디언] '인보험' / '물보험' 성격에 따라 탭 화면 분기 (A안과 대칭) */}
-              <TableFold>
+              <TableFold className="flex-1 h-full">
                 <TableFoldHead title="피보험자정보"></TableFoldHead>
-                <TableFoldBody>
+                <TableFoldBody className="flex-1">
                   <TabPager
                     data={tabsB}
                     active={activeB}
@@ -1496,9 +1496,9 @@ export default function Ltpa050Section() {
                   >
                     {/* [인보험 탭] 피보험자 인적 정보 및 기본/선택 담보 구성 리스트 */}
                     {activeB === 'tab1' && (
-                      <Gcol gap={2}>
+                      <Grid gap={2} className="h-full grid-rows-[auto_1fr]">
                         {/* [그리드 B02] 피보험자 성명, 연령, 직업, 직무급수, 보험료 현황 */}
-                        <div className="ag-theme-alpine ag-border-t inner-scroll h-[9.2rem]!" data-row={2}>
+                        <div className="ag-theme-alpine ag-border-t inner-scroll" data-row={2}>
                           <AgGridReact<DummyDataTypeB02>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1511,7 +1511,7 @@ export default function Ltpa050Section() {
                           />
                         </div>
                         {/* [그리드 B03] 인보험 세부 담보별 가입 금액 및 보험료 명세 */}
-                        <div className="ag-theme-alpine inner-scroll h-[33.2rem]!" data-row={10}>
+                        <div className="ag-theme-alpine inner-scroll" data-row={10}>
                           <AgGridReact<DummyDataTypeB03>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1523,14 +1523,14 @@ export default function Ltpa050Section() {
                             tooltipShowDelay={0}
                           />
                         </div>
-                      </Gcol>
+                      </Grid>
                     )}
 
                     {/* [물보험 탭] 건물/소재지 관련 정보 및 화재기본/특약 담보 구성 리스트 */}
                     {activeB === 'tab2' && (
-                      <Gcol gap={2}>
+                      <Grid gap={2} className="h-full grid-rows-[auto_auto_auto_1fr]">
                         {/* [그리드 B04] 물건 피보험자명, 직무급수, 보장보험료 요약 */}
-                        <div className="ag-theme-alpine ag-border-t inner-scroll h-[9.2rem]!" data-row={2}>
+                        <div className="ag-theme-alpine ag-border-t inner-scroll" data-row={2}>
                           <AgGridReact<DummyDataTypeB04>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1549,7 +1549,7 @@ export default function Ltpa050Section() {
                           </FormRow>
                         </FormTable>
                         {/* [그리드 B05] 화재기본담보 테이블 */}
-                        <div className="ag-theme-alpine inner-scroll h-[9.2rem]!" data-row={2}>
+                        <div className="ag-theme-alpine inner-scroll" data-row={2}>
                           <AgGridReact<DummyDataTypeB05>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1562,7 +1562,7 @@ export default function Ltpa050Section() {
                           />
                         </div>
                         {/* [그리드 B06] 화재특약담보 테이블 */}
-                        <div className="ag-theme-alpine inner-scroll h-[18.4rem]!" data-row={5}>
+                        <div className="ag-theme-alpine inner-scroll" data-row={5}>
                           <AgGridReact<DummyDataTypeB06>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -1574,7 +1574,7 @@ export default function Ltpa050Section() {
                             tooltipShowDelay={0}
                           />
                         </div>
-                      </Gcol>
+                      </Grid>
                     )}
                   </TabPager>
                 </TableFoldBody>

@@ -37,7 +37,7 @@ const DATA_TABS_4 = [
     age: '2',
     gender: '남',
     value: 'tab2',
-    removable: true,
+    removable: false,
     info: [
       '추가정보1',
       '추가정보2',
