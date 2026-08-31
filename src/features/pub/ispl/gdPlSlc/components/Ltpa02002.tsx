@@ -627,7 +627,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           >
                             {[
                               { value: '무해지 적용', label: '무해지 적용' },
-                              { value: '무해지 미적용', label: '무해지 미적용' },
+                              { value: '기본형', label: '기본형' },
                             ].map((opt) => (
                               <RadioGroupItem
                                 key={opt.value}
@@ -648,8 +648,8 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
                           >
                             {[
-                              { value: '납면 적용', label: '납면 적용' },
-                              { value: '납면 미적용', label: '납면 미적용' },
+                              { value: '납입면제형', label: '납입면제형' },
+                              { value: '납입면제미운영형', label: '납입면제미운영형' },
                             ].map((opt) => (
                               <RadioGroupItem
                                 key={opt.value}
@@ -765,7 +765,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             <dt className="text-[1.2rem] font-bold text-[#000]">기계약 유지(부족자금)</dt>
                             <dd>
                               <BulletItem type="dot" size="sm">
-                                기계약 해약없이 추가 판매
+                                기계약 해약 없이 부족자금에 맞춘 설계
                               </BulletItem>
                             </dd>
                           </div>
