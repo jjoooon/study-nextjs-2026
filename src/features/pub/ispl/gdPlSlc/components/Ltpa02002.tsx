@@ -1192,7 +1192,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 key={idx}
                                 className={`grid-rows-[minmax(0,1fr)_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-shadow gap-0 ${
                                   isSelected
-                                    ? 'bg-[var(--color-primary-10)] after:pointer-events-none after:content-[""] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-[1rem] after:border-[0.2rem] after:border-[var(--color-primary-50)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)] [&>button_*]:text-white [&>button_path]:fill-white [&>button_path]:fill-white'
+                                    ? 'bg-[var(--color-primary-10)] after:pointer-events-none after:content-[""] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-[1rem] after:border-[0.2rem] after:border-[var(--color-primary-50)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)]'
                                     : 'bg-[var(--color-primary-5)] shadow-[inset_0_0_0_0.1rem_rgba(0,0,0,0.1)]'
                                 }`}
                                 style={
@@ -1219,27 +1219,40 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                     viewBox="0 0 40 40"
                                     fill="none"
                                   >
-                                    <circle cx="30.5" cy="29.5" r="9.5" fill="var(--color-primary-20)" />
+                                    <circle
+                                      cx="30.5"
+                                      cy="29.5"
+                                      r="9.5"
+                                      fill={isSelected ? 'rgba(255, 255, 255, 0.3)' : 'var(--color-primary-20)'}
+                                    />
                                     <path
                                       d="M18.9854 22.4062C19.7586 22.4062 20.3857 23.0334 20.3857 23.8066C20.3857 24.5798 19.7585 25.207 18.9854 25.207H11.8066C11.0335 25.207 10.4063 24.5798 10.4062 23.8066C10.4062 23.0334 11.0334 22.4062 11.8066 22.4062H18.9854Z"
-                                      fill="#61554F"
+                                      fill={isSelected ? '#FFFFFF' : '#61554F'}
                                     />
                                     <path
                                       d="M22.6484 16.3994C23.4215 16.3996 24.0479 17.0267 24.0479 17.7998C24.0479 18.5729 23.4215 19.2 22.6484 19.2002H11.8066C11.0334 19.2002 10.4062 18.573 10.4062 17.7998C10.4062 17.0266 11.0334 16.3994 11.8066 16.3994H22.6484Z"
-                                      fill="#61554F"
+                                      fill={isSelected ? '#FFFFFF' : '#61554F'}
                                     />
                                     <path
                                       fillRule="evenodd"
                                       clipRule="evenodd"
                                       d="M23.8057 4C25.5194 4.00002 27.1515 4.73281 28.29 6.01367L32.9844 11.2949C33.9606 12.3932 34.5 13.8118 34.5 15.2812V31C34.5 34.3137 31.8137 37 28.5 37H11.5L11.1914 36.9922C8.02111 36.8316 5.5 34.2102 5.5 31V10C5.5 6.68629 8.18629 4 11.5 4H23.8057ZM11.5 6.59961C9.62223 6.59961 8.09961 8.12223 8.09961 10V31C8.09961 32.8778 9.62223 34.4004 11.5 34.4004H28.5C30.3778 34.4004 31.9004 32.8778 31.9004 31V15.2998H28.5C25.5729 15.2998 23.2002 12.9271 23.2002 10V6.59961H11.5ZM25.7998 10C25.7998 11.4912 27.0088 12.7002 28.5 12.7002H30.7549L26.3467 7.74121C26.1814 7.55526 25.9979 7.38952 25.7998 7.24609V10Z"
-                                      fill="#61554F"
+                                      fill={isSelected ? '#FFFFFF' : '#61554F'}
                                     />
                                   </svg>
                                   <Gcol placement="ss" gap={0}>
-                                    <Typo tag="p" variant="body-sm" className="text-[var(--color-gray-70)]">
+                                    <Typo
+                                      tag="p"
+                                      variant="body-sm"
+                                      className={isSelected ? 'text-white' : 'text-[var(--color-gray-70)]'}
+                                    >
                                       예상보험료
                                     </Typo>
-                                    <Typo tag="p" variant="heading-xl" className="text-[var(--color-primary-50)]">
+                                    <Typo
+                                      tag="p"
+                                      variant="heading-xl"
+                                      className={isSelected ? 'text-white' : 'text-[var(--color-primary-50)]'}
+                                    >
                                       {v.field1.toLocaleString()}원
                                     </Typo>
                                   </Gcol>
@@ -1275,7 +1288,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
               <Gcol className="h-full max-h-[59.6rem]" placement="cc">
                 <PuzzleSpinner />
               </Gcol>
-            ) : (
+            ) : selectedPlanInfo ? (
               <Grid
                 className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_minmax(0,1fr)_auto] max-h-[59.6rem]"
                 gap={0}
@@ -1353,6 +1366,92 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     {selectedPlanInfo?.plan.field1.toLocaleString()}원
                   </Typo>
                 </Grow>
+              </Grid>
+            ) : (
+              /* 추천설계 사용 가이드 (플랜 미선택 시 노출) */
+              <Grid
+                className="w-full h-full rounded-[1rem] border border-[#FF5C2E] bg-white shadow-[0_0.2rem_0.2rem_0_rgba(255,92,46,0.2)] overflow-hidden grid-rows-[auto_minmax(0,1fr)] max-h-[59.6rem]"
+                gap={0}
+              >
+                <Gcol
+                  className="relative px-[1.6rem] py-[1.2rem] gap-[0.2rem] rounded-b-[1rem]"
+                  placement="ss"
+                  style={{
+                    backgroundImage: `url(${withPublicUrl('/images/Ltpa020/cand_on_bg.png')}), linear-gradient(358deg,#FF5C2E 9.4%,#FF8D02 97.24%)`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: '10rem, cover',
+                    backgroundPosition: '96% 107%',
+                  }}
+                >
+                  <Typo
+                    tag="strong"
+                    variant="heading-sm"
+                    weight="bold"
+                    className="text-white flex items-center gap-1.5 text-[1.5rem]"
+                  >
+                    <Ai2Icon size={20} color="white" />
+                    추천설계 사용 가이드
+                  </Typo>
+                </Gcol>
+
+                <div className="flex flex-col items-center justify-center overflow-y-auto gap-4 px-6">
+                  {/* 타임라인 / 가이드 스텝 3단계 */}
+                  <div
+                    className="w-full flex flex-col gap-3 relative pt-[10rem]"
+                    style={{
+                      backgroundImage: `url(${withPublicUrl('/images/Ltpa020/info.png')})`,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundSize: ' w-[11rem], h-[12.7rem]',
+                      backgroundPosition: 'center 0',
+                    }}
+                  >
+                    {/* Step 1: 보장내용 상세보기 */}
+                    <div className="relative flex flex-col gap-3">
+                      {/* 세로 연결 점선 */}
+                      <div className="absolute left-[0.85rem] top-[1.6rem] bottom-[5.8rem] w-[0.1rem] border-l border-dashed border-gray-300 z-0" />
+                      <div className="relative z-1 flex items-start gap-3 w-full">
+                        <span className="shrink-0 w-[1.8rem] h-[1.8rem] rounded-[0.4rem] bg-[#009443] text-white flex items-center justify-center font-bold text-[1.1rem] leading-none mt-2">
+                          1
+                        </span>
+                        <div className="flex flex-col gap-1 bg-[#F4F4F5] py-[0.8rem] px-[1.2rem] rounded-[1rem] w-full">
+                          <span className="font-bold text-[#00AA4D] text-[1.2rem]">보장내용 상세보기</span>
+                          <p className="text-[1.2rem] text-[#000] leading-[1.45] break-keep">
+                            추천결과 카드를 선택하여,
+                            <br /> 자세한 보장내용과 보험료를 확인해 보세요.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Step 2: 추천설계 비교하기 */}
+                      <div className="relative z-1 flex items-start gap-3 w-full">
+                        <span className="shrink-0 w-[1.8rem] h-[1.8rem] rounded-[0.4rem] bg-[#338CF5] text-white flex items-center justify-center font-bold text-[1.1rem] leading-none mt-2">
+                          2
+                        </span>
+                        <div className="flex flex-col gap-1 bg-[#F4F4F5] py-[0.8rem] px-[1.2rem] rounded-[1rem] w-full">
+                          <span className="font-bold text-[#006FF2] text-[1.2rem]">추천설계 비교하기</span>
+                          <p className="text-[1.2rem] text-[#000] leading-[1.45] break-keep">
+                            카드별 &apos;비교하기&apos; 체크하신 후,
+                            <br /> [추천설계비교]를 클릭하여 비교해 보세요. 3개까지 가능해요.
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Step 3: 설계 진행하기 */}
+                      <div className="relative z-1 flex items-start gap-3 w-full">
+                        <span className="shrink-0 w-[1.8rem] h-[1.8rem] rounded-[0.4rem] bg-[#FF5C2E] text-white flex items-center justify-center font-bold text-[1.1rem] leading-none mt-2">
+                          3
+                        </span>
+                        <div className="flex flex-col gap-1 bg-[#F4F4F5] py-[0.8rem] px-[1.2rem] rounded-[1rem] w-full">
+                          <span className="font-bold text-[#FF5C2E] text-[1.2rem]">설계 진행하기</span>
+                          <p className="text-[1.2rem] text-[#000] leading-[1.45] break-keep">
+                            아래의 [설계생성]을 클릭하면 가입설계 탭이 열립니다.
+                            <br /> 여기에서 담보 조정 등으로 최적의 설계를 진행하시기 바랍니다.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </Grid>
             )}
           </Grid>
