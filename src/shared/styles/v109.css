@@ -2450,3 +2450,17 @@
 .v109 [data-slot='table-body'] tr > *:first-child {
   border-left: 0 !important;
 }
+
+/* Chrome 109 전용 .divide-gray-200 호환 스타일 */
+.v109 .divide-gray-200 > :not(:last-child),
+.v109 .divide-gray-200 > *:not(:last-child),
+.v109 .divide-gray-200 :where(& > :not(:last-child)) {
+  border-color: var(--color-gray-200, var(--color-gray-20, #e5e7eb)) !important;
+}
+
+.v109 .divide-gray-200 {
+  :where(& > :not(:last-child)) {
+    border-color: var(--color-gray-200, var(--color-gray-20, #e5e7eb));
+  }
+}
+
