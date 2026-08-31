@@ -1190,10 +1190,10 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             return (
                               <Grid
                                 key={idx}
-                                className={`grid-rows-[minmax(0,1fr)_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-shadow gap-0 ${
+                                className={`relative grid-rows-[minmax(0,1fr)_auto] w-[13rem] h-[15.9rem] rounded-[1rem] overflow-hidden transition-all gap-0 border-[0.2rem] ${
                                   isSelected
-                                    ? 'bg-[var(--color-primary-10)] after:pointer-events-none after:content-[""] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:rounded-[1rem] after:border-[0.2rem] after:border-[var(--color-primary-50)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)]'
-                                    : 'bg-[var(--color-primary-5)] shadow-[inset_0_0_0_0.1rem_rgba(0,0,0,0.1)]'
+                                    ? 'border-[#FF5C2E] bg-[var(--color-primary-10)] shadow-[0_0.4rem_0.8rem_0_rgba(255,92,46,0.20)]'
+                                    : 'border-transparent bg-[var(--color-primary-5)] shadow-[inset_0_0_0_0.1rem_rgba(0,0,0,0.1)]'
                                 }`}
                                 style={
                                   isSelected
