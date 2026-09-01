@@ -5,11 +5,12 @@
 
 import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import { Type } from 'lucide-react';
 import * as React from 'react';
 import { useMemo } from 'react';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
 import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
-import { Grow, Grid, Gcol } from '@atoms';
+import { Grow, Grid, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormTable, FormRow, FormCell } from '@common/FormTable';
@@ -262,7 +263,7 @@ export default function Ltpa670Section() {
             <Grow placement="bwe" className="w-full" variant={'box-round'}>
               <FormTable variant={'none'} cols={['w-1', 'w-[20rem]', 'w-[2rem]', 'w-[6rem]', 'w-1', 'w-auto']}>
                 <FormRow>
-                  <FormCell title={'담보'} tdClassName="grid-cols-[auto_1fr_auto_1fr]" colSpan={3}>
+                  <FormCell title={'상품'} tdClassName="grid-cols-[auto_1fr_auto_1fr]" colSpan={3}>
                     <Input width={80} value={'CLA23114'} />
                     <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
                       <SearchIcon color={'var(--color-primary-50)'} />
@@ -318,6 +319,9 @@ export default function Ltpa670Section() {
             </Grow>
             <Gcol>
               <Grow className="w-full" placement="ec">
+                <Button color="gray" variant="outlined">
+                  순위초기화
+                </Button>
                 <Button color="success" variant="outlined">
                   엑셀내보내기
                   <FileExportIcon />
@@ -373,7 +377,9 @@ export default function Ltpa670Section() {
         mainFoot={
           <MainBottom>
             <MainBottomItem>
-              <Grow gap={1} placement={'ec'} className="w-full">
+              <Grow gap={2} placement={'ec'} className="w-full">
+                <Typo variant="body-md">적용시작일자</Typo>
+                <DatePickerInput mode="single" onChange={() => {}} value="" />
                 <Button variant={'contained'} color={'primary'} size={'xl'}>
                   저장
                 </Button>
