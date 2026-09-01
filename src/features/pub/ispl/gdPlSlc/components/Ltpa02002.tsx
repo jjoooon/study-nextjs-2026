@@ -482,7 +482,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
           <Typo
             tag="h3"
             variant={'heading-sm'}
-            className="shrink-0 text-[var(--color-text-blue-gray)] h-[2.8rem] flex items-center"
+            className="shrink-0 text-[var(--color-text-blue-gray)] h-[3rem] flex items-center"
           >
             {selectedTags.length > 0 ? '상품특징' : '검색정보'}
           </Typo>
@@ -496,21 +496,20 @@ export function Ltpa02002({ userType }: { userType: string }) {
               >
                 <span className="w-[100%] flex items-center font-normal flex-wrap gap-1.5 py-0.5 ">
                   {selectedTags.length > 0 ? (
-                    <Grow placement="sc" gap={1.5} className="flex-wrap items-center">
+                    <Grow placement="sc" gap={0.5} className="flex-wrap items-center">
                       {selectedTags.map((tag, idx) => (
                         <span
                           key={idx}
-                          className="inline-flex items-center px-2.5 py-1 rounded-full bg-[var(--color-gray-90)] text-white font-normal text-[1.2rem] leading-none shrink-0"
+                          className="inline-flex items-center px-2.5 py-1 rounded-full bg-[var(--color-gray-90)] text-white font-bold min-h-[2.2rem] text-[1.2rem] leading-none shrink-0"
                         >
                           {tag}
                         </span>
                       ))}
                     </Grow>
                   ) : (
-                    <Typo tag="div" variant={'body-md'} className="var(--color-text-blue-gray) flex items-start gap-1">
+                    <Typo tag="div" variant={'body-md'} className="min-h-[2.2rem] flex items-start gap-1">
                       <KebabIcon />
-                      추가정보를 입력하면 보다 정확한 추천 결과를 받아보실 수 있습니다. 추가정보를 선택적으로 입력
-                      가능합니다.
+                      상세 검색을 선택하시면 더 정확한 추천 결과를 받아볼 수 있습니다.
                     </Typo>
                   )}
                 </span>
@@ -792,27 +791,35 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   </Grow>
                   <Gcol placement="ss" className="bg-[#fff] rounded-[0.6rem] p-3" gap={2}>
                     <Grow gap={2}>
-                      <Typo tag="b" variant={'heading-sm'}>
-                        {lastInquiryDate ? lastInquiryDate : '진행필요'}
-                      </Typo>
+                      {lastInquiryDate && (
+                        <Typo tag="b" variant={'heading-sm'}>
+                          {lastInquiryDate}
+                        </Typo>
+                      )}
                       {lastInquiryDate ? (
-                        <Button
-                          variant={'contained'}
-                          size={'sm'}
-                          color={'coolgray-light'}
-                          onClick={() => setLastInquiryDate('')}
-                        >
-                          재조회
-                        </Button>
+                        <>
+                          <Typo variant={'body-md'}>보장분석 진행했습니다.</Typo>
+                          <Button
+                            variant={'contained'}
+                            size={'sm'}
+                            color={'coolgray-light'}
+                            onClick={() => setLastInquiryDate('')}
+                          >
+                            재조회
+                          </Button>
+                        </>
                       ) : (
-                        <Button
-                          variant={'contained'}
-                          size={'sm'}
-                          color={'coolgray-light'}
-                          onClick={() => setLastInquiryDate('2026-08-01')}
-                        >
-                          조회
-                        </Button>
+                        <>
+                          <Typo variant={'body-md'}>보장분석 진행 시, 정확한 추천이 가능합니다.</Typo>
+                          <Button
+                            variant={'contained'}
+                            size={'sm'}
+                            color={'coolgray-light'}
+                            onClick={() => setLastInquiryDate('2026-08-01')}
+                          >
+                            조회
+                          </Button>
+                        </>
                       )}
                     </Grow>
 
@@ -963,7 +970,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       >
                         진단비
                       </Checkbox>
-                      <Grow variant="box" className="h-[2.8rem] py-0 px-2 rounded-1 gap-3 w-full" placement="sc">
+                      <Grow variant="box" className="h-[2.8rem] py-0 px-2 rounded-[0.4rem] gap-3 w-full" placement="sc">
                         <Checkbox
                           size="sm"
                           checked={coverageSubValues.includes('진단비-암')}
@@ -1021,7 +1028,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       >
                         수술/치료
                       </Checkbox>
-                      <Grow variant="box" className="h-[2.8rem] py-0 px-2 rounded-1 gap-3 w-full" placement="sc">
+                      <Grow variant="box" className="h-[2.8rem] py-0 px-2 rounded-[0.4rem] gap-3 w-full" placement="sc">
                         <Checkbox
                           size="sm"
                           checked={coverageSubValues.includes('수술치료-암')}
