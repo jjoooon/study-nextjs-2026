@@ -59,6 +59,7 @@ export interface Ltpz079Props {
 const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
   // 화면 배율에 따른 동적 컬럼 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const [msg, setMsg] = React.useState<string>('');
 
   // Ag-Grid 컬럼 정의
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
@@ -136,6 +137,19 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
   // 그리드에 표시할 데이터 상태 관리
   const rowData = data?.grid1 ?? [];
 
+  const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
+
+  React.useEffect(() => {
+    if (gridRef.current?.api) {
+      gridRef.current.api.updateGridOptions({
+        noRowsOverlayComponentParams: { message: msg },
+      });
+      if (!rowData || rowData.length === 0) {
+        gridRef.current.api.showNoRowsOverlay();
+      }
+    }
+  }, [msg, rowData]);
+
   return (
     // Dialog 컴포넌트: 팝업 창을 렌더링합니다.
     <Dialog open>
@@ -167,7 +181,7 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
               </FormRow>
             </FormTable>
             <Grow>
-              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+              <Button color="coolgray" only="default" size="lg" variant="contained" onClick={() => setMsg('ddddd')}>
                 조회
               </Button>
               <Button
@@ -185,8 +199,10 @@ const Ltpz079 = ({ data, loading }: Ltpz079Props) => {
           {/* Ag-Grid 테이블 영역 */}
           <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
             <AgGridReact<DummyDataType>
+              ref={gridRef}
               loading={loading}
               noRowsOverlayComponent={AgGridEmptyComponent}
+              noRowsOverlayComponentParams={{ message: msg }}
               getRowId={(params) => String(params.data.id)}
               rowData={rowData}
               columnDefs={columnDefs}

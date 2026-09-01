@@ -341,12 +341,20 @@ const Ltpz640 = () => {
           ...remainingRows.slice(insertIndex),
         ];
 
-        setRowData(
-          nextRows.map((row, index) => ({
-            ...row,
-            field0: index + 1,
-          }))
-        );
+        const finalNextRows = nextRows.map((row, index) => ({
+          ...row,
+          field0: index + 1,
+        }));
+        setRowData(finalNextRows);
+
+        if (gridApiRef.current) {
+          const api = gridApiRef.current;
+          api.setGridOption?.('rowData', finalNextRows);
+          api.refreshClientSideRowModel?.('everything');
+          api.resetRowHeights();
+          api.redrawRows();
+          api.refreshCells({ force: true });
+        }
         return;
       }
 
@@ -410,12 +418,20 @@ const Ltpz640 = () => {
         ...remainingRows.slice(insertIndex),
       ];
 
-      setRowData(
-        nextRows.map((row, index) => ({
-          ...row,
-          field0: index + 1,
-        }))
-      );
+      const finalNextRows = nextRows.map((row, index) => ({
+        ...row,
+        field0: index + 1,
+      }));
+      setRowData(finalNextRows);
+
+      if (gridApiRef.current) {
+        const api = gridApiRef.current;
+        api.setGridOption?.('rowData', finalNextRows);
+        api.refreshClientSideRowModel?.('everything');
+        api.resetRowHeights();
+        api.redrawRows();
+        api.refreshCells({ force: true });
+      }
     },
     [rowData, setRowData]
   );
@@ -652,6 +668,11 @@ const Ltpz640 = () => {
               <AgGridReact<DummyData1Type>
                 onGridReady={(event) => {
                   gridApiRef.current = event.api;
+                }}
+                onFirstDataRendered={(event) => {
+                  event.api.resetRowHeights();
+                  event.api.redrawRows();
+                  event.api.refreshCells({ force: true });
                 }}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 getRowId={(params) => String(params.data.id)}

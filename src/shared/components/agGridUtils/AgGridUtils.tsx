@@ -784,23 +784,28 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
       const finalRows = transformRows ? transformRows(nextRows) : nextRows;
 
       if (gridApiRef?.current) {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            // 새로 삽입된 행으로 스크롤 이동
-            gridApiRef.current?.ensureIndexVisible(boundedIndex, 'middle');
+        const api = gridApiRef.current;
+        // AG Grid 내부 Row Model에 즉시 새 데이터 세팅 및 Row Span 높이값 강제 재구축
+        api.setGridOption?.('rowData', finalRows);
+        api.refreshClientSideRowModel?.('everything');
+        api.resetRowHeights();
+        api.redrawRows();
+        api.refreshCells({ force: true });
 
-            if (insertAt === 'focused') {
-              const focusedCell = gridApiRef.current?.getFocusedCell();
-              if (focusedCell) {
-                gridApiRef.current?.setFocusedCell(boundedIndex, focusedCell.column.getColId());
-              }
-            } else if (insertAt === 'end') {
-              const viewportElement = document.querySelector('.ag-body-viewport');
-              if (viewportElement) {
-                viewportElement.scrollTop = viewportElement.scrollHeight;
-              }
+        requestAnimationFrame(() => {
+          api.ensureIndexVisible(boundedIndex, 'middle');
+
+          if (insertAt === 'focused') {
+            const focusedCell = api.getFocusedCell();
+            if (focusedCell) {
+              api.setFocusedCell(boundedIndex, focusedCell.column.getColId());
             }
-          });
+          } else if (insertAt === 'end') {
+            const viewportElement = document.querySelector('.ag-body-viewport');
+            if (viewportElement) {
+              viewportElement.scrollTop = viewportElement.scrollHeight;
+            }
+          }
         });
       }
 
