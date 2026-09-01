@@ -209,15 +209,23 @@ const Ltpz640 = () => {
   const handleAddRow = createAddRowHandler<DummyData1Type, number>(setRowData, {
     idKey: 'id',
     getNextId: getNextNumericRowId,
-    createRow: (nextId, rows, focusedRow) => ({
-      id: nextId,
-      field0: nextId,
-      field1: focusedRow ? focusedRow.field1 : '',
-      field2: '',
-      checked: false,
-      target: [false, false, false],
-    }),
+    createRow: (nextId, rows, focusedRow) => {
+      const defaultField1 = focusedRow?.field1 || (rows.length > 0 ? rows[rows.length - 1].field1 : '');
+      return {
+        id: nextId,
+        field0: nextId,
+        field1: defaultField1,
+        field2: '',
+        checked: false,
+        target: [false, false, false],
+      };
+    },
     insertAt: 'focused',
+    transformRows: (rows) =>
+      rows.map((row, index) => ({
+        ...row,
+        field0: index + 1,
+      })),
     gridApiRef,
   });
 

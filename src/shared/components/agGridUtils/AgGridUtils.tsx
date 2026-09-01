@@ -719,6 +719,7 @@ export function createSequentialRowReorderHandler<
  * @param options.insertAt 삽입 위치 (기본값: 'end')
  * @param options.getInsertIndex 커스텀 삽입 인덱스 계산 함수
  * @param options.gridApiRef 추가된 행으로 스크롤하기 위한 ag-Grid API ref
+ * @param options.transformRows 생성 및 삽입 완료 후 행 전체 재정렬/변환 함수
  */
 export function createAddRowHandler<RowType extends Record<string, unknown>, IDType extends string | number>(
   setRowData: React.Dispatch<React.SetStateAction<RowType[]>>,
@@ -729,9 +730,10 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
     insertAt?: 'start' | 'end' | 'focused';
     getInsertIndex?: (rows: RowType[]) => number;
     gridApiRef?: React.RefObject<GridApi<RowType> | null>;
+    transformRows?: (rows: RowType[]) => RowType[];
   }
 ) {
-  const { idKey, getNextId, createRow, insertAt = 'end', getInsertIndex, gridApiRef } = options;
+  const { idKey, getNextId, createRow, insertAt = 'end', getInsertIndex, gridApiRef, transformRows } = options;
 
   return () => {
     setRowData((prev) => {
@@ -742,15 +744,31 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
 
       let defaultIndex = insertAt === 'start' ? 0 : nextRows.length;
 
-      // focused 인 경우 포커스된 행 바로 아래에 인덱스 설정
+      // focused 인 경우 포커스된 행 바로 아래 또는 선택된/마지막 행 바로 아래에 인덱위치 설정
       if (insertAt === 'focused' && gridApiRef?.current) {
         const focusedCell = gridApiRef.current.getFocusedCell();
+        const selectedNodes = gridApiRef.current.getSelectedNodes();
+
         if (focusedCell && focusedCell.rowIndex >= 0) {
           defaultIndex = focusedCell.rowIndex + 1;
-          focusedRow = prev[focusedCell.rowIndex];
+          const displayedRow = gridApiRef.current.getDisplayedRowAtIndex(focusedCell.rowIndex);
+          focusedRow = displayedRow?.data ?? prev[focusedCell.rowIndex];
+        } else if (selectedNodes.length > 0) {
+          const selectedNode = selectedNodes[0];
+          focusedRow = selectedNode.data;
+          const selectedIndex = selectedNode.rowIndex;
+          defaultIndex =
+            selectedIndex !== null && selectedIndex !== undefined && selectedIndex >= 0
+              ? selectedIndex + 1
+              : nextRows.length;
+        } else if (prev.length > 0) {
+          defaultIndex = nextRows.length;
+          focusedRow = prev[prev.length - 1];
         } else {
           defaultIndex = nextRows.length;
         }
+      } else if (prev.length > 0) {
+        focusedRow = prev[prev.length - 1];
       }
 
       const newRow = {
@@ -762,6 +780,8 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
       const boundedIndex = Math.max(0, Math.min(customIndex, nextRows.length));
 
       nextRows.splice(boundedIndex, 0, newRow);
+
+      const finalRows = transformRows ? transformRows(nextRows) : nextRows;
 
       if (gridApiRef?.current) {
         requestAnimationFrame(() => {
@@ -784,7 +804,7 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
         });
       }
 
-      return nextRows;
+      return finalRows;
     });
   };
 }
