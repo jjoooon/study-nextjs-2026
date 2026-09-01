@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import {
@@ -22,7 +22,7 @@ import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
 import { useFormFields } from '@hooks/useFormFields';
-import { SearchIcon, ResetIcon, FileExportIcon, PenIcon } from '@icons';
+import { SearchIcon, ResetIcon, FileExportIcon, PenIcon, LinkIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
@@ -69,6 +69,7 @@ type DummyDataRow = {
   field25: string; // 최초설계일
   field26: string; // BM
   field27: string; // 유자격자
+  link?: string;
 };
 const DummyData: DummyDataRow[] = [
   {
@@ -104,6 +105,7 @@ const DummyData: DummyDataRow[] = [
     field25: '2026-03-11',
     field26: '김한화',
     field27: '(야탑동)',
+    link: 'a1',
   },
   {
     id: 2,
@@ -138,6 +140,7 @@ const DummyData: DummyDataRow[] = [
     field25: '2026-03-11', // 전속FP(최초설계일)
     field26: '김한화', // 방카(BM)
     field27: '(야탑동)', // 방카(유자격자)
+    link: 'a1',
   },
   {
     id: 3,
@@ -172,6 +175,7 @@ const DummyData: DummyDataRow[] = [
     field25: '2026-03-11',
     field26: '김한화',
     field27: '이정연(구로점)',
+    link: 'a1',
   },
   {
     id: 4,
@@ -206,6 +210,7 @@ const DummyData: DummyDataRow[] = [
     field25: '2026-03-11',
     field26: '김한화',
     field27: '(야탑동)',
+    link: 'a2',
   },
   {
     id: 5,
@@ -239,6 +244,7 @@ const DummyData: DummyDataRow[] = [
     field25: '2026-03-11',
     field26: '김한화',
     field27: '(야탑동)',
+    link: 'a2',
   },
   {
     id: 6,
@@ -436,6 +442,41 @@ export default function Ltpa010Section() {
     type09: '',
   });
 
+  // 동일한 link 값 연결 아이콘 렌더링 헬퍼
+  const renderLinkChain = (params: ICellRendererParams<DummyDataRow>) => {
+    const link = params.data?.link;
+    if (!link) return null;
+
+    const rowIndex = params.node?.rowIndex;
+    if (rowIndex == null) return null;
+
+    const prevLink = params.api.getDisplayedRowAtIndex(rowIndex - 1)?.data?.link;
+    const nextLink = params.api.getDisplayedRowAtIndex(rowIndex + 1)?.data?.link;
+
+    const hasPrev = prevLink === link;
+    const hasNext = nextLink === link;
+
+    // 연속된 동일한 link가 없을 경우 미표시
+    if (!hasPrev && !hasNext) return null;
+
+    return (
+      <>
+        {/* 상단 연결 고리 아이콘 (이전 행`과 같은 link일 경우: 중간 또는 마지막 행) */}
+        {hasPrev && (
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none overflow-hidden w-[3.2rem] h-[1.6rem] ">
+            <LinkIcon size={32} className="absolute bottom-0" />
+          </div>
+        )}
+        {/* 하단 연결 고리 아이콘 (다음 행과 같은 link일 경우: 첫번째 또는 중간 행) */}
+        {hasNext && (
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none overflow-hidden w-[3.2rem] h-[1.6rem]">
+            <LinkIcon size={32} className="absolute top-0" />
+          </div>
+        )}
+      </>
+    );
+  };
+
   // Ag-Grid 컬럼 정의
   const columnDefs: (ColDef<DummyDataRow> | ColGroupDef<DummyDataRow>)[] = [
     // 1. 설계번호: 클릭 시 상세 조회 기능을 위한 링크 버튼 형태로 렌더링
@@ -443,13 +484,18 @@ export default function Ltpa010Section() {
       headerName: '설계번호',
       flex: 1,
       minWidth: attributeColumnWidth(96),
-      cellClass: 'text-center',
+      cellClass: 'text-center !relative link-cell',
       field: 'field01',
       autoHeight: true,
-      cellRenderer: (params: { data?: DummyDataRow }) => (
-        <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-          {params.data?.field01}
-        </Button>
+      cellRenderer: (params: ICellRendererParams<DummyDataRow>) => (
+        <>
+          {renderLinkChain(params)}
+          <div className="relative w-full h-full flex items-center justify-center min-h-[3rem]">
+            <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
+              {params.data?.field01}
+            </Button>
+          </div>
+        </>
       ),
     },
     // 2. 상품명/구분 & 고지유형/플랜명: 2행 구조의 헤더와 커스텀 필드 렌더러를 사용하여 복합 정보 표시

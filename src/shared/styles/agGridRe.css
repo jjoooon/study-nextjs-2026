@@ -1714,3 +1714,8 @@ body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-popup-child:has(.ag-to
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+
+.link-cell .ag-cell-value {
+  position: static !important;
+}
