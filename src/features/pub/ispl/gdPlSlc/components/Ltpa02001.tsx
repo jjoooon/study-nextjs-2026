@@ -456,7 +456,17 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
     return (
       <Grow className="w-full px-[0.6rem]" placement={'cc'} gap={4}>
         <Grow>
-          <Input aria-label="상품명" placeholder="상품명 입력" type="text" width={'full'} size={'sm'} clear={true} />
+          <Input
+            aria-label="상품명"
+            placeholder="상품명 입력"
+            type="text"
+            width={'full'}
+            size={'sm'}
+            clear={true}
+            error={true}
+            errorMsg={'입력하세요'}
+            errorPs={'tl'}
+          />
           <Button aria-label="상품명 검색" variant={'outlined'} color={'gray-light'} only={'icon'} size={'md'}>
             <SearchIcon color={'var(--color-primary-50)'} />
           </Button>

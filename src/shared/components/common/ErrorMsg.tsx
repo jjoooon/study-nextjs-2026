@@ -3,7 +3,9 @@
  */
 'use client';
 
-import { Fragment, useEffect, useRef } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import useMounted from '@/shared/hooks/useMounted';
 import { cn } from '@/shared/lib/shadcn/utils';
 import log from '@/shared/utils/logger';
 import { Typo } from '@atoms';
@@ -22,19 +24,27 @@ import { Typo } from '@atoms';
 type ErrorMsgPosition = 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 
 /**
- * 위치 토큰 -> Tailwind class 매핑.
- *
- * 구성:
- * - 본문 박스 위치(top/bottom + left/center/right)
- * - 꼬리(after pseudo element) 위치/회전
+ * 위치 토큰 -> 말풍선 꼬리(after pseudo element) Tailwind class 매핑.
  */
-const positionStyles: Record<ErrorMsgPosition, string> = {
-  tl: 'bottom-[calc(100%+0.6rem)] left-0 after:top-full after:left-[0.4rem] after:rotate-[45deg] after:translate-y-[-0.4rem]',
-  tc: 'bottom-[calc(100%+0.6rem)] left-1/2 -translate-x-1/2 after:top-full after:left-1/2 after:-translate-x-1/2 after:rotate-[45deg] after:translate-y-[-0.4rem]',
-  tr: 'bottom-[calc(100%+0.6rem)] right-0 after:top-full after:right-[0.4rem] after:rotate-[45deg] after:translate-y-[-0.4rem]',
-  bl: 'top-[calc(100%+0.6rem)] left-0 after:bottom-full after:left-[0.4rem] after:rotate-[225deg] after:translate-y-[0.4rem]',
-  bc: 'top-[calc(100%+0.6rem)] left-1/2 -translate-x-1/2 after:bottom-full after:left-1/2 after:-translate-x-1/2 after:rotate-[225deg] after:translate-y-[0.4rem] w-auto text-center',
-  br: 'top-[calc(100%+0.6rem)] right-0 after:bottom-full after:right-[0.4rem] after:rotate-[225deg] after:translate-y-[0.4rem]',
+const arrowStyles: Record<ErrorMsgPosition, string> = {
+  tl: 'after:top-full after:left-[0.4rem] after:rotate-[45deg] after:translate-y-[-0.4rem]',
+  tc: 'after:top-full after:left-1/2 after:-translate-x-1/2 after:rotate-[45deg] after:translate-y-[-0.4rem]',
+  tr: 'after:top-full after:right-[0.4rem] after:rotate-[45deg] after:translate-y-[-0.4rem]',
+  bl: 'after:bottom-full after:left-[0.4rem] after:rotate-[225deg] after:translate-y-[0.4rem]',
+  bc: 'after:bottom-full after:left-1/2 after:-translate-x-1/2 after:rotate-[225deg] after:translate-y-[0.4rem] w-auto text-center',
+  br: 'after:bottom-full after:right-[0.4rem] after:rotate-[225deg] after:translate-y-[0.4rem]',
+};
+
+/**
+ * 위치 토큰 -> absolute 포지션용 transform Tailwind class 매핑.
+ */
+const transformStyles: Record<ErrorMsgPosition, string> = {
+  tl: 'translate-y-[-100%]',
+  tc: 'translate-x-[-50%] translate-y-[-100%]',
+  tr: 'translate-x-[-100%] translate-y-[-100%]',
+  bl: '',
+  bc: 'translate-x-[-50%]',
+  br: 'translate-x-[-100%]',
 };
 
 /**
@@ -45,7 +55,7 @@ const positionStyles: Record<ErrorMsgPosition, string> = {
  * - 검증 실패 시 `show=true`로 에러 노출
  * - 외부 클릭/포커스 이탈 시 `onClose`로 닫힘 처리
  */
-type ErrorMsgProps = {
+type ErrorMsgProps = React.HTMLAttributes<HTMLSpanElement> & {
   /** 접근성 연결 id (`aria-describedby`와 동일값 권장) */
   id?: string;
   children: React.ReactNode;
@@ -68,9 +78,92 @@ export function ErrorMsg({
   position = 'tl',
   onClose,
   closeOnOutsideClick = true,
+  className,
+  style,
+  ...props
 }: ErrorMsgProps) {
-  /** 말풍선 DOM 참조(내부 클릭 판별용) */
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  /** 앵커(원래 배치 위치) DOM 참조 */
+  const anchorRef = useRef<HTMLSpanElement | null>(null);
+  /** 말풍선 DOM 참조 (내부 클릭 판별용) */
+  const containerRef = useRef<HTMLSpanElement | null>(null);
+
+  const [mounted, setMounted] = useState(false);
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+
+  useMounted(() => {
+    setMounted(true);
+  });
+
+  /** 앵커 요소(또는 부모 요소)의 document.body 기준 절대 위치 계산 */
+  const updatePosition = () => {
+    if (!anchorRef.current) return;
+    const targetElement = anchorRef.current.parentElement || anchorRef.current;
+    const rect = targetElement.getBoundingClientRect();
+    if (rect.width === 0 && rect.height === 0) return;
+
+    const gap = 6; // 0.6rem = 6px
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+    let top = 0;
+    let left = 0;
+
+    switch (position) {
+      case 'tl':
+        top = rect.top + scrollTop - gap;
+        left = rect.left + scrollLeft;
+        break;
+      case 'tc':
+        top = rect.top + scrollTop - gap;
+        left = rect.left + scrollLeft + rect.width / 2;
+        break;
+      case 'tr':
+        top = rect.top + scrollTop - gap;
+        left = rect.right + scrollLeft;
+        break;
+      case 'bl':
+        top = rect.bottom + scrollTop + gap;
+        left = rect.left + scrollLeft;
+        break;
+      case 'bc':
+        top = rect.bottom + scrollTop + gap;
+        left = rect.left + scrollLeft + rect.width / 2;
+        break;
+      case 'br':
+        top = rect.bottom + scrollTop + gap;
+        left = rect.right + scrollLeft;
+        break;
+    }
+
+    setCoords({ top, left });
+  };
+
+  useLayoutEffect(() => {
+    if (!show) return;
+    updatePosition();
+
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (anchorRef.current) {
+      const targetElement = anchorRef.current.parentElement || anchorRef.current;
+      if (typeof ResizeObserver !== 'undefined') {
+        resizeObserver = new ResizeObserver(() => {
+          updatePosition();
+        });
+        resizeObserver.observe(targetElement);
+      }
+    }
+
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, [show, position, children]);
 
   useEffect(() => {
     /** 표시 중이 아니거나 외부 클릭 닫기가 비활성화면 리스너 미등록 */
@@ -79,15 +172,15 @@ export function ErrorMsg({
     /**
      * 외부 포인터 입력으로 닫힘 처리.
      * 닫지 않는 예외 케이스:
-     * 1) ErrorMsg 내부 클릭
+     * 1) ErrorMsg 내부 또는 앵커 부모 요소 클릭
      * 2) `aria-describedby`로 연결된 트리거 요소 클릭
      * 3) 현재 포커스 요소가 해당 ErrorMsg와 연결된 경우
      */
     const handlePointerDown = (event: MouseEvent | TouchEvent) => {
       const target = event.target as Node;
 
-      // ErrorMsg 자체를 클릭한 경우
-      if (containerRef.current?.contains(target)) return;
+      // ErrorMsg 자체 또는 앵커 부모를 클릭한 경우
+      if (containerRef.current?.contains(target) || anchorRef.current?.parentElement?.contains(target)) return;
 
       // aria-describedby로 연결된 요소를 클릭한 경우
       if (id && target instanceof Element) {
@@ -141,9 +234,6 @@ export function ErrorMsg({
     };
   }, [show, closeOnOutsideClick, onClose, id]);
 
-  /** 비표시 상태면 DOM 미렌더(접근성/성능 측면에서 명확) */
-  if (!show) return null;
-
   const formattedChildren =
     typeof children === 'string'
       ? children
@@ -157,29 +247,48 @@ export function ErrorMsg({
           ))
       : children;
 
+  const tooltipPortal =
+    mounted && show && coords
+      ? createPortal(
+          <span
+            id={id}
+            /** 디버깅/자동화 선택자용 식별 데이터 속성 */
+            data-component="error-msg"
+            ref={containerRef}
+            style={{
+              top: `${coords.top}px`,
+              left: `${coords.left}px`,
+              ...style,
+            }}
+            className={cn(
+              // 말풍선 본체 스타일 (Portal rendering via absolute positioning)
+              'absolute z-[9999] shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT pointer-events-auto',
+              // 말풍선 꼬리(after) 기본 스타일
+              "after:content-[''] after:w-2 after:h-2 after:absolute after:border after:border-[var(--color-input-border-error)]",
+              'after:bg-[var(--color-input-surface-error)] after:z-0 after:rounded-1 break-keep',
+              // 위치 및 transform 매핑
+              arrowStyles[position],
+              transformStyles[position],
+              className
+            )}
+            {...props}
+          >
+            <Typo
+              variant={'body-sm'}
+              tag={'span'}
+              className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
+            >
+              {formattedChildren}
+            </Typo>
+          </span>,
+          document.body
+        )
+      : null;
+
   return (
-    <span
-      id={id}
-      /** 디버깅/자동화 선택자용 식별 데이터 속성 */
-      data-component="error-msg"
-      ref={containerRef}
-      className={cn(
-        // 말풍선 본체 스타일
-        'block absolute z-10 shadow-md border border-[var(--color-input-border-error)] rounded-DEFAULT',
-        // 말풍선 꼬리(after) 기본 스타일
-        "after:content-[''] after:w-2 after:h-2 after:absolute after:border after:border-[var(--color-input-border-error)]",
-        'after:bg-[var(--color-input-surface-error)] after:z-0 after:rounded-1 break-keep',
-        // 위치 토큰 적용
-        positionStyles[position]
-      )}
-    >
-      <Typo
-        variant={'body-sm'}
-        tag={'span'}
-        className="block relative text-[var(--color-text-danger)] bg-[var(--color-input-surface-error)] px-2 py-[0.2rem] rounded-DEFAULT z-1 whitespace-nowrap"
-      >
-        {formattedChildren}
-      </Typo>
-    </span>
+    <>
+      <span ref={anchorRef} className="hidden" aria-hidden="true" />
+      {tooltipPortal}
+    </>
   );
 }

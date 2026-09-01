@@ -59,7 +59,7 @@ const Ltpz075 = () => {
                 <TableHead className="text-left">1급 바닥면적</TableHead>
                 <TableCell>
                   <Grow>
-                    <Input align="right" value="1" />㎡
+                    <Input align="right" value="1" error={true} errorMsg={'입력하세요'} errorPs={'tl'} />㎡
                   </Grow>
                 </TableCell>
                 <TableCell>
@@ -77,7 +77,7 @@ const Ltpz075 = () => {
                 <TableHead className="text-left">2급 바닥면적</TableHead>
                 <TableCell>
                   <Grow>
-                    <Input align="right" value="1" />㎡
+                    <Input align="right" value="1" error={true} errorMsg={'입력하세요'} errorPs={'tl'} />㎡
                   </Grow>
                 </TableCell>
                 <TableCell>
