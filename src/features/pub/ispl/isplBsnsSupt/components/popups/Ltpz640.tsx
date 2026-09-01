@@ -540,7 +540,6 @@ const Ltpz640 = () => {
       //   cellClass: 'text-center',
       //   cellEditor: 'agNumberCellEditor',
       //   sortable: false,
-      //   autoHeight: true,
       //   spanRows: true,
       // },
       {
@@ -549,7 +548,6 @@ const Ltpz640 = () => {
         flex: 1,
         cellClass: 'editable-cell',
         minWidth: attributeColumnWidth(140),
-        autoHeight: true,
         spanRows: true,
         editable: true,
         cellEditor: 'agTextCellEditor',
@@ -566,7 +564,6 @@ const Ltpz640 = () => {
         cellClass: 'editable-cell',
         cellRenderer: 'agCheckboxCellRenderer',
         cellEditor: 'agCheckboxCellEditor',
-        autoHeight: true,
         resizable: false,
       },
       {
@@ -574,7 +571,6 @@ const Ltpz640 = () => {
         field: 'field2',
         flex: 10,
         cellClass: 'editable-cell',
-        autoHeight: true,
         editable: true,
         cellEditor: 'agTextCellEditor',
         rowDrag: true,
@@ -584,7 +580,6 @@ const Ltpz640 = () => {
         field: 'target',
         flex: 1,
         minWidth: attributeColumnWidth(210),
-        autoHeight: true,
         cellClass: 'text-center justify-center editable-cell',
         cellRenderer: (params: ICellRendererParams<DummyData1Type>) => {
           const target = params.data?.target ?? [false, false, false];
