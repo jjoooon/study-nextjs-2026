@@ -19,10 +19,19 @@ const RadioGroupContext = React.createContext<{
   required?: boolean;
   /** 비활성화 여부 */
   disabled?: boolean;
+  /** 현재 선택된 값 */
+  selectedValue?: string;
+  /** 선택 해제 허용 여부 */
+  allowDeselect?: boolean;
+  /** 값 변경 핸들러 */
+  handleValueChange?: (value: string) => void;
 }>({
   error: false,
   required: false,
   disabled: false,
+  selectedValue: undefined,
+  allowDeselect: true,
+  handleValueChange: undefined,
 });
 
 const radioGroupItemVariants = cva(
@@ -78,17 +87,17 @@ const radioGroupItemVariants = cva(
       {
         variant: 'button',
         size: 'lg',
-        className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.042rem] w-auto',
+        className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto',
       },
       {
         variant: 'button',
         size: 'md',
-        className: 'h-[2.5rem] px-[1rem] text-[1.3rem] tracking-[-0.039rem] w-auto',
+        className: 'h-[2.5rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto',
       },
       {
         variant: 'button',
         size: 'sm',
-        className: 'h-[2.2rem] px-[1rem] text-[1.3rem] tracking-[-0.039rem] w-auto',
+        className: 'h-[2.2rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto',
       },
       {
         variant: 'button',
@@ -105,17 +114,17 @@ const radioGroupItemVariants = cva(
       {
         variant: 'noCheckButton',
         size: 'lg',
-        className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.042rem] w-auto justify-center items-center flex',
+        className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto justify-center items-center flex',
       },
       {
         variant: 'noCheckButton',
         size: 'md',
-        className: 'h-[2.5rem] px-[1rem] text-[1.3rem] tracking-[-0.039rem] w-auto justify-center items-center flex',
+        className: 'h-[2.5rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto justify-center items-center flex',
       },
       {
         variant: 'noCheckButton',
         size: 'sm',
-        className: 'h-[2.2rem] px-[1rem] text-[1.3rem] tracking-[-0.039rem] w-auto justify-center items-center flex',
+        className: 'h-[2.2rem] px-[1rem] text-[1.3rem] tracking-[-0.13rem] w-auto justify-center items-center flex',
       },
       {
         variant: 'noCheckButton',
@@ -203,6 +212,16 @@ interface RadioGroupExtraProps {
    * @default 'auto'
    */
   width?: 'full' | 'auto';
+  /**
+   * 이미 선택된 아이템 다시 클릭 시 선택 해제 허용 여부
+   * @default true
+   */
+  allowDeselect?: boolean;
+  /**
+   * allowDeselect의 별칭 (선택 해제 허용 여부)
+   * @default true
+   */
+  clearable?: boolean;
 }
 
 /**
@@ -225,6 +244,8 @@ const RadioGroup = React.forwardRef<
       onValueChange,
       required,
       disabled,
+      allowDeselect = true,
+      clearable,
       ...props
     },
     ref
@@ -232,6 +253,7 @@ const RadioGroup = React.forwardRef<
     const errorId = React.useId();
     const groupRequired = Boolean(required);
     const groupDisabled = Boolean(disabled);
+    const canDeselect = clearable ?? allowDeselect ?? true;
 
     const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue);
     const isControlled = value !== undefined;
@@ -250,11 +272,20 @@ const RadioGroup = React.forwardRef<
     );
 
     return (
-      <RadioGroupContext.Provider value={{ error: groupError, required: groupRequired, disabled: groupDisabled }}>
+      <RadioGroupContext.Provider
+        value={{
+          error: groupError,
+          required: groupRequired,
+          disabled: groupDisabled,
+          selectedValue: selectedValue ?? undefined,
+          allowDeselect: canDeselect,
+          handleValueChange,
+        }}
+      >
         <div className={cn('relative', width === 'full' ? 'w-full' : 'w-auto')}>
           <RadioGroupPrimitive.Root
             className={cn('cp-radio flex items-center justify-start flex-wrap gap-x-2 gap-y-1', className)}
-            value={value}
+            value={selectedValue ?? undefined}
             defaultValue={defaultValue}
             onValueChange={handleValueChange}
             required={required}
@@ -326,17 +357,34 @@ const RadioGroupItem = React.forwardRef<
     const isTab = variant === 'tab';
     const generatedId = React.useId();
     const radioId = props.id || generatedId;
-    const { error: groupError, required: groupRequired, disabled: groupDisabled } = React.useContext(RadioGroupContext);
+    const {
+      error: groupError,
+      required: groupRequired,
+      disabled: groupDisabled,
+      selectedValue,
+      allowDeselect,
+      handleValueChange,
+    } = React.useContext(RadioGroupContext);
     const isError = error || groupError;
     const isRequired = Boolean(props.required || groupRequired);
     const isDisabled = Boolean(props.disabled || groupDisabled);
     const indicatorSize = size === 'sm' ? 'md' : size;
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      props.onClick?.(e);
+      if (e.defaultPrevented) return;
+
+      if (allowDeselect && props.value === selectedValue && handleValueChange) {
+        handleValueChange('');
+      }
+    };
 
     return (
       <div className="relative flex items-center gap-1">
         <RadioGroupPrimitive.Item
           ref={ref}
           id={radioId}
+          onClick={handleClick}
           className={cn(
             radioGroupItemVariants({ variant, size, color }),
             'relative whitespace-nowrap',
@@ -356,7 +404,7 @@ const RadioGroupItem = React.forwardRef<
           {isButton ? (
             <div
               className={cn(
-                'border border-[var(--color-gray-15)]! absolute left-[0.6rem] rounded-full flex items-center justify-center bg-white  focus:!outline-none',
+                'border border-[var(--color-gray-15)]! absolute left-[0.6rem] rounded-full flex items-center justify-center bg-white  focus:!outline-none tracking-[-0.13rem]',
                 size === 'sm'
                   ? 'top-[0.35rem] h-[1.2rem] w-[1.2rem]'
                   : size === 'md'
@@ -391,7 +439,7 @@ const RadioGroupItem = React.forwardRef<
           <label
             htmlFor={radioId}
             className={cn(
-              'text-[1.3rem] font-normal cursor-pointer select-none ',
+              'text-[1.3rem] font-normal cursor-pointer select-none tracking-[-0.13rem]',
               isError && 'text-[var(--color-text-danger)]'
             )}
           >

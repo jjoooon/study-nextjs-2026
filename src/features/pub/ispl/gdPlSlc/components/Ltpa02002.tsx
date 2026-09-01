@@ -656,7 +656,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                                 value={opt.value}
                                 variant="button"
                                 size={'lg'}
-                                className="w-full text-left tracking-[-0.14rem]"
+                                className="w-full text-left"
                               >
                                 {opt.label}
                               </RadioGroupItem>
@@ -834,7 +834,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                           key={opt.value}
                           value={opt.value}
                           variant="button"
-                          size={'md'}
+                          size={'lg'}
                           disabled={!lastInquiryDate}
                           className="!w-full !text-left"
                         >
