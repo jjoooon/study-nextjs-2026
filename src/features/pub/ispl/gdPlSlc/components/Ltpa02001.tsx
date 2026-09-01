@@ -826,7 +826,7 @@ export function Ltpa02001({ isPossibleProductsOnly = false, onResetPossibleFilte
       {/* 3. 하단 작업 버튼 영역 (추천설계 / 설계시작) */}
       <Grow gap={1} className="w-full min-h-[3.2rem] pb-2.5" placement="ec">
         <Button variant={'outlined'} color={'gray'} size={'xl'}>
-          <AiIcon size={24} color={'#006FF2'} color2={'#A683FF'} />
+          <AiIcon size={18} color={'#006FF2'} color2={'#A683FF'} />
           추천설계
         </Button>
         <Button type="button" variant={'contained'} color={'primary'} size={'xl'}>

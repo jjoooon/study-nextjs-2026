@@ -24,6 +24,7 @@ import {
   KebabIcon,
   QuestionMark,
   PaperIcon,
+  AiIcon,
 } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -1471,6 +1472,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                   transition: animateCardPhase === 'fall' ? 'transform 0.3s ease-in, opacity 0.3s ease-in' : 'none',
                 }}
               />
+              <AiIcon size={18} color={'#006FF2'} color2={'#A683FF'} />
               추천설계비교({comparedPlanKeys.length})
             </Button>
             <Button type="submit" form={'page2-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>

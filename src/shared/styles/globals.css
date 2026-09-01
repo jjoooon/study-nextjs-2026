@@ -1298,14 +1298,14 @@
   display: none;
 }
 .ltpa020-guide-line li:before {
-  content:"";
+  content: '';
   display: block;
   position: absolute;
   width: 1px;
   height: 100%;
-  border-left:1px dashed var(--color-gray-20);
-  left:0.9rem;
-  top:1.4rem;
+  border-left: 1px dashed var(--color-gray-20);
+  left: 0.9rem;
+  top: 1.4rem;
   z-index: 0;
 }
 .ltpa020-guide-line li > div {

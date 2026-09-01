@@ -4,7 +4,7 @@
 'use client';
 
 import '@/shared/lib/agGridPub';
-import type { ColDef } from 'ag-grid-enterprise';
+import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo } from '@atoms';
@@ -26,6 +26,7 @@ type DummyDataType = {
   field01: string;
   field02: string;
   field03: string;
+  totalOperationCount?: number;
   field04: string;
   field05: string;
   field06: string;
@@ -37,6 +38,7 @@ const DummyData: DummyDataType[] = [
     field02: '2026-03-01~2026-03-16, 입원(2일)',
     field03:
       '수술/시술(봉합술), 추가질문답변: ①치료내용:하이푸, 색전술, 근종절제, 호르몬치료 등 ②출혈 및 크기변화여부:출혈 및 크기, 갯수 증가 없음 ③잔여병변유무 ④수술 예정:없음',
+    totalOperationCount: 2,
     field04: '한화병원한화병원한화병원한화병원',
     field05: '완치',
     field06: '없음',
@@ -47,6 +49,7 @@ const DummyData: DummyDataType[] = [
     field02: '2026-03-02~2026-03-06, 통원(1일)',
     field03:
       '약물치료(주사,연고,안약 등), 추가질문답변: ①발생부위:경추 ②척추질환(디스크,관절염,척추만곡 등)동반:없음 ③발생원인:교통사고 外원인',
+    totalOperationCount: 4,
     field04: '한화병원',
     field05: '미완치',
     field06: '있음(2회)',
@@ -135,6 +138,19 @@ const Ltpz094 = () => {
       wrapText: true,
       cellClass: 'text-left !leading-[1.4] !py-1',
       suppressMovable: true,
+      cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
+        return (
+          <>
+            {params.value}
+            {params.data?.totalOperationCount && (
+              <>
+                <br />
+                <strong className="font-bold">총수술횟수: {params.data.totalOperationCount}회</strong>
+              </>
+            )}
+          </>
+        );
+      },
     },
     {
       headerName: '치료병원',
