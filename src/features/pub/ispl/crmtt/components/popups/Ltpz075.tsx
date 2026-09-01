@@ -30,7 +30,7 @@ const Ltpz075 = () => {
               복합건물관리
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTRZ075)
+              (LTPZ075)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -159,9 +159,9 @@ const Ltpz075 = () => {
               </Typo>
               <BulletList color={'warning'} size="md">
                 <BulletListItem type="dash">
-                  우급: 최우급부터 순차적으로 합산해 전체면적의 70%에 도달하는 급수
+                  우급 : 최우급부터 순차적으로 합산해 전체면적의 70%에 도달하는 급수
                 </BulletListItem>
-                <BulletListItem type="dash">열급: 전체 바닥면적에서 우급을 제외한 면적</BulletListItem>
+                <BulletListItem type="dash">열급 : 전체 바닥면적에서 우급을 제외한 면적</BulletListItem>
               </BulletList>
             </BulletList>
           </Gcol>
@@ -170,6 +170,9 @@ const Ltpz075 = () => {
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
+              <Button variant={'contained'} size={'xl'}>
+                확인
+              </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기
