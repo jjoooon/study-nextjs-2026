@@ -755,7 +755,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                     </Typo>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button variant={'none'} size={'md'} only={'icon'}>
+                        <Button variant={'none'} size={'md'} only={'icon'} className="w-[2.5rem]! h-[1.4rem]!">
                           <QuestionMark color="var(--color-gray-60)" />
                         </Button>
                       </TooltipTrigger>
@@ -888,7 +888,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                       <Grow gap={1} placement="ec">
                         <Button
                           size={'md'}
-                          className="w-full font-normal"
+                          className="w-full font-[700]!"
                           onClick={() =>
                             setMedicalHistoryList([
                               { disease: '척추관협착증', period: '무관' },
@@ -1102,25 +1102,27 @@ export function Ltpa02002({ userType }: { userType: string }) {
       </div>
 
       {dataNone ? (
-        <Gcol className="h-full gap-2.5 " placement="cc">
-          <div className="w-[24.8rem]">
-            <Image
-              src={withPublicUrl('/images/Ltpa020/pro100.jpg')}
-              alt="설명"
-              fill
-              style={{ objectFit: 'cover' }}
-              onClick={() => {
-                setDataNone(false);
-              }}
-              className="relative!"
-            />
-          </div>
-          <p className="text-center text-[1.3rem] font-bold text-[var(--color-secondary-70)]">
-            상품을 추천할 고객과 조건을 선택하고
-            <br />
-            <b className="text-[var(--color-primary-50)]">최적의 상품 플랜</b>을 확인하세요!
-          </p>
-        </Gcol>
+        <Grow className="h-full gap-2.5 pt-[37rem]" placement="cs">
+          <Grow className="gap-0" placement="cc">
+            <div className="w-[19.6rem]">
+              <Image
+                src={withPublicUrl('/images/Ltpa020/pro100.jpg')}
+                alt="설명"
+                fill
+                style={{ objectFit: 'cover' }}
+                onClick={() => {
+                  setDataNone(false);
+                }}
+                className="relative!"
+              />
+            </div>
+            <p className="text-left text-[1.3rem] font-bold text-[var(--color-secondary-70)]">
+              상품을 추천할 고객과 조건을 선택하고
+              <br />
+              <b className="text-[var(--color-primary-50)]">최적의 상품 플랜</b>을 확인하세요!
+            </p>
+          </Grow>
+        </Grow>
       ) : (
         <>
           <Grid
