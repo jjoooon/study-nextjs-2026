@@ -239,14 +239,14 @@ const Ltpz043 = () => {
                   <FormCell title={'공제금액'} titleColSpan={2} colSpan={2}>
                     <NativeSelect
                       aria-label="선택"
-                      width={180}
+                      width={264}
                       value={form.type08}
                       required
                       onChange={(e) => setFormField('type08', e.target.value)}
                     >
                       {[
-                        { value: 'selection', id: 'type08-1', label: '1사고당 대인' },
-                        { value: 'selection2', id: 'type08-2', label: '대물 각각 100만원' },
+                        { value: 'selection', id: 'type08-1', label: '1사고당 대인, 대물 각각 100만원' },
+                        { value: 'selection2', id: 'type08-2', label: '1사고당 대인, 대물 각각 100만원' },
                       ].map((option) => (
                         <NativeSelectOption key={option.id} value={option.value}>
                           {option.label}

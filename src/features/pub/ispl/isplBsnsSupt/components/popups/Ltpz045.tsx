@@ -191,7 +191,7 @@ const Ltpz045 = () => {
                     </FormCell>
                   </FormRow>
                   <FormRow>
-                    <FormCell title={'설명'}>김한화</FormCell>
+                    <FormCell title={'성명'}>김한화</FormCell>
                     <FormCell title={'영문명'}>KIM HANHWA</FormCell>
                   </FormRow>
                   <FormRow>
