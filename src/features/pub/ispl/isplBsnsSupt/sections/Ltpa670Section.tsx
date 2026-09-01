@@ -5,7 +5,6 @@
 
 import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { Type } from 'lucide-react';
 import * as React from 'react';
 import { useMemo } from 'react';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/uiux/RadioGroup';
