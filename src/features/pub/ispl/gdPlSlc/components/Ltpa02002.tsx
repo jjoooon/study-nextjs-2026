@@ -586,7 +586,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                         <RadioGroupItem
                           key={'po' + idx}
                           value={opt.value}
-                          variant="button"
+                          variant="noCheckButton"
                           size={'lg'}
                           className="w-full text-left"
                         >
@@ -627,7 +627,7 @@ export function Ltpa02002({ userType }: { userType: string }) {
                             className="gap-[0.4rem] w-full grid grid-cols-[1fr_1fr] items-start"
                           >
                             {[
-                              { value: '무해지 적용', label: '무해지 적용' },
+                              { value: '무해지형', label: '무해지형' },
                               { value: '기본형', label: '기본형' },
                             ].map((opt) => (
                               <RadioGroupItem

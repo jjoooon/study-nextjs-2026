@@ -41,7 +41,9 @@ const radioGroupItemVariants = cva(
         default:
           'rounded-full border bg-[var(--color-element-inverse)] data-[state=checked]:border-[var(--color-border-gray-light)] data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)]',
         button:
-          'rounded-[0.6rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)] disabled:data-[state=checked]:text-[var(--color-gray-30)] disabled:data-[state=checked]:shadow-none',
+          'rounded-[0.4rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)] disabled:data-[state=checked]:text-[var(--color-gray-30)] disabled:data-[state=checked]:shadow-none',
+        noCheckButton:
+          'rounded-[0.4rem] border border-[var(--color-border-gray-light)] bg-white font-normal leading-normal text-black data-[required=true]:bg-[var(--color-input-surface-highlight)] data-[required=true]:border-[var(--color-input-border-highlight)] data-[invalid]:text-[var(--color-text-danger)] data-[invalid]:bg-[var(--color-input-surface-error)] data-[invalid]:border-[var(--color-input-border-error)] disabled:data-[state=checked]:text-[var(--color-gray-30)] disabled:data-[state=checked]:shadow-none',
         chipBox:
           'rounded-full border border-[var(--color-gray-20)] bg-[var(--color-gray-0)] font-normal leading-normal text-[var(--color-gray-100)] whitespace-nowrap px-2 text-[1.3rem] tracking-[-0.042rem] w-auto data-[state=checked]:bg-[var(--color-primary-50)] data-[state=checked]:text-[#FFF] data-[state=checked]:border-[#ff6135] ',
         tab: `h-[3rem] rounded-full border-transparent bg-[var(--color-gray-10)] px-[0.8rem] py-[0.4rem] text-[1.2rem] font-bold leading-normal tracking-[-0.13rem] text-[var(--color-gray-70)] 
@@ -76,7 +78,7 @@ const radioGroupItemVariants = cva(
       {
         variant: 'button',
         size: 'lg',
-        className: 'h-[2.8rem] px-[1rem] text-[1.4rem] tracking-[-0.042rem] w-auto',
+        className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.042rem] w-auto',
       },
       {
         variant: 'button',
@@ -96,6 +98,33 @@ const radioGroupItemVariants = cva(
       },
       {
         variant: 'button',
+        color: 'info',
+        className:
+          'data-[state=checked]:bg-[#f0f7ff] data-[state=checked]:text-[#006ff2] data-[state=checked]:border-[#006ff2] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(0,111,242,0.19)]',
+      },
+      {
+        variant: 'noCheckButton',
+        size: 'lg',
+        className: 'h-[2.8rem] px-[1rem] text-[1.3rem] tracking-[-0.042rem] w-auto justify-center items-center flex',
+      },
+      {
+        variant: 'noCheckButton',
+        size: 'md',
+        className: 'h-[2.5rem] px-[1rem] text-[1.3rem] tracking-[-0.039rem] w-auto justify-center items-center flex',
+      },
+      {
+        variant: 'noCheckButton',
+        size: 'sm',
+        className: 'h-[2.2rem] px-[1rem] text-[1.3rem] tracking-[-0.039rem] w-auto justify-center items-center flex',
+      },
+      {
+        variant: 'noCheckButton',
+        color: 'primary',
+        className:
+          'data-[state=checked]:bg-[#fff7f4] data-[state=checked]:text-[#ff3800] data-[state=checked]:border-[#ff6135] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(255,92,46,0.19)]',
+      },
+      {
+        variant: 'noCheckButton',
         color: 'info',
         className:
           'data-[state=checked]:bg-[#f0f7ff] data-[state=checked]:text-[#006ff2] data-[state=checked]:border-[#006ff2] data-[state=checked]:shadow-[0rem_0.1rem_0.1rem_0rem_rgba(0,111,242,0.19)]',
@@ -292,6 +321,7 @@ const RadioGroupItem = React.forwardRef<
     ref
   ) => {
     const isButton = variant === 'button';
+    const isNoCheckButton = variant === 'noCheckButton';
     const isChipBox = variant === 'chipBox';
     const isTab = variant === 'tab';
     const generatedId = React.useId();
@@ -303,7 +333,7 @@ const RadioGroupItem = React.forwardRef<
     const indicatorSize = size === 'sm' ? 'md' : size;
 
     return (
-      <div className={`relative flex items-center gap-1 ${isButton && (isChipBox || isTab) ? '' : ''}`}>
+      <div className="relative flex items-center gap-1">
         <RadioGroupPrimitive.Item
           ref={ref}
           id={radioId}
@@ -321,7 +351,7 @@ const RadioGroupItem = React.forwardRef<
           data-invalid={isError ? '' : undefined}
           aria-invalid={isError ? true : undefined}
           {...props}
-          {...(isChipBox || isTab || variant === 'none' ? {} : { size: undefined })} // Avoid passing invalid html attributes if necessary
+          {...(isChipBox || isTab || variant === 'none' ? {} : { size: undefined })}
         >
           {isButton ? (
             <div
@@ -343,7 +373,7 @@ const RadioGroupItem = React.forwardRef<
                 />
               </RadioGroupPrimitive.Indicator>
             </div>
-          ) : !(isChipBox || isTab) ? (
+          ) : !(isNoCheckButton || isChipBox || isTab) ? (
             <RadioGroupPrimitive.Indicator className="flex items-center justify-center whitespace-nowrap">
               <div
                 className={cn(
@@ -354,10 +384,10 @@ const RadioGroupItem = React.forwardRef<
               />
             </RadioGroupPrimitive.Indicator>
           ) : null}
-          {children && (isButton || isChipBox || isTab) && children}
+          {children && (isButton || isNoCheckButton || isChipBox || isTab) && children}
         </RadioGroupPrimitive.Item>
 
-        {children && !isButton && !isChipBox && !isTab && (
+        {children && !isButton && !isNoCheckButton && !isChipBox && !isTab && (
           <label
             htmlFor={radioId}
             className={cn(
