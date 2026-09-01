@@ -128,6 +128,11 @@ const Ltpz058 = () => {
     },
     {
       headerName: '영위업종',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">영위업종</span>
+        </Grow>
+      ),
       flex: 10,
       cellClass: 'text-center',
       children: [
@@ -150,7 +155,12 @@ const Ltpz058 = () => {
 
   const columnDefsBusinessTypeOnly: (ColDef<DummyDataTypeAll> | ColGroupDef<DummyDataTypeAll>)[] = [
     {
-      headerName: '영업위종',
+      headerName: '영위업종',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold text-[1.3rem]!">영위업종</span>
+        </Grow>
+      ),
       flex: 1,
       cellClass: 'text-center',
       children: [
