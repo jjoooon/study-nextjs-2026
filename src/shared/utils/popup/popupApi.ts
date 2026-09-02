@@ -66,6 +66,8 @@ export const POPUP_TYPES = {
 export interface OpenPopupOptions {
   /** 타임아웃 (밀리초), 0이면 무제한 */
   timeout?: number;
+  /** Dialog의 modal 속성 (기본값: true) */
+  modal?: boolean;
 }
 
 /**
@@ -96,7 +98,7 @@ export async function open<T = unknown, P = Record<string, unknown>>(
   options: OpenPopupOptions = {}
 ): Promise<T> {
   const store = getStore();
-  const { timeout = 0 } = options;
+  const { timeout = 0, modal } = options;
 
   return new Promise<T>((resolve, reject) => {
     // 1. 고유 ID 생성 (crypto.randomUUID 사용해 더 강력한 고유성 보장)
@@ -150,7 +152,10 @@ export async function open<T = unknown, P = Record<string, unknown>>(
         addPopup({
           id,
           popupType,
-          props: (props ?? {}) as Record<string, unknown>,
+          props: {
+            ...(props ?? {}),
+            ...(modal !== undefined && { modal }),
+          } as Record<string, unknown>,
         })
       );
     } catch (dispatchError) {
