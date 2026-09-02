@@ -181,13 +181,30 @@ const Ltpz640 = () => {
   const [rowData, setRowData] = React.useState<DummyData1Type[]>(DummyData1);
   const dragStartColumnRef = React.useRef<string | null>(null);
   // 행 추가·삭제·드래그 이동 후 높이 재계산이 필요한 경우를 표시하는 플래그
-  // setRowData 직후 바로 resetRowHeights()를 호출하면 React 상태가 아직 DOM에 반영되지
-  // 않은 시점(특히 내부망 등 느린 환경)에서 이전 높이 기준으로 계산되는 문제가 있습니다.
-  // onRowDataUpdated 이벤트에서 처리함으로써 AG Grid가 새 데이터를 완전히 반영한 뒤
-  // 높이를 재계산하도록 보장합니다.
   const pendingRowHeightRefreshRef = React.useRef(false);
 
-  // AG Grid가 rowData 업데이트를 완료한 시점에 셀 높이를 재계산하는 핸들러
+  // [spanRows 병합 셀 높이 재계산 - getRowId Delta Update 우회 전략]
+  //
+  // 근본 원인:
+  //  getRowId가 설정되면 AG Grid는 Delta Update 방식으로 동작합니다.
+  //  Delta Update는 동일한 id의 행은 "변경 없음"으로 처리하므로
+  //  행 순서가 바뀌어도, 행이 추가/삭제되어도 인접 행의 span 경계를
+  //  재계산하지 않습니다.
+  //  - 행 추가: 새 id 행만 삽입 처리 → 인접 행 span 미재계산
+  //  - 행 삭제: 해당 행만 제거 → 인접 행 span 미재계산
+  //  - 순서 변경(화살표): 데이터 동일 → AG Grid는 no-op으로 처리
+  //
+  // 첫 번째 span 셀 드래그만 동작하는 이유:
+  //  드래그 시 field1(span 컬럼) 값이 변경되므로 AG Grid가 해당 행을
+  //  "데이터 변경"으로 인식 → span 경계 재평가가 이루어짐.
+  //  onModelUpdated, rAF, setTimeout 등 타이밍 기반 접근이 실패한 이유도
+  //  결국 Delta Update가 span 캐시를 업데이트하지 않기 때문입니다.
+  //
+  // 해결:
+  //  rowData = [] → rowData = currentRows 를 동기 연속 호출합니다.
+  //  AG Grid는 두 setGridOption 호출을 같은 JS 실행 컨텍스트에서
+  //  배치 처리하므로 span 캐시가 완전히 초기화된 후 새로 계산됩니다.
+  //  DOM paint는 다음 frame에 일어나므로 시각적 깜빡임이 없습니다.
   const handleRowDataUpdated = React.useCallback(() => {
     if (!pendingRowHeightRefreshRef.current) {
       return;
@@ -199,14 +216,23 @@ const Ltpz640 = () => {
       return;
     }
 
-    // requestAnimationFrame을 두 번 중첩하여 브라우저 paint 사이클이 한 번 완료된 뒤
-    // 높이를 재계산합니다. 이는 모든 환경에서 DOM 업데이트가 완료된 것을 보장합니다.
+    // 현재 그리드에서 최신 행 데이터를 수집합니다
+    const currentRows: DummyData1Type[] = [];
+    api.forEachNode((node) => {
+      if (node.data) currentRows.push(node.data);
+    });
+
+    // span 캐시 완전 초기화: 빈 배열로 모든 행·span 경계 제거
+    api.setGridOption?.('rowData', []);
+    // 실제 데이터 즉시 재설정: span을 처음부터 계산
+    // (동기 호출이므로 AG Grid가 배치 처리 → DOM에는 최종 상태만 반영)
+    api.setGridOption?.('rowData', currentRows);
+
+    // 다음 frame에서 높이 재계산 (span 계산 완료 후)
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        api.resetRowHeights();
-        api.redrawRows();
-        api.refreshCells({ force: true });
-      });
+      api.resetRowHeights();
+      api.redrawRows();
+      api.refreshCells({ force: true });
     });
   }, []);
 
