@@ -180,6 +180,35 @@ const Ltpz640 = () => {
   const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
   const [rowData, setRowData] = React.useState<DummyData1Type[]>(DummyData1);
   const dragStartColumnRef = React.useRef<string | null>(null);
+  // 행 추가·삭제·드래그 이동 후 높이 재계산이 필요한 경우를 표시하는 플래그
+  // setRowData 직후 바로 resetRowHeights()를 호출하면 React 상태가 아직 DOM에 반영되지
+  // 않은 시점(특히 내부망 등 느린 환경)에서 이전 높이 기준으로 계산되는 문제가 있습니다.
+  // onRowDataUpdated 이벤트에서 처리함으로써 AG Grid가 새 데이터를 완전히 반영한 뒤
+  // 높이를 재계산하도록 보장합니다.
+  const pendingRowHeightRefreshRef = React.useRef(false);
+
+  // AG Grid가 rowData 업데이트를 완료한 시점에 셀 높이를 재계산하는 핸들러
+  const handleRowDataUpdated = React.useCallback(() => {
+    if (!pendingRowHeightRefreshRef.current) {
+      return;
+    }
+    pendingRowHeightRefreshRef.current = false;
+
+    const api = gridApiRef.current;
+    if (!api) {
+      return;
+    }
+
+    // requestAnimationFrame을 두 번 중첩하여 브라우저 paint 사이클이 한 번 완료된 뒤
+    // 높이를 재계산합니다. 이는 모든 환경에서 DOM 업데이트가 완료된 것을 보장합니다.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        api.resetRowHeights();
+        api.redrawRows();
+        api.refreshCells({ force: true });
+      });
+    });
+  }, []);
 
   const handleRowDragEnter = React.useCallback((event: RowDragEnterEvent<DummyData1Type>) => {
     const targetEl = event.event?.target as HTMLElement | null;
@@ -235,6 +264,7 @@ const Ltpz640 = () => {
   }, []);
 
   const handleDeleteRow = React.useCallback(() => {
+    pendingRowHeightRefreshRef.current = true;
     setRowData((prev) => prev.filter((row) => !row.checked));
   }, [setRowData]);
 
@@ -345,16 +375,8 @@ const Ltpz640 = () => {
           ...row,
           field0: index + 1,
         }));
+        pendingRowHeightRefreshRef.current = true;
         setRowData(finalNextRows);
-
-        if (gridApiRef.current) {
-          const api = gridApiRef.current;
-          api.setGridOption?.('rowData', finalNextRows);
-          api.refreshClientSideRowModel?.('everything');
-          api.resetRowHeights();
-          api.redrawRows();
-          api.refreshCells({ force: true });
-        }
         return;
       }
 
@@ -422,16 +444,8 @@ const Ltpz640 = () => {
         ...row,
         field0: index + 1,
       }));
+      pendingRowHeightRefreshRef.current = true;
       setRowData(finalNextRows);
-
-      if (gridApiRef.current) {
-        const api = gridApiRef.current;
-        api.setGridOption?.('rowData', finalNextRows);
-        api.refreshClientSideRowModel?.('everything');
-        api.resetRowHeights();
-        api.redrawRows();
-        api.refreshCells({ force: true });
-      }
     },
     [rowData, setRowData]
   );
@@ -441,6 +455,7 @@ const Ltpz640 = () => {
 
   const moveCheckedRowsWithinGroup = React.useCallback(
     (direction: 'up' | 'down') => {
+      pendingRowHeightRefreshRef.current = true;
       setRowData((prev) => {
         const nextRows = [...prev];
         let groupStart = 0;
@@ -664,10 +679,16 @@ const Ltpz640 = () => {
                 onGridReady={(event) => {
                   gridApiRef.current = event.api;
                 }}
+                onRowDataUpdated={handleRowDataUpdated}
                 onFirstDataRendered={(event) => {
-                  event.api.resetRowHeights();
-                  event.api.redrawRows();
-                  event.api.refreshCells({ force: true });
+                  // 초기 렌더링 완료 시점에도 동일 패턴으로 높이 재계산
+                  requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                      event.api.resetRowHeights();
+                      event.api.redrawRows();
+                      event.api.refreshCells({ force: true });
+                    });
+                  });
                 }}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 getRowId={(params) => String(params.data.id)}

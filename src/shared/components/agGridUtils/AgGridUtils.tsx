@@ -785,27 +785,34 @@ export function createAddRowHandler<RowType extends Record<string, unknown>, IDT
 
       if (gridApiRef?.current) {
         const api = gridApiRef.current;
-        // AG Grid 내부 Row Model에 즉시 새 데이터 세팅 및 Row Span 높이값 강제 재구축
+        // AG Grid 내부 Row Model에 즉시 새 데이터 세팅
         api.setGridOption?.('rowData', finalRows);
         api.refreshClientSideRowModel?.('everything');
-        api.resetRowHeights();
-        api.redrawRows();
-        api.refreshCells({ force: true });
 
+        // requestAnimationFrame 2중첩으로 브라우저 paint 사이클 완료 후 높이 재계산.
+        // setRowData 콜백 내에서 즉시 resetRowHeights()를 호출하면 React/AG Grid 내부
+        // 업데이트가 DOM에 반영되기 전(특히 내부망 등 느린 환경)에 실행되어 이전 높이
+        // 기준으로 계산되는 문제를 방지합니다.
         requestAnimationFrame(() => {
-          api.ensureIndexVisible(boundedIndex, 'middle');
+          requestAnimationFrame(() => {
+            api.resetRowHeights();
+            api.redrawRows();
+            api.refreshCells({ force: true });
 
-          if (insertAt === 'focused') {
-            const focusedCell = api.getFocusedCell();
-            if (focusedCell) {
-              api.setFocusedCell(boundedIndex, focusedCell.column.getColId());
+            api.ensureIndexVisible(boundedIndex, 'middle');
+
+            if (insertAt === 'focused') {
+              const focusedCell = api.getFocusedCell();
+              if (focusedCell) {
+                api.setFocusedCell(boundedIndex, focusedCell.column.getColId());
+              }
+            } else if (insertAt === 'end') {
+              const viewportElement = document.querySelector('.ag-body-viewport');
+              if (viewportElement) {
+                viewportElement.scrollTop = viewportElement.scrollHeight;
+              }
             }
-          } else if (insertAt === 'end') {
-            const viewportElement = document.querySelector('.ag-body-viewport');
-            if (viewportElement) {
-              viewportElement.scrollTop = viewportElement.scrollHeight;
-            }
-          }
+          });
         });
       }
 
