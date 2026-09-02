@@ -3,10 +3,11 @@
  */
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
+import { BulletItem } from '@common/BulletList';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { InputCombo } from '@common/InputCombo';
@@ -109,6 +110,9 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
   // 현재 활성화된 탭 정보
   const currentTab = tabs.find((t) => t.value === active);
 
+  // 태아 '가입' 체크박스 상태 관리 (체크 시 다태아, 다태아연계, 수수료선지급 표시)
+  const [isFetusSubscribed, setIsFetusSubscribed] = useState<boolean>(false);
+
   // M1. 무한루프에러 수정
   useEffect(() => {
     const isSame =
@@ -128,7 +132,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
               <LayoutScrollItem>
                 <Gcol placement={'ss'} className="w-full overflow-x-hidden" gap={3}>
                   {/* 1.1 기본 보험정보 설정 테이블 */}
-                  <FormTable cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
+                  <FormTable cols={['w-[11rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                     {/* 공통: 보험시기, 보험기간 */}
                     <FormRow>
                       <FormCell title={'보험시기'}>
@@ -549,9 +553,22 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                       <FormRow>
                         <FormCell title={'태아여부'}>
                           <Grow className="flex gap-3">
-                            <Checkbox color="primary">가입</Checkbox>
-                            <Checkbox color="primary">다태아</Checkbox>
-                            <Checkbox color="primary">수수료선지급</Checkbox>
+                            <Checkbox
+                              color="primary"
+                              checked={isFetusSubscribed}
+                              onCheckedChange={(checked) => setIsFetusSubscribed(Boolean(checked))}
+                            >
+                              가입
+                            </Checkbox>
+                            {isFetusSubscribed && (
+                              <>
+                                <Checkbox color="primary">다태아</Checkbox>
+                                <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                                  다태아연계
+                                </Button>
+                                <Checkbox color="primary">수수료선지급</Checkbox>
+                              </>
+                            )}
                           </Grow>
                         </FormCell>
                         <FormCell title={'계약전환'}>
@@ -702,8 +719,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                         </Grow>
                       }
                     >
-                      {/* 인보험 */}
-                      <FormTable lineTop={false} cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
+                      <FormTable lineTop={false} cols={['w-[11rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                         {(currentTab?.type === '일반' ||
                           currentTab?.type === '태아' ||
                           currentTab?.type === '재물피보험자') && (
@@ -723,7 +739,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                     ]}
                                     col={2}
                                     required
-                                    value=""
+                                    readOnly={currentTab?.type === '태아' ? true : false}
+                                    value={currentTab?.type === '태아' ? '태아' : ''}
                                     width={84}
                                   />
                                   <Button
@@ -745,6 +762,15 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                       </RadioGroupItem>
                                     ))}
                                   </RadioGroup>
+                                  {currentTab?.type === '태아' && (
+                                    <Input
+                                      aria-label="태아이름"
+                                      placeholder="태아이름"
+                                      width={84}
+                                      value={''}
+                                      className="ml-1"
+                                    />
+                                  )}
                                 </FormCell>
                                 <FormCell title="연령" tdClassName="gap-3">
                                   <Grow>
@@ -762,7 +788,12 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                   tdClassName="justify-between flex-wrap"
                                 >
                                   <Grow placement="sc">
-                                    <Input aria-label="피보험자명" width={84} value={'김환화환화'} readOnly />
+                                    <Input
+                                      aria-label="피보험자명"
+                                      width={84}
+                                      value={currentTab?.type === '태아' ? '태아' : '김환화환화'}
+                                      readOnly
+                                    />
                                     <Input
                                       aria-label="주민등록번호 마스킹"
                                       width={114}
@@ -786,8 +817,11 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                       readOnly
                                     />
                                     <Input aria-label="피보험자 성별" width={32} value={'남'} align="center" readOnly />
+                                    {currentTab?.type === '태아' && (
+                                      <Input aria-label="태아이름" placeholder="태아이름" width={84} value={''} />
+                                    )}
                                   </Grow>
-                                  <Grow gap={2.5}>
+                                  <Grow gap={1}>
                                     <KeyValueItem label={'상령일'}>
                                       <Typo weight={'bold'}>2023-01-12</Typo>
                                       <Badge color={'blue'} size={'md'} variant={'contained'}>
@@ -804,9 +838,14 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                         </Badge>
                                       </KeyValueItem>
                                     )}
-                                    <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
-                                      알림톡발송
-                                    </Button>
+                                    <Grow gap={1}>
+                                      <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                                        알림톡발송
+                                      </Button>
+                                      <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                                        고객등록
+                                      </Button>
+                                    </Grow>
                                   </Grow>
                                 </FormCell>
                               </FormRow>
@@ -875,7 +914,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                 <Input aria-label="피보험자명" width={84} value={'김한화'} readOnly />는
                                 <NativeSelect
                                   aria-label="주피와 관계 선택"
-                                  width={156}
+                                  width={'auto'}
                                   className="ml-[0.4rem]"
                                   required
                                 >
@@ -888,6 +927,9 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                     </NativeSelectOption>
                                   ))}
                                 </NativeSelect>
+                                <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                                  고객등록
+                                </Button>
                               </FormCell>
 
                               {currentTab?.type !== '재물피보험자' && (
@@ -899,9 +941,9 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                             </FormRow>
                           </>
                         )}
-                        {(currentTab?.type === '일반' || currentTab?.type === '태아') && (
+                        {currentTab?.type === '일반' && (
                           <FormRow>
-                            <FormCell title={'할인적용'} colSpan={currentTab?.type === '태아' ? 1 : 3}>
+                            <FormCell title={'할인적용'} colSpan={3}>
                               <Checkbox color="primary">가족연계할인</Checkbox>
                               <Button
                                 aria-label="피보험자 검색"
@@ -913,15 +955,76 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                 <SearchIcon color="var(--color-primary-50)" />
                               </Button>
                             </FormCell>
-
-                            {currentTab?.type === '태아' && (
-                              <FormCell title="임신주수">
+                          </FormRow>
+                        )}
+                        {currentTab?.type === '태아' && (
+                          <>
+                            <FormRow>
+                              <FormCell title="임신주수" colSpan={3}>
                                 <Input aria-label="임신주수" width={32} align="right" value={'20'} required />
                                 주 (출산예정일
                                 <DatePickerInput mode={'single'} value={'2026-03-10'} required />)
                               </FormCell>
-                            )}
-                          </FormRow>
+                            </FormRow>
+                            <FormRow>
+                              <FormCell title={'할인적용'} colSpan={3}>
+                                <Gcol placement="ss">
+                                  <Grow>
+                                    <Checkbox color="primary">가족연계할인(출산지원금 연계 강화)</Checkbox>
+                                    <NativeSelect aria-label="할인적용 선택" width={'auto'} className="ml-[0.4rem]">
+                                      {[
+                                        { value: '선택', id: '', label: '선택' },
+                                        { value: '추가할인', id: '', label: '추가할인(출산지원금연계)' },
+                                        { value: '기본할인', id: '', label: '기본할인' },
+                                      ].map((option, index) => (
+                                        <NativeSelectOption key={'주피와관계' + index} value={option.value}>
+                                          {option.label}
+                                        </NativeSelectOption>
+                                      ))}
+                                    </NativeSelect>
+                                    <Button
+                                      aria-label="피보험자 검색"
+                                      variant="outlined"
+                                      only="icon"
+                                      size="lg"
+                                      color="gray-light"
+                                    >
+                                      <SearchIcon color="var(--color-primary-50)" />
+                                    </Button>
+                                  </Grow>
+                                  <BulletItem type="ref" size="md">
+                                    가족관계증명서 또는 주민등록등본(관계명시) 필수 스캔
+                                  </BulletItem>
+                                </Gcol>
+                              </FormCell>
+                            </FormRow>
+                            <FormRow>
+                              <FormCell title={'할인적용'} colSpan={3}>
+                                <Gcol placement="ss">
+                                  <Grow>
+                                    <Checkbox color="primary">출산육아휴직할인</Checkbox>
+                                    <NativeSelect aria-label="할인적용 선택" width={'auto'} className="ml-[0.4rem]">
+                                      {[
+                                        { value: '선택', id: '', label: '선택' },
+                                        { value: '육아휴직', id: '', label: '육아휴직(육아기 근로시간 단축 포함)' },
+                                        { value: '출산', id: '', label: '출산(과거1년이내)' },
+                                        { value: '다둥이', id: '', label: '다둥이(과거1년이내)' },
+                                      ].map((option, index) => (
+                                        <NativeSelectOption key={'주피와관계' + index} value={option.value}>
+                                          {option.label}
+                                        </NativeSelectOption>
+                                      ))}
+                                    </NativeSelect>
+                                    (마지막 출생자녀 생년월일
+                                    <DatePickerInput mode={'single'} value={'2026-03-10'} />)
+                                  </Grow>
+                                  <BulletItem type="ref" size="md">
+                                    계약자기준 증빙서류 필수 스캔
+                                  </BulletItem>
+                                </Gcol>
+                              </FormCell>
+                            </FormRow>
+                          </>
                         )}
                         {currentTab?.type === '재물목적물' && (
                           <>
@@ -1186,7 +1289,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
 
                   {/* 계약자 정보 : 상세모드일때 / 간편모드&연금저축일때 */}
                   {(!_simpleMode || (_simpleMode && currentTab?.type === '연금저축')) && (
-                    <FormTable caption="계약자 정보" cols={['w-[12rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
+                    <FormTable caption="계약자 정보" cols={['w-[11rem]', 'w-[40%]', 'w-[12rem]', 'w-[auto]']}>
                       {_simpleMode ? (
                         <FormRow>
                           <FormCell title={'계약자'} titleVariant="section">
@@ -1222,21 +1325,29 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                       ) : (
                         <FormRow>
                           <FormCell title={'계약자'} titleVariant="section" colSpan={3}>
-                            <Input aria-label="피보험자명" width={84} value={'김환화'} readOnly />
-                            <Input aria-label="주민등록번호 마스킹" width={114} value={'000000-0******'} readOnly />
-                            <Button
-                              aria-label="피보험자 검색"
-                              variant={'outlined'}
-                              only="icon"
-                              size={'lg'}
-                              color={'gray-light'}
-                            >
-                              <SearchIcon color={'var(--color-primary-50)'} />
-                            </Button>
-                            <Checkbox color="primary" />
-                            <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
-                              개인사업자
-                            </Button>
+                            <Grow placement="bwc">
+                              <Grow placement="sc">
+                                <Input aria-label="피보험자명" width={84} value={'김환화'} readOnly />
+                                <Input aria-label="주민등록번호 마스킹" width={114} value={'000000-0******'} readOnly />
+                                <Button
+                                  aria-label="피보험자 검색"
+                                  variant={'outlined'}
+                                  only="icon"
+                                  size={'lg'}
+                                  color={'gray-light'}
+                                >
+                                  <SearchIcon color={'var(--color-primary-50)'} />
+                                </Button>
+                                <Checkbox color="primary" />
+                                <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
+                                  개인사업자
+                                </Button>
+                              </Grow>
+
+                              <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
+                                고객등록
+                              </Button>
+                            </Grow>
                           </FormCell>
                         </FormRow>
                       )}

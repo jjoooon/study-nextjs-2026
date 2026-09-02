@@ -32,6 +32,7 @@ type PageTitleProps = {
   simpleMode?: boolean;
   onSimpleModeChange?: (value: boolean) => void;
   memoButtonColor?: 'gray' | 'primary';
+  disabled?: boolean;
 };
 
 export function PageTitle({ data }: PageTitleProps) {
@@ -78,7 +79,13 @@ export function PageTitle({ data }: PageTitleProps) {
   );
 }
 
-export function PageTitleProduct({ data, simpleMode, onSimpleModeChange, memoButtonColor = 'gray' }: PageTitleProps) {
+export function PageTitleProduct({
+  data,
+  simpleMode,
+  onSimpleModeChange,
+  memoButtonColor = 'gray',
+  disabled = false,
+}: PageTitleProps) {
   // 상품형 타이틀도 동일하게 안전한 기본 객체를 만들어 예외 상황을 방지한다.
   const safeData = data ?? {};
 
@@ -112,7 +119,7 @@ export function PageTitleProduct({ data, simpleMode, onSimpleModeChange, memoBut
           label={['간편', '상세']}
           state={resolvedSimpleMode}
           onChange={handleSimpleModeChange}
-          disabled={true}
+          disabled={disabled}
         />
 
         {/* 제목이 길 수 있으므로 툴팁으로 전체 제목을 확인할 수 있게 한다. (값이 있을 때만 툴팁 활성화) */}
