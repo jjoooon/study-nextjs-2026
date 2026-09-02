@@ -261,7 +261,7 @@ const Ltpz640 = () => {
     [setRowData]
   );
 
-  const handleAddRow = createAddRowHandler<DummyData1Type, number>(setRowData, {
+  const handleAddRowRaw = createAddRowHandler<DummyData1Type, number>(setRowData, {
     idKey: 'id',
     getNextId: getNextNumericRowId,
     createRow: (nextId, rows, focusedRow) => {
@@ -284,6 +284,11 @@ const Ltpz640 = () => {
     gridApiRef,
   });
 
+  const handleAddRow = React.useCallback(() => {
+    pendingRowHeightRefreshRef.current = true;
+    handleAddRowRaw();
+  }, [handleAddRowRaw]);
+
   const handleOpenAddPackageDialog = React.useCallback(() => {
     setMergePackageName('');
     setOpenCellMerge(true);
@@ -302,6 +307,10 @@ const Ltpz640 = () => {
 
   const handleCellValueChanged = React.useCallback(
     (event: CellValueChangedEvent<DummyData1Type>) => {
+      if (event.colDef.field === 'field1') {
+        pendingRowHeightRefreshRef.current = true;
+      }
+
       if (event.colDef.field === 'field0') {
         handleOrderChanged(event);
         return;
@@ -540,6 +549,7 @@ const Ltpz640 = () => {
       return;
     }
 
+    pendingRowHeightRefreshRef.current = true;
     setRowData((prev) => {
       const nextId = getNextNumericRowId(prev);
       const newRow: DummyData1Type = {
