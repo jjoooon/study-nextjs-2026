@@ -507,7 +507,7 @@
     "id": "LTPZ079",
     "title": "설계이미지조회",
     "width": 960,
-    "height": 424,
+    "height": 396,
     "isIframe": true
   },
   {
@@ -826,10 +826,10 @@
     "isIframe": false
   },
   {
-    "id": "LTPA060",
+    "id": "LTPZ060",
     "title": "고지대상 조회 및 입력",
     "width": 1180,
-    "height": 800,
+    "height": 448,
     "isIframe": true
   },
   {

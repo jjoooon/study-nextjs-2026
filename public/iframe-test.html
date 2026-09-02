@@ -536,7 +536,7 @@
         <div
           class="iframe-wrapper active-glow"
           id="iframeWrapper"
-          style="width: 1000px; height: 700px; display: flex; flex-direction: column; background-color: #fff"
+          style="width: 1000px; display: flex; flex-direction: column; background-color: #fff"
         >
           <div
             style="
@@ -586,7 +586,7 @@
               </svg>
             </button>
           </div>
-          <div class="dialogpopup" style="width: 100%; height: 100%;">
+          <div class="dialogpopup" style="width: 100%; height: 700px">
             <iframe src="" id="testIframe" style="flex: 1; border: 0; width: 100%; height: 100%"></iframe>
           </div>
         </div>
@@ -672,12 +672,20 @@
       let allItems = [];
       let currentTab = 'popup'; // 기본 탭을 팝업으로 설정
 
+      function updateDialogPopupHeight(heightPx) {
+        const dialogPopup = document.querySelector('.dialogpopup');
+        if (dialogPopup) {
+          dialogPopup.style.height = heightPx + 'px';
+        }
+      }
+
       function updateIframeSizeFromSliders() {
         const w = widthSlider.value;
         const h = heightSlider.value;
 
         iframeWrapper.style.width = w + 'px';
         iframeWrapper.style.height = h + 'px';
+        updateDialogPopupHeight(h);
 
         widthVal.value = w;
         heightVal.value = h;
@@ -699,6 +707,7 @@
 
         iframeWrapper.style.width = w + 'px';
         iframeWrapper.style.height = h + 'px';
+        updateDialogPopupHeight(h);
 
         widthSlider.value = w;
         heightSlider.value = h;
@@ -745,6 +754,7 @@
           heightSlider.value = preset.height;
           heightVal.value = preset.height;
           iframeWrapper.style.height = preset.height + 'px';
+          updateDialogPopupHeight(preset.height);
         }
 
         updateActivePresetButton(sizeKey);
@@ -797,6 +807,7 @@
           }
           if (defaultHeight) {
             iframeWrapper.style.height = defaultHeight + 'px';
+            updateDialogPopupHeight(defaultHeight);
             heightSlider.value = defaultHeight;
             heightVal.value = defaultHeight;
           }
@@ -838,6 +849,7 @@
           if (event.data.height) {
             const newHeight = event.data.height;
             iframeWrapper.style.height = newHeight + 'px';
+            updateDialogPopupHeight(newHeight);
             heightSlider.value = newHeight;
             heightVal.value = newHeight;
           }
@@ -974,14 +986,18 @@
         const predefined = dialogSizesMap.get((item.id || '').toLowerCase());
         if (predefined && predefined.isIframe !== false && (predefined.width || predefined.height)) {
           if (predefined.width) {
-            iframeWrapper.style.width = predefined.width + 'px';
-            widthSlider.value = predefined.width;
-            widthVal.value = predefined.width;
+            const w = Math.round(Number(predefined.width)) + 2;
+            iframeWrapper.style.width = w + 'px';
+            widthSlider.value = w;
+            widthVal.value = w;
           }
           if (predefined.height && predefined.height !== 'auto') {
-            iframeWrapper.style.height = predefined.height + 'px';
-            heightSlider.value = predefined.height;
-            heightVal.value = predefined.height;
+            // dialogSizes의 헤더 포함 전체 크기에서 헤더 30px 차감한 값 적용
+            const h = Math.max(0, Number(predefined.height) - 30);
+            iframeWrapper.style.height = h + 'px';
+            updateDialogPopupHeight(h);
+            heightSlider.value = h;
+            heightVal.value = h;
           }
         } else {
           // 전달되는 크기 값이 없거나 isIframe이 false인 경우 기본값 width: 100%, height: 100%로 변경
@@ -1011,10 +1027,11 @@
         if (event.data.type === 'DIALOG_DEFAULT_SIZE') {
           const { width, height, title, popupId } = event.data;
 
-          // Dialog에서 전달하는 값으로 크기 조절
+          // Dialog에서 전달하는 30px 차감 완료된 높이 값으로 그대로 적용
           if (width && height) {
             iframeWrapper.style.width = width + 'px';
             iframeWrapper.style.height = height + 'px';
+            updateDialogPopupHeight(height);
             if (widthSlider) widthSlider.value = width;
             if (widthVal) widthVal.value = width;
             if (heightSlider) heightSlider.value = height;

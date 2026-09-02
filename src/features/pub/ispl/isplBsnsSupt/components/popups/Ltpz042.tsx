@@ -306,7 +306,7 @@ const Ltpz042 = () => {
 
           {/* 유자격자: Grid1 단독 */}
           {!isEmpNo && (
-            <div className="ag-theme-alpine w-full inner-scroll" data-row={rowData.length}>
+            <div className="ag-theme-alpine w-full inner-scroll radio-selection" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 key="ltpz042-grid-qualified"
                 getRowId={(params) => `qualified-${params.data.id}`}

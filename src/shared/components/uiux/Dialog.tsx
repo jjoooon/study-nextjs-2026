@@ -827,6 +827,7 @@ function DialogContent({
             : undefined;
 
       const contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
+      const finalIframeHeight = Math.max(0, contentHeight);
 
       const popupTitle = predefined?.title || '';
 
@@ -837,7 +838,7 @@ function DialogContent({
             popupId: currentId,
             title: popupTitle,
             width: Math.round(targetWidthPx) + 2,
-            height: Math.round(contentHeight),
+            height: Math.round(finalIframeHeight),
             sizePreset: typeof size === 'string' ? size : undefined,
           },
           '*'
@@ -846,7 +847,7 @@ function DialogContent({
         if (popupTitle) {
           changeTitle(popupTitle);
         }
-        resizeWindow({ width: Math.round(targetWidthPx) + 2, height: Math.round(contentHeight) });
+        resizeWindow({ width: Math.round(targetWidthPx) + 2, height: Math.round(finalIframeHeight) });
       } catch {
         // cross-origin 무시
       }

@@ -747,7 +747,9 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   border: 1px solid var(--color-border-gray-light) !important;
   background-color: var(--color-element-inverse) !important;
 }
-
+.ag-theme-alpine.radio-selection .ag-checked{
+  pointer-events: none !important;
+}
 .ag-theme-alpine.radio-selection .ag-checkbox-input-wrapper::after {
   content: '' !important;
   position: absolute !important;
