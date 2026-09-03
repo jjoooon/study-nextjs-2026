@@ -425,7 +425,6 @@ export default function Ltpa680Section() {
   const [considerText2, setConsiderText2] = useState(
     '① 소견서(진단명, 치료기간, 치료내용, 현재상태 등)\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지'
   );
-  const handleConsiderEditClick = () => setIsConsiderEditMode(true);
   const handleConsiderSaveClick = () => setIsConsiderEditMode(false);
   const [searchWord] = useState('척추');
   const [guidelineType, setGuidelineType] = useState('일반고지형');
@@ -433,9 +432,7 @@ export default function Ltpa680Section() {
   const [isEditMode, setIsEditMode] = useState(false);
 
   // 수정 버튼 클릭 핸들러
-  const handleEditClick = () => {
-    setIsEditMode(true);
-  };
+
   // 저장 버튼 클릭 핸들러
   const handleSaveClick = () => {
     setIsEditMode(false);
