@@ -543,7 +543,7 @@ const Ltpz021 = () => {
                       columnDefs={columnDefs}
                       defaultColDef={{
                         suppressMovable: true, // 사용자의 임의 컬럼 드래그 이동 비활성화
-                        sortable: false, // 추천설계비교 화면에서는 정렬 비활성화 (3개 그리드 순서가 어긋날 수 있음)
+                        sortable: true, // 추천설계비교 화면에서는 정렬 비활성화 (3개 그리드 순서가 어긋날 수 있음)
                         resizable: true, // 컬럼 크기 조절 허용
                       }}
                       tooltipShowMode="whenTruncated" // 컬럼 너비 초과 시에만 툴팁 노출

@@ -178,7 +178,7 @@ const Ltpz028 = () => {
               columnDefs={columnDefs}
               noRowsOverlayComponent={AgGridEmptyComponent}
               defaultColDef={{
-                sortable: false,
+                sortable: true,
                 resizable: true,
               }}
               domLayout="normal"
