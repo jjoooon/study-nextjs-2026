@@ -282,7 +282,7 @@ export default function Ltpa220Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '계약 수익성 분석(CSM)',
+            pageName: '계약 수익성(CSM)',
             pageId: 'LTPA220',
           }}
         />

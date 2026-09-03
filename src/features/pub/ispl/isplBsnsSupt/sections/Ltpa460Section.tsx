@@ -291,7 +291,7 @@ export default function Ltpa460Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '검증화면 조회',
+            pageName: '산출검증항목 조회',
             pageId: 'LTPA460',
           }}
         />

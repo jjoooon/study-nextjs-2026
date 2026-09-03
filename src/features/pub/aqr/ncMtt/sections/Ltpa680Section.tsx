@@ -958,7 +958,7 @@ export default function Ltpa680Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '장기심사가이드',
+            pageName: '장기질병가이드',
             pageId: 'LTPA680',
           }}
         />

@@ -372,7 +372,7 @@ export default function Ltpa060Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '고지대상 조회 및 입력',
+            pageName: '고지대상조회및 입력',
             pageId: 'LTPA060',
           }}
         />

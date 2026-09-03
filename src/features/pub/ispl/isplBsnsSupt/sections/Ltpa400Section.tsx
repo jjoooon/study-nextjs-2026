@@ -723,7 +723,7 @@ export default function Ltpa400Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '장기보험_가입설계요청',
+            pageName: '장기보험-가입설계요청',
             pageId: 'LTPA400',
           }}
         />

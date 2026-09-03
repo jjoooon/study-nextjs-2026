@@ -406,7 +406,7 @@ export default function Ltpa490Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '미사용청약서 관리',
+            pageName: '미사용청약서관리',
             pageId: 'LTPA490',
           }}
         />

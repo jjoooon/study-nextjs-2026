@@ -391,7 +391,7 @@ export default function Ltpa570Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '실시간 설계현황(지점별)',
+            pageName: '세부지점별 실시간 설계현황',
             pageId: 'LTPA570',
           }}
         />
