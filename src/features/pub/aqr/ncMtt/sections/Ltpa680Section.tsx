@@ -947,7 +947,7 @@ export default function Ltpa680Section() {
   const DATA_TABS = [
     { label: '인수기준', value: 'tab1' },
     { label: '질병정보', value: 'tab2' },
-    { label: 'Mobile용', value: 'tab3' },
+    // { label: 'Mobile용', value: 'tab3' },
   ];
 
   // 탭 상태 관리: 선택값(active)에 따라 하단 컨텐츠 분기 렌더링
@@ -1277,15 +1277,7 @@ export default function Ltpa680Section() {
                                       엑셀가져오기
                                       <FileImportIcon />
                                     </Button>
-                                    <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleEditClick}>
-                                      수정
-                                    </Button>
-                                    <Button
-                                      variant={'contained'}
-                                      size={'md'}
-                                      onClick={handleSaveClick}
-                                      disabled={!isEditMode}
-                                    >
+                                    <Button variant={'contained'} size={'md'} onClick={handleSaveClick}>
                                       저장
                                     </Button>
                                   </Grow>
@@ -1343,21 +1335,8 @@ export default function Ltpa680Section() {
                                       엑셀가져오기
                                       <FileImportIcon />
                                     </Button>
-                                    <Button
-                                      variant={'outlined'}
-                                      size={'md'}
-                                      color={'gray'}
-                                      onClick={handleConsiderEditClick}
-                                      disabled={isConsiderEditMode}
-                                    >
-                                      수정
-                                    </Button>
-                                    <Button
-                                      variant={'contained'}
-                                      size={'md'}
-                                      onClick={handleConsiderSaveClick}
-                                      disabled={!isConsiderEditMode}
-                                    >
+
+                                    <Button variant={'contained'} size={'md'} onClick={handleConsiderSaveClick}>
                                       저장
                                     </Button>
                                   </Grow>
