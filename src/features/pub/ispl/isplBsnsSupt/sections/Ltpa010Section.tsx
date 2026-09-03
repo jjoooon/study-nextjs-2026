@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, ColGroupDef, ICellRendererParams, SortChangedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import {
@@ -82,7 +82,7 @@ const DummyData: DummyDataRow[] = [
     field02: '1_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
     field03: '1_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값1',
     memo: true,
-    field05: '1_김한화김한',
+    field05: '5_김한화김한',
     field06: '2009-01-01',
     field20: '1_김한화김한김한화김한',
     field21: '2009-01-01',
@@ -449,8 +449,22 @@ export default function Ltpa010Section() {
     type09: '',
   });
 
+  // 정렬 적용 여부 상태
+  const [isSorted, setIsSorted] = React.useState(false);
+
+  // AG Grid 정렬 변경 핸들러
+  const handleSortChanged = React.useCallback((params: SortChangedEvent<DummyDataRow>) => {
+    const hasSort = params.api.getColumnState().some((col) => col.sort != null);
+    setIsSorted(hasSort);
+    params.api.refreshCells({ force: true });
+  }, []);
+
   // 동일한 link 값 연결 아이콘 렌더링 헬퍼
   const renderLinkChain = (params: ICellRendererParams<DummyDataRow>) => {
+    // 정렬(Sort) 상태가 적용되어 순서가 바뀐 경우 연결 아이콘 미표시
+    const hasSort = isSorted || params.api.getColumnState().some((col) => col.sort != null);
+    if (hasSort) return null;
+
     const link = params.data?.link;
     if (!link) return null;
 
@@ -1212,6 +1226,7 @@ export default function Ltpa010Section() {
                           }
                         });
                       }}
+                      onSortChanged={handleSortChanged}
                       domLayout="normal"
                       tooltipShowMode="whenTruncated"
                       tooltipShowDelay={0}

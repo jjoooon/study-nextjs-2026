@@ -47,7 +47,7 @@ type CalendarProps = React.ComponentProps<typeof DayPicker> & {
 function Calendar({
   className,
   classNames,
-  showOutsideDays = true,
+  showOutsideDays = false,
   captionLayout = 'label',
   buttonVariant = 'none',
   formatters,
@@ -292,7 +292,18 @@ function Calendar({
         }}
         classNames={{
           root: cn('w-auto', defaultClassNames.root),
-          months: cn('relative flex flex-col gap-4 md:flex-row', defaultClassNames.months),
+          months: cn(
+            `relative flex gap-[4.8rem] flex-row 
+            has-[>*:nth-child(3)]:before:content-[""] 
+            has-[>*:nth-child(3)]:before:absolute 
+            has-[>*:nth-child(3)]:before:left-1/2 
+            has-[>*:nth-child(3)]:before:top-[4.2rem] 
+            has-[>*:nth-child(3)]:before:bottom-0 
+            has-[>*:nth-child(3)]:before:-translate-x-1/2 
+            has-[>*:nth-child(3)]:before:w-[0.1rem] 
+            has-[>*:nth-child(3)]:before:bg-[linear-gradient(to_bottom,#fff,#ccc,#fff)]`,
+            defaultClassNames.months
+          ),
           month: cn('flex w-full flex-col gap-4', defaultClassNames.month),
           nav: cn(
             'absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1 pointer-events-none',
@@ -317,15 +328,18 @@ function Calendar({
             defaultClassNames.dropdowns
           ),
           dropdown_root: cn(
-            'has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border h-[2.8rem] border-[var(--color-gray-20)]',
+            'has-focus:border-ring border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] relative rounded-md border h-[2.8rem] border-[var(--color-gray-20)] text-[1.4rem]',
             defaultClassNames.dropdown_root
           ),
-          dropdown: cn('bg-[#fff] absolute inset-0 opacity-0', defaultClassNames.dropdown),
+          dropdown: cn(
+            'bg-[#fff] absolute inset-0 opacity-0 text-[1.4rem] [&>option]:text-[1.4rem]',
+            defaultClassNames.dropdown
+          ),
           caption_label: cn(
             'select-none font-medium',
             captionLayout === 'label'
               ? 'text-sm'
-              : '[&>svg]:text-muted-foreground flex h-full items-center gap-1 rounded-md pl-2 pr-1 text-[1.3rem] [&>svg]:size-3.5',
+              : '[&>svg]:text-muted-foreground flex h-full items-center gap-1 rounded-md pl-2 pr-1 text-[1.4rem] [&>svg]:size-3.5 pointer-events-none',
             defaultClassNames.caption_label
           ),
           table: 'w-full border-collapse',

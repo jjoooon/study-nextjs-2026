@@ -599,6 +599,7 @@
     background: #c1c1c1;
     border-radius: 2rem;
     border: 0.6rem solid #ffffff;
+    min-height: 4rem !important;
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
@@ -1310,4 +1311,15 @@
 }
 .ltpa020-guide-line li > div {
   z-index: 1;
+}
+.ltpz999 {
+  gap:0
+}
+.ltpz999 [data-slot="dialog-header"] {
+  border:0 !important;
+  min-height: 2rem;
+  max-height: 2rem;
+}
+.ltpz999 [data-slot="dialog-footer"] {
+  margin-top: 2.4rem;
 }

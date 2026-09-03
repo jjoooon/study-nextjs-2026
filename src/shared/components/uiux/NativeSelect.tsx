@@ -145,9 +145,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       // : 'focus:border-[#006ff2] focus:ring-1 focus:ring-[#006ff2]'
     } 
       focus:outline-none`;
-    const readonlyStyle = readOnly
-      ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100'
-      : '';
+    const readonlyStyle = readOnly ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100' : '';
     const disabledStyle =
       'disabled:bg-[var(--color-input-surface-disabled)] disabled:cursor-not-allowed disabled:opacity-100';
     const disabledStyle2 = 'disabled:opacity-100 !border-0 !p-0 !w-auto';
@@ -174,7 +172,9 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
 
       const findLabel = (nodes: React.ReactNode[]): boolean => {
         for (const node of nodes) {
-          if (React.isValidElement<React.OptionHTMLAttributes<HTMLOptionElement> & { children?: React.ReactNode }>(node)) {
+          if (
+            React.isValidElement<React.OptionHTMLAttributes<HTMLOptionElement> & { children?: React.ReactNode }>(node)
+          ) {
             if (node.type === 'option' || node.props?.value !== undefined) {
               if (String(node.props.value) === String(currentVal)) {
                 label = String(node.props.children ?? '');
@@ -256,7 +256,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
               )}
               <SelectDropIcon
                 className={cn(
-                  'pointer-events-none absolute top-1/2 right-[0.8rem]  select-none text-[var(--color-icon-basic)]',
+                  'pointer-events-none absolute top-1/2 right-[0.8rem] select-none text-[var(--color-icon-basic)]',
                   size === 'lg' ? 'size-[1.4rem] -translate-y-[0.6rem]' : 'size-[1.2rem] -translate-y-[0.5rem]'
                 )}
                 aria-hidden="true"
@@ -281,8 +281,8 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
 
 NativeSelect.displayName = 'NativeSelect';
 
-function NativeSelectOption({ ...props }: React.ComponentProps<'option'>) {
-  return <option data-slot="native-select-option" {...props} />;
+function NativeSelectOption({ className, ...props }: React.ComponentProps<'option'>) {
+  return <option data-slot="native-select-option" className={cn('text-[1.3rem]', className)} {...props} />;
 }
 
 function NativeSelectOptGroup({ className, ...props }: NativeSelectOptGroupProps) {
