@@ -213,7 +213,7 @@ const Ltpz027 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              SELEF고지 알림톡 발송
+              SELF고지 알림톡 발송
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ027)

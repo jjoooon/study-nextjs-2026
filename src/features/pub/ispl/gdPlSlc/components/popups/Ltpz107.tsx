@@ -27,7 +27,7 @@ const Ltpz107 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              보험표 납입면제 안내
+              보험료 납입면제 안내
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ107)

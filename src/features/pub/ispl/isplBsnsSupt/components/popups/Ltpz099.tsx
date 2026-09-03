@@ -297,7 +297,7 @@ export const Ltpz099 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              추천설계 상세보기
+              추천설계상세보기
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ099)

@@ -543,7 +543,7 @@ const Ltpz070 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              계약 수익성(CMS)
+              계약 수익성(CSM)
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ070)

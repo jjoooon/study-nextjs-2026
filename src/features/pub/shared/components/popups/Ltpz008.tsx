@@ -223,7 +223,7 @@ const Ltpz008 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              담보순서변경
+              담보순서조정
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ008)

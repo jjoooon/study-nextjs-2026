@@ -161,11 +161,6 @@ export function Ltpa35002Side<TData extends InfoContractBaseData = InfoContractB
               <Grow>
                 보험시기 {info.date} <CalendarIcon color={'var(--color-blue-gray-50)'} />
               </Grow>
-              {
-                <Badge color="red" size="md" className="shrink-0">
-                  경과
-                </Badge>
-              }
             </Grow>
             {/* <div className="text-[1.2rem]">{Array.isArray(data.info) ? data.info.join('/') : data.info}</div> */}
           </Gcol>

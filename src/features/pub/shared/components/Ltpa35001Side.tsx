@@ -5,15 +5,7 @@
 
 import { Gcol, Grow, Typo, Divider } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
-import {
-  CalendarIcon,
-  SpinnerBIcon,
-  InputClearIcon,
-  CircleCheckIcon,
-  AppliedIcon,
-  ApprovedIcon,
-  PaidIcon,
-} from '@icons';
+import { CalendarIcon, SpinnerBIcon, InputClearIcon, CircleCheckIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 
@@ -142,11 +134,6 @@ export function Ltpa35001Side<TData extends InfoContractBaseData = InfoContractB
               <Grow>
                 보험시기 {info.date} <CalendarIcon color={'var(--color-blue-gray-50)'} />
               </Grow>
-              {
-                <Badge color="red" size="md" className="shrink-0">
-                  경과
-                </Badge>
-              }
             </Grow>
             {/* <div className="text-[1.2rem]">{Array.isArray(data.info) ? data.info.join('/') : data.info}</div> */}
           </Gcol>

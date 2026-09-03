@@ -26,7 +26,7 @@ const Ltpz014 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              동영상 매뉴얼 바로가기
+              동영상매뉴얼바로가기
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ014)

@@ -586,7 +586,7 @@ const Ltpz034 = ({
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
-              고지유형찾기
+              예상고지유형
             </Typo>
             <Typo tag="p" variant="body-xl">
               (LTPZ034)

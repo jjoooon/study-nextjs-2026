@@ -204,7 +204,7 @@ const Ltpz070 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              나만의설계 종복사
+              나만의설계 다른종복사
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ115)

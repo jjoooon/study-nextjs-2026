@@ -311,7 +311,7 @@ const Ltpz030 = () => {
           <DialogHeader>
             <DialogTitle>
               <Typo tag={'strong'} variant={'heading-lg'}>
-                고지유형찾기(UW)
+                고지유형추천_UW
               </Typo>
               <Typo tag={'p'} variant={'body-xl'}>
                 (LTPZ030)

@@ -345,7 +345,7 @@ const Ltpz086 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              기 누적금액 조회
+              기누적금액 조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ086)

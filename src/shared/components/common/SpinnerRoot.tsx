@@ -484,29 +484,6 @@ function GlobalSpinnerPortal({
       }}
     >
       {renderIndicator(currentText, currentIndex)}
-
-      {/* 개발용 닫기 버튼 */}
-      <button
-        type="button"
-        onClick={() => window.location.reload()}
-        style={{
-          position: 'absolute',
-          top: '16px',
-          right: '16px',
-          color: 'rgba(255, 255, 255, 0.5)',
-          background: 'none',
-          border: 'none',
-          fontSize: '20px',
-          cursor: 'pointer',
-          padding: '8px',
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = 'white')}
-        onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)')}
-        aria-label="스피너 닫기"
-      >
-        ✕
-      </button>
-
       {animationStyle}
     </div>,
     document.body

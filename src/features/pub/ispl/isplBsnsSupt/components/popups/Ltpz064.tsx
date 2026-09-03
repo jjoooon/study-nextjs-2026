@@ -481,7 +481,7 @@ export const Ltpz064 = ({ addressType = 'road' }: Ltpz064Props) => {
           <DialogTitle>
             {/* 2026-05-27 타이틀 수정 */}
             <Typo tag={'strong'} variant={'heading-lg'}>
-              다수피보험자 명세관리
+              다수피보험자명세관리
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ064)

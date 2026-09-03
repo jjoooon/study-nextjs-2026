@@ -292,7 +292,7 @@ const Ltpz201 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              동일질병 추가질문 답변확인
+              추가 질문답변 확인
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ201)

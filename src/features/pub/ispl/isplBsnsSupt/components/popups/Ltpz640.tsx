@@ -669,7 +669,7 @@ const Ltpz640 = () => {
           <DialogHeader>
             <DialogTitle>
               <Typo tag={'strong'} variant={'heading-lg'}>
-                보장패키지유형관리
+                보장패키지 유형관리
               </Typo>
               <Typo tag={'p'} variant={'body-xl'}>
                 (LTPZ640)

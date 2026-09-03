@@ -416,7 +416,7 @@ const Ltpz001 = () => {
             {/* 오른쪽 영역: 발행 방법 설정 (프린트, 이메일, 팩스, 모바일) */}
             <Grid gap={2} placement={'ss'} className="w-[26.4rem] shrink-0 grid-rows-[auto_1fr] overflow-hidden">
               <Typo tag={'h3'} variant={'heading-lg'}>
-                발행방법
+                장기출력물팝업
               </Typo>
               <TabPager
                 data={scrIdcInfoData.tabInfo}

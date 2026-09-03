@@ -165,7 +165,7 @@ const Ltpz009 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              설계 메모
+              설계메모
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ009)

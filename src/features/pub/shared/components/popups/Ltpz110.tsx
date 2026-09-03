@@ -37,7 +37,7 @@ const Ltpz110 = ({ open = true, onOpenChange, isID, defaultValues }: Ltpz110Prop
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              고지유형 찾기 정보 변경
+              고지유형 정보변경
             </Typo>
             {!isID && (
               <Typo tag={'p'} variant={'body-xl'}>

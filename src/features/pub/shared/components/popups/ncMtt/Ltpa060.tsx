@@ -329,7 +329,7 @@ export const Ltpa060 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              외부정보클렌징 결과 조회(사고력요약)
+              외부정보클렌징 결과 조회(사고력요약)&gt;자동고지(ICIS)
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPA060)
