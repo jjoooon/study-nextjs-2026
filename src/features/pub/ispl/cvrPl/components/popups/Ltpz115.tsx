@@ -85,6 +85,16 @@ const DummyData2: DummyData2Type[] = [
     field01: '4종',
     field02: '납입후 50%해약환급금지급형, 납입면제 운영형, 3N5간편고지형2',
   },
+  {
+    id: 4,
+    field01: '4종',
+    field02: '납입후 50%해약환급금지급형, 납입면제 운영형, 3N5간편고지형2',
+  },
+  {
+    id: 4,
+    field01: '4종',
+    field02: '납입후 50%해약환급금지급형, 납입면제 운영형, 3N5간편고지형2',
+  },
 ];
 
 const DummyData3: DummyData3Type[] = [

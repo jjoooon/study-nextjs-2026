@@ -87,6 +87,9 @@ const parseCssSizeToPx = (value?: DialogSizeValue): number | undefined => {
   if (!value || typeof value !== 'string') return undefined;
   const trimmed = value.trim();
   if (trimmed.toLowerCase() === 'auto') return undefined;
+  if (trimmed.toLowerCase() === 'full' || trimmed === DIALOG_FULL_HEIGHT || trimmed === DIALOG_FULL_WIDTH) {
+    if (typeof window !== 'undefined') return window.innerHeight - 24;
+  }
   if (trimmed.endsWith('rem')) {
     const num = parseFloat(trimmed);
     return isNaN(num) ? undefined : num * getRootFontSize();
@@ -164,6 +167,13 @@ const resolveSizeValue = (value?: DialogSizeValue, presetMap?: Record<string, st
     if (trimmed.toLowerCase() === 'auto') {
       return 'auto';
     }
+    if (trimmed.toLowerCase() === 'full') {
+      return presetMap === DIALOG_PRESET_HEIGHT
+        ? DIALOG_FULL_HEIGHT
+        : presetMap === DIALOG_PRESET_WIDTH
+          ? DIALOG_FULL_WIDTH
+          : 'full';
+    }
     if (presetMap && trimmed in presetMap) {
       return presetMap[trimmed];
     }
@@ -220,6 +230,11 @@ const resolveDialogSize = (
   const predefinedWidthCss = resolveSizeValue(predefinedSize?.width, DIALOG_PRESET_WIDTH);
   const predefinedHeightCss = resolveSizeValue(predefinedSize?.height, DIALOG_PRESET_HEIGHT);
 
+  const isPredefinedHeightFull =
+    predefinedSize?.height === 'full' || predefinedHeightCss === 'full' || predefinedHeightCss === DIALOG_FULL_HEIGHT;
+  const isPredefinedWidthFull =
+    predefinedSize?.width === 'full' || predefinedWidthCss === 'full' || predefinedWidthCss === DIALOG_FULL_WIDTH;
+
   const targetWidth =
     predefinedWidthCss !== undefined ? parseCssSizeToPx(predefinedWidthCss) : getTargetWidthPx(size, className);
 
@@ -227,10 +242,12 @@ const resolveDialogSize = (
   if (viewportWidth && targetWidth !== undefined && targetWidth >= viewportWidth - 20) {
     return {
       width: DIALOG_FULL_WIDTH,
-      height: predefinedHeightCss,
+      height: isPredefinedHeightFull ? DIALOG_FULL_HEIGHT : predefinedHeightCss,
       maxWidth: DIALOG_FULL_WIDTH,
-      maxHeight: (isDialogSizeConfig(size) ? toCssSize(size.maxHeight) : undefined) ?? DIALOG_DEFAULT_MAX_HEIGHT,
-      isFullSize: false,
+      maxHeight: isPredefinedHeightFull
+        ? DIALOG_FULL_HEIGHT
+        : ((isDialogSizeConfig(size) ? toCssSize(size.maxHeight) : undefined) ?? DIALOG_DEFAULT_MAX_HEIGHT),
+      isFullSize: isPredefinedHeightFull,
       isFullWidth: true,
     };
   }
@@ -238,30 +255,37 @@ const resolveDialogSize = (
   if (predefinedWidthCss !== undefined || predefinedHeightCss !== undefined) {
     const isConfig = isDialogSizeConfig(size);
     const hasConfigHeight = isConfig && size.height !== undefined;
-    const defaultMaxH =
-      hasConfigHeight && (!isConfig || size.maxHeight === undefined) ? undefined : DIALOG_DEFAULT_MAX_HEIGHT;
+    const defaultMaxH = isPredefinedHeightFull
+      ? DIALOG_FULL_HEIGHT
+      : hasConfigHeight && (!isConfig || size.maxHeight === undefined)
+        ? undefined
+        : DIALOG_DEFAULT_MAX_HEIGHT;
 
     return {
-      width:
-        predefinedWidthCss ??
-        (typeof size === 'string' && size in DIALOG_PRESET_WIDTH
-          ? DIALOG_PRESET_WIDTH[size as Exclude<DialogSizePreset, 'full'>]
-          : isDialogSizeConfig(size)
-            ? toCssSize(size.width)
-            : undefined),
-      height:
-        predefinedHeightCss ??
-        (typeof size === 'string' && size in DIALOG_PRESET_HEIGHT
-          ? DIALOG_PRESET_HEIGHT[size as DialogSizePreset]
-          : isDialogSizeConfig(size)
-            ? toCssSize(size.height)
-            : undefined),
+      width: isPredefinedWidthFull
+        ? DIALOG_FULL_WIDTH
+        : (predefinedWidthCss ??
+          (typeof size === 'string' && size in DIALOG_PRESET_WIDTH
+            ? DIALOG_PRESET_WIDTH[size as Exclude<DialogSizePreset, 'full'>]
+            : isDialogSizeConfig(size)
+              ? toCssSize(size.width)
+              : undefined)),
+      height: isPredefinedHeightFull
+        ? DIALOG_FULL_HEIGHT
+        : (predefinedHeightCss ??
+          (typeof size === 'string' && size in DIALOG_PRESET_HEIGHT
+            ? DIALOG_PRESET_HEIGHT[size as DialogSizePreset]
+            : isDialogSizeConfig(size)
+              ? toCssSize(size.height)
+              : undefined)),
       minWidth: isDialogSizeConfig(size) ? toCssSize(size.minWidth) : undefined,
       minHeight: isDialogSizeConfig(size) ? toCssSize(size.minHeight) : undefined,
-      maxWidth: (isDialogSizeConfig(size) ? toCssSize(size.maxWidth) : undefined) ?? DIALOG_FULL_WIDTH,
-      maxHeight: (isDialogSizeConfig(size) ? toCssSize(size.maxHeight) : undefined) ?? defaultMaxH,
-      isFullSize: false,
-      isFullWidth: false,
+      maxWidth: isPredefinedWidthFull
+        ? DIALOG_FULL_WIDTH
+        : ((isDialogSizeConfig(size) ? toCssSize(size.maxWidth) : undefined) ?? DIALOG_FULL_WIDTH),
+      maxHeight: defaultMaxH,
+      isFullSize: isPredefinedHeightFull && isPredefinedWidthFull,
+      isFullWidth: isPredefinedWidthFull,
     };
   }
 
@@ -819,12 +843,17 @@ function DialogContent({
 
       // 세로 높이 결정
       const rawHeight = iframeHeight ?? predefined?.height;
+      const isHeightFull = rawHeight === 'full';
       const parsedIframeHeight =
         typeof rawHeight === 'number'
           ? rawHeight
-          : rawHeight !== undefined
-            ? parseCssSizeToPx(resolveSizeValue(rawHeight, DIALOG_PRESET_HEIGHT))
-            : undefined;
+          : isHeightFull
+            ? typeof window !== 'undefined'
+              ? window.innerHeight - 20
+              : 900
+            : rawHeight !== undefined
+              ? parseCssSizeToPx(resolveSizeValue(rawHeight, DIALOG_PRESET_HEIGHT))
+              : undefined;
 
       const contentHeight = parsedIframeHeight ?? getTargetHeightPx(size, className) ?? 650;
       const finalIframeHeight = Math.max(0, contentHeight);

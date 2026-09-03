@@ -111,13 +111,13 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
             </Grow>
 
             <h2 className="mt-8">ReadOnly</h2>
-            <p>readOnly 옵션이 활성화되면 사용자 입력이 차단됩니다.</p>
+            <p>readOnly 옵션이 활성화되면 사용자 입력이 차단되며, 기본적으로 호버 시 툴팁으로 전체 텍스트가 표시됩니다 (showTooltipOnReadOnly=true).</p>
             <Grow
               gap={4}
               className="p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
             >
               <NativeSelect width="md" readOnly defaultValue="apple">
-                <NativeSelectOption value="apple">readOnly</NativeSelectOption>
+                <NativeSelectOption value="apple">readOnly 툴팁 표시 옵션 선택 텍스트가 매우 길 때</NativeSelectOption>
                 <NativeSelectOption value="banana">banana</NativeSelectOption>
               </NativeSelect>
             </Grow>
@@ -187,6 +187,10 @@ import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
       table: { category: '설정 props' },
     },
     readOnly: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
+    showTooltipOnReadOnly: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
     },

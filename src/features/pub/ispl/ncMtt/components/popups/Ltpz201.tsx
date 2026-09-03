@@ -58,6 +58,42 @@ const DummyData: DummyDataType[] = [
     field05: '',
     field06: '',
   },
+  {
+    id: 3,
+    field01: '전립선 제자리암 진단 후 정기검진 시 PSA(전립선항원) 수치가 안정적입니까?',
+    field02: '1년 이상',
+    field03: '1년 이상',
+    field04: '',
+    field05: '',
+    field06: '',
+  },
+  {
+    id: 4,
+    field01: '전립선 제자리암 진단 후 정기검진 시 PSA(전립선항원) 수치가 안정적입니까?',
+    field02: '1년 이상',
+    field03: '1년 이상',
+    field04: '',
+    field05: '',
+    field06: '',
+  },
+  {
+    id: 5,
+    field01: '전립선 제자리암 진단 후 정기검진 시 PSA(전립선항원) 수치가 안정적입니까?',
+    field02: '1년 이상',
+    field03: '1년 이상',
+    field04: '',
+    field05: '',
+    field06: '',
+  },
+  {
+    id: 6,
+    field01: '전립선 제자리암 진단 후 정기검진 시 PSA(전립선항원) 수치가 안정적입니까?',
+    field02: '1년 이상',
+    field03: '1년 이상',
+    field04: '',
+    field05: '',
+    field06: '',
+  },
 ];
 type DummyDataType2 = DummyDataType;
 
@@ -73,6 +109,42 @@ const DummyData2: DummyDataType2[] = [
   },
   {
     id: 2,
+    field01: '발생부위를 모두 선택하여 주십시오.',
+    field02: '목(경추)',
+    field03: '모름',
+    field04: '',
+    field05: '',
+    field06: '',
+  },
+  {
+    id: 3,
+    field01: '발생부위를 모두 선택하여 주십시오.',
+    field02: '목(경추)',
+    field03: '모름',
+    field04: '',
+    field05: '',
+    field06: '',
+  },
+  {
+    id: 4,
+    field01: '발생부위를 모두 선택하여 주십시오.',
+    field02: '목(경추)',
+    field03: '모름',
+    field04: '',
+    field05: '',
+    field06: '',
+  },
+  {
+    id: 5,
+    field01: '발생부위를 모두 선택하여 주십시오.',
+    field02: '목(경추)',
+    field03: '모름',
+    field04: '',
+    field05: '',
+    field06: '',
+  },
+  {
+    id: 6,
     field01: '발생부위를 모두 선택하여 주십시오.',
     field02: '목(경추)',
     field03: '모름',
@@ -248,7 +320,7 @@ const Ltpz201 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="gap-3">
-          <Grid placement="ss" className="w-full grid-rows-[auto_1fr_1fr]" gap={3}>
+          <Grid placement="ss" className="w-full grid-rows-[auto_auto_1fr]" gap={3}>
             <Typo tag={'p'} variant={'body-md'}>
               고지하신 질병 중 <b className="font-bold">추가질문에 대한 답변을 확인</b>하신 후 고객님의{' '}
               <b className="font-bold">치료내용에 맞는 답변항목을 선택</b>해주시기 바랍니다.

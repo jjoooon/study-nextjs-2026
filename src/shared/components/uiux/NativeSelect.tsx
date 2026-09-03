@@ -7,6 +7,7 @@ import { UIUXsize } from '@/shared/types/uiTypes';
 import { Typo } from '@atoms';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { SelectDropIcon } from '@icons';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 /**
  * NativeSelect 컴포넌트의 Props 인터페이스입니다.
@@ -53,6 +54,8 @@ interface UINativeSelectProps extends Omit<React.ComponentProps<'select'>, 'size
    * @default 'bl'
    */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
+  /** 읽기 전용(readOnly) 상태일 때 텍스트 툴팁 노출 여부 @default true */
+  showTooltipOnReadOnly?: boolean;
 }
 
 type NativeSelectOptGroupProps = React.HTMLAttributes<HTMLOptGroupElement> & {
@@ -76,6 +79,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
       error = false,
       errorMsg = '입력은 필수입니다.',
       errorPs = 'bl',
+      showTooltipOnReadOnly = true,
       ...props
     },
     ref
@@ -142,7 +146,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
     } 
       focus:outline-none`;
     const readonlyStyle = readOnly
-      ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none'
+      ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100'
       : '';
     const disabledStyle =
       'disabled:bg-[var(--color-input-surface-disabled)] disabled:cursor-not-allowed disabled:opacity-100';
@@ -163,21 +167,93 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
             ? 'var(--color-gray-30)'
             : 'var(--color-gray-50)';
 
+    const selectedLabel = React.useMemo(() => {
+      const currentVal = props.value ?? selectedValue;
+      let label = '';
+      const childrenArray = React.Children.toArray(props.children);
+
+      const findLabel = (nodes: React.ReactNode[]): boolean => {
+        for (const node of nodes) {
+          if (React.isValidElement<React.OptionHTMLAttributes<HTMLOptionElement> & { children?: React.ReactNode }>(node)) {
+            if (node.type === 'option' || node.props?.value !== undefined) {
+              if (String(node.props.value) === String(currentVal)) {
+                label = String(node.props.children ?? '');
+                return true;
+              }
+            }
+            if (node.props?.children) {
+              if (findLabel(React.Children.toArray(node.props.children))) return true;
+            }
+          }
+        }
+        return false;
+      };
+
+      findLabel(childrenArray);
+      return label || (currentVal !== undefined && currentVal !== null ? String(currentVal) : '');
+    }, [props.value, selectedValue, props.children]);
+
+    const [isOverflow, setIsOverflow] = React.useState(false);
+
+    React.useEffect(() => {
+      const el = localRef.current;
+      if (!el || !readOnly || !showTooltipOnReadOnly || !selectedLabel) {
+        setIsOverflow(false);
+        return;
+      }
+
+      const checkOverflow = () => {
+        setIsOverflow(el.scrollWidth > el.clientWidth);
+      };
+
+      checkOverflow();
+
+      const resizeObserver = new ResizeObserver(checkOverflow);
+      resizeObserver.observe(el);
+      window.addEventListener('resize', checkOverflow);
+
+      return () => {
+        resizeObserver.disconnect();
+        window.removeEventListener('resize', checkOverflow);
+      };
+    }, [readOnly, showTooltipOnReadOnly, selectedLabel, width]);
+
+    const selectElement = (
+      <select
+        ref={localRef}
+        data-slot="native-select"
+        className={cn('cp-nativeselect', variantStyles[variant])}
+        tabIndex={readOnly ? -1 : props.tabIndex}
+        aria-invalid={isErrorActive || undefined}
+        aria-describedby={isErrorActive ? errorId : undefined}
+        {...props}
+        onMouseDown={(e) => {
+          if (readOnly) {
+            e.preventDefault();
+          }
+          props.onMouseDown?.(e);
+        }}
+        onChange={handleChange}
+      />
+    );
+
+    const shouldRenderTooltip = readOnly && showTooltipOnReadOnly && Boolean(selectedLabel) && isOverflow;
+
     return (
       <div className={cn('relative', className)} style={widthStyle}>
         <div className="group/native-select relative tracking-[-0.13rem]" data-slot="native-select-wrapper">
           {variant !== 'text' ? (
             <>
-              <select
-                ref={localRef}
-                data-slot="native-select"
-                className={cn('cp-nativeselect', variantStyles[variant])}
-                tabIndex={readOnly ? -1 : props.tabIndex}
-                aria-invalid={isErrorActive || undefined}
-                aria-describedby={isErrorActive ? errorId : undefined}
-                {...props}
-                onChange={handleChange}
-              />
+              {shouldRenderTooltip ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>{selectElement}</TooltipTrigger>
+                  <TooltipContent side="top" align="center">
+                    {selectedLabel}
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                selectElement
+              )}
               <SelectDropIcon
                 className={cn(
                   'pointer-events-none absolute top-1/2 right-[0.8rem]  select-none text-[var(--color-icon-basic)]',
@@ -189,15 +265,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, UINativeSelectProps>(
             </>
           ) : (
             <Typo variant="heading-sm" className="whitespace-nowrap">
-              {(() => {
-                const selectedVal = props.value ?? props.defaultValue;
-                const matched = (
-                  React.Children.toArray(props.children) as React.ReactElement<
-                    React.OptionHTMLAttributes<HTMLOptionElement>
-                  >[]
-                ).find((child) => child.props.value === selectedVal);
-                return matched ? matched.props.children : selectedVal;
-              })()}
+              {selectedLabel}
             </Typo>
           )}
         </div>

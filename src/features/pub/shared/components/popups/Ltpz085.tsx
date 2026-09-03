@@ -54,6 +54,18 @@ const DummyData: DummyDataType[] = [
     isEdit: true,
     field02: 1000,
   },
+  {
+    id: 4,
+    field01: '여성통합암(4대유사암 제외)진단비 ',
+    isEdit: true,
+    field02: 1000,
+  },
+  {
+    id: 4,
+    field01: '여성통합암(4대유사암 제외)진단비 ',
+    isEdit: true,
+    field02: 1000,
+  },
 ];
 
 const Ltrz085 = () => {

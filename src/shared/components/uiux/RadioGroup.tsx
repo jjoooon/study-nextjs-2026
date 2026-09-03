@@ -214,12 +214,12 @@ interface RadioGroupExtraProps {
   width?: 'full' | 'auto';
   /**
    * 이미 선택된 아이템 다시 클릭 시 선택 해제 허용 여부
-   * @default true
+   * @default false
    */
   allowDeselect?: boolean;
   /**
    * allowDeselect의 별칭 (선택 해제 허용 여부)
-   * @default true
+   * @default false
    */
   clearable?: boolean;
 }
@@ -244,7 +244,7 @@ const RadioGroup = React.forwardRef<
       onValueChange,
       required,
       disabled,
-      allowDeselect = true,
+      allowDeselect = false,
       clearable,
       ...props
     },
@@ -253,7 +253,7 @@ const RadioGroup = React.forwardRef<
     const errorId = React.useId();
     const groupRequired = Boolean(required);
     const groupDisabled = Boolean(disabled);
-    const canDeselect = clearable ?? allowDeselect ?? true;
+    const canDeselect = clearable ?? allowDeselect;
 
     const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue);
     const isControlled = value !== undefined;
