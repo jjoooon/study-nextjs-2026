@@ -124,6 +124,7 @@
     "tailwindcss": "^4.1.18",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.19.1",
+    "vite": "^8.2.2",
     "web-streams-polyfill": "^4.2.0",
     "whatwg-fetch": "^3.6.20"
   },
