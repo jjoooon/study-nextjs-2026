@@ -60,6 +60,27 @@ const dummyData: DummyDataType[] = [
     field03: 100000,
     field04: 100000,
   },
+  {
+    id: 3,
+    field01: '',
+    field02: 100000,
+    field03: 100000,
+    field04: 100000,
+  },
+  {
+    id: 3,
+    field01: '',
+    field02: 100000,
+    field03: 100000,
+    field04: 100000,
+  },
+  {
+    id: 3,
+    field01: '',
+    field02: 100000,
+    field03: 100000,
+    field04: 100000,
+  },
 ];
 
 const Ltpz087 = () => {

@@ -39,6 +39,9 @@ const DummyData: DummyDataType[] = [
   { id: 1, field01: '웰시 코기 카디건', field02: 'Welsh Corgi Cardigan' },
   { id: 2, field01: '웰시 코기 펨브로크', field02: 'Welsh Corgi Pembroke' },
   { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
+  { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
+  { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
+  { id: 3, field01: '부비에 데 아르덴', field02: 'Bouvier des Ardennes' },
 ];
 
 const Ltpz083 = () => {

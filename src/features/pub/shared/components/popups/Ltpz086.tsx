@@ -354,7 +354,7 @@ const Ltpz086 = () => {
         </DialogHeader>
 
         {/* 다이얼로그 본문 영역 */}
-        <DialogSection className="grid-rows-[auto_auto] gap-3">
+        <DialogSection className="grid-rows-[auto_minmax(0,1fr)] gap-3">
           {/* 섹션 1: 위배내용 */}
           <TableFold>
             <TableFoldHead title="위배내용">

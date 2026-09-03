@@ -13,6 +13,7 @@ import { format } from '@/shared/utils/formatUtils';
 import { ErrorMsg } from '@common/ErrorMsg';
 import { InputClearIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   variant?: 'ghost' | 'default' | 'info';
@@ -48,6 +49,8 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   maxLength?: number;
   /** 입력 최소 길이 지정 */
   minLength?: number;
+  /** 읽기 전용(readOnly) 상태일 때 텍스트 툴팁 노출 여부 @default true */
+  showTooltipOnReadOnly?: boolean;
   // debug?: boolean;
 }
 
@@ -144,6 +147,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
     charFilter,
     maxLength,
     minLength,
+    showTooltipOnReadOnly = true,
     ...props
   },
   ref
@@ -351,10 +355,10 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   } 
       focus:ring-1 ${!isInvalid && !shouldShowError ? 'focus:ring-[var(--color-gray-5)]' : ''} focus:outline-none`;
   const readonlyStyle = readOnly
-    ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 pointer-events-none outline-none'
+    ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 outline-none'
     : '';
   const readonlyStyle2 = readOnly
-    ? 'bg-[transparent] cursor-not-allowed opacity-100 pointer-events-none border-0 px-0 text-[#000] font-bold outline-none appearance-none field-sizing-[content]'
+    ? 'bg-[transparent] cursor-not-allowed opacity-100 border-0 px-0 text-[#000] font-bold outline-none appearance-none field-sizing-[content] flex items-center'
     : '';
   const disabledStyle = disabled ? 'opacity-50 cursor-not-allowed' : '';
   const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
@@ -370,7 +374,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const variantStyles = {
     default: cn(baseStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
     ghost: cn(ghostStyle, hoverStyle, focusStyle, readonlyStyle, disabledStyle, sizeStyle),
-    info: cn(infoStyle, hoverStyle, focusStyle, readonlyStyle2, disabledStyle, 'h-[2.5rem]'),
+    info: cn(infoStyle, hoverStyle, focusStyle, readonlyStyle2, disabledStyle, sizeStyle),
   };
 
   // formatter가 'jumin'이고 placeholder 미지정 시 자동으로 주민번호 placeholder 적용
@@ -378,10 +382,67 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   const clearPaddingStyle = clear && isInputFocused && displayValue !== '' ? { paddingRight: '2.5rem' } : undefined;
   const mergedInputStyle = clearPaddingStyle ? { ...styleProp, ...clearPaddingStyle } : styleProp;
 
-  // if (props.debug) {
-  //   // eslint-disable-next-line no-console
-  //   console.log('[Input] clear:', clear, 'isFocused:', isFocused, 'isInputFocused:', isInputFocused, 'displayValue:', displayValue, 'show:', clear && isInputFocused && displayValue !== '');
-  // }
+  const [isOverflow, setIsOverflow] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = inputRef.current;
+    if (!el || !readOnly || !showTooltipOnReadOnly || !displayValue) {
+      setIsOverflow(false);
+      return;
+    }
+
+    const checkOverflow = () => {
+      setIsOverflow(el.scrollWidth > el.clientWidth + 1);
+    };
+
+    checkOverflow();
+
+    const resizeObserver = new ResizeObserver(checkOverflow);
+    resizeObserver.observe(el);
+    window.addEventListener('resize', checkOverflow);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', checkOverflow);
+    };
+  }, [readOnly, showTooltipOnReadOnly, displayValue, width, size]);
+
+  const shouldRenderTooltip = readOnly && showTooltipOnReadOnly && Boolean(displayValue) && isOverflow;
+
+  const renderSingleInput = (
+    <input
+      ref={inputRef}
+      type={type}
+      data-slot="input"
+      className={cn(
+        variantStyles[variant],
+        commaAmount
+          ? 'text-right tracking-[-0.03rem]'
+          : align === 'right'
+            ? 'text-right'
+            : align === 'center'
+              ? 'text-center'
+              : 'text-left',
+        'w-[100%] [:focus]:px-[0.7rem]'
+      )}
+      required={required}
+      readOnly={readOnly}
+      maxLength={maxLength}
+      minLength={minLength}
+      aria-invalid={shouldShowError || undefined}
+      aria-describedby={shouldShowError ? errorId : undefined}
+      value={isControlled ? displayValue : undefined}
+      onChange={handleChange}
+      onKeyDown={handleFormatterKeyDown}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      style={mergedInputStyle}
+      placeholder={resolvedPlaceholder}
+      e2e_type={e2eType}
+      {...inputProps}
+    />
+  );
+
   return (
     <div
       className={cn('relative cp-input', className)}
@@ -397,27 +458,58 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
         >
           {before && <div>{before}</div>}
           <div className="relative w-full [&>input]:w-full [&>input]:bg-transparent [&>input]:border-0 [&>input]:tracking-[-0.03rem] [&>input]:p-0 [&>input]:m-0 [&>input]:focus:ring-0 [&>input]:focus:outline-none">
-            <input
-              ref={inputRef}
-              type={type}
-              data-slot="input"
-              className={cn(align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left')}
-              required={required}
-              readOnly={readOnly}
-              maxLength={maxLength}
-              minLength={minLength}
-              aria-invalid={shouldShowError || undefined}
-              aria-describedby={shouldShowError ? errorId : undefined}
-              value={isControlled ? displayValue : undefined}
-              onChange={handleChange}
-              onKeyDown={handleFormatterKeyDown}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              style={mergedInputStyle}
-              placeholder={resolvedPlaceholder}
-              e2e_type={e2eType}
-              {...inputProps}
-            />
+            {shouldRenderTooltip ? (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <input
+                    ref={inputRef}
+                    type={type}
+                    data-slot="input"
+                    className={cn(align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left')}
+                    required={required}
+                    readOnly={readOnly}
+                    maxLength={maxLength}
+                    minLength={minLength}
+                    aria-invalid={shouldShowError || undefined}
+                    aria-describedby={shouldShowError ? errorId : undefined}
+                    value={isControlled ? displayValue : undefined}
+                    onChange={handleChange}
+                    onKeyDown={handleFormatterKeyDown}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    style={mergedInputStyle}
+                    placeholder={resolvedPlaceholder}
+                    e2e_type={e2eType}
+                    {...inputProps}
+                  />
+                </TooltipTrigger>
+                <TooltipContent side="top" align="center">
+                  {displayValue}
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              <input
+                ref={inputRef}
+                type={type}
+                data-slot="input"
+                className={cn(align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left')}
+                required={required}
+                readOnly={readOnly}
+                maxLength={maxLength}
+                minLength={minLength}
+                aria-invalid={shouldShowError || undefined}
+                aria-describedby={shouldShowError ? errorId : undefined}
+                value={isControlled ? displayValue : undefined}
+                onChange={handleChange}
+                onKeyDown={handleFormatterKeyDown}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                style={mergedInputStyle}
+                placeholder={resolvedPlaceholder}
+                e2e_type={e2eType}
+                {...inputProps}
+              />
+            )}
             {clear && isInputFocused && displayValue !== '' && (
               <Button
                 variant="none"
@@ -427,15 +519,7 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
                 className="absolute! right-0 top-1/2 -translate-y-1/2"
                 onMouseDown={(e) => e.preventDefault()} // 포커스 유지
                 onClick={() => {
-                  // input 값을 지우는 이벤트 발생
                   if (onChange) {
-                    // let clearedValue = '';
-                    // // 주민등록번호: 빈 문자열 전달
-                    // if (formatter === 'jumin') {
-                    //   clearedValue = '';
-                    // } else if (formatter && typeof formatter === 'function') {
-                    //   clearedValue = formatter('');
-                    // }
                     const event = {
                       target: {
                         value: '',
@@ -454,39 +538,36 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
       ) : (
         <>
           {variant === 'info' && readOnly ? (
-            <span className="font-bold text-[#000] text-[1.3rem]">{displayValue}</span>
+            shouldRenderTooltip ? (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span
+                    className={cn(
+                      'font-bold text-[#000] text-[1.3rem] inline-flex items-center truncate max-w-full',
+                      sizeStyle
+                    )}
+                  >
+                    {displayValue}
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="top" align="center">
+                  {displayValue}
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              <span className={cn('font-bold text-[#000] text-[1.3rem] inline-flex items-center', sizeStyle)}>
+                {displayValue}
+              </span>
+            )
+          ) : shouldRenderTooltip ? (
+            <Tooltip>
+              <TooltipTrigger asChild>{renderSingleInput}</TooltipTrigger>
+              <TooltipContent side="top" align="center">
+                {displayValue}
+              </TooltipContent>
+            </Tooltip>
           ) : (
-            <input
-              ref={inputRef}
-              type={type}
-              data-slot="input"
-              className={cn(
-                variantStyles[variant],
-                commaAmount
-                  ? 'text-right tracking-[-0.03rem]'
-                  : align === 'right'
-                    ? 'text-right'
-                    : align === 'center'
-                      ? 'text-center'
-                      : 'text-left',
-                'w-[100%] [:focus]:px-[0.7rem]'
-              )}
-              required={required}
-              readOnly={readOnly}
-              maxLength={maxLength}
-              minLength={minLength}
-              aria-invalid={shouldShowError || undefined}
-              aria-describedby={shouldShowError ? errorId : undefined}
-              value={isControlled ? displayValue : undefined}
-              onChange={handleChange}
-              onKeyDown={handleFormatterKeyDown}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              style={mergedInputStyle}
-              placeholder={resolvedPlaceholder}
-              e2e_type={e2eType}
-              {...inputProps}
-            />
+            renderSingleInput
           )}
           {clear && isInputFocused && displayValue !== '' && (
             <Button
@@ -496,7 +577,6 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
               className="absolute! right-2 top-1/2 -translate-y-1/2"
               onMouseDown={(e) => e.preventDefault()} // 포커스 유지
               onClick={() => {
-                // input 값을 지우는 이벤트 발생
                 if (onChange) {
                   const event = {
                     target: {

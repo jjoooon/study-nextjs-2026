@@ -40,6 +40,9 @@ const DummyData: DummyDataType[] = [
   { id: 1, isCheck: false, field01: '김한화한화', field02: '계약자', field03: '등록대상', field04: '-' },
   { id: 2, isCheck: false, field01: '김한화한화김한화한화', field02: '법인대리인', field03: '등록대상', field04: '-' },
   { id: 3, isCheck: false, field01: '김한화', field02: '등록대상', field03: '등록대상', field04: '-' },
+  { id: 3, isCheck: false, field01: '김한화', field02: '등록대상', field03: '등록대상', field04: '-' },
+  { id: 3, isCheck: false, field01: '김한화', field02: '등록대상', field03: '등록대상', field04: '-' },
+  { id: 3, isCheck: false, field01: '김한화', field02: '등록대상', field03: '등록대상', field04: '-' },
 ];
 
 const Ltpz053 = () => {

@@ -279,6 +279,10 @@ const [value, setValue] = useState('option1');
       control: { type: 'boolean' },
       table: { category: '설정 props' },
     },
+    allowDeselect: {
+      control: { type: 'boolean' },
+      table: { category: '설정 props' },
+    },
     error: {
       control: { type: 'boolean' },
       table: { category: '에러 props' },
@@ -313,6 +317,7 @@ const [value, setValue] = useState('option1');
     width: 'auto',
     disabled: false,
     required: false,
+    allowDeselect: false,
     error: false,
     errorMsg: '하나를 선택해주세요.',
     errorPs: 'bl',

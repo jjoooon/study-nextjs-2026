@@ -36,7 +36,80 @@ type DummyDataType = {
   field6: boolean;
 };
 
-const dummyData: DummyDataType[] = [];
+const dummyData: DummyDataType[] = [
+  {
+    id: 1,
+    field1: '2024-11-05',
+    field2: '12345',
+    field3: '홍길동',
+    field4: 'OO지점',
+    field5: '메모 내용입니다.',
+    field6: false,
+  },
+  {
+    id: 2,
+    field1: '2024-11-05',
+    field2: '12345',
+    field3: '홍길동',
+    field4: 'OO지점',
+    field5: '메모 내용입니다.',
+    field6: false,
+  },
+  {
+    id: 3,
+    field1: '2024-11-05',
+    field2: '12345',
+    field3: '홍길동',
+    field4: 'OO지점',
+    field5: '메모 내용입니다.',
+    field6: false,
+  },
+  {
+    id: 4,
+    field1: '2024-11-05',
+    field2: '12345',
+    field3: '홍길동',
+    field4: 'OO지점',
+    field5: '메모 내용입니다.',
+    field6: false,
+  },
+  {
+    id: 5,
+    field1: '2024-11-05',
+    field2: '12345',
+    field3: '홍길동',
+    field4: 'OO지점',
+    field5: '메모 내용입니다.',
+    field6: false,
+  },
+  {
+    id: 6,
+    field1: '2024-11-05',
+    field2: '12345',
+    field3: '홍길동',
+    field4: 'OO지점',
+    field5: '메모 내용입니다.',
+    field6: false,
+  },
+  {
+    id: 7,
+    field1: '2024-11-05',
+    field2: '12345',
+    field3: '홍길동',
+    field4: 'OO지점',
+    field5: '메모 내용입니다.',
+    field6: false,
+  },
+  {
+    id: 8,
+    field1: '2024-11-05',
+    field2: '12345',
+    field3: '홍길동',
+    field4: 'OO지점',
+    field5: '메모 내용입니다.',
+    field6: false,
+  },
+];
 
 const Ltpz009 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();

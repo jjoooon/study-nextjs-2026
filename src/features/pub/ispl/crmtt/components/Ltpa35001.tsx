@@ -552,6 +552,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                     {currentTab?.type === '태아' && (
                       <FormRow>
                         <FormCell title={'태아여부'}>
+                          {/* dev: 260903 - 체크박스 선택시 다태아 체크박스, 다태아연계 버튼, 수수료선지급 체크박스 보여지게 수정 */}
                           <Grow className="flex gap-3">
                             <Checkbox
                               color="primary"
@@ -570,6 +571,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                               </>
                             )}
                           </Grow>
+                          {/* //dev: 260903 - 체크박스 선택시 다태아 체크박스, 다태아연계 버튼, 수수료선지급 체크박스 보여지게 수정 */}
                         </FormCell>
                         <FormCell title={'계약전환'}>
                           <Checkbox color="primary">신청</Checkbox>
@@ -762,6 +764,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                       </RadioGroupItem>
                                     ))}
                                   </RadioGroup>
+                                  {/* dev: 260903 - 태아이름 */}
                                   {currentTab?.type === '태아' && (
                                     <Input
                                       aria-label="태아이름"
@@ -771,6 +774,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                       className="ml-1"
                                     />
                                   )}
+                                  {/* //dev: 260903 - 태아이름 */}
                                 </FormCell>
                                 <FormCell title="연령" tdClassName="gap-3">
                                   <Grow>
@@ -817,9 +821,12 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                       readOnly
                                     />
                                     <Input aria-label="피보험자 성별" width={32} value={'남'} align="center" readOnly />
+
+                                    {/* dev: 260903 - 태아이름 */}
                                     {currentTab?.type === '태아' && (
                                       <Input aria-label="태아이름" placeholder="태아이름" width={84} value={''} />
                                     )}
+                                    {/* //dev: 260903 - 태아이름 */}
                                   </Grow>
                                   <Grow gap={1}>
                                     <KeyValueItem label={'상령일'}>
@@ -842,9 +849,12 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                       <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                                         알림톡발송
                                       </Button>
+
+                                      {/* dev: 260903 - 고객등록 */}
                                       <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                                         고객등록
                                       </Button>
+                                      {/* //dev: 260903 - 고객등록 */}
                                     </Grow>
                                   </Grow>
                                 </FormCell>
@@ -927,6 +937,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                                     </NativeSelectOption>
                                   ))}
                                 </NativeSelect>
+                                {/* dev: 260903 - 고객등록 */}
                                 <Button color={'secondary'} size={'lg'} variant={'outlined'} onClick={() => {}}>
                                   고객등록
                                 </Button>
@@ -941,6 +952,8 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                             </FormRow>
                           </>
                         )}
+
+                        {/* dev: 260903 - 일반 할인적용 */}
                         {currentTab?.type === '일반' && (
                           <FormRow>
                             <FormCell title={'할인적용'} colSpan={3}>
@@ -957,6 +970,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode }: Ltpa35001Props) => {
                             </FormCell>
                           </FormRow>
                         )}
+                        {/* dev: 260903 - 태아 할인적용 */}
                         {currentTab?.type === '태아' && (
                           <>
                             <FormRow>

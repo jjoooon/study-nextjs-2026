@@ -73,6 +73,22 @@ const DummyData: DummyDataType[] = [
     registrationDate: '',
     target: false,
   },
+  {
+    id: 4,
+    isCheck: false,
+    planName: '',
+    myPlanName: '',
+    registrationDate: '',
+    target: false,
+  },
+  {
+    id: 4,
+    isCheck: false,
+    planName: '',
+    myPlanName: '',
+    registrationDate: '',
+    target: false,
+  },
 ];
 
 const Ltpz017 = () => {
