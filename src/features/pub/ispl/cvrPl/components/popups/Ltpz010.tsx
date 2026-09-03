@@ -223,7 +223,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
         width: attributeColumnWidth(30),
         cellClass: 'text-center',
         cellRenderer: attributeRenderer,
-        sortable: false,
       },
       {
         headerName: '가입금액(만원)',
@@ -231,8 +230,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
         minWidth: attributeColumnWidth(140),
         flex: 1,
         cellClass: () => 'w-auto text-centerleft editable-cell [&_input]:text-left!',
-        sortable: false,
-        filter: false,
         // 담보 데이터 내 canEditExpiry 변수가 true인 경우에만 인라인 셀 드롭다운을 편집할 수 있도록 분기
         editable: (params: EditableCallbackParams<DummyDataType>) => {
           return params.data?.canEditExpiry === true;
@@ -260,8 +257,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                   flex: 1,
                   cellClass: 'text-right',
                   headerClass: 'px-0!',
-                  sortable: false,
-                  filter: false,
                   valueFormatter: numberValueFormatter,
                 },
                 {
@@ -271,8 +266,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                   flex: 1,
                   cellClass: 'text-right',
                   headerClass: 'px-0!',
-                  sortable: false,
-                  filter: false,
                   valueFormatter: numberValueFormatter,
                 },
               ],
@@ -291,8 +284,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                   minWidth: attributeColumnWidth(70),
                   flex: 1,
                   cellClass: 'text-center px-[0.2rem]!',
-                  sortable: false,
-                  filter: false,
                 },
                 {
                   headerName: '출생후',
@@ -300,8 +291,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                   minWidth: attributeColumnWidth(140),
                   flex: 2,
                   cellClass: 'text-center px-[0.2rem]!',
-                  sortable: false,
-                  filter: false,
                 },
               ],
             },
@@ -314,8 +303,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
               flex: 1,
               cellClass: 'text-right',
               headerClass: 'px-0!',
-              sortable: false,
-              filter: false,
               valueFormatter: numberValueFormatter,
             },
             {
@@ -324,8 +311,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
               minWidth: attributeColumnWidth(70),
               flex: 1,
               cellClass: 'text-center px-[0.2rem]!',
-              sortable: false,
-              filter: false,
             },
             {
               headerName: '납기',
@@ -333,8 +318,6 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
               minWidth: attributeColumnWidth(70),
               flex: 1,
               cellClass: 'text-center px-[0.2rem]!',
-              sortable: false,
-              filter: false,
             },
           ]),
     ],
@@ -627,6 +610,7 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
                     defaultColDef={{
                       cellClass: 'p-0',
                       cellStyle: { padding: 0 },
+                      sortable: true,
                     }}
                     singleClickEdit={true}
                     onCellValueChanged={onCellValueChanged}

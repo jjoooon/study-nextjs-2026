@@ -8,7 +8,13 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import { AgGridEmptyComponent, createFieldRenderer, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createFieldRenderer,
+  useAgGridInfiniteAppend,
+  useDynamicColumnWidths,
+  createGroupHeaderWithSort,
+} from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -285,19 +291,16 @@ export default function Ltpa490Section() {
         },
       },
       {
-        headerName: '계명자명',
+        headerName: '계약자명',
+        headerGroupComponent: createGroupHeaderWithSort('field02'),
         flex: 1,
         minWidth: attributeColumnWidth(75),
-        headerGroupComponent: () => (
-          <Grow placement="cc" className="w-full">
-            <span className="font-bold text-[1.3rem]!">계명자명</span>
-          </Grow>
-        ),
         cellClass: 'text-center px-0!',
         autoHeight: true,
         children: [
           {
             headerName: '피보험자명',
+            field: 'field03',
             flex: 1,
             minWidth: attributeColumnWidth(75),
             cellClass: 'text-center px-0!',
@@ -316,11 +319,7 @@ export default function Ltpa490Section() {
       },
       {
         headerName: '취급지점',
-        headerGroupComponent: () => (
-          <Grow placement="cc" className="w-full">
-            <span className="font-bold text-[1.3rem]!">취급지점</span>
-          </Grow>
-        ),
+        headerGroupComponent: createGroupHeaderWithSort('field05'),
         flex: 1,
         minWidth: attributeColumnWidth(110),
         cellClass: 'text-center',

@@ -250,7 +250,7 @@ const Ltpz017 = () => {
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData}
                   columnDefs={columnDefs}
-                  defaultColDef={{ sortable: false }}
+                  defaultColDef={{ sortable: true }}
                   singleClickEdit={true}
                   onCellValueChanged={onCellValueChanged}
                   rowSelection={{

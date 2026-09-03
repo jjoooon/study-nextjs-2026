@@ -13,6 +13,8 @@ import {
   createFieldRenderer,
   OverflowTooltipText,
   useDynamicColumnWidths,
+  createDualRowHeader,
+  dualRowSortComparator,
 } from '@aggrid';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
@@ -76,342 +78,347 @@ const DummyData: DummyDataRow[] = [
     id: 1,
     isCheck: true,
     isState: true,
-    field01: 'LA123456789012',
-    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
-    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    field01: '1_LA123456789012',
+    field02: '1_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '1_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값1',
     memo: true,
-    field05: '김한화김한',
+    field05: '1_김한화김한',
     field06: '2009-01-01',
-    field20: '김한화김한김한화김한',
+    field20: '1_김한화김한김한화김한',
     field21: '2009-01-01',
-    field07: 9999999,
-    field08: 2.1,
+    field07: 1000000,
+    field08: 1.1,
     field22: '2009-01-01',
     field23: '2009-01-01',
-    field09: '설계중',
-    field10: '심사결과',
-    field11: '미출력',
-    field24: '',
-    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
-    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
-    field14: '박한화(123123)',
-    field15: '박한화14',
-    field16: '박한화15',
-    field17: '박한화(123123)',
-    field18: '동시가입설계',
-    field19: 'LA20143129023123912',
+    field09: '1_설계중',
+    field10: '1_심사결과',
+    field11: '1_미출력',
+    field24: '1_서명완료',
+    field12: '1_신부산GA지점/00팀',
+    field13: '1_인카금융-다이렉트',
+    field14: '1_박한화(123123)',
+    field15: '1_박한화14',
+    field16: '1_박한화15',
+    field17: '1_박한화(123123)',
+    field18: '1_동시가입설계',
+    field19: '1_LA20143129023123912',
     nickname: '최고설계메니져뚜루루',
 
-    field25: '2026-03-11',
-    field26: '김한화',
-    field27: '(야탑동)',
+    field25: '2026-03-01',
+    field26: '1_김한화',
+    field27: '1_(야탑동)',
     link: 'a1',
   },
   {
     id: 2,
     isCheck: true,
     isState: false,
-    field01: 'LA123456789012',
-    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
-    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    field01: '2_LA123456789012',
+    field02: '2_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '2_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
     memo: true,
-    field05: '김한화김한',
-    field06: '2009-01-01',
-    field20: '김한화김한김한화김한',
-    field21: '2009-01-01',
-    field07: 9999999,
-    field08: 2.1,
-    field22: '2009-01-01',
-    field23: '2009-01-01',
-    field09: '설계중',
-    field10: '설계중',
-    field11: '미출력',
-    field24: '휴대폰 서명',
-    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
-    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
-    field14: '박한화(123123)',
-    field15: '박한화14',
-    field16: '박한화15',
-    field17: '박한화(123123)',
-    field18: '가입설계',
-    field19: 'LA20143129023123912',
+    field05: '2_김한화김한',
+    field06: '2009-01-02',
+    field20: '2_김한화김한김한화김한',
+    field21: '2009-01-02',
+    field07: 2000000,
+    field08: 2.2,
+    field22: '2009-01-02',
+    field23: '2009-01-02',
+    field09: '2_설계중',
+    field10: '2_설계중',
+    field11: '2_미출력',
+    field24: '2_휴대폰 서명',
+    field12: '2_신부산GA지점/00팀',
+    field13: '2_인카금융-다이렉트',
+    field14: '2_박한화(123123)',
+    field15: '2_박한화14',
+    field16: '2_박한화15',
+    field17: '2_박한화(123123)',
+    field18: '2_가입설계',
+    field19: '2_LA20143129023123912',
     nickname: '최고설최고설최고설최고설최고설최고설최고설',
 
-    field25: '2026-03-11', // 전속FP(최초설계일)
-    field26: '김한화', // 방카(BM)
-    field27: '(야탑동)', // 방카(유자격자)
+    field25: '2026-03-02',
+    field26: '2_김한화',
+    field27: '2_(야탑동)',
     link: 'a1',
   },
   {
     id: 3,
     isCheck: true,
     isState: false,
-    field01: 'LA123456789012',
-    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
-    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    field01: '3_LA123456789012',
+    field02: '3_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '3_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
     memo: true,
-    field05: '김한화김한',
-    field06: '2009-01-01',
-    field20: '김한화김한김한화김한',
-    field21: '2009-01-01',
-    field07: 9999999,
-    field08: 2.1,
-    field22: '2009-01-01',
-    field23: '2009-01-01',
-    field09: '설계중',
-    field10: '설계중',
-    field11: '미출력',
-    field24: '',
-    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
-    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
-    field14: '박한화(123123)',
-    field15: '박한화14',
-    field16: '박한화15',
-    field17: '박한화(123123)',
-    field18: '가입설계',
-    field19: 'LA20143129023123912',
+    field05: '3_김한화김한',
+    field06: '2009-01-03',
+    field20: '3_김한화김한김한화김한',
+    field21: '2009-01-03',
+    field07: 3000000,
+    field08: 3.3,
+    field22: '2009-01-03',
+    field23: '2009-01-03',
+    field09: '3_설계중',
+    field10: '3_설계중',
+    field11: '3_미출력',
+    field24: '3_서명대기',
+    field12: '3_신부산GA지점/00팀',
+    field13: '3_인카금융-다이렉트',
+    field14: '3_박한화(123123)',
+    field15: '3_박한화14',
+    field16: '3_박한화15',
+    field17: '3_박한화(123123)',
+    field18: '3_가입설계',
+    field19: '3_LA20143129023123912',
     nickname: '',
 
-    field25: '2026-03-11',
-    field26: '김한화',
-    field27: '이정연(구로점)',
+    field25: '2026-03-03',
+    field26: '3_김한화',
+    field27: '3_이정연(구로점)',
     link: 'a1',
   },
   {
     id: 4,
     isCheck: true,
     isState: false,
-    field01: 'LA123456789012',
-    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
-    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    field01: '4_LA123456789012',
+    field02: '4_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '4_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
     memo: false,
-    field05: '김한화김한',
-    field06: '2009-01-01',
-    field20: '김한화김한김한화김한',
-    field21: '2009-01-01',
-    field07: 9999999,
-    field08: 2.1,
-    field22: '2009-01-01',
-    field23: '2009-01-01',
-    field09: '설계중',
-    field10: '설계중',
-    field11: '미출력',
-    field24: '',
-    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
-    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
-    field14: '박한화(123123)',
-    field15: '박한화14',
-    field16: '박한화15',
-    field17: '박한화(123123)',
-    field18: '동시가입설계',
-    field19: 'LA20143129023123912',
+    field05: '4_김한화김한',
+    field06: '2009-01-04',
+    field20: '4_김한화김한김한화김한',
+    field21: '2009-01-04',
+    field07: 4000000,
+    field08: 4.4,
+    field22: '2009-01-04',
+    field23: '2009-01-04',
+    field09: '4_설계중',
+    field10: '4_설계중',
+    field11: '4_미출력',
+    field24: '4_서명완료',
+    field12: '4_신부산GA지점/00팀',
+    field13: '4_인카금융-다이렉트',
+    field14: '4_박한화(123123)',
+    field15: '4_박한화14',
+    field16: '4_박한화15',
+    field17: '4_박한화(123123)',
+    field18: '4_동시가입설계',
+    field19: '4_LA20143129023123912',
     nickname: '',
 
-    field25: '2026-03-11',
-    field26: '김한화',
-    field27: '(야탑동)',
+    field25: '2026-03-04',
+    field26: '4_김한화',
+    field27: '4_(야탑동)',
     link: 'a2',
   },
   {
     id: 5,
     isCheck: true,
     isState: false,
-    field01: 'LA123456789012',
-    field02: '55555 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
-    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    field01: '5_LA123456789012',
+    field02: '5_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '5_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
     memo: true,
-    field05: '김한화김한',
-    field06: '2009-01-01',
-    field20: '김한화김한김한화김한',
-    field21: '2009-01-01',
-    field07: 9999999,
-    field08: 2.1,
-    field22: '2009-01-01',
-    field23: '2009-01-01',
-    field09: '설계중',
-    field10: '심사대기',
-    field11: '미출력',
-    field24: '',
-    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
-    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
-    field14: '박한화(123123)',
-    field15: '박한화14',
-    field16: '박한화15',
-    field17: '박한화(123123)',
-    field18: '동시가입설계',
-    field19: 'LA20143129023123912',
+    field05: '5_김한화김한',
+    field06: '2009-01-05',
+    field20: '5_김한화김한김한화김한',
+    field21: '2009-01-05',
+    field07: 5000000,
+    field08: 5.5,
+    field22: '2009-01-05',
+    field23: '2009-01-05',
+    field09: '5_설계중',
+    field10: '5_심사대기',
+    field11: '5_미출력',
+    field24: '5_서명완료',
+    field12: '5_신부산GA지점/00팀',
+    field13: '5_인카금융-다이렉트',
+    field14: '5_박한화(123123)',
+    field15: '5_박한화14',
+    field16: '5_박한화15',
+    field17: '5_박한화(123123)',
+    field18: '5_동시가입설계',
+    field19: '5_LA20143129023123912',
     nickname: '',
-    field25: '2026-03-11',
-    field26: '김한화',
-    field27: '(야탑동)',
+    field25: '2026-03-05',
+    field26: '5_김한화',
+    field27: '5_(야탑동)',
     link: 'a2',
   },
   {
     id: 6,
     isCheck: true,
     isState: false,
-    field01: 'LA123456789012',
-    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
-    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    field01: '6_LA123456789012',
+    field02: '6_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '6_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
     memo: true,
-    field05: '김한화김한',
-    field06: '2009-01-01',
-    field20: '김한화김한김한화김한',
-    field21: '2009-01-01',
-    field07: 9999999,
-    field08: 2.1,
-    field22: '2009-01-01',
-    field23: '2009-01-01',
-    field09: '설계중',
-    field10: '설계중',
-    field11: '미출력',
-    field24: '',
-    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
-    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
-    field14: '박한화(123123)',
-    field15: '박한화14',
-    field16: '박한화15',
-    field17: '박한화(123123)',
-    field18: '동시가입설계',
-    field19: 'LA20143129023123912',
+    field05: '6_김한화김한',
+    field06: '2009-01-06',
+    field20: '6_김한화김한김한화김한',
+    field21: '2009-01-06',
+    field07: 6000000,
+    field08: 6.6,
+    field22: '2009-01-06',
+    field23: '2009-01-06',
+    field09: '6_설계중',
+    field10: '6_설계중',
+    field11: '6_미출력',
+    field24: '6_서명대기',
+    field12: '6_신부산GA지점/00팀',
+    field13: '6_인카금융-다이렉트',
+    field14: '6_박한화(123123)',
+    field15: '6_박한화14',
+    field16: '6_박한화15',
+    field17: '6_박한화(123123)',
+    field18: '6_동시가입설계',
+    field19: '6_LA20143129023123912',
     nickname: '',
-    field25: '2026-03-11',
-    field26: '김한화',
-    field27: '(야탑동)',
+    field25: '2026-03-06',
+    field26: '6_김한화',
+    field27: '6_(야탑동)',
   },
   {
     id: 7,
     isCheck: true,
     isState: false,
-    field01: 'LA123456789012',
-    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
-    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    field01: '7_LA123456789012',
+    field02: '7_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '7_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
     memo: true,
-    field05: '김한화김한',
-    field06: '2009-01-01',
-    field20: '김한화김한김한화김한',
-    field21: '2009-01-01',
-    field07: 9999999,
-    field08: 2.1,
-    field22: '2009-01-01',
-    field23: '2009-01-01',
-    field09: '설계중',
-    field10: '설계중',
-    field11: '미출력',
-    field24: '',
-    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
-    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
-    field14: '박한화(123123)',
-    field15: '박한화14',
-    field16: '박한화15',
-    field17: '박한화(123123)',
-    field18: '동시가입설계',
-    field19: 'LA20143129023123912',
+    field05: '7_김한화김한',
+    field06: '2009-01-07',
+    field20: '7_김한화김한김한화김한',
+    field21: '2009-01-07',
+    field07: 7000000,
+    field08: 7.7,
+    field22: '2009-01-07',
+    field23: '2009-01-07',
+    field09: '7_설계중',
+    field10: '7_설계중',
+    field11: '7_미출력',
+    field24: '7_서명완료',
+    field12: '7_신부산GA지점/00팀',
+    field13: '7_인카금융-다이렉트',
+    field14: '7_박한화(123123)',
+    field15: '7_박한화14',
+    field16: '7_박한화15',
+    field17: '7_박한화(123123)',
+    field18: '7_동시가입설계',
+    field19: '7_LA20143129023123912',
     nickname: '',
-    field25: '2026-03-11',
-    field26: '김한화',
-    field27: '(야탑동)',
+    field25: '2026-03-07',
+    field26: '7_김한화',
+    field27: '7_(야탑동)',
   },
   {
     id: 8,
     isCheck: true,
     isState: false,
-    field01: 'LA123456789012',
-    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
-    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    field01: '8_LA123456789012',
+    field02: '8_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '8_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
     memo: true,
-    field05: '김한화김한',
-    field06: '2009-01-01',
-    field20: '김한화김한김한화김한',
-    field21: '2009-01-01',
-    field07: 9999999,
-    field08: 2.1,
-    field22: '2009-01-01',
-    field23: '2009-01-01',
-    field09: '설계중',
-    field10: '설계중',
-    field11: '미출력',
-    field24: '',
-    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
-    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
-    field14: '박한화(123123)',
-    field15: '박한화14',
-    field16: '박한화15',
-    field17: '박한화(123123)',
-    field18: '동시가입설계',
-    field19: 'LA20143129023123912',
+    field05: '8_김한화김한',
+    field06: '2009-01-08',
+    field20: '8_김한화김한김한화김한',
+    field21: '2009-01-08',
+    field07: 8000000,
+    field08: 8.8,
+    field22: '2009-01-08',
+    field23: '2009-01-08',
+    field09: '8_설계중',
+    field10: '8_설계중',
+    field11: '8_미출력',
+    field24: '8_서명완료',
+    field12: '8_신부산GA지점/00팀',
+    field13: '8_인카금융-다이렉트',
+    field14: '8_박한화(123123)',
+    field15: '8_박한화14',
+    field16: '8_박한화15',
+    field17: '8_박한화(123123)',
+    field18: '8_동시가입설계',
+    field19: '8_LA20143129023123912',
     nickname: '',
-    field25: '2026-03-11',
-    field26: '김한화',
-    field27: '(야탑동)',
+    field25: '2026-03-08',
+    field26: '8_김한화',
+    field27: '8_(야탑동)',
   },
   {
     id: 9,
     isCheck: true,
     isState: false,
-    field01: 'LA123456789012',
-    field02: '한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
-    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
+    field01: '9_LA123456789012',
+    field02: '9_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
+    field03: '9_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
     memo: true,
-    field05: '김한화김한',
-    field06: '2009-01-01',
-    field20: '김한화김한김한화김한',
-    field21: '2009-01-01',
-    field07: 9999999,
-    field08: 2.1,
-    field22: '2009-01-01',
-    field23: '2009-01-01',
-    field09: '설계중',
-    field10: '설계중',
-    field11: '미출력',
-    field24: '',
-    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
-    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
-    field14: '박한화(123123)',
-    field15: '박한화14',
-    field16: '박한화15',
-    field17: '박한화(123123)',
-    field18: '동시가입설계',
-    field19: 'LA20143129023123912',
+    field05: '9_김한화김한',
+    field06: '2009-01-09',
+    field20: '9_김한화김한김한화김한',
+    field21: '2009-01-09',
+    field07: 9000000,
+    field08: 9.9,
+    field22: '2009-01-09',
+    field23: '2009-01-09',
+    field09: '9_설계중',
+    field10: '9_설계중',
+    field11: '9_미출력',
+    field24: '9_서명완료',
+    field12: '9_신부산GA지점/00팀',
+    field13: '9_인카금융-다이렉트',
+    field14: '9_박한화(123123)',
+    field15: '9_박한화14',
+    field16: '9_박한화15',
+    field17: '9_박한화(123123)',
+    field18: '9_동시가입설계',
+    field19: '9_LA20143129023123912',
     nickname: '',
-    field25: '2026-03-11',
-    field26: '김한화',
-    field27: '(야탑동)',
+    field25: '2026-03-09',
+    field26: '9_김한화',
+    field27: '9_(야탑동)',
   },
-  ...Array.from({ length: 16 }, (_, i) => ({
-    id: 10 + i,
-    isCheck: true,
-    isState: false,
-    field01: 'LA123456789012',
-    field02: `한화실손의료보험(갱신형)2601 ${10 + i}`,
-    field03: '고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값',
-    memo: true,
-    field05: '김한화김한',
-    field06: '2009-01-01',
-    field20: '김한화김한김한화김한',
-    field21: '2009-01-01',
-    field07: 9999999,
-    field08: 2.1,
-    field22: '2009-01-01',
-    field23: '2009-01-01',
-    field09: '설계중',
-    field10: '설계중',
-    field11: '미출력',
-    field24: '',
-    field12: '신부산GA지점/00팀00팀00팀00팀00팀',
-    field13: '인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트인카금융-다이렉트',
-    field14: '박한화(123123)',
-    field15: '박한화14',
-    field16: '박한화15',
-    field17: '박한화(123123)',
-    field18: '동시가입설계',
-    field19: 'LA20143129023123912',
-    nickname: '',
-    field25: '2026-03-11',
-    field26: '김한화',
-    field27: '(야탑동)',
-  })),
+  ...Array.from({ length: 16 }, (_, i) => {
+    const num = 10 + i;
+    return {
+      id: num,
+      isCheck: true,
+      isState: false,
+      field01: `${num}_LA123456789012`,
+      field02: `${num}_한화실손의료보험(갱신형)2601`,
+      field03: `${num}_고지유형/플랜명/차량번호 값`,
+      memo: true,
+      field05: `${num}_김한화김한`,
+      field06: `2009-01-${num.toString().padStart(2, '0')}`,
+      field20: `${num}_김한화김한`,
+      field21: `2009-01-${num.toString().padStart(2, '0')}`,
+      field07: num * 100000,
+      field08: num * 0.1,
+      field22: `2009-01-${num.toString().padStart(2, '0')}`,
+      field23: `2009-01-${num.toString().padStart(2, '0')}`,
+      field09: `${num}_설계중`,
+      field10: `${num}_설계중`,
+      field11: `${num}_미출력`,
+      field24: `${num}_서명완료`,
+      field12: `${num}_신부산GA지점`,
+      field13: `${num}_인카금융`,
+      field14: `${num}_박한화`,
+      field15: `${num}_박한화`,
+      field16: `${num}_박한화`,
+      field17: `${num}_박한화`,
+      field18: `${num}_가입설계`,
+      field19: `${num}_LA20143129023123912`,
+      nickname: '',
+      field25: `2026-03-${num.toString().padStart(2, '0')}`,
+      field26: `${num}_김한화`,
+      field27: `${num}_(야탑동)`,
+    };
+  }),
 ];
+
+// Ltpa010Section: 통합가입설계조회 화면 섹션 컴포넌트
 
 /**
  * Ltpa010Section: 통합가입설계조회 화면 섹션 컴포넌트
@@ -498,18 +505,12 @@ export default function Ltpa010Section() {
         </>
       ),
     },
-    // 2. 상품명/구분 & 고지유형/플랜명: 2행 구조의 헤더와 커스텀 필드 렌더러를 사용하여 복합 정보 표시
+    // 2. 상품명/구분 & 고지유형/플랜명: 2행 구조 헤더 (상단: field02 정렬, 하단: field03 정렬)
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            상품명/구분
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            고지유형/플랜명
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field02',
+      field: 'field02',
+      headerComponent: createDualRowHeader('상품명/구분', 'field02', '고지유형/플랜명', 'field03'),
+      comparator: dualRowSortComparator,
       width: attributeColumnWidth(400),
       cellClass: '!px-0',
       autoHeight: true,
@@ -573,16 +574,10 @@ export default function Ltpa010Section() {
     },
     // 3. 계약자 & 생년월일: 두 필드를 하나의 컬럼에 상하로 배치
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            계약자
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            생년월일
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field05',
+      field: 'field05',
+      headerComponent: createDualRowHeader('계약자', 'field05', '생년월일', 'field06'),
+      comparator: dualRowSortComparator,
       autoHeight: true,
       cellClass: 'text-center !px-0',
       flex: 1,
@@ -591,16 +586,10 @@ export default function Ltpa010Section() {
     },
     // 4. 피보험자 & 생년월일
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            피보험자
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            생년월일
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field20',
+      field: 'field20',
+      headerComponent: createDualRowHeader('피보험자', 'field20', '생년월일', 'field21'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       headerClass: '!px-0',
       autoHeight: true,
@@ -610,16 +599,10 @@ export default function Ltpa010Section() {
     },
     // 5. 보험료 & 환급률
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            보험료(원)
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            환급률
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field07',
+      field: 'field07',
+      headerComponent: createDualRowHeader('보험료(원)', 'field07', '환급률', 'field08'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       autoHeight: true,
       flex: 1,
@@ -637,16 +620,10 @@ export default function Ltpa010Section() {
     },
     // 6. 설계일자 & 유효기한
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            설계일자
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            유효기한
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field22',
+      field: 'field22',
+      headerComponent: createDualRowHeader('설계일자', 'field22', '유효기한', 'field23'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(80),
@@ -673,16 +650,10 @@ export default function Ltpa010Section() {
     },
     // 7. 설계상태 & 심사결과
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            설계상태
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            심사결과
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field09',
+      field: 'field09',
+      headerComponent: createDualRowHeader('설계상태', 'field09', '심사결과', 'field10'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(70),
@@ -722,16 +693,10 @@ export default function Ltpa010Section() {
     },
     // 8. 청약서출력 & 스캔여부
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            청약서출력
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            스캔여부
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field11',
+      field: 'field11',
+      headerComponent: createDualRowHeader('청약서출력', 'field11', '스캔여부', 'field24'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(70),
@@ -757,16 +722,10 @@ export default function Ltpa010Section() {
     },
     // 9. 취급기관/팀 & 취급자
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            취급기관/팀
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            취급자
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field12',
+      field: 'field12',
+      headerComponent: createDualRowHeader('취급기관/팀', 'field12', '취급자', 'field13'),
+      comparator: dualRowSortComparator,
       cellClass: '!px-0',
       flex: 1,
       minWidth: attributeColumnWidth(120),
@@ -775,16 +734,10 @@ export default function Ltpa010Section() {
     },
     // 9-1. 취급기관/팀 & BM (방카일 경우 BM으로 변경)
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            취급기관/팀
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            BM
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field12_bm',
+      field: 'field12',
+      headerComponent: createDualRowHeader('취급기관/팀', 'field12', 'BM', 'field26'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(120),
@@ -793,16 +746,10 @@ export default function Ltpa010Section() {
     },
     // 9-2. 취급자 & 유자격자 (방카일 경우 유자격)
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            취급자
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            유자격자
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field13',
+      field: 'field13',
+      headerComponent: createDualRowHeader('취급자', 'field13', '유자격자', 'field27'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(90),
@@ -811,16 +758,10 @@ export default function Ltpa010Section() {
     },
     // 10. 최초설계자 & SM
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            최초설계자
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            SM
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field14',
+      field: 'field14',
+      headerComponent: createDualRowHeader('최초설계자', 'field14', 'SM', 'field15'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(100),
@@ -860,16 +801,10 @@ export default function Ltpa010Section() {
     },
     // 10-1. 최초설계일 & 최초설계자 (전속FP 일 경우)
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            최초설계일
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            최초설계자
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field25',
+      field: 'field25',
+      headerComponent: createDualRowHeader('최초설계일', 'field25', '최초설계자', 'field14'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(90),
@@ -878,16 +813,10 @@ export default function Ltpa010Section() {
     },
     // 11. 사용인 & 부실유의
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            사용인
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            부실유의
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field16',
+      field: 'field16',
+      headerComponent: createDualRowHeader('사용인', 'field16', '부실유의', 'field17'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(80),
@@ -896,16 +825,10 @@ export default function Ltpa010Section() {
     },
     // 12. 설계종류 & 증권번호
     {
-      headerComponent: () => (
-        <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full" gap={0}>
-          <Grow placement="cc" className="min-h-[3rem]">
-            설계종류
-          </Grow>
-          <Grow placement="cc" className="min-h-[3rem]">
-            증권번호
-          </Grow>
-        </Grid>
-      ),
+      colId: 'field18',
+      field: 'field18',
+      headerComponent: createDualRowHeader('설계종류', 'field18', '증권번호', 'field19'),
+      comparator: dualRowSortComparator,
       cellClass: 'text-center !px-0',
       flex: 1,
       minWidth: attributeColumnWidth(130),

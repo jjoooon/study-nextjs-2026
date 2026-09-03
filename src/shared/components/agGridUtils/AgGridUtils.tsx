@@ -13,11 +13,12 @@ import type {
   EditableCallbackParams,
   CellClassParams,
   IHeaderParams,
+  IHeaderGroupParams,
   GridApi,
   GridReadyEvent,
   CellValueChangedEvent,
 } from 'ag-grid-enterprise';
-import type { AgGridReact, CustomLoadingOverlayProps, CustomCellEditorProps } from 'ag-grid-react';
+import type { AgGridReact, CustomLoadingOverlayProps, CustomCellEditorProps, CustomHeaderProps } from 'ag-grid-react';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import type { RefObject } from 'react';
@@ -2587,3 +2588,132 @@ export type TwoRadioCellRendererOptions = {
   trueValue?: string;
   falseValue?: string;
 };
+
+/**
+ * [Ag-Grid Helper] 그룹 헤더 클릭 시 지정된 필드 또는 하위 자식 컬럼 정렬을 토글하고
+ * 정렬 방향 아이콘(↑/↓)을 표시하는 커스텀 그룹 헤더 컴포넌트 팩토리 함수
+ *
+ * @param targetSortField 그룹 헤더 클릭 시 독립적으로 정렬할 필드 ID (지정 시 자식 컬럼 sort UI에 영향을 주지 않음)
+ */
+export function createGroupHeaderWithSort(targetSortField?: string) {
+  const GroupHeaderWithSortComponent = (props: IHeaderGroupParams) => {
+    const [sortState, setSortState] = React.useState<'asc' | 'desc' | null>(null);
+
+    const handleClick = () => {
+      const nextSort = sortState === 'desc' ? 'asc' : sortState === 'asc' ? 'desc' : 'asc';
+      setSortState(nextSort);
+
+      if (targetSortField) {
+        props.api.applyColumnState({
+          state: [{ colId: targetSortField, sort: nextSort }],
+          defaultState: { sort: null },
+        });
+      } else {
+        const leafCols = props.columnGroup.getLeafColumns();
+        if (!leafCols || leafCols.length === 0) return;
+
+        // 첫 번째 대표 자식 컬럼만 정렬하여 다중 정렬 순번 숫자(1, 2, 3...) 노출 방지
+        const primaryCol = leafCols[0];
+        props.api.applyColumnState({
+          state: [{ colId: primaryCol.getColId(), sort: nextSort }],
+          defaultState: { sort: null },
+        });
+      }
+    };
+
+    return (
+      <Grow onClick={handleClick} placement="cc" className="w-full cursor-pointer select-none gap-1">
+        <span className="font-bold">{props.displayName}</span>
+        {sortState === 'asc' && <span className="ag-icon ag-icon-asc" role="presentation" />}
+        {sortState === 'desc' && <span className="ag-icon ag-icon-desc" role="presentation" />}
+      </Grow>
+    );
+  };
+
+  return GroupHeaderWithSortComponent;
+}
+
+export const GroupHeaderWithSort = createGroupHeaderWithSort();
+
+/** 복합 2행 헤더 정렬 타겟 컬럼 저장용 글로벌 모듈 변수 */
+let activeDualRowSortTarget: string = '';
+
+/**
+ * [Ag-Grid Helper] 2행 구조 복합 헤더의 동적 정렬 비교 함수 (숫자 및 한국어 텍스트 정렬 지원) 타이트 2개에 내용은 하나
+ */
+export const dualRowSortComparator = (
+  _valueA: unknown,
+  _valueB: unknown,
+  nodeA: { data?: Record<string, unknown> },
+  nodeB: { data?: Record<string, unknown> }
+) => {
+  const valA = nodeA.data?.[activeDualRowSortTarget] ?? '';
+  const valB = nodeB.data?.[activeDualRowSortTarget] ?? '';
+
+  if (typeof valA === 'number' && typeof valB === 'number') {
+    return valA - valB;
+  }
+  return String(valA).localeCompare(String(valB), 'ko-KR', { numeric: true });
+};
+
+/**
+ * [Ag-Grid Helper] 단일 컬럼 내 2행 헤더(상단/하단 항목 각각 독립 정렬 지원) 컴포넌트 팩토리 함수
+ *
+ * @example
+ * headerComponent: createDualRowHeader('상품명/구분', 'field02', '고지유형/플랜명', 'field03'), 타이틀 2개 내용도 2개
+ * comparator: dualRowSortComparator,
+ */
+export function createDualRowHeader<TData extends Record<string, unknown>>(
+  topTitle: string,
+  topField: keyof TData & string,
+  bottomTitle: string,
+  bottomField: keyof TData & string
+) {
+  const DualRowHeaderComponent = (props: CustomHeaderProps) => {
+    const [topSortState, setTopSortState] = React.useState<'asc' | 'desc' | null>(null);
+    const [bottomSortState, setBottomSortState] = React.useState<'asc' | 'desc' | null>(null);
+
+    const handleTopClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      activeDualRowSortTarget = topField;
+      const nextSort = topSortState === 'desc' ? 'asc' : topSortState === 'asc' ? 'desc' : 'asc';
+      setTopSortState(nextSort);
+      setBottomSortState(null);
+
+      props.api.applyColumnState({
+        state: [{ colId: props.column.getColId(), sort: nextSort }],
+        defaultState: { sort: null },
+      });
+    };
+
+    const handleBottomClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      activeDualRowSortTarget = bottomField;
+      const nextSort = bottomSortState === 'desc' ? 'asc' : bottomSortState === 'asc' ? 'desc' : 'asc';
+      setBottomSortState(nextSort);
+      setTopSortState(null);
+
+      props.api.applyColumnState({
+        state: [{ colId: props.column.getColId(), sort: nextSort }],
+        defaultState: { sort: null },
+      });
+    };
+
+    return (
+      <Grid className="grid-rows-[1fr_1fr] divide-y divide-gray-300 w-full h-full select-none" gap={0}>
+        <Grow onClick={handleTopClick} placement="cc" className="min-h-[3rem] gap-1 cursor-pointer">
+          <span>{topTitle}</span>
+          {topSortState === 'asc' && <span className="ag-icon ag-icon-asc" role="presentation" />}
+          {topSortState === 'desc' && <span className="ag-icon ag-icon-desc" role="presentation" />}
+        </Grow>
+        <Grow onClick={handleBottomClick} placement="cc" className="min-h-[3rem] gap-1 cursor-pointer">
+          <span>{bottomTitle}</span>
+          {bottomSortState === 'asc' && <span className="ag-icon ag-icon-asc" role="presentation" />}
+          {bottomSortState === 'desc' && <span className="ag-icon ag-icon-desc" role="presentation" />}
+        </Grow>
+      </Grid>
+    );
+  };
+
+  return DualRowHeaderComponent;
+}
