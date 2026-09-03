@@ -48,7 +48,7 @@
  * @lastModified 2026-03-05
  */
 
-import React from 'react';
+import * as React from 'react';
 import {
   AlertDialog,
   AlertDialogAction,

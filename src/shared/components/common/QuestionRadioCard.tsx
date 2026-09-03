@@ -3,7 +3,7 @@
  */
 'use client';
 
-import React from 'react';
+import * as React from 'react';
 import { type ReactNode } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grid, Grow, Typo } from '@atoms';

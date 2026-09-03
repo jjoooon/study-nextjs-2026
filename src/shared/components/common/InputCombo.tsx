@@ -3,8 +3,9 @@
  */
 'use client';
 
-import React, { useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import { useRef, useState } from 'react';
+import * as ReactDOM from 'react-dom';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grid } from '@atoms';
 import { Button } from '@uiux/Button';

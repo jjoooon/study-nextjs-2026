@@ -80,7 +80,7 @@ const DummyData: DummyDataRow[] = [
     isState: true,
     field01: '1_LA123456789012',
     field02: '1_한화실손의료보험(갱신형)2601 한화실손의료보험(갱신형)2601',
-    field03: '1_고지유형/플랜명/차량번호 값 고지유형/플랜명/차량번호 값1',
+    field03: '1_고지유형/플랜',
     memo: true,
     field05: '5_김한화김한',
     field06: '2009-01-01',

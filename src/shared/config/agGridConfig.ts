@@ -1,6 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
+'use client';
+
 import { AgGridReact } from 'ag-grid-react';
 
 /**

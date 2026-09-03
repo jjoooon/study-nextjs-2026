@@ -51,7 +51,6 @@ import log from '@/shared/utils/logger';
 import { SpinnerRoot } from '@common/SpinnerRoot';
 import { LayoutDoc } from '@layout/BaseLayout';
 import { Toaster } from '@uiux/Sonner';
-import '@/shared/config/agGridConfig';
 import { Providers } from './providers';
 
 const logger = log.getLogger('Layout');
