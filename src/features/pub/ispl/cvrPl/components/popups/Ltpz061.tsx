@@ -275,6 +275,7 @@ const Ltpz061 = () => {
       // 2026-05-27 select 전체 수정
       {
         headerName: '부담보기간',
+        headerGroupComponent: () => <span className="font-bold! text-center w-full text-[1.3rem]">부담보기간</span>,
         marryChildren: true,
         children: [
           {
@@ -382,6 +383,7 @@ const Ltpz061 = () => {
       // 2026-05-27 select 전체 수정
       {
         headerName: '부담보기간',
+        headerGroupComponent: () => <span className="font-bold! text-center w-full text-[1.3rem]">부담보기간</span>,
         marryChildren: true,
         children: [
           {

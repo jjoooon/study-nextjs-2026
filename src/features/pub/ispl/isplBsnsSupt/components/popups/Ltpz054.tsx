@@ -268,7 +268,7 @@ const Ltpz054 = () => {
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={DummyData1}
                     columnDefs={columnDefs}
-                    defaultColDef={{ sortable: false }}
+                    defaultColDef={{ sortable: true }}
                     rowSelection={{
                       mode: 'multiRow',
                       checkboxes: true,
@@ -301,7 +301,7 @@ const Ltpz054 = () => {
                     noRowsOverlayComponent={AgGridEmptyComponent}
                     rowData={DummyData2}
                     columnDefs={columnDefs}
-                    defaultColDef={{ sortable: false }}
+                    defaultColDef={{ sortable: true }}
                     rowSelection={{
                       mode: 'multiRow',
                       checkboxes: true,
