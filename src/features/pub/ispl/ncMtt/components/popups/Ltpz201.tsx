@@ -6,7 +6,7 @@
 import type { ColDef, ColGroupDef, IHeaderGroupParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useMemo, useState } from 'react';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths, createHeaderWithSort } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { TableFold, TableFoldHead, TableFoldBody } from '@common/TableFold';
@@ -203,11 +203,7 @@ const Ltpz201 = () => {
         children: [
           {
             headerName: '',
-            headerComponent: () => (
-              <Grow placement="cc" className="w-full">
-                <span className="text-[1.2rem]! font-normal text-center">2026-03-01~2026-03-16, 입원(2일)</span>
-              </Grow>
-            ),
+            headerComponent: createHeaderWithSort('2026-03-01~2026-03-16, 입원(2일)'),
             field: 'field02',
             editable: true,
             flex: 2,
@@ -224,11 +220,7 @@ const Ltpz201 = () => {
         children: [
           {
             headerName: '',
-            headerComponent: () => (
-              <Grow placement="cc" className="w-full">
-                <span className="text-[1.2rem]! font-normal text-center">2026-03-01~2026-03-16, 입원(2일)</span>
-              </Grow>
-            ),
+            headerComponent: createHeaderWithSort('2026-03-01~2026-03-16, 입원(2일)'),
             field: 'field03',
             editable: true,
             flex: 2,
@@ -245,11 +237,7 @@ const Ltpz201 = () => {
         children: [
           {
             headerName: '',
-            headerComponent: () => (
-              <Grow placement="cc" className="w-full">
-                <span className="text-[1.2rem]! font-normal text-center">2026-03-01~2026-03-16, 입원(2일)</span>
-              </Grow>
-            ),
+            headerComponent: createHeaderWithSort('2026-03-01~2026-03-16, 입원(2일)'),
             field: 'field04',
             editable: true,
             flex: 2,
@@ -266,11 +254,7 @@ const Ltpz201 = () => {
         children: [
           {
             headerName: '',
-            headerComponent: () => (
-              <Grow placement="cc" className="w-full">
-                <span className="text-[1.2rem]! font-normal text-center">2026-03-01~2026-03-16, 입원(2일)</span>
-              </Grow>
-            ),
+            headerComponent: createHeaderWithSort('2026-03-01~2026-03-16, 입원(2일)'),
             field: 'field05',
             editable: true,
             flex: 2,
@@ -287,11 +271,7 @@ const Ltpz201 = () => {
         children: [
           {
             headerName: '',
-            headerComponent: () => (
-              <Grow placement="cc" className="w-full">
-                <span className="text-[1.2rem]! font-normal text-center">2026-03-01~2026-03-16, 입원(2일)</span>
-              </Grow>
-            ),
+            headerComponent: createHeaderWithSort('2026-03-01~2026-03-16, 입원(2일)'),
             field: 'field06',
             editable: true,
             flex: 2,

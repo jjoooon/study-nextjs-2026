@@ -2717,3 +2717,36 @@ export function createDualRowHeader<TData extends Record<string, unknown>>(
 
   return DualRowHeaderComponent;
 }
+
+/**
+ * [Ag-Grid Helper] 커스텀 단일 헤더 정렬 지원 팩토리 함수
+ *
+ * @example
+ * headerComponent: createHeaderWithSort('2026-03-01~2026-03-16, 입원(2일)', 'text-[1.2rem]! font-normal text-center')
+ */
+export function createHeaderWithSort(label: string, className: string = 'text-[1.2rem]! font-normal text-center') {
+  const HeaderWithSortComponent = (props: CustomHeaderProps) => {
+    const [sortState, setSortState] = React.useState<'asc' | 'desc' | null>(null);
+
+    const handleClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      const nextSort = sortState === 'desc' ? 'asc' : sortState === 'asc' ? 'desc' : 'asc';
+      setSortState(nextSort);
+
+      props.api.applyColumnState({
+        state: [{ colId: props.column.getColId(), sort: nextSort }],
+        defaultState: { sort: null },
+      });
+    };
+
+    return (
+      <Grow onClick={handleClick} placement="cc" className="w-full cursor-pointer select-none gap-1">
+        <span className={className}>{label}</span>
+        {sortState === 'asc' && <span className="ag-icon ag-icon-asc" role="presentation" />}
+        {sortState === 'desc' && <span className="ag-icon ag-icon-desc" role="presentation" />}
+      </Grow>
+    );
+  };
+
+  return HeaderWithSortComponent;
+}
