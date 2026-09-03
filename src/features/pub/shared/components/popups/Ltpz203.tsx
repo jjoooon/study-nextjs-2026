@@ -55,7 +55,7 @@ type InfoDataType = {
  */
 const InfoData: InfoDataType = {
   id: 1,
-  담보명: '한화 시그니처 여성 건강보험4.0 2504',
+  담보명: '한화 시그니처 여성 건강보험4.0 2504 ',
   가능: '인수가능',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
@@ -92,10 +92,6 @@ const selectOption4: SelectOptionType = [
 const selectOption5: SelectOptionType = [
   { value: '옵션1', label: '갱신 20년' },
   { value: '옵션2', label: '갱신 30년' },
-];
-const selectOption6: SelectOptionType = [
-  { value: '옵션1', label: '1형(일반고지형)' },
-  { value: '옵션2', label: '2형(갱신형)' },
 ];
 
 /**
@@ -336,7 +332,11 @@ const Ltpz203 = () => {
                         {InfoData.옵션.map((option, index) => {
                           const optionKey = `옵션${index + 1}` as keyof typeof option;
                           return (
-                            <Grow key={index} placement="ss" className="text-[1.3rem]">
+                            <Grow
+                              key={index}
+                              placement="ss"
+                              className={`text-[1.3rem] ${index === 3 ? 'font-bold' : ''}`}
+                            >
                               {index === 0 && (
                                 // M1. 수정
                                 <ShieldIcon
@@ -438,29 +438,22 @@ const Ltpz203 = () => {
                   key={i}
                 >
                   <Grid className="p-[1.6rem] gap-5 grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden" placement="ss">
-                    <Gcol className="gap-2" placement="ss">
+                    <Gcol placement="ss">
                       {/* 비교설계 적용 대상 선택 체크박스 및 변경 버튼 */}
-                      <Grow placement="bwc" className="w-full">
-                        <Checkbox aria-label="선택"></Checkbox>
-                        <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                          변경
-                        </Button>
+                      <Grow placement="ss" className="w-full">
+                        <Checkbox color={'info'} aria-label="선택" className="gap-x-2!">
+                          {' '}
+                          <Typo tag="div" variant={'body-sm'} weight={'bold'} color={'information'}>
+                            대안설계{i + 1}
+                          </Typo>
+                        </Checkbox>
+                        <Badge color="blue" className="h-[2.2rem] rounded-full text-[1.1rem] leading-[1] px-[0.6rem]">
+                          <CircleCheckIcon size={12} color="var(--color-information-50)" />
+                          인수가능1
+                        </Badge>
                       </Grow>
                       <Gcol placement="ss">
-                        <Typo
-                          tag="div"
-                          variant={'body-sm'}
-                          weight={'bold'}
-                          color={'information'}
-                          className="flex gap-1 items-center"
-                        >
-                          비교설계{i + 1}
-                          <Badge color="blue" className="h-[2.2rem] rounded-full text-[1.1rem] leading-[1] px-[0.6rem]">
-                            <CircleCheckIcon size={12} color="var(--color-information-50)" />
-                            인수가능
-                          </Badge>
-                        </Typo>
-                        <Typo tag="h3" variant={'body-xl'} weight={'bold'}>
+                        <Typo tag="h3" variant={'body-md'} weight={'bold'}>
                           {InfoData.담보명}
                         </Typo>
                       </Gcol>
@@ -486,7 +479,7 @@ const Ltpz203 = () => {
                           })}
                         </NativeSelect>
                         <Grow>
-                          <NativeSelect size="md">
+                          <NativeSelect size="md" readOnly>
                             {selectOption3.map((option, index) => {
                               return (
                                 <NativeSelectOption key={index} value={option.value}>
@@ -495,7 +488,7 @@ const Ltpz203 = () => {
                               );
                             })}
                           </NativeSelect>
-                          <NativeSelect size="md">
+                          <NativeSelect size="md" readOnly>
                             {selectOption4.map((option, index) => {
                               return (
                                 <NativeSelectOption key={index} value={option.value}>
@@ -514,15 +507,14 @@ const Ltpz203 = () => {
                             })}
                           </NativeSelect>
                         </Grow>
-                        <NativeSelect size="md" readOnly>
-                          {selectOption6.map((option, index) => {
-                            return (
-                              <NativeSelectOption key={index} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            );
-                          })}
-                        </NativeSelect>
+                        <Grow placement="ss" className="text-[1.3rem] font-bold">
+                          <CheckboxIcon
+                            color={'var(--color-blue-gray-60)'}
+                            className="translate-y-[0.2rem] shrink-0"
+                            size={16}
+                          />
+                          1형(일반 고지 형)
+                        </Grow>
                       </Gcol>
                     </Gcol>
 
