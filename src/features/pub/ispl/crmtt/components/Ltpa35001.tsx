@@ -92,7 +92,7 @@ const tooltipContents = [
 ];
 
 const tooltipContents2 = [
-  <div className="w-[34rem]">
+  <div key="tooltip1" className="w-[34rem]">
     - 고혈압추가고지 : 최근 5년 이내 &apos;고혈압&apos; 병력 없는 분
     <br />- 당뇨추가고지 : 최근 5년 이내 &apos;당뇨&apos; 병력 없는 분
     <br />- 고혈압및당뇨추가고지 : 최근 5년 이내 &apos;고혈압, 당뇨&apos; 병력 없는 분
