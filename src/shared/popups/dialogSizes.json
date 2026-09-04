@@ -802,7 +802,7 @@
     "title": "거래이력리스트",
     "width": 760,
     "height": 282,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ997",
@@ -816,7 +816,7 @@
     "title": "시스템 메시지(다건)",
     "width": 760,
     "height": 416,
-    "isIframe": true
+    "isIframe": false
   },
   {
     "id": "LTPZ999",
