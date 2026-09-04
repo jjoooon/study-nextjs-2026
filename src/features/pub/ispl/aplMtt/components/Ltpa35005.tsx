@@ -1350,6 +1350,9 @@ export const Ltpa35005 = () => {
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     동영상매뉴얼
                   </Button>
+                  <Button variant={'outlined'} color={'gray'} size={'xl'}>
+                    간편수납
+                  </Button>
                 </Grow>
                 <Grow gap={1}>
                   <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'gray'} size={'xl'}>
