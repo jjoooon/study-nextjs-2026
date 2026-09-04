@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { useMemo } from 'react';
 import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
-import { Grow, Typo } from '@atoms';
+import { Grow, Typo, Gcol } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
@@ -174,7 +174,7 @@ const Ltpz204 = () => {
         headerName: '선택',
         field: 'checked',
         flex: 1,
-        minWidth: attributeColumnWidth(20),
+        minWidth: attributeColumnWidth(30),
         sortable: false,
         editable: true,
         cellDataType: 'boolean',
@@ -186,8 +186,7 @@ const Ltpz204 = () => {
       {
         headerName: '세부',
         field: 'field2',
-        flex: 8,
-        minWidth: attributeColumnWidth(360),
+        flex: 20,
         autoHeight: true,
       },
     ],
@@ -223,7 +222,7 @@ const Ltpz204 = () => {
         </DialogHeader>
         <DialogSection className="grid-rows-[minmax(0,1fr)] gap-1">
           <ResizablePanelGroup orientation="horizontal" className="w-full h-full">
-            <ResizablePanel defaultSize={40}>
+            <ResizablePanel defaultSize={50}>
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyData1Type>
                   noRowsOverlayComponent={AgGridEmptyComponent}
@@ -242,7 +241,7 @@ const Ltpz204 = () => {
               </div>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel defaultSize={60}>
+            <ResizablePanel defaultSize={50}>
               <div className="ag-theme-alpine">
                 <AgGridReact<DummyData2Type>
                   onGridReady={(event) => {
@@ -266,6 +265,14 @@ const Ltpz204 = () => {
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
+          <Gcol className="w-full" placement="ss" variant="box-warning">
+            <Typo icon="warning">
+              패키지에 속한 담보를 추천설계에 반영합니다. 단, 상품에 따라 일부 담보는 미반영될 수 있습니다.
+            </Typo>
+            <Typo icon="warning">
+              세트담보의 경우, 대표담보(모단보)만 표시됨니다. 추천설계 결과에는 종속 담보(자담보)까지 함께 반영됩니다.
+            </Typo>
+          </Gcol>
         </DialogSection>
         <DialogFooter>
           <DialogFooterArea>

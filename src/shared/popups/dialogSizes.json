@@ -852,5 +852,12 @@
     "width": 1180,
     "height": 800,
     "isIframe": true
+  },
+  {
+    "id": "LTPZ204",
+    "title": "보장패키지 선택",
+    "width": 780,
+    "height": 600,
+    "isIframe": true
   }
 ]
