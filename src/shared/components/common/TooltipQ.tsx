@@ -4,6 +4,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { QuestionMark } from '@icons';
 import { Button } from '@uiux/Button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
@@ -12,11 +13,19 @@ type TooltipQProps = {
   defaultOpen?: boolean;
   sideOffset?: number;
   align?: 'start' | 'center' | 'end';
+  className?: string;
   children?: ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export function TooltipQ({ defaultOpen = false, sideOffset = 1, children, align = 'center', onClick }: TooltipQProps) {
+export function TooltipQ({
+  defaultOpen = false,
+  sideOffset = 1,
+  className,
+  children,
+  align = 'center',
+  onClick,
+}: TooltipQProps) {
   if (onClick && !children) {
     return (
       <Button
@@ -50,7 +59,7 @@ export function TooltipQ({ defaultOpen = false, sideOffset = 1, children, align 
           align={align}
           sideOffset={sideOffset}
           variant="default"
-          className="[&>span]:whitespace-auto! text-wrap tracking-[-0.08rem] break-keep"
+          className={cn('[&>span]:whitespace-auto! text-wrap tracking-[-0.08rem] break-keep', className)}
         >
           {children}
         </TooltipContent>
