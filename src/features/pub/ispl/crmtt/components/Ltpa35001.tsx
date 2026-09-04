@@ -242,87 +242,6 @@ export const Ltpa35001 = ({
                         </>
                       )}
 
-                      {/* 만기: 일반 */}
-                      {currentTab?.type === '일반' && (
-                        <FormRow>
-                          <FormCell title={'만기'} colSpan={3}>
-                            <RadioGroup defaultValue="80세">
-                              {[
-                                { value: '80세', label: '80세' },
-                                { value: '90세', label: '90세' },
-                                { value: '100세', label: '100세' },
-                                { value: '110세', label: '110세' },
-                              ].map((option) => (
-                                <RadioGroupItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </RadioGroupItem>
-                              ))}
-                            </RadioGroup>
-                          </FormCell>
-                        </FormRow>
-                      )}
-                      {/* 만기: 태아 */}
-                      {currentTab?.type === '태아' && (
-                        <FormRow>
-                          <FormCell title={'만기'} colSpan={3}>
-                            <RadioGroup defaultValue="100세만기">
-                              {[
-                                { value: '100세만기', id: 'child-insurance-period-100', label: '100세만기' },
-                                { value: '90세만기', id: 'child-insurance-period-90', label: '90세만기' },
-                                { value: '80세만기', id: 'child-insurance-period-80', label: '80세만기' },
-                                { value: '55세만기', id: 'child-insurance-period-55', label: '55세만기' },
-                                { value: '30세만기', id: 'child-insurance-period-30', label: '30세만기' },
-                                { value: '20세만기', id: 'child-insurance-period-20', label: '20세만기' },
-                              ].map((option) => (
-                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                  {option.label}
-                                </RadioGroupItem>
-                              ))}
-                            </RadioGroup>
-                          </FormCell>
-                        </FormRow>
-                      )}
-                      {/* 만기: 재물 */}
-                      {(currentTab?.type === '재물피보험자' || currentTab?.type === '재물목적물') && (
-                        <FormRow>
-                          <FormCell title={'만기'} colSpan={3}>
-                            <RadioGroup defaultValue="03세 만기">
-                              {[
-                                { value: '03세 만기', id: 'child-insurance-period-03', label: '03세 만기' },
-                                { value: '05세 만기', id: 'child-insurance-period-05', label: '05세 만기' },
-                                { value: '07세 만기', id: 'child-insurance-period-07', label: '07세 만기' },
-                                { value: '10세 만기', id: 'child-insurance-period-10', label: '10세 만기' },
-                                { value: '15세 만기', id: 'child-insurance-period-15', label: '15세 만기' },
-                              ].map((option) => (
-                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                  {option.label}
-                                </RadioGroupItem>
-                              ))}
-                            </RadioGroup>
-                          </FormCell>
-                        </FormRow>
-                      )}
-                      {/* 만기: 단체 */}
-                      {currentTab?.type === '단체' && (
-                        <FormRow>
-                          <FormCell title={'만기'} colSpan={3}>
-                            <RadioGroup defaultValue="03년">
-                              {[
-                                { value: '03년', id: 'group-insurance-period-03', label: '03년' },
-                                { value: '05년', id: 'group-insurance-period-05', label: '05년' },
-                                { value: '07년', id: 'group-insurance-period-07', label: '07년' },
-                                { value: '10년', id: 'group-insurance-period-10', label: '10년' },
-                                { value: '15년', id: 'group-insurance-period-15', label: '15년' },
-                              ].map((option) => (
-                                <RadioGroupItem key={option.id} value={option.value} id={option.id}>
-                                  {option.label}
-                                </RadioGroupItem>
-                              ))}
-                            </RadioGroup>
-                          </FormCell>
-                        </FormRow>
-                      )}
-
                       {/* 납기: 일반 */}
                       {currentTab?.type === '일반' && (
                         <FormRow>
@@ -627,7 +546,7 @@ export const Ltpa35001 = ({
                             title={
                               <Grow placement="sc">
                                 고지유형
-                                <TooltipQ>{tooltipContents2[0]}</TooltipQ>
+                                <TooltipQ align="start">{tooltipContents2[0]}</TooltipQ>
                               </Grow>
                             }
                             colSpan={3}
