@@ -7,12 +7,21 @@ import Ltpa350Section from '@/features/pub/ispl/sections/Ltpa350Section';
 export interface LTPA350PageProps {
   memoButtonColor?: 'gray' | 'primary';
   showRenewalCycle?: boolean;
+  showContractConversion?: boolean;
 }
 
-export default function Page({ memoButtonColor, showRenewalCycle = true }: LTPA350PageProps = {}) {
+export default function Page({
+  memoButtonColor,
+  showRenewalCycle = true,
+  showContractConversion = false,
+}: LTPA350PageProps = {}) {
   return (
     <Suspense fallback={null}>
-      <Ltpa350Section memoButtonColor={memoButtonColor} showRenewalCycle={showRenewalCycle} />
+      <Ltpa350Section
+        memoButtonColor={memoButtonColor}
+        showRenewalCycle={showRenewalCycle}
+        showContractConversion={showContractConversion}
+      />
     </Suspense>
   );
 }
