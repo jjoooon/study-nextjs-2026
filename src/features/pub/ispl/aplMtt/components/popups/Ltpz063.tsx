@@ -2,6 +2,8 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 'use client';
+/* eslint-disable react/display-name */
+
 import type {
   CellClassParams,
   CellEditorSelectorResult,
@@ -474,15 +476,6 @@ const PayPeriodCellEditor = (props: WonUnitCellEditorProps) => {
   );
 };
 
-// Ltpz063 팝업 전용 가운데 정렬 DatePicker 에디터
-const Ltpz063DatePickerCellEditor = (props: any) => {
-  return (
-    <div className="flex w-full h-full items-center justify-center mx-auto [&_.cp-datepicker]:mx-auto [&_.cp-datepicker]:justify-center">
-      <DatePickerCellEditor {...props} />
-    </div>
-  );
-};
-
 // 2분할 해약환급금/예정이율 전용 셀 렌더러
 const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
   const fieldKey = params.colDef?.field;
@@ -704,33 +697,6 @@ export const Ltpz063 = () => {
   const [externalContracts, setExternalContracts] = React.useState<ExternalContractItem[]>(INITIAL_EXTERNAL_CONTRACTS);
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
-  // 타사계약 추가 핸들러 (승환계약정보 탭)
-  const handleAddSwitchContract = React.useCallback(() => {
-    const newId = `ext_${Date.now()}`;
-    const newContract: SwitchContractItem = {
-      id: newId,
-      name: '타사기존',
-      isOur: false,
-      company: '한화손보',
-      productName: '',
-      status: '정상',
-      insured: '홍길순',
-      period: '',
-      premium: '',
-      payPeriod: '',
-      coverage: '',
-      amount: '',
-      refund: '',
-      refundYm: '2026-06',
-      rate: '',
-      rateYm: '2026-06',
-      purpose: '',
-      exemption: '',
-      isSwitch: false,
-    };
-    setSwitchContracts((prev) => [...prev, newContract]);
-  }, []);
-
   // 타사계약 추가 핸들러 (추가계약정보 탭)
   const handleAddExternalContract = React.useCallback(() => {
     const newId = `ext_${Date.now()}`;
@@ -760,6 +726,15 @@ export const Ltpz063 = () => {
   const handleDeleteExternalContract = React.useCallback((targetId: string) => {
     setExternalContracts((prev) => prev.filter((item) => item.id !== targetId));
   }, []);
+
+  // Ltpz063 팝업 전용 가운데 정렬 DatePicker 에디터
+  const Ltpz063DatePickerCellEditor = (props: any) => {
+    return (
+      <div className="flex w-full h-full items-center justify-center mx-auto [&_.cp-datepicker]:mx-auto [&_.cp-datepicker]:justify-center">
+        <DatePickerCellEditor {...props} />
+      </div>
+    );
+  };
 
   // 행 타입이 편집 가능 대상 타입인지 확인 (해약환급금, 예정이율, 보험목적, 면책사유)
   const isEditableTargetRow = (fieldName: string | number) => EDITABLE_TARGET_TYPES.has(String(fieldName));
