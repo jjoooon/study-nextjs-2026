@@ -13,6 +13,7 @@ import type {
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { DialogBottomInfo } from '@/shared/components/common/DialogBottomInfo';
+import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, DatePickerCellEditor, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
@@ -43,42 +44,264 @@ const DATA_TABS: LTPZ051Tab[] = [
   { name: '추가계약정보 (0건)', value: 'value3', label: '추가계약정보 (0건)' },
 ];
 
-type DummyDataType = {
-  id: number;
-  type: string | number;
-  ourInsurance1: string | number;
-  ourInsurance2: string | number | boolean;
-  externalInsurance1: string | number | boolean;
-  externalInsurance2: string | number | boolean;
-  baseYm?: string;
+export type SwitchContractItem = {
+  id: string;
+  name: string;
+  isOur: boolean;
+  company: string;
+  productName: string;
+  status: string;
+  insured: string;
+  period: string;
+  premium: string;
+  payPeriod: string;
+  coverage: string;
+  amount: string;
+  refund: string;
+  refundYm: string;
+  rate: string;
+  rateYm: string;
+  purpose: string;
+  exemption: string;
+  isSwitch: boolean;
 };
+
+export type ExternalContractItem = {
+  id: string;
+  company: string;
+  productName: string;
+  status: string;
+  insured: string;
+  period: string;
+  premium: string;
+  payPeriod: string;
+  coverage: string;
+  amount: string;
+  refund: string;
+  refundYm: string;
+  rate: string;
+  rateYm: string;
+  purpose: string;
+  exemption: string;
+  isSwitch: boolean;
+};
+
+const INITIAL_SWITCH_CONTRACTS: SwitchContractItem[] = [
+  {
+    id: 'our_1',
+    name: '당사기존',
+    isOur: true,
+    company: '한화손보',
+    productName: 'ㅇㅇ 간편보험 2601',
+    status: '해지(2024-03-01)',
+    insured: '홍길순',
+    period: '2024-03-01 ~ 2026-03-31',
+    premium: '165,000원',
+    payPeriod: '월납/10년납',
+    coverage: '질병후유장해 등',
+    amount: '3,000만원',
+    refund: '300,000,000,000원',
+    refundYm: '2024-03',
+    rate: '15.99%',
+    rateYm: '2024-06',
+    purpose: '장기상해',
+    exemption: '계약자,피보험자,수익자의 고의사고 등',
+    isSwitch: true,
+  },
+  {
+    id: 'ext_1',
+    name: '타사기존',
+    isOur: false,
+    company: '메리츠화재',
+    productName: '(무)메리츠간편한355건강보험',
+    status: '실효(2024-03-01)',
+    insured: '홍길순',
+    period: '2024-03-01 ~ 2026-03-31',
+    premium: '165,000원',
+    payPeriod: '월납/10년납',
+    coverage: '유병자상해사망 등',
+    amount: '3,000만원',
+    refund: '4,000,000원',
+    refundYm: '2024-03',
+    rate: '13%',
+    rateYm: '2024-06',
+    purpose: '',
+    exemption: '',
+    isSwitch: true,
+  },
+  {
+    id: 'ext_2',
+    name: '타사기존',
+    isOur: false,
+    company: '삼성화재',
+    productName: '삼성간편건강보험',
+    status: '철회(2024-03-01)',
+    insured: '홍길순',
+    period: '2025-12-15 ~ 2026-03-15',
+    premium: '165,000원',
+    payPeriod: '월납/10년납',
+    coverage: '유병자상해사망 등',
+    amount: '3,000만원',
+    refund: '',
+    refundYm: '2024-03',
+    rate: '',
+    rateYm: '2024-06',
+    purpose: '',
+    exemption: '',
+    isSwitch: false,
+  },
+];
+
+const INITIAL_NORMAL_CONTRACTS: SwitchContractItem[] = [
+  {
+    id: 'our_1',
+    name: '당사기존',
+    isOur: true,
+    company: '한화손보',
+    productName: 'ㅇㅇ 간편보험 2601',
+    status: '정상',
+    insured: '홍길순',
+    period: '2024-03-01 ~ 2026-03-31',
+    premium: '165,000원',
+    payPeriod: '월납/10년납',
+    coverage: '질병후유장해 등',
+    amount: '3,000만원',
+    refund: '3,000,000원',
+    refundYm: '2024-03',
+    rate: '5.99%',
+    rateYm: '2024-03',
+    purpose: '장기상해',
+    exemption: '계약자,피보험자,수익자의 고의사고 등',
+    isSwitch: true,
+  },
+  {
+    id: 'ext_1',
+    name: '타사기존',
+    isOur: false,
+    company: '메리츠화재',
+    productName: '(무)메리츠간편한355건강보험',
+    status: '정상',
+    insured: '홍길순',
+    period: '2024-03-01 ~ 2026-03-31',
+    premium: '165,000원',
+    payPeriod: '월납/10년납',
+    coverage: '유병자상해사망 등',
+    amount: '3,000만원',
+    refund: '',
+    refundYm: '2024-03',
+    rate: '',
+    rateYm: '2024-03',
+    purpose: '',
+    exemption: '',
+    isSwitch: true,
+  },
+  {
+    id: 'ext_2',
+    name: '타사기존',
+    isOur: false,
+    company: '삼성화재',
+    productName: '삼성간편건강보험',
+    status: '정상',
+    insured: '홍길순',
+    period: '2025-12-15 ~ 2026-03-15',
+    premium: '165,000원',
+    payPeriod: '월납/10년납',
+    coverage: '유병자상해사망 등',
+    amount: '3,000만원',
+    refund: '',
+    refundYm: '2024-03',
+    rate: '',
+    rateYm: '2024-03',
+    purpose: '',
+    exemption: '',
+    isSwitch: false,
+  },
+];
+
+const INITIAL_EXTERNAL_CONTRACTS: ExternalContractItem[] = [
+  {
+    id: 'ext_1',
+    company: '한화손보',
+    productName: 'ㅇㅇ 간편보험 2601',
+    status: '계약상태',
+    insured: '홍길순',
+    period: '2024-03-01 ~ 2026-03-31',
+    premium: '165,000원',
+    payPeriod: '월납/10년납',
+    coverage: '유병자상해사망 등',
+    amount: '3,000만원',
+    refund: '3,000원',
+    refundYm: '2026-06',
+    rate: '5.99%',
+    rateYm: '2026-06',
+    purpose: '장기상해',
+    exemption: '계약자,피보험자,수익자의 고의사고 등',
+    isSwitch: true,
+  },
+  {
+    id: 'ext_2',
+    company: '메리츠화재',
+    productName: '(무)메리츠간편한355건강보험',
+    status: '계약상태',
+    insured: '홍길순',
+    period: '2025-12-15 ~ 2026-03-15',
+    premium: '165,000원',
+    payPeriod: '월납/10년납',
+    coverage: '유병자상해사망 등',
+    amount: '3,000만원',
+    refund: '3,000원',
+    refundYm: '2026-06',
+    rate: '5.99%',
+    rateYm: '2026-06',
+    purpose: '장기상해',
+    exemption: '계약자,피보험자,수익자의 고의사고 등',
+    isSwitch: false,
+  },
+  {
+    id: 'ext_3',
+    company: '삼성화재',
+    productName: '삼성간편건강보험',
+    status: '계약상태',
+    insured: '홍길동',
+    period: '2025-12-15 ~ 2026-03-15',
+    premium: '165,000원',
+    payPeriod: '월납/10년납',
+    coverage: '유병자상해사망 등',
+    amount: '3,000만원',
+    refund: '3,000원',
+    refundYm: '2026-06',
+    rate: '5.99%',
+    rateYm: '2026-06',
+    purpose: '장기상해',
+    exemption: '계약자,피보험자,수익자의 고의사고 등',
+    isSwitch: false,
+  },
+];
+
+type AgGridRow = any;
 
 // ag-Grid 셀에 표시될 수 있는 데이터 타입
 type GridCellValue = string | number | boolean | null | undefined;
-// value1/value2 탭: 체크박스로 선택 가능한 필드명
-type MainSelectableField = 'ourInsurance2' | 'externalInsurance1' | 'externalInsurance2';
-// value3 탭: 체크박스로 선택 가능한 필드명 (externalInsurance3, externalInsurance4 추가)
-type ExtraSelectableField = 'externalInsurance1' | 'externalInsurance2' | 'externalInsurance3' | 'externalInsurance4';
 
 // 체크박스 렌더러에 전달되는 파라미터
 type CheckboxRendererParams<TData> = {
-  data: TData | undefined; // 현재 행 데이터
-  value: GridCellValue; // 셀의 현재 값
-  colDef: ColDef<TData>; // 컬럼 정의
-  node?: any; // 행 노드
-  api?: any; // 그리드 API
+  data: TData | undefined;
+  value: GridCellValue;
+  colDef: ColDef<TData>;
+  node?: any;
+  api?: any;
   [key: string]: any;
 };
 
 // 셀 에디터 props
 type WonUnitCellEditorProps = {
-  value?: GridCellValue; // 에디터의 현재 값
-  onValueChange?: (value: string) => void; // 값 변경 콜백
-  stopEditing?: () => void; // 에디팅 종료
+  value?: GridCellValue;
+  onValueChange?: (value: string) => void;
+  stopEditing?: () => void;
   [key: string]: any;
 };
 
-// value3(추가계약정보) 탭에서 행 타입별 편집/표시 규칙에 사용
+// 행 타입별 편집/표시 규칙
 const TYPE3_NUMBER_FORMAT_TYPES = new Set(['보험료', '보험가입금액', '해약환급금/기준연월']);
 const TYPE3_EDITABLE_TEXT_TYPES = new Set([
   '상품명',
@@ -93,386 +316,6 @@ const TYPE3_EDITABLE_TEXT_TYPES = new Set([
 const EDITABLE_TARGET_TYPES = new Set(['해약환급금/기준연월', '예정이율/기준연월', '보험목적', '면책사유 및 면책사항']);
 const LEFT_ALIGN_TARGET_TYPES = new Set(['보험료', '보험가입금액', '해약환급금/기준연월', '예정이율/기준연월']);
 
-const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    type: '보험회사명',
-    ourInsurance1: '한화손보',
-    ourInsurance2: '한화손보',
-    externalInsurance1: '메리츠화재',
-    externalInsurance2: '삼성화재',
-  },
-  {
-    id: 2,
-    type: '상품명',
-    ourInsurance1: '한화 여성간편건강보험 4.0',
-    ourInsurance2: 'ㅇㅇ 간편보험 2601',
-    externalInsurance1: '(무)메리츠간편한355건강보험',
-    externalInsurance2: '삼성간편건강보험',
-  },
-  {
-    id: 3,
-    type: '계약상태(발생일)',
-    ourInsurance1: '청약중',
-    ourInsurance2: '해지(2024-03-01)',
-    externalInsurance1: '실효(2024-03-01)',
-    externalInsurance2: '철회(2024-03-01)',
-  },
-  {
-    id: 4,
-    type: '피보험자',
-    ourInsurance1: '홍길순',
-    ourInsurance2: '홍길순',
-    externalInsurance1: '홍길순',
-    externalInsurance2: '홍길순',
-  },
-  {
-    id: 5,
-    type: '보험기간',
-    ourInsurance1: '2024-03-01 ~ 2026-03-31',
-    ourInsurance2: '2024-03-01 ~ 2026-03-31',
-    externalInsurance1: '2024-03-01 ~ 2026-03-31',
-    externalInsurance2: '2025-12-15 ~ 2026-03-15',
-  },
-  {
-    id: 6,
-    type: '보험료',
-    ourInsurance1: '165,000원',
-    ourInsurance2: '165,000원',
-    externalInsurance1: '165,000원',
-    externalInsurance2: '165,000원',
-  },
-  {
-    id: 7,
-    type: '납입주기/기간',
-    ourInsurance1: '월납/10년납',
-    ourInsurance2: '월납/10년납',
-    externalInsurance1: '월납/10년납',
-    externalInsurance2: '월납/10년납',
-  },
-  {
-    id: 8,
-    type: '주요보장내용',
-    ourInsurance1: '질병후유장해 등',
-    ourInsurance2: '질병후유장해 등',
-    externalInsurance1: '유병자상해사망 등',
-    externalInsurance2: '유병자상해사망 등',
-  },
-  {
-    id: 9,
-    type: '보험가입금액',
-    ourInsurance1: '3,000만원',
-    ourInsurance2: '3,000만원',
-    externalInsurance1: '3,000만원',
-    externalInsurance2: '3,000만원',
-  },
-  {
-    id: 10,
-    type: '해약환급금/기준연월',
-    ourInsurance1: '신계약 해당사항 없음',
-    ourInsurance2: '300000000000원',
-    externalInsurance1: '4000000원',
-    externalInsurance2: '',
-    baseYm: '2024-03',
-  },
-  {
-    id: 11,
-    type: '예정이율/기준연월',
-    ourInsurance1: '5.99%',
-    ourInsurance2: '15.99%',
-    externalInsurance1: '13',
-    externalInsurance2: '',
-    baseYm: '2024-06',
-  },
-  {
-    id: 12,
-    type: '보험목적',
-    ourInsurance1: '장기상해',
-    ourInsurance2: '장기상해',
-    externalInsurance1: '',
-    externalInsurance2: '',
-  },
-  {
-    id: 13,
-    type: '면책사유 및 면책사항',
-    ourInsurance1: '계약자,피보험자,수익자의 고의사고 등',
-    ourInsurance2: '계약자,피보험자,수익자의 고의사고 등',
-    externalInsurance1: '',
-    externalInsurance2: '',
-  },
-  {
-    id: 14,
-    type: '승환',
-    ourInsurance1: '',
-    ourInsurance2: true,
-    externalInsurance1: true,
-    externalInsurance2: false,
-  },
-];
-
-type DummyDataType2 = DummyDataType;
-
-const DummyData2: DummyDataType2[] = [
-  {
-    id: 1,
-    type: '보험회사명',
-    ourInsurance1: '한화손보',
-    ourInsurance2: '한화손보',
-    externalInsurance1: '메리츠화재',
-    externalInsurance2: '삼성화재',
-  },
-  {
-    id: 2,
-    type: '상품명',
-    ourInsurance1: '한화 여성간편건강보험 4.0',
-    ourInsurance2: 'ㅇㅇ 간편보험 2601',
-    externalInsurance1: '(무)메리츠간편한355건강보험',
-    externalInsurance2: '삼성간편건강보험',
-  },
-  {
-    id: 3,
-    type: '계약상태',
-    ourInsurance1: '청약중',
-    ourInsurance2: '정상',
-    externalInsurance1: '정상',
-    externalInsurance2: '정상',
-  },
-  {
-    id: 4,
-    type: '피보험자',
-    ourInsurance1: '홍길순',
-    ourInsurance2: '홍길순',
-    externalInsurance1: '홍길순',
-    externalInsurance2: '홍길순',
-  },
-  {
-    id: 5,
-    type: '보험기간',
-    ourInsurance1: '2024-03-01 ~ 2026-03-31',
-    ourInsurance2: '2024-03-01 ~ 2026-03-31',
-    externalInsurance1: '2024-03-01 ~ 2026-03-31',
-    externalInsurance2: '2025-12-15 ~ 2026-03-15',
-  },
-  {
-    id: 6,
-    type: '보험료',
-    ourInsurance1: '165,000원',
-    ourInsurance2: '165,000원',
-    externalInsurance1: '165,000원',
-    externalInsurance2: '165,000원',
-  },
-  {
-    id: 7,
-    type: '납입주기/기간',
-    ourInsurance1: '월납/10년납',
-    ourInsurance2: '월납/10년납',
-    externalInsurance1: '월납/10년납',
-    externalInsurance2: '월납/10년납',
-  },
-  {
-    id: 8,
-    type: '주요보장내용',
-    ourInsurance1: '질병후유장해 등',
-    ourInsurance2: '질병후유장해 등',
-    externalInsurance1: '유병자상해사망 등',
-    externalInsurance2: '유병자상해사망 등',
-  },
-  {
-    id: 9,
-    type: '보험가입금액',
-    ourInsurance1: '3,000만원',
-    ourInsurance2: '3,000만원',
-    externalInsurance1: '3,000만원',
-    externalInsurance2: '3,000만원',
-  },
-  {
-    id: 10,
-    type: '해약환급금/기준연월',
-    ourInsurance1: '신계약 해당사항 없음',
-    ourInsurance2: '3,000,000원',
-    externalInsurance1: '',
-    externalInsurance2: '',
-    baseYm: '2024-03',
-  },
-  {
-    id: 11,
-    type: '예정이율/기준연월',
-    ourInsurance1: '5.99%',
-    ourInsurance2: '5.99%',
-    externalInsurance1: '',
-    externalInsurance2: '',
-    baseYm: '2024-03',
-  },
-  {
-    id: 12,
-    type: '보험목적',
-    ourInsurance1: '장기상해',
-    ourInsurance2: '장기상해',
-    externalInsurance1: '',
-    externalInsurance2: '',
-  },
-  {
-    id: 13,
-    type: '면책사유 및 면책사항',
-    ourInsurance1:
-      '계약자,피보험자,수익자의 고의사고 등계약자,피보험자,수익자의 고의사고 등계약자,피보험자,수익자의 고의사고 등',
-    ourInsurance2: '계약자,피보험자,수익자의 고의사고 등',
-    externalInsurance1: '',
-    externalInsurance2: '',
-  },
-  {
-    id: 14,
-    type: '승환예정',
-    ourInsurance1: '',
-    ourInsurance2: true,
-    externalInsurance1: true,
-    externalInsurance2: false,
-  },
-];
-type DummyDataType3 = {
-  id: number;
-  type: string | number;
-  ourInsurance1: string | number;
-  externalInsurance1: string | number | boolean;
-  externalInsurance2: string | number | boolean;
-  externalInsurance3: string | number | boolean;
-  externalInsurance4?: string | number | boolean;
-  baseYm?: string;
-};
-
-type AgGridRow = DummyDataType3;
-
-// value3 탭의 기본 더미 데이터
-const DummyData3: DummyDataType3[] = [
-  {
-    id: 1,
-    type: '보험회사명',
-    ourInsurance1: '한화손보',
-    externalInsurance1: '한화손보',
-    externalInsurance2: '메리츠화재',
-    externalInsurance3: '삼성화재',
-    externalInsurance4: 'KB손보',
-  },
-  {
-    id: 2,
-    type: '상품명',
-    ourInsurance1: '한화 여성간편건강보험 4.0',
-    externalInsurance1: 'ㅇㅇ 간편보험 2601',
-    externalInsurance2: '(무)메리츠간편한355건강보험',
-    externalInsurance3: '삼성간편건강보험',
-    externalInsurance4: 'KB간편건강보험',
-  },
-  {
-    id: 3,
-    type: '계약상태',
-    ourInsurance1: '청약중',
-    externalInsurance1: '계약상태',
-    externalInsurance2: '계약상태',
-    externalInsurance3: '계약상태',
-    externalInsurance4: '계약상태',
-  },
-  {
-    id: 4,
-    type: '피보험자',
-    ourInsurance1: '홍길순',
-    externalInsurance1: '홍길순',
-    externalInsurance2: '홍길순',
-    externalInsurance3: '홍길순',
-    externalInsurance4: '홍길순',
-  },
-  {
-    id: 5,
-    type: '보험기간',
-    ourInsurance1: '2024-03-01 ~ 2026-03-31',
-    externalInsurance1: '2024-03-01 ~ 2026-03-31',
-    externalInsurance2: '2025-12-15 ~ 2026-03-15',
-    externalInsurance3: '2025-12-15 ~ 2026-03-15',
-    externalInsurance4: '2025-12-15 ~ 2026-03-15',
-  },
-  {
-    id: 6,
-    type: '보험료',
-    ourInsurance1: '165,000원',
-    externalInsurance1: '165,000원',
-    externalInsurance2: '165,000원',
-    externalInsurance3: '165,000원',
-    externalInsurance4: '165,000원',
-  },
-  {
-    id: 7,
-    type: '납입주기/기간',
-    ourInsurance1: '월납/10년납',
-    externalInsurance1: '월납/10년납',
-    externalInsurance2: '월납/10년납',
-    externalInsurance3: '월납/10년납',
-    externalInsurance4: '월납/10년납',
-  },
-  {
-    id: 8,
-    type: '주요보장내용',
-    ourInsurance1: '질병후유장해 등',
-    externalInsurance1: '유병자상해사망 등',
-    externalInsurance2: '유병자상해사망 등',
-    externalInsurance3: '유병자상해사망 등',
-    externalInsurance4: '유병자상해사망 등',
-  },
-  {
-    id: 9,
-    type: '보험가입금액',
-    ourInsurance1: '3,000만원 등',
-    externalInsurance1: '3,000만원',
-    externalInsurance2: '3,000만원',
-    externalInsurance3: '3,000만원',
-    externalInsurance4: '3,000만원',
-  },
-  {
-    id: 10,
-    type: '해약환급금/기준연월',
-    ourInsurance1: '신계약 해당사항 없음',
-    externalInsurance1: '3,000만원',
-    externalInsurance2: '3,000만원',
-    externalInsurance3: '3,000만원',
-    externalInsurance4: '3,000만원',
-    baseYm: '2026-06',
-  },
-  {
-    id: 11,
-    type: '예정이율/기준연월',
-    ourInsurance1: '5.99%',
-    externalInsurance1: '5.99%',
-    externalInsurance2: '5.99%',
-    externalInsurance3: '5.99%',
-    externalInsurance4: '5.99%',
-    baseYm: '2026-06',
-  },
-  {
-    id: 12,
-    type: '보험목적',
-    ourInsurance1: '장기상해',
-    externalInsurance1: '장기상해',
-    externalInsurance2: '장기상해',
-    externalInsurance3: '장기상해',
-    externalInsurance4: '장기상해',
-  },
-  {
-    id: 13,
-    type: '면책사유 및 면책사항',
-    ourInsurance1: '계약자,피보험자,수익자의 고의사고 등',
-    externalInsurance1: '계약자,피보험자,수익자의 고의사고 등',
-    externalInsurance2: '계약자,피보험자,수익자의 고의사고 등',
-    externalInsurance3: '계약자,피보험자,수익자의 고의사고 등',
-    externalInsurance4: '계약자,피보험자,수익자의 고의사고 등',
-  },
-  {
-    id: 14,
-    type: '승환(예정)',
-    ourInsurance1: '',
-    externalInsurance1: true,
-    externalInsurance2: false,
-    externalInsurance3: false,
-    externalInsurance4: false,
-  },
-];
 const formatNumberWithComma = (str: string) => {
   const rawNum = str.replace(/[^0-9.-]/g, '');
   if (!rawNum || isNaN(Number(rawNum))) return str;
@@ -506,25 +349,23 @@ const getSelectableValueCellClass = <TData extends { type: string | number }>(pa
     : 'text-center flex! items-center! justify-center! !leading-[1.3] !py-2 [&_.ag-input-field-input]:text-center';
 };
 
-const isType3CompanyRow = (row: DummyDataType3 | undefined) => row?.type === '보험회사명';
-const isType3StatusRow = (row: DummyDataType3 | undefined) => row?.type === '계약상태';
-const isType3InsuredRow = (row: DummyDataType3 | undefined) => row?.type === '피보험자';
-const isType3DateRow = (row: DummyDataType3 | undefined) => row?.type === '보험기간';
-const isType3PremiumRow = (row: DummyDataType3 | undefined) => row?.type === '보험료';
-const isType3CoverageAmountRow = (row: DummyDataType3 | undefined) => row?.type === '보험가입금액';
+const isType3CompanyRow = (row: AgGridRow | undefined) => row?.type === '보험회사명';
+const isType3StatusRow = (row: AgGridRow | undefined) => row?.type === '계약상태';
+const isType3InsuredRow = (row: AgGridRow | undefined) => row?.type === '피보험자';
+const isType3DateRow = (row: AgGridRow | undefined) => row?.type === '보험기간';
+const isType3PremiumRow = (row: AgGridRow | undefined) => row?.type === '보험료';
+const isType3CoverageAmountRow = (row: AgGridRow | undefined) => row?.type === '보험가입금액';
+const isType3PayPeriodRow = (row: AgGridRow | undefined) => row?.type === '납입주기/기간';
 const getBaseYmField = (colId: string | undefined) => {
   if (!colId) return 'baseYm';
   return `${colId}BaseYm`;
 };
-const isType3NumberFormatRow = (row: DummyDataType3 | undefined) => TYPE3_NUMBER_FORMAT_TYPES.has(getTypeLabel(row));
-const isType3EditableTextRow = (row: DummyDataType3 | undefined) => TYPE3_EDITABLE_TEXT_TYPES.has(getTypeLabel(row));
-const isType3EditableRow = (row: DummyDataType3 | undefined) =>
+const isType3NumberFormatRow = (row: AgGridRow | undefined) => TYPE3_NUMBER_FORMAT_TYPES.has(getTypeLabel(row));
+const isType3EditableTextRow = (row: AgGridRow | undefined) => TYPE3_EDITABLE_TEXT_TYPES.has(getTypeLabel(row));
+const isType3EditableRow = (row: AgGridRow | undefined) =>
   !!row &&
-  (isType3CompanyRow(row) ||
-    isType3DateRow(row) ||
-    isType3NumberFormatRow(row) ||
-    isType3EditableTextRow(row) ||
-    isSwitchoverRow(row));
+  !isSwitchoverRow(row) &&
+  (isType3CompanyRow(row) || isType3DateRow(row) || isType3NumberFormatRow(row) || isType3EditableTextRow(row));
 
 // 저장 직전 단위 문자열 및 천단위 콤마(,) 자동 보정 (원, %, 만원)
 const getValueWithUnit = (row: { type: string | number } | undefined, value: GridCellValue): GridCellValue => {
@@ -548,13 +389,13 @@ const getValueWithUnit = (row: { type: string | number } | undefined, value: Gri
     return trimmed.endsWith('%') ? trimmed : `${trimmed}%`;
   }
 
-  if (row && 'externalInsurance3' in row && getTypeLabel(row) === '보험가입금액') {
+  if (row && getTypeLabel(row) === '보험가입금액') {
     const numOnly = trimmed.replace(/만원/g, '').trim();
     const formattedNum = formatNumberWithComma(numOnly);
     return `${formattedNum}만원`;
   }
 
-  if (row && 'externalInsurance3' in row && getTypeLabel(row) === '보험료') {
+  if (row && getTypeLabel(row) === '보험료') {
     const numOnly = trimmed.replace(/원/g, '').trim();
     const formattedNum = formatNumberWithComma(numOnly);
     return `${formattedNum}원`;
@@ -563,7 +404,7 @@ const getValueWithUnit = (row: { type: string | number } | undefined, value: Gri
   return value;
 };
 
-// 단위(원) 고정 입력 에디터: 입력 시 단위는 제거하고 값만 편집
+// 단위(원) 고정 입력 에디터
 const WonUnitCellEditor = (props: WonUnitCellEditorProps) => {
   const editorValue = props.value == null ? '' : formatNumberWithComma(String(props.value).replace(/원/g, '').trim());
 
@@ -605,7 +446,35 @@ const ManwonUnitCellEditor = (props: WonUnitCellEditorProps) => {
   );
 };
 
-// 2분할 해약환급금/예정이율 전용 셀 렌더러 (좌측 금액/% input, 우측 기준연월 DatePicker 독립 제어)
+// 납입주기/기간 전용 입력 에디터 (기본 value에 '/' 포함)
+const PayPeriodCellEditor = (props: WonUnitCellEditorProps) => {
+  const initialVal = React.useMemo(() => {
+    const raw = props.value == null ? '' : String(props.value).trim();
+    if (!raw) return ' / ';
+    if (!raw.includes('/')) return `${raw} / `;
+    return raw;
+  }, [props.value]);
+
+  const [editorValue, setEditorValue] = React.useState(initialVal);
+
+  return (
+    <div className="flex h-full w-full items-center px-1 bg-white">
+      <input
+        className="ag-input-field-input ag-text-field-input w-full text-center outline-none focus:border-primary-500 border border-gray-300 rounded px-1 text-xs"
+        value={editorValue}
+        onChange={(event) => {
+          const val = event.target.value;
+          setEditorValue(val);
+          props.onValueChange?.(val);
+        }}
+        onBlur={() => props.stopEditing?.()}
+        autoFocus
+      />
+    </div>
+  );
+};
+
+// 2분할 해약환급금/예정이율 전용 셀 렌더러
 const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
   const fieldKey = params.colDef?.field;
   const cellId = `${params.node?.id ?? ''}_${fieldKey ?? ''}`;
@@ -626,7 +495,6 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  // 다른 셀 편집 개시 시 현재 셀을 닫도록 싱글톤 이벤트 수신
   React.useEffect(() => {
     const handleCloseAll = (e: Event) => {
       const customEvent = e as CustomEvent;
@@ -651,7 +519,6 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
       }
 
       if (target instanceof Element) {
-        // 달력 팝오버, 연도 드롭다운 포털, option/select 등 팝오버 내부 조작 시 닫지 않음
         const isInsidePopover =
           target.closest('.rdp') ||
           target.closest('.cp-datepicker') ||
@@ -748,10 +615,8 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
 
   return (
     <div ref={containerRef} className="relative !h-full h-full w-full flex items-stretch">
-      {/* 중앙 세로 구분선 (상/하단 보더와 빈틈없이 완벽히 연결) */}
       <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-[#ddddde] pointer-events-none z-10" />
 
-      {/* 좌측 50% 영역 */}
       {isEditingLeft ? (
         <Grow className="w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] justify-start px-1 flex items-center gap-1 h-full overflow-hidden">
           <input
@@ -782,7 +647,6 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
         </Grow>
       )}
 
-      {/* 우측 50% 영역 */}
       {isEditingRight ? (
         <Grow className="!h-full h-full pl-1 text-left! aspect-auto w-1/2 flex-1 basis-1/2 min-w-0 max-w-[50%] items-center justify-center overflow-visible pointer-events-auto z-10">
           <div className="w-full flex items-center justify-center pointer-events-auto">
@@ -815,52 +679,117 @@ const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
   );
 };
 
+// 승환(예정) 행 정렬 고정 (가장 하단에 위치)
+const keepSwitchoverRowAtBottom = (params: PostSortRowsParams<AgGridRow>) => {
+  const switchRowIndex = params.nodes.findIndex((node) => node.data && isSwitchoverRow(node.data));
+  if (switchRowIndex > -1) {
+    const [switchRow] = params.nodes.splice(switchRowIndex, 1);
+    params.nodes.push(switchRow);
+  }
+};
+
 export const Ltpz063 = () => {
-  // 탭 상태 + 탭별 그리드 데이터 상태
   const { tabs, active, setActive } = useTabs(DATA_TABS);
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(DummyData2);
-  const [rowData3, setRowData3] = React.useState<DummyDataType3[]>(DummyData3);
+  const [switchContracts, setSwitchContracts] = React.useState<SwitchContractItem[]>(INITIAL_SWITCH_CONTRACTS);
+  const [normalContracts, setNormalContracts] = React.useState<SwitchContractItem[]>(INITIAL_NORMAL_CONTRACTS);
+  const [externalContracts, setExternalContracts] = React.useState<ExternalContractItem[]>(INITIAL_EXTERNAL_CONTRACTS);
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
-  // 저장 직전 단위 문자열 및 천단위 콤마(,) 자동 보정 (원, %, 만원)
-  const getValueWithUnit = (row: { type: string | number } | undefined, value: GridCellValue): GridCellValue => {
-    if (typeof value !== 'string') {
-      return value;
-    }
+  // 타사계약 추가 핸들러 (승환계약정보 탭)
+  const handleAddSwitchContract = React.useCallback(() => {
+    const newId = `ext_${Date.now()}`;
+    const newContract: SwitchContractItem = {
+      id: newId,
+      name: '타사기존',
+      isOur: false,
+      company: '한화손보',
+      productName: '',
+      status: '정상',
+      insured: '홍길순',
+      period: '',
+      premium: '',
+      payPeriod: '',
+      coverage: '',
+      amount: '',
+      refund: '',
+      refundYm: '2026-06',
+      rate: '',
+      rateYm: '2026-06',
+      purpose: '',
+      exemption: '',
+      isSwitch: false,
+    };
+    setSwitchContracts((prev) => [...prev, newContract]);
+  }, []);
 
-    const trimmed = value.trim();
+  // 타사계약 삭제 핸들러 (승환계약정보 탭)
+  const handleDeleteSwitchContract = React.useCallback((targetId: string) => {
+    setSwitchContracts((prev) => prev.filter((item) => item.id !== targetId));
+  }, []);
 
-    if (trimmed.length === 0) {
-      return value;
-    }
+  // 타사계약 추가 핸들러 (정상계약정보 탭)
+  const handleAddNormalContract = React.useCallback(() => {
+    const newId = `ext_${Date.now()}`;
+    const newContract: SwitchContractItem = {
+      id: newId,
+      name: '타사기존',
+      isOur: false,
+      company: '한화손보',
+      productName: '',
+      status: '정상',
+      insured: '홍길순',
+      period: '',
+      premium: '',
+      payPeriod: '',
+      coverage: '',
+      amount: '',
+      refund: '',
+      refundYm: '2026-06',
+      rate: '',
+      rateYm: '2026-06',
+      purpose: '',
+      exemption: '',
+      isSwitch: false,
+    };
+    setNormalContracts((prev) => [...prev, newContract]);
+  }, []);
 
-    if (getTypeLabel(row) === '해약환급금/기준연월') {
-      const numOnly = trimmed.replace(/원/g, '').trim();
-      const formattedNum = formatNumberWithComma(numOnly);
-      return `${formattedNum}원`;
-    }
+  // 타사계약 삭제 핸들러 (정상계약정보 탭)
+  const handleDeleteNormalContract = React.useCallback((targetId: string) => {
+    setNormalContracts((prev) => prev.filter((item) => item.id !== targetId));
+  }, []);
 
-    if (getTypeLabel(row) === '예정이율/기준연월') {
-      return trimmed.endsWith('%') ? trimmed : `${trimmed}%`;
-    }
+  // 타사계약 추가 핸들러 (추가계약정보 탭)
+  const handleAddExternalContract = React.useCallback(() => {
+    const newId = `ext_${Date.now()}`;
+    const newContract: ExternalContractItem = {
+      id: newId,
+      company: '선택',
+      productName: '',
+      status: '선택',
+      insured: '선택',
+      period: '',
+      premium: '',
+      payPeriod: ' / ',
+      coverage: '',
+      amount: '',
+      refund: '',
+      refundYm: '2026-06',
+      rate: '',
+      rateYm: '2026-06',
+      purpose: '',
+      exemption: '',
+      isSwitch: false,
+    };
+    setExternalContracts((prev) => [...prev, newContract]);
+  }, []);
 
-    if (row && 'externalInsurance3' in row && getTypeLabel(row) === '보험가입금액') {
-      const numOnly = trimmed.replace(/만원/g, '').trim();
-      const formattedNum = formatNumberWithComma(numOnly);
-      return `${formattedNum}만원`;
-    }
+  // 타사계약 삭제 핸들러 (추가계약정보 탭)
+  const handleDeleteExternalContract = React.useCallback((targetId: string) => {
+    setExternalContracts((prev) => prev.filter((item) => item.id !== targetId));
+  }, []);
 
-    if (row && 'externalInsurance3' in row && getTypeLabel(row) === '보험료') {
-      const numOnly = trimmed.replace(/원/g, '').trim();
-      const formattedNum = formatNumberWithComma(numOnly);
-      return `${formattedNum}원`;
-    }
-
-    return value;
-  };
-
-  // Ltpz063 팝업 전용 가운데 정렬 DatePicker 에디터 (공통 파일 영향 0%)
+  // Ltpz063 팝업 전용 가운데 정렬 DatePicker 에디터
   const Ltpz063DatePickerCellEditor = (props: any) => {
     return (
       <div className="flex w-full h-full items-center justify-center mx-auto [&_.cp-datepicker]:mx-auto [&_.cp-datepicker]:justify-center">
@@ -869,28 +798,391 @@ export const Ltpz063 = () => {
     );
   };
 
-  // value3 탭: 회사명/날짜/금액/비율/계약상태/피보험자에 맞는 에디터를 자동 선택
+  // 행 타입이 편집 가능 대상 타입인지 확인 (해약환급금, 예정이율, 보험목적, 면책사유)
+  const isEditableTargetRow = (fieldName: string | number) => EDITABLE_TARGET_TYPES.has(String(fieldName));
+
+  // ag-Grid 셀 스타일 규칙: 2분할 행에 '!p-0' 패딩 제거 적용
+  const externalInsuranceCellClassRules = {
+    '!p-0': ({ data }: { data: AgGridRow | undefined }) =>
+      data ? isMainRefundRow(data) || isMainInterestRateRow(data) : false,
+  };
+
+  // value1 / value2 탭용 셀 클래스 규칙 (수정 가능한 셀만 editable-cell 및 text-[#006ff2] 부여)
+  const getSwitchExternalCellClass = <TData extends { type: string | number }>(params: CellClassParams<TData>) => {
+    if (!params.data) {
+      return '';
+    }
+
+    if (isMainRefundRow(params.data) || isMainInterestRateRow(params.data)) {
+      return 'split-dual-cell editable-cell text-[#006ff2]';
+    }
+    if (isEditableTargetRow(params.data.type) || isSwitchoverRow(params.data)) {
+      return `${getSelectableValueCellClass(params)} editable-cell text-[#006ff2]`;
+    }
+
+    return getSelectableValueCellClass(params);
+  };
+
+  // value3 탭용 셀 클래스 규칙 (수정 가능한 셀만 editable-cell 및 text-[#006ff2] 부여)
+  const getThirdExternalCellClass = <TData extends { type: string | number }>(params: CellClassParams<TData>) => {
+    if (!params.data) {
+      return '';
+    }
+
+    if (isMainRefundRow(params.data) || isMainInterestRateRow(params.data)) {
+      return 'split-dual-cell editable-cell text-[#006ff2]';
+    }
+    if (isType3EditableRow(params.data) || isSwitchoverRow(params.data)) {
+      return `${getSelectableValueCellClass(params)} editable-cell text-[#006ff2]`;
+    }
+
+    return getSelectableValueCellClass(params);
+  };
+
+  // 체크박스 셀 렌더러 생성 함수
+  const createCheckboxCellRenderer = (
+    setContractState: React.Dispatch<React.SetStateAction<any[]>>,
+    enableSelectIcon: boolean = false
+  ) => {
+    return (params: CheckboxRendererParams<any>) => {
+      if (!isSwitchoverRow(params.data)) {
+        if (isMainRefundRow(params.data) || isMainInterestRateRow(params.data)) {
+          return <DualSplitCellRenderer {...params} />;
+        }
+        if (
+          enableSelectIcon &&
+          params.data &&
+          (isType3CompanyRow(params.data) || isType3StatusRow(params.data) || isType3InsuredRow(params.data))
+        ) {
+          return createExpiryCellRenderer<AgGridRow>('center')(params as any);
+        }
+        return getValueWithUnit(params.data, params.value);
+      }
+
+      const fieldKey = params.colDef?.field;
+      const isChecked = Boolean(params.value);
+
+      return (
+        <Grow placement={'cc'}>
+          <Checkbox
+            checked={isChecked}
+            onCheckedChange={(checked) => {
+              if (!fieldKey) return;
+              const newCheckedState = checked === true;
+              params.node?.setData({
+                ...params.data,
+                [fieldKey]: newCheckedState,
+              });
+              setContractState((prev) =>
+                prev.map((item) => (item.id === fieldKey ? { ...item, isSwitch: newCheckedState } : item))
+              );
+            }}
+            aria-label="승환(예정) 선택"
+          />
+        </Grow>
+      );
+    };
+  };
+
+  const checkboxRenderer1 = React.useMemo(() => createCheckboxCellRenderer(setSwitchContracts, false), []);
+  const checkboxRenderer2 = React.useMemo(() => createCheckboxCellRenderer(setNormalContracts, false), []);
+  const checkboxRenderer3 = React.useMemo(() => createCheckboxCellRenderer(setExternalContracts, true), []);
+
+  // Header Component for value1 (SwitchContracts)
+  const FirstGridHeaderWithDelete = React.useMemo(() => {
+    const Component = (props: IHeaderParams<AgGridRow>) => {
+      const colId = props.column?.getColId();
+      const contractId = colId ? colId.replace(/^v1_/, '') : '';
+
+      return (
+        <Grow className="w-full" gap={2} placement={'cc'}>
+          <span className="ag-header-cell-text">{props.displayName || '타사기존'}</span>
+          <Button color="gray" variant="outlined" onClick={() => handleDeleteSwitchContract(contractId)}>
+            삭제
+          </Button>
+        </Grow>
+      );
+    };
+    return Component;
+  }, [handleDeleteSwitchContract]);
+
+  // Header Component for value2 (NormalContracts)
+  const SecondGridHeaderWithDelete = React.useMemo(() => {
+    const Component = (props: IHeaderParams<AgGridRow>) => {
+      const colId = props.column?.getColId();
+      const contractId = colId ? colId.replace(/^v2_/, '') : '';
+
+      return (
+        <Grow className="w-full" gap={2} placement={'cc'}>
+          <span className="ag-header-cell-text">{props.displayName || '타사기존'}</span>
+          <Button color="gray" variant="outlined" onClick={() => handleDeleteNormalContract(contractId)}>
+            삭제
+          </Button>
+        </Grow>
+      );
+    };
+    return Component;
+  }, [handleDeleteNormalContract]);
+
+  // Header Component for value3 (ExternalContracts)
+  const ThirdGridHeaderWithDelete = React.useMemo(() => {
+    const Component = (props: IHeaderParams<AgGridRow>) => {
+      const colId = props.column?.getColId();
+      const contractId = colId ? colId.replace(/^v3_/, '') : '';
+
+      return (
+        <Grow className="w-full" gap={2} placement={'cc'}>
+          <span className="ag-header-cell-text">타사기존</span>
+          <Button color="gray" variant="outlined" onClick={() => handleDeleteExternalContract(contractId)}>
+            삭제
+          </Button>
+        </Grow>
+      );
+    };
+    return Component;
+  }, [handleDeleteExternalContract]);
+
+  // value1 rowData
+  const rowData1 = React.useMemo(() => {
+    const ROW_FIELD_MAP: { id: number; type: string; field: keyof SwitchContractItem; ourVal: string }[] = [
+      { id: 1, type: '보험회사명', field: 'company', ourVal: '한화손보' },
+      { id: 2, type: '상품명', field: 'productName', ourVal: '한화 여성간편건강보험 4.0' },
+      { id: 3, type: '계약상태', field: 'status', ourVal: '청약중' },
+      { id: 4, type: '피보험자', field: 'insured', ourVal: '홍길순' },
+      { id: 5, type: '보험기간', field: 'period', ourVal: '2024-03-01 ~ 2026-03-31' },
+      { id: 6, type: '보험료', field: 'premium', ourVal: '165,000원' },
+      { id: 7, type: '납입주기/기간', field: 'payPeriod', ourVal: '월납/10년납' },
+      { id: 8, type: '주요보장내용', field: 'coverage', ourVal: '질병후유장해 등' },
+      { id: 9, type: '보험가입금액', field: 'amount', ourVal: '3,000만원 등' },
+      { id: 10, type: '해약환급금/기준연월', field: 'refund', ourVal: '신계약 해당사항 없음' },
+      { id: 11, type: '예정이율/기준연월', field: 'rate', ourVal: '5.99%' },
+      { id: 12, type: '보험목적', field: 'purpose', ourVal: '장기상해' },
+      { id: 13, type: '면책사유 및 면책사항', field: 'exemption', ourVal: '계약자,피보험자,수익자의 고의사고 등' },
+      { id: 14, type: '승환(예정)', field: 'isSwitch', ourVal: '' },
+    ];
+
+    return ROW_FIELD_MAP.map((item) => {
+      const rowObj: any = {
+        id: item.id,
+        type: item.type,
+        ourInsurance1: item.ourVal,
+      };
+
+      switchContracts.forEach((contract) => {
+        rowObj[contract.id] = contract[item.field];
+        if (item.type === '해약환급금/기준연월') {
+          rowObj[`${contract.id}BaseYm`] = contract.refundYm;
+        } else if (item.type === '예정이율/기준연월') {
+          rowObj[`${contract.id}BaseYm`] = contract.rateYm;
+        }
+      });
+
+      return rowObj;
+    });
+  }, [switchContracts]);
+
+  // value1 columnDefs
+  const columnDefs1: ColDef<AgGridRow>[] = React.useMemo(
+    () => [
+      {
+        headerName: '구분',
+        colId: 'v1_type',
+        width: attributeColumnWidth(140),
+        headerClass: '[&_.ag-header-cell-text]:font-bold',
+        cellClass: 'text-center font-bold',
+        field: 'type',
+        pinned: 'left',
+        autoHeight: true,
+        wrapText: true,
+      },
+      {
+        headerName: '당사신규',
+        colId: 'v1_ourInsurance1',
+        flex: 1,
+        minWidth: attributeColumnWidth(230),
+        headerClass: '[&_.ag-header-cell-text]:font-bold',
+        cellClass: getValueCellClass,
+        field: 'ourInsurance1',
+        pinned: 'left',
+        autoHeight: true,
+        wrapText: true,
+      },
+      ...switchContracts.map((contract) => {
+        const colDef: ColDef<AgGridRow> = {
+          headerName: contract.name,
+          colId: `v1_${contract.id}`,
+          headerClass: '[&_.ag-header-cell-text]:font-bold',
+          cellClass: getSwitchExternalCellClass,
+          cellClassRules: externalInsuranceCellClassRules,
+          width: attributeColumnWidth(249),
+          minWidth: attributeColumnWidth(249),
+          field: contract.id,
+          cellRenderer: checkboxRenderer1,
+          editable: ({ data }) =>
+            data ? isEditableTargetRow(data.type) && !isMainRefundRow(data) && !isMainInterestRateRow(data) : false,
+          autoHeight: true,
+          wrapText: true,
+        };
+        if (!contract.isOur) {
+          colDef.headerComponent = FirstGridHeaderWithDelete;
+        }
+        return colDef;
+      }),
+    ],
+    [switchContracts, attributeColumnWidth, checkboxRenderer1, FirstGridHeaderWithDelete]
+  );
+
+  // value2 rowData
+  const rowData2 = React.useMemo(() => {
+    const ROW_FIELD_MAP: { id: number; type: string; field: keyof SwitchContractItem; ourVal: string }[] = [
+      { id: 1, type: '보험회사명', field: 'company', ourVal: '한화손보' },
+      { id: 2, type: '상품명', field: 'productName', ourVal: '한화 여성간편건강보험 4.0' },
+      { id: 3, type: '계약상태', field: 'status', ourVal: '청약중' },
+      { id: 4, type: '피보험자', field: 'insured', ourVal: '홍길순' },
+      { id: 5, type: '보험기간', field: 'period', ourVal: '2024-03-01 ~ 2026-03-31' },
+      { id: 6, type: '보험료', field: 'premium', ourVal: '165,000원' },
+      { id: 7, type: '납입주기/기간', field: 'payPeriod', ourVal: '월납/10년납' },
+      { id: 8, type: '주요보장내용', field: 'coverage', ourVal: '질병후유장해 등' },
+      { id: 9, type: '보험가입금액', field: 'amount', ourVal: '3,000만원 등' },
+      { id: 10, type: '해약환급금/기준연월', field: 'refund', ourVal: '신계약 해당사항 없음' },
+      { id: 11, type: '예정이율/기준연월', field: 'rate', ourVal: '5.99%' },
+      { id: 12, type: '보험목적', field: 'purpose', ourVal: '장기상해' },
+      { id: 13, type: '면책사유 및 면책사항', field: 'exemption', ourVal: '계약자,피보험자,수익자의 고의사고 등' },
+      { id: 14, type: '승환(예정)', field: 'isSwitch', ourVal: '' },
+    ];
+
+    return ROW_FIELD_MAP.map((item) => {
+      const rowObj: any = {
+        id: item.id,
+        type: item.type,
+        ourInsurance1: item.ourVal,
+      };
+
+      normalContracts.forEach((contract) => {
+        rowObj[contract.id] = contract[item.field];
+        if (item.type === '해약환급금/기준연월') {
+          rowObj[`${contract.id}BaseYm`] = contract.refundYm;
+        } else if (item.type === '예정이율/기준연월') {
+          rowObj[`${contract.id}BaseYm`] = contract.rateYm;
+        }
+      });
+
+      return rowObj;
+    });
+  }, [normalContracts]);
+
+  // value2 columnDefs
+  const columnDefs2: ColDef<AgGridRow>[] = React.useMemo(
+    () => [
+      {
+        headerName: '구분',
+        colId: 'v2_type',
+        width: attributeColumnWidth(140),
+        headerClass: '[&_.ag-header-cell-text]:font-bold',
+        cellClass: 'text-center font-bold',
+        field: 'type',
+        pinned: 'left',
+        autoHeight: true,
+        wrapText: true,
+      },
+      {
+        headerName: '당사신규',
+        colId: 'v2_ourInsurance1',
+        flex: 1,
+        minWidth: attributeColumnWidth(230),
+        headerClass: '[&_.ag-header-cell-text]:font-bold',
+        cellClass: getValueCellClass,
+        field: 'ourInsurance1',
+        pinned: 'left',
+        autoHeight: true,
+        wrapText: true,
+      },
+      ...normalContracts.map((contract) => {
+        const colDef: ColDef<AgGridRow> = {
+          headerName: contract.name,
+          colId: `v2_${contract.id}`,
+          headerClass: '[&_.ag-header-cell-text]:font-bold',
+          cellClass: getSwitchExternalCellClass,
+          cellClassRules: externalInsuranceCellClassRules,
+          width: attributeColumnWidth(249),
+          minWidth: attributeColumnWidth(249),
+          field: contract.id,
+          cellRenderer: checkboxRenderer2,
+          editable: ({ data }) =>
+            data ? isEditableTargetRow(data.type) && !isMainRefundRow(data) && !isMainInterestRateRow(data) : false,
+          autoHeight: true,
+          wrapText: true,
+        };
+        if (!contract.isOur) {
+          colDef.headerComponent = SecondGridHeaderWithDelete;
+        }
+        return colDef;
+      }),
+    ],
+    [normalContracts, attributeColumnWidth, checkboxRenderer2, SecondGridHeaderWithDelete]
+  );
+
+  // value3 rowData (externalContracts 상태로부터 동적 렌더링)
+  const rowData3 = React.useMemo(() => {
+    const ROW_FIELD_MAP: { id: number; type: string; field: keyof ExternalContractItem; ourVal: string }[] = [
+      { id: 1, type: '보험회사명', field: 'company', ourVal: '한화손보' },
+      { id: 2, type: '상품명', field: 'productName', ourVal: '한화 여성간편건강보험 4.0' },
+      { id: 3, type: '계약상태', field: 'status', ourVal: '청약중' },
+      { id: 4, type: '피보험자', field: 'insured', ourVal: '홍길순' },
+      { id: 5, type: '보험기간', field: 'period', ourVal: '2024-03-01 ~ 2026-03-31' },
+      { id: 6, type: '보험료', field: 'premium', ourVal: '165,000원' },
+      { id: 7, type: '납입주기/기간', field: 'payPeriod', ourVal: '월납/10년납' },
+      { id: 8, type: '주요보장내용', field: 'coverage', ourVal: '질병후유장해 등' },
+      { id: 9, type: '보험가입금액', field: 'amount', ourVal: '3,000만원 등' },
+      { id: 10, type: '해약환급금/기준연월', field: 'refund', ourVal: '신계약 해당사항 없음' },
+      { id: 11, type: '예정이율/기준연월', field: 'rate', ourVal: '5.99%' },
+      { id: 12, type: '보험목적', field: 'purpose', ourVal: '장기상해' },
+      { id: 13, type: '면책사유 및 면책사항', field: 'exemption', ourVal: '계약자,피보험자,수익자의 고의사고 등' },
+      { id: 14, type: '승환(예정)', field: 'isSwitch', ourVal: '' },
+    ];
+
+    return ROW_FIELD_MAP.map((item) => {
+      const rowObj: any = {
+        id: item.id,
+        type: item.type,
+        ourInsurance1: item.ourVal,
+      };
+
+      externalContracts.forEach((contract) => {
+        rowObj[contract.id] = contract[item.field];
+        if (item.type === '해약환급금/기준연월') {
+          rowObj[`${contract.id}BaseYm`] = contract.refundYm;
+        } else if (item.type === '예정이율/기준연월') {
+          rowObj[`${contract.id}BaseYm`] = contract.rateYm;
+        }
+      });
+
+      return rowObj;
+    });
+  }, [externalContracts]);
+
+  // value3 cellEditorSelector
   const getType3CellEditorSelector = (
     params: EditableCallbackParams<AgGridRow>
   ): CellEditorSelectorResult | undefined => {
     if (isType3CompanyRow(params.data)) {
       return {
         component: 'agSelectCellEditor',
-        params: { values: ['한화손보', '메리츠화재', '삼성화재', 'KB손보', 'DB손보'] },
+        params: { values: ['선택', '한화손보', '메리츠화재', '삼성화재', 'KB손보', 'DB손보'] },
       };
     }
 
     if (isType3StatusRow(params.data)) {
       return {
         component: 'agSelectCellEditor',
-        params: { values: ['계약상태', '피보험자'] },
+        params: { values: ['선택', '계약상태', '정상', '실효', '해지', '철회', '피보험자'] },
       };
     }
 
     if (isType3InsuredRow(params.data)) {
       return {
         component: 'agSelectCellEditor',
-        params: { values: ['홍길동', '홍길순'] },
+        params: { values: ['선택', '홍길동', '홍길순'] },
       };
     }
 
@@ -912,370 +1204,64 @@ export const Ltpz063 = () => {
       };
     }
 
+    if (isType3PayPeriodRow(params.data)) {
+      return {
+        component: PayPeriodCellEditor,
+      };
+    }
+
     return undefined;
   };
 
-  // value3 탭 헤더: 타사기존 컬럼을 사용자 액션으로 숨길 수 있는 헤더
-  const ThirdGridHeaderWithDelete = React.useMemo(() => {
-    const Component = (props: IHeaderParams<AgGridRow>) => {
-      const handleDeleteColumn = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
+  // value3 columnDefs (externalContracts 상태로부터 동적 렌더링)
+  const columnDefs3: ColDef<AgGridRow>[] = React.useMemo(
+    () => [
+      {
+        headerName: '구분',
+        colId: 'v3_type',
+        width: attributeColumnWidth(140),
+        headerClass: '[&_.ag-header-cell-text]:font-bold',
+        cellClass: 'text-center font-bold',
+        field: 'type',
+        pinned: 'left',
+        autoHeight: true,
+        wrapText: true,
+      },
+      {
+        headerName: '당사신규',
+        colId: 'v3_ourInsurance1',
+        flex: 1,
+        minWidth: attributeColumnWidth(230),
+        headerClass: '[&_.ag-header-cell-text]:font-bold',
+        cellClass: getValueCellClass,
+        field: 'ourInsurance1',
+        pinned: 'left',
+        autoHeight: true,
+        wrapText: true,
+      },
+      ...externalContracts.map((contract) => ({
+        headerName: '타사기존',
+        colId: `v3_${contract.id}`,
+        headerClass: '[&_.ag-header-cell-text]:font-bold',
+        headerComponent: ThirdGridHeaderWithDelete,
+        cellClass: getThirdExternalCellClass,
+        cellClassRules: externalInsuranceCellClassRules,
+        width: attributeColumnWidth(249),
+        minWidth: attributeColumnWidth(249),
+        field: contract.id,
+        cellRenderer: checkboxRenderer3,
+        editable: (params: EditableCallbackParams<AgGridRow>) =>
+          params.data
+            ? isType3EditableRow(params.data) && !isMainRefundRow(params.data) && !isMainInterestRateRow(params.data)
+            : false,
+        cellEditorSelector: getType3CellEditorSelector,
+        autoHeight: true,
+        wrapText: true,
+      })),
+    ],
+    [externalContracts, attributeColumnWidth, checkboxRenderer3, ThirdGridHeaderWithDelete]
+  );
 
-        const targetColumnId = props.column?.getColId();
-
-        if (!targetColumnId) {
-          return;
-        }
-
-        props.api.setColumnsVisible([targetColumnId], false);
-      };
-
-      return (
-        <Grow className="w-full" gap={2} placement={'cc'}>
-          <span className="ag-header-cell-text">타사기존</span>
-          <Button color="gray" variant="outlined" onClick={handleDeleteColumn}>
-            삭제
-          </Button>
-        </Grow>
-      );
-    };
-
-    return Component;
-  }, []);
-
-  // value1/value2 탭: 필드명이 체크박스 선택 가능 필드인지 판별하는 타입 가드
-  const isSelectableField = (field: string): field is MainSelectableField =>
-    field === 'ourInsurance2' || field === 'externalInsurance1' || field === 'externalInsurance2';
-
-  // value3 탭: 필드명이 체크박스 선택 가능 필드인지 판별하는 타입 가드 (externalInsurance3 포함)
-  const isSelectableField3 = (field: string): field is ExtraSelectableField =>
-    field === 'externalInsurance1' || field === 'externalInsurance2' || field === 'externalInsurance3';
-
-  // 행 타입이 편집 가능 대상 타입인지 확인 (해약환급금, 예정이율, 보험목적, 면책사유)
-  const isEditableTargetRow = (fieldName: DummyDataType['type']) => EDITABLE_TARGET_TYPES.has(String(fieldName));
-
-  // ag-Grid 셀 스타일 규칙: 2분할 행에 '!p-0' 패딩 제거 적용
-  const externalInsuranceCellClassRules = {
-    '!p-0': ({ data }: { data: DummyDataType | undefined }) =>
-      data ? isMainRefundRow(data) || isMainInterestRateRow(data) : false,
-  };
-
-  // 타사/당사 기존 컬럼 셀 클래스 규칙: 편집/강조 대상 행(해약환급금, 예정이율, 보험목적, 면책사유, 승환/승환예정)에만 파란색 text-[#006ff2] 및 editable-cell 부여
-  const getExternalCellClass = <TData extends { type: string | number }>(params: CellClassParams<TData>) => {
-    if (!params.data) {
-      return '';
-    }
-
-    if (isMainRefundRow(params.data) || isMainInterestRateRow(params.data)) {
-      return 'split-dual-cell editable-cell text-[#006ff2]';
-    }
-
-    if (isEditableTargetRow(params.data.type) || isSwitchoverRow(params.data)) {
-      return `${getSelectableValueCellClass(params)} editable-cell text-[#006ff2]`;
-    }
-
-    return getSelectableValueCellClass(params);
-  };
-
-  // 값을 체크박스의 체크 여부로 변환: null/undefined/빈 문자열 → false, 'true' 문자열 → true, 1 → true
-  const isCheckedValue = (value: GridCellValue) => {
-    if (value === null || value === undefined || value === '') {
-      return false;
-    }
-
-    if (typeof value === 'boolean') {
-      return value;
-    }
-
-    if (typeof value === 'number') {
-      return value === 1;
-    }
-
-    return value.toLowerCase() === 'true';
-  };
-
-  // value1 체크박스 변경 핸들러
-  const handleCheckboxChange = (params: CheckboxRendererParams<DummyDataType>, checked: boolean | 'indeterminate') => {
-    const targetField = params.colDef.field;
-
-    if (!params.data || !targetField || !isSelectableField(targetField)) {
-      return;
-    }
-
-    const nextValue = checked === true;
-
-    setRowData((prevRows) =>
-      prevRows.map((row) => (row.id === params.data?.id ? { ...row, [targetField]: nextValue } : row))
-    );
-  };
-
-  // value2 체크박스 변경 핸들러
-  const handleCheckboxChange2 = (
-    params: CheckboxRendererParams<DummyDataType2>,
-    checked: boolean | 'indeterminate'
-  ) => {
-    const targetField = params.colDef.field;
-
-    if (!params.data || !targetField || !isSelectableField(targetField)) {
-      return;
-    }
-
-    const nextValue = checked === true;
-
-    setRowData2((prevRows) =>
-      prevRows.map((row) => (row.id === params.data?.id ? { ...row, [targetField]: nextValue } : row))
-    );
-  };
-
-  // value3 체크박스 변경 핸들러
-  const handleCheckboxChange3 = (
-    params: CheckboxRendererParams<DummyDataType3>,
-    checked: boolean | 'indeterminate'
-  ) => {
-    const targetField = params.colDef.field;
-
-    if (!params.data || !targetField || !isSelectableField3(targetField)) {
-      return;
-    }
-
-    const nextValue = checked === true;
-
-    setRowData3((prevRows) =>
-      prevRows.map((row) => (row.id === params.data?.id ? { ...row, [targetField]: nextValue } : row))
-    );
-  };
-
-  const createCheckboxCellRenderer = <TData extends { type: string | number }>(
-    onChange: (params: CheckboxRendererParams<TData>, checked: boolean | 'indeterminate') => void
-  ) => {
-    // '승환' 행은 체크박스, 해약환급금/예정이율 행은 DualSplitCellRenderer, 일반 행은 문자열/숫자 값 표시
-    const CheckboxCellRenderer = (params: CheckboxRendererParams<TData>) => {
-      if (isSwitchoverRow(params.data)) {
-        return (
-          <div className="flex w-full justify-center">
-            <Checkbox
-              checked={isCheckedValue(params.value)}
-              color="primary"
-              onCheckedChange={(checked) => onChange(params, checked)}
-              size="lg"
-              variant="noneText"
-            >
-              단일
-            </Checkbox>
-          </div>
-        );
-      }
-
-      if (isMainRefundRow(params.data) || isMainInterestRateRow(params.data)) {
-        return <DualSplitCellRenderer {...params} />;
-      }
-
-      return getValueWithUnit(params.data, params.value);
-    };
-
-    CheckboxCellRenderer.displayName = 'CheckboxCellRenderer';
-
-    return CheckboxCellRenderer;
-  };
-
-  const checkboxRenderer = createCheckboxCellRenderer(handleCheckboxChange);
-  const checkboxRenderer2 = createCheckboxCellRenderer(handleCheckboxChange2);
-  const checkboxRenderer3 = createCheckboxCellRenderer(handleCheckboxChange3);
-
-  const keepSwitchoverRowAtBottom = (params: PostSortRowsParams<DummyDataType3>) => {
-    for (let index = params.nodes.length - 1; index >= 0; index -= 1) {
-      const rowNode = params.nodes[index];
-
-      if (!isSwitchoverRow(rowNode.data)) {
-        continue;
-      }
-
-      params.nodes.splice(index, 1);
-      params.nodes.push(rowNode);
-    }
-  };
-
-  // value1 탭의 타사기존 컬럼 팩토리
-  const createMainExternalColumn = (
-    field: 'externalInsurance1' | 'externalInsurance2',
-    colId?: string
-  ): ColDef<DummyDataType> => ({
-    headerName: '타사기존',
-    colId: colId || `v1_${field}`,
-    headerClass: '[&_.ag-header-cell-text]:font-bold',
-    cellClass: getExternalCellClass,
-    width: attributeColumnWidth(249),
-    minWidth: attributeColumnWidth(249),
-    maxWidth: attributeColumnWidth(249),
-    field,
-    editable: ({ data }) =>
-      data ? isEditableTargetRow(data.type) && !isMainRefundRow(data) && !isMainInterestRateRow(data) : false,
-    cellRenderer: checkboxRenderer,
-    autoHeight: true,
-    wrapText: true,
-  });
-
-  // value3 탭의 타사기존 컬럼 팩토리 (헤더 삭제 버튼 포함)
-  const createThirdExternalColumn = (field: ExtraSelectableField, colId?: string): ColDef<DummyDataType3> => ({
-    headerName: '타사기존',
-    colId: colId || `v3_${field}`,
-    headerComponent: ThirdGridHeaderWithDelete,
-    headerClass: '[&_.ag-header-cell-text]:font-bold ',
-    cellClass: (params) =>
-      params.data && (isMainRefundRow(params.data) || isMainInterestRateRow(params.data))
-        ? '!p-0 !m-0 !h-full flex items-center justify-center editable-cell text-[#006ff2]'
-        : `${getSelectableValueCellClass(params)} editable-cell text-[#006ff2]`,
-    width: attributeColumnWidth(249),
-    minWidth: attributeColumnWidth(249),
-    maxWidth: attributeColumnWidth(249),
-    field,
-    editable: ({ data }) => isType3EditableRow(data) && !isMainRefundRow(data) && !isMainInterestRateRow(data),
-    cellEditorSelector: getType3CellEditorSelector,
-    cellEditorParams: {
-      mode: 'range',
-    },
-    cellRenderer: checkboxRenderer3,
-    autoHeight: true,
-    wrapText: true,
-  });
-
-  // value1: 승환계약정보 컬럼
-  const columnDefs: ColDef<DummyDataType>[] = [
-    {
-      headerName: '구분',
-      colId: 'v1_type',
-      width: attributeColumnWidth(140),
-      minWidth: attributeColumnWidth(140),
-      maxWidth: attributeColumnWidth(140),
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center font-bold',
-      field: 'type',
-      pinned: 'left',
-      autoHeight: true,
-      wrapText: true,
-    },
-    {
-      headerName: '당사신규',
-      colId: 'v1_ourInsurance1',
-      width: attributeColumnWidth(220),
-      minWidth: attributeColumnWidth(220),
-      maxWidth: attributeColumnWidth(220),
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: getValueCellClass,
-      field: 'ourInsurance1',
-      pinned: 'left',
-      autoHeight: true,
-      wrapText: true,
-    },
-    {
-      headerName: '당사기존',
-      colId: 'v1_ourInsurance2',
-      width: attributeColumnWidth(249),
-      minWidth: attributeColumnWidth(249),
-      maxWidth: attributeColumnWidth(249),
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: getExternalCellClass,
-      cellClassRules: externalInsuranceCellClassRules,
-      flex: 1,
-      field: 'ourInsurance2',
-      cellRenderer: checkboxRenderer,
-      autoHeight: true,
-      wrapText: true,
-    },
-    createMainExternalColumn('externalInsurance1', 'v1_externalInsurance1'),
-    createMainExternalColumn('externalInsurance2', 'v1_externalInsurance2'),
-  ];
-  // value2: 정상계약정보 컬럼
-  const columnDefs2: ColDef<DummyDataType2>[] = [
-    {
-      headerName: '구분',
-      colId: 'v2_type',
-      width: attributeColumnWidth(140),
-      minWidth: attributeColumnWidth(140),
-      maxWidth: attributeColumnWidth(140),
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center font-bold',
-      field: 'type',
-      pinned: 'left',
-      autoHeight: true,
-      wrapText: true,
-    },
-    {
-      headerName: '당사신규',
-      colId: 'v2_ourInsurance1',
-      width: attributeColumnWidth(220),
-      minWidth: attributeColumnWidth(220),
-      maxWidth: attributeColumnWidth(220),
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: getValueCellClass,
-      field: 'ourInsurance1',
-      pinned: 'left',
-      autoHeight: true,
-      wrapText: true,
-    },
-    {
-      headerName: '당사기존',
-      colId: 'v2_ourInsurance2',
-      width: attributeColumnWidth(249),
-      minWidth: attributeColumnWidth(249),
-      maxWidth: attributeColumnWidth(249),
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: getExternalCellClass,
-      cellClassRules: externalInsuranceCellClassRules,
-      field: 'ourInsurance2',
-      cellRenderer: checkboxRenderer2,
-      autoHeight: true,
-      wrapText: true,
-    },
-    {
-      headerName: '타사기존',
-      colId: 'v2_externalInsurance1',
-      width: attributeColumnWidth(249),
-      minWidth: attributeColumnWidth(249),
-      maxWidth: attributeColumnWidth(249),
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: getExternalCellClass,
-      cellClassRules: externalInsuranceCellClassRules,
-      field: 'externalInsurance1',
-      editable: ({ data }) =>
-        data ? isEditableTargetRow(data.type) && !isMainRefundRow(data) && !isMainInterestRateRow(data) : false,
-      cellRenderer: checkboxRenderer2,
-      autoHeight: true,
-      wrapText: true,
-    },
-  ];
-  // value3: 추가계약정보 컬럼
-  const columnDefs3: ColDef<DummyDataType3>[] = [
-    {
-      headerName: '구분',
-      colId: 'v3_type',
-      width: attributeColumnWidth(140),
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: 'text-center font-bold',
-      field: 'type',
-      pinned: 'left',
-      autoHeight: true,
-      wrapText: true,
-    },
-    {
-      headerName: '당사신규',
-      colId: 'v3_ourInsurance1',
-      flex: 1,
-      minWidth: attributeColumnWidth(220),
-      headerClass: '[&_.ag-header-cell-text]:font-bold',
-      cellClass: getValueCellClass,
-      field: 'ourInsurance1',
-      pinned: 'left',
-      autoHeight: true,
-      wrapText: true,
-    },
-    createThirdExternalColumn('externalInsurance1', 'v3_externalInsurance1'),
-    createThirdExternalColumn('externalInsurance2', 'v3_externalInsurance2'),
-    createThirdExternalColumn('externalInsurance3', 'v3_externalInsurance3'),
-    createThirdExternalColumn('externalInsurance4', 'v3_externalInsurance4'),
-  ];
-
-  // 탭 선택값에 따라 그리드를 분기 렌더링
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="2xl">
@@ -1361,11 +1347,12 @@ export const Ltpz063 = () => {
           >
             {active === 'value1' ? (
               <div className="ag-theme-alpine ag-border-t">
-                <AgGridReact<DummyDataType>
+                <AgGridReact<AgGridRow>
                   getRowId={(params) => `tab1-${params.data.id}`}
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={rowData}
-                  columnDefs={columnDefs}
+                  rowData={rowData1}
+                  columnDefs={columnDefs1}
+                  postSortRows={keepSwitchoverRowAtBottom}
                   singleClickEdit={true}
                   defaultColDef={{
                     sortable: true,
@@ -1378,11 +1365,12 @@ export const Ltpz063 = () => {
               </div>
             ) : active === 'value2' ? (
               <div className="ag-theme-alpine ag-border-t">
-                <AgGridReact<DummyDataType2>
+                <AgGridReact<AgGridRow>
                   getRowId={(params) => `tab2-${params.data.id}`}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData2}
                   columnDefs={columnDefs2}
+                  postSortRows={keepSwitchoverRowAtBottom}
                   singleClickEdit={true}
                   defaultColDef={{
                     sortable: true,
@@ -1395,7 +1383,7 @@ export const Ltpz063 = () => {
               </div>
             ) : active === 'value3' ? (
               <div className="ag-theme-alpine ag-border-t">
-                <AgGridReact<DummyDataType3>
+                <AgGridReact<AgGridRow>
                   getRowId={(params) => `tab3-${params.data.id}`}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   rowData={rowData3}
@@ -1430,16 +1418,16 @@ export const Ltpz063 = () => {
               )}
             </Grow>
             <Grow>
-              {active === 'value3' ? (
+              {active === 'value3' && (
                 <>
                   <Button variant={'outlined'} size={'xl'} color={'gray'}>
                     불러오기
                   </Button>
-                  <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  <Button variant={'outlined'} size={'xl'} color={'gray'} onClick={handleAddExternalContract}>
                     타사승환추가
                   </Button>
                 </>
-              ) : null}
+              )}
               <Button variant={'contained'} size={'xl'}>
                 저장
               </Button>

@@ -276,6 +276,7 @@ const Ltpz001 = () => {
       { value: 'tabE', label: '이메일' },
       { value: 'tabF', label: '팩스' },
       { value: 'tabM', label: '모바일' },
+      { value: 'tabPst', label: '우편' },
     ],
   });
 
@@ -422,7 +423,7 @@ const Ltpz001 = () => {
                 data={scrIdcInfoData.tabInfo}
                 active={tabActive}
                 setActive={setTabActive}
-                visibleCount={4}
+                visibleCount={5}
                 getValue={(tab) => String(tab.value)}
                 contentClass="overflow-y-auto relative bg-[var(--color-blue-gray-10)] rounded-b-[0.6rem] gray-scroll"
                 renderTab={(tab) => <span>{tab.label}</span>}
