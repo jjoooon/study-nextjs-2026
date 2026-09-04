@@ -474,6 +474,15 @@ const PayPeriodCellEditor = (props: WonUnitCellEditorProps) => {
   );
 };
 
+// Ltpz063 팝업 전용 가운데 정렬 DatePicker 에디터
+const Ltpz063DatePickerCellEditor = (props: any) => {
+  return (
+    <div className="flex w-full h-full items-center justify-center mx-auto [&_.cp-datepicker]:mx-auto [&_.cp-datepicker]:justify-center">
+      <DatePickerCellEditor {...props} />
+    </div>
+  );
+};
+
 // 2분할 해약환급금/예정이율 전용 셀 렌더러
 const DualSplitCellRenderer = (params: CheckboxRendererParams<any>) => {
   const fieldKey = params.colDef?.field;
@@ -722,43 +731,6 @@ export const Ltpz063 = () => {
     setSwitchContracts((prev) => [...prev, newContract]);
   }, []);
 
-  // 타사계약 삭제 핸들러 (승환계약정보 탭)
-  const handleDeleteSwitchContract = React.useCallback((targetId: string) => {
-    setSwitchContracts((prev) => prev.filter((item) => item.id !== targetId));
-  }, []);
-
-  // 타사계약 추가 핸들러 (정상계약정보 탭)
-  const handleAddNormalContract = React.useCallback(() => {
-    const newId = `ext_${Date.now()}`;
-    const newContract: SwitchContractItem = {
-      id: newId,
-      name: '타사기존',
-      isOur: false,
-      company: '한화손보',
-      productName: '',
-      status: '정상',
-      insured: '홍길순',
-      period: '',
-      premium: '',
-      payPeriod: '',
-      coverage: '',
-      amount: '',
-      refund: '',
-      refundYm: '2026-06',
-      rate: '',
-      rateYm: '2026-06',
-      purpose: '',
-      exemption: '',
-      isSwitch: false,
-    };
-    setNormalContracts((prev) => [...prev, newContract]);
-  }, []);
-
-  // 타사계약 삭제 핸들러 (정상계약정보 탭)
-  const handleDeleteNormalContract = React.useCallback((targetId: string) => {
-    setNormalContracts((prev) => prev.filter((item) => item.id !== targetId));
-  }, []);
-
   // 타사계약 추가 핸들러 (추가계약정보 탭)
   const handleAddExternalContract = React.useCallback(() => {
     const newId = `ext_${Date.now()}`;
@@ -788,15 +760,6 @@ export const Ltpz063 = () => {
   const handleDeleteExternalContract = React.useCallback((targetId: string) => {
     setExternalContracts((prev) => prev.filter((item) => item.id !== targetId));
   }, []);
-
-  // Ltpz063 팝업 전용 가운데 정렬 DatePicker 에디터
-  const Ltpz063DatePickerCellEditor = (props: any) => {
-    return (
-      <div className="flex w-full h-full items-center justify-center mx-auto [&_.cp-datepicker]:mx-auto [&_.cp-datepicker]:justify-center">
-        <DatePickerCellEditor {...props} />
-      </div>
-    );
-  };
 
   // 행 타입이 편집 가능 대상 타입인지 확인 (해약환급금, 예정이율, 보험목적, 면책사유)
   const isEditableTargetRow = (fieldName: string | number) => EDITABLE_TARGET_TYPES.has(String(fieldName));
@@ -887,42 +850,6 @@ export const Ltpz063 = () => {
   const checkboxRenderer1 = React.useMemo(() => createCheckboxCellRenderer(setSwitchContracts, false), []);
   const checkboxRenderer2 = React.useMemo(() => createCheckboxCellRenderer(setNormalContracts, false), []);
   const checkboxRenderer3 = React.useMemo(() => createCheckboxCellRenderer(setExternalContracts, true), []);
-
-  // Header Component for value1 (SwitchContracts)
-  const FirstGridHeaderWithDelete = React.useMemo(() => {
-    const Component = (props: IHeaderParams<AgGridRow>) => {
-      const colId = props.column?.getColId();
-      const contractId = colId ? colId.replace(/^v1_/, '') : '';
-
-      return (
-        <Grow className="w-full" gap={2} placement={'cc'}>
-          <span className="ag-header-cell-text">{props.displayName || '타사기존'}</span>
-          <Button color="gray" variant="outlined" onClick={() => handleDeleteSwitchContract(contractId)}>
-            삭제
-          </Button>
-        </Grow>
-      );
-    };
-    return Component;
-  }, [handleDeleteSwitchContract]);
-
-  // Header Component for value2 (NormalContracts)
-  const SecondGridHeaderWithDelete = React.useMemo(() => {
-    const Component = (props: IHeaderParams<AgGridRow>) => {
-      const colId = props.column?.getColId();
-      const contractId = colId ? colId.replace(/^v2_/, '') : '';
-
-      return (
-        <Grow className="w-full" gap={2} placement={'cc'}>
-          <span className="ag-header-cell-text">{props.displayName || '타사기존'}</span>
-          <Button color="gray" variant="outlined" onClick={() => handleDeleteNormalContract(contractId)}>
-            삭제
-          </Button>
-        </Grow>
-      );
-    };
-    return Component;
-  }, [handleDeleteNormalContract]);
 
   // Header Component for value3 (ExternalContracts)
   const ThirdGridHeaderWithDelete = React.useMemo(() => {
@@ -1023,13 +950,10 @@ export const Ltpz063 = () => {
           autoHeight: true,
           wrapText: true,
         };
-        if (!contract.isOur) {
-          colDef.headerComponent = FirstGridHeaderWithDelete;
-        }
         return colDef;
       }),
     ],
-    [switchContracts, attributeColumnWidth, checkboxRenderer1, FirstGridHeaderWithDelete]
+    [switchContracts, attributeColumnWidth, checkboxRenderer1]
   );
 
   // value2 rowData
@@ -1113,13 +1037,10 @@ export const Ltpz063 = () => {
           autoHeight: true,
           wrapText: true,
         };
-        if (!contract.isOur) {
-          colDef.headerComponent = SecondGridHeaderWithDelete;
-        }
         return colDef;
       }),
     ],
-    [normalContracts, attributeColumnWidth, checkboxRenderer2, SecondGridHeaderWithDelete]
+    [normalContracts, attributeColumnWidth, checkboxRenderer2]
   );
 
   // value3 rowData (externalContracts 상태로부터 동적 렌더링)
