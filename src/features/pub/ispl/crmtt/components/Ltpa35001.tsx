@@ -173,8 +173,8 @@ export const Ltpa35001 = ({
                         <FormCell title={'보험기간'} colSpan={3}>
                           <RadioGroup defaultValue="90세만기">
                             {[
-                              { value: '90세만기', label: '90세만기' },
                               { value: '100세만기', label: '100세만기' },
+                              { value: '90세만기', label: '90세만기' },
                             ].map((option) => (
                               <RadioGroupItem key={option.value} value={option.value}>
                                 {option.label}
