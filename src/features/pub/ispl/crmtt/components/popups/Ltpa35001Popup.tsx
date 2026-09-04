@@ -91,7 +91,6 @@ const Ltpa35001Popup = ({ open = true, onOpenChange, onClose }: Ltpa35001PopupPr
                   <Typo variant={'body-sm'} tag={'b'} className="color-[#000]">
                     증빙서류(계약자 또는 계약자의 배우자 기준) 확인
                   </Typo>
-
                   <BulletList position="col" type="dash" className="-ml-2 font-normal">
                     <BulletListItem className="text-[1.2rem]">
                       가족관계증명서 또는 주민등록등본 내 계약자(또는 배우자)의 마지막 출생자녀 생년월일과 설계화면
@@ -116,7 +115,6 @@ const Ltpa35001Popup = ({ open = true, onOpenChange, onClose }: Ltpa35001PopupPr
                   <Typo variant={'body-sm'} tag={'b'} className="color-[#000]">
                     적용대상
                   </Typo>
-
                   <BulletList position="col" type="dash" className="-ml-2 font-normal">
                     <BulletListItem className="text-[1.2rem]">
                       계약자(법정대리인포함) 또는 계약자의 배우자가 육아휴직 기간 중인 경우
@@ -127,7 +125,6 @@ const Ltpa35001Popup = ({ open = true, onOpenChange, onClose }: Ltpa35001PopupPr
                   <Typo variant={'body-sm'} tag={'b'} className="color-[#000]">
                     증빙서류(계약자 또는 계약자의 배우자 기준) 확인
                   </Typo>
-
                   <BulletList position="col" type="dash" className="-ml-2 font-normal">
                     <BulletListItem className="text-[1.2rem]">
                       가족관계증명서 또는 주민등록등본 내 계약자(또는 배우자)의 육아휴직(육아기 근로시간 단축) 확인서의
