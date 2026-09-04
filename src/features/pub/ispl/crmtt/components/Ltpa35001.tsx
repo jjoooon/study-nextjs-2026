@@ -92,14 +92,14 @@ const tooltipContents = [
 ];
 
 const tooltipContents2 = [
-  <>
+  <div className="w-[34rem]">
     - 고혈압추가고지 : 최근 5년 이내 &apos;고혈압&apos; 병력 없는 분
     <br />- 당뇨추가고지 : 최근 5년 이내 &apos;당뇨&apos; 병력 없는 분
     <br />- 고혈압및당뇨추가고지 : 최근 5년 이내 &apos;고혈압, 당뇨&apos; 병력 없는 분
     <br />
     <br />※ &apos;추가고지&apos;는 알릴사항에 추가되는 질문항목으로 병력이 없더라도 실제 심사 시 고객에 따라 인수 또는
     거절 될 수 있습니다.
-  </>,
+  </div>,
 ];
 
 /**
@@ -546,7 +546,9 @@ export const Ltpa35001 = ({
                             title={
                               <Grow placement="sc">
                                 고지유형
-                                <TooltipQ align="start">{tooltipContents2[0]}</TooltipQ>
+                                <TooltipQ align="start" className="max-w-[36rem]">
+                                  {tooltipContents2[0]}
+                                </TooltipQ>
                               </Grow>
                             }
                             colSpan={3}
