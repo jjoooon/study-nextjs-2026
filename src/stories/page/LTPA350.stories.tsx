@@ -31,9 +31,19 @@ const meta: Meta<typeof LTPA350> = {
         defaultValue: { summary: 'gray' },
       },
     },
+    showRenewalCycle: {
+      name: '갱신주기 없는 경우',
+      control: 'boolean',
+      description: '일반 탭에서 갱신주기 표시 여부 (false 시 갱신주기 미노출 및 납입주기 colSpan={3} 적용)',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+      },
+    },
   },
   args: {
     memoButtonColor: 'gray',
+    showRenewalCycle: true,
   },
 };
 export default meta;
