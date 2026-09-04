@@ -613,12 +613,13 @@ export default function Ltpa680Section() {
 
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
-      flex: 1,
+      flex: 10,
       field: 'field01',
       cellClass: 'text-left border-r-0!',
     },
     {
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       field: 'field02',
       cellClass: 'text-center px-0!',
     },
@@ -626,12 +627,13 @@ export default function Ltpa680Section() {
 
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
-      flex: 1,
+      flex: 10,
       field: 'field01',
       cellClass: 'text-left border-r-0!',
     },
     {
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       field: 'field02',
       cellClass: 'text-center px-0!',
     },
@@ -639,12 +641,13 @@ export default function Ltpa680Section() {
 
   const columnDefs4: ColDef<DummyDataType4>[] = [
     {
-      flex: 1,
+      flex: 10,
       field: 'field01',
       cellClass: 'text-left border-r-0!',
     },
     {
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       field: 'field02',
       cellClass: 'text-center px-0!',
     },
@@ -863,14 +866,14 @@ export default function Ltpa680Section() {
       headerName: '입원일수',
       field: 'field1',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '수술유무',
       field: 'field2',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       cellRenderer: ({ value }: { value: boolean }) => (value ? 'Y' : 'N'),
     },
@@ -878,21 +881,21 @@ export default function Ltpa680Section() {
       headerName: '경과일수',
       field: 'field3',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '재발',
       field: 'field4',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       cellRenderer: ({ value }: { value: boolean }) => (value ? 'Y' : 'N'),
     },
     {
       field: 'field5',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
@@ -905,7 +908,7 @@ export default function Ltpa680Section() {
     {
       field: 'field6',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
@@ -919,27 +922,27 @@ export default function Ltpa680Section() {
       headerName: '2대질병',
       field: 'field7',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '암',
       field: 'field8',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '질병수술',
       field: 'field9',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       field: 'field10',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
@@ -953,20 +956,20 @@ export default function Ltpa680Section() {
       headerName: '질병입원',
       field: 'field11',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '질병치료',
       field: 'field12',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       field: 'field13',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
@@ -980,70 +983,70 @@ export default function Ltpa680Section() {
       headerName: '상해50%',
       field: 'field14',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '상해수술',
       field: 'field15',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '상해입원',
       field: 'field16',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '상해치료',
       field: 'field17',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '장기요양',
       field: 'field18',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '치매',
       field: 'field19',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '치아',
       field: 'field20',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '실손',
       field: 'field21',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '서류',
       field: 'field22',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '참고사항',
       field: 'field23',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
   ];
@@ -1214,7 +1217,7 @@ export default function Ltpa680Section() {
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData3}
                         columnDefs={columnDefs3}
-                        domLayout="autoHeight"
+                        domLayout="normal"
                         headerHeight={0}
                         groupHeaderHeight={0}
                       />
@@ -1239,7 +1242,7 @@ export default function Ltpa680Section() {
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData4}
                         columnDefs={columnDefs4}
-                        domLayout="autoHeight"
+                        domLayout="normal"
                         headerHeight={0}
                         groupHeaderHeight={0}
                       />
