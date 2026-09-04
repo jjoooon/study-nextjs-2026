@@ -773,11 +773,14 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   overflow: hidden;
   text-overflow: clip;
 }
-
+.truncate-no .truncate-no{
+  padding-right: 0.2rem;
+}
 .truncate-no {
   overflow: hidden;
   text-overflow: clip;
   white-space: nowrap;
+  
 }
 
 .ag-header-group-text {

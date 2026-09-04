@@ -470,6 +470,7 @@ function GlobalSpinnerPortal({
   return createPortal(
     <div
       role="dialog"
+      tabIndex={-1}
       aria-busy="true"
       aria-label={typeof currentText === 'string' ? currentText : undefined}
       style={{

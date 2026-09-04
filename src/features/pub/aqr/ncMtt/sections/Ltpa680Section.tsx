@@ -169,6 +169,16 @@ const DummyData2: DummyDataType2[] = [
     field01: '더건강한 암플랜 심사가이드라인',
     field02: '2026-01-01',
   },
+  {
+    id: 3,
+    field01: '더건강한 암플랜 심사가이드라인',
+    field02: '2026-01-01',
+  },
+  {
+    id: 3,
+    field01: '더건강한 암플랜 심사가이드라인',
+    field02: '2026-01-01',
+  },
 ];
 
 type DummyDataType3 = {
@@ -252,6 +262,110 @@ const DummyData5: DummyDataType5[] = [
     field1: '15일이하15일이하15일이하15일이하15일이하15일이하15일이하15일이하15일이하15일이하15일이하',
     field2: true,
     field3: '즉시',
+    field4: false,
+    field5: '인수',
+    field6: '할증(20)',
+    field7: '거절',
+    field8: '할증(10)',
+    field9: '거절',
+    field10: '거절',
+    field11: '할증(30)',
+    field12: '인수',
+    field13: '인수',
+    field14: '인수',
+    field15: '인수',
+    field16: '인수',
+    field17: '인수',
+    field18: '서류',
+    field19: '서류',
+    field20: '서류',
+    field21: '진단',
+    field22: '',
+    field23: '',
+  },
+  {
+    id: 2,
+    field1: '15일이하',
+    field2: true,
+    field3: '3개월이내',
+    field4: false,
+    field5: '인수',
+    field6: '할증(20)',
+    field7: '거절',
+    field8: '할증(10)',
+    field9: '거절',
+    field10: '거절',
+    field11: '할증(30)',
+    field12: '인수',
+    field13: '인수',
+    field14: '인수',
+    field15: '인수',
+    field16: '인수',
+    field17: '인수',
+    field18: '서류',
+    field19: '서류',
+    field20: '서류',
+    field21: '진단',
+    field22: '',
+    field23: '',
+  },
+  {
+    id: 2,
+    field1: '15일이하',
+    field2: true,
+    field3: '3개월이내',
+    field4: false,
+    field5: '인수',
+    field6: '할증(20)',
+    field7: '거절',
+    field8: '할증(10)',
+    field9: '거절',
+    field10: '거절',
+    field11: '할증(30)',
+    field12: '인수',
+    field13: '인수',
+    field14: '인수',
+    field15: '인수',
+    field16: '인수',
+    field17: '인수',
+    field18: '서류',
+    field19: '서류',
+    field20: '서류',
+    field21: '진단',
+    field22: '',
+    field23: '',
+  },
+  {
+    id: 2,
+    field1: '15일이하',
+    field2: true,
+    field3: '3개월이내',
+    field4: false,
+    field5: '인수',
+    field6: '할증(20)',
+    field7: '거절',
+    field8: '할증(10)',
+    field9: '거절',
+    field10: '거절',
+    field11: '할증(30)',
+    field12: '인수',
+    field13: '인수',
+    field14: '인수',
+    field15: '인수',
+    field16: '인수',
+    field17: '인수',
+    field18: '서류',
+    field19: '서류',
+    field20: '서류',
+    field21: '진단',
+    field22: '',
+    field23: '',
+  },
+  {
+    id: 2,
+    field1: '15일이하',
+    field2: true,
+    field3: '3개월이내',
     field4: false,
     field5: '인수',
     field6: '할증(20)',
@@ -425,7 +539,6 @@ export default function Ltpa680Section() {
   const [considerText2, setConsiderText2] = useState(
     '① 소견서(진단명, 치료기간, 치료내용, 현재상태 등)\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지\n② 필요 시 의사경과기록지'
   );
-  const handleConsiderEditClick = () => setIsConsiderEditMode(true);
   const handleConsiderSaveClick = () => setIsConsiderEditMode(false);
   const [searchWord] = useState('척추');
   const [guidelineType, setGuidelineType] = useState('일반고지형');
@@ -433,9 +546,7 @@ export default function Ltpa680Section() {
   const [isEditMode, setIsEditMode] = useState(false);
 
   // 수정 버튼 클릭 핸들러
-  const handleEditClick = () => {
-    setIsEditMode(true);
-  };
+
   // 저장 버튼 클릭 핸들러
   const handleSaveClick = () => {
     setIsEditMode(false);
@@ -502,12 +613,13 @@ export default function Ltpa680Section() {
 
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
-      flex: 1,
+      flex: 10,
       field: 'field01',
       cellClass: 'text-left border-r-0!',
     },
     {
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       field: 'field02',
       cellClass: 'text-center px-0!',
     },
@@ -515,12 +627,13 @@ export default function Ltpa680Section() {
 
   const columnDefs3: ColDef<DummyDataType3>[] = [
     {
-      flex: 1,
+      flex: 10,
       field: 'field01',
       cellClass: 'text-left border-r-0!',
     },
     {
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       field: 'field02',
       cellClass: 'text-center px-0!',
     },
@@ -528,12 +641,13 @@ export default function Ltpa680Section() {
 
   const columnDefs4: ColDef<DummyDataType4>[] = [
     {
-      flex: 1,
+      flex: 10,
       field: 'field01',
       cellClass: 'text-left border-r-0!',
     },
     {
-      width: 70,
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       field: 'field02',
       cellClass: 'text-center px-0!',
     },
@@ -752,14 +866,14 @@ export default function Ltpa680Section() {
       headerName: '입원일수',
       field: 'field1',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '수술유무',
       field: 'field2',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       cellRenderer: ({ value }: { value: boolean }) => (value ? 'Y' : 'N'),
     },
@@ -767,21 +881,21 @@ export default function Ltpa680Section() {
       headerName: '경과일수',
       field: 'field3',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '재발',
       field: 'field4',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       cellRenderer: ({ value }: { value: boolean }) => (value ? 'Y' : 'N'),
     },
     {
       field: 'field5',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
@@ -794,7 +908,7 @@ export default function Ltpa680Section() {
     {
       field: 'field6',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
@@ -808,27 +922,27 @@ export default function Ltpa680Section() {
       headerName: '2대질병',
       field: 'field7',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '암',
       field: 'field8',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '질병수술',
       field: 'field9',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       field: 'field10',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
@@ -842,20 +956,20 @@ export default function Ltpa680Section() {
       headerName: '질병입원',
       field: 'field11',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '질병치료',
       field: 'field12',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       field: 'field13',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">
@@ -869,70 +983,70 @@ export default function Ltpa680Section() {
       headerName: '상해50%',
       field: 'field14',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '상해수술',
       field: 'field15',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '상해입원',
       field: 'field16',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '상해치료',
       field: 'field17',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '장기요양',
       field: 'field18',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '치매',
       field: 'field19',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '치아',
       field: 'field20',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '실손',
       field: 'field21',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '서류',
       field: 'field22',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
     {
       headerName: '참고사항',
       field: 'field23',
       flex: 1,
-      minWidth: 80,
+      minWidth: attributeColumnWidth(80),
       cellClass: 'text-center',
     },
   ];
@@ -947,7 +1061,7 @@ export default function Ltpa680Section() {
   const DATA_TABS = [
     { label: '인수기준', value: 'tab1' },
     { label: '질병정보', value: 'tab2' },
-    { label: 'Mobile용', value: 'tab3' },
+    // { label: 'Mobile용', value: 'tab3' },
   ];
 
   // 탭 상태 관리: 선택값(active)에 따라 하단 컨텐츠 분기 렌더링
@@ -1103,7 +1217,7 @@ export default function Ltpa680Section() {
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData3}
                         columnDefs={columnDefs3}
-                        domLayout="autoHeight"
+                        domLayout="normal"
                         headerHeight={0}
                         groupHeaderHeight={0}
                       />
@@ -1128,7 +1242,7 @@ export default function Ltpa680Section() {
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData4}
                         columnDefs={columnDefs4}
-                        domLayout="autoHeight"
+                        domLayout="normal"
                         headerHeight={0}
                         groupHeaderHeight={0}
                       />
@@ -1277,15 +1391,7 @@ export default function Ltpa680Section() {
                                       엑셀가져오기
                                       <FileImportIcon />
                                     </Button>
-                                    <Button variant={'outlined'} size={'md'} color={'gray'} onClick={handleEditClick}>
-                                      수정
-                                    </Button>
-                                    <Button
-                                      variant={'contained'}
-                                      size={'md'}
-                                      onClick={handleSaveClick}
-                                      disabled={!isEditMode}
-                                    >
+                                    <Button variant={'contained'} size={'md'} onClick={handleSaveClick}>
                                       저장
                                     </Button>
                                   </Grow>
@@ -1303,7 +1409,7 @@ export default function Ltpa680Section() {
                                           sortable: true,
                                           resizable: true,
                                         }}
-                                        domLayout="autoHeight"
+                                        domLayout="normal"
                                         tooltipShowMode="whenTruncated"
                                         tooltipShowDelay={0}
                                         headerHeight={50}
@@ -1324,7 +1430,7 @@ export default function Ltpa680Section() {
                                           resizable: true,
                                         }}
                                         headerHeight={50}
-                                        domLayout="autoHeight"
+                                        domLayout="normal"
                                         tooltipShowMode="whenTruncated"
                                         tooltipShowDelay={0}
                                       />
@@ -1343,21 +1449,8 @@ export default function Ltpa680Section() {
                                       엑셀가져오기
                                       <FileImportIcon />
                                     </Button>
-                                    <Button
-                                      variant={'outlined'}
-                                      size={'md'}
-                                      color={'gray'}
-                                      onClick={handleConsiderEditClick}
-                                      disabled={isConsiderEditMode}
-                                    >
-                                      수정
-                                    </Button>
-                                    <Button
-                                      variant={'contained'}
-                                      size={'md'}
-                                      onClick={handleConsiderSaveClick}
-                                      disabled={!isConsiderEditMode}
-                                    >
+
+                                    <Button variant={'contained'} size={'md'} onClick={handleConsiderSaveClick}>
                                       저장
                                     </Button>
                                   </Grow>

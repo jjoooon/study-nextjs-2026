@@ -1,8 +1,11 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
+'use client';
+
 import { cva, type VariantProps } from 'class-variance-authority';
-import React, { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
+import * as React from 'react';
+import { ReactNode, useRef, useState, useEffect, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Typo, Grow } from '@atoms';
 import { Table, TableBody, TableCaption, TableCell, TableHead } from '@uiux/Table';

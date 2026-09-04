@@ -1,4 +1,4 @@
-/*
- * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
- */
+import '@/shared/config/agGridConfig';
+export * from '@/shared/config/agGridConfig';
 export * from './AgGridUtils';
+

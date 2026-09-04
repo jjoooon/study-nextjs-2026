@@ -1112,8 +1112,7 @@ function DialogContent({
         return;
       }
 
-      const shouldAction =
-        resizeHandle || dialogHeader || !contentRef.current?.querySelector('[data-slot="dialog-header"]');
+      const shouldAction = resizeHandle || dialogHeader;
 
       if (!shouldAction) {
         return;
