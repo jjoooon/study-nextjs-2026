@@ -109,6 +109,7 @@ const tooltipContents2 = [
 type Ltpa35001Props = {
   simpleMode?: boolean;
   showRenewalCycle?: boolean;
+  showContractConversion?: boolean;
 };
 
 /**
@@ -116,8 +117,13 @@ type Ltpa35001Props = {
  * @description 보험 설계 시 기본 정보 및 피보험자/목적물/단체 정보를 입력하는 공통 템플릿 컴포넌트
  * - 간편 모드(simpleMode) 여부에 따라 피보험자 등록 및 세부 입력 폼의 노출 조건이 달라집니다.
  * - 갱신주기 노출 여부(showRenewalCycle)에 따라 일반 탭의 갱신주기 표시 및 납입주기 colSpan이 변경됩니다.
+ * - 계약전환 노출 여부(showContractConversion)에 따라 일반 탭의 계약전환 셀 노출 여부가 결정됩니다.
  */
-export const Ltpa35001 = ({ simpleMode: _simpleMode, showRenewalCycle = true }: Ltpa35001Props) => {
+export const Ltpa35001 = ({
+  simpleMode: _simpleMode,
+  showRenewalCycle = true,
+  showContractConversion = false,
+}: Ltpa35001Props) => {
   // useTabs 훅을 활용해 탭 목록(tabs), 현재 활성 탭(active) 및 탭 추가/삭제 처리를 수행
   const { tabs, active, setActive, handleRemove, replaceTabs } = useTabs(TabsData);
 
@@ -161,6 +167,20 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, showRenewalCycle = true }: 
                         </FormCell>
                         <FormCell title={'보험기간'}>
                           <DatePickerInput readOnly mode={'range'} />
+                        </FormCell>
+                      </FormRow>
+                      <FormRow>
+                        <FormCell title={'보험기간'} colSpan={3}>
+                          <RadioGroup defaultValue="90세만기">
+                            {[
+                              { value: '100세만기', label: '100세만기' },
+                              { value: '90세만기', label: '90세만기' },
+                            ].map((option) => (
+                              <RadioGroupItem key={option.value} value={option.value}>
+                                {option.label}
+                              </RadioGroupItem>
+                            ))}
+                          </RadioGroup>
                         </FormCell>
                       </FormRow>
                       <FormRow>
@@ -447,9 +467,9 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, showRenewalCycle = true }: 
                             <FormCell title={'갱신주기'}>
                               <RadioGroup defaultValue="3년">
                                 {[
-                                  { value: '3년', label: '3년' },
-                                  { value: '10년', label: '10년' },
                                   { value: '20년', label: '20년' },
+                                  { value: '10년', label: '10년' },
+                                  { value: '3년', label: '3년' },
                                 ].map((option) => (
                                   <RadioGroupItem key={option.value} value={option.value}>
                                     {option.label}
@@ -462,7 +482,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, showRenewalCycle = true }: 
                       )}
                       {currentTab?.type === '일반' && (
                         <FormRow>
-                          <FormCell title={'태아여부'}>
+                          <FormCell title={'태아여부'} colSpan={showContractConversion ? undefined : 3}>
                             {/* dev: 260903 - 체크박스 선택시 다태아 체크박스, 다태아연계 버튼, 수수료선지급 체크박스 보여지게 수정 */}
                             <Grow className="flex gap-3">
                               <Checkbox
@@ -484,9 +504,11 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, showRenewalCycle = true }: 
                             </Grow>
                             {/* //dev: 260903 - 체크박스 선택시 다태아 체크박스, 다태아연계 버튼, 수수료선지급 체크박스 보여지게 수정 */}
                           </FormCell>
-                          <FormCell title={'계약전환'}>
-                            <Checkbox color="primary">신청</Checkbox>
-                          </FormCell>
+                          {showContractConversion && (
+                            <FormCell title={'계약전환'}>
+                              <Checkbox color="primary">신청</Checkbox>
+                            </FormCell>
+                          )}
                         </FormRow>
                       )}
                       {/* 납입주기/갱신주기: 태아 */}
@@ -588,7 +610,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, showRenewalCycle = true }: 
                       {currentTab?.type === '일반' && (
                         <FormRow>
                           <FormCell title={'간편고지요율구분'} colSpan={3}>
-                            <RadioGroup defaultValue="월납">
+                            <RadioGroup defaultValue="315간편">
                               {[{ value: '315간편', label: '315간편' }].map((option) => (
                                 <RadioGroupItem key={option.value} value={option.value}>
                                   {option.label}
@@ -1068,7 +1090,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, showRenewalCycle = true }: 
                                 </FormCell>
                               </FormRow>
                               <FormRow>
-                                {currentTab?.type === '일반' && (
+                                {(currentTab?.type === '태아' || currentTab?.type === '일반') && (
                                   <FormCell title="(실손)동시설계">
                                     <Input aria-label="코드" width={131} value={'LA12345678901234'} readOnly />
                                     <Input aria-label="코드" width={120} value={11189492940} commaAmount readOnly />
@@ -1346,7 +1368,7 @@ export const Ltpa35001 = ({ simpleMode: _simpleMode, showRenewalCycle = true }: 
                               </FormRow>
                               <FormRow>
                                 <FormCell title="실손보상구분">
-                                  <NativeSelect aria-label="실손보상구분" width={200} required>
+                                  <NativeSelect aria-label="실손보상구분" width={180} required>
                                     {[{ value: 'selection', id: 'property-reimbursement-1', label: '선택' }].map(
                                       (option) => (
                                         <NativeSelectOption key={option.id} value={option.value}>

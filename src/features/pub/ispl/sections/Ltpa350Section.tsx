@@ -184,9 +184,14 @@ const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
 export interface Ltpa350SectionProps {
   memoButtonColor?: 'gray' | 'primary';
   showRenewalCycle?: boolean;
+  showContractConversion?: boolean;
 }
 
-export default function Ltpa350Section({ memoButtonColor, showRenewalCycle = true }: Ltpa350SectionProps = {}) {
+export default function Ltpa350Section({
+  memoButtonColor,
+  showRenewalCycle = true,
+  showContractConversion = false,
+}: Ltpa350SectionProps = {}) {
   // simpleMode: 페이지를 간략 모드로 보여줄지 여부 (PageTitle와 step별 본문에서 같이 사용)
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
 
@@ -226,7 +231,13 @@ export default function Ltpa350Section({ memoButtonColor, showRenewalCycle = tru
   // - `simpleMode`: 1/3단계에서 간략 UI 여부 제어
   // - `onIsWidthExpandedChange`: 2단계에서 본문 폭 변경 시 상위의 aside 표시 정책 동기화
   const stepMainBody: Record<number, ReactNode> = {
-    1: <Ltpa35001 simpleMode={simpleMode} showRenewalCycle={showRenewalCycle} />,
+    1: (
+      <Ltpa35001
+        simpleMode={simpleMode}
+        showRenewalCycle={showRenewalCycle}
+        showContractConversion={showContractConversion}
+      />
+    ),
     2: <Ltpa35002 onIsWidthExpandedChange={setIsWidthExpanded} />,
     3: <Ltpa35003 simpleMode={simpleMode} />,
     4: <Ltpa35004 />,
