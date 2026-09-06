@@ -279,7 +279,7 @@ const Ltpz042 = () => {
                   <FormCell title={'유자격자명'}>
                     <Input
                       aria-label="유자격자명 입력"
-                      width={'16rem'}
+                      width={'14rem'}
                       value={form.type02}
                       onChange={(e) => setFormField('type02', e.target.value)}
                     />
