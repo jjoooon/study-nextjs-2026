@@ -380,9 +380,9 @@ const Ltpz086 = () => {
           </TableFold>
 
           {/* 섹션 2: 기계약 사항 */}
-          <TableFold>
+          <TableFold className="grid-rows-[auto_minmax(0,1fr)] h-full">
             <TableFoldHead title="기계약 사항" />
-            <TableFoldBody>
+            <TableFoldBody className="h-full min-h-0">
               <div className="ag-theme-alpine min-h-[30vh]">
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}

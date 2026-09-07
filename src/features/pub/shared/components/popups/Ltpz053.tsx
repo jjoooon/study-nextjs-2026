@@ -65,7 +65,8 @@ const Ltpz053 = () => {
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = [
     {
       headerName: '고객명',
-      width: attributeColumnWidth(150),
+      minWidth: attributeColumnWidth(150),
+      flex: 1,
       field: 'field01',
       cellClass: 'text-center !px-0',
       autoHeight: true,
@@ -73,7 +74,7 @@ const Ltpz053 = () => {
     },
     {
       headerName: '실명증표진위여부 확인서',
-      flex: 1,
+      flex: 10,
       field: 'field02',
       cellClass: 'text-center ',
       autoHeight: true,
@@ -81,7 +82,8 @@ const Ltpz053 = () => {
     },
     {
       headerName: '타인사망피보험자 동의확인서',
-      width: attributeColumnWidth(200),
+      minWidth: attributeColumnWidth(200),
+      flex: 1,
       field: 'field04',
       cellClass: 'text-center',
       autoHeight: true,
@@ -263,7 +265,7 @@ const Ltpz053 = () => {
           <TableFold variant="accordion">
             <TableFoldHead title="신원확인결과"></TableFoldHead>
             <TableFoldBody>
-              <FormTable caption="월클릭스켄" cols={['w-[7rem]', 'w-auto', 'w-[7rem]', 'w-auto']}>
+              <FormTable caption="원클릭스켄" cols={['w-[7rem]', 'w-auto', 'w-[7rem]', 'w-auto']}>
                 <FormRow>
                   <FormCell title={'진위여부'}>
                     <Input aria-label="" value={'Y'} readOnly width={'4rem'} />

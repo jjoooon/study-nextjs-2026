@@ -503,7 +503,7 @@ const Ltpz059 = () => {
 
     const isSelected = params.node.isSelected();
 
-    params.node.setSelected(!isSelected);
+    params.node.setSelected(true);
   };
 
   /**
@@ -756,7 +756,7 @@ const Ltpz059 = () => {
                       rowSelection={{
                         mode: 'singleRow',
                         checkboxes: true,
-                        enableClickSelection: false,
+                        enableClickSelection: 'enableSelection',
                       }}
                       selectionColumnDef={{
                         headerName: '선택',
