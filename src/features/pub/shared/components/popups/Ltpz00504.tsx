@@ -7,6 +7,7 @@ import '@/shared/lib/agGridPub';
 import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -17,13 +18,19 @@ import { Button } from '@uiux/Button';
 import Ltpz0050401 from './Ltpz0050401';
 export type Ltpz005TabValue = 'common' | 'accum' | 'job' | 'expected-uw';
 
+interface Ltpz00504Props {
+  onClose?: () => void;
+  recommendData?: ExpectedUwRecommendItem[];
+}
+
 type ExpectedUwRecommendItem = {
   id: number;
-  isChecked: boolean;
+  isChecked?: boolean;
   type: string;
-  title: string;
+  title: React.ReactNode;
   plan: string[];
-  list: string[];
+  price?: string;
+  list?: string[];
 };
 
 type ExpectedUwAmountRow = {
@@ -86,42 +93,37 @@ const expectedUwExclusionCoverageData: ExpectedUw03Row[] = [
     date: '5년 0개월',
   },
 ];
+const title1 = "<b>현재 설계상품</b>내에서 <b>'인수'</b>예상 고지유형";
+const title2 = "<b>간편고지유형</b>내에서 <b>'인수'</b>예상 고지유형";
+const title3 = "<b>일반고지유형</b>내에서 <b>'인수/할증/부담보/감액'</b>예상 고지유형";
 const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   {
     id: 1,
     isChecked: false,
-    type: '인수가능',
-    title: '한화 시그니처 여성 간편건강보험4.0 무배당2604',
-    plan: ['납입면제형', '납입후50%해약환급금지급형', '3N5간편고지형'],
-    list: ['(올케어플랜)(4~5형)(15-80세)', '100세만기', '3형(345간편고지형)'],
+    type: '인수',
+    title: title1,
+    plan: ['일반고지형'],
+    price: '34,000원',
   },
   {
     id: 2,
     isChecked: false,
-    type: '인수가능',
-    title: '한화 3N5 더간편건강보험(세만기형) 무배당2604',
-    plan: ['납입후50%해약환급금지급형', '납입면제 운영형', '3N5간편고지형Ⅲ'],
-    list: [
-      '(프리미엄올인원플랜)(1.7.8.9형)(15-80세)',
-      '100세만기',
-      '1형(355간편고지형)(올인원플랜)(1.7.8.9형)(15-80세)',
-    ],
+    type: '인수',
+    title: title2,
+    plan: ['9형(3,10,5간편고지형(고혈압및당뇨추가고지))'],
+    price: '60,000원',
   },
   {
     id: 3,
     isChecked: false,
-    type: '인수가능',
-    title: '한화 시그니처 여성 건강보험3.0 2504',
-    plan: ['납입면제형', '납입후50%해약환급금지급형[할증운영상품]'],
-    list: ['올인원플랜(15-80세)', '100세만기 월납 / 20년납', '1형(일반고지형)'],
+    type: '조건부인수',
+    title: title3,
+    plan: ['일반고지형'],
+    price: '30,000원',
   },
 ];
 
-interface Ltpz00504Props {
-  onClose?: () => void;
-}
-
-const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
+const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [aiReasonOpen, setAiReasonOpen] = React.useState(false);
 
@@ -195,7 +197,13 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
   const [expectedUwExclusionCoverageRowData] = React.useState<ExpectedUw03Row[]>(expectedUwExclusionCoverageData);
 
   // AI 추천 설계안 체크 여부 상태 관리
-  const [recommendData, setRecommendData] = React.useState<ExpectedUwRecommendItem[]>(expectedUwRecommendData);
+  const [recommendData, setRecommendData] = React.useState<ExpectedUwRecommendItem[]>(
+    propRecommendData ?? expectedUwRecommendData
+  );
+
+  React.useEffect(() => {
+    setRecommendData(propRecommendData ?? expectedUwRecommendData);
+  }, [propRecommendData]);
 
   // 체크된 수 계산
   const checkedCount = React.useMemo(() => {
@@ -415,27 +423,72 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
             </Gcol>
             <Gcol>
               <TableFold>
-                <TableFoldHead title="대안설계"></TableFoldHead>
+                <TableFoldHead title="대안설계">
+                  {recommendData && recommendData.length > 0 && (
+                    <Typo variant={'body-sm'} icon={'info'}>
+                      본 대안설계는 예상UW결과기반의 참고정보로, 실제 심사결과 및 인수조건과 다를 수 있습니다.
+                    </Typo>
+                  )}
+                </TableFoldHead>
                 <TableFoldBody className="w-full">
-                  <Grid className="w-full mb-[1rem] grid-cols-3" gap={3}>
-                    {recommendData.map((item) => (
-                      <RecommendCard
-                        key={item.id}
-                        onAiReasonClick={() => setAiReasonOpen(true)}
-                        type={item.type}
-                        title={item.title}
-                        list={item.list}
-                        plan={item.plan}
-                        variant={'checkbox'}
-                        checked={item.isChecked}
-                        onCheckedChange={(checked) => {
-                          setRecommendData((prev) =>
-                            prev.map((d) => (d.id === item.id ? { ...d, isChecked: checked } : d))
-                          );
-                        }}
-                      />
-                    ))}
-                  </Grid>
+                  {recommendData && recommendData.length > 0 ? (
+                    <Gcol className="w-full gap-1">
+                      <Grid className="w-full grid-cols-3" gap={3}>
+                        {recommendData.map((item) => (
+                          <RecommendCard
+                            key={item.id}
+                            onAiReasonClick={() => setAiReasonOpen(true)}
+                            type={item.type}
+                            title={item.title}
+                            list={item.list}
+                            plan={item.plan}
+                            price={item.price}
+                          />
+                        ))}
+                      </Grid>
+                      <Grow gap={1} className="w-full justify-end">
+                        <Grow placement="es" className="w-[33rem]">
+                          <Typo variant={'body-sm'} icon={'warning'} className="text-[#E43939]">
+                            할증 반영 전 예상보험료로 최종 심사결과에 따라 변경될 수 있습니다.
+                          </Typo>
+                        </Grow>
+                      </Grow>
+                    </Gcol>
+                  ) : (
+                    <Grow className="w-full bg-[#F4F4F4] rounded-[0.8rem] items-end justify-center min-h-[14rem]">
+                      <Grow>
+                        <img
+                          src={withPublicUrl('/images/Ltpa005/ltpz00504.png')}
+                          alt=""
+                          className="w-[10rem] h-[12rem] object-contain shrink-0"
+                        />
+                        <Gcol placement="ss" gap={1}>
+                          <Typo tag="strong" variant="body-md" className="text-[#000] font-bold">
+                            [운영 비대상]
+                          </Typo>
+                          <Typo tag="p" variant="body-md" className="text-[#414141]">
+                            대안설계 운영 대상이 아닙니다.
+                          </Typo>
+                        </Gcol>
+                        <Gcol placement="ss" gap={1}>
+                          <Typo tag="strong" variant="body-md" className="text-[#000] font-bold">
+                            [필수정보 누락]
+                          </Typo>
+                          <Typo tag="p" variant="body-md" className="text-[#414141]">
+                            대안설계 전달이 어렵습니다.
+                          </Typo>
+                        </Gcol>
+                        <Gcol placement="ss" gap={1}>
+                          <Typo tag="strong" variant="body-md" className="text-[#000] font-bold">
+                            [예상UW결과 미충족]
+                          </Typo>
+                          <Typo tag="p" variant="body-md" className="text-[#414141]">
+                            대안설계 안내 대상이 아닙니다.
+                          </Typo>
+                        </Gcol>
+                      </Grow>
+                    </Grow>
+                  )}
                 </TableFoldBody>
               </TableFold>
             </Gcol>

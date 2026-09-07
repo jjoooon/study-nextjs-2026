@@ -3,30 +3,59 @@
  */
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Gcol, Grow, Grid, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
 import { AiIcon, CircleCheckIcon } from '@icons';
-import { Checkbox } from '@uiux/Checkbox';
-import { Badge } from '../uiux/Badge';
+import { Badge2 } from '../uiux/Badge2';
 import { Button } from '../uiux/Button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../uiux/Tooltip';
+
+/**
+ * 가입가능 여부(인수, 조건부인수 등) 텍스트 및 뱃지 스타일 렌더링 헬퍼
+ */
+const getPossibilityBadgeStyle = (possibility?: string | string[]) => {
+  if (!possibility) return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
+
+  const rawText = Array.isArray(possibility) ? possibility.filter(Boolean).join(',') : possibility;
+  const clean = rawText.replace(/^[0-9]/, '').trim();
+
+  if (!clean) return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
+
+  const label = clean.startsWith('예상') ? clean : `예상 : ${clean}`;
+
+  if (clean.includes('조건부') || clean.includes('할증') || clean.includes('부담보') || clean.includes('감액')) {
+    return { color: 'yellow' as const, iconColor: '#FFB800', label };
+  }
+  if (clean.includes('거절')) {
+    return { color: 'red' as const, iconColor: '#E53E3E', label };
+  }
+  if (clean.includes('인수')) {
+    return { color: 'green' as const, iconColor: '#00B050', label };
+  }
+  if (clean.includes('심사') || clean.includes('적부')) {
+    return { color: 'blue' as const, iconColor: '#006FF2', label };
+  }
+
+  return { color: 'green' as const, iconColor: '#00B050', label };
+};
 
 export type RecommendCardDataItem = {
   id: number;
-  type: string;
-  title: string;
-  plan: string[];
+  type?: string;
+  title?: ReactNode;
+  plan?: string[] | string;
+  price?: string;
   list?: string[];
+  isChecked?: boolean;
 };
 
 type RecommendCardNormalProps = {
   variant?: 'normal' | 'checkbox';
   className?: string;
   recommendData?: RecommendCardDataItem[];
-  title?: string;
+  title?: ReactNode;
   type?: string;
-  plan?: string[];
+  plan?: string[] | string;
+  price?: string;
   list?: string[];
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -43,6 +72,7 @@ type RecommendCardFreeProps = {
   title?: never;
   type?: never;
   plan?: never;
+  price?: never;
   list?: never;
   checked?: never;
   onCheckedChange?: never;
@@ -52,11 +82,12 @@ type RecommendCardFreeProps = {
 export type RecommendCardProps = RecommendCardNormalProps | RecommendCardFreeProps;
 
 type NormalRecommendCardItemProps = {
-  variant: 'normal' | 'checkbox';
+  variant?: 'normal' | 'checkbox';
   className?: string;
-  title?: string;
+  title?: ReactNode;
   type?: string;
-  plan?: string[];
+  plan?: string[] | string;
+  price?: string;
   list?: string[];
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
@@ -64,119 +95,76 @@ type NormalRecommendCardItemProps = {
 };
 
 function NormalRecommendCardItem({
-  variant,
   className,
-  title = '',
-  type = '',
-  plan = [],
-  list = [],
-  checked,
-  onCheckedChange,
+  title,
+  type,
+  plan,
+  price,
   onAiReasonClick,
 }: NormalRecommendCardItemProps) {
-  const [internalChecked, setInternalChecked] = useState(false);
-  const isChecked = checked ?? internalChecked;
+  const { color, iconColor, label } = getPossibilityBadgeStyle(type);
+  const planText = Array.isArray(plan) && plan.length > 0 ? plan.join(', ') : typeof plan === 'string' ? plan : '';
 
   return (
     <Grid
-      className={`relative p-px w-full rounded-[0.8rem] bg-linear-to-b from-[#E5E5E5] from-[47.33%] to-[#61554F] to-100%${className ? ` ${className}` : ''}`}
+      className={`relative w-full h-full rounded-[1rem] bg-white border border-[#E2E8F0] shadow-[0_0.2rem_0.4rem_rgba(0,0,0,0.06)] overflow-hidden flex flex-col justify-between grid-rows-[1fr_auto] gap-0${
+        className ? ` ${className}` : ''
+      }`}
     >
-      <Grid className={'rounded-[0.8rem] grid-rows-[1fr_auto] w-full bg-[#817772] gap-0'}>
-        <Gcol
-          className="relative overflow-visible bg-white rounded-[0.8rem] w-full pt-[2rem] pb-[1.2rem] px-4 shadow-[0_0.4rem_0.4rem_0_rgba(0,0,0,0.1)] [&>div]:[position:initial]"
-          placement="bws"
-          gap={2}
-        >
-          <Gcol placement="ss" gap={2}>
-            <Grow className="w-full" placement="bwc">
-              <Badge size="md" variant="rounded" className="text-[#006FF2] bg-[#E0EFFF] h-[2.2rem] px-[0.6rem]">
-                <CircleCheckIcon color="#006FF2" />
-                {type}
-              </Badge>
-              {variant === 'checkbox' ? (
-                <Checkbox
-                  checked={isChecked}
-                  className={`absolute right-0`}
-                  color="primary"
-                  onCheckedChange={(nextChecked) => {
-                    const nextValue = nextChecked === true;
-                    if (checked === undefined) {
-                      setInternalChecked(nextValue);
-                    }
-                    onCheckedChange?.(nextValue);
-                  }}
-                  variant="noneText"
-                >
-                  단일
-                </Checkbox>
-              ) : null}
-            </Grow>
-            <Gcol className="w-full" gap={0.5} placement={'ss'}>
-              <Gcol className="w-full" gap={2}>
-                <Typo tag={'strong'} variant={'body-xl'} className="w-full h-[2rem] text-[#000] overflow-hidden">
-                  <Tooltip>
-                    <TooltipTrigger>{title}</TooltipTrigger>
-                    <TooltipContent align="center" side="top" sideOffset={0} variant="default">
-                      {title}
-                    </TooltipContent>
-                  </Tooltip>
-                </Typo>
-                <Grow className="w-full flex flex-col" placement="ss">
-                  {plan && plan.length > 0
-                    ? plan.map((item, index) => (
-                        <Typo key={index} tag={'p'} variant={'body-xs'} className="text-[#414141]">
-                          {item}
-                        </Typo>
-                      ))
-                    : null}
-                </Grow>
-              </Gcol>
-            </Gcol>
+      <Gcol className="p-[1.6rem] w-full h-[18rem]" placement="ss">
+        <Gcol className="w-full" placement="ss" gap={2}>
+          <Grow className="w-full justify-start">
+            <Badge2 color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
+              <CircleCheckIcon size={12} color={iconColor} />
+              {label}
+            </Badge2>
+          </Grow>
+
+          <Gcol className="w-full" placement="ss" gap={2}>
+            <Typo tag="strong" variant="body-xl" className="w-full font-normal text-[1.4rem] text-[#000] h-[4.6rem]">
+              {typeof title === 'string' && title.includes('<') ? (
+                <span dangerouslySetInnerHTML={{ __html: title }} />
+              ) : (
+                title
+              )}
+            </Typo>
           </Gcol>
-          {variant === 'normal' ? (
-            <Grow className="w-full rounded-[0.8rem] bg-[#F4F4F4] px-[1rem] py-[1rem]" placement="sc">
-              <BulletList>
-                {list && list.length > 0
-                  ? list.map((item, index) => (
-                      <BulletListItem key={index} size={'sm'} type={'dotBig'} className="text-[#000]!">
-                        {item}
-                      </BulletListItem>
-                    ))
-                  : null}
-              </BulletList>
-            </Grow>
-          ) : null}
-          {variant === 'checkbox' ? (
-            <Grow
-              className="w-full rounded-[0.8rem] bg-[#F4F4F4] px-[1rem] py-[1rem] min-h-[5.4rem] items-start"
-              placement="sc"
-            >
-              <BulletList>
-                {list && list.length > 0
-                  ? list.map((item, index) => (
-                      <BulletListItem key={index} size={'sm'} type={'dotBig'} className="text-[#000]!">
-                        {item}
-                      </BulletListItem>
-                    ))
-                  : null}
-              </BulletList>
-            </Grow>
-          ) : null}
         </Gcol>
-        <Grow className="w-full h-[3.7rem]" placement="cc">
-          <Button
-            color="primary"
-            className="text-white font-bold"
-            onClick={() => onAiReasonClick?.()}
-            only="default"
-            size="lg"
-            variant="none"
+
+        <Gcol>
+          {planText ? (
+            <Typo tag="p" variant="body-xs" className="text-[#414141] text-[1.2rem] items-start w-full">
+              {planText}
+            </Typo>
+          ) : null}
+          <Grow
+            className="w-full bg-[#FFF5F2] rounded-[0.8rem] px-[1.4rem] py-[1.2rem] items-center justify-end gap-2"
+            placement="sc"
           >
-            <AiIcon color={'#FFFFFF'} color2={'#FFFFFF'} />
-            AI 추천이유
-          </Button>
-        </Grow>
-      </Grid>
+            <Typo tag="span" variant="body-sm">
+              예상보험료
+            </Typo>
+            <Typo tag="strong" className="text-[#FF5C2E] font-bold text-[1.8rem]">
+              {price}
+            </Typo>
+          </Grow>
+        </Gcol>
+      </Gcol>
+
+      {/* 하단 버튼 */}
+      <Grow className="w-full h-[4rem]" placement="cc">
+        <Button
+          color="primary"
+          className="w-full h-[4rem] bg-[#7B736E] hover:bg-[#69615C] text-white font-bold text-[1.3rem] flex items-center justify-center gap-1.5 rounded-b-[0.8rem] rounded-t-none transition-colors cursor-pointer"
+          onClick={() => onAiReasonClick?.()}
+          only="default"
+          size="lg"
+          variant="none"
+        >
+          <AiIcon color={'#FFFFFF'} color2={'#FFFFFF'} />
+          대안상품 비교설계
+        </Button>
+      </Grow>
     </Grid>
   );
 }
@@ -208,9 +196,10 @@ export function RecommendCard(props: RecommendCardProps) {
     className,
     recommendData,
     variant = 'normal',
-    title = '',
-    type = '',
-    plan = [],
+    title,
+    type,
+    plan,
+    price,
     list = [],
     checked,
     onCheckedChange,
@@ -228,6 +217,7 @@ export function RecommendCard(props: RecommendCardProps) {
             title={item.title}
             type={item.type}
             plan={item.plan}
+            price={item.price}
             list={item.list}
             onAiReasonClick={onAiReasonClick}
           />
@@ -243,6 +233,7 @@ export function RecommendCard(props: RecommendCardProps) {
       title={title}
       type={type}
       plan={plan}
+      price={price}
       list={list}
       checked={checked}
       onCheckedChange={onCheckedChange}
