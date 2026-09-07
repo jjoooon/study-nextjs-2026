@@ -1158,7 +1158,7 @@ export const Ltpa35001 = ({
                                           aria-label="주민등록번호 마스킹"
                                           width={114}
                                           value={'000000-0******'}
-                                          readOnly
+                                          required
                                         />
                                         <Button
                                           aria-label="소유자 검색"
@@ -1169,7 +1169,7 @@ export const Ltpa35001 = ({
                                         >
                                           <SearchIcon color={'var(--color-primary-50)'} />
                                         </Button>
-                                        <Input
+                                        {/* <Input
                                           aria-label="소유자 나이"
                                           width={53}
                                           value={'134세'}
@@ -1182,7 +1182,11 @@ export const Ltpa35001 = ({
                                           value={'남'}
                                           align="center"
                                           readOnly
-                                        />
+                                        /> */}
+                                        {/*여기 */}
+                                        <Button color="secondary" size="lg" variant="outlined" onClick={() => {}}>
+                                          고객등록
+                                        </Button>
                                       </Grow>
                                       <Grow gap={2}>
                                         <Checkbox color="primary">계약자와 동일</Checkbox>
