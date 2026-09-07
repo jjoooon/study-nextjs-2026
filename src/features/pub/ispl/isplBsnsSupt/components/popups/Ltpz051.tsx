@@ -116,6 +116,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
           headerName: '상해급수',
           minWidth: attributeColumnWidth(60),
           flex: 1,
+          field: 'field04',
           cellClass: 'text-center px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyData1Type>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field04 ?? '')}</Typo>
@@ -124,6 +125,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
         {
           headerName: '직업',
           flex: 5,
+          field: 'field05',
           cellClass: 'text-center px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyData1Type>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field05 ?? '')}</Typo>
@@ -144,6 +146,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
           headerName: '상해급수',
           minWidth: attributeColumnWidth(60),
           flex: 1,
+          field: 'field06',
           cellClass: 'text-center px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyData1Type>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field06 ?? '')}</Typo>
@@ -152,6 +155,7 @@ const Ltpz051 = ({ data, loading }: Ltpz051Props) => {
         {
           headerName: '직업',
           flex: 5,
+          field: 'field07',
           cellClass: 'text-center px-0! whitespace-nowrap',
           cellRenderer: (params: ICellRendererParams<DummyData1Type>) => (
             <Typo className="whitespace-nowrap">{String(params.data?.field07 ?? '')}</Typo>
