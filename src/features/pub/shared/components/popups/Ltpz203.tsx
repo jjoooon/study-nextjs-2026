@@ -19,7 +19,7 @@ import {
   NoteIcon,
   ShieldIcon,
 } from '@icons';
-import { Badge } from '@uiux/Badge';
+import { Badge2, getBadge2ColorByText } from '@uiux/Badge2';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 
@@ -36,6 +36,59 @@ import {
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 /**
+ * 동일한 색상 그룹의 태그들을 묶어서 하나의 Badge2로 렌더링하는 헬퍼 함수
+ * 예: ['부담보', '할증', '감액'] -> <Badge2 color="yellow">부담보 · 할증 · 감액</Badge2>
+ */
+const renderGroupedBadge2 = (tags?: string[]) => {
+  if (!tags || tags.length === 0) return null;
+
+  const groups: { color: string; items: string[] }[] = [];
+
+  tags.forEach((tag) => {
+    const color = getBadge2ColorByText(tag) ?? 'gray';
+    const lastGroup = groups[groups.length - 1];
+
+    if (lastGroup && lastGroup.color === color) {
+      lastGroup.items.push(tag);
+    } else {
+      groups.push({ color, items: [tag] });
+    }
+  });
+
+  return groups.map((group, idx) => (
+    <Badge2 key={idx} color={group.color as any}>
+      {group.items.join(' · ')}
+    </Badge2>
+  ));
+};
+
+/**
+ * 가입가능 여부(인수, 조건부인수 등) 텍스트 및 뱃지 스타일 렌더링 헬퍼
+ * - '예상 : ' 접두사 고정
+ * - '인수'일 때 green, '조건부인수'일 때 yellow 등
+ */
+const getPossibilityBadgeStyle = (possibility?: string) => {
+  if (!possibility) return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
+
+  const clean = possibility.replace(/^[0-9]/, '').trim();
+
+  if (clean.includes('조건부')) {
+    return { color: 'yellow' as const, iconColor: '#FFB800', label: '예상 : 조건부인수' };
+  }
+  if (clean.includes('거절')) {
+    return { color: 'red' as const, iconColor: '#E53E3E', label: '예상 : 거절' };
+  }
+  if (clean.includes('인수')) {
+    return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
+  }
+  if (clean.includes('심사') || clean.includes('적부')) {
+    return { color: 'blue' as const, iconColor: '#006FF2', label: `예상 : ${clean}` };
+  }
+
+  return { color: 'green' as const, iconColor: '#00B050', label: `예상 : ${clean}` };
+};
+
+/**
  * 비교 옵션 타입 정의
  */
 type OptionType = { 옵션1: string } | { 옵션2: string } | { 옵션3: string[] } | { 옵션4: string };
@@ -45,9 +98,39 @@ type OptionType = { 옵션1: string } | { 옵션2: string } | { 옵션3: string[
  */
 type InfoDataType = {
   id: number;
+  유형: 'type1' | 'type2' | 'type3' | string;
   담보명: string;
+  tag: string[];
   가능: string;
   옵션: OptionType[];
+};
+
+/**
+ * 고지 유형별 문구 반환 헬퍼 함수
+ */
+const getNoticeTypeLabel = (type?: string, fallback: React.ReactNode = null): React.ReactNode => {
+  switch (type) {
+    case 'type1':
+      return (
+        <Typo tag="p" className="text-[1.5rem] font-normal">
+          <b className="font-bold">현재 설계상품내</b>에서 <b>&apos;인수&apos;</b>예상 고지 유형
+        </Typo>
+      );
+    case 'type2':
+      return (
+        <Typo tag="p" className="text-[1.5rem] font-normal">
+          <b className="font-bold">일반고지유형내</b>에서 <b>&apos;인수/할증/부담보/감액&apos;예상</b> 고지 유형
+        </Typo>
+      );
+    case 'type3':
+      return (
+        <Typo tag="p" className="text-[1.5rem] font-normal">
+          <b className="font-bold">간편고지유형내</b>에서 <b>&apos;인수&apos;</b>예상 고지 유형
+        </Typo>
+      );
+    default:
+      return fallback;
+  }
 };
 
 /**
@@ -55,8 +138,52 @@ type InfoDataType = {
  */
 const InfoData: InfoDataType = {
   id: 1,
+  유형: '',
   담보명: '한화 시그니처 여성 건강보험4.0 2504 ',
   가능: '인수가능',
+  tag: ['인수'],
+  옵션: [
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
+  ],
+};
+
+const InfoData1: InfoDataType = {
+  id: 1,
+  유형: 'type1',
+  담보명: '1한화 시그니처 여성 건강보험4.0 2504 ',
+  가능: '1인수가능',
+  tag: ['인수'],
+  옵션: [
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
+  ],
+};
+
+const InfoData2: InfoDataType = {
+  id: 1,
+  유형: 'type2',
+  담보명: '2한화 시그니처 여성 건강보험4.0 2504 ',
+  가능: '2조건부인수',
+  tag: ['심사', '거절', '부담보', '할증', '감액'],
+  옵션: [
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
+  ],
+};
+
+const InfoData3: InfoDataType = {
+  id: 1,
+  유형: 'type3',
+  담보명: '3한화 시그니처 여성 건강보험4.0 2504 ',
+  가능: '3인수가능',
+  tag: ['부담보', '할증', '감액'],
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
@@ -319,6 +446,8 @@ const Ltpz203 = () => {
                   <Grid className="p-[1.6rem] gap-5 grid-rows-[1fr_auto]" placement="ss">
                     <Gcol className="gap-2" placement="ss">
                       <Gcol placement="ss">
+                        {getNoticeTypeLabel(InfoData.유형)}
+
                         <Typo tag="h3" variant={'body-xl'} weight={'bold'} className="">
                           {InfoData.담보명}
                         </Typo>
@@ -427,7 +556,7 @@ const Ltpz203 = () => {
 
             {/* [우측 영역] 가로 스크롤 가능한 비교설계 카드 3개 */}
             <Grow placement="ss" className="overflow-y-hidden overflow-x-auto h-full pb-[1rem]" gap={3}>
-              {[...Array(3)].map((_, i) => (
+              {[InfoData1, InfoData2, InfoData3].map((infoData, i) => (
                 <CardBox
                   color="var(--color-information-50)"
                   bottom={
@@ -438,7 +567,7 @@ const Ltpz203 = () => {
                   key={i}
                 >
                   <Grid className="p-[1.6rem] gap-5 grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden" placement="ss">
-                    <Gcol placement="ss">
+                    <Gcol placement="ss" className="">
                       {/* 비교설계 적용 대상 선택 체크박스 및 변경 버튼 */}
                       <Grow placement="ss" className="w-full">
                         <Checkbox color={'info'} aria-label="선택" className="gap-x-2!">
@@ -447,15 +576,29 @@ const Ltpz203 = () => {
                             대안설계{i + 1}
                           </Typo>
                         </Checkbox>
-                        <Badge color="blue" className="h-[2.2rem] rounded-full text-[1.1rem] leading-[1] px-[0.6rem]">
-                          <CircleCheckIcon size={12} color="var(--color-information-50)" />
-                          인수가능1
-                        </Badge>
+                        {(() => {
+                          const { color, iconColor, label } = getPossibilityBadgeStyle(infoData.가능);
+                          return (
+                            <Badge2 color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
+                              <CircleCheckIcon size={12} color={iconColor} />
+                              {label}
+                            </Badge2>
+                          );
+                        })()}
                       </Grow>
-                      <Gcol placement="ss">
-                        <Typo tag="h3" variant={'body-md'} weight={'bold'}>
-                          {InfoData.담보명}
-                        </Typo>
+                      <Gcol placement="bws" className="h-[8.8rem]">
+                        <Gcol placement="ss">
+                          {getNoticeTypeLabel(infoData.유형)}
+                          <Grow className="gap-1 flex-wrap">
+                            <Badge2 color="gray">예상UW</Badge2>
+                            {renderGroupedBadge2(infoData.tag)}
+                          </Grow>
+                        </Gcol>
+                        <Gcol placement="ss">
+                          <Typo tag="h3" variant={'body-md'} weight={'bold'}>
+                            {infoData.담보명}
+                          </Typo>
+                        </Gcol>
                       </Gcol>
 
                       {/* 비교설계 콤보박스(NativeSelect) 영역 (납기/만기/갱신형 등 가입조건 조율) */}
