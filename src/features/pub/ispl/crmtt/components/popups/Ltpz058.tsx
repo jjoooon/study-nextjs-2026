@@ -7,7 +7,7 @@ import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { SearchIcon } from '@/shared/components/icons/CommonIcons';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, useDynamicColumnWidths, createGroupHeaderWithSort } from '@aggrid';
 import { Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -128,11 +128,7 @@ const Ltpz058 = () => {
     },
     {
       headerName: '영위업종',
-      headerGroupComponent: () => (
-        <Grow placement="cc" className="w-full">
-          <span className="font-bold text-[1.3rem]!">영위업종</span>
-        </Grow>
-      ),
+      headerGroupComponent: createGroupHeaderWithSort('field4'),
       flex: 10,
       cellClass: 'text-center',
       children: [
@@ -148,6 +144,7 @@ const Ltpz058 = () => {
           field: 'field4',
           flex: 10,
           cellClass: 'text-left',
+          sortable: true,
         },
       ],
     },
@@ -156,11 +153,7 @@ const Ltpz058 = () => {
   const columnDefsBusinessTypeOnly: (ColDef<DummyDataTypeAll> | ColGroupDef<DummyDataTypeAll>)[] = [
     {
       headerName: '영위업종',
-      headerGroupComponent: () => (
-        <Grow placement="cc" className="w-full">
-          <span className="font-bold text-[1.3rem]!">영위업종</span>
-        </Grow>
-      ),
+      headerGroupComponent: createGroupHeaderWithSort('field4'),
       flex: 1,
       cellClass: 'text-center',
       children: [
@@ -176,6 +169,7 @@ const Ltpz058 = () => {
           field: 'field4',
           flex: 10,
           cellClass: 'text-left',
+          sortable: true,
         },
       ],
     },
@@ -241,7 +235,7 @@ const Ltpz058 = () => {
                     rowData={DummyDataA}
                     columnDefs={columnDefsA}
                     defaultColDef={{
-                      sortable: false,
+                      sortable: true,
                       resizable: false,
                     }}
                     singleClickEdit={true}
@@ -256,7 +250,7 @@ const Ltpz058 = () => {
                     rowData={DummyDataB}
                     columnDefs={columnDefsB}
                     defaultColDef={{
-                      sortable: false,
+                      sortable: true,
                       resizable: false,
                     }}
                     singleClickEdit={true}
@@ -271,7 +265,7 @@ const Ltpz058 = () => {
                     rowData={DummyDataAll}
                     columnDefs={columnDefsBusinessTypeOnly}
                     defaultColDef={{
-                      sortable: false,
+                      sortable: true,
                       resizable: false,
                     }}
                     singleClickEdit={true}
