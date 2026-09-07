@@ -57,7 +57,7 @@ const renderGroupedBadge2 = (tags?: string[]) => {
 
   return groups.map((group, idx) => (
     <Badge2 key={idx} color={group.color as any}>
-      {group.items.join(' · ')}
+      {group.items.join(', ')}
     </Badge2>
   ));
 };
@@ -65,27 +65,32 @@ const renderGroupedBadge2 = (tags?: string[]) => {
 /**
  * 가입가능 여부(인수, 조건부인수 등) 텍스트 및 뱃지 스타일 렌더링 헬퍼
  * - '예상 : ' 접두사 고정
- * - '인수'일 때 green, '조건부인수'일 때 yellow 등
+ * - '인수'일 때 green, '조건부인수' / '할증' / '부담보' / '감액'일 때 yellow 등
  */
-const getPossibilityBadgeStyle = (possibility?: string) => {
+export const getPossibilityBadgeStyle = (possibility?: string | string[]) => {
   if (!possibility) return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
 
-  const clean = possibility.replace(/^[0-9]/, '').trim();
+  const rawText = Array.isArray(possibility) ? possibility.filter(Boolean).join(',') : possibility;
+  const clean = rawText.replace(/^[0-9]/, '').trim();
 
-  if (clean.includes('조건부')) {
-    return { color: 'yellow' as const, iconColor: '#FFB800', label: '예상 : 조건부인수' };
+  if (!clean) return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
+
+  const label = `예상 : ${clean}`;
+
+  if (clean.includes('조건부') || clean.includes('할증') || clean.includes('부담보') || clean.includes('감액')) {
+    return { color: 'yellow' as const, iconColor: '#FFB800', label };
   }
   if (clean.includes('거절')) {
-    return { color: 'red' as const, iconColor: '#E53E3E', label: '예상 : 거절' };
+    return { color: 'red' as const, iconColor: '#E53E3E', label };
   }
   if (clean.includes('인수')) {
-    return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
+    return { color: 'green' as const, iconColor: '#00B050', label };
   }
   if (clean.includes('심사') || clean.includes('적부')) {
-    return { color: 'blue' as const, iconColor: '#006FF2', label: `예상 : ${clean}` };
+    return { color: 'blue' as const, iconColor: '#006FF2', label };
   }
 
-  return { color: 'green' as const, iconColor: '#00B050', label: `예상 : ${clean}` };
+  return { color: 'green' as const, iconColor: '#00B050', label };
 };
 
 /**
@@ -98,6 +103,7 @@ type OptionType = { 옵션1: string } | { 옵션2: string } | { 옵션3: string[
  */
 type InfoDataType = {
   id: number;
+  예상: string[];
   유형: 'type1' | 'type2' | 'type3' | string;
   담보명: string;
   tag: string[];
@@ -138,6 +144,7 @@ const getNoticeTypeLabel = (type?: string, fallback: React.ReactNode = null): Re
  */
 const InfoData: InfoDataType = {
   id: 1,
+  예상: [''],
   유형: '',
   담보명: '한화 시그니처 여성 건강보험4.0 2504 ',
   가능: '인수가능',
@@ -152,6 +159,7 @@ const InfoData: InfoDataType = {
 
 const InfoData1: InfoDataType = {
   id: 1,
+  예상: ['인수'],
   유형: 'type1',
   담보명: '1한화 시그니처 여성 건강보험4.0 2504 ',
   가능: '1인수가능',
@@ -166,6 +174,7 @@ const InfoData1: InfoDataType = {
 
 const InfoData2: InfoDataType = {
   id: 1,
+  예상: ['조건부인수'],
   유형: 'type2',
   담보명: '2한화 시그니처 여성 건강보험4.0 2504 ',
   가능: '2조건부인수',
@@ -180,6 +189,7 @@ const InfoData2: InfoDataType = {
 
 const InfoData3: InfoDataType = {
   id: 1,
+  예상: ['할증', '부담보', '감액'],
   유형: 'type3',
   담보명: '3한화 시그니처 여성 건강보험4.0 2504 ',
   가능: '3인수가능',
@@ -577,7 +587,7 @@ const Ltpz203 = () => {
                           </Typo>
                         </Checkbox>
                         {(() => {
-                          const { color, iconColor, label } = getPossibilityBadgeStyle(infoData.가능);
+                          const { color, iconColor, label } = getPossibilityBadgeStyle(infoData.예상 ?? infoData.가능);
                           return (
                             <Badge2 color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
                               <CircleCheckIcon size={12} color={iconColor} />
