@@ -136,7 +136,7 @@ type ConfirmDialogProps = {
 
 export function ConfirmDialog({
   open,
-  defaultOpen = true,
+  defaultOpen,
   onOpenChange,
   title = '알림',
   description,
@@ -162,9 +162,11 @@ export function ConfirmDialog({
     }
   };
 
+  const initialDefaultOpen = defaultOpen !== undefined ? defaultOpen : trigger !== undefined ? false : true;
+
   const dialogProps = {
     ...(open !== undefined ? { open } : {}),
-    defaultOpen: defaultOpen ?? true, // 항상 기본 열림 상태
+    defaultOpen: initialDefaultOpen,
     ...(onOpenChange ? { onOpenChange } : {}),
   };
 
