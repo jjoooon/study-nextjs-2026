@@ -796,6 +796,10 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   display: block;
 }
 
+.isTotal {
+  background-color: var(--color-primary-10) !important;
+}
+
 .isStandard {
   background-color: var(--color-purple-10) !important;
 }
