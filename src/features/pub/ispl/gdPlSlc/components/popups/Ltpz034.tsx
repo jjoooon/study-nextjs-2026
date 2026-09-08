@@ -39,9 +39,9 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Popover, PopoverTrigger } from '@uiux/Popover';
-import Ltpz110 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz110';
-
 import { toast } from '@uiux/Sonner';
+import Ltpz110 from './Ltpz110';
+
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
@@ -620,7 +620,7 @@ const Ltpz034 = ({
                     정보 변경
                   </Button>
                 </PopoverTrigger>
-                <Ltpz110 isPopover side="bottom" align="end" isID={!isRegistered} />
+                <Ltpz110 side="bottom" align="end" isID={!isRegistered} />
               </Popover>
             </Grow>
             <Grow className="w-full" gap={2} placement="ec">

@@ -751,6 +751,12 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * @default 'center'
    */
   align?: 'center' | 'left' | 'right';
+  /**
+   * fixed 화면 중앙 정렬 대신 relative 포지셔닝과 기본 위치값(top:0, left:0, transform:none)을 사용하여
+   * 부모 영역 안의 레이아웃 흐름 속에 바로 배치할지 여부
+   * @default false
+   */
+  isRelative?: boolean;
 }
 
 /**
@@ -776,6 +782,7 @@ function DialogContent({
   dim = 'dark',
   iframeHeight,
   popupId,
+  isRelative = false,
   ...props
 }: DialogContentProps) {
   const { dialogId, isMinimized, setMinimized, open, setModalOverride } = React.useContext(DialogDepthContext);
@@ -914,6 +921,7 @@ function DialogContent({
 
   // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시 (현재 팝업이 최소화되었거나 iframe 환경인 경우에는 암막 숨김)
   const resolvedShowOverlay =
+    !isRelative &&
     !isMinimized &&
     !isIframeState &&
     (showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId)));
@@ -1035,6 +1043,27 @@ function DialogContent({
   }
 
   const contentStyle = React.useMemo<React.CSSProperties>(() => {
+    if (isRelative) {
+      return {
+        ...(props.style ?? {}),
+        position: 'relative',
+        top: '0px',
+        left: '0px',
+        transform: 'none',
+        width: isFullWidth ? DIALOG_FULL_WIDTH : resizedSize.width > 0 ? `${resizedSize.width}px` : resolvedSize.width ?? '100%',
+        height: isFullSize
+          ? DIALOG_FULL_HEIGHT
+          : resizedSize.height > 0
+            ? `${resizedSize.height}px`
+            : resolvedSize.height,
+        minWidth: resolvedSize.minWidth,
+        minHeight: resolvedSize.minHeight,
+        maxWidth: 'none',
+        maxHeight: isFullSize ? DIALOG_FULL_HEIGHT : resolvedSize.maxHeight,
+        zIndex: parallelZIndex,
+      };
+    }
+
     let initialLeft = '50%';
     let transformValue = `translate(-50%, -50%)`;
 
@@ -1230,7 +1259,8 @@ function DialogContent({
           data-isminimize={isMinimized ? 'true' : 'false'}
           data-is-iframe={isIframeState ? 'true' : undefined}
           className={cn(
-            'fixed w-full grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-[0.2rem] border border-[#1f1f1f] px-0 py-0 shadow-[0_0.2rem_1.2rem_0_#222222] outline-none',
+            isRelative ? 'relative w-full' : 'fixed w-full',
+            'grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-[0.2rem] border border-[#1f1f1f] px-0 py-0 shadow-[0_0.2rem_1.2rem_0_#222222] outline-none',
             isDragging || !!isResizing ? 'transition-none' : 'dialog-bounce-transition',
             isIframeState && 'is-iframe',
             className
