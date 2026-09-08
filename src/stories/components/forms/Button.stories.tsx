@@ -180,6 +180,19 @@ import { Button } from '@uiux/Button';
       options: ['default', 'icon'],
       table: { category: '스타일 props' },
     },
+    error: {
+      control: { type: 'boolean' },
+      table: { category: '에러 props' },
+    },
+    errorMsg: {
+      control: { type: 'text' },
+      table: { category: '에러 props' },
+    },
+    errorPs: {
+      control: { type: 'select' },
+      options: ['tl', 'tc', 'tr', 'bl', 'bc', 'br'],
+      table: { category: '에러 props' },
+    },
     disabled: {
       control: { type: 'boolean' },
       table: { category: '설정 props' },
