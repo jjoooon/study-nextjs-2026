@@ -1789,4 +1789,9 @@ body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-popup-child:has(.ag-to
   color: #000 !important;
 }
 
-
+.cell-greater {
+  background-color: var(--color-danger-15) !important;
+}
+.cell-less {
+  background-color: var(--color-information-15) !important;
+}
