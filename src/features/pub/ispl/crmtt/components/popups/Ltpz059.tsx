@@ -762,6 +762,7 @@ const Ltpz059 = () => {
                         checkboxes: true,
                         enableClickSelection: 'enableSelection',
                       }}
+                      suppressRowDeselection={true}
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
@@ -789,6 +790,7 @@ const Ltpz059 = () => {
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
+                      suppressRowDeselection={true}
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
@@ -816,6 +818,7 @@ const Ltpz059 = () => {
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
+                      suppressRowDeselection={true}
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
