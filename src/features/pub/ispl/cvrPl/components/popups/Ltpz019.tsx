@@ -424,56 +424,56 @@ const Ltpz019 = () => {
         {/* 팝업 본문 콘텐츠 영역 */}
         <DialogSection className="grid-rows-[auto_minmax(0,1fr)]">
           {/* 상단: 현재 가입 진행 중인 기본 정보 테이블 */}
-          <Grow className="w-full" variant="box-round" placement={'ss'}>
-            <FormTable variant="head">
-              <FormRow>
-                <FormCell title={'현재 상품'}>
-                  <Input value="한화 시그니처 여성 건강보험40 2504" readOnly variant="info" />
-                </FormCell>
-                <FormCell title={'현재 고객'}>
-                  <Input value="홍길순 외 0명" readOnly variant="info" />
-                </FormCell>
-              </FormRow>
-            </FormTable>
-          </Grow>
-
-          {/* 중단 및 하단: 상품 선택 본문 레이아웃 */}
-          <Grid className="w-full grid-rows-[auto_auto_minmax(0,1fr)]" gap={2}>
-            {/* 간편설계 안내 문구 */}
-            <Gcol placement={'ss'} className="w-full">
+          <Gcol placement="ss">
+            <Grow className="w-full" variant="box-round" placement={'ss'}>
+              <FormTable variant="head">
+                <FormRow>
+                  <FormCell title={'현재 상품'}>
+                    <Input value="한화 시그니처 여성 건강보험40 2504" readOnly variant="info" />
+                  </FormCell>
+                  <FormCell title={'현재 고객'}>
+                    <Input value="홍길순 외 0명" readOnly variant="info" />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
+            </Grow>
+            <Gcol placement={'ss'} className="w-full" gap={2}>
               <Typo variant={'body-lg'} weight={'bold'} className="flex items-center">
                 간편설계를 생성할 상품을 선택해주세요.
               </Typo>
-            </Gcol>
 
-            {/* 설계 모드 조건 질문 (Radio) */}
-            <Gcol gap={3} placement={'ss'}>
-              <Gcol placement={'ss'} className="w-full">
+              {/* 설계 모드 조건 질문 (Radio) */}
+              <Gcol gap={3} placement={'ss'}>
+                <Gcol placement={'ss'} className="w-full">
+                  <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
+                    <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
+                      1
+                    </Badge>
+                    현재 고객을 대상으로 다른 상품을 설계하시겠어요?
+                  </Typo>
+                  <RadioGroup className="gap-2 ml-[2.4rem]" onValueChange={() => {}} width="full">
+                    {[
+                      { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
+                      { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
+                    ].map((option) => (
+                      <RadioGroupItem key={option.value} value={option.value}>
+                        {option.label}
+                      </RadioGroupItem>
+                    ))}
+                  </RadioGroup>
+                </Gcol>
                 <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
                   <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
-                    1
+                    2{/* 상품을 선택해주세요. */}
                   </Badge>
-                  현재 고객을 대상으로 다른 상품을 설계하시겠어요?
+                  상품을 선택해주세요.
                 </Typo>
-                <RadioGroup className="gap-2 ml-[2.4rem]" onValueChange={() => {}} width="full">
-                  {[
-                    { value: 'v1', label: '네, 현재 고객으로 상세설계할게요.' },
-                    { value: 'v2', label: '아니오, 신규 고객으로 간편설계할게요.' },
-                  ].map((option) => (
-                    <RadioGroupItem key={option.value} value={option.value}>
-                      {option.label}
-                    </RadioGroupItem>
-                  ))}
-                </RadioGroup>
               </Gcol>
-              <Typo variant={'body-lg'} weight={'bold'} className="flex items-center gap-[0.6rem]">
-                <Badge color="secondary" size="md" variant="contained" className="w-[1.8rem] h-[1.8rem]">
-                  2{/* 상품을 선택해주세요. */}
-                </Badge>
-                상품을 선택해주세요.
-              </Typo>
             </Gcol>
+          </Gcol>
 
+          {/* 중단 및 하단: 상품 선택 본문 레이아웃 */}
+          <Grid className="w-full grid-rows-[minmax(0,1fr)]" gap={2}>
             {/* 본문 그리드: 2분할 레이아웃 (상품정보 vs 종/플랜정보) */}
             <Grow placement={'ss'} className="w-full gap-3 h-full">
               <Grid className="w-full grid-cols-[5fr_2fr] grid-rows-[minmax(0,1fr)] gap-3 h-full">

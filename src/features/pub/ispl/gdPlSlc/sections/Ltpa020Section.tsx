@@ -5,7 +5,7 @@
 
 import * as React from 'react';
 import { useCallback, useState } from 'react';
-import Ltpz034 from '@/features/pub/shared/components/popups/Ltpz034';
+import Ltpz034 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz034';
 import { Gcol, Grow, Divider, Grid, Typo } from '@atoms';
 
 import { BottomBar } from '@common/BottomBar';

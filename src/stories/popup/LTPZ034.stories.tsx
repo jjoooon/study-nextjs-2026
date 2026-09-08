@@ -3,7 +3,7 @@
  */
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import * as React from 'react';
-import Ltpz034 from '@/features/pub/shared/components/popups/Ltpz034';
+import Ltpz034 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz034';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 interface StoryProps extends React.ComponentProps<typeof Ltpz034> {
