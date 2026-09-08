@@ -743,7 +743,7 @@ const Ltpz059 = () => {
               {buildingSelectType === '건물구조선택' && (
                 <Grid className="w-full h-full grid-cols-[2fr_2fr_2fr_4fr] gap-3">
                   {/* 기둥 그리드 */}
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine radio-mode">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -770,7 +770,7 @@ const Ltpz059 = () => {
                     />
                   </div>
                   {/* 지붕 그리드 */}
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine radio-mode">
                     <AgGridReact<DummyDataType2>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -797,7 +797,7 @@ const Ltpz059 = () => {
                     />
                   </div>
                   {/* 외벽 그리드 */}
-                  <div className="ag-theme-alpine">
+                  <div className="ag-theme-alpine radio-mode">
                     <AgGridReact<DummyDataType3>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}

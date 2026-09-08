@@ -38,6 +38,8 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
+import { Popover, PopoverTrigger } from '@uiux/Popover';
+import Ltpz110 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz110';
 
 import { toast } from '@uiux/Sonner';
 import '@/shared/lib/agGridPub';
@@ -612,9 +614,14 @@ const Ltpz034 = ({
                 </FormRow>
               </FormTable>
 
-              <Button variant="outlined" size="md">
-                정보 변경
-              </Button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outlined" size="md">
+                    정보 변경
+                  </Button>
+                </PopoverTrigger>
+                <Ltpz110 isPopover side="bottom" align="end" isID={!isRegistered} />
+              </Popover>
             </Grow>
             <Grow className="w-full" gap={2} placement="ec">
               <Typo variant={'body-sm'} weight={'bold'} className="text-[#414141]">
