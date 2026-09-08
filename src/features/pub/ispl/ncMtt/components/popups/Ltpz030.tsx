@@ -4,7 +4,7 @@
 'use client';
 
 import * as React from 'react';
-import Ltpz110 from '@/features/pub/shared/components/popups/Ltpz110';
+import Ltpz110 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz110';
 import { Gcol, Grow, Typo, Divider } from '@atoms';
 import { BulletItem, BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
