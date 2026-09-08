@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import Ltpz204 from '@/features/pub/ispl/isplBsnsSupt/components/popups/Ltpz204';
+import Ltpz204 from '@/features/pub/ispl/gdPlSlc/components/popups/Ltpz204';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
