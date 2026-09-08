@@ -328,7 +328,8 @@ const Ltpz201 = () => {
                       singleClickEdit: true,
                       cellClass: 'text-center',
                       cellClassRules: {
-                        'bg-[#fff0f0]!': (params) => !params.value || String(params.value).trim() === '',
+                        'bg-[var(--color-primary-10)]!': (params) =>
+                          !params.value || String(params.value).trim() === '',
                       },
                     }}
                     singleClickEdit={true}
@@ -362,7 +363,8 @@ const Ltpz201 = () => {
                       singleClickEdit: true,
                       cellClass: 'text-center',
                       cellClassRules: {
-                        'bg-[#fff0f0]!': (params) => !params.value || String(params.value).trim() === '',
+                        'bg-[var(--color-primary-10)]!': (params) =>
+                          !params.value || String(params.value).trim() === '',
                       },
                     }}
                     singleClickEdit={true}

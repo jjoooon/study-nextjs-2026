@@ -820,16 +820,10 @@ const Ltpz001 = () => {
             <DialogFooterArea>
               <Grow>
                 <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  간편출력
+                </Button>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
                   PDF저장
-                </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  간편출력 이동
-                </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  출력예약하기
-                </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  전환후 계약 담보별 보험료 예시
                 </Button>
 
                 {/* test 용 */}
