@@ -95,7 +95,7 @@ const SelectionClearHeader = () => (
       </Button>
     </TooltipTrigger>
     <TooltipContent variant="default" side="top" align="start" sideOffset={-4}>
-      담보 모두 해제
+      선택 담보를 전체 해제합니다.
     </TooltipContent>
   </Tooltip>
 );
