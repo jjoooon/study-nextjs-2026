@@ -34,6 +34,7 @@ import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { KeyValueList } from '@common/KeyValueList';
 import { LayoutScrollItem, LayoutScrollWrap } from '@common/LayoutScroll';
 import { TextSelectChange } from '@common/TextSelectChange';
+import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { MyPlanSelect } from '@features/MyPlanSelect';
 import {
@@ -836,6 +837,9 @@ export function Ltpa35002a({
               고지유형별보험료비교
             </Button>
             <Grow className="gap-1">
+              <Checkbox>
+                <TooltipQ>체크 후[보험료계산]클릭하시면 Log가 쌓입니다</TooltipQ>
+              </Checkbox>
               <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 담보전환
               </Button>
