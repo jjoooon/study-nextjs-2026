@@ -228,7 +228,7 @@ export default function Ltpa440Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '가입설계 이관',
+            pageName: '가입설계이관',
             pageId: 'Ltpa440',
           }}
         />

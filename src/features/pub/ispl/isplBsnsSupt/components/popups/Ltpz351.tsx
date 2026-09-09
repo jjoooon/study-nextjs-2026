@@ -213,7 +213,7 @@ const Ltpz351 = ({ noticeType = 'B', isPayExempt = true }: Ltpz351Props) => {
         return (
           <Gcol className="w-full" placement="ss" variant="box-info">
             <Typo icon="info" variant="body-sm" weight={'bold'}>
-              장애보험 전환
+              장애인보험 전환
             </Typo>
             <BulletList>
               <BulletListItem size="sm" before="1." type="symbols">

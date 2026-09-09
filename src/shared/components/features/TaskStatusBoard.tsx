@@ -3,7 +3,7 @@
  */
 'use client';
 
-import React from 'react';
+import * as React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Gcol, Grow, Grid, Typo } from '@atoms';

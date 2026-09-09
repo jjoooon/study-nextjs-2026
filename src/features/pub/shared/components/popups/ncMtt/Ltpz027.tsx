@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
@@ -9,7 +8,7 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
-import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { Gcol, Grid, Grow, Typo, Divider } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
@@ -22,8 +21,6 @@ import {
   DialogSection,
   DialogTitle,
 } from '@uiux/Dialog';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@uiux/Table';
-import { TableCell } from '@uiux/Table';
 
 // Grid2 dummy data
 type DummyDataType = {
@@ -207,13 +204,73 @@ const Ltpz027 = () => {
   );
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
+  const columnDefs2 = React.useMemo<ColDef<DummyData2Type>[]>(
+    () => [
+      {
+        headerName: '성명',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        field: 'field01',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '생년월일',
+        flex: 1,
+        minWidth: attributeColumnWidth(100),
+        field: 'field02',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '휴대폰번호',
+        flex: 1,
+        minWidth: attributeColumnWidth(120),
+        field: 'field03',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+      {
+        headerName: '발송구분',
+        flex: 1.5,
+        minWidth: attributeColumnWidth(140),
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+        cellRenderer: () => (
+          <Grid className="grid-cols-[1fr_1fr] w-full h-[2.9rem]">
+            <Grow>
+              <Button aria-label="발송" variant={'contained'} size={'md'} color={'primary'}>
+                발송
+              </Button>
+            </Grow>
+            <Grow className="border-l border-l-[var(--color-gray-20)]">
+              <Button aria-label="취소" variant={'outlined'} size={'md'} color={'gray'}>
+                취소
+              </Button>
+            </Grow>
+          </Grid>
+        ),
+      },
+      {
+        headerName: '진행상태',
+        flex: 1,
+        minWidth: attributeColumnWidth(80),
+        field: 'field04',
+        cellClass: 'text-center px-0!',
+        autoHeight: true,
+      },
+    ],
+    [attributeColumnWidth]
+  );
+  const [rowData2] = React.useState<DummyData2Type[]>(DummyData2);
+
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="ml" className="">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              SELEF고지 알림톡 발송
+              SELF고지 알림톡 발송
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ027)
@@ -221,45 +278,30 @@ const Ltpz027 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="w-full grid h-full grid-rows-[auto_1fr]">
-          <Gcol placement={'ss'}>
+          <Grid className="grid-rows-[auto_1fr] gap-2" placement={'ss'}>
             <Typo variant="heading-sm" color="default">
               발송대상
             </Typo>
-            <Table variant="default">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>성명</TableHead>
-                  <TableHead>생년월일</TableHead>
-                  <TableHead>휴대폰번호</TableHead>
-                  <TableHead colSpan={2}>발송구분</TableHead>
-                  <TableHead>진행상태</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow className="text-center">
-                  <TableCell>김한화</TableCell>
-                  <TableCell>1990-01-01</TableCell>
-                  <TableCell>010-0000-0000</TableCell>
-                  <TableCell>
-                    <Button aria-label="발송" variant={'contained'} size={'md'} color={'primary'}>
-                      발송
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button aria-label="취소" variant={'outlined'} size={'md'} color={'gray'}>
-                      취소
-                    </Button>
-                  </TableCell>
-                  <TableCell>진행중</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Gcol>
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData2?.length}>
+              <AgGridReact<DummyData2Type>
+                getRowId={(params) => String(params.data.id)}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                rowData={rowData2}
+                columnDefs={columnDefs2}
+                defaultColDef={{
+                  sortable: true,
+                  resizable: true,
+                }}
+                domLayout="normal"
+                className="text-center"
+              />
+            </div>
+          </Grid>
           <Grid className="grid-rows-[auto_1fr] gap-2" placement={'ss'}>
             <Typo variant="heading-sm" color="default">
               진행이력
             </Typo>
-            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData?.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}

@@ -460,7 +460,7 @@ const Ltpz200 = () => {
                 }}
                 postSortRows={postSortRows}
                 rowClassRules={{
-                  'bg-[#FFF0F0]!': (params) => !!params.data?.isViolation,
+                  ' isTotal': (params) => !!params.data?.isViolation,
                 }}
                 enableCellSpan={true}
                 domLayout="normal"

@@ -472,7 +472,7 @@ const Ltpz021 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              추천설계비교
+              추가설계비교
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ021)

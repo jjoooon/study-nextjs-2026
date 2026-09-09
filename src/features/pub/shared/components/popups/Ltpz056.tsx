@@ -31,7 +31,7 @@ const Ltpz056 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              카카오알림톡 발송
+              카카오알림톡 발송대상
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ056)

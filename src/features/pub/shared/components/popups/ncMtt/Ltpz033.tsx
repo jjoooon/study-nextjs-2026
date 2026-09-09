@@ -25,7 +25,7 @@ const Ltpz033 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              치료내용 상세예시
+              질병검색 및 입력
             </Typo>
           </DialogTitle>
         </DialogHeader>

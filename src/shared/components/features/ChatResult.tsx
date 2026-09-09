@@ -3,7 +3,8 @@
  */
 'use client';
 
-import React, { useRef, useState } from 'react';
+import * as React from 'react';
+import { useRef, useState } from 'react';
 import { PageArrowDoubleIcon, CircleCheckStepIcon, ArrowIcon, TimeRecordIcon } from '@/shared/components/icons';
 import { Grow, Gcol, Grid, Typo } from '@atoms';
 import { BulletItem } from '@common/BulletList';

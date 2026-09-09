@@ -251,7 +251,7 @@ export default function Ltpa670Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '상품별추천속성관리',
+            pageName: '상품별 추천속성관리',
             pageId: 'LTPA670',
           }}
         />

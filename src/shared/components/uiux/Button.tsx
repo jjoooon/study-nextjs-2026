@@ -7,6 +7,7 @@ import * as React from 'react';
 
 import { cn } from '@/shared/lib/shadcn/utils';
 import { hasButtonAuth } from '@/shared/utils/authUtils';
+import { ErrorMsg } from '@common/ErrorMsg';
 
 const buttonVariants = cva(
   `cp-button relative inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-md font-normal transition-all outline-none cursor-pointer leading-[100%] tracking-[-0.13rem] 
@@ -418,6 +419,21 @@ interface UIButtonProps
   children?: React.ReactNode;
   asChild?: boolean;
   effect?: 'flash';
+  /** 에러 상태 표시 여부 */
+  error?: boolean;
+  /** 에러 상태일 때 표시할 메시지 내용 */
+  errorMsg?: React.ReactNode;
+  /**
+   * 에러 메시지가 표시될 위치
+   * - `tl`: Top Left (상단 좌측)
+   * - `tc`: Top Center (상단 중앙)
+   * - `tr`: Top Right (상단 우측)
+   * - `bl`: Bottom Left (하단 좌측) (기본)
+   * - `bc`: Bottom Center (하단 중앙)
+   * - `br`: Bottom Right (하단 우측)
+   * @default 'bl'
+   */
+  errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
 }
 
 // Flash animation style (opacity blink)
@@ -449,14 +465,21 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
       type,
       id,
       effect,
+      error = false,
+      errorMsg,
+      errorPs = 'bl',
       ...props
     },
     ref
   ) => {
+    const errorId = React.useId();
+    const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
+    const shouldShowError = (error || isInvalid) && Boolean(errorMsg);
+
     const Comp = asChild ? Slot : 'button';
     const effectClass = effect === 'flash' ? 'button-flash-animate' : '';
 
-    return (
+    const buttonElement = (
       <Comp
         ref={ref}
         id={id}
@@ -465,14 +488,29 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
         data-size={size}
         data-color={color}
         data-only={only}
-        className={cn(buttonVariants({ variant, color, size, only }), effectClass, className)}
+        aria-invalid={shouldShowError || undefined}
+        aria-describedby={shouldShowError ? errorId : undefined}
+        className={cn(buttonVariants({ variant, color, size, only }), effectClass, !shouldShowError && className)}
         type={Comp === 'button' ? (type ?? 'button') : undefined}
-        disabled={!hasButtonAuth(id)}
+        disabled={!hasButtonAuth(id) || props.disabled}
         {...props}
       >
         {children}
       </Comp>
     );
+
+    if (shouldShowError) {
+      return (
+        <div className={cn('relative inline-flex flex-col', className)}>
+          {buttonElement}
+          <ErrorMsg aria-live="polite" show={true} position={errorPs} id={errorId}>
+            {errorMsg}
+          </ErrorMsg>
+        </div>
+      );
+    }
+
+    return buttonElement;
   }
 );
 

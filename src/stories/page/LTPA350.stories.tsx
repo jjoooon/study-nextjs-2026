@@ -31,9 +31,29 @@ const meta: Meta<typeof LTPA350> = {
         defaultValue: { summary: 'gray' },
       },
     },
+    showRenewalCycle: {
+      name: '갱신주기 없는 경우',
+      control: 'boolean',
+      description: '일반 탭에서 갱신주기 표시 여부 (false 시 갱신주기 미노출 및 납입주기 colSpan={3} 적용)',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+      },
+    },
+    showContractConversion: {
+      name: '계약전환 있는 경우',
+      control: 'boolean',
+      description: '일반 탭에서 계약전환 신청 표시 여부 (true 시 계약전환 셀 노출 및 태아여부 colSpan 조정)',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
   },
   args: {
     memoButtonColor: 'gray',
+    showRenewalCycle: true,
+    showContractConversion: false,
   },
 };
 export default meta;

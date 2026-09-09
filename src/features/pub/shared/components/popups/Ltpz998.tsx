@@ -136,7 +136,7 @@ const Ltpz998 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              업무처리안내
+              시스템 메시지(다건)
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ998)

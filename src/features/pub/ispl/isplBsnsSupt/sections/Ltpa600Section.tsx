@@ -620,7 +620,7 @@ export default function Ltpa600Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '담보그룹관리',
+            pageName: '담보분류관리',
             pageId: 'LTPA600',
           }}
         />

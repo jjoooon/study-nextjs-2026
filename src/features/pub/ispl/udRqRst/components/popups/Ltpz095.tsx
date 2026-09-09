@@ -140,7 +140,7 @@ const DummyData2: DummyDataType2[] = [
     field05: '10,000',
   },
 ];
-const Ltpa095 = () => {
+const Ltpz095 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // AgGrid Column
@@ -226,7 +226,7 @@ const Ltpa095 = () => {
               조건부 특약 가입 상세
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA095)
+              (LTPz095)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -293,4 +293,4 @@ const Ltpa095 = () => {
   );
 };
 
-export default Ltpa095;
+export default Ltpz095;

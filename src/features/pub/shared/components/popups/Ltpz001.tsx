@@ -276,6 +276,7 @@ const Ltpz001 = () => {
       { value: 'tabE', label: '이메일' },
       { value: 'tabF', label: '팩스' },
       { value: 'tabM', label: '모바일' },
+      { value: 'tabPst', label: '우편' },
     ],
   });
 
@@ -422,7 +423,7 @@ const Ltpz001 = () => {
                 data={scrIdcInfoData.tabInfo}
                 active={tabActive}
                 setActive={setTabActive}
-                visibleCount={4}
+                visibleCount={5}
                 getValue={(tab) => String(tab.value)}
                 contentClass="overflow-y-auto relative bg-[var(--color-blue-gray-10)] rounded-b-[0.6rem] gray-scroll"
                 renderTab={(tab) => <span>{tab.label}</span>}
@@ -718,33 +719,98 @@ const Ltpz001 = () => {
                     </>
                   )}
 
+                  {tabActive === 'tabPst' && (
+                    <>
+                      <Gcol placement={'ss'} gap={2}>
+                        <Typo tag={'h3'} variant={'heading-sm'}>
+                          전송대상
+                        </Typo>
+                        <Grow>
+                          <Typo tag={'p'} variant={'body-sm'}>
+                            계약자 전송
+                          </Typo>
+                        </Grow>
+                      </Gcol>
+                      <Gcol placement={'ss'} gap={2}>
+                        <Typo tag={'h3'} variant={'heading-sm'}>
+                          수신자명
+                        </Typo>
+                        <Grow>
+                          <Input value={'홍길동'} readOnly />
+                        </Grow>
+                      </Gcol>
+                      <Gcol placement={'ss'} gap={2}>
+                        <Typo tag={'h3'} variant={'heading-sm'}>
+                          주소 선택
+                        </Typo>
+                        <RadioGroup defaultValue="주소 선택" disabled>
+                          {[
+                            { value: '자택', label: '자택' },
+                            { value: '직장', label: '직장' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.value} value={option.value}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </Gcol>
+                      <Gcol placement={'ss'} gap={2}>
+                        <Typo tag={'h3'} variant={'heading-sm'}>
+                          주소 확인
+                        </Typo>
+                        <Grow>
+                          <Typo tag={'p'} variant={'body-sm'}>
+                            설계화면 內 계약추가사항 &gt; &gt; 고객확인정보_우편물수령처를 자택, 직장 중에 선택하셔야
+                            우편발송 가능합니다.
+                          </Typo>
+                        </Grow>
+                      </Gcol>
+                      <Gcol placement={'ss'}>
+                        <Typo variant={'body-sm'} icon={'info'}>
+                          <b>우편신청관련 안내사항</b>
+                        </Typo>
+                        <BulletList size={'sm'}>
+                          <BulletListItem>
+                            우편으로 발송시 고객 도달시점까지 5일~7일 걸릴수 있습니다.<br></br> (실 계약체결내용과 내용
+                            상이 가능성 高)
+                          </BulletListItem>
+                          <BulletListItem>계약자 변경시 다른 설계번호로 진행하시기 바랍니다.</BulletListItem>
+                        </BulletList>
+                      </Gcol>
+                    </>
+                  )}
+
                   {/* 공통: 리포트 내용 선택 옵션 */}
-                  <Divider dir="row" className="w-full" />
-                  <Gcol placement={'ss'} gap={2}>
-                    <Typo tag={'h3'} variant={'heading-sm'}>
-                      리포트내용선택
-                    </Typo>
-                    <Gcol className="gap-1.5" placement="ss">
-                      {[
-                        { value: '설계단계 안내', label: '설계단계 안내' },
-                        { value: '고객 및 기계약 요약정보', label: '고객 및 기계약 요약정보' },
-                        { value: '설계조건정보', label: '설계조건정보' },
-                        { value: '발급서류 및 비발급서류 안내', label: '발급서류 및 비발급서류 안내' },
-                        { value: '주요문의 FAQ 요약', label: '주요문의 FAQ 요약' },
-                      ].map((option) => (
-                        <Checkbox
-                          key={option.value}
-                          value={option.value}
-                          checked={form.reportOptions.includes(option.value)}
-                          onCheckedChange={(checked) =>
-                            handleToggleOption('reportOptions', option.value, Boolean(checked))
-                          }
-                        >
-                          {option.label}
-                        </Checkbox>
-                      ))}
-                    </Gcol>
-                  </Gcol>
+                  {tabActive !== 'tabPst' && (
+                    <>
+                      <Divider dir="row" className="w-full" />
+                      <Gcol placement={'ss'} gap={2}>
+                        <Typo tag={'h3'} variant={'heading-sm'}>
+                          리포트내용선택
+                        </Typo>
+                        <Gcol className="gap-1.5" placement="ss">
+                          {[
+                            { value: '설계단계 안내', label: '설계단계 안내' },
+                            { value: '고객 및 기계약 요약정보', label: '고객 및 기계약 요약정보' },
+                            { value: '설계조건정보', label: '설계조건정보' },
+                            { value: '발급서류 및 비발급서류 안내', label: '발급서류 및 비발급서류 안내' },
+                            { value: '주요문의 FAQ 요약', label: '주요문의 FAQ 요약' },
+                          ].map((option) => (
+                            <Checkbox
+                              key={option.value}
+                              value={option.value}
+                              checked={form.reportOptions.includes(option.value)}
+                              onCheckedChange={(checked) =>
+                                handleToggleOption('reportOptions', option.value, Boolean(checked))
+                              }
+                            >
+                              {option.label}
+                            </Checkbox>
+                          ))}
+                        </Gcol>
+                      </Gcol>
+                    </>
+                  )}
                 </Gcol>
               </TabPager>
             </Grid>
@@ -754,16 +820,10 @@ const Ltpz001 = () => {
             <DialogFooterArea>
               <Grow>
                 <Button variant={'outlined'} size={'xl'} color={'gray'}>
+                  간편출력
+                </Button>
+                <Button variant={'outlined'} size={'xl'} color={'gray'}>
                   PDF저장
-                </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  간편출력 이동
-                </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  출력예약하기
-                </Button>
-                <Button variant={'outlined'} size={'xl'} color={'gray'}>
-                  전환후 계약 담보별 보험료 예시
                 </Button>
 
                 {/* test 용 */}

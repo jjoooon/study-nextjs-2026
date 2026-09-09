@@ -1,6 +1,8 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
+'use client';
+
 import { ReactNode, HTMLAttributes, createContext, useContext } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { DotIcon, RefIcon, StarIcon, DashIcon, HashIcon } from '@icons';

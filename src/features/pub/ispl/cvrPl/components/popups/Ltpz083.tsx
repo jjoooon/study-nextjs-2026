@@ -76,7 +76,7 @@ const Ltpz083 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              견종검색
+              견종 검색
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ083)

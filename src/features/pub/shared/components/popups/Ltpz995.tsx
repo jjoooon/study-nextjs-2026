@@ -179,7 +179,7 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              파일업로드
+              파일 업로드
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ995)

@@ -34,7 +34,7 @@ const Ltpz092 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              가입설계동의 인증처리(주민번호 입력)
+              장기심사가이드 더보기 상세
             </Typo>
           </DialogTitle>
         </DialogHeader>

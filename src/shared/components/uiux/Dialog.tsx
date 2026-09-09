@@ -510,6 +510,13 @@ interface DialogProps extends React.ComponentPropsWithoutRef<typeof DialogPrimit
    * 다이얼로그 접힘 상태가 바뀔 때 호출되는 콜백 함수
    */
   onMinimizeChange?: (minimized: boolean) => void;
+  /**
+   * iframe 환경 여부 강제 지정 (boolean)
+   * - true/false 값이 전달되면 dialogSizes.json 설정 및 URL 감지보다 이 값이 최우선 적용됩니다.
+   * - 지정하지 않거나 undefined인 경우 dialogSizes.json 의 isIframe 설정 및 URL 기반으로 판단합니다.
+   */
+  iframe?: boolean;
+  isIframe?: boolean;
 }
 
 /**
@@ -524,6 +531,8 @@ function Dialog({
   defaultMinimized,
   onMinimizeChange,
   modal = true,
+  iframe: iframeProp,
+  isIframe: isIframeProp,
   ...props
 }: DialogProps) {
   const parentDialogContext = React.useContext(DialogDepthContext);
@@ -576,7 +585,11 @@ function Dialog({
 
   const effectiveModal = isMinimized || modalOverride === false ? false : (modalOverride ?? modal);
 
-  const isIframeEnv = React.useMemo(() => isExternalOrCustomIframe(), []);
+  const explicitIframe = iframeProp ?? isIframeProp;
+  const isIframeEnv = React.useMemo(() => {
+    if (explicitIframe !== undefined) return explicitIframe;
+    return isExternalOrCustomIframe();
+  }, [explicitIframe]);
 
   return (
     <DialogDepthContext.Provider
@@ -751,6 +764,19 @@ interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof Dialo
    * @default 'center'
    */
   align?: 'center' | 'left' | 'right';
+  /**
+   * fixed 화면 중앙 정렬 대신 relative 포지셔닝과 기본 위치값(top:0, left:0, transform:none)을 사용하여
+   * 부모 영역 안의 레이아웃 흐름 속에 바로 배치할지 여부
+   * @default false
+   */
+  isRelative?: boolean;
+  /**
+   * iframe 환경 여부 강제 지정 (boolean)
+   * - true/false 값이 전달되면 dialogSizes.json 설정 및 URL 감지보다 이 값이 최우선 적용됩니다.
+   * - 지정하지 않거나 undefined인 경우 dialogSizes.json 의 isIframe 설정 및 URL 기반으로 판단합니다.
+   */
+  iframe?: boolean;
+  isIframe?: boolean;
 }
 
 /**
@@ -776,9 +802,14 @@ function DialogContent({
   dim = 'dark',
   iframeHeight,
   popupId,
+  isRelative = false,
+  iframe: iframeProp,
+  isIframe: isIframeProp,
   ...props
 }: DialogContentProps) {
-  const { dialogId, isMinimized, setMinimized, open, setModalOverride } = React.useContext(DialogDepthContext);
+  const { dialogId, isMinimized, setMinimized, open, setModalOverride, isIframe: contextIsIframe } = React.useContext(DialogDepthContext);
+
+  const explicitIframe = iframeProp ?? isIframeProp ?? contextIsIframe;
 
   // dim === 'none' 일 때는 Radix 비모달(modal=false) 전환 및 바닥 클릭 가능 처리
   useIsomorphicLayoutEffect(() => {
@@ -800,15 +831,20 @@ function DialogContent({
     }
   }, [dim, setModalOverride]);
 
-  // iframe 환경 검사: dialogSizes.json 의 isIframe 설정 기반으로 판별
+  // iframe 환경 검사: iframe prop이 전달된 경우 최우선 적용, 없으면 dialogSizes.json 의 isIframe 설정 기반으로 판별
   const [isIframeState, setIsIframeState] = React.useState(() => {
+    if (explicitIframe !== undefined) return explicitIframe;
     if (typeof window === 'undefined') return false;
     return isExternalOrCustomIframe(popupId);
   });
 
   useIsomorphicLayoutEffect(() => {
     const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
-    const inIframe = isExternalOrCustomIframe(currentId);
+    const inIframe =
+      explicitIframe !== undefined
+        ? explicitIframe
+        : isExternalOrCustomIframe(currentId);
+
     setIsIframeState(inIframe);
 
     if (inIframe && typeof document !== 'undefined') {
@@ -819,7 +855,7 @@ function DialogContent({
     } else if (typeof document !== 'undefined') {
       document.body.classList.remove('is-iframe');
     }
-  }, [popupId]);
+  }, [popupId, explicitIframe]);
 
   // iframe 환경일 때 부모 창으로 다이얼로그의 지정된 크기 및 화면 정보 전송 (dialogSizes.json 기반 단일화)
   React.useEffect(() => {
@@ -830,8 +866,13 @@ function DialogContent({
       const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
       const predefined = getDialogPredefinedSize(currentId);
 
-      // isIframe이 명시적으로 false이거나, iframe 환경이 아닌 경우 부모 창에 정보 전달 안 함
-      const inIframe = predefined?.isIframe !== undefined ? predefined.isIframe : isIframeState;
+      // explicitIframe이 명시되었으면 최우선 적용, 없으면 predefined?.isIframe, 둘 다 없으면 isIframeState 사용
+      const inIframe =
+        explicitIframe !== undefined
+          ? explicitIframe
+          : predefined?.isIframe !== undefined
+            ? predefined.isIframe
+            : isIframeState;
       if (!inIframe) return;
 
       // 가로 너비 결정
@@ -914,6 +955,7 @@ function DialogContent({
 
   // 단일 팝업 → 항상 암막 표시 / 복수 팝업 → 최상위 다이얼로그만 암막 표시 (현재 팝업이 최소화되었거나 iframe 환경인 경우에는 암막 숨김)
   const resolvedShowOverlay =
+    !isRelative &&
     !isMinimized &&
     !isIframeState &&
     (showOverlay ?? (openCount <= 1 || (dialogId !== null && dialogId === topOpenDialogId)));
@@ -1035,6 +1077,31 @@ function DialogContent({
   }
 
   const contentStyle = React.useMemo<React.CSSProperties>(() => {
+    if (isRelative) {
+      return {
+        ...(props.style ?? {}),
+        position: 'relative',
+        top: '0px',
+        left: '0px',
+        transform: 'none',
+        width: isFullWidth
+          ? DIALOG_FULL_WIDTH
+          : resizedSize.width > 0
+            ? `${resizedSize.width}px`
+            : (resolvedSize.width ?? '100%'),
+        height: isFullSize
+          ? DIALOG_FULL_HEIGHT
+          : resizedSize.height > 0
+            ? `${resizedSize.height}px`
+            : resolvedSize.height,
+        minWidth: resolvedSize.minWidth,
+        minHeight: resolvedSize.minHeight,
+        maxWidth: 'none',
+        maxHeight: isFullSize ? DIALOG_FULL_HEIGHT : resolvedSize.maxHeight,
+        zIndex: parallelZIndex,
+      };
+    }
+
     let initialLeft = '50%';
     let transformValue = `translate(-50%, -50%)`;
 
@@ -1112,8 +1179,7 @@ function DialogContent({
         return;
       }
 
-      const shouldAction =
-        resizeHandle || dialogHeader || !contentRef.current?.querySelector('[data-slot="dialog-header"]');
+      const shouldAction = resizeHandle || dialogHeader;
 
       if (!shouldAction) {
         return;
@@ -1231,7 +1297,8 @@ function DialogContent({
           data-isminimize={isMinimized ? 'true' : 'false'}
           data-is-iframe={isIframeState ? 'true' : undefined}
           className={cn(
-            'fixed w-full grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-[0.2rem] border border-[#1f1f1f] px-0 py-0 shadow-[0_0.2rem_1.2rem_0_#222222] outline-none',
+            isRelative ? 'relative w-full' : 'fixed w-full',
+            'grid grid-rows-[auto_1fr_auto] gap-5 !pointer-events-auto bg-white rounded-[0.2rem] border border-[#1f1f1f] px-0 py-0 shadow-[0_0.2rem_1.2rem_0_#222222] outline-none',
             isDragging || !!isResizing ? 'transition-none' : 'dialog-bounce-transition',
             isIframeState && 'is-iframe',
             className

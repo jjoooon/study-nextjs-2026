@@ -34,7 +34,7 @@ const Ltpz050 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection>
+        <DialogSection className="grid-rows-[auto_auto_1fr]">
           <FormTable
             caption="부실유의계약 선별인수 확인서"
             cols={['w-[9rem]', 'w-auto', 'w-[9rem]', 'w-auto']}
@@ -71,6 +71,7 @@ const Ltpz050 = () => {
                   <Grow className="w-full [&>div]:w-full!" placement="ss">
                     <Textarea
                       placeholder="내용을 입력하세요"
+                      className="min-w-[39rem] min-h-[8.2rem]"
                       value={'계약자의 12차월(1년)이내 미유지 계약이 직전 1년간 3건(3건이상)입니다.'}
                       readOnly
                     />
@@ -82,6 +83,7 @@ const Ltpz050 = () => {
                   <Grow className="w-full [&>div]:w-full!" placement="ss">
                     <Textarea
                       placeholder="내용을 입력하세요"
+                      className="min-w-[39rem] min-h-[8.2rem]"
                       value={'현재 계약은 정상 유지되고 있으면 암보험담보 추가 계약입니다.'}
                     />
                   </Grow>
@@ -94,6 +96,7 @@ const Ltpz050 = () => {
                   <Grow className="w-full [&>div]:w-full!" placement="ss">
                     <Textarea
                       placeholder="내용을 입력하세요"
+                      className="min-w-[39rem] min-h-[8.2rem]"
                       value={'계약자의 12차월(1년)이내 미유지 계약이 직전 1년간 3건(3건이상)입니다.'}
                       readOnly
                     />

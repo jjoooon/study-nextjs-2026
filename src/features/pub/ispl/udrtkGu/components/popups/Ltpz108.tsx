@@ -26,7 +26,7 @@ const Ltpz108 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              대용량 지침 체크 방법 안내
+              대용량지침체크방법안내
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ108)

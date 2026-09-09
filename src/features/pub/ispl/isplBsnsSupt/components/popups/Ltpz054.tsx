@@ -326,7 +326,7 @@ const Ltpz054 = () => {
 
           {/* 조회 정보 */}
           {/* 2026.05.27 */}
-          <Grid placement="ss" className="w-full grid-rows-[auto_1fr-auto_1fr]" gap={3}>
+          <Grid placement="ss" className="w-full grid-rows-[auto_1fr]" gap={3}>
             <TableFold className="grid-rows-[auto_1fr]">
               <TableFoldHead title="당사 스캔대상 발급물"></TableFoldHead>
               <TableFoldBody>

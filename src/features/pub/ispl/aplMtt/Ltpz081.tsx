@@ -31,7 +31,7 @@ const Ltpz081 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              영수증 발행
+              영수증발행
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ081)

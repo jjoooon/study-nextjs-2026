@@ -2,7 +2,7 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 import type { IHeaderParams, SortDirection } from 'ag-grid-enterprise';
-import React from 'react';
+import * as React from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Divider, Grow, Gcol } from '@atoms';
 import { HashFilter, useHashFilter } from '@common/HashFilter';

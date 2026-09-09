@@ -98,7 +98,7 @@ const Ltpz048 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              QA 심사이력
+              QA심사이력
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ048)

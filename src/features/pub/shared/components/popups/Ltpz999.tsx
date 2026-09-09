@@ -20,6 +20,7 @@ import {
   DialogFooterArea,
   DialogClose,
   DialogTitle,
+  DialogHeader,
 } from '@uiux/Dialog';
 
 // Ltpz999 컴포넌트 Props 타입 정의
@@ -74,14 +75,23 @@ const Ltpz999: React.FC<Ltpz999Props> = ({ errorType = '오류' }) => {
         showCloseButton={false}
         resizable={false}
         size={'sm'}
-        className="grid-rows-[1fr_auto] !max-h-[42.2rem]"
+        className="grid-rows-[auto_1fr_auto] !max-h-[42.2rem] ltpz999"
       >
         {/* 접근성을 위한 숨김 처리된 타이틀 */}
-        <VisuallyHidden.Root>
-          <DialogTitle>시스템 오류 안내</DialogTitle>
-        </VisuallyHidden.Root>
+        <DialogHeader>
+          <VisuallyHidden.Root>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                시스템 오류 안내
+              </Typo>
+              <Typo tag={'p'} variant={'body-xl'}>
+                (LTPZ999)
+              </Typo>
+            </DialogTitle>
+          </VisuallyHidden.Root>
+        </DialogHeader>
 
-        <DialogSection className="pt-5 gap-5 grid-rows-[auto_auto_minmax(0,1fr)] overflow-y-hidden">
+        <DialogSection className="gap-5 grid-rows-[auto_auto_minmax(0,1fr)] overflow-y-hidden">
           {/* 상단: 코드 표시 */}
           <Grow placement="ec" className="text-[var(--color-gray-70)]">
             코드 LTRE006(trandZomH110)

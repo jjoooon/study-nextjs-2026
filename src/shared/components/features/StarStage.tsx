@@ -3,7 +3,7 @@
  */
 'use client';
 
-import React from 'react';
+import * as React from 'react';
 import { Gcol, Grow } from '@atoms';
 import { StageIcon } from '@icons';
 

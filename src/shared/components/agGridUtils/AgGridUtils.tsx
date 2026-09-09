@@ -2597,11 +2597,26 @@ export type TwoRadioCellRendererOptions = {
  */
 export function createGroupHeaderWithSort(targetSortField?: string) {
   const GroupHeaderWithSortComponent = (props: IHeaderGroupParams) => {
-    const [sortState, setSortState] = React.useState<'asc' | 'desc' | null>(null);
+    const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
+    const leafCols = props.columnGroup.getLeafColumns();
+    const primaryCol = targetSortField ? props.api.getColumn(targetSortField) : leafCols?.[0];
+
+    React.useEffect(() => {
+      if (!primaryCol) return;
+      const onSortChanged = () => {
+        forceUpdate();
+      };
+      primaryCol.addEventListener('sortChanged', onSortChanged);
+      return () => {
+        primaryCol.removeEventListener('sortChanged', onSortChanged);
+      };
+    }, [primaryCol]);
+
+    const sortState = (primaryCol?.getSort() as 'asc' | 'desc' | null) ?? null;
 
     const handleClick = () => {
-      const nextSort = sortState === 'desc' ? 'asc' : sortState === 'asc' ? 'desc' : 'asc';
-      setSortState(nextSort);
+      // 3단계 순환: null -> asc -> desc -> null
+      const nextSort: 'asc' | 'desc' | null = sortState === null ? 'asc' : sortState === 'asc' ? 'desc' : null;
 
       if (targetSortField) {
         props.api.applyColumnState({
@@ -2609,16 +2624,16 @@ export function createGroupHeaderWithSort(targetSortField?: string) {
           defaultState: { sort: null },
         });
       } else {
-        const leafCols = props.columnGroup.getLeafColumns();
         if (!leafCols || leafCols.length === 0) return;
 
-        // 첫 번째 대표 자식 컬럼만 정렬하여 다중 정렬 순번 숫자(1, 2, 3...) 노출 방지
-        const primaryCol = leafCols[0];
+        const targetCol = leafCols[0];
         props.api.applyColumnState({
-          state: [{ colId: primaryCol.getColId(), sort: nextSort }],
+          state: [{ colId: targetCol.getColId(), sort: nextSort }],
           defaultState: { sort: null },
         });
       }
+
+      forceUpdate();
     };
 
     return (
@@ -2635,11 +2650,11 @@ export function createGroupHeaderWithSort(targetSortField?: string) {
 
 export const GroupHeaderWithSort = createGroupHeaderWithSort();
 
-/** 복합 2행 헤더 정렬 타겟 컬럼 저장용 글로벌 모듈 변수 */
-let activeDualRowSortTarget: string = '';
+/** 복합 2행 헤더 컬럼별 정렬 타겟 저장용 맵 */
+const activeDualRowTargetMap: Record<string, string> = {};
 
 /**
- * [Ag-Grid Helper] 2행 구조 복합 헤더의 동적 정렬 비교 함수 (숫자 및 한국어 텍스트 정렬 지원) 타이트 2개에 내용은 하나
+ * [Ag-Grid Helper] 2행 구조 복합 헤더의 동적 정렬 비교 함수 (숫자 및 한국어 텍스트 정렬 지원)
  */
 export const dualRowSortComparator = (
   _valueA: unknown,
@@ -2647,8 +2662,17 @@ export const dualRowSortComparator = (
   nodeA: { data?: Record<string, unknown> },
   nodeB: { data?: Record<string, unknown> }
 ) => {
-  const valA = nodeA.data?.[activeDualRowSortTarget] ?? '';
-  const valB = nodeB.data?.[activeDualRowSortTarget] ?? '';
+  let targetField = '';
+  for (const key in activeDualRowTargetMap) {
+    if (activeDualRowTargetMap[key]) {
+      targetField = activeDualRowTargetMap[key];
+      break;
+    }
+  }
+  if (!targetField) return 0;
+
+  const valA = nodeA.data?.[targetField] ?? '';
+  const valB = nodeB.data?.[targetField] ?? '';
 
   if (typeof valA === 'number' && typeof valB === 'number') {
     return valA - valB;
@@ -2670,33 +2694,62 @@ export function createDualRowHeader<TData extends Record<string, unknown>>(
   bottomField: keyof TData & string
 ) {
   const DualRowHeaderComponent = (props: CustomHeaderProps) => {
-    const [topSortState, setTopSortState] = React.useState<'asc' | 'desc' | null>(null);
-    const [bottomSortState, setBottomSortState] = React.useState<'asc' | 'desc' | null>(null);
+    const colId = props.column.getColId();
+    const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
+
+    React.useEffect(() => {
+      const onSortChanged = () => {
+        forceUpdate();
+      };
+      props.column.addEventListener('sortChanged', onSortChanged);
+      return () => {
+        props.column.removeEventListener('sortChanged', onSortChanged);
+      };
+    }, [props.column]);
+
+    const currentSort = (props.column.getSort() as 'asc' | 'desc' | null) ?? null;
+    const targetField = activeDualRowTargetMap[colId] ?? '';
+
+    const topSortState = currentSort !== null && targetField === topField ? currentSort : null;
+    const bottomSortState = currentSort !== null && targetField === bottomField ? currentSort : null;
 
     const handleTopClick = (e: React.MouseEvent) => {
       e.stopPropagation();
-      activeDualRowSortTarget = topField;
-      const nextSort = topSortState === 'desc' ? 'asc' : topSortState === 'asc' ? 'desc' : 'asc';
-      setTopSortState(nextSort);
-      setBottomSortState(null);
+      // 순환: null -> asc -> desc -> null
+      const nextSort: 'asc' | 'desc' | null = topSortState === null ? 'asc' : topSortState === 'asc' ? 'desc' : null;
+
+      if (nextSort === null) {
+        delete activeDualRowTargetMap[colId];
+      } else {
+        activeDualRowTargetMap[colId] = topField;
+      }
 
       props.api.applyColumnState({
-        state: [{ colId: props.column.getColId(), sort: nextSort }],
+        state: [{ colId, sort: nextSort }],
         defaultState: { sort: null },
       });
+
+      forceUpdate();
     };
 
     const handleBottomClick = (e: React.MouseEvent) => {
       e.stopPropagation();
-      activeDualRowSortTarget = bottomField;
-      const nextSort = bottomSortState === 'desc' ? 'asc' : bottomSortState === 'asc' ? 'desc' : 'asc';
-      setBottomSortState(nextSort);
-      setTopSortState(null);
+      // 순환: null -> asc -> desc -> null
+      const nextSort: 'asc' | 'desc' | null =
+        bottomSortState === null ? 'asc' : bottomSortState === 'asc' ? 'desc' : null;
+
+      if (nextSort === null) {
+        delete activeDualRowTargetMap[colId];
+      } else {
+        activeDualRowTargetMap[colId] = bottomField;
+      }
 
       props.api.applyColumnState({
-        state: [{ colId: props.column.getColId(), sort: nextSort }],
+        state: [{ colId, sort: nextSort }],
         defaultState: { sort: null },
       });
+
+      forceUpdate();
     };
 
     return (
@@ -2726,17 +2779,30 @@ export function createDualRowHeader<TData extends Record<string, unknown>>(
  */
 export function createHeaderWithSort(label: string, className: string = 'text-[1.2rem]! font-normal text-center') {
   const HeaderWithSortComponent = (props: CustomHeaderProps) => {
-    const [sortState, setSortState] = React.useState<'asc' | 'desc' | null>(null);
+    const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
+
+    React.useEffect(() => {
+      const onSortChanged = () => {
+        forceUpdate();
+      };
+      props.column.addEventListener('sortChanged', onSortChanged);
+      return () => {
+        props.column.removeEventListener('sortChanged', onSortChanged);
+      };
+    }, [props.column]);
+
+    const sortState = (props.column.getSort() as 'asc' | 'desc' | null) ?? null;
 
     const handleClick = (e: React.MouseEvent) => {
       e.stopPropagation();
-      const nextSort = sortState === 'desc' ? 'asc' : sortState === 'asc' ? 'desc' : 'asc';
-      setSortState(nextSort);
+      const nextSort: 'asc' | 'desc' | null = sortState === null ? 'asc' : sortState === 'asc' ? 'desc' : null;
 
       props.api.applyColumnState({
         state: [{ colId: props.column.getColId(), sort: nextSort }],
         defaultState: { sort: null },
       });
+
+      forceUpdate();
     };
 
     return (

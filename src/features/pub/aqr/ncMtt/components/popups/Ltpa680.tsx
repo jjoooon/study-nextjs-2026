@@ -27,7 +27,7 @@ const Ltpa680 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              장기심사가이드
+              장기질병가이드
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPA680)

@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import React from 'react';
+import * as React from 'react';
 
 interface IconProps {
   className?: string;

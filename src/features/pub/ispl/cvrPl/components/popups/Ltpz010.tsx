@@ -400,7 +400,7 @@ const Ltpz010 = ({ data, loading, isSimplified = false, isFetusisured = true }: 
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              동시가입설계상세
+              실손동시가입설계 상세
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ010)

@@ -217,20 +217,41 @@ const Ltpz042 = () => {
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
   const columnDefs2: ColDef<DummyDataType2>[] = [
-    { headerName: '직원번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '직원명', flex: 2, field: 'field02', cellClass: 'text-left', autoHeight: true },
+    {
+      headerName: '직원번호',
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
+      field: 'field01',
+      cellClass: 'text-center px-0!',
+      autoHeight: true,
+    },
+    { headerName: '직원명', flex: 10, field: 'field02', cellClass: 'text-left', autoHeight: true },
   ];
   const [rowData2] = React.useState<DummyDataType2[]>(DummyData2);
 
   const columnDefs3: ColDef<DummyDataType3>[] = [
-    { headerName: '지점번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '지점명', flex: 2, field: 'field02', cellClass: 'text-left', autoHeight: true },
+    {
+      headerName: '지점번호',
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
+      field: 'field01',
+      cellClass: 'text-center px-0!',
+      autoHeight: true,
+    },
+    { headerName: '지점명', flex: 10, field: 'field02', cellClass: 'text-left', autoHeight: true },
   ];
   const [rowData3] = React.useState<DummyDataType3[]>(DummyData3);
 
   const columnDefs4: ColDef<DummyDataType4>[] = [
-    { headerName: '유자격자번호', flex: 1, field: 'field01', cellClass: 'text-center px-0!', autoHeight: true },
-    { headerName: '유자격자명', flex: 2, field: 'field02', cellClass: 'text-left', autoHeight: true },
+    {
+      headerName: '유자격자번호',
+      flex: 1,
+      minWidth: attributeColumnWidth(80),
+      field: 'field01',
+      cellClass: 'text-center px-0!',
+      autoHeight: true,
+    },
+    { headerName: '유자격자명', flex: 10, field: 'field02', cellClass: 'text-left', autoHeight: true },
   ];
   const [rowData4] = React.useState<DummyDataType4[]>(DummyData4);
 
@@ -279,7 +300,7 @@ const Ltpz042 = () => {
                   <FormCell title={'유자격자명'}>
                     <Input
                       aria-label="유자격자명 입력"
-                      width={'16rem'}
+                      width={'14rem'}
                       value={form.type02}
                       onChange={(e) => setFormField('type02', e.target.value)}
                     />

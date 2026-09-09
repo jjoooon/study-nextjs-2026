@@ -292,7 +292,7 @@ const Ltpz201 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              동일질병 추가질문 답변확인
+              추가 질문답변 확인
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ201)
@@ -328,7 +328,8 @@ const Ltpz201 = () => {
                       singleClickEdit: true,
                       cellClass: 'text-center',
                       cellClassRules: {
-                        'bg-[#fff0f0]!': (params) => !params.value || String(params.value).trim() === '',
+                        'bg-[var(--color-primary-10)]!': (params) =>
+                          !params.value || String(params.value).trim() === '',
                       },
                     }}
                     singleClickEdit={true}
@@ -362,7 +363,8 @@ const Ltpz201 = () => {
                       singleClickEdit: true,
                       cellClass: 'text-center',
                       cellClassRules: {
-                        'bg-[#fff0f0]!': (params) => !params.value || String(params.value).trim() === '',
+                        'bg-[var(--color-primary-10)]!': (params) =>
+                          !params.value || String(params.value).trim() === '',
                       },
                     }}
                     singleClickEdit={true}

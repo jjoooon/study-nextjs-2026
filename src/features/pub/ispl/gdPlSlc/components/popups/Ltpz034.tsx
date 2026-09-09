@@ -38,8 +38,10 @@ import {
   DialogFooterArea,
   DialogClose,
 } from '@uiux/Dialog';
-
+import { Popover, PopoverTrigger } from '@uiux/Popover';
 import { toast } from '@uiux/Sonner';
+import Ltpz110 from './Ltpz110';
+
 import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
@@ -433,29 +435,12 @@ const CustomNoRowsOverlay = () => (
  */
 const Ltpz034 = ({
   onOpenChange,
-  minimized,
-  onMinimizeChange,
   isRegistered = true,
   basicRows: initialBasicRows,
   healthRows: initialHealthRows,
   dummyRows,
   onShowPossibleProducts,
 }: Ltpz034Props) => {
-  // 최소화 로컬 상태 관리 (부모가 관리하지 않을 경우 백업)
-  const [localMinimized, setLocalMinimized] = React.useState(false);
-  const isMinimizedControlled = minimized !== undefined;
-  const isMinimized = isMinimizedControlled ? minimized : localMinimized;
-
-  const handleMinimizeChange = React.useCallback(
-    (val: boolean) => {
-      if (!isMinimizedControlled) {
-        setLocalMinimized(val);
-      }
-      onMinimizeChange?.(val);
-    },
-    [isMinimizedControlled, onMinimizeChange]
-  );
-
   // 선택된 고지유형 ID 목록 상태 관리 (최대 3개 제한)
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
 
@@ -575,18 +560,12 @@ const Ltpz034 = ({
   );
 
   return (
-    <Dialog open minimized={isMinimized} onMinimizeChange={handleMinimizeChange}>
-      <DialogContent
-        showCloseButton
-        resizable
-        minimized={true}
-        dim={'dark'}
-        className={isRegistered ? 'w-[69.2rem]' : 'w-[76rem]'}
-      >
+    <Dialog open>
+      <DialogContent showCloseButton resizable dim={'dark'} className={isRegistered ? 'w-[69.2rem]' : 'w-[76rem]'}>
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
-              고지유형찾기
+              예상고지유형
             </Typo>
             <Typo tag="p" variant="body-xl">
               (LTPZ034)
@@ -634,15 +613,15 @@ const Ltpz034 = ({
                   )}
                 </FormRow>
               </FormTable>
-              {isRegistered && (
-                <Button variant="outlined" size="md">
-                  N년내 입원수술
-                </Button>
-              )}
 
-              <Button variant="outlined" size="md">
-                정보 변경
-              </Button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outlined" size="md">
+                    정보 변경
+                  </Button>
+                </PopoverTrigger>
+                <Ltpz110 side="bottom" align="end" isID={!isRegistered} />
+              </Popover>
             </Grow>
             <Grow className="w-full" gap={2} placement="ec">
               <Typo variant={'body-sm'} weight={'bold'} className="text-[#414141]">
@@ -673,7 +652,7 @@ const Ltpz034 = ({
           </Gcol>
           <Grid
             className={
-              isRegistered ? 'grid-cols-[18rem_1fr] gap-3' : 'grid-cols-[1fr_auto_1fr] grid-rows-[auto_minmax(0,1fr)]'
+              isRegistered ? 'grid-cols-[24rem_1fr] gap-3' : 'grid-cols-[1fr_auto_1fr] grid-rows-[auto_minmax(0,1fr)]'
             }
           >
             {isRegistered ? (
@@ -873,14 +852,14 @@ const Ltpz034 = ({
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button
+              {/* <Button
                 variant={'outlined'}
                 size={'xl'}
                 color={'gray'}
                 onClick={() => handleMinimizeChange(!isMinimized)}
               >
                 접어두기
-              </Button>
+              </Button> */}
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
                   닫기

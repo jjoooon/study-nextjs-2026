@@ -3,7 +3,7 @@
  */
 'use client';
 
-import React from 'react';
+import * as React from 'react';
 import { useTabsPagination } from '@/shared/hooks/useTabs';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grow, Gcol, Typo } from '@atoms';

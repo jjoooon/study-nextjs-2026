@@ -81,7 +81,7 @@ const Ltpz101 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              청약불가 사전안내
+              청약완료불가사전안내
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ101)

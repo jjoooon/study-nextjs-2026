@@ -37,7 +37,7 @@ export const Ltpz994 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              파일다운로드
+              파일 다운로드
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ994)

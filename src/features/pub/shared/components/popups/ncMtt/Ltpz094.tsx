@@ -187,7 +187,7 @@ const Ltpz094 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              질병 상세내용
+              질병상세내용
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (Ltpz094)

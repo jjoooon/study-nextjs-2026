@@ -286,7 +286,7 @@ export default function Ltpa630Section() {
       <LayoutHead>
         <PageID
           data={{
-            pageName: '보장패키지담보관리',
+            pageName: '보장패키지 담보관리',
             pageId: 'LTPA630',
           }}
         />

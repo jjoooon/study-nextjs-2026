@@ -80,7 +80,7 @@ const Ltpz104 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              가입설계 이력조회
+              가입설계이력조회
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ104)

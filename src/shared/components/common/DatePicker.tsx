@@ -180,6 +180,8 @@ interface UIInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>,
   min?: string | Date;
   /** 선택 가능한 최대 날짜 (포맷: YYYY-MM-DD 또는 Date 객체) */
   max?: string | Date;
+  /** 이전/다음 달 날짜 표시 여부 @default false */
+  showOutsideDays?: boolean;
 }
 
 /**
@@ -206,6 +208,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
     autoRangeDays = 0,
     min,
     max,
+    showOutsideDays,
     isFocused,
     onFocus: onFocusProp,
     onBlur: onBlurProp,
@@ -1025,6 +1028,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}
+              showOutsideDays={showOutsideDays}
               className="border-none"
               required={true}
               onResetClick={() => {
@@ -1049,6 +1053,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}
+              showOutsideDays={showOutsideDays}
               className="border-none"
               required={required}
               onResetClick={() => {
@@ -1071,6 +1076,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               fromDate={minDate}
               toDate={maxDate}
               disabled={disabledDays}
+              showOutsideDays={showOutsideDays}
               className="border-none"
               onResetClick={() => {
                 setSelected(undefined);
