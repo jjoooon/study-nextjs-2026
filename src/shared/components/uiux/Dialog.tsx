@@ -439,8 +439,8 @@ export const isExternalOrCustomIframe = (popupId?: string): boolean => {
     return predefined.isIframe;
   }
 
-  // 3. 사전 정의되지 않은 경우 최상위 창 여부로 기본 판별
-  return window.self !== window.top;
+  // 3. 사전 정의되지 않은 경우 기본값 false 반환 (dialogSizes.json 또는 Prop으로 명시된 경우만 iframe 모드 적용)
+  return false;
 };
 
 type DialogContextValue = {
