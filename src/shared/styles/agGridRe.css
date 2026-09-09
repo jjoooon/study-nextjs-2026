@@ -796,6 +796,10 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   display: block;
 }
 
+.isTotal {
+  background-color: var(--color-primary-10) !important;
+}
+
 .isStandard {
   background-color: var(--color-purple-10) !important;
 }
@@ -1722,4 +1726,72 @@ body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-popup-child:has(.ag-to
 
 .link-cell .ag-cell-value {
   position: static !important;
+}
+
+/*ag-color*/
+.isHover {
+  background-color: var(--color-secondary-10) !important;
+  color: #000 !important;
+}
+
+.isSelected {
+  background-color: var(--color-warning-10) !important;
+  color: #000 !important;
+}
+
+.isClick {
+  background-color: var(--color-warning-15) !important;
+  color: #000 !important;
+}
+
+.isEditable {
+  background-color: var(--color-information-5) !important;
+  color: #000 !important;
+}
+
+.isEdited {
+  background-color: var(--color-information-15) !important;
+  color: #000 !important;
+}
+
+.isTotal, .isHighlight {
+  background-color: var(--color-primary-10) !important;
+  color: #000 !important;
+}
+
+.isDecrease {
+  background-color: var(--color-danger-10) !important;
+  color: #000 !important;
+}
+
+.isError {
+  background-color: var(--color-danger-15) !important;
+  color: #000 !important;
+}
+
+.isSuccess {
+  background-color: var(--color-success-10) !important;
+  color: #000 !important;
+}
+
+.isStandard {
+  background-color: var(--color-purple-10) !important;
+  color: #000 !important;
+}
+
+.isBookmark {
+  background-color: var(--color-yellow-10) !important;
+  color: #000 !important;
+}
+
+.isCancel {
+  background-color:  var(--color-gray-30) !important;;
+  color: #000 !important;
+}
+
+.cell-greater {
+  background-color: var(--color-danger-15) !important;
+}
+.cell-less {
+  background-color: var(--color-information-15) !important;
 }
