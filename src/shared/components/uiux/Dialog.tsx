@@ -807,7 +807,14 @@ function DialogContent({
   isIframe: isIframeProp,
   ...props
 }: DialogContentProps) {
-  const { dialogId, isMinimized, setMinimized, open, setModalOverride, isIframe: contextIsIframe } = React.useContext(DialogDepthContext);
+  const {
+    dialogId,
+    isMinimized,
+    setMinimized,
+    open,
+    setModalOverride,
+    isIframe: contextIsIframe,
+  } = React.useContext(DialogDepthContext);
 
   const explicitIframe = iframeProp ?? isIframeProp ?? contextIsIframe;
 
@@ -840,10 +847,7 @@ function DialogContent({
 
   useIsomorphicLayoutEffect(() => {
     const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
-    const inIframe =
-      explicitIframe !== undefined
-        ? explicitIframe
-        : isExternalOrCustomIframe(currentId);
+    const inIframe = explicitIframe !== undefined ? explicitIframe : isExternalOrCustomIframe(currentId);
 
     setIsIframeState(inIframe);
 
