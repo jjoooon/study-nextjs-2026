@@ -35,7 +35,9 @@ const Ltpz205 = () => {
         </DialogHeader>
 
         <DialogSection>
-          <Typo className="font-bold">입력하신 초회보험료 정보로 수납하시겠습니까?</Typo>
+          <Typo className="font-bold" variant="body-md">
+            입력하신 초회보험료 정보로 수납하시겠습니까?
+          </Typo>
           <Gcol gap={2}>
             <FormTable caption="사업자" cols={['w-[11rem]', 'w-auto']}>
               <FormRow>
