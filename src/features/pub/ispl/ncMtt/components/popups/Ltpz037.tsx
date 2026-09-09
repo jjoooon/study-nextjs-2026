@@ -46,7 +46,7 @@ const Ltpz037 = ({ type = 'customer', diseaseAgree = 'Y' }: Ltpz037Props) => {
 
         <DialogSection className="grid-rows-[auto_auto_auto]">
           <Gcol placement={'ss'} gap={2} className="sticky top-0 z-10 bg-[#fff]">
-            <Typo variant="body-lg">피보험자의 보험금 지급정보를 조회하는 동의[문자 등의 LMS]를 발송합니다.</Typo>
+            <Typo variant="body-lg">피보험자의 보험금 지급정보를 조회하는 동의[문자 동의 LMS]를 발송합니다.</Typo>
             <Typo variant="body-lg" weight={'bold'}>
               취급자 정보
             </Typo>

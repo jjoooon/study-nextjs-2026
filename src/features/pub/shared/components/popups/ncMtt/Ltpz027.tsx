@@ -278,11 +278,11 @@ const Ltpz027 = () => {
           </DialogTitle>
         </DialogHeader>
         <DialogSection className="w-full grid h-full grid-rows-[auto_1fr]">
-          <Gcol placement={'ss'}>
+          <Grid className="grid-rows-[auto_1fr] gap-2" placement={'ss'}>
             <Typo variant="heading-sm" color="default">
               발송대상
             </Typo>
-            <div className="ag-theme-alpine inner-scroll" data-row={rowData2.length}>
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData2?.length}>
               <AgGridReact<DummyData2Type>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
@@ -296,12 +296,12 @@ const Ltpz027 = () => {
                 className="text-center"
               />
             </div>
-          </Gcol>
+          </Grid>
           <Grid className="grid-rows-[auto_1fr] gap-2" placement={'ss'}>
             <Typo variant="heading-sm" color="default">
               진행이력
             </Typo>
-            <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
+            <div className="ag-theme-alpine inner-scroll" data-row={rowData?.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
