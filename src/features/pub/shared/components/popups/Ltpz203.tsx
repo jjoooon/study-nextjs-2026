@@ -9,6 +9,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import {
   CalendarIcon2,
@@ -426,7 +427,7 @@ const Ltpz203 = () => {
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              상품비교설계
+              대안설계 상세보기
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
               (LTPZ203)
@@ -728,6 +729,20 @@ const Ltpz203 = () => {
               ))}
             </Grow>
           </Grid>
+          <Gcol className="w-full" placement="ss" variant="box-info">
+            <BulletList>
+              <BulletListItem size="sm" type="dot">
+                현재 설계에서 조정가능한 조건은 대안유형으로 제시하지 않습니다.
+              </BulletListItem>
+              <BulletListItem size="sm" type="dot">
+                본 대안유형은 예상UW결과기반의 참고정보로, 실제 심사결과 및 인수조건과 다를 수 있습니다.
+                (고지정보미반영)
+              </BulletListItem>
+              <BulletListItem size="sm" type="dot">
+                추천 · 우선순위를 의미하지 않으며, 실제 제안전 세부조건을 확인해 주세요.
+              </BulletListItem>
+            </BulletList>
+          </Gcol>
         </DialogSection>
 
         {/* 다이얼로그 하단 푸터 버튼 */}
