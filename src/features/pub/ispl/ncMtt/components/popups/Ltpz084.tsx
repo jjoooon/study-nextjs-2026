@@ -46,6 +46,7 @@ const Ltpz084 = () => {
               simpleMode={false}
               mtValue="0rem"
               warningMessage="알릴의무사항은 상세설계시 입력 가능합니다."
+              headerBgClass="bg-[#FFF]!"
               // allNoDisabled={true}
             />
           </div>
