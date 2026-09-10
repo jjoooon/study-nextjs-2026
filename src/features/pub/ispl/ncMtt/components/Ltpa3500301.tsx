@@ -349,7 +349,7 @@ export const Ltpa3500301 = ({
   return (
     <LayoutScrollWrap className={`${sampleMode ? 'grid-cols-[1fr]' : 'grid-cols-[1fr_auto]'} gap-3 h-full`}>
       <LayoutScrollItem
-        className="w-full h-full grid grid-rows-[auto_1fr] scroll-smooth overflow-y-auto gap-3"
+        className="w-full h-full grid grid-rows-[auto_1fr] scroll-smooth overflow-y-auto gap-[1.2rem]"
         data-layout="scroll-item"
       >
         {!sampleMode && (

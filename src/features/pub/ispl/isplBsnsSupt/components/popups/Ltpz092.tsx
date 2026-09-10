@@ -42,7 +42,7 @@ export const Ltpz092: React.FC<Ltpz092Props> = ({ showDownloadButton = true }) =
         </DialogHeader>
         <DialogSection>
           <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
-            <Grow className="w-full" variant="box-round-b">
+            <Grow className="w-full" variant="box-round" placement={'ss'}>
               <FormTable variant={'head'} lineTop={false} caption="">
                 <FormRow>
                   <FormCell title={'검색'}>
