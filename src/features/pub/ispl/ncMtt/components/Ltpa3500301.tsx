@@ -8,6 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -154,6 +155,7 @@ interface Ltpa3500301Props {
   mtValue?: '0rem' | '-3rem';
   allNoDisabled?: boolean;
   warningMessage?: string;
+  headerBgClass?: string;
 }
 
 export const Ltpa3500301 = ({
@@ -162,6 +164,7 @@ export const Ltpa3500301 = ({
   mtValue = '-3rem',
   warningMessage = '[홍길순 Self고지중] Self고지 완료(또는 취소)처리시 알릴사항 입력 가능',
   allNoDisabled = false,
+  headerBgClass = '',
 }: Ltpa3500301Props) => {
   type BadgeId = number | '6-1';
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -353,7 +356,7 @@ export const Ltpa3500301 = ({
         data-layout="scroll-item"
       >
         {!sampleMode && (
-          <Grow variant={'box-round-b'} placement={'se'} className={'w-full sticky top-0 z-10'}>
+          <Grow variant={'box-round-b'} placement={'se'} className={cn('w-full sticky top-0 z-10', headerBgClass)}>
             <Gcol placement="ss">
               <Typo
                 variant={'body-sm'}
@@ -387,7 +390,11 @@ export const Ltpa3500301 = ({
         )}
         <Gcol gap={2}>
           {!sampleMode && (
-            <Gcol variant={'box-line'} placement={'ss'} className="w-full">
+            <Gcol
+              variant={'box-line'}
+              placement={'ss'}
+              className="w-full bg-[#F4F4F4] shadow-none border-[0.1rem] border-solid border-[#D8D8D8]"
+            >
               <Typo variant={'body-lg'} weight={'bold'}>
                 ■ 이 청약서에서 ‘최근 3개월 1년, 5년 이내’는 청약일의 3개월, 1년, 5년 전일부터 청약일가지를 의미합니다.
                 (예를 들어 청약일이 4월 1일 인 경우 ‘최근 3개월 1년, 5년 이내’는 1월 1일부터 4월 1일까지)
