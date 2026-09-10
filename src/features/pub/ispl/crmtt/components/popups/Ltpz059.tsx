@@ -17,6 +17,7 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { createExpiryCellRenderer } from '@grid/CellRenderers';
 import { ArrowIcon, EssentialIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -397,6 +398,9 @@ const Ltpz059 = () => {
   // 소재지 세부장소 입력 필드 상태
   const [detailPlace, setDetailPlace] = React.useState<string>('');
 
+  // 사용승인년도 확인불가 체크박스 상태
+  const [isUnknownApprovalYear, setIsUnknownApprovalYear] = React.useState<boolean>(false);
+
   // 이미지 선택 모드 시, 각 섹션(기둥/지붕/외벽)별 현재 캐러셀 페이지 번호 저장
   const [imagePageBySection, setImagePageBySection] = React.useState<Record<ImageSectionType, number>>({
     기둥: 0,
@@ -759,6 +763,7 @@ const Ltpz059 = () => {
                         checkboxes: true,
                         enableClickSelection: 'enableSelection',
                       }}
+                      suppressRowDeselection={true}
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
@@ -786,6 +791,7 @@ const Ltpz059 = () => {
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
+                      suppressRowDeselection={true}
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
@@ -813,6 +819,7 @@ const Ltpz059 = () => {
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
+                      suppressRowDeselection={true}
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
@@ -898,7 +905,7 @@ const Ltpz059 = () => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <FormTable caption="사업자" cols={['w-[10rem]', 'w-[20rem]', 'w-[10rem]', 'w-auto']}>
+              <FormTable caption="사업자" cols={['w-[10rem]', 'w-[25rem]', 'w-[10rem]', 'w-auto']}>
                 {/* 소재지 텍스트 노출 행 */}
                 <FormRow>
                   <FormCell
@@ -915,24 +922,33 @@ const Ltpz059 = () => {
                 </FormRow>
                 {/* 건물급수 및 적용년도 입력 행 */}
                 <FormRow>
-                  <FormCell title={'건물급수'} colSpan={3}>
-                    <Grid className="w-full grid-cols-[8.6rem_auto_10rem_auto_8rem_1fr] place-items-center">
-                      <Input value={'김한화한화'} readOnly />
+                  <FormCell title={'건물급수'}>
+                    <Grid className="w-full grid-flow-col items-center justify-start">
+                      <Input value={'11'} width={50} readOnly />
                       <Typo variant="body-sm">급(적용급수)</Typo>
-                      <NativeSelect aria-label="조회구분 선택" value={'선택'} required onChange={() => ''}>
+                      <NativeSelect aria-label="조회구분 선택" value={'선택'} width={60} required onChange={() => ''}>
                         {[
-                          { value: 'selection', id: 'type01', label: '선택1' },
-                          { value: 'selection2', id: 'type02', label: '선택2' },
+                          { value: 'selection', id: 'type01', label: '선택' },
+                          { value: 'selection2', id: 'type02', label: '1급' },
+                          { value: 'selection3', id: 'type03', label: '2급' },
+                          { value: 'selection4', id: 'type04', label: '3급' },
+                          { value: 'selection5', id: 'type05', label: '4급' },
                         ].map((option) => (
                           <NativeSelectOption key={option.id} value={option.value}>
                             {option.label}
                           </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                      <Typo variant="body-sm">건축년도</Typo>
-                      <Input readOnly />
-                      <Input readOnly />
                     </Grid>
+                  </FormCell>
+                  <FormCell title={'사용승인년도'}>
+                    <Input width={50} required={!isUnknownApprovalYear} readOnly={isUnknownApprovalYear} />
+                    <Checkbox
+                      checked={isUnknownApprovalYear}
+                      onCheckedChange={(checked) => setIsUnknownApprovalYear(Boolean(checked))}
+                    >
+                      확인불가
+                    </Checkbox>
                   </FormCell>
                 </FormRow>
                 {/* 지상/지하 전체층수 입력 행 */}
