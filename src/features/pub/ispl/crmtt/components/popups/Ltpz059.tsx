@@ -597,6 +597,7 @@ const Ltpz059 = () => {
   const columnDefs4: (ColDef<DummyDataType4> | ColGroupDef<DummyDataType4>)[] = [
     {
       headerName: '건축물대장',
+      headerGroupComponent: () => <span className="font-bold text-center w-full">건축물대장</span>,
       headerClass: 'ag-visible',
       children: [
         {
