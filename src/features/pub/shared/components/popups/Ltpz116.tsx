@@ -218,7 +218,9 @@ const Ltpz116 = () => {
                   <Input aria-label="" width={26} value={'1'} readOnly />
                   <Input aria-label="" width={300} value={'무배당 LIFEPLUS 한아름종합보험2206'} readOnly />
                 </FormCell>
-                <FormCell title={'보험시기'}>2026-03-01</FormCell>
+                <FormCell title={'보험시기'} tdClassName="font-bold">
+                  2026-03-01
+                </FormCell>
               </FormRow>
               <FormRow>
                 <FormCell title={'피보험자'}>
@@ -230,7 +232,9 @@ const Ltpz116 = () => {
                     ))}
                   </NativeSelect>
                 </FormCell>
-                <FormCell title={'설계상태'}>설계중</FormCell>
+                <FormCell title={'설계상태'} tdClassName="font-bold">
+                  설계중
+                </FormCell>
               </FormRow>
             </FormTable>
           </Grow>

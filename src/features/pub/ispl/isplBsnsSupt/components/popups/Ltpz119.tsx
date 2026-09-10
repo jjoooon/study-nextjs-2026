@@ -281,7 +281,7 @@ export const Ltpz119 = () => {
           <Grid className="w-full grid-rows-[1fr] h-full" gap={3}>
             <TableFold variant="default">
               <TableFoldHead title="첨부문서 결재 관리" />
-              <TableFoldBody className="grid-rows-[auto_1fr]">
+              <TableFoldBody className="grid-rows-[auto_1fr] gap-3">
                 <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
                   <FormTable variant="head">
                     <FormRow className="w-full">
