@@ -11,7 +11,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 import { chatbotUtils } from '@/shared/utils/chatbotUtils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { Grow } from '@atoms';
-import { Dialog, DialogContent, DialogHeader } from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@uiux/Dialog';
 import { AiBotIcon } from './AiBotIcon';
 
 const CHATBOT_DIALOG_WIDTH = 400;
@@ -131,10 +131,12 @@ export const Ltpa120 = ({
             placement="se"
             gap={1}
           >
-            <div className="pb-[1.2rem] leading-[1.1] bg-[linear-gradient(328deg,rgba(255,92,46,1)_9.4%,rgba(255,244,147,1)_97.24%)] bg-clip-text text-transparent break-keep text-[1.4rem] font-[900]">
-              AI 설계비서
-            </div>
-            <Image src={withPublicUrl('/images/chatbot-top.svg')} alt="" width={50} height={48} />
+            <DialogTitle asChild>
+              <div className="leading-[1.1] bg-[linear-gradient(328deg,rgba(255,92,46,1)_9.4%,rgba(255,244,147,1)_97.24%)] bg-clip-text text-transparent break-keep text-[1.4rem] font-[900]">
+                <b className="block pt-[1rem]">AI 설계비서</b>
+                <Image src={withPublicUrl('/images/chatbot-top.svg')} alt="" width={50} height={48} />
+              </div>
+            </DialogTitle>
           </Grow>
         </DialogHeader>
         <div className="w-full h-full min-h-0 bg-white rounded-b-[1rem] overflow-hidden border border-[#404040] border-t-0!">
