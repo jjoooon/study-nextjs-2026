@@ -439,8 +439,8 @@ export const isExternalOrCustomIframe = (popupId?: string): boolean => {
     return predefined.isIframe;
   }
 
-  // 3. 사전 정의되지 않은 경우 최상위 창 여부로 기본 판별
-  return window.self !== window.top;
+  // 3. 사전 정의되지 않은 경우 기본값 false 반환 (dialogSizes.json 또는 Prop으로 명시된 경우만 iframe 모드 적용)
+  return false;
 };
 
 type DialogContextValue = {
@@ -807,7 +807,14 @@ function DialogContent({
   isIframe: isIframeProp,
   ...props
 }: DialogContentProps) {
-  const { dialogId, isMinimized, setMinimized, open, setModalOverride, isIframe: contextIsIframe } = React.useContext(DialogDepthContext);
+  const {
+    dialogId,
+    isMinimized,
+    setMinimized,
+    open,
+    setModalOverride,
+    isIframe: contextIsIframe,
+  } = React.useContext(DialogDepthContext);
 
   const explicitIframe = iframeProp ?? isIframeProp ?? contextIsIframe;
 
@@ -840,10 +847,7 @@ function DialogContent({
 
   useIsomorphicLayoutEffect(() => {
     const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
-    const inIframe =
-      explicitIframe !== undefined
-        ? explicitIframe
-        : isExternalOrCustomIframe(currentId);
+    const inIframe = explicitIframe !== undefined ? explicitIframe : isExternalOrCustomIframe(currentId);
 
     setIsIframeState(inIframe);
 

@@ -8,6 +8,7 @@ import { BulletList, BulletListItem } from '@common/BulletList';
 import { CalendarIcon, SpinnerBIcon, InputClearIcon, CircleCheckIcon } from '@icons';
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
 export type InfoContractBaseData = {
   date: string;
@@ -237,6 +238,29 @@ export function Ltpa35001Side<TData extends InfoContractBaseData = InfoContractB
                   </Grow>
                 </Grow>
               </BulletListItem>
+              <BulletListItem>
+                <Grow placement={'bwc'} className="w-full">
+                  <Grow placement={'sc'}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>
+                          <Typo variant={'body-xs'}>추가구비서류 스캔</Typo>
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent align="center" side="top" sideOffset={0} variant="default">
+                        {`미스캔서류:서류명 노출`}
+                      </TooltipContent>
+                    </Tooltip>
+                    <Divider />
+                    {info.docScan ? (
+                      <CircleCheckIcon size={14} />
+                    ) : (
+                      <InputClearIcon color={'var(--color-danger-50)'} size={14} />
+                    )}
+                  </Grow>
+                </Grow>
+              </BulletListItem>
+
               <BulletListItem>
                 <Grow placement={'ss'} className="w-full items-baseline">
                   <Typo tag="div" variant={'body-xs'} className="white-space-nowrap">
