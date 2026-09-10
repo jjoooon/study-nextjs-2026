@@ -458,11 +458,6 @@ const Ltpz059 = () => {
   };
 
   /**
-   * 입력된 셀 값이 비어있는지 확인
-   */
-  const isEmptyCellValue = (value: string | number | null | undefined): boolean => String(value ?? '') === '';
-
-  /**
    * 이미지 섹션별 전체 개수 기반의 최대 캐러셀 페이지 수 계산
    */
   const getMaxImagePage = (section: ImageSectionType) =>
@@ -500,8 +495,6 @@ const Ltpz059 = () => {
     if (params.colDef.field !== 'field01') {
       return;
     }
-
-    const isSelected = params.node.isSelected();
 
     params.node.setSelected(true);
   };
@@ -619,7 +612,9 @@ const Ltpz059 = () => {
           flex: 1,
           // title 행(표제부/전유부 헤더)일 경우 버튼들을 위해 1칸만 할당, 그 외에는 2칸을 합쳐 넓게 씀
           colSpan: ({ data }) => (data?.rowType === 'title' ? 1 : 2),
-          cellClassRules: editableCellClassRules<DummyDataType4>(),
+          cellClassRules: {
+            'editable-cell': ({ data }) => isEditableRow(data),
+          },
           cellClass: ({ data }) => {
             const base = 'text-center px-[0.2rem]! tracking-tighter';
 
@@ -627,7 +622,7 @@ const Ltpz059 = () => {
               return base;
             }
 
-            return isEditableRow(data) ? base : `${base} no-edited`;
+            return isEditableRow(data) ? `${base} editable-cell` : `${base} no-edited`;
           },
           // 현재 활성화 및 입력 가능한 항목일 때만 편집 상태 진입 가능
           editable: ({ data }) => {
@@ -638,8 +633,21 @@ const Ltpz059 = () => {
             return isEditableRow(data);
           },
           cellEditor: 'agSelectCellEditor',
-          cellEditorParams: {
-            values: ['동명1', '동명2'],
+          cellEditorParams: (params: { data?: DummyDataType4 }) => {
+            if (params.data?.field01 === '호칭명') {
+              return {
+                values: ['호칭명1', '호칭명2'],
+              };
+            }
+
+            return {
+              values: ['동명1', '동명2'],
+            };
+          },
+          onCellValueChanged: (params) => {
+            if (params.newValue) {
+              console.log(`${params.data?.field01} 선택한 값: `, params.newValue);
+            }
           },
           cellRenderer: (params: ICellRendererParams<DummyDataType4>) =>
             params.data?.rowType === 'spacer' ? null : params.data?.rowType === 'title' ? (
@@ -652,20 +660,26 @@ const Ltpz059 = () => {
                 onClick={() => {
                   const targetFieldName = getEditableFieldNameByTitle(params.data?.field01);
 
+                  // 조회 버튼 클릭 시 해당 필드('동명' 또는 '호칭명')의 agSelectCellEditor 및 editable-cell 활성화
                   setEditableFieldName(targetFieldName);
+
+                  params.api.forEachNode((node) => {
+                    if (node.data?.field01 === targetFieldName) {
+                      const existingValue = node.data?.field02;
+                      // 비어있지 않고 선택된 기존 값이 있다면 콜백(콘솔) 실행
+                      if (
+                        existingValue !== undefined &&
+                        existingValue !== null &&
+                        String(existingValue).trim() !== ''
+                      ) {
+                        console.log(`[조회 활성화 시 기존 선택된 값] ${targetFieldName}:`, existingValue);
+                      }
+                    }
+                  });
                 }}
               >
                 조회
               </Button>
-            ) : isEditableRow(params.data) && isEmptyCellValue(params.value as string | number | null | undefined) ? (
-              // 편집 가능하고 비어있을 때는 화살표 콤보박스 아이콘 렌더링
-              <span className="flex w-full h-full items-center justify-end pr-2">
-                <img
-                  src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20class%3D%22ag-icon%22%20fill%3D%22black%22%20stroke%3D%22none%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M7.334%2010.667%2016%2021.334l8.667-10.667H7.334Z%22%2F%3E%3C%2Fsvg%3E"
-                  alt="select-arrow"
-                  className="w-[1.8rem]! h-[1.8rem]!"
-                />
-              </span>
             ) : (
               // 만료일 처리가 가미된 텍스트 셀 렌더러
               getExpiryRenderer('center')(params)
@@ -704,7 +718,7 @@ const Ltpz059 = () => {
         </DialogHeader>
 
         {/* 팝업 본문 영역 */}
-        <DialogSection className="flex flex-col w-full max-h-[calc(85vh-10rem)] overflow-y-auto min-h-0">
+        <DialogSection className="w-full grid-rows-[1fr_auto]">
           {/* 아코디언 섹션 1: 건물구조입력 */}
           <TableFold variant="accordion" className="grid grid-rows-[auto_1fr]">
             <TableFoldHead title="건물구조입력">

@@ -349,11 +349,11 @@ export const Ltpa3500301 = ({
   return (
     <LayoutScrollWrap className={`${sampleMode ? 'grid-cols-[1fr]' : 'grid-cols-[1fr_auto]'} gap-3 h-full`}>
       <LayoutScrollItem
-        className="w-full h-full grid grid-rows-[auto_1fr] scroll-smooth overflow-y-auto"
+        className="w-full h-full grid grid-rows-[auto_1fr] scroll-smooth overflow-y-auto gap-3"
         data-layout="scroll-item"
       >
         {!sampleMode && (
-          <Grow variant={'box-round-b'} placement={'se'} className={'w-full'}>
+          <Grow variant={'box-round-b'} placement={'se'} className={'w-full sticky top-0 z-10'}>
             <Gcol placement="ss">
               <Typo
                 variant={'body-sm'}
@@ -387,7 +387,7 @@ export const Ltpa3500301 = ({
         )}
         <Gcol gap={2}>
           {!sampleMode && (
-            <Gcol variant={'box-round'} placement={'ss'} className="w-full">
+            <Gcol variant={'box-line'} placement={'ss'} className="w-full">
               <Typo variant={'body-lg'} weight={'bold'}>
                 ■ 이 청약서에서 ‘최근 3개월 1년, 5년 이내’는 청약일의 3개월, 1년, 5년 전일부터 청약일가지를 의미합니다.
                 (예를 들어 청약일이 4월 1일 인 경우 ‘최근 3개월 1년, 5년 이내’는 1월 1일부터 4월 1일까지)
