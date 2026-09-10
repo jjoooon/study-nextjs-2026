@@ -729,9 +729,21 @@ export const Ltpz063 = () => {
 
   // Ltpz063 팝업 전용 가운데 정렬 DatePicker 에디터
   const Ltpz063DatePickerCellEditor = (props: any) => {
+    const isRange = props.mode === 'range' || props.colDef?.cellEditorParams?.mode === 'range';
+    const mergedProps = {
+      ...props,
+      mode: isRange ? ('range' as const) : props.mode,
+      colDef: {
+        ...props.colDef,
+        cellEditorParams: {
+          ...props.colDef?.cellEditorParams,
+          mode: isRange ? 'range' : 'single',
+        },
+      },
+    };
     return (
       <div className="flex w-full h-full items-center justify-center mx-auto [&_.cp-datepicker]:mx-auto [&_.cp-datepicker]:justify-center">
-        <DatePickerCellEditor {...props} />
+        <DatePickerCellEditor {...mergedProps} />
       </div>
     );
   };
@@ -1085,6 +1097,7 @@ export const Ltpz063 = () => {
     if (isType3DateRow(params.data)) {
       return {
         component: Ltpz063DatePickerCellEditor,
+        params: { mode: 'range' },
       };
     }
 

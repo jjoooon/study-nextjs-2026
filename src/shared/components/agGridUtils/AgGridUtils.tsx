@@ -1419,7 +1419,8 @@ function parseRangeFromValue(rawValue: unknown): DatePickerRangeValue {
  * - ag-Grid 컬럼 설정의 cellEditorParams로 DatePickerCellEditorParams 옵션 전달 가능
  */
 export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams<RowType>) {
-  const editorParams = (props.colDef?.cellEditorParams ?? {}) as DatePickerCellEditorParams;
+  const rawParams = (props as any).cellEditorParams ?? props.colDef?.cellEditorParams ?? {};
+  const editorParams = { ...rawParams, ...props } as DatePickerCellEditorParams;
   const mode: DatePickerEditorMode = editorParams.mode ?? 'single';
 
   const [value, setValue] = React.useState<string>(() => {
