@@ -993,9 +993,10 @@ function DialogContent({
     return () => window.removeEventListener('resize', checkOverflow);
   }, []);
 
-  // dialogSizes.json 에서 현재 팝업의 사전 정의 크기 조회 (ID가 있으면 기존 크기 프로세스를 오버라이드)
+  // dialogSizes.json 에서 현재 팝업의 사전 정의 크기 조회 (단, iframe 모드가 false인 내부 팝업일 때는 json의 사전 정의 크기를 적용하지 않고 일반 팝업과 동일하게 동작)
   const currentPopupId = popupId || getCurrentPopupIdFromUrl();
-  const predefinedSize = getDialogPredefinedSize(currentPopupId);
+  const rawPredefinedSize = getDialogPredefinedSize(currentPopupId);
+  const predefinedSize = isIframeState ? rawPredefinedSize : undefined;
   const predefinedWidthCss = resolveSizeValue(predefinedSize?.width, DIALOG_PRESET_WIDTH);
 
   const resolvedSize = React.useMemo(

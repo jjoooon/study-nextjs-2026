@@ -1795,3 +1795,11 @@ body:not(:has(.ag-cell:hover, .ag-header-cell:hover)) .ag-popup-child:has(.ag-to
 .cell-less {
   background-color: var(--color-information-15) !important;
 }
+
+/* AG-Grid 전역 모션/애니메이션/트랜지션 끄기 */
+.ag-theme-alpine *,
+.ag-theme-alpine *::before,
+.ag-theme-alpine *::after {
+  transition: none !important;
+  animation: none !important;
+}

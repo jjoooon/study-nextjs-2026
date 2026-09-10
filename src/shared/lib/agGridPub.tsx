@@ -6,6 +6,7 @@ import {
   CellSpanModule,
   ClientSideRowModelModule,
   ModuleRegistry,
+  provideGlobalGridOptions,
 } from 'ag-grid-enterprise';
 import { RichSelectModule } from 'ag-grid-enterprise';
 import { TreeDataModule } from 'ag-grid-enterprise';
@@ -21,7 +22,12 @@ ModuleRegistry.registerModules([
   TreeDataModule,
   // 필요시 엔터프라이즈 모듈 추가
 ]);
-// 이 파일을 import하는 것만으로 모듈 등록이 보장됨
+
+// [전역 AG-Grid 설정] 애니메이션 및 모션 전역 비활성화
+provideGlobalGridOptions({
+  animateRows: false,
+});
+// 이 파일을 import하는 것만으로 모듈 등록 및 전역 설정이 보장됨
 
 // [전역 설정] 마우스가 AG Grid 셀 영역을 벗어나는 즉시 툴팁 DOM 요소 자동 삭제
 if (typeof window !== 'undefined') {
