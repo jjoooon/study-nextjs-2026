@@ -3,27 +3,24 @@
  */
 'use client';
 
+import { useState } from 'react';
 import { Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 
 import { Button } from '@uiux/Button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-  DialogClose,
-} from '@uiux/Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogSection, DialogTitle } from '@uiux/Dialog';
 import { Ltpa35004 } from '../Ltpa35004';
 
 import '@/shared/lib/agGridPub';
 
 const Ltpz114 = () => {
+  const handleClose = () => {
+    console.log(11111111);
+  };
+
   return (
-    <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="full">
+    <Dialog open onOpenChange={handleClose}>
+      <DialogContent showCloseButton resizable={true} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -38,11 +35,6 @@ const Ltpz114 = () => {
           <Ltpa35004 />
         </DialogSection>
         <DialogFooter>
-          <DialogClose asChild>
-            <Button variant={'outlined'} size={'xl'} color={'gray-light'} className="absolute bottom-[4.6rem] right-6">
-              닫기
-            </Button>
-          </DialogClose>
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>

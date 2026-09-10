@@ -20,6 +20,7 @@ import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
+import { DialogClose } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
@@ -277,7 +278,11 @@ const DummyData: AgGridRow[] = [
   },
 ];
 
-export function Ltpa35004() {
+interface Ltpa35004Props {
+  onClose?: () => void;
+}
+
+export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [isHeightExpanded] = useState(false);
   const [gridKey] = useState(0);
@@ -634,9 +639,17 @@ export function Ltpa35004() {
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     청약후심사요청
                   </Button>
-                  <Button variant={'outlined'} size={'xl'} color={'gray-light'} className="is-dialog-view">
-                    닫기
-                  </Button>
+                  <DialogClose asChild>
+                    <Button
+                      variant={'outlined'}
+                      size={'xl'}
+                      color={'gray-light'}
+                      className="is-dialog-view"
+                      onClick={onClose}
+                    >
+                      닫기
+                    </Button>
+                  </DialogClose>
                 </Grow>
               </MainBottomItem>
             </MainBottom>
