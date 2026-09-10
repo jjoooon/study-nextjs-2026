@@ -147,7 +147,7 @@ const InfoData: InfoDataType = {
   id: 1,
   예상: [''],
   유형: '',
-  담보명: '한화 시그니처 여성 건강보험4.0 2504 ',
+  담보명: '한화 시그니처 여성 건강보험4.0 2504 한화 시그니처 여성 건강보험4.0 2504 ',
   가능: '인수가능',
   tag: ['인수'],
   옵션: [
@@ -447,9 +447,9 @@ const Ltpz203 = () => {
                   </div>
                 }
               >
-                <Grid className="grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden">
+                <Grid className="grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden gap-0">
                   {/* 카드 헤더 고정핀 */}
-                  <Grow className="bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem] font-[700]">
+                  <Grow className="bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem] font-[700] h-[4rem]">
                     <FixingPinIcon className="" />
                     기준설계
                   </Grow>
@@ -467,7 +467,7 @@ const Ltpz203 = () => {
                       <Gcol
                         variant="box-warning"
                         placement="ss"
-                        className="border border-[var(--color-primary-15)] gap-1 min-h-[13.9rem]"
+                        className="border border-[var(--color-primary-15)] gap-1 min-h-[12rem]"
                       >
                         {InfoData.옵션.map((option, index) => {
                           const optionKey = `옵션${index + 1}` as keyof typeof option;
@@ -584,7 +584,7 @@ const Ltpz203 = () => {
                         <Checkbox color={'info'} aria-label="선택" className="gap-x-2!">
                           {' '}
                           <Typo tag="div" variant={'body-sm'} weight={'bold'} color={'information'}>
-                            대안설계{i + 1}
+                            비교설계{i + 1}
                           </Typo>
                         </Checkbox>
                         {(() => {
@@ -597,13 +597,9 @@ const Ltpz203 = () => {
                           );
                         })()}
                       </Grow>
-                      <Gcol placement="bws" className="h-[8.8rem]">
-                        <Gcol placement="ss">
+                      <Gcol placement="bws">
+                        <Gcol placement="ss" className="h-[4rem]">
                           {getNoticeTypeLabel(infoData.유형)}
-                          <Grow className="gap-1 flex-wrap">
-                            <Badge2 color="gray">예상UW</Badge2>
-                            {renderGroupedBadge2(infoData.tag)}
-                          </Grow>
                         </Gcol>
                         <Gcol placement="ss">
                           <Typo tag="h3" variant={'body-md'} weight={'bold'}>
