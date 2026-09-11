@@ -113,12 +113,19 @@ export function useTabsPagination<T>(
   visibleCount: number,
   variant: string,
   active: string,
-  getValue: (item: T) => string
+  getValue: (item: T) => string,
+  options?: {
+    autoSelectFirstTab?: boolean;
+    setActive?: (value: string) => void;
+  }
 ) {
   const safeData = data ?? [];
 
   // variant는 외부 API 호환을 위해 유지
   void variant;
+
+  const autoSelectFirstTab = options?.autoSelectFirstTab ?? true;
+  const setActive = options?.setActive;
 
   // visibleStart의 초기값을 active에 맞춰 계산
   const getStartByActive = (activeValue: string) => {
@@ -144,16 +151,42 @@ export function useTabsPagination<T>(
     }
   }
 
-  const handlePrev = () => setVisibleStart((prev) => Math.max(0, prev - visibleCount));
+  const selectFirstTabOfPage = (startIndex: number) => {
+    if (!autoSelectFirstTab || !setActive || safeData.length === 0) return;
+
+    const pageTabs = safeData.slice(startIndex, Math.min(startIndex + visibleCount, safeData.length));
+    const firstAvailableTab =
+      pageTabs.find((tab) => {
+        const isDisabled =
+          typeof tab === 'object' &&
+          tab !== null &&
+          'disabled' in tab &&
+          Boolean((tab as { disabled?: unknown }).disabled);
+        return !isDisabled;
+      }) ?? safeData[startIndex];
+
+    if (firstAvailableTab) {
+      setActive(getValue(firstAvailableTab));
+    }
+  };
+
+  const handlePrev = () => {
+    const newStart = Math.max(0, visibleStart - visibleCount);
+    setVisibleStart(newStart);
+    selectFirstTabOfPage(newStart);
+  };
+
   const handleNext = () => {
+    if (visibleStart + visibleCount >= safeData.length) return;
     const maxStart =
       safeData.length % visibleCount === 0
         ? safeData.length - visibleCount
         : safeData.length - (safeData.length % visibleCount);
     const safeMaxStart = Math.max(0, maxStart);
-    if (visibleStart + visibleCount >= safeData.length) return;
-    if (visibleStart + visibleCount >= safeMaxStart) setVisibleStart(safeMaxStart);
-    else setVisibleStart(visibleStart + visibleCount);
+    const newStart = visibleStart + visibleCount >= safeMaxStart ? safeMaxStart : visibleStart + visibleCount;
+
+    setVisibleStart(newStart);
+    selectFirstTabOfPage(newStart);
   };
 
   const isLastPage =

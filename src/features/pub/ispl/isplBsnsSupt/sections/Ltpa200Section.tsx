@@ -241,11 +241,6 @@ export default function Ltpa200Section() {
     setLoadedCount(res.items.length);
   }, [loadedCount, totalCount, fetchMockData, isLoading]);
 
-  const handleLoadReset = React.useCallback(() => {
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
-
   // 새로 추가한 행만 편집 가능
   const isEditableNewRow = React.useCallback(
     (params: EditableCallbackParams<DummyDataType>) => params.data?.isNew === true,
@@ -598,8 +593,6 @@ export default function Ltpa200Section() {
                     pageSize={pageSize}
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
-                    onLoadReset={handleLoadReset}
-                    isReset={true}
                   />
                 </Gcol>
               </TableFoldBody>

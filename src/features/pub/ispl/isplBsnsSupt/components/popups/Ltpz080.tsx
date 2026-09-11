@@ -123,10 +123,6 @@ const Ltpz080 = () => {
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
 
-  const handleLoadReset = React.useCallback(() => {
-    handleSearch();
-  }, [handleSearch]);
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl">
@@ -221,13 +217,11 @@ const Ltpz080 = () => {
             <TableMore
               gridRef={gridRef}
               isAll={true}
-              isReset={true}
               loadedCount={loadedCount}
               totalCount={totalCount}
               pageSize={pageSize}
               onLoadAll={handleLoadAll}
               onLoadNext={handleLoadNext}
-              onLoadReset={handleLoadReset}
             />
           </Gcol>
         </DialogSection>

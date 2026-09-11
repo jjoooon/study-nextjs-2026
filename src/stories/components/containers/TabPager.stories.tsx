@@ -247,6 +247,11 @@ const handleRemoveTab = (value: string) => {
                   <td>ReactNode</td>
                   <td>오른쪽 버튼 영역</td>
                 </tr>
+                <tr>
+                  <td>autoSelectFirstTab</td>
+                  <td>boolean (기본값: true)</td>
+                  <td>좌우 버튼으로 페이지 이동 시 이동한 페이지의 첫 번째 탭 자동 선택 여부</td>
+                </tr>
               </tbody>
             </table>
           </>
@@ -270,6 +275,11 @@ const handleRemoveTab = (value: string) => {
     removable: {
       control: 'boolean',
       description: '탭 제거 가능 여부',
+      table: { category: '설정 props' },
+    },
+    autoSelectFirstTab: {
+      control: 'boolean',
+      description: '좌우 버튼 이동 시 해당 페이지의 첫 번째 탭 자동 선택 여부',
       table: { category: '설정 props' },
     },
     visibleCount: {
@@ -320,6 +330,7 @@ const handleRemoveTab = (value: string) => {
     removable: true,
     error: false,
     visibleCount: 4,
+    autoSelectFirstTab: true,
   },
 };
 

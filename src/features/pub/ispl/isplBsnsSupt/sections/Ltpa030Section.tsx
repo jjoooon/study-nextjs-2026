@@ -592,11 +592,6 @@ export default function Ltpa030Section() {
     setLoadedCount(res.items.length);
   }, [loadedCount, totalCount, fetchMockData, isLoading, setRowData2, setLoadedCount]);
 
-  const handleLoadReset = React.useCallback(() => {
-    setRowData2((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize, setRowData2, setLoadedCount]);
-
   // 첫번째 agGrid 행삭제
   const handleDeleteRow = React.useCallback(() => {
     const gridApi = gridApiRef.current;
@@ -870,8 +865,6 @@ export default function Ltpa030Section() {
                     pageSize={pageSize}
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
-                    onLoadReset={handleLoadReset}
-                    isReset={true}
                   />
                 </TableFold>
               </ResizablePanel>

@@ -176,21 +176,7 @@ export function TableMore<TData = unknown>({
   const isLastPage = hasCountMode ? loadedCount >= totalCount : resolvedCurrentPage >= resolvedTotalPages;
 
   const handleLoadAll = () => {
-    if (isLastPage) {
-      if (!isReset) {
-        return;
-      }
-      if (onLoadReset) {
-        onLoadReset();
-        return;
-      }
-      if (hasCountMode && onLoadedCountChange) {
-        onLoadedCountChange(pageSize!);
-        return;
-      }
-      onPageChange?.(1);
-      return;
-    }
+    if (isLastPage) return;
 
     if (onLoadAll) {
       onLoadAll();
