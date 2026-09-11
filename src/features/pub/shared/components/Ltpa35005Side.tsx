@@ -288,6 +288,16 @@ export function Ltpa35005Side<TData extends InfoContractBaseData = InfoContractB
                 </Grow>
               </BulletListItem>
               <BulletListItem>
+                <Grow placement={'ss'} className="w-full ">
+                  <Gcol placement={'ss'} gap={0}>
+                    <Typo variant={'body-xs'}>실손담보 중복 청약완료 불가</Typo>
+                    <Typo variant={'body-xs'} weight={'bold'} color={'information'}>
+                      인수기획파트문의
+                    </Typo>
+                  </Gcol>
+                </Grow>
+              </BulletListItem>
+              <BulletListItem>
                 <Grow placement={'ss'} className="w-full items-baseline">
                   <Typo tag="div" variant={'body-xs'} className="white-space-nowrap">
                     전자적안내동의할인

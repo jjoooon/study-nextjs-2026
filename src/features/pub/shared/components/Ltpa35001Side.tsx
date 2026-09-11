@@ -247,7 +247,13 @@ export function Ltpa35001Side<TData extends InfoContractBaseData = InfoContractB
                           <Typo variant={'body-xs'}>추가구비서류 스캔</Typo>
                         </span>
                       </TooltipTrigger>
-                      <TooltipContent align="center" side="top" sideOffset={0} variant="default">
+                      <TooltipContent
+                        align="center"
+                        side="top"
+                        sideOffset={0}
+                        variant="default"
+                        className="max-w-[50rem]"
+                      >
                         {`미스캔서류:서류명 노출`}
                       </TooltipContent>
                     </Tooltip>
@@ -258,6 +264,16 @@ export function Ltpa35001Side<TData extends InfoContractBaseData = InfoContractB
                       <InputClearIcon color={'var(--color-danger-50)'} size={14} />
                     )}
                   </Grow>
+                </Grow>
+              </BulletListItem>
+              <BulletListItem>
+                <Grow placement={'ss'} className="w-full ">
+                  <Gcol placement={'ss'} gap={0}>
+                    <Typo variant={'body-xs'}>실손담보 중복 청약완료 불가</Typo>
+                    <Typo variant={'body-xs'} weight={'bold'} color={'information'}>
+                      인수기획파트문의
+                    </Typo>
+                  </Gcol>
                 </Grow>
               </BulletListItem>
 
