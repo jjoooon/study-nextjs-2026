@@ -5,8 +5,13 @@
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
-import { Grid, Grow } from '@atoms';
+import {
+  AgGridEmptyComponent,
+  useDynamicColumnWidths,
+  createTooltipValueGetter,
+  createCellValueChangedHandler,
+} from '@aggrid';
+import { Gcol, Grid, Grow } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
@@ -419,6 +424,29 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
     field14: '9',
     field15: '140000',
   },
+  ...Array.from({ length: 30 }, (_, i) => {
+    const num = 21 + i;
+    const day = ((i % 28) + 1).toString().padStart(2, '0');
+    return {
+      id: num,
+      isCheck: false,
+      field01: `2026-06-${day} 12:00`,
+      field02: i % 2 === 0 ? 'GA' : 'FP',
+      field03: `대리점(${3000000 + num})`,
+      field04: `홍길동${num}(8090${num})`,
+      field05: i % 2 === 0 ? '기등록' : '미등록',
+      field06: `홍길순${num}`,
+      field07: '사망후유, 진단비, 입원/통원 보장 조건',
+      field08: `LT22222_${num}`,
+      field09: `한화 시그니처 여성 건강보험4.0 (${num})`,
+      field10: String(10 + (num % 5)),
+      field11: `${(70000 + num * 1000).toLocaleString()}원`,
+      field12: `LA${123456789012 + num}`,
+      field13: num % 3 === 0 ? '설계중' : num % 3 === 1 ? '청약중' : '청약완료',
+      field14: String(8 + (num % 6)),
+      field15: `${(100000 + num * 2000).toLocaleString()}원`,
+    };
+  }),
 ];
 
 const Ltpa04001 = () => {
@@ -435,6 +463,15 @@ const Ltpa04001 = () => {
   const [totalCount, setTotalCount] = React.useState(Ltpa040DummyData.length);
   // 중복 요청 방지용 로딩 플래그
   const [isLoading, setIsLoading] = React.useState(false);
+
+  // createCellValueChangedHandler 시그니처 호환용(현 화면에서는 에러행 관리 미사용)
+  const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
+
+  // 체크박스 선택 변경 핸들러
+  const onCellValueChanged = React.useMemo(
+    () => createCellValueChangedHandler<Ltpa040DummyDataRow, number>('isCheck', setRowData, setErrorRows, 'id'),
+    [setRowData, setErrorRows]
+  );
 
   // 무한 스크롤(더보기) 기능을 위한 설정
   const pageSize = 5;
@@ -500,6 +537,7 @@ const Ltpa04001 = () => {
     setRowData((prev) => prev.slice(0, pageSize));
     setLoadedCount(pageSize);
   }, [pageSize]);
+
   const columnDefs: (ColDef<Ltpa040DummyDataRow> | ColGroupDef<Ltpa040DummyDataRow>)[] = [
     {
       headerName: '추천설계정보',
@@ -649,7 +687,7 @@ const Ltpa04001 = () => {
   ];
 
   return (
-    <Grid className="w-full grid-rows-[auto_1fr] gap-3 h-full">
+    <Grid className="w-full grid-rows-[auto_minmax(0,1fr)] gap-3 h-full">
       <Grow className="w-full" variant="box-round-b" placement={'bwe'}>
         <FormTable
           variant={'none'}
@@ -750,54 +788,58 @@ const Ltpa04001 = () => {
           </Button>
         </Grow>
       </Grow>
-      <div className="ag-theme-alpine radio-selection ">
-        <AgGridReact<Ltpa040DummyDataRow>
-          ref={gridRef}
-          noRowsOverlayComponent={AgGridEmptyComponent}
-          getRowId={(params) => String(params.data.id)}
-          rowData={rowData}
-          columnDefs={columnDefs}
-          tooltipShowMode="whenTruncated"
-          tooltipShowDelay={0}
-          tooltipHideDelay={3000}
-          defaultColDef={{
-            sortable: true,
-            resizable: true,
-          }}
-          rowSelection={{
-            mode: 'singleRow',
-            checkboxes: true,
-            enableClickSelection: false,
-          }}
-          selectionColumnDef={{
-            headerName: '선택',
-            width: 30,
-            cellClass: 'text-center editable-cell',
-          }}
-          singleClickEdit={true}
-          rowClassRules={{}}
-          onCellValueChanged={() => {}}
-          domLayout="normal"
-          onGridReady={(params) => {
-            params.api.forEachNode((node) => {
-              if (node.data?.isCheck) {
-                node.setSelected(true);
-              }
-            });
-          }}
+
+      {/* 그리드 영역: Gcol을 통해 그리드와 TableMore를 캡슐화 */}
+      <Gcol gap={1} className="overflow-hidden">
+        <div className="ag-theme-alpine radio-selection h-full">
+          <AgGridReact<Ltpa040DummyDataRow>
+            ref={gridRef}
+            noRowsOverlayComponent={AgGridEmptyComponent}
+            getRowId={(params) => String(params.data.id)}
+            rowData={rowData}
+            columnDefs={columnDefs}
+            tooltipShowMode="whenTruncated"
+            tooltipShowDelay={0}
+            tooltipHideDelay={3000}
+            defaultColDef={{
+              sortable: true,
+              resizable: true,
+            }}
+            rowSelection={{
+              mode: 'singleRow',
+              checkboxes: true,
+              enableClickSelection: false,
+            }}
+            selectionColumnDef={{
+              headerName: '선택',
+              width: 30,
+              cellClass: 'text-center editable-cell',
+            }}
+            singleClickEdit={true}
+            rowClassRules={{}}
+            onCellValueChanged={onCellValueChanged}
+            domLayout="normal"
+            onGridReady={(params) => {
+              params.api.forEachNode((node) => {
+                if (node.data?.isCheck) {
+                  node.setSelected(true);
+                }
+              });
+            }}
+          />
+        </div>
+        {/* 그리드 하단: 데이터 더보기(페이징) 컨트롤 */}
+        <TableMore
+          gridRef={gridRef}
+          loadedCount={loadedCount}
+          totalCount={totalCount}
+          pageSize={pageSize}
+          onLoadAll={handleLoadAll}
+          onLoadNext={handleLoadNext}
+          onLoadReset={handleLoadReset}
+          isReset={true}
         />
-      </div>
-      {/* 그리드 하단: 데이터 더보기(페이징) 컨트롤 */}
-      <TableMore
-        gridRef={gridRef}
-        loadedCount={loadedCount}
-        totalCount={totalCount}
-        pageSize={pageSize}
-        onLoadAll={handleLoadAll}
-        onLoadNext={handleLoadNext}
-        onLoadReset={handleLoadReset}
-        isReset={true}
-      />
+      </Gcol>
     </Grid>
   );
 };
