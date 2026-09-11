@@ -53,7 +53,7 @@ const DummyData: DummyDataType[] = Array.from({ length: 30 }, (_, index) => ({
   field06: '박한화화',
   field07: `809421${index % 10}`,
   field08: '신부산GA지점',
-  field09: String(1000000 + index * 500rl00),
+  field09: String(1000000 + index * 50000),
   field10: `TEXT ${index + 1}`,
   field11: index % 3 === 0 ? '승인' : '선택',
 }));
