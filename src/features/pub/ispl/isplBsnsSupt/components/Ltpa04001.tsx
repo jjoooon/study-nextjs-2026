@@ -4,10 +4,17 @@
 'use client';
 import type { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
-import { AgGridEmptyComponent, useDynamicColumnWidths, createTooltipValueGetter } from '@aggrid';
+import * as React from 'react';
+import {
+  AgGridEmptyComponent,
+  useDynamicColumnWidths,
+  createTooltipValueGetter,
+  useAgGridInfiniteAppend,
+} from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
+import { TableMore } from '@common/TablePagination';
 import { ResetIcon, SearchIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Input } from '@uiux/Input';
@@ -155,6 +162,31 @@ const Ltpa040DummyData: Ltpa040DummyDataRow[] = [
 
 const Ltpa04001 = () => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
+  const gridRef = React.useRef<AgGridReact<Ltpa040DummyDataRow>>(null);
+  const pageSize = 5;
+  const {
+    loadedCount,
+    totalCount,
+    dataSource,
+    handleLoadAll: handleLoadAllDefault,
+    handleLoadNext: handleLoadNextDefault,
+    handleLoadReset: handleLoadResetDefault,
+  } = useAgGridInfiniteAppend({
+    allRows: Ltpa040DummyData,
+    pageSize,
+  });
+
+  const handleLoadNext = React.useCallback(() => {
+    handleLoadNextDefault();
+  }, [handleLoadNextDefault]);
+
+  const handleLoadAll = React.useCallback(() => {
+    handleLoadAllDefault();
+  }, [handleLoadAllDefault]);
+
+  const handleLoadReset = React.useCallback(() => {
+    handleLoadResetDefault();
+  }, [handleLoadResetDefault]);
   const columnDefs: (ColDef<Ltpa040DummyDataRow> | ColGroupDef<Ltpa040DummyDataRow>)[] = [
     {
       headerName: '추천설계정보',
@@ -407,9 +439,9 @@ const Ltpa04001 = () => {
       </Grow>
       <div className="ag-theme-alpine radio-selection ">
         <AgGridReact<Ltpa040DummyDataRow>
+          ref={gridRef}
           noRowsOverlayComponent={AgGridEmptyComponent}
           getRowId={(params) => String(params.data.id)}
-          rowData={Ltpa040DummyData}
           columnDefs={columnDefs}
           tooltipShowMode="whenTruncated"
           tooltipShowDelay={0}
@@ -439,8 +471,22 @@ const Ltpa04001 = () => {
               }
             });
           }}
+          key={loadedCount}
+          rowModelType="infinite"
+          cacheBlockSize={pageSize}
+          maxBlocksInCache={2}
+          datasource={dataSource}
         />
       </div>
+      <TableMore
+        gridRef={gridRef}
+        loadedCount={loadedCount}
+        totalCount={totalCount}
+        pageSize={pageSize}
+        onLoadAll={handleLoadAll}
+        onLoadNext={handleLoadNext}
+        onLoadReset={handleLoadReset}
+      />
     </Grid>
   );
 };
