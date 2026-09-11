@@ -3,7 +3,7 @@
  */
 'use client';
 
-import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, GridApi, ICellEditorParams, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
@@ -173,6 +173,64 @@ const DummyData1: DummyData1Type[] = [
   },
 ];
 
+// 상품명 전용 셀 에디터 (편집 모드에서도 돋보기 버튼 유지 및 getValue 적용)
+const ProductNameCellEditor = (props: ICellEditorParams<DummyData1Type>) => {
+  const [val, setVal] = React.useState<string>(props.value == null ? '' : String(props.value));
+  const valRef = React.useRef<string>(props.value == null ? '' : String(props.value));
+
+  type CellEditorImperativeRef = {
+    getValue: () => string;
+    isCancelAfterEnd: () => boolean;
+  };
+  type CellEditorPropsWithForwardedRef<T> = ICellEditorParams<T> & {
+    forwardedRef?: React.Ref<CellEditorImperativeRef>;
+  };
+  const propsWithForwardedRef = props as unknown as CellEditorPropsWithForwardedRef<DummyData1Type>;
+
+  React.useImperativeHandle(
+    propsWithForwardedRef.forwardedRef,
+    () => ({
+      getValue: () => valRef.current,
+      isCancelAfterEnd: () => false,
+    }),
+    []
+  );
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVal = e.target.value;
+    valRef.current = newVal;
+    setVal(newVal);
+    if (props.node && props.column) {
+      props.node.setDataValue(props.column.getColId(), newVal);
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-between w-full h-full gap-1">
+      <input
+        className="ag-input-field-input ag-text-field-input min-w-0 flex-1 outline-none border border-gray-300 rounded px-1 text-xs h-[2.2rem]"
+        value={val}
+        onChange={handleChange}
+        onBlur={() => props.stopEditing?.()}
+        autoFocus
+      />
+      <Button
+        aria-label="검색"
+        variant={'outlined'}
+        only="icon"
+        size={'sm'}
+        color={'gray-light'}
+        onClick={(e) => {
+          e.stopPropagation();
+          alert('상품검색');
+        }}
+      >
+        <SearchIcon color={'var(--color-primary-50)'} size={14} />
+      </Button>
+    </div>
+  );
+};
+
 export default function Ltpa670Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
@@ -255,8 +313,18 @@ export default function Ltpa670Section() {
         field: 'productName',
         flex: 8,
         minWidth: attributeColumnWidth(240),
-        editable: true,
-        cellClass: 'editable-cell flex! items-center!',
+        editable: (params) => {
+          const event = (params as { event?: MouseEvent }).event;
+          if (event && event.target) {
+            const target = event.target as HTMLElement;
+            if (target.closest('button')) {
+              return false;
+            }
+          }
+          return true;
+        },
+        cellEditor: ProductNameCellEditor,
+        cellClass: 'editable-cell flex! items-center! w-full',
         cellRenderer: (params: ICellRendererParams<DummyData1Type>) => (
           <div className="flex items-center justify-between w-full h-full gap-1">
             <span className="truncate min-w-0 flex-1 leading-normal">{params.value || '\u00A0'}</span>
@@ -268,6 +336,7 @@ export default function Ltpa670Section() {
               color={'gray-light'}
               onClick={(e) => {
                 e.stopPropagation();
+                alert('상품검색');
               }}
             >
               <SearchIcon color={'var(--color-primary-50)'} size={14} />
