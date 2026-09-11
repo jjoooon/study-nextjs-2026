@@ -274,7 +274,13 @@ export function Ltpa35006Side<TData extends InfoContractBaseData = InfoContractB
                           <Typo variant={'body-xs'}>추가구비서류 스캔</Typo>
                         </span>
                       </TooltipTrigger>
-                      <TooltipContent align="center" side="top" sideOffset={0} variant="default">
+                      <TooltipContent
+                        align="center"
+                        side="top"
+                        sideOffset={0}
+                        variant="default"
+                        className="max-w-[50rem]"
+                      >
                         {`미스캔서류:서류명 노출`}
                       </TooltipContent>
                     </Tooltip>
