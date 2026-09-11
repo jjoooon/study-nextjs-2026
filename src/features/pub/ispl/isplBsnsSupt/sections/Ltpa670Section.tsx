@@ -28,10 +28,10 @@ import '@/shared/lib/agGridPub';
 type DummyData1Type = {
   id: number;
   productName: string;
-  recommendStatus: '추천' | '제외';
+  recommendStatus: '추천' | '제외' | '';
   startDate: string;
   endDate: string;
-  channel: 'GA' | '전속' | 'TM';
+  channel: 'GA' | '전속' | 'TM' | '';
   priority: number;
 };
 
@@ -283,10 +283,10 @@ export default function Ltpa670Section() {
       const newRow: DummyData1Type = {
         id: nextId,
         productName: '',
-        recommendStatus: '추천',
+        recommendStatus: '',
         startDate: '',
         endDate: '',
-        channel: 'GA',
+        channel: '',
         priority: prev.length + 1,
       };
       return [...prev, newRow];
@@ -441,6 +441,34 @@ export default function Ltpa670Section() {
                 <FormRow>
                   <FormCell title={'상품판매 기준일자'}>
                     <DatePickerInput mode="single" onChange={() => {}} value="" />
+                    <Grow className="gap-[1.2rem]">
+                      <Grow>
+                        <RadioGroup className="gap-2" width="full">
+                          <RadioGroupItem value={'전체'} color="primary" size="md">
+                            전체
+                          </RadioGroupItem>
+                          <RadioGroupItem value={'추천'} color="primary" size="md">
+                            추천
+                          </RadioGroupItem>
+                          <RadioGroupItem value={'제외'} color="primary" size="md">
+                            제외
+                          </RadioGroupItem>
+                        </RadioGroup>
+                      </Grow>
+                      <Grow>
+                        <CheckboxGroup value={channels} onValueChange={setChannels} className="gap-3">
+                          <CheckboxGroupItem value="전속" size="md">
+                            전속
+                          </CheckboxGroupItem>
+                          <CheckboxGroupItem value="GA" size="md">
+                            GA
+                          </CheckboxGroupItem>
+                          <CheckboxGroupItem value="TM" size="md">
+                            TM
+                          </CheckboxGroupItem>
+                        </CheckboxGroup>
+                      </Grow>
+                    </Grow>
                   </FormCell>
                 </FormRow>
               </FormTable>
@@ -462,45 +490,15 @@ export default function Ltpa670Section() {
               </Grow>
             </Grow>
             <Gcol className="w-full overflow-hidden">
-              <Grow className="w-full" placement="bwc">
-                <Grow className="gap-[1.2rem]">
-                  <Grow>
-                    <RadioGroup className="gap-2" width="full">
-                      <RadioGroupItem value={'전체'} color="primary" size="md">
-                        전체
-                      </RadioGroupItem>
-                      <RadioGroupItem value={'추천'} color="primary" size="md">
-                        추천
-                      </RadioGroupItem>
-                      <RadioGroupItem value={'제외'} color="primary" size="md">
-                        제외
-                      </RadioGroupItem>
-                    </RadioGroup>
-                  </Grow>
-                  <Grow>
-                    <CheckboxGroup value={channels} onValueChange={setChannels} className="gap-3">
-                      <CheckboxGroupItem value="전속" size="md">
-                        전속
-                      </CheckboxGroupItem>
-                      <CheckboxGroupItem value="GA" size="md">
-                        GA
-                      </CheckboxGroupItem>
-                      <CheckboxGroupItem value="TM" size="md">
-                        TM
-                      </CheckboxGroupItem>
-                    </CheckboxGroup>
-                  </Grow>
-                </Grow>
-                <Grow placement="ec">
-                  <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
-                    행추가
-                    <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
-                  </Button>
-                  <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow}>
-                    행삭제
-                    <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
-                  </Button>
-                </Grow>
+              <Grow placement="ec" className="w-full">
+                <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
+                  행추가
+                  <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
+                </Button>
+                <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow}>
+                  행삭제
+                  <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
+                </Button>
               </Grow>
               <div className="ag-theme-alpine">
                 {/* 2026-06-04 suppressClickEdit 삭제 */}
