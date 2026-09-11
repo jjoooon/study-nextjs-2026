@@ -116,7 +116,7 @@ export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {
               data={Tabs}
               active={TabActive}
               setActive={TabSetActive}
-              visibleCount={6}
+              visibleCount={3}
               error={false}
               errorMsg="입력하세요."
               getValue={(tab) => String(tab.id)}
