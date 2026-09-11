@@ -359,13 +359,6 @@ export default function Ltpa070Section() {
     setLoadedCount(res.items.length);
   }, [loadedCount, totalCount, fetchMockData, isLoading]);
 
-  // 접기 버튼 (onLoadReset 콜백)
-  const handleLoadReset = React.useCallback(() => {
-    // 현재 목록을 첫 페이지 크기만큼만 유지
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
-
   return (
     <>
       <LayoutHead>
@@ -480,8 +473,6 @@ export default function Ltpa070Section() {
                 pageSize={pageSize}
                 onLoadAll={handleLoadAll}
                 onLoadNext={handleLoadNext}
-                onLoadReset={handleLoadReset}
-                isReset={true}
               />
             </Grid>
           </Grid>
