@@ -71,7 +71,9 @@ export const Ltpz092: React.FC<Ltpz092Props> = ({ showDownloadButton = true }) =
                 </Grow>
               )}
             </Grow>
-            <Gcol className="w-full min-h-[10rem]">등록된 이미지 노출 영역</Gcol>
+            <div className="w-full min-h-[10rem] overflow-y-auto">
+              <div className="w-full h-[90rem] bg-[#e4e4e4]">등록된 이미지 노출 영역</div>
+            </div>
           </Grid>
         </DialogSection>
 
