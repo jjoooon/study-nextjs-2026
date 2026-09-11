@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 
 import { useTabs } from '@/shared/hooks/useTabs';
-import { AgGridEmptyComponent, createTooltipValueGetter, useAgGridInfiniteAppend } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter } from '@aggrid';
 import { Grow, Grid, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -102,338 +102,25 @@ type Ltpa400DummyDataRow2 = {
   field11_01: string | number;
   field12_01: string | number;
 };
-const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = [
-  {
-    id: 1,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화화',
-    field06_01: '한화 건강쑥쑥 어린이보험 한화 건강쑥쑥 어린이보험 한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플 우리집안심간편플 우리집안심간편플 우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 2,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 3,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 4,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 5,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 6,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 7,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 8,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 9,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 10,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 11,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 12,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 13,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 14,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 15,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 16,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 17,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 18,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 19,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 20,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 21,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-  {
-    id: 22,
-    field01_01: '신부산GA지점',
-    field02_01: '1301097',
-    field03_01: '에이플러스-서면',
-    field04_01: '4649111',
-    field05_01: '김한화',
-    field06_01: '한화 건강쑥쑥 어린이보험',
-    field07_01: '우리집안심간편플',
-    field08_01: '박한화화',
-    field09_01: '2026-04-11',
-    field10_01: '임한화화(8994772)',
-    field11_01: 'LA251028678825',
-    field12_01: 'LA251028678825',
-  },
-];
+const Ltpa400DummyData2: Ltpa400DummyDataRow2[] = Array.from({ length: 30 }, (_, index) => ({
+  id: index + 1,
+  field01_01: `신부산GA지점`,
+  field02_01: `13010${97 + (index % 5)}`,
+  field03_01: `에이플러스-서면`,
+  field04_01: `46491${11 + (index % 5)}`,
+  field05_01: index % 2 === 0 ? '김한화화' : '김한화',
+  field06_01:
+    index % 3 === 0
+      ? '한화 건강쑥쑥 어린이보험 한화 건강쑥쑥 어린이보험 한화 건강쑥쑥 어린이보험'
+      : '한화 건강쑥쑥 어린이보험',
+  field07_01:
+    index % 3 === 0 ? '우리집안심간편플 우리집안심간편플 우리집안심간편플 우리집안심간편플' : '우리집안심간편플',
+  field08_01: '박한화화',
+  field09_01: '2026-04-11',
+  field10_01: '임한화화(8994772)',
+  field11_01: `LA2510286788${25 + index}`,
+  field12_01: `LA2510286788${25 + index}`,
+}));
 
 export default function Ltpa400Section() {
   const { tabs, active, setActive, handleRemove } = useTabs(DATA_TABS);
@@ -441,28 +128,47 @@ export default function Ltpa400Section() {
   // 2026-05-22 페이징 추가
   const gridRef = React.useRef<AgGridReact<Ltpa400DummyDataRow2>>(null);
   const pageSize = 5;
-  const {
-    loadedCount,
-    totalCount,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-  } = useAgGridInfiniteAppend({
-    allRows: Ltpa400DummyData2,
-    pageSize,
-  });
-  const handleLoadNext = React.useCallback(() => {
-    handleLoadNextDefault();
-  }, [handleLoadNextDefault]);
+  const [rowData, setRowData] = React.useState<Ltpa400DummyDataRow2[]>([]);
+  const [loadedCount, setLoadedCount] = React.useState(0);
+  const totalCount = Ltpa400DummyData2.length;
 
-  const handleLoadAll = React.useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    return new Promise<Ltpa400DummyDataRow2[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(Ltpa400DummyData2.slice(start, end));
+      }, 100);
+    });
+  }, []);
+
+  const handleSearch = React.useCallback(async () => {
+    const initialData = await fetchMockData(1, pageSize);
+    setRowData(initialData);
+    setLoadedCount(initialData.length);
+  }, [fetchMockData, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
+    const nextData = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...nextData]);
+    setLoadedCount((prev) => prev + nextData.length);
+  }, [fetchMockData, loadedCount, totalCount, pageSize]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    setRowData(Ltpa400DummyData2);
+    setLoadedCount(totalCount);
+  }, [loadedCount, totalCount]);
 
   const handleLoadReset = React.useCallback(() => {
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
-  const visibleRows = React.useMemo(() => Ltpa400DummyData2.slice(0, loadedCount), [loadedCount]);
+    handleSearch();
+  }, [handleSearch]);
 
   // 2026-05-22 지원SM 버튼으로 변경
   // 2026-05-27 담당SM 버튼으로 변경
@@ -975,7 +681,7 @@ export default function Ltpa400Section() {
                     </FormRow>
                   </FormTable>
                   <Grow>
-                    <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                    <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                       조회
                     </Button>
                     <Button
@@ -983,7 +689,7 @@ export default function Ltpa400Section() {
                       only={'icon'}
                       size={'lg'}
                       variant={'outlined'}
-                      onClick={() => {}}
+                      onClick={handleSearch}
                       aria-label="새로고침"
                     >
                       <ResetIcon />
@@ -997,15 +703,14 @@ export default function Ltpa400Section() {
                       <FileExportIcon />
                     </Button>
                   </Grow>
-                  <Gcol className="w-full">
+                  <Gcol className="w-full overflow-hidden">
                     <div className="ag-theme-alpine">
                       {/* 2026-05-22 체크박스 삭제 */}
                       <AgGridReact<Ltpa400DummyDataRow2>
                         ref={gridRef}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         getRowId={(params) => String(params.data.id)}
-                        // rowData={Ltpa400DummyData2}
-                        rowData={visibleRows}
+                        rowData={rowData}
                         columnDefs={columnDefs2}
                         defaultColDef={{
                           sortable: true,
@@ -1024,6 +729,7 @@ export default function Ltpa400Section() {
                     <TableMore
                       gridRef={gridRef}
                       isAll={true}
+                      isReset={true}
                       loadedCount={loadedCount}
                       totalCount={totalCount}
                       pageSize={pageSize}

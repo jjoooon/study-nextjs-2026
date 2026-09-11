@@ -8,13 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import {
-  AgGridEmptyComponent,
-  createFieldRenderer,
-  useAgGridInfiniteAppend,
-  useDynamicColumnWidths,
-  createGroupHeaderWithSort,
-} from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, useDynamicColumnWidths, createGroupHeaderWithSort } from '@aggrid';
 import { Grid, Grow, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -51,214 +45,66 @@ type DummyDataType = {
   field12: string | number;
 };
 // 2026-05-29 field08 dummy data 수정
-const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 2,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 3,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 4,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 5,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 6,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 7,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 8,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 9,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 10,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 11,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-  {
-    id: 12,
-    field01: 'LA123456789012-1',
-    field02: '홍길동',
-    field03: '홍일홍2',
-    field04: '청약중',
-    field05: '상품지원파트',
-    field06: '김한화',
-    field07: '김한화',
-    field08: '2026-05-01 ~ 2026-05-31',
-    field09: '미대상',
-    field10: '미초과',
-    field11: '미파기',
-    field12: '130211',
-  },
-];
+const DummyData: DummyDataType[] = Array.from({ length: 30 }, (_, index) => ({
+  id: index + 1,
+  field01: `LA123456789012-${index + 1}`,
+  field02: index % 2 === 0 ? '홍길동' : '김철수',
+  field03: `홍일홍${(index % 3) + 1}`,
+  field04: index % 3 === 0 ? '청약완료' : '청약중',
+  field05: '상품지원파트',
+  field06: '김한화',
+  field07: '김한화',
+  field08: '2026-05-01 ~ 2026-05-31',
+  field09: '미대상',
+  field10: '미초과',
+  field11: '미파기',
+  field12: `사유${index + 1}`,
+}));
 
 export default function Ltpa490Section() {
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
-  const pageSize = 5;
-  const {
-    loadedCount,
-    totalCount,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-  } = useAgGridInfiniteAppend({
-    allRows: DummyData,
-    pageSize,
-  });
-  const handleLoadNext = React.useCallback(() => {
-    handleLoadNextDefault();
-  }, [handleLoadNextDefault]);
+  const pageSize = 10;
+  const [rowData, setRowData] = React.useState<DummyDataType[]>([]);
+  const [loadedCount, setLoadedCount] = React.useState(0);
+  const totalCount = DummyData.length;
 
-  const handleLoadAll = React.useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    return new Promise<DummyDataType[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(DummyData.slice(start, end));
+      }, 100);
+    });
+  }, []);
+
+  const handleSearch = React.useCallback(async () => {
+    const initialData = await fetchMockData(1, pageSize);
+    setRowData(initialData);
+    setLoadedCount(initialData.length);
+  }, [fetchMockData, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
+    const nextData = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...nextData]);
+    setLoadedCount((prev) => prev + nextData.length);
+  }, [fetchMockData, loadedCount, totalCount, pageSize]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    setRowData(DummyData);
+    setLoadedCount(totalCount);
+  }, [loadedCount, totalCount]);
 
   const handleLoadReset = React.useCallback(() => {
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
-  const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
+    handleSearch();
+  }, [handleSearch]);
 
   const ExceedPeriodHeader = () => (
     <span className="w-full flex flex-col items-center">
@@ -539,7 +385,7 @@ export default function Ltpa490Section() {
                 </FormRow>
               </FormTable>
               <Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -547,7 +393,7 @@ export default function Ltpa490Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
@@ -556,14 +402,14 @@ export default function Ltpa490Section() {
             </Grow>
             <TableFold className="grid-rows-[auto_minmax(0,1fr)] ltpa490-section">
               <TableFoldHead title="대상리스트" />
-              <TableFoldBody className="gap-3">
-                <Grid className="grid-rows-[minmax(0,1fr)_auto] gap-2 overflow-y-hidden">
-                  <Gcol className="w-full" gap={1}>
+              <TableFoldBody className="gap-3 h-full overflow-hidden">
+                <Grid className="grid-rows-[minmax(0,1fr)_auto] gap-2 overflow-y-hidden h-full">
+                  <Gcol className="w-full overflow-hidden" gap={1}>
                     <div className="ag-theme-alpine">
                       <AgGridReact<DummyDataType>
                         ref={gridRef}
                         noRowsOverlayComponent={AgGridEmptyComponent}
-                        rowData={visibleRows}
+                        rowData={rowData}
                         columnDefs={columnDefs}
                         singleClickEdit={true}
                         rowHeight={60}
@@ -572,7 +418,8 @@ export default function Ltpa490Section() {
                     </div>
                     <TableMore
                       gridRef={gridRef}
-                      isAll={false}
+                      isAll={true}
+                      isReset={true}
                       loadedCount={loadedCount}
                       totalCount={totalCount}
                       pageSize={pageSize}

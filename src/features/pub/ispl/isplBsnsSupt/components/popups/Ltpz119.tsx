@@ -41,147 +41,65 @@ type DummyDataType2 = {
   field07: string | number;
   field08: string | number;
 };
-const DummyData2: DummyDataType2[] = [
-  {
-    id: 1,
-    field01: '2006년 5월 심사가이드라인',
-    field02: '2006년 5월 심사가이드라인',
-    field03: '간편심사가이드 인수완화 두통질병',
-    field04: '김한화',
-    field05: '2006-05-01 10:00:00',
-    field06: '2006-05-01 10:00:00',
-    field07: 'xxxxxxxxxx',
-    field08: '승인',
-  },
-  {
-    id: 2,
-    field01: '2006년 5월 심사가이드라인',
-    field02: '2006년 5월 심사가이드라인',
-    field03: '간편심사가이드 인수완화 두통질병간편심사가이드 인수완화 두통질병간편심사가이드 인수완화 두통질병',
-    field04: '김한화',
-    field05: '2006-05-01 10:00:00',
-    field06: '2006-05-01 10:00:00',
-    field07: 'xxxxxxxxxx',
-    field08: '승인',
-  },
-  {
-    id: 3,
-    field01: '2006년 5월 심사가이드라인',
-    field02: '2006년 5월 심사가이드라인',
-    field03: '간편심사가이드 인수완화 두통질병',
-    field04: '김한화',
-    field05: '2006-05-01 10:00:00',
-    field06: '2006-05-01 10:00:00',
-    field07: 'xxxxxxxxxx',
-    field08: '승인',
-  },
-  {
-    id: 4,
-    field01: '2006년 5월 심사가이드라인',
-    field02: '2006년 5월 심사가이드라인',
-    field03: '간편심사가이드 인수완화 두통질병',
-    field04: '김한화',
-    field05: '2006-05-01 10:00:00',
-    field06: '2006-05-01 10:00:00',
-    field07: 'xxxxxxxxxx',
-    field08: '승인',
-  },
-  {
-    id: 5,
-    field01: '2006년 5월 심사가이드라인',
-    field02: '2006년 5월 심사가이드라인',
-    field03: '간편심사가이드 인수완화 두통질병',
-    field04: '김한화',
-    field05: '2006-05-01 10:00:00',
-    field06: '2006-05-01 10:00:00',
-    field07: 'xxxxxxxxxx',
-    field08: '승인',
-  },
-  {
-    id: 6,
-    field01: '2006년 5월 심사가이드라인',
-    field02: '2006년 5월 심사가이드라인',
-    field03: '간편심사가이드 인수완화 두통질병',
-    field04: '김한화',
-    field05: '2006-05-01 10:00:00',
-    field06: '2006-05-01 10:00:00',
-    field07: 'xxxxxxxxxx',
-    field08: '승인',
-  },
-  {
-    id: 7,
-    field01: '2006년 5월 심사가이드라인',
-    field02: '2006년 5월 심사가이드라인',
-    field03: '간편심사가이드 인수완화 두통질병',
-    field04: '김한화',
-    field05: '2006-05-01 10:00:00',
-    field06: '2006-05-01 10:00:00',
-    field07: 'xxxxxxxxxx',
-    field08: '승인',
-  },
-  {
-    id: 8,
-    field01: '2006년 5월 심사가이드라인',
-    field02: '2006년 5월 심사가이드라인',
-    field03: '간편심사가이드 인수완화 두통질병',
-    field04: '김한화',
-    field05: '2006-05-01 10:00:00',
-    field06: '2006-05-01 10:00:00',
-    field07: 'xxxxxxxxxx',
-    field08: '승인',
-  },
-];
+const DummyData2: DummyDataType2[] = Array.from({ length: 30 }, (_, index) => ({
+  id: index + 1,
+  field01: '2006년 5월 심사가이드라인',
+  field02: '2006년 5월 심사가이드라인',
+  field03:
+    index % 2 === 0 ? '간편심사가이드 인수완화 두통질병' : '간편심사가이드 인수완화 두통질병간편심사가이드 인수완화',
+  field04: '김한화',
+  field05: '2006-05-01 10:00:00',
+  field06: '2006-05-01 10:00:00',
+  field07: `doc${1000 + index}`,
+  field08: '승인',
+}));
 
 export const Ltpz119 = () => {
   const pageSize = 5;
-  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(() => DummyData2.slice(0, pageSize));
-  const [loadedCount, setLoadedCount] = React.useState(pageSize);
-  const [totalCount, setTotalCount] = React.useState(DummyData2.length);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [rowData, setRowData] = React.useState<DummyDataType2[]>([]);
+  const [loadedCount, setLoadedCount] = React.useState(0);
+  const totalCount = DummyData2.length;
 
   const gridRef = React.useRef<AgGridReact<DummyDataType2>>(null);
-
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
-  // 데이터 호출 모사 (API 호출)
   const fetchMockData = React.useCallback(async (page: number, limit: number) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const items = DummyData2.slice(start, end);
-      return {
-        items,
-        totalCount: DummyData2.length,
-      };
-    } finally {
-      setIsLoading(false);
-    }
+    return new Promise<DummyDataType2[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(DummyData2.slice(start, end));
+      }, 100);
+    });
   }, []);
 
-  // 다음 데이터 로드 (onLoadNext 콜백)
+  const handleSearch = React.useCallback(async () => {
+    const initialData = await fetchMockData(1, pageSize);
+    setRowData(initialData);
+    setLoadedCount(initialData.length);
+  }, [fetchMockData, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
   const handleLoadNext = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
-    const res = await fetchMockData(nextPage, pageSize);
-    setRowData2((prev) => [...prev, ...res.items]);
-    setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+    if (loadedCount >= totalCount) return;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
+    const nextData = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...nextData]);
+    setLoadedCount((prev) => prev + nextData.length);
+  }, [fetchMockData, loadedCount, totalCount, pageSize]);
 
-  // 전체 데이터 로드 (onLoadAll 콜백)
   const handleLoadAll = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-    const res = await fetchMockData(1, totalCount);
-    setRowData2(res.items);
-    setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+    if (loadedCount >= totalCount) return;
+    setRowData(DummyData2);
+    setLoadedCount(totalCount);
+  }, [loadedCount, totalCount]);
 
-  // 목록 접기 (onLoadReset 콜백)
   const handleLoadReset = React.useCallback(() => {
-    setRowData2((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
+    handleSearch();
+  }, [handleSearch]);
 
   // 오늘 날짜 기준 1주일 전 ~ 오늘 계산
   const getInitialDateRange = () => {
@@ -307,7 +225,7 @@ export const Ltpz119 = () => {
                     </FormRow>
                   </FormTable>
                   <Grow>
-                    <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                    <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                       조회
                     </Button>
                     <Button
@@ -315,7 +233,7 @@ export const Ltpz119 = () => {
                       only={'icon'}
                       size={'lg'}
                       variant={'outlined'}
-                      onClick={() => {}}
+                      onClick={handleSearch}
                       aria-label="새로고침"
                     >
                       <ResetIcon />
@@ -323,13 +241,13 @@ export const Ltpz119 = () => {
                   </Grow>
                 </Grow>
 
-                <Gcol gap={1}>
-                  <div className="ag-theme-alpine inner-scroll" data-page={pageSize}>
+                <Gcol gap={1} className="overflow-hidden min-h-[21.3rem]" placement="ss">
+                  <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType2>
                       ref={gridRef}
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={rowData2}
+                      rowData={rowData}
                       columnDefs={columnDefs2}
                       defaultColDef={{ sortable: true, resizable: true }}
                       singleClickEdit={true}
@@ -350,13 +268,14 @@ export const Ltpz119 = () => {
                   </div>
                   <TableMore
                     gridRef={gridRef}
+                    isAll={true}
+                    isReset={true}
                     loadedCount={loadedCount}
                     totalCount={totalCount}
                     pageSize={pageSize}
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
                     onLoadReset={handleLoadReset}
-                    isReset={true}
                   />
                 </Gcol>
               </TableFoldBody>

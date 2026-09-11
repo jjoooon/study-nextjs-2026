@@ -455,10 +455,13 @@ const Ltpa04001 = () => {
   // =====================
   // 그리드 데이터/페이징 상태
   // =====================
-  // 초기 렌더는 첫 페이지(5건)만 표시
-  const [rowData, setRowData] = React.useState<Ltpa040DummyDataRow[]>(() => Ltpa040DummyData.slice(0, 5));
+  // 무한 스크롤(더보기) 기능을 위한 설정
+  const pageSize = 5;
+
+  // 초기 렌더는 첫 페이지만 표시
+  const [rowData, setRowData] = React.useState<Ltpa040DummyDataRow[]>(() => Ltpa040DummyData.slice(0, pageSize));
   // 현재 화면에 로드된 누적 건수
-  const [loadedCount, setLoadedCount] = React.useState(5);
+  const [loadedCount, setLoadedCount] = React.useState(pageSize);
   // 전체 데이터 건수(서버 응답 total과 동일하게 유지)
   const [totalCount, setTotalCount] = React.useState(Ltpa040DummyData.length);
   // 중복 요청 방지용 로딩 플래그
@@ -473,8 +476,6 @@ const Ltpa04001 = () => {
     [setRowData, setErrorRows]
   );
 
-  // 무한 스크롤(더보기) 기능을 위한 설정
-  const pageSize = 5;
   // TableMore와 연동하기 위한 그리드 ref
   const gridRef = React.useRef<AgGridReact<Ltpa040DummyDataRow>>(null);
 
@@ -512,7 +513,7 @@ const Ltpa04001 = () => {
     if (loadedCount >= totalCount || isLoading) return;
 
     // 현재 로드 건수 기준으로 다음 페이지 번호 계산
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
     const res = await fetchMockData(nextPage, pageSize);
 
     // 기존 목록 하단에 다음 페이지 데이터 이어붙이기

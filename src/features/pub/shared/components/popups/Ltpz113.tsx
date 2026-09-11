@@ -152,6 +152,20 @@ const DummyData: DummyDataType[] = [
     field07: '미리보기 출력완료',
     field08: '삭제',
   },
+  ...Array.from({ length: 20 }, (_, i) => {
+    const num = 11 + i;
+    return {
+      id: num,
+      field01: `LA1234567890${num}`,
+      field02: `한화 더 경증 간편건강 보험(만기형) 무배당 2604 (${num})`,
+      field03: `김한화${num}`,
+      field04: String(50000 + num * 1000),
+      field05: '2026-06-18-10:24:20',
+      field06: '출력가능',
+      field07: '미리보기 출력완료',
+      field08: '삭제',
+    };
+  }),
 ];
 
 const Ltpz113 = () => {
@@ -322,7 +336,7 @@ const Ltpz113 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr]">
+        <DialogSection className="grid-rows-[auto_1fr_auto]">
           <Grow className="w-full" variant="box-round" placement={'ss'} gap={6}>
             <FormTable variant={'none'} lineTop={false} cols={['w-1', 'w-auto']}>
               <FormRow>
@@ -373,7 +387,7 @@ const Ltpz113 = () => {
             </Grow>
           </Grow>
 
-          <Gcol className="w-full">
+          <Gcol gap={1} className="overflow-hidden min-h-[24.2rem]" placement="ss">
             <Grow placement="bwc" className="w-full">
               <RadioGroup defaultValue="단면" className="gap-3">
                 {[
@@ -389,7 +403,7 @@ const Ltpz113 = () => {
                 전체삭제
               </Button>
             </Grow>
-            <div className="ag-theme-alpine inner-scroll" data-page={pageSize}>
+            <div className="ag-theme-alpine">
               <AgGridReact<DummyDataType>
                 ref={gridRef}
                 getRowId={(params) => String(params.data.id)}

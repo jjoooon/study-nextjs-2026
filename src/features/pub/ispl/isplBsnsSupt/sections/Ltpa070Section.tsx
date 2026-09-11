@@ -190,6 +190,20 @@ const DummyData: DummyDataType[] = [
     field07: 'xxxxxxxxxx',
     field08: '승인',
   },
+  ...Array.from({ length: 16 }, (_, i) => {
+    const num = 15 + i;
+    return {
+      id: num,
+      field01: `2006년 5월 심사가이드라인 (${num})`,
+      field02: `2006년 5월 심사가이드라인 (${num})`,
+      field03: `간편심사가이드 인수완화 두통질병 (${num})`,
+      field04: `김한화${num}`,
+      field05: '2006-05-01 10:00:00',
+      field06: '2006-05-01 10:00:00',
+      field07: `doc${num}`,
+      field08: num % 3 === 0 ? '승인' : num % 3 === 1 ? '등록' : '결재중',
+    };
+  }),
 ];
 
 export default function Ltpa070Section() {
@@ -281,12 +295,12 @@ export default function Ltpa070Section() {
   );
 
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
-  const pageSize = 10;
+  const pageSize = 5;
 
-  // 초기 렌더는 첫 페이지(10건)만 표시
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 10));
+  // 초기 렌더는 첫 페이지만 표시
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, pageSize));
   // 현재 화면에 로드된 누적 건수
-  const [loadedCount, setLoadedCount] = React.useState(10);
+  const [loadedCount, setLoadedCount] = React.useState(pageSize);
   // 전체 데이터 건수
   const [totalCount, setTotalCount] = React.useState(DummyData.length);
   // 중복 요청 방지용 로딩 플래그
@@ -326,7 +340,7 @@ export default function Ltpa070Section() {
     if (loadedCount >= totalCount || isLoading) return;
 
     // 현재 로드 건수 기준으로 다음 페이지 번호 계산
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
     const res = await fetchMockData(nextPage, pageSize);
 
     // 기존 목록 하단에 다음 페이지 데이터 이어붙이기
@@ -419,7 +433,7 @@ export default function Ltpa070Section() {
               </Grow>
             </Grow>
 
-            <Grid className="grid-rows-[auto_1fr_auto] gap-2">
+            <Grid className="grid-rows-[auto_1fr] gap-2 overflow-hidden">
               <Grow placement="ec">
                 <Button color="gray" variant="outlined">
                   파일추가
@@ -430,7 +444,7 @@ export default function Ltpa070Section() {
                   <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
               </Grow>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine h-full">
                 <AgGridReact<DummyDataType>
                   ref={gridRef}
                   getRowId={(params) => String(params.data.id)}

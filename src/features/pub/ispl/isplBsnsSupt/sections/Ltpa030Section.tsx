@@ -419,7 +419,6 @@ export default function Ltpa030Section() {
       field: 'field01',
       width: 90,
       cellClass: (params) => (isEditableNewRow2(params) ? 'text-center editable-cell' : 'text-center'),
-      autoHeight: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '취급직원', '사용인', '설계'] },
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -434,7 +433,6 @@ export default function Ltpa030Section() {
       headerName: '대상',
       field: 'field02',
       width: 260,
-      autoHeight: true,
       suppressNavigable: true,
       cellClass: 'editable-cell text-center',
       tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field03' }),
@@ -459,7 +457,7 @@ export default function Ltpa030Section() {
                   />
                 ) : (
                   <div
-                    className="h-8 w-full cursor-text"
+                    className=" w-full cursor-text"
                     onMouseDown={(event) => event.stopPropagation()}
                     onClick={(event) => {
                       event.stopPropagation();
@@ -502,7 +500,6 @@ export default function Ltpa030Section() {
       field: 'field04',
       width: 130,
       cellClass: 'editable-cell text-center',
-      autoHeight: true,
       editable: isEditableNewRow2,
       cellEditor: DatePickerCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) =>
@@ -514,7 +511,6 @@ export default function Ltpa030Section() {
       width: 130,
       editable: isEditableNewRow2,
       cellClass: 'editable-cell text-center',
-      autoHeight: true,
       cellEditor: DatePickerCellEditor,
       cellRenderer: (params: ICellRendererParams<DummyDataType2>) =>
         params.data?.field05 && String(params.data.field05).trim() !== '' ? String(params.data.field05) : '',
@@ -525,7 +521,6 @@ export default function Ltpa030Section() {
       width: 90,
       editable: isEditableNewRow2,
       cellClass: (params) => (isEditableNewRow2(params) ? 'text-center editable-cell' : 'text-center'),
-      autoHeight: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택', '정상', '고객환불', '조치완료', '취소'] },
       cellRenderer: (params: ICellRendererParams<DummyDataType>) => {
@@ -551,17 +546,17 @@ export default function Ltpa030Section() {
     },
   ];
 
+  const pageSize = 10;
+
   const [rowData, setRowData] = React.useState<DummyDataType[]>(DummyData);
-  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(() => DummyData2.slice(0, 4));
-  const [loadedCount, setLoadedCount] = React.useState(4);
+  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(() => DummyData2.slice(0, pageSize));
+  const [loadedCount, setLoadedCount] = React.useState(pageSize);
   const [totalCount] = React.useState(DummyData2.length);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const gridApiRef2 = React.useRef<GridApi<DummyDataType2> | null>(null);
   const gridRef2 = React.useRef<AgGridReact<DummyDataType2>>(null);
-
-  const pageSize = 4;
 
   const fetchMockData = React.useCallback(async (page: number, limit: number) => {
     setIsLoading(true);
@@ -582,7 +577,7 @@ export default function Ltpa030Section() {
   const handleLoadNext = React.useCallback(async () => {
     if (loadedCount >= totalCount || isLoading) return;
 
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
     const res = await fetchMockData(nextPage, pageSize);
 
     setRowData2((prev) => [...prev, ...res.items]);
@@ -833,9 +828,9 @@ export default function Ltpa030Section() {
                       </Button>
                     </Grow>
                   </TableFoldHead>
-                  <TableFoldBody>
-                    <Gcol>
-                      <div className="ag-theme-alpine inner-scroll" data-rows={rowData2.length}>
+                  <TableFoldBody className="h-full overflow-hidden">
+                    <Gcol className="h-full overflow-hidden gap-1" placement="ss">
+                      <div className="ag-theme-alpine inner-scroll h-full" data-page={rowData2.length}>
                         <AgGridReact<DummyDataType2>
                           ref={gridRef2}
                           getRowId={(params) => String(params.data.id)}
@@ -865,19 +860,19 @@ export default function Ltpa030Section() {
                           }}
                         />
                       </div>
-                      <TableMore
-                        gridRef={gridRef2}
-                        isAll={true}
-                        loadedCount={loadedCount}
-                        totalCount={totalCount}
-                        pageSize={pageSize}
-                        onLoadAll={handleLoadAll}
-                        onLoadNext={handleLoadNext}
-                        onLoadReset={handleLoadReset}
-                        isReset={true}
-                      />
                     </Gcol>
                   </TableFoldBody>
+                  <TableMore
+                    gridRef={gridRef2}
+                    isAll={true}
+                    loadedCount={loadedCount}
+                    totalCount={totalCount}
+                    pageSize={pageSize}
+                    onLoadAll={handleLoadAll}
+                    onLoadNext={handleLoadNext}
+                    onLoadReset={handleLoadReset}
+                    isReset={true}
+                  />
                 </TableFold>
               </ResizablePanel>
             </ResizablePanelGroup>

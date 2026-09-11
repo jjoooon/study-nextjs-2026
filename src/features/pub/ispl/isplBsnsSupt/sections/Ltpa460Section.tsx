@@ -7,12 +7,7 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
-import {
-  AgGridEmptyComponent,
-  useAgGridInfiniteAppend,
-  createTooltipValueGetter,
-  useDynamicColumnWidths,
-} from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -45,53 +40,22 @@ type DummyDataType = {
   field10: string | number;
   field11: string | number;
 };
-const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    field01: 8,
-    field02: '로그구분1',
-    field03: '-',
-    field04: '2026-03-01',
-    field05: '항목명1 항목명1 항목명1 항목명1 항목명1 항목명1 항목명1 항목명1',
-    field06: '항목명2',
-    field07: '항목명3',
-    field08: '항목명4',
-    field09: '항목명5',
-    field10: '항목명6',
-    field11: '항목명7',
-  },
-  {
-    id: 2,
-    field01: 7,
-    field02: '로그구분1',
-    field03: 'Data',
-    field04: '2026-03-01',
-    field05: 'Data',
-    field06: 'Data',
-    field07: 'Data',
-    field08: 'Data',
-    field09: 'Data',
-    field10: '항목명6',
-    field11: '항목명7',
-  },
-  {
-    id: 3,
-    field01: 6,
-    field02: '로그구분1',
-    field03: 'Data',
-    field04: '2026-03-01',
-    field05: 'Data',
-    field06: 'Data',
-    field07: 'Data',
-    field08: 'Data',
-    field09: 'Data',
-    field10: '항목명6',
-    field11: '항목명7',
-  },
-];
+const DummyData: DummyDataType[] = Array.from({ length: 30 }, (_, index) => ({
+  id: index + 1,
+  field01: 30 - index,
+  field02: `로그구분${(index % 3) + 1}`,
+  field03: index % 2 === 0 ? '-' : 'Data',
+  field04: '2026-03-01',
+  field05: `항목명${(index % 5) + 1} 항목명${(index % 5) + 1} 항목명${(index % 5) + 1}`,
+  field06: 'Data',
+  field07: 'Data',
+  field08: 'Data',
+  field09: 'Data',
+  field10: '항목명6',
+  field11: '항목명7',
+}));
 
 export default function Ltpa460Section() {
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
   const [coverageName, setCoverageName] = useState('');
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -130,29 +94,48 @@ export default function Ltpa460Section() {
   }, []);
 
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
-  const pageSize = 5;
-  const {
-    loadedCount,
-    totalCount,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-  } = useAgGridInfiniteAppend({
-    allRows: rowData,
-    pageSize,
-  });
-  const handleLoadNext = React.useCallback(() => {
-    handleLoadNextDefault();
-  }, [handleLoadNextDefault]);
+  const pageSize = 10;
+  const [rowData, setRowData] = React.useState<DummyDataType[]>([]);
+  const [loadedCount, setLoadedCount] = React.useState(0);
+  const totalCount = DummyData.length;
 
-  const handleLoadAll = React.useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    return new Promise<DummyDataType[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(DummyData.slice(start, end));
+      }, 100);
+    });
+  }, []);
+
+  const handleSearch = React.useCallback(async () => {
+    const initialData = await fetchMockData(1, pageSize);
+    setRowData(initialData);
+    setLoadedCount(initialData.length);
+  }, [fetchMockData, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
+    const nextData = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...nextData]);
+    setLoadedCount((prev) => prev + nextData.length);
+  }, [fetchMockData, loadedCount, totalCount, pageSize]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    setRowData(DummyData);
+    setLoadedCount(totalCount);
+  }, [loadedCount, totalCount]);
 
   const handleLoadReset = React.useCallback(() => {
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
-  const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
+    handleSearch();
+  }, [handleSearch]);
 
   // 2026-06-01 width, flex 수정
   // AgGrid Column
@@ -366,7 +349,7 @@ export default function Ltpa460Section() {
                 </FormRow>
               </FormTable>
               <Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -374,14 +357,14 @@ export default function Ltpa460Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
                 </Button>
               </Grow>
             </Grow>
-            <Gcol className="w-full grid-rows-[auto_1fr_auto]">
+            <Gcol className="w-full grid-rows-[auto_1fr_auto] overflow-hidden">
               <Grow className="w-full flex justify-end">
                 <Button color="success" variant="outlined">
                   엑셀가져오기
@@ -393,7 +376,7 @@ export default function Ltpa460Section() {
                   ref={gridRef}
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={visibleRows}
+                  rowData={rowData}
                   columnDefs={columnDefs}
                   singleClickEdit={true}
                   domLayout="normal"
@@ -401,7 +384,8 @@ export default function Ltpa460Section() {
               </div>
               <TableMore
                 gridRef={gridRef}
-                isAll={false}
+                isAll={true}
+                isReset={true}
                 loadedCount={loadedCount}
                 totalCount={totalCount}
                 pageSize={pageSize}

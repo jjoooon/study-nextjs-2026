@@ -11,12 +11,11 @@ import {
   AgGridEmptyComponent,
   createInsertCopiedRowButtonCellRenderer,
   getNextNumericRowId,
-  useAgGridInfiniteAppend,
   useDynamicColumnWidths,
   createTooltipValueGetter,
   createFieldRenderer,
 } from '@aggrid';
-import { Grow, Grid, Typo } from '@atoms';
+import { Grow, Grid, Gcol, Typo } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { InputTag } from '@common/InputTag';
 import { TableMore } from '@common/TablePagination';
@@ -514,13 +513,49 @@ export default function Ltpa600Section() {
   );
 
   // 시뮬레이션 -------------
-  const [rowData2, setRowData2] = React.useState<DummyData2Type[]>(DummyData2);
+  const [rowData2, setRowData2] = React.useState<DummyData2Type[]>([]);
+  const [loadedCount2, setLoadedCount2] = React.useState(0);
+  const totalCount2 = DummyData2.length;
   const gridRef = React.useRef<AgGridReact<DummyData2Type>>(null);
-  const pageSize = 3;
-  const { totalCount, dataSource, handleSortChanged } = useAgGridInfiniteAppend({
-    allRows: rowData2,
-    pageSize,
-  });
+  const pageSize = 15;
+
+  const fetchMockData2 = React.useCallback(async (page: number, limit: number) => {
+    return new Promise<DummyData2Type[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(DummyData2.slice(start, end));
+      }, 100);
+    });
+  }, []);
+
+  const handleSearch2 = React.useCallback(async () => {
+    const initialData = await fetchMockData2(1, pageSize);
+    setRowData2(initialData);
+    setLoadedCount2(initialData.length);
+  }, [fetchMockData2, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch2();
+  }, [handleSearch2]);
+
+  const handleLoadNext2 = React.useCallback(async () => {
+    if (loadedCount2 >= totalCount2) return;
+    const nextPage = Math.floor(loadedCount2 / pageSize) + 1;
+    const nextData = await fetchMockData2(nextPage, pageSize);
+    setRowData2((prev) => [...prev, ...nextData]);
+    setLoadedCount2((prev) => prev + nextData.length);
+  }, [fetchMockData2, loadedCount2, totalCount2, pageSize]);
+
+  const handleLoadAll2 = React.useCallback(async () => {
+    if (loadedCount2 >= totalCount2) return;
+    setRowData2(DummyData2);
+    setLoadedCount2(totalCount2);
+  }, [loadedCount2, totalCount2]);
+
+  const handleLoadReset2 = React.useCallback(() => {
+    handleSearch2();
+  }, [handleSearch2]);
 
   // 복사
   const duplicateButtonRenderer = useMemo(
@@ -707,7 +742,7 @@ export default function Ltpa600Section() {
                       </CheckboxGroup>
                     </Grid>
                     <Grow>
-                      <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                      <Button color="coolgray" onClick={handleSearch2} only="default" size="lg" variant="contained">
                         조회
                       </Button>
                       <Button
@@ -715,7 +750,7 @@ export default function Ltpa600Section() {
                         only={'icon'}
                         size={'lg'}
                         variant={'outlined'}
-                        onClick={() => {}}
+                        onClick={handleSearch2}
                         aria-label="새로고침"
                       >
                         <ResetIcon />
@@ -723,46 +758,39 @@ export default function Ltpa600Section() {
                     </Grow>
                   </Grow>
 
-                  <div className="ag-theme-alpine radio-selection">
-                    <AgGridReact<DummyData2Type>
-                      ref={gridRef}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData2}
-                      columnDefs={columnDefs2}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true, // 2026-06-01 true로 변경
-                      }}
-                      singleClickEdit={true}
-                      domLayout="normal"
-                      animateRows={false}
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      tooltipHideDelay={3000}
-                      onSortChanged={(event) => {
-                        handleSortChanged(
-                          event.api
-                            .getColumnState()
-                            .filter((col) => col.sort)
-                            .map((col) => ({
-                              colId: col.colId || '',
-                              sort: (col.sort || 'asc') as 'asc' | 'desc',
-                            }))
-                        );
-                      }}
-                      datasource={dataSource}
+                  <Gcol gap={1} className="overflow-hidden min-h-[21.3rem]" placement="ss">
+                    <div className="ag-theme-alpine radio-selection">
+                      <AgGridReact<DummyData2Type>
+                        ref={gridRef}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData2}
+                        columnDefs={columnDefs2}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true, // 2026-06-01 true로 변경
+                        }}
+                        singleClickEdit={true}
+                        domLayout="normal"
+                        animateRows={false}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        tooltipHideDelay={3000}
+                      />
+                    </div>
+                    <TableMore
+                      gridRef={gridRef}
+                      isAll={true}
+                      isReset={true}
+                      loadedCount={loadedCount2}
+                      totalCount={totalCount2}
+                      pageSize={pageSize}
+                      onLoadAll={handleLoadAll2}
+                      onLoadNext={handleLoadNext2}
+                      onLoadReset={handleLoadReset2}
                     />
-                  </div>
+                  </Gcol>
                 </Grid>
-                <TableMore
-                  gridRef={gridRef}
-                  isAll={false}
-                  isNext={false}
-                  loadedCount={totalCount}
-                  totalCount={totalCount}
-                  pageSize={totalCount}
-                />
               </Grid>
             </ResizablePanel>
           </ResizablePanelGroup>

@@ -105,15 +105,15 @@ const DummyData: DummyDataType[] = [
 ];
 
 export default function Ltpa210Section() {
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 5));
-  const [loadedCount, setLoadedCount] = React.useState(5);
+  const pageSize = 5;
+
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, pageSize));
+  const [loadedCount, setLoadedCount] = React.useState(pageSize);
   const [totalCount] = React.useState(DummyData.length);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const gridApiRef = React.useRef<GridApi<DummyDataType> | null>(null);
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
-
-  const pageSize = 5;
 
   const fetchMockData = React.useCallback(async (page: number, limit: number) => {
     setIsLoading(true);
@@ -131,10 +131,17 @@ export default function Ltpa210Section() {
     }
   }, []);
 
+  // 초기 로딩 및 검색 실행
+  const handleSearch = React.useCallback(async () => {
+    const res = await fetchMockData(1, pageSize);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [fetchMockData, pageSize]);
+
   const handleLoadNext = React.useCallback(async () => {
     if (loadedCount >= totalCount || isLoading) return;
 
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
     const res = await fetchMockData(nextPage, pageSize);
 
     setRowData((prev) => [...prev, ...res.items]);
@@ -444,7 +451,7 @@ export default function Ltpa210Section() {
               </FormTable>
 
               <Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -452,14 +459,14 @@ export default function Ltpa210Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
                 </Button>
               </Grow>
             </Grow>
-            <TableFold>
+            <TableFold className="h-full">
               <TableFoldHead title="등록사항">
                 <Grow>
                   <Button color="gray" variant="outlined" onClick={handleAddRow}>
@@ -472,9 +479,9 @@ export default function Ltpa210Section() {
                   </Button>
                 </Grow>
               </TableFoldHead>
-              <TableFoldBody>
-                <Gcol className="w-full" gap={1}>
-                  <div className="ag-theme-alpine inner-scroll" data-rows={rowData.length}>
+              <TableFoldBody className="h-full overflow-hidden">
+                <Gcol className="w-full h-full overflow-hidden" gap={1}>
+                  <div className="ag-theme-alpine inner-scroll h-full" data-rows={rowData.length}>
                     <AgGridReact<DummyDataType>
                       ref={gridRef}
                       // getRowId 적용: id 필드를 고유 식별자로 사용

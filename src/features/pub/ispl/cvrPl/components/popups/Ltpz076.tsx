@@ -7,12 +7,11 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { ResetIcon, RightArrowIcon } from '@/shared/components/icons/CommonIcons';
-import { useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid'; // 2026-07-31 useAgGridInfiniteAppend 추가
-import { Grid, Grow, Gcol, Typo } from '@atoms'; // 2026-07-22 : Gcol 추가
+import { useDynamicColumnWidths } from '@aggrid';
+import { Grid, Grow, Gcol, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { TableFoldBody, TableFoldHead } from '@common/TableFold';
-import { TableFold } from '@common/TableFold';
+import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { TableMore } from '@common/TablePagination';
 import { Button } from '@uiux/Button';
 import {
@@ -39,64 +38,13 @@ type DummyDataType = {
   field03: string | number;
 };
 
-const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    isChecked: true,
-    field01: 3253180,
-    field02: '(주)씨엔아이보험대리',
-    field03: '대리점',
-  },
-  {
-    id: 2,
-    isChecked: true,
-    field01: 3253180,
-    field02: '(주)씨엔아이보험대리',
-    field03: '대리점',
-  },
-  {
-    id: 3,
-    isChecked: true,
-    field01: 3253180,
-    field02: '(주)씨엔아이보험대리',
-    field03: '대리점',
-  },
-  {
-    id: 4,
-    isChecked: true,
-    field01: 3253180,
-    field02: '(주)씨엔아이보험대리',
-    field03: '대리점',
-  },
-  {
-    id: 5,
-    isChecked: true,
-    field01: 3253180,
-    field02: '(주)씨엔아이보험대리',
-    field03: '대리점',
-  },
-  {
-    id: 6,
-    isChecked: true,
-    field01: 3253180,
-    field02: '(주)씨엔아이보험대리11',
-    field03: '대리점',
-  },
-  {
-    id: 7,
-    isChecked: true,
-    field01: 3253180,
-    field02: '(주)씨엔아이보험대리',
-    field03: '대리점',
-  },
-  {
-    id: 8,
-    isChecked: true,
-    field01: 3253180,
-    field02: '(주)씨엔아이보험대리',
-    field03: '대리점',
-  },
-];
+const DummyData: DummyDataType[] = Array.from({ length: 30 }, (_, index) => ({
+  id: index + 1,
+  isChecked: true,
+  field01: 3253180 + index,
+  field02: `(주)씨엔아이보험대리${index + 1}`,
+  field03: index % 2 === 0 ? '대리점' : '설계사',
+}));
 
 type DummyDataType2 = {
   id: number;
@@ -231,11 +179,47 @@ const Ltpz076 = () => {
   // 2026-07-31 - 페이지네이션 추가
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 5;
-  const { loadedCount, totalCount, handleLoadAll, handleLoadNext, handleLoadReset } = useAgGridInfiniteAppend({
-    allRows: DummyData,
-    pageSize,
-  });
-  const rowData = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
+  const [rowData, setRowData] = React.useState<DummyDataType[]>([]);
+  const [loadedCount, setLoadedCount] = React.useState(0);
+  const totalCount = DummyData.length;
+
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    return new Promise<DummyDataType[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(DummyData.slice(start, end));
+      }, 100);
+    });
+  }, []);
+
+  const handleSearch = React.useCallback(async () => {
+    const initialData = await fetchMockData(1, pageSize);
+    setRowData(initialData);
+    setLoadedCount(initialData.length);
+  }, [fetchMockData, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
+    const nextData = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...nextData]);
+    setLoadedCount((prev) => prev + nextData.length);
+  }, [fetchMockData, loadedCount, totalCount, pageSize]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    setRowData(DummyData);
+    setLoadedCount(totalCount);
+  }, [loadedCount, totalCount]);
+
+  const handleLoadReset = React.useCallback(() => {
+    handleSearch();
+  }, [handleSearch]);
 
   return (
     <Dialog open>
@@ -271,7 +255,7 @@ const Ltpz076 = () => {
               <TableFoldBody className="grid gap-[1.2rem]">
                 {/* 2026-07-22 : 구조 변경, true로 수정 */}
                 <Grid className="grid-flow-col grid-cols-[1fr_auto]" gap={3}>
-                  <Gcol>
+                  <Grid className="grid-rows-[auto_1fr_auto]">
                     <Grow placement="bwe" className="w-full" variant={'box-round'}>
                       <FormTable variant={'none'} lineTop={false} caption="보험정보" cols={['w-[1rem]', 'w-auto']}>
                         <FormRow>
@@ -307,7 +291,7 @@ const Ltpz076 = () => {
                         </FormRow>
                       </FormTable>
                       <Grow>
-                        <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                        <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                           조회
                         </Button>
                         <Button
@@ -315,51 +299,51 @@ const Ltpz076 = () => {
                           only={'icon'}
                           size={'lg'}
                           variant={'outlined'}
-                          onClick={() => {}}
+                          onClick={handleSearch}
                           aria-label="새로고침"
                         >
                           <ResetIcon />
                         </Button>
                       </Grow>
                     </Grow>
-                    {/* 20260731 - data-page={5} 수정, ref 추가 */}
-                    <div className="ag-theme-alpine inner-scroll" data-page={5}>
-                      <AgGridReact<DummyDataType>
-                        ref={gridRef}
-                        getRowId={(params) => String(params.data.id)}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        enableCellSpan={true}
-                        singleClickEdit={true}
-                        rowSelection={{
-                          mode: 'multiRow',
-                          headerCheckbox: true,
-                          checkboxes: true,
-                        }}
-                        selectionColumnDef={{
-                          width: 30,
-                          cellClass: 'editable-cell',
-                        }}
+                    <Gcol gap={1} className="overflow-hidden min-h-[21.3rem]" placement="ss">
+                      <div className="ag-theme-alpine">
+                        <AgGridReact<DummyDataType>
+                          ref={gridRef}
+                          getRowId={(params) => String(params.data.id)}
+                          rowData={rowData}
+                          columnDefs={columnDefs}
+                          enableCellSpan={true}
+                          singleClickEdit={true}
+                          rowSelection={{
+                            mode: 'multiRow',
+                            headerCheckbox: true,
+                            checkboxes: true,
+                          }}
+                          selectionColumnDef={{
+                            width: 30,
+                            cellClass: 'editable-cell',
+                          }}
+                        />
+                      </div>
+                      <TableMore
+                        gridRef={gridRef}
+                        loadedCount={loadedCount}
+                        totalCount={totalCount}
+                        pageSize={pageSize}
+                        onLoadAll={handleLoadAll}
+                        onLoadNext={handleLoadNext}
+                        onLoadReset={handleLoadReset}
+                        isReset={true}
+                        isAll={true}
                       />
-                    </div>
-                    {/* 2026-07-31 - 페이지네이션 추가 */}
-                    <TableMore
-                      gridRef={gridRef}
-                      loadedCount={loadedCount}
-                      totalCount={totalCount}
-                      pageSize={pageSize}
-                      onLoadAll={handleLoadAll}
-                      onLoadNext={handleLoadNext}
-                      onLoadReset={handleLoadReset}
-                      isReset={true}
-                      isAll={true}
-                    />
-                  </Gcol>
-                  <Grow className="w-full h-full flex justify-center items-center ">
-                    <Button variant={'none'} size={'lg'} color={'primary'} className="p-0">
-                      <RightArrowIcon color="#FF5C2E" />
-                    </Button>
-                  </Grow>
+                    </Gcol>
+                    <Grow className="w-full h-full flex justify-center items-center ">
+                      <Button variant={'none'} size={'lg'} color={'primary'} className="p-0">
+                        <RightArrowIcon color="#FF5C2E" />
+                      </Button>
+                    </Grow>
+                  </Grid>
                 </Grid>
                 {/* // 2026-07-22 : 구조 변경 */}
               </TableFoldBody>

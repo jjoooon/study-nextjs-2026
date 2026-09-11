@@ -6,13 +6,7 @@
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import {
-  AgGridEmptyComponent,
-  createFieldRenderer,
-  createTooltipValueGetter,
-  useAgGridInfiniteAppend,
-  useDynamicColumnWidths,
-} from '@aggrid';
+import { AgGridEmptyComponent, createFieldRenderer, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Gcol, Typo } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
@@ -43,137 +37,14 @@ type DummyData1Type = {
   field4: string;
   field5: string;
 };
-const DummyData1: DummyData1Type[] = [
-  {
-    id: 1,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '',
-  },
-  {
-    id: 2,
-    field1: 'CLA34224',
-    field2:
-      '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '뇌',
-  },
-  {
-    id: 3,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '진단서',
-    field5: '암',
-  },
-  {
-    id: 4,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '심',
-  },
-  {
-    id: 5,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '기타',
-  },
-  {
-    id: 6,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '암',
-  },
-  {
-    id: 7,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '뇌',
-  },
-  {
-    id: 8,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '심',
-  },
-  {
-    id: 9,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '기타',
-  },
-  {
-    id: 10,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '암',
-  },
-  {
-    id: 11,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '뇌',
-  },
-  {
-    id: 12,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '심',
-  },
-  {
-    id: 13,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '기타',
-  },
-  {
-    id: 14,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '암',
-  },
-  {
-    id: 15,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '뇌',
-  },
-  {
-    id: 16,
-    field1: 'CLA34224',
-    field2: '1 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명',
-    field3: '사망/후유',
-    field4: '',
-    field5: '심',
-  },
-];
+const DummyData1: DummyData1Type[] = Array.from({ length: 30 }, (_, index) => ({
+  id: index + 1,
+  field1: `CLA342${24 + index}`,
+  field2: `${index + 1} 담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명담보그룹명`,
+  field3: '사망/후유',
+  field4: index % 3 === 0 ? '진단서' : '',
+  field5: ['암', '뇌', '심', '기타'][index % 4],
+}));
 
 const Ltpz080 = () => {
   // 2026-06-01 width, flex 수정
@@ -212,31 +83,49 @@ const Ltpz080 = () => {
     [attributeColumnWidth]
   );
 
-  const [rowData1] = React.useState<DummyData1Type[]>(DummyData1);
   const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
   const pageSize = 5;
-  const {
-    loadedCount,
-    totalCount,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-  } = useAgGridInfiniteAppend({
-    allRows: rowData1,
-    pageSize,
-  });
+  const [rowData, setRowData] = React.useState<DummyData1Type[]>([]);
+  const [loadedCount, setLoadedCount] = React.useState(0);
+  const totalCount = DummyData1.length;
 
-  const handleLoadNext = React.useCallback(() => {
-    handleLoadNextDefault();
-  }, [handleLoadNextDefault]);
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    return new Promise<DummyData1Type[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(DummyData1.slice(start, end));
+      }, 100);
+    });
+  }, []);
 
-  const handleLoadAll = React.useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
+  const handleSearch = React.useCallback(async () => {
+    const initialData = await fetchMockData(1, pageSize);
+    setRowData(initialData);
+    setLoadedCount(initialData.length);
+  }, [fetchMockData, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
+    const nextData = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...nextData]);
+    setLoadedCount((prev) => prev + nextData.length);
+  }, [fetchMockData, loadedCount, totalCount, pageSize]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    setRowData(DummyData1);
+    setLoadedCount(totalCount);
+  }, [loadedCount, totalCount]);
 
   const handleLoadReset = React.useCallback(() => {
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
+    handleSearch();
+  }, [handleSearch]);
 
   return (
     <Dialog open>
@@ -251,7 +140,7 @@ const Ltpz080 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_auto_1fr] gap-3">
+        <DialogSection className="grid grid-rows-[auto_auto_1fr] gap-3">
           <Grow className="w-full" variant="box-round" placement={'bwe'} gap={6}>
             <FormTable variant="head">
               {/* 260727 - FormRow에 w-full 삭제 */}
@@ -269,7 +158,7 @@ const Ltpz080 = () => {
               </FormRow>
             </FormTable>
             <Grow>
-              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+              <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                 조회
               </Button>
               <Button
@@ -277,7 +166,7 @@ const Ltpz080 = () => {
                 only={'icon'}
                 size={'lg'}
                 variant={'outlined'}
-                onClick={() => {}}
+                onClick={handleSearch}
                 aria-label="새로고침"
               >
                 <ResetIcon />
@@ -288,7 +177,7 @@ const Ltpz080 = () => {
           <FormTable cols={['w-[11rem]', 'w-auto']}>
             <FormRow className="w-full">
               <FormCell title={'매핑 담보 그룹'}>
-                <CheckboxGroup className="gap-3">
+                <CheckboxGroup className="gap-x-3 gap-y-1">
                   {[
                     { value: '사망/후유', label: '사망/후유' },
                     { value: '진단비', label: '진단비' },
@@ -309,14 +198,13 @@ const Ltpz080 = () => {
               </FormCell>
             </FormRow>
           </FormTable>
-
-          <Gcol>
-            <div className="ag-theme-alpine inner-scroll" data-row={rowData1.length}>
+          <Gcol gap={1} className="overflow-hidden min-h-[21.3rem]" placement="ss">
+            <div className="ag-theme-alpine">
               <AgGridReact<DummyData1Type>
                 ref={gridRef}
                 noRowsOverlayComponent={AgGridEmptyComponent}
                 getRowId={(params) => String(params.data.id)}
-                rowData={rowData1.slice(0, loadedCount)}
+                rowData={rowData}
                 columnDefs={columnDefs1}
                 defaultColDef={{
                   sortable: true,
@@ -332,7 +220,8 @@ const Ltpz080 = () => {
             </div>
             <TableMore
               gridRef={gridRef}
-              isAll={false}
+              isAll={true}
+              isReset={true}
               loadedCount={loadedCount}
               totalCount={totalCount}
               pageSize={pageSize}

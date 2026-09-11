@@ -257,57 +257,65 @@ const Ltpz038 = () => {
     },
   ];
 
-  // pagination
-  const pageSize = 10;
-  const {
-    loadedCount,
-    totalCount,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-  } = useAgGridInfiniteAppend({
-    allRows: DummyData,
-    pageSize,
-  });
+  // =====================
+  // 그리드 데이터/페이징 상태
+  // =====================
+  const pageSize = 5;
+  const [rowData, setRowData] = useState<DummyDataType[]>(() => DummyData.slice(0, pageSize));
+  const [loadedCount, setLoadedCount] = useState(pageSize);
+  const [totalCount, setTotalCount] = useState(DummyData.length);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLoadAll = useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
+  // 실데이터 호출 모사 (API 호출)
+  const fetchMockData = useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = DummyData.slice(start, end);
+      return {
+        items,
+        totalCount: DummyData.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-  const handleLoadNext = useCallback(() => {
-    handleLoadNextDefault();
-  }, [handleLoadNextDefault]);
+  // 초기 로딩 및 검색 실행
+  const handleSearch = useCallback(async () => {
+    const res = await fetchMockData(1, pageSize);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+    setTotalCount(res.totalCount);
+  }, [fetchMockData, pageSize]);
 
+  // 다음 버튼 누를 때 데이터 추가 호출 (onLoadNext 콜백)
+  const handleLoadNext = useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+
+    setRowData((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  // 전체조회 버튼 누를 때 데이터 호출 (onLoadAll 콜백)
+  const handleLoadAll = useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const res = await fetchMockData(1, totalCount);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  // 접기 버튼 (onLoadReset 콜백)
   const handleLoadReset = useCallback(() => {
-    setPendingScrollIndex(null);
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
-
-  const visibleRows = useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
-
-  useEffect(() => {
-    if (pendingScrollIndex === null) {
-      return;
-    }
-
-    if (loadedCount <= pendingScrollIndex) {
-      return;
-    }
-
-    requestAnimationFrame(() => {
-      gridRef.current?.api.ensureIndexVisible(pendingScrollIndex, 'top');
-      setPendingScrollIndex(null);
-    });
-  }, [loadedCount, pendingScrollIndex]);
-
-  const handleLoadNextWithScroll = () => {
-    if (loadedCount >= totalCount) {
-      return;
-    }
-
-    setPendingScrollIndex(loadedCount);
-    handleLoadNext();
-  };
+    setRowData((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
 
   return (
     <Dialog open>
@@ -394,7 +402,7 @@ const Ltpz038 = () => {
               </FormRow>
             </FormTable>
             <Grow>
-              <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+              <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                 조회
               </Button>
               <Button
@@ -402,7 +410,7 @@ const Ltpz038 = () => {
                 only={'icon'}
                 size={'lg'}
                 variant={'outlined'}
-                onClick={() => {}}
+                onClick={handleSearch}
                 aria-label="새로고침"
               >
                 <ResetIcon />
@@ -410,13 +418,13 @@ const Ltpz038 = () => {
             </Grow>
           </Grow>
 
-          <Gcol className="w-full">
-            <div className="ag-theme-alpine inner-scroll" data-page={pageSize}>
+          <Gcol gap={1} className="overflow-hidden min-h-[21.3rem]" placement="ss">
+            <div className="ag-theme-alpine">
               <AgGridReact<DummyDataType>
                 ref={gridRef}
                 getRowId={(params) => String(params.data.id)}
                 noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={visibleRows}
+                rowData={rowData}
                 columnDefs={columnDefs}
                 domLayout="normal"
                 tooltipShowMode="whenTruncated"
@@ -430,8 +438,9 @@ const Ltpz038 = () => {
               totalCount={totalCount}
               pageSize={pageSize}
               onLoadAll={handleLoadAll}
-              onLoadNext={handleLoadNextWithScroll}
+              onLoadNext={handleLoadNext}
               onLoadReset={handleLoadReset}
+              isReset={true}
             />
           </Gcol>
         </DialogSection>

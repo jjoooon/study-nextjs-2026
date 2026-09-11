@@ -7,7 +7,7 @@ import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { useMemo } from 'react';
-import { AgGridEmptyComponent, numberValueFormatter, useAgGridInfiniteAppend, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Grid, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -149,31 +149,48 @@ export default function Ltpa660Section() {
   const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
   const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
 
-  const pageSize = 3;
-  const {
-    loadedCount,
-    totalCount,
-    dataSource,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-    handleSortChanged,
-  } = useAgGridInfiniteAppend({
-    allRows: DummyData1,
-    pageSize,
-  });
+  const pageSize = 5;
+  const [rowData, setRowData] = React.useState<DummyData1Type[]>([]);
+  const [loadedCount, setLoadedCount] = React.useState(0);
+  const totalCount = DummyData1.length;
 
-  const handleLoadNext = React.useCallback(() => {
-    handleLoadNextDefault();
-  }, [handleLoadNextDefault]);
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    return new Promise<DummyData1Type[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(DummyData1.slice(start, end));
+      }, 100);
+    });
+  }, []);
 
-  const handleLoadAll = React.useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
+  const handleSearch = React.useCallback(async () => {
+    const initialData = await fetchMockData(1, pageSize);
+    setRowData(initialData);
+    setLoadedCount(initialData.length);
+  }, [fetchMockData, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
+    const nextData = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...nextData]);
+    setLoadedCount((prev) => prev + nextData.length);
+  }, [fetchMockData, loadedCount, totalCount, pageSize]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    setRowData(DummyData1);
+    setLoadedCount(totalCount);
+  }, [loadedCount, totalCount]);
 
   const handleLoadReset = React.useCallback(() => {
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
+    handleSearch();
+  }, [handleSearch]);
 
   // 2026-06-01 minWidth, flex 수정, valueParser, valueFormatter 추가
   const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
@@ -281,7 +298,7 @@ export default function Ltpa660Section() {
               </FormTable>
 
               <Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -289,14 +306,14 @@ export default function Ltpa660Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
                 </Button>
               </Grow>
             </Grow>
-            <Gcol>
+            <Gcol className="w-full overflow-hidden">
               <Grow className="w-full" placement="ec">
                 <Button color="success" variant="outlined">
                   엑셀내보내기
@@ -310,19 +327,9 @@ export default function Ltpa660Section() {
                   onGridReady={(event) => {
                     gridApiRef.current = event.api;
                   }}
-                  onSortChanged={(event) => {
-                    handleSortChanged(
-                      event.api
-                        .getColumnState()
-                        .filter((col) => col.sort)
-                        .map((col) => ({
-                          colId: col.colId || '',
-                          sort: (col.sort || 'asc') as 'asc' | 'desc',
-                        }))
-                    );
-                  }}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
+                  rowData={rowData}
                   columnDefs={columnDefs2}
                   defaultColDef={{
                     sortable: true,
@@ -345,15 +352,12 @@ export default function Ltpa660Section() {
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                   tooltipHideDelay={3000}
-                  rowModelType="infinite"
-                  cacheBlockSize={pageSize}
-                  maxBlocksInCache={2}
-                  datasource={dataSource}
                 />
               </div>
               <TableMore
                 gridRef={gridRef}
-                isAll={false}
+                isAll={true}
+                isReset={true}
                 loadedCount={loadedCount}
                 totalCount={totalCount}
                 pageSize={pageSize}

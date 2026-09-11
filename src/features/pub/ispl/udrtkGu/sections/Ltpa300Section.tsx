@@ -279,6 +279,26 @@ const Ltpa300DummyData: Ltpa300DummyDataRow[] = [
     field13: 'data',
     field14: 'data',
   },
+  ...Array.from({ length: 16 }, (_, i) => {
+    const num = 15 + i;
+    return {
+      id: num,
+      field01: '신부산GA지점',
+      field02: String(123456 + num),
+      field03: `김한화${num}`,
+      field04: String(654321 + num),
+      field05: `심한화${num}`,
+      field06: `LA2014871642${num}`,
+      field07: 'data',
+      field08: num % 2 === 0 ? '활성(전체)' : '비활성(직원처리)',
+      field09: `박한화${num}`,
+      field10: `2026-03-${((i % 28) + 1).toString().padStart(2, '0')}`,
+      field11: 'data',
+      field12: 'data',
+      field13: num % 2 === 0 ? '온라인' : '배치',
+      field14: String(num % 5),
+    };
+  }),
 ];
 
 export default function Ltpa300Section() {
@@ -291,7 +311,7 @@ export default function Ltpa300Section() {
     type05: '',
     type06: '',
   });
-  // 2026-06-04 flex, minWidth 수정
+
   const columnDefs = React.useMemo<ColDef<Ltpa300DummyDataRow>[]>(
     () => [
       {
@@ -359,31 +379,67 @@ export default function Ltpa300Section() {
     ],
     [attributeColumnWidth]
   );
+
+  // =====================
+  // 그리드 데이터/페이징 상태
+  // =====================
+  const pageSize = 5;
   const gridRef = React.useRef<AgGridReact<Ltpa300DummyDataRow>>(null);
-  const pageSize = 10;
-  const {
-    loadedCount,
-    totalCount,
-    dataSource,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-  } = useAgGridInfiniteAppend({
-    allRows: Ltpa300DummyData,
-    pageSize,
-  });
+  const [rowData, setRowData] = React.useState<Ltpa300DummyDataRow[]>(() => Ltpa300DummyData.slice(0, pageSize));
+  const [loadedCount, setLoadedCount] = React.useState(pageSize);
+  const [totalCount, setTotalCount] = React.useState(Ltpa300DummyData.length);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleLoadNext = React.useCallback(() => {
-    handleLoadNextDefault();
-  }, [handleLoadNextDefault]);
+  // 실데이터 호출 모사 (API 호출)
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      const items = Ltpa300DummyData.slice(start, end);
+      return {
+        items,
+        totalCount: Ltpa300DummyData.length,
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-  const handleLoadAll = React.useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
+  // 초기 로딩 및 검색 실행
+  const handleSearch = React.useCallback(async () => {
+    const res = await fetchMockData(1, pageSize);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+    setTotalCount(res.totalCount);
+  }, [fetchMockData, pageSize]);
 
+  // 다음 버튼 누를 때 데이터 추가 호출 (onLoadNext 콜백)
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
+    const res = await fetchMockData(nextPage, pageSize);
+
+    setRowData((prev) => [...prev, ...res.items]);
+    setLoadedCount((prev) => prev + res.items.length);
+  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+
+  // 전체조회 버튼 누를 때 데이터 호출 (onLoadAll 콜백)
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount || isLoading) return;
+
+    const res = await fetchMockData(1, totalCount);
+    setRowData(res.items);
+    setLoadedCount(res.items.length);
+  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+
+  // 접기 버튼 (onLoadReset 콜백)
   const handleLoadReset = React.useCallback(() => {
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
+    setRowData((prev) => prev.slice(0, pageSize));
+    setLoadedCount(pageSize);
+  }, [pageSize]);
 
   return (
     <>
@@ -448,7 +504,6 @@ export default function Ltpa300Section() {
                     </Button>
                     <Input aria-label="조직구분명 입력" width={140} value={'신부산GA지점'} readOnly />
                   </FormCell>
-                  {/* 2026-05-27 */}
                   <FormCell title={'점검방법'}>
                     <NativeSelect
                       aria-label="점검방법 선택"
@@ -519,7 +574,7 @@ export default function Ltpa300Section() {
               </FormTable>
 
               <Grow>
-                <Button id="btnRA" color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button id="btnRA" color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -527,7 +582,7 @@ export default function Ltpa300Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
@@ -542,12 +597,12 @@ export default function Ltpa300Section() {
                   <FileExportIcon />
                 </Button>
               </TableFoldHead>
-              <TableFoldBody className="grid-rows-[minmax(0,1fr)_auto] gap-1">
-                <div className="ag-theme-alpine">
+              <TableFoldBody className="grid-rows-[minmax(0,1fr)_auto] gap-1 overflow-hidden">
+                <div className="ag-theme-alpine h-full">
                   <AgGridReact<Ltpa300DummyDataRow>
                     ref={gridRef}
-                    // noRowsOverlayComponent={AgGridEmptyComponent}
                     getRowId={(params) => String(params.data.id)}
+                    rowData={rowData}
                     columnDefs={columnDefs}
                     defaultColDef={{
                       sortable: true,
@@ -556,11 +611,6 @@ export default function Ltpa300Section() {
                       cellClass: 'text-center',
                     }}
                     domLayout="normal"
-                    key={loadedCount}
-                    rowModelType="infinite"
-                    cacheBlockSize={pageSize}
-                    maxBlocksInCache={2}
-                    datasource={dataSource}
                   />
                 </div>
                 <TableMore
@@ -571,6 +621,7 @@ export default function Ltpa300Section() {
                   onLoadAll={handleLoadAll}
                   onLoadNext={handleLoadNext}
                   onLoadReset={handleLoadReset}
+                  isReset={true}
                 />
               </TableFoldBody>
             </TableFold>

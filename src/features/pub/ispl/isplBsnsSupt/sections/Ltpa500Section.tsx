@@ -8,13 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { createExpiryCellRenderer } from '@/shared/components/grid/CellRenderers';
 import { useFormFields } from '@/shared/hooks/useFormFields';
-import {
-  AgGridEmptyComponent,
-  createTooltipValueGetter,
-  numberValueFormatter,
-  useAgGridInfiniteAppend,
-  useDynamicColumnWidths,
-} from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Grid, Grow } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
 import { DatePickerInput } from '@common/DatePicker';
@@ -48,177 +42,68 @@ type DummyDataType = {
   field10: string | number;
   field11: string | number;
 };
-const DummyData: DummyDataType[] = [
-  {
-    id: 1,
-    field01: '(전속)영업관리자승인계약',
-    field02: 'LA20148716422000',
-    field03: 'LA20148716422001',
-    field04:
-      'LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건',
-    field05: '김한화화',
-    field06: '박한화화',
-    field07: '8094210',
-    field08: '신부산GA지점',
-    field09: '999999999',
-    field10: 'TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT',
-    field11: '선택',
-  },
-  {
-    id: 2,
-    field01: '(전속)영업관리자승인계약',
-    field02: 'LA20148716422000',
-    field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
-    field07: '8094210',
-    field08: '신부산GA지점',
-    field09: '999999999',
-    field10: 'TEXT',
-    field11: '선택',
-  },
-  {
-    id: 3,
-    field01: '(전속)영업관리자승인계약',
-    field02: 'LA20148716422000',
-    field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
-    field07: '8094210',
-    field08: '신부산GA지점',
-    field09: '999999999',
-    field10: 'TEXT',
-    field11: '선택',
-  },
-  {
-    id: 4,
-    field01: '(전속)영업관리자승인계약',
-    field02: 'LA20148716422000',
-    field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
-    field07: '8094210',
-    field08: '신부산GA지점',
-    field09: '999999999',
-    field10: 'TEXT',
-    field11: '선택',
-  },
-  {
-    id: 5,
-    field01: '(전속)영업관리자승인계약',
-    field02: 'LA20148716422000',
-    field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
-    field07: '8094210',
-    field08: '신부산GA지점',
-    field09: '999999999',
-    field10: 'TEXT',
-    field11: '선택',
-  },
-  {
-    id: 6,
-    field01: '(전속)영업관리자승인계약',
-    field02: 'LA20148716422000',
-    field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
-    field07: '8094210',
-    field08: '신부산GA지점',
-    field09: '999999999',
-    field10: 'TEXT',
-    field11: '선택',
-  },
-  {
-    id: 7,
-    field01: '(전속)영업관리자승인계약',
-    field02: 'LA20148716422000',
-    field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
-    field07: '8094210',
-    field08: '신부산GA지점',
-    field09: '999999999',
-    field10: 'TEXT',
-    field11: '선택',
-  },
-  {
-    id: 8,
-    field01: '(전속)영업관리자승인계약',
-    field02: 'LA20148716422000',
-    field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
-    field07: '8094210',
-    field08: '신부산GA지점',
-    field09: '999999999',
-    field10: 'TEXT',
-    field11: '선택',
-  },
-  {
-    id: 9,
-    field01: '(전속)영업관리자승인계약',
-    field02: 'LA20148716422000',
-    field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
-    field07: '8094210',
-    field08: '신부산GA지점',
-    field09: '999999999',
-    field10: 'TEXT',
-    field11: '선택',
-  },
-  {
-    id: 10,
-    field01: '(전속)영업관리자승인계약',
-    field02: 'LA20148716422000',
-    field03: 'LA20148716422001',
-    field04: 'LA01581001_무배당 참 편한 건',
-    field05: '김한화',
-    field06: '박한화',
-    field07: '8094210',
-    field08: '신부산GA지점',
-    field09: '999999999',
-    field10: 'TEXT',
-    field11: '선택',
-  },
-];
+const DummyData: DummyDataType[] = Array.from({ length: 30 }, (_, index) => ({
+  id: index + 1,
+  field01: index % 2 === 0 ? '(전속)영업관리자승인계약' : '유의승환',
+  field02: `LA201487164220${index < 10 ? '0' + index : index}`,
+  field03: `LA201487164220${index < 10 ? '1' + index : index + 1}`,
+  field04:
+    index % 3 === 0 ? 'LA01581001_무배당 참 편한 건 LA01581001_무배당 참 편한 건' : 'LA01581001_무배당 참 편한 건',
+  field05: index % 2 === 0 ? '김한화화' : '김한화',
+  field06: '박한화화',
+  field07: `809421${index % 10}`,
+  field08: '신부산GA지점',
+  field09: String(1000000 + index * 500rl00),
+  field10: `TEXT ${index + 1}`,
+  field11: index % 3 === 0 ? '승인' : '선택',
+}));
 
 export default function Ltpa500Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const getExpiryRenderer = createExpiryCellRenderer<DummyDataType>;
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
-  const pageSize = 5;
-  const {
-    loadedCount,
-    totalCount,
-    handleLoadAll: handleLoadAllDefault,
-    handleLoadNext: handleLoadNextDefault,
-    handleLoadReset: handleLoadResetDefault,
-  } = useAgGridInfiniteAppend({
-    allRows: DummyData,
-    pageSize,
-  });
-  const handleLoadNext = React.useCallback(() => {
-    handleLoadNextDefault();
-  }, [handleLoadNextDefault]);
+  const pageSize = 10;
+  const [rowData, setRowData] = React.useState<DummyDataType[]>([]);
+  const [loadedCount, setLoadedCount] = React.useState(0);
+  const totalCount = DummyData.length;
 
-  const handleLoadAll = React.useCallback(() => {
-    handleLoadAllDefault();
-  }, [handleLoadAllDefault]);
+  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+    return new Promise<DummyDataType[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(DummyData.slice(start, end));
+      }, 100);
+    });
+  }, []);
+
+  const handleSearch = React.useCallback(async () => {
+    const initialData = await fetchMockData(1, pageSize);
+    setRowData(initialData);
+    setLoadedCount(initialData.length);
+  }, [fetchMockData, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
+  const handleLoadNext = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
+    const nextData = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...nextData]);
+    setLoadedCount((prev) => prev + nextData.length);
+  }, [fetchMockData, loadedCount, totalCount, pageSize]);
+
+  const handleLoadAll = React.useCallback(async () => {
+    if (loadedCount >= totalCount) return;
+    setRowData(DummyData);
+    setLoadedCount(totalCount);
+  }, [loadedCount, totalCount]);
 
   const handleLoadReset = React.useCallback(() => {
-    handleLoadResetDefault();
-  }, [handleLoadResetDefault]);
-  const visibleRows = React.useMemo(() => DummyData.slice(0, loadedCount), [loadedCount]);
+    handleSearch();
+  }, [handleSearch]);
 
   // AgGrid Column
   // 2026-05-29 수정 cellClass 수정
@@ -413,7 +298,7 @@ export default function Ltpa500Section() {
                 </FormRow>
               </FormTable>
               <Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -421,7 +306,7 @@ export default function Ltpa500Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
@@ -430,14 +315,14 @@ export default function Ltpa500Section() {
             </Grow>
             <TableFold className="grid-rows-[auto_minmax(0,1fr)]">
               <TableFoldHead title="대상리스트"></TableFoldHead>
-              <TableFoldBody className="overflow-y-hidden">
-                <Grid className="grid-rows-[minmax(0,1fr)_auto] overflow-y-hidden">
+              <TableFoldBody className="h-full overflow-hidden">
+                <Grid className="grid-rows-[minmax(0,1fr)_auto] overflow-hidden h-full">
                   <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       ref={gridRef}
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
-                      rowData={visibleRows}
+                      rowData={rowData}
                       columnDefs={columnDefs}
                       singleClickEdit={true}
                       domLayout="normal"
@@ -457,6 +342,7 @@ export default function Ltpa500Section() {
                   <TableMore
                     gridRef={gridRef}
                     isAll={true}
+                    isReset={true}
                     loadedCount={loadedCount}
                     totalCount={totalCount}
                     pageSize={pageSize}

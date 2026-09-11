@@ -339,52 +339,49 @@ export default function Ltpa570Section() {
     return [...organizationColumnsByGroupBy[groupBy], ...metricColumns];
   }, [groupBy, attributeColumnWidth]);
 
-  const [rowData, setRowData] = React.useState<Ltpa570DummyDataRow[]>(() => Ltpa570DummyData.slice(0, 5));
-  const [loadedCount, setLoadedCount] = React.useState(5);
-  const [totalCount] = React.useState(Ltpa570DummyData.length);
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const gridRef = React.useRef<AgGridReact<Ltpa570DummyDataRow>>(null);
   const pageSize = 5;
+  const [rowData, setRowData] = React.useState<Ltpa570DummyDataRow[]>([]);
+  const [loadedCount, setLoadedCount] = React.useState(0);
+  const totalCount = Ltpa570DummyData.length;
 
   const fetchMockData = React.useCallback(async (page: number, limit: number) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const items = Ltpa570DummyData.slice(start, end);
-      return {
-        items,
-        totalCount: Ltpa570DummyData.length,
-      };
-    } finally {
-      setIsLoading(false);
-    }
+    return new Promise<Ltpa570DummyDataRow[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(Ltpa570DummyData.slice(start, end));
+      }, 100);
+    });
   }, []);
 
+  const handleSearch = React.useCallback(async () => {
+    const initialData = await fetchMockData(1, pageSize);
+    setRowData(initialData);
+    setLoadedCount(initialData.length);
+  }, [fetchMockData, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
   const handleLoadNext = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
-    const res = await fetchMockData(nextPage, pageSize);
-
-    setRowData((prev) => [...prev, ...res.items]);
-    setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+    if (loadedCount >= totalCount) return;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
+    const nextData = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...nextData]);
+    setLoadedCount((prev) => prev + nextData.length);
+  }, [fetchMockData, loadedCount, totalCount, pageSize]);
 
   const handleLoadAll = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-
-    const res = await fetchMockData(1, totalCount);
-    setRowData(res.items);
-    setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
+    if (loadedCount >= totalCount) return;
+    setRowData(Ltpa570DummyData);
+    setLoadedCount(totalCount);
+  }, [loadedCount, totalCount]);
 
   const handleLoadReset = React.useCallback(() => {
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
+    handleSearch();
+  }, [handleSearch]);
 
   return (
     <>
@@ -520,7 +517,7 @@ export default function Ltpa570Section() {
                 </FormRow>
               </FormTable>
               <Grow>
-                <Button color="coolgray" onClick={() => {}} only="default" size="lg" variant="contained">
+                <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
                 <Button
@@ -528,14 +525,14 @@ export default function Ltpa570Section() {
                   only={'icon'}
                   size={'lg'}
                   variant={'outlined'}
-                  onClick={() => {}}
+                  onClick={handleSearch}
                   aria-label="새로고침"
                 >
                   <ResetIcon />
                 </Button>
               </Grow>
             </Grow>
-            <Grid className="grid-rows-[auto_1fr]">
+            <Grid className="grid-rows-[auto_1fr] overflow-hidden h-full">
               <Grow className="w-full" placement="ec">
                 <Button color="success" variant="outlined">
                   엑셀내보내기
