@@ -101,10 +101,6 @@ export default function Ltpa500Section() {
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
 
-  const handleLoadReset = React.useCallback(() => {
-    handleSearch();
-  }, [handleSearch]);
-
   // AgGrid Column
   // 2026-05-29 수정 cellClass 수정
   // 2026-06-01 width, flex 수정 및 cellClass 수정
@@ -342,13 +338,11 @@ export default function Ltpa500Section() {
                   <TableMore
                     gridRef={gridRef}
                     isAll={true}
-                    isReset={true}
                     loadedCount={loadedCount}
                     totalCount={totalCount}
                     pageSize={pageSize}
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
-                    onLoadReset={handleLoadReset}
                   />
                 </Grid>
               </TableFoldBody>

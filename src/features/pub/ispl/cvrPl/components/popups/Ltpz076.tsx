@@ -217,10 +217,6 @@ const Ltpz076 = () => {
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
 
-  const handleLoadReset = React.useCallback(() => {
-    handleSearch();
-  }, [handleSearch]);
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="lg">
@@ -333,8 +329,6 @@ const Ltpz076 = () => {
                         pageSize={pageSize}
                         onLoadAll={handleLoadAll}
                         onLoadNext={handleLoadNext}
-                        onLoadReset={handleLoadReset}
-                        isReset={true}
                         isAll={true}
                       />
                     </Gcol>

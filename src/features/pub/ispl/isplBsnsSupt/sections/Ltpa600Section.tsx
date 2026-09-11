@@ -553,10 +553,6 @@ export default function Ltpa600Section() {
     setLoadedCount2(totalCount2);
   }, [loadedCount2, totalCount2]);
 
-  const handleLoadReset2 = React.useCallback(() => {
-    handleSearch2();
-  }, [handleSearch2]);
-
   // 복사
   const duplicateButtonRenderer = useMemo(
     () =>
@@ -781,13 +777,11 @@ export default function Ltpa600Section() {
                     <TableMore
                       gridRef={gridRef}
                       isAll={true}
-                      isReset={true}
                       loadedCount={loadedCount2}
                       totalCount={totalCount2}
                       pageSize={pageSize}
                       onLoadAll={handleLoadAll2}
                       onLoadNext={handleLoadNext2}
-                      onLoadReset={handleLoadReset2}
                     />
                   </Gcol>
                 </Grid>

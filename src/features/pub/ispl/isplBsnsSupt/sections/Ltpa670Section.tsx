@@ -161,10 +161,6 @@ export default function Ltpa670Section() {
     setRowData(DummyData1);
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
-
-  const handleLoadReset = React.useCallback(() => {
-    handleSearch();
-  }, [handleSearch]);
   // 2026-06-01 minWidth, flex 수정, valueParser, valueFormatter 추가
   const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
     () => [
@@ -364,8 +360,6 @@ export default function Ltpa670Section() {
                 pageSize={pageSize}
                 onLoadAll={handleLoadAll}
                 onLoadNext={handleLoadNext}
-                onLoadReset={handleLoadReset}
-                isReset={true}
               />
             </Gcol>
           </Grid>

@@ -435,12 +435,6 @@ export default function Ltpa300Section() {
     setLoadedCount(res.items.length);
   }, [loadedCount, totalCount, fetchMockData, isLoading]);
 
-  // 접기 버튼 (onLoadReset 콜백)
-  const handleLoadReset = React.useCallback(() => {
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
-
   return (
     <>
       <LayoutHead>
@@ -620,8 +614,6 @@ export default function Ltpa300Section() {
                   pageSize={pageSize}
                   onLoadAll={handleLoadAll}
                   onLoadNext={handleLoadNext}
-                  onLoadReset={handleLoadReset}
-                  isReset={true}
                 />
               </TableFoldBody>
             </TableFold>

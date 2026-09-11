@@ -317,12 +317,6 @@ const Ltpz113 = () => {
     setLoadedCount(res.items.length);
   }, [loadedCount, totalCount, fetchMockData, isLoading]);
 
-  // 접기 버튼 (onLoadReset 콜백)
-  const handleLoadReset = React.useCallback(() => {
-    setRowData((prev) => prev.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
-
   return (
     <Dialog open>
       <DialogContent showCloseButton resizable={true} size="xl" className="">
@@ -423,8 +417,6 @@ const Ltpz113 = () => {
               pageSize={pageSize}
               onLoadAll={handleLoadAll}
               onLoadNext={handleLoadNext}
-              onLoadReset={handleLoadReset}
-              isReset={true}
             />
           </Gcol>
           <Gcol className="w-full" placement="ss" variant="box-warning">

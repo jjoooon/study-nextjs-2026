@@ -133,10 +133,6 @@ export default function Ltpa460Section() {
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
 
-  const handleLoadReset = React.useCallback(() => {
-    handleSearch();
-  }, [handleSearch]);
-
   // 2026-06-01 width, flex 수정
   // AgGrid Column
   const columnDefs: ColDef<DummyDataType>[] = [
@@ -385,13 +381,11 @@ export default function Ltpa460Section() {
               <TableMore
                 gridRef={gridRef}
                 isAll={true}
-                isReset={true}
                 loadedCount={loadedCount}
                 totalCount={totalCount}
                 pageSize={pageSize}
                 onLoadAll={handleLoadAll}
                 onLoadNext={handleLoadNext}
-                onLoadReset={handleLoadReset}
               />
             </Gcol>
           </Grid>

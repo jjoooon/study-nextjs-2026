@@ -346,10 +346,6 @@ export const Ltpa3500301 = ({
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
 
-  const handleLoadReset = React.useCallback(() => {
-    handleSearch();
-  }, [handleSearch]);
-
   return (
     <LayoutScrollWrap className={`${sampleMode ? 'grid-cols-[1fr]' : 'grid-cols-[1fr_auto]'} gap-3 h-full`}>
       <LayoutScrollItem
@@ -967,17 +963,13 @@ export const Ltpa3500301 = ({
                   <Button
                     color="gray"
                     onClick={() => {
-                      if (loadedCount >= totalCount) {
-                        handleLoadReset();
-                      } else {
-                        handleLoadAll();
-                      }
+                      handleLoadAll();
                     }}
                     size="lg"
                     variant="outlined"
-                    disabled={simpleMode}
+                    disabled={simpleMode || loadedCount >= totalCount}
                   >
-                    {loadedCount >= totalCount ? '접기' : '전체조회'}
+                    전체조회
                   </Button>
                   <Button color="primary" onClick={() => {}} size="lg" variant="outlined" disabled={simpleMode}>
                     질병 입력/수정
@@ -1022,7 +1014,6 @@ export const Ltpa3500301 = ({
                   onLoadNext={handleLoadNext}
                   isNext={false}
                   isAll={false}
-                  onLoadReset={handleLoadReset}
                   only={'all'}
                 />
               </Grid>

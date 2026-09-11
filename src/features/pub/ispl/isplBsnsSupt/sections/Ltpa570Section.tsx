@@ -379,10 +379,6 @@ export default function Ltpa570Section() {
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
 
-  const handleLoadReset = React.useCallback(() => {
-    handleSearch();
-  }, [handleSearch]);
-
   return (
     <>
       <LayoutHead>
@@ -562,8 +558,6 @@ export default function Ltpa570Section() {
                 pageSize={pageSize}
                 onLoadAll={handleLoadAll}
                 onLoadNext={handleLoadNext}
-                onLoadReset={handleLoadReset}
-                isReset={true}
                 isAll={true}
               />
             </Grid>

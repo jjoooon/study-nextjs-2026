@@ -102,10 +102,6 @@ export default function Ltpa490Section() {
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
 
-  const handleLoadReset = React.useCallback(() => {
-    handleSearch();
-  }, [handleSearch]);
-
   const ExceedPeriodHeader = () => (
     <span className="w-full flex flex-col items-center">
       유효기간
@@ -419,13 +415,11 @@ export default function Ltpa490Section() {
                     <TableMore
                       gridRef={gridRef}
                       isAll={true}
-                      isReset={true}
                       loadedCount={loadedCount}
                       totalCount={totalCount}
                       pageSize={pageSize}
                       onLoadAll={handleLoadAll}
                       onLoadNext={handleLoadNext}
-                      onLoadReset={handleLoadReset}
                     />
                   </Gcol>
                   <Gcol variant="box-info" placement="ss">

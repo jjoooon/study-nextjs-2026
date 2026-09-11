@@ -166,10 +166,6 @@ export default function Ltpa400Section() {
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
 
-  const handleLoadReset = React.useCallback(() => {
-    handleSearch();
-  }, [handleSearch]);
-
   // 2026-05-22 지원SM 버튼으로 변경
   // 2026-05-27 담당SM 버튼으로 변경
   // 2026-06-01 width, flex, cellClass 수정, tooltipValueGetter 추가
@@ -729,13 +725,11 @@ export default function Ltpa400Section() {
                     <TableMore
                       gridRef={gridRef}
                       isAll={true}
-                      isReset={true}
                       loadedCount={loadedCount}
                       totalCount={totalCount}
                       pageSize={pageSize}
                       onLoadAll={handleLoadAll}
                       onLoadNext={handleLoadNext}
-                      onLoadReset={handleLoadReset}
                     />
                   </Gcol>
                 </Grid>

@@ -97,10 +97,6 @@ export const Ltpz119 = () => {
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
 
-  const handleLoadReset = React.useCallback(() => {
-    handleSearch();
-  }, [handleSearch]);
-
   // 오늘 날짜 기준 1주일 전 ~ 오늘 계산
   const getInitialDateRange = () => {
     const today = new Date();
@@ -269,13 +265,11 @@ export const Ltpz119 = () => {
                   <TableMore
                     gridRef={gridRef}
                     isAll={true}
-                    isReset={true}
                     loadedCount={loadedCount}
                     totalCount={totalCount}
                     pageSize={pageSize}
                     onLoadAll={handleLoadAll}
                     onLoadNext={handleLoadNext}
-                    onLoadReset={handleLoadReset}
                   />
                 </Gcol>
               </TableFoldBody>
