@@ -173,7 +173,7 @@ export function TableMore<TData = unknown>({
     return null;
   }
 
-  const isLastPage = resolvedCurrentPage >= resolvedTotalPages;
+  const isLastPage = hasCountMode ? loadedCount >= totalCount : resolvedCurrentPage >= resolvedTotalPages;
 
   const handleLoadAll = () => {
     if (isLastPage) {
@@ -237,9 +237,9 @@ export function TableMore<TData = unknown>({
             className="w-[6rem]"
             color={'coolgray-light'}
             onClick={handleLoadAll}
-            disabled={isLastPage && !isReset}
+            disabled={isLastPage}
           >
-            {isLastPage ? (isReset ? '접기' : '전체조회') : '전체조회'}
+            전체조회
           </Button>
         )}
         {isNext && (
