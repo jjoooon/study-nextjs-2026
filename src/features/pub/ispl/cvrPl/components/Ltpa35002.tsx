@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { TabPager } from '@common/TabPager';
 import { LayoutMain } from '@layout/BaseLayout';
@@ -139,8 +140,9 @@ export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {
                   </TooltipContent>
                 </Tooltip>
               )}
-              renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount) => {
+              renderDropdownItem={(tab, setActive, setVisibleStart, data, visibleCount, active) => {
                 const idx = data.findIndex((t) => String(t.value) === String(tab.value));
+                const isSelected = String(tab.value) === String(active ?? TabActive);
                 return (
                   <Button
                     variant={'none'}
@@ -152,7 +154,11 @@ export function Ltpa35002({ onIsWidthExpandedChange }: Ltpa35002Props) {
                         setVisibleStart(page * visibleCount);
                       }
                     }}
-                    className="min-h-[2.8rem]! w-full rounded-none hover:bg-[var(--color-warning-10)]"
+                    className={cn(
+                      'min-h-[2.8rem]! w-full rounded-none hover:bg-[var(--color-warning-10)]',
+                      isSelected && 'bg-[var(--color-warning-10)] font-bold text-[var(--color-primary-60)]'
+                    )}
+                    aria-selected={isSelected}
                     style={idx > 0 ? { borderTop: '1px solid var(--color-gray-15)' } : undefined}
                   >
                     <span className="flex items-start gap-2 w-full">

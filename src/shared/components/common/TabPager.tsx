@@ -85,7 +85,8 @@ interface TabPagerProps<T> {
         setActive: (value: string) => void,
         setVisibleStart: (start: number) => void,
         data: T[],
-        visibleCount: number
+        visibleCount: number,
+        active?: string
       ) => React.ReactNode);
   /**
    * 데이터 객체 T로부터 고유한 문자열 값(키/식별자)을 추출하는 함수
@@ -254,7 +255,7 @@ export function TabPager<T>({
                         onWheel={(e) => e.stopPropagation()}
                       >
                         {safeData.map((tab) =>
-                          renderDropdownItem(tab, setActive, setVisibleStart, safeData, visibleCount)
+                          renderDropdownItem(tab, setActive, setVisibleStart, safeData, visibleCount, active)
                         )}
                       </Gcol>
                     </PopoverContent>
