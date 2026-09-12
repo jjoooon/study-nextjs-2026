@@ -501,7 +501,7 @@ export function Ltpa35002d({
         className={`grid w-full  ${!isHeightExpanded ? 'grid-rows-[auto_1fr_auto]' : 'grid-rows-[1fr_auto]'} gap-[1rem] h-full`}
       >
         {/* M1. 간격 및 위치 수정 */}
-        <Gcol variant={'box-round-b'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
+        <Gcol variant={'box-round'} placement={'ss'} className={`w-full ${!isHeightExpanded ? '' : 'hidden'}`}>
           <Grow className="gap-[0.2rem]" placement={'bwc'}>
             <Grow className="gap-[0.6rem]" placement={'sc'}>
               <Button variant={'contained'} color={is보장패키지 ? 'primary' : 'coolgray-light'} size={'md'}>
