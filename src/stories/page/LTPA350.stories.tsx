@@ -3,7 +3,7 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import * as React from 'react';
-import LTPA350, { LTPA350PageProps } from '@/app/pub/ispl/pages/LTPA350';
+import LTPA350, { LTPA350PageProps } from '@/app/pub/pages/LTPA350';
 import { SpinnerRoot } from '@/shared/components/common/SpinnerRoot';
 import { LayoutDoc } from '@layout/BaseLayout';
 

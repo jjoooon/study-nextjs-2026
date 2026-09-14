@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import LTPA010 from '@/app/pub/ispl/pages/LTPA010';
+import LTPA010 from '@/app/pub/pages/LTPA010';
 import { Ltpa35004 } from '@/features/pub/ispl/udRqRst/components/Ltpa35004'; // 04. 심사요청
 import { Grow, Typo } from '@atoms';
 import { Button } from '@uiux/Button';
