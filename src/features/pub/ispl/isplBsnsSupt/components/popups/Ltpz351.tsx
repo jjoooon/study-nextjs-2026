@@ -13,7 +13,7 @@ import {
   AgGridEmptyComponent,
   PortalErrorTooltipCellEditor,
 } from '@aggrid';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Grid, Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
@@ -403,44 +403,46 @@ const Ltpz351 = ({ noticeType = 'B', isPayExempt = true }: Ltpz351Props) => {
         </DialogHeader>
 
         <DialogSection>
-          <Gcol className="w-full" placement="ss" gap={2}>
-            <div className="ag-theme-alpine radio-selection inner-scroll" data-row={rowData.length}>
-              <AgGridReact<DummyDataType>
-                getRowId={(params) => String(params.data.id)}
-                noRowsOverlayComponent={AgGridEmptyComponent}
-                rowData={rowData}
-                columnDefs={columnDefs}
-                defaultColDef={{
-                  sortable: true,
-                  resizable: true,
-                }}
-                selectionColumnDef={{
-                  cellClass: 'editable-cell',
-                  width: 30,
-                }}
-                rowSelection={{
-                  mode: 'singleRow',
-                  checkboxes: true,
-                  enableClickSelection: true,
-                }}
-                singleClickEdit={true}
-                rowClassRules={{}}
-                domLayout="normal"
-              />
-            </div>
-            <Grow placement="ec" className="w-full">
-              <Button variant={'contained'} size={'md'}>
-                전송
-              </Button>
-            </Grow>
-          </Gcol>
-          <Gcol gap={2}>
-            <Gcol className="w-full" placement="ss" variant="box-warning">
-              <Typo icon="warning" variant="body-sm">
-                계약자 휴대폰 번호는 고객등록화면에서 수정
-              </Typo>
+          <Gcol gap={3} className="w-full" placement="ss">
+            <Gcol className="w-full" placement="ss" gap={2}>
+              <div className="ag-theme-alpine radio-selection inner-scroll" data-row={rowData.length}>
+                <AgGridReact<DummyDataType>
+                  getRowId={(params) => String(params.data.id)}
+                  noRowsOverlayComponent={AgGridEmptyComponent}
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  defaultColDef={{
+                    sortable: true,
+                    resizable: true,
+                  }}
+                  selectionColumnDef={{
+                    cellClass: 'editable-cell',
+                    width: 30,
+                  }}
+                  rowSelection={{
+                    mode: 'singleRow',
+                    checkboxes: true,
+                    enableClickSelection: true,
+                  }}
+                  singleClickEdit={true}
+                  rowClassRules={{}}
+                  domLayout="normal"
+                />
+              </div>
+              <Grow placement="ec" className="w-full">
+                <Button variant={'contained'} size={'md'}>
+                  전송
+                </Button>
+              </Grow>
             </Gcol>
-            {renderNoticeContent()}
+            <Gcol gap={2} className="w-full" placement="ss">
+              <Gcol className="w-full" placement="ss" variant="box-warning">
+                <Typo icon="warning" variant="body-sm">
+                  계약자 휴대폰 번호는 고객등록화면에서 수정
+                </Typo>
+              </Gcol>
+              {renderNoticeContent()}
+            </Gcol>
           </Gcol>
         </DialogSection>
 

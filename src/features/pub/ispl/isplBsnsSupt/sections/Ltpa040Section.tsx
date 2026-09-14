@@ -20,7 +20,7 @@ type Ltp040TabType = { name: string; value: string; label: string };
 
 const DATA_TABS: Ltp040TabType[] = [
   { name: '추천설계명세', value: 'tab1', label: '추천설계명세' },
-  { name: '추천설계조건입력 현황', value: 'tab2', label: '추천설계조건입력 현황' },
+  // { name: '추천설계조건입력 현황', value: 'tab2', label: '추천설계조건입력 현황' },
 ];
 
 export default function Ltpa040Section() {
@@ -65,7 +65,7 @@ export default function Ltpa040Section() {
                 </Grow>
               </MainBottomItem>
             )}
-            {active === 'tab2' && (
+            {/* {active === 'tab2' && (
               <MainBottomItem className="justify-end">
                 <Grow gap={1}>
                   <Button type="submit" form={'page2-MainForm'} variant={'outlined'} color={'primary'} size={'xl'}>
@@ -73,7 +73,7 @@ export default function Ltpa040Section() {
                   </Button>
                 </Grow>
               </MainBottomItem>
-            )}
+            )} */}
           </MainBottom>
         }
       />

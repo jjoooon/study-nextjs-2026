@@ -46,7 +46,6 @@ import '@/shared/lib/agGridPub';
 
 type DummyDataType = {
   id: number;
-  isChecked?: boolean;
   field01: string | number;
   field02: string | number;
   field03: string | number;
@@ -56,7 +55,6 @@ type DummyDataType = {
 const DUMMY_DATA: DummyDataType[] = [
   {
     id: 1,
-    isChecked: true,
     field01: 'M00.0',
     field02: '대장직장용종대장직장용종대장직장용종대장직장용종대장직장용종12대장',
     field03: '무관',
@@ -64,7 +62,6 @@ const DUMMY_DATA: DummyDataType[] = [
   },
   {
     id: 2,
-    isChecked: false,
     field01: 'M00.0',
     field02: '12123대장직장용종대장직장용종대장직장용종대장직장용종',
     field03: '10개월이내',
@@ -72,14 +69,12 @@ const DUMMY_DATA: DummyDataType[] = [
   },
   {
     id: 3,
-    isChecked: false,
     field01: 'M00.0',
     field02: '대12312장직장용종대장직장용종대장직장용종대장직장용종대장직장용종12',
     field03: '10개월이내',
   },
   {
     id: 4,
-    isChecked: false,
     field01: 'M00.0',
     field02: '대12312장직장용종대장직장용종대장직장용종대장직장용종대장직장용종12',
     field03: '10개월이내',
@@ -685,17 +680,6 @@ const Ltpz034 = ({
                         defaultColDef={{
                           sortable: false,
                           resizable: true,
-                        }}
-                        rowSelection={{
-                          mode: 'multiRow',
-                          checkboxes: true,
-                          enableClickSelection: false,
-                          headerCheckbox: false,
-                        }}
-                        selectionColumnDef={{
-                          headerName: '선택',
-                          width: 30,
-                          cellClass: 'text-center editable-cell',
                         }}
                         domLayout="normal"
                       />

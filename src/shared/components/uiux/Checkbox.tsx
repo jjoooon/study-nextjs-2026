@@ -393,8 +393,6 @@ function CheckboxGroup({
   const [internalValues, setInternalValues] = React.useState<string[]>(defaultValue);
   // manual 검증 모드에서 "에러 표시 시작 여부"를 제어
   const [hasValidationStarted, setHasValidationStarted] = React.useState(false);
-  const [prevError, setPrevError] = React.useState(error);
-  const [prevValidateMode, setPrevValidateMode] = React.useState(validateMode);
   // 그룹에 등록된 아이템 메타 정보(disabled/selectAll)
   const [registeredItems, setRegisteredItems] = React.useState<Record<string, CheckboxGroupItemRegistration>>({});
   const isControlled = valueProp !== undefined;
@@ -519,14 +517,11 @@ function CheckboxGroup({
     [selectAllValue, selectableValues, setValues, values, maxSelected]
   );
 
-  // manual 모드에서는 외부 error prop이 들어온 시점부터 검증 표시 시작 (렌더 단계에서 동기화)
-  if (error !== prevError || validateMode !== prevValidateMode) {
-    setPrevError(error);
-    setPrevValidateMode(validateMode);
-    if (validateMode === 'manual') {
-      setHasValidationStarted(error);
+  React.useEffect(() => {
+    if (validateMode === 'manual' && error) {
+      setHasValidationStarted(true);
     }
-  }
+  }, [error, validateMode]);
 
   // 검증 로직
   // - required 또는 minSelected > 1 이면 "선택 개수 기반 검증" 사용
@@ -542,16 +537,18 @@ function CheckboxGroup({
 
   const resolvedErrorMsg = errorMsg ?? `${minSelected}개 이상 선택해 주세요.`;
 
-  // 일반 항목 선택 상태가 바뀌면 selectAll 값도 자동 동기화 (렌더 단계에서 동기화)
-  if (selectAllValue) {
-    const normalizedValues = isAllSelectableChecked
-      ? uniq([...values.filter((item) => item !== selectAllValue), selectAllValue])
-      : values.filter((item) => item !== selectAllValue);
+  // 일반 항목 선택 상태가 바뀌면 selectAll 값도 자동 동기화 (useEffect에서 안전하게 수행)
+  React.useEffect(() => {
+    if (selectAllValue) {
+      const normalizedValues = isAllSelectableChecked
+        ? uniq([...values.filter((item) => item !== selectAllValue), selectAllValue])
+        : values.filter((item) => item !== selectAllValue);
 
-    if (!areSameValues(normalizedValues, values)) {
-      setValues(normalizedValues);
+      if (!areSameValues(normalizedValues, values)) {
+        setValues(normalizedValues);
+      }
     }
-  }
+  }, [selectAllValue, isAllSelectableChecked, values, setValues]);
 
   const contextValue = React.useMemo(
     () => ({

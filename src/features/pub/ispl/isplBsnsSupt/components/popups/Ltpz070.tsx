@@ -252,6 +252,9 @@ const Ltpz070 = () => {
     () => [
       {
         headerName: '현재 (보장 보험료: 50,000원)',
+        headerGroupComponent: () => (
+          <span className="font-bold text-center w-full text-[1.3rem]">현재 (보장 보험료: 50,000원)</span>
+        ),
         children: [
           {
             headerName: '수익성',
@@ -295,6 +298,9 @@ const Ltpz070 = () => {
     () => [
       {
         headerName: '변경후 (보장 보험료: 500,000원)',
+        headerGroupComponent: () => (
+          <span className="font-bold text-center w-full text-[1.3rem]">변경후 (보장 보험료: 500,000원)</span>
+        ),
         headerClass: 'ag-header-color',
         children: [
           {

@@ -69,7 +69,7 @@ const DummyData1: DummyData1Type[] = [
     field2: 1,
     field3: 1,
     field4: '김***화화화화',
-    field5: '2026-04-21 14:41',
+    field5: '',
     field6: '박한화박한화박한화박한화(9091999)',
     field7:
       '비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.비고입니다. 비고입니다.',
@@ -154,7 +154,7 @@ const DummyData2: DummyData2Type[] = [
     field2: 1,
     field3: 1,
     field4: '김*화',
-    field5: '2026-04-21 14:41',
+    field5: '',
     field6: '박한화(9091999)',
     field7: '',
   },
@@ -247,7 +247,8 @@ const Ltpz054 = () => {
       field: 'field5',
       flex: 1,
       minWidth: attributeColumnWidth(110),
-      cellClass: `text-center bg-[#E9FEF2]`,
+      cellClass: (params) =>
+        `text-center ${params.value ? 'bg-[var(--color-success-10)]' : 'bg-[var(--color-danger-15)]'}`,
     },
     {
       headerName: '스캔처리자',

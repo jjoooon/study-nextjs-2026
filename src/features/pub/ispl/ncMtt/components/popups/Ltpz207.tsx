@@ -8,7 +8,12 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
-import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createCellValueChangedHandler,
+  useDynamicColumnWidths,
+  createTooltipValueGetter,
+} from '@aggrid';
 import { Gcol, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -25,6 +30,7 @@ import {
   DialogClose,
 } from '@uiux/Dialog';
 import { Input } from '@uiux/Input';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@uiux/Resizable';
 
 type DummyDataType = {
   id: number;
@@ -53,16 +59,17 @@ type DummyDataType2 = {
   field9: string;
 };
 
+// ===== 샘플 데이터 =====
 const dummyData: DummyDataType[] = [
   {
     id: 1,
-    isChecked: false,
+    isChecked: true,
     field1: 'S92',
-    field2: '발등 골절',
+    field2: '발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절',
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '3',
+    field6: '120',
     field7: 'Y',
     field8: '미고지',
     field9: '고지필요',
@@ -74,9 +81,9 @@ const dummyData: DummyDataType[] = [
     field2: '추간판장애',
     field3: '2025-12-01',
     field4: '2021-03-02',
-    field5: '',
-    field6: '',
-    field7: 'Y',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '1000',
+    field7: 'N',
     field8: '미고지',
     field9: '고지필요',
   },
@@ -89,7 +96,7 @@ const dummyData: DummyDataType[] = [
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
     field6: '',
-    field7: 'Y',
+    field7: 'N',
     field8: '미고지',
     field9: '',
   },
@@ -123,13 +130,13 @@ const dummyData: DummyDataType[] = [
 const dummyData2: DummyDataType2[] = [
   {
     id: 1,
-    isChecked: false,
+    isChecked: true,
     field1: 'S92',
-    field2: '발등 골절',
+    field2: '발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절 발등 골절',
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '',
+    field6: '200',
     field7: 'Y',
     field8: '미고지',
     field9: '고지필요',
@@ -138,7 +145,7 @@ const dummyData2: DummyDataType2[] = [
     id: 2,
     isChecked: false,
     field1: 'M51',
-    field2: '추간판장애',
+    field2: '추간판장애 추간판장애 추간판장애 추간판장애 추간판장애 추간판장애 추간판장애 추간판장애',
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '',
@@ -155,7 +162,7 @@ const dummyData2: DummyDataType2[] = [
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '',
+    field6: '3',
     field7: 'Y',
     field8: '미고지',
     field9: '',
@@ -168,86 +175,125 @@ const dummyData2: DummyDataType2[] = [
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '',
+    field6: '3',
     field7: 'Y',
     field8: '미고지',
     field9: '',
   },
   {
     id: 5,
-    isChecked: false,
+    isChecked: true,
     field1: 'M54',
     field2: '요통',
     field3: '2025-12-01',
     field4: '2021-03-02',
     field5: '22(2025-12-01~2027-12-01)',
-    field6: '',
+    field6: '3',
+    field7: 'Y',
+    field8: '고지',
+    field9: '',
+  },
+  {
+    id: 6,
+    isChecked: true,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '3',
+    field7: 'Y',
+    field8: '고지',
+    field9: '',
+  },
+  {
+    id: 7,
+    isChecked: true,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '3',
+    field7: 'Y',
+    field8: '고지',
+    field9: '',
+  },
+  {
+    id: 8,
+    isChecked: true,
+    field1: 'M54',
+    field2: '요통',
+    field3: '2025-12-01',
+    field4: '2021-03-02',
+    field5: '22(2025-12-01~2027-12-01)',
+    field6: '3',
     field7: 'Y',
     field8: '고지',
     field9: '',
   },
 ];
 
-export const Ltpa060 = () => {
-  const [rowData] = React.useState<DummyDataType[]>(dummyData);
+const Ltpz207 = () => {
+  // 테이블 데이터 상태 관리
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(dummyData);
   const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
+  // 화면 크기에 따라 컬럼 너비를 동적으로 조정
   const { attributeColumnWidth } = useDynamicColumnWidths();
+
+  // 에러 행 상태 관리 (체크박스 처리용)
+  const setErrorRows = React.useCallback<React.Dispatch<React.SetStateAction<number[]>>>(() => {}, []);
+
+  // ===== ag-Grid 컬럼 정의 =====
   const columnDefs: ColDef<DummyDataType>[] = [
     {
       headerName: '대표질병코드',
       field: 'field1',
-      width: attributeColumnWidth(80),
-      cellClass: 'text-center',
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '질병명',
       field: 'field2',
-      flex: 2,
-      minWidth: attributeColumnWidth(200),
-      cellClass: 'text-center',
+      flex: 40,
+      cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType>({ field: 'field2' }),
     },
     {
       headerName: '원사고발생일',
       field: 'field3',
-      width: attributeColumnWidth(100),
-      cellClass: 'text-center',
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '최종사고발생일',
       field: 'field4',
-      width: attributeColumnWidth(100),
-      cellClass: 'text-center',
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '입원',
       field: 'field5',
       flex: 1,
-      minWidth: attributeColumnWidth(170),
-      cellClass: 'text-center',
+      minWidth: attributeColumnWidth(180),
     },
     {
       headerName: '통원',
       field: 'field6',
       width: attributeColumnWidth(50),
-      cellClass: 'text-center',
     },
     {
       headerName: '수술',
       field: 'field7',
       width: attributeColumnWidth(50),
-      cellClass: 'text-center',
     },
     {
       headerName: '고지여부',
       field: 'field8',
       width: attributeColumnWidth(60),
-      cellClass: 'text-center',
     },
     {
       headerName: '체크',
       field: 'field9',
-      width: attributeColumnWidth(60),
-      cellClass: 'text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellRenderer: (params: { data: DummyDataType }) => (
         <Gcol placement="cc" className="h-full">
           <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
@@ -261,58 +307,52 @@ export const Ltpa060 = () => {
     {
       headerName: '대표질병코드',
       field: 'field1',
-      width: attributeColumnWidth(80),
-      cellClass: 'text-center',
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '질병명',
       field: 'field2',
-      flex: 2,
-      minWidth: attributeColumnWidth(200),
-      cellClass: 'text-center',
+      flex: 40,
+      cellClass: 'text-left',
+      tooltipValueGetter: createTooltipValueGetter<DummyDataType2>({ field: 'field2' }),
     },
     {
       headerName: '원사고발생일',
       field: 'field3',
-      width: attributeColumnWidth(100),
-      cellClass: 'text-center',
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '최종사고발생일',
       field: 'field4',
-      width: attributeColumnWidth(100),
-      cellClass: 'text-center',
+      width: attributeColumnWidth(90),
     },
     {
       headerName: '입원',
       field: 'field5',
       flex: 1,
-      minWidth: attributeColumnWidth(170),
-      cellClass: 'text-center',
+      minWidth: attributeColumnWidth(180),
     },
     {
       headerName: '통원',
       field: 'field6',
       width: attributeColumnWidth(50),
-      cellClass: 'text-center',
     },
     {
+      // 수술 여부
       headerName: '수술',
       field: 'field7',
       width: attributeColumnWidth(50),
-      cellClass: 'text-center',
     },
     {
       headerName: '고지여부',
       field: 'field8',
       width: attributeColumnWidth(60),
-      cellClass: 'text-center',
     },
     {
       headerName: '체크',
       field: 'field9',
-      width: attributeColumnWidth(60),
-      cellClass: 'text-center',
+      flex: 1,
+      minWidth: attributeColumnWidth(70),
       cellRenderer: (params: { data: DummyDataType }) => (
         <Gcol placement="cc" className="h-full">
           <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
@@ -323,105 +363,145 @@ export const Ltpa060 = () => {
     },
   ];
 
+  // ===== 셀 값 변경 핸들러 =====
+  // 체크박스 변경 시 데이터 업데이트 처리
+  const onCellValueChanged = React.useMemo(
+    () => createCellValueChangedHandler<DummyDataType, number>('isChecked', setRowData, setErrorRows, 'id'),
+    [setRowData, setErrorRows]
+  );
+
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="xl">
+      <DialogContent showCloseButton resizable={false} size="2xl">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              외부정보클렌징 결과 조회(사고력요약)&gt;자동고지(ICIS)
+              고지대상 조회 및 입력
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPA060)
+              (LTPZ207)
             </Typo>
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="grid-rows-[1fr] gap-5">
-          <Gcol placement="ss" className="w-full pt-3" gap={3}>
-            <Grow className="w-full" variant="box-round">
-              <FormTable variant={'head'} lineTop={false} caption="">
-                <FormRow>
-                  <FormCell title={'FP정보제공동의(유효일자)'}>
-                    <Input aria-label="FP정보제공동의 유효일자" width={100} value={'2026-03-01'} readOnly />
-                  </FormCell>
-                  <FormCell title={'전문호출기간'}>
-                    <Input aria-label="전문호출기간 시작일" width={100} value={'2026-03-01'} readOnly />-
-                    <Input aria-label="전문호출기간 종료일" width={100} value={'2026-03-01'} readOnly />
-                  </FormCell>
-                  <FormCell title={'최종적재일'}>
-                    <Input aria-label="최종적재일" width={100} value={'2026-03-01'} readOnly />
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </Grow>
-            <Gcol placement="ss" className="w-full pt-2" gap={3}>
-              <TableFold>
-                <TableFoldHead title="필수고지"></TableFoldHead>
-                <TableFoldBody>
-                  <div className="ag-theme-alpine min-h-[18.5rem]">
+        <DialogSection className="grid-rows-[auto_minmax(0,1fr)] gap-3">
+          {/* FP정보제공 동의 및 조회 기간 입력 섹션 */}
+          <Grow className="w-full" variant="box-round">
+            <FormTable variant={'head'} lineTop={false} caption="">
+              <FormRow>
+                <FormCell title={'FP정보제공동의(유효일자)'}>
+                  <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
+                </FormCell>
+                <FormCell title={'전문호출기간'}>
+                  <Input aria-label="전문호출기간" width={40} value={5} readOnly align="center" />
+                  <Typo>년</Typo>
+                </FormCell>
+                <FormCell title={'최종적재일'}>
+                  <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />
+                </FormCell>
+              </FormRow>
+            </FormTable>
+          </Grow>
+          <ResizablePanelGroup orientation="vertical" className="w-full h-full min-h-[44.6rem]">
+            <ResizablePanel defaultSize={50}>
+              {/* 펼침메뉴: 필수고지 */}
+              <TableFold className="h-full flex flex-col min-h-0">
+                <TableFoldHead title="필수고지" variant="default" />
+                <TableFoldBody className="w-full flex-1 min-h-0 relative">
+                  {/* ag-Grid 테이블: 필수고지 데이터 */}
+                  <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData}
                       columnDefs={columnDefs}
                       selectionColumnDef={{
                         width: 30,
+                        cellClass: 'editable-cell',
                       }}
                       noRowsOverlayComponent={AgGridEmptyComponent}
+                      onCellValueChanged={onCellValueChanged}
+                      // ag-Grid 기본 설정
                       defaultColDef={{
-                        sortable: true,
-                        resizable: true,
+                        sortable: true, // 컬럼 정렬 가능
+                        resizable: true, // 컬럼 너비 조절 가능
+                        cellClass: 'text-center', // 중앙 정렬
                       }}
+                      // 다중행 선택 모드 (고지 상태 행 제외)
                       rowSelection={{
                         mode: 'multiRow',
-                        isRowSelectable: (node) => node.data?.field8 !== '고지',
-                        checkboxes: true,
-                        hideDisabledCheckboxes: false,
-                        enableClickSelection: false,
+                        isRowSelectable: (node) => node.data?.field8 !== '고지', // '고지' 상태 행은 선택 불가
+                        checkboxes: true, // 체크박스 표시
+                        enableClickSelection: false, // 행 클릭으로 선택 안됨
+                      }}
+                      // 그리드 초기화 후 체크 상태 복원
+                      onGridReady={(params) => {
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isChecked) {
+                            node.setSelected(true);
+                          }
+                        });
                       }}
                       domLayout="normal"
-                      alwaysShowVerticalScroll={true}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      tooltipHideDelay={1000}
                     />
                   </div>
                 </TableFoldBody>
               </TableFold>
-              <TableFold>
-                <TableFoldHead title="고지확인대상"></TableFoldHead>
-                <TableFoldBody>
-                  <div className="ag-theme-alpine min-h-[18.5rem]">
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel defaultSize={50}>
+              {/* 펼침메뉴: 고지확인대상 */}
+              <TableFold className="h-full flex flex-col min-h-0">
+                <TableFoldHead title="고지확인대상" variant="default" />
+                <TableFoldBody className="w-full flex-1 min-h-0 relative">
+                  {/* ag-Grid 테이블: 고지확인대상 데이터 */}
+                  <div className="ag-theme-alpine">
                     <AgGridReact<DummyDataType2>
                       getRowId={(params) => String(params.data.id)}
                       rowData={rowData2}
                       columnDefs={columnDefs2}
                       selectionColumnDef={{
                         width: 30,
+                        cellClass: 'editable-cell',
                       }}
+                      onCellValueChanged={onCellValueChanged}
                       noRowsOverlayComponent={AgGridEmptyComponent}
                       defaultColDef={{
                         sortable: true,
                         resizable: true,
+                        cellClass: 'text-center',
                       }}
                       rowSelection={{
                         mode: 'multiRow',
                         isRowSelectable: (node) => node.data?.field8 !== '고지',
                         checkboxes: true,
-                        hideDisabledCheckboxes: false,
                         enableClickSelection: false,
                       }}
+                      onGridReady={(params) => {
+                        params.api.forEachNode((node) => {
+                          if (node.data?.isChecked) {
+                            node.setSelected(true);
+                          }
+                        });
+                      }}
+                      tooltipShowMode="whenTruncated"
+                      tooltipShowDelay={0}
+                      tooltipHideDelay={1000}
                       domLayout="normal"
-                      alwaysShowVerticalScroll={true}
                     />
                   </div>
                 </TableFoldBody>
               </TableFold>
-            </Gcol>
-          </Gcol>
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </DialogSection>
 
         <DialogFooter>
           <DialogFooterArea>
             <Grow>
-              <Button variant={'contained'} size={'xl'}>
+              <Button type="submit" form={''} variant={'contained'} color={'primary'} size={'xl'}>
                 알릴사항 반영하기
               </Button>
               <DialogClose asChild>
@@ -437,3 +517,5 @@ export const Ltpa060 = () => {
     </Dialog>
   );
 };
+
+export default Ltpz207;

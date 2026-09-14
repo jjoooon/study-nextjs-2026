@@ -233,7 +233,7 @@
   {
     "id": "LTPZ035",
     "title": "담보별 취급상품 조회",
-    "width": 560,
+    "width": 760,
     "height": 334,
     "isIframe": true
   },
@@ -858,6 +858,20 @@
     "title": "보장패키지 선택",
     "width": 780,
     "height": 600,
+    "isIframe": true
+  },
+  {
+    "id": "LTPZ206",
+    "title": "다태아 설계연계관리",
+    "width": 1180,
+    "height": 716,
+    "isIframe": true
+  },
+  {
+    "id": "LTPZ207",
+    "title": "고지대상 조회 및 입력",
+    "width": 1180,
+    "height": 660,
     "isIframe": true
   }
 ]

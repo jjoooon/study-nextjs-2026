@@ -21,7 +21,6 @@ interface TableMoreProps<TData = unknown> {
   totalPages?: number;
   onPageChange?: (pageNumber: number) => void;
   itemsPerPage?: number | null;
-  isReset?: boolean;
   isAll?: boolean;
   isNext?: boolean;
   loadedCount?: number;
@@ -32,7 +31,6 @@ interface TableMoreProps<TData = unknown> {
   only?: 'all' | 'next';
   onLoadAll?: () => void;
   onLoadNext?: () => void;
-  onLoadReset?: () => void;
 }
 
 export function TablePagination({ currentPage, totalPages, onPageChange, itemsPerPage }: TablePaginationProps) {
@@ -132,13 +130,11 @@ export function TableMore<TData = unknown>({
   totalCount,
   pageSize,
   gridRef,
-  isReset = false,
   isAll = true,
   isNext = true,
   onLoadedCountChange,
   onLoadAll,
   onLoadNext,
-  onLoadReset,
 }: TableMoreProps<TData>) {
   const hasCountMode =
     typeof loadedCount === 'number' && typeof totalCount === 'number' && typeof pageSize === 'number' && pageSize > 0;
@@ -173,24 +169,10 @@ export function TableMore<TData = unknown>({
     return null;
   }
 
-  const isLastPage = resolvedCurrentPage >= resolvedTotalPages;
+  const isLastPage = hasCountMode ? loadedCount >= totalCount : resolvedCurrentPage >= resolvedTotalPages;
 
   const handleLoadAll = () => {
-    if (isLastPage) {
-      if (!isReset) {
-        return;
-      }
-      if (onLoadReset) {
-        onLoadReset();
-        return;
-      }
-      if (hasCountMode && onLoadedCountChange) {
-        onLoadedCountChange(pageSize!);
-        return;
-      }
-      onPageChange?.(1);
-      return;
-    }
+    if (isLastPage) return;
 
     if (onLoadAll) {
       onLoadAll();
@@ -237,9 +219,9 @@ export function TableMore<TData = unknown>({
             className="w-[6rem]"
             color={'coolgray-light'}
             onClick={handleLoadAll}
-            disabled={isLastPage && !isReset}
+            disabled={isLastPage}
           >
-            {isLastPage ? (isReset ? '접기' : '전체조회') : '전체조회'}
+            전체조회
           </Button>
         )}
         {isNext && (

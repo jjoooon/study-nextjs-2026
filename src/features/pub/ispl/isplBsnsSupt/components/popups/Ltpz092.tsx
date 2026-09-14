@@ -42,7 +42,7 @@ export const Ltpz092: React.FC<Ltpz092Props> = ({ showDownloadButton = true }) =
         </DialogHeader>
         <DialogSection>
           <Grid className="w-full grid-rows-[auto_1fr] h-full" gap={3}>
-            <Grow className="w-full" variant="box-round-b">
+            <Grow className="w-full" variant="box-round" placement={'ss'}>
               <FormTable variant={'head'} lineTop={false} caption="">
                 <FormRow>
                   <FormCell title={'검색'}>
@@ -71,7 +71,9 @@ export const Ltpz092: React.FC<Ltpz092Props> = ({ showDownloadButton = true }) =
                 </Grow>
               )}
             </Grow>
-            <Gcol className="w-full min-h-[10rem]">등록된 이미지 노출 영역</Gcol>
+            <div className="w-full min-h-[10rem] overflow-y-auto">
+              <div className="w-full h-[90rem] bg-[#e4e4e4]">등록된 이미지 노출 영역</div>
+            </div>
           </Grid>
         </DialogSection>
 

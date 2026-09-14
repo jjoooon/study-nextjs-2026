@@ -361,6 +361,7 @@ export function Ltpa35002b({
       },
       {
         headerName: '만기',
+        headerGroupComponent: () => <span className="font-bold text-center w-full">만기</span>,
         children: [
           {
             headerName: '출생전',
@@ -417,6 +418,7 @@ export function Ltpa35002b({
       },
       {
         headerName: '납기',
+        headerGroupComponent: () => <span className="font-bold text-center w-full">납기</span>,
         children: [
           {
             headerName: '출생후',

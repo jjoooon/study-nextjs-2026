@@ -173,11 +173,6 @@ const handleLoadAll = React.useCallback(async () => {
   setLoadedCount(res.items.length);
 }, [loadedCount, totalCount, fetchMockData, isLoading]);
 
-const handleLoadReset = React.useCallback(() => {
-  setRowData(DummyData.slice(0, pageSize));
-  setLoadedCount(pageSize);
-}, [pageSize]);
-
 <div className="ag-theme-alpine">
   <AgGridReact<DummyDataType>
     ref={gridRef}
@@ -194,8 +189,6 @@ const handleLoadReset = React.useCallback(() => {
   pageSize={pageSize}
   onLoadAll={handleLoadAll}
   onLoadNext={handleLoadNext}
-  onLoadReset={handleLoadReset}
-  isReset={true}
 />
 \`\`\`
           `}
@@ -287,11 +280,6 @@ export const TableMoreAppendLoad: StoryObj = {
       setLoadedCount(res.items.length);
     }, [loadedCount, totalCount, fetchMockData, isLoading]);
 
-    const handleLoadReset = React.useCallback(() => {
-      setRowData(DummyData.slice(0, pageSize));
-      setLoadedCount(pageSize);
-    }, [pageSize]);
-
     return (
       <div style={{ width: '100%', marginBottom: '6rem' }}>
         <div className="ag-theme-alpine">
@@ -310,8 +298,6 @@ export const TableMoreAppendLoad: StoryObj = {
           pageSize={pageSize}
           onLoadAll={handleLoadAll}
           onLoadNext={handleLoadNext}
-          onLoadReset={handleLoadReset}
-          isReset={true}
         />
       </div>
     );

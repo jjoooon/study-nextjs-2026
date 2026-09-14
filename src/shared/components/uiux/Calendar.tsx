@@ -169,7 +169,7 @@ function Calendar({
                 type="button"
                 disabled={isMonthDisabled}
                 data-month={`${currentYear}-${String(month).padStart(2, '0')}`}
-                data-currentMonth={
+                data-current-month={
                   today.getFullYear() === currentYear && today.getMonth() + 1 === month ? 'true' : undefined
                 }
                 data-selected-month={isSelected ? 'true' : undefined}

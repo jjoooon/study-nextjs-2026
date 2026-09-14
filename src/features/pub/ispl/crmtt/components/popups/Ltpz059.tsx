@@ -6,7 +6,6 @@
 import type { CellClickedEvent, ColDef, ColGroupDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { editableCellClassRules } from '@/features/pub/ispl/cvrPl/utils/agGridUtils';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
@@ -17,6 +16,7 @@ import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { createExpiryCellRenderer } from '@grid/CellRenderers';
 import { ArrowIcon, EssentialIcon } from '@icons';
 import { Button } from '@uiux/Button';
+import { Checkbox } from '@uiux/Checkbox';
 import {
   Dialog,
   DialogContent,
@@ -300,7 +300,7 @@ const imageItemsBySection: Record<ImageSectionType, ImageItemType[]> = {
 
 /**
  * 우측 건축물대장 그리드용 더미 데이터
- * - 표제부 타이틀, 동명, 기둥 등의 일반 행, 빈 행, 전유부 타이틀 및 호칭명 등을 계층화하여 표현
+ * - 표제부 타이틀, 동명, 기둥 등의 일반 행, 빈 행, 전유부 타이틀 및 호명칭 등을 계층화하여 표현
  */
 const DummyData4: DummyDataType4[] = [
   {
@@ -363,7 +363,7 @@ const DummyData4: DummyDataType4[] = [
   },
   {
     id: 12,
-    field01: '호칭명',
+    field01: '호명칭',
     field02: '',
   },
   {
@@ -388,7 +388,7 @@ const Ltpz059 = () => {
   // AG Grid 열 크기 조절을 위한 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
-  // 건축물대장 그리드에서 현재 편집(활성화) 중인 필드의 이름 저장 ('동명' 또는 '호칭명')
+  // 건축물대장 그리드에서 현재 편집(활성화) 중인 필드의 이름 저장 ('동명' 또는 '호명칭')
   const [editableFieldName, setEditableFieldName] = React.useState<string | null>(null);
 
   // 보험가입층수 선택 상태 관리 ('전체' | '일부')
@@ -396,6 +396,9 @@ const Ltpz059 = () => {
 
   // 소재지 세부장소 입력 필드 상태
   const [detailPlace, setDetailPlace] = React.useState<string>('');
+
+  // 사용승인년도 확인불가 체크박스 상태
+  const [isUnknownApprovalYear, setIsUnknownApprovalYear] = React.useState<boolean>(false);
 
   // 이미지 선택 모드 시, 각 섹션(기둥/지붕/외벽)별 현재 캐러셀 페이지 번호 저장
   const [imagePageBySection, setImagePageBySection] = React.useState<Record<ImageSectionType, number>>({
@@ -419,7 +422,7 @@ const Ltpz059 = () => {
   /**
    * 타이틀 이름에 따라 편집 가능한 속성 필드 매핑 반환
    * - '표제부' 조회 -> '동명' 수정 활성화
-   * - '전유부' 조회 -> '호칭명' 수정 활성화
+   * - '전유부' 조회 -> '호명칭' 수정 활성화
    */
   const getEditableFieldNameByTitle = (title: string | number | undefined): string | null => {
     const titleText = String(title ?? '');
@@ -429,7 +432,7 @@ const Ltpz059 = () => {
     }
 
     if (titleText === '전유부') {
-      return '호칭명';
+      return '호명칭';
     }
 
     return null;
@@ -456,11 +459,6 @@ const Ltpz059 = () => {
 
     return String(data.field01) === editableFieldName;
   };
-
-  /**
-   * 입력된 셀 값이 비어있는지 확인
-   */
-  const isEmptyCellValue = (value: string | number | null | undefined): boolean => String(value ?? '') === '';
 
   /**
    * 이미지 섹션별 전체 개수 기반의 최대 캐러셀 페이지 수 계산
@@ -500,8 +498,6 @@ const Ltpz059 = () => {
     if (params.colDef.field !== 'field01') {
       return;
     }
-
-    const isSelected = params.node.isSelected();
 
     params.node.setSelected(true);
   };
@@ -597,6 +593,7 @@ const Ltpz059 = () => {
   const columnDefs4: (ColDef<DummyDataType4> | ColGroupDef<DummyDataType4>)[] = [
     {
       headerName: '건축물대장',
+      headerGroupComponent: () => <span className="font-bold text-center w-full">건축물대장</span>,
       headerClass: 'ag-visible',
       children: [
         {
@@ -619,7 +616,9 @@ const Ltpz059 = () => {
           flex: 1,
           // title 행(표제부/전유부 헤더)일 경우 버튼들을 위해 1칸만 할당, 그 외에는 2칸을 합쳐 넓게 씀
           colSpan: ({ data }) => (data?.rowType === 'title' ? 1 : 2),
-          cellClassRules: editableCellClassRules<DummyDataType4>(),
+          cellClassRules: {
+            'editable-cell': ({ data }) => isEditableRow(data),
+          },
           cellClass: ({ data }) => {
             const base = 'text-center px-[0.2rem]! tracking-tighter';
 
@@ -627,7 +626,7 @@ const Ltpz059 = () => {
               return base;
             }
 
-            return isEditableRow(data) ? base : `${base} no-edited`;
+            return isEditableRow(data) ? `${base} editable-cell` : `${base} no-edited`;
           },
           // 현재 활성화 및 입력 가능한 항목일 때만 편집 상태 진입 가능
           editable: ({ data }) => {
@@ -638,8 +637,21 @@ const Ltpz059 = () => {
             return isEditableRow(data);
           },
           cellEditor: 'agSelectCellEditor',
-          cellEditorParams: {
-            values: ['동명1', '동명2'],
+          cellEditorParams: (params: { data?: DummyDataType4 }) => {
+            if (params.data?.field01 === '호명칭') {
+              return {
+                values: ['호명칭1', '호명칭2'],
+              };
+            }
+
+            return {
+              values: ['동명1', '동명2'],
+            };
+          },
+          onCellValueChanged: (params) => {
+            if (params.newValue) {
+              console.log(`${params.data?.field01} 선택한 값: `, params.newValue);
+            }
           },
           cellRenderer: (params: ICellRendererParams<DummyDataType4>) =>
             params.data?.rowType === 'spacer' ? null : params.data?.rowType === 'title' ? (
@@ -652,20 +664,26 @@ const Ltpz059 = () => {
                 onClick={() => {
                   const targetFieldName = getEditableFieldNameByTitle(params.data?.field01);
 
+                  // 조회 버튼 클릭 시 해당 필드('동명' 또는 '호명칭')의 agSelectCellEditor 및 editable-cell 활성화
                   setEditableFieldName(targetFieldName);
+
+                  params.api.forEachNode((node) => {
+                    if (node.data?.field01 === targetFieldName) {
+                      const existingValue = node.data?.field02;
+                      // 비어있지 않고 선택된 기존 값이 있다면 콜백(콘솔) 실행
+                      if (
+                        existingValue !== undefined &&
+                        existingValue !== null &&
+                        String(existingValue).trim() !== ''
+                      ) {
+                        console.log(`[조회 활성화 시 기존 선택된 값] ${targetFieldName}:`, existingValue);
+                      }
+                    }
+                  });
                 }}
               >
                 조회
               </Button>
-            ) : isEditableRow(params.data) && isEmptyCellValue(params.value as string | number | null | undefined) ? (
-              // 편집 가능하고 비어있을 때는 화살표 콤보박스 아이콘 렌더링
-              <span className="flex w-full h-full items-center justify-end pr-2">
-                <img
-                  src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20class%3D%22ag-icon%22%20fill%3D%22black%22%20stroke%3D%22none%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M7.334%2010.667%2016%2021.334l8.667-10.667H7.334Z%22%2F%3E%3C%2Fsvg%3E"
-                  alt="select-arrow"
-                  className="w-[1.8rem]! h-[1.8rem]!"
-                />
-              </span>
             ) : (
               // 만료일 처리가 가미된 텍스트 셀 렌더러
               getExpiryRenderer('center')(params)
@@ -704,7 +722,7 @@ const Ltpz059 = () => {
         </DialogHeader>
 
         {/* 팝업 본문 영역 */}
-        <DialogSection className="flex flex-col w-full max-h-[calc(85vh-10rem)] overflow-y-auto min-h-0">
+        <DialogSection className="w-full grid-rows-[1fr_auto]">
           {/* 아코디언 섹션 1: 건물구조입력 */}
           <TableFold variant="accordion" className="grid grid-rows-[auto_1fr]">
             <TableFoldHead title="건물구조입력">
@@ -758,6 +776,7 @@ const Ltpz059 = () => {
                         checkboxes: true,
                         enableClickSelection: 'enableSelection',
                       }}
+                      suppressRowDeselection={true}
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
@@ -785,6 +804,7 @@ const Ltpz059 = () => {
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
+                      suppressRowDeselection={true}
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
@@ -812,6 +832,7 @@ const Ltpz059 = () => {
                         checkboxes: true,
                         enableClickSelection: false,
                       }}
+                      suppressRowDeselection={true}
                       selectionColumnDef={{
                         headerName: '선택',
                         width: 30,
@@ -897,7 +918,10 @@ const Ltpz059 = () => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <FormTable caption="사업자" cols={['w-[10rem]', 'w-[20rem]', 'w-[10rem]', 'w-auto']}>
+              <FormTable
+                caption="사업자"
+                cols={['w-[10rem]', 'w-[25rem]', 'w-[10rem]', 'w-auto', 'w-[7rem]', 'w-auto']}
+              >
                 {/* 소재지 텍스트 노출 행 */}
                 <FormRow>
                   <FormCell
@@ -907,46 +931,81 @@ const Ltpz059 = () => {
                         <EssentialIcon />
                       </Grow>
                     }
-                    colSpan={3}
+                    colSpan={5}
                   >
                     소재지정보 text text text
                   </FormCell>
                 </FormRow>
                 {/* 건물급수 및 적용년도 입력 행 */}
                 <FormRow>
-                  <FormCell title={'건물급수'} colSpan={3}>
-                    <Grid className="w-full grid-cols-[8.6rem_auto_10rem_auto_8rem_1fr] place-items-center">
-                      <Input value={'김한화한화'} readOnly />
+                  <FormCell title={'건물급수'}>
+                    <Grid className="w-full grid-flow-col items-center justify-start">
+                      <Input value={'11'} width={50} readOnly />
                       <Typo variant="body-sm">급(적용급수)</Typo>
-                      <NativeSelect aria-label="조회구분 선택" value={'선택'} required onChange={() => ''}>
+                      <NativeSelect aria-label="조회구분 선택" value={'선택'} width={60} required onChange={() => ''}>
                         {[
-                          { value: 'selection', id: 'type01', label: '선택1' },
-                          { value: 'selection2', id: 'type02', label: '선택2' },
+                          { value: 'selection', id: 'type01', label: '선택' },
+                          { value: 'selection2', id: 'type02', label: '1급' },
+                          { value: 'selection3', id: 'type03', label: '2급' },
+                          { value: 'selection4', id: 'type04', label: '3급' },
+                          { value: 'selection5', id: 'type05', label: '4급' },
                         ].map((option) => (
                           <NativeSelectOption key={option.id} value={option.value}>
                             {option.label}
                           </NativeSelectOption>
                         ))}
                       </NativeSelect>
-                      <Typo variant="body-sm">건축년도</Typo>
-                      <Input readOnly />
-                      <Input readOnly />
                     </Grid>
+                  </FormCell>
+                  <FormCell title={'사용승인년도'}>
+                    <Input width={50} required={!isUnknownApprovalYear} readOnly={isUnknownApprovalYear} />
+                    <Checkbox
+                      checked={isUnknownApprovalYear}
+                      onCheckedChange={(checked) => setIsUnknownApprovalYear(Boolean(checked))}
+                    >
+                      확인불가
+                    </Checkbox>
+                  </FormCell>
+
+                  <FormCell
+                    title={
+                      <>
+                        소유자
+                        <br /> 사용유형
+                      </>
+                    }
+                    titleRowSpan={4}
+                    rowSpan={4}
+                  >
+                    <RadioGroup className="gap-3 flex-col items-start">
+                      {[
+                        { value: '0', label: '건물주(전체사용)' },
+                        { value: '1', label: '건물주(전체임대)' },
+                        { value: '2', label: '건물주(일부사용일부임대)' },
+                        { value: '3', label: '임차인' },
+                      ].map((option) => (
+                        <RadioGroupItem key={option.value} value={option.value} required>
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}
+                    </RadioGroup>
                   </FormCell>
                 </FormRow>
                 {/* 지상/지하 전체층수 입력 행 */}
                 <FormRow>
-                  <FormCell title={'전체증수'} colSpan={3}>
+                  <FormCell title={'전체층수'}>
                     지상
                     <Input width={40} align="right" required />
                     층 / 지하
                     <Input width={32} align="right" required />층
                   </FormCell>
+                  <FormCell title={'전체면적'} className="has-r-border">
+                    <Input width={60} align="right" required />㎡
+                  </FormCell>
                 </FormRow>
                 {/* 보험가입층수 라디오 및 가입면적 노출 행 */}
                 <FormRow>
                   <FormCell title={'보험가입층수'}>
-                    {/* 2026-05-27 radio 수정 */}
                     <RadioGroup
                       className="gap-3"
                       value={insuredFloorType ?? ''}
@@ -969,7 +1028,7 @@ const Ltpz059 = () => {
                       ))}
                     </RadioGroup>
                   </FormCell>
-                  <FormCell title={'가입면적'}>
+                  <FormCell title={'가입면적'} className="has-r-border">
                     <Input width={70} align="right" readOnly />
                     ㎡ ↔
                     <Input width={70} align="right" readOnly />평
@@ -977,7 +1036,7 @@ const Ltpz059 = () => {
                 </FormRow>
                 {/* 세부장소 입력 행 */}
                 <FormRow>
-                  <FormCell title={'세부장소'} colSpan={3}>
+                  <FormCell title={'세부장소'} colSpan={3} className="has-r-border">
                     <Grid className="w-full grid-cols-[1fr_auto] place-items-center">
                       <Input
                         value={detailPlace}

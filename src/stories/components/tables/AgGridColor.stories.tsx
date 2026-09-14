@@ -97,8 +97,10 @@ const meta: Meta<typeof AgGridReact<ColorCaseDataType>> = {
           <div>
             <p>
               <b>AG Grid 셀 상태별 컬러 스타일 가이드 (Case 별 컬러 모음)</b>입니다.
-              <br />
-              각 케이스별로 <code>is[CaseName]</code> 형태의 클래스(예: <code>isHover</code>, <code>isSelected</code>, <code>isClick</code>, <code>isEditable</code>, <code>isEdited</code>, <code>isTotal</code>, <code>isDecrease</code>, <code>isError</code>, <code>isSuccess</code>, <code>isStandard</code>, <code>isBookmark</code>, <code>isCancel</code>)가 추가되어 적용됩니다.
+              <br />각 케이스별로 <code>is[CaseName]</code> 형태의 클래스(예: <code>isHover</code>,{' '}
+              <code>isSelected</code>, <code>isClick</code>, <code>isEditable</code>, <code>isEdited</code>,{' '}
+              <code>isTotal</code>, <code>isDecrease</code>, <code>isError</code>, <code>isSuccess</code>,{' '}
+              <code>isStandard</code>, <code>isBookmark</code>, <code>isCancel</code>)가 추가되어 적용됩니다.
             </p>
           </div>
           <Primary />

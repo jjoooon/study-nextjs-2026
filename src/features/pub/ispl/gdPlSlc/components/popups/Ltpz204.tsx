@@ -220,10 +220,10 @@ const Ltpz204 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[minmax(0,1fr)] gap-1">
-          <ResizablePanelGroup orientation="horizontal" className="w-full h-full">
+        <DialogSection className="grid-rows-[minmax(0,1fr)] gap-1 p-1">
+          <ResizablePanelGroup orientation="horizontal" className="w-full h-full min-h-[30rem]">
             <ResizablePanel defaultSize={50}>
-              <div className="ag-theme-alpine">
+              <div className="ag-theme-alpine ">
                 <AgGridReact<DummyData1Type>
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
@@ -231,7 +231,7 @@ const Ltpz204 = () => {
                   columnDefs={columnDefs1}
                   defaultColDef={{
                     sortable: true,
-                    resizable: true, // 2026-06-01 true로 변경
+                    resizable: true,
                   }}
                   singleClickEdit={true}
                   domLayout="normal"

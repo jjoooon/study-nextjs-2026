@@ -8,6 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import * as React from 'react';
 import { useFormFields } from '@/shared/hooks/useFormFields';
+import { cn } from '@/shared/lib/shadcn/utils';
 import { AgGridEmptyComponent, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
@@ -154,6 +155,7 @@ interface Ltpa3500301Props {
   mtValue?: '0rem' | '-3rem';
   allNoDisabled?: boolean;
   warningMessage?: string;
+  headerBgClass?: string;
 }
 
 export const Ltpa3500301 = ({
@@ -162,6 +164,7 @@ export const Ltpa3500301 = ({
   mtValue = '-3rem',
   warningMessage = '[홍길순 Self고지중] Self고지 완료(또는 취소)처리시 알릴사항 입력 가능',
   allNoDisabled = false,
+  headerBgClass = '',
 }: Ltpa3500301Props) => {
   type BadgeId = number | '6-1';
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -305,55 +308,52 @@ export const Ltpa3500301 = ({
 
   const gridRef = React.useRef<AgGridReact<DummyDataType>>(null);
   const pageSize = 4;
-  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => DummyData.slice(0, 4));
-  const [loadedCount, setLoadedCount] = React.useState(4);
-  const [totalCount] = React.useState(DummyData.length);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [rowData, setRowData] = React.useState<DummyDataType[]>([]);
+  const [loadedCount, setLoadedCount] = React.useState(0);
+  const totalCount = DummyData.length;
 
   const fetchMockData = React.useCallback(async (page: number, limit: number) => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const start = (page - 1) * limit;
-      const end = start + limit;
-      const items = DummyData.slice(start, end);
-      return {
-        items,
-        totalCount: DummyData.length,
-      };
-    } finally {
-      setIsLoading(false);
-    }
+    return new Promise<DummyDataType[]>((resolve) => {
+      setTimeout(() => {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        resolve(DummyData.slice(start, end));
+      }, 100);
+    });
   }, []);
 
+  const handleSearch = React.useCallback(async () => {
+    const initialData = await fetchMockData(1, pageSize);
+    setRowData(initialData);
+    setLoadedCount(initialData.length);
+  }, [fetchMockData, pageSize]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, [handleSearch]);
+
   const handleLoadNext = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-    const nextPage = Math.ceil(loadedCount / pageSize) + 1;
-    const res = await fetchMockData(nextPage, pageSize);
-    setRowData((prev) => [...prev, ...res.items]);
-    setLoadedCount((prev) => prev + res.items.length);
-  }, [loadedCount, totalCount, pageSize, fetchMockData, isLoading]);
+    if (loadedCount >= totalCount) return;
+    const nextPage = Math.floor(loadedCount / pageSize) + 1;
+    const nextData = await fetchMockData(nextPage, pageSize);
+    setRowData((prev) => [...prev, ...nextData]);
+    setLoadedCount((prev) => prev + nextData.length);
+  }, [fetchMockData, loadedCount, totalCount, pageSize]);
 
   const handleLoadAll = React.useCallback(async () => {
-    if (loadedCount >= totalCount || isLoading) return;
-    const res = await fetchMockData(1, totalCount);
-    setRowData(res.items);
-    setLoadedCount(res.items.length);
-  }, [loadedCount, totalCount, fetchMockData, isLoading]);
-
-  const handleLoadReset = React.useCallback(() => {
-    setRowData(DummyData.slice(0, pageSize));
-    setLoadedCount(pageSize);
-  }, [pageSize]);
+    if (loadedCount >= totalCount) return;
+    setRowData(DummyData);
+    setLoadedCount(totalCount);
+  }, [loadedCount, totalCount]);
 
   return (
     <LayoutScrollWrap className={`${sampleMode ? 'grid-cols-[1fr]' : 'grid-cols-[1fr_auto]'} gap-3 h-full`}>
       <LayoutScrollItem
-        className="w-full h-full grid grid-rows-[auto_1fr] scroll-smooth overflow-y-auto"
+        className="w-full h-full grid grid-rows-[auto_1fr] scroll-smooth overflow-y-auto gap-[1.2rem]"
         data-layout="scroll-item"
       >
         {!sampleMode && (
-          <Grow variant={'box-round-b'} placement={'se'} className={'w-full'}>
+          <Grow variant={'box-round-b'} placement={'se'} className={cn('w-full sticky top-0 z-10', headerBgClass)}>
             <Gcol placement="ss">
               <Typo
                 variant={'body-sm'}
@@ -387,7 +387,11 @@ export const Ltpa3500301 = ({
         )}
         <Gcol gap={2}>
           {!sampleMode && (
-            <Gcol variant={'box-round'} placement={'ss'} className="w-full">
+            <Gcol
+              variant={'box-line'}
+              placement={'ss'}
+              className="w-full bg-[#F4F4F4] shadow-none border-[0.1rem] border-solid border-[#D8D8D8]"
+            >
               <Typo variant={'body-lg'} weight={'bold'}>
                 ■ 이 청약서에서 ‘최근 3개월 1년, 5년 이내’는 청약일의 3개월, 1년, 5년 전일부터 청약일가지를 의미합니다.
                 (예를 들어 청약일이 4월 1일 인 경우 ‘최근 3개월 1년, 5년 이내’는 1월 1일부터 4월 1일까지)
@@ -959,17 +963,13 @@ export const Ltpa3500301 = ({
                   <Button
                     color="gray"
                     onClick={() => {
-                      if (loadedCount >= totalCount) {
-                        handleLoadReset();
-                      } else {
-                        handleLoadAll();
-                      }
+                      handleLoadAll();
                     }}
                     size="lg"
                     variant="outlined"
-                    disabled={simpleMode}
+                    disabled={simpleMode || loadedCount >= totalCount}
                   >
-                    {loadedCount >= totalCount ? '접기' : '전체조회'}
+                    전체조회
                   </Button>
                   <Button color="primary" onClick={() => {}} size="lg" variant="outlined" disabled={simpleMode}>
                     질병 입력/수정
@@ -1014,7 +1014,6 @@ export const Ltpa3500301 = ({
                   onLoadNext={handleLoadNext}
                   isNext={false}
                   isAll={false}
-                  onLoadReset={handleLoadReset}
                   only={'all'}
                 />
               </Grid>

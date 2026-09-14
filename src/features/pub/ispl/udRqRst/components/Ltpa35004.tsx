@@ -277,7 +277,11 @@ const DummyData: AgGridRow[] = [
   },
 ];
 
-export function Ltpa35004() {
+interface Ltpa35004Props {
+  onClose?: () => void;
+}
+
+export function Ltpa35004({ onClose }: Ltpa35004Props = {}) {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const [isHeightExpanded] = useState(false);
   const [gridKey] = useState(0);
@@ -634,7 +638,13 @@ export function Ltpa35004() {
                   <Button variant={'outlined'} color={'gray'} size={'xl'}>
                     청약후심사요청
                   </Button>
-                  <Button variant={'outlined'} size={'xl'} color={'gray-light'} className="is-dialog-view">
+                  <Button
+                    variant={'outlined'}
+                    size={'xl'}
+                    color={'gray-light'}
+                    className="is-dialog-view"
+                    onClick={onClose}
+                  >
                     닫기
                   </Button>
                 </Grow>

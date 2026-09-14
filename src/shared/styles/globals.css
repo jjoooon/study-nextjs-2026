@@ -1274,12 +1274,12 @@
   display: none;
 }
 
-[data-currentMonth='true'][data-selected-month='true'],
+[data-current-month='true'][data-selected-month='true'],
 [data-selected='true'][data-today='true'] button {
   background-color: #ff5c2e;
 }
 
-[data-currentMonth='true'],
+[data-current-month='true'],
 [data-today='true'] button {
   background-color: var(--color-blue-gray-80);
   color: #fff;
@@ -1322,4 +1322,17 @@
 }
 .ltpz999 [data-slot='dialog-footer'] {
   margin-top: 2.4rem;
+}
+
+.has-r-border + td{
+  position: relative;
+}
+.has-r-border + td::after {
+  content:"";
+  display: block;
+  position: absolute;
+  right:0;
+  top:0;
+  height: 100%;
+  border-right: 0.1rem solid #E5E5E5 !important;
 }

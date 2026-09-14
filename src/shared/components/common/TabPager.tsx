@@ -85,7 +85,8 @@ interface TabPagerProps<T> {
         setActive: (value: string) => void,
         setVisibleStart: (start: number) => void,
         data: T[],
-        visibleCount: number
+        visibleCount: number,
+        active?: string
       ) => React.ReactNode);
   /**
    * 데이터 객체 T로부터 고유한 문자열 값(키/식별자)을 추출하는 함수
@@ -99,6 +100,11 @@ interface TabPagerProps<T> {
    * 탭 콘텐츠 패널 영역에 적용할 추가적인 CSS 클래스명
    */
   contentClass?: string;
+  /**
+   * 좌우 버튼으로 페이지 이동 시 이동한 페이지의 첫 번째 탭을 자동 선택할지 여부
+   * @default true
+   */
+  autoSelectFirstTab?: boolean;
 }
 
 /**
@@ -124,6 +130,7 @@ export function TabPager<T>({
   getValue,
   className,
   contentClass,
+  autoSelectFirstTab = true,
 }: TabPagerProps<T>) {
   const safeData = data ?? [];
 
@@ -133,7 +140,11 @@ export function TabPager<T>({
     visibleCount,
     variant,
     active ?? '',
-    getValue
+    getValue,
+    {
+      autoSelectFirstTab,
+      setActive,
+    }
   );
 
   // removable이 true일 때만 onRemove 전달
@@ -244,7 +255,7 @@ export function TabPager<T>({
                         onWheel={(e) => e.stopPropagation()}
                       >
                         {safeData.map((tab) =>
-                          renderDropdownItem(tab, setActive, setVisibleStart, safeData, visibleCount)
+                          renderDropdownItem(tab, setActive, setVisibleStart, safeData, visibleCount, active)
                         )}
                       </Gcol>
                     </PopoverContent>

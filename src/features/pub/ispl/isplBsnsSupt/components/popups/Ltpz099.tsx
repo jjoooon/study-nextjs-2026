@@ -427,7 +427,7 @@ export const Ltpz099 = () => {
                               className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
                               style={getComparisonHeaderCellStyle(column)}
                             >
-                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
+                              <Typo tag={'span'} variant={'body-md'} weight={'bold'}>
                                 {column.headerName}
                               </Typo>
                             </div>
@@ -495,7 +495,7 @@ export const Ltpz099 = () => {
                               className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
                               style={getComparisonHeaderCellStyle(column)}
                             >
-                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#344054]">
+                              <Typo tag={'span'} variant={'body-md'} weight={'bold'}>
                                 {column.headerName}
                               </Typo>
                             </div>

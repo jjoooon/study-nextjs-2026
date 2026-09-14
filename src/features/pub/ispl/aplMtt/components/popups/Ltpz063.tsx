@@ -729,9 +729,21 @@ export const Ltpz063 = () => {
 
   // Ltpz063 팝업 전용 가운데 정렬 DatePicker 에디터
   const Ltpz063DatePickerCellEditor = (props: any) => {
+    const isRange = props.mode === 'range' || props.colDef?.cellEditorParams?.mode === 'range';
+    const mergedProps = {
+      ...props,
+      mode: isRange ? ('range' as const) : props.mode,
+      colDef: {
+        ...props.colDef,
+        cellEditorParams: {
+          ...props.colDef?.cellEditorParams,
+          mode: isRange ? 'range' : 'single',
+        },
+      },
+    };
     return (
       <div className="flex w-full h-full items-center justify-center mx-auto [&_.cp-datepicker]:mx-auto [&_.cp-datepicker]:justify-center">
-        <DatePickerCellEditor {...props} />
+        <DatePickerCellEditor {...mergedProps} />
       </div>
     );
   };
@@ -849,7 +861,7 @@ export const Ltpz063 = () => {
     const ROW_FIELD_MAP: { id: number; type: string; field: keyof SwitchContractItem; ourVal: string }[] = [
       { id: 1, type: '보험회사명', field: 'company', ourVal: '한화손보' },
       { id: 2, type: '상품명', field: 'productName', ourVal: '한화 여성간편건강보험 4.0' },
-      { id: 3, type: '계약상태', field: 'status', ourVal: '청약중' },
+      { id: 3, type: '계약상태(발생일)', field: 'status', ourVal: '청약중' },
       { id: 4, type: '피보험자', field: 'insured', ourVal: '홍길순' },
       { id: 5, type: '보험기간', field: 'period', ourVal: '2024-03-01 ~ 2026-03-31' },
       { id: 6, type: '보험료', field: 'premium', ourVal: '165,000원' },
@@ -860,7 +872,7 @@ export const Ltpz063 = () => {
       { id: 11, type: '예정이율/기준연월', field: 'rate', ourVal: '5.99%' },
       { id: 12, type: '보험목적', field: 'purpose', ourVal: '장기상해' },
       { id: 13, type: '면책사유 및 면책사항', field: 'exemption', ourVal: '계약자,피보험자,수익자의 고의사고 등' },
-      { id: 14, type: '승환(예정)', field: 'isSwitch', ourVal: '' },
+      { id: 14, type: '승환', field: 'isSwitch', ourVal: '' },
     ];
 
     return ROW_FIELD_MAP.map((item) => {
@@ -947,7 +959,7 @@ export const Ltpz063 = () => {
       { id: 11, type: '예정이율/기준연월', field: 'rate', ourVal: '5.99%' },
       { id: 12, type: '보험목적', field: 'purpose', ourVal: '장기상해' },
       { id: 13, type: '면책사유 및 면책사항', field: 'exemption', ourVal: '계약자,피보험자,수익자의 고의사고 등' },
-      { id: 14, type: '승환(예정)', field: 'isSwitch', ourVal: '' },
+      { id: 14, type: '승환예정', field: 'isSwitch', ourVal: '' },
     ];
 
     return ROW_FIELD_MAP.map((item) => {
@@ -1085,6 +1097,7 @@ export const Ltpz063 = () => {
     if (isType3DateRow(params.data)) {
       return {
         component: Ltpz063DatePickerCellEditor,
+        params: { mode: 'range' },
       };
     }
 

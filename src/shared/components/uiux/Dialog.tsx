@@ -439,8 +439,8 @@ export const isExternalOrCustomIframe = (popupId?: string): boolean => {
     return predefined.isIframe;
   }
 
-  // 3. 사전 정의되지 않은 경우 최상위 창 여부로 기본 판별
-  return window.self !== window.top;
+  // 3. 사전 정의되지 않은 경우 기본값 false 반환 (dialogSizes.json 또는 Prop으로 명시된 경우만 iframe 모드 적용)
+  return false;
 };
 
 type DialogContextValue = {
@@ -807,7 +807,14 @@ function DialogContent({
   isIframe: isIframeProp,
   ...props
 }: DialogContentProps) {
-  const { dialogId, isMinimized, setMinimized, open, setModalOverride, isIframe: contextIsIframe } = React.useContext(DialogDepthContext);
+  const {
+    dialogId,
+    isMinimized,
+    setMinimized,
+    open,
+    setModalOverride,
+    isIframe: contextIsIframe,
+  } = React.useContext(DialogDepthContext);
 
   const explicitIframe = iframeProp ?? isIframeProp ?? contextIsIframe;
 
@@ -840,10 +847,7 @@ function DialogContent({
 
   useIsomorphicLayoutEffect(() => {
     const currentId = popupId || getCurrentPopupIdFromUrl() || getPopupIdFromElement(contentRef.current);
-    const inIframe =
-      explicitIframe !== undefined
-        ? explicitIframe
-        : isExternalOrCustomIframe(currentId);
+    const inIframe = explicitIframe !== undefined ? explicitIframe : isExternalOrCustomIframe(currentId);
 
     setIsIframeState(inIframe);
 
@@ -989,9 +993,10 @@ function DialogContent({
     return () => window.removeEventListener('resize', checkOverflow);
   }, []);
 
-  // dialogSizes.json 에서 현재 팝업의 사전 정의 크기 조회 (ID가 있으면 기존 크기 프로세스를 오버라이드)
+  // dialogSizes.json 에서 현재 팝업의 사전 정의 크기 조회 (단, iframe 모드가 false인 내부 팝업일 때는 json의 사전 정의 크기를 적용하지 않고 일반 팝업과 동일하게 동작)
   const currentPopupId = popupId || getCurrentPopupIdFromUrl();
-  const predefinedSize = getDialogPredefinedSize(currentPopupId);
+  const rawPredefinedSize = getDialogPredefinedSize(currentPopupId);
+  const predefinedSize = isIframeState ? rawPredefinedSize : undefined;
   const predefinedWidthCss = resolveSizeValue(predefinedSize?.width, DIALOG_PRESET_WIDTH);
 
   const resolvedSize = React.useMemo(
