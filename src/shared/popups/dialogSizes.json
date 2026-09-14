@@ -859,5 +859,19 @@
     "width": 780,
     "height": 600,
     "isIframe": true
+  },
+  {
+    "id": "LTPZ206",
+    "title": "다태아 설계연계관리",
+    "width": 1180,
+    "height": 716,
+    "isIframe": true
+  },
+  {
+    "id": "LTPZ207",
+    "title": "고지대상 조회 및 입력",
+    "width": 1180,
+    "height": 660,
+    "isIframe": true
   }
 ]

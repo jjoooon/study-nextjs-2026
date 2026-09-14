@@ -1323,3 +1323,16 @@
 .ltpz999 [data-slot='dialog-footer'] {
   margin-top: 2.4rem;
 }
+
+.has-r-border + td{
+  position: relative;
+}
+.has-r-border + td::after {
+  content:"";
+  display: block;
+  position: absolute;
+  right:0;
+  top:0;
+  height: 100%;
+  border-right: 0.1rem solid #E5E5E5 !important;
+}

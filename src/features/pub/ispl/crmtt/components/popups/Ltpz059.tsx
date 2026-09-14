@@ -300,7 +300,7 @@ const imageItemsBySection: Record<ImageSectionType, ImageItemType[]> = {
 
 /**
  * 우측 건축물대장 그리드용 더미 데이터
- * - 표제부 타이틀, 동명, 기둥 등의 일반 행, 빈 행, 전유부 타이틀 및 호칭명 등을 계층화하여 표현
+ * - 표제부 타이틀, 동명, 기둥 등의 일반 행, 빈 행, 전유부 타이틀 및 호명칭 등을 계층화하여 표현
  */
 const DummyData4: DummyDataType4[] = [
   {
@@ -363,7 +363,7 @@ const DummyData4: DummyDataType4[] = [
   },
   {
     id: 12,
-    field01: '호칭명',
+    field01: '호명칭',
     field02: '',
   },
   {
@@ -388,7 +388,7 @@ const Ltpz059 = () => {
   // AG Grid 열 크기 조절을 위한 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
-  // 건축물대장 그리드에서 현재 편집(활성화) 중인 필드의 이름 저장 ('동명' 또는 '호칭명')
+  // 건축물대장 그리드에서 현재 편집(활성화) 중인 필드의 이름 저장 ('동명' 또는 '호명칭')
   const [editableFieldName, setEditableFieldName] = React.useState<string | null>(null);
 
   // 보험가입층수 선택 상태 관리 ('전체' | '일부')
@@ -422,7 +422,7 @@ const Ltpz059 = () => {
   /**
    * 타이틀 이름에 따라 편집 가능한 속성 필드 매핑 반환
    * - '표제부' 조회 -> '동명' 수정 활성화
-   * - '전유부' 조회 -> '호칭명' 수정 활성화
+   * - '전유부' 조회 -> '호명칭' 수정 활성화
    */
   const getEditableFieldNameByTitle = (title: string | number | undefined): string | null => {
     const titleText = String(title ?? '');
@@ -432,7 +432,7 @@ const Ltpz059 = () => {
     }
 
     if (titleText === '전유부') {
-      return '호칭명';
+      return '호명칭';
     }
 
     return null;
@@ -638,9 +638,9 @@ const Ltpz059 = () => {
           },
           cellEditor: 'agSelectCellEditor',
           cellEditorParams: (params: { data?: DummyDataType4 }) => {
-            if (params.data?.field01 === '호칭명') {
+            if (params.data?.field01 === '호명칭') {
               return {
-                values: ['호칭명1', '호칭명2'],
+                values: ['호명칭1', '호명칭2'],
               };
             }
 
@@ -664,7 +664,7 @@ const Ltpz059 = () => {
                 onClick={() => {
                   const targetFieldName = getEditableFieldNameByTitle(params.data?.field01);
 
-                  // 조회 버튼 클릭 시 해당 필드('동명' 또는 '호칭명')의 agSelectCellEditor 및 editable-cell 활성화
+                  // 조회 버튼 클릭 시 해당 필드('동명' 또는 '호명칭')의 agSelectCellEditor 및 editable-cell 활성화
                   setEditableFieldName(targetFieldName);
 
                   params.api.forEachNode((node) => {
@@ -918,7 +918,10 @@ const Ltpz059 = () => {
               </Grow>
             </TableFoldHead>
             <TableFoldBody>
-              <FormTable caption="사업자" cols={['w-[10rem]', 'w-[25rem]', 'w-[10rem]', 'w-auto']}>
+              <FormTable
+                caption="사업자"
+                cols={['w-[10rem]', 'w-[25rem]', 'w-[10rem]', 'w-auto', 'w-[7rem]', 'w-auto']}
+              >
                 {/* 소재지 텍스트 노출 행 */}
                 <FormRow>
                   <FormCell
@@ -928,7 +931,7 @@ const Ltpz059 = () => {
                         <EssentialIcon />
                       </Grow>
                     }
-                    colSpan={3}
+                    colSpan={5}
                   >
                     소재지정보 text text text
                   </FormCell>
@@ -963,20 +966,46 @@ const Ltpz059 = () => {
                       확인불가
                     </Checkbox>
                   </FormCell>
+
+                  <FormCell
+                    title={
+                      <>
+                        소유자
+                        <br /> 사용유형
+                      </>
+                    }
+                    titleRowSpan={4}
+                    rowSpan={4}
+                  >
+                    <RadioGroup className="gap-3 flex-col items-start">
+                      {[
+                        { value: '0', label: '건물주(전체사용)' },
+                        { value: '1', label: '건물주(전체임대)' },
+                        { value: '2', label: '건물주(일부사용일부임대)' },
+                        { value: '3', label: '임차인' },
+                      ].map((option) => (
+                        <RadioGroupItem key={option.value} value={option.value} required>
+                          {option.label}
+                        </RadioGroupItem>
+                      ))}
+                    </RadioGroup>
+                  </FormCell>
                 </FormRow>
                 {/* 지상/지하 전체층수 입력 행 */}
                 <FormRow>
-                  <FormCell title={'전체증수'} colSpan={3}>
+                  <FormCell title={'전체층수'}>
                     지상
                     <Input width={40} align="right" required />
                     층 / 지하
                     <Input width={32} align="right" required />층
                   </FormCell>
+                  <FormCell title={'전체면적'} className="has-r-border">
+                    <Input width={60} align="right" required />㎡
+                  </FormCell>
                 </FormRow>
                 {/* 보험가입층수 라디오 및 가입면적 노출 행 */}
                 <FormRow>
                   <FormCell title={'보험가입층수'}>
-                    {/* 2026-05-27 radio 수정 */}
                     <RadioGroup
                       className="gap-3"
                       value={insuredFloorType ?? ''}
@@ -999,7 +1028,7 @@ const Ltpz059 = () => {
                       ))}
                     </RadioGroup>
                   </FormCell>
-                  <FormCell title={'가입면적'}>
+                  <FormCell title={'가입면적'} className="has-r-border">
                     <Input width={70} align="right" readOnly />
                     ㎡ ↔
                     <Input width={70} align="right" readOnly />평
@@ -1007,7 +1036,7 @@ const Ltpz059 = () => {
                 </FormRow>
                 {/* 세부장소 입력 행 */}
                 <FormRow>
-                  <FormCell title={'세부장소'} colSpan={3}>
+                  <FormCell title={'세부장소'} colSpan={3} className="has-r-border">
                     <Grid className="w-full grid-cols-[1fr_auto] place-items-center">
                       <Input
                         value={detailPlace}
