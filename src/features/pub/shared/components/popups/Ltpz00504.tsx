@@ -96,11 +96,12 @@ const expectedUwExclusionCoverageData: ExpectedUw03Row[] = [
 const title1 = "<b>현재 설계상품</b>내에서 <b>'인수'</b>예상 고지유형";
 const title2 = "<b>간편고지유형</b>내에서 <b>'인수'</b>예상 고지유형";
 const title3 = "<b>일반고지유형</b>내에서 <b>'인수/할증/부담보/감액'</b>예상 고지유형";
+
 const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   {
     id: 1,
     isChecked: false,
-    type: '인수',
+    type: '인수 (인수)',
     title: title1,
     plan: ['일반고지형'],
     price: '34,000원',
@@ -108,7 +109,7 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   {
     id: 2,
     isChecked: false,
-    type: '인수',
+    type: '연기 (연기)',
     title: title2,
     plan: ['9형(3,10,5간편고지형(고혈압및당뇨추가고지))'],
     price: '60,000원',
@@ -116,7 +117,7 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   {
     id: 3,
     isChecked: false,
-    type: '조건부인수',
+    type: '거절 (거절)',
     title: title3,
     plan: ['일반고지형'],
     price: '30,000원',

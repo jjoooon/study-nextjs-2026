@@ -11,19 +11,10 @@ import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, u
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import {
-  CalendarIcon2,
-  CheckboxIcon,
-  CircleCheckIcon,
-  FixingPinIcon,
-  InfoBoxWarningIcon,
-  NoteIcon,
-  ShieldIcon,
-} from '@icons';
-import { Badge2, getBadge2ColorByText } from '@uiux/Badge2';
+import { CalendarIcon2, CheckboxIcon, FixingPinIcon, InfoBoxWarningIcon, NoteIcon, ShieldIcon } from '@icons';
+import { Badge2, getPossibilityBadgeStyle } from '@uiux/Badge2';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-
 import {
   Dialog,
   DialogClose,
@@ -37,64 +28,6 @@ import {
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
 /**
- * 동일한 색상 그룹의 태그들을 묶어서 하나의 Badge2로 렌더링하는 헬퍼 함수
- * 예: ['부담보', '할증', '감액'] -> <Badge2 color="yellow">부담보 · 할증 · 감액</Badge2>
- */
-const renderGroupedBadge2 = (tags?: string[]) => {
-  if (!tags || tags.length === 0) return null;
-
-  const groups: { color: string; items: string[] }[] = [];
-
-  tags.forEach((tag) => {
-    const color = getBadge2ColorByText(tag) ?? 'gray';
-    const lastGroup = groups[groups.length - 1];
-
-    if (lastGroup && lastGroup.color === color) {
-      lastGroup.items.push(tag);
-    } else {
-      groups.push({ color, items: [tag] });
-    }
-  });
-
-  return groups.map((group, idx) => (
-    <Badge2 key={idx} color={group.color as any}>
-      {group.items.join(', ')}
-    </Badge2>
-  ));
-};
-
-/**
- * 가입가능 여부(인수, 조건부인수 등) 텍스트 및 뱃지 스타일 렌더링 헬퍼
- * - '예상 : ' 접두사 고정
- * - '인수'일 때 green, '조건부인수' / '할증' / '부담보' / '감액'일 때 yellow 등
- */
-export const getPossibilityBadgeStyle = (possibility?: string | string[]) => {
-  if (!possibility) return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
-
-  const rawText = Array.isArray(possibility) ? possibility.filter(Boolean).join(',') : possibility;
-  const clean = rawText.replace(/^[0-9]/, '').trim();
-
-  if (!clean) return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
-
-  const label = `예상 : ${clean}`;
-
-  if (clean.includes('조건부') || clean.includes('할증') || clean.includes('부담보') || clean.includes('감액')) {
-    return { color: 'yellow' as const, iconColor: '#FFB800', label };
-  }
-  if (clean.includes('거절')) {
-    return { color: 'red' as const, iconColor: '#E53E3E', label };
-  }
-  if (clean.includes('인수')) {
-    return { color: 'green' as const, iconColor: '#00B050', label };
-  }
-  if (clean.includes('심사') || clean.includes('적부')) {
-    return { color: 'blue' as const, iconColor: '#006FF2', label };
-  }
-
-  return { color: 'green' as const, iconColor: '#00B050', label };
-};
-
-/**
  * 비교 옵션 타입 정의
  */
 type OptionType = { 옵션1: string } | { 옵션2: string } | { 옵션3: string[] } | { 옵션4: string };
@@ -104,11 +37,9 @@ type OptionType = { 옵션1: string } | { 옵션2: string } | { 옵션3: string[
  */
 type InfoDataType = {
   id: number;
-  예상: string[];
+  예상: string;
   유형: 'type1' | 'type2' | 'type3' | string;
   담보명: string;
-  tag: string[];
-  가능: string;
   옵션: OptionType[];
 };
 
@@ -145,11 +76,9 @@ const getNoticeTypeLabel = (type?: string, fallback: React.ReactNode = null): Re
  */
 const InfoData: InfoDataType = {
   id: 1,
-  예상: [''],
+  예상: '',
   유형: '',
   담보명: '한화 시그니처 여성 건강보험4.0 2504 한화 시그니처 여성 건강보험4.0 2504 ',
-  가능: '인수가능',
-  tag: ['인수'],
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
@@ -160,11 +89,9 @@ const InfoData: InfoDataType = {
 
 const InfoData1: InfoDataType = {
   id: 1,
-  예상: ['인수'],
+  예상: '인수 (인수)',
   유형: 'type1',
-  담보명: '1한화 시그니처 여성 건강보험4.0 2504 ',
-  가능: '1인수가능',
-  tag: ['인수'],
+  담보명: '1한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
@@ -174,12 +101,10 @@ const InfoData1: InfoDataType = {
 };
 
 const InfoData2: InfoDataType = {
-  id: 1,
-  예상: ['조건부인수'],
+  id: 2,
+  예상: '거절 (거절)',
   유형: 'type2',
-  담보명: '2한화 시그니처 여성 건강보험4.0 2504 ',
-  가능: '2조건부인수',
-  tag: ['심사', '거절', '부담보', '할증', '감액'],
+  담보명: '2한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
@@ -189,12 +114,36 @@ const InfoData2: InfoDataType = {
 };
 
 const InfoData3: InfoDataType = {
-  id: 1,
-  예상: ['할증', '부담보', '감액'],
+  id: 3,
+  예상: '연기 (연기)',
   유형: 'type3',
-  담보명: '3한화 시그니처 여성 건강보험4.0 2504 ',
-  가능: '3인수가능',
-  tag: ['부담보', '할증', '감액'],
+  담보명: '3한화 시그니처 여성 건강보험4.0 2504',
+  옵션: [
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
+  ],
+};
+
+const InfoData4: InfoDataType = {
+  id: 4,
+  예상: '심사 (진단)',
+  유형: 'type1',
+  담보명: '4한화 시그니처 여성 건강보험4.0 2504',
+  옵션: [
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
+  ],
+};
+
+const InfoData5: InfoDataType = {
+  id: 5,
+  예상: '조건부인수 (할증)',
+  유형: 'type2',
+  담보명: '5한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
@@ -565,9 +514,9 @@ const Ltpz203 = () => {
               </CardBox>
             </Grid>
 
-            {/* [우측 영역] 가로 스크롤 가능한 비교설계 카드 3개 */}
+            {/* [우측 영역] 가로 스크롤 가능한 비교설계 카드 5개 */}
             <Grow placement="ss" className="overflow-y-hidden overflow-x-auto h-full pb-[1rem]" gap={3}>
-              {[InfoData1, InfoData2, InfoData3].map((infoData, i) => (
+              {[InfoData1, InfoData2, InfoData3, InfoData4, InfoData5].map((infoData, i) => (
                 <CardBox
                   color="var(--color-information-50)"
                   bottom={
@@ -584,14 +533,13 @@ const Ltpz203 = () => {
                         <Checkbox color={'info'} aria-label="선택" className="gap-x-2!">
                           {' '}
                           <Typo tag="div" variant={'body-sm'} weight={'bold'} color={'information'}>
-                            비교설계{i + 1}
+                            대안설계{i + 1}
                           </Typo>
                         </Checkbox>
                         {(() => {
-                          const { color, iconColor, label } = getPossibilityBadgeStyle(infoData.예상 ?? infoData.가능);
+                          const { color, label } = getPossibilityBadgeStyle(infoData.예상);
                           return (
                             <Badge2 color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
-                              <CircleCheckIcon size={12} color={iconColor} />
                               {label}
                             </Badge2>
                           );

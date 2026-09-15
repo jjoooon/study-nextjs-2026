@@ -5,38 +5,9 @@
 
 import type { ReactNode } from 'react';
 import { Gcol, Grow, Grid, Typo } from '@atoms';
-import { AiIcon, CircleCheckIcon } from '@icons';
-import { Badge2 } from '../uiux/Badge2';
+import { AiIcon } from '@icons';
+import { Badge2, getPossibilityBadgeStyle } from '../uiux/Badge2';
 import { Button } from '../uiux/Button';
-
-/**
- * 가입가능 여부(인수, 조건부인수 등) 텍스트 및 뱃지 스타일 렌더링 헬퍼
- */
-const getPossibilityBadgeStyle = (possibility?: string | string[]) => {
-  if (!possibility) return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
-
-  const rawText = Array.isArray(possibility) ? possibility.filter(Boolean).join(',') : possibility;
-  const clean = rawText.replace(/^[0-9]/, '').trim();
-
-  if (!clean) return { color: 'green' as const, iconColor: '#00B050', label: '예상 : 인수' };
-
-  const label = clean.startsWith('예상') ? clean : `예상 : ${clean}`;
-
-  if (clean.includes('조건부') || clean.includes('할증') || clean.includes('부담보') || clean.includes('감액')) {
-    return { color: 'yellow' as const, iconColor: '#FFB800', label };
-  }
-  if (clean.includes('거절')) {
-    return { color: 'red' as const, iconColor: '#E53E3E', label };
-  }
-  if (clean.includes('인수')) {
-    return { color: 'green' as const, iconColor: '#00B050', label };
-  }
-  if (clean.includes('심사') || clean.includes('적부')) {
-    return { color: 'blue' as const, iconColor: '#006FF2', label };
-  }
-
-  return { color: 'green' as const, iconColor: '#00B050', label };
-};
 
 export type RecommendCardDataItem = {
   id: number;
@@ -102,7 +73,7 @@ function NormalRecommendCardItem({
   price,
   onAiReasonClick,
 }: NormalRecommendCardItemProps) {
-  const { color, iconColor, label } = getPossibilityBadgeStyle(type);
+  const { color, label } = getPossibilityBadgeStyle(type);
   const planText = Array.isArray(plan) && plan.length > 0 ? plan.join(', ') : typeof plan === 'string' ? plan : '';
 
   return (
@@ -115,7 +86,6 @@ function NormalRecommendCardItem({
         <Gcol className="w-full" placement="ss" gap={2}>
           <Grow className="w-full justify-start">
             <Badge2 color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
-              <CircleCheckIcon size={12} color={iconColor} />
               {label}
             </Badge2>
           </Grow>

@@ -10,8 +10,8 @@ import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { CalendarIcon2, CheckboxIcon, CircleCheckIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
-import { Badge } from '@uiux/Badge';
+import { CalendarIcon2, CheckboxIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
+import { Badge2, getPossibilityBadgeStyle } from '@uiux/Badge2';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 
@@ -37,8 +37,8 @@ type OptionType = { 옵션1: string } | { 옵션2: string } | { 옵션3: string[
  */
 type InfoDataType = {
   id: number;
+  예상?: string;
   담보명: string;
-  가능: string;
   옵션: OptionType[];
 };
 
@@ -47,8 +47,68 @@ type InfoDataType = {
  */
 const InfoData: InfoDataType = {
   id: 1,
+  예상: '',
   담보명: '한화 시그니처 여성 건강보험4.0 2504',
-  가능: '인수가능',
+  옵션: [
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
+  ],
+};
+
+const InfoData1: InfoDataType = {
+  id: 1,
+  예상: '인수 (인수)',
+  담보명: '1한화 시그니처 여성 건강보험4.0 2504',
+  옵션: [
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
+  ],
+};
+
+const InfoData2: InfoDataType = {
+  id: 2,
+  예상: '거절 (거절)',
+  담보명: '2한화 시그니처 여성 건강보험4.0 2504',
+  옵션: [
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
+  ],
+};
+
+const InfoData3: InfoDataType = {
+  id: 3,
+  예상: '연기 (연기)',
+  담보명: '3한화 시그니처 여성 건강보험4.0 2504',
+  옵션: [
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
+  ],
+};
+
+const InfoData4: InfoDataType = {
+  id: 4,
+  예상: '심사 (진단)',
+  담보명: '4한화 시그니처 여성 건강보험4.0 2504',
+  옵션: [
+    { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
+    { 옵션2: '비대면진단심사플랜(20~40세)' },
+    { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
+    { 옵션4: '1형(일반 고지 형)' },
+  ],
+};
+
+const InfoData5: InfoDataType = {
+  id: 5,
+  예상: '조건부인수 (할증)',
+  담보명: '5한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
@@ -162,7 +222,7 @@ function CardBox({ children, bottom, color }: { children: React.ReactNode; botto
 /**
  * @component Ltpz013
  * @description 상품비교설계 팝업 다이얼로그 컴포넌트
- * - 기준 설계안과 최대 3개의 비교 설계안을 가로 병렬 구조로 배치하여 한도, 가입금액, 보험료 정보를 대조하는 화면입니다.
+ * - 기준 설계안과 최대 5개의 비교 설계안을 가로 병렬 구조로 배치하여 한도, 가입금액, 보험료 정보를 대조하는 화면입니다.
  * - 주요 기능:
  *   1. 여러 카드 내부에 들어있는 Ag-Grid 테이블의 스크롤 위치 동기화 (`handleSyncScroll`)
  *   2. Ag-Grid의 기본 헤더를 숨기는 대신, 정적 flex 영역(`getComparisonHeaderCellStyle`)을 정의하여 그리드 본체와 정확히 매칭되는 상단 헤더 직접 렌더링
@@ -330,7 +390,6 @@ const Ltpz013 = () => {
                           return (
                             <Grow key={index} placement="ss" className="text-[1.3rem]">
                               {index === 0 && (
-                                // M1. 수정
                                 <ShieldIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -338,7 +397,6 @@ const Ltpz013 = () => {
                                 />
                               )}
                               {index === 1 && (
-                                // M1. 수정
                                 <NoteIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -346,7 +404,6 @@ const Ltpz013 = () => {
                                 />
                               )}
                               {index === 2 && (
-                                // M1. 수정
                                 <CalendarIcon2
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -354,7 +411,6 @@ const Ltpz013 = () => {
                                 />
                               )}
                               {index === 3 && (
-                                // M1. 수정
                                 <CheckboxIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -417,9 +473,9 @@ const Ltpz013 = () => {
               </CardBox>
             </Grid>
 
-            {/* [우측 영역] 가로 스크롤 가능한 비교설계 카드 3개 */}
+            {/* [우측 영역] 가로 스크롤 가능한 비교설계 카드 5개 */}
             <Grow placement="ss" className="overflow-y-hidden overflow-x-auto h-full pb-[1rem]" gap={3}>
-              {[...Array(3)].map((_, i) => (
+              {[InfoData1, InfoData2, InfoData3, InfoData4, InfoData5].map((infoData, i) => (
                 <CardBox
                   color="var(--color-information-50)"
                   bottom={
@@ -439,21 +495,27 @@ const Ltpz013 = () => {
                         </Button>
                       </Grow>
                       <Gcol placement="ss">
-                        <Typo
-                          tag="div"
-                          variant={'body-sm'}
-                          weight={'bold'}
-                          color={'information'}
-                          className="flex gap-1 items-center"
-                        >
-                          비교설계{i + 1}
-                          <Badge color="blue" className="h-[2.2rem] rounded-full text-[1.1rem] leading-[1] px-[0.6rem]">
-                            <CircleCheckIcon size={12} color="var(--color-information-50)" />
-                            인수가능
-                          </Badge>
-                        </Typo>
+                        <Grow placement="ss" className="w-full justify-start items-center">
+                          <Typo
+                            tag="div"
+                            variant={'body-sm'}
+                            weight={'bold'}
+                            color={'information'}
+                            className="flex gap-1 items-center"
+                          >
+                            비교설계{i + 1}
+                          </Typo>
+                          {(() => {
+                            const { color, label } = getPossibilityBadgeStyle(infoData.예상);
+                            return (
+                              <Badge2 color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
+                                {label}
+                              </Badge2>
+                            );
+                          })()}
+                        </Grow>
                         <Typo tag="h3" variant={'body-xl'} weight={'bold'}>
-                          {InfoData.담보명}
+                          {infoData.담보명}
                         </Typo>
                       </Gcol>
 
@@ -518,7 +580,7 @@ const Ltpz013 = () => {
                       </Gcol>
                     </Gcol>
 
-                    {/* 담보 그리드 감싸는 컨테이너 - 스크롤 동기화 타겟 (index 1 ~ 3) */}
+                    {/* 담보 그리드 감싸는 컨테이너 - 스크롤 동기화 타겟 (index 1 ~ 5) */}
                     <div
                       className="ag-theme-alpine no-header w-full overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
                       ref={(el) => {
