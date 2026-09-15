@@ -70,6 +70,16 @@ const items = [
               type: '(step: number) => void',
               description: '단계 클릭 시 호출되는 콜백 함수',
             },
+            {
+              prop: 'effect',
+              type: "'process' | string",
+              description: '버튼 애니메이션 효과 종류 (예: process)',
+            },
+            {
+              prop: 'effectStep',
+              type: 'number',
+              description: '애니메이션 효과를 적용할 단계 번호',
+            },
           ]}
         />
       ),
@@ -101,11 +111,24 @@ const items = [
       description: '단계 변경 시 콜백 함수',
       table: { category: 'Events' },
     },
+    effect: {
+      control: { type: 'select' },
+      options: [undefined, 'process'],
+      description: '버튼 애니메이션 효과 종류',
+      table: { category: 'Effect' },
+    },
+    effectStep: {
+      control: { type: 'number', min: 1, max: 6 },
+      description: '애니메이션 효과를 적용할 단계 번호',
+      table: { category: 'Effect' },
+    },
   },
   args: {
     items: demoItems,
     completeSteps: [1],
     activeStep: 2,
+    effect: undefined,
+    effectStep: undefined,
   },
 };
 
@@ -122,5 +145,16 @@ export const WithDefaultActiveOnly: Story = {
     completeSteps: [1, 2],
     activeStep: undefined,
     defaultActiveStep: 3,
+  },
+};
+
+export const WithEffectFlash: Story = {
+  name: 'Effect (특정 단계 플래시 효과)',
+  args: {
+    items: demoItems,
+    completeSteps: [1],
+    activeStep: 2,
+    effect: 'process',
+    effectStep: 3,
   },
 };

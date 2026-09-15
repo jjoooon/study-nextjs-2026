@@ -418,7 +418,7 @@ interface UIButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>, VariantProps<typeof buttonVariants> {
   children?: React.ReactNode;
   asChild?: boolean;
-  effect?: 'flash';
+  effect?: 'flash' | (string & {});
   /** 에러 상태 표시 여부 */
   error?: boolean;
   /** 에러 상태일 때 표시할 메시지 내용 */
@@ -434,22 +434,6 @@ interface UIButtonProps
    * @default 'bl'
    */
   errorPs?: 'tl' | 'tc' | 'tr' | 'bl' | 'bc' | 'br';
-}
-
-// Flash animation style (opacity blink)
-const flashKeyframes = `
-@keyframes button-flash {
-  0% { opacity: 1; }
-  25% { opacity: 0.2; }
-  50% { opacity: 1; }
-  75% { opacity: 0.2; }
-  100% { opacity: 1; }
-}`;
-if (typeof window !== 'undefined' && !document.getElementById('button-flash-style')) {
-  const style = document.createElement('style');
-  style.id = 'button-flash-style';
-  style.innerHTML = flashKeyframes;
-  document.head.appendChild(style);
 }
 
 const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
@@ -476,8 +460,21 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
     const isInvalid = props['aria-invalid'] === 'true' || props['aria-invalid'] === true;
     const shouldShowError = (error || isInvalid) && Boolean(errorMsg);
 
+    const [activeEffect, setActiveEffect] = React.useState<string | undefined>(effect);
+
+    React.useEffect(() => {
+      setActiveEffect(effect);
+    }, [effect]);
+
+    const handleAnimationEnd = (e: React.AnimationEvent<HTMLButtonElement>) => {
+      if (activeEffect && e.animationName.startsWith('button-')) {
+        setActiveEffect(undefined);
+      }
+      props.onAnimationEnd?.(e);
+    };
+
     const Comp = asChild ? Slot : 'button';
-    const effectClass = effect === 'flash' ? 'button-flash-animate' : '';
+    const effectClass = activeEffect ? `button-${activeEffect}-animate` : '';
 
     const buttonElement = (
       <Comp
@@ -493,6 +490,7 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
         className={cn(buttonVariants({ variant, color, size, only }), effectClass, !shouldShowError && className)}
         type={Comp === 'button' ? (type ?? 'button') : undefined}
         disabled={!hasButtonAuth(id) || props.disabled}
+        onAnimationEnd={handleAnimationEnd}
         {...props}
       >
         {children}
@@ -513,14 +511,6 @@ const Button = React.forwardRef<HTMLButtonElement, UIButtonProps>(
     return buttonElement;
   }
 );
-
-// Add flash animation class
-if (typeof window !== 'undefined' && !document.getElementById('button-flash-animate-style')) {
-  const style = document.createElement('style');
-  style.id = 'button-flash-animate-style';
-  style.innerHTML = `.button-flash-animate { animation: button-flash 1s linear 2; }`;
-  document.head.appendChild(style);
-}
 
 Button.displayName = 'Button';
 

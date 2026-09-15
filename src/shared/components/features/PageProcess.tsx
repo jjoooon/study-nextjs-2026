@@ -3,7 +3,7 @@
  */
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Num1, Num2, Num3, Num4, Num5, Num6 } from '@/shared/components/icons/StepNumber';
 import { Gcol, Typo } from '@atoms';
 import { CheckBoldIcon, ProcessActiveIcon } from '@icons';
@@ -19,19 +19,46 @@ export type PageProcessItem = {
 // PageProcess 입력값
 // - completeSteps가 있으면 "명시 완료 목록" 기준으로 완료 상태를 판단
 // - completeSteps가 없으면 activeStep보다 작은 단계를 완료로 간주
+// PageProcess 입력값
+// - completeSteps가 있으면 "명시 완료 목록" 기준으로 완료 상태를 판단
+// - completeSteps가 없으면 activeStep보다 작은 단계를 완료로 간주
 type PageProcessProps = {
   items: PageProcessItem[];
   completeSteps?: number[];
   activeStep?: number;
   defaultActiveStep?: number;
   onStepChange?: (step: number) => void;
+  /** 버튼 애니메이션 효과 종류 (예: 'flash') */
+  effect?: 'flash' | (string & {});
+  /** 애니메이션 효과를 적용할 단계 번호 (1-based step) */
+  effectStep?: number;
 };
 
-export function PageProcess({ items, completeSteps, activeStep, defaultActiveStep, onStepChange }: PageProcessProps) {
+export function PageProcess({
+  items,
+  completeSteps,
+  activeStep,
+  defaultActiveStep,
+  onStepChange,
+  effect,
+  effectStep,
+}: PageProcessProps) {
   // 활성 단계 우선순위: activeStep > defaultActiveStep > 첫 아이템 step > 1
   const resolvedActiveStep = activeStep ?? defaultActiveStep ?? items[0]?.step ?? 1;
   // 완료 단계 조회 성능/가독성을 위해 Set으로 변환
   const completeStepSet = new Set(completeSteps ?? []);
+
+  const [activeEffect, setActiveEffect] = useState<string | undefined>(effect);
+
+  useEffect(() => {
+    setActiveEffect(effect);
+  }, [effect, effectStep]);
+
+  const handleAnimationEnd = (e: React.AnimationEvent<HTMLButtonElement>) => {
+    if (activeEffect && e.animationName.startsWith('button-')) {
+      setActiveEffect(undefined);
+    }
+  };
 
   // 단계별 상태 계산
   // - 'active'   : 현재 활성 단계
@@ -64,18 +91,22 @@ export function PageProcess({ items, completeSteps, activeStep, defaultActiveSte
               const stepState = getStepState(item.step);
               const isActive = stepState === 'active';
               const isComplete = stepState === 'complete';
+              const isEffectTarget = item.step === effectStep;
+              const effectClass = isEffectTarget && activeEffect ? `button-${activeEffect}-animate` : '';
 
               return (
                 // 각 단계 버튼: 클릭 시 상위로 단계 변경 이벤트 전달
                 <button
                   type="button"
                   data-process={stepState}
-                  className={`relative flex flex-col w-[2.9rem] gap-1 items-center justify-center -mt-[1px] rounded-tl-[0.8rem] border border-[1px] border-[var(--color-gray-15)] border-r-0 rounded-bl-[0.8rem]  hover:bg-[var(--color-secondary-5)] bg-[#fff] text-[var(--color-gray-70)] z-0 shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.10)] py-[2rem] [@media(max-height:630px)]:py-[1rem] ${
+                  onAnimationEnd={isEffectTarget ? handleAnimationEnd : undefined}
+                  className={`relative flex flex-col w-[2.9rem] gap-1 items-center justify-center -mt-[1px] rounded-tl-[0.8rem] border border-[1px] border-[var(--color-gray-15)] border-r-0 rounded-bl-[0.8rem] hover:bg-[var(--color-secondary-5)] bg-[#fff] text-[var(--color-gray-70)] z-0 shadow-[0_0.2rem_0.4rem_0_rgba(0,0,0,0.10)] py-[2rem] [@media(max-height:630px)]:py-[1rem] ${
                     isActive &&
                     'w-[3.3rem] text-white z-1 border-y-[1px] border-l-[1px] border-r-0 border-transparent rounded-l-xl rounded-r-none bg-origin-border [background-clip:padding-box,_border-box] [background-image:linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%),linear-gradient(to_bottom,#ffad4f,#e5561c)]'
                   }
                   ${isComplete && 'bg-[var(--color-secondary-30)] text-white hover:bg-[var(--color-secondary-40)] border-[#89807c]'}
-                  }`}
+                  ${effectClass}
+                  `}
                   onClick={() => onStepChange?.(item.step)}
                 >
                   <b

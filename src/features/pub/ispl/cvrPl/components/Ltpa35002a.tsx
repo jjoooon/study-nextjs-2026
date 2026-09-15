@@ -841,7 +841,7 @@ export function Ltpa35002a({
               <Checkbox>
                 <TooltipQ>체크 후[보험료계산]클릭하시면 Log가 쌓입니다</TooltipQ>
               </Checkbox>
-              <Button variant={'outlined'} color={'gray'} size={'xl'}>
+              <Button variant={'outlined'} color={'gray'} size={'xl'} effect={'flash'}>
                 담보전환
               </Button>
               <Tooltip>
@@ -857,7 +857,7 @@ export function Ltpa35002a({
               <Button variant={'outlined'} color={'gray'} size={'xl'}>
                 동일상품복사
               </Button>
-              <Button type="button" variant={'contained'} color={'primary'} size={'xl'}>
+              <Button type="button" variant={'contained'} color={'primary'} size={'xl'} effect={'flash'}>
                 보험료계산(지침)
               </Button>
             </Grow>

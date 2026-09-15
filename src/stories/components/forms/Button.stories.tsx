@@ -140,6 +140,15 @@ import { Button } from '@uiux/Button';
               </Button>
               <Button disabled>disabled</Button>
             </Grow>
+
+            <h2 className="mt-8">Effect (Flash)</h2>
+            <p>effect="flash" 옵션을 전달하거나 동적으로 지정하면 버튼에 깜빡이는 애니메이션이 실행됩니다.</p>
+            <Grow
+              gap={2}
+              className="flex-wrap p-16 border border-[var(--color-gray-10)] border-dashed bg-[var(--color-gray-0)] rounded-[1rem] w-full"
+            >
+              <Button effect="flash">플래시 효과 버튼</Button>
+            </Grow>
           </StoryDocTemplate>
         );
       },
@@ -235,3 +244,49 @@ type Story = StoryObj<typeof Button>;
 export const Default: Story = {
   render: (args) => <Button {...args}>{args.children}</Button>,
 };
+
+export const FlashEffect: Story = {
+  name: 'Effect (Flash 애니메이션)',
+  args: {
+    effect: 'flash',
+    children: '플래시 효과 버튼',
+  },
+};
+
+export const DynamicFlashEffect: Story = {
+  name: 'Effect (동적 플래시 트리거)',
+  render: () => {
+    const FlashDemo = () => {
+      const [effect, setEffect] = React.useState<string | undefined>(undefined);
+      const [triggerCount, setTriggerCount] = React.useState(0);
+
+      const handleTrigger = () => {
+        setEffect('flash');
+        setTriggerCount((prev) => prev + 1);
+      };
+
+      return (
+        <Gcol gap={4} className="items-center">
+          <Grow gap={2} placement="cc">
+            <Button
+              key={triggerCount}
+              effect={effect}
+              color="primary"
+              size="lg"
+              onAnimationEnd={() => setEffect(undefined)}
+            >
+              {effect === 'flash' ? '플래시 효과 실행 중...' : '대상 버튼'}
+            </Button>
+          </Grow>
+          <Button variant="outlined" color="secondary" size="md" onClick={handleTrigger}>
+            플래시 효과 동적 실행 (클릭 {triggerCount}회)
+          </Button>
+        </Gcol>
+      );
+    };
+
+    return <FlashDemo />;
+  },
+};
+
+

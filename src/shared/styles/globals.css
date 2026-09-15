@@ -1336,3 +1336,38 @@
   height: 100%;
   border-right: 0.1rem solid #E5E5E5 !important;
 }
+
+/* Button & Interactive Element Animation Effects */
+@keyframes button-flash {
+  0% { opacity: 1; }
+  25% { opacity: 0.2; }
+  50% { opacity: 1; }
+  75% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+@keyframes button-process {
+  0% {
+    background-color: var(--color-warning-30);
+  }
+  50% {
+    background-color: #ffffff;
+    color: var(--color-gray-70);
+  }
+  100% {
+    background-color: var(--color-warning-30);
+  }
+}
+
+.button-flash-animate {
+  animation: button-flash 1s linear 2;
+}
+.button-process-animate {
+  animation: button-process 1s linear infinite;
+}
+
+/* 하위 텍스트 및 자식 요소들이 부모 버튼의 애니메이션 color 변화를 상속받도록 설정 */
+.button-process-animate * {
+  color: inherit !important;
+}
+
+

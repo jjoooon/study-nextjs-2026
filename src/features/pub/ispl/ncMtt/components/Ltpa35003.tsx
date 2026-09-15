@@ -6,8 +6,9 @@
 import { useCallback, useState } from 'react';
 import * as React from 'react';
 import { useTabs } from '@/shared/hooks/useTabs';
-import { Grow } from '@atoms';
+import { Grow, Gcol, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
+import { ConfirmDialog } from '@common/ConfirmDialog';
 import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
@@ -329,16 +330,43 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                   <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
                     알릴사항 가져오기
                   </Button>
-                  <Button
-                    type="submit"
-                    form={'page3-MainForm'}
-                    variant={'contained'}
-                    color={'primary'}
-                    size={'xl'}
-                    // onClick={onCalcGuidelineClick}
-                  >
-                    저장
-                  </Button>
+                  <ConfirmDialog
+                    defaultOpen={false}
+                    title="알림"
+                    description={
+                      <div className="flex flex-col gap-2 ">
+                        <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+                          <Typo tag={'h3'} variant={'body-sm'} icon={'warning'} weight={'bold'}>
+                            알릴 사항 반영
+                          </Typo>
+                          <BulletList position="col" className="gap-1">
+                            <BulletListItem type="dot" size="sm">
+                              조회정보를 기준으로 추정입력되며(예.완치여부)
+                              <br />
+                              실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인 바랍니다.
+                            </BulletListItem>
+                            <BulletListItem type="dot" size="sm" color="warning">
+                              추가 확인 또는 입력이 필요한 경우 해당 입력화면으로 이동
+                            </BulletListItem>
+                          </BulletList>
+                        </Gcol>
+                        <Gcol placement={'ss'}>
+                          <Typo>알릴사항 반영하시겠습니까?</Typo>
+                          <Typo tag={'strong'} weight={'bold'}>
+                            위 내용을 확인하였으며, 설계에 반영합니다.
+                          </Typo>
+                        </Gcol>
+                      </div>
+                    }
+                    confirmLabel="진행"
+                    cancelLabel="닫기"
+                    tone="info"
+                    trigger={
+                      <Button type="submit" form={'page3-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
+                        저장
+                      </Button>
+                    }
+                  />
                 </Grow>
               </MainBottomItem>
             </MainBottom>

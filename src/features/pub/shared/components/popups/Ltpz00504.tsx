@@ -10,7 +10,7 @@ import * as React from 'react';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { ConfirmDialog } from '@common/ConfirmDialog';
 import { RecommendCard } from '@common/RecommendCard';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -324,7 +324,7 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
                         description={
                           <div className="flex flex-col gap-2 max-w-[35rem]">
                             <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-                              <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
+                              <Typo tag={'h3'} variant={'body-sm'} icon={'warning'} weight={'bold'}>
                                 담보 감액 반영
                               </Typo>
                               <BulletList position="col" className="gap-1">
