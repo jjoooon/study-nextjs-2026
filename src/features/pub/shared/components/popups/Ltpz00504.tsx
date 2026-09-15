@@ -9,11 +9,14 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem } from '@common/BulletList';
+import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
+import { ConfirmDialog } from '@common/ConfirmDialog';
 import { RecommendCard } from '@common/RecommendCard';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
+
 import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
+
 import Ltpz0050401 from './Ltpz0050401';
 export type Ltpz005TabValue = 'common' | 'accum' | 'job' | 'expected-uw';
 
@@ -306,7 +309,37 @@ const Ltpz00504 = ({ onClose }: Ltpz00504Props) => {
                   >
                     <Grow placement="bwc" className="w-full">
                       <Badge color="primary">15개</Badge>
-                      <Button size={'md'}>설계반영</Button>
+                      <ConfirmDialog
+                        defaultOpen={false}
+                        title="알림"
+                        description={
+                          <div className="flex flex-col gap-2 max-w-[35rem]">
+                            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+                              <Typo variant={'body-sm'} icon={'warning'} weight={'bold'}>
+                                담보 감액 반영
+                              </Typo>
+                              <BulletList position="col" className="gap-1">
+                                <BulletListItem type="dot" size="sm" color="warning">
+                                  심사결과 가입불가한 담보를 조정하며, 동시가입조건의 담보도 함께 조정합니다.
+                                </BulletListItem>
+                                <BulletListItem type="dot" size="sm">
+                                  완료시 지침확인 결과로 이동합니다.
+                                </BulletListItem>
+                              </BulletList>
+                            </Gcol>
+                            <Gcol placement={'ss'}>
+                              <Typo>감액 반영하시겠습니까?</Typo>
+                              <Typo tag={'strong'} weight={'bold'}>
+                                위 내용을 확인하였으며, 설계에 반영합니다.
+                              </Typo>
+                            </Gcol>
+                          </div>
+                        }
+                        confirmLabel="진행"
+                        cancelLabel="닫기"
+                        tone="info"
+                        trigger={<Button size={'md'}>감액반영</Button>}
+                      />
                     </Grow>
                   </TableFoldHead>
                   <TableFoldBody>
