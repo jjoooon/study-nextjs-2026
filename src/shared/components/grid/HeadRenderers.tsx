@@ -3,9 +3,12 @@
  */
 import type { IHeaderParams, SortDirection } from 'ag-grid-enterprise';
 import * as React from 'react';
+import { DotColor } from '@/shared/components/common/DotColor';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Divider, Grow, Gcol } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { HashFilter, useHashFilter } from '@common/HashFilter';
+import { TooltipQ } from '@common/TooltipQ';
 import { SearchIcon, SortArrowIcon, SortArrowDefaultIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
@@ -24,6 +27,7 @@ interface HeaderWithUnitProps {
   column?: IHeaderParams['column'];
   enableSorting?: IHeaderParams['enableSorting'];
   progressSort?: IHeaderParams['progressSort'];
+  children?: React.ReactNode;
 }
 
 export const HeaderWithUnit = React.memo(function HeaderWithUnit({
@@ -37,6 +41,7 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
   enableSorting,
   view = false,
   progressSort,
+  children,
 }: HeaderWithUnitProps) {
   // ag-grid 정렬 제어 함수가 모두 주입된 경우에만 정렬 활성화
   const isSortable = !!(column && enableSorting && progressSort);
@@ -70,11 +75,13 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
     <Gcol className={cn('w-full leading-[1.4rem] font-bold', className)} placement={'cc'} gap={gap}>
       {label}
       <span className={(cn(unitClassName), 'font-bold')}>{unit}</span>
+      {children}
     </Gcol>
   ) : (
     <Grow className={cn('w-full font-bold', className)} placement={'cc'} gap={gap}>
       {label}
       <span className={(cn(unitClassName), 'font-bold text-[1.1rem]')}>{unit}</span>
+      {children}
     </Grow>
   );
 
@@ -272,5 +279,30 @@ export function AgGridProductNameHeader(props: IHeaderParams) {
         onCheckedChange={context?.onCheckedChange ? handleCheckedChange : undefined}
       />
     </div>
+  );
+}
+
+const uwLegendStatuses = ['인수', '거절', '연기', '인심사', '서류보완', '진단', '적부', '할증', '부담보', '감액'];
+
+export function UwStatusTooltipQ() {
+  return (
+    <span
+      className="inline-flex items-center justify-center [&_button]:translate-y-0! [&_button]:ml-0! [&_button]:h-[1.2rem]! [&_button]:w-[1.2rem]!"
+      onMouseDown={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <TooltipQ align="center" className="min-w-[9rem]">
+        <BulletList className="w-full">
+          {uwLegendStatuses.map((status, idx) => (
+            <BulletListItem key={idx} type="dot" className="gap-1">
+              <Grow placement="sc">
+                <span className="text-[1.2rem] text-[var(--color-gray-70)] font-normal">{status}</span>
+                <DotColor status={status} />
+              </Grow>
+            </BulletListItem>
+          ))}
+        </BulletList>
+      </TooltipQ>
+    </span>
   );
 }

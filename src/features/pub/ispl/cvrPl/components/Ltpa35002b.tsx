@@ -43,7 +43,7 @@ import {
   searchButtonRenderer,
   uwIconRenderer,
 } from '@grid/CellRenderers';
-import { HeaderWithUnit, AgGridProductNameHeader } from '@grid/HeadRenderers';
+import { HeaderWithUnit, AgGridProductNameHeader, UwStatusTooltipQ } from '@grid/HeadRenderers';
 import { PaperIcon, ResetIcon, SizeIcon, SizeOffIcon } from '@icons';
 import { LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
@@ -441,12 +441,12 @@ export function Ltpa35002b({
         ],
       },
       {
-        headerName: 'UW예상',
+        headerName: '예상UW',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
-          label: 'UW',
-          unit: '예상',
-          className: 'flex-row-reverse',
+          label: '예상UW',
+          col: true,
+          children: <UwStatusTooltipQ />,
         },
         field: 'field8',
         flex: 1,
@@ -637,6 +637,7 @@ export function Ltpa35002b({
               className={`tooltip-hidden-toggle ag-theme-alpine${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
             >
               <AgGridReact<AgGridRow>
+                headerHeight={35}
                 // 1. 데이터 및 기본 구성
                 rowData={rowData} // 그리드에 렌더링할 데이터 목록
                 columnDefs={columnDefs} // 컬럼 정의 구조 객체

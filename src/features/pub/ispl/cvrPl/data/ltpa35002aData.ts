@@ -63,7 +63,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 700,
-    field8: ['인수가능'],
+    field8: ['인수', '거절', '연기'],
     rowCopy: false,
     titleDetail: {
       title: '보통약관(상해사망)',
@@ -91,7 +91,7 @@ export const dummyData: DummyDataType[] = [
     field6: '20년납',
     isEditedField6: false,
     field7: 154,
-    field8: ['인수가능'],
+    field8: ['인심사', '할증', '부담보'],
     rowCopy: false,
     titleDetail: {
       title: '보험료납입면제대상보장(6대사유Ⅱ)',
@@ -118,7 +118,7 @@ export const dummyData: DummyDataType[] = [
     field6: '전기납',
     isEditedField6: false,
     field7: 2769,
-    field8: ['인수가능'],
+    field8: ['감액'],
     rowCopy: false,
     titleDetail: {
       title: '보장보험료50%납입지원Ⅱ(4대유사암)',
