@@ -100,7 +100,7 @@ export const getPossibilityBadgeStyle = (possibility?: string | string[]) => {
 
   if (!clean) return { color: 'green' as const, iconColor: '#00AA4D', label: '예상 : 인수' };
 
-  const label = clean.startsWith('예상') ? clean : `예상:${clean}`;
+  const label = clean.startsWith('예상') ? clean : `예상: ${clean}`;
 
   if (clean.includes('조건부') || clean.includes('할증') || clean.includes('부담보') || clean.includes('감액')) {
     return { color: 'yellow' as const, iconColor: '#DD9F00', label };

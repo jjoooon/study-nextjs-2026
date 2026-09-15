@@ -10,7 +10,7 @@ import * as React from 'react';
 import { withPublicUrl } from '@/shared/utils/url/publicUrl';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Divider, Gcol, Grid, Grow, Typo } from '@atoms';
-import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { ConfirmDialog } from '@common/ConfirmDialog';
 import { RecommendCard } from '@common/RecommendCard';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
@@ -104,7 +104,7 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   {
     id: 1,
     isChecked: false,
-    type: '인수 (인수)',
+    type: '인수(인수)',
     title: title1,
     plan: ['일반고지형'],
     price: '34,000원',
@@ -112,7 +112,7 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   {
     id: 2,
     isChecked: false,
-    type: '연기 (연기)',
+    type: '연기(연기)',
     title: title2,
     plan: ['9형(3,10,5간편고지형(고혈압및당뇨추가고지))'],
     price: '60,000원',
@@ -120,7 +120,7 @@ const expectedUwRecommendData: ExpectedUwRecommendItem[] = [
   {
     id: 3,
     isChecked: false,
-    type: '거절 (거절)',
+    type: '거절(거절)',
     title: title3,
     plan: ['일반고지형'],
     price: '30,000원',
@@ -532,7 +532,7 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
       </div>
       <Grow className="w-full" placement="ec">
         <Button variant={'contained'} size={'xl'} disabled={checkedCount === 0}>
-          설계생성({checkedCount})
+          설계비교 ({checkedCount})
         </Button>
         <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onClose}>
           닫기

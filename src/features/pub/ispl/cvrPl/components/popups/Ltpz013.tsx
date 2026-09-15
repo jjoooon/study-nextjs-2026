@@ -383,7 +383,7 @@ const Ltpz013 = () => {
                       <Gcol
                         variant="box-warning"
                         placement="ss"
-                        className="border border-[var(--color-primary-15)] gap-1 min-h-[13.9rem]"
+                        className="border border-[var(--color-primary-15)] gap-1 min-h-[14.3rem] justify-center"
                       >
                         {InfoData.옵션.map((option, index) => {
                           const optionKey = `옵션${index + 1}` as keyof typeof option;
@@ -474,7 +474,7 @@ const Ltpz013 = () => {
             </Grid>
 
             {/* [우측 영역] 가로 스크롤 가능한 비교설계 카드 5개 */}
-            <Grow placement="ss" className="overflow-y-hidden overflow-x-auto h-full pb-[1rem]" gap={3}>
+            <Grow placement="ss" className="overflow-y-hidden overflow-x-auto h-full" gap={3}>
               {[InfoData1, InfoData2, InfoData3, InfoData4, InfoData5].map((infoData, i) => (
                 <CardBox
                   color="var(--color-information-50)"
