@@ -102,7 +102,7 @@ const InfoData1: InfoDataType = {
 
 const InfoData2: InfoDataType = {
   id: 2,
-  예상: '거절 (거절)',
+  예상: '조건부인수 (할증·부담보·감액))',
   유형: 'type2',
   담보명: '2한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
@@ -141,7 +141,7 @@ const InfoData4: InfoDataType = {
 
 const InfoData5: InfoDataType = {
   id: 5,
-  예상: '조건부인수 (할증)',
+  예상: '거절 (거절',
   유형: 'type2',
   담보명: '5한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
