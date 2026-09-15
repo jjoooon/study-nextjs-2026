@@ -8,6 +8,7 @@ import type { ColDef, ICellRendererParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useState } from 'react';
 import * as React from 'react';
+import { DotColor } from '@/shared/components/common/DotColor';
 import { useFormFields } from '@/shared/hooks/useFormFields';
 import { useTabs } from '@/shared/hooks/useTabs';
 import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
@@ -400,18 +401,10 @@ const Ltpz031 = () => {
               )}
             </div>
             <Grow className="gap-[0.2rem] mt-1 shrink-0" placement="ec">
-              {field3.includes('할증') && (
-                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-danger-50)]"></div>
-              )}
-              {field3.includes('부담보') && (
-                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-success-60)]"></div>
-              )}
-              {field3.includes('SI경증') && (
-                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-information-50)]"></div>
-              )}
-              {field3.includes('SI경증(감액)') && (
-                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-warning-40)]"></div>
-              )}
+              {field3.includes('할증') && <DotColor status="할증" size="sm" />}
+              {field3.includes('부담보') && <DotColor status="부담보" size="sm" />}
+              {field3.includes('SI경증') && <DotColor status="SI경증" size="sm" />}
+              {field3.includes('SI경증(감액)') && <DotColor status="SI경증(감액)" size="sm" />}
             </Grow>
           </Grow>
         );
@@ -938,17 +931,19 @@ const Ltpz031 = () => {
                     </Grow>
                     <Grow className="text-[1.1rem] w-full" placement="sc">
                       <Grow placement="sc">
-                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>할증
+                        <DotColor status="할증" className="w-[0.6rem] h-[0.6rem]" />
+                        할증
                       </Grow>
                       <Grow placement="sc">
-                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>부담보
+                        <DotColor status="부담보" className="w-[0.6rem] h-[0.6rem]" />
+                        부담보
                       </Grow>
                       <Grow placement="sc">
-                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>
-                        SI검증
+                        <DotColor status="SI경증" className="w-[0.6rem] h-[0.6rem]" />
+                        SI경증
                       </Grow>
                       <Grow placement="sc">
-                        <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>
+                        <DotColor status="SI경증(감액)" className="w-[0.6rem] h-[0.6rem]" />
                         SI경증(감액)
                       </Grow>
                     </Grow>
@@ -1055,13 +1050,13 @@ const Ltpz031 = () => {
                                             <Gcol placement={'ss'} gap={1.5}>
                                               <Typo className="body-md font-bold">척추염좌</Typo>
                                               <Grow>
-                                                <Badge color="primary" size="md" variant="contained">
+                                                <Badge color="red" size="md" variant="contained">
                                                   할증
                                                 </Badge>
-                                                <Badge color="green" size="md" variant="contained">
+                                                <Badge color="purple" size="md" variant="contained">
                                                   부담보
                                                 </Badge>
-                                                <Badge color="blue" size="md" variant="contained">
+                                                <Badge color="green" size="md" variant="contained">
                                                   SI경증
                                                 </Badge>
                                               </Grow>
@@ -1092,13 +1087,13 @@ const Ltpz031 = () => {
                                             <Gcol placement={'ss'} gap={1.5}>
                                               <Typo className="body-md font-bold">자궁근종</Typo>
                                               <Grow>
-                                                <Badge color="primary" size="md" variant="contained">
+                                                <Badge color="red" size="md" variant="contained">
                                                   할증
                                                 </Badge>
-                                                <Badge color="green" size="md" variant="contained">
+                                                <Badge color="purple" size="md" variant="contained">
                                                   부담보
                                                 </Badge>
-                                                <Badge color="blue" size="md" variant="contained">
+                                                <Badge color="green" size="md" variant="contained">
                                                   SI경증
                                                 </Badge>
                                               </Grow>
@@ -1129,13 +1124,13 @@ const Ltpz031 = () => {
                                             <Gcol placement={'ss'} gap={1.5}>
                                               <Typo className="body-md font-bold">대장·직장용종</Typo>
                                               <Grow>
-                                                <Badge color="primary" size="md" variant="contained">
+                                                <Badge color="red" size="md" variant="contained">
                                                   할증
                                                 </Badge>
-                                                <Badge color="green" size="md" variant="contained">
+                                                <Badge color="purple" size="md" variant="contained">
                                                   부담보
                                                 </Badge>
-                                                <Badge color="blue" size="md" variant="contained">
+                                                <Badge color="green" size="md" variant="contained">
                                                   SI경증
                                                 </Badge>
                                               </Grow>
@@ -1166,13 +1161,13 @@ const Ltpz031 = () => {
                                             <Gcol placement={'ss'} gap={1.5}>
                                               <Typo className="body-md font-bold">추간판장애</Typo>
                                               <Grow>
-                                                <Badge color="primary" size="md" variant="contained">
+                                                <Badge color="red" size="md" variant="contained">
                                                   할증
                                                 </Badge>
-                                                <Badge color="green" size="md" variant="contained">
+                                                <Badge color="purple" size="md" variant="contained">
                                                   부담보
                                                 </Badge>
-                                                <Badge color="blue" size="md" variant="contained">
+                                                <Badge color="green" size="md" variant="contained">
                                                   SI경증
                                                 </Badge>
                                               </Grow>
@@ -1203,13 +1198,13 @@ const Ltpz031 = () => {
                                             <Gcol placement={'ss'} gap={1.5}>
                                               <Typo className="body-md font-bold">어깨병변</Typo>
                                               <Grow>
-                                                <Badge color="primary" size="md" variant="contained">
+                                                <Badge color="red" size="md" variant="contained">
                                                   할증
                                                 </Badge>
-                                                <Badge color="green" size="md" variant="contained">
+                                                <Badge color="purple" size="md" variant="contained">
                                                   부담보
                                                 </Badge>
-                                                <Badge color="blue" size="md" variant="contained">
+                                                <Badge color="green" size="md" variant="contained">
                                                   SI경증
                                                 </Badge>
                                               </Grow>

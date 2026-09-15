@@ -52,6 +52,15 @@ type DummyDataType = {
   field04?: string | number;
 };
 
+const BADGE_COLOR_MAP: Record<string, 'red' | 'purple' | 'green' | 'blue' | 'primary'> = {
+  할증: 'red',
+  부담보: 'purple',
+  SI경증: 'green',
+  'SI경증(감액)': 'blue',
+  고지: 'green',
+  '자동(ICIS)': 'primary',
+};
+
 const DUMMY_DATA: DummyDataType[] = [
   {
     id: 1,
@@ -536,7 +545,7 @@ const Ltpz034 = ({
           <Grow placement="bwc" className="w-full min-w-0 py-1 leading-[1.3]">
             <span className="">{params.value}</span>
             {params.data?.field04 && (
-              <Badge color={'blue'} className="shrink-0">
+              <Badge color={BADGE_COLOR_MAP[String(params.data.field04)] ?? 'blue'} className="shrink-0">
                 {params.data.field04}
               </Badge>
             )}

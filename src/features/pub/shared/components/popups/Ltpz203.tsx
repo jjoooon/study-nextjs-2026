@@ -9,12 +9,12 @@ import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
 import { Gcol, Grid, Grow, Typo } from '@atoms';
+import { BulletList, BulletListItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
-import { CalendarIcon2, CheckboxIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
+import { CalendarIcon2, CheckboxIcon, FixingPinIcon, InfoBoxWarningIcon, NoteIcon, ShieldIcon } from '@icons';
 import { Badge2, getPossibilityBadgeStyle } from '@uiux/Badge2';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
-
 import {
   Dialog,
   DialogClose,
@@ -37,9 +37,38 @@ type OptionType = { 옵션1: string } | { 옵션2: string } | { 옵션3: string[
  */
 type InfoDataType = {
   id: number;
-  예상?: string;
+  예상: string;
+  유형: 'type1' | 'type2' | 'type3' | string;
   담보명: string;
   옵션: OptionType[];
+};
+
+/**
+ * 고지 유형별 문구 반환 헬퍼 함수
+ */
+const getNoticeTypeLabel = (type?: string, fallback: React.ReactNode = null): React.ReactNode => {
+  switch (type) {
+    case 'type1':
+      return (
+        <Typo tag="p" className="text-[1.5rem] font-normal">
+          <b className="font-bold">현재 설계상품내</b>에서 <b>&apos;인수&apos;</b>예상 고지 유형
+        </Typo>
+      );
+    case 'type2':
+      return (
+        <Typo tag="p" className="text-[1.5rem] font-normal">
+          <b className="font-bold">일반고지유형내</b>에서 <b>&apos;인수/할증/부담보/감액&apos;예상</b> 고지 유형
+        </Typo>
+      );
+    case 'type3':
+      return (
+        <Typo tag="p" className="text-[1.5rem] font-normal">
+          <b className="font-bold">간편고지유형내</b>에서 <b>&apos;인수&apos;</b>예상 고지 유형
+        </Typo>
+      );
+    default:
+      return fallback;
+  }
 };
 
 /**
@@ -48,7 +77,8 @@ type InfoDataType = {
 const InfoData: InfoDataType = {
   id: 1,
   예상: '',
-  담보명: '한화 시그니처 여성 건강보험4.0 2504',
+  유형: '',
+  담보명: '한화 시그니처 여성 건강보험4.0 2504 한화 시그니처 여성 건강보험4.0 2504 ',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
@@ -60,6 +90,7 @@ const InfoData: InfoDataType = {
 const InfoData1: InfoDataType = {
   id: 1,
   예상: '인수 (인수)',
+  유형: 'type1',
   담보명: '1한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
@@ -71,7 +102,8 @@ const InfoData1: InfoDataType = {
 
 const InfoData2: InfoDataType = {
   id: 2,
-  예상: '거절 (거절)',
+  예상: '조건부인수 (할증·부담보·감액))',
+  유형: 'type2',
   담보명: '2한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
@@ -84,6 +116,7 @@ const InfoData2: InfoDataType = {
 const InfoData3: InfoDataType = {
   id: 3,
   예상: '연기 (연기)',
+  유형: 'type3',
   담보명: '3한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
@@ -96,6 +129,7 @@ const InfoData3: InfoDataType = {
 const InfoData4: InfoDataType = {
   id: 4,
   예상: '심사 (진단)',
+  유형: 'type1',
   담보명: '4한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
@@ -107,7 +141,8 @@ const InfoData4: InfoDataType = {
 
 const InfoData5: InfoDataType = {
   id: 5,
-  예상: '조건부인수 (할증)',
+  예상: '거절 (거절',
+  유형: 'type2',
   담보명: '5한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
@@ -144,10 +179,6 @@ const selectOption4: SelectOptionType = [
 const selectOption5: SelectOptionType = [
   { value: '옵션1', label: '갱신 20년' },
   { value: '옵션2', label: '갱신 30년' },
-];
-const selectOption6: SelectOptionType = [
-  { value: '옵션1', label: '1형(일반고지형)' },
-  { value: '옵션2', label: '2형(갱신형)' },
 ];
 
 /**
@@ -212,7 +243,7 @@ function CardBox({ children, bottom, color }: { children: React.ReactNode; botto
         {children}
       </Grid>
       <Grow placement="bwc" className="px-[1.6rem] h-[4rem] text-white">
-        <b>보험료(환급률)</b>
+        <b>예상보험료(환급률)</b>
         {bottom}
       </Grow>
     </Grid>
@@ -220,15 +251,15 @@ function CardBox({ children, bottom, color }: { children: React.ReactNode; botto
 }
 
 /**
- * @component Ltpz013
+ * @component Ltpz203
  * @description 상품비교설계 팝업 다이얼로그 컴포넌트
- * - 기준 설계안과 최대 5개의 비교 설계안을 가로 병렬 구조로 배치하여 한도, 가입금액, 보험료 정보를 대조하는 화면입니다.
+ * - 기준 설계안과 최대 3개의 비교 설계안을 가로 병렬 구조로 배치하여 한도, 가입금액, 보험료 정보를 대조하는 화면입니다.
  * - 주요 기능:
  *   1. 여러 카드 내부에 들어있는 Ag-Grid 테이블의 스크롤 위치 동기화 (`handleSyncScroll`)
  *   2. Ag-Grid의 기본 헤더를 숨기는 대신, 정적 flex 영역(`getComparisonHeaderCellStyle`)을 정의하여 그리드 본체와 정확히 매칭되는 상단 헤더 직접 렌더링
  *   3. 담보별 가입금액 및 합계 행 표시 및 각 비교설계 카드별 가입조건(납기, 만기, 고지형 등) 동적 선택
  */
-const Ltpz013 = () => {
+const Ltpz203 = () => {
   // 담보 목록 데이터를 관리하는 상태값
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
@@ -340,15 +371,15 @@ const Ltpz013 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="2xl" className="Ltpz013">
+      <DialogContent showCloseButton resizable={true} size="2xl" className="Ltpz203">
         {/* 다이얼로그 타이틀 */}
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
-              상품비교설계
+              대안설계 상세보기
             </Typo>
             <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ013)
+              (LTPZ203)
             </Typo>
           </DialogTitle>
         </DialogHeader>
@@ -365,9 +396,9 @@ const Ltpz013 = () => {
                   </div>
                 }
               >
-                <Grid className="grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden">
+                <Grid className="grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden gap-0">
                   {/* 카드 헤더 고정핀 */}
-                  <Grow className="bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem] font-[700]">
+                  <Grow className="bg-[var(--color-primary-50)] text-white w-full h-[4rem] items-center justify-start p-[1.6rem] font-[700] h-[4rem]">
                     <FixingPinIcon className="" />
                     기준설계
                   </Grow>
@@ -375,6 +406,8 @@ const Ltpz013 = () => {
                   <Grid className="p-[1.6rem] gap-5 grid-rows-[1fr_auto]" placement="ss">
                     <Gcol className="gap-2" placement="ss">
                       <Gcol placement="ss">
+                        {getNoticeTypeLabel(InfoData.유형)}
+
                         <Typo tag="h3" variant={'body-xl'} weight={'bold'} className="">
                           {InfoData.담보명}
                         </Typo>
@@ -383,13 +416,18 @@ const Ltpz013 = () => {
                       <Gcol
                         variant="box-warning"
                         placement="ss"
-                        className="border border-[var(--color-primary-15)] gap-1 min-h-[13.9rem]"
+                        className="border border-[var(--color-primary-15)] gap-1 min-h-[12rem]"
                       >
                         {InfoData.옵션.map((option, index) => {
                           const optionKey = `옵션${index + 1}` as keyof typeof option;
                           return (
-                            <Grow key={index} placement="ss" className="text-[1.3rem]">
+                            <Grow
+                              key={index}
+                              placement="ss"
+                              className={`text-[1.3rem] ${index === 3 ? 'font-bold' : ''}`}
+                            >
                               {index === 0 && (
+                                // M1. 수정
                                 <ShieldIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -397,6 +435,7 @@ const Ltpz013 = () => {
                                 />
                               )}
                               {index === 1 && (
+                                // M1. 수정
                                 <NoteIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -404,6 +443,7 @@ const Ltpz013 = () => {
                                 />
                               )}
                               {index === 2 && (
+                                // M1. 수정
                                 <CalendarIcon2
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -411,6 +451,7 @@ const Ltpz013 = () => {
                                 />
                               )}
                               {index === 3 && (
+                                // M1. 수정
                                 <CheckboxIcon
                                   color={'var(--color-blue-gray-60)'}
                                   className="translate-y-[0.2rem] shrink-0"
@@ -486,37 +527,33 @@ const Ltpz013 = () => {
                   key={i}
                 >
                   <Grid className="p-[1.6rem] gap-5 grid-rows-[auto_minmax(0,1fr)] overflow-y-hidden" placement="ss">
-                    <Gcol className="gap-2" placement="ss">
+                    <Gcol placement="ss" className="">
                       {/* 비교설계 적용 대상 선택 체크박스 및 변경 버튼 */}
-                      <Grow placement="bwc" className="w-full">
-                        <Checkbox aria-label="선택"></Checkbox>
-                        <Button variant={'outlined'} color={'gray'} size={'sm'}>
-                          변경
-                        </Button>
-                      </Grow>
-                      <Gcol placement="ss">
-                        <Grow placement="ss" className="w-full justify-start items-center">
-                          <Typo
-                            tag="div"
-                            variant={'body-sm'}
-                            weight={'bold'}
-                            color={'information'}
-                            className="flex gap-1 items-center"
-                          >
-                            비교설계{i + 1}
+                      <Grow placement="ss" className="w-full">
+                        <Checkbox color={'info'} aria-label="선택" className="gap-x-2!">
+                          {' '}
+                          <Typo tag="div" variant={'body-sm'} weight={'bold'} color={'information'}>
+                            대안설계{i + 1}
                           </Typo>
-                          {(() => {
-                            const { color, label } = getPossibilityBadgeStyle(infoData.예상);
-                            return (
-                              <Badge2 color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
-                                {label}
-                              </Badge2>
-                            );
-                          })()}
-                        </Grow>
-                        <Typo tag="h3" variant={'body-xl'} weight={'bold'}>
-                          {infoData.담보명}
-                        </Typo>
+                        </Checkbox>
+                        {(() => {
+                          const { color, label } = getPossibilityBadgeStyle(infoData.예상);
+                          return (
+                            <Badge2 color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
+                              {label}
+                            </Badge2>
+                          );
+                        })()}
+                      </Grow>
+                      <Gcol placement="bws">
+                        <Gcol placement="ss" className="h-[4rem]">
+                          {getNoticeTypeLabel(infoData.유형)}
+                        </Gcol>
+                        <Gcol placement="ss">
+                          <Typo tag="h3" variant={'body-md'} weight={'bold'}>
+                            {infoData.담보명}
+                          </Typo>
+                        </Gcol>
                       </Gcol>
 
                       {/* 비교설계 콤보박스(NativeSelect) 영역 (납기/만기/갱신형 등 가입조건 조율) */}
@@ -540,7 +577,7 @@ const Ltpz013 = () => {
                           })}
                         </NativeSelect>
                         <Grow>
-                          <NativeSelect size="md">
+                          <NativeSelect size="md" readOnly>
                             {selectOption3.map((option, index) => {
                               return (
                                 <NativeSelectOption key={index} value={option.value}>
@@ -549,7 +586,7 @@ const Ltpz013 = () => {
                               );
                             })}
                           </NativeSelect>
-                          <NativeSelect size="md">
+                          <NativeSelect size="md" readOnly>
                             {selectOption4.map((option, index) => {
                               return (
                                 <NativeSelectOption key={index} value={option.value}>
@@ -568,19 +605,18 @@ const Ltpz013 = () => {
                             })}
                           </NativeSelect>
                         </Grow>
-                        <NativeSelect size="md" readOnly>
-                          {selectOption6.map((option, index) => {
-                            return (
-                              <NativeSelectOption key={index} value={option.value}>
-                                {option.label}
-                              </NativeSelectOption>
-                            );
-                          })}
-                        </NativeSelect>
+                        <Grow placement="ss" className="text-[1.3rem] font-bold">
+                          <CheckboxIcon
+                            color={'var(--color-blue-gray-60)'}
+                            className="translate-y-[0.2rem] shrink-0"
+                            size={16}
+                          />
+                          1형(일반 고지 형)
+                        </Grow>
                       </Gcol>
                     </Gcol>
 
-                    {/* 담보 그리드 감싸는 컨테이너 - 스크롤 동기화 타겟 (index 1 ~ 5) */}
+                    {/* 담보 그리드 감싸는 컨테이너 - 스크롤 동기화 타겟 (index 1 ~ 3) */}
                     <div
                       className="ag-theme-alpine no-header w-full overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
                       ref={(el) => {
@@ -623,11 +659,34 @@ const Ltpz013 = () => {
                         tooltipShowDelay={0}
                       />
                     </div>
+                    {/* 2번째 카드(i === 1) 하단 안내 문구 */}
+                    {i === 1 && (
+                      <Grow placement="ss" gap={1} className="shrink-0" style={{ marginTop: '-1.2rem' }}>
+                        <InfoBoxWarningIcon size={14} color="#E43939" className="shrink-0 mt-0.5" />
+                        <span className="text-[#E43939] text-[1.2rem]">
+                          할증 반영 전 예상보험료로 최종 심사결과에 따라 변경될 수 있습니다.
+                        </span>
+                      </Grow>
+                    )}
                   </Grid>
                 </CardBox>
               ))}
             </Grow>
           </Grid>
+          <Gcol className="w-full" placement="ss" variant="box-info">
+            <BulletList>
+              <BulletListItem size="sm" type="dot">
+                현재 설계에서 조정가능한 조건은 대안유형으로 제시하지 않습니다.
+              </BulletListItem>
+              <BulletListItem size="sm" type="dot">
+                본 대안유형은 예상UW결과기반의 참고정보로, 실제 심사결과 및 인수조건과 다를 수 있습니다.
+                (고지정보미반영)
+              </BulletListItem>
+              <BulletListItem size="sm" type="dot">
+                추천 · 우선순위를 의미하지 않으며, 실제 제안전 세부조건을 확인해 주세요.
+              </BulletListItem>
+            </BulletList>
+          </Gcol>
         </DialogSection>
 
         {/* 다이얼로그 하단 푸터 버튼 */}
@@ -635,7 +694,7 @@ const Ltpz013 = () => {
           <DialogFooterArea>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
-                선택설계생성(0)
+                설계생성(0)
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
@@ -651,4 +710,4 @@ const Ltpz013 = () => {
   );
 };
 
-export default Ltpz013;
+export default Ltpz203;

@@ -8,6 +8,7 @@ import type { ColDef, GridApi, ICellRendererParams, RowClickedEvent } from 'ag-g
 import { AgGridReact } from 'ag-grid-react';
 import { useState, useCallback, useRef } from 'react';
 import * as React from 'react';
+import { DotColor } from '@/shared/components/common/DotColor';
 import {
   AgGridEmptyComponent,
   createCellValueChangedHandler,
@@ -202,7 +203,7 @@ export const DummyData2: DummyDataType2[] = [
     field4: 'Y',
     field5: '',
     field6: '',
-    badge: [],
+    badge: ['할증'],
     checked: false,
     checkedDisabled: false,
   },
@@ -226,7 +227,7 @@ export const DummyData2: DummyDataType2[] = [
     field4: 'N',
     field5: '',
     field6: '',
-    badge: [],
+    badge: ['부담보'],
     checked: false,
     checkedDisabled: true,
   },
@@ -236,9 +237,9 @@ type BadgeType = '할증' | '부담보' | 'SI경증(감액)' | 'SI경증';
 
 const BADGE_STYLES: Record<BadgeType, string> = {
   할증: 'bg-[var(--color-danger-10)] text-[var(--color-danger-50)]',
-  부담보: 'bg-[var(--color-success-10)] text-[var(--color-success-50)]',
-  'SI경증(감액)': 'bg-[var(--color-warning-10)] text-[var(--color-warning-50)]',
-  SI경증: 'bg-[var(--color-information-10)] text-[var(--color-information-50)]',
+  부담보: 'bg-[var(--color-purple-10)] text-[var(--color-purple-50)]',
+  'SI경증(감액)': 'bg-[var(--color-information-10)] text-[var(--color-information-50)]',
+  SI경증: 'bg-[var(--color-success-10)] text-[var(--color-success-60)]',
 };
 
 /**
@@ -580,18 +581,10 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
               )}
             </div>
             <Grow className="gap-[0.2rem] mt-1 shrink-0" placement="ec">
-              {field3.includes('할증') && (
-                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-danger-50)]"></div>
-              )}
-              {field3.includes('부담보') && (
-                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-success-60)]"></div>
-              )}
-              {field3.includes('SI경증') && (
-                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-information-50)]"></div>
-              )}
-              {field3.includes('SI경증(감액)') && (
-                <div className="w-[0.8rem] h-[0.8rem] rounded-full bg-[var(--color-warning-40)]"></div>
-              )}
+              {field3.includes('할증') && <DotColor status="할증" size="sm" />}
+              {field3.includes('부담보') && <DotColor status="부담보" size="sm" />}
+              {field3.includes('SI경증') && <DotColor status="SI경증" size="sm" />}
+              {field3.includes('SI경증(감액)') && <DotColor status="SI경증(감액)" size="sm" />}
             </Grow>
           </Grow>
         );
@@ -752,17 +745,19 @@ const Ltpz112 = ({ initialRowData = DummyData, initialRowData2 = [] }: Ltpz112Pr
                       </Typo>
                       <Grow className="text-[1.1rem] w-full" placement="sc">
                         <Grow placement="sc">
-                          <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-danger-50)]"></div>할증
+                          <DotColor status="할증" className="w-[0.6rem] h-[0.6rem]" />
+                          할증
                         </Grow>
                         <Grow placement="sc">
-                          <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-success-60)]"></div>부담보
+                          <DotColor status="부담보" className="w-[0.6rem] h-[0.6rem]" />
+                          부담보
                         </Grow>
                         <Grow placement="sc">
-                          <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-information-50)]"></div>
+                          <DotColor status="SI경증" className="w-[0.6rem] h-[0.6rem]" />
                           SI경증
                         </Grow>
                         <Grow placement="sc">
-                          <div className="w-[0.6rem] h-[0.6rem] rounded-full bg-[var(--color-warning-40)]"></div>
+                          <DotColor status="SI경증(감액)" className="w-[0.6rem] h-[0.6rem]" />
                           SI경증(감액)
                         </Grow>
                       </Grow>
