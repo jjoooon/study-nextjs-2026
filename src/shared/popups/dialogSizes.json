@@ -873,5 +873,12 @@
     "width": 1180,
     "height": 660,
     "isIframe": true
+  },
+  {
+    "id": "LTPZNRT",
+    "title": "리액트팝업",
+    "width": 560,
+    "height": 100,
+    "isIframe": true
   }
 ]
