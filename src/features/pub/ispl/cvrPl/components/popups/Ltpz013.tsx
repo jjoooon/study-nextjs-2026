@@ -53,67 +53,67 @@ const InfoData: InfoDataType = {
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
     { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
-    { 옵션4: '1형(일반 고지 형)' },
+    { 옵션4: '1형(일반고지형)' },
   ],
 };
 
 const InfoData1: InfoDataType = {
   id: 1,
-  예상: '인수 (인수)',
+  예상: '인수(인수)',
   담보명: '1한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
     { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
-    { 옵션4: '1형(일반 고지 형)' },
+    { 옵션4: '1형(일반고지형)' },
   ],
 };
 
 const InfoData2: InfoDataType = {
   id: 2,
-  예상: '거절 (거절)',
+  예상: '거절(거절)',
   담보명: '2한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
     { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
-    { 옵션4: '1형(일반 고지 형)' },
+    { 옵션4: '1형(일반고지형)' },
   ],
 };
 
 const InfoData3: InfoDataType = {
   id: 3,
-  예상: '연기 (연기)',
+  예상: '연기(연기)',
   담보명: '3한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
     { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
-    { 옵션4: '1형(일반 고지 형)' },
+    { 옵션4: '1형(일반고지형)' },
   ],
 };
 
 const InfoData4: InfoDataType = {
   id: 4,
-  예상: '심사 (진단)',
+  예상: '심사(진단)',
   담보명: '4한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
     { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
-    { 옵션4: '1형(일반 고지 형)' },
+    { 옵션4: '1형(일반고지형)' },
   ],
 };
 
 const InfoData5: InfoDataType = {
   id: 5,
-  예상: '조건부인수 (할증)',
+  예상: '조건부인수(할증)',
   담보명: '5한화 시그니처 여성 건강보험4.0 2504',
   옵션: [
     { 옵션1: '납입면제 강화형, 납입후 50% 해약환급금지급형 해약환급금지급형' },
     { 옵션2: '비대면진단심사플랜(20~40세)' },
     { 옵션3: ['20년납', '100세만기', '갱신 20년'] },
-    { 옵션4: '1형(일반 고지 형)' },
+    { 옵션4: '1형(일반고지형)' },
   ],
 };
 
@@ -383,7 +383,7 @@ const Ltpz013 = () => {
                       <Gcol
                         variant="box-warning"
                         placement="ss"
-                        className="border border-[var(--color-primary-15)] gap-1 min-h-[13.9rem]"
+                        className="border border-[var(--color-primary-15)] gap-1 min-h-[14.3rem] justify-center"
                       >
                         {InfoData.옵션.map((option, index) => {
                           const optionKey = `옵션${index + 1}` as keyof typeof option;
@@ -474,7 +474,7 @@ const Ltpz013 = () => {
             </Grid>
 
             {/* [우측 영역] 가로 스크롤 가능한 비교설계 카드 5개 */}
-            <Grow placement="ss" className="overflow-y-hidden overflow-x-auto h-full pb-[1rem]" gap={3}>
+            <Grow placement="ss" className="overflow-y-hidden overflow-x-auto h-full" gap={3}>
               {[InfoData1, InfoData2, InfoData3, InfoData4, InfoData5].map((infoData, i) => (
                 <CardBox
                   color="var(--color-information-50)"
@@ -635,7 +635,7 @@ const Ltpz013 = () => {
           <DialogFooterArea>
             <Grow>
               <Button variant={'contained'} size={'xl'}>
-                선택설계생성(0)
+                설계생성(0)
               </Button>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>

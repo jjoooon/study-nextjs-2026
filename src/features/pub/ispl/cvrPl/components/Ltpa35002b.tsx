@@ -444,7 +444,8 @@ export function Ltpa35002b({
         headerName: '예상UW',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
-          label: '예상UW',
+          label: 'UW',
+          unit: '예상',
           col: true,
           children: <UwStatusTooltipQ />,
         },

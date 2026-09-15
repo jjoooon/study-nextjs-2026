@@ -4,7 +4,7 @@
 
 'use client';
 import * as React from 'react';
-import { Gcol, Grow, Typo } from '@atoms';
+import { Divider, Gcol, Grow, Typo } from '@atoms';
 import { BulletList, BulletListItem } from '@common/BulletList';
 import {
   RefuseIcon,
@@ -163,23 +163,26 @@ export default function NotificationTable<
                     >
                       <Gcol placement={'ss'} gap={1.5}>
                         {row.tooltipData.slice(0, 3).map((tip, idx) => (
-                          <Gcol key={idx} placement={'ss'} className="gap-[0.6rem]">
-                            <Grow placement={'cc'}>
-                              <Typo tag={'strong'} className="body-md font-bold text-[1.2rem]">
-                                {tip.title}
-                              </Typo>
-                              <Button only="icon" size={'sm'} variant="none" title="복사하기" className="h-[1.8rem]">
-                                <NewWin size={16} color="var(--color-gray-50)" />
-                              </Button>
-                            </Grow>
-                            <BulletList color={'warning'} size="sm" className="gap-[0.2rem]">
-                              {(Array.isArray(tip.content) ? tip.content : [tip.content]).map((item, cIdx) => (
-                                <BulletListItem key={cIdx}>
-                                  {cIdx === 0 && <strong className="font-bold">제한담보:</strong>} {item}
-                                </BulletListItem>
-                              ))}
-                            </BulletList>
-                          </Gcol>
+                          <React.Fragment key={idx}>
+                            {idx > 0 && <Divider dir="row" className="w-full" />}
+                            <Gcol placement={'ss'} className="gap-[0.6rem]">
+                              <Grow placement={'cc'}>
+                                <Typo tag={'strong'} className="body-md font-bold text-[1.2rem]">
+                                  {tip.title}
+                                </Typo>
+                                <Button only="icon" size={'sm'} variant="none" title="복사하기" className="h-[1.8rem]">
+                                  <NewWin size={16} color="var(--color-gray-50)" />
+                                </Button>
+                              </Grow>
+                              <BulletList color={'warning'} size="sm" className="gap-[0.2rem]">
+                                {(Array.isArray(tip.content) ? tip.content : [tip.content]).map((item, cIdx) => (
+                                  <BulletListItem key={cIdx}>
+                                    {cIdx === 0 && <strong className="font-bold">제한담보:</strong>} {item}
+                                  </BulletListItem>
+                                ))}
+                              </BulletList>
+                            </Gcol>
+                          </React.Fragment>
                         ))}
                       </Gcol>
                     </TooltipContent>

@@ -480,7 +480,7 @@ export function Ltpa35002d({
         cellRenderer: getExpiryRenderer('left'), // 좌측 정렬 납기 렌더러
       },
       {
-        headerName: 'UW예상',
+        headerName: '예상UW',
         headerComponent: HeaderWithUnit,
         headerComponentParams: {
           label: 'UW',

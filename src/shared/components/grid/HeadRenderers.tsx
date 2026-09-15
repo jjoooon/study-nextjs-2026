@@ -18,11 +18,12 @@ import { Input } from '@uiux/Input';
 // - ag-grid의 column/enableSorting/progressSort를 받으면 정렬 가능한 헤더로 동작
 interface HeaderWithUnitProps {
   label: string;
-  unit: string;
+  unit?: string;
   className?: string;
   unitClassName?: string;
   gap?: number;
   col?: boolean;
+  unitPos?: 'left' | 'right';
   view?: boolean;
   column?: IHeaderParams['column'];
   enableSorting?: IHeaderParams['enableSorting'];
@@ -34,6 +35,7 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
   label,
   unit,
   col = false,
+  unitPos = 'right',
   className,
   unitClassName = 'text-[1.1rem]',
   gap = 0,
@@ -70,17 +72,47 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
     progressSort(event.shiftKey);
   };
 
-  // col=true면 세로 배치, 아니면 가로 배치로 라벨+단위를 렌더링
+  // unit이 '예상' 또는 unitPos === 'left'인 경우 unit이 label 앞에 위치함 (예: 예상UW)
+  const isUnitLeft = unitPos === 'left' || unit === '예상';
+
+  const renderText = () => {
+    if (!unit) return <span>{label}</span>;
+
+    if (isUnitLeft) {
+      return (
+        <span className="inline-flex items-center">
+          <span className={cn(unitClassName, 'font-bold')}>{unit}</span>
+          <span>{label}</span>
+        </span>
+      );
+    }
+
+    return (
+      <span className="inline-flex items-center">
+        <span>{label}</span>
+        <span className={cn(unitClassName, 'font-bold')}>{unit}</span>
+      </span>
+    );
+  };
+
+  // col=true면 세로 배치: children(툴팁)이나 isUnitLeft가 있으면 라벨+단위를 1열(상단), children을 2열(하단)로 렌더링
   const content = col ? (
     <Gcol className={cn('w-full leading-[1.4rem] font-bold', className)} placement={'cc'} gap={gap}>
-      {label}
-      <span className={(cn(unitClassName), 'font-bold')}>{unit}</span>
-      {children}
+      {children || isUnitLeft ? (
+        <>
+          {renderText()}
+          {children}
+        </>
+      ) : (
+        <>
+          {label}
+          <span className={cn(unitClassName, 'font-bold')}>{unit}</span>
+        </>
+      )}
     </Gcol>
   ) : (
     <Grow className={cn('w-full font-bold', className)} placement={'cc'} gap={gap}>
-      {label}
-      <span className={(cn(unitClassName), 'font-bold text-[1.1rem]')}>{unit}</span>
+      {renderText()}
       {children}
     </Grow>
   );
