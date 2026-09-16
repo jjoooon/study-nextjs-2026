@@ -159,9 +159,9 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
   if (icon === 'dot') IconComponent = <DotIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-1" />;
   if (icon === 'dotBig')
     IconComponent = <DotIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-[0.5rem]" size={10} />;
-  if (icon === 'hash') IconComponent = <HashIcon className="inline-flex -translate-y-[0.1rem]" size={10} />;
+  if (icon === 'hash') IconComponent = <HashIcon className="inline-flex -translate-y-[0.1rem]" size={4} />;
   if (icon === 'dash')
-    IconComponent = <DashIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-[0.5rem]" size={10} />;
+    IconComponent = <DashIcon className="inline-flex -translate-y-[0.1rem] ml-[0.1rem] mr-[0.4rem]" size={4} />;
   if (icon === 'star') IconComponent = <StarIcon className="inline-flex -translate-y-[0.15rem] mr-1" size={10} />;
 
   /**
@@ -178,7 +178,7 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
     dot: 'inline-block relative -indent-[0.9rem] ml-[0.9rem]',
     dotBig: 'inline-block relative -indent-[1.2rem] ml-[1.2rem]',
     hash: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',
-    dash: 'inline-block relative -indent-[1.6rem] ml-[1.6rem]',
+    dash: 'inline-block relative -indent-[1rem] ml-[1rem]',
     star: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',
     ref: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',
   };
@@ -187,12 +187,7 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
   return createElement(
     tag,
     {
-      className: cn(
-        typoVariants({ variant, weight }),
-        icon ? indentStyle[icon] : typoVariants({ color: 'default' }),
-        color ? typoVariants({ color }) : '',
-        className
-      ),
+      className: cn(typoVariants({ variant, weight, color }), icon ? indentStyle[icon] : '', className),
       style,
     },
     <>
