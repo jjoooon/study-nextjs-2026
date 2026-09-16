@@ -447,28 +447,6 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
                     </TableFoldBody>
                   </TableFold>
                 </Grow>
-                <Grow className="w-full">
-                  <Gcol>
-                    <Gcol className="w-full">
-                      <Gcol variant={'box-info'} placement={'ss'} className="w-full">
-                        <Typo variant={'body-sm'} icon={'info'}>
-                          <b>설계반영 시 유의사항</b>
-                        </Typo>
-                        <BulletList>
-                          <BulletListItem size={'sm'} type="dotBig">
-                            <b>설계반영 클릭시 자동 처리됩니다. 이외의 사항은 심상요청이후 재확인바랍니다.</b>
-                          </BulletListItem>
-                          <BulletListItem size={'sm'} type="dotBig">
-                            고지필요대상 : 알릴 사항 자동입력
-                          </BulletListItem>
-                          <BulletListItem size={'sm'} type="dotBig">
-                            제한담보 : 일괄조정 & 연관담보 동시 조정
-                          </BulletListItem>
-                        </BulletList>
-                      </Gcol>
-                    </Gcol>
-                  </Gcol>
-                </Grow>
               </Gcol>
               <Gcol>
                 <TableFold>
