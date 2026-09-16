@@ -105,7 +105,7 @@ export function PlanApplyStatus({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} className="w-[32rem]">
+      <DialogContent showCloseButton resizable={false} className="w-[37rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
