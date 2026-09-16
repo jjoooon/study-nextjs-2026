@@ -232,63 +232,6 @@ const Ltpz013 = () => {
   // 담보 목록 데이터를 관리하는 상태값
   const [rowData] = React.useState<DummyDataType[]>(DummyData);
 
-  // 각 비교 카드 그리드의 스크롤 엘리먼트를 수집하는 ref 배열
-  const scrollRefs = React.useRef<(HTMLDivElement | null)[]>([]);
-  // 스크롤 이벤트의 연쇄 호출(무한 동기화 루프)을 방지하기 위한 Lock 플래그 ref
-  const isSyncing = React.useRef(false);
-
-  /**
-   * 스크롤 동기화 이벤트 핸들러
-   * - 임의의 카드 내 그리드를 세로 스크롤하면 다른 모든 카드의 그리드도 동일한 scrollTop으로 동기화 스크롤시킵니다.
-   */
-  const handleSyncScroll = (idx: number, e: React.UIEvent<HTMLDivElement>) => {
-    if (isSyncing.current) return;
-    isSyncing.current = true;
-
-    const target = e.target as HTMLDivElement;
-    const scrollTop = target.scrollTop;
-
-    scrollRefs.current.forEach((ref, i) => {
-      // 본인을 제외하고 ref가 유효하며 오차가 1px 이상일 때 스크롤 동기화
-      if (i !== idx && ref && Math.abs(ref.scrollTop - scrollTop) > 1) {
-        ref.scrollTop = scrollTop;
-      }
-    });
-
-    // 비동기로 플래그를 해제하여 순환 동기화 방지
-    setTimeout(() => {
-      isSyncing.current = false;
-    }, 0);
-  };
-
-  /**
-   * 커스텀 헤더 셀의 스타일 계산 함수
-   * - Ag-Grid 본문 컬럼에 적용된 width 또는 flex 설정 값을 상단 커스텀 헤더 요소에 동기화하여 너비를 정확히 일치시킵니다.
-   */
-  function getComparisonHeaderCellStyle(column: ColDef): React.CSSProperties {
-    if (typeof column.width === 'number') {
-      const width = `${column.width}px`;
-
-      return {
-        flex: '0 0 auto',
-        minWidth: width,
-        width,
-      };
-    }
-
-    if (typeof column.flex === 'number') {
-      return {
-        flex: `${column.flex} ${column.flex} 0%`,
-        minWidth: 0,
-      };
-    }
-
-    return {
-      flex: '1 1 0%',
-      minWidth: 0,
-    };
-  }
-
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // 담보 그리드 컬럼 구성 정의
@@ -372,10 +315,10 @@ const Ltpz013 = () => {
                     기준설계
                   </Grow>
                   {/* 가입조건 및 상세 담보 그리드 */}
-                  <Grid className="p-[1.6rem] gap-5 grid-rows-[1fr_auto]" placement="ss">
+                  <Grid className="p-[1.6rem] gap-5 grid-rows-[auto_1fr]" placement="ss">
                     <Gcol className="gap-2" placement="ss">
                       <Gcol placement="ss">
-                        <Typo tag="h3" variant={'body-xl'} weight={'bold'} className="">
+                        <Typo tag="h3" variant={'body-xl'} weight={'bold'} className="line-clamp-2 break-all">
                           {InfoData.담보명}
                         </Typo>
                       </Gcol>
@@ -424,46 +367,18 @@ const Ltpz013 = () => {
                       </Gcol>
                     </Gcol>
 
-                    {/* 담보 그리드 감싸는 컨테이너 - 스크롤 동기화 타겟 (index 0) */}
-                    <div
-                      className="ag-theme-alpine no-header w-full overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
-                      ref={(el) => {
-                        scrollRefs.current[0] = el;
-                      }}
-                      onScroll={(e) => handleSyncScroll(0, e)}
-                    >
-                      {/* Ag-Grid 기본 헤더 대신 렌더링되는 커스텀 고정 헤더 */}
-                      <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-                        {columnDefs.map((column, index) => {
-                          const key = column.field ?? column.headerName ?? `column-${index}`;
-
-                          return (
-                            <div
-                              key={key}
-                              className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                              style={getComparisonHeaderCellStyle(column)}
-                            >
-                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#000]">
-                                {column.headerName}
-                              </Typo>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      {/* Ag-Grid React 본체 (헤더 영역은 CSS 스타일로 숨김 처리됨) */}
+                    <div className="ag-theme-alpine inner-scroll min-h-[37.7rem]" data-row={10}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={rowData}
                         columnDefs={columnDefs}
-                        headerHeight={0}
-                        groupHeaderHeight={0}
                         defaultColDef={{
                           suppressMovable: true,
                           sortable: true,
                           resizable: true,
                         }}
-                        domLayout="autoHeight"
+                        domLayout="normal"
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
                       />
@@ -581,44 +496,18 @@ const Ltpz013 = () => {
                     </Gcol>
 
                     {/* 담보 그리드 감싸는 컨테이너 - 스크롤 동기화 타겟 (index 1 ~ 5) */}
-                    <div
-                      className="ag-theme-alpine no-header w-full overflow-y-auto relative [&_.ag-header]:!hidden [&_.ag-header-viewport]:!hidden [&_.ag-header-row]:!h-0 [&_.ag-header]:!min-h-0"
-                      ref={(el) => {
-                        scrollRefs.current[i + 1] = el;
-                      }}
-                      onScroll={(e) => handleSyncScroll(i + 1, e)}
-                    >
-                      {/* Ag-Grid 기본 헤더 대신 렌더링되는 커스텀 고정 헤더 */}
-                      <div className="sticky top-0 z-10 flex h-[3rem] w-full border-b border-[#D9E2EC] bg-[var(--color-gray-5)] border-t-[0.2rem] border-t-[#000]">
-                        {columnDefs.map((column, index) => {
-                          const key = column.field ?? column.headerName ?? `column-${index}`;
-                          return (
-                            <div
-                              key={key}
-                              className={`flex h-full items-center border-r border-[#D9E2EC] px-0 justify-center last:border-r-0`}
-                              style={getComparisonHeaderCellStyle(column)}
-                            >
-                              <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[#000]">
-                                {column.headerName}
-                              </Typo>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      {/* Ag-Grid React 본체 (헤더 영역은 CSS 스타일로 숨김 처리됨) */}
+                    <div className="ag-theme-alpine inner-scroll " data-row={10}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         rowData={rowData}
                         columnDefs={columnDefs}
-                        headerHeight={0}
-                        groupHeaderHeight={0}
                         defaultColDef={{
                           suppressMovable: true,
                           sortable: true,
                           resizable: true,
                         }}
-                        domLayout="autoHeight"
+                        domLayout="normal"
                         tooltipShowMode="whenTruncated"
                         tooltipShowDelay={0}
                       />
