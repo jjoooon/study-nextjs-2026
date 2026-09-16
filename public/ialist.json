@@ -1961,7 +1961,7 @@
     "dep2": "가입설계",
     "dep3": "알릴사항",
     "id": "LTPZ207",
-    "path": "ispl/ncMtt",
+    "path": "ispl/ncMtt/components/popups",
     "dep4": "고지대상조회및 입력",
     "file": "알릴사항",
     "plan": "이현숙",
@@ -1969,8 +1969,8 @@
     "sdate": "",
     "date": "26.04.17",
     "modify": "26.06.04",
-    "subId": "LTPA060_02",
-    "popup": false
+    "subId": "",
+    "popup": true
   },
   {
     "pub": "권오택",

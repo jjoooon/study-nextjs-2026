@@ -48,138 +48,6 @@ const coverageDummyList = [
   { id: 12, field1: '여성통합암(4대유사암제외)진단비Ⅱ(유방암)', field2: '3000', field3: '8700' },
   { id: 13, field1: '여성통합암(4대유사암제외)진단비Ⅱ(자궁관련암)', field2: '3000', field3: '2400' },
   { id: 14, field1: '여성통합암(4대유사암제외)진단비Ⅱ(난소암)', field2: '3000', field3: '900' },
-  { id: 15, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정여성생식기관암)', field2: '3000', field3: '120' },
-  { id: 16, field1: '여성통합암(4대유사암제외)진단비Ⅱ(비뇨기관암(요로암))', field2: '3000', field3: '1050' },
-  { id: 17, field1: '여성통합암(4대유사암제외)진단비Ⅱ(폐암)', field2: '3000', field3: '3060' },
-  { id: 18, field1: '여성통합암(4대유사암제외)진단비Ⅱ(특정호흡기및흉곽내기관암)', field2: '3000', field3: '270' },
-  { id: 19, field1: '여성통합암(4대유사암제외)진단비Ⅱ(눈,뇌,중추신경계통및내분비선암)', field2: '3000', field3: '330' },
-  { id: 20, field1: '여성통합암(4대유사암제외)진단비Ⅱ(입술,구강및인두암)', field2: '3000', field3: '390' },
-  {
-    id: 21,
-    field1: '여성통합암(4대유사암제외)진단비Ⅱ(뼈,관절,악성흑색종,중피성및연조직암)',
-    field2: '3000',
-    field3: '510',
-  },
-  { id: 22, field1: '여성통합암(4대유사암제외)진단비Ⅱ(림프및조혈관련특정암)', field2: '3000', field3: '2460' },
-  {
-    id: 23,
-    field1: '암(4대유사암제외)특정치료비(암전문의료기관Ⅱ(상급종합병원등))(각연간1회한)',
-    field2: '9000',
-    field3: '36000',
-  },
-  {
-    id: 24,
-    field1: '암(4대유사암제외)특정치료비(수술)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
-    field2: '2000',
-    field3: '12040',
-  },
-  {
-    id: 25,
-    field1: '암(4대유사암제외)특정치료비(항암방사선치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
-    field2: '2000',
-    field3: '8140',
-  },
-  {
-    id: 26,
-    field1: '암(4대유사암제외)특정치료비(항암약물치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
-    field2: '2000',
-    field3: '14980',
-  },
-  {
-    id: 27,
-    field1: '암(4대유사암제외)특정치료비(중환자실치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
-    field2: '1000',
-    field3: '680',
-  },
-  {
-    id: 28,
-    field1: '암(4대유사암제외)특정치료비(호스피스완화의료치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
-    field2: '2000',
-    field3: '160',
-  },
-  {
-    id: 29,
-    field1: '4대유사암특정치료비(암전문의료기관Ⅱ(상급종합병원등))(각연간1회한)',
-    field2: '1500',
-    field3: '1547',
-  },
-  {
-    id: 30,
-    field1: '4대유사암특정치료비(수술)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
-    field2: '400',
-    field3: '1188',
-  },
-  {
-    id: 31,
-    field1: '4대유사암특정치료비(항암방사선치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
-    field2: '400',
-    field3: '260',
-  },
-  {
-    id: 32,
-    field1: '4대유사암특정치료비(항암약물치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
-    field2: '400',
-    field3: '96',
-  },
-  {
-    id: 33,
-    field1: '4대유사암특정치료비(중환자실치료)(암전문의료기관Ⅱ(상급종합병원등))(연간1회한)',
-    field2: '300',
-    field3: '3',
-  },
-  {
-    id: 34,
-    field1: '암(특정유사암포함)항암세기조절방사선치료비(1회한)',
-    field2: '2000',
-    field3: '2880',
-  },
-  {
-    id: 35,
-    field1: '암(특정유사암포함)항암양성자방사선치료비(1회한)',
-    field2: '3000',
-    field3: '960',
-  },
-  {
-    id: 36,
-    field1: '암(특정유사암포함)항암중입자방사선치료비(1회한)',
-    field2: '5000',
-    field3: '1750',
-  },
-  {
-    id: 37,
-    field1: '암(특정유사암포함)표적항암약물허가치료비(1회한)',
-    field2: '2000',
-    field3: '5120',
-  },
-  {
-    id: 38,
-    field1: '카티(CAR-T)항암약물허가치료비(1회한)',
-    field2: '5000',
-    field3: '120',
-  },
-  {
-    id: 39,
-    field1: '암(4대유사암제외)특정항암호르몬약물허가치료비(연간1회한)',
-    field2: '300',
-    field3: '894',
-  },
-  { id: 40, field1: '뇌혈관질환진단비', field2: '1000', field3: '7860' },
-  { id: 41, field1: '뇌졸중진단비', field2: '1000', field3: '3740' },
-  { id: 42, field1: '뇌출혈진단비', field2: '1500', field3: '1590' },
-  { id: 43, field1: '뇌전증진단비', field2: '1000', field3: '1960' },
-  { id: 44, field1: '허혈성심장질환진단비', field2: '1000', field3: '2460' },
-  { id: 45, field1: '급성심근경색증진단비', field2: '1000', field3: '600' },
-  { id: 46, field1: '심근병증진단비', field2: '1000', field3: '1210' },
-  { id: 47, field1: '심장판막협착증(대동맥판막)진단비', field2: '100', field3: '69' },
-  { id: 48, field1: '암(4대유사암제외)수술비Ⅱ(수술1회당)', field2: '500', field3: '4750' },
-  { id: 49, field1: '4대유사암수술비Ⅱ(수술1회당)', field2: '100', field3: '530' },
-  { id: 50, field1: '뇌혈관질환수술비(1회한)', field2: '1000', field3: '2700' },
-  { id: 51, field1: '뇌졸중수술비(1회한)', field2: '1000', field3: '1700' },
-  { id: 52, field1: '허혈성심장질환수술비(1회한)', field2: '1000', field3: '2800' },
-  { id: 53, field1: '급성심근경색증수술비(1회한)', field2: '1000', field3: '600' },
-  { id: 54, field1: '상해중환자실입원비(1일이상10일한도)', field2: '20', field3: '800' },
-  { id: 55, field1: '질병중환자실입원비(1일이상10일한도)', field2: '20', field3: '540' },
-  { id: 56, field1: '치료비 선지급서비스Ⅱ 특별약관', field2: '', field3: '' },
 ];
 
 const coverageDummyList1 = [
@@ -479,7 +347,7 @@ const Ltpz021 = () => {
             </Typo>
           </DialogTitle>
         </DialogHeader>
-        <DialogSection className="grid-rows-[auto_1fr] h-full min-h-0 overflow-hidden min-w-[0]!">
+        <DialogSection className="grid-rows-[auto_1fr]">
           <Grow className="w-full" variant="box-round">
             <FormTable variant={'head'} lineTop={false}>
               <FormRow>
@@ -533,8 +401,8 @@ const Ltpz021 = () => {
                     ></Checkbox>
                   </Grow>
                 </Grow>
-                <Gcol className="w-full h-full min-h-0 overflow-hidden px-[1rem] pb-[3rem]" placement="ss" gap={0}>
-                  <div className="ag-theme-alpine w-full inner-scroll" data-rows={rowData1.length}>
+                <Gcol className="w-full overflow-hidden px-[1rem] pb-[3rem]" placement="ss" gap={0}>
+                  <div className="ag-theme-alpine w-full inner-scroll min-h-[30rem]" data-row={rowData1.length}>
                     <AgGridReact<DummyDataType>
                       getRowId={(params) => String(params.data.id)}
                       noRowsOverlayComponent={AgGridEmptyComponent}
@@ -554,7 +422,7 @@ const Ltpz021 = () => {
 
                   {/* 예상보험료 요약 영역 */}
                   <Grow
-                    className="flex h-[3rem] w-full border-t !border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem] class-expected-premium-bar"
+                    className="absolute bottom-0 flex h-[3rem] w-[calc(100%-2rem)] border-t !border-t-[var(--color-primary-50)] bg-[var(--color-primary-10)] border-t-[0.1rem] border-b border-b-[var(--color-gray-15)] px-[0.6rem] text-[1.3rem] class-expected-premium-bar"
                     placement="bwc"
                   >
                     <Typo tag={'span'} variant={'body-md'} weight={'bold'} className="text-[var(--color-primary-50)]">

@@ -13,9 +13,18 @@ import { TabPager } from '@common/TabPager';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { LayoutMain, LayoutMainBody, LayoutMainFoot } from '@layout/BaseLayout';
 import { Button } from '@uiux/Button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogFooterArea,
+  DialogHeader,
+  DialogSection,
+  DialogTitle,
+} from '@uiux/Dialog';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 import { Ltpa3500301 } from './Ltpa3500301';
-
 import '@/shared/lib/agGridPub';
 
 interface TabDataType {
@@ -238,6 +247,8 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
   const { tabs: Tabs, active: TabActive, setActive: TabSetActive } = useTabs<TabDataType>(stringifiedTabs);
 
   const [testError, setTestError] = useState(false);
+  const [isAlert01, setAlert01] = useState(false);
+
   return (
     <>
       <form
@@ -330,13 +341,13 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                   <Button variant={'outlined'} color={'gray'} size={'xl'} onClick={handleActionButtonClick}>
                     알릴사항 가져오기
                   </Button>
-                  <ConfirmDialog
+                  {/* <ConfirmDialog
                     defaultOpen={false}
                     title="알림"
                     description={
                       <div className="flex flex-col gap-2 ">
                         <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-                          <Typo tag={'h3'} variant={'body-sm'} icon={'warning'} weight={'bold'}>
+                          <Typo tag={'h3'} variant={'body-sm'}>
                             알릴 사항 반영
                           </Typo>
                           <BulletList position="col" className="gap-1">
@@ -350,6 +361,12 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                             </BulletListItem>
                           </BulletList>
                         </Gcol>
+
+                        <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+                          <Typo tag={'h3'} variant={'body-sm'} icon={'warning'} weight={'bold'}>
+                            추가 확인 또는 입력이 필요한 경우 해당 입력화면으로 이동
+                          </Typo>
+                        </Gcol>
                         <Gcol placement={'ss'}>
                           <Typo>알릴사항 반영하시겠습니까?</Typo>
                           <Typo tag={'strong'} weight={'bold'}>
@@ -361,18 +378,76 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
                     confirmLabel="진행"
                     cancelLabel="닫기"
                     tone="info"
-                    trigger={
-                      <Button type="submit" form={'page3-MainForm'} variant={'contained'} color={'primary'} size={'xl'}>
-                        저장
-                      </Button>
-                    }
-                  />
+                    trigger={ }
+                  /> */}
+                  <Button
+                    type="submit"
+                    form={'page3-MainForm'}
+                    variant={'contained'}
+                    color={'primary'}
+                    size={'xl'}
+                    onClick={() => setAlert01(true)}
+                  >
+                    저장
+                  </Button>
                 </Grow>
               </MainBottomItem>
             </MainBottom>
           </LayoutMainFoot>
         </LayoutMain>
       </form>
+
+      <Dialog open={isAlert01} onOpenChange={setAlert01}>
+        <DialogContent showCloseButton resizable={true} size="sm">
+          <DialogHeader>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                설계반영 확인 안내
+              </Typo>
+            </DialogTitle>
+          </DialogHeader>
+
+          <DialogSection>
+            <Gcol placement={'ss'}>
+              <Typo tag={'h3'} variant={'body-sm'} weight={'bold'}>
+                1) 알릴 사항 반영
+              </Typo>
+              <Typo tag={'p'} variant={'body-sm'}>
+                조회정보를 기준으로 추정입력되며(예.완치여부)
+                <br />
+                실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인 바랍니다.
+              </Typo>
+            </Gcol>
+
+            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+              <Typo tag={'h3'} variant={'body-sm'} icon={'warning'} weight={'bold'} color={'danger'}>
+                추가 확인 또는 입력이 필요한 경우 해당 입력화면으로 이동
+              </Typo>
+            </Gcol>
+            <Gcol placement={'ss'}>
+              <Typo>알릴사항 반영하시겠습니까?</Typo>
+              <Typo tag={'strong'} weight={'bold'}>
+                위 내용을 확인하였으며, 설계에 반영합니다.
+              </Typo>
+            </Gcol>
+          </DialogSection>
+
+          <DialogFooter>
+            <DialogFooterArea>
+              <Grow>
+                <Button variant={'contained'} size={'xl'}>
+                  진행
+                </Button>
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+            </DialogFooterArea>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

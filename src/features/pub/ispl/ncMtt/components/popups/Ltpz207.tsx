@@ -46,6 +46,8 @@ type DummyDataType = {
   field7: string;
   field8: string;
   field9: string;
+  field10: string;
+  field11: number;
 };
 type DummyDataType2 = {
   id: number;
@@ -75,6 +77,8 @@ const dummyData: DummyDataType[] = [
     field7: 'Y',
     field8: '미고지',
     field9: '고지필요',
+    field10: 'Y',
+    field11: 1,
   },
   {
     id: 2,
@@ -88,6 +92,8 @@ const dummyData: DummyDataType[] = [
     field7: 'N',
     field8: '미고지',
     field9: '고지필요',
+    field10: 'Y',
+    field11: 1,
   },
   {
     id: 3,
@@ -101,6 +107,8 @@ const dummyData: DummyDataType[] = [
     field7: 'N',
     field8: '미고지',
     field9: '',
+    field10: 'Y',
+    field11: 1,
   },
   {
     id: 4,
@@ -114,6 +122,8 @@ const dummyData: DummyDataType[] = [
     field7: 'Y',
     field8: '미고지',
     field9: '',
+    field10: 'Y',
+    field11: 1,
   },
   {
     id: 5,
@@ -127,6 +137,8 @@ const dummyData: DummyDataType[] = [
     field7: 'Y',
     field8: '고지',
     field9: '',
+    field10: 'Y',
+    field11: 1,
   },
 ];
 const dummyData2: DummyDataType2[] = [
@@ -304,6 +316,16 @@ const Ltpz207 = () => {
         </Gcol>
       ),
     },
+    {
+      headerName: '완치(가정)',
+      field: 'field10',
+      width: attributeColumnWidth(60),
+    },
+    {
+      headerName: '발생횟수',
+      field: 'field11',
+      width: attributeColumnWidth(60),
+    },
   ];
   const columnDefs2: ColDef<DummyDataType2>[] = [
     {
@@ -372,186 +394,245 @@ const Ltpz207 = () => {
     [setRowData, setErrorRows]
   );
 
+  const [isAlert01, setAlert01] = React.useState(false);
+
   return (
-    <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="2xl">
-        <DialogHeader>
-          <DialogTitle>
-            <Typo tag={'strong'} variant={'heading-lg'}>
-              고지대상 조회 및 입력
-            </Typo>
-            <Typo tag={'p'} variant={'body-xl'}>
-              (LTPZ207)
-            </Typo>
-          </DialogTitle>
-        </DialogHeader>
+    <>
+      <Dialog open>
+        <DialogContent showCloseButton resizable={false} size="2xl">
+          <DialogHeader>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                고지대상 조회 및 입력
+              </Typo>
+              <Typo tag={'p'} variant={'body-xl'}>
+                (LTPZ207)
+              </Typo>
+            </DialogTitle>
+          </DialogHeader>
 
-        <DialogSection className="grid-rows-[auto_minmax(0,1fr)] gap-3">
-          {/* FP정보제공 동의 및 조회 기간 입력 섹션 */}
-          <Grow className="w-full" variant="box-round">
-            <FormTable variant={'head'} lineTop={false} caption="">
-              <FormRow>
-                <FormCell title={'FP정보제공동의(유효일자)'}>
-                  <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
-                </FormCell>
-                <FormCell title={'전문호출기간'}>
-                  <Input aria-label="전문호출기간" width={40} value={5} readOnly align="center" />
-                  <Typo>년</Typo>
-                </FormCell>
-                <FormCell title={'최종적재일'}>
-                  <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />
-                </FormCell>
-              </FormRow>
-            </FormTable>
-          </Grow>
-          <ResizablePanelGroup orientation="vertical" className="w-full h-full min-h-[44.6rem]">
-            <ResizablePanel defaultSize={50}>
-              {/* 펼침메뉴: 필수고지 */}
-              <TableFold className="h-full flex flex-col min-h-0">
-                <TableFoldHead title="필수고지" variant="default" />
-                <TableFoldBody className="w-full flex-1 min-h-0 relative">
-                  {/* ag-Grid 테이블: 필수고지 데이터 */}
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData}
-                      columnDefs={columnDefs}
-                      selectionColumnDef={{
-                        width: 30,
-                        cellClass: 'editable-cell',
-                      }}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      onCellValueChanged={onCellValueChanged}
-                      // ag-Grid 기본 설정
-                      defaultColDef={{
-                        sortable: true, // 컬럼 정렬 가능
-                        resizable: true, // 컬럼 너비 조절 가능
-                        cellClass: 'text-center', // 중앙 정렬
-                      }}
-                      // 다중행 선택 모드 (고지 상태 행 제외)
-                      rowSelection={{
-                        mode: 'multiRow',
-                        isRowSelectable: (node) => node.data?.field8 !== '고지', // '고지' 상태 행은 선택 불가
-                        checkboxes: true, // 체크박스 표시
-                        enableClickSelection: false, // 행 클릭으로 선택 안됨
-                      }}
-                      // 그리드 초기화 후 체크 상태 복원
-                      onGridReady={(params) => {
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isChecked) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                      domLayout="normal"
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      tooltipHideDelay={1000}
-                    />
-                  </div>
-                </TableFoldBody>
-              </TableFold>
-            </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel defaultSize={50}>
-              {/* 펼침메뉴: 고지확인대상 */}
-              <TableFold className="h-full flex flex-col min-h-0">
-                <TableFoldHead title="고지확인대상" variant="default" />
-                <TableFoldBody className="w-full flex-1 min-h-0 relative">
-                  {/* ag-Grid 테이블: 고지확인대상 데이터 */}
-                  <div className="ag-theme-alpine">
-                    <AgGridReact<DummyDataType2>
-                      getRowId={(params) => String(params.data.id)}
-                      rowData={rowData2}
-                      columnDefs={columnDefs2}
-                      selectionColumnDef={{
-                        width: 30,
-                        cellClass: 'editable-cell',
-                      }}
-                      onCellValueChanged={onCellValueChanged}
-                      noRowsOverlayComponent={AgGridEmptyComponent}
-                      defaultColDef={{
-                        sortable: true,
-                        resizable: true,
-                        cellClass: 'text-center',
-                      }}
-                      rowSelection={{
-                        mode: 'multiRow',
-                        isRowSelectable: (node) => node.data?.field8 !== '고지',
-                        checkboxes: true,
-                        enableClickSelection: false,
-                      }}
-                      onGridReady={(params) => {
-                        params.api.forEachNode((node) => {
-                          if (node.data?.isChecked) {
-                            node.setSelected(true);
-                          }
-                        });
-                      }}
-                      tooltipShowMode="whenTruncated"
-                      tooltipShowDelay={0}
-                      tooltipHideDelay={1000}
-                      domLayout="normal"
-                    />
-                  </div>
-                </TableFoldBody>
-              </TableFold>
-            </ResizablePanel>
-          </ResizablePanelGroup>
-        </DialogSection>
-
-        <DialogFooter>
-          <DialogFooterArea>
-            <Grow>
-              <ConfirmDialog
-                defaultOpen={false}
-                title="알림"
-                description={
-                  <div className="flex flex-col gap-2 ">
-                    <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-                      <Typo tag={'h3'} variant={'body-sm'} icon={'warning'} weight={'bold'}>
-                        알릴 사항 반영
-                      </Typo>
-                      <BulletList position="col" className="gap-1">
-                        <BulletListItem type="dot" size="sm">
-                          조회정보를 기준으로 추정입력되며(예.완치여부)
-                          <br />
-                          실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인 바랍니다.
-                        </BulletListItem>
-                        <BulletListItem type="dot" size="sm" color="warning">
-                          추가 확인 또는 입력이 필요한 경우 해당 입력화면으로 이동
-                        </BulletListItem>
-                      </BulletList>
-                    </Gcol>
-                    <Gcol placement={'ss'}>
-                      <Typo>알릴사항 반영하시겠습니까?</Typo>
-                      <Typo tag={'strong'} weight={'bold'}>
-                        위 내용을 확인하였으며, 설계에 반영합니다.
-                      </Typo>
-                    </Gcol>
-                  </div>
-                }
-                confirmLabel="진행"
-                cancelLabel="닫기"
-                tone="info"
-                trigger={
-                  <Button type="submit" form={''} variant={'contained'} color={'primary'} size={'xl'}>
-                    알릴사항 반영하기
-                  </Button>
-                }
-              />
-
-              <DialogClose asChild>
-                <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
-                  닫기
-                </Button>
-              </DialogClose>
+          <DialogSection className="grid-rows-[auto_minmax(0,1fr)] gap-3">
+            {/* FP정보제공 동의 및 조회 기간 입력 섹션 */}
+            <Grow className="w-full" variant="box-round">
+              <FormTable variant={'head'} lineTop={false} caption="">
+                <FormRow>
+                  <FormCell title={'FP정보제공동의(유효일자)'}>
+                    <Input aria-label="FP정보제공동의 유효일자" width={90} value={'2026-03-01'} readOnly />
+                  </FormCell>
+                  <FormCell title={'전문호출기간'}>
+                    <Input aria-label="전문호출기간" width={40} value={5} readOnly align="center" />
+                    <Typo>년</Typo>
+                  </FormCell>
+                  <FormCell title={'최종적재일'}>
+                    <Input aria-label="최종적재일" width={90} value={'2026-03-01'} readOnly />
+                  </FormCell>
+                </FormRow>
+              </FormTable>
             </Grow>
-          </DialogFooterArea>
-          <DialogBottomInfo />
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <ResizablePanelGroup orientation="vertical" className="w-full h-full min-h-[44.6rem]">
+              <ResizablePanel defaultSize={50}>
+                {/* 펼침메뉴: 필수고지 */}
+                <TableFold className="h-full flex flex-col min-h-0">
+                  <TableFoldHead title="필수고지" variant="default" />
+                  <TableFoldBody className="w-full flex-1 min-h-0 relative">
+                    {/* ag-Grid 테이블: 필수고지 데이터 */}
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<DummyDataType>
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData}
+                        columnDefs={columnDefs}
+                        selectionColumnDef={{
+                          width: 30,
+                          cellClass: 'editable-cell',
+                        }}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        onCellValueChanged={onCellValueChanged}
+                        // ag-Grid 기본 설정
+                        defaultColDef={{
+                          sortable: true, // 컬럼 정렬 가능
+                          resizable: true, // 컬럼 너비 조절 가능
+                          cellClass: 'text-center', // 중앙 정렬
+                        }}
+                        // 다중행 선택 모드 (고지 상태 행 제외)
+                        rowSelection={{
+                          mode: 'multiRow',
+                          isRowSelectable: (node) => node.data?.field8 !== '고지', // '고지' 상태 행은 선택 불가
+                          checkboxes: true, // 체크박스 표시
+                          enableClickSelection: false, // 행 클릭으로 선택 안됨
+                        }}
+                        // 그리드 초기화 후 체크 상태 복원
+                        onGridReady={(params) => {
+                          params.api.forEachNode((node) => {
+                            if (node.data?.isChecked) {
+                              node.setSelected(true);
+                            }
+                          });
+                        }}
+                        domLayout="normal"
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        tooltipHideDelay={1000}
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel defaultSize={50}>
+                {/* 펼침메뉴: 고지확인대상 */}
+                <TableFold className="h-full flex flex-col min-h-0">
+                  <TableFoldHead title="고지확인대상" variant="default" />
+                  <TableFoldBody className="w-full flex-1 min-h-0 relative">
+                    {/* ag-Grid 테이블: 고지확인대상 데이터 */}
+                    <div className="ag-theme-alpine">
+                      <AgGridReact<DummyDataType2>
+                        getRowId={(params) => String(params.data.id)}
+                        rowData={rowData2}
+                        columnDefs={columnDefs2}
+                        selectionColumnDef={{
+                          width: 30,
+                          cellClass: 'editable-cell',
+                        }}
+                        onCellValueChanged={onCellValueChanged}
+                        noRowsOverlayComponent={AgGridEmptyComponent}
+                        defaultColDef={{
+                          sortable: true,
+                          resizable: true,
+                          cellClass: 'text-center',
+                        }}
+                        rowSelection={{
+                          mode: 'multiRow',
+                          isRowSelectable: (node) => node.data?.field8 !== '고지',
+                          checkboxes: true,
+                          enableClickSelection: false,
+                        }}
+                        onGridReady={(params) => {
+                          params.api.forEachNode((node) => {
+                            if (node.data?.isChecked) {
+                              node.setSelected(true);
+                            }
+                          });
+                        }}
+                        tooltipShowMode="whenTruncated"
+                        tooltipShowDelay={0}
+                        tooltipHideDelay={1000}
+                        domLayout="normal"
+                      />
+                    </div>
+                  </TableFoldBody>
+                </TableFold>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </DialogSection>
+
+          <DialogFooter>
+            <DialogFooterArea>
+              <Grow>
+                {/* <ConfirmDialog
+                  defaultOpen={false}
+                  title="알림"
+                  description={
+                    <div className="flex flex-col gap-2 ">
+                      <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+                        <Typo tag={'h3'} variant={'body-sm'} icon={'warning'} weight={'bold'}>
+                          알릴 사항 반영
+                        </Typo>
+                        <BulletList position="col" className="gap-1">
+                          <BulletListItem type="dot" size="sm">
+                            조회정보를 기준으로 추정입력되며(예.완치여부)
+                            <br />
+                            실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인 바랍니다.
+                          </BulletListItem>
+                          <BulletListItem type="dot" size="sm" color="warning">
+                            추가 확인 또는 입력이 필요한 경우 해당 입력화면으로 이동
+                          </BulletListItem>
+                        </BulletList>
+                      </Gcol>
+                      <Gcol placement={'ss'}>
+                        <Typo>알릴사항 반영하시겠습니까?</Typo>
+                        <Typo tag={'strong'} weight={'bold'}>
+                          위 내용을 확인하였으며, 설계에 반영합니다.
+                        </Typo>
+                      </Gcol>
+                    </div>
+                  }
+                  confirmLabel="진행"
+                  cancelLabel="닫기"
+                  tone="info"
+                  trigger={
+                    <Button variant={'contained'} color={'primary'} size={'xl'}>
+                      알릴사항 반영하기
+                    </Button>
+                  }
+                /> */}
+                <Button variant={'contained'} color={'primary'} size={'xl'} onClick={() => setAlert01(true)}>
+                  알릴사항 반영하기
+                </Button>
+
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+            </DialogFooterArea>
+            <DialogBottomInfo />
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isAlert01} onOpenChange={setAlert01}>
+        <DialogContent showCloseButton resizable={true} size="sm">
+          <DialogHeader>
+            <DialogTitle>
+              <Typo tag={'strong'} variant={'heading-lg'}>
+                알릴 사항 반영
+              </Typo>
+            </DialogTitle>
+          </DialogHeader>
+
+          <DialogSection>
+            <Gcol placement={'ss'}>
+              <Typo tag={'h3'} variant={'body-sm'} weight={'bold'}>
+                1. 알릴 사항 반영
+              </Typo>
+              <Typo tag={'p'} variant={'body-sm'}>
+                조회정보를 기준으로 추정입력되며(예.완치여부)
+                <br />
+                실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인 바랍니다.
+              </Typo>
+            </Gcol>
+
+            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+              <Typo tag={'h3'} variant={'body-sm'} icon={'warning'} weight={'bold'} color={'danger'}>
+                추가 확인 또는 입력이 필요한 경우 해당 입력화면으로 이동
+              </Typo>
+            </Gcol>
+            <Gcol placement={'ss'}>
+              <Typo>알릴사항 반영하시겠습니까?</Typo>
+              <Typo tag={'strong'} weight={'bold'}>
+                위 내용을 확인하였으며, 설계에 반영합니다.
+              </Typo>
+            </Gcol>
+          </DialogSection>
+
+          <DialogFooter>
+            <DialogFooterArea>
+              <Grow>
+                <Button variant={'contained'} size={'xl'}>
+                  진행
+                </Button>
+                <DialogClose asChild>
+                  <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
+                    닫기
+                  </Button>
+                </DialogClose>
+              </Grow>
+            </DialogFooterArea>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

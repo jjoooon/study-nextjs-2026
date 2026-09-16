@@ -15,7 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@uiux/Dialog';
 import { AiBotIcon } from './AiBotIcon';
 
 const CHATBOT_DIALOG_WIDTH = 400;
-const CHATBOT_DIALOG_HEIGHT = 560;
+const CHATBOT_DIALOG_HEIGHT = 600;
 const VIEWPORT_MARGIN = 12;
 
 function getInitialDialogPosition(buttonRect: DOMRect): { x: number; y: number } {

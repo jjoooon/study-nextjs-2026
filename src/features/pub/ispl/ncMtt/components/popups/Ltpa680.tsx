@@ -6,7 +6,7 @@
 import '@/shared/lib/agGridPub';
 import * as React from 'react';
 import Ltpa680Section from '@/features/pub/ispl/ncMtt/sections/Ltpa680Section';
-import { Typo } from '@atoms';
+import { Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Button } from '@uiux/Button';
 import {
@@ -23,7 +23,7 @@ import {
 const Ltpa680 = () => {
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={true} size="lg" className="inner-page">
+      <DialogContent showCloseButton resizable={true} size="2xl" className="inner-page">
         <DialogHeader>
           <DialogTitle>
             <Typo tag={'strong'} variant={'heading-lg'}>
@@ -39,7 +39,7 @@ const Ltpa680 = () => {
         </DialogSection>
 
         <DialogFooter>
-          {/* <DialogFooterArea>
+          <DialogFooterArea>
             <Grow>
               <DialogClose asChild>
                 <Button variant={'outlined'} size={'xl'} color={'gray-light'}>
@@ -47,7 +47,7 @@ const Ltpa680 = () => {
                 </Button>
               </DialogClose>
             </Grow>
-          </DialogFooterArea> */}
+          </DialogFooterArea>
           <DialogBottomInfo />
         </DialogFooter>
       </DialogContent>

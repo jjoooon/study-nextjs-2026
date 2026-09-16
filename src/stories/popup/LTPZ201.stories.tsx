@@ -5,7 +5,7 @@ import Ltpz201 from '@/features/pub/ispl/ncMtt/components/popups/Ltpz201';
 import { LayoutDoc } from '@layout/BaseLayout';
 
 export default {
-  title: 'app/popup/Ltpz201',
+  title: 'app/popup/LTPZ201',
   component: Ltpz201,
 };
 
