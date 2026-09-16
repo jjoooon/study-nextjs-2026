@@ -532,7 +532,7 @@ const Ltpz203 = () => {
                     </Gcol>
 
                     {/* 담보 그리드 감싸는 컨테이너 */}
-                    <div className="ag-theme-alpine inner-scroll" data-row={10}>
+                    <div className="ag-theme-alpine inner-scroll" data-row={rowData.length}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}

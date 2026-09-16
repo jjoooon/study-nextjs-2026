@@ -367,7 +367,7 @@ const Ltpz013 = () => {
                       </Gcol>
                     </Gcol>
 
-                    <div className="ag-theme-alpine inner-scroll min-h-[37.7rem]" data-row={10}>
+                    <div className="ag-theme-alpine min-h-[37.7rem]">
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
@@ -495,8 +495,7 @@ const Ltpz013 = () => {
                       </Gcol>
                     </Gcol>
 
-                    {/* 담보 그리드 감싸는 컨테이너 - 스크롤 동기화 타겟 (index 1 ~ 5) */}
-                    <div className="ag-theme-alpine inner-scroll " data-row={10}>
+                    <div className="ag-theme-alpine inner-scroll " data-row={rowData.length}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         noRowsOverlayComponent={AgGridEmptyComponent}
