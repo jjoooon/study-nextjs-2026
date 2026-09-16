@@ -170,11 +170,11 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
    * - info/warning/detail은 `em` 강조 색과 굵기를 표준화
    */
   const indentStyle = {
-    info: 'inline-block relative -indent-[2rem] ml-[2rem] text-[var(--color-gray-70)] [&>em]:text-[var(--color-information-50)] [&>em]:font-bold [&>em]:not-italic!',
+    info: 'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-information-50)] [&>em]:font-bold [&>em]:not-italic!',
     warning:
-      'inline-block relative -indent-[2rem] ml-[2rem] text-[var(--color-gray-70)] [&>em]:text-[var(--color-danger-50)] [&>em]:font-bold [&>em]:not-italic!',
+      'inline-block relative -indent-[2rem] ml-[2rem] [&>em]:text-[var(--color-danger-50)] [&>em]:font-bold [&>em]:not-italic!',
     detail:
-      'inline-block relative -indent-[1.4rem] ml-[1.4rem] text-[var(--color-gray-70)] [&>em]:text-[var(--color-primary-50)] [&>em]:font-bold [&>em]:not-italic!',
+      'inline-block relative -indent-[1.4rem] ml-[1.4rem] [&>em]:text-[var(--color-primary-50)] [&>em]:font-bold [&>em]:not-italic!',
     dot: 'inline-block relative -indent-[0.9rem] ml-[0.9rem]',
     dotBig: 'inline-block relative -indent-[1.2rem] ml-[1.2rem]',
     hash: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',
@@ -183,11 +183,19 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
     ref: 'inline-block relative -indent-[1.4rem] ml-[1.4rem]',
   };
 
+  /** info/warning/detail 의 기본색은 gray 이지만, color Prop이 명시되면 해당 color 가 우선 */
+  const effectiveColor = color ?? (icon === 'info' || icon === 'warning' || icon === 'detail' ? 'gray' : undefined);
+
   /** 최종 렌더: variants + 아이콘 들여쓰기 + 외부 className 병합 */
   return createElement(
     tag,
     {
-      className: cn(typoVariants({ variant, weight, color }), icon ? indentStyle[icon] : '', className),
+      className: cn(
+        typoVariants({ variant, weight }),
+        icon ? indentStyle[icon] : '',
+        typoVariants({ color: effectiveColor }),
+        className
+      ),
       style,
     },
     <>
