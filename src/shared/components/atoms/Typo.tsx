@@ -190,12 +190,7 @@ export const Typo = ({ tag = 'span', variant, weight, color, children, className
   return createElement(
     tag,
     {
-      className: cn(
-        typoVariants({ variant, weight }),
-        icon ? indentStyle[icon] : '',
-        typoVariants({ color: effectiveColor }),
-        className
-      ),
+      className: cn(typoVariants({ variant, weight, color: effectiveColor }), icon ? indentStyle[icon] : '', className),
       style,
     },
     <>

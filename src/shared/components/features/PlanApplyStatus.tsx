@@ -105,7 +105,7 @@ export function PlanApplyStatus({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton resizable={false} className="w-[38rem]">
+      <DialogContent showCloseButton resizable={false} className="w-[32rem]">
         <DialogHeader>
           <DialogTitle>
             <Typo tag="strong" variant="heading-lg">
@@ -133,7 +133,7 @@ export function PlanApplyStatus({
                     </Typo>
                     {item.id === 'notice' && (
                       <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-                        <Typo tag={'strong'} variant={'body-sm'} icon={'warning'}>
+                        <Typo tag={'span'} variant={'body-sm'} icon={'warning'}>
                           조회정보를 기준으로 추정입력되며 (예: 완치여부) 실제 사실관계와 다를 수 있으므로 반드시
                           고객에게 확인바랍니다.
                         </Typo>

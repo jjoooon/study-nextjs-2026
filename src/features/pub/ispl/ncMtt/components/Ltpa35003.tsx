@@ -398,38 +398,39 @@ export function Ltpa35003({ simpleMode: _simpleMode }: Ltpa35003Props) {
       </form>
 
       <Dialog open={isAlert01} onOpenChange={setAlert01}>
-        <DialogContent showCloseButton resizable={true} size="sm">
+        <DialogContent showCloseButton resizable={false} className="w-[35rem]">
           <DialogHeader>
             <DialogTitle>
               <Typo tag={'strong'} variant={'heading-lg'}>
-                설계반영 확인 안내
+                알림
               </Typo>
             </DialogTitle>
           </DialogHeader>
 
           <DialogSection>
-            <Gcol placement={'ss'}>
-              <Typo tag={'h3'} variant={'body-sm'} weight={'bold'}>
-                1) 알릴 사항 반영
-              </Typo>
-              <Typo tag={'p'} variant={'body-sm'}>
-                조회정보를 기준으로 추정입력되며(예.완치여부)
-                <br />
-                실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인 바랍니다.
-              </Typo>
-            </Gcol>
-
-            <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
-              <Typo tag={'h3'} variant={'body-sm'} icon={'warning'} weight={'bold'} color={'danger'}>
-                추가 확인 또는 입력이 필요한 경우 해당 입력화면으로 이동
-              </Typo>
-            </Gcol>
-            <Gcol placement={'ss'}>
-              <Typo>알릴사항 반영하시겠습니까?</Typo>
-              <Typo tag={'strong'} weight={'bold'}>
-                위 내용을 확인하였으며, 설계에 반영합니다.
-              </Typo>
-            </Gcol>
+            <div className="flex flex-col gap-3 ">
+              <Gcol variant={'box-warning'} placement={'ss'} className="w-full">
+                <Typo tag={'h3'} variant={'body-sm'} icon={'warning'} weight={'bold'}>
+                  알릴 사항 반영
+                </Typo>
+                <BulletList position="col" className="gap-1">
+                  <BulletListItem type="dot" size="sm">
+                    조회정보를 기준으로 추정입력되며(예.완치여부)
+                    <br />
+                    실제 사실관계와 다를 수 있으므로 반드시 고객에게 확인 바랍니다.
+                  </BulletListItem>
+                  <BulletListItem type="dot" size="sm" color="warning">
+                    추가 확인 또는 입력이 필요한 경우 해당 입력화면으로 이동합니다.
+                  </BulletListItem>
+                </BulletList>
+              </Gcol>
+              <Gcol placement={'cc'}>
+                <Typo>알릴사항 반영하시겠습니까?</Typo>
+                <Typo tag={'strong'} weight={'bold'}>
+                  위 내용을 확인하였으며, 설계에 반영합니다.
+                </Typo>
+              </Gcol>
+            </div>
           </DialogSection>
 
           <DialogFooter>
