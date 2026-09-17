@@ -28,7 +28,7 @@ const Ltpz01609 = () => {
                   </Grow>
                 }
               >
-                <NativeSelect aria-label="무인판매시설 여부" width={'auto'}>
+                <NativeSelect aria-label="무인판매시설 여부" width={'auto'} required>
                   {[
                     { value: 0, label: '선택' },
                     { value: 1, label: 'Y' },

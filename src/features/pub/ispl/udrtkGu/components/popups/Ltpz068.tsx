@@ -951,7 +951,7 @@ const Ltpz068 = () => {
 
   return (
     <Dialog open>
-      <DialogContent showCloseButton resizable={false} size="2xl">
+      <DialogContent showCloseButton resizable={true} size="2xl" className="min-h-[60rem]">
         {/* 다이얼로그 상단 타이틀 */}
         <DialogHeader>
           <DialogTitle>
@@ -983,7 +983,7 @@ const Ltpz068 = () => {
             각 열(Column)들과 일정한 세로 구분선 영역을 형성합니다.
           */}
           <div className="relative">
-            <Grid className="grid-cols-[15.8rem_16rem_16.2rem_17.6rem]  h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none">
+            <Grid className="grid-cols-[15.8rem_16rem_16.2rem_17.6rem] h-[calc(100%+4rem)] absolute top-[-4rem] right-0 items-start gap-0 z-100 pointer-events-none ">
               {/* 현재 설계 고정 영역 */}
               <div className="flex flex-col w-full cursor-pointer h-[100%]">
                 <Grow className="flex flex-col items-start justify-between h-[100%] p-0 rounded-t-[1rem] gap-0 ">

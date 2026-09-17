@@ -334,7 +334,7 @@ const Ltpz061 = () => {
         headerName: '부담보사유',
         field: 'field05',
         flex: 5,
-        cellClass: 'text-center',
+        cellClass: 'text-center editable-cell',
         editable: true,
         cellEditor: ReasonCellEditor,
         autoHeight: true,
@@ -345,6 +345,7 @@ const Ltpz061 = () => {
         field: 'isCheck',
         flex: 1,
         minWidth: attributeColumnWidth(30),
+        cellClass: 'editable-cell',
         cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
         cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
         editable: true,
@@ -441,7 +442,7 @@ const Ltpz061 = () => {
         headerName: '부담보사유',
         field: 'field05',
         flex: 5,
-        cellClass: 'text-center',
+        cellClass: 'text-center editable-cell',
         editable: true,
         autoHeight: true,
         cellEditor: ReasonCellEditor,
@@ -452,6 +453,7 @@ const Ltpz061 = () => {
         field: 'isCheck',
         flex: 1,
         minWidth: attributeColumnWidth(30),
+        cellClass: 'editable-cell',
         cellRenderer: 'agCheckboxCellRenderer', // ag-Grid 기본 체크박스 렌더러 사용
         cellEditor: 'agCheckboxCellEditor', // ag-Grid 기본 체크박스 에디터 사용
         editable: true,

@@ -39,7 +39,7 @@ const Ltpz056 = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <DialogSection className="gap-2 grid-rows-[auto_1fr_1fr]">
+        <DialogSection className="gap-2 grid-rows-[auto_auto_auto]">
           <TableFold variant="default">
             <TableFoldHead title="카카오알림톡 발송대상"></TableFoldHead>
             <TableFoldBody>

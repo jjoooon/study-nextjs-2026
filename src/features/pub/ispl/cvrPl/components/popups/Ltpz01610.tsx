@@ -174,7 +174,7 @@ const Ltpz01610 = () => {
                   </Grow>
                 }
               >
-                <Input width={100} />명
+                <Input width={100} required />명
               </FormCell>
             </FormRow>
             <FormRow>
@@ -186,7 +186,7 @@ const Ltpz01610 = () => {
                   </Grow>
                 }
               >
-                <NativeSelect aria-label="보상한도 선택" width={'auto'}>
+                <NativeSelect aria-label="보상한도 선택" width={'auto'} required>
                   {[{ value: 1, label: '대인 1인당 1천만원. 1사고당 5천만원' }].map((option, idx) => (
                     <NativeSelectOption key={idx} value={option.value}>
                       {option.label}

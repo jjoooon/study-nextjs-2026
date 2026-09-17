@@ -23,6 +23,7 @@ import { Input } from '@uiux/Input';
 import Ltpz01601 from './Ltpz01601';
 import Ltpz01602 from './Ltpz01602';
 import Ltpz01603 from './Ltpz01603';
+import Ltpz01604 from './Ltpz01604';
 import Ltpz01608 from './Ltpz01608';
 import Ltpz01609 from './Ltpz01609';
 import Ltpz01610 from './Ltpz01610';
@@ -78,6 +79,9 @@ const Ltpz016 = () => {
 
           {/* ltpz01603 */}
           <Ltpz01603 />
+
+          {/* ltpz01604 */}
+          <Ltpz01604 />
         </DialogSection>
 
         <DialogFooter>

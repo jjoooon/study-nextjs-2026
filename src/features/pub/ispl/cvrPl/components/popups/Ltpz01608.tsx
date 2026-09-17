@@ -30,7 +30,7 @@ const Ltpz01608 = () => {
                   </Grow>
                 }
               >
-                <Input width={100} value={''} />
+                <Input width={100} value={''} required />
                 <Button variant={'outlined'}>차량등록여부</Button>
               </FormCell>
             </FormRow>
