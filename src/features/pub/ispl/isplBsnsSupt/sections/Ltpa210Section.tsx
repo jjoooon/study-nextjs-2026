@@ -476,7 +476,7 @@ export default function Ltpa210Section() {
               </TableFoldHead>
               <TableFoldBody className="h-full overflow-hidden">
                 <Gcol className="w-full h-full overflow-hidden" gap={1}>
-                  <div className="ag-theme-alpine inner-scroll h-full" data-rows={rowData.length}>
+                  <div className="ag-theme-alpine inner-scroll h-full" data-row={rowData.length}>
                     <AgGridReact<DummyDataType>
                       ref={gridRef}
                       // getRowId 적용: id 필드를 고유 식별자로 사용

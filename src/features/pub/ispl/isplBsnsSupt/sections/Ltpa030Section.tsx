@@ -779,7 +779,7 @@ export default function Ltpa030Section() {
                     </Grow>
                   </TableFoldHead>
                   <TableFoldBody>
-                    <div className="ag-theme-alpine inner-scroll" data-rows={DummyData.length}>
+                    <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
                         rowData={rowData}
