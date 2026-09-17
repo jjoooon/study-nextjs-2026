@@ -3,11 +3,11 @@
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { PlanApplyStatus, PlanApplyItem, PlanApplyStatusType } from './PlanApplyStatus';
+import { PlanApplyStatus, PlanApplyItem, PlanApplyStatusType } from '@/shared/components/features/PlanApplyStatus';
 import { Button } from '@uiux/Button';
 
 const meta: Meta<typeof PlanApplyStatus> = {
-  title: 'Shared/Features/PlanApplyStatus',
+  title: 'Components/Features/PlanApplyStatus',
   component: PlanApplyStatus,
   tags: ['autodocs'],
   parameters: {

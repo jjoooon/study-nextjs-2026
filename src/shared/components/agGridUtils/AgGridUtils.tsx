@@ -1318,7 +1318,7 @@ export const AmountWithPopoverCellEditor = forwardRef((props: ICellEditorParams,
               </Button>
             </Grow>
             <Typo icon="ref" color="gray" className="mt-1">
-              가입금액 입력단위:백만원
+              가입금액 입력단위 : 100만원
             </Typo>
           </Gcol>
         </PopoverContent>
