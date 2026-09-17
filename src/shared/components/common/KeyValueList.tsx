@@ -118,7 +118,7 @@ export const KeyValueItem = ({ label, children, className, variant = 'default' }
   const variantStyles = {
     default: '',
     info: '[&>div]:text-[1.3rem] [&>div]:text-[var(--color-gray-70)] flex gap-2 items-center [&>div+div]:text-[var(--color-gray-100)] [&>div+div]:font-bold',
-    error: 'text-[var(--color-text-danger)]',
+    error: '[&>div]:text-[var(--color-text-danger)]',
   };
   return (
     <Grow className={cn(className, variantStyles[variant])}>

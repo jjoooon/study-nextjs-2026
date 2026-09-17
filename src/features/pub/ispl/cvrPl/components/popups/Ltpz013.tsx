@@ -423,7 +423,11 @@ const Ltpz013 = () => {
                           {(() => {
                             const { color, label } = getPossibilityBadgeStyle(infoData.예상);
                             return (
-                              <Badge variant="status" color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
+                              <Badge
+                                variant="status"
+                                color={color}
+                                className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]"
+                              >
                                 {label}
                               </Badge>
                             );

@@ -944,7 +944,7 @@ export const Ltpa35001 = ({
                                       {/* //dev: 260903 - 태아이름 */}
                                     </Grow>
                                     <Grow gap={1}>
-                                      <KeyValueItem label={'상령일'}>
+                                      <KeyValueItem label={'상령일'} variant="error">
                                         <Typo weight={'bold'}>2023-01-12</Typo>
                                         <Badge color={'blue'} size={'md'} variant={'contained'}>
                                           D-31
