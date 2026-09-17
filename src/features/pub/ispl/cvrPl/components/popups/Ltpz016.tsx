@@ -36,6 +36,7 @@ import {
 import { Input } from '@uiux/Input';
 import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
 
+import Ltpz01604 from './Ltpz01604';
 import '@/shared/lib/agGridPub';
 
 // --- 골프용품손해(실손) 데이터 및 타입 ---
@@ -625,6 +626,8 @@ const Ltpz016 = () => {
               </FormTable>
             </TableFoldBody>
           </TableFold>
+          {/* 임대인 배상책임 */}
+          <Ltpz01604 />
         </DialogSection>
 
         <DialogFooter>
