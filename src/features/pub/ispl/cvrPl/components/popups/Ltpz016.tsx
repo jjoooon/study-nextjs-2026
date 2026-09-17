@@ -64,15 +64,6 @@ const Ltpz016 = () => {
             </FormTable>
           </Grow>
 
-          {/* Ltpz01608 */}
-          <Ltpz01608 />
-
-          {/* Ltpz01609 */}
-          <Ltpz01609 />
-
-          {/* Ltpz01610 */}
-          <Ltpz01610 />
-
           {/* ltpz01601 */}
           <Ltpz01601 />
 
@@ -90,6 +81,15 @@ const Ltpz016 = () => {
 
           {/* ltpz01606 */}
           <Ltpz01606 />
+
+          {/* Ltpz01608 */}
+          <Ltpz01608 />
+
+          {/* Ltpz01609 */}
+          <Ltpz01609 />
+
+          {/* Ltpz01610 */}
+          <Ltpz01610 />
         </DialogSection>
 
         <DialogFooter>
