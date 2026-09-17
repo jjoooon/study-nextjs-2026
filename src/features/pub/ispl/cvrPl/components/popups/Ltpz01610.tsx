@@ -84,7 +84,7 @@ const maskedCellRenderer = (params: ICellRendererParams<DummyDataType>) => {
   return <span>{formatted}</span>;
 };
 
-const Ltpz01611 = () => {
+const Ltpz01610 = () => {
   // 1. 약사명단 state & handlers
   const [rowData, setRowData] = useState<DummyDataType[]>(DummyData);
   const gridApiRef = useRef<GridApi<DummyDataType> | null>(null);
@@ -164,7 +164,7 @@ const Ltpz01611 = () => {
       <TableFold>
         <TableFoldHead title="의약품등배상책임" />
         <TableFoldBody className="gap-2">
-          <FormTable caption="설계번호" cols={['w-[12rem]', 'w-[auto]']}>
+          <FormTable cols={['w-[12rem]', 'w-[auto]']}>
             <FormRow>
               <FormCell
                 title={
@@ -186,7 +186,7 @@ const Ltpz01611 = () => {
                   </Grow>
                 }
               >
-                <NativeSelect aria-label="개시연령 선택" width={'auto'}>
+                <NativeSelect aria-label="보상한도 선택" width={'auto'}>
                   {[{ value: 1, label: '대인 1인당 1천만원. 1사고당 5천만원' }].map((option, idx) => (
                     <NativeSelectOption key={idx} value={option.value}>
                       {option.label}
@@ -247,4 +247,4 @@ const Ltpz01611 = () => {
   );
 };
 
-export default Ltpz01611;
+export default Ltpz01610;

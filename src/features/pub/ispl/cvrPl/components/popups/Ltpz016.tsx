@@ -23,7 +23,9 @@ import { Input } from '@uiux/Input';
 import Ltpz01601 from './Ltpz01601';
 import Ltpz01602 from './Ltpz01602';
 import Ltpz01603 from './Ltpz01603';
-import Ltpz01611 from './Ltpz01611';
+import Ltpz01608 from './Ltpz01608';
+import Ltpz01609 from './Ltpz01609';
+import Ltpz01610 from './Ltpz01610';
 
 import '@/shared/lib/agGridPub';
 
@@ -59,8 +61,14 @@ const Ltpz016 = () => {
             </FormTable>
           </Grow>
 
-          {/* 의약품등배상책임 */}
-          <Ltpz01611 />
+          {/* Ltpz01608 */}
+          <Ltpz01608 />
+
+          {/* Ltpz01609 */}
+          <Ltpz01609 />
+
+          {/* Ltpz01610 */}
+          <Ltpz01610 />
 
           {/* ltpz01601 */}
           <Ltpz01601 />
