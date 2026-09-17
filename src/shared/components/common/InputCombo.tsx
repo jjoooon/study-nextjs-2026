@@ -4,7 +4,7 @@
 'use client';
 
 import * as React from 'react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import { cn } from '@/shared/lib/shadcn/utils';
 import { Grid } from '@atoms';
@@ -92,6 +92,24 @@ export function InputCombo<TValue = string>({
   const [popoverPos, setPopoverPos] = useState<{ top: number; left: number; width: number }>();
   const [isFocused, setIsFocused] = useState(false);
   const [prevValue, setPrevValue] = useState<TValue | string | undefined>(value);
+
+  // 스크롤 발생 시 팝오버 자동 닫기 (단, 팝오버 내부 리스트 스크롤 시 제외)
+  useEffect(() => {
+    if (!open) return;
+
+    const handleScroll = (e: Event) => {
+      if (popoverRef.current && popoverRef.current.contains(e.target as Node)) {
+        return;
+      }
+      setOpen(false);
+      setHoveredIdx(null);
+    };
+
+    window.addEventListener('scroll', handleScroll, true);
+    return () => {
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [open]);
 
   const normalized = options.map((opt) => (isComboOptionItem(opt) ? opt : { value: opt, label: String(opt) }));
 

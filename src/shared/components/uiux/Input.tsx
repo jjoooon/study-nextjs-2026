@@ -355,12 +355,12 @@ const Input = React.forwardRef<HTMLInputElement, UIInputProps>(function Input(
   } 
       focus:ring-1 ${!isInvalid && !shouldShowError ? 'focus:ring-[var(--color-gray-5)]' : ''} focus:outline-none`;
   const readonlyStyle = readOnly
-    ? 'bg-[var(--color-input-surface-disabled)] cursor-not-allowed opacity-100 outline-none'
+    ? 'bg-[var(--color-input-surface-disabled)] cursor-pointer opacity-100 outline-none'
     : '';
   const readonlyStyle2 = readOnly
-    ? 'bg-[transparent] cursor-not-allowed opacity-100 border-0 px-0 text-[#000] font-bold outline-none appearance-none field-sizing-[content] flex items-center'
+    ? 'bg-[transparent] cursor-pointer opacity-100 border-0 px-0 text-[#000] font-bold outline-none appearance-none field-sizing-[content] flex items-center'
     : '';
-  const disabledStyle = disabled ? 'opacity-50 cursor-not-allowed' : '';
+  const disabledStyle = disabled ? 'opacity-50 cursor-pointer' : '';
   const sizeStyle = `${size === 'lg' ? 'h-[2.8rem]' : 'h-[2.5rem]'}`;
 
   const infoStyle = cn(

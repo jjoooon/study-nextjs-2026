@@ -886,11 +886,26 @@ export const Ltpa35001 = ({
                                     tdClassName="justify-between flex-wrap"
                                   >
                                     <Grow placement="sc">
-                                      <Input
+                                      {/* <Input
                                         aria-label="피보험자명"
                                         width={84}
                                         value={currentTab?.type === '태아' ? '태아' : '김환화환화'}
                                         readOnly
+                                      /> */}
+                                      <InputCombo
+                                        clear={true}
+                                        onChange={() => {}}
+                                        options={[
+                                          { label: <td>박은빈</td>, value: '박은빈' },
+                                          { label: <td>김은빈</td>, value: '김은빈' },
+                                          { label: <td>최은빈</td>, value: '최은빈' },
+                                          { label: <td>안은빈</td>, value: '안은빈' },
+                                          { label: <td>조은빈</td>, value: '조은빈' },
+                                        ]}
+                                        col={2}
+                                        readOnly={true}
+                                        value={currentTab?.type === '태아' ? '태아' : ''}
+                                        width={84}
                                       />
                                       <Input
                                         aria-label="주민등록번호 마스킹"
