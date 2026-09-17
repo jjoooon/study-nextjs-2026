@@ -11,7 +11,7 @@ import { AgGridEmptyComponent, createTooltipValueGetter, numberValueFormatter, u
 import { Gcol, Grid, Grow, Typo } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { CalendarIcon2, CheckboxIcon, FixingPinIcon, NoteIcon, ShieldIcon } from '@icons';
-import { Badge2, getPossibilityBadgeStyle } from '@uiux/Badge2';
+import { Badge, getPossibilityBadgeStyle } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import { Checkbox } from '@uiux/Checkbox';
 
@@ -423,9 +423,9 @@ const Ltpz013 = () => {
                           {(() => {
                             const { color, label } = getPossibilityBadgeStyle(infoData.예상);
                             return (
-                              <Badge2 color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
+                              <Badge variant="status" color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
                                 {label}
-                              </Badge2>
+                              </Badge>
                             );
                           })()}
                         </Grow>

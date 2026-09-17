@@ -6,7 +6,7 @@
 import type { ReactNode } from 'react';
 import { Gcol, Grow, Grid, Typo } from '@atoms';
 import { AiIcon } from '@icons';
-import { Badge2, getPossibilityBadgeStyle } from '../uiux/Badge2';
+import { Badge, getPossibilityBadgeStyle } from '../uiux/Badge';
 import { Button } from '../uiux/Button';
 
 export type RecommendCardDataItem = {
@@ -85,9 +85,9 @@ function NormalRecommendCardItem({
       <Gcol className="p-[1.6rem] w-full h-[18rem]" placement="ss">
         <Gcol className="w-full" placement="ss" gap={2}>
           <Grow className="w-full justify-start">
-            <Badge2 color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
+            <Badge variant="status" color={color} className="h-[2.2rem] text-[1.1rem] px-[0.6rem] py-[0.2rem]">
               {label}
-            </Badge2>
+            </Badge>
           </Grow>
 
           <Gcol className="w-full" placement="ss" gap={2}>

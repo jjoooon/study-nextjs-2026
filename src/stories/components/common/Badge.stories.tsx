@@ -105,6 +105,28 @@ import { Badge } from '@uiux/Badge';
               </tbody>
             </table>
 
+            <h2>Status (UW 상태 알약 뱃지)</h2>
+            <p>variant="status"를 사용하면 심사 결과 상태에 맞춰 아이콘과 배경색이 자동 매핑되는 알약형 뱃지로 표시됩니다.</p>
+            <Unstyled>
+              <Gcol gap={3} variant="box-line" className="p-16 w-[30rem]">
+                <Grow gap={2} placement="ec">
+                  <Badge variant="status">예상 : 인수 (인수)</Badge>
+                </Grow>
+                <Grow gap={2} placement="ec">
+                  <Badge variant="status">예상 : 거절 (거절)</Badge>
+                </Grow>
+                <Grow gap={2} placement="ec">
+                  <Badge variant="status">예상 : 연기 (연기)</Badge>
+                </Grow>
+                <Grow gap={2} placement="ec">
+                  <Badge variant="status">예상 : 심사 (진단)</Badge>
+                </Grow>
+                <Grow gap={2} placement="ec">
+                  <Badge variant="status">예상 : 조건부인수 (할증)</Badge>
+                </Grow>
+              </Gcol>
+            </Unstyled>
+
             <h2>Variant</h2>
             <p>Badge 컴포넌트에서 사용할 수 있는 variant 옵션은 다음과 같습니다.</p>
             <Unstyled>
@@ -122,6 +144,7 @@ import { Badge } from '@uiux/Badge';
                   <Badge variant="ghost" color="red">
                     ghost
                   </Badge>
+                  <Badge variant="status">status</Badge>
                 </Grow>
               </Gcol>
             </Unstyled>
@@ -171,7 +194,7 @@ import { Badge } from '@uiux/Badge';
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['contained', 'soft', 'outlined', 'ghost', 'rounded'],
+      options: ['contained', 'soft', 'outlined', 'ghost', 'rounded', 'status'],
       table: { category: '스타일 props' },
     },
     color: {
