@@ -251,7 +251,7 @@ const dummyData2: DummyDataType2[] = [
 const Ltpz207 = () => {
   // 테이블 데이터 상태 관리
   const [rowData, setRowData] = React.useState<DummyDataType[]>(dummyData);
-  const [rowData2] = React.useState<DummyDataType2[]>(dummyData2);
+  const [rowData2, setRowData2] = React.useState<DummyDataType2[]>(dummyData2);
   // 화면 크기에 따라 컬럼 너비를 동적으로 조정
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -377,7 +377,7 @@ const Ltpz207 = () => {
       field: 'field9',
       flex: 1,
       minWidth: attributeColumnWidth(70),
-      cellRenderer: (params: { data: DummyDataType }) => (
+      cellRenderer: (params: { data: DummyDataType2 }) => (
         <Gcol placement="cc" className="h-full">
           <Typo tag={'span'} variant={'body-md'} className="text-[#006ff2]">
             {params.data.field9}
@@ -392,6 +392,10 @@ const Ltpz207 = () => {
   const onCellValueChanged = React.useMemo(
     () => createCellValueChangedHandler<DummyDataType, number>('isChecked', setRowData, setErrorRows, 'id'),
     [setRowData, setErrorRows]
+  );
+  const onCellValueChanged2 = React.useMemo(
+    () => createCellValueChangedHandler<DummyDataType2, number>('isChecked', setRowData2, setErrorRows, 'id'),
+    [setRowData2, setErrorRows]
   );
 
   const [isAlert01, setAlert01] = React.useState(false);
@@ -493,7 +497,7 @@ const Ltpz207 = () => {
                           width: 30,
                           cellClass: 'editable-cell',
                         }}
-                        onCellValueChanged={onCellValueChanged}
+                        onCellValueChanged={onCellValueChanged2}
                         noRowsOverlayComponent={AgGridEmptyComponent}
                         defaultColDef={{
                           sortable: true,
