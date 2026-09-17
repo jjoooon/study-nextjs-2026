@@ -1491,7 +1491,7 @@ export default function Ltpa360Section() {
                           </Button>
                         </Grow>
                       </Grow>
-                      <div className="ag-theme-alpine w-full inner-scroll" data-rows={Ltpa360DummyData2.length}>
+                      <div className="ag-theme-alpine w-full inner-scroll" data-row={Ltpa360DummyData2.length}>
                         <AgGridReact<Ltpa360DummyDataRow2>
                           noRowsOverlayComponent={AgGridEmptyComponent}
                           getRowId={(params) => String(params.data.id)}

@@ -344,7 +344,7 @@ const Ltpz065 = () => {
                   </FormCell>
                 </FormRow>
               </FormTable>
-              <div className="ag-theme-alpine inner-scroll" data-rows={DummyData.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={DummyData.length}>
                 <AgGridReact<DummyDataType>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
