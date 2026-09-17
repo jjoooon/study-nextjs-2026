@@ -24,6 +24,8 @@ import Ltpz01601 from './Ltpz01601';
 import Ltpz01602 from './Ltpz01602';
 import Ltpz01603 from './Ltpz01603';
 import Ltpz01604 from './Ltpz01604';
+import Ltpz01605 from './Ltpz01605';
+import Ltpz01606 from './Ltpz01606';
 import Ltpz01611 from './Ltpz01611';
 
 import '@/shared/lib/agGridPub';
@@ -74,6 +76,12 @@ const Ltpz016 = () => {
 
           {/* ltpz01604 */}
           <Ltpz01604 />
+
+          {/* ltpz01605 */}
+          <Ltpz01605 />
+
+          {/* ltpz01606 */}
+          <Ltpz01606 />
         </DialogSection>
 
         <DialogFooter>
