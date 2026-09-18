@@ -200,26 +200,6 @@ const Ltpz01602 = () => {
   ];
 
   // 2. 시설소유(관리)자배상책임 ag-grid renderer & defs
-  const selectCellRenderer = useCallback(<TData,>(params: ICellRendererParams<TData>) => {
-    const value = params.value == null ? '' : String(params.value);
-    const hasValue = value.trim().length > 0;
-
-    if (hasValue) {
-      return (
-        <div className="flex h-full w-full items-center justify-center px-1">
-          <span className="block min-w-0 flex-1 truncate text-center leading-[2.5rem]">{value}</span>
-        </div>
-      );
-    }
-
-    return (
-      <div className="flex h-full w-full items-center justify-between gap-1 px-1">
-        <span className="block min-w-0 flex-1" />
-        <span className="ag-icon ag-icon-small-down shrink-0" aria-hidden="true" />
-      </div>
-    );
-  }, []);
-
   const facilityColumnDefs: ColDef<FacilityLiabilityDataType>[] = [
     {
       headerName: '업종구분',
@@ -229,7 +209,7 @@ const Ltpz01602 = () => {
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
-      cellRenderer: selectCellRenderer,
+      cellRenderer: expiryCellRenderer('center'),
     },
     {
       headerName: '규모',
@@ -261,7 +241,7 @@ const Ltpz01602 = () => {
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
       cellEditor: 'agSelectCellEditor',
-      cellRenderer: selectCellRenderer,
+      cellRenderer: expiryCellRenderer('center'),
     },
     {
       headerName: '자기부담금',
@@ -272,7 +252,7 @@ const Ltpz01602 = () => {
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
       cellEditor: 'agSelectCellEditor',
-      cellRenderer: selectCellRenderer,
+      cellRenderer: expiryCellRenderer('center'),
     },
     {
       headerName: '보험료',
@@ -296,7 +276,7 @@ const Ltpz01602 = () => {
         </div>
       ),
       cellEditor: 'agSelectCellEditor',
-      cellRenderer: selectCellRenderer,
+      cellRenderer: expiryCellRenderer('center'),
     },
     {
       headerName: '요양병원여부',
