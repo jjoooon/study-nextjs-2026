@@ -176,11 +176,12 @@ export const Ltpa35001 = ({
                           </Button>
                         </FormCell>
                         <FormCell title={'보험기간'}>
-                          <Input placeholder="____-__-__" width={84} />-
+                          <Input placeholder="____-__-__" width={84} readOnly />-
                           <Input
                             placeholder="____-__-__"
                             value={'2099-09-09'}
                             width={84}
+                            readOnly
                             className="text-[var(--color-information-50)]"
                           />
                         </FormCell>
