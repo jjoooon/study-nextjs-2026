@@ -26,6 +26,7 @@ import Ltpz01603 from './Ltpz01603';
 import Ltpz01604 from './Ltpz01604';
 import Ltpz01605 from './Ltpz01605';
 import Ltpz01606 from './Ltpz01606';
+import Ltpz01607 from './Ltpz01607';
 import Ltpz01608 from './Ltpz01608';
 import Ltpz01609 from './Ltpz01609';
 import Ltpz01610 from './Ltpz01610';
@@ -81,6 +82,9 @@ const Ltpz016 = () => {
 
           {/* ltpz01606 */}
           <Ltpz01606 />
+
+          {/* ltpz01607 */}
+          <Ltpz01607 />
 
           {/* Ltpz01608 */}
           <Ltpz01608 />
