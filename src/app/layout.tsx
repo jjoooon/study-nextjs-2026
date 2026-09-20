@@ -90,31 +90,32 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var is109OrLower = false;
+                  var detectedVer = null;
                   var nav = navigator;
                   if (nav.userAgentData && nav.userAgentData.brands) {
                     for (var i = 0; i < nav.userAgentData.brands.length; i++) {
                       var b = nav.userAgentData.brands[i];
                       if (!/Not/i.test(b.brand) && /(Chrome|Chromium|Edge|Microsoft Edge)/i.test(b.brand)) {
                         var v = parseInt(b.version, 10);
-                        if (v > 0 && v <= 109) { is109OrLower = true; break; }
+                        if (v > 0) { detectedVer = v; break; }
                       }
                     }
                   }
-                  if (!is109OrLower && nav.userAgent) {
+                  if (!detectedVer && nav.userAgent) {
                     var match = nav.userAgent.match(/(?:Chrome|Chromium|Edg(?:e|A|iOS|W)?|CriOS)[\\/ ](\\d+)/i);
                     if (match && match[1]) {
                       var ver = parseInt(match[1], 10);
-                      if (ver > 0 && ver <= 109) { is109OrLower = true; }
+                      if (ver > 0) { detectedVer = ver; }
                     }
                   }
-                  if (is109OrLower) {
-                    document.documentElement.classList.add('v109');
+                  if (detectedVer) {
+                    var versionClass = detectedVer <= 109 ? 'v109' : 'v' + detectedVer;
+                    document.documentElement.classList.add(versionClass);
                     if (document.body) {
-                      document.body.classList.add('v109');
+                      document.body.classList.add(versionClass);
                     } else {
                       document.addEventListener('DOMContentLoaded', function() {
-                        document.body.classList.add('v109');
+                        document.body.classList.add(versionClass);
                       });
                     }
                   }

@@ -9,7 +9,7 @@
  */
 if (typeof window !== 'undefined') {
   try {
-    const checkIs109OrLower = (): boolean => {
+    const getBrowserVersion = (): number | null => {
       // 1. Client Hints (navigator.userAgentData) 검사
       const nav = navigator as unknown as {
         userAgentData?: {
@@ -20,8 +20,8 @@ if (typeof window !== 'undefined') {
         for (const b of nav.userAgentData.brands) {
           if (!/Not/i.test(b.brand) && /(Chrome|Chromium|Edge|Microsoft Edge)/i.test(b.brand)) {
             const versionNum = parseInt(b.version.split('.')[0], 10);
-            if (!isNaN(versionNum) && versionNum > 0 && versionNum <= 109) {
-              return true;
+            if (!isNaN(versionNum) && versionNum > 0) {
+              return versionNum;
             }
           }
         }
@@ -29,44 +29,45 @@ if (typeof window !== 'undefined') {
 
       // 2. User Agent 문자열 정밀 유연 검사
       const ua = navigator.userAgent;
-      if (!ua) return false;
+      if (!ua) return null;
 
-      // Chrome, Edg/Edge/EdgW/EdgA/EdgiOS, CriOS, Chromium 계열 109 이하 버전 검사
+      // Chrome, Edg/Edge/EdgW/EdgA/EdgiOS, CriOS, Chromium 계열 버전 검사
       const matches = ua.matchAll(/(?:Chrome|Chromium|Edg(?:e|A|iOS|W)?|CriOS)[\/ ](\d+)/gi);
       for (const match of matches) {
         const ver = parseInt(match[1], 10);
-        if (!isNaN(ver) && ver > 0 && ver <= 109) {
-          return true;
+        if (!isNaN(ver) && ver > 0) {
+          return ver;
         }
       }
 
-      return false;
+      return null;
     };
 
-    const is109 = checkIs109OrLower();
-    console.log('[BrowserDetector] is109OrLower:', is109, '| UA:', navigator.userAgent);
+    const ver = getBrowserVersion();
+    const versionClass = ver ? (ver <= 109 ? 'v109' : `v${ver}`) : null;
+    console.log('[BrowserDetector] version:', ver, '| class:', versionClass, '| UA:', navigator.userAgent);
 
-    if (is109) {
-      const applyV109Class = () => {
-        if (document.documentElement && !document.documentElement.classList.contains('v109')) {
-          document.documentElement.classList.add('v109');
+    if (versionClass) {
+      const applyVersionClass = () => {
+        if (document.documentElement && !document.documentElement.classList.contains(versionClass)) {
+          document.documentElement.classList.add(versionClass);
         }
-        if (document.body && !document.body.classList.contains('v109')) {
-          document.body.classList.add('v109');
+        if (document.body && !document.body.classList.contains(versionClass)) {
+          document.body.classList.add(versionClass);
         }
       };
 
       // 즉시 적용
-      applyV109Class();
+      applyVersionClass();
 
       // DOMContentLoaded & load 시점 재적용
       if (document.readyState === 'loading') {
-        window.addEventListener('DOMContentLoaded', applyV109Class);
+        window.addEventListener('DOMContentLoaded', applyVersionClass);
       }
-      window.addEventListener('load', applyV109Class);
+      window.addEventListener('load', applyVersionClass);
 
       // React / Next.js 하이드레이션 등으로 클래스가 제거/덮어씌워지는 경우 방지 (초기 3초간 300ms 주기 보장)
-      const intervalId = setInterval(applyV109Class, 300);
+      const intervalId = setInterval(applyVersionClass, 300);
       setTimeout(() => clearInterval(intervalId), 3000);
     }
   } catch (e) {
