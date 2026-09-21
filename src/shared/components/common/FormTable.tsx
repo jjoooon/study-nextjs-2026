@@ -90,6 +90,8 @@ interface FormTableProps {
   vertical?: boolean;
   /** 테이블 하단에 렌더링할 추가 영역(요약, 버튼 등) */
   after?: React.ReactNode;
+  /** 스켈레톤 상태 적용 여부 (기본값: false) */
+  skeleton?: boolean | string;
 }
 
 /**
@@ -292,7 +294,10 @@ export const FormTable = ({
   lineTop = true,
   after,
   vertical,
+  skeleton = false,
 }: FormTableProps) => {
+  const isSkeleton = skeleton === true || skeleton === 'true';
+
   /**
    * 테이블 외형 프리셋.
    * - `default`: 표준 입력형 테이블
@@ -385,7 +390,9 @@ export const FormTable = ({
         className={cn(
           'cp-formtable overflow-visible',
           variantStyles[variant as keyof typeof variantStyles],
-          showLineTop ? '!border-t !border-t-[.2rem] !border-t-[#000]' : '!border-t-0',
+          showLineTop
+            ? cn('!border-t !border-t-[.2rem]', isSkeleton ? '!border-t-[var(--color-gray-10)]' : '!border-t-[#000]')
+            : '!border-t-0',
           className
         )}
         data-variant={variant}

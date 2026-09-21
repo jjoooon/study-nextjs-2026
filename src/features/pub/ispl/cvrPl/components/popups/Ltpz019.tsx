@@ -82,30 +82,30 @@ const dummyData3: DummyDataType3[] = [
     id: 2,
     field1: '비대면진단심사플랜(15~40세)',
   },
-  {
-    id: 3,
-    field1: '비대면진단심사플랜(15~40세)',
-  },
-  {
-    id: 4,
-    field1: '올인원플랜(15~40세)',
-  },
-  {
-    id: 5,
-    field1: '올인원플랜(15~40세)',
-  },
-  {
-    id: 6,
-    field1: '올인원플랜(15~40세)',
-  },
-  {
-    id: 7,
-    field1: '올인원플랜(15~40세)',
-  },
-  {
-    id: 8,
-    field1: '올인원플랜(15~40세)',
-  },
+  // {
+  //   id: 3,
+  //   field1: '비대면진단심사플랜(15~40세)',
+  // },
+  // {
+  //   id: 4,
+  //   field1: '올인원플랜(15~40세)',
+  // },
+  // {
+  //   id: 5,
+  //   field1: '올인원플랜(15~40세)',
+  // },
+  // {
+  //   id: 6,
+  //   field1: '올인원플랜(15~40세)',
+  // },
+  // {
+  //   id: 7,
+  //   field1: '올인원플랜(15~40세)',
+  // },
+  // {
+  //   id: 8,
+  //   field1: '올인원플랜(15~40세)',
+  // },
 ];
 
 /**
@@ -184,61 +184,61 @@ const dummyData: DummyDataType[] = [
     field1: '종합건강',
     field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
   },
-  {
-    id: 5,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
-  {
-    id: 6,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
-  {
-    id: 7,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
-  {
-    id: 8,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
-  {
-    id: 9,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
-  {
-    id: 10,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
-  {
-    id: 11,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
-  {
-    id: 12,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
-  {
-    id: 13,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
-  {
-    id: 14,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
-  {
-    id: 20,
-    field1: '종합건강',
-    field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
-  },
+  // {
+  //   id: 5,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
+  // {
+  //   id: 6,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
+  // {
+  //   id: 7,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
+  // {
+  //   id: 8,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
+  // {
+  //   id: 9,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
+  // {
+  //   id: 10,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
+  // {
+  //   id: 11,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
+  // {
+  //   id: 12,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
+  // {
+  //   id: 13,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
+  // {
+  //   id: 14,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
+  // {
+  //   id: 20,
+  //   field1: '종합건강',
+  //   field2: '{LA1312312}한화 311 간편건강보험(연만기 경신쳥)',
+  // },
 ];
 
 /**
@@ -488,8 +488,7 @@ const Ltpz019 = () => {
                   <TableFoldBody className="w-full ">
                     {/* showProductNameTooltip 값에 따라 말풍선 노출을 제어하기 위해 CSS 클래스 동적 부여 */}
                     <div
-                      className={`w-full tooltip-hidden-toggle ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
-                      data-row={dummyData.length}
+                      className={`w-full min-h-[39.6rem] tooltip-hidden-toggle ag-theme-alpine ${showProductNameTooltip ? ' show-product-tooltip' : ''}`}
                     >
                       <AgGridReact<DummyDataType>
                         getRowId={(params) => String(params.data.id)}
@@ -516,7 +515,7 @@ const Ltpz019 = () => {
                     <Grid className="w-full h-full grid-rows-[auto_1fr]" gap={3}>
                       {/* 우측 상단: 종 정보 리스트 (Ag-Grid) */}
                       <Gcol className="w-full">
-                        <div className="ag-theme-alpine w-full inner-scroll" data-row={dummyData2.length}>
+                        <div className="ag-theme-alpine w-full inner-scroll" data-row={4}>
                           <AgGridReact<DummyDataType2>
                             getRowId={(params) => String(params.data.id)}
                             noRowsOverlayComponent={AgGridEmptyComponent}
@@ -550,7 +549,7 @@ const Ltpz019 = () => {
                           renderTab={(tab) => <span>{tab.label}</span>}
                           renderDropdownItem={false}
                         >
-                          <div className="ag-theme-alpine w-full ag-border-t inner-scroll" data-row={dummyData3.length}>
+                          <div className="ag-theme-alpine w-full ag-border-t inner-scroll" data-row={5}>
                             <AgGridReact<DummyDataType3>
                               getRowId={(params) => String(params.data.id)}
                               noRowsOverlayComponent={AgGridEmptyComponent}
