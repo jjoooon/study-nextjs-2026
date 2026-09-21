@@ -35,7 +35,7 @@ function Skeleton({
   height,
   style,
   loading = true,
-  animate = false,
+  animate = true,
   type = 'default',
   color = 'default',
   children,

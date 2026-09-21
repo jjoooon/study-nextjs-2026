@@ -1,31 +1,74 @@
 /*
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
-import { ReactNode } from 'react';
+'use client';
+
+import { useSearchParams } from 'next/navigation';
+import { ReactNode, useEffect } from 'react';
 import { cn } from '@/shared/lib/shadcn/utils';
 
 // 공통 레이아웃 props
 // - children: 하위 UI
 // - className: 기본 레이아웃 클래스에 추가로 합칠 사용자 클래스
+// - isPopup: 팝업 여부 (미지정 시 URL 파라미터 isPopup=true / popup=true 기준 자동 감지)
 interface LayoutProps {
   children?: ReactNode;
   size?: string;
   className?: string;
   state?: boolean;
   isFlowExpanded?: boolean;
+  isPopup?: boolean;
 }
 
-// 문서 전체 래퍼: 상단(head) + 본문(body) 2행 구조
-export const LayoutDoc = ({ children, className }: LayoutProps) => {
+// 팝업 여부 판별 훅 (URL 파라미터 isPopup=true / popup=true / popup=y / popup=1 또는 prop 기준)
+export const useIsPopup = (propIsPopup?: boolean) => {
+  const searchParams = useSearchParams();
+
+  if (typeof propIsPopup === 'boolean') {
+    return propIsPopup;
+  }
+
+  // 1. Next.js searchParams 훅 검사
+  const searchParamVal = searchParams?.get('isPopup') ?? searchParams?.get('popup');
+  if (searchParamVal === 'true' || searchParamVal === 'y' || searchParamVal === '1') {
+    return true;
+  }
+
+  // 2. 브라우저 window.location.search 검사 (Storybook iframe / 외부 iframe 환경 호환)
+  if (typeof window !== 'undefined') {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const winParamVal = urlParams.get('isPopup') ?? urlParams.get('popup');
+      if (winParamVal === 'true' || winParamVal === 'y' || winParamVal === '1') {
+        return true;
+      }
+
+      // 3. Hash URL (예: #/?isPopup=true) 감지
+      if (window.location.hash.includes('isPopup=true') || window.location.hash.includes('popup=true')) {
+        return true;
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  return false;
+};
+
+// 문서 전체 래퍼: 상단(head) + 본문(body) 2행 구조 (팝업 모드일 경우 본문 1행 구조)
+export const LayoutDoc = ({ children, className, isPopup: propIsPopup }: LayoutProps) => {
+  const isPopup = useIsPopup(propIsPopup);
+
   return (
     <div
       data-layout="doc"
+      data-is-popup={isPopup}
       className={cn(
         'relative grid h-full min-h-[51rem] bg-[#fff]',
-        // 기본 2개 구조 (Head + Body)
-        'grid-rows-[auto_minmax(0,1fr)]',
-        // 직계 자식(>) 중 3번째 자식이 존재하면 3행 구조 (Head + Body + Foot)로 변경
-        '[&:has(>*:nth-child(3))]:grid-rows-[auto_minmax(0,1fr)_auto]',
+        // 기본 2개 구조 (Head + Body), 팝업일 경우 1개 구조
+        isPopup ? 'grid-rows-[minmax(0,1fr)]' : 'grid-rows-[auto_minmax(0,1fr)]',
+        // 직계 자식(>) 중 3번째 자식이 존재하고 팝업이 아닌 경우 3행 구조 (Head + Body + Foot)로 변경
+        !isPopup && '[&:has(>*:nth-child(3))]:grid-rows-[auto_minmax(0,1fr)_auto]',
         className
       )}
     >
@@ -35,7 +78,11 @@ export const LayoutDoc = ({ children, className }: LayoutProps) => {
 };
 
 // 문서 상단 영역
-export const LayoutHead = ({ children, className }: LayoutProps) => {
+export const LayoutHead = ({ children, className, isPopup: propIsPopup }: LayoutProps) => {
+  const isPopup = useIsPopup(propIsPopup);
+
+  if (isPopup) return null;
+
   return (
     <header
       data-layout="head"
@@ -60,7 +107,11 @@ export const LayoutBody = ({ children, className, ...rest }: LayoutProps) => {
 };
 
 // 문서 하단 영역
-export const LayoutFoot = ({ children, className }: LayoutProps) => {
+export const LayoutFoot = ({ children, className, isPopup: propIsPopup }: LayoutProps) => {
+  const isPopup = useIsPopup(propIsPopup);
+
+  if (isPopup) return null;
+
   return (
     <footer data-layout="foot" className={cn('relative flex justify-between items-center', className)}>
       {children}

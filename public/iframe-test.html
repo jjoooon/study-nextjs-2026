@@ -666,7 +666,7 @@
         const subIdQuery = item.subId && item.subId.includes('sub_') ? `&step=${encodeURIComponent(item.subId)}` : '';
 
         const base = (storybookBase || '').replace(/\/+$/, '');
-        return `${base}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}`;
+        return `${base}/iframe.html?id=${storyPath}--default&viewMode=story${stepQuery}${subIdQuery}&isPopup=true&args=isPopup:true`;
       }
 
       let allItems = [];

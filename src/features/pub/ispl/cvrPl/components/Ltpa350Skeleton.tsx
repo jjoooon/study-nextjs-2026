@@ -13,7 +13,7 @@ import { Skeleton } from '@uiux/Skeleton';
 
 export function Ltpa350Skeleton() {
   return (
-    <Grid className="grid-rows-[auto_1fr_auto] h-full">
+    <Grid className="grid-rows-[auto_1fr_auto] h-[100vh]">
       <LayoutHead>
         <Grow placement={'bwc'} className="w-full py-[0.4rem] gap-[0.4rem] relative">
           <Skeleton className="w-[10rem]" type="text" />
