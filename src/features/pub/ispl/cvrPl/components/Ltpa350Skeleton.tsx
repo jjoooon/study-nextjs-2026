@@ -2,53 +2,16 @@
  * COPYRIGHT (c) 2026 All rights reserved by HANWHA General Insurance.
  */
 
-import { useEffect, useState } from 'react';
-import { useTabs } from '@/shared/hooks/useTabs';
-import { cn } from '@/shared/lib/shadcn/utils';
-import { Grow, Gcol, Typo, Grid } from '@atoms';
+import { Grow, Gcol, Grid } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
-import { BulletList, BulletListItem } from '@common/BulletList';
-import { BulletItem } from '@common/BulletList';
-import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
-import { InputCombo } from '@common/InputCombo';
-import { KeyValueItem } from '@common/KeyValueList';
-import { TabPager } from '@common/TabPager';
-import { TooltipQ } from '@common/TooltipQ';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
-import { SearchIcon, AddIcon } from '@icons';
 import { LayoutFoot, LayoutHead } from '@layout/BaseLayout';
 import { LayoutMain, LayoutScrollWrap, LayoutMainFoot, LayoutMainBody, LayoutScrollItem } from '@layout/BaseLayout';
 import { LayoutTemplateLTPA350 } from '@layout/LayoutTemplate';
-import { LayoutTemplateLTPA350MainBody } from '@layout/LayoutTemplate';
-import { Badge } from '@uiux/Badge';
-import { Button } from '@uiux/Button';
-import { Checkbox } from '@uiux/Checkbox';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogFooterArea,
-  DialogHeader,
-  DialogSection,
-  DialogTitle,
-} from '@uiux/Dialog';
-import { Input } from '@uiux/Input';
-import { NativeSelect, NativeSelectOption } from '@uiux/NativeSelect';
-import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 import { Skeleton } from '@uiux/Skeleton';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@uiux/Tooltip';
 
-export interface Ltpa350SkeletonProps {
-  /**
-   * 스켈레톤 모션(애니메이션) 적용 여부
-   * @default false
-   */
-  animate?: boolean;
-}
-
-export function Ltpa350Skeleton({ animate = false }: Ltpa350SkeletonProps = {}) {
+export function Ltpa350Skeleton() {
   return (
     <Grid className="grid-rows-[auto_1fr_auto] h-full">
       <LayoutHead>
