@@ -73,17 +73,14 @@ export function Ltpa350Skeleton({ animate = false }: Ltpa350SkeletonProps = {}) 
           </Grow>
         }
         pageProcess={
-          <Gcol
-            placement="bwe"
-            className="w-[3.8rem] pb-[1rem] bg-[var(--color-gray-5)] border-r-[1px] border-r-[var(--color-gray-15)]"
-          >
+          <Gcol placement="bwe" className="w-[3.8rem] pb-[1rem] border-r-[1px] border-r-[var(--color-gray-10)]">
             <Gcol className="h-full max-h-[54rem] gap-[0.2rem]" placement="se">
               <Skeleton className="h-[9rem] w-[3.3rem] rounded-[0.8rem_0_0_0.8rem]" color="dark" />
-              <Skeleton className="h-[6rem] w-[2.9rem] rounded-[0.8rem_0_0_0.8rem]" color="dark" />
-              <Skeleton className="h-[6rem] w-[2.9rem] rounded-[0.8rem_0_0_0.8rem]" color="dark" />
-              <Skeleton className="h-[6rem] w-[2.9rem] rounded-[0.8rem_0_0_0.8rem]" color="dark" />
-              <Skeleton className="h-[6rem] w-[2.9rem] rounded-[0.8rem_0_0_0.8rem]" color="dark" />
-              <Skeleton className="h-[6rem] w-[2.9rem] rounded-[0.8rem_0_0_0.8rem]" color="dark" />
+              <Skeleton className="h-[6rem] w-[2.9rem] rounded-[0.8rem_0_0_0.8rem]" color="" />
+              <Skeleton className="h-[6rem] w-[2.9rem] rounded-[0.8rem_0_0_0.8rem]" color="" />
+              <Skeleton className="h-[6rem] w-[2.9rem] rounded-[0.8rem_0_0_0.8rem]" color="" />
+              <Skeleton className="h-[6rem] w-[2.9rem] rounded-[0.8rem_0_0_0.8rem]" color="" />
+              <Skeleton className="h-[6rem] w-[2.9rem] rounded-[0.8rem_0_0_0.8rem]" color="" />
             </Gcol>
           </Gcol>
         }
@@ -144,7 +141,7 @@ export function Ltpa350Skeleton({ animate = false }: Ltpa350SkeletonProps = {}) 
                     <Gcol gap={0}>
                       <Grow placement="bwc" className="w-full">
                         <Grow>
-                          <Skeleton className="w-[10rem] h-[3rem] rounded-[0.8rem_0.8rem_0_0]" />
+                          <Skeleton className="w-[10rem] h-[3rem] rounded-[0.8rem_0.8rem_0_0]" color="dark" />
                           <Skeleton className="w-[10rem] h-[3rem] rounded-[0.8rem_0.8rem_0_0]" />
                           <Skeleton className="w-[10rem] h-[3rem] rounded-[0.8rem_0.8rem_0_0]" />
                         </Grow>
@@ -276,7 +273,10 @@ export function Ltpa350Skeleton({ animate = false }: Ltpa350SkeletonProps = {}) 
               <Skeleton className="w-[6rem]" type="text" />
               <Skeleton className="h-[2.5rem] w-[3.5rem]" />
             </Grow>
-            <Grid variant="box-line" className="grid-cols-[1fr_1fr] w-full gap-1" placement="ss">
+            <Grid
+              className="grid-cols-[1fr_1fr] w-full gap-1 border rounded-[0.8rem] p-2 border-[var(--color-gray-10)]"
+              placement="ss"
+            >
               <Skeleton className="h-[2.2rem]" />
               <Skeleton className="h-[2.2rem]" />
               <Skeleton className="h-[2.2rem]" />
