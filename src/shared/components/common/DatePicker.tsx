@@ -312,7 +312,19 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
 
   const handleOpenChange = (nextOpen: boolean) => {
     setOpen(nextOpen);
-    if (nextOpen) {
+    if (nextOpen && mode === 'range') {
+      const currentRangeSelected =
+        selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
+      const fromDate = currentRangeSelected?.from ? normalizeDate(currentRangeSelected.from) : undefined;
+      const toDate = currentRangeSelected?.to ? normalizeDate(currentRangeSelected.to) : undefined;
+
+      // 이미 시작일(from)만 선택되어 있고 종료일(to)이 비어있는 상태라면 종료일 선택 대기 모드로 유지
+      if (fromDate && !toDate) {
+        setIsSelectingEnd(true);
+      } else {
+        setIsSelectingEnd(false);
+      }
+    } else if (nextOpen) {
       setIsSelectingEnd(false);
     }
   };
@@ -386,52 +398,23 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         const clickedDay = new Date(selectedDay);
         clickedDay.setHours(0, 0, 0, 0);
 
-        if (autoRangeDays > 0 && !autoRangeFix) {
-          const currentRangeSelected =
-            selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
+        const currentRangeSelected =
+          selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
 
-          // 1. 이미 from과 to가 모두 선택 완료된 상태에서 다시 클릭했을 때 -> 새로운 시작일로 설정
-          if (currentRangeSelected?.from && currentRangeSelected?.to && !isSelectingEnd) {
-            setSelected({ from: clickedDay, to: undefined });
-            setRangeInput({ from: formatDate(clickedDay), to: '' });
-            setNumericValue(formatDate(clickedDay).replace(/\D/g, ''));
-            setIsSelectingEnd(true);
-            onChange?.(clickedDay, formatDate(clickedDay));
-            setInvalidDate(false);
-            return;
-          }
+        const fromDate = currentRangeSelected?.from ? normalizeDate(currentRangeSelected.from) : undefined;
+        const toDate = currentRangeSelected?.to ? normalizeDate(currentRangeSelected.to) : undefined;
 
-          // 2. 시작일 선택 단계이거나, from이 아직 없는 경우
-          if (!isSelectingEnd || !currentRangeSelected || !currentRangeSelected.from) {
-            setSelected({ from: clickedDay, to: undefined });
-            setRangeInput({ from: formatDate(clickedDay), to: '' });
-            setNumericValue(formatDate(clickedDay).replace(/\D/g, ''));
-            setIsSelectingEnd(true);
-            onChange?.(clickedDay, formatDate(clickedDay));
-            setInvalidDate(false);
-            return;
-          }
+        // 시작일(fromDate)이 지정되어 있고 종료일(toDate)이 비어있거나, isSelectingEnd 상태인 경우 종료일 선택 단계로 처리
+        const shouldSelectEnd = (isSelectingEnd || !toDate) && Boolean(fromDate);
 
-          // 3. 종료일 선택 대기 상태 (isSelectingEnd === true && currentRangeSelected.from 존재)
-          if (isSelectingEnd && currentRangeSelected.from) {
-            const fromDate = normalizeDate(currentRangeSelected.from)!;
+        // 1. 종료일 선택 단계 (시작일이 이미 존재하는 경우)
+        if (shouldSelectEnd && fromDate) {
+          // 1-1. autoRangeDays 허용 범위 검사 (지정되어 있는 경우)
+          if (autoRangeDays > 0) {
             const maxAllowed = new Date(fromDate);
             maxAllowed.setDate(maxAllowed.getDate() + autoRangeDays - 1);
 
-            // 3-1. 시작일과 동일한 날짜를 다시 선택한 경우 -> 취소가 아닌 종료일로 선택되어 시작일과 종료일이 같은 날짜가 됨
-            if (isSameDay(clickedDay, fromDate)) {
-              const nextTo = clickedDay;
-              setSelected({ from: fromDate, to: nextTo });
-              setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
-              setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-              setIsSelectingEnd(false);
-              onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
-              setOpen(false);
-              setInvalidDate(false);
-              return;
-            }
-
-            // 3-2. 시작일보다 이전이거나 허용 범위를 초과한 날짜를 클릭한 경우 -> 새로운 시작일로 재설정
+            // 허용 범위를 초과하거나 시작일보다 이전 날짜를 클릭한 경우 -> 새로 클릭한 날짜를 '시작일 - 빈값'으로 설정
             if (clickedDay < fromDate || clickedDay > maxAllowed) {
               const nextFrom = clickedDay;
               setSelected({ from: nextFrom, to: undefined });
@@ -442,124 +425,34 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
               setInvalidDate(false);
               return;
             }
-
-            // 3-3. 허용 범위 내의 날짜를 종료일로 선택한 경우 -> 완료
-            const nextTo = clickedDay;
-            setSelected({ from: fromDate, to: nextTo });
-            setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
-            setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-            setIsSelectingEnd(false);
-            onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
-            setOpen(false);
-            setInvalidDate(false);
-            return;
-          }
-        }
-
-        const offset = autoRangeDays ?? 7;
-
-        if (autoRangeFix) {
-          const nextFrom = clickedDay;
-          const nextTo = new Date(nextFrom);
-          nextTo.setDate(nextTo.getDate() + offset);
-
-          setSelected({ from: nextFrom, to: nextTo });
-          setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
-          setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-          setIsSelectingEnd(false);
-          onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
-
-          setOpen(false);
-          setInvalidDate(false);
-          return;
-        }
-
-        const currentRangeSelected =
-          selected && !Array.isArray(selected) && !(selected instanceof Date) ? selected : undefined;
-
-        const fromDate = currentRangeSelected?.from ? normalizeDate(currentRangeSelected.from) : undefined;
-        const toDate = currentRangeSelected?.to ? normalizeDate(currentRangeSelected.to) : undefined;
-
-        // 1. 종료일 대기 상태(isSelectingEnd)에서 시작일과 동일한 날짜를 다시 선택한 경우 -> 취소가 아닌 종료일로 선택
-        if (isSelectingEnd && fromDate && isSameDay(clickedDay, fromDate)) {
-          const nextTo = clickedDay;
-          setSelected({ from: fromDate, to: nextTo });
-          setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
-          setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-          setIsSelectingEnd(false);
-          onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
-          setOpen(false);
-          setInvalidDate(false);
-          return;
-        }
-
-        // 2. 종료일 선택 다시 선택시 종료일 초기화 및 종료일 대기 모드 전환 (from과 to가 서로 다를 때만)
-        if (toDate && !isSameDay(fromDate, toDate) && isSameDay(clickedDay, toDate)) {
-          setSelected({ from: fromDate, to: undefined });
-          setRangeInput({ from: formatDate(fromDate), to: '' });
-          setNumericValue(formatDate(fromDate).replace(/\D/g, ''));
-          setIsSelectingEnd(true); // 종료일 선택 대기 상태로 전환
-          onChange?.(fromDate, formatDate(fromDate));
-          setInvalidDate(false);
-          return;
-        }
-
-        // 3. 기존에 이미 기간 선택(from과 to 모두 존재)이 완료되었던 상태에서 세 번째 클릭이 들어온 경우 -> 무조건 새로운 시작일로 지정
-        if (fromDate && toDate && !isSelectingEnd) {
-          const nextFrom = clickedDay;
-          const nextTo = new Date(nextFrom);
-          nextTo.setDate(nextTo.getDate() + offset);
-
-          // 만약 자동으로 계산된 nextTo가 maxDate를 넘는다면 클램프
-          if (maxDate && nextTo > maxDate) {
-            nextTo.setTime(maxDate.getTime());
           }
 
-          setSelected({ from: nextFrom, to: nextTo });
-          setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
-          setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-          setIsSelectingEnd(true); // 종료일 선택 대기 상태로 전환
-          onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
-
-          setInvalidDate(false);
-          return;
-        }
-
-        // 4. 종료일 대기 상태이거나, 한쪽만 채워져 있는 경우
-        if (isSelectingEnd && fromDate) {
+          // 시작일과 종료일 결정 (클릭한 날짜가 시작일 이전이면 두 날짜 위치 자동 순서 정렬)
+          let nextFrom = fromDate;
+          let nextTo = clickedDay;
           if (clickedDay < fromDate) {
-            // 클릭한 날짜가 시작일보다 전인 경우 -> 클릭한 앞날짜가 시작일(from), 전에 선택한 시작일이 종료일(to)이 됨
-            const nextFrom = clickedDay;
-            const nextTo = fromDate;
-
-            setSelected({ from: nextFrom, to: nextTo });
-            setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
-            setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-            setIsSelectingEnd(false); // 선택 완료
-            onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
-            setOpen(false);
-          } else {
-            // 클릭한 날짜가 시작일보다 같거나 후인 경우 -> 기존 시작일이 시작일(from), 클릭한 날짜가 종료일(to)이 됨
-            const nextTo = clickedDay;
-            setSelected({ from: fromDate, to: nextTo });
-            setRangeInput({ from: formatDate(fromDate), to: formatDate(nextTo) });
-            setNumericValue(`${formatDate(fromDate).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-            setIsSelectingEnd(false); // 선택 완료
-            onChange?.(nextTo, `${formatDate(fromDate)} ~ ${formatDate(nextTo)}`);
-            setOpen(false);
+            nextFrom = clickedDay;
+            nextTo = fromDate;
           }
-        } else {
-          // 시작일 선택 단계
-          const nextFrom = clickedDay;
-          const nextTo = new Date(nextFrom);
-          nextTo.setDate(nextTo.getDate() + offset);
 
           setSelected({ from: nextFrom, to: nextTo });
           setRangeInput({ from: formatDate(nextFrom), to: formatDate(nextTo) });
           setNumericValue(`${formatDate(nextFrom).replace(/\D/g, '')}${formatDate(nextTo).replace(/\D/g, '')}`);
-          setIsSelectingEnd(true); // 다음 클릭은 종료일 선택
+          setIsSelectingEnd(false); // 기간 선택 완료
           onChange?.(nextTo, `${formatDate(nextFrom)} ~ ${formatDate(nextTo)}`);
+          setOpen(false);
+          setInvalidDate(false);
+          return;
         }
+
+        // 2. 시작일 선택 단계이거나, 이미 기간 선택이 완료되었던 상태에서 선택하는 경우
+        // -> 무조건 클릭한 날짜를 '시작일 - 빈값'으로 설정 (종료일 자동설정 금지)
+        const nextFrom = clickedDay;
+        setSelected({ from: nextFrom, to: undefined });
+        setRangeInput({ from: formatDate(nextFrom), to: '' });
+        setNumericValue(formatDate(nextFrom).replace(/\D/g, ''));
+        setIsSelectingEnd(true); // 종료일 선택 대기 상태로 전환
+        onChange?.(nextFrom, formatDate(nextFrom));
         setInvalidDate(false);
         return;
       }
@@ -659,37 +552,15 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         return;
       }
 
-      // 2. 기존 종료일이 없거나, 새 시작일이 기존 종료일보다 늦은 경우
-      if (autoRangeDays > 0) {
-        const offset = autoRangeDays;
-        const autoTo = new Date(parsedDate);
-        autoTo.setDate(autoTo.getDate() + offset);
-
-        if (maxDate && autoTo > maxDate) {
-          autoTo.setTime(maxDate.getTime());
-        }
-
-        const autoToFormatted = formatDate(autoTo);
-
-        setRangeInput({ from: formatted, to: autoToFormatted });
-        setSelected({ from: parsedDate, to: autoTo });
-        setNumericValue(`${digits}${autoToFormatted.replace(/\D/g, '')}`);
-        setInvalidRange({ from: false, to: false });
-        setInvalidDate(false);
-        onChange?.(autoTo, `${formatted} ~ ${autoToFormatted}`);
-        toInputRef.current?.focus();
-        return;
-      } else {
-        // autoRangeDays가 설정되어 있지 않고 기존 종료일이 없거나 역전된 경우: 시작일만 설정하고 종료일은 비움
-        setRangeInput({ from: formatted, to: '' });
-        setSelected({ from: parsedDate, to: undefined });
-        setNumericValue(digits);
-        setInvalidRange({ from: false, to: false });
-        setInvalidDate(false);
-        onChange?.(parsedDate, formatted);
-        toInputRef.current?.focus();
-        return;
-      }
+      // 2. 기존 종료일이 없거나, 새 시작일이 기존 종료일보다 늦은 경우 -> 시작일만 설정하고 종료일은 비움 (시작일 - 빈값)
+      setRangeInput({ from: formatted, to: '' });
+      setSelected({ from: parsedDate, to: undefined });
+      setNumericValue(digits);
+      setInvalidRange({ from: false, to: false });
+      setInvalidDate(false);
+      onChange?.(parsedDate, formatted);
+      toInputRef.current?.focus();
+      return;
     }
 
     const nextRange: DateRange = { ...currentRange, [part]: parsedDate };
@@ -987,6 +858,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
       <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <Button
+            type="button"
             id={`${finalId}-button`}
             variant={'outlined'}
             only={'icon'}
@@ -995,6 +867,7 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
             aria-label="Select date"
             className={buttonSizeClass}
             disabled={isCalendarButtonDisabled}
+            onClick={() => handleOpenChange(!open)}
           >
             <CalendarIcon color="var(--color-icon-primary)" />
             <span className="sr-only">Select date</span>
