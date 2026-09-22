@@ -642,29 +642,54 @@ export const DatePickerInput = React.forwardRef<HTMLInputElement, UIInputProps>(
         ? selected
         : { from: undefined, to: undefined };
 
-    // 만약 시작일이 완성되었고 종료일이 비어있다면 자동 입력 적용
+    // 만약 시작일이 완성되었을 때의 처리
     if (part === 'from' && parsedDate && digits.length === 8 && isWithinRange) {
-      const offset = autoRangeDays ?? 7;
-      const autoTo = new Date(parsedDate);
-      autoTo.setDate(autoTo.getDate() + offset);
+      const existingToDate = currentRange.to || parseDateFromDigits(rangeInput.to.replace(/\D/g, ''));
 
-      // autoTo가 maxDate를 넘지 않도록 클램프
-      if (maxDate && autoTo > maxDate) {
-        autoTo.setTime(maxDate.getTime());
+      // 1. 기존 종료일이 존재하고 시작일이 종료일보다 작거나 같은 경우: 기존 종료일 유지
+      if (existingToDate && isValidDate(existingToDate) && parsedDate <= existingToDate) {
+        const existingToFormatted = formatDate(existingToDate);
+        setRangeInput({ from: formatted, to: existingToFormatted });
+        setSelected({ from: parsedDate, to: existingToDate });
+        setNumericValue(`${digits}${existingToFormatted.replace(/\D/g, '')}`);
+        setInvalidRange({ from: false, to: false });
+        setInvalidDate(false);
+        onChange?.(existingToDate, `${formatted} ~ ${existingToFormatted}`);
+        toInputRef.current?.focus();
+        return;
       }
 
-      const autoToFormatted = formatDate(autoTo);
+      // 2. 기존 종료일이 없거나, 새 시작일이 기존 종료일보다 늦은 경우
+      if (autoRangeDays > 0) {
+        const offset = autoRangeDays;
+        const autoTo = new Date(parsedDate);
+        autoTo.setDate(autoTo.getDate() + offset);
 
-      setRangeInput({ from: formatted, to: autoToFormatted });
-      setSelected({ from: parsedDate, to: autoTo });
-      setNumericValue(`${digits}${autoToFormatted.replace(/\D/g, '')}`);
-      setInvalidRange({ from: false, to: false });
-      setInvalidDate(false);
-      onChange?.(autoTo, `${formatted} ~ ${autoToFormatted}`);
+        if (maxDate && autoTo > maxDate) {
+          autoTo.setTime(maxDate.getTime());
+        }
 
-      // 포커스 종료일로 이동
-      toInputRef.current?.focus();
-      return;
+        const autoToFormatted = formatDate(autoTo);
+
+        setRangeInput({ from: formatted, to: autoToFormatted });
+        setSelected({ from: parsedDate, to: autoTo });
+        setNumericValue(`${digits}${autoToFormatted.replace(/\D/g, '')}`);
+        setInvalidRange({ from: false, to: false });
+        setInvalidDate(false);
+        onChange?.(autoTo, `${formatted} ~ ${autoToFormatted}`);
+        toInputRef.current?.focus();
+        return;
+      } else {
+        // autoRangeDays가 설정되어 있지 않고 기존 종료일이 없거나 역전된 경우: 시작일만 설정하고 종료일은 비움
+        setRangeInput({ from: formatted, to: '' });
+        setSelected({ from: parsedDate, to: undefined });
+        setNumericValue(digits);
+        setInvalidRange({ from: false, to: false });
+        setInvalidDate(false);
+        onChange?.(parsedDate, formatted);
+        toInputRef.current?.focus();
+        return;
+      }
     }
 
     const nextRange: DateRange = { ...currentRange, [part]: parsedDate };
