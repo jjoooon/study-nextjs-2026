@@ -685,7 +685,7 @@ function DialogOverlay({ className, style, disableMotion = false, dim = 'dark', 
       style={style}
       className={cn(
         'cp-dialog-overlay fixed inset-0 pointer-events-none',
-        dim === 'dark' ? 'bg-black/60' : 'bg-transparent',
+        dim === 'dark' ? 'bg-black/10' : 'bg-transparent',
         disableMotion
           ? 'transition-none'
           : 'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0',

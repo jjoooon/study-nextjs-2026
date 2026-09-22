@@ -77,34 +77,10 @@ const expectedUwLimitedCoverageData: ExpectedUwAmountRow[] = [
 ];
 
 // 보험료 할증
-const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [
-  {
-    id: 1,
-    coverageName: '보험료압입명제대상보장(8대사유)1보험료압입명제대상보장(8대사유)',
-  },
-  {
-    id: 2,
-    coverageName: '보험료압입명제대상보장(8대사유)1',
-  },
-  {
-    id: 3,
-    coverageName: '보험료압입명제대상보장(8대사유)1',
-  },
-];
+const expectedUwPremiumSurchargeData: ExpectedUwSingleRow[] = [];
 
 //부 담보(부위/질병)
-const expectedUwExclusionCoverageData: ExpectedUw03Row[] = [
-  {
-    id: 1,
-    coverageName: '보험료압입명제대상보장(8대사유)보험료압입명제대상보장(8대사유)',
-    date: '5년 0개월',
-  },
-  {
-    id: 2,
-    coverageName: '보험료압입명제대상보장(8대사유)',
-    date: '5년 0개월',
-  },
-];
+const expectedUwExclusionCoverageData: ExpectedUw03Row[] = [];
 const title1 = "<b>현재 설계상품</b>내에서 <b>'인수'</b>예상 고지유형";
 const title2 = "<b>간편고지유형</b>내에서 <b>'인수'</b>예상 고지유형";
 const title3 = "<b>일반고지유형</b>내에서 <b>'인수/할증/부담보/감액'</b>예상 고지유형";
@@ -368,10 +344,11 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
                     </TableFoldHead>
                     <TableFoldBody>
                       {/* 제한담보 */}
-                      <div className="ag-theme-alpine inner-scroll" data-row={4}>
+                      <div className="ag-theme-alpine inner-scroll" data-page={4}>
                         <AgGridReact<ExpectedUwAmountRow>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
+                          noRowsOverlayComponentParams={{ message: '조회 목록이 없습니다.' }}
                           rowData={expectedUwLimitedCoverageRowData}
                           columnDefs={expectedUwAmountColumnDefs}
                           defaultColDef={{
@@ -400,6 +377,7 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
                         <AgGridReact<ExpectedUwSingleRow>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
+                          noRowsOverlayComponentParams={{ message: '조회 목록이 없습니다.' }}
                           rowData={expectedUwPremiumSurchargeRowData}
                           columnDefs={expectedUwSingleColumnDefs}
                           defaultColDef={{
@@ -428,6 +406,7 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
                         <AgGridReact<ExpectedUw03Row>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}
+                          noRowsOverlayComponentParams={{ message: '조회 목록이 없습니다.' }}
                           rowData={expectedUwExclusionCoverageRowData}
                           columnDefs={expectedUw03ColumnDefs}
                           defaultColDef={{

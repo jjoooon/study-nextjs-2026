@@ -1104,7 +1104,15 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
 /* .ag-theme-alpine.inner-scroll:not([data-row='0']) .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 15rem !important;
 } */
-
+.ag-theme-alpine.inner-scroll[data-row="1"] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine.inner-scroll[data-row="2"] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine.inner-scroll[data-row="3"] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine.inner-scroll[data-row="4"] .ag-root-wrapper-body .ag-overlay,
+.ag-theme-alpine.inner-scroll[data-row="5"] .ag-root-wrapper-body .ag-overlay{
+  position: absolute;
+  bottom: 0;
+  top: auto;
+}
 .ag-theme-alpine.inner-scroll[data-row] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 15rem !important;
   max-height: 100% !important;
@@ -1117,26 +1125,31 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   min-height: 0 !important;
   overflow-y: auto !important;
 }
+.ag-theme-alpine.inner-scroll[data-row='1'] .ag-root-wrapper-body .ag-overlay,
 .ag-theme-alpine.inner-scroll[data-row='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 3rem !important;
   min-height: 3rem !important;
   max-height: 3rem !important;
 }
+.ag-theme-alpine.inner-scroll[data-row='2'] .ag-root-wrapper-body .ag-overlay,
 .ag-theme-alpine.inner-scroll[data-row='2'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 6rem !important;
   min-height: 6rem !important;
   max-height: 6rem !important;
 }
+.ag-theme-alpine.inner-scroll[data-row='3'] .ag-root-wrapper-body .ag-overlay,
 .ag-theme-alpine.inner-scroll[data-row='3'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 9rem !important;
   min-height: 9rem !important;
   max-height: 9rem !important;
 }
+.ag-theme-alpine.inner-scroll[data-row='4'] .ag-root-wrapper-body .ag-overlay,
 .ag-theme-alpine.inner-scroll[data-row='4'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 12rem !important;
   min-height: 12rem !important;
   max-height: 12rem !important;
 }
+.ag-theme-alpine.inner-scroll[data-row='5'] .ag-root-wrapper-body .ag-overlay,
 .ag-theme-alpine.inner-scroll[data-row='5'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 15rem !important;
   min-height: 15rem !important;
