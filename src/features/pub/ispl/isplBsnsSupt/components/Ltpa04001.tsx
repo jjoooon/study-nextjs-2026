@@ -635,6 +635,11 @@ const Ltpa04001 = () => {
     },
     {
       headerName: '설계 생성정보',
+      headerGroupComponent: () => (
+        <Grow placement="cc" className="w-full">
+          <span className="font-bold">설계 생성정보</span>
+        </Grow>
+      ),
       headerClass: 'ag-header-color',
       cellClass: 'text-center',
       children: [
