@@ -1,0 +1,156 @@
+[
+  {
+    "id": "LTPA010",
+    "title": "통합가입설계조회",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA020",
+    "title": "상품플랜설계",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA050",
+    "title": "설계비교",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA350",
+    "title": "계약사항",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA040",
+    "title": "추천 설계 만족도 조사 및 활용 모니터링",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA300",
+    "title": "정액담보점검목록 조회",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA301",
+    "title": "정액담보점검내역",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA400",
+    "title": "장기보험-가입설계요청",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA220",
+    "title": "계약 수익성(CSM)",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA500",
+    "title": "장기신계약가입설계결재정보",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA460",
+    "title": "산출검증항목 조회",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA680",
+    "title": "장기질병가이드",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA600",
+    "title": "담보분류관리",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA630",
+    "title": "보장패키지 담보관리",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA650",
+    "title": "보장패키지 상품시뮬",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA660",
+    "title": "담보별 추천속성관리",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA670",
+    "title": "상품별 추천속성관리",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA540",
+    "title": "유사담보관리",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA490",
+    "title": "미사용청약서관리",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA560",
+    "title": "실시간 설계현황",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA570",
+    "title": "세부지점별 실시간 설계현황",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  },
+  {
+    "id": "LTPA440",
+    "title": "가입설계이관",
+    "width": 1204,
+    "height": 700,
+    "isIframe": false
+  }
+]

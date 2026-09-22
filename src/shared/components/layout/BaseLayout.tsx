@@ -5,7 +5,30 @@
 
 import { useSearchParams } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
+import { getCurrentPopupIdFromUrl } from '@/shared/components/uiux/Dialog';
 import { cn } from '@/shared/lib/shadcn/utils';
+import dialogSizesData from '@/shared/popups/dialogSizes.json';
+import pageSizesData from '@/shared/popups/pageSizes.json';
+import { changeTitle, resizeWindow } from '@/shared/utils/screenUtils';
+
+type PredefinedSizeItem = {
+  id?: string;
+  title?: string;
+  width?: number | string;
+  height?: number | string;
+  isIframe?: boolean;
+};
+
+const allPredefinedSizes: PredefinedSizeItem[] = [
+  ...(dialogSizesData as PredefinedSizeItem[]),
+  ...(pageSizesData as PredefinedSizeItem[]),
+];
+
+const getPredefinedSize = (id?: string): PredefinedSizeItem | undefined => {
+  if (!id) return undefined;
+  const cleanId = id.trim().toLowerCase();
+  return allPredefinedSizes.find((item) => item.id?.trim().toLowerCase() === cleanId);
+};
 
 // 공통 레이아웃 props
 // - children: 하위 UI
@@ -56,8 +79,55 @@ export const useIsPopup = (propIsPopup?: boolean) => {
 };
 
 // 문서 전체 래퍼: 상단(head) + 본문(body) 2행 구조 (팝업 모드일 경우 본문 1행 구조)
-export const LayoutDoc = ({ children, className, isPopup: propIsPopup }: LayoutProps) => {
+export const LayoutDoc = ({ children, className, size, isPopup: propIsPopup }: LayoutProps) => {
   const isPopup = useIsPopup(propIsPopup);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !isPopup) return;
+
+    const timer = setTimeout(() => {
+      const currentId = getCurrentPopupIdFromUrl();
+      const predefined = getPredefinedSize(currentId);
+
+      const parsePx = (val?: string | number) => {
+        if (typeof val === 'number') return val;
+        if (typeof val === 'string') {
+          if (val.endsWith('rem')) return parseFloat(val) * 10;
+          if (val.endsWith('px')) return parseFloat(val);
+          const num = parseFloat(val);
+          return isNaN(num) ? undefined : num;
+        }
+        return undefined;
+      };
+
+      const targetWidthPx = parsePx(predefined?.width) ?? 1204;
+      const targetHeightPx = parsePx(predefined?.height) ?? 700;
+      const popupTitle = predefined?.title || '';
+
+      try {
+        window.parent.postMessage(
+          {
+            type: 'DIALOG_DEFAULT_SIZE',
+            popupId: currentId,
+            title: popupTitle,
+            width: Math.round(targetWidthPx) + 2,
+            height: Math.round(targetHeightPx),
+            sizePreset: size,
+          },
+          '*'
+        );
+
+        if (popupTitle) {
+          changeTitle(popupTitle);
+        }
+        resizeWindow({ width: Math.round(targetWidthPx) + 2, height: Math.round(targetHeightPx) });
+      } catch {
+        // cross-origin 무시
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [isPopup, size]);
 
   return (
     <div
@@ -166,9 +236,11 @@ export const LayoutFolderFoot = ({ children, className }: LayoutProps) => {
 };
 
 // 메인 영역 래퍼
-export const LayoutMain = ({ children, className }: LayoutProps) => {
+export const LayoutMain = ({ children, className, isPopup: propIsPopup }: LayoutProps) => {
+  const isPopup = useIsPopup(propIsPopup);
+
   return (
-    <main data-layout="main" className={cn('relative overflow-hidden', className)}>
+    <main data-layout="main" className={cn('relative overflow-hidden', isPopup && 'pt-3', className)}>
       {children}
     </main>
   );

@@ -110,71 +110,66 @@ export default function Ltpa020Section() {
     <>
       <LayoutHead>
         <PageID data={{ pageName: '상품플랜설계', pageId: 'LTPA020' }} />
-
-        {/* 상단 헤더 영역
-            1) 상품선택/추천설계 탭 전환
-            2) 기준일자/판매채널 조건
-            3) 계약자 검색 입력 */}
-        <Grow placement={'bwc'} gap={3} className="w-full pt-1 pb-1 ltpa020-tab-group">
-          <RadioGroup
-            value={tabSelectValue}
-            onValueChange={(value) => setTabSelectValue(value)}
-            className="bg-[#fff] gap-[0.2rem] rounded-2 relative after:content-[''] after:absolute after:block after:w-full after:h-full after:border after:border-[var(--color-secondary-15)] after:rounded-[0.8rem] after:z-0"
-          >
-            <RadioGroupItem
-              variant={'button'}
-              value="Ltpa02001"
-              className="relative z-1 [&>div]:hidden w-[18rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
-            >
-              상품선택
-            </RadioGroupItem>
-            <RadioGroupItem
-              variant={'button'}
-              value="Ltpa02002"
-              className="relative z-1 [&>div]:hidden w-[18rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
-            >
-              <span className="flex w-full justify-center items-center">추천설계</span>
-              {/* 현재 탭 상태에 맞춰 AI 아이콘 색상을 전환해 선택 상태를 직관적으로 표시 */}
-              <AiIcon
-                size={24}
-                color={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#006FF2'}
-                color2={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#A683FF'}
-              />
-            </RadioGroupItem>
-          </RadioGroup>
-          {userAdmin && (
-            <Grow>
-              <FormTable variant="none">
-                <FormRow>
-                  <FormCell title={'기준일자'}>
-                    <DatePickerInput value="2026-01-01" />
-                  </FormCell>
-                  <FormCell title={'판매채널'}>
-                    <RadioGroup>
-                      {[
-                        { value: '전체', label: '전체' },
-                        { value: '전속', label: '전속' },
-                        { value: 'GA', label: 'GA' },
-                        { value: 'TM', label: 'TM' },
-                        { value: 'CM', label: 'CM' },
-                        { value: '방카', label: '방카' },
-                      ].map((option) => (
-                        <RadioGroupItem key={option.value} value={option.value}>
-                          {option.label}
-                        </RadioGroupItem>
-                      ))}
-                    </RadioGroup>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
-            </Grow>
-          )}
-          <EmpInput empNo={'3999999'} empName={'김한손'} readOnly />
-        </Grow>
       </LayoutHead>
       <LayoutTemplatePx0
         mainBody={
-          <Grid className="w-full h-full grid-rows-[auto_minmax(0,1fr)]" gap={2} placement="ss">
+          <Grid className="w-full h-full grid-rows-[auto_auto_minmax(0,1fr)]" gap={2} placement="ss">
+            <Grow placement={'bwc'} gap={3} className="w-full pt-1 px-3 pt-1 ltpa020-tab-group">
+              <RadioGroup
+                value={tabSelectValue}
+                onValueChange={(value) => setTabSelectValue(value)}
+                className="bg-[#fff] gap-[0.2rem] rounded-2 relative after:content-[''] after:absolute after:block after:w-full after:h-full after:border after:border-[var(--color-secondary-15)] after:rounded-[0.8rem] after:z-0"
+              >
+                <RadioGroupItem
+                  variant={'button'}
+                  value="Ltpa02001"
+                  className="relative z-1 [&>div]:hidden w-[18rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
+                >
+                  상품선택
+                </RadioGroupItem>
+                <RadioGroupItem
+                  variant={'button'}
+                  value="Ltpa02002"
+                  className="relative z-1 [&>div]:hidden w-[18rem] h-[3.6rem] bg-[transparent] border-0! flex items-center gap-1 justify-center rounded-2 text-[1.4rem] text-[var(--color-secondary-70)] font-bold data-[state=checked]:bg-[linear-gradient(328deg,#FF5C2E_9.4%,#FF8D02_97.24%)] data-[state=checked]:text-white"
+                >
+                  <span className="flex w-full justify-center items-center">추천설계</span>
+                  {/* 현재 탭 상태에 맞춰 AI 아이콘 색상을 전환해 선택 상태를 직관적으로 표시 */}
+                  <AiIcon
+                    size={24}
+                    color={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#006FF2'}
+                    color2={tabSelectValue === 'Ltpa02002' ? '#ffffff' : '#A683FF'}
+                  />
+                </RadioGroupItem>
+              </RadioGroup>
+              {userAdmin && (
+                <Grow>
+                  <FormTable variant="none">
+                    <FormRow>
+                      <FormCell title={'기준일자'}>
+                        <DatePickerInput value="2026-01-01" />
+                      </FormCell>
+                      <FormCell title={'판매채널'}>
+                        <RadioGroup>
+                          {[
+                            { value: '전체', label: '전체' },
+                            { value: '전속', label: '전속' },
+                            { value: 'GA', label: 'GA' },
+                            { value: 'TM', label: 'TM' },
+                            { value: 'CM', label: 'CM' },
+                            { value: '방카', label: '방카' },
+                          ].map((option) => (
+                            <RadioGroupItem key={option.value} value={option.value}>
+                              {option.label}
+                            </RadioGroupItem>
+                          ))}
+                        </RadioGroup>
+                      </FormCell>
+                    </FormRow>
+                  </FormTable>
+                </Grow>
+              )}
+              <EmpInput empNo={'3999999'} empName={'김한손'} readOnly />
+            </Grow>
             {/* 검색/고객정보 영역
                 - 등록/미등록 모드에 따라 입력 UI가 완전히 분기됨
                 - 고지유형찾기 팝업 호출 버튼 포함 */}
