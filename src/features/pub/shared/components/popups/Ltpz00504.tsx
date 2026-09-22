@@ -344,7 +344,7 @@ const Ltpz00504 = ({ onClose, recommendData: propRecommendData }: Ltpz00504Props
                     </TableFoldHead>
                     <TableFoldBody>
                       {/* 제한담보 */}
-                      <div className="ag-theme-alpine inner-scroll" data-page={4}>
+                      <div className="ag-theme-alpine inner-scroll" data-row={4}>
                         <AgGridReact<ExpectedUwAmountRow>
                           getRowId={(params) => String(params.data.id)}
                           noRowsOverlayComponent={AgGridEmptyComponent}

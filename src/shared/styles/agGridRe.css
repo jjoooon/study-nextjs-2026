@@ -3,15 +3,25 @@
   height: 100%;
   --ag-font-family: var(
     --ag-cell-font-family,
+    'NotoSansKRNumber',
     'Malgun Gothic',
     '맑은 고딕',
     'Apple SD Gothic Neo',
-    'Noto Sans KR',
     Arial,
     sans-serif
   );
-  --ag-cell-font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
-  --ag-header-font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  --ag-cell-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', Arial, sans-serif;
+  --ag-header-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', Arial, sans-serif;
+}
+
+/* AG Grid 및 셀 전용 숫자 폰트(Noto Sans KR) 클래스 */
+.num-font,
+.font-notosans,
+.ag-theme-alpine .num-font,
+.ag-theme-alpine .font-notosans,
+.ag-cell.num-font,
+.ag-cell.font-notosans {
+  font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', sans-serif !important;
 }
 .ag-theme-alpine .ag-root {
   background-color: var(--color-gray-5);
@@ -74,7 +84,7 @@
 }
 
 .ag-header-cell-resize {
-  background: linear-gradient(90deg, transparent, #e0e0e0);
+  background: none;
 }
 
 .ag-header-cell-resize:after {

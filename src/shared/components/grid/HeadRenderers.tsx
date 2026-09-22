@@ -324,16 +324,14 @@ export function UwStatusTooltipQ() {
       onClick={(e) => e.stopPropagation()}
     >
       <TooltipQ align="center" className="min-w-[9rem]">
-        <BulletList className="w-full">
+        <Gcol placement="ss">
           {uwLegendStatuses.map((status, idx) => (
-            <BulletListItem key={idx} type="dot" className="gap-1">
-              <Grow placement="sc">
-                <span className="text-[1.2rem] text-[var(--color-gray-70)] font-normal">{status}</span>
-                <DotColor status={status} />
-              </Grow>
-            </BulletListItem>
+            <Grow placement="sc" key={idx}>
+              <DotColor status={status} />
+              <span className="text-[1.2rem] text-[var(--color-gray-70)] font-normal">{status}</span>
+            </Grow>
           ))}
-        </BulletList>
+        </Gcol>
       </TooltipQ>
     </span>
   );
