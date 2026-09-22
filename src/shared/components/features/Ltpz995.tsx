@@ -65,6 +65,7 @@ const ACCEPTED_FILE_TYPES: MimeType[] = [
   APPLICATION_TYPES.POWERPOINT_XML,
   TEXT_TYPES.PLAIN,
   APPLICATION_TYPES.ZIP,
+  APPLICATION_TYPES.ZIP_COMPRESSED,
   APPLICATION_TYPES.SEVEN_Z,
 ];
 
@@ -100,6 +101,9 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
   const handleAddFile = (error: FilePondErrorDescription | null, file: FilePondFile) => {
     if (error) {
       logger.error('파일 추가 오류:', error);
+
+      // 타입/사이즈 검증 실패 시 FilePond가 에러 상태로만 표시하고 목록에서 자동 제거하지 않으므로 직접 제거
+      pondRef.current?.removeFile(file.id);
       return;
     }
 
