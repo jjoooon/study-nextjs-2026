@@ -33,6 +33,22 @@ registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
 
 const logger = log.getLogger('FileUploader');
 
+/**
+ * filepond의 FilePondErrorDescription({type, code, body})은 서버/네트워크 오류에만 실제로 사용됨.
+ * 파일 타입/사이즈 등 클라이언트 측 검증 실패는 { main, sub } 형태(상태 라벨 객체)로 전달되는데,
+ * filepond 타입 선언에는 이 shape가 반영되어 있지 않음.
+ */
+interface FilePondValidationStatus {
+  main: string;
+  sub: string;
+}
+
+type FilePondErrorLike = FilePondErrorDescription | FilePondValidationStatus;
+
+function getErrorMessage(error: FilePondErrorLike): string {
+  return 'body' in error ? error.body : `${error.main} ${error.sub}`;
+}
+
 interface Ltpz995Props {
   files?: UploadFileItem[];
   onOpenChange?: (open: boolean) => void;
@@ -40,15 +56,30 @@ interface Ltpz995Props {
   resolve: (result: Ltpz995Result) => void;
 }
 
+// 소수점이 0으로만 채워진 경우 제거 (FilePond의 removeDecimalsWhenZero와 동일한 규칙)
+function removeDecimalsWhenZero(value: number, decimalCount: number): string {
+  return value
+    .toFixed(decimalCount)
+    .split('.')
+    .filter((part) => part !== '0')
+    .join('.');
+}
+
 // 파일 크기를 읽기 쉬운 단위로 변환
+// FilePond 목록의 개별 파일 용량 표시와 동일한 값이 나오도록 FilePond의 fileSizeBase 기본값(1000)과
+// toNaturalFileSize 포맷 규칙을 그대로 따름
 function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Byte';
+  bytes = Math.round(Math.abs(bytes));
 
-  const k = 1024;
-  const sizes = ['Byte', 'KB', 'MB', 'GB', 'TB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const KB = 1000;
+  const MB = KB * KB;
+  const GB = KB * KB * KB;
 
-  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+  if (bytes < KB) return `${bytes} bytes`;
+  if (bytes < MB) return `${Math.floor(bytes / KB)} KB`;
+  if (bytes < GB) return `${removeDecimalsWhenZero(bytes / MB, 1)} MB`;
+
+  return `${removeDecimalsWhenZero(bytes / GB, 2)} GB`;
 }
 
 // 허용할 파일 MIME 타입 설정
@@ -65,6 +96,7 @@ const ACCEPTED_FILE_TYPES: MimeType[] = [
   APPLICATION_TYPES.POWERPOINT_XML,
   TEXT_TYPES.PLAIN,
   APPLICATION_TYPES.ZIP,
+  APPLICATION_TYPES.ZIP_COMPRESSED,
   APPLICATION_TYPES.SEVEN_Z,
 ];
 
@@ -97,9 +129,12 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
     setTotalSize(currentFiles.reduce((sum, f) => sum + (f.fileSize || 0), 0));
   };
 
-  const handleAddFile = (error: FilePondErrorDescription | null, file: FilePondFile) => {
+  const handleAddFile = (error: FilePondErrorLike | null, file: FilePondFile) => {
     if (error) {
-      logger.error('파일 추가 오류:', error);
+      logger.error('파일 추가 오류:', getErrorMessage(error));
+
+      // 타입/사이즈 검증 실패 시 FilePond가 에러 상태로만 표시하고 목록에서 자동 제거하지 않으므로 직접 제거
+      pondRef.current?.removeFile(file.id);
       return;
     }
 
@@ -118,9 +153,9 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
     syncStats(currentFiles);
   };
 
-  const handleRemoveFile = (error: FilePondErrorDescription | null, file: FilePondFile) => {
+  const handleRemoveFile = (error: FilePondErrorLike | null, file: FilePondFile) => {
     if (error) {
-      logger.error('파일 제거 오류:', error);
+      logger.error('파일 제거 오류:', getErrorMessage(error));
       return;
     }
 
@@ -133,12 +168,12 @@ export default function Ltpz995({ files, resolve }: Ltpz995Props) {
     logger.info('파일 순서 변경됨, 전체 파일 수:', files.length);
   };
 
-  const handleError = (error: FilePondErrorDescription) => {
-    logger.error('파일 에러:', error?.body || error);
+  const handleError = (error: FilePondErrorLike) => {
+    logger.error('파일 에러:', getErrorMessage(error));
   };
 
-  const handleWarning = (warning: FilePondErrorDescription) => {
-    logger.warn('파일 경고:', warning?.body || warning);
+  const handleWarning = (warning: FilePondErrorLike) => {
+    logger.warn('파일 경고:', getErrorMessage(warning));
   };
 
   const handleSearch = () => {

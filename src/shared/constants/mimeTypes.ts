@@ -33,6 +33,7 @@ export const APPLICATION_TYPES = {
 
   // Archives
   ZIP: 'application/zip',
+  ZIP_COMPRESSED: 'application/x-zip-compressed', // Windows(Explorer/Edge/Chrome)에서 .zip을 이 값으로 보고하는 경우가 흔함
   GZIP: 'application/gzip',
   TAR: 'application/x-tar',
   RAR: 'application/vnd.rar',
