@@ -12,35 +12,31 @@ import { Popover, PopoverContent, PopoverTrigger } from '@uiux/Popover';
 export function AsideFootButtonGroup() {
   return (
     <Grow className="asidefootbuttongroup [&>button]:flex-1 [&>button]:w-full" placement={'bwc'}>
-      <Button variant={'outlined'} color={'gray'} size={'lg'}>
-        제안서
-        <PlusIcon />
-      </Button>
       <Popover>
         <PopoverTrigger asChild>
           <Button variant={'outlined'} color={'gray'} size={'lg'}>
-            출력
+            제안서
             <PlusIcon />
           </Button>
         </PopoverTrigger>
-        <PopoverContent side="top" align="end" className="max-w-[42.5rem]" closeButton={true}>
+        <PopoverContent side="top" align="start" className="max-w-[42.5rem]" closeButton={true}>
           <Grid className="w-full grid-cols-[1fr] gap-1">
             <Button variant={'outlined'} color={'gray'} size={'lg'}>
-              출력물 공통팝업
-            </Button>
-            {/* 아래 버튼들은 출력물 종류 선택 항목 */}
-            <Button variant={'outlined'} color={'gray'} size={'lg'}>
-              설계요약서
+              미리보기
             </Button>
             <Button variant={'outlined'} color={'gray'} size={'lg'}>
-              가입제안서
+              출력
             </Button>
             <Button variant={'outlined'} color={'gray'} size={'lg'}>
-              상품설명서
+              PDF저장
             </Button>
           </Grid>
         </PopoverContent>
       </Popover>
+
+      <Button variant={'outlined'} color={'gray'} size={'lg'}>
+        출력
+      </Button>
 
       <Ltpa120 />
     </Grow>
