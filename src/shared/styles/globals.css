@@ -6,10 +6,13 @@
 /* Noto Sans KR 숫자 전용 폰트 정의 (unicode-range: 숫자 및 관련 기호) */
 @font-face {
   font-family: 'NotoSansKRNumber';
-  src: local('Noto Sans KR'), url('./NotoSansKR-Variable.woff2') format('woff2');
-  unicode-range: U+0030-0039, U+002C, U+002E, U+0025, U+002B, U+002D;
+  src: url('./NotoSansKR-Variable.woff2') format('woff2-variations'),
+       url('./NotoSansKR-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
+  font-display: swap;
+  /* 숫자(0-9), 콤마(,), 마침표(.), 퍼센트(%), 플러스(+), 마이너스(-) */
+  unicode-range: U+0030-0039, U+002C, U+002E, U+0025, U+002B, U+002D;
 }
 @plugin "tailwindcss-animate";
 @custom-variant dark (&:is(.dark *));

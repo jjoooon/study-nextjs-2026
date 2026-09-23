@@ -88,4 +88,3 @@ if (typeof window !== 'undefined' && document.fonts && typeof document.fonts.rea
       // 폰트 로드 실패 시 예외 무시
     });
 }
-
