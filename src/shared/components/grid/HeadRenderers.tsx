@@ -66,10 +66,11 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
 
   // 헤더 클릭 시 ag-grid 기본 정렬 순환 함수를 호출
   // shiftKey가 있으면 다중 정렬 동작(ag-grid 규칙)
-  const handleSort = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSort = (event: React.SyntheticEvent) => {
     if (!isSortable) return;
     if (!progressSort) return;
-    progressSort(event.shiftKey);
+    const mouseEvent = event as React.MouseEvent;
+    progressSort(mouseEvent.shiftKey ?? false);
   };
 
   // unit이 '예상' 또는 unitPos === 'left'인 경우 unit이 label 앞에 위치함 (예: 예상UW)
@@ -123,10 +124,17 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
   }
 
   return (
-    <button
-      type="button"
-      className="h-full w-full flex justify-center items-center cursor-pointer"
+    <div
+      role="button"
+      tabIndex={0}
+      className="h-full w-full flex justify-center items-center cursor-pointer select-none"
       onClick={handleSort}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleSort(e);
+        }
+      }}
       aria-label={`${label} 정렬`}
       aria-disabled={!enableSorting}
     >
@@ -143,7 +151,7 @@ export const HeaderWithUnit = React.memo(function HeaderWithUnit({
           )}
         </span>
       </Grow>
-    </button>
+    </div>
   );
 });
 
