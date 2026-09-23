@@ -1498,13 +1498,25 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
     }
 
     setValue(formatted);
-    // 셀의 값을 즉시 반영
-    if (props.node && props.column) {
-      props.node.setDataValue(props.column.getColId(), formatted);
-    }
-    // 날짜 선택 시 편집 종료(값 반영)
-    if (props.stopEditing) {
-      setTimeout(() => props.stopEditing(), 0);
+
+    // monthOnly 인 경우 YYYY-MM (7자리 문자열) 완결 시만 편집 완료
+    // 일반 single 인 경우 YYYY-MM-DD (10자리 문자열) 완결 시만 편집 완료
+    // 중간 입력 과정 중에는 stopEditing을 호출하지 않아 키보드 직접 입력 지원
+    const isCompleted = editorParams.monthOnly
+      ? /^\d{4}-\d{2}$/.test(formatted)
+      : /^\d{4}-\d{2}-\d{2}$/.test(formatted);
+
+    if (isCompleted) {
+      if (props.node && props.column) {
+        props.node.setDataValue(props.column.getColId(), formatted);
+      }
+      if (props.stopEditing) {
+        setTimeout(() => props.stopEditing(), 0);
+      }
+    } else if (formatted === '') {
+      if (props.node && props.column) {
+        props.node.setDataValue(props.column.getColId(), '');
+      }
     }
   };
 
@@ -1525,7 +1537,6 @@ export function DatePickerCellEditor<RowType = unknown>(props: ICellEditorParams
       value={mode === 'single' ? value : undefined}
       rangeValue={mode === 'range' ? rangeValue : undefined}
       onChange={handleChange}
-      autoOpen={true}
       size="md"
       width="full"
     />
