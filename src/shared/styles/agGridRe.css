@@ -14,6 +14,21 @@
   --ag-header-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', Arial, sans-serif;
 }
 
+/* ===== AG Grid 전역 애니메이션 & CSS 트랜지션 완전 제거 (셀/행 높이 모션 차단) ===== */
+.ag-theme-alpine,
+.ag-theme-alpine *,
+.ag-theme-alpine *::before,
+.ag-theme-alpine *::after,
+.ag-root-wrapper,
+.ag-root-wrapper *,
+.ag-row,
+.ag-cell,
+.ag-header-cell,
+.ag-header-row {
+  transition: none !important;
+  animation: none !important;
+}
+
 /* AG Grid 및 셀 전용 숫자 폰트(Noto Sans KR) 클래스 */
 .num-font,
 .font-notosans,
@@ -65,17 +80,19 @@
 } */
 
 /* ===== Row Span Cell ===== */
-/* suppressRowTransform 사용 시 스팬된 셀이 absolute 포지션으로 올라오므로
-   배경색이 없으면 뒤 행이 비쳐 보임 → 배경색 필수 */
-.ag-row .ag-cell.row-span-cell {
+/* 병합 셀(Row Span) 수직 중앙 정렬 및 배경색 지정 */
+.ag-row .ag-cell.row-span-cell,
+.ag-cell.row-span-cell,
+.ag-theme-alpine .ag-cell.row-span-cell {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   background-color: #fff;
-  z-index: 1;
+  z-index: 2 !important;
 }
-.ag-row.ag-row-even .ag-cell.row-span-cell {
-  background-color: #fff;
-}
+.ag-row.ag-row-even .ag-cell.row-span-cell,
 .ag-row.ag-row-odd .ag-cell.row-span-cell {
-  background-color: var(--ag-odd-row-background-color, #f9f9f9);
+  background-color: #fff;
 }
 
 /* header */

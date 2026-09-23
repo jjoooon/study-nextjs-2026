@@ -3,158 +3,187 @@
  */
 'use client';
 
-import type { ColDef, GridApi, ICellRendererParams } from 'ag-grid-enterprise';
+import type { ColDef, GridApi } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { useMemo } from 'react';
-import { AgGridEmptyComponent, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AgGridEmptyComponent, DatePickerCellEditor, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Grid, Gcol } from '@atoms';
 import { BottomBar } from '@common/BottomBar';
-import { DatePickerInput } from '@common/DatePicker';
-import { FormTable, FormRow, FormCell } from '@common/FormTable';
 import { TableMore } from '@common/TablePagination';
 import { MainBottom, MainBottomItem } from '@features/MainFoot';
 import { PageID } from '@features/PageID';
-import { SearchIcon, ResetIcon, FileExportIcon } from '@icons';
+import { createExpiryCellRenderer } from '@grid/CellRenderers';
+import { ZoomInIcon, ZoomOutIcon } from '@icons';
 import { LayoutHead, LayoutFoot } from '@layout/BaseLayout';
 import { LayoutTemplate } from '@layout/LayoutTemplate';
 import { Button } from '@uiux/Button';
 import { CheckboxGroup, CheckboxGroupItem } from '@uiux/Checkbox';
-import { Input } from '@uiux/Input';
-import { NativeSelect } from '@uiux/NativeSelect';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
 
 import '@/shared/lib/agGridPub';
 
 type DummyData1Type = {
   id: number;
-  packageName: string;
-  field1: string;
-  field2: string;
-  field3: number;
-  field4: number;
-  field5: boolean;
+  code: string;
+  productName: string;
+  recommendStatus: '추천' | '제외' | '';
+  startDate: string;
+  endDate: string;
+  channel: 'GA' | '전속' | 'TM' | '';
 };
+
 const DummyData1: DummyData1Type[] = [
   {
     id: 1,
-    packageName: '간병인 사용',
-    field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
-    field3: 50000,
-    field4: 1,
-    field5: true,
+    code: 'CLA02822',
+    productName: '나눔의행복(상해사망)',
+    recommendStatus: '추천',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: 'GA',
   },
   {
     id: 2,
-    packageName: '간병인 사용',
-    field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
-    field3: 50000,
-    field4: 2,
-    field5: false,
+    code: 'CLA02822',
+    productName: '나눔의행복(상해사망)(간편)',
+    recommendStatus: '제외',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: '전속',
   },
   {
     id: 3,
-    packageName: '암주요치료(전이암)',
-    field1: 'CLA23114',
-    field2: '통합암(4대유사암제외) 진단비',
-    field3: 50000,
-    field4: 3,
-    field5: true,
+    code: 'CLA02822',
+    productName: '보통약관(상해사망(간편))',
+    recommendStatus: '추천',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: 'TM',
   },
   {
     id: 4,
-    packageName: '암주요치료(전이암)',
-    field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
-    field3: 50000,
-    field4: 4,
-    field5: true,
+    code: 'CLA02822',
+    productName: '보통약관(상해사망(갱신형))',
+    recommendStatus: '추천',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: 'GA',
   },
   {
     id: 5,
-    packageName: '암주요치료(전이암)',
-    field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
-    field3: 50000,
-    field4: 4,
-    field5: false,
+    code: 'CLA02822',
+    productName: '보통약관(상해사망)',
+    recommendStatus: '제외',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: '전속',
   },
   {
     id: 6,
-    packageName: '암주요치료',
-    field1: 'CLA23114',
-    field2: '나눔의 행복(상해사망)',
-    field3: 50000,
-    field4: 6,
-    field5: true,
+    code: 'CLA02822',
+    productName: '보통약관(부양자상해사망)',
+    recommendStatus: '제외',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: 'TM',
   },
-  ...Array.from({ length: 19 }, (_, i) => ({
-    id: 7 + i,
-    packageName: '종합치료',
-    field1: 'CLA23114',
-    field2: `치료담보 ${7 + i}`,
-    field3: 50000,
-    field4: 7 + i,
-    field5: i % 2 === 0,
-  })),
+  {
+    id: 7,
+    code: 'CLA02822',
+    productName: '상해사망',
+    recommendStatus: '추천',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: 'GA',
+  },
+  {
+    id: 8,
+    code: 'CLA02822',
+    productName: '상해사망',
+    recommendStatus: '제외',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: '전속',
+  },
+  {
+    id: 9,
+    code: 'CLA02822',
+    productName: '상해사망',
+    recommendStatus: '추천',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: 'TM',
+  },
+  {
+    id: 10,
+    code: 'CLA02822',
+    productName: '상해사망(간편)',
+    recommendStatus: '추천',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: 'GA',
+  },
+  {
+    id: 11,
+    code: 'CLA02822',
+    productName: '상해사망(간편)',
+    recommendStatus: '제외',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: '전속',
+  },
+  {
+    id: 12,
+    code: 'CLA02822',
+    productName: '상해사망(간편)',
+    recommendStatus: '제외',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: 'TM',
+  },
+  {
+    id: 13,
+    code: 'CLA02822',
+    productName: '상해사망(간편,갱신형)',
+    recommendStatus: '추천',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: '전속',
+  },
+  {
+    id: 14,
+    code: 'CLA02822',
+    productName: '상해사망(간편,연만기)',
+    recommendStatus: '제외',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: 'TM',
+  },
+  {
+    id: 15,
+    code: 'CLA02822',
+    productName: '상해사망(간편,연만기)',
+    recommendStatus: '추천',
+    startDate: '2026-09-09',
+    endDate: '2026-09-30',
+    channel: 'TM',
+  },
 ];
-
-const TwoRadioCellRenderer = (params: ICellRendererParams<DummyData1Type>) => {
-  const rowId = params.node?.rowIndex ?? params.data?.id ?? 0;
-  const initialVal = params.data?.field5 !== false ? 'option1' : 'option2';
-  const [val, setVal] = React.useState<string>(initialVal);
-
-  React.useEffect(() => {
-    const currentVal = params.data?.field5 !== false ? 'option1' : 'option2';
-    setVal(currentVal);
-  }, [params.data?.field5, params.value]);
-
-  const handleChange = (newVal: string) => {
-    setVal(newVal);
-    const boolVal = newVal === 'option1';
-    if (params.node) {
-      try {
-        params.node.setDataValue('field5', boolVal);
-      } catch {
-        // ignore
-      }
-    }
-    params.setValue?.(boolVal);
-  };
-
-  return (
-    <div className="flex items-center justify-center h-full w-full z-50">
-      <RadioGroup
-        className="gap-2 flex items-center justify-center"
-        value={val}
-        onValueChange={handleChange}
-        width="auto"
-        name={`radio-group-ltpa660-${rowId}`}
-      >
-        <RadioGroupItem color="primary" id={`d1-${rowId}`} size="lg" value="option1" variant="default">
-          필수
-        </RadioGroupItem>
-        <RadioGroupItem color="primary" id={`d2-${rowId}`} size="lg" value="option2" variant="default">
-          제외
-        </RadioGroupItem>
-      </RadioGroup>
-    </div>
-  );
-};
 
 export default function Ltpa660Section() {
   const { attributeColumnWidth } = useDynamicColumnWidths();
-  const gridApiRef = React.useRef<GridApi<DummyData1Type> | null>(null);
-  const gridRef = React.useRef<AgGridReact<DummyData1Type>>(null);
+  const getExpiryRenderer = createExpiryCellRenderer<DummyData1Type>;
+  const gridApiRef = useRef<GridApi<DummyData1Type> | null>(null);
+  const gridRef = useRef<AgGridReact<DummyData1Type>>(null);
 
-  const pageSize = 5;
-  const [rowData, setRowData] = React.useState<DummyData1Type[]>([]);
-  const [loadedCount, setLoadedCount] = React.useState(0);
+  const [channels, setChannels] = useState<string[]>(['전속', 'GA', 'TM']);
+  const [rowData, setRowData] = useState<DummyData1Type[]>([]);
+  const [loadedCount, setLoadedCount] = useState(0);
   const totalCount = DummyData1.length;
+  const pageSize = 5;
 
-  const fetchMockData = React.useCallback(async (page: number, limit: number) => {
+  const fetchMockData = useCallback(async (page: number, limit: number) => {
     return new Promise<DummyData1Type[]>((resolve) => {
       setTimeout(() => {
         const start = (page - 1) * limit;
@@ -164,17 +193,17 @@ export default function Ltpa660Section() {
     });
   }, []);
 
-  const handleSearch = React.useCallback(async () => {
+  const handleSearch = useCallback(async () => {
     const initialData = await fetchMockData(1, pageSize);
     setRowData(initialData);
     setLoadedCount(initialData.length);
   }, [fetchMockData, pageSize]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     handleSearch();
   }, [handleSearch]);
 
-  const handleLoadNext = React.useCallback(async () => {
+  const handleLoadNext = useCallback(async () => {
     if (loadedCount >= totalCount) return;
     const nextPage = Math.floor(loadedCount / pageSize) + 1;
     const nextData = await fetchMockData(nextPage, pageSize);
@@ -182,63 +211,111 @@ export default function Ltpa660Section() {
     setLoadedCount((prev) => prev + nextData.length);
   }, [fetchMockData, loadedCount, totalCount, pageSize]);
 
-  const handleLoadAll = React.useCallback(async () => {
+  const handleLoadAll = useCallback(async () => {
     if (loadedCount >= totalCount) return;
     setRowData(DummyData1);
     setLoadedCount(totalCount);
   }, [loadedCount, totalCount]);
 
-  // 2026-06-01 minWidth, flex 수정, valueParser, valueFormatter 추가
+  const handleAddRow = useCallback(() => {
+    setRowData((prev) => {
+      const nextId = prev.length > 0 ? Math.max(...prev.map((r) => r.id)) + 1 : 1;
+      const newRow: DummyData1Type = {
+        id: nextId,
+        code: '',
+        productName: '',
+        recommendStatus: '',
+        startDate: '',
+        endDate: '',
+        channel: '',
+      };
+      return [...prev, newRow];
+    });
+  }, []);
+
+  const handleDeleteRow = useCallback(() => {
+    const api = gridApiRef.current;
+    if (!api) return;
+    const selectedNodes = api.getSelectedNodes();
+    const selectedIds = new Set(selectedNodes.map((node) => node.data?.id));
+    if (selectedIds.size === 0) return;
+    setRowData((prev) => prev.filter((row) => !selectedIds.has(row.id)));
+  }, []);
+
   const columnDefs2: ColDef<DummyData1Type>[] = useMemo(
     () => [
       {
         headerName: '담보코드',
-        field: 'field1',
-        cellClass: 'text-center',
+        field: 'code',
         flex: 1,
-        minWidth: attributeColumnWidth(80),
-        autoHeight: true,
-        cellRenderer: (params: ICellRendererParams<DummyData1Type>) =>
-          params.data?.field1 ? (
-            <Button color="link" onClick={() => {}} only="default" size="lg" variant="text">
-              {params.value}
-            </Button>
-          ) : (
-            params.value
-          ),
+        editable: true,
+        minWidth: attributeColumnWidth(120),
+        cellClass: 'editable-cell text-center',
       },
       {
         headerName: '담보명',
-        field: 'field2',
-        flex: 10,
+        field: 'productName',
+        flex: 8,
+        minWidth: attributeColumnWidth(240),
       },
       {
-        headerName: '판매건수',
-        field: 'field3',
-        flex: 1,
+        headerName: '추천여부',
+        field: 'recommendStatus',
+        flex: 2,
         minWidth: attributeColumnWidth(80),
-        cellClass: 'text-center',
-        valueFormatter: numberValueFormatter<DummyData1Type>,
+        cellClass: 'editable-cell',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['추천', '제외'],
+        },
+        cellRenderer: getExpiryRenderer('center'),
       },
       {
-        headerName: '판매순위',
-        field: 'field4',
-        flex: 1,
-        minWidth: attributeColumnWidth(80),
-        cellClass: 'text-center',
+        headerName: '적용기간',
+        flex: 3,
+        minWidth: attributeColumnWidth(260),
+        cellClass: 'text-center flex! items-center! editable-cell justify-center!',
+        editable: true,
+        cellEditor: DatePickerCellEditor,
+        cellEditorParams: {
+          mode: 'range',
+        },
+        valueGetter: (params) => {
+          if (params.data?.startDate && params.data?.endDate) {
+            return `${params.data.startDate} ~ ${params.data.endDate}`;
+          }
+          return params.data?.startDate || '';
+        },
+        valueSetter: (params) => {
+          if (!params.data) return false;
+          const val = String(params.newValue || '').trim();
+          if (!val) {
+            params.data.startDate = '';
+            params.data.endDate = '';
+          } else {
+            const [from = '', to = ''] = val.split('~').map((s) => s.trim());
+            params.data.startDate = from;
+            params.data.endDate = to;
+          }
+          return true;
+        },
       },
       {
-        headerName: '담보추천 구분코드',
-        field: 'field5',
+        headerName: '판매채널',
+        field: 'channel',
         flex: 1,
-        minWidth: attributeColumnWidth(160),
-        cellClass: 'text-center',
-        cellRenderer: TwoRadioCellRenderer,
-        suppressCellSelection: true,
-        suppressKeyboardEvent: () => true,
+        minWidth: attributeColumnWidth(100),
+        cellClass: 'text-center flex! items-center! editable-cell  justify-center!',
+        editable: true,
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['GA', '전속', 'TM'],
+        },
+        cellRenderer: getExpiryRenderer('center'),
       },
     ],
-    [attributeColumnWidth]
+    [attributeColumnWidth, getExpiryRenderer]
   );
 
   return (
@@ -254,70 +331,54 @@ export default function Ltpa660Section() {
       <LayoutTemplate
         mainBody={
           <Grid className="w-full grid grid-rows-[auto_minmax(0,1fr)] gap-3 h-full">
-            <Grow placement="bwe" className="w-full" variant={'box-round'}>
-              <FormTable variant={'none'} cols={['w-1', 'w-[20rem]', 'w-1', 'w-auto']}>
-                <FormRow>
-                  <FormCell title={'담보'} tdClassName="grid-cols-[auto_auto_1fr_auto]" colSpan={3}>
-                    <NativeSelect width={96}>
-                      <option value="">담보그룹</option>
-                    </NativeSelect>
-                    <Input width={80} value={'CLA23114'} />
-                    <Button aria-label="검색" variant={'outlined'} only="icon" size={'lg'} color={'gray-light'}>
-                      <SearchIcon color={'var(--color-primary-50)'} />
-                    </Button>
-                    <Input
-                      aria-label=""
-                      width={430}
-                      value={'한화시그니처여성건강보험/(1종) 납입면제 강화형 기본형'}
-                      readOnly
-                    />
-                  </FormCell>
-                </FormRow>
-                <FormRow>
-                  <FormCell title={'조회기간'}>
-                    <DatePickerInput mode="range" onChange={() => {}} value="" />
-                  </FormCell>
-                  <FormCell title={'구분'}>
-                    <CheckboxGroup className="gap-3">
-                      {[
-                        { label: '현재판매담보', value: '현재판매담보' },
-                        { label: '보통약관제외', value: '보통약관제외' },
-                        { label: '동시가입담보 묶어서 보기', value: 'simpleExclude' },
-                      ].map((option) => (
-                        <CheckboxGroupItem key={option.value} value={option.value}>
-                          {option.label}
-                        </CheckboxGroupItem>
-                      ))}
-                    </CheckboxGroup>
-                  </FormCell>
-                </FormRow>
-              </FormTable>
+            <Grow placement="bwc" className="w-full" variant={'box-round'}>
+              <Grow className="gap-[4rem]">
+                <Grow>
+                  <RadioGroup className="gap-2" width="full">
+                    <RadioGroupItem value={'전체'} color="primary" size="md">
+                      전체
+                    </RadioGroupItem>
+                    <RadioGroupItem value={'추천'} color="primary" size="md">
+                      추천
+                    </RadioGroupItem>
+                    <RadioGroupItem value={'제외'} color="primary" size="md">
+                      제외
+                    </RadioGroupItem>
+                  </RadioGroup>
+                </Grow>
+                <Grow>
+                  <CheckboxGroup value={channels} onValueChange={setChannels} className="gap-3">
+                    <CheckboxGroupItem value="전속" size="md">
+                      전속
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="GA" size="md">
+                      GA
+                    </CheckboxGroupItem>
+                    <CheckboxGroupItem value="TM" size="md">
+                      TM
+                    </CheckboxGroupItem>
+                  </CheckboxGroup>
+                </Grow>
+              </Grow>
 
               <Grow>
                 <Button color="coolgray" onClick={handleSearch} only="default" size="lg" variant="contained">
                   조회
                 </Button>
-                <Button
-                  color={'gray'}
-                  only={'icon'}
-                  size={'lg'}
-                  variant={'outlined'}
-                  onClick={handleSearch}
-                  aria-label="새로고침"
-                >
-                  <ResetIcon />
-                </Button>
               </Grow>
             </Grow>
             <Gcol className="w-full overflow-hidden">
-              <Grow className="w-full" placement="ec">
-                <Button color="success" variant="outlined">
-                  엑셀내보내기
-                  <FileExportIcon />
+              <Grow placement="ec" className="w-full">
+                <Button variant={'outlined'} color={'gray'} onClick={handleAddRow}>
+                  행추가
+                  <ZoomInIcon size={14} color={'var(--color-gray-60)'} />
+                </Button>
+                <Button variant={'outlined'} color={'gray'} onClick={handleDeleteRow}>
+                  행삭제
+                  <ZoomOutIcon size={14} color={'var(--color-gray-60)'} />
                 </Button>
               </Grow>
               <div className="ag-theme-alpine">
-                {/* 2026-06-04 suppressClickEdit={true} 삭제 */}
                 <AgGridReact<DummyData1Type>
                   ref={gridRef}
                   onGridReady={(event) => {
@@ -325,13 +386,14 @@ export default function Ltpa660Section() {
                   }}
                   noRowsOverlayComponent={AgGridEmptyComponent}
                   getRowId={(params) => String(params.data.id)}
-                  rowData={rowData}
                   columnDefs={columnDefs2}
+                  rowData={rowData}
                   defaultColDef={{
                     sortable: true,
                     resizable: true,
                   }}
                   singleClickEdit={true}
+                  stopEditingWhenCellsLoseFocus={true}
                   rowSelection={{
                     mode: 'multiRow',
                     headerCheckbox: false,
@@ -344,7 +406,6 @@ export default function Ltpa660Section() {
                     cellClass: 'editable-cell text-center',
                   }}
                   domLayout="normal"
-                  animateRows={false}
                   tooltipShowMode="whenTruncated"
                   tooltipShowDelay={0}
                   tooltipHideDelay={3000}
@@ -365,7 +426,7 @@ export default function Ltpa660Section() {
         mainFoot={
           <MainBottom>
             <MainBottomItem>
-              <Grow gap={1} placement={'ec'} className="w-full">
+              <Grow gap={2} placement={'ec'} className="w-full">
                 <Button variant={'contained'} color={'primary'} size={'xl'}>
                   저장
                 </Button>

@@ -23,9 +23,31 @@ ModuleRegistry.registerModules([
   // 필요시 엔터프라이즈 모듈 추가
 ]);
 
-// [전역 AG-Grid 설정] 애니메이션 및 모션 전역 비활성화
+// [전역 AG-Grid 설정] 애니메이션 비활성화 및 데이터/폰트 렌더링 후 셀 높이 전역 자동 재계산 (딜레이 없이 즉시 반영)
 provideGlobalGridOptions({
   animateRows: false,
+  suppressAnimationFrame: true,
+  suppressColumnMoveAnimation: true,
+  onFirstDataRendered: (params) => {
+    if (!params.api || typeof window === 'undefined') return;
+    try {
+      if (!params.api.isDestroyed?.()) {
+        params.api.resetRowHeights();
+      }
+    } catch {
+      // ignore
+    }
+  },
+  onRowDataUpdated: (params) => {
+    if (!params.api || typeof window === 'undefined') return;
+    try {
+      if (!params.api.isDestroyed?.()) {
+        params.api.resetRowHeights();
+      }
+    } catch {
+      // ignore
+    }
+  },
 });
 // 이 파일을 import하는 것만으로 모듈 등록 및 전역 설정이 보장됨
 

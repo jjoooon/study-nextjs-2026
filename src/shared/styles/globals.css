@@ -6,10 +6,13 @@
 /* Noto Sans KR 숫자 전용 폰트 정의 (unicode-range: 숫자 및 관련 기호) */
 @font-face {
   font-family: 'NotoSansKRNumber';
-  src: local('Noto Sans KR'), url('./NotoSansKR-Variable.woff2') format('woff2');
-  unicode-range: U+0030-0039, U+002C, U+002E, U+0025, U+002B, U+002D;
+  src: url('./NotoSansKR-Variable.woff2') format('woff2-variations'),
+       url('./NotoSansKR-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
+  font-display: swap;
+  /* 숫자(0-9), 콤마(,), 마침표(.), 퍼센트(%), 플러스(+), 마이너스(-) */
+  unicode-range: U+0030-0039, U+002C, U+002E, U+0025, U+002B, U+002D;
 }
 @plugin "tailwindcss-animate";
 @custom-variant dark (&:is(.dark *));
@@ -160,9 +163,9 @@
   --ag-row-height: 3rem;
   --ag-group-header-height: 3rem;
   --ag-list-item-height: 3rem;
-  --ag-font-family: 'OpenSansNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
-  --ag-cell-font-family: 'OpenSansNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
-  --ag-header-font-family: 'OpenSansNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  --ag-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  --ag-cell-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+  --ag-header-font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
 
   /* ===== 1. Base Unit ===== */
   --base-unit: 0.4rem;
@@ -548,13 +551,38 @@
     font-size: 10px;
     /* letter-spacing: -0.13rem; */
   }
-  input, select, textarea, button,body {
-    font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', Arial, sans-serif !important;
-  }
+  /* 1. 기본 루트/바디에 숫자 폰트 + 기본 폰트 스택 정의 */
   body {
-    /* overflow:hidden; */
     background-color: #fff;
+    font-family: 'NotoSansKRNumber', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
+
+  /* 2. 브라우저 기본 스타일로 인해 상속이 끊기는 폼/인터랙션 요소 강제 상속 */
+  button,
+  input,
+  select,
+  textarea,
+  optgroup,
+  option,
+  datalist,
+  legend {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* 3. (선택) code/pre 계열에서도 동일한 숫자 폰트를 유지하고 싶은 경우 */
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: 'NotoSansKRNumber', Consolas, Monaco, monospace;
+  }
+
   #storybook-root {
     /* width: 1196px; */
     border-right: 1px solid #ccc;
@@ -639,7 +667,7 @@
   }
 
   input::placeholder {
-    font-family: 'Pretendard', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
+    font-family: 'NotoSansKRNumber', 'Pretendard', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif;
     font-size: 1.3rem;
     color: #000;
     opacity: 0.2;
@@ -726,7 +754,7 @@
     align-items: center;
     justify-content: center;
     height: 100% !important;
-    font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
+    font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif !important;
   }
 
   .filepond--list-scroller {

@@ -9,6 +9,7 @@ import { ColDef, ColGroupDef } from 'ag-grid-enterprise';
 import type { ValueFormatterParams, ValueParserParams } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
+import { toast } from 'sonner';
 import {
   AgGridEmptyComponent,
   createSpanRowsByField,
@@ -21,7 +22,6 @@ import { TabPager } from '@common/TabPager';
 import { AiIcon } from '@icons';
 import { Button } from '@uiux/Button';
 import { RadioGroup, RadioGroupItem } from '@uiux/RadioGroup';
-
 export type Ltpz005TabValue = 'common' | 'accum' | 'job' | 'expected-uw';
 
 type GroupTabItem = {
@@ -557,7 +557,13 @@ const Ltpz00502 = ({ onClose }: Ltpz00502Props) => {
         <Button variant={'outlined'} size={'xl'} color={'gray'}>
           타사정액담보해약확인서 등록
         </Button>
-        <Button variant={'contained'} size={'xl'}>
+        <Button
+          variant={'contained'}
+          size={'xl'}
+          onClick={() => {
+            toast('asdfasdf asf');
+          }}
+        >
           보험료계산(지침)
         </Button>
         <Button variant={'outlined'} size={'xl'} color={'gray-light'} onClick={onClose}>
