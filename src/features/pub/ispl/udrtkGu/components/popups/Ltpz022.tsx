@@ -10,6 +10,7 @@ import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TabPager } from '@common/TabPager';
 import { AiIcon } from '@icons';
+import { Badge } from '@uiux/Badge';
 import { Button } from '@uiux/Button';
 import {
   Dialog,
@@ -44,6 +45,7 @@ type UnderwritingViolationRow = {
   id: number;
   criteria: string; // 인수제한 구분 (인수기준, 청약완료불가 등)
   details: string; // 상세 위배 내용 (HTML 포함 가능)
+  auto?: boolean;
 };
 
 /** 그리드에 표시될 임시 데이터 */
@@ -53,12 +55,14 @@ const violationRowData: UnderwritingViolationRow[] = [
     criteria: '인수기준',
     details:
       '[ULA16364H01_1814_01] [암(유사암제외)항암호르몬약물(연1회)][전체누적][인수한도: 300 만원][초과: 300 만원]',
+    auto: true,
   },
   {
     id: 2,
     // target: '홍길순',
     criteria: '인수기준',
     details: '[ULA16364H01_1818_01] [암(유사암제외)항암호르몬약물(합)][전체누적][인수한도: 300 만원][초과: 300 만원]',
+    auto: true,
   },
   {
     id: 3,
@@ -66,6 +70,7 @@ const violationRowData: UnderwritingViolationRow[] = [
     criteria: '인수기준',
     details:
       '[ULA16364H01_1095_01] [카티(CAR-T)항암약물허가치료비(1회한)][전체누적][인수한도: 5000 만원][초과: 5,000 만원]',
+    auto: false,
   },
   {
     id: 4,
@@ -73,24 +78,28 @@ const violationRowData: UnderwritingViolationRow[] = [
     criteria: '인수기준',
     details:
       '[ULA16364H01_1035_01] [표적항암약물허가치료비(1회한)(합)][전체누적][인수한도: 7000 만원][초과: 2,000 만원]',
+    auto: false,
   },
   {
     id: 5,
     // target: '홍길순',
     criteria: '인수기준',
     details: '[ULA16364H01_663_01] [표적항암약물허가치료비(합)][전체누적][인수한도: 16000 만원][초과: 3,000 만원]',
+    auto: false,
   },
   {
     id: 6,
     // target: '홍길순',
     criteria: '인수기준',
     details: '[ULA16364H01_834_01] [항암양성자방사선치료비(1회한)][전체누적][인수한도: 3000 만원][초과: 3,000 만원]',
+    auto: false,
   },
   {
     id: 7,
     // target: '홍길순',
     criteria: '인수기준',
     details: '[ULA16364H01_2634_01] [항암양성자방사선치료비(합)][전체누적][인수한도: 4000 만원][초과: 2,000 만원]',
+    auto: true,
   },
   {
     id: 8,
@@ -98,24 +107,28 @@ const violationRowData: UnderwritingViolationRow[] = [
     criteria: '인수기준',
     details:
       '[ULA16364H01_2280_01] [항암중입자방사선치료(유사암포함)(1회한)][전체누적][인수한도: 5000 만원][초과: 5,000 만원]',
+    auto: false,
   },
   {
     id: 9,
     // target: '홍길순',
     criteria: '특인대상',
     details: '[표준하체산출이력001] [특별조건부 확인 필요] 표준하체 위험지수 산출의뢰 이력이 있습니다.',
+    auto: false,
   },
   {
     id: 10,
     // target: '홍길순',
     criteria: '참고사항',
     details: '[표준하체산출이력001] [특별조건부 확인 필요] 표준하체 위험지수 산출의뢰 이력이 있습니다.',
+    auto: false,
   },
   {
     id: 11,
     // target: '홍길순',
     criteria: '참고사항',
     details: '[시그니처여성올인원플랜00] [시그니처 여성 올인원플랜]',
+    auto: false,
   },
   {
     id: 12,
@@ -123,12 +136,14 @@ const violationRowData: UnderwritingViolationRow[] = [
     criteria: '참고사항',
     details:
       '[모집인제한_암담보비중안내_여성] ▶암담보제한◀ 전체 보장보험료 (119814원) 중 암담보보장보험료 (71507원)  비중 40% 초과되었습니다. ①암직접치료통원비(상급종합병원포함) 5만원 이상 또는 ②뇌출혈진단비 1500만원 이상 가입 필요합니다. (암/유의담보 리스트는 대내문서 참고)',
+    auto: false,
   },
   {
     id: 13,
     // target: '홍길순',
     criteria: '참고사항',
     details: '[테스트_13] 대인벌금:  0대물벌금:  0변호사:  0형사합의실손:  0형사합의실손_42일미만:  0',
+    auto: false,
   },
   {
     id: 14,
@@ -136,6 +151,7 @@ const violationRowData: UnderwritingViolationRow[] = [
     criteria: '청약완료불가(업계누적)',
     details:
       '[정액담보(항암약물치료)초과ICIS001] [업계가입금액 초과 수납불가][주소희] 고액항암치료비 2억7천만원 초과시(업계 정액보상담보 포함) 가입이 불가능합니다. [당사 : 37000만원 / 타사 : 0만원]',
+    auto: false,
   },
 ];
 
@@ -275,7 +291,7 @@ const Ltpz022 = () => {
                   <col style={{ width: '12rem' }} />
                   <col style={{ width: 'auto' }} />
                 </colgroup>
-                <TableHeader className="sticky top-0">
+                <TableHeader className="sticky top-0 z-10">
                   <TableRow>
                     <TableHead className="text-center">인수제한</TableHead>
                     <TableHead className="text-center">위배내용</TableHead>
@@ -306,7 +322,15 @@ const Ltpz022 = () => {
                           </TableCell>
                         )}
                         <TableCell style={{ backgroundColor: detailsBg }} onClick={() => handleCellClicked(row)}>
-                          <div dangerouslySetInnerHTML={{ __html: applyDetailsColor(String(row.details)) }} />
+                          <Grow placement="bwc">
+                            <div dangerouslySetInnerHTML={{ __html: applyDetailsColor(String(row.details)) }} />
+                            {row.auto && (
+                              <Badge variant={'rounded'} color={'primary'} size={'lg'}>
+                                <AiIcon color={'var(--color-primary-50)'} color2={'var(--color-primary-50)'} />
+                                자동해소
+                              </Badge>
+                            )}
+                          </Grow>
                         </TableCell>
                       </TableRow>
                     );
@@ -315,6 +339,18 @@ const Ltpz022 = () => {
               </Table>
             </div>
           </TabPager>
+
+          <Grow variant="box-detail" className="w-full gap-0">
+            <Typo icon={'ref'} variant={'body-sm'} color={'danger'}>
+              <Badge variant={'rounded'} color={'primary'} size={'lg'} className="shrink-0 translate-[0.2rem] mr-1">
+                <AiIcon color={'var(--color-primary-50)'} color2={'var(--color-primary-50)'} />
+                자동해소
+              </Badge>
+              <Typo variant={'body-sm'} color={'gray'}>
+                AI 자동해소로 지침 해소가 가능한 영역입니다. (일부 해소가 제한될 수 있습니다.)
+              </Typo>
+            </Typo>
+          </Grow>
         </DialogSection>
 
         {/* 푸터: 추가 확인 버튼 및 닫기 */}

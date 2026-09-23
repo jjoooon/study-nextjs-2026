@@ -18,7 +18,7 @@ import { cn } from '@/shared/lib/shadcn/utils';
 // - variants: variant / size / color의 개별 축
 // - compoundVariants: 축 조합별 실제 색상/보더 지정
 const badgeVariants = cva(
-  'inline-flex items-center justify-center rounded-[0.3rem] px-1 w-fit whitespace-nowrap shrink-0 gap-1 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden leading-none',
+  'inline-flex items-center justify-center rounded-[0.3rem] px-1 w-fit whitespace-nowrap shrink-0 gap-1 [&>svg]:pointer-events-none transition-[color,box-shadow] overflow-hidden leading-none indent-[0rem]',
   {
     variants: {
       variant: {
@@ -26,14 +26,13 @@ const badgeVariants = cva(
         dark: '',
         soft: 'border',
         outlined: 'border bg-transparent',
-        rounded:
-          'rounded-full bg-[var(--color-blue-gray-15)] text-[#000] h-[1.5rem] text-[1.1rem] font-bold px-[0.4rem]',
+        rounded: 'rounded-full h-[1.5rem] text-[1.1rem] font-bold px-[0.4rem]',
         ghost: '',
         status:
           'rounded-full h-[1.9rem] text-[1.1rem] font-bold px-[0.6rem] py-[0.1rem] tracking-[-0.02rem] gap-[0.3rem]',
       },
       size: {
-        lg: 'h-[2.4rem] text-[1.4rem] font-bold px-2 [&>svg]:size-[1.4rem] pt-[0.1rem] tracking-[-0.13rem]',
+        lg: 'h-[2.2rem] text-[1.1rem] font-bold gap-[0.2rem] px-[0.6rem] [&>svg]:size-[1.4rem] pt-[0.1rem] tracking-[-0.13rem]',
         md: 'h-[1.8rem] text-[1.1rem] font-bold px-1 pr-[0.6rem] [&>svg]:size-[1.2rem] tracking-[-0.13rem]',
         sm: 'h-[1.5rem] text-[1.1rem] font-bold pl-[0.2rem] pr-[0.4rem] pt-[0.1rem] [&>svg]:size-[1.1rem] tracking-[-0.13rem]',
       },
@@ -53,20 +52,44 @@ const badgeVariants = cva(
       },
     },
     compoundVariants: [
-      // contained + color 조합
+      // contained & rounded + color 조합
       {
-        variant: 'contained',
+        variant: ['contained', 'rounded'],
         color: 'blue',
         class: 'bg-[var(--color-information-10)] text-[var(--color-information-50)]',
       },
-      { variant: 'contained', color: 'red', class: 'bg-[var(--color-danger-10)] text-[var(--color-danger-50)]' },
-      { variant: 'contained', color: 'green', class: 'bg-[var(--color-success-10)] text-[var(--color-success-50)]' },
-      { variant: 'contained', color: 'primary', class: 'bg-[var(--color-primary-10)] text-[var(--color-primary-50)]' },
-      { variant: 'contained', color: 'gray', class: 'bg-[var(--color-blue-gray-15)] text-[var(--color-gray-70)]' },
-      { variant: 'contained', color: 'bluegray', class: 'bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)]' },
-      { variant: 'contained', color: 'secondary', class: 'bg-[var(--color-secondary-50)] text-[var(--color-gray-0)]' },
-      { variant: 'contained', color: 'purple', class: 'bg-[#F0E6FF] text-[#853EE2]' },
-      { variant: 'contained', color: 'yellow', class: 'bg-[var(--color-warning-10)] text-[#FFB800]' },
+      {
+        variant: ['contained', 'rounded'],
+        color: 'red',
+        class: 'bg-[var(--color-danger-10)] text-[var(--color-danger-50)]',
+      },
+      {
+        variant: ['contained', 'rounded'],
+        color: 'green',
+        class: 'bg-[var(--color-success-10)] text-[var(--color-success-50)]',
+      },
+      {
+        variant: ['contained', 'rounded'],
+        color: 'primary',
+        class: 'bg-[var(--color-danger-10)] text-[var(--color-primary-50)]',
+      },
+      {
+        variant: ['contained', 'rounded'],
+        color: 'gray',
+        class: 'bg-[var(--color-blue-gray-15)] text-[var(--color-gray-70)]',
+      },
+      {
+        variant: ['contained', 'rounded'],
+        color: 'bluegray',
+        class: 'bg-[var(--color-blue-gray-50)] text-[var(--color-gray-0)]',
+      },
+      {
+        variant: ['contained', 'rounded'],
+        color: 'secondary',
+        class: 'bg-[var(--color-secondary-50)] text-[var(--color-gray-0)]',
+      },
+      { variant: ['contained', 'rounded'], color: 'purple', class: 'bg-[#F0E6FF] text-[#853EE2]' },
+      { variant: ['contained', 'rounded'], color: 'yellow', class: 'bg-[var(--color-warning-10)] text-[#FFB800]' },
 
       // dark + color 조합
       {
@@ -334,8 +357,6 @@ function Badge({
   asChild = false,
   ...props
 }: BadgeProps) {
-  const Comp = asChild ? Slot : 'span';
-
   const textContent = extractText(children);
 
   const isStatus = variant === 'status';
@@ -354,8 +375,27 @@ function Badge({
     return getBadgeIconByText(textContent);
   }, [icon, shouldShowIcon, children, textContent]);
 
+  if (asChild) {
+    return (
+      <Slot
+        data-slot="badge"
+        className={cn(
+          badgeVariants({
+            variant,
+            size: isStatus ? undefined : size,
+            color: computedColor as VariantProps<typeof badgeVariants>['color'],
+          }),
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </Slot>
+    );
+  }
+
   return (
-    <Comp
+    <span
       data-slot="badge"
       className={cn(
         badgeVariants({
@@ -369,7 +409,7 @@ function Badge({
     >
       {renderedIcon}
       {children}
-    </Comp>
+    </span>
   );
 }
 
