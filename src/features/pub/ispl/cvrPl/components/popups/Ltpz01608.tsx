@@ -4,7 +4,8 @@
 'use client';
 
 import * as React from 'react';
-import { Grow } from '@atoms';
+
+import { Gcol, Grow, Typo } from '@atoms';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
 import { TableFold, TableFoldBody, TableFoldHead } from '@common/TableFold';
 import { EssentialIcon, SearchIcon } from '@icons';
@@ -120,6 +121,11 @@ const Ltpz01608 = () => {
           </FormTable>
         </TableFoldBody>
       </TableFold>
+      <Gcol variant={'box-info'} placement={'ss'} className="w-full">
+        <Typo variant={'body-sm'} icon={'info'}>
+          최초 자동차 등록일이 5년 이내인 승용자동차에 한하여 가입 가능합니다.
+        </Typo>
+      </Gcol>
     </>
   );
 };

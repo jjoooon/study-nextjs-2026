@@ -205,7 +205,7 @@ const Ltpz01602 = () => {
       headerName: '업종구분',
       field: 'field01',
       width: 100,
-      cellClass: 'text-center',
+      cellClass: 'text-center editable-cell',
       editable: true,
       cellEditor: 'agSelectCellEditor',
       cellEditorParams: { values: ['선택1', '선택2'] },
@@ -214,15 +214,15 @@ const Ltpz01602 = () => {
     {
       headerName: '규모',
       flex: 1,
-      cellClass: 'text-center',
+      cellClass: 'text-center p-0! h-full',
       cellRenderer: (params: ICellRendererParams<FacilityLiabilityDataType>) => {
         return (
-          <Grid className='"h-full w-full grid-cols-[1fr_1fr_1fr_1fr] items-stretch'>
-            <span className="flex h-full items-center justify-center">{params.data?.field02}</span>
+          <Grid className="h-full w-full grid-cols-[1fr_1fr_1fr_1fr] gap-0 items-stretch">
+            <span className="flex w-full h-full items-center justify-center editable-cell">{params.data?.field02}</span>
             <span className="flex h-full items-center justify-center border-l border-gray-200 pl-2">
               {params.data?.field03}
             </span>
-            <span className="flex h-full items-center justify-center border-l border-gray-200 pl-2">
+            <span className="flex h-full items-center justify-center border-l border-gray-200 pl-2 editable-cell">
               {params.data?.field04}
             </span>
             <span className="flex h-full items-center justify-center border-l border-gray-200 pl-2">
@@ -236,7 +236,7 @@ const Ltpz01602 = () => {
       headerName: '보상한도',
       field: 'field06',
       width: 100,
-      cellClass: 'text-center',
+      cellClass: 'text-center editable-cell',
       editable: true,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
@@ -247,7 +247,7 @@ const Ltpz01602 = () => {
       headerName: '자기부담금',
       field: 'field07',
       width: 100,
-      cellClass: 'text-center',
+      cellClass: 'text-center editable-cell',
       editable: true,
       valueParser: (params) => Number(params.newValue) || 0,
       valueFormatter: numberValueFormatter,
@@ -266,7 +266,7 @@ const Ltpz01602 = () => {
       headerName: '',
       field: 'field09',
       width: 100,
-      cellClass: 'text-center',
+      cellClass: 'text-center editable-cell',
       editable: true,
       headerComponent: () => (
         <div className="w-full text-center whitespace-normal px-1">

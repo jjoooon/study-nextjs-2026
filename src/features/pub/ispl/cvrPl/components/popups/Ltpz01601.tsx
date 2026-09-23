@@ -66,8 +66,7 @@ const Ltpz01601 = () => {
         </FormTable>
         <Gcol variant={'box-info'} placement={'ss'} className="w-full">
           <Typo variant={'body-sm'} icon={'info'}>
-            약관상 피보험자가 소유, 사용, 관리 중 발생한 우연한 사고로 배상책임을 부담하는 주거용 주택을 등록해
-            주세요.
+            약관상 피보험자가 소유, 사용, 관리 중 발생한 우연한 사고로 배상책임을 부담하는 주거용 주택을 등록해 주세요.
           </Typo>
         </Gcol>
       </TableFoldBody>

@@ -61,8 +61,7 @@ const columnDefs: ColDef<DataType>[] = [
     headerName: '기본주소(소재지)',
     field: 'field02',
     flex: 10,
-    cellClass: 'text-left editable-cell',
-    editable: true,
+    cellClass: 'text-left',
   },
   {
     headerName: '호수상세정보',
