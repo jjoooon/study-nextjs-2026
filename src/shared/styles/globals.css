@@ -551,13 +551,39 @@
     font-size: 10px;
     /* letter-spacing: -0.13rem; */
   }
-  input, select, textarea, button,body {
-    font-family: 'NotoSansKRNumber', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', Arial, sans-serif !important;
-  }
+  /* 1. 기본 루트/바디에 숫자 폰트 + 기본 폰트 스택 정의 */
   body {
-    /* overflow:hidden; */
     background-color: #fff;
+    font-family: 'NotoSansKRNumber', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    font-weight: 400;
+    font-variation-settings: 'wght' 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
+
+  /* 2. 브라우저 기본 스타일로 인해 상속이 끊기는 폼/인터랙션 요소 강제 상속 */
+  button,
+  input,
+  select,
+  textarea,
+  optgroup,
+  option,
+  datalist,
+  legend {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* 3. (선택) code/pre 계열에서도 동일한 숫자 폰트를 유지하고 싶은 경우 */
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: 'NotoSansKRNumber', Consolas, Monaco, monospace;
+  }
+
   #storybook-root {
     /* width: 1196px; */
     border-right: 1px solid #ccc;
