@@ -130,7 +130,21 @@ const comparisonRows: ComparisonRow[] = [
   },
 ];
 
-const Ltpz011 = () => {
+/**
+ * Ltpz011 컴포넌트 Props
+ */
+export interface Ltpz011Props {
+  /**
+   * 초기 그리드 로우 데이터 (기본값: comparisonRows)
+   */
+  initialRowData?: ComparisonRow[];
+  /**
+   * 데이터가 없는 빈 목록 상태 표시 여부
+   */
+  isEmpty?: boolean;
+}
+
+const Ltpz011: React.FC<Ltpz011Props> = ({ initialRowData, isEmpty = false }) => {
   // 2026-05-28 cellClass 수정
   // 2026-05-29 width 수정
   const { attributeColumnWidth } = useDynamicColumnWidths();
@@ -183,11 +197,27 @@ const Ltpz011 = () => {
     },
   ];
 
-  const rowData2 = comparisonRows;
+  const [rowData2, setRowData2] = React.useState<ComparisonRow[]>(() => {
+    if (isEmpty) return [];
+    if (initialRowData !== undefined) return initialRowData;
+    return comparisonRows;
+  });
+
+  React.useEffect(() => {
+    if (isEmpty) {
+      setRowData2([]);
+    } else if (initialRowData !== undefined) {
+      setRowData2(initialRowData);
+    } else {
+      setRowData2(comparisonRows);
+    }
+  }, [isEmpty, initialRowData]);
 
   // 테이블 하단에 고정될 '합계' 행 데이터 계산
-  const sumRow2 = React.useMemo<ComparisonRow[]>(
-    () => [
+  const sumRow2 = React.useMemo<ComparisonRow[] | undefined>(() => {
+    if (!rowData2 || rowData2.length === 0) return undefined;
+
+    return [
       {
         id: -1,
         state: '',
@@ -198,9 +228,8 @@ const Ltpz011 = () => {
         premium: rowData2.reduce((sum, row) => sum + row.premium, 0), // 리스트에 있는 모든 보험료(premium)를 하나씩 더해서 총합을 구함
         isSumRow: true, // 이 행이 합계 전용 행임을 알려주는 구분값
       },
-    ],
-    [rowData2]
-  );
+    ];
+  }, [rowData2]);
 
   return (
     <Dialog open>
@@ -242,6 +271,7 @@ const Ltpz011 = () => {
                 <AgGridReact<ComparisonRow>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
+                  noRowsOverlayComponentParams={{ message: '데이터가 없습니다.' }}
                   rowData={rowData2}
                   columnDefs={columnDefs2}
                   pinnedBottomRowData={sumRow2}

@@ -184,11 +184,13 @@ const isPageProcessStep = (value: number): value is Ltpa350ProcessStep => {
 export interface Ltpa350SectionProps {
   showRenewalCycle?: boolean;
   showContractConversion?: boolean;
+  isDepositEmpty?: boolean;
 }
 
 export default function Ltpa350Section({
   showRenewalCycle = true,
   showContractConversion = false,
+  isDepositEmpty = false,
 }: Ltpa350SectionProps = {}) {
   // simpleMode: 페이지를 간략 모드로 보여줄지 여부 (PageTitle와 step별 본문에서 같이 사용)
   const [simpleMode, setSimpleMode] = useState<boolean>(data.head.pageTitle.simpleMode);
@@ -240,7 +242,7 @@ export default function Ltpa350Section({
     3: <Ltpa35003 simpleMode={simpleMode} />,
     4: <Ltpa35004 />,
     5: <Ltpa35005 />,
-    6: <Ltpa35006 />,
+    6: <Ltpa35006 isEmpty={isDepositEmpty} />,
   };
 
   const refinedPageTitle = {

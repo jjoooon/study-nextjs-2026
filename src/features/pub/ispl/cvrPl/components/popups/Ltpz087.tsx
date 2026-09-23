@@ -83,7 +83,17 @@ const dummyData: DummyDataType[] = [
   },
 ];
 
-const Ltpz087 = () => {
+/**
+ * Ltpz087 컴포넌트 Props
+ */
+export interface Ltpz087Props {
+  /** 초기 행 데이터 */
+  initialRowData?: DummyDataType[];
+  /** 데이터가 없는 빈 목록 상태 표시 여부 */
+  isEmpty?: boolean;
+}
+
+const Ltpz087: React.FC<Ltpz087Props> = ({ initialRowData, isEmpty = false }) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs = React.useMemo<ColDef<DummyDataType>[]>(
     () => [
@@ -122,8 +132,22 @@ const Ltpz087 = () => {
     [attributeColumnWidth]
   );
 
-  const [rowData] = useState<DummyDataType[]>(dummyData);
+  const [rowData, setRowData] = useState<DummyDataType[]>(() => {
+    if (isEmpty) return [];
+    if (initialRowData !== undefined) return initialRowData;
+    return dummyData;
+  });
+
+  React.useEffect(() => {
+    if (isEmpty) {
+      setRowData([]);
+    } else {
+      setRowData(initialRowData ?? dummyData);
+    }
+  }, [isEmpty, initialRowData]);
+
   const sumRow = React.useMemo(() => {
+    if (!rowData || rowData.length === 0) return undefined;
     const parse = (v: string | number) => {
       if (typeof v === 'number') return v;
       if (!v) return 0;
@@ -229,6 +253,7 @@ const Ltpz087 = () => {
                     // ref={gridRef}
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
+                    noRowsOverlayComponentParams={{ message: '데이터가 없습니다.' }}
                     rowData={rowData}
                     columnDefs={columnDefs}
                     defaultColDef={{

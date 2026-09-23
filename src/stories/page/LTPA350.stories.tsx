@@ -40,16 +40,41 @@ const meta: Meta<typeof LTPA350> = {
         defaultValue: { summary: 'false' },
       },
     },
+    isDepositEmpty: {
+      name: '입금사항 데이터 없음 여부 (수납)',
+      control: 'boolean',
+      description: '6단계(수납) 탭에서 입금사항 그리드 데이터가 없는 빈 목록 상태로 표시합니다.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
   },
   args: {
     showRenewalCycle: true,
     showContractConversion: false,
+    isDepositEmpty: false,
   },
 };
 export default meta;
 type Story = StoryObj<typeof LTPA350>;
 
 export const Default: Story = {
+  render: (args = {}) => (
+    <LayoutDoc>
+      <TempSpinner />
+      <LTPA350 {...args} />
+    </LayoutDoc>
+  ),
+};
+
+export const DepositNoData: Story = {
+  name: '입금사항 데이터 없음 (수납)',
+  args: {
+    showRenewalCycle: true,
+    showContractConversion: false,
+    isDepositEmpty: true,
+  },
   render: (args = {}) => (
     <LayoutDoc>
       <TempSpinner />

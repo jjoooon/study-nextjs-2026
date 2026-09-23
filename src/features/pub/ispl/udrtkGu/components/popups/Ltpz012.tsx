@@ -196,9 +196,67 @@ const finalSummaryData: FinalSummaryData[] = [
 ];
 
 /**
+ * Ltpz012 컴포넌트 Props
+ */
+export interface Ltpz012Props {
+  /** 가점계산 초기 데이터 */
+  initialSection2Data?: DummyDataType2[];
+  /** 감점계산 초기 데이터 */
+  initialSection3Data?: DummyDataType2[];
+  /** 정책요소 초기 데이터 */
+  initialPolicyData?: DummyDataType2[];
+  /** 데이터가 없는 빈 목록 상태 표시 여부 */
+  isEmpty?: boolean;
+}
+
+/**
  * Ltpz012: 청약포인트의 상세 산출 내역(가점, 감점, 정책요소 등)을 보여주는 팝업 컴포넌트입니다.
  */
-const Ltpz012 = () => {
+const Ltpz012: React.FC<Ltpz012Props> = ({
+  initialSection2Data,
+  initialSection3Data,
+  initialPolicyData,
+  isEmpty = false,
+}) => {
+  const [data2, setData2] = React.useState<DummyDataType2[]>(() => {
+    if (isEmpty) return [];
+    if (initialSection2Data !== undefined) return initialSection2Data;
+    return section2Data;
+  });
+
+  const [data3, setData3] = React.useState<DummyDataType2[]>(() => {
+    if (isEmpty) return [];
+    if (initialSection3Data !== undefined) return initialSection3Data;
+    return section3Data;
+  });
+
+  const [pData, setPData] = React.useState<DummyDataType2[]>(() => {
+    if (isEmpty) return [];
+    if (initialPolicyData !== undefined) return initialPolicyData;
+    return policyData;
+  });
+
+  React.useEffect(() => {
+    if (isEmpty) {
+      setData2([]);
+      setData3([]);
+      setPData([]);
+    } else {
+      setData2(initialSection2Data ?? section2Data);
+      setData3(initialSection3Data ?? section3Data);
+      setPData(initialPolicyData ?? policyData);
+    }
+  }, [isEmpty, initialSection2Data, initialSection3Data, initialPolicyData]);
+
+  const currentSection2SumData = React.useMemo(() => {
+    if (!data2 || data2.length === 0) return undefined;
+    return section2SumData;
+  }, [data2]);
+
+  const currentSection3SumData = React.useMemo(() => {
+    if (!data3 || data3.length === 0) return undefined;
+    return section3SumData;
+  }, [data3]);
   /** 특정 합계 행(가점 합계, 감점 소계, 감점 합계)인지 여부를 판별하는 유틸 함수 */
   const isMergedSumRow = (data?: DummyDataType2) => {
     return (
@@ -410,13 +468,13 @@ const Ltpz012 = () => {
                 </Button>
               </TableFoldHead>
               <TableFoldBody>
-                <div className="ag-theme-alpine inner-scroll" data-row={section2Data.length}>
+                <div className="ag-theme-alpine inner-scroll" data-row={data2.length}>
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={section2Data}
+                    rowData={data2}
                     columnDefs={columnDefs}
-                    pinnedBottomRowData={section2SumData}
+                    pinnedBottomRowData={currentSection2SumData}
                     defaultColDef={{ sortable: true, resizable: true }}
                     domLayout={'normal'}
                   />
@@ -428,13 +486,13 @@ const Ltpz012 = () => {
             <TableFold>
               <TableFoldHead title="감점계산" />
               <TableFoldBody>
-                <div className="ag-theme-alpine inner-scroll" data-row={section3Data.length}>
+                <div className="ag-theme-alpine inner-scroll" data-row={data3.length}>
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={section3Data}
+                    rowData={data3}
                     columnDefs={columnDefs}
-                    pinnedBottomRowData={section3SumData}
+                    pinnedBottomRowData={currentSection3SumData}
                     getRowStyle={(params) =>
                       params.node.rowPinned && !params.data?.isSumRow ? { backgroundColor: '#ffffff' } : undefined
                     }
@@ -450,11 +508,11 @@ const Ltpz012 = () => {
             <TableFold>
               <TableFoldHead title="정책요소" />
               <TableFoldBody>
-                <div className="ag-theme-alpine inner-scroll" data-row={policyData.length}>
+                <div className="ag-theme-alpine inner-scroll" data-row={pData.length}>
                   <AgGridReact<DummyDataType2>
                     getRowId={(params) => String(params.data.id)}
                     noRowsOverlayComponent={AgGridEmptyComponent}
-                    rowData={policyData}
+                    rowData={pData}
                     columnDefs={columnDefs}
                     defaultColDef={{ sortable: true, resizable: true }}
                     domLayout={'autoHeight'}

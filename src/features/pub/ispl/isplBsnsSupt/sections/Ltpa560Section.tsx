@@ -210,7 +210,14 @@ const Ltpa560DummyData: Ltpa560DummyDataRow[] = [
   },
 ];
 
-export default function Ltpa560Section() {
+export interface Ltpa560SectionProps {
+  /** 초기 행 데이터 */
+  initialRowData?: Ltpa560DummyDataRow[];
+  /** 데이터가 없는 빈 목록 상태 표시 여부 */
+  isEmpty?: boolean;
+}
+
+export default function Ltpa560Section({ initialRowData, isEmpty = false }: Ltpa560SectionProps = {}) {
   const [form, setFormField] = useFormFields({
     type01: '',
     type02: '',
@@ -218,7 +225,19 @@ export default function Ltpa560Section() {
     type04: '',
   });
 
-  const [rowData] = React.useState<Ltpa560DummyDataRow[]>(Ltpa560DummyData);
+  const [rowData, setRowData] = React.useState<Ltpa560DummyDataRow[]>(() => {
+    if (isEmpty) return [];
+    if (initialRowData !== undefined) return initialRowData;
+    return Ltpa560DummyData;
+  });
+
+  React.useEffect(() => {
+    if (isEmpty) {
+      setRowData([]);
+    } else {
+      setRowData(initialRowData ?? Ltpa560DummyData);
+    }
+  }, [isEmpty, initialRowData]);
 
   // AgGrid Column
   // 2026-05-29 수정 cellClass 추가, width 수정
@@ -360,7 +379,9 @@ export default function Ltpa560Section() {
 
   const gridRef = React.useRef<AgGridReact<Ltpa560DummyDataRow>>(null);
 
-  const sumRow = React.useMemo<Ltpa560DummyDataRow[]>(() => {
+  const sumRow = React.useMemo<Ltpa560DummyDataRow[] | undefined>(() => {
+    if (!rowData || rowData.length === 0) return undefined;
+
     const toNumber = (value: string | number): number => {
       if (typeof value === 'number') {
         return Number.isFinite(value) ? value : 0;
@@ -549,6 +570,7 @@ export default function Ltpa560Section() {
                 <AgGridReact<Ltpa560DummyDataRow>
                   ref={gridRef}
                   noRowsOverlayComponent={AgGridEmptyComponent}
+                  noRowsOverlayComponentParams={{ message: '데이터가 없습니다.' }}
                   getRowId={(params) => String(params.data.id)}
                   getRowClass={(params) => (params.data?.subtotal ? 'ag-row-subtotal' : undefined)}
                   rowData={rowData}

@@ -93,7 +93,17 @@ const DummyData: DummyDataType[] = [
   },
 ];
 
-const Ltpz049 = () => {
+/**
+ * Ltpz049 컴포넌트 Props
+ */
+export interface Ltpz049Props {
+  /** 초기 행 데이터 */
+  initialRowData?: DummyDataType[];
+  /** 데이터가 없는 빈 목록 상태 표시 여부 */
+  isEmpty?: boolean;
+}
+
+const Ltpz049: React.FC<Ltpz049Props> = ({ initialRowData, isEmpty = false }) => {
   // AgGrid Column
   const { attributeColumnWidth } = useDynamicColumnWidths();
   const columnDefs: (ColDef<DummyDataType> | ColGroupDef<DummyDataType>)[] = useMemo(
@@ -142,8 +152,22 @@ const Ltpz049 = () => {
     [attributeColumnWidth]
   );
 
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => {
+    if (isEmpty) return [];
+    if (initialRowData !== undefined) return initialRowData;
+    return DummyData;
+  });
+
+  React.useEffect(() => {
+    if (isEmpty) {
+      setRowData([]);
+    } else {
+      setRowData(initialRowData ?? DummyData);
+    }
+  }, [isEmpty, initialRowData]);
+
   const sumRow = React.useMemo(() => {
+    if (!rowData || rowData.length === 0) return undefined;
     const parse = (v: string | number) => {
       if (typeof v === 'number') return v;
       if (!v) return 0;

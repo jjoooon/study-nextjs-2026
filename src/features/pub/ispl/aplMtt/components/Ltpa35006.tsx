@@ -6,8 +6,14 @@
 import '@/shared/lib/agGridPub';
 import type { ColDef, ICellRendererParams, SelectionChangedEvent } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
+import * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
-import { createCellClickSelectionToggleHandler, numberValueFormatter, useDynamicColumnWidths } from '@aggrid';
+import {
+  AgGridEmptyComponent,
+  createCellClickSelectionToggleHandler,
+  numberValueFormatter,
+  useDynamicColumnWidths,
+} from '@aggrid';
 import { Grow, Gcol, Typo, Grid } from '@atoms';
 import { DatePickerInput } from '@common/DatePicker';
 import { FormCell, FormRow, FormTable } from '@common/FormTable';
@@ -78,7 +84,17 @@ const DummyData: DummyDataType = {
   ],
 };
 
-export const Ltpa35006 = () => {
+/**
+ * Ltpa35006 컴포넌트 Props
+ */
+export interface Ltpa35006Props {
+  /** 입금사항 초기 행 데이터 */
+  initialDepositGridRows?: Ltpa35006GridRow[];
+  /** 데이터가 없는 빈 목록 상태 표시 여부 */
+  isEmpty?: boolean;
+}
+
+export const Ltpa35006: React.FC<Ltpa35006Props> = ({ initialDepositGridRows, isEmpty = false }) => {
   // 화면 너비에 반응하여 ag-Grid의 컬럼 너비를 동적으로 조정하기 위한 커스텀 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -112,8 +128,20 @@ export const Ltpa35006 = () => {
     type26: '',
   });
 
-  // 전체 입금 내역 목록을 메모이제이션 로드
-  const gridRows = useMemo<Ltpa35006GridRow[]>(() => DummyData.agGridTable ?? [], []);
+  // 전체 입금 내역 목록 상태 관리
+  const [gridRows, setGridRows] = useState<Ltpa35006GridRow[]>(() => {
+    if (isEmpty) return [];
+    if (initialDepositGridRows !== undefined) return initialDepositGridRows;
+    return DummyData.agGridTable ?? [];
+  });
+
+  React.useEffect(() => {
+    if (isEmpty) {
+      setGridRows([]);
+    } else {
+      setGridRows(initialDepositGridRows ?? DummyData.agGridTable ?? []);
+    }
+  }, [isEmpty, initialDepositGridRows]);
 
   // 입금 내역 중에서 하단 합계 행(isSumRow)을 필터링하여 실제 데이터 행만 추출
   const depositGridRows = useMemo(() => gridRows.filter((row) => !row.isSumRow), [gridRows]);
@@ -123,8 +151,10 @@ export const Ltpa35006 = () => {
   const [selectedDepositAmount, setSelectedDepositAmount] = useState(0);
 
   // ag-Grid 하단에 고정되어 실시간으로 선택 금액 합계를 나타낼 pinned 행 데이터 설정
-  const depositSumRow = useMemo<Ltpa35006GridRow[]>(
-    () => [
+  const depositSumRow = useMemo<Ltpa35006GridRow[] | undefined>(() => {
+    if (isEmpty || depositGridRows.length === 0) return undefined;
+
+    return [
       {
         id: -1,
         field1: String(selectedDepositCount), // 선택된 건수
@@ -134,9 +164,8 @@ export const Ltpa35006 = () => {
         field5: '',
         isSumRow: true,
       },
-    ],
-    [selectedDepositAmount, selectedDepositCount]
-  );
+    ];
+  }, [depositGridRows.length, isEmpty, selectedDepositAmount, selectedDepositCount]);
 
   // ─── 입금사항 ag-Grid 컬럼 정의 ──────────────────────────────────────────────────────────
   const columnDefs = useMemo<ColDef<Ltpa35006GridRow>[]>(
@@ -287,7 +316,7 @@ export const Ltpa35006 = () => {
                         </FormCell>
                         <FormCell title={'보험기간'}>
                           {/* 보험 적용 기간 표시용 날짜 범위 선택 컴포넌트 */}
-                          <DatePickerInput readOnly mode={'range'} />
+                          <DatePickerInput readOnly mode={'range'} onChange={() => {}} />
                         </FormCell>
                         <FormCell title={'설계번호'}>
                           <Input aria-label="설계번호" width={'full'} value={'LA2401521476365'} readOnly />
@@ -897,6 +926,8 @@ export const Ltpa35006 = () => {
                       <div className="ag-theme-alpine  inner-scroll" data-row={depositGridRows.length}>
                         <AgGridReact<Ltpa35006GridRow>
                           getRowId={(params) => String(params.data.id)}
+                          noRowsOverlayComponent={AgGridEmptyComponent}
+                          noRowsOverlayComponentParams={{ message: '데이터가 없습니다.' }}
                           rowData={depositGridRows} // 하단 합계를 뺀 순수 입금 내역 리스트
                           pinnedBottomRowData={depositSumRow} // 선택 건수 및 금액의 합계를 보여주는 하단 고정행
                           columnDefs={columnDefs} // 컬럼 정의

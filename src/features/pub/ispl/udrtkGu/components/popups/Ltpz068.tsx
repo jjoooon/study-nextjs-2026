@@ -7,7 +7,7 @@ import '@/shared/lib/agGridPub';
 import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
-import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
+import { AgGridEmptyComponent, createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
 import { Grow, Typo, Grid } from '@atoms';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
 import { Ai2Icon } from '@icons';
@@ -804,9 +804,38 @@ const PLAN_COLS: Array<{
  *   3. 탭 클릭 시 선택한 플랜을 활성화(`selectedPlan`)하고 하단 합계행(`sumRow`)과 연계 계산
  */
 
-const Ltpz068 = () => {
+/**
+ * Ltpz068 컴포넌트 Props
+ */
+export interface Ltpz068Props {
+  /**
+   * 초기 그리드 로우 데이터 (기본값: DummyData)
+   */
+  initialRowData?: DummyDataType[];
+  /**
+   * 데이터가 없는 빈 목록 표시 여부
+   */
+  isEmpty?: boolean;
+}
+
+const Ltpz068: React.FC<Ltpz068Props> = ({ initialRowData, isEmpty = false }) => {
   // 담보 목록 로우 데이터
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => {
+    if (isEmpty) return [];
+    if (initialRowData !== undefined) return initialRowData;
+    return DummyData;
+  });
+
+  React.useEffect(() => {
+    if (isEmpty) {
+      setRowData([]);
+    } else if (initialRowData !== undefined) {
+      setRowData(initialRowData);
+    } else {
+      setRowData(DummyData);
+    }
+  }, [isEmpty, initialRowData]);
+
   // 현재 체크(선택)된 추천 해소안 플랜 상태
   const [selectedPlan, setSelectedPlan] = React.useState<PlanKey>('A');
 
@@ -829,9 +858,12 @@ const Ltpz068 = () => {
 
   /**
    * 하단 고정(Pinned Bottom) 합계행 생성 로직
+   * - 데이터가 없는 경우(rowData.length === 0) 합계행을 표시하지 않도록 undefined를 반환합니다.
    * - 현재설계액 및 A, B, C안의 보장 보험료의 누적 총합을 각각 합산하여 반환합니다.
    */
-  const sumRow = React.useMemo<DummyDataType[]>(() => {
+  const sumRow = React.useMemo<DummyDataType[] | undefined>(() => {
+    if (!rowData || rowData.length === 0) return undefined;
+
     const currentTotal = rowData.reduce((acc, row) => acc + toNumber(row.premium), 0);
     const planATotal = rowData.reduce((acc, row) => acc + toNumber(row.premiumA), 0);
     const planBTotal = rowData.reduce((acc, row) => acc + toNumber(row.premiumB), 0);
@@ -1039,9 +1071,11 @@ const Ltpz068 = () => {
               })}
             </Grid>
             {/* 가입 설계 금액 대조용 Ag-Grid 본체 */}
-            <div className="ag-theme-alpine relative">
+            <div className="ag-theme-alpine relative" data-row={rowData.length}>
               <AgGridReact<DummyDataType>
                 getRowId={(params) => String(params.data.id)}
+                noRowsOverlayComponent={AgGridEmptyComponent}
+                noRowsOverlayComponentParams={{ message: '데이터가 없습니다.' }}
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={{

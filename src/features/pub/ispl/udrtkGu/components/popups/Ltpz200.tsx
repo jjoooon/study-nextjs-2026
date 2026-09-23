@@ -255,9 +255,23 @@ const DummyData: DummyDataType[] = [
 ];
 
 /**
+ * Ltpz200 컴포넌트 Props
+ */
+export interface Ltpz200Props {
+  /**
+   * 초기 그리드 로우 데이터 (기본값: DummyData)
+   */
+  initialRowData?: DummyDataType[];
+  /**
+   * 데이터가 없는 빈 목록 상태 표시 여부
+   */
+  isEmpty?: boolean;
+}
+
+/**
  * Ltpz022: 보험 설계의 지침 확인 결과(인수 지침 위배 사항)를 보여주는 팝업 컴포넌트입니다.
  */
-const Ltpz200 = () => {
+const Ltpz200: React.FC<Ltpz200Props> = ({ initialRowData, isEmpty = false }) => {
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
   // AgGrid Column Grouping
@@ -364,9 +378,21 @@ const Ltpz200 = () => {
     type02: '',
   });
 
-  const [rowData] = React.useState<DummyDataType[]>(() =>
-    [...DummyData].sort((a, b) => (b.isViolation ? 1 : 0) - (a.isViolation ? 1 : 0))
-  );
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => {
+    if (isEmpty) return [];
+    if (initialRowData !== undefined) return initialRowData;
+    return [...DummyData].sort((a, b) => (b.isViolation ? 1 : 0) - (a.isViolation ? 1 : 0));
+  });
+
+  React.useEffect(() => {
+    if (isEmpty) {
+      setRowData([]);
+    } else if (initialRowData !== undefined) {
+      setRowData(initialRowData);
+    } else {
+      setRowData([...DummyData].sort((a, b) => (b.isViolation ? 1 : 0) - (a.isViolation ? 1 : 0)));
+    }
+  }, [isEmpty, initialRowData]);
 
   const postSortRows = React.useCallback((params: PostSortRowsParams<DummyDataType>) => {
     params.nodes.sort((nodeA, nodeB) => {
@@ -377,7 +403,8 @@ const Ltpz200 = () => {
     });
   }, []);
 
-  const pinnedBottomRowData = React.useMemo<DummyDataType[]>(() => {
+  const pinnedBottomRowData = React.useMemo<DummyDataType[] | undefined>(() => {
+    if (!rowData || rowData.length === 0) return undefined;
     const totalInsuredAmount = rowData.reduce((sum, row) => sum + (Number(row.insuredAmount) || 0), 0);
 
     return [

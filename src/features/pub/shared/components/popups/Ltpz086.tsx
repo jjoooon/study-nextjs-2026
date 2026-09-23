@@ -127,6 +127,18 @@ const DummyData2: DummyData2Type[] = [
 ];
 
 /**
+ * Ltpz086 컴포넌트 Props
+ */
+export interface Ltpz086Props {
+  /** 기계약 사항 초기 데이터 */
+  initialRowData?: DummyDataType[];
+  /** 위배내용 초기 데이터 */
+  initialData2?: DummyData2Type[];
+  /** 데이터가 없는 빈 목록 상태 표시 여부 */
+  isEmpty?: boolean;
+}
+
+/**
  * @component Ltpz086
  * @description 기 누적금액 조회 팝업 다이얼로그 컴포넌트
  * - 계약 진행 시 한도 초과 또는 인수 조건 위배가 발생한 누적 위배 상세 내역을 제공합니다.
@@ -134,7 +146,7 @@ const DummyData2: DummyData2Type[] = [
  *   1. 위배내용 (인수제한 사유, 누적명, 누적 한도 정보)
  *   2. 기계약 사항 (기존 가입되어 있는 타사 및 당사 계약 정보 리스트 및 합계)
  */
-const Ltpz086 = () => {
+const Ltpz086: React.FC<Ltpz086Props> = ({ initialRowData, initialData2, isEmpty = false }) => {
   // 반응형 그리드 열 너비 계산 훅
   const { attributeColumnWidth } = useDynamicColumnWidths();
 
@@ -304,13 +316,36 @@ const Ltpz086 = () => {
     },
   ];
 
+  // 위배내용 테이블용 상태 관리
+  const [data2, setData2] = React.useState<DummyData2Type[]>(() => {
+    if (isEmpty) return [];
+    if (initialData2 !== undefined) return initialData2;
+    return DummyData2;
+  });
+
   // 기계약 사항 테이블용 상태 관리
-  const [rowData] = React.useState<DummyDataType[]>(DummyData);
+  const [rowData, setRowData] = React.useState<DummyDataType[]>(() => {
+    if (isEmpty) return [];
+    if (initialRowData !== undefined) return initialRowData;
+    return DummyData;
+  });
+
+  React.useEffect(() => {
+    if (isEmpty) {
+      setRowData([]);
+      setData2([]);
+    } else {
+      setRowData(initialRowData ?? DummyData);
+      setData2(initialData2 ?? DummyData2);
+    }
+  }, [isEmpty, initialRowData, initialData2]);
 
   /**
    * 기계약 사항 그리드 하단에 고정 표시(Pinned Bottom)할 합계 행 데이터를 동적으로 생성
    */
-  const sumRow = React.useMemo<DummyDataType[]>(() => {
+  const sumRow = React.useMemo<DummyDataType[] | undefined>(() => {
+    if (!rowData || rowData.length === 0) return undefined;
+
     // 세 자리 콤마가 포함된 문자열을 숫자로 변환하는 유틸 함수
     const parse = (value: string | number) => {
       if (typeof value === 'number') return value;
@@ -363,11 +398,11 @@ const Ltpz086 = () => {
               </Typo>
             </TableFoldHead>
             <TableFoldBody>
-              <div className="ag-theme-alpine inner-scroll" data-row={DummyData2.length}>
+              <div className="ag-theme-alpine inner-scroll" data-row={data2.length}>
                 <AgGridReact<DummyData2Type>
                   getRowId={(params) => String(params.data.id)}
                   noRowsOverlayComponent={AgGridEmptyComponent}
-                  rowData={DummyData2}
+                  rowData={data2}
                   columnDefs={columnDefs2}
                   defaultColDef={{
                     sortable: true,

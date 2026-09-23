@@ -1135,6 +1135,15 @@ html.v109 .pointer-events-none .ag-selection-checkbox .ag-checkbox-input-wrapper
   min-height: 0 !important;
   overflow-y: auto !important;
 }
+/* 데이터가 0건일 때(data-row='0') 하단 고정 합계행(pinnedBottom) 최하단 바닥 고정 */
+.ag-theme-alpine[data-row='0'] .ag-floating-bottom {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 5 !important;
+  background-color: var(--color-white) !important;
+}
 .ag-theme-alpine.inner-scroll[data-row='1'] .ag-root-wrapper-body .ag-overlay,
 .ag-theme-alpine.inner-scroll[data-row='1'] .ag-root-wrapper-body .ag-body.ag-layout-normal {
   height: 3rem !important;
