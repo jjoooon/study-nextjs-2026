@@ -8,8 +8,10 @@ import type { ColDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import * as React from 'react';
 import { createTooltipValueGetter, useDynamicColumnWidths } from '@aggrid';
-import { Grow, Typo, Grid } from '@atoms';
+import { Grow, Typo, Gcol, Grid } from '@atoms';
+import { BulletList, BulletListItem, BulletItem } from '@common/BulletList';
 import { DialogBottomInfo } from '@common/DialogBottomInfo';
+
 import { Ai2Icon } from '@icons';
 import { Button } from '@uiux/Button';
 import {
@@ -965,7 +967,7 @@ const Ltpz068 = () => {
         </DialogHeader>
 
         {/* 다이얼로그 본문 섹션 */}
-        <DialogSection className="grid-rows-[auto_1fr] gap-2 pt-[2rem]">
+        <DialogSection className="grid-rows-[auto_1fr_auto] gap-2 pt-[2rem]">
           {/* 상단 AI 해결안 가이드 멘트 */}
           <Grow className="w-full justify-start">
             <Ai2Icon color={'var(--color-information-50)'} />
@@ -1059,6 +1061,19 @@ const Ltpz068 = () => {
               />
             </div>
           </div>
+          <Gcol variant="box-info" placement="ss">
+            <BulletList position="col" className="gap-0">
+              <BulletListItem type="dot" size="sm">
+                <b>A안 :</b> 인수금지 및 인수기준 지침 해소
+              </BulletListItem>
+              <BulletListItem type="dot" size="sm">
+                <b>B안 :</b> 인수금지, 인수기준, 청약완료불가(당사누적)
+              </BulletListItem>
+              <BulletListItem type="dot" size="sm">
+                <b>C안 :</b> 인수금지, 인수기준, 청약완료불가(당사누적), 청약완료불가, 청약완료불가(업계누적)
+              </BulletListItem>
+            </BulletList>
+          </Gcol>
         </DialogSection>
 
         {/* 다이얼로그 하단 푸터 버튼 */}
