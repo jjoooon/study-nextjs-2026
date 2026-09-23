@@ -116,6 +116,16 @@
 .ag-header-group-cell.ag-column-first.ag-header-group-cell-with-group {
   border-right: 1px solid var(--color-gray-10) !important;
 }
+.ag-header-cell.ag-column-last{
+  border-right: 0 !important;
+}
+.ag-header-group-cell.ag-column-last{
+  border-right: 0 !important;
+}
+.ag-header-group-cell {
+  border-right: 1px solid var(--color-gray-10) !important;
+}
+
 .ag-header-cell {
   font-weight: bold;
   text-align: right;

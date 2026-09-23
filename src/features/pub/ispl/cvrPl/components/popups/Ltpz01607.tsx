@@ -172,7 +172,7 @@ const columnDefs: (ColDef<DataType> | ColGroupDef<DataType>)[] = [
         headerName: '대인(1인당)',
         field: 'field04',
         flex: 1,
-        cellClass: 'text-center editable-cell',
+        cellClass: 'text-center editable-cell border',
         editable: true,
         cellEditor: 'agSelectCellEditor',
         cellEditorParams: { values: ['1,000만원', '10,000만원'] },
